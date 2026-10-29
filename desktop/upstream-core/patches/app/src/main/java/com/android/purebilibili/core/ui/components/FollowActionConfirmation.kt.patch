@@ -1,0 +1,22 @@
+--- a/com/android/purebilibili/core/ui/components/FollowActionConfirmation.kt
++++ b/com/android/purebilibili/core/ui/components/FollowActionConfirmation.kt
+@@ -1,17 +1,18 @@
+ package com.android.purebilibili.core.ui.components
+ 
+ import androidx.compose.runtime.Composable
+ import androidx.compose.runtime.getValue
+ import androidx.compose.runtime.mutableStateOf
+ import androidx.compose.runtime.remember
+ import androidx.compose.runtime.rememberUpdatedState
+ import androidx.compose.runtime.setValue
+-import com.android.purebilibili.core.ui.AppAlertDialog
++// Desktop: the confirmation is a dialog owned by the Windows window (DesktopWindowsFollowConfirmationDialog).
++import com.bilipai.desktop.ui.DesktopWindowsFollowConfirmationDialog as AppAlertDialog
+ 
+ /**
+  * Keep the existing follow action, but require an explicit second step before unfollowing.
+  * UI state belongs to this target and relationship; changing either discards a pending choice.
+  * Shared interaction only: the adaptive dialog preserves each material's native appearance.
+  */
+ @Composable
+ internal fun rememberFollowActionWithConfirmation(

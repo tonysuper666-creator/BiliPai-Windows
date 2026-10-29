@@ -1,0 +1,52 @@
+--- a/full-navigation-settings/com/android/purebilibili/feature/settings/DesktopOriginalAnimationSettingsContent.kt
++++ b/full-navigation-settings/com/android/purebilibili/feature/settings/DesktopOriginalAnimationSettingsContent.kt
+@@ -1,9 +1,11 @@
+ package com.android.purebilibili.feature.settings
++
++import com.bilipai.desktop.plugins.asAndroidContext
+ import com.android.purebilibili.core.ui.components.AppIcon
+ import com.android.purebilibili.core.ui.components.AppText
+ import com.android.purebilibili.core.ui.components.AppSegmentOption
+ import com.android.purebilibili.feature.settings.ui.LocalSettingsTopContentPadding
+ import androidx.compose.foundation.layout.PaddingValues
+ import androidx.compose.foundation.background
+ import androidx.compose.foundation.lazy.LazyColumn
+ import androidx.compose.foundation.lazy.rememberLazyListState
+@@ -84,17 +86,17 @@
+         when (cardMotionTier) {
+             MotionTier.Reduced -> "更短延迟与更弱位移，优先稳定和性能"
+             MotionTier.Normal -> "平衡性能与动效，适合大多数设备"
+             MotionTier.Enhanced -> "更明显的层级与动势，适合大屏展示"
+         }
+     }
+     val uiEntranceAnimationEnabled by DesktopOriginalFullNavigationSettings.getUiEntranceAnimationEnabled(context)
+         .collectAsState(initial = true)
+-    val skeletonBreathingEnabled by com.android.purebilibili.core.store.SkeletonSettingsStore.breathingEnabled(context).collectAsState(initial = true)
++    val skeletonBreathingEnabled by com.android.purebilibili.core.store.SkeletonSettingsStore.breathingEnabled(context.asAndroidContext()).collectAsState(initial = true)
+     val globalTextTapCopyEnabled by DesktopOriginalFullNavigationSettings
+         .getGlobalTextTapCopyEnabled(context)
+         .collectAsState(initial = false)
+     val appNavigationSettings by DesktopOriginalFullNavigationSettings.getAppNavigationSettings(context)
+         .collectAsState(initial = AppNavigationSettings())
+     val videoTransitionRealtimeBlurEnabled by DesktopOriginalFullNavigationSettings
+         .getVideoTransitionRealtimeBlurEnabled(context)
+         .collectAsState(initial = false)
+@@ -522,17 +524,17 @@
+                         AppSwitchPreference(
+                             icon = rememberSettingsSemanticIcon(SettingsIconRole.TOP_BAR_BLUR),
+                             title = "骨架呼吸动画",
+                             subtitle = "加载时的轻微呼吸动效",
+                             checked = skeletonBreathingEnabled,
+                             onCheckedChange = { enabled ->
+                                 scope.launch {
+                                     com.android.purebilibili.core.store.SkeletonSettingsStore
+-                                        .setBreathingEnabled(context, enabled)
++                                        .setBreathingEnabled(context.asAndroidContext(), enabled)
+                                 }
+                             },
+                             iconTint = iOSBlue,
+                         )
+                         AppPreferenceDivider()
+                         // 磨砂效果 (始终显示)
+                         AppSwitchPreference(
+                             icon = rememberSettingsSemanticIcon(SettingsIconRole.TOP_BAR_BLUR),

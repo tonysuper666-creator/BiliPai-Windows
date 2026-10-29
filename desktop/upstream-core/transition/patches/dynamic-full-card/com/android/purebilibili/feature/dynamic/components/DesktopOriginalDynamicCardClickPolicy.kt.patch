@@ -1,0 +1,21 @@
+--- a/dynamic-full-card/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicCardClickPolicy.kt
++++ b/dynamic-full-card/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicCardClickPolicy.kt
+@@ -325,16 +325,18 @@
+     return when (val target = BilibiliNavigationTargetParser.parse(url)) {
+         is BilibiliNavigationTarget.Video -> DynamicOpusLinkCardAction.OpenVideo(target.videoId)
+         is BilibiliNavigationTarget.Dynamic -> DynamicOpusLinkCardAction.OpenDynamicDetail(target.dynamicId)
+         is BilibiliNavigationTarget.Article -> DynamicOpusLinkCardAction.OpenArticle(
+             articleId = target.articleId,
+             title = card.title
+         )
+         is BilibiliNavigationTarget.Live -> DynamicOpusLinkCardAction.OpenLive(target.roomId)
++        // Upstream opens its native match page (OpenMatch); the legacy desktop card has no match page yet.
++        is BilibiliNavigationTarget.Match -> DynamicOpusLinkCardAction.None
+         is BilibiliNavigationTarget.Space -> DynamicOpusLinkCardAction.OpenUser(target.mid)
+         is BilibiliNavigationTarget.BangumiSeason -> DynamicOpusLinkCardAction.OpenBangumi(
+             seasonId = target.seasonId,
+             epId = 0L
+         )
+         is BilibiliNavigationTarget.BangumiEpisode -> DynamicOpusLinkCardAction.OpenBangumi(
+             seasonId = 0L,
+             epId = target.epId

@@ -1,0 +1,45 @@
+--- a/original-favorites/com/android/purebilibili/feature/list/HistoryPersonalCard.kt
++++ b/original-favorites/com/android/purebilibili/feature/list/HistoryPersonalCard.kt
+@@ -57,17 +57,17 @@
+ import com.android.purebilibili.core.ui.components.AppWindowActionMenu
+ import com.android.purebilibili.core.ui.components.AppIcon
+ import com.android.purebilibili.core.ui.components.AppIconButton
+ import com.android.purebilibili.core.ui.components.AppLinearProgressIndicator
+ import com.android.purebilibili.core.ui.components.AppText
+ import com.android.purebilibili.core.ui.feedContentTypography
+ import com.android.purebilibili.core.ui.skeleton.ContentSkeletonBlock
+ import com.android.purebilibili.core.ui.skeleton.rememberContentSkeletonBlockColor
+-import com.android.purebilibili.core.ui.skeleton.rememberContentSkeletonPulse
++import com.android.purebilibili.core.ui.skeleton.rememberContentSkeletonPulseState
+ import com.android.purebilibili.core.ui.transition.LocalVideoCardSharedElementSourceRoute
+ import com.android.purebilibili.core.ui.transition.LocalVideoSharedTransitionSpeedSettings
+ import com.android.purebilibili.core.ui.transition.VideoCardSourceChromeSnapshot
+ import com.android.purebilibili.core.ui.transition.VideoCardSourceCoverPresentation
+ import com.android.purebilibili.core.ui.transition.VideoCardSourceLayout
+ import com.android.purebilibili.core.ui.transition.rememberNativeVideoCardSnapshotController
+ import com.android.purebilibili.core.ui.transition.resolveVideoCardSharedTransitionMotionSpec
+ import com.android.purebilibili.core.ui.transition.shouldUseVideoCardShellSharedBounds
+@@ -99,20 +99,20 @@
+ }
+ 
+ internal fun canAddHistoryToWatchLater(item: HistoryItem): Boolean =
+     item.business == HistoryBusiness.ARCHIVE && item.videoItem.id > 0L
+ 
+ @Composable
+ internal fun HistoryPersonalCardSkeleton(
+     modifier: Modifier = Modifier,
+-    blockColor: Color? = null,
++    blockColor: (() -> Color)? = null,
+ ) {
+-    val pulse = if (blockColor == null) rememberContentSkeletonPulse() else 0f
+-    val color = blockColor ?: rememberContentSkeletonBlockColor(pulse)
++    val pulse = rememberContentSkeletonPulseState()
++    val color: () -> Color = blockColor ?: rememberContentSkeletonBlockColor(pulse)
+     val blockShape = AppShapes.container(ContainerLevel.Card)
+ 
+     HorizontalVideoCardFrame(
+         modifier = modifier
+             .fillMaxWidth(),
+         coverContent = {
+             ContentSkeletonBlock(
+                 color = color,

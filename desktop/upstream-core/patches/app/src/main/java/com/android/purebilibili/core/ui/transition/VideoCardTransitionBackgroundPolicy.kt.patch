@@ -1,0 +1,126 @@
+--- a/com/android/purebilibili/core/ui/transition/VideoCardTransitionBackgroundPolicy.kt
++++ b/com/android/purebilibili/core/ui/transition/VideoCardTransitionBackgroundPolicy.kt
+@@ -24,17 +24,16 @@
+ import androidx.compose.ui.graphics.Color
+ import androidx.compose.ui.graphics.TileMode
+ import androidx.compose.ui.graphics.TransformOrigin
+ import androidx.compose.ui.graphics.graphicsLayer
+ import androidx.compose.ui.graphics.lerp
+ import androidx.compose.ui.graphics.layer.drawLayer
+ import androidx.compose.ui.graphics.rememberGraphicsLayer
+ import androidx.compose.ui.platform.LocalDensity
+-import androidx.compose.ui.platform.LocalView
+ import androidx.compose.ui.unit.dp
+ import com.android.purebilibili.core.ui.adaptive.MotionTier
+ import com.android.purebilibili.navigation.isVideoCardReturnTargetRoute
+ import kotlin.math.pow
+ import kotlin.math.roundToInt
+ 
+ // 景深层（与 Hero 卡片放大配合，progress 0→1 同源）：
+ // 1) 页面绕被点击卡片中心轻微后退（无 bounds 时退回屏幕中心），系统状态栏保持原位
+@@ -462,40 +461,23 @@
+         shadowElevationPx = shadowElevationPx,
+     )
+ }
+ 
+ /**
+  * 读设备物理屏圆角（px）。取四角最大值。
+  * API < 31 或 insets 未就绪 / OEM 返回 0 → 0（由 fallback dp 兜底）。
+  */
++// Desktop: a monitor has no rounded display corners, so this is upstream's "no insets" answer (0, the dp fallback
++// applies). The parameter is untyped because android.view.WindowInsets does not exist here.
++@Suppress("UNUSED_PARAMETER")
+ internal fun resolveDeviceDisplayCornerRadiusPx(
+-    rootWindowInsets: android.view.WindowInsets?,
++    rootWindowInsets: Any? = null,
+     sdkInt: Int = Build.VERSION.SDK_INT,
+-): Float {
+-    if (
+-        sdkInt < Build.VERSION_CODES.S ||
+-        Build.VERSION.SDK_INT < Build.VERSION_CODES.S ||
+-        rootWindowInsets == null
+-    ) {
+-        return 0f
+-    }
+-    val positions = intArrayOf(
+-        android.view.RoundedCorner.POSITION_TOP_LEFT,
+-        android.view.RoundedCorner.POSITION_TOP_RIGHT,
+-        android.view.RoundedCorner.POSITION_BOTTOM_LEFT,
+-        android.view.RoundedCorner.POSITION_BOTTOM_RIGHT,
+-    )
+-    var maxRadius = 0
+-    for (position in positions) {
+-        val radius = rootWindowInsets.getRoundedCorner(position)?.radius ?: 0
+-        if (radius > maxRadius) maxRadius = radius
+-    }
+-    return maxRadius.toFloat()
+-}
++): Float = 0f
+ 
+ /**
+  * 满深度圆角（dp）：max(设备物理圆角换算 dp, [fallbackDp])。
+  */
+ internal fun resolveVideoCardTransitionBackgroundCornerRadiusDp(
+     deviceCornerRadiusPx: Float,
+     density: Float,
+     fallbackDp: Float = VIDEO_CARD_TRANSITION_BACKGROUND_CORNER_FALLBACK_DP,
+@@ -689,21 +671,20 @@
+     exposureProvider: () -> VideoCardTransitionExposure,
+     isGestureRestoreInProgressProvider: () -> Boolean = { false },
+     motionTierProvider: () -> MotionTier = { MotionTier.Normal },
+     isLightBackgroundProvider: () -> Boolean = { false },
+     realtimeBlurEnabledProvider: () -> Boolean = { false },
+     scaleReductionProvider: () -> Float = { VIDEO_CARD_TRANSITION_RELATED_SCALE_REDUCTION },
+     sourceBoundsProvider: () -> Rect? = { null },
+ ): Modifier {
+-    val view = LocalView.current
+     val screenDensity = LocalDensity.current.density
+     var deviceCornerRadiusPx by remember { mutableFloatStateOf(0f) }
+     SideEffect {
+-        deviceCornerRadiusPx = resolveDeviceDisplayCornerRadiusPx(view.rootWindowInsets)
++        deviceCornerRadiusPx = resolveDeviceDisplayCornerRadiusPx()
+     }
+     val frameState = remember(
+         progressProvider,
+         phaseProvider,
+         exposureProvider,
+         isGestureRestoreInProgressProvider,
+         motionTierProvider,
+         isLightBackgroundProvider,
+@@ -1201,17 +1182,16 @@
+ ): Modifier {
+     val isHostOwnedSnapshot = snapshotHandle != null
+     // A host-owned handle already supplies both resources; allocate the fallback only when
+     // this source actually owns its snapshot (including after a handle ownership change).
+     val effectiveSnapshotHandle = snapshotHandle ?: rememberVideoCardTransitionSnapshotHandle()
+     val contentLayer = effectiveSnapshotHandle.contentLayer
+     val snapshotState = effectiveSnapshotHandle.state
+     val sourceRendererToken = remember(snapshotState, contentLayer) { Any() }
+-    val view = LocalView.current
+     var deviceCornerRadiusPx by remember { mutableFloatStateOf(0f) }
+     // Keep the shared session snapshot when the last source detaches. A remounted
+     // source refreshes it after Host bridges the preparation frame.
+     DisposableEffect(snapshotState, contentLayer, isHostOwnedSnapshot) {
+         if (isHostOwnedSnapshot) snapshotState.attachSourceRenderer(sourceRendererToken)
+         onDispose {
+             if (isHostOwnedSnapshot) snapshotState.detachSourceRenderer(sourceRendererToken)
+             if (shouldInvalidateSnapshotOnSourceDispose(isHostOwnedSnapshot = isHostOwnedSnapshot)) {
+@@ -1223,17 +1203,17 @@
+                 // 仅标记 needsSourceRefresh，源页再次挂上时重录真实首页。
+                 contentLayer.renderEffect = null
+                 snapshotState.markSourceDetachedForRefresh()
+             }
+         }
+     }
+     // insets 首帧可能为空；每次重组刷新，开场前通常已就绪。
+     SideEffect {
+-        deviceCornerRadiusPx = resolveDeviceDisplayCornerRadiusPx(view.rootWindowInsets)
++        deviceCornerRadiusPx = resolveDeviceDisplayCornerRadiusPx()
+     }
+     val phase = phaseProvider()
+     val exposure = exposureProvider()
+     val motionTier = motionTierProvider()
+     val renderDecision = resolveVideoCardTransitionRenderDecision(exposure)
+     val useSnapshotBlur = shouldUseVideoCardTransitionSnapshotBlur(
+         exposure = exposure,
+         motionTier = motionTier,

@@ -1,5 +1,7 @@
 package com.bilipai.desktop.settings
 
+import com.bilipai.desktop.plugins.asAndroidContext
+
 import com.android.purebilibili.core.store.DesktopOriginalPlaybackSettingsPreferences
 import com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings
 import com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings
@@ -263,7 +265,7 @@ class DesktopSettingsShareMirrorTest {
         assertEquals(JsonPrimitive(false), store.preferences("settings")["click_to_play"])
         assertTrue(DesktopOriginalPlayerSectionSettings.getLongPressSpeedLockEnabledSync(context))
         assertTrue(DesktopOriginalPlayerSectionSettings.getLongPressSpeedHintHiddenSync(context))
-        assertTrue(DynamicSettingsStore.observeCommentPreviewVisible(context.pluginContext).first())
+        assertTrue(DynamicSettingsStore.observeCommentPreviewVisible(context.pluginContext.asAndroidContext()).first())
         assertEquals(JsonPrimitive(true), store.preferences("settings")["concurrent_fixture"])
         val disk = Json.parseToJsonElement(Files.readString(store.root.resolve("plugin-settings.json"))).jsonObject
         assertEquals(JsonPrimitive(112), disk["quality_settings"]!!.jsonObject["mobile_quality"])
@@ -274,18 +276,18 @@ class DesktopSettingsShareMirrorTest {
         val store = newStore(); val context = newContext(store)
         store.update("settings", mapOf("dynamic_comment_preview_visible" to JsonPrimitive(false)))
         val service = DesktopSettingsShareService(context)
-        assertFalse(DynamicSettingsStore.observeCommentPreviewVisible(context.pluginContext).first())
+        assertFalse(DynamicSettingsStore.observeCommentPreviewVisible(context.pluginContext.asAndroidContext()).first())
         val session = service.readImportSession(raw(""""navigation":{"dynamic_comment_preview_visible":true}"""))
         assertEquals(listOf("dynamic_comment_preview_visible"), service.applyImport(session).appliedKeys)
-        assertTrue(DynamicSettingsStore.observeCommentPreviewVisible(context.pluginContext).first())
+        assertTrue(DynamicSettingsStore.observeCommentPreviewVisible(context.pluginContext.asAndroidContext()).first())
         assertEquals(JsonPrimitive(true), store.preferences("settings")["dynamic_comment_preview_visible"])
         assertEquals(JsonPrimitive(true),
             service.buildExportArtifact("export", "0.3.3").profile.sections.navigation["dynamic_comment_preview_visible"])
         val saved = service.saveCurrentProfile("preview", "0.3.3", Instant.parse("2026-10-10T00:00:00Z"))
         service.applyImport(service.readImportSession(raw(""""navigation":{"dynamic_comment_preview_visible":false}""")))
-        assertFalse(DynamicSettingsStore.observeCommentPreviewVisible(context.pluginContext).first())
+        assertFalse(DynamicSettingsStore.observeCommentPreviewVisible(context.pluginContext.asAndroidContext()).first())
         service.restoreSavedProfile(saved)
-        assertTrue(DynamicSettingsStore.observeCommentPreviewVisible(context.pluginContext).first())
+        assertTrue(DynamicSettingsStore.observeCommentPreviewVisible(context.pluginContext.asAndroidContext()).first())
         // A JSON string is not a boolean: rejected, nothing written.
         val before = bytes(store)
         val invalid = service.readImportSession(raw(""""navigation":{"dynamic_comment_preview_visible":"true"}"""))

@@ -26,8 +26,8 @@ class DesktopOriginalFavoriteSettingsReadbackTest {
         val existing = DesktopFavoriteInteractionPreferences(f.plugin.store)
         assertFalse(existing.getQuickSaveDefaultFolder().first())
         DesktopOriginalPlaybackPreferenceOperation.run(f.context, f.current::get) {
-            FavoriteInteractionSettingsStore.setQuickSaveDefaultFolder(f.context, true)
-            assertTrue(FavoriteInteractionSettingsStore.getQuickSaveDefaultFolder(f.context).first())
+            FavoriteInteractionSettingsStore.setQuickSaveDefaultFolder(f.context.androidContext, true)
+            assertTrue(FavoriteInteractionSettingsStore.getQuickSaveDefaultFolder(f.context.androidContext).first())
             assertFalse(existing.getQuickSaveDefaultFolder().first())
         }
         assertTrue(existing.getQuickSaveDefaultFolder().first())
@@ -38,7 +38,7 @@ class DesktopOriginalFavoriteSettingsReadbackTest {
         val f = Fixture()
         assertThrows(CancellationException::class.java) { runBlocking {
             DesktopOriginalPlaybackPreferenceOperation.run(f.context, f.current::get) {
-                FavoriteInteractionSettingsStore.setQuickSaveDefaultFolder(f.context, true)
+                FavoriteInteractionSettingsStore.setQuickSaveDefaultFolder(f.context.androidContext, true)
                 f.current.set(false)
             }
         } }
@@ -49,7 +49,7 @@ class DesktopOriginalFavoriteSettingsReadbackTest {
         val f = Fixture()
         assertThrows(IllegalStateException::class.java) { runBlocking {
             DesktopOriginalPlaybackPreferenceOperation.run(f.context, f.current::get) {
-                FavoriteInteractionSettingsStore.setQuickSaveDefaultFolder(f.context, true)
+                FavoriteInteractionSettingsStore.setQuickSaveDefaultFolder(f.context.androidContext, true)
                 error("synthetic failure after complete original setter")
             }
         } }

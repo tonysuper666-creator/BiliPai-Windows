@@ -109,7 +109,7 @@ internal class DesktopStorageSettingsOwner(
             }
             if(CacheClearTarget.APP_METADATA in selected)withContext(Dispatchers.IO) {
                 checkRequest();FollowingCacheStore.clear(DesktopFollowingCacheContext(context.pluginContext.store,
-                    {isActive()}, {block->context.commit {checkRequest();block()};true}))
+                    {isActive()}, {block->context.commit {checkRequest();block()};true}).asAndroidContext())
                 repository.invalidateStorageWbi(checkRequest)
             }
             checkRequest()

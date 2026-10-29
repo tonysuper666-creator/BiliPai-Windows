@@ -1,0 +1,21 @@
+--- a/original-watchlater/com/android/purebilibili/feature/watchlater/WatchLaterScreen.kt
++++ b/original-watchlater/com/android/purebilibili/feature/watchlater/WatchLaterScreen.kt
+@@ -1121,17 +1121,17 @@
+                 .globalWallpaperAwareBackground(AppSurfaceTokens.groupedListContainer())
+         ) {
+             when {
+                 state.isLoading -> {
+                     BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
+                         val skeletonColumns = pinchListColumns
+                         val skeletonBlockColor = com.android.purebilibili.core.ui.skeleton
+                             .rememberContentSkeletonBlockColor(
+-                                com.android.purebilibili.core.ui.skeleton.rememberContentSkeletonPulse()
++                                com.android.purebilibili.core.ui.skeleton.rememberContentSkeletonPulseState()
+                             )
+                         LazyVerticalGrid(
+                             columns = GridCells.Fixed(skeletonColumns),
+                             contentPadding = PaddingValues(
+                                 start = AppSpacingTokens.Medium,
+                                 end = AppSpacingTokens.Medium,
+                                 top = padding.calculateTopPadding() + AppSpacingTokens.Small,
+                                 bottom = bottomContentPadding,

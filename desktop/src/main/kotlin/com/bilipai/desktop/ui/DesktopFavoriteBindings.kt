@@ -18,7 +18,7 @@ data class DesktopFavoriteHomeAppearance(
     val headerBlurMode: HomeHeaderBlurMode,
     val isBottomBarBlurEnabled: Boolean,
 )
-data class DesktopFavoriteNavigationAppearance(val bottomBarVisibilityMode: DesktopFavoriteNavigationTypes.BottomBarVisibilityMode)
+data class DesktopFavoriteNavigationAppearance(val bottomBarVisibilityMode: com.android.purebilibili.core.store.SettingsManager.BottomBarVisibilityMode)
 class DesktopFavoriteQueueToken(val owner: Any)
 class DesktopFavoriteBindings(
     val showOnlineCount: Flow<Boolean>,

@@ -1,5 +1,7 @@
 package com.android.purebilibili.feature.following
 
+import com.bilipai.desktop.plugins.asAndroidContext
+
 import com.android.purebilibili.feature.list.DesktopFavoriteEnvironment
 import com.android.purebilibili.data.model.response.FollowingUser
 import com.bilipai.desktop.plugins.DesktopPluginStore
@@ -62,6 +64,15 @@ class DesktopFollowingCacheContext(private val store:DesktopPluginStore,
                 if(!commitIfCurrent {checkRequest();permit=com.bilipai.desktop.plugins.DesktopPluginStore.OriginalPreferenceWritePermit(store)})throw CancellationException("Following cache publication retired")
                 checkNotNull(permit)
             }) { Unit to values.toMap() }
+        }
+    }
+    /** This owner as the Android Context upstream FollowingCacheStore takes: the same admitted write path as [Editor]. */
+    fun asAndroidContext(): android.content.Context {
+        fun checkRequest() { checkOwned();com.bilipai.desktop.plugins.DesktopSubscriptionWriteAdmission.checkCurrentRequestOrOriginal() }
+        return com.bilipai.desktop.plugins.DesktopPluginContext(store).asAndroidContext(::checkRequest) {
+            var permit:com.bilipai.desktop.plugins.DesktopPluginStore.OriginalPreferenceWritePermit?=null
+            if(!commitIfCurrent {checkRequest();permit=com.bilipai.desktop.plugins.DesktopPluginStore.OriginalPreferenceWritePermit(store)})throw CancellationException("Following cache publication retired")
+            checkNotNull(permit)
         }
     }
     companion object {const val MODE_PRIVATE=0}

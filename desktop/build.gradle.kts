@@ -184,7 +184,99 @@ val migratedWholeModulePaths: Set<String> = migratedWholeModules.flatMap { modul
     root.walkTopDown().filter { it.isFile && it.extension == "kt" }.map { it.relativeTo(root).invariantSeparatorsPath }.toList()
 }.toSet()
 val migratedUpstreamModules = listOf("core-data/", "network-core/") + migratedWholeModules
-val migratedUpstreamRelativePaths = migratedWholeModulePaths + setOf(
+// App core (TON-1000): the files under app/src/main/java/com/android/purebilibili/core compile from the merged root in
+// this module, except the Android-only areas the desktop implements itself (appCoreDesktopOwned, each with the reason).
+val appJavaRoot = mergedRepositoryRoot.resolve("app/src/main/java")
+val appCoreDesktopOwned: Map<String, String> = mapOf(
+    "core/util/PlaybackTelemetryPolicy.kt" to "Media3 播放错误码分类；桌面播放走 mpv，没有这些错误码",
+    "core/theme/ScheduledDarkThemeObserver.kt" to "Android 系统壁纸取色、定时深色（AlarmManager）与字体文件 ContentResolver",
+    "core/theme/SeedWallpaperColorScheme.kt" to "Android 系统壁纸取色、定时深色（AlarmManager）与字体文件 ContentResolver",
+    "core/cache/PlayUrlCache.kt" to "Media3 播放地址缓存；桌面播放地址由 DesktopRepository 管理",
+    "core/database/AppDatabase.kt" to "Room 数据库；桌面用 JSON 存储（DesktopBlockedUpStore、DesktopCommentFraudJsonDao 等）",
+    "core/database/Converters.kt" to "Room 数据库；桌面用 JSON 存储（DesktopBlockedUpStore、DesktopCommentFraudJsonDao 等）",
+    "core/database/DatabaseModule.kt" to "Room 数据库；桌面用 JSON 存储（DesktopBlockedUpStore、DesktopCommentFraudJsonDao 等）",
+    "core/database/dao/BlockedUpDao.kt" to "Room 数据库；桌面用 JSON 存储（DesktopBlockedUpStore、DesktopCommentFraudJsonDao 等）",
+    "core/database/dao/CommentFraudDao.kt" to "Room 数据库；桌面用 JSON 存储（DesktopBlockedUpStore、DesktopCommentFraudJsonDao 等）",
+    "core/lifecycle/BackgroundManager.kt" to "Android 进程前后台与内存回收回调",
+    "core/lifecycle/BackgroundMemoryTrimPolicy.kt" to "Android 进程前后台与内存回收回调",
+    "core/paging/ForwardPagingSession.kt" to "androidx.paging（桌面无此依赖）",
+    "core/paging/ForwardPagingSource.kt" to "androidx.paging（桌面无此依赖）",
+    "core/performance/Android17Diagnostics.kt" to "Android 进程退出与 Android 17 诊断；桌面诊断走 DesktopDiagnostics",
+    "core/performance/NativeExitTrace.kt" to "Android 进程退出与 Android 17 诊断；桌面诊断走 DesktopDiagnostics",
+    "core/performance/ProcessExitContext.kt" to "Android 进程退出与 Android 17 诊断；桌面诊断走 DesktopDiagnostics",
+    "core/player/BasePlayerViewModel.kt" to "Media3/ExoPlayer 播放栈；桌面播放走 mpv（com.bilipai.desktop.player）",
+    "core/player/HiResCompatibleRenderersFactory.kt" to "Media3/ExoPlayer 播放栈；桌面播放走 mpv（com.bilipai.desktop.player）",
+    "core/player/LoudnessAwareRenderersFactory.kt" to "Media3/ExoPlayer 播放栈；桌面播放走 mpv（com.bilipai.desktop.player）",
+    "core/player/LoudnessNormalizationAudioProcessor.kt" to "Media3/ExoPlayer 播放栈；桌面播放走 mpv（com.bilipai.desktop.player）",
+    "core/player/PlaybackMediaCache.kt" to "Media3/ExoPlayer 播放栈；桌面播放走 mpv（com.bilipai.desktop.player）",
+    "core/player/PlayerVolumeController.kt" to "Media3/ExoPlayer 播放栈；桌面播放走 mpv（com.bilipai.desktop.player）",
+    "core/player/waveform/AudioWaveformCollector.kt" to "Media3/ExoPlayer 播放栈；桌面播放走 mpv（com.bilipai.desktop.player）",
+    "core/player/waveform/AudioWaveformPolicy.kt" to "Media3/ExoPlayer 播放栈；桌面播放走 mpv（com.bilipai.desktop.player）",
+    "core/player/waveform/AudioWaveformSource.kt" to "Media3/ExoPlayer 播放栈；桌面播放走 mpv（com.bilipai.desktop.player）",
+    "core/player/waveform/WaveformAudioSink.kt" to "Media3/ExoPlayer 播放栈；桌面播放走 mpv（com.bilipai.desktop.player）",
+    "core/store/AudioLibraryDatabase.kt" to "Room 数据库；桌面用 JSON 存储（DesktopBlockedUpStore、DesktopCommentFraudJsonDao 等）",
+    "core/ui/LottieComponents.kt" to "Lottie Android 渲染（桌面无此依赖）",
+    "core/ui/MaidLottieAnimationSettingsHost.kt" to "Lottie Android 渲染（桌面无此依赖）",
+    "core/ui/SystemBarCompat.kt" to "Android 系统栏、折叠屏、挖孔与画中画窗口",
+    "core/ui/adaptive/HingeOcclusionInputShield.kt" to "Android 系统栏、折叠屏、挖孔与画中画窗口",
+    "core/ui/adaptive/HingeSafeOverlayRegionsPolicy.kt" to "Android 系统栏、折叠屏、挖孔与画中画窗口",
+    "core/ui/animation/ParticleDissolveEffect.kt" to "OpenGL ES 视图粒子特效（GLSurfaceView）",
+    "core/ui/animation/gl/ParticleRenderer.kt" to "OpenGL ES 视图粒子特效（GLSurfaceView）",
+    "core/ui/animation/gl/ShaderUtils.kt" to "OpenGL ES 视图粒子特效（GLSurfaceView）",
+    "core/ui/animation/gl/ThanosEffectView.kt" to "OpenGL ES 视图粒子特效（GLSurfaceView）",
+    "core/ui/animation/gl/ThanosParticlePolicy.kt" to "OpenGL ES 视图粒子特效（GLSurfaceView）",
+    "core/ui/common/ClipboardUtils.kt" to "Android 剪贴板与文本选择 ActionMode",
+    "core/ui/common/Modifiers.kt" to "Android 剪贴板与文本选择 ActionMode",
+    "core/ui/common/TextSelectionBottomSheet.kt" to "Android 剪贴板与文本选择 ActionMode",
+    "core/ui/common/TextSelectionHost.kt" to "Android 剪贴板与文本选择 ActionMode",
+    "core/ui/common/TextSelectionPolicy.kt" to "Android 剪贴板与文本选择 ActionMode",
+    "core/ui/performance/AppDisplayModePreference.kt" to "Android 显示模式与帧率覆盖（Window/Display API、androidx.metrics）",
+    "core/ui/performance/JankTracking.kt" to "Android 显示模式与帧率覆盖（Window/Display API、androidx.metrics）",
+    "core/ui/performance/PanelFrameRateOverridePolicy.kt" to "Android 显示模式与帧率覆盖（Window/Display API、androidx.metrics）",
+    "core/ui/performance/VideoPlaybackRefreshRateEffect.kt" to "Android 显示模式与帧率覆盖（Window/Display API、androidx.metrics）",
+    "core/ui/performance/VideoRefreshRatePolicy.kt" to "Android 显示模式与帧率覆盖（Window/Display API、androidx.metrics）",
+    "core/ui/util/DeviceCornerRadius.kt" to "Android 系统栏、折叠屏、挖孔与画中画窗口",
+    "core/util/AnalyticsHelper.kt" to "Android 日志、崩溃采集与 Firebase；桌面走 DesktopDiagnostics 与 desktop/src 里的 Logger 桥",
+    "core/util/CacheUtils.kt" to "Android 权限、相册、分享面板、ConnectivityManager 与应用缓存目录",
+    "core/util/CrashReporter.kt" to "Android 日志、崩溃采集与 Firebase；桌面走 DesktopDiagnostics 与 desktop/src 里的 Logger 桥",
+    "core/util/FileUtils.kt" to "Android 权限、相册、分享面板、ConnectivityManager 与应用缓存目录",
+    "core/util/FoldableDisplayPolicy.kt" to "Android 系统栏、折叠屏、挖孔与画中画窗口",
+    "core/util/GalleryVisualMediaContracts.kt" to "Android 权限、相册、分享面板、ConnectivityManager 与应用缓存目录",
+    "core/util/HingeLayoutPolicy.kt" to "Android 系统栏、折叠屏、挖孔与画中画窗口",
+    "core/util/Logger.kt" to "Android 日志、崩溃采集与 Firebase；桌面走 DesktopDiagnostics 与 desktop/src 里的 Logger 桥",
+    "core/util/MediaUtils.kt" to "Android 权限、相册、分享面板、ConnectivityManager 与应用缓存目录",
+    "core/util/NetworkUtils.kt" to "Android 权限、相册、分享面板、ConnectivityManager 与应用缓存目录",
+    "core/util/PermissionHelper.kt" to "Android 权限、相册、分享面板、ConnectivityManager 与应用缓存目录",
+    "core/util/PipAspectRatioPolicy.kt" to "Android 系统栏、折叠屏、挖孔与画中画窗口",
+    "core/util/ShareUtils.kt" to "Android 权限、相册、分享面板、ConnectivityManager 与应用缓存目录",
+    "core/util/VideoSurfaceCompatibility.kt" to "Android 系统栏、折叠屏、挖孔与画中画窗口",
+    "core/util/WindowSizeUtils.kt" to "Android 系统栏、折叠屏、挖孔与画中画窗口",
+)
+// Areas that move in a later step and keep their legacy copies until then (an intermediate state that compiles).
+val appCoreLaterSteps: Map<String, String> = mapOf(
+    "core/plugin/" to "upstream moved the plugin contracts to plugin-sdk with a new identity model (capabilityManifest); " +
+        "the desktop plugin platform and the legacy feature plugins move to it together",
+    "core/ui/components/PageAwareAsyncImage.kt" to "reads feature/home's LocalHomeCardCoverLoadingAllowed and Android drawables; moves with the home feature (M4b)",
+    "core/ui/wallpaper/WallpaperMedia" to "video wallpaper on Media3/AndroidView and BitmapFactory probing; needs a desktop replacement over the mpv player",
+    "core/util/PlayerOrientationPolicy.kt" to "Activity orientation of the player; moves with the video feature (M4a)",
+    "core/util/PlayerPresentationPolicy.kt" to "Activity orientation of the player; moves with the video feature (M4a)",
+    "core/ui/components/UserLevelBadge.kt" to "draws app R.drawable level badges; moves once drawable resources are generated",
+    "core/store/LocalPlaylistStore.kt" to "Room AudioLibraryDatabase; the desktop music library is JSON, moves with the audio feature (M4c)",
+    "core/store/PlayHistoryStore.kt" to "Room AudioLibraryDatabase; the desktop music library is JSON, moves with the audio feature (M4c)",
+    "core/store/UpdateHighlightsStore.kt" to "reads feature/settings/highlights; moves with the settings feature (M4d)",
+    "core/events/BrandSuccessEvents.kt" to "the desktop success feedback carries its own origin model (DesktopBrandSuccessOrigin) that upstream's events do not have; moves with the feedback host",
+    "core/ui/BrandSuccessFeedbackHost.kt" to "the desktop success feedback carries its own origin model (DesktopBrandSuccessOrigin); moves with BrandSuccessEvents",
+    "core/store/FavoriteFolderCoverCache.kt" to "the desktop keeps one cover cache per favorites origin; moves with the favorites feature (M4d)",
+    "core/ui/components/AppLiquidAwareTabRow.kt" to "calls feature/home's liquid tab components with their new parameters; moves with the home feature (M4b)",
+)
+// Files of a later-step area that other migrated files already need and that have no legacy copy (pure declarations).
+val appCoreAheadOfLaterSteps = setOf("core/plugin/BuiltinPluginIds.kt")
+val migratedAppCorePaths: Set<String> = appJavaRoot.resolve("com/android/purebilibili/core").walkTopDown()
+    .filter { it.isFile && it.extension == "kt" }.map { it.relativeTo(appJavaRoot).invariantSeparatorsPath }
+    .filter { path -> path.removePrefix("com/android/purebilibili/").let { core -> core in appCoreAheadOfLaterSteps ||
+        (appCoreDesktopOwned.keys + appCoreLaterSteps.keys).none { core.startsWith(it) } } }
+    .toSortedSet()
+val migratedUpstreamRelativePaths = migratedWholeModulePaths + migratedAppCorePaths + setOf(
     "com/android/purebilibili/core/network/AppSignUtils.kt",
     "com/android/purebilibili/core/network/WbiUtils.kt",
     "com/android/purebilibili/core/network/grpc/ProtoWire.kt",
@@ -2287,7 +2379,7 @@ val verifyAppearanceDependencies by tasks.registering {
         val pins = JsonSlurper().parse(file("third-party/miuix5157/dependency-pins.json")) as Map<*, *>
         val artifacts = configurations.getByName("runtimeClasspath").resolvedConfiguration.resolvedArtifacts
         val dependencies = pins["dependencies"] as List<*>
-        require(dependencies.size == 8) { "The fixed appearance dependency inventory changed." }
+        require(dependencies.size == 9) { "The fixed appearance dependency inventory changed." }
         fun digest(file: File) = MessageDigest.getInstance("SHA-256").digest(file.readBytes()).joinToString("") { "%02x".format(it) }
         dependencies.forEach { item ->
             val entry = item as Map<*, *>
@@ -2299,7 +2391,7 @@ val verifyAppearanceDependencies by tasks.registering {
             val entry = item as Map<*, *>
             require(digest(file("src/main/resources/${entry["resource"]}")) == entry["sha256"]) { "Appearance notice checksum failed: ${entry["resource"]}" }
         }
-        logger.lifecycle("Verified eight fixed appearance runtime dependencies and six source notices.")
+        logger.lifecycle("Verified nine fixed appearance runtime dependencies and four source notices.")
     }
 }
 
@@ -2404,6 +2496,42 @@ val prepareJsWorkerResources by tasks.registering(Sync::class) {
 
 // Generated legacy files that re-declare migrated upstream declarations under another file name.
 val upstreamOwnedGeneratedCopies = setOf(
+    // app core (TON-1000): renamed subsets whose every declaration the upstream app core files now own.
+    "appearance/com/android/purebilibili/core/store/DesktopOriginalWallpaperPaletteModels.kt",
+    "appearance/com/android/purebilibili/core/store/ThemeSelectionStore.kt",
+    "dynamic-detail-container/com/android/purebilibili/core/store/DesktopOriginalDetailLiquidReusePolicy.kt",
+    "dynamic-detail-container/com/android/purebilibili/core/ui/transition/DesktopOriginalDetailPredictiveBlurPolicy.kt",
+    "dynamic-reply/com/android/purebilibili/core/store/DesktopOriginalReplySkeletonSettingsStore.kt",
+    "frosted-audio-renderer/com/android/purebilibili/core/store/DesktopOriginalBottomSearchModes.kt",
+    "home-page/com/android/purebilibili/core/store/DesktopHomeNavigationMigration.kt",
+    "home-page/com/android/purebilibili/core/store/navigation/DesktopHomeNavigationLabels.kt",
+    "home-page/com/android/purebilibili/core/ui/transition/DesktopHomeDepthOwnershipPolicy.kt",
+    "home-page/com/android/purebilibili/core/util/DesktopHomeCardTapEffect.kt",
+    "home-page/com/android/purebilibili/core/util/DesktopHomeTapEffect.kt",
+    "home-partition/com/android/purebilibili/core/ui/skeleton/DesktopOriginalMediaListSkeleton.kt",
+    "independent-bangumi-pages/com/android/purebilibili/core/ui/skeleton/DesktopOriginalBangumiPosterDetailSkeleton.kt",
+    "live-home-list/com/android/purebilibili/core/util/DesktopOriginalLiveApiErrors.kt",
+    "original-article-detail/com/android/purebilibili/core/ui/skeleton/DesktopOriginalArticleSkeleton.kt",
+    "original-danmaku-list-menu/com/android/purebilibili/core/store/DanmakuSettingsScope.kt",
+    "original-danmaku-settings/com/android/purebilibili/core/store/DesktopOriginalDanmakuSettingsModels.kt",
+    "original-favorites/com/android/purebilibili/core/store/DesktopFavoriteChromePolicies.kt",
+    "original-favorites/com/android/purebilibili/core/ui/DesktopFavoriteBottomBarLocals.kt",
+    "original-favorites/com/android/purebilibili/core/ui/adaptive/DesktopFavoriteDeviceProfile.kt",
+    "original-favorites/com/android/purebilibili/core/ui/skeleton/DesktopFavoriteContentGridSkeleton.kt",
+    "original-favorites/com/android/purebilibili/core/util/DesktopFavoriteGridSkeleton.kt",
+    "original-navigation3-host/com/android/purebilibili/core/ui/transition/DesktopOriginalNavigationHostDepth.kt",
+    "original-navigation3-host/com/android/purebilibili/core/ui/transition/DesktopOriginalNavigationPredictiveBackground.kt",
+    "original-search-pages/com/android/purebilibili/core/ui/DesktopOriginalSearchNowPlayingAvoidance.kt",
+    "original-search-pages/com/android/purebilibili/core/ui/skeleton/DesktopOriginalSearchTrendingSkeleton.kt",
+    "original-video-detail-holder-full/com/android/purebilibili/core/ui/transition/DesktopOriginalVideoCardMorphProgressReporter.kt",
+    "original-video-fullscreen-pager/com/android/purebilibili/core/ui/skeleton/DesktopOriginalVideoCommentListSkeleton.kt",
+    "original-video-player-full-controls/com/android/purebilibili/core/store/DesktopOriginalPlayerProgressBehaviorModels.kt",
+    "original-video-player-full-controls/com/android/purebilibili/core/store/DesktopOriginalPlayerProgressPlacement.kt",
+    "original-video-player-section-full/com/android/purebilibili/core/store/DesktopOriginalPlayerInteractionSettings.kt",
+    "playback-settings/com/android/purebilibili/core/store/player/DefaultAudioQuality.kt",
+    "video-tablet-full/com/android/purebilibili/core/store/DesktopOriginalTabletSecondaryDefaultTab.kt",
+    "whole-playback-settings/generated/com/android/purebilibili/core/store/DesktopOriginalHwDecodeMigrationPolicy.kt",
+    "whole-playback-settings/generated/com/android/purebilibili/core/store/DesktopOriginalPlaybackSettingsDefaults.kt",
     // design-system / design-tokens (TON-997): declarations that upstream's own files now own.
     "dynamic-tabs/com/android/purebilibili/core/ui/components/DesktopOriginalDynamicNativeTabs.kt",
     "dynamic-tabs/com/android/purebilibili/core/ui/DesktopOriginalDynamicImmersiveChrome.kt",
@@ -2438,6 +2566,33 @@ val transitionPatchDirectory = file("upstream-core/transition/patches")
 val transitionPatchedGeneratedFiles = fileTree(transitionPatchDirectory) { include("**/*.patch") }.files
     .map { it.relativeTo(transitionPatchDirectory).invariantSeparatorsPath.removeSuffix(".patch") }.toSortedSet()
 val transitionPatchProducers = mapOf(
+    "shared-liquid-tabs" to "extractSharedLiquidTabs",
+    "original-following" to "extractOriginalFollowing",
+    "original-space-pages" to "extractOriginalSpacePages",
+    "original-message-pages" to "extractOriginalMessagePages",
+    "independent-bangumi-pages" to "extractOriginalBangumiPages",
+    "video-tablet-full" to "extractOriginalVideoTabletFull",
+    "original-root-home-navigation" to "extractOriginalRootHomeNavigation",
+    "home-page" to "extractOriginalHomePage",
+    "appearance" to "extractUpstreamAppearance",
+    "original-offline-player" to "extractOriginalOfflinePlayer",
+    "home-bangumi-page" to "extractOriginalHomeBangumiPage",
+    "bgm-detail" to "extractBgmDetail",
+    "settings-search" to "extractUpstreamSettingsSearch",
+    "settings-privacy" to "extractUpstreamSettingsPrivacy",
+    "plugins" to "extractUpstreamPlugins",
+    "original-video-fullscreen-pager" to "extractOriginalVideoFullscreenPager",
+    "original-video-full-owner" to "extractOriginalVideoFullOwner",
+    "original-aicu" to "extractOriginalAicu",
+    "home-viewmodel" to "extractOriginalHomeViewModel",
+    "full-navigation-settings" to "extractUpstreamFullNavigation",
+    "collection-sheet" to "extractStableCollectionSheet",
+    "discovery" to "extractUpstreamDiscovery",
+    "dynamic-reply" to "extractUpstreamDynamicReply",
+    "home-cards" to "extractUpstreamHomeCards",
+    "home-settings" to "extractOriginalHomeSettings",
+    "original-video-detail-holder-full" to "extractOriginalVideoDetailHolderFull",
+    "original-video-detail-units" to "extractOriginalVideoDetailUnits",
     "api" to "extractUpstreamApi",
     "dynamic-detail-container" to "extractUpstreamDynamicDetailContainer",
     "dynamic-full-card" to "extractUpstreamDynamicFullCard",
@@ -2543,7 +2698,8 @@ val applyTransitionPatches by tasks.registering {
 //    the upstream file declares.
 val upstreamReplacementDirectory = file("upstream-core/replacements")
 fun migratedUpstreamFile(relative: String): File {
-    val candidates = migratedUpstreamModules.map { mergedRepositoryRoot.resolve(it + "src/main/java/" + relative) }.filter { it.isFile }
+    val candidates = (migratedUpstreamModules.map { mergedRepositoryRoot.resolve(it + "src/main/java/" + relative) } +
+        listOfNotNull(appJavaRoot.resolve(relative).takeIf { relative in migratedAppCorePaths })).filter { it.isFile }
     require(candidates.size == 1) { "$relative must exist in exactly one migrated upstream module, found ${candidates.size}" }
     return candidates.single()
 }
@@ -2704,6 +2860,82 @@ val generateUpstreamStringResources by tasks.registering {
     }
 }
 
+// Numeric key types of the upstream DataStore preferences (TON-1000). Preferences.Key carries no runtime type and the
+// desktop settings document is JSON, where 1 cannot tell Int from Long or Float. Booleans, strings and string sets are
+// unambiguous in JSON; numeric keys are typed by this table, built from the upstream sources: every literal
+// int/long/float key, plus the scoped danmaku keys built by buildScopedDanmakuKeyName(scope, "<suffix>"). A numeric key
+// built any other way, or one name declared with two types, fails the build instead of being guessed at runtime.
+val generateUpstreamPreferenceKeyTypes by tasks.registering {
+    val roots = listOf(appJavaRoot, mergedRepositoryRoot.resolve("core-data/src/main/java"))
+    val output = layout.buildDirectory.dir("generated/upstream-preference-types")
+    inputs.files(roots.map { fileTree(it) { include("**/*.kt") } }).withPathSensitivity(PathSensitivity.RELATIVE)
+    outputs.dir(output)
+    doLast {
+        val literal = Regex("""\b(int|long|float|double)PreferencesKey\(\s*"([^"${'$'}]+)"\s*\)""")
+        val scoped = Regex("""\b(int|long|float|double)PreferencesKey\(\s*buildScopedDanmakuKeyName\(\s*[\w.]+\s*,\s*"(\w+)"\s*\)\s*\)""")
+        val anyNumeric = Regex("""\b(int|long|float|double)PreferencesKey\(""")
+        val names = sortedMapOf<String, String>()
+        val suffixes = sortedMapOf<String, String>()
+        val unknown = mutableListOf<String>()
+        roots.forEach { root -> root.walkTopDown().filter { it.isFile && it.extension == "kt" }.sortedBy { it.path }.forEach { file ->
+            val text = file.readText()
+            val where = file.relativeTo(mergedRepositoryRoot).invariantSeparatorsPath
+            fun record(table: MutableMap<String, String>, name: String, type: String) {
+                val previous = table.put(name, type)
+                if (previous != null && previous != type) throw GradleException("$where: preference `$name` is declared as $previous and $type")
+            }
+            val known = mutableSetOf<Int>()
+            literal.findAll(text).forEach { record(names, it.groupValues[2], it.groupValues[1]); known += it.range.first }
+            scoped.findAll(text).forEach { record(suffixes, it.groupValues[2], it.groupValues[1]); known += it.range.first }
+            anyNumeric.findAll(text).forEach { match ->
+                if (match.range.first !in known && !text.substring(match.range.first).startsWith(match.value + "name")) {
+                    val line = text.substring(0, match.range.first).count { it == '\n' } + 1
+                    unknown += "$where:$line"
+                }
+            }
+        } }
+        // A key function's own parameter (fun intPreferencesKey(name: String)) is not a key; nothing else may be dynamic.
+        if (unknown.isNotEmpty()) throw GradleException("Numeric DataStore keys built at runtime cannot be typed for the desktop settings document: $unknown")
+        val target = output.get().asFile
+        target.deleteRecursively()
+        target.resolve("com/bilipai/desktop/settings/DesktopUpstreamPreferenceKeyTypes.kt").apply { parentFile.mkdirs() }.writeText(
+            "// Generated at build time from the upstream DataStore key declarations.\npackage com.bilipai.desktop.settings\n\n" +
+                "internal object DesktopUpstreamPreferenceKeyTypes {\n    val names: Map<String, String> = mapOf(\n" +
+                names.entries.joinToString("") { "        \"${it.key}\" to \"${it.value}\",\n" } + "    )\n" +
+                "    /** buildScopedDanmakuKeyName(scope, suffix) = danmaku_<scope prefix>_<suffix>. */\n" +
+                "    val scopedDanmakuSuffixes: Map<String, String> = mapOf(\n" +
+                suffixes.entries.joinToString("") { "        \"${it.key}\" to \"${it.value}\",\n" } + "    )\n}\n")
+    }
+}
+
+// Upstream app BuildConfig (TON-1000), the release variant: the version is the upstream app version this desktop build
+// compiles (read from app/build.gradle.kts, so it follows every merge), DEBUG and the verbose-log switches are off as in
+// upstream release builds, and BUILD_COMMIT_SHA is upstream's "local" default unless -Pbili.build.commitSha is given.
+val generateUpstreamBuildConfig by tasks.registering {
+    val script = mergedRepositoryRoot.resolve("app/build.gradle.kts")
+    val output = layout.buildDirectory.dir("generated/upstream-buildconfig")
+    val commitSha = providers.gradleProperty("bili.build.commitSha").orElse("local")
+    inputs.file(script).withPathSensitivity(PathSensitivity.RELATIVE)
+    inputs.property("commitSha", commitSha)
+    outputs.dir(output)
+    doLast {
+        val text = script.readText()
+        val versionCode = Regex("""versionCode\s*=\s*(\d+)""").find(text)?.groupValues?.get(1)
+            ?: throw GradleException("app/build.gradle.kts: versionCode not found")
+        val versionName = Regex("versionName\\s*=\\s*\"([^\"]+)\"").find(text)?.groupValues?.get(1)
+            ?: throw GradleException("app/build.gradle.kts: versionName not found")
+        val target = output.get().asFile
+        target.deleteRecursively()
+        target.resolve("com/android/purebilibili/BuildConfig.kt").apply { parentFile.mkdirs() }.writeText(
+            "// Generated at build time from the upstream app/build.gradle.kts (release variant).\npackage com.android.purebilibili\n\n" +
+                "object BuildConfig {\n    const val DEBUG: Boolean = false\n    const val BUILD_TYPE: String = \"release\"\n" +
+                "    const val VERSION_CODE: Int = $versionCode\n    const val VERSION_NAME: String = \"$versionName\"\n" +
+                "    const val BUILD_COMMIT_SHA: String = \"${commitSha.get()}\"\n" +
+                "    const val ENABLE_VERBOSE_DEBUG_LOGS: Boolean = false\n    const val ENABLE_VERBOSE_RUNTIME_LOG_PERSISTENCE: Boolean = false\n" +
+                "    const val ALLOW_HARDCODED_DNS_FALLBACK: Boolean = false\n}\n")
+    }
+}
+
 val verifyNoSilentSdkGates by tasks.registering {
     inputs.files(fileTree(mergedRepositoryRoot) { migratedWholeModules.forEach { include(it + "src/main/java/**/*.kt") } })
     inputs.dir(desktopUpstreamPatchDirectory).withPathSensitivity(PathSensitivity.RELATIVE)
@@ -2761,14 +2993,64 @@ val migratedSourceReadingTestClasses: List<String> = migratedWholeModuleTestRoot
         Regex("""^package\s+([\w.]+)""", RegexOption.MULTILINE).find(text)!!.groupValues[1] + "." + file.nameWithoutExtension
     }.toList()
 }.sorted()
+// Upstream app core tests (TON-1000) whose subject compiles from upstream and that use kotlin.test only. Tests that need
+// JUnit 4, Robolectric or mockk (not in the desktop test graph) or that test desktop-owned / later-step files stay out;
+// tests that read upstream sources by relative path run from the app module directory (upstreamAppCoreSourceTests).
+val appTestRoot = mergedRepositoryRoot.resolve("app/src/test/java")
+val appCoreUpstreamTestsNotRun: Map<String, String> = mapOf(
+    "core/player/waveform/AudioWaveformPolicyTest.kt" to "its subject is desktop-owned: the Media3 player stack",
+    "core/player/HiResCompatibleRenderersFactoryTest.kt" to "its subject is desktop-owned: the Media3 player stack",
+    "core/player/PlayerVolumeControllerTest.kt" to "its subject is desktop-owned: the Media3 player stack",
+    "core/util/CrashSnapshotPolicyTest.kt" to "its subject is desktop-owned: Android logging and crash capture",
+    "core/util/LoggerPersistencePolicyTest.kt" to "its subject is desktop-owned: Android logging and crash capture",
+    "core/util/HistoricalCrashLogsTest.kt" to "its subject is desktop-owned: Android logging and crash capture",
+    "core/util/FoldableDisplayPolicyTest.kt" to "its subject is desktop-owned: Android windows, foldables, picture-in-picture and display modes",
+    "core/util/WindowSizeUtilsTest.kt" to "its subject is desktop-owned: Android windows, foldables, picture-in-picture and display modes",
+    "core/util/PipAspectRatioPolicyTest.kt" to "its subject is desktop-owned: Android windows, foldables, picture-in-picture and display modes",
+    "core/util/VideoSurfaceCompatibilityTest.kt" to "its subject is desktop-owned: Android windows, foldables, picture-in-picture and display modes",
+    "core/util/AppAdaptiveStrategySnapshotTest.kt" to "its subject is desktop-owned: Android windows, foldables, picture-in-picture and display modes",
+    "core/ui/performance/AppDisplayModePreferenceTest.kt" to "its subject is desktop-owned: Android windows, foldables, picture-in-picture and display modes",
+    "core/ui/performance/VideoRefreshRatePolicyTest.kt" to "its subject is desktop-owned: Android windows, foldables, picture-in-picture and display modes",
+    "core/ui/animation/gl/ThanosParticlePolicyTest.kt" to "its subject is desktop-owned: OpenGL particle effects",
+    "core/ui/animation/gl/ParticleRendererPolicyTest.kt" to "its subject is desktop-owned: OpenGL particle effects",
+    "core/ui/animation/DissolveRenderPolicyTest.kt" to "its subject is desktop-owned: OpenGL particle effects",
+    "core/performance/ProcessExitContextTest.kt" to "its subject is desktop-owned: Android process exit and Android 17 diagnostics",
+    "core/performance/Android17DiagnosticsPolicyTest.kt" to "its subject is desktop-owned: Android process exit and Android 17 diagnostics",
+    "core/util/MediaUtilsHdrCapabilityTest.kt" to "its subject is desktop-owned: Android media, cache and text-selection helpers",
+    "core/util/AutomaticCacheClearPolicyTest.kt" to "its subject is desktop-owned: Android media, cache and text-selection helpers",
+    "core/ui/common/TextSelectionPolicyTest.kt" to "its subject is desktop-owned: Android media, cache and text-selection helpers",
+    "core/ui/common/LongPressCopyPolicyTest.kt" to "its subject is desktop-owned: Android media, cache and text-selection helpers",
+    "core/util/PlayerOrientationPolicyTest.kt" to "its subject moves in a later step (player orientation, M4a)",
+    "core/util/PlayerPresentationPolicyTest.kt" to "its subject moves in a later step (player orientation, M4a)",
+    "core/theme/AppThemeEndpointPolicyTest.kt" to "it calls feature/video resolvePlaybackNotificationAccentColor, which moves with M4a",
+    "core/ui/adaptive/DeviceUiProfilePolicyTest.kt" to "the same test class (same package and name) as design-system DeviceUiProfilePolicyTest, which runs",
+)
+val appCoreUpstreamTestPaths: Set<String> = appTestRoot.resolve("com/android/purebilibili/core").walkTopDown()
+    .filter { it.isFile && it.extension == "kt" }
+    .filter { file -> !Regex("""^import (org\.junit|org\.robolectric|io\.mockk|androidx\.test)""", RegexOption.MULTILINE).containsMatchIn(file.readText()) }
+    .map { it.relativeTo(appTestRoot).invariantSeparatorsPath }
+    .filter { path -> path.removePrefix("com/android/purebilibili/").let { core -> core !in appCoreUpstreamTestsNotRun &&
+        (appCoreDesktopOwned.keys + appCoreLaterSteps.keys).none { core.startsWith(it) } &&
+        // FooTest.kt tests Foo.kt: a test of a desktop-owned or later-step file is left out with its subject.
+        (appCoreDesktopOwned.keys + appCoreLaterSteps.keys).none { key -> key.endsWith(".kt") && core == key.removeSuffix(".kt") + "Test.kt" } } }
+    .toSortedSet()
+val appCoreSourceReadingTestClasses: List<String> = appCoreUpstreamTestPaths.map { appTestRoot.resolve(it) }
+    .filter { Regex("""\bFile\(|Paths\.get\(|\.readText\(""").containsMatchIn(it.readText()) }
+    .map { file -> Regex("""^package\s+([\w.]+)""", RegexOption.MULTILINE).find(file.readText())!!.groupValues[1] + "." + file.nameWithoutExtension }
+    .sorted()
 kotlin.sourceSets.named("test") {
     migratedWholeModuleTestRoots.forEach { kotlin.srcDir(it) }
+    kotlin.srcDir(appTestRoot)
+    val appTestRootPath = appTestRoot.toPath()
+    kotlin.exclude { element -> !element.isDirectory && element.file.toPath().startsWith(appTestRootPath) &&
+        element.file.relativeTo(appTestRoot).invariantSeparatorsPath !in appCoreUpstreamTestPaths }
     val buildDirectoryPath = layout.buildDirectory.get().asFile.toPath()
     kotlin.exclude { element ->
         val file = element.file
         val path = file.invariantSeparatorsPath
         val index = path.lastIndexOf("/com/android/purebilibili/")
-        element.file.toPath().startsWith(buildDirectoryPath) && index >= 0 && path.substring(index + 1) in migratedWholeModuleTestPaths
+        element.file.toPath().startsWith(buildDirectoryPath) && index >= 0 &&
+            path.substring(index + 1).let { it in migratedWholeModuleTestPaths || it in appCoreUpstreamTestPaths }
     }
 }
 
@@ -2796,12 +3078,14 @@ kotlin.sourceSets.named("main") {
         }
     }
     // Migrated upstream files the desktop patches or replaces are compiled from their adapted form only.
-    val migratedRootPaths = migratedUpstreamModules.map { mergedRepositoryRoot.resolve(it + "src/main/java").toPath() }
+    val migratedRootPaths = migratedUpstreamModules.map { mergedRepositoryRoot.resolve(it + "src/main/java").toPath() } + listOf(appJavaRoot.toPath())
     kotlin.exclude { element ->
         migratedRootPaths.any { element.file.toPath().startsWith(it) } && upstreamIdentity(element.file) in desktopAdaptedUpstreamPaths
     }
     kotlin.srcDir(generateUpstreamColorResources)
     kotlin.srcDir(files(layout.buildDirectory.dir("generated/upstream-strings/kotlin")).builtBy(generateUpstreamStringResources))
+    kotlin.srcDir(files(layout.buildDirectory.dir("generated/upstream-preference-types")).builtBy(generateUpstreamPreferenceKeyTypes))
+    kotlin.srcDir(files(layout.buildDirectory.dir("generated/upstream-buildconfig")).builtBy(generateUpstreamBuildConfig))
     kotlin.srcDir(upstreamReplacementDirectory)
     // Desktop stand-ins for the Android APIs the migrated modules use, and transition compat code.
     kotlin.srcDir("upstream-core/compat")
@@ -2811,6 +3095,10 @@ kotlin.sourceSets.named("main") {
     kotlin.srcDir(applyTransitionPatches)
     kotlin.srcDir(applyDesktopUpstreamPatches)
     migratedUpstreamModules.forEach { kotlin.srcDir(mergedRepositoryRoot.resolve(it + "src/main/java")) }
+    // Only the migrated app core files of the app source root; the rest of the app is not migrated yet.
+    val appJavaRootPath = appJavaRoot.toPath()
+    kotlin.exclude { element -> !element.isDirectory && element.file.toPath().startsWith(appJavaRootPath) && upstreamIdentity(element.file) !in migratedAppCorePaths }
+    kotlin.srcDir(appJavaRoot)
     kotlin.srcDir(generatedUpstream)
     kotlin.srcDir(layout.buildDirectory.dir("generated/api"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/danmaku"))
@@ -2991,8 +3279,7 @@ dependencies {
     // desktop implementation onto runtimeClasspath transitively.
     implementation("androidx.navigationevent:navigationevent-compose:1.1.2")
     implementation(project(":miuix5157"))
-    implementation("com.materialkolor:material-kolor:4.1.1")
-    implementation("com.materialkolor:material-color-utilities:5.0.1")
+    implementation("com.materialkolor:material-kolor-material3:6.0.0-beta01")
     implementation("dev.chrisbanes.haze:haze-jvm:2.0.1")
     implementation("dev.chrisbanes.haze:haze-utils-jvm:2.0.1")
     implementation("dev.chrisbanes.haze:haze-blur-jvm:2.0.1")
@@ -5064,9 +5351,22 @@ val upstreamDesignSourceTests by tasks.registering(Test::class) {
     systemProperty("java.awt.headless", "true")
     dependsOn(tasks.named("testClasses"), verifyUniqueClassNames)
 }
+val upstreamAppCoreSourceTests by tasks.registering(Test::class) {
+    group = "verification"
+    description = "Upstream app core tests that read upstream sources, run from the app module directory."
+    testClassesDirs = sourceSets["test"].output.classesDirs
+    classpath = sourceSets["test"].runtimeClasspath
+    workingDir = mergedRepositoryRoot.resolve("app")
+    useJUnitPlatform()
+    appCoreSourceReadingTestClasses.forEach { filter.includeTestsMatching(it) }
+    filter.isFailOnNoMatchingTests = false
+    systemProperty("java.awt.headless", "true")
+    dependsOn(tasks.named("testClasses"), verifyUniqueClassNames)
+}
 tasks.test {
     migratedSourceReadingTestClasses.forEach { filter.excludeTestsMatching(it) }
-    finalizedBy(upstreamDesignSourceTests)
+    appCoreSourceReadingTestClasses.forEach { filter.excludeTestsMatching(it) }
+    finalizedBy(upstreamDesignSourceTests, upstreamAppCoreSourceTests)
 }
 tasks.named("compileKotlin") { dependsOn(verifyUpstreamReplacements, verifyNoSilentSdkGates) }
 tasks.named("check") { dependsOn(verifyUniqueClassNames) }

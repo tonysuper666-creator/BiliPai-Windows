@@ -1,0 +1,99 @@
+--- a/whole-playback-settings/generated/com/android/purebilibili/core/store/DesktopOriginalPlaybackSettingsPreferences.kt
++++ b/whole-playback-settings/generated/com/android/purebilibili/core/store/DesktopOriginalPlaybackSettingsPreferences.kt
+@@ -674,19 +674,19 @@
+ 
+ 
+     fun getLaunchToPortraitFeedOnStartup(context: Context): Flow<Boolean> = context.settingsDataStore.data
+         .map { preferences -> preferences[KEY_LAUNCH_TO_PORTRAIT_FEED_ON_STARTUP] ?: false }
+ 
+ 
+     suspend fun setLaunchToPortraitFeedOnStartup(context: Context, value: Boolean) {
+         editSettingsAndCommitPrefs(
+-            context = context,
++            context = context.androidContext,
+             name = PORTRAIT_STARTUP_CACHE_PREFS,
+-            editSettings = { this[KEY_LAUNCH_TO_PORTRAIT_FEED_ON_STARTUP] = value },
++            editSettings = { this[androidx.datastore.preferences.core.booleanPreferencesKey(KEY_LAUNCH_TO_PORTRAIT_FEED_ON_STARTUP.name)] = value },
+             editPrefs = { putBoolean(CACHE_KEY_LAUNCH_TO_PORTRAIT_FEED, value) },
+         )
+     }
+ 
+     /**
+      * 冷启动快速路径。返回 null 表示缓存缺失，调用方必须挂起读取 DataStore 后再决定
+      * 初始导航，不能把 null 当成默认 false；自动备份只恢复 DataStore、不恢复这个缓存。
+      */
+@@ -718,33 +718,33 @@
+     private val KEY_VIDEO_SECOND_CODEC = stringPreferencesKey("video_second_codec_preference")
+ 
+     fun getWifiQuality(context: Context): Flow<Int> = context.settingsDataStore.data
+         .map { preferences -> preferences[KEY_WIFI_QUALITY] ?: 80 }
+ 
+ 
+     suspend fun setWifiQuality(context: Context, value: Int) {
+         val success = editSettingsAndCommitPrefs(
+-            context, "quality_settings",
+-            editSettings = { this[KEY_WIFI_QUALITY] = value },
++            context.androidContext, "quality_settings",
++            editSettings = { this[androidx.datastore.preferences.core.intPreferencesKey(KEY_WIFI_QUALITY.name)] = value },
+             editPrefs = { putInt("wifi_quality", value) },
+         )
+         com.android.purebilibili.core.util.Logger.d("SettingsManager", " WiFi 画质已设置: $value (写入成功: $success)")
+     }
+     
+     // --- 流量默认画质 (默认 64 = 720P) ---
+ 
+     fun getMobileQuality(context: Context): Flow<Int> = context.settingsDataStore.data
+         .map { preferences -> preferences[KEY_MOBILE_QUALITY] ?: 64 }
+ 
+ 
+     suspend fun setMobileQuality(context: Context, value: Int) {
+         val success = editSettingsAndCommitPrefs(
+-            context, "quality_settings",
+-            editSettings = { this[KEY_MOBILE_QUALITY] = value },
++            context.androidContext, "quality_settings",
++            editSettings = { this[androidx.datastore.preferences.core.intPreferencesKey(KEY_MOBILE_QUALITY.name)] = value },
+             editPrefs = { putInt("mobile_quality", value) },
+         )
+         com.android.purebilibili.core.util.Logger.d("SettingsManager", " 流量画质已设置: $value (写入成功: $success)")
+     }
+     
+     //  同步读取画质设置（用于 VideoPlaybackViewModel）
+ 
+     private val KEY_AUTO_HIGHEST_QUALITY = booleanPreferencesKey("auto_highest_quality")
+@@ -753,32 +753,32 @@
+     
+ 
+     fun getAutoHighestQuality(context: Context): Flow<Boolean> = context.settingsDataStore.data
+         .map { preferences -> preferences[KEY_AUTO_HIGHEST_QUALITY] ?: false }  // 默认关闭
+     
+ 
+     suspend fun setAutoHighestQuality(context: Context, value: Boolean) {
+         editSettingsAndCommitPrefs(
+-            context, "quality_settings",
+-            editSettings = { this[KEY_AUTO_HIGHEST_QUALITY] = value },
++            context.androidContext, "quality_settings",
++            editSettings = { this[androidx.datastore.preferences.core.booleanPreferencesKey(KEY_AUTO_HIGHEST_QUALITY.name)] = value },
+             editPrefs = { putBoolean("auto_highest_quality", value) },
+         )
+         com.android.purebilibili.core.util.Logger.d("SettingsManager", "🚀 自动最高画质: $value")
+     }
+     
+ 
+     fun getBiliDirectedTrafficEnabled(context: Context): Flow<Boolean> = context.settingsDataStore.data
+         .map { preferences -> preferences[KEY_BILI_DIRECTED_TRAFFIC] ?: false }
+ 
+ 
+     suspend fun setBiliDirectedTrafficEnabled(context: Context, value: Boolean) {
+         editSettingsAndCommitPrefs(
+-            context, "quality_settings",
+-            editSettings = { this[KEY_BILI_DIRECTED_TRAFFIC] = value },
++            context.androidContext, "quality_settings",
++            editSettings = { this[androidx.datastore.preferences.core.booleanPreferencesKey(KEY_BILI_DIRECTED_TRAFFIC.name)] = value },
+             editPrefs = { putBoolean("bili_directed_traffic", value) },
+         )
+         com.android.purebilibili.core.util.Logger.d("SettingsManager", "📶 B站定向流量支持: $value")
+     }
+ 
+ 
+     fun getVideoCodec(context: Context): Flow<String> = context.settingsDataStore.data
+         .map { preferences -> preferences[KEY_VIDEO_CODEC] ?: "hev1" }

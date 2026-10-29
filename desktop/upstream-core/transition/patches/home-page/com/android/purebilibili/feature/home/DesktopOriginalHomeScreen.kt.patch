@@ -1,0 +1,21 @@
+--- a/home-page/com/android/purebilibili/feature/home/DesktopOriginalHomeScreen.kt
++++ b/home-page/com/android/purebilibili/feature/home/DesktopOriginalHomeScreen.kt
+@@ -1693,17 +1693,17 @@
+                     collapsedTabInsetPx = collapsedEmbeddedTabInset.toPx(),
+                     minimumTopPaddingPx = statusBarHeight.toPx(),
+                 ).toDp()
+             }
+         }
+     }
+     
+     // [Feature] Bottom Bar Auto-Hide (based on scroll hide mode)
+-    val isBottomBarAutoHideEnabled = bottomBarVisibilityMode == com.bilipai.desktop.ui.DesktopFavoriteNavigationTypes.BottomBarVisibilityMode.SCROLL_HIDE
++    val isBottomBarAutoHideEnabled = bottomBarVisibilityMode == com.android.purebilibili.core.store.SettingsManager.BottomBarVisibilityMode.SCROLL_HIDE
+     val bottomBarVisibleState = LocalSetBottomBarVisible.current
+     
+     // [Feature] Global Scroll Offset for Liquid Glass
+     val activeGridState = if (currentCategory == HomeCategory.POPULAR) {
+         popularGridStates[popularSubCategory]
+     } else {
+         gridStates[currentCategory]
+     }

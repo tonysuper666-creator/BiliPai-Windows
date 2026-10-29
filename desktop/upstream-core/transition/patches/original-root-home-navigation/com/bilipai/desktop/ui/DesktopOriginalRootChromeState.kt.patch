@@ -1,0 +1,57 @@
+--- a/original-root-home-navigation/com/bilipai/desktop/ui/DesktopOriginalRootChromeState.kt
++++ b/original-root-home-navigation/com/bilipai/desktop/ui/DesktopOriginalRootChromeState.kt
+@@ -18,17 +18,17 @@
+     val bottomBarVisibilityState:MutableTransitionState<Boolean>,
+     val bottomBarContentPadding:Dp,
+ )
+ @Composable internal fun desktopOriginalRootChromeState(
+     currentRoute:String?, activeBottomTabRoute:String?, bottomBarMountRoute:String?,
+     visibleBottomBarRoutes:Set<String>, isTabletLayout:Boolean, useSideNavigation:Boolean,
+     isVideoDetailDestination:Boolean, navigation3ReturnSession:BiliPaiReturnSessionState,
+     cardTransitionEnabled:Boolean, driveBottomBarByProgress:Boolean,
+-    videoCardSourceChromeVisible:Boolean, bottomBarVisibilityMode:DesktopFavoriteNavigationTypes.BottomBarVisibilityMode,
++    videoCardSourceChromeVisible:Boolean, bottomBarVisibilityMode:com.android.purebilibili.core.store.SettingsManager.BottomBarVisibilityMode,
+     isBottomBarVisible:Boolean, setBottomBarVisible:(Boolean)->Unit,
+     isBottomBarFloating:Boolean, audioNowPlayingBarEnabled:Boolean, audioNowPlayingActive:Boolean,
+     audioNowPlayingItem:PlaylistItem?, currentBottomNavItem:BottomNavItem, scrollOffsetState:MutableFloatState,
+     bottomBarUiSkinDecoration:BottomBarUiSkinDecoration?, navigationBarsBottom:Dp,
+ ):DesktopOriginalRootChromeState {
+ val isSettingsScreen = activeBottomTabRoute == ScreenRoutes.Settings.route
+ val shouldHideBottomBarOnTablet = isTabletLayout && isSettingsScreen
+ 
+@@ -112,32 +112,32 @@
+ // 最终决定是否显示：
+ // - 必须是用户配置的可见主入口页面
+ // - 不是侧边栏模式
+ // - 不是故事模式
+ // - 且 (模式为始终显示 OR (模式为向下浏览时隐藏 AND 当前状态为可见))
+ // - 且 模式不是永久隐藏
+ val finalBottomBarVisible = showBottomBar &&
+     (driveBottomBarByProgress || videoCardSourceChromeVisible) &&
+-    bottomBarVisibilityMode != DesktopFavoriteNavigationTypes.BottomBarVisibilityMode.ALWAYS_HIDDEN &&
++    bottomBarVisibilityMode != com.android.purebilibili.core.store.SettingsManager.BottomBarVisibilityMode.ALWAYS_HIDDEN &&
+     (
+-        bottomBarVisibilityMode == DesktopFavoriteNavigationTypes.BottomBarVisibilityMode.ALWAYS_VISIBLE ||
++        bottomBarVisibilityMode == com.android.purebilibili.core.store.SettingsManager.BottomBarVisibilityMode.ALWAYS_VISIBLE ||
+             isBottomBarVisible ||
+             (isBottomBarFloating && audioNowPlayingBarEnabled && audioNowPlayingActive &&
+                 audioNowPlayingItem != null)
+     )
+ // This raw signal is intentionally independent from the user's bottom-bar visibility
+ // mode: the linked playback strip still compacts on downward browsing when the bar itself
+ // is configured to remain visible.
+ val collapseLinkedPlaybackDock = !isBottomBarVisible ||
+     (currentBottomNavItem == BottomNavItem.DYNAMIC && scrollOffsetState.floatValue > 50f)
+ val bottomBarVisibilityState = remember { MutableTransitionState(finalBottomBarVisible) }
+ bottomBarVisibilityState.targetState = finalBottomBarVisible
+ val bottomBarCanMount =
+-    bottomBarVisibilityMode != DesktopFavoriteNavigationTypes.BottomBarVisibilityMode.ALWAYS_HIDDEN &&
++    bottomBarVisibilityMode != com.android.purebilibili.core.store.SettingsManager.BottomBarVisibilityMode.ALWAYS_HIDDEN &&
+         (
+             bottomBarMountGate ||
+                 driveBottomBarByProgress ||
+                 bottomBarVisibilityState.currentState ||
+                 bottomBarVisibilityState.targetState
+         )
+ val bottomBarReservesSpace = bottomBarCanMount &&
+     !driveBottomBarByProgress &&

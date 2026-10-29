@@ -1,0 +1,20 @@
+--- a/full-navigation-settings/com/android/purebilibili/core/store/DesktopOriginalFullNavigationSettings.kt
++++ b/full-navigation-settings/com/android/purebilibili/core/store/DesktopOriginalFullNavigationSettings.kt
+@@ -1,16 +1,16 @@
+ package com.android.purebilibili.core.store
+ import com.bilipai.desktop.plugins.DesktopPluginContext as Context
+ import com.bilipai.desktop.settings.fullNavigationBooleanKey as booleanPreferencesKey
+ import com.bilipai.desktop.settings.fullNavigationIntKey as intPreferencesKey
+ import com.bilipai.desktop.settings.fullNavigationStringKey as stringPreferencesKey
+ import com.bilipai.desktop.settings.fullNavigationDataStore as settingsDataStore
+ import com.android.purebilibili.core.store.navigation.parseBottomBarItemLabels
+-import com.bilipai.desktop.ui.DesktopFavoriteNavigationTypes.BottomBarVisibilityMode
++import com.android.purebilibili.core.store.SettingsManager.BottomBarVisibilityMode
+ import com.bilipai.desktop.ui.DesktopOriginalHomeSettingConstants.TopTabLabelMode
+ import com.android.purebilibili.core.ui.blur.BlurIntensity
+ import com.android.purebilibili.core.ui.transition.*
+ import kotlinx.coroutines.flow.*
+ internal object DesktopOriginalFullNavigationSettings {
+     const val MAX_TOP_TABS=5
+     private val KEY_BLUR_INTENSITY = stringPreferencesKey("blur_intensity")
+     private val KEY_BOTTOM_BAR_BLUR_ENABLED = booleanPreferencesKey("bottom_bar_blur_enabled")

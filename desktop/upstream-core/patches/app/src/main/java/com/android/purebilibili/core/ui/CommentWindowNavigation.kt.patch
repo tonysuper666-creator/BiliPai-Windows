@@ -1,0 +1,21 @@
+--- a/com/android/purebilibili/core/ui/CommentWindowNavigation.kt
++++ b/com/android/purebilibili/core/ui/CommentWindowNavigation.kt
+@@ -1,16 +1,15 @@
+ package com.android.purebilibili.core.ui
+ 
+ import androidx.compose.runtime.Composable
+ import androidx.compose.runtime.CompositionLocalProvider
+-import androidx.compose.ui.platform.LocalView
+ import androidx.navigationevent.compose.LocalNavigationEventDispatcherOwner
+-import androidx.navigationevent.findViewTreeNavigationEventDispatcherOwner
+ 
+ /** Bind comment handlers to the dialog receiving the gesture, not the underlying route. */
+ @Composable
+ internal fun CommentWindowNavigation(content: @Composable () -> Unit) {
+-    val owner = checkNotNull(LocalView.current.findViewTreeNavigationEventDispatcherOwner()) {
++    // Desktop: no view tree; the comment dialog layer provides its own dispatcher owner.
++    val owner = checkNotNull(com.bilipai.desktop.ui.LocalDesktopCommentDialogOwner.current) {
+         "Comment dialog must provide a window navigation dispatcher"
+     }
+     CompositionLocalProvider(LocalNavigationEventDispatcherOwner provides owner, content = content)
+ }

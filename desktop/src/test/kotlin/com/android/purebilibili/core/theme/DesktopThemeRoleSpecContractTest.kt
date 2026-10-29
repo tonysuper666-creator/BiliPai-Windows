@@ -7,7 +7,7 @@ import androidx.compose.ui.graphics.Color
 import com.android.purebilibili.core.store.ThemeModeRoleOverrides
 import com.android.purebilibili.core.store.ThemeRoleOverrides
 import com.materialkolor.PaletteStyle
-import com.materialkolor.dynamicColorScheme
+import com.materialkolor.material3.dynamicColorScheme
 import com.materialkolor.dynamiccolor.ColorSpec
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -34,7 +34,7 @@ class DesktopThemeRoleSpecContractTest {
     @Test
     fun requestedStylesAndSpecificationsRetainCompleteAccentFamiliesAndReadablePairs() {
         for (hex in listOf("#007AFF", "#FF9500")) {
-            for (style in PaletteStyle.entries) {
+            for (style in PaletteStyle.KnownStyles) {
                 for (spec in listOf(ColorSpec.SpecVersion.SPEC_2021, ColorSpec.SpecVersion.SPEC_2025)) {
                     for (dark in listOf(false, true)) {
                         val message = "$hex / $style / $spec / dark=$dark"

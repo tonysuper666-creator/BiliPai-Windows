@@ -1,10 +1,12 @@
 package com.bilipai.desktop.settings
+
+import com.bilipai.desktop.plugins.asAndroidContext
 import com.android.purebilibili.core.store.*
 import com.android.purebilibili.feature.search.*
 import com.android.purebilibili.data.model.response.SearchType
 import com.bilipai.desktop.plugins.*
 import com.bilipai.desktop.ui.DesktopOriginalHomePreferences
-import com.bilipai.desktop.ui.DesktopFavoriteNavigationTypes.BottomBarVisibilityMode
+import com.android.purebilibili.core.store.SettingsManager.BottomBarVisibilityMode
 import com.bilipai.desktop.appearance.*
 import com.android.purebilibili.core.ui.blur.BlurIntensity
 import com.android.purebilibili.core.ui.transition.*
@@ -181,8 +183,8 @@ class DesktopFullNavigationSettingsTest {
 
     @Test fun skeletonUsesExistingGlobalAuthority():Unit=runBlocking {
         withFixture {
-            SkeletonSettingsStore.setBreathingEnabled(context,false)
-            verify(!SkeletonSettingsStore.breathingEnabled(DesktopPluginContext(DesktopPluginStore(root))).first(),"Existing original skeleton same global backing")
+            SkeletonSettingsStore.setBreathingEnabled(context.asAndroidContext(),false)
+            verify(!SkeletonSettingsStore.breathingEnabled(DesktopPluginContext(DesktopPluginStore(root)).asAndroidContext()).first(),"Existing original skeleton same global backing")
 
         }
     }

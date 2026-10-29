@@ -1,0 +1,44 @@
+--- a/original-following/com/android/purebilibili/feature/following/FollowingListScreen.kt
++++ b/original-following/com/android/purebilibili/feature/following/FollowingListScreen.kt
+@@ -298,17 +298,17 @@
+             } finally {
+                 if (generation == followingGeneration) followingRequestActive = false
+             }
+         }
+     }
+ 
+     private fun restoreFollowingListFromPersistentCache(mid: Long, forceRefresh: Boolean): Boolean {
+         val context = environment.cacheContext
+-        val snapshot = FollowingCacheStore.getSnapshot(context, mid) ?: return false
++        val snapshot = FollowingCacheStore.getSnapshot(context.asAndroidContext(), mid) ?: return false
+         if (!shouldUseFollowingPersistentCache(
+                 forceRefresh = forceRefresh,
+                 requestMid = mid,
+                 cachedMid = snapshot.mid,
+                 cachedUsersCount = snapshot.users.size
+             )
+         ) {
+             return false
+@@ -514,20 +514,20 @@
+         val generation = followingGeneration
+         val writeGeneration = ++cacheWriteGeneration
+         val context = environment.cacheContext.forRequest { generation == followingGeneration && writeGeneration == cacheWriteGeneration }
+         val snapshotUsers = users.toList()
+ 
+         followingCacheSaveJob?.cancel()
+         followingCacheSaveJob = viewModelScope.launch(Dispatchers.IO) {
+             if (snapshotUsers.isEmpty()) {
+-                FollowingCacheStore.clear(context)
++                FollowingCacheStore.clear(context.asAndroidContext())
+             } else {
+                 FollowingCacheStore.saveSnapshot(
+-                    context = context,
++                    context = context.asAndroidContext(),
+                     mid = mid,
+                     total = total,
+                     users = snapshotUsers
+                 )
+             }
+         }
+     }
+ 

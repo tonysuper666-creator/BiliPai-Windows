@@ -143,7 +143,7 @@ class DesktopWindowsNavigationDisplayTest {
                 assertSame(restored, owner.session.value)
             } finally {
                 owner.close()
-                CardPositionManager.restoreVideoSourceKey(oldSourceKey)
+                CardPositionManager.restoreVideoSource(sourceKey = oldSourceKey, sourceOwner = null)
             }
         }
     }
@@ -192,7 +192,7 @@ class DesktopWindowsNavigationDisplayTest {
             } finally {
                 clock.bindNavigationDriver(null)
                 owner.close()
-                CardPositionManager.restoreVideoSourceKey(previousGlobal)
+                CardPositionManager.restoreVideoSource(sourceKey = previousGlobal, sourceOwner = null)
             }
         }
     }

@@ -1,0 +1,15 @@
+--- a/original-video-detail-units/com/android/purebilibili/core/store/DesktopOriginalVideoInfoSettings.kt
++++ b/original-video-detail-units/com/android/purebilibili/core/store/DesktopOriginalVideoInfoSettings.kt
+@@ -5,12 +5,6 @@
+ import com.bilipai.desktop.settings.dynamicSettingsDataStore as settingsDataStore
+ import com.android.purebilibili.core.ui.components.AppTagChipSize
+ import kotlinx.coroutines.flow.*
+-data class PlayerControlVisibilitySettings(
+-    val showCastButton: Boolean = true,
+-    val showFollowButton: Boolean = true,
+-    /** 紧凑播放器控件：隐藏顶栏分享并收紧顶底栏间距。默认经典布局。 */
+-    val compactPlayerChrome: Boolean = false
+-)
+ 
+ internal object DesktopOriginalVideoInfoSettings {
+     private val KEY_VIDEO_INFO_DEFAULT_EXPANDED = booleanPreferencesKey("video_info_default_expanded")

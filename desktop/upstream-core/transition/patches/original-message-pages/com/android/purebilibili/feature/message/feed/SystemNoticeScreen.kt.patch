@@ -1,0 +1,40 @@
+--- a/original-message-pages/com/android/purebilibili/feature/message/feed/SystemNoticeScreen.kt
++++ b/original-message-pages/com/android/purebilibili/feature/message/feed/SystemNoticeScreen.kt
+@@ -33,17 +33,17 @@
+ import androidx.compose.ui.unit.dp
+ import com.android.purebilibili.feature.message.MessageAppScaffold as AppScaffold
+ import com.android.purebilibili.core.ui.AppTopBar
+ import com.android.purebilibili.core.ui.AdaptivePullToRefreshBox
+ import com.android.purebilibili.core.ui.rememberAppBackIcon
+ import com.android.purebilibili.core.ui.components.AppIconButton
+ import com.android.purebilibili.core.ui.skeleton.ContentSkeletonBlock
+ import com.android.purebilibili.core.ui.skeleton.rememberContentSkeletonBlockColor
+-import com.android.purebilibili.core.ui.skeleton.rememberContentSkeletonPulse
++import com.android.purebilibili.core.ui.skeleton.rememberContentSkeletonPulseState
+ import com.android.purebilibili.data.model.response.SystemNoticeItem
+ import com.bilipai.desktop.ui.DesktopMessagePageAdmission
+ import kotlinx.coroutines.flow.MutableStateFlow
+ import kotlinx.coroutines.flow.StateFlow
+ import kotlinx.coroutines.flow.asStateFlow
+ import kotlinx.coroutines.launch
+ 
+ data class SystemNoticeUiState(
+@@ -225,17 +225,17 @@
+                 }
+             }
+         }
+     }
+ }
+ 
+ @Composable
+ private fun SystemNoticeListSkeleton(modifier: Modifier = Modifier) {
+-    val blockColor = rememberContentSkeletonBlockColor(rememberContentSkeletonPulse())
++    val blockColor = rememberContentSkeletonBlockColor(rememberContentSkeletonPulseState())
+     LazyColumn(
+         modifier = modifier,
+         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 12.dp),
+         verticalArrangement = Arrangement.spacedBy(10.dp),
+         userScrollEnabled = false,
+     ) {
+         items(7) {
+             MessageFeedCard(modifier = Modifier.fillMaxWidth()) {

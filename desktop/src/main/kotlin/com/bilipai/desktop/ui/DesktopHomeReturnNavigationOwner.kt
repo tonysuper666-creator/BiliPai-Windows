@@ -202,7 +202,8 @@ internal class DesktopHomeReturnNavigationOwner(
             relatedRestorePending = false
             relatedTransitionObserved = false
             mutableSession.value = mutableSession.value.restorePreviousVideoSourceAfterRelatedReturn()
-            CardPositionManager.restoreVideoSourceKey(mutableSession.value.lastVideoSourceKey)
+            // Upstream restores the source pixel owner too; this desktop return session keeps only the key.
+            CardPositionManager.restoreVideoSource(sourceKey = mutableSession.value.lastVideoSourceKey, sourceOwner = null)
         }
     }
 

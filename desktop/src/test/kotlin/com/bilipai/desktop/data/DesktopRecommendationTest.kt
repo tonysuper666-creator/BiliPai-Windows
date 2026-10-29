@@ -1,5 +1,7 @@
 package com.bilipai.desktop.data
 
+import com.bilipai.desktop.plugins.asAndroidContext
+
 import com.android.purebilibili.core.network.AppSignUtils
 import com.android.purebilibili.core.network.BilibiliApi
 import com.android.purebilibili.core.store.*
@@ -192,7 +194,7 @@ class DesktopRecommendationTest {
         val flow = preferences.feedback(101)
         preferences.record(101, TodayWatchDislikedVideoSnapshot("BV-old", "v", "up", 1, 1), emptySet(), false)
         assertEquals(setOf("BV-old"), flow.value.dislikedBvids)
-        TodayWatchFeedbackStore.clear(preferences.recommendationContext(101))
+        TodayWatchFeedbackStore.clear(preferences.recommendationContext(101).asAndroidContext())
         assertTrue(flow.value.dislikedBvids.isEmpty())
     }
 

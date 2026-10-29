@@ -1,0 +1,26 @@
+--- a/upstream/app/src/main/java/com/android/purebilibili/feature/list/FavoritePersonalCardSkeleton.kt
++++ b/upstream/app/src/main/java/com/android/purebilibili/feature/list/FavoritePersonalCardSkeleton.kt
+@@ -7,21 +7,21 @@
+ import androidx.compose.ui.draw.drawWithContent
+ import androidx.compose.ui.graphics.Color
+ import com.android.purebilibili.core.ui.components.AppText
+ import com.android.purebilibili.core.ui.skeleton.ContentSkeletonBlock
+ import com.android.purebilibili.feature.personal.PersonalMediaCardFrame
+ 
+ /** Share the real card shell, cover constraints, padding and typography metrics. */
+ @Composable
+-internal fun FavoritePersonalCardSkeleton(stacked: Boolean, blockColor: Color, modifier: Modifier = Modifier) {
++internal fun FavoritePersonalCardSkeleton(stacked: Boolean, blockColor: () -> Color, modifier: Modifier = Modifier) {
+     @Composable
+     fun TextPlaceholder(text: String, style: androidx.compose.ui.text.TextStyle) {
+         AppText(text = text, style = style, modifier = Modifier.drawWithContent {
+-            drawRect(blockColor, size = size.copy(height = size.height * 0.65f))
++            drawRect(blockColor(), size = size.copy(height = size.height * 0.65f))
+         })
+     }
+     PersonalMediaCardFrame(
+         modifier = modifier,
+         stacked = stacked,
+         enabled = false,
+         onClick = {},
+         headlineContent = { TextPlaceholder("加载收藏视频标题", MaterialTheme.typography.bodyMedium) },

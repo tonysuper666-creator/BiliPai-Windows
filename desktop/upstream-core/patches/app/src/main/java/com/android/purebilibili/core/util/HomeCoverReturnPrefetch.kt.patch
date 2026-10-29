@@ -1,0 +1,28 @@
+--- a/com/android/purebilibili/core/util/HomeCoverReturnPrefetch.kt
++++ b/com/android/purebilibili/core/util/HomeCoverReturnPrefetch.kt
+@@ -105,22 +105,23 @@
+  * Caller owns cancellation. Limit outstanding decodes instead of enqueueing all covers in the
+  * input callback; sized cards retain their exact decode size and cache identity.
+  */
+ internal suspend fun prefetchHomeCoverImages(
+     context: Context,
+     entries: List<HomeCoverReturnPrefetchEntry>,
+ ) {
+     if (entries.isEmpty()) return
+-    val imageLoader = SingletonImageLoader.get(context)
++    // Desktop: Coil's platform context is its process-wide PlatformContext, not the Android Context.
++    val imageLoader = SingletonImageLoader.get(coil3.PlatformContext.INSTANCE)
+     // 入口再次校验，避免直接调用绕过尺寸和批次预算。
+     val boundedEntries = resolveHomeCoverReturnPrefetchCandidates(entries, sourceBvid = null)
+     prefetchHomeCoversWithBudget(boundedEntries) { entry ->
+         imageLoader.execute(
+-            ImageRequest.Builder(context.applicationContext)
++            ImageRequest.Builder(coil3.PlatformContext.INSTANCE)
+                 .data(entry.url)
+                 .size(entry.decodeWidthPx, entry.decodeHeightPx)
+                 .memoryCacheKey(entry.cacheKey)
+                 .diskCacheKey(entry.cacheKey)
+                 .build()
+         )
+     }
+ }

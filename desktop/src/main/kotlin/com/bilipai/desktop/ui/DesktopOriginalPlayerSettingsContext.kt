@@ -26,6 +26,8 @@ class DesktopOriginalPlayerSettingsContext internal constructor(
 ) {
     companion object { const val MODE_PRIVATE = 0 }
     internal val settingsDataStore get() = DesktopOriginalPlayerSettingsDataStore(this)
+    /** This owner as the Android Context upstream code takes (settings_prefs is Root's settings document, admitted here). */
+    internal val androidContext: android.content.Context by lazy { DesktopOriginalSettingsAndroidContext(this) }
     internal val videoOverlay: DesktopOriginalVideoOverlayPlatform get() {
         requireCurrent()
         return checkNotNull(videoOverlayPlatform) { "Root original video overlay platform is required" }
@@ -81,6 +83,10 @@ internal fun playerStringPreferencesKey(name: String) = DesktopPreferenceKey(nam
 
 internal class DesktopOriginalPlayerPreferenceValues(private val snapshot: DesktopPreferenceSnapshot) {
     val changes = linkedMapOf<String, JsonElement?>()
+    /** The namespace as this edit sees it (snapshot plus staged changes), for the upstream DataStore bridge. */
+    internal val json: JsonObject get() = JsonObject(snapshot.json.toMutableMap().apply {
+        changes.forEach { (key, value) -> if (value == null) remove(key) else put(key, value) }
+    })
     operator fun <T> get(key: DesktopPreferenceKey<T>): T? =
         if (changes.containsKey(key.name)) changes[key.name]?.let(key.decode) else snapshot[key]
     operator fun <T> set(key: DesktopPreferenceKey<T>, value: T) {
@@ -125,6 +131,8 @@ internal class DesktopOriginalPlayerMirrorPreferences(private val context: Deskt
     fun getBoolean(key: String, default: Boolean) = (values()[key] as? JsonPrimitive)?.booleanOrNull ?: default
     fun getFloat(key: String, default: Float) = (values()[key] as? JsonPrimitive)?.floatOrNull ?: default
     fun getInt(key: String, default: Int) = (values()[key] as? JsonPrimitive)?.intOrNull ?: default
+    fun getLong(key: String, default: Long) = (values()[key] as? JsonPrimitive)?.longOrNull ?: default
+    internal fun all(): Map<String, JsonElement> = values()
     fun getString(key: String, default: String?) = (values()[key] as? JsonPrimitive)?.takeIf { it.isString }?.content ?: default
     fun getStringSet(key: String, default: Set<String>?): Set<String>? =
         (values()[key] as? JsonArray)?.mapNotNull { (it as? JsonPrimitive)?.takeIf { value -> value.isString }?.content }?.toSet() ?: default
@@ -134,6 +142,8 @@ internal class DesktopOriginalPlayerMirrorPreferences(private val context: Deskt
         fun putBoolean(key: String, value: Boolean) = apply { changes[key] = JsonPrimitive(value) }
         fun putFloat(key: String, value: Float) = apply { changes[key] = JsonPrimitive(value) }
         fun putInt(key: String, value: Int) = apply { changes[key] = JsonPrimitive(value) }
+        fun putLong(key: String, value: Long) = apply { changes[key] = JsonPrimitive(value) }
+        fun remove(key: String) = apply { changes[key] = null }
         fun putString(key: String, value: String?) = apply { changes[key] = value?.let(::JsonPrimitive) }
         fun putStringSet(key: String, value: Set<String>?) = apply {
             changes[key] = value?.let { JsonArray(it.map(::JsonPrimitive)) }

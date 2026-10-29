@@ -1,0 +1,37 @@
+--- a/plugins/com/android/purebilibili/feature/plugin/TodayWatchPlugin.kt
++++ b/plugins/com/android/purebilibili/feature/plugin/TodayWatchPlugin.kt
+@@ -1,11 +1,13 @@
+ // GENERATED from app/src/main/java/com/android/purebilibili/feature/plugin/TodayWatchPlugin.kt; do not edit.
+ // LF-normalized SHA-256: 043f356998e8bac5f4d3d17759767b80b7c47a7d11787d5b4e134b00d61b8193
+ package com.android.purebilibili.feature.plugin
++
++import com.bilipai.desktop.plugins.asAndroidContext
+ 
+ import com.android.purebilibili.core.plugin.PluginCapability
+ import com.android.purebilibili.core.plugin.PluginCapabilityManifest
+ import com.android.purebilibili.core.plugin.PluginManager
+ import com.android.purebilibili.core.plugin.PluginStore
+ import com.android.purebilibili.core.plugin.RecommendationAction
+ import com.android.purebilibili.core.plugin.RecommendationCreatorSignal
+ import com.android.purebilibili.core.plugin.RecommendationGroup
+@@ -169,18 +171,18 @@
+             generatedAt = plan.generatedAt
+         )
+     }
+ 
+     fun clearPersonalizationData() {
+         ioScope.launch {
+             try {
+                 val context = personalizationContext()
+-                TodayWatchProfileStore.clear(context)
+-                TodayWatchFeedbackStore.clear(context)
++                TodayWatchProfileStore.clear(context.asAndroidContext())
++                TodayWatchFeedbackStore.clear(context.asAndroidContext())
+                 updateConfig { current ->
+                     current.copy(refreshTriggerToken = System.currentTimeMillis())
+                 }
+                 Logger.d(TAG, "已清空今日推荐画像与反馈缓存")
+             } catch (e: Exception) {
+                 Logger.e(TAG, "清空画像失败", e)
+             }
+         }

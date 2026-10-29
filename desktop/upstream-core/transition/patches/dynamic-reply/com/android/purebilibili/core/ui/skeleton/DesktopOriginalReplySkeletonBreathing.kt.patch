@@ -1,0 +1,15 @@
+--- a/dynamic-reply/com/android/purebilibili/core/ui/skeleton/DesktopOriginalReplySkeletonBreathing.kt
++++ b/dynamic-reply/com/android/purebilibili/core/ui/skeleton/DesktopOriginalReplySkeletonBreathing.kt
+@@ -16,12 +16,6 @@
+ import com.bilipai.desktop.settings.LocalDesktopDynamicTimelinePreferences
+ import com.android.purebilibili.core.store.SkeletonSettingsStore
+ 
+-@Composable
+-fun rememberSkeletonBreathingEnabled(): Boolean {
+-    val context = checkNotNull(LocalDesktopDynamicTimelinePreferences.current).context
+-    return remember(context) { SkeletonSettingsStore.breathingEnabled(context) }
+-        .collectAsState(initial = true).value
+-}
+ 
+ /** A visible, smooth luminance breath over a 2.8 second cycle; never changes layout size. */
+ @Composable

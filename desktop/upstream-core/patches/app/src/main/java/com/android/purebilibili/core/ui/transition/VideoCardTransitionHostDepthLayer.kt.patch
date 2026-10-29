@@ -1,0 +1,42 @@
+--- a/com/android/purebilibili/core/ui/transition/VideoCardTransitionHostDepthLayer.kt
++++ b/com/android/purebilibili/core/ui/transition/VideoCardTransitionHostDepthLayer.kt
+@@ -12,17 +12,16 @@
+ import androidx.compose.ui.Modifier
+ import androidx.compose.ui.draw.drawWithContent
+ import androidx.compose.ui.geometry.Offset
+ import androidx.compose.ui.geometry.Rect
+ import androidx.compose.ui.graphics.BlurEffect
+ import androidx.compose.ui.graphics.Color
+ import androidx.compose.ui.graphics.TileMode
+ import androidx.compose.ui.graphics.layer.drawLayer
+-import androidx.compose.ui.platform.LocalView
+ import com.android.purebilibili.core.ui.adaptive.MotionTier
+ 
+ /**
+  * Host 持有的会话级冻结景深层：画在 [NavDisplay] 下方。
+  *
+  * 与来源 Scene 的 dispose 解耦——SinglePane 在 HELD 卸掉首页后，预测返回仍可
+  * 立刻从满糊跟手消到清晰，不必等 previousScene 重新挂 effect 再补录。
+  */
+@@ -42,20 +41,19 @@
+     modifier: Modifier = Modifier,
+ ) {
+     val contentLayer = snapshotHandle.contentLayer
+     val snapshotState = snapshotHandle.state
+     if (!enabled) {
+         SideEffect { snapshotHandle.clearRenderEffect() }
+         return
+     }
+-    val view = LocalView.current
+     var deviceCornerRadiusPx by remember { mutableFloatStateOf(0f) }
+     SideEffect {
+-        deviceCornerRadiusPx = resolveDeviceDisplayCornerRadiusPx(view.rootWindowInsets)
++        deviceCornerRadiusPx = resolveDeviceDisplayCornerRadiusPx()
+         if (!realtimeBlurEnabledProvider()) snapshotHandle.clearRenderEffect()
+     }
+     Box(
+         modifier = modifier
+             .fillMaxSize()
+             .drawWithContent {
+                 // Host 层无子内容；只绘制冻结快照。
+                 val exposure = exposureProvider()

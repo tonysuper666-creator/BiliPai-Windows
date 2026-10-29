@@ -2,21 +2,27 @@
   "schemaVersion": 1,
   "dependencies": [
     {
-      "coordinate": "com.materialkolor:material-kolor-jvm:4.1.1",
-      "url": "https://repo.maven.apache.org/maven2/com/materialkolor/material-kolor-jvm/4.1.1/material-kolor-jvm-4.1.1.jar",
-      "sha256": "0125a24ca92662320ef2409b8d439409174cb4b11f70afff466fe11272876d66",
-      "artifactName": "material-kolor-jvm.jar"
+      "coordinate": "com.materialkolor:material-kolor-material3-jvm:6.0.0-beta01",
+      "url": "https://repo.maven.apache.org/maven2/com/materialkolor/material-kolor-material3-jvm/6.0.0-beta01/material-kolor-material3-jvm-6.0.0-beta01.jar",
+      "sha256": "a4dfa51407497297c616e1b02ad80cb2ff172ea5d895f265f5ab6c5f891ee0ea",
+      "artifactName": "material-kolor-material3-jvm.jar"
     },
     {
-      "coordinate": "com.materialkolor:material-color-utilities-jvm:5.0.1",
-      "url": "https://repo.maven.apache.org/maven2/com/materialkolor/material-color-utilities-jvm/5.0.1/material-color-utilities-jvm-5.0.1.jar",
-      "sha256": "a997ae8bcbdddc5baeca01c64d03f8d5014a186ae3f3a7f93ce9abbee93c7f9a",
+      "coordinate": "com.materialkolor:material-kolor-core-jvm:6.0.0-beta01",
+      "url": "https://repo.maven.apache.org/maven2/com/materialkolor/material-kolor-core-jvm/6.0.0-beta01/material-kolor-core-jvm-6.0.0-beta01.jar",
+      "sha256": "95c71cb209186b49175f5948505af4a4003044a24d7efcd1b899fcab365ed41a",
+      "artifactName": "material-kolor-core-jvm.jar"
+    },
+    {
+      "coordinate": "com.materialkolor:material-color-utilities-jvm:6.0.0-beta01",
+      "url": "https://repo.maven.apache.org/maven2/com/materialkolor/material-color-utilities-jvm/6.0.0-beta01/material-color-utilities-jvm-6.0.0-beta01.jar",
+      "sha256": "260b54775909b6a32915344beab956781d4d1b0f89af4fb7ca0f60e75d650787",
       "artifactName": "material-color-utilities-jvm.jar"
     },
     {
-      "coordinate": "com.github.ajalt.colormath:colormath-jvm:3.6.1",
-      "url": "https://repo.maven.apache.org/maven2/com/github/ajalt/colormath/colormath-jvm/3.6.1/colormath-jvm-3.6.1.jar",
-      "sha256": "a1853ee4a5fec636dbbb8c44955b7a3015f02ce8f9cfa1c2350791c2c2d3639c",
+      "coordinate": "com.github.ajalt.colormath:colormath-jvm:3.7.0",
+      "url": "https://repo.maven.apache.org/maven2/com/github/ajalt/colormath/colormath-jvm/3.7.0/colormath-jvm-3.7.0.jar",
+      "sha256": "e15f04f0ab6da0cbfa43326d12fc5e59d159200e28d72fdbf2a72b472277917d",
       "artifactName": "colormath-jvm.jar"
     },
     {
@@ -53,43 +59,27 @@
   "notices": [
     {
       "repository": "https://github.com/jordond/MaterialKolor",
-      "tag": "4.1.1",
-      "commit": "473e6c7a5c603e51944fcf53402cc30bd4ab0586",
+      "tag": "6.0.0-beta01",
+      "commit": "df31234785b1d8ca772796356bd676bfcf2c4b3a",
       "path": "LICENSE",
-      "sha256": "8c6e9406804f46a424c033510a28d02c64a0d94862a27c71af231a91cc1504d3",
-      "resource": "licenses/appearance/materialkolor-4.1.1-LICENSE.txt"
+      "sha256": "3a67e69687ccd8cfdb7f184d2f8e9f9b7cb91b399496863b8be79a0e45d324b7",
+      "resource": "licenses/appearance/materialkolor-6.0.0-beta01-LICENSE.txt"
     },
     {
-      "repository": "https://github.com/jordond/MaterialKolor",
-      "tag": "4.1.1",
-      "commit": "473e6c7a5c603e51944fcf53402cc30bd4ab0586",
-      "path": "material-color-utilities/src/commonMain/kotlin/com/materialkolor/LICENSE",
-      "sha256": "8ded460ad5bd3ab9082eaa2f7502cc9bb621eaff87cecc55d823f21758707cea",
-      "resource": "licenses/appearance/materialkolor-4.1.1-1-LICENSE.txt"
-    },
-    {
-      "repository": "https://github.com/jordond/MaterialKolor",
-      "tag": "5.0.1",
-      "commit": "cc4d2cb931ba0a45995abe988717a2cea9ed478e",
+      "repository": "https://github.com/material-foundation/material-color-utilities",
+      "commit": "5b3618b16fdc3825e21d5679bafd144662088ea1",
       "path": "LICENSE",
-      "sha256": "8c6e9406804f46a424c033510a28d02c64a0d94862a27c71af231a91cc1504d3",
-      "resource": "licenses/appearance/material-color-utilities-5.0.1-LICENSE.txt"
-    },
-    {
-      "repository": "https://github.com/jordond/MaterialKolor",
-      "tag": "5.0.1",
-      "commit": "cc4d2cb931ba0a45995abe988717a2cea9ed478e",
-      "path": "material-color-utilities/src/commonMain/kotlin/com/materialkolor/LICENSE",
-      "sha256": "8ded460ad5bd3ab9082eaa2f7502cc9bb621eaff87cecc55d823f21758707cea",
-      "resource": "licenses/appearance/material-color-utilities-5.0.1-1-LICENSE.txt"
+      "sha256": "e662e6c2fc7ba7bc613c7e4ddf852d4ad3fcc05faead7cbe16b1dac67b55f426",
+      "resource": "licenses/appearance/material-color-utilities-5b3618b-LICENSE.txt",
+      "note": "MaterialKolor 6.0.0-beta01 ports this upstream (submodule tools/mcu-upstream/src/main at this commit) into material-color-utilities-jvm"
     },
     {
       "repository": "https://github.com/ajalt/colormath",
-      "tag": "3.6.1",
-      "commit": "5e776b66ea6ffc5dc5dc360ab88ca5aefbd2a310",
+      "tag": "3.7.0",
+      "commit": "8c74641accebfb250abacee956f876a41def1456",
       "path": "LICENSE",
       "sha256": "ab1cd8a3d0e92e1f69e95e8ca839127c52d4bd32fa2824d683d0dc66cc8fe21f",
-      "resource": "licenses/appearance/colormath-3.6.1-LICENSE.txt"
+      "resource": "licenses/appearance/colormath-3.7.0-LICENSE.txt"
     },
     {
       "repository": "https://github.com/compose-miuix-ui/miuix",

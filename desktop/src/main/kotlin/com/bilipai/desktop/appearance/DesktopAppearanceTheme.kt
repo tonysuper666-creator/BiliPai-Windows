@@ -59,7 +59,7 @@ internal fun buildDesktopAppearancePalette(settings: DesktopThemeSettings, syste
         seedPaletteStyle = settings.seedPaletteStyle,
     )
     val lightBase = base(false); val darkBase = base(true)
-    val roles = resolveEffectiveThemeRoleOverrides(settings.md3ColorSource, settings.themeRoleOverrides, settings.uiStyle)
+    val roles = resolveEffectiveThemeRoleOverrides(settings.md3ColorSource, settings.themeRoleOverrides)
         .let { if (settings.seedPaletteStyle.enabled) it.copy(enabled = false) else it }
     fun endpoint(base: ColorScheme, dark: Boolean): AppThemePalette {
         val overridden = applyThemeRoleOverrides(base, roles, dark)

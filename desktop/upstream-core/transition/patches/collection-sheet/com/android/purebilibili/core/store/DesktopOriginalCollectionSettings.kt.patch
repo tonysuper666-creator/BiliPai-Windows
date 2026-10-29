@@ -1,0 +1,77 @@
+--- a/collection-sheet/com/android/purebilibili/core/store/DesktopOriginalCollectionSettings.kt
++++ b/collection-sheet/com/android/purebilibili/core/store/DesktopOriginalCollectionSettings.kt
+@@ -7,74 +7,11 @@
+ import com.android.purebilibili.feature.video.ui.components.CollectionSortMode
+ import kotlinx.coroutines.flow.*
+ import kotlinx.serialization.json.*
+-internal fun decodeCollectionSubscriptionIds(rawValue: String?): Set<String> {
+-    return rawValue
+-        ?.split(",")
+-        ?.map { it.trim() }
+-        ?.filter { it.isNotBlank() }
+-        ?.toSet()
+-        ?: emptySet()
+-}
+ 
+-internal fun encodeCollectionSubscriptionIds(collectionIds: Set<String>): String {
+-    return collectionIds
+-        .filter { it.isNotBlank() }
+-        .sorted()
+-        .joinToString(",")
+-}
+ 
+-internal fun toggleCollectionSubscription(
+-    subscribedCollectionIds: Set<String>,
+-    collectionId: Long
+-): Set<String> {
+-    val normalizedId = collectionId.takeIf { it > 0L }?.toString() ?: return subscribedCollectionIds
+-    return if (normalizedId in subscribedCollectionIds) {
+-        subscribedCollectionIds - normalizedId
+-    } else {
+-        subscribedCollectionIds + normalizedId
+-    }
+-}
+ 
+-internal fun setCollectionSubscription(
+-    subscribedCollectionIds: Set<String>,
+-    collectionId: Long,
+-    subscribed: Boolean
+-): Set<String> {
+-    val normalizedId = collectionId.takeIf { it > 0L }?.toString() ?: return subscribedCollectionIds
+-    return if (subscribed) {
+-        subscribedCollectionIds + normalizedId
+-    } else {
+-        subscribedCollectionIds - normalizedId
+-    }
+-}
+ 
+-internal fun decodeCollectionSortPreferences(rawValue: String?): Map<Long, CollectionSortMode> {
+-    if (rawValue.isNullOrBlank()) return emptyMap()
+-    return runCatching {
+-        Json.parseToJsonElement(rawValue).jsonObject.entries.mapNotNull { (key, value) ->
+-            val collectionId = key.toLongOrNull() ?: return@mapNotNull null
+-            val sortMode = runCatching {
+-                CollectionSortMode.valueOf(value.jsonPrimitive.content)
+-            }.getOrNull() ?: return@mapNotNull null
+-            collectionId to sortMode
+-        }.toMap()
+-    }.getOrDefault(emptyMap())
+-}
+ 
+-internal fun encodeCollectionSortPreferences(
+-    preferences: Map<Long, CollectionSortMode>
+-): String {
+-    if (preferences.isEmpty()) return "{}"
+-    return preferences.entries
+-        .sortedBy { it.key }
+-        .joinToString(
+-            separator = ",",
+-            prefix = "{",
+-            postfix = "}"
+-        ) { entry ->
+-            "\"${entry.key}\":\"${entry.value.name}\""
+-        }
+-}
+ 
+ internal object DesktopOriginalCollectionSettings {
+     private val KEY_SUBSCRIBED_COLLECTION_IDS = stringPreferencesKey("subscribed_collection_ids")

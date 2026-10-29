@@ -1,5 +1,7 @@
 package com.bilipai.desktop.plugins
 
+import com.bilipai.desktop.plugins.asAndroidContext
+
 import com.android.purebilibili.core.plugin.feed.*
 import com.android.purebilibili.core.store.TodayWatchProfileStore
 import kotlinx.coroutines.runBlocking
@@ -41,13 +43,13 @@ class DesktopPluginServicesTest {
         val root = Files.createTempDirectory("plugin-creators-")
         val first = DesktopPluginContext(DesktopPluginStore(root.resolve("100")))
         val second = DesktopPluginContext(DesktopPluginStore(root.resolve("200")))
-        TodayWatchProfileStore.recordWatchProgress(first, 11, "作者甲", 90, 1_000)
-        assertEquals("作者甲", TodayWatchProfileStore.getCreatorSignals(first, 1_000).single().name)
-        assertTrue(TodayWatchProfileStore.getCreatorSignals(second, 1_000).isEmpty())
-        TodayWatchProfileStore.recordWatchProgress(second, 12, "作者乙", 120, 1_000)
-        TodayWatchProfileStore.clear(first)
-        assertEquals(12L, TodayWatchProfileStore.getCreatorSignals(second, 1_000).single().mid)
-        assertTrue(TodayWatchProfileStore.getCreatorSignals(first, 1_000).isEmpty())
+        TodayWatchProfileStore.recordWatchProgress(first.asAndroidContext(), 11, "作者甲", 90, 1_000)
+        assertEquals("作者甲", TodayWatchProfileStore.getCreatorSignals(first.asAndroidContext(), 1_000).single().name)
+        assertTrue(TodayWatchProfileStore.getCreatorSignals(second.asAndroidContext(), 1_000).isEmpty())
+        TodayWatchProfileStore.recordWatchProgress(second.asAndroidContext(), 12, "作者乙", 120, 1_000)
+        TodayWatchProfileStore.clear(first.asAndroidContext())
+        assertEquals(12L, TodayWatchProfileStore.getCreatorSignals(second.asAndroidContext(), 1_000).single().mid)
+        assertTrue(TodayWatchProfileStore.getCreatorSignals(first.asAndroidContext(), 1_000).isEmpty())
     }
 
     @Test fun `subscription cache retains unchanged feed entries and original read state`(): Unit = runBlocking {

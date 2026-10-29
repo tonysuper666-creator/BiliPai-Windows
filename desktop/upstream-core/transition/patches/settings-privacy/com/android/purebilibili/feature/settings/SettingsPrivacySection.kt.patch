@@ -1,0 +1,35 @@
+--- a/settings-privacy/com/android/purebilibili/feature/settings/SettingsPrivacySection.kt
++++ b/settings-privacy/com/android/purebilibili/feature/settings/SettingsPrivacySection.kt
+@@ -1,11 +1,13 @@
+ // GENERATED from app/src/main/java/com/android/purebilibili/feature/settings/ui/SettingsSections.kt; do not edit.
+ // LF-normalized SHA-256: e306f73ee7cf49877248eb01063816d50f43f61b47c9d41a52ab372917de54f7
+ package com.android.purebilibili.feature.settings
++
++import com.bilipai.desktop.plugins.asAndroidContext
+ import androidx.compose.runtime.*
+ import androidx.compose.ui.graphics.vector.rememberVectorPainter
+ import com.android.purebilibili.core.ui.components.AppSwitchPreference as SettingSwitchItem
+ import com.android.purebilibili.core.ui.components.AppPreference as SettingClickableItem
+ import com.bilipai.desktop.settings.DesktopSettingsVectors
+ import com.bilipai.desktop.settings.DesktopPrivacySettingsSymbols
+ import com.bilipai.desktop.settings.DesktopPrivacySettingsVectors
+ import com.bilipai.desktop.settings.LocalDesktopPrivacySectionBindings
+@@ -23,17 +25,17 @@
+     onMessageNotificationClick: () -> Unit,
+     onBlockedListClick: () -> Unit, // [New]
+     onCommentFraudHistoryClick: () -> Unit // [New]
+ ) {
+     val bindings = LocalDesktopPrivacySectionBindings.current
+     val context = bindings.context
+     val scope = rememberCoroutineScope()
+     val searchHintEnabled by remember(context) {
+-        com.android.purebilibili.core.store.SearchHintSettingsStore.isEnabled(context)
++        com.android.purebilibili.core.store.SearchHintSettingsStore.isEnabled(context.asAndroidContext())
+     }.collectAsState(initial = true)
+     val siblingTints = remember { resolveSettingsSiblingIconTints(4, paletteOffset = 4) }
+     val permissionVisual = rememberSettingsEntryVisual(SettingsSearchTarget.PERMISSION)
+     val messageNotificationVisual =
+         rememberSettingsEntryVisual(SettingsSearchTarget.MESSAGE_NOTIFICATION)
+     val blockedListVisual = rememberSettingsEntryVisual(SettingsSearchTarget.BLOCKED_LIST)
+     val visibilityOffIcon = rememberSettingsSemanticIcon(SettingsIconRole.PRIVACY_HISTORY)
+     val contentAuthenticationIcon = rememberSettingsSemanticIcon(

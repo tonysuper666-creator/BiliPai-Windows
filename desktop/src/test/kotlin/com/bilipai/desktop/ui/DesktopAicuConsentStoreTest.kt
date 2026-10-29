@@ -21,7 +21,7 @@ class DesktopAicuConsentStoreTest {
         val current = AtomicBoolean(true)
         fun adapter(pluginContext: DesktopPluginContext) = DesktopOriginalPlayerSettingsContext(pluginContext,
             current::get, { block -> if (current.get()) { block(); true } else false })
-        val store = DataStoreAicuConsentStore(adapter(context))
+        val store = DataStoreAicuConsentStore(adapter(context).androidContext)
         assertEquals(0, store.acceptedVersion())
         store.accept(1)
         assertEquals(JsonPrimitive(1), context.store.preferences("settings")["aicu_disclaimer_accepted_version"])
@@ -30,14 +30,14 @@ class DesktopAicuConsentStoreTest {
             .jsonObject["aicu_disclaimer_accepted_version"]!!.jsonPrimitive.int)
         val coldDirectory = Files.createDirectory(directory.resolve("cold"))
         Files.write(coldDirectory.resolve("plugin-settings.json"), persisted)
-        assertEquals(1, DataStoreAicuConsentStore(adapter(DesktopPluginContext(DesktopPluginStore(coldDirectory)))).acceptedVersion())
+        assertEquals(1, DataStoreAicuConsentStore(adapter(DesktopPluginContext(DesktopPluginStore(coldDirectory))).androidContext).acceptedVersion())
         val sameBacking = DesktopPluginContext(DesktopPluginStore(directory))
-        assertEquals(1, DataStoreAicuConsentStore(adapter(sameBacking)).acceptedVersion())
+        assertEquals(1, DataStoreAicuConsentStore(adapter(sameBacking).androidContext).acceptedVersion())
         current.set(false)
         assertFailsWith<CancellationException> { store.accept(2) }
         assertEquals(JsonPrimitive(1), context.store.preferences("settings")["aicu_disclaimer_accepted_version"])
         assertContentEquals(persisted, Files.readAllBytes(directory.resolve("plugin-settings.json")))
         current.set(true)
-        assertEquals(1, DataStoreAicuConsentStore(adapter(DesktopPluginContext(DesktopPluginStore(directory)))).acceptedVersion())
+        assertEquals(1, DataStoreAicuConsentStore(adapter(DesktopPluginContext(DesktopPluginStore(directory))).androidContext).acceptedVersion())
     }
 }
