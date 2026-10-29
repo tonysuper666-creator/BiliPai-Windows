@@ -14,6 +14,7 @@ import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.StandardCopyOption
 import com.android.purebilibili.core.store.StoredAccountSession
+import com.bilipai.desktop.diagnostics.DesktopDiagnosticsBridge
 
 /** Immutable receipt of the PRIMARY account and the last successful explicit UI credential install.
  * The opaque in-memory stamp contains no credentials and is owned only by the existing Store. */
@@ -27,7 +28,12 @@ internal class DesktopHomeNavRequestReceipt internal constructor(
 internal class DesktopSessionStore(private val path: Path = defaultPath(), private val persistent: Boolean = true) : CookieJar, DesktopDynamicCacheSessionGuard {
     private val json = Json { ignoreUnknownKeys = true }
     private val lock = Any()
+    // Set when the saved file exists but cannot be read or decrypted. The file is kept as it is: automatic writes are
+    // skipped, and an explicit account action first sets the unreadable file aside (never deletes it).
+    private var restoreFailure: DesktopCredentialProtectionException? = null
     private var saved = if (persistent) readSaved() else SavedSession()
+    /** Why the saved login could not be restored at startup, or null. Shown to the user instead of a silent logout. */
+    internal val credentialRestoreFailure: String? get() = synchronized(lock) { restoreFailure?.message }
     // Replaced only after saveLoginAccount actually persists. Identical credentials may keep generation unchanged.
     private var primaryUiLoginInstallationStamp = Any()
     private val mutableGeneration = MutableStateFlow(0L)
@@ -258,20 +264,22 @@ internal class DesktopSessionStore(private val path: Path = defaultPath(), priva
             }
             val now = System.currentTimeMillis()
             var accountCookies = saved.cookies
+            // Candidate state: published only after persist succeeds, so a failed save keeps the request cookies.
+            val nextServerCookies = serverCookies.toMutableMap()
             cookies.filter { belongsToResponseHost(it, url.host) }.forEach { cookie ->
                 if (cookie.expiresAt <= now) {
-                    serverCookies.remove(cookie.identity())
+                    nextServerCookies.remove(cookie.identity())
                     if (cookie.name in ACCOUNT_COOKIE_NAMES && cookie.path == "/") accountCookies = accountCookies - cookie.name
                 } else {
                     // Set-Cookie may intentionally target a future path, so do not call matches(url) here.
-                    serverCookies[cookie.identity()] = cookie
+                    nextServerCookies[cookie.identity()] = cookie
                 }
             }
-            removeExpired(now)
-            val next = saved.copy(cookies = accountCookies, serverCookies = serverCookies.values.map { ServerCookie.fromCookie(it) })
+            nextServerCookies.entries.removeIf { it.value.expiresAt <= now }
+            val next = saved.copy(cookies = accountCookies, serverCookies = nextServerCookies.values.map { ServerCookie.fromCookie(it) })
             val credentialChanged = saved.cookies["SESSDATA"] != next.cookies["SESSDATA"]
             persist(next)
-            saved = next; refreshPlaybackAuthorizationLocked()
+            saved = next; replaceServerCookies(nextServerCookies); refreshPlaybackAuthorizationLocked()
             if (credentialChanged) generation++
         }
     }
@@ -317,14 +325,17 @@ internal class DesktopSessionStore(private val path: Path = defaultPath(), priva
         val previous = accountRecords(saved)
         val changed = saved.account?.mid != account.mid || saved.cookies["SESSDATA"] != cookies["SESSDATA"]
         val sameAccount = saved.account?.mid == account.mid
-        if (snapshot != null) {
-            serverCookies.clear(); snapshot.server.forEach { serverCookies[it.identity()] = it }
-        } else if (saved.account != null && !sameAccount) serverCookies.clear()
+        // Candidate state: published only after persist succeeds, so a failed save keeps the previous request cookies.
+        val nextServerCookies = when {
+            snapshot != null -> snapshot.server.associateBy { it.identity() }
+            saved.account != null && !sameAccount -> emptyMap()
+            else -> serverCookies.toMap()
+        }
         val authorizedNames = if (imported) PERSISTED_COOKIE_NAMES else ACCOUNT_COOKIE_NAMES
         var newSaved = saved.copy(
             cookies = (if (sameAccount || saved.account == null) saved.cookies.filterKeys { it in VISITOR_COOKIE_NAMES } else emptyMap()) + cookies.filterKeys { it in authorizedNames },
             account = account,
-            serverCookies = serverCookies.values.map { ServerCookie.fromCookie(it) },
+            serverCookies = nextServerCookies.values.map { ServerCookie.fromCookie(it) },
             spiCookies = snapshot?.spi ?: saved.spiCookies.takeIf { sameAccount || saved.account == null }.orEmpty(),
             accessToken = credentials?.accessToken ?: saved.accessToken.takeIf { sameAccount && preserveAccessToken },
             refreshToken = credentials?.refreshToken ?: saved.refreshToken.takeIf { sameAccount && preserveAccessToken }.orEmpty(),
@@ -333,8 +344,8 @@ internal class DesktopSessionStore(private val path: Path = defaultPath(), priva
             lastUsedAt = System.currentTimeMillis(),
         )
         newSaved = newSaved.copy(accounts = previous.filterNot { it.session.mid == account.mid } + recordCurrent(newSaved))
-        persist(newSaved)
-        saved = newSaved; refreshPlaybackAuthorizationLocked()
+        persist(newSaved, explicit = true)
+        saved = newSaved; replaceServerCookies(nextServerCookies); refreshPlaybackAuthorizationLocked()
         if (changed) generation++
         mutableAccount.value = account
         mutableAccounts.value = accountRecords(saved).map { it.toInfo() }
@@ -365,7 +376,7 @@ internal class DesktopSessionStore(private val path: Path = defaultPath(), priva
 
     fun logout() = synchronized(lock) {
         val cleared = SavedSession(accounts = accountRecords(saved), loginBuvid = saved.loginBuvid, playbackAccountMid = saved.playbackAccountMid)
-        persist(cleared)
+        persist(cleared, explicit = true)
         saved = cleared; refreshPlaybackAuthorizationLocked()
         serverCookies.clear()
         mutableAccount.value = null
@@ -381,7 +392,7 @@ internal class DesktopSessionStore(private val path: Path = defaultPath(), priva
             serverCookies = target.serverCookies, accessToken = source.accessToken.takeIf { it.isNotBlank() },
             refreshToken = source.refreshToken, accessTokenPlatform = source.accessTokenPlatform,
             tokenExpiresAt = target.tokenExpiresAt, lastUsedAt = System.currentTimeMillis(), accounts = accountRecords(saved))
-        persist(next); saved = next; refreshPlaybackAuthorizationLocked(); serverCookies.clear()
+        persist(next, explicit = true); saved = next; refreshPlaybackAuthorizationLocked(); serverCookies.clear()
         next.serverCookies.mapNotNull { it.toCookie() }.filter { it.expiresAt > System.currentTimeMillis() }.forEach { serverCookies[it.identity()] = it }
         generation++; mutableAccount.value = account; mutableAccounts.value = accountRecords(saved).map { it.toInfo() }; true
     }
@@ -392,7 +403,7 @@ internal class DesktopSessionStore(private val path: Path = defaultPath(), priva
         val remaining = existing.filterNot { it.session.mid == mid }
         val playbackMid = saved.playbackAccountMid?.takeUnless { it == mid }
         val next = if (saved.account?.mid == mid) SavedSession(accounts = remaining, loginBuvid = saved.loginBuvid, playbackAccountMid = playbackMid) else saved.copy(accounts = remaining, playbackAccountMid = playbackMid)
-        persist(next); saved = next; refreshPlaybackAuthorizationLocked()
+        persist(next, explicit = true); saved = next; refreshPlaybackAuthorizationLocked()
         if (mutableAccount.value?.mid == mid) { serverCookies.clear(); generation++; mutableAccount.value = null }
         mutableAccounts.value = accountRecords(saved).map { it.toInfo() }; true
     }
@@ -422,6 +433,10 @@ internal class DesktopSessionStore(private val path: Path = defaultPath(), priva
     private fun SavedAccount.toInfo() = DesktopStoredAccountInfo(AccountSummary(session.mid, session.name, session.face, session.isVip),
         session.lastUsedAt, session.accessToken.isNotBlank(), session.accessTokenPlatform)
 
+    private fun replaceServerCookies(next: Map<CookieIdentity, Cookie>) {
+        serverCookies.clear(); serverCookies.putAll(next)
+    }
+
     private fun removeExpired(now: Long) {
         serverCookies.entries.removeIf { it.value.expiresAt <= now }
     }
@@ -430,29 +445,56 @@ internal class DesktopSessionStore(private val path: Path = defaultPath(), priva
         Cookie.Builder().name(name).value(value).domain("bilibili.com").path("/").secure().build()
     }.getOrNull()
 
-    private fun readSaved(): SavedSession = runCatching {
-        if (!Files.isRegularFile(path)) return@runCatching SavedSession()
-        val restored = transformSecrets(json.decodeFromString<SavedSession>(Files.readString(path)), DesktopCredentialCipher::unprotect)
-        if (restored.schemaVersion < 2) {
+    private fun readSaved(): SavedSession {
+        if (!Files.isRegularFile(path)) return SavedSession()
+        val restored = try {
+            transformSecrets(json.decodeFromString<SavedSession>(Files.readString(path)), DesktopCredentialCipher::unprotect)
+        } catch (failure: Exception) {
+            // Not a silent logout: keep the file, say why, and retry on the next start.
+            val reason = failure as? DesktopCredentialProtectionException
+                ?: DesktopCredentialProtectionException("登录凭据文件无法读取（${failure.javaClass.simpleName}）", failure)
+            restoreFailure = reason
+            DesktopDiagnosticsBridge.record("E", CREDENTIAL_LOG_TAG, "登录凭据未恢复，已保留原文件：${reason.message}", failure)
+            return SavedSession()
+        }
+        DesktopDiagnosticsBridge.record("I", CREDENTIAL_LOG_TAG, "登录凭据已通过 ${DesktopCredentialCipher.protectionId} 读取：" +
+            "当前账号=${if (restored.account != null && restored.cookies["SESSDATA"].orEmpty().isNotBlank()) "有" else "无"}，已保存账号=${restored.accounts.size}")
+        return if (restored.schemaVersion < 2) {
             // Old flattened visitor entries lack provenance and cannot safely be widened on restore.
             restored.copy(schemaVersion = 2, cookies = restored.cookies.filterKeys { it in ACCOUNT_COOKIE_NAMES },
                 spiCookies = emptyMap(), serverCookies = emptyList())
         } else restored.copy(cookies = restored.cookies.filterKeys { it in PERSISTED_COOKIE_NAMES },
             spiCookies = restored.spiCookies.filterKeys { it in SPI_COOKIE_NAMES })
-    }.getOrElse { SavedSession() }
+    }
 
-    private fun persist(session: SavedSession) {
+    /** Writes the whole session atomically. Encryption happens before the file is touched, so a protection failure
+     * leaves the previous file and the in-memory state unchanged (callers assign [saved] only after this returns). */
+    private fun persist(session: SavedSession, explicit: Boolean = false) {
         if (!persistent) return
+        // Automatic writes (cookies from a response, visitor ids, profile flags) never replace an unreadable login.
+        if (restoreFailure != null && !explicit) return
+        val content = json.encodeToString(SavedSession.serializer(), transformSecrets(session.copy(schemaVersion = 3), DesktopCredentialCipher::protect))
+        restoreFailure?.let(::setAsideUnreadable)
         Files.createDirectories(path.parent)
         val temporary = Files.createTempFile(path.parent, "session-", ".tmp")
         try {
-            Files.writeString(temporary, json.encodeToString(SavedSession.serializer(), transformSecrets(session.copy(schemaVersion = 3), DesktopCredentialCipher::protect)))
+            Files.writeString(temporary, content)
             try {
                 Files.move(temporary, path, StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING)
             } catch (_: java.nio.file.AtomicMoveNotSupportedException) {
                 Files.move(temporary, path, StandardCopyOption.REPLACE_EXISTING)
             }
         } finally { Files.deleteIfExists(temporary) }
+    }
+
+    /** An explicit login, switch, logout or removal after a failed restore keeps the unreadable file next to the new one. */
+    private fun setAsideUnreadable(failure: DesktopCredentialProtectionException) {
+        if (Files.isRegularFile(path)) {
+            val kept = path.resolveSibling(path.fileName.toString().removeSuffix(".json") + ".unreadable-" + System.currentTimeMillis() + ".json")
+            Files.move(path, kept)
+            DesktopDiagnosticsBridge.record("W", CREDENTIAL_LOG_TAG, "无法读取的登录凭据已另存为 ${kept.fileName}（原因：${failure.message}）")
+        }
+        restoreFailure = null
     }
 
     private data class CookieIdentity(val name: String, val domain: String, val path: String)
@@ -518,6 +560,7 @@ internal class DesktopSessionStore(private val path: Path = defaultPath(), priva
     }
 
     companion object {
+        internal const val CREDENTIAL_LOG_TAG = "DesktopCredentials"
         internal fun temporary() = DesktopSessionStore(defaultPath(), persistent = false)
         private val ACCOUNT_COOKIE_NAMES = setOf("SESSDATA", "bili_jct", "DedeUserID", "DedeUserID__ckMd5")
         private val VISITOR_COOKIE_NAMES = setOf("buvid3", "buvid4", "buvid_fp", "b_nut", "b_lsid", "sid")

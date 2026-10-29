@@ -2632,6 +2632,78 @@ val sdkGatesKeptInDesignModules = mapOf(
     // The factory the shell would inject for the scaffold blur is not provided on the desktop, so the handle stays null (no blur).
     "com/android/purebilibili/core/ui/AdaptiveScaffoldHaze.kt" to "scaffold blur is opt-in through LocalAdaptiveScaffoldHazeFactory",
 )
+// Upstream app string resources (TON-1000). res/values (Simplified Chinese, the default), values-en and values-zh-rTW
+// strings.xml become com.android.purebilibili.R.string ids plus one table per locale, read by the Context.getString /
+// stringResource stand-ins with Android's locale fallback. Text is processed the way aapt2 does (escapes, quotes,
+// whitespace). Another qualifier or another resource kind in these files fails the build instead of being dropped.
+val upstreamStringResourceDirectory = mergedRepositoryRoot.resolve("app/src/main/res")
+val upstreamStringQualifiers = mapOf("values" to "default", "values-en" to "en", "values-zh-rTW" to "zh-TW")
+val generateUpstreamStringResources by tasks.registering {
+    val output = layout.buildDirectory.dir("generated/upstream-strings")
+    inputs.files(fileTree(upstreamStringResourceDirectory) { include("values*/strings.xml") }).withPathSensitivity(PathSensitivity.RELATIVE)
+    outputs.dir(output)
+    doLast {
+        val target = output.get().asFile
+        target.deleteRecursively()
+        val unknown = upstreamStringResourceDirectory.listFiles()!!.filter { it.resolve("strings.xml").isFile && it.name !in upstreamStringQualifiers }
+        if (unknown.isNotEmpty()) throw GradleException("String resources with a qualifier the desktop does not implement: ${unknown.map { it.name }}")
+        /** aapt2: backslash escapes, double quotes keep whitespace verbatim, other whitespace runs become one space, trimmed. */
+        fun androidText(raw: String, where: String): String {
+            val out = StringBuilder(); var quoted = false; var pendingSpace = false; var index = 0
+            fun emit(text: String) { if (pendingSpace && out.isNotEmpty()) out.append(' '); pendingSpace = false; out.append(text) }
+            while (index < raw.length) {
+                val c = raw[index++]
+                when {
+                    c == '\\' -> {
+                        if (index >= raw.length) throw GradleException("$where: trailing backslash")
+                        when (val e = raw[index++]) {
+                            'n' -> emit("\n"); 't' -> emit("\t")
+                            'u' -> { emit(raw.substring(index, index + 4).toInt(16).toChar().toString()); index += 4 }
+                            '\u0027', '"', '\\', '@', '?' -> emit(e.toString())
+                            else -> throw GradleException("$where: unsupported escape \\$e")
+                        }
+                    }
+                    c == '"' -> quoted = !quoted
+                    !quoted && c.isWhitespace() -> pendingSpace = true
+                    else -> emit(c.toString())
+                }
+            }
+            if (quoted) throw GradleException("$where: unbalanced double quote")
+            return out.toString()
+        }
+        fun encode(text: String) = text.replace("\\", "\\\\").replace("\t", "\\t").replace("\n", "\\n")
+        val tables = upstreamStringQualifiers.mapValues { (directory, _) -> sortedMapOf<String, String>().also { table ->
+            val file = upstreamStringResourceDirectory.resolve("$directory/strings.xml")
+            if (!file.isFile) return@also
+            val factory = javax.xml.parsers.DocumentBuilderFactory.newInstance()
+            val children = factory.newDocumentBuilder().parse(file).documentElement.childNodes
+            for (index in 0 until children.length) {
+                val node = children.item(index)
+                if (node.nodeType != org.w3c.dom.Node.ELEMENT_NODE) continue
+                val element = node as org.w3c.dom.Element
+                val where = "${file.relativeTo(mergedRepositoryRoot)} ${element.getAttribute("name")}"
+                if (element.tagName != "string") throw GradleException("$where: <${element.tagName}> resources are not implemented on the desktop")
+                if ((0 until element.childNodes.length).any { element.childNodes.item(it).nodeType == org.w3c.dom.Node.ELEMENT_NODE })
+                    throw GradleException("$where: styled string markup is not implemented on the desktop")
+                table[element.getAttribute("name")] = androidText(element.textContent, where)
+            }
+        } }
+        val base = tables.getValue("values")
+        tables.forEach { (directory, table) ->
+            val extra = table.keys - base.keys
+            if (extra.isNotEmpty()) throw GradleException("$directory/strings.xml has strings without a default value: $extra")
+        }
+        val ids = base.keys.withIndex().associate { (index, name) -> name to (0x7f130000 + index + 1) }
+        target.resolve("kotlin/com/android/purebilibili/R.kt").apply { parentFile.mkdirs() }.writeText(
+            "// Generated at build time from the upstream app res/values strings.xml.\npackage com.android.purebilibili\n\nobject R {\n    object string {\n" +
+                base.keys.joinToString("") { "        const val $it: Int = ${"0x%x".format(ids.getValue(it))}\n" } + "    }\n}\n")
+        tables.forEach { (directory, table) ->
+            target.resolve("resources/upstream-strings/${upstreamStringQualifiers.getValue(directory)}.tsv").apply { parentFile.mkdirs() }
+                .writeText(table.entries.joinToString("") { "${"0x%x".format(ids.getValue(it.key))}\t${encode(it.value)}\n" })
+        }
+    }
+}
+
 val verifyNoSilentSdkGates by tasks.registering {
     inputs.files(fileTree(mergedRepositoryRoot) { migratedWholeModules.forEach { include(it + "src/main/java/**/*.kt") } })
     inputs.dir(desktopUpstreamPatchDirectory).withPathSensitivity(PathSensitivity.RELATIVE)
@@ -2729,6 +2801,7 @@ kotlin.sourceSets.named("main") {
         migratedRootPaths.any { element.file.toPath().startsWith(it) } && upstreamIdentity(element.file) in desktopAdaptedUpstreamPaths
     }
     kotlin.srcDir(generateUpstreamColorResources)
+    kotlin.srcDir(files(layout.buildDirectory.dir("generated/upstream-strings/kotlin")).builtBy(generateUpstreamStringResources))
     kotlin.srcDir(upstreamReplacementDirectory)
     // Desktop stand-ins for the Android APIs the migrated modules use, and transition compat code.
     kotlin.srcDir("upstream-core/compat")
@@ -2834,6 +2907,7 @@ tasks.named("compileKotlin") { dependsOn(prepareNativeDiagnosticShare) }
 tasks.named("processResources") { dependsOn(prepareNativeDiagnosticShare) }
 tasks.matching { it.name == "prepareAppResources" }.configureEach { dependsOn(prepareNativeDiagnosticShare) }
 sourceSets.named("main") { resources.srcDir(generatedAppearanceResources) }
+sourceSets.named("main") { resources.srcDir(files(layout.buildDirectory.dir("generated/upstream-strings/resources")).builtBy(generateUpstreamStringResources)) }
 tasks.named("processResources") { dependsOn(extractUpstreamAppearance) }
 
 val prepareOriginalPluginResources by tasks.registering(Sync::class) {
@@ -2962,6 +3036,12 @@ tasks.test {
     filter { excludeTestsMatching("com.android.purebilibili.core.ui.wallpaper.WallpaperTransformPolicyTest.landscapeImageFillsPortraitViewportAndCanReachBothEdges") }
     systemProperty("java.awt.headless", "true")
     systemProperty("bilipai.js.workerResources", jsWorkerOutput.get().asFile.absolutePath)
+}
+// Saved credentials are protected by Windows DPAPI only. A non-Windows test host has no system protection, so its
+// test JVMs explicitly select the test-only implementation (DesktopCredentialProtection); Windows tests use DPAPI.
+tasks.withType<Test>().configureEach {
+    if (!System.getProperty("os.name").startsWith("Windows", ignoreCase = true))
+        systemProperty("bilipai.credentialProtection", "test-only")
 }
 tasks.register<Test>("jsWorkerSmoke") {
     group = "verification"
