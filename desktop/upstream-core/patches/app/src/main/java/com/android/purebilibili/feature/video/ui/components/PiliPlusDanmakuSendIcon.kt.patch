@@ -1,0 +1,35 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/video/ui/components/PiliPlusDanmakuSendIcon.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/video/ui/components/PiliPlusDanmakuSendIcon.kt
+@@ -18,17 +18,20 @@
+ import androidx.compose.ui.graphics.Color
+ import androidx.compose.ui.semantics.clearAndSetSemantics
+ import androidx.compose.ui.semantics.contentDescription
+-import androidx.compose.ui.text.font.Font
++import androidx.compose.ui.text.platform.Font
+ import androidx.compose.ui.text.font.FontFamily
+ import androidx.compose.ui.text.PlatformTextStyle
+ import androidx.compose.ui.unit.Dp
+ import androidx.compose.ui.unit.dp
+ import androidx.compose.ui.unit.sp
+-import com.android.purebilibili.R
+ import com.android.purebilibili.core.ui.appIconGlyphTextStyle
+ import com.android.purebilibili.core.ui.components.AppText
+ 
+-private val PiliPlusIconFont = FontFamily(Font(R.font.piliplus_custom_icons))
++private val PiliPlusIconFont = FontFamily(Font(
++    identity = "original-v037-piliplus-custom-icons",
++    data = object {}.javaClass.getResourceAsStream("/fonts/piliplus_custom_icons.ttf")
++        ?.use { it.readBytes() } ?: error("Original PiliPlus icon font is missing"),
++))
+ 
+ /** TV-and-danmaku motif with a send arrow, distinct from the settings gear and toggle mark. */
+ @Composable
+@@ -84,7 +87,7 @@
+                 fontSize = (size.value * 0.48f).sp,
+                 lineHeight = (size.value * 0.54f).sp,
+                 style = MaterialTheme.typography.labelSmall.copy(
+-                    platformStyle = PlatformTextStyle(includeFontPadding = false),
++                    platformStyle = null,
+                 ),
+                 tapToCopyEnabled = false,
+             )
