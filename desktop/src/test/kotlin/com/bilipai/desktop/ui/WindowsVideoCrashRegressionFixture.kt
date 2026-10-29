@@ -18,6 +18,7 @@ import java.util.concurrent.CopyOnWriteArraySet
 import java.util.concurrent.atomic.AtomicReference
 import javax.imageio.ImageIO
 import javax.swing.JFrame
+import javax.swing.SwingUtilities
 
 private class ProductReferences(private val scope: CoroutineScope) : AutoCloseable {
     private val compositions = CopyOnWriteArraySet<ObservableComposition>()
