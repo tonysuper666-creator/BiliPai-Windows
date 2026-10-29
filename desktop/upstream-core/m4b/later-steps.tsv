@@ -10,7 +10,7 @@ feature/dynamic/DynamicDetailScreen.kt	Android Intent/Toast/ActivityResult: need
 feature/dynamic/DynamicPagingSource.kt	androidx.paging: the desktop has no paging dependency yet
 feature/dynamic/DynamicScreen.kt	Android Intent/Toast/ActivityResult: needs a desktop interface (file chooser, share, toast); Coil ImageRequest.Builder(Context): Android Context is not a coil3 PlatformContext on the desktop
 feature/dynamic/DynamicScreenStatePolicy.kt	calls into other files of this list (unresolved: DynamicUiState, timelineRequestType, timelinePages)
-feature/dynamic/DynamicViewModel.kt	androidx.paging: the desktop has no paging dependency yet; AndroidViewModel/Application: needs injected services instead (Toast through the desktop notifier); upstream ActionRepository, BlockedUpRepository, DynamicCreateRepository and VideoRepository still wait (upstream-core/data/later-steps.tsv)
+feature/dynamic/DynamicViewModel.kt	androidx.paging: the desktop has no paging dependency yet; AndroidViewModel/Application: needs injected services instead (Toast through the desktop notifier); upstream ActionRepository, BlockedUpRepository and VideoRepository still wait (upstream-core/data/later-steps.tsv)
 feature/dynamic/components/DrawGrid.kt	Coil ImageRequest.Builder(Context): Android Context is not a coil3 PlatformContext on the desktop
 feature/dynamic/components/DynamicCard.kt	Android Intent/Toast/ActivityResult: needs a desktop interface (file chooser, share, toast); Coil ImageRequest.Builder(Context): Android Context is not a coil3 PlatformContext on the desktop
 feature/dynamic/components/DynamicCardClickPolicy.kt	the desktop dynamic card keeps its transition-patched legacy policy (desktop DynamicDetailImageLayout setting, no OpenMatch action); moves with DynamicCard
@@ -18,12 +18,12 @@ feature/dynamic/components/DynamicCommentEntryBar.kt	calls into other files of t
 feature/dynamic/components/DynamicCommentInputHost.kt	calls into other files of this list (unresolved: sessionId, drafts)
 feature/dynamic/components/DynamicCommentPreviewPolicy.kt	calls into other files of this list (unresolved: Cannot infer type for type parameter '_'. Specify )
 feature/dynamic/components/DynamicCommentSheet.kt	Android Intent/Toast/ActivityResult: needs a desktop interface (file chooser, share, toast)
-feature/dynamic/components/DynamicCreateReserveDialog.kt	upstream DynamicCreateRepository still waits (upstream-core/data/later-steps.tsv)
-feature/dynamic/components/DynamicCreateVoteDialog.kt	upstream DynamicCreateRepository still waits (upstream-core/data/later-steps.tsv); Android Intent/Toast/ActivityResult: needs a desktop interface (file chooser, share, toast)
+feature/dynamic/components/DynamicCreateReserveDialog.kt	the desktop editor runs these dialogs over LocalDesktopDynamicEditorBindings (desktop session); upstream calls DynamicCreateRepository/CommentRepository over NetworkModule, which is not bound to the desktop session yet (TON-1071 B1)
+feature/dynamic/components/DynamicCreateVoteDialog.kt	the desktop editor runs these dialogs over LocalDesktopDynamicEditorBindings (desktop session); upstream calls DynamicCreateRepository/CommentRepository over NetworkModule, which is not bound to the desktop session yet (TON-1071 B1); Android Intent/Toast/ActivityResult: needs a desktop interface (file chooser, share, toast)
 feature/dynamic/components/DynamicDraftStore.kt	MediaStore/ContentResolver/WebView: needs a desktop interface (file chooser, save dialog)
 feature/dynamic/components/DynamicImageCropDialog.kt	android.graphics.Bitmap/Palette: no desktop stand-in yet; Coil ImageRequest.Builder(Context): Android Context is not a coil3 PlatformContext on the desktop
 feature/dynamic/components/DynamicPublishComposer.kt	Android Intent/Toast/ActivityResult: needs a desktop interface (file chooser, share, toast)
-feature/dynamic/components/DynamicPublishPickers.kt	upstream DynamicCreateRepository still waits (upstream-core/data/later-steps.tsv)
+feature/dynamic/components/DynamicPublishPickers.kt	the desktop editor runs these dialogs over LocalDesktopDynamicEditorBindings (desktop session); upstream calls DynamicCreateRepository/CommentRepository over NetworkModule, which is not bound to the desktop session yet (TON-1071 B1)
 feature/dynamic/components/DynamicSaveImage.kt	feature/share saveShareImageDocument (gallery save through MediaStore): needs a desktop interface (save dialog)
 feature/dynamic/components/DynamicShareToMessageDialog.kt	calls into other files of this list (unresolved: share, it)
 feature/dynamic/components/DynamicSidebar.kt	Coil ImageRequest.Builder(Context): Android Context is not a coil3 PlatformContext on the desktop
@@ -70,4 +70,4 @@ feature/search/SearchTrendingScreen.kt	calls into other files of this list (unre
 feature/search/SearchTrendingViewModel.kt	AndroidViewModel/Application: needs injected services instead (Toast through the desktop notifier); Media3/AndroidView: the desktop plays through mpv
 feature/search/SearchViewModel.kt	androidx.paging: the desktop has no paging dependency yet; AndroidViewModel/Application: needs injected services instead (Toast through the desktop notifier)
 feature/search/TopicDetailScreen.kt	Android Intent/Toast/ActivityResult: needs a desktop interface (file chooser, share, toast); R.drawable resources are not generated for the desktop yet; Coil ImageRequest.Builder(Context): Android Context is not a coil3 PlatformContext on the desktop
-feature/search/TopicDetailViewModel.kt	upstream TopicRepository and DynamicCreateRepository still wait (upstream-core/data/later-steps.tsv)
+feature/search/TopicDetailViewModel.kt	upstream TopicRepository still waits (upstream-core/data/later-steps.tsv)

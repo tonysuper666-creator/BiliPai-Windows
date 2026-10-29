@@ -6,3 +6,6 @@ media/com/android/purebilibili/data/repository/DesktopMediaPgcPolicies.kt
 media/com/android/purebilibili/data/repository/LiveInteractionModels.kt
 plugins/com/android/purebilibili/data/repository/SponsorBlockRepository.kt
 search/com/android/purebilibili/core/database/entity/SearchHistory.kt
+discovery/com/android/purebilibili/data/repository/DesktopRecommendationFeedbackRequests.kt
+dynamic-follow/com/android/purebilibili/data/repository/DesktopOriginalFollowStateChange.kt
+original-video-detail-units/com/android/purebilibili/data/repository/DesktopOriginalVideoInteractionStatusCache.kt

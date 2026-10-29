@@ -1,0 +1,29 @@
+--- a/collection-sheet/com/android/purebilibili/data/repository/DesktopOriginalCollectionActions.kt
++++ b/collection-sheet/com/android/purebilibili/data/repository/DesktopOriginalCollectionActions.kt
+@@ -9,26 +9,6 @@
+ private const val UNFAVORITE_SEASON_PATH = "x/v3/fav/season/unfav"
+ 
+ private const val COLLECTION_SUBSCRIPTION_PLATFORM = "web"
+-internal data class CollectionSubscriptionRequest(
+-    val path: String,
+-    val seasonId: Long,
+-    val platform: String,
+-    val csrf: String
+-)
+-
+-internal fun buildCollectionSubscriptionRequest(
+-    seasonId: Long,
+-    subscribe: Boolean,
+-    csrf: String
+-): CollectionSubscriptionRequest {
+-    return CollectionSubscriptionRequest(
+-        path = if (subscribe) FAVORITE_SEASON_PATH else UNFAVORITE_SEASON_PATH,
+-        seasonId = seasonId,
+-        platform = COLLECTION_SUBSCRIPTION_PLATFORM,
+-        csrf = csrf
+-    )
+-}
+-
+ internal class DesktopOriginalCollectionActions(private val api:BilibiliApi, private val csrfProvider:()->String) {
+ suspend fun setCollectionSubscription(
+     seasonId: Long,
