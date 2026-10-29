@@ -52,6 +52,8 @@ try {
         [IO.File]::WriteAllText("$src\.legacy-root\.legacy-commit",$legacy,[Text.UTF8Encoding]::new($false))
         $report.legacyMaterializer='Python tarfile of exact git archive (Windows tar Unicode filename failure)'
     }
+    # Derived archives are redundant once the pinned tree and build junction exist.
+    Remove-Item "$out\legacy.tar","$src\.legacy-root.tar" -ErrorAction SilentlyContinue
     $report.stage='createDistributable'
     Set-Location $src
     # cmd preserves native exit status and sends Gradle's native stderr to the log on PS 5.1.
@@ -64,11 +66,12 @@ try {
     $target="$root\apps\TON1020"
     # Keep the previous package for rollback; never delete another card's data.
     if(Test-Path $target){Move-Item $target "$root\apps\TON1020-before-TON1047"}
-    Copy-Item $package $target -Recurse
+    Move-Item $package $target
     $native="$src\desktop\native\windows-x64"
+    if(!(Test-Path $native)){$native="$root\apps\TON1020-before-TON1047\app\resources\native\windows-x64"}
     $runtime="$target\app\resources\native\windows-x64"
     New-Item -ItemType Directory -Force $runtime | Out-Null
-    Copy-Item "$native\*" $runtime -Recurse -Force
+    foreach($file in Get-ChildItem $native -File){if(!(Test-Path "$runtime\$($file.Name)")){Copy-Item $file.FullName $runtime}}
     foreach($name in @('libmpv-2.dll','bilipai-diagnostic-share.dll')){
         if(!(Test-Path "$runtime\$name")){throw "native runtime missing: $name"}
     }

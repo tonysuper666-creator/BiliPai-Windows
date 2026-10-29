@@ -135,7 +135,7 @@ try {
     try {
       $null = Initialize-BpTree $p.Id $evidenceDir
       if ($sessionScript) {
-        & $sessionScript -Deadline ((Get-Date).AddSeconds($maxSec))
+        Invoke-BpEvidenceSession $sessionScript ((Get-Date).AddSeconds($maxSec))
       } else {
         $w = Wait-BpTreeWindow ([Math]::Max(1, $maxSec - 1))
         $shot = Save-BpTreeShot $w 'descendant-window'

@@ -61,6 +61,13 @@ function Assert-BpEvidencePath([string]$Path, [string]$Boundary) {
     return $full
 }
 
+function Invoke-BpEvidenceSession([string]$SessionScript, [datetime]$Deadline) {
+    if (!$script:BpTreeDirectory -or !$script:BpTree) { throw 'measured tree context is not initialized' }
+    # A call operator (&) creates another script scope: the callback and helpers then
+    # lose the tree's script: variables. Dot-source in the owning scope instead.
+    . $SessionScript -Deadline $Deadline
+}
+
 function Initialize-BpTree([int]$RootProcessId, [string]$Directory) {
     New-Item -ItemType Directory -Force -Path $Directory | Out-Null
     $script:BpTreeDirectory = $Directory

@@ -57,3 +57,14 @@ and HotSpot home/temp properties beneath `ton1020\profile`. Java restarts
 inherit these settings. It rejects absent executables and reparse points.
 Configuration/JVM properties support isolation but cannot replace a file-access
 audit. Do not inspect the real profile to try to prove a negative.
+
+The approved TON-1047 attempt on 2026-10-29 stopped before a visible client
+window was measured: invoking the callback with `&` lost its script-scoped
+tree directory. The result was a null `Path` error, 0 client screenshots and
+5 measured processes, all cleaned up. Actual jpackage parent/child PIDs and
+the child's hidden AWT handles were measured; visible-window ownership,
+playback, SMTC and restart were not validated. `Invoke-BpEvidenceSession`
+now dot-sources the callback in the owning scope. `Test-CallbackContext.ps1`
+reproduces the original error and verifies the fix using this shell's real
+PID and file output, without a client, GUI or process termination. This fix
+has not had another client run. The existing single-use marker must remain.
