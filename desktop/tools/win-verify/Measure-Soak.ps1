@@ -12,7 +12,7 @@
 param(
     [int]$Minutes = 30,
     [int]$SettleSeconds = 20,
-    [int]$PlaybackWaitSeconds = 40,
+    [int]$PlaybackWaitSeconds = 60,
     [int]$PlaybackCheckSeconds = 60,
     [int]$SampleSeconds = 30,
     [switch]$StartPlayback,
@@ -70,9 +70,12 @@ try {
     if ($StartPlayback) {
         $rect = New-Object BpMeasure+RECT
         [void][BpMeasure]::GetClientRect($hwnd, [ref]$rect)
-        for ($attempt = 1; $attempt -le 2 -and -not $playbackVerified; $attempt++) {
+        # Different rows of the feed: the first attempt can land on a card whose player never
+        # starts, and a silent 30 minute run is worse than three quick attempts.
+        $clickYRatios = @($ClickYRatio, 0.42, 0.55)
+        for ($attempt = 1; $attempt -le $clickYRatios.Count -and -not $playbackVerified; $attempt++) {
             $before = Get-BpScreenThumbCenter -Hwnd $hwnd
-            $clickUtc = Send-BpClickReal -Hwnd $hwnd -X ([int]($rect.Right * $ClickXRatio)) -Y ([int]($rect.Bottom * $ClickYRatio))
+            $clickUtc = Send-BpClickReal -Hwnd $hwnd -X ([int]($rect.Right * $ClickXRatio)) -Y ([int]($rect.Bottom * $clickYRatios[$attempt - 1]))
             Write-BpLog ("attempt {0}: clicked a card at {1:o}" -f $attempt, $clickUtc)
             # Playback can take several seconds to start here (measured p50 ~4 s), so wait for
             # sustained motion in the centre of the window instead of sampling a fixed delay.
