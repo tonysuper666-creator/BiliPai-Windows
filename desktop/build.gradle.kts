@@ -2827,6 +2827,54 @@ val generateUpstreamStringResources by tasks.registering {
     }
 }
 
+// Numeric key types of the upstream DataStore preferences (TON-1000). Preferences.Key carries no runtime type and the
+// desktop settings document is JSON, where 1 cannot tell Int from Long or Float. Booleans, strings and string sets are
+// unambiguous in JSON; numeric keys are typed by this table, built from the upstream sources: every literal
+// int/long/float key, plus the scoped danmaku keys built by buildScopedDanmakuKeyName(scope, "<suffix>"). A numeric key
+// built any other way, or one name declared with two types, fails the build instead of being guessed at runtime.
+val generateUpstreamPreferenceKeyTypes by tasks.registering {
+    val roots = listOf(appJavaRoot, mergedRepositoryRoot.resolve("core-data/src/main/java"))
+    val output = layout.buildDirectory.dir("generated/upstream-preference-types")
+    inputs.files(roots.map { fileTree(it) { include("**/*.kt") } }).withPathSensitivity(PathSensitivity.RELATIVE)
+    outputs.dir(output)
+    doLast {
+        val literal = Regex("""\b(int|long|float|double)PreferencesKey\(\s*"([^"${'$'}]+)"\s*\)""")
+        val scoped = Regex("""\b(int|long|float|double)PreferencesKey\(\s*buildScopedDanmakuKeyName\(\s*[\w.]+\s*,\s*"(\w+)"\s*\)\s*\)""")
+        val anyNumeric = Regex("""\b(int|long|float|double)PreferencesKey\(""")
+        val names = sortedMapOf<String, String>()
+        val suffixes = sortedMapOf<String, String>()
+        val unknown = mutableListOf<String>()
+        roots.forEach { root -> root.walkTopDown().filter { it.isFile && it.extension == "kt" }.sortedBy { it.path }.forEach { file ->
+            val text = file.readText()
+            val where = file.relativeTo(mergedRepositoryRoot).invariantSeparatorsPath
+            fun record(table: MutableMap<String, String>, name: String, type: String) {
+                val previous = table.put(name, type)
+                if (previous != null && previous != type) throw GradleException("$where: preference `$name` is declared as $previous and $type")
+            }
+            val known = mutableSetOf<Int>()
+            literal.findAll(text).forEach { record(names, it.groupValues[2], it.groupValues[1]); known += it.range.first }
+            scoped.findAll(text).forEach { record(suffixes, it.groupValues[2], it.groupValues[1]); known += it.range.first }
+            anyNumeric.findAll(text).forEach { match ->
+                if (match.range.first !in known && !text.substring(match.range.first).startsWith(match.value + "name")) {
+                    val line = text.substring(0, match.range.first).count { it == '\n' } + 1
+                    unknown += "$where:$line"
+                }
+            }
+        } }
+        // A key function's own parameter (fun intPreferencesKey(name: String)) is not a key; nothing else may be dynamic.
+        if (unknown.isNotEmpty()) throw GradleException("Numeric DataStore keys built at runtime cannot be typed for the desktop settings document: $unknown")
+        val target = output.get().asFile
+        target.deleteRecursively()
+        target.resolve("com/bilipai/desktop/settings/DesktopUpstreamPreferenceKeyTypes.kt").apply { parentFile.mkdirs() }.writeText(
+            "// Generated at build time from the upstream DataStore key declarations.\npackage com.bilipai.desktop.settings\n\n" +
+                "internal object DesktopUpstreamPreferenceKeyTypes {\n    val names: Map<String, String> = mapOf(\n" +
+                names.entries.joinToString("") { "        \"${it.key}\" to \"${it.value}\",\n" } + "    )\n" +
+                "    /** buildScopedDanmakuKeyName(scope, suffix) = danmaku_<scope prefix>_<suffix>. */\n" +
+                "    val scopedDanmakuSuffixes: Map<String, String> = mapOf(\n" +
+                suffixes.entries.joinToString("") { "        \"${it.key}\" to \"${it.value}\",\n" } + "    )\n}\n")
+    }
+}
+
 val verifyNoSilentSdkGates by tasks.registering {
     inputs.files(fileTree(mergedRepositoryRoot) { migratedWholeModules.forEach { include(it + "src/main/java/**/*.kt") } })
     inputs.dir(desktopUpstreamPatchDirectory).withPathSensitivity(PathSensitivity.RELATIVE)
@@ -2925,6 +2973,7 @@ kotlin.sourceSets.named("main") {
     }
     kotlin.srcDir(generateUpstreamColorResources)
     kotlin.srcDir(files(layout.buildDirectory.dir("generated/upstream-strings/kotlin")).builtBy(generateUpstreamStringResources))
+    kotlin.srcDir(files(layout.buildDirectory.dir("generated/upstream-preference-types")).builtBy(generateUpstreamPreferenceKeyTypes))
     kotlin.srcDir(upstreamReplacementDirectory)
     // Desktop stand-ins for the Android APIs the migrated modules use, and transition compat code.
     kotlin.srcDir("upstream-core/compat")

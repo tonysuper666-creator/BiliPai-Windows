@@ -317,6 +317,8 @@ fun stringPreferencesKey(name: String) = DesktopPreferenceKey(name) { value: Jso
 
 class DesktopPreferenceSnapshot(private val values: JsonObject) {
     operator fun <T> get(key: DesktopPreferenceKey<T>): T? = values[key.name]?.let(key.decode)
+    /** The namespace as stored, for the upstream DataStore bridge (DesktopSettingsDocumentDataStore). */
+    internal val json: JsonObject get() = values
 }
 
 class DesktopPreferenceEditor {
