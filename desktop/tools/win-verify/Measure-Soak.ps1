@@ -11,7 +11,9 @@
 [CmdletBinding()]
 param(
     [int]$Minutes = 30,
-    [int]$SettleSeconds = 30,
+    [int]$SettleSeconds = 20,
+    [int]$PlaybackWaitSeconds = 40,
+    [int]$PlaybackCheckSeconds = 60,
     [int]$SampleSeconds = 30,
     [switch]$StartPlayback,
     [double]$ClickXRatio = 0.30,
@@ -45,6 +47,7 @@ $appPid = 0
 $since = [datetime]::MinValue
 $crash = $false
 $hang = $false
+$playbackChecks = New-Object System.Collections.ArrayList
 
 try {
     $capSeconds = $Minutes * 60 + $SettleSeconds + 120
@@ -67,31 +70,33 @@ try {
     if ($StartPlayback) {
         $rect = New-Object BpMeasure+RECT
         [void][BpMeasure]::GetClientRect($hwnd, [ref]$rect)
-        $before = Get-BpScreenThumb -Hwnd $hwnd
-        $clickUtc = Send-BpClickReal -Hwnd $hwnd -X ([int]($rect.Right * $ClickXRatio)) -Y ([int]($rect.Bottom * $ClickYRatio))
-        Write-BpLog ('clicked a card at ' + $clickUtc.ToString('o'))
-        Start-Sleep -Seconds 12
-        $prev = Get-BpScreenThumb -Hwnd $hwnd
-        $moving = 0
-        $checks = 0
-        for ($k = 0; $k -lt 12; $k++) {
-            Start-Sleep -Seconds 2
-            $now = Get-BpScreenThumb -Hwnd $hwnd
-            $diff = Compare-BpThumb -A $prev -B $now
-            $checks++
-            if ($null -ne $diff -and $diff -ge 2) { $moving++ }
-            [void]$samples.Add([pscustomobject]@{
-                    ts = (Get-Date).ToUniversalTime().ToString('o'); privateMB = (Get-BpProcessSample -ProcessId $uiPid).PrivateMB
-                    workingMB = 0; threads = 0; handles = 0; responding = $true
-                })
-            $prev = $now
+        for ($attempt = 1; $attempt -le 2 -and -not $playbackVerified; $attempt++) {
+            $before = Get-BpScreenThumbCenter -Hwnd $hwnd
+            $clickUtc = Send-BpClickReal -Hwnd $hwnd -X ([int]($rect.Right * $ClickXRatio)) -Y ([int]($rect.Bottom * $ClickYRatio))
+            Write-BpLog ("attempt {0}: clicked a card at {1:o}" -f $attempt, $clickUtc)
+            # Playback can take several seconds to start here (measured p50 ~4 s), so wait for
+            # sustained motion in the centre of the window instead of sampling a fixed delay.
+            $flags = New-Object System.Collections.ArrayList
+            $prev = $before
+            $stop = (Get-Date).AddSeconds($PlaybackWaitSeconds)
+            while ((Get-Date) -lt $stop) {
+                if (Test-BpPause) { Write-BpLog 'PAUSE appeared: stopping the soak before playback'; break }
+                Start-Sleep -Milliseconds 150
+                $now = Get-BpScreenThumbCenter -Hwnd $hwnd
+                $vsBase = Compare-BpThumb -A $before -B $now
+                $vsPrev = Compare-BpThumb -A $prev -B $now
+                [void]$flags.Add(($null -ne $vsPrev -and $vsPrev -ge 2 -and $null -ne $vsBase -and $vsBase -ge 6))
+                $prev = $now
+                if ($flags.Count -ge 20) {
+                    $win = $flags.GetRange($flags.Count - 20, 20)
+                    if (@($win | Where-Object { $_ }).Count -ge 15) { $playbackVerified = $true; break }
+                }
+            }
+            Write-BpLog ("attempt {0}: playback verified={1}" -f $attempt, $playbackVerified)
+            if (-not $playbackVerified) { Start-Sleep -Seconds 3 }
         }
-        $ratio = 0
-        if ($checks -gt 0) { $ratio = [math]::Round(1.0 * $moving / $checks, 2) }
-        $summary.playback_motion_ratio = $ratio
-        $playbackVerified = ($ratio -ge 0.6)
-        Write-BpLog ("playback motion {0}/{1} checks ({2}) verified={3}" -f $moving, $checks, $ratio, $playbackVerified)
         $summary.playback_verified = $playbackVerified
+        if (-not $playbackVerified) { Write-BpLog 'playback could not be verified; the soak still runs but will be reported as not played' }
     }
 
     $deadline = (Get-Date).AddMinutes($Minutes)
@@ -101,6 +106,16 @@ try {
         if (-not $s) { $crash = $true; Write-BpLog 'process disappeared: crash/exit detected'; break }
         $responding = [BpMeasure]::Responds($hwnd)
         if (-not $responding) { $hang = $true; Write-BpLog 'window not responding: hang detected' }
+        # Playback has to still be running minutes later, not just at the start: every
+        # $PlaybackCheckSeconds take two thumbnails 1 s apart and require them to differ.
+        if ($StartPlayback) {
+            $a = Get-BpScreenThumbCenter -Hwnd $hwnd
+            Start-Sleep -Milliseconds 1000
+            $b = Get-BpScreenThumbCenter -Hwnd $hwnd
+            $movingNow = ((Compare-BpThumb -A $a -B $b) -ge 2)
+            $playbackChecks.Add([pscustomobject]@{ ts = (Get-Date).ToUniversalTime().ToString('o'); moving = $movingNow })
+            if (-not $movingNow) { Write-BpLog 'picture stopped changing during the soak' }
+        }
         [void]$samples.Add([pscustomobject]@{
             ts        = $s.TimestampUtc
             privateMB = $s.PrivateMB
@@ -123,9 +138,15 @@ try {
         $summary.private_max_mb = ($samples | Measure-Object -Property privateMB -Maximum).Maximum
         $summary.growth_pct = [math]::Round(100.0 * ($last - $first) / $first, 1)
     }
+    $summary.playback_checks = $playbackChecks.Count
+    $summary.playback_checks_moving = @($playbackChecks | Where-Object { $_.moving }).Count
+    if ($playbackChecks.Count -gt 0) {
+        $summary.playback_still_moving_ratio = [math]::Round(1.0 * $summary.playback_checks_moving / $playbackChecks.Count, 2)
+    }
     $summary.played = [bool]$StartPlayback
-    $summary.ok = (-not $crash -and -not $hang -and (-not $StartPlayback -or $playbackVerified))
+    $summary.ok = (-not $crash -and -not $hang -and (-not $StartPlayback -or ($playbackVerified -and $summary.playback_checks_moving -ge [math]::Ceiling(0.8 * [math]::Max(1, $playbackChecks.Count)))))
     if ($StartPlayback -and -not $playbackVerified) { $summary.reason = 'no continuous playback motion was observed' }
+    elseif ($StartPlayback -and $summary.playback_checks_moving -lt [math]::Ceiling(0.8 * [math]::Max(1, $playbackChecks.Count))) { $summary.reason = 'playback stopped moving during the run' }
 } catch {
     $summary.ok = $false
     $summary.reason = $_.Exception.Message

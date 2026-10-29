@@ -38,7 +38,10 @@ function Measure-CpuWindow {
     param([int]$ProcessId, [int]$Seconds, [string]$Phase, [switch]$IgnorePause)
     $p = Get-Process -Id $ProcessId -ErrorAction Stop
     $cpu0 = $p.TotalProcessorTime.TotalSeconds
-    $ops0 = $p.ReadOperationCount + $p.OtherOperationCount
+    $first = Get-BpProcessSample -ProcessId $ProcessId
+    if (-not $first) { throw 'process disappeared before the phase started' }
+    $ops0 = $null
+    if ($first.IoAvailable) { $ops0 = $first.IoReadOps + $first.IoWriteOps + $first.IoOtherOps }
     $sw = [Diagnostics.Stopwatch]::StartNew()
     $inner = New-Object System.Collections.ArrayList
     while ($sw.Elapsed.TotalSeconds -lt $Seconds) {
@@ -50,9 +53,11 @@ function Measure-CpuWindow {
         }
         $s = Get-BpProcessSample -ProcessId $ProcessId
         if (-not $s) { throw 'process disappeared during the measurement' }
+        $ioSum = $null
+        if ($s.IoAvailable) { $ioSum = $s.IoReadOps + $s.IoWriteOps + $s.IoOtherOps }
         [void]$inner.Add([pscustomobject]@{
                 phase = $Phase; ts = $s.TimestampUtc; privateMB = $s.PrivateMB
-                cpuSeconds = $s.CpuSeconds; ioOps = ($s.IoReadMB + $s.IoOtherMB)
+                cpuSeconds = $s.CpuSeconds; ioOps = $ioSum
                 threads = $s.Threads; handles = $s.Handles
             })
         Start-Sleep -Seconds 1
@@ -60,7 +65,10 @@ function Measure-CpuWindow {
     $sw.Stop()
     $p.Refresh()
     $cpuDelta = $p.TotalProcessorTime.TotalSeconds - $cpu0
-    $opsDelta = ($p.ReadOperationCount + $p.OtherOperationCount) - $ops0
+    $last = Get-BpProcessSample -ProcessId $ProcessId
+    $opsDelta = $null
+    $ioAvailable = ($null -ne $ops0 -and $last -and $last.IoAvailable)
+    if ($ioAvailable) { $opsDelta = ($last.IoReadOps + $last.IoWriteOps + $last.IoOtherOps) - $ops0 }
     foreach ($row in $inner) { [void]$samples.Add($row) }
     $meanPrivate = 0
     if ($inner.Count -gt 0) { $meanPrivate = [math]::Round((($inner | Measure-Object -Property privateMB -Average).Average), 1) }
@@ -69,6 +77,7 @@ function Measure-CpuWindow {
         seconds         = [math]::Round($sw.Elapsed.TotalSeconds, 1)
         cpu_pct_one     = [math]::Round(100.0 * $cpuDelta / [math]::Max(0.1, $sw.Elapsed.TotalSeconds), 2)
         io_ops          = $opsDelta
+        io_available    = $ioAvailable
         private_mean_mb = $meanPrivate
         private_max_mb  = [math]::Round((($inner | Measure-Object -Property privateMB -Maximum).Maximum), 1)
     }
@@ -123,14 +132,20 @@ try {
     $cpuDrop = 0
     if ($min.cpu_pct_one -gt 0) { $cpuDrop = 1 - ($pause.cpu_pct_one / $min.cpu_pct_one) }
     $ioDrop = 0
-    if ($min.io_ops -gt 0) { $ioDrop = 1 - ($pause.io_ops / $min.io_ops) }
+    $ioComparable = ($min.io_available -and $pause.io_available -and $null -ne $min.io_ops -and $min.io_ops -gt 0)
+    if ($ioComparable) { $ioDrop = 1 - ($pause.io_ops / $min.io_ops) }
     $summary.pause_cpu_drop_ratio = [math]::Round($cpuDrop, 3)
     $summary.pause_io_drop_ratio = [math]::Round($ioDrop, 3)
+    $summary.pause_io_comparable = $ioComparable
     if ($pause.seconds -lt 10) {
         $summary.pause_verdict = 'not measured (phase too short)'
-    } elseif ($cpuDrop -ge 0.5 -and ($min.io_ops -eq 0 -or $ioDrop -ge 0.5)) {
-        $summary.pause_verdict = 'effective (background work dropped while PAUSE existed)'
-    } elseif ($cpuDrop -le 0.15 -and ($min.io_ops -eq 0 -or $ioDrop -le 0.15)) {
+    } elseif (-not $ioComparable) {
+        # Without real I/O counters the CPU reading alone cannot tell "nothing to pause" from
+        # "pause honoured"; say so instead of guessing.
+        $summary.pause_verdict = 'not verified (I/O counters unavailable, CPU alone is inconclusive)'
+    } elseif ($cpuDrop -ge 0.5 -and $ioDrop -ge 0.5) {
+        $summary.pause_verdict = 'effective (CPU and I/O both dropped while PAUSE existed)'
+    } elseif ($cpuDrop -le 0.15 -and $ioDrop -le 0.15) {
         $summary.pause_verdict = 'not honoured (CPU and I/O unchanged with PAUSE present)'
     } else {
         $summary.pause_verdict = 'inconclusive (partial change)'

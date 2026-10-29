@@ -432,13 +432,24 @@ function Get-BpProcessSample {
     param([int]$ProcessId)
     $p = Get-Process -Id $ProcessId -ErrorAction SilentlyContinue
     if (-not $p) { return $null }
+    # Get-Process has no I/O counters on this platform; reading them off the Process object
+    # silently produced zeros. The counters live on the CIM Win32_Process class instead.
+    $ioRead = $null; $ioWrite = $null; $ioOther = $null
+    $cim = Get-CimInstance Win32_Process -Filter ("ProcessId = " + $ProcessId) -ErrorAction SilentlyContinue
+    if ($cim) {
+        $ioRead = [int64]$cim.ReadOperationCount
+        $ioWrite = [int64]$cim.WriteOperationCount
+        $ioOther = [int64]$cim.OtherOperationCount
+    }
     [pscustomobject]@{
         TimestampUtc   = (Get-Date).ToUniversalTime().ToString('o')
         PrivateMB      = [math]::Round($p.PrivateMemorySize64 / 1MB, 1)
         WorkingSetMB   = [math]::Round($p.WorkingSet64 / 1MB, 1)
         CpuSeconds     = [math]::Round($p.TotalProcessorTime.TotalSeconds, 3)
-        IoReadMB       = [math]::Round(($p.ReadOperationCount), 0)
-        IoOtherMB      = [math]::Round(($p.OtherOperationCount), 0)
+        IoReadOps      = $ioRead
+        IoWriteOps     = $ioWrite
+        IoOtherOps     = $ioOther
+        IoAvailable    = ($null -ne $ioRead)
         Threads        = $p.Threads.Count
         Handles        = $p.HandleCount
     }

@@ -17,11 +17,13 @@ param(
     [double]$ClickYRatio = 0.30,
     [int]$MotionWindow = 20,
     [int]$MotionWindowHits = 15,
+    [int]$CalibrationShots = 3,
     [string]$Tag = 'run1'
 )
 $ErrorActionPreference = 'Stop'
 . (Join-Path $PSScriptRoot 'BpVerify.Common.ps1')
 
+Add-Type -AssemblyName System.Drawing
 $dataDir = Initialize-BpRun -Name "clicktoframe-$Tag"
 if (Test-BpPause) { Write-BpLog 'PAUSE file present: measurement paused, nothing was started.'; exit 3 }
 if (-not (Test-BpInteractiveSession)) { exit 7 }
@@ -92,6 +94,21 @@ for ($i = 1; $i -le $Iterations; $i++) {
                 $hits = @($window | Where-Object { $_ }).Count
                 if ($hits -ge $MotionWindowHits) {
                     $changeMs = $offsets[$flags.Count - $MotionWindow]
+                    # Keep the frame that triggered the decision for the first few iterations so
+                    # "sustained motion" can be checked against what was actually on screen.
+                    if ($i -le $CalibrationShots) {
+                        try {
+                            $shot = Join-Path $dataDir ("detected-{0:d2}.png" -f $i)
+                            $rect2 = New-Object BpMeasure+RECT
+                            [void][BpMeasure]::GetWindowRect($hwnd, [ref]$rect2)
+                            $w2 = $rect2.Right - $rect2.Left; $h2 = $rect2.Bottom - $rect2.Top
+                            $bmp = New-Object System.Drawing.Bitmap $w2, $h2
+                            $g = [System.Drawing.Graphics]::FromImage($bmp)
+                            $g.CopyFromScreen($rect2.Left, $rect2.Top, 0, 0, (New-Object System.Drawing.Size $w2, $h2), [System.Drawing.CopyPixelOperation]::SourceCopy)
+                            $bmp.Save($shot, [System.Drawing.Imaging.ImageFormat]::Png)
+                            $g.Dispose(); $bmp.Dispose()
+                        } catch { Write-BpLog ('screenshot failed: ' + $_.Exception.Message) }
+                    }
                     Write-BpLog ("player motion sustained after {0} ms ({1}/{2} samples moving)" -f $changeMs, $hits, $MotionWindow)
                     break
                 }
@@ -135,19 +152,34 @@ for ($i = 1; $i -le $Iterations; $i++) {
 
 $summary = [ordered]@{
     item = 21; tag = $Tag; iterations = $Iterations
-    endpoint = 'first sample where at least 15 of the last 20 one-frame steps (3 s at 150 ms) change the centre of the window: a spinner or a page transition cannot keep that up, a playing video can'
+    endpoint = 'first sample where at least 15 of the last 20 one-frame steps (3 s at 150 ms) change the centre of the window; a page transition or spinner cannot keep that up'
+    endpoint_limits = 'screen change is a proxy: a video that starts on a still frame can be detected late, and this is not calibrated against a decoder-level first frame'
     observe_seconds = $ObserveSeconds; budget_ms = $BudgetMs
     timeouts = @($results | Where-Object { $_.result -eq 'timeout' }).Count
     over_budget = @($results | Where-Object { $_.result -eq 'changed' -and -not $_.within_budget }).Count
     failures = $failures
 }
+# Two views, both stated so neither can be mistaken for the other:
+#   censored  - every attempted iteration counts; a timeout enters as "at least ObserveSeconds"
+#               (this is the only one that can be called a p50/p95 over N launches)
+#   detected  - only the iterations where a picture was actually seen; descriptive, N smaller
+$censorMs = $ObserveSeconds * 1000
+$censored = @($results | ForEach-Object { if ($null -ne $_.click_to_change_ms) { [double]$_.click_to_change_ms } else { [double]$censorMs } } | Sort-Object)
+if ($censored.Count -gt 0) {
+    $summary.percentile_basis = 'all attempted iterations, a timeout counts as >= ' + $censorMs + ' ms'
+    $summary.attempts = $censored.Count
+    $summary.click_to_change_p50_ms = $censored[[int][math]::Floor(($censored.Count - 1) * 0.5)]
+    $summary.click_to_change_p95_ms = $censored[[int][math]::Floor(($censored.Count - 1) * 0.95)]
+    $summary.click_to_change_max_ms = $censored[$censored.Count - 1]
+    $summary.fraction_within_budget = [math]::Round(1.0 * @($censored | Where-Object { $_ -le $BudgetMs }).Count / $censored.Count, 2)
+}
 $vals = @($results | ForEach-Object { $_.click_to_change_ms } | Where-Object { $null -ne $_ })
 if ($vals.Count -gt 0) {
     $sorted = $vals | Sort-Object
-    $summary.samples = $vals.Count
-    $summary.click_to_change_p50_ms = $sorted[[int][math]::Floor(($sorted.Count - 1) * 0.5)]
-    $summary.click_to_change_p95_ms = $sorted[[int][math]::Floor(($sorted.Count - 1) * 0.95)]
-    $summary.click_to_change_max_ms = $sorted[$sorted.Count - 1]
+    $summary.detected_samples = $vals.Count
+    $summary.detected_p50_ms = $sorted[[int][math]::Floor(($sorted.Count - 1) * 0.5)]
+    $summary.detected_p95_ms = $sorted[[int][math]::Floor(($sorted.Count - 1) * 0.95)]
+    $summary.detected_max_ms = $sorted[$sorted.Count - 1]
 }
 if ($results.Count -gt 0) {
     $summary.new_player_chain = @($results | Where-Object { $_.new_player_chain }).Count
