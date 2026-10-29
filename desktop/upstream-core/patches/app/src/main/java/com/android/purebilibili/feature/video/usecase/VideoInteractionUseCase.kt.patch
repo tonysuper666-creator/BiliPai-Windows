@@ -1,0 +1,28 @@
+# Inject the existing account-scoped desktop engagement and analytics implementations.
+--- a/app/src/main/java/com/android/purebilibili/feature/video/usecase/VideoInteractionUseCase.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/video/usecase/VideoInteractionUseCase.kt
+@@ -1,9 +1,9 @@
+ // File: feature/video/usecase/VideoInteractionUseCase.kt
+ package com.android.purebilibili.feature.video.usecase
+ 
+-import com.android.purebilibili.core.util.AnalyticsHelper
+-import com.android.purebilibili.core.util.Logger
+-import com.android.purebilibili.data.repository.ActionRepository
++import com.bilipai.desktop.ui.DesktopOriginalVideoInteractionAnalytics
++import com.bilipai.desktop.ui.DesktopOriginalVideoInteractionLog as Logger
++import com.android.purebilibili.data.repository.DesktopOriginalVideoEngagementProtocol
+ import com.android.purebilibili.data.model.response.FavFolder
+ import kotlinx.coroutines.async
+ import kotlinx.coroutines.coroutineScope
+@@ -20,7 +20,10 @@
+  * 
+  * Requirement Reference: AC1.2 - User interactions handled by UseCase
+  */
+-class VideoInteractionUseCase {
++internal class VideoInteractionUseCase(
++    private val ActionRepository: DesktopOriginalVideoEngagementProtocol,
++    private val AnalyticsHelper: DesktopOriginalVideoInteractionAnalytics,
++) {
+     
+     companion object {
+         private const val TAG = "VideoInteractionUseCase"
