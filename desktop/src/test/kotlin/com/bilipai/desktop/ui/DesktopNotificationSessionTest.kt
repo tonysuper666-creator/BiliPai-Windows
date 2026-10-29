@@ -5,6 +5,7 @@ import com.bilipai.desktop.integration.DesktopNotificationCenter
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 import kotlin.concurrent.thread
+import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
@@ -58,6 +59,8 @@ internal class RecordingNotificationCenter : DesktopNotificationCenter {
 }
 
 class DesktopNotificationSessionTest {
+    @BeforeTest fun resetLeases() { DesktopNotificationAccountLeases.clearForTest() }
+
     private fun item(key: String, route: String = "inbox") =
         PendingMessageNotification(key = key, notificationId = 1, route = route, title = "t", text = "x", group = "reply")
 
@@ -156,6 +159,57 @@ class DesktopNotificationSessionTest {
         DesktopNotificationCleanup.retryOutstanding()
         assertEquals(1, center.texts().size, "the returning account's new notification must survive")
         assertTrue(center.cleared.isEmpty(), "the old session may no longer withdraw the shared group")
+    }
+
+    @Test fun aVisitorSessionWithoutAnAccountCanBeBuiltAndPublishes() {
+        // The port is created before the settings/login checks, and a visitor has mid == null.
+        val center = RecordingNotificationCenter()
+        val visitor = DesktopNotificationSession(null, center)
+        assertTrue(visitor.publish(item("reply-1")), "a visitor must not crash the notification path")
+        assertEquals("messages-null", visitor.group)
+    }
+
+    @Test fun aGroupWithdrawalAlreadyInsideTheSurfaceBlocksTheNextSessionOfThatAccount() {
+        val center = RecordingNotificationCenter()
+        val oldSession = session(center, 7L)
+        assertTrue(oldSession.publish(item("reply-1")))
+        val entered = center.enterClearWithBlock()
+        val clearing = thread { oldSession.pause() }
+        assertTrue(entered.await(5, TimeUnit.SECONDS))
+
+        // The account changes hands while the old RemoveGroup is still running.
+        val returning = session(center, 7L)
+        assertFalse(returning.publish(item("reply-2")), "a running group operation of this account still owns the range")
+
+        center.releaseClear()
+        clearing.join(5_000)
+        assertTrue(returning.publish(item("reply-2")), "publishing resumes when the account has no running group operation")
+    }
+
+    @Test fun aPlainDetachAndRemountLeavesUnreadNotificationsAlone() {
+        val center = RecordingNotificationCenter()
+        val first = session(center, 7L)
+        assertTrue(first.publish(item("reply-1")))
+        first.detach() // window going away, no group withdrawal pending
+
+        session(center, 7L) // same account remounts
+        DesktopNotificationCleanup.retryOutstanding()
+        assertEquals(1, center.texts().size, "an unread notification must survive a remount")
+        assertTrue(center.removed.isEmpty())
+    }
+
+    @Test fun aConfirmationCollectedAfterANewPublishKeepsTheNewEntry() {
+        val center = RecordingNotificationCenter().apply { failRemove = true }
+        val session = session(center)
+        assertTrue(session.publish(item("reply-1")))
+        assertEquals(emptySet(), session.withdrawNow(setOf("reply-1")))
+
+        // The confirmation is queued, then the same key is delivered again before anyone collects it.
+        center.failRemove = false
+        DesktopNotificationCleanup.retryOutstanding()
+        assertTrue(session.publish(item("reply-1")))
+        assertEquals(emptySet(), session.takeResolved(), "the new delivery keeps the entry alive")
+        assertFalse(session.hasResolved())
     }
 
     @Test fun twoSessionsForTheSameAccountNeverShareADeliveryTag() {

@@ -37,8 +37,8 @@ internal class DesktopNotificationSession(
         withdraw = { tag, target -> center.remove(tag, target) }, report = report).apply { bind(group) }
     /** Message key -> the deliveries of it that are still on screen. */
     private val liveTags = ConcurrentHashMap<String, MutableSet<String>>()
-    /** Keys whose last delivery is confirmed gone, for the caller to drop from its list. */
-    private val resolved = java.util.concurrent.ConcurrentLinkedQueue<String>()
+    /** Keys that lost a delivery; whether their entry can end is decided when the caller collects them. */
+    private val settledKeys = ConcurrentHashMap.newKeySet<String>()
     private val paused = AtomicBoolean()
     private val accountRetired = AtomicBoolean()
     private val groupClearPending = AtomicBoolean()
@@ -62,12 +62,19 @@ internal class DesktopNotificationSession(
 
     fun keyFor(tag: String): String = tag.substringBefore('#')
 
-    /** Keys whose last delivery is gone; the caller drops them from its list. */
-    fun hasResolved(): Boolean = !resolved.isEmpty()
+    /** True when at least one key lost its last delivery. */
+    fun hasResolved(): Boolean = settledKeys.any { liveTags[it].isNullOrEmpty() }
 
+    /**
+     * Keys that can leave the caller's list: identity is checked here, at consumption time, so a
+     * delivery published after the confirmation keeps its entry alive.
+     */
     fun takeResolved(): Set<String> {
         val out = linkedSetOf<String>()
-        while (true) out += (resolved.poll() ?: break)
+        for (key in settledKeys.toList()) {
+            settledKeys.remove(key)
+            if (liveTags[key].isNullOrEmpty()) out += key
+        }
         return out
     }
 
@@ -104,8 +111,9 @@ internal class DesktopNotificationSession(
 
     /** Another session took this account: this one may no longer withdraw the shared group. */
     fun abandonGroupClear() {
-        groupClearPending.set(false)
-        // What this session delivered is still ours to withdraw, one tag at a time.
+        // Only a session that was already withdrawing that group has anything to hand over; a plain
+        // detach followed by a remount must leave the unread notifications alone.
+        if (!groupClearPending.getAndSet(false)) return
         withdrawal.remember(allLiveTags())
         trackIfOutstanding()
     }
@@ -125,12 +133,14 @@ internal class DesktopNotificationSession(
                 } else {
                     clearAttempts.incrementAndGet()
                     clearsInFlight.incrementAndGet()
+                    DesktopNotificationAccountLeases.beginGroupOperation(accountId)
                     val cleared = try {
                         runCatching { center.clear(group) }.onFailure {
                             report("通知中心整组清理失败 group=$group", it)
                         }.isSuccess
                     } finally {
                         clearsInFlight.decrementAndGet()
+                        DesktopNotificationAccountLeases.endGroupOperation(accountId)
                     }
                     if (paused.get()) {
                         groupClearPending.set(!cleared)
@@ -159,12 +169,14 @@ internal class DesktopNotificationSession(
 
     /** False when the delivery was refused, or when a group withdrawal is running right now. */
     fun publish(item: PendingMessageNotification): Boolean {
-        if (!isPublishing() || clearsInFlight.get() > 0) return false
+        if (!isPublishing() || clearsInFlight.get() > 0 ||
+            DesktopNotificationAccountLeases.groupOperationInFlight(accountId)) return false
         val tag = deliveryTag(item.key)
         val outcome = runCatching {
             center.show(item.title, item.text, "account:$accountId:${item.route}", tag, group)
         }
-        if (!isPublishing() || clearsInFlight.get() > 0) {
+        if (!isPublishing() || clearsInFlight.get() > 0 ||
+            DesktopNotificationAccountLeases.groupOperationInFlight(accountId)) {
             withdrawal.remember(listOf(tag))
             trackIfOutstanding()
             return false
@@ -178,7 +190,8 @@ internal class DesktopNotificationSession(
         val key = keyFor(tag)
         val remaining = liveTags[key] ?: return
         remaining.remove(tag)
-        if (remaining.isEmpty()) { liveTags.remove(key); resolved += key }
+        if (remaining.isEmpty()) liveTags.remove(key)
+        settledKeys += key
     }
 
     private fun allLiveTags(): List<String> = liveTags.values.flatMap { it.toList() }
