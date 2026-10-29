@@ -309,6 +309,28 @@ class GradleModelTests(unittest.TestCase):
         self.assertEqual(['prepareUpstreamSources'], one.deps)
         self.assertIn(('build', 'generated/appearance'), one.args)
         self.assertEqual(('repo', ''), one.args[3])
+        migrated = self.model(self.SYNTHETIC + '''
+        val migratedUpstreamModules = listOf("core-data/", "network-core/")
+        val transitionPatchProducers = mapOf(
+            "one" to "extractOne",
+        )
+        val applyTransitionPatches by tasks.registering {
+            val target = layout.buildDirectory.dir("transition-patched")
+            outputs.dir(target)
+        }
+        kotlin.sourceSets.named("main") {
+            kotlin.srcDir(applyTransitionPatches)
+            migratedUpstreamModules.forEach { kotlin.srcDir(mergedRepositoryRoot.resolve(it + "src/main/java")) }
+        }
+        ''')
+        self.assertEqual([], migrated.unresolved_source_dirs)
+        self.assertIn(('build', 'transition-patched'), migrated.source_dirs['main'])
+        for module in ('core-data', 'network-core'):
+            path = module + '/src/main/java'
+            self.assertIn(('merged', path), migrated.source_dirs['main'])
+            self.assertEqual(module, migrated.source_owners['main', 'merged', path])
+        self.assertEqual('applyTransitionPatches', migrated.source_owners['main', 'build', 'transition-patched'])
+        self.assertEqual(['extractOne'], migrated.tasks['applyTransitionPatches'].deps)
 
     def test_producers_are_python_tasks_feeding_a_source_directory_in_dependency_order(self):
         tasks, skipped = gate.select_producers(self.model())

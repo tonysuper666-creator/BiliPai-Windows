@@ -6,6 +6,7 @@ A real linked worktree keeps git history queries rooted at this read point.
 """
 from contextlib import contextmanager
 import os
+import re
 from pathlib import Path
 import shutil
 import subprocess
@@ -55,6 +56,13 @@ def legacy_gate_workspace(repo):
             subprocess.run(["git", "-c", "core.autocrlf=false", "-C", str(repo), "archive",
                             "--format=tar", "-o", str(archive), commit, "--", *originals], check=True)
             subprocess.run(["tar", "-xf", str(archive), "-C", str(view)], check=True)
+            # The symbol gate also models modules compiled from the merged root.
+            # Keep those real inputs separate from the old generator originals.
+            recipe = repo / "desktop/build.gradle.kts"
+            modules = re.search(r'val migratedUpstreamModules = listOf\((.*?)\)', recipe.read_text()) if recipe.exists() else None
+            for module in re.findall(r'"([^"]+)"', modules.group(1)) if modules else []:
+                relative = Path(module) / 'src/main/java'
+                shutil.copytree(repo / relative, view / '.merged-root' / relative)
             live_build = repo / "desktop/build"
             if live_build.is_dir():
                 if os.name == "nt":

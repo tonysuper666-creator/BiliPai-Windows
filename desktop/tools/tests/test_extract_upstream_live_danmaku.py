@@ -2,6 +2,7 @@ import hashlib
 import importlib.util
 import json
 import os
+import re
 from pathlib import Path
 import shutil
 import subprocess
@@ -88,7 +89,10 @@ class LiveDanmakuSourceTests(unittest.TestCase):
         # Actual Gradle Sync only copies direct rows; the sole media output owns all
         # three FQCNs. Sync prunes its old destination entries on the next real run.
         gradle=(DESKTOP/'build.gradle.kts').read_text('utf8')
-        self.assertIn('sources.filter { (it["mode"] ?: "direct") == "direct" }',gradle)
+        sync_filter = re.search(r'sources\.filter\s*\{(.*?)\}\s*\.map', gradle, re.S)
+        self.assertIsNotNone(sync_filter)
+        self.assertRegex(sync_filter.group(1), r'\(it\["mode"\]\s*\?:\s*"direct"\)\s*==\s*"direct"')
+        self.assertRegex(sync_filter.group(1), r'&&\s*!migratedUpstreamSource\(it\["path"\]\.toString\(\)\)')
         self.assertIn('tasks.registering(Sync::class)',gradle)
         self.assertIn('inputs.file("tools/v030_live_danmaku.py")',gradle)
         self.assertIn('inputs.dir("upstream-slices/v030-live-danmaku")',gradle)

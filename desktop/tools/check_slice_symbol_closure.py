@@ -866,6 +866,11 @@ class GradleModel:
         self.source_dirs = {'main': [], 'test': []}   # (kind, relative path)
         self.unresolved_source_dirs = []
         self.sync_excludes = []
+        self.task_outputs = {}
+        self.source_owners = {}
+        self.migrated_modules = []
+        self.migrated_paths = set()
+        self.upstream_owned_copies = set()
 
 
 _TASK_HEAD = re.compile(r'val (\w+) by tasks\.registering\((\w+)::class\)\s*\{')
@@ -957,6 +962,13 @@ def parse_gradle(text):
     text = text.replace('\r\n', '\n')
     masked = mask_kotlin(text)
     model = GradleModel()
+    def string_collection(name, constructor):
+        match = re.search(r'\bval ' + name + r' = ' + constructor + r'\((.*?)\)', text, re.S)
+        return re.findall(r'"([^"$]+)"', match.group(1)) if match else []
+
+    model.migrated_modules = string_collection('migratedUpstreamModules', 'listOf')
+    model.migrated_paths = set(string_collection('migratedUpstreamRelativePaths', 'setOf'))
+    model.upstream_owned_copies = set(string_collection('upstreamOwnedGeneratedCopies', 'setOf'))
     for m in _VARIABLE.finditer(text):
         model.variables[m.group(1)] = m.group(2)
     for m in _TASK_HEAD.finditer(text):
@@ -996,6 +1008,26 @@ def parse_gradle(text):
         elif any(k == 'unresolved' for k, _ in args):
             skip = 'unresolved Gradle expression in the command line'
         model.tasks[name] = Task(name, tool, args, deps, skip)
+    # M0's Kotlin task is a producer too: derive its output and dependency owners
+    # from the current recipe rather than treating it as an unknown source root.
+    transition = re.search(r'val (applyTransitionPatches) by tasks\.registering\s*\{', text)
+    if transition:
+        end = _block_end(masked, transition.end() - 1)
+        body = text[transition.end():end]
+        outputs = re.search(r'outputs\.dir\((\w+)\)', body)
+        # The task has local `generated` and `output` variables; use the one
+        # actually declared as its output.
+        local = dict(re.findall(r'val (\w+) = layout\.buildDirectory\.dir\("([^"]+)"\)', body))
+        if not outputs or outputs.group(1) not in local:
+            raise ToolError('Cannot resolve applyTransitionPatches output')
+        destination = local[outputs.group(1)]
+        producers = re.search(r'val transitionPatchProducers = mapOf\((.*?)\n\)', text, re.S)
+        deps = re.findall(r'"[^"]+" to "([^"]+)"', producers.group(1)) if producers else []
+        tool = 'tools/check_slice_symbol_closure.py'
+        model.tasks[transition.group(1)] = Task(transition.group(1), tool,
+            [('python', ''), ('literal', tool), ('literal', '--materialize-transition'),
+             ('literal', '--repo'), ('repo', ''), ('literal', '--transition-output'), ('build', destination)], deps, None)
+        model.task_outputs[transition.group(1)] = destination
     blocks = [(m.start(), _block_end(masked, m.end() - 1), m.group(1)) for m in _SOURCE_SET.finditer(text)]
     for m in re.finditer(r'(?<![\w.])kotlin\.srcDir\(', masked):
         e = _paren_end(masked, m.end() - 1)
@@ -1012,6 +1044,16 @@ def parse_gradle(text):
             found = ('build', mm.group(1))
         elif expr in model.variables:
             found = ('build', model.variables[expr])
+        elif expr in model.task_outputs:
+            found = ('build', model.task_outputs[expr])
+            model.source_owners[(owner, *found)] = expr
+        elif expr == 'mergedRepositoryRoot.resolve(it + "src/main/java")' and model.migrated_modules:
+            for module in model.migrated_modules:
+                entry = ('merged', module + 'src/main/java')
+                if entry not in model.source_dirs[owner]:
+                    model.source_dirs[owner].append(entry)
+                model.source_owners[(owner, *entry)] = module.rstrip('/')
+            continue
         else:
             mm = re.fullmatch(r'(\w+)\.map \{ it\.dir\("([^"]+)"\) \}', expr)
             if mm and mm.group(1) in model.variables:
@@ -1244,6 +1286,52 @@ def make_scratch_repo(repo, scratch, revision=None):
     return root, {}
 
 
+def materialize_transition(root, output):
+    """Execute the current Gradle task's strict, exactly-once unified hunks.
+
+    This writes only the scratch producer output, never a checkout or patch.
+    It deliberately preserves CR bytes, as Kotlin readText/split("\\n") does.
+    """
+    desktop = Path(root) / 'desktop'
+    patches = desktop / 'upstream-core/transition/patches'
+    output = Path(output)
+    if output.exists():
+        _remove_tree(output)
+    for patch in sorted(patches.rglob('*.patch')):
+        relative = patch.relative_to(patches).as_posix()[:-6]
+        lines = (desktop / 'build/generated' / relative).read_bytes().decode('utf8').split('\n')
+        body = patch.read_bytes().decode('utf8').split('\n')
+        at = next(i for i, line in enumerate(body) if line.startswith('--- ')) + 2
+        while at < len(body):
+            header = body[at]
+            at += 1
+            if not header and at == len(body):
+                break
+            if not header.startswith('@@ '):
+                raise ToolError('%s: malformed hunk %s' % (relative, header))
+            before, after = [], []
+            while at < len(body) and not body[at].startswith('@@ '):
+                line = body[at]
+                at += 1
+                if not line and at == len(body):
+                    break
+                if not line or line[0] not in ' +-':
+                    raise ToolError('%s: unexpected patch line %s' % (relative, line))
+                if line[0] in ' -':
+                    before.append(line[1:])
+                if line[0] in ' +':
+                    after.append(line[1:])
+            matches = [i for i in range(len(lines) - len(before) + 1) if lines[i:i + len(before)] == before]
+            if len(matches) != 1:
+                raise ToolError('%s: hunk %s matches %d times' % (relative, header, len(matches)))
+            start = matches[0]
+            lines[start:start + len(before)] = after
+        destination = output / relative.split('/', 1)[1].removeprefix('generated/')
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        prefix = '// Generated at build time: build/generated/%s + upstream-core/transition/patches/%s.patch\n' % (relative, relative)
+        destination.write_bytes((prefix + '\n'.join(lines)).encode('utf8'))
+
+
 def run_producers(root, tasks, env_overrides, timeout=1800, log=None):
     """Run every task the way Gradle does: python <desktop>/<tool> <args>, cwd=<desktop>."""
     root = Path(root)
@@ -1378,6 +1466,10 @@ def collect_sources(root, model, extra_dirs=()):
     manifest = json.loads((root / 'desktop/upstream-sources.json').read_text(encoding='utf8'))
     direct = {identity(entry['path']) for entry in manifest['sources'] if entry.get('mode', 'direct') == 'direct'}
     direct -= {identity(path) for path in model.sync_excludes}
+    direct = {path for path in direct if not path.startswith(tuple(model.migrated_modules))
+              and not any(path.endswith('/src/main/java/' + name) for name in model.migrated_paths)}
+    patched = {p.relative_to(root / 'desktop/upstream-core/transition/patches').as_posix()[:-6]
+               for p in (root / 'desktop/upstream-core/transition/patches').rglob('*.patch')} if model.task_outputs else set()
     compiled_real = set()
     for relative in sorted(direct):
         if not relative.endswith(('.kt', '.java')):
@@ -1405,6 +1497,13 @@ def collect_sources(root, model, extra_dirs=()):
                     continue
                 origin = 'generated'
                 logical_root = 'build/' + relative
+            elif kind == 'merged':
+                merged = root / '.merged-root' if (root / '.merged-root').is_dir() else root
+                folder = merged / relative
+                if not os.path.isdir(_long(folder)):
+                    raise ToolError('Migrated module source is missing: ' + relative)
+                origin = 'vendored'
+                logical_root = relative
             else:
                 folder = root / 'desktop' / relative
                 if not os.path.isdir(_long(folder)):
@@ -1414,6 +1513,11 @@ def collect_sources(root, model, extra_dirs=()):
                 logical_root = 'desktop/' + relative
             for real in walk_sources(folder):
                 inner = Path(os.path.relpath(str(real).replace('\\\\?\\', ''), str(folder))).as_posix()
+                if kind == 'build':
+                    generated_relative = (relative + '/' + inner).removeprefix('generated/')
+                    if inner in model.migrated_paths or (relative.startswith('generated/') and
+                            generated_relative in model.upstream_owned_copies | patched):
+                        continue
                 sources.append(Source(logical_root + '/' + inner, real, origin, source_set))
     for index, folder in enumerate(extra_dirs):
         for real in walk_sources(folder):
@@ -2980,6 +3084,8 @@ def main(argv=None):
         description='Static symbol-closure gate for generated and desktop-owned Kotlin (no compiler, no JVM). '
                     'Producers run in a throw-away mirror; the checkout is never written.')
     parser.add_argument('--repo', default=None, help='repository root (default: this checkout)')
+    parser.add_argument('--materialize-transition', action='store_true', help=argparse.SUPPRESS)
+    parser.add_argument('--transition-output', help=argparse.SUPPRESS)
     parser.add_argument('--revision', default=None,
                         help='mirror `git archive <revision>` instead of the working tree (history calibration)')
     parser.add_argument('--scratch', default=None,
@@ -3023,6 +3129,9 @@ def main(argv=None):
             sys.stderr.flush()
 
     try:
+        if args.materialize_transition:
+            materialize_transition(repo, args.transition_output)
+            return 0
         if args.list_producers:
             model = parse_gradle((repo / 'desktop/build.gradle.kts').read_text(encoding='utf8'))
             tasks, skipped = select_producers(model)
