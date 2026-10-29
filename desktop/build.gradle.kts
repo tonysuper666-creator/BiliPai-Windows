@@ -264,7 +264,6 @@ val appCoreLaterSteps: Map<String, String> = mapOf(
     "core/ui/components/UserLevelBadge.kt" to "draws app R.drawable level badges; moves once drawable resources are generated",
     "core/store/LocalPlaylistStore.kt" to "Room AudioLibraryDatabase; the desktop music library is JSON, moves with the audio feature (M4c)",
     "core/store/PlayHistoryStore.kt" to "Room AudioLibraryDatabase; the desktop music library is JSON, moves with the audio feature (M4c)",
-    "core/store/UpdateHighlightsStore.kt" to "reads feature/settings/highlights; moves with the settings feature (M4d)",
     "core/events/BrandSuccessEvents.kt" to "the desktop success feedback carries its own origin model (DesktopBrandSuccessOrigin) that upstream's events do not have; moves with the feedback host",
     "core/ui/BrandSuccessFeedbackHost.kt" to "the desktop success feedback carries its own origin model (DesktopBrandSuccessOrigin); moves with BrandSuccessEvents",
     "core/store/FavoriteFolderCoverCache.kt" to "the desktop keeps one cover cache per favorites origin; moves with the favorites feature (M4d)",
@@ -274,7 +273,20 @@ val migratedAppCorePaths: Set<String> = appJavaRoot.resolve("com/android/purebil
     .filter { it.isFile && it.extension == "kt" }.map { it.relativeTo(appJavaRoot).invariantSeparatorsPath }
     .filter { path -> path.removePrefix("com/android/purebilibili/").let { core -> (appCoreDesktopOwned.keys + appCoreLaterSteps.keys).none { core.startsWith(it) } } }
     .toSortedSet()
-val migratedUpstreamRelativePaths = migratedWholeModulePaths + migratedAppCorePaths + setOf(
+// M4d (TON-1005): the feature areas plugin, profile, space, message, settings and login compile from the merged root as
+// well. A file stays on its legacy copy while upstream-core/m4d/later-steps.tsv lists it (path <TAB> what it waits for);
+// upstream-core/m4d/retired-generated.tsv lists the producer copies that re-declare names of the migrated files.
+val migratedAppM4dAreas = listOf("feature/plugin/", "feature/profile/", "feature/space/", "feature/message/", "feature/settings/", "feature/login/")
+fun m4dTable(name: String): List<Pair<String, String>> = file("upstream-core/m4d/$name").takeIf { it.isFile }?.readLines().orEmpty()
+    .filter { it.isNotBlank() && !it.startsWith("#") }.map { it.substringBefore('\t').trim() to it.substringAfter('\t', "").trim() }
+val appM4dLaterSteps: Map<String, String> = m4dTable("later-steps.tsv").toMap()
+val appM4dRetiredGeneratedCopies: Set<String> = m4dTable("retired-generated.tsv").map { it.first }.toSet()
+val migratedAppM4dPaths: Set<String> = migratedAppM4dAreas.asSequence().flatMap { appJavaRoot.resolve("com/android/purebilibili/$it").walkTopDown() }
+    .filter { it.isFile && it.extension == "kt" }.map { it.relativeTo(appJavaRoot).invariantSeparatorsPath }
+    .filter { path -> path.removePrefix("com/android/purebilibili/") !in appM4dLaterSteps }
+    .toSortedSet()
+val migratedAppPaths: Set<String> = migratedAppCorePaths + migratedAppM4dPaths
+val migratedUpstreamRelativePaths = migratedWholeModulePaths + migratedAppPaths + setOf(
     "com/android/purebilibili/core/network/AppSignUtils.kt",
     "com/android/purebilibili/core/network/WbiUtils.kt",
     "com/android/purebilibili/core/network/grpc/ProtoWire.kt",
@@ -2717,7 +2729,7 @@ val applyTransitionPatches by tasks.registering {
 val upstreamReplacementDirectory = file("upstream-core/replacements")
 fun migratedUpstreamFile(relative: String): File {
     val candidates = (migratedUpstreamModules.map { mergedRepositoryRoot.resolve(it + "src/main/java/" + relative) } +
-        listOfNotNull(appJavaRoot.resolve(relative).takeIf { relative in migratedAppCorePaths })).filter { it.isFile }
+        listOfNotNull(appJavaRoot.resolve(relative).takeIf { relative in migratedAppPaths })).filter { it.isFile }
     require(candidates.size == 1) { "$relative must exist in exactly one migrated upstream module, found ${candidates.size}" }
     return candidates.single()
 }
@@ -3094,7 +3106,7 @@ kotlin.sourceSets.named("main") {
     kotlin.exclude { element ->
         val path = element.file.toPath()
         path.startsWith(generatedDirectoryPath) && generatedDirectoryPath.relativize(path).joinToString("/").let {
-            it in upstreamOwnedGeneratedCopies || it in transitionPatchedGeneratedFiles
+            it in upstreamOwnedGeneratedCopies || it in appM4dRetiredGeneratedCopies || it in transitionPatchedGeneratedFiles
         }
     }
     // Migrated upstream files the desktop patches or replaces are compiled from their adapted form only.
@@ -3117,7 +3129,7 @@ kotlin.sourceSets.named("main") {
     migratedUpstreamModules.forEach { kotlin.srcDir(mergedRepositoryRoot.resolve(it + "src/main/java")) }
     // Only the migrated app core files of the app source root; the rest of the app is not migrated yet.
     val appJavaRootPath = appJavaRoot.toPath()
-    kotlin.exclude { element -> !element.isDirectory && element.file.toPath().startsWith(appJavaRootPath) && upstreamIdentity(element.file) !in migratedAppCorePaths }
+    kotlin.exclude { element -> !element.isDirectory && element.file.toPath().startsWith(appJavaRootPath) && upstreamIdentity(element.file) !in migratedAppPaths }
     kotlin.srcDir(appJavaRoot)
     kotlin.srcDir(generatedUpstream)
     kotlin.srcDir(layout.buildDirectory.dir("generated/api"))

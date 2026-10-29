@@ -1,0 +1,5 @@
+# producer copy (relative to build/generated/) that re-declares names of a migrated M4d file
+dynamic-full-card/com/android/purebilibili/feature/message/DesktopOriginalMessageUserBasicInfo.kt
+home-settings/generated/com/android/purebilibili/feature/settings/AppearanceSettingsLayoutPolicy.kt
+original-storage-settings/com/android/purebilibili/feature/settings/CacheClearAnimation.kt
+settings/com/android/purebilibili/feature/settings/webdav/DesktopWebDavConfig.kt
