@@ -84,3 +84,7 @@ internal class DesktopOriginalSettingsAndroidContext(private val settings: Deskt
         }
     }
 }
+
+/** The Android Context upstream UI code reads through LocalContext: Root's plugin context, whose settings_prefs is the
+ * settings document. Provided once at the window root; a composition outside it fails instead of reading a detached store. */
+internal val LocalDesktopUpstreamAndroidContext = androidx.compose.runtime.staticCompositionLocalOf<android.content.Context?> { null }

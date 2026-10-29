@@ -3,15 +3,14 @@ package androidx.compose.ui.platform
 import androidx.compose.runtime.Composable
 
 /**
- * Desktop LocalContext for upstream app code: the Android Context of the settings owner the desktop page already
- * provides (LocalDesktopOriginalPlayerSettingsContext), so upstream stores read and write Root's settings document
- * with that page's write admission. A composition without a settings owner fails with that local's own error instead
- * of reading a detached default store.
+ * Desktop LocalContext for upstream app code: the Android Context the window root provides
+ * (LocalDesktopUpstreamAndroidContext), whose settings_prefs is Root's settings document. Upstream UI code reads
+ * settings through it; desktop writes pass their page's own Context (DesktopOriginalPlayerSettingsContext.androidContext).
+ * A composition outside the root fails loudly instead of reading a detached default store.
  */
 object LocalContext {
     val current: android.content.Context
-        @Composable get() {
-            val settings = com.bilipai.desktop.ui.LocalDesktopOriginalPlayerSettingsContext.current
-            return settings.androidContext
+        @Composable get() = checkNotNull(com.bilipai.desktop.ui.LocalDesktopUpstreamAndroidContext.current) {
+            "Upstream code needs the window root's LocalDesktopUpstreamAndroidContext"
         }
 }

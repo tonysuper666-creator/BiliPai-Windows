@@ -28,6 +28,7 @@ import com.android.purebilibili.feature.settings.AppThemeMode
 import com.bilipai.desktop.appearance.DesktopAppearanceTheme
 import com.bilipai.desktop.appearance.DesktopThemeSettings
 import com.bilipai.desktop.plugins.DesktopPluginContext
+import com.bilipai.desktop.plugins.asAndroidContext
 import com.bilipai.desktop.plugins.DesktopPluginStore
 import com.bilipai.desktop.settings.DesktopDynamicTimelinePreferences
 import com.bilipai.desktop.settings.DesktopHomeCardPreferences
@@ -191,6 +192,8 @@ class DesktopWindowsVideoDetailsPanelLayoutTest {
                     LocalWindowInfo provides currentWindow,
                     LocalDesktopHomeCardPreferences provides home,
                     LocalDesktopDynamicTimelinePreferences provides dynamic,
+                    // The window root provides this for upstream LocalContext reads (DesktopShell).
+                    LocalDesktopUpstreamAndroidContext provides context.asAndroidContext(),
                 ) {
                     DesktopAppearanceTheme(DesktopThemeSettings(uiStyle = style, themeMode = mode,
                         hapticFeedbackEnabled = false), systemLanguageTags = listOf("zh-CN")) {

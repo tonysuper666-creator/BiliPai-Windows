@@ -1776,7 +1776,9 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         onDispose { registration?.close() }
     }
     val modalContentBlur = com.bilipai.desktop.ui.rememberDesktopOriginalWindowModalBlur(hostWindow)
+    val upstreamAndroidContext = remember(globalPluginContext) { globalPluginContext.asAndroidContext() }
     CompositionLocalProvider(LocalDesktopBrowseMemory provides browseMemory, LocalUiSkinState provides packages.skin,
+        com.bilipai.desktop.ui.LocalDesktopUpstreamAndroidContext provides upstreamAndroidContext,
         com.bilipai.desktop.ui.LocalDesktopOriginalModalContentBlurTarget provides modalContentBlur,
         LocalDesktopWindowsPlayerWindow provides hostWindow,
         LocalDesktopWindowsVideoEnhancement provides DesktopWindowsVideoEnhancementUiBinding(
