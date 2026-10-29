@@ -48,7 +48,7 @@ import ux_shell_model as shell  # noqa: E402
 import ux_source as source  # noqa: E402
 import ux_vendored_player_keys as vk  # noqa: E402
 from test_ux_leaf_anchor_guard import call_arguments, check_legacy_branch, check_must_keep  # noqa: E402
-from test_ux_leaf_layout_binding import BASE_SHA256, HUNKS, V6_HUNKS, reverse_apply, reverse_v6  # noqa: E402
+from test_ux_leaf_layout_binding import BASE_SHA256, HUNKS, TON1028_HUNKS, V6_HUNKS, reverse_apply, reverse_chain, reverse_v6  # noqa: E402
 
 CONTRACT = model.load()
 KEYS = CONTRACT["player_keys"]
@@ -919,7 +919,7 @@ class LeafWiringTest(NeedleCase):
     def test_the_diff_is_small_and_exactly_the_recorded_size(self):
         import difflib
         base = reverse_v6(LEAF_TEXT).split("\n")
-        now = LEAF_TEXT.split("\n")
+        now = reverse_chain(LEAF_TEXT, TON1028_HUNKS).split("\n")  # V6 as it landed; the later TON-1028 hunk is undone first
         added = removed = 0
         for tag, i1, i2, j1, j2 in difflib.SequenceMatcher(None, base, now, autojunk=False).get_opcodes():
             if tag != "equal":

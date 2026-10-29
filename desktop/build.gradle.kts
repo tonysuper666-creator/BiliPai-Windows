@@ -3046,7 +3046,8 @@ val appCoreUpstreamTestsNotRun: Map<String, String> = mapOf(
 )
 val appCoreUpstreamTestPaths: Set<String> = appTestRoot.resolve("com/android/purebilibili/core").walkTopDown()
     .filter { it.isFile && it.extension == "kt" }
-    .filter { file -> !Regex("""^import (org\.junit|org\.robolectric|io\.mockk|androidx\.test)""", RegexOption.MULTILINE).containsMatchIn(file.readText()) }
+    // JUnit 4, Robolectric, mockk and androidx.test are not on the desktop test classpath; JUnit 5 (org.junit.jupiter) is.
+    .filter { file -> !Regex("""^import (org\.junit\.(?!jupiter)|org\.robolectric|io\.mockk|androidx\.test)""", RegexOption.MULTILINE).containsMatchIn(file.readText()) }
     .map { it.relativeTo(appTestRoot).invariantSeparatorsPath }
     .filter { path -> path.removePrefix("com/android/purebilibili/").let { core -> core !in appCoreUpstreamTestsNotRun &&
         (appCoreDesktopOwned.keys + appCoreLaterSteps.keys).none { core.startsWith(it) } &&

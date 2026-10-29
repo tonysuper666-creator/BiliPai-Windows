@@ -11,6 +11,7 @@ import com.android.purebilibili.core.plugin.*
 import com.android.purebilibili.feature.plugin.googlecast.GoogleCastMediaLoader
 import com.android.purebilibili.feature.plugin.googlecast.toCastPluginRoute
 import com.bilipai.desktop.plugins.DesktopPluginContext
+import com.bilipai.desktop.plugins.asAndroidContext
 import com.bilipai.desktop.plugins.desktopPluginContext
 import com.bilipai.desktop.plugins.DesktopPluginScopeRegistry
 import kotlinx.coroutines.*
@@ -48,6 +49,8 @@ class DesktopGoogleCastPlugin : BuiltinPlugin, CastPluginApi {
     private val _busy = MutableStateFlow(false)
     val isBusy = _busy.asStateFlow()
 
+    /** Root starts discovery with the plugin platform it owns. */
+    fun startRouteDiscovery(context: DesktopPluginContext) = startRouteDiscovery(context.asAndroidContext())
     override fun startRouteDiscovery(androidContext: android.content.Context) {
         val context = desktopPluginContext(androidContext)
         if (discoveryJob?.isActive == true) return
