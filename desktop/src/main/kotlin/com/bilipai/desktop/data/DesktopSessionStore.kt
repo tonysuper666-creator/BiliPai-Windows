@@ -264,20 +264,22 @@ internal class DesktopSessionStore(private val path: Path = defaultPath(), priva
             }
             val now = System.currentTimeMillis()
             var accountCookies = saved.cookies
+            // Candidate state: published only after persist succeeds, so a failed save keeps the request cookies.
+            val nextServerCookies = serverCookies.toMutableMap()
             cookies.filter { belongsToResponseHost(it, url.host) }.forEach { cookie ->
                 if (cookie.expiresAt <= now) {
-                    serverCookies.remove(cookie.identity())
+                    nextServerCookies.remove(cookie.identity())
                     if (cookie.name in ACCOUNT_COOKIE_NAMES && cookie.path == "/") accountCookies = accountCookies - cookie.name
                 } else {
                     // Set-Cookie may intentionally target a future path, so do not call matches(url) here.
-                    serverCookies[cookie.identity()] = cookie
+                    nextServerCookies[cookie.identity()] = cookie
                 }
             }
-            removeExpired(now)
-            val next = saved.copy(cookies = accountCookies, serverCookies = serverCookies.values.map { ServerCookie.fromCookie(it) })
+            nextServerCookies.entries.removeIf { it.value.expiresAt <= now }
+            val next = saved.copy(cookies = accountCookies, serverCookies = nextServerCookies.values.map { ServerCookie.fromCookie(it) })
             val credentialChanged = saved.cookies["SESSDATA"] != next.cookies["SESSDATA"]
             persist(next)
-            saved = next; refreshPlaybackAuthorizationLocked()
+            saved = next; replaceServerCookies(nextServerCookies); refreshPlaybackAuthorizationLocked()
             if (credentialChanged) generation++
         }
     }
@@ -323,14 +325,17 @@ internal class DesktopSessionStore(private val path: Path = defaultPath(), priva
         val previous = accountRecords(saved)
         val changed = saved.account?.mid != account.mid || saved.cookies["SESSDATA"] != cookies["SESSDATA"]
         val sameAccount = saved.account?.mid == account.mid
-        if (snapshot != null) {
-            serverCookies.clear(); snapshot.server.forEach { serverCookies[it.identity()] = it }
-        } else if (saved.account != null && !sameAccount) serverCookies.clear()
+        // Candidate state: published only after persist succeeds, so a failed save keeps the previous request cookies.
+        val nextServerCookies = when {
+            snapshot != null -> snapshot.server.associateBy { it.identity() }
+            saved.account != null && !sameAccount -> emptyMap()
+            else -> serverCookies.toMap()
+        }
         val authorizedNames = if (imported) PERSISTED_COOKIE_NAMES else ACCOUNT_COOKIE_NAMES
         var newSaved = saved.copy(
             cookies = (if (sameAccount || saved.account == null) saved.cookies.filterKeys { it in VISITOR_COOKIE_NAMES } else emptyMap()) + cookies.filterKeys { it in authorizedNames },
             account = account,
-            serverCookies = serverCookies.values.map { ServerCookie.fromCookie(it) },
+            serverCookies = nextServerCookies.values.map { ServerCookie.fromCookie(it) },
             spiCookies = snapshot?.spi ?: saved.spiCookies.takeIf { sameAccount || saved.account == null }.orEmpty(),
             accessToken = credentials?.accessToken ?: saved.accessToken.takeIf { sameAccount && preserveAccessToken },
             refreshToken = credentials?.refreshToken ?: saved.refreshToken.takeIf { sameAccount && preserveAccessToken }.orEmpty(),
@@ -340,7 +345,7 @@ internal class DesktopSessionStore(private val path: Path = defaultPath(), priva
         )
         newSaved = newSaved.copy(accounts = previous.filterNot { it.session.mid == account.mid } + recordCurrent(newSaved))
         persist(newSaved, explicit = true)
-        saved = newSaved; refreshPlaybackAuthorizationLocked()
+        saved = newSaved; replaceServerCookies(nextServerCookies); refreshPlaybackAuthorizationLocked()
         if (changed) generation++
         mutableAccount.value = account
         mutableAccounts.value = accountRecords(saved).map { it.toInfo() }
@@ -427,6 +432,10 @@ internal class DesktopSessionStore(private val path: Path = defaultPath(), priva
 
     private fun SavedAccount.toInfo() = DesktopStoredAccountInfo(AccountSummary(session.mid, session.name, session.face, session.isVip),
         session.lastUsedAt, session.accessToken.isNotBlank(), session.accessTokenPlatform)
+
+    private fun replaceServerCookies(next: Map<CookieIdentity, Cookie>) {
+        serverCookies.clear(); serverCookies.putAll(next)
+    }
 
     private fun removeExpired(now: Long) {
         serverCookies.entries.removeIf { it.value.expiresAt <= now }

@@ -1,5 +1,6 @@
 package com.bilipai.desktop.data
 
+import okhttp3.Cookie
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import java.nio.file.Files
 import java.nio.file.Path
@@ -23,6 +24,11 @@ class DesktopCredentialPersistenceTest {
     private fun sessionFile(): Path = Files.createTempDirectory("bilipai-credentials-").resolve("session.json")
     private fun DesktopSessionStore.sentSessData(): String? =
         loadForRequest("https://api.bilibili.com/x/web-interface/nav".toHttpUrl()).firstOrNull { it.name == "SESSDATA" }?.value
+
+    private val navUrl = "https://api.bilibili.com/x/web-interface/nav".toHttpUrl()
+    private fun DesktopSessionStore.sentCookies(): Map<String, String> = loadForRequest(navUrl).associate { it.name to it.value }
+    private fun serverCookie(name: String, value: String) =
+        Cookie.Builder().name(name).value(value).domain("bilibili.com").path("/").secure().build()
 
     private fun child(vararg args: String): String {
         val java = ProcessHandle.current().info().command().orElseThrow()
@@ -76,6 +82,60 @@ class DesktopCredentialPersistenceTest {
         val restarted = DesktopSessionStore(file)
         assertEquals(1L, restarted.account.value?.mid)
         assertEquals("old-sessdata", restarted.sentSessData())
+    }
+
+    @Test fun `an encryption failure during a login keeps every request cookie of the previous session`() {
+        val file = sessionFile()
+        val store = DesktopSessionStore(file)
+        store.saveAccount(mapOf("SESSDATA" to "old-sessdata"), AccountSummary(1, "old", ""),
+            snapshot = DesktopSessionStore.CookieSnapshot(listOf(serverCookie("bp_t", "old-server")), emptyMap()))
+        val sentBefore = store.sentCookies()
+        val currentBefore = store.currentCookies()
+        val before = Files.readAllBytes(file)
+        DesktopCredentialCipher.protection = FailingProtection
+        assertFailsWith<DesktopCredentialProtectionException> {
+            store.saveLoginAccount(mapOf("SESSDATA" to "new-sessdata", "bili_jct" to "new-csrf"), AccountSummary(2, "new", ""), null,
+                DesktopSessionStore.CookieSnapshot(listOf(serverCookie("bili_jct", "new-csrf"), serverCookie("bp_t", "new-server")), emptyMap()),
+                store.generation) { true }
+        }
+        assertEquals(1L, store.account.value?.mid)
+        assertEquals(sentBefore, store.sentCookies())
+        assertEquals(currentBefore, store.currentCookies())
+        assertContentEquals(before, Files.readAllBytes(file))
+    }
+
+    @Test fun `an encryption failure while saving response cookies keeps the request cookies and the file`() {
+        val file = sessionFile()
+        val store = DesktopSessionStore(file)
+        store.saveAccount(mapOf("SESSDATA" to "old-sessdata"), AccountSummary(1, "old", ""),
+            snapshot = DesktopSessionStore.CookieSnapshot(listOf(serverCookie("bp_t", "old-server")), emptyMap()))
+        val sentBefore = store.sentCookies()
+        val generationBefore = store.generation
+        val before = Files.readAllBytes(file)
+        DesktopCredentialCipher.protection = FailingProtection
+        assertFailsWith<DesktopCredentialProtectionException> {
+            store.saveFromResponse(navUrl, listOf(serverCookie("bili_jct", "new-csrf"), serverCookie("bp_t", "new-server")))
+        }
+        assertEquals(sentBefore, store.sentCookies())
+        assertEquals(generationBefore, store.generation)
+        assertContentEquals(before, Files.readAllBytes(file))
+        DesktopCredentialCipher.protection = platform
+        store.saveFromResponse(navUrl, listOf(serverCookie("bili_jct", "new-csrf")))
+        assertEquals("new-csrf", store.sentCookies()["bili_jct"])
+    }
+
+    @Test fun `a saved credential with an unsupported protection or version is refused and the file is kept`() {
+        for (unsupported in listOf("dpapi:v2:AAAA", "test-only:v2:AAAA", "other:v1:AAAA", "dpapi:AAAA")) {
+            val file = sessionFile()
+            Files.writeString(file, """{"cookies":{"SESSDATA":"$unsupported"},"account":{"mid":9,"name":"x","avatar":""},"schemaVersion":3}""")
+            val before = Files.readAllBytes(file)
+            val store = DesktopSessionStore(file)
+            assertNotNull(store.credentialRestoreFailure, unsupported)
+            assertNull(store.account.value, unsupported)
+            assertNull(store.sentSessData(), unsupported)
+            assertContentEquals(before, Files.readAllBytes(file), unsupported)
+            assertFailsWith<DesktopCredentialProtectionException>(unsupported) { DesktopCredentialCipher.unprotect(unsupported) }
+        }
     }
 
     @Test fun `a decryption failure at startup keeps the file, reports the reason and recovers on the next start`() {

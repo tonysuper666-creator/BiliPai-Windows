@@ -102,11 +102,13 @@ internal class UnavailableCredentialProtection(private val osName: String) : Des
         "$osName 上没有可用的系统凭据保护（桌面版只在 Windows 上用 DPAPI 保存登录凭据），不保存明文")
 }
 
-/** Text form of protected credentials: `<id>:v1:<base64>`. The legacy `dpapi:v1:` values written by earlier builds
- * are exactly this form. Values without a known tag are pre-encryption plaintext, read once and re-sealed on the
- * next successful write. */
+/** Text form of protected credentials: `<id>:v<version>:<base64>`; this build writes and opens `v1` only. The legacy
+ * `dpapi:v1:` values written by earlier builds are exactly this form. A value in this form with an unknown id or
+ * version is refused, never sent as a cookie. Values not in this form are pre-encryption plaintext, read once and
+ * re-sealed on the next successful write. */
 internal object DesktopCredentialCipher {
-    private const val VERSION = ":v1:"
+    private const val VERSION = 1
+    private val sealedForm = Regex("^([A-Za-z][A-Za-z0-9_-]*):v([0-9]+):")
     private val knownIds = setOf(WindowsDpapiCredentialProtection.id, TestOnlyCredentialProtection.id)
 
     @Volatile
@@ -120,22 +122,29 @@ internal object DesktopCredentialCipher {
         val current = protection
         val plain = value.toByteArray(StandardCharsets.UTF_8)
         try {
-            return current.id + VERSION + Base64.getEncoder().encodeToString(current.protect(plain))
+            return "${current.id}:v$VERSION:" + Base64.getEncoder().encodeToString(current.protect(plain))
         } finally { plain.fill(0) }
     }
 
     fun unprotect(value: String): String {
-        val id = value.substringBefore(VERSION, missingDelimiterValue = "")
-        if (id !in knownIds) return value
+        val sealed = sealedForm.find(value)
+        if (sealed == null) {
+            if (knownIds.any { value.startsWith("$it:") }) throw DesktopCredentialProtectionException("凭据数据已损坏（格式无法识别）")
+            return value // Legacy plaintext, migrated on the next successful write.
+        }
+        val (id, version) = sealed.destructured
+        if (id !in knownIds) throw DesktopCredentialProtectionException("这份凭据由不支持的保护方式「$id」保存，无法解密")
+        if (version != VERSION.toString()) throw DesktopCredentialProtectionException("这份凭据的保护格式版本 v$version 不受支持，无法解密")
         val current = protection
         if (current.id != id) throw DesktopCredentialProtectionException(
             "这份凭据由「$id」保护，当前进程使用「${current.id}」，无法解密")
-        val sealed = try { Base64.getDecoder().decode(value.substring(id.length + VERSION.length)) }
+        val bytes = try { Base64.getDecoder().decode(value.substring(sealed.range.last + 1)) }
             catch (failure: IllegalArgumentException) { throw DesktopCredentialProtectionException("凭据数据已损坏", failure) }
-        val plain = current.unprotect(sealed)
+        val plain = current.unprotect(bytes)
         try { return String(plain, StandardCharsets.UTF_8) } finally { plain.fill(0) }
     }
 
-    /** True when [value] is sealed by a known protection (used by tests and the restore record). */
-    fun isProtected(value: String): Boolean = value.substringBefore(VERSION, missingDelimiterValue = "") in knownIds
+    /** True when [value] is sealed in the format this build writes (used by tests and the restore record). */
+    fun isProtected(value: String): Boolean = sealedForm.find(value)?.destructured
+        ?.let { (id, version) -> id in knownIds && version == VERSION.toString() } == true
 }
