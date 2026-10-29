@@ -188,6 +188,11 @@ val migratedUpstreamModules = listOf("core-data/", "network-core/") + migratedWh
 // this module, except the Android-only areas the desktop implements itself (appCoreDesktopOwned, each with the reason).
 val appJavaRoot = mergedRepositoryRoot.resolve("app/src/main/java")
 val appCoreDesktopOwned: Map<String, String> = mapOf(
+    "core/theme/AppFontFileStore.kt" to "Android 系统壁纸取色、定时深色（AlarmManager）与字体文件 ContentResolver",
+    "core/theme/ScheduledDarkThemeObserver.kt" to "Android 系统壁纸取色、定时深色（AlarmManager）与字体文件 ContentResolver",
+    "core/theme/SeedWallpaperColorScheme.kt" to "Android 系统壁纸取色、定时深色（AlarmManager）与字体文件 ContentResolver",
+    "core/theme/SystemWallpaperSeed.kt" to "Android 系统壁纸取色、定时深色（AlarmManager）与字体文件 ContentResolver",
+    "core/theme/WallpaperColorCompatibility.kt" to "Android 系统壁纸取色、定时深色（AlarmManager）与字体文件 ContentResolver",
     "core/cache/PlayUrlCache.kt" to "Media3 播放地址缓存；桌面播放地址由 DesktopRepository 管理",
     "core/database/AppDatabase.kt" to "Room 数据库；桌面用 JSON 存储（DesktopBlockedUpStore、DesktopCommentFraudJsonDao 等）",
     "core/database/Converters.kt" to "Room 数据库；桌面用 JSON 存储（DesktopBlockedUpStore、DesktopCommentFraudJsonDao 等）",
@@ -253,8 +258,6 @@ val appCoreDesktopOwned: Map<String, String> = mapOf(
 val appCoreLaterSteps: Map<String, String> = mapOf(
     "core/plugin/" to "upstream moved the plugin contracts to plugin-sdk with a new identity model (capabilityManifest); " +
         "the desktop plugin platform and the legacy feature plugins move to it together",
-    "core/theme/" to "upstream theme code uses materialkolor 6 (com.materialkolor.material3); the legacy appearance settings copies " +
-        "and their producer use the 4.x API, and both versions cannot be on one classpath, so they move together",
     "core/ui/components/PageAwareAsyncImage.kt" to "reads feature/home's LocalHomeCardCoverLoadingAllowed and Android drawables; moves with the home feature (M4b)",
     "core/ui/wallpaper/WallpaperMedia" to "video wallpaper on Media3/AndroidView and BitmapFactory probing; needs a desktop replacement over the mpv player",
     "core/util/PlayerOrientationPolicy.kt" to "Activity orientation of the player; moves with the video feature (M4a)",
@@ -2375,7 +2378,7 @@ val verifyAppearanceDependencies by tasks.registering {
         val pins = JsonSlurper().parse(file("third-party/miuix5157/dependency-pins.json")) as Map<*, *>
         val artifacts = configurations.getByName("runtimeClasspath").resolvedConfiguration.resolvedArtifacts
         val dependencies = pins["dependencies"] as List<*>
-        require(dependencies.size == 8) { "The fixed appearance dependency inventory changed." }
+        require(dependencies.size == 9) { "The fixed appearance dependency inventory changed." }
         fun digest(file: File) = MessageDigest.getInstance("SHA-256").digest(file.readBytes()).joinToString("") { "%02x".format(it) }
         dependencies.forEach { item ->
             val entry = item as Map<*, *>
@@ -2387,7 +2390,7 @@ val verifyAppearanceDependencies by tasks.registering {
             val entry = item as Map<*, *>
             require(digest(file("src/main/resources/${entry["resource"]}")) == entry["sha256"]) { "Appearance notice checksum failed: ${entry["resource"]}" }
         }
-        logger.lifecycle("Verified eight fixed appearance runtime dependencies and six source notices.")
+        logger.lifecycle("Verified nine fixed appearance runtime dependencies and four source notices.")
     }
 }
 
@@ -3205,8 +3208,7 @@ dependencies {
     // desktop implementation onto runtimeClasspath transitively.
     implementation("androidx.navigationevent:navigationevent-compose:1.1.2")
     implementation(project(":miuix5157"))
-    implementation("com.materialkolor:material-kolor:4.1.1")
-    implementation("com.materialkolor:material-color-utilities:5.0.1")
+    implementation("com.materialkolor:material-kolor-material3:6.0.0-beta01")
     implementation("dev.chrisbanes.haze:haze-jvm:2.0.1")
     implementation("dev.chrisbanes.haze:haze-utils-jvm:2.0.1")
     implementation("dev.chrisbanes.haze:haze-blur-jvm:2.0.1")
