@@ -184,7 +184,83 @@ val migratedWholeModulePaths: Set<String> = migratedWholeModules.flatMap { modul
     root.walkTopDown().filter { it.isFile && it.extension == "kt" }.map { it.relativeTo(root).invariantSeparatorsPath }.toList()
 }.toSet()
 val migratedUpstreamModules = listOf("core-data/", "network-core/") + migratedWholeModules
-val migratedUpstreamRelativePaths = migratedWholeModulePaths + setOf(
+// App core (TON-1000): the files under app/src/main/java/com/android/purebilibili/core compile from the merged root in
+// this module, except the Android-only areas the desktop implements itself (appCoreDesktopOwned, each with the reason).
+val appJavaRoot = mergedRepositoryRoot.resolve("app/src/main/java")
+val appCoreDesktopOwned: Map<String, String> = mapOf(
+    "core/cache/PlayUrlCache.kt" to "Media3 播放地址缓存；桌面播放地址由 DesktopRepository 管理",
+    "core/database/AppDatabase.kt" to "Room 数据库；桌面用 JSON 存储（DesktopBlockedUpStore、DesktopCommentFraudJsonDao 等）",
+    "core/database/Converters.kt" to "Room 数据库；桌面用 JSON 存储（DesktopBlockedUpStore、DesktopCommentFraudJsonDao 等）",
+    "core/database/DatabaseModule.kt" to "Room 数据库；桌面用 JSON 存储（DesktopBlockedUpStore、DesktopCommentFraudJsonDao 等）",
+    "core/database/dao/BlockedUpDao.kt" to "Room 数据库；桌面用 JSON 存储（DesktopBlockedUpStore、DesktopCommentFraudJsonDao 等）",
+    "core/database/dao/CommentFraudDao.kt" to "Room 数据库；桌面用 JSON 存储（DesktopBlockedUpStore、DesktopCommentFraudJsonDao 等）",
+    "core/lifecycle/BackgroundManager.kt" to "Android 进程前后台与内存回收回调",
+    "core/lifecycle/BackgroundMemoryTrimPolicy.kt" to "Android 进程前后台与内存回收回调",
+    "core/paging/ForwardPagingSession.kt" to "androidx.paging（桌面无此依赖）",
+    "core/paging/ForwardPagingSource.kt" to "androidx.paging（桌面无此依赖）",
+    "core/performance/Android17Diagnostics.kt" to "Android 进程退出与 Android 17 诊断；桌面诊断走 DesktopDiagnostics",
+    "core/performance/NativeExitTrace.kt" to "Android 进程退出与 Android 17 诊断；桌面诊断走 DesktopDiagnostics",
+    "core/performance/ProcessExitContext.kt" to "Android 进程退出与 Android 17 诊断；桌面诊断走 DesktopDiagnostics",
+    "core/player/BasePlayerViewModel.kt" to "Media3/ExoPlayer 播放栈；桌面播放走 mpv（com.bilipai.desktop.player）",
+    "core/player/HiResCompatibleRenderersFactory.kt" to "Media3/ExoPlayer 播放栈；桌面播放走 mpv（com.bilipai.desktop.player）",
+    "core/player/LoudnessAwareRenderersFactory.kt" to "Media3/ExoPlayer 播放栈；桌面播放走 mpv（com.bilipai.desktop.player）",
+    "core/player/LoudnessNormalizationAudioProcessor.kt" to "Media3/ExoPlayer 播放栈；桌面播放走 mpv（com.bilipai.desktop.player）",
+    "core/player/PlaybackMediaCache.kt" to "Media3/ExoPlayer 播放栈；桌面播放走 mpv（com.bilipai.desktop.player）",
+    "core/player/PlayerVolumeController.kt" to "Media3/ExoPlayer 播放栈；桌面播放走 mpv（com.bilipai.desktop.player）",
+    "core/player/waveform/AudioWaveformCollector.kt" to "Media3/ExoPlayer 播放栈；桌面播放走 mpv（com.bilipai.desktop.player）",
+    "core/player/waveform/AudioWaveformPolicy.kt" to "Media3/ExoPlayer 播放栈；桌面播放走 mpv（com.bilipai.desktop.player）",
+    "core/player/waveform/AudioWaveformSource.kt" to "Media3/ExoPlayer 播放栈；桌面播放走 mpv（com.bilipai.desktop.player）",
+    "core/player/waveform/WaveformAudioSink.kt" to "Media3/ExoPlayer 播放栈；桌面播放走 mpv（com.bilipai.desktop.player）",
+    "core/plugin/js/BiliPaiJsRuntime.kt" to "Android 内置 JS 引擎；桌面插件走 GraalJS 进程（DesktopJsWorker）",
+    "core/plugin/json/JsonPluginStatsSummaryWorker.kt" to "WorkManager 后台任务；桌面没有系统后台调度",
+    "core/store/AudioLibraryDatabase.kt" to "Room 数据库；桌面用 JSON 存储（DesktopBlockedUpStore、DesktopCommentFraudJsonDao 等）",
+    "core/theme/AppFontFileStore.kt" to "Android 系统壁纸取色、定时深色（AlarmManager）与字体文件 ContentResolver",
+    "core/theme/ScheduledDarkThemeObserver.kt" to "Android 系统壁纸取色、定时深色（AlarmManager）与字体文件 ContentResolver",
+    "core/theme/SeedWallpaperColorScheme.kt" to "Android 系统壁纸取色、定时深色（AlarmManager）与字体文件 ContentResolver",
+    "core/theme/SystemWallpaperSeed.kt" to "Android 系统壁纸取色、定时深色（AlarmManager）与字体文件 ContentResolver",
+    "core/theme/WallpaperColorCompatibility.kt" to "Android 系统壁纸取色、定时深色（AlarmManager）与字体文件 ContentResolver",
+    "core/ui/LottieComponents.kt" to "Lottie Android 渲染（桌面无此依赖）",
+    "core/ui/MaidLottieAnimationSettingsHost.kt" to "Lottie Android 渲染（桌面无此依赖）",
+    "core/ui/SystemBarCompat.kt" to "Android 系统栏、折叠屏、挖孔与画中画窗口",
+    "core/ui/adaptive/HingeOcclusionInputShield.kt" to "Android 系统栏、折叠屏、挖孔与画中画窗口",
+    "core/ui/adaptive/HingeSafeOverlayRegionsPolicy.kt" to "Android 系统栏、折叠屏、挖孔与画中画窗口",
+    "core/ui/animation/ParticleDissolveEffect.kt" to "OpenGL ES 视图粒子特效（GLSurfaceView）",
+    "core/ui/animation/gl/ParticleRenderer.kt" to "OpenGL ES 视图粒子特效（GLSurfaceView）",
+    "core/ui/animation/gl/ShaderUtils.kt" to "OpenGL ES 视图粒子特效（GLSurfaceView）",
+    "core/ui/animation/gl/ThanosEffectView.kt" to "OpenGL ES 视图粒子特效（GLSurfaceView）",
+    "core/ui/animation/gl/ThanosParticlePolicy.kt" to "OpenGL ES 视图粒子特效（GLSurfaceView）",
+    "core/ui/common/ClipboardUtils.kt" to "Android 剪贴板与文本选择 ActionMode",
+    "core/ui/common/Modifiers.kt" to "Android 剪贴板与文本选择 ActionMode",
+    "core/ui/common/TextSelectionBottomSheet.kt" to "Android 剪贴板与文本选择 ActionMode",
+    "core/ui/common/TextSelectionHost.kt" to "Android 剪贴板与文本选择 ActionMode",
+    "core/ui/common/TextSelectionPolicy.kt" to "Android 剪贴板与文本选择 ActionMode",
+    "core/ui/performance/AppDisplayModePreference.kt" to "Android 显示模式与帧率覆盖（Window/Display API、androidx.metrics）",
+    "core/ui/performance/JankTracking.kt" to "Android 显示模式与帧率覆盖（Window/Display API、androidx.metrics）",
+    "core/ui/performance/PanelFrameRateOverridePolicy.kt" to "Android 显示模式与帧率覆盖（Window/Display API、androidx.metrics）",
+    "core/ui/performance/VideoPlaybackRefreshRateEffect.kt" to "Android 显示模式与帧率覆盖（Window/Display API、androidx.metrics）",
+    "core/ui/performance/VideoRefreshRatePolicy.kt" to "Android 显示模式与帧率覆盖（Window/Display API、androidx.metrics）",
+    "core/ui/util/DeviceCornerRadius.kt" to "Android 系统栏、折叠屏、挖孔与画中画窗口",
+    "core/util/AnalyticsHelper.kt" to "Android 日志、崩溃采集与 Firebase；桌面走 DesktopDiagnostics 与 desktop/src 里的 Logger 桥",
+    "core/util/CacheUtils.kt" to "Android 权限、相册、分享面板、ConnectivityManager 与应用缓存目录",
+    "core/util/CrashReporter.kt" to "Android 日志、崩溃采集与 Firebase；桌面走 DesktopDiagnostics 与 desktop/src 里的 Logger 桥",
+    "core/util/FileUtils.kt" to "Android 权限、相册、分享面板、ConnectivityManager 与应用缓存目录",
+    "core/util/FoldableDisplayPolicy.kt" to "Android 系统栏、折叠屏、挖孔与画中画窗口",
+    "core/util/GalleryVisualMediaContracts.kt" to "Android 权限、相册、分享面板、ConnectivityManager 与应用缓存目录",
+    "core/util/HingeLayoutPolicy.kt" to "Android 系统栏、折叠屏、挖孔与画中画窗口",
+    "core/util/Logger.kt" to "Android 日志、崩溃采集与 Firebase；桌面走 DesktopDiagnostics 与 desktop/src 里的 Logger 桥",
+    "core/util/MediaUtils.kt" to "Android 权限、相册、分享面板、ConnectivityManager 与应用缓存目录",
+    "core/util/NetworkUtils.kt" to "Android 权限、相册、分享面板、ConnectivityManager 与应用缓存目录",
+    "core/util/PermissionHelper.kt" to "Android 权限、相册、分享面板、ConnectivityManager 与应用缓存目录",
+    "core/util/PipAspectRatioPolicy.kt" to "Android 系统栏、折叠屏、挖孔与画中画窗口",
+    "core/util/ShareUtils.kt" to "Android 权限、相册、分享面板、ConnectivityManager 与应用缓存目录",
+    "core/util/VideoSurfaceCompatibility.kt" to "Android 系统栏、折叠屏、挖孔与画中画窗口",
+    "core/util/WindowSizeUtils.kt" to "Android 系统栏、折叠屏、挖孔与画中画窗口",
+)
+val migratedAppCorePaths: Set<String> = appJavaRoot.resolve("com/android/purebilibili/core").walkTopDown()
+    .filter { it.isFile && it.extension == "kt" }.map { it.relativeTo(appJavaRoot).invariantSeparatorsPath }
+    .filter { path -> appCoreDesktopOwned.keys.none { path.removePrefix("com/android/purebilibili/").startsWith(it) } }
+    .toSortedSet()
+val migratedUpstreamRelativePaths = migratedWholeModulePaths + migratedAppCorePaths + setOf(
     "com/android/purebilibili/core/network/AppSignUtils.kt",
     "com/android/purebilibili/core/network/WbiUtils.kt",
     "com/android/purebilibili/core/network/grpc/ProtoWire.kt",
@@ -2404,6 +2480,49 @@ val prepareJsWorkerResources by tasks.registering(Sync::class) {
 
 // Generated legacy files that re-declare migrated upstream declarations under another file name.
 val upstreamOwnedGeneratedCopies = setOf(
+    // app core (TON-1000): renamed subsets whose every declaration the upstream app core files now own.
+    "appearance/com/android/purebilibili/core/store/DesktopOriginalWallpaperPaletteModels.kt",
+    "appearance/com/android/purebilibili/core/store/ThemeSelectionStore.kt",
+    "blocked-list-ui/com/android/purebilibili/core/ui/components/DesktopUpstreamUserLevelBadge.kt",
+    "dynamic-detail-container/com/android/purebilibili/core/store/DesktopOriginalDetailLiquidReusePolicy.kt",
+    "dynamic-detail-container/com/android/purebilibili/core/ui/transition/DesktopOriginalDetailPredictiveBlurPolicy.kt",
+    "dynamic-reply/com/android/purebilibili/core/store/DesktopOriginalReplySkeletonSettingsStore.kt",
+    "frosted-audio-renderer/com/android/purebilibili/core/store/DesktopOriginalBottomSearchModes.kt",
+    "home-page/com/android/purebilibili/core/store/DesktopHomeNavigationMigration.kt",
+    "home-page/com/android/purebilibili/core/store/navigation/DesktopHomeNavigationLabels.kt",
+    "home-page/com/android/purebilibili/core/ui/transition/DesktopHomeDepthOwnershipPolicy.kt",
+    "home-page/com/android/purebilibili/core/ui/wallpaper/DesktopHomeWallpaperType.kt",
+    "home-page/com/android/purebilibili/core/util/DesktopHomeCardTapEffect.kt",
+    "home-page/com/android/purebilibili/core/util/DesktopHomeTapEffect.kt",
+    "home-partition/com/android/purebilibili/core/ui/skeleton/DesktopOriginalMediaListSkeleton.kt",
+    "independent-bangumi-pages/com/android/purebilibili/core/ui/skeleton/DesktopOriginalBangumiPosterDetailSkeleton.kt",
+    "live-home-list/com/android/purebilibili/core/util/DesktopOriginalLiveApiErrors.kt",
+    "music-player-full/com/android/purebilibili/core/store/DesktopOriginalLocalPlaylistModels.kt",
+    "music-player-full/com/android/purebilibili/core/store/DesktopOriginalPlayHistoryModels.kt",
+    "original-article-detail/com/android/purebilibili/core/ui/skeleton/DesktopOriginalArticleSkeleton.kt",
+    "original-danmaku-list-menu/com/android/purebilibili/core/store/DanmakuSettingsScope.kt",
+    "original-danmaku-settings/com/android/purebilibili/core/store/DesktopOriginalDanmakuSettingsModels.kt",
+    "original-favorites/com/android/purebilibili/core/store/DesktopFavoriteChromePolicies.kt",
+    "original-favorites/com/android/purebilibili/core/ui/DesktopFavoriteBottomBarLocals.kt",
+    "original-favorites/com/android/purebilibili/core/ui/adaptive/DesktopFavoriteDeviceProfile.kt",
+    "original-favorites/com/android/purebilibili/core/ui/skeleton/DesktopFavoriteContentGridSkeleton.kt",
+    "original-favorites/com/android/purebilibili/core/util/DesktopFavoriteGridSkeleton.kt",
+    "original-navigation3-host/com/android/purebilibili/core/ui/transition/DesktopOriginalNavigationHostDepth.kt",
+    "original-navigation3-host/com/android/purebilibili/core/ui/transition/DesktopOriginalNavigationPredictiveBackground.kt",
+    "original-search-pages/com/android/purebilibili/core/ui/DesktopOriginalSearchNowPlayingAvoidance.kt",
+    "original-search-pages/com/android/purebilibili/core/ui/skeleton/DesktopOriginalSearchTrendingSkeleton.kt",
+    "original-video-detail-holder-full/com/android/purebilibili/core/ui/transition/DesktopOriginalVideoCardMorphProgressReporter.kt",
+    "original-video-fullscreen-pager/com/android/purebilibili/core/ui/skeleton/DesktopOriginalVideoCommentListSkeleton.kt",
+    "original-video-player-full-controls/com/android/purebilibili/core/store/DesktopOriginalPlayerProgressBehaviorModels.kt",
+    "original-video-player-full-controls/com/android/purebilibili/core/store/DesktopOriginalPlayerProgressPlacement.kt",
+    "original-video-player-section-full/com/android/purebilibili/core/store/DesktopOriginalPlayerInteractionSettings.kt",
+    "packages/com/android/purebilibili/core/plugin/skin/DesktopUiSkinCompositionPolicy.kt",
+    "playback-settings/com/android/purebilibili/core/store/player/DefaultAudioQuality.kt",
+    "plugins/com/android/purebilibili/core/plugin/feed/DesktopFeedConditionalValidators.kt",
+    "plugins/com/android/purebilibili/core/plugin/feed/DesktopSavedSubscriptionFeed.kt",
+    "video-tablet-full/com/android/purebilibili/core/store/DesktopOriginalTabletSecondaryDefaultTab.kt",
+    "whole-playback-settings/generated/com/android/purebilibili/core/store/DesktopOriginalHwDecodeMigrationPolicy.kt",
+    "whole-playback-settings/generated/com/android/purebilibili/core/store/DesktopOriginalPlaybackSettingsDefaults.kt",
     // design-system / design-tokens (TON-997): declarations that upstream's own files now own.
     "dynamic-tabs/com/android/purebilibili/core/ui/components/DesktopOriginalDynamicNativeTabs.kt",
     "dynamic-tabs/com/android/purebilibili/core/ui/DesktopOriginalDynamicImmersiveChrome.kt",
@@ -2811,6 +2930,10 @@ kotlin.sourceSets.named("main") {
     kotlin.srcDir(applyTransitionPatches)
     kotlin.srcDir(applyDesktopUpstreamPatches)
     migratedUpstreamModules.forEach { kotlin.srcDir(mergedRepositoryRoot.resolve(it + "src/main/java")) }
+    // Only the migrated app core files of the app source root; the rest of the app is not migrated yet.
+    val appJavaRootPath = appJavaRoot.toPath()
+    kotlin.exclude { element -> !element.isDirectory && element.file.toPath().startsWith(appJavaRootPath) && upstreamIdentity(element.file) !in migratedAppCorePaths }
+    kotlin.srcDir(appJavaRoot)
     kotlin.srcDir(generatedUpstream)
     kotlin.srcDir(layout.buildDirectory.dir("generated/api"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/danmaku"))
