@@ -1,0 +1,58 @@
+--- a/dynamic-full-card/com/android/purebilibili/data/repository/DesktopDynamicMessageShareRepository.kt
++++ b/dynamic-full-card/com/android/purebilibili/data/repository/DesktopDynamicMessageShareRepository.kt
+@@ -9,12 +9,6 @@
+ import kotlinx.coroutines.Dispatchers
+ import kotlinx.coroutines.withContext
+ import java.util.UUID
+-
+-internal data class MessageShareTarget(
+-    val mid: Long,
+-    val name: String,
+-    val avatarUrl: String,
+-)
+ 
+ internal class DesktopDynamicMessageShareRepository(private val request: suspend (String, ByteArray) -> ByteArray, private val mid: () -> Long?) {
+     private val SHARE_LIST_PATH = "/bilibili.im.interface.v1.ImInterface/ShareList"
+@@ -66,42 +60,3 @@
+         }
+     }
+ }
+-
+-internal fun buildDynamicShareSendRequest(
+-    senderUid: Long,
+-    receiverId: Long,
+-    content: String,
+-    timestampSeconds: Long,
+-    deviceId: String,
+-): ByteArray {
+-    val message = ProtoWire.message(
+-        ProtoWire.int64(1, senderUid),
+-        ProtoWire.int32(2, 1),
+-        ProtoWire.int64(3, receiverId),
+-        ProtoWire.int32(5, 7),
+-        ProtoWire.string(6, content),
+-        ProtoWire.int64(8, timestampSeconds),
+-        ProtoWire.int32(16, 1),
+-    )
+-    return ProtoWire.message(
+-        ProtoWire.bytes(1, message),
+-        ProtoWire.string(5, deviceId),
+-    )
+-}
+-
+-internal fun parseMessageShareTargets(bytes: ByteArray): List<MessageShareTarget> =
+-    ProtoWire.parseFields(bytes)
+-        .asSequence()
+-        .filter { it.number == 1 && it.wireType == ProtoWire.WIRE_LENGTH_DELIMITED }
+-        .mapNotNull { field ->
+-            val fields = ProtoWire.parseFields(field.bytes)
+-            val mid = fields.firstOrNull { it.number == 1 }?.varint ?: 0L
+-            if (mid <= 0L) return@mapNotNull null
+-            MessageShareTarget(
+-                mid = mid,
+-                name = fields.firstOrNull { it.number == 2 }?.let(ProtoWire::stringValue).orEmpty(),
+-                avatarUrl = fields.firstOrNull { it.number == 3 }?.let(ProtoWire::stringValue).orEmpty(),
+-            )
+-        }
+-        .distinctBy(MessageShareTarget::mid)
+-        .toList()

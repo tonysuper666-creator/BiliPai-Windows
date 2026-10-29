@@ -1,0 +1,13 @@
+--- a/original-video-full-owner/com/android/purebilibili/data/repository/DesktopOriginalVideoActionStatus.kt
++++ b/original-video-full-owner/com/android/purebilibili/data/repository/DesktopOriginalVideoActionStatus.kt
+@@ -5,10 +5,6 @@
+ import com.android.purebilibili.data.model.response.WatchLaterItem
+ import kotlinx.coroutines.Dispatchers
+ import kotlinx.coroutines.withContext
+-
+-internal fun isWatchLaterAid(items: List<WatchLaterItem>, aid: Long): Boolean {
+-    return aid > 0L && items.any { it.aid == aid }
+-}
+ 
+ internal class DesktopOriginalVideoActionStatus(
+     private val api: BilibiliApi,
