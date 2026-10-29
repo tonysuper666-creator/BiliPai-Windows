@@ -94,7 +94,7 @@ class DesktopFollowingPaginationRootTest {
         try {
             FollowingRootFixture(directory, 0).useSuspending { f ->
                 f.awaitInitialized(); val env = environment(f)
-                f.owned { FollowingCacheStore.saveSnapshot(env.cacheContext, 41L, 1, listOf(FollowingUser(mid=901L,uname="Cached"))) }
+                f.owned { FollowingCacheStore.saveSnapshot(env.cacheContext.asAndroidContext(), 41L, 1, listOf(FollowingUser(mid=901L,uname="Cached"))) }
                 f.followingReply = { check(gate.await(6, TimeUnit.SECONDS)); page(listOf(101L)) }
                 val vm = FollowingListViewModel(env)
                 f.ui { vm.loadFollowingList(41L) }
@@ -144,7 +144,7 @@ class DesktopFollowingPaginationRootTest {
                 f.driveUntil { (vm.uiState.value as? FollowingListUiState.Success)?.users?.map { it.mid } == listOf(201L) }
                 gate.countDown(); f.driveUntil { f.loadJobs.none() }
                 assertEquals(listOf(201L), users(vm))
-                f.owned { assertEquals(listOf(201L), FollowingCacheStore.getSnapshot(env.cacheContext,41L)?.users?.map { it.mid }) }
+                f.owned { assertEquals(listOf(201L), FollowingCacheStore.getSnapshot(env.cacheContext.asAndroidContext(),41L)?.users?.map { it.mid }) }
             }
         } finally { gate.countDown() }
     }

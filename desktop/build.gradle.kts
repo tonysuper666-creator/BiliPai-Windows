@@ -2993,14 +2993,62 @@ val migratedSourceReadingTestClasses: List<String> = migratedWholeModuleTestRoot
         Regex("""^package\s+([\w.]+)""", RegexOption.MULTILINE).find(text)!!.groupValues[1] + "." + file.nameWithoutExtension
     }.toList()
 }.sorted()
+// Upstream app core tests (TON-1000) whose subject compiles from upstream and that use kotlin.test only. Tests that need
+// JUnit 4, Robolectric or mockk (not in the desktop test graph) or that test desktop-owned / later-step files stay out;
+// tests that read upstream sources by relative path run from the app module directory (upstreamAppCoreSourceTests).
+val appTestRoot = mergedRepositoryRoot.resolve("app/src/test/java")
+val appCoreUpstreamTestsNotRun: Map<String, String> = mapOf(
+    "core/player/waveform/AudioWaveformPolicyTest.kt" to "its subject is desktop-owned: the Media3 player stack",
+    "core/player/HiResCompatibleRenderersFactoryTest.kt" to "its subject is desktop-owned: the Media3 player stack",
+    "core/player/PlayerVolumeControllerTest.kt" to "its subject is desktop-owned: the Media3 player stack",
+    "core/util/CrashSnapshotPolicyTest.kt" to "its subject is desktop-owned: Android logging and crash capture",
+    "core/util/LoggerPersistencePolicyTest.kt" to "its subject is desktop-owned: Android logging and crash capture",
+    "core/util/HistoricalCrashLogsTest.kt" to "its subject is desktop-owned: Android logging and crash capture",
+    "core/util/FoldableDisplayPolicyTest.kt" to "its subject is desktop-owned: Android windows, foldables, picture-in-picture and display modes",
+    "core/util/WindowSizeUtilsTest.kt" to "its subject is desktop-owned: Android windows, foldables, picture-in-picture and display modes",
+    "core/util/PipAspectRatioPolicyTest.kt" to "its subject is desktop-owned: Android windows, foldables, picture-in-picture and display modes",
+    "core/util/VideoSurfaceCompatibilityTest.kt" to "its subject is desktop-owned: Android windows, foldables, picture-in-picture and display modes",
+    "core/util/AppAdaptiveStrategySnapshotTest.kt" to "its subject is desktop-owned: Android windows, foldables, picture-in-picture and display modes",
+    "core/ui/performance/AppDisplayModePreferenceTest.kt" to "its subject is desktop-owned: Android windows, foldables, picture-in-picture and display modes",
+    "core/ui/performance/VideoRefreshRatePolicyTest.kt" to "its subject is desktop-owned: Android windows, foldables, picture-in-picture and display modes",
+    "core/ui/animation/gl/ThanosParticlePolicyTest.kt" to "its subject is desktop-owned: OpenGL particle effects",
+    "core/ui/animation/gl/ParticleRendererPolicyTest.kt" to "its subject is desktop-owned: OpenGL particle effects",
+    "core/ui/animation/DissolveRenderPolicyTest.kt" to "its subject is desktop-owned: OpenGL particle effects",
+    "core/performance/ProcessExitContextTest.kt" to "its subject is desktop-owned: Android process exit and Android 17 diagnostics",
+    "core/performance/Android17DiagnosticsPolicyTest.kt" to "its subject is desktop-owned: Android process exit and Android 17 diagnostics",
+    "core/util/MediaUtilsHdrCapabilityTest.kt" to "its subject is desktop-owned: Android media, cache and text-selection helpers",
+    "core/util/AutomaticCacheClearPolicyTest.kt" to "its subject is desktop-owned: Android media, cache and text-selection helpers",
+    "core/ui/common/TextSelectionPolicyTest.kt" to "its subject is desktop-owned: Android media, cache and text-selection helpers",
+    "core/ui/common/LongPressCopyPolicyTest.kt" to "its subject is desktop-owned: Android media, cache and text-selection helpers",
+    "core/util/PlayerOrientationPolicyTest.kt" to "its subject moves in a later step (player orientation, M4a)",
+    "core/util/PlayerPresentationPolicyTest.kt" to "its subject moves in a later step (player orientation, M4a)",
+    "core/theme/AppThemeEndpointPolicyTest.kt" to "it calls feature/video resolvePlaybackNotificationAccentColor, which moves with M4a",
+    "core/ui/adaptive/DeviceUiProfilePolicyTest.kt" to "the same test class (same package and name) as design-system DeviceUiProfilePolicyTest, which runs",
+)
+val appCoreUpstreamTestPaths: Set<String> = appTestRoot.resolve("com/android/purebilibili/core").walkTopDown()
+    .filter { it.isFile && it.extension == "kt" }
+    .filter { file -> !Regex("""^import (org\.junit|org\.robolectric|io\.mockk|androidx\.test)""", RegexOption.MULTILINE).containsMatchIn(file.readText()) }
+    .map { it.relativeTo(appTestRoot).invariantSeparatorsPath }
+    .filter { path -> path.removePrefix("com/android/purebilibili/").let { core -> core !in appCoreUpstreamTestsNotRun &&
+        (appCoreDesktopOwned.keys + appCoreLaterSteps.keys).none { core.startsWith(it) } } }
+    .toSortedSet()
+val appCoreSourceReadingTestClasses: List<String> = appCoreUpstreamTestPaths.map { appTestRoot.resolve(it) }
+    .filter { Regex("""\bFile\(|Paths\.get\(|\.readText\(""").containsMatchIn(it.readText()) }
+    .map { file -> Regex("""^package\s+([\w.]+)""", RegexOption.MULTILINE).find(file.readText())!!.groupValues[1] + "." + file.nameWithoutExtension }
+    .sorted()
 kotlin.sourceSets.named("test") {
     migratedWholeModuleTestRoots.forEach { kotlin.srcDir(it) }
+    kotlin.srcDir(appTestRoot)
+    val appTestRootPath = appTestRoot.toPath()
+    kotlin.exclude { element -> !element.isDirectory && element.file.toPath().startsWith(appTestRootPath) &&
+        element.file.relativeTo(appTestRoot).invariantSeparatorsPath !in appCoreUpstreamTestPaths }
     val buildDirectoryPath = layout.buildDirectory.get().asFile.toPath()
     kotlin.exclude { element ->
         val file = element.file
         val path = file.invariantSeparatorsPath
         val index = path.lastIndexOf("/com/android/purebilibili/")
-        element.file.toPath().startsWith(buildDirectoryPath) && index >= 0 && path.substring(index + 1) in migratedWholeModuleTestPaths
+        element.file.toPath().startsWith(buildDirectoryPath) && index >= 0 &&
+            path.substring(index + 1).let { it in migratedWholeModuleTestPaths || it in appCoreUpstreamTestPaths }
     }
 }
 
@@ -5301,9 +5349,22 @@ val upstreamDesignSourceTests by tasks.registering(Test::class) {
     systemProperty("java.awt.headless", "true")
     dependsOn(tasks.named("testClasses"), verifyUniqueClassNames)
 }
+val upstreamAppCoreSourceTests by tasks.registering(Test::class) {
+    group = "verification"
+    description = "Upstream app core tests that read upstream sources, run from the app module directory."
+    testClassesDirs = sourceSets["test"].output.classesDirs
+    classpath = sourceSets["test"].runtimeClasspath
+    workingDir = mergedRepositoryRoot.resolve("app")
+    useJUnitPlatform()
+    appCoreSourceReadingTestClasses.forEach { filter.includeTestsMatching(it) }
+    filter.isFailOnNoMatchingTests = false
+    systemProperty("java.awt.headless", "true")
+    dependsOn(tasks.named("testClasses"), verifyUniqueClassNames)
+}
 tasks.test {
     migratedSourceReadingTestClasses.forEach { filter.excludeTestsMatching(it) }
-    finalizedBy(upstreamDesignSourceTests)
+    appCoreSourceReadingTestClasses.forEach { filter.excludeTestsMatching(it) }
+    finalizedBy(upstreamDesignSourceTests, upstreamAppCoreSourceTests)
 }
 tasks.named("compileKotlin") { dependsOn(verifyUpstreamReplacements, verifyNoSilentSdkGates) }
 tasks.named("check") { dependsOn(verifyUniqueClassNames) }
