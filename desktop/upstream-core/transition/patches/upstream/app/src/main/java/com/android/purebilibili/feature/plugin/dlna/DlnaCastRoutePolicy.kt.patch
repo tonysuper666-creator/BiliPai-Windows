@@ -1,10 +1,10 @@
 --- a/upstream/app/src/main/java/com/android/purebilibili/feature/plugin/dlna/DlnaCastRoutePolicy.kt
 +++ b/upstream/app/src/main/java/com/android/purebilibili/feature/plugin/dlna/DlnaCastRoutePolicy.kt
-@@ -1,10 +1,10 @@
+@@ -1,22 +1,19 @@
  package com.android.purebilibili.feature.plugin.dlna
  
- import androidx.compose.material.icons.Icons
- import androidx.compose.material.icons.rounded.Tv
+-import androidx.compose.material.icons.Icons
+-import androidx.compose.material.icons.rounded.Tv
 -import com.android.purebilibili.core.plugin.CastPluginRoute
 +import com.android.purebilibili.plugin.sdk.CastPluginRoute
  import com.android.purebilibili.feature.cast.SsdpDiscovery
@@ -12,3 +12,16 @@
  
  sealed class DlnaRouteSelection {
      data class Ssdp(val device: SsdpDiscovery.SsdpDevice) : DlnaRouteSelection()
+ }
+ 
+ internal fun toDlnaCastRoute(device: VisibleSsdpDevice): CastPluginRoute = CastPluginRoute(
+     routeId = "ssdp:${device.device.location}",
+     name = device.title,
+-    description = device.subtitle,
+-    icon = Icons.Rounded.Tv
++    description = device.subtitle
+ )
+ 
+ data class DlnaRouteSnapshot(
+     val routes: List<CastPluginRoute>,
+     val ssdpCache: Map<String, SsdpDiscovery.SsdpDevice>

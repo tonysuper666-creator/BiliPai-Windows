@@ -2,7 +2,6 @@
 // Raw SHA-256 5951d425ad3aa159468a6c811a534552d927d77fefed8de18580fae73ce4758f; Git blob cbc074ababb0a0ca866aefba731892a243b2de2d.
 package com.bilipai.desktop.danmaku
 
-import androidx.compose.ui.graphics.toArgb
 import com.android.purebilibili.plugin.sdk.DanmakuItem as PluginDanmakuItem
 import com.android.purebilibili.plugin.sdk.DanmakuStyle
 import com.android.purebilibili.danmaku.parser.bas.*
@@ -98,7 +97,7 @@ internal fun filterDesktopBasDanmaku(
                 val style = checkNotNull(processor).style(filtered)
                 val changedColor = filtered.color.takeIf { it != sourceItem.color }
                 val color = filtered.color and 0x00FFFFFF
-                val colorOverride = style?.textColor?.toArgb()?.and(0x00FFFFFF) ?: changedColor
+                val colorOverride = style?.textColor?.and(0x00FFFFFF) ?: changedColor
                 val scale = style?.scale ?: item.fontScale
                 if (filtered.content != item.source || filtered.timeMs != item.startTimeMs ||
                     color != item.color || colorOverride != item.colorOverride || scale != item.fontScale

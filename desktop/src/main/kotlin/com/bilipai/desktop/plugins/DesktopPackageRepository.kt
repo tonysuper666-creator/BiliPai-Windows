@@ -28,10 +28,12 @@ data class DesktopPackageState(val kotlinPackages: List<InstalledExternalPluginP
 
 /** Original package protocols are reused; the adapter validates Windows paths before every mutation. */
 class DesktopPackageRepository(val context: DesktopPluginContext) {
+    /** Upstream package and skin stores take an Android Context over this plugin platform. */
+    private val upstreamContext = context.asAndroidContext()
     private val mutex = Mutex()
     @Volatile private var stopped = false
-    private val kotlinStore = ExternalKotlinPluginInstallStore.createDefault(context)
-    private val skinStore = UiSkinInstallStore.createDefault(context)
+    private val kotlinStore = ExternalKotlinPluginInstallStore.createDefault(upstreamContext)
+    private val skinStore = UiSkinInstallStore.createDefault(upstreamContext)
     private val _state = MutableStateFlow(DesktopPackageState())
     val state: StateFlow<DesktopPackageState> = _state.asStateFlow()
 
@@ -104,25 +106,25 @@ class DesktopPackageRepository(val context: DesktopPluginContext) {
         validateManagedTree(context.store.root.resolve("ui_skins/assets/${safeId(verified.manifest.skinId)}/${verified.packageSha256}"))
         val installed = skinStore.installPreview(verified, preview.bytes).getOrThrow()
         validateSkinRecord(installed)
-        if (activate) UiSkinSettingsStore.setSelection(context, UiSkinSelection(true, installed.skinId, installed.installId))
+        if (activate) UiSkinSettingsStore.setSelection(upstreamContext, UiSkinSelection(true, installed.skinId, installed.installId))
         installed
     }
     suspend fun selectSkin(installId: String?): Unit = mutate {
         validateMetadata("ui_skins")
         val installed = installId?.let { id -> skinStore.listInstalledPackages().firstOrNull { it.installId == id } ?: error("皮肤不存在") }
         installed?.let(::validateSkinRecord)
-        UiSkinSettingsStore.setSelection(context, UiSkinSelection(installed != null, installed?.skinId, installed?.installId))
+        UiSkinSettingsStore.setSelection(upstreamContext, UiSkinSelection(installed != null, installed?.skinId, installed?.installId))
     }
     suspend fun deleteSkin(installId: String): Boolean = mutate {
         validateMetadata("ui_skins")
         val skin = skinStore.listInstalledPackages().firstOrNull { it.installId == installId } ?: return@mutate false
         validateSkinRecord(skin)
         validateManagedTree(context.store.root.resolve("ui_skins/assets/${safeId(skin.skinId)}/${skin.packageSha256}"))
-        if (UiSkinSettingsStore.readState(context).activeSkin?.installId == installId)
-            UiSkinSettingsStore.setSelection(context, UiSkinSelection())
+        if (UiSkinSettingsStore.readState(upstreamContext).activeSkin?.installId == installId)
+            UiSkinSettingsStore.setSelection(upstreamContext, UiSkinSelection())
         skinStore.deleteInstalledPackage(installId).getOrThrow()
     }
-    suspend fun catalog(): SkinCatalog = withContext(Dispatchers.IO) { checkOpen(); SkinCatalogLoader.load(context).getOrThrow() }
+    suspend fun catalog(): SkinCatalog = withContext(Dispatchers.IO) { checkOpen(); SkinCatalogLoader.load(upstreamContext).getOrThrow() }
     suspend fun previewCatalog(entry: SkinCatalogEntry, mode: UiSkinImportMode = UiSkinImportMode.FULL_SKIN): DesktopSkinPackagePreview = withContext(Dispatchers.IO) {
         val url = entry.preferredPackageUrl() ?: error("此装扮缺少下载包地址")
         previewSkinBytes(downloadPublicAsset(url, currentCoroutineContext()[Job]), mode)
@@ -136,7 +138,7 @@ class DesktopPackageRepository(val context: DesktopPluginContext) {
         validateMetadata("ui_skins")
         val packages = kotlinStore.listInstalledPackages().also { it.forEach(::validateKotlinRecord) }
         val skins = skinStore.listInstalledPackages().also { it.forEach(::validateSkinRecord) }
-        _state.value = DesktopPackageState(packages, skins, UiSkinSettingsStore.readState(context))
+        _state.value = DesktopPackageState(packages, skins, UiSkinSettingsStore.readState(upstreamContext))
     }
     private suspend fun <T> mutate(block: () -> T): T = withContext(Dispatchers.IO) {
         mutex.withLock { checkOpen(); refresh(); block().also { refresh() } }

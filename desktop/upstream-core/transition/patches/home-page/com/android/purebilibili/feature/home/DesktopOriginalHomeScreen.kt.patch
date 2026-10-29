@@ -1,9 +1,30 @@
 --- a/home-page/com/android/purebilibili/feature/home/DesktopOriginalHomeScreen.kt
 +++ b/home-page/com/android/purebilibili/feature/home/DesktopOriginalHomeScreen.kt
-@@ -1693,17 +1693,17 @@
-                     collapsedTabInsetPx = collapsedEmbeddedTabInset.toPx(),
-                     minimumTopPaddingPx = statusBarHeight.toPx(),
-                 ).toDp()
+@@ -1,9 +1,10 @@
+ // Original source app/src/main/java/com/android/purebilibili/feature/home/HomeScreen.kt
+ // LF SHA256 2c959020dec595839527d8c51ebbfb0a8fbf991290ec102cd18ac7b82054d176
+ package com.android.purebilibili.feature.home
+ 
++import com.bilipai.desktop.plugins.asAndroidContext
+ import com.android.purebilibili.core.ui.components.AppText
+ import com.bilipai.desktop.ui.DesktopHomeClock as SystemClock
+ import androidx.compose.animation.*
+ import androidx.compose.animation.core.animate
+ import androidx.compose.animation.core.animateDpAsState
+@@ -445,11 +446,11 @@
+         installedPlugins,
+         isSubscriptionPluginPersistedEnabled,
+         homeTopTabSettings,
+     ) {
+         com.android.purebilibili.core.plugin.feed.isSubscriptionPluginOrFeedEnabled(
+-            context = platform.pluginContext,
++            context = platform.pluginContext.asAndroidContext(),
+             installedPlugins = installedPlugins,
+             isPluginPersistedEnabled = isSubscriptionPluginPersistedEnabled,
+         )
+     }
+     val topTabEntries = remember(homeTopTabSettings, subscriptionFeedsEnabled) {
+@@ -1696,11 +1697,11 @@
              }
          }
      }
@@ -16,6 +37,3 @@
      // [Feature] Global Scroll Offset for Liquid Glass
      val activeGridState = if (currentCategory == HomeCategory.POPULAR) {
          popularGridStates[popularSubCategory]
-     } else {
-         gridStates[currentCategory]
-     }

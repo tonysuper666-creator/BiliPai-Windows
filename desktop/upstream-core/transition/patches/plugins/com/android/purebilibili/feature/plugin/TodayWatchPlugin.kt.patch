@@ -1,6 +1,6 @@
 --- a/plugins/com/android/purebilibili/feature/plugin/TodayWatchPlugin.kt
 +++ b/plugins/com/android/purebilibili/feature/plugin/TodayWatchPlugin.kt
-@@ -1,23 +1,25 @@
+@@ -1,23 +1,27 @@
  // GENERATED from app/src/main/java/com/android/purebilibili/feature/plugin/TodayWatchPlugin.kt; do not edit.
  // LF-normalized SHA-256: 043f356998e8bac5f4d3d17759767b80b7c47a7d11787d5b4e134b00d61b8193
  package com.android.purebilibili.feature.plugin
@@ -28,6 +28,8 @@
 +import com.android.purebilibili.plugin.sdk.RecommendationGroup
 +import com.android.purebilibili.plugin.sdk.RecommendationGroupItem
 +import com.android.purebilibili.plugin.sdk.RecommendationMode
++import com.android.purebilibili.core.plugin.BuiltinPlugin
++import com.android.purebilibili.data.model.response.VideoItem
 +import com.android.purebilibili.plugin.sdk.RecommendationPluginApi
 +import com.android.purebilibili.plugin.sdk.RecommendationRequest
 +import com.android.purebilibili.plugin.sdk.RecommendationResult
@@ -38,7 +40,33 @@
  import com.bilipai.desktop.plugins.DesktopPluginLog as Logger
  import com.android.purebilibili.feature.home.TodayWatchCreatorSignal
  import com.android.purebilibili.feature.home.TodayWatchMode
-@@ -172,12 +174,12 @@
+@@ -65,11 +69,11 @@
+     val waterfallExponent: Float = 1.38f,
+     val collapsed: Boolean = false,
+     val refreshTriggerToken: Long = 0L
+ )
+ 
+-class TodayWatchPlugin(private val personalizationContext: () -> com.bilipai.desktop.plugins.DesktopPluginContext) : RecommendationPluginApi {
++class TodayWatchPlugin(private val personalizationContext: () -> com.bilipai.desktop.plugins.DesktopPluginContext) : BuiltinPlugin, RecommendationPluginApi<VideoItem> {
+ 
+     override val id: String = PLUGIN_ID
+     override val name: String = "今日推荐单"
+     override val description: String = "本地分析观看历史，生成可定制推荐队列"
+     override val version: String = "1.1.0"
+@@ -111,11 +115,11 @@
+ 
+     fun setCurrentMode(mode: TodayWatchPluginMode) {
+         updateConfig { it.copy(currentMode = mode) }
+     }
+ 
+-    override fun buildRecommendations(request: RecommendationRequest): RecommendationResult {
++    override fun buildRecommendations(request: RecommendationRequest<VideoItem>): RecommendationResult<VideoItem> {
+         val plan = buildTodayWatchPlan(
+             historyVideos = request.historyVideos,
+             candidateVideos = request.candidateVideos,
+             mode = request.mode.toTodayWatchMode(),
+             eyeCareNightActive = request.sceneSignals.eyeCareNightActive,
+@@ -172,12 +176,12 @@
  
      fun clearPersonalizationData() {
          ioScope.launch {

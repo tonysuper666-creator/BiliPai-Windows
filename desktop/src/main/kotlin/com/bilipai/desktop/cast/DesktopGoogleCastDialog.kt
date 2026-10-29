@@ -1,5 +1,6 @@
 package com.bilipai.desktop.cast
 
+import com.bilipai.desktop.plugins.asAndroidContext
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -39,13 +40,14 @@ private fun DesktopGoogleCastDialogContent(context: DesktopPluginContext, plugin
     val error by plugin.error.collectAsState()
     var seekSeconds by remember { mutableStateOf("") }
     var mediaError by remember { mutableStateOf<String?>(null) }
-    DisposableEffect(plugin, context) { plugin.startRouteDiscovery(context); onDispose { plugin.stopRouteDiscovery() } }
+    val upstreamContext = remember(context) { context.asAndroidContext() }
+    DisposableEffect(plugin, context) { plugin.startRouteDiscovery(upstreamContext); onDispose { plugin.stopRouteDiscovery() } }
     AlertDialog(onDismissRequest = onDismiss, title = { Text("Google Cast") }, text = {
         Column(Modifier.widthIn(min = 420.dp, max = 620.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
             error?.let { Text(it, color = MaterialTheme.colorScheme.error) }
             mediaError?.let { Text(it, color = MaterialTheme.colorScheme.error) }
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                TextButton(enabled = !busy, onClick = { plugin.refreshRouteDiscovery(context) }) { Text("刷新设备") }
+                TextButton(enabled = !busy, onClick = { plugin.refreshRouteDiscovery(upstreamContext) }) { Text("刷新设备") }
                 if (discovering) Text("正在发现局域网设备…")
             }
             LazyColumn(Modifier.heightIn(max = 220.dp)) {
@@ -62,7 +64,7 @@ private fun DesktopGoogleCastDialogContent(context: DesktopPluginContext, plugin
                             if (request == null) mediaError = "当前媒体没有可投屏的播放地址"
                             else {
                                 if (controlSource != null) check(request === controlSource)
-                                val result = request.use { plugin.cast(context, route, it) }
+                                val result = request.use { plugin.cast(upstreamContext, route, it) }
                                 if (result.isSuccess) sourceAccepted = true
                             }
                         }

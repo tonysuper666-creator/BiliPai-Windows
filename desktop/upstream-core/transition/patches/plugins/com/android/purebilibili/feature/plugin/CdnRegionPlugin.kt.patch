@@ -1,10 +1,11 @@
 --- a/plugins/com/android/purebilibili/feature/plugin/CdnRegionPlugin.kt
 +++ b/plugins/com/android/purebilibili/feature/plugin/CdnRegionPlugin.kt
-@@ -1,13 +1,13 @@
+@@ -1,13 +1,14 @@
  // GENERATED from app/src/main/java/com/android/purebilibili/feature/plugin/CdnRegionPlugin.kt; do not edit.
  // LF-normalized SHA-256: 09ea1ecd71cdf8fc2a703568160cf8b588d34bc26de1c0092dcff1c4ffd26f57
  package com.android.purebilibili.feature.plugin
  
++import com.bilipai.desktop.plugins.asAndroidContext
  import com.bilipai.desktop.plugins.DesktopPluginContext as Context
 -import com.android.purebilibili.core.plugin.Plugin
 -import com.android.purebilibili.core.plugin.PluginCapability
@@ -17,3 +18,157 @@
  import com.bilipai.desktop.plugins.DesktopPluginLog as Logger
  import kotlinx.coroutines.delay
  import kotlinx.coroutines.CancellationException
+@@ -55,11 +56,11 @@
+ private data class CdnActivePlaybackSession(
+     val candidates: List<PlaybackCdnCandidate>,
+     val updatedAtMs: Long
+ )
+ 
+-interface PlaybackCdnPlugin : Plugin {
++interface PlaybackCdnPlugin : BuiltinPlugin {
+     fun rewritePlaybackCandidates(
+         videoUrls: List<String>,
+         audioUrls: List<String>
+     ): PlaybackCdnRewriteResult
+ 
+@@ -79,11 +80,11 @@
+     ) = Unit
+ 
+     fun isAdaptivePrefetchEnabled(): Boolean = false
+ }
+ 
+-class CdnRegionPlugin : PlaybackCdnPlugin {
++class CdnRegionPlugin : BuiltinPlugin, PlaybackCdnPlugin {
+     override val id: String = CDN_REGION_PLUGIN_ID
+     override val name: String = "CDN 智能选线"
+     override val description: String = "在 B 站当前授权的签名 CDN 候选中选线，并可选预缓存未来 DASH 分片"
+     override val version: String = "1.5.0"
+     override val author: String = "BiliPai项目组"
+@@ -116,12 +117,12 @@
+     private var activePlaybackSession: CdnActivePlaybackSession? = null
+ 
+     override suspend fun onEnable() {
+         running = true
+         val context = PluginManager.getContext()
+-        catalog = loadCdnRegionCatalog(context)
+-        cache = CdnRegionPluginStore.read(context)
++        catalog = loadCdnRegionCatalog(com.bilipai.desktop.plugins.desktopPluginContext(context))
++        cache = CdnRegionPluginStore.read(com.bilipai.desktop.plugins.desktopPluginContext(context))
+         CdnTransferRuntime.configure(running, cache.parallelDownloadEnabled && !cache.experimentalRewriteEnabled)
+         compiledCustomRules = compileCdnCustomRules(cache.customRules)
+         com.bilipai.desktop.plugins.DesktopPluginApplicationScope.ioScope.launch {
+             delay(1_500L)
+             refreshIpLocationIfNeeded()
+@@ -204,11 +205,11 @@
+     private suspend fun probePlaybackCdnCandidatesInternal(
+         videoUrls: List<String>,
+         sources: List<PlaybackCdnCandidateSource>,
+         ignoreCooldown: Boolean
+     ): List<CdnLineDiagnostic> {
+-        val context = com.bilipai.desktop.plugins.DesktopPlayerPluginWriteAdmission.contextOrOriginal { PluginManager.getContext() }
++        val context = com.bilipai.desktop.plugins.DesktopPlayerPluginWriteAdmission.contextOrOriginal { com.bilipai.desktop.plugins.desktopPluginContext(PluginManager.getContext()) }
+         val now = System.currentTimeMillis()
+         val current = CdnRegionPluginStore.read(context).also { value -> com.bilipai.desktop.plugins.DesktopPlayerPluginWriteAdmission.mutateOrOriginal { cache = value } }
+         val candidates = resolveCdnProbeCandidates(
+             urls = videoUrls,
+             healthByHost = current.healthByHost,
+@@ -247,20 +248,20 @@
+         val next = current.copy(
+             healthByHost = current.healthByHost + (host to recordCdnHealthEvent(previous, event, now))
+         )
+         com.bilipai.desktop.plugins.DesktopPlayerPluginWriteAdmission.mutateOrOriginal { cache = next }
+         com.bilipai.desktop.plugins.DesktopPlayerPluginWriteAdmission.launchOrOriginal(com.bilipai.desktop.plugins.DesktopPluginApplicationScope.ioScope) {
+-            CdnRegionPluginStore.write(com.bilipai.desktop.plugins.DesktopPlayerPluginWriteAdmission.contextOrOriginal { PluginManager.getContext() }, next)
++            CdnRegionPluginStore.write(com.bilipai.desktop.plugins.DesktopPlayerPluginWriteAdmission.contextOrOriginal { com.bilipai.desktop.plugins.desktopPluginContext(PluginManager.getContext()) }, next)
+         }
+     }
+ 
+     internal fun canUseParallelDownload(): Boolean = running && !cache.experimentalRewriteEnabled
+ 
+     internal suspend fun setParallelDownloadEnabled(enabled: Boolean) {
+         com.bilipai.desktop.plugins.DesktopPlayerPluginWriteAdmission.checkCurrentOrOriginal()
+         val next = cache.copy(parallelDownloadEnabled = enabled)
+-        CdnRegionPluginStore.write(com.bilipai.desktop.plugins.DesktopPlayerPluginWriteAdmission.contextOrOriginal { PluginManager.getContext() }, next)
++        CdnRegionPluginStore.write(com.bilipai.desktop.plugins.DesktopPlayerPluginWriteAdmission.contextOrOriginal { com.bilipai.desktop.plugins.desktopPluginContext(PluginManager.getContext()) }, next)
+         com.bilipai.desktop.plugins.DesktopPlayerPluginWriteAdmission.mutateOrOriginal {
+             cache = next
+             CdnTransferRuntime.configure(running, enabled && !next.experimentalRewriteEnabled)
+         }
+     }
+@@ -418,14 +419,14 @@
+ 
+     private suspend fun refreshIpLocationIfNeeded() {
+         val context = PluginManager.getContext()
+         val enabled = PluginStore.isEnabled(context, id)
+         val loadedCatalog = catalog.ifEmpty {
+-            loadCdnRegionCatalog(context).also { catalog = it }
++            loadCdnRegionCatalog(com.bilipai.desktop.plugins.desktopPluginContext(context)).also { catalog = it }
+         }
+         if (loadedCatalog.isEmpty()) return
+-        val current = CdnRegionPluginStore.read(context).also { cache = it }
++        val current = CdnRegionPluginStore.read(com.bilipai.desktop.plugins.desktopPluginContext(context)).also { cache = it }
+         val hasSelection = hasUsableCdnRegionSelection(
+             region = current.selectedRegion,
+             cachedHosts = current.selectedHosts,
+             catalog = loadedCatalog
+         )
+@@ -446,11 +447,11 @@
+             if (current.selectedHosts != resolvedHosts) {
+                 val corrected = current.copy(
+                     selectedHosts = resolvedHosts
+                 )
+                 cache = corrected
+-                CdnRegionPluginStore.write(context, corrected)
++                CdnRegionPluginStore.write(com.bilipai.desktop.plugins.desktopPluginContext(context), corrected)
+             }
+             return
+         }
+ 
+         try {
+@@ -479,21 +480,21 @@
+                 fallbackUsed = selection.fallbackUsed,
+                 refreshedAtMs = System.currentTimeMillis(),
+                 lastError = null
+             )
+             cache = next
+-            CdnRegionPluginStore.write(context, next)
++            CdnRegionPluginStore.write(com.bilipai.desktop.plugins.desktopPluginContext(context), next)
+             Logger.d(
+                 TAG,
+                 "CDN 属地刷新成功: ip=${maskIpAddressForLog(location.addr)}, " +
+                     "${location.country}/${location.province}/${location.city}, isp=${location.isp.ifBlank { "未知" }} -> " +
+                     (selection.region.ifBlank { "未命中" })
+             )
+         } catch (e: Exception) {
+             val preserved = current.copy(lastError = e.message ?: e.javaClass.simpleName)
+             cache = preserved
+-            CdnRegionPluginStore.write(context, preserved)
++            CdnRegionPluginStore.write(com.bilipai.desktop.plugins.desktopPluginContext(context), preserved)
+             Logger.w(TAG, "CDN 属地刷新失败，保留旧缓存: ${e.message}")
+         }
+     }
+ }
+ 
+@@ -519,20 +520,20 @@
+         ignoreUnknownKeys = true
+         encodeDefaults = true
+     }
+ 
+     suspend fun read(context: Context): CdnRegionPluginCache {
+-        val raw = PluginStore.getConfigJson(context, CDN_REGION_PLUGIN_ID) ?: return CdnRegionPluginCache()
++        val raw = PluginStore.getConfigJson(context.asAndroidContext(), CDN_REGION_PLUGIN_ID) ?: return CdnRegionPluginCache()
+         val stored = runCatching { json.decodeFromString<CdnRegionPluginCache>(raw) }
+             .getOrDefault(CdnRegionPluginCache())
+         val now = System.currentTimeMillis()
+         return stored.copy(healthByHost = stored.healthByHost.mapValues { decayCdnHealth(it.value, now) })
+     }
+ 
+     suspend fun write(context: Context, cache: CdnRegionPluginCache) {
+         PluginStore.setConfigJson(
+-            context = context,
++            context = context.asAndroidContext(),
+             pluginId = CDN_REGION_PLUGIN_ID,
+             configJson = json.encodeToString(cache)
+         )
+     }
+ }

@@ -9,7 +9,7 @@
 -import com.android.purebilibili.core.plugin.PlayerPluginApi
 -import com.android.purebilibili.core.plugin.PluginCapability
 -import com.android.purebilibili.core.plugin.PluginCapabilityManifest
-+import com.android.purebilibili.plugin.sdk.PlayerPluginApi
++import com.android.purebilibili.core.plugin.DesktopSingleSessionPlayerPlugin
 +import com.android.purebilibili.plugin.sdk.PluginCapability
 +import com.android.purebilibili.plugin.sdk.PluginCapabilityManifest
  import com.android.purebilibili.core.plugin.PluginManager
@@ -21,3 +21,16 @@
  import com.android.purebilibili.data.model.response.SponsorSegment
  import com.android.purebilibili.data.model.response.SponsorProgressMarker
  import com.android.purebilibili.data.repository.SponsorBlockRepository
+@@ -114,11 +114,11 @@
+ /**
+  *  空降助手插件
+  * 
+  * 基于 SponsorBlock 数据库自动跳过视频中的广告、赞助、片头片尾等片段。
+  */
+-class SponsorBlockPlugin : PlayerPluginApi {
++class SponsorBlockPlugin : DesktopSingleSessionPlayerPlugin {
+     
+     override val id = SPONSOR_BLOCK_PLUGIN_ID
+     override val name = "空降助手"
+     override val description = "自动跳过视频中的广告、赞助、片头片尾等片段"
+     override val version = "1.1.1"

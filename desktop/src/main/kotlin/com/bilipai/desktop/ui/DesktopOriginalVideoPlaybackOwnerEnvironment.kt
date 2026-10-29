@@ -1,7 +1,7 @@
 package com.bilipai.desktop.ui
 
 import com.android.purebilibili.core.network.BilibiliApi
-import com.android.purebilibili.core.plugin.PlayerPlugin
+import com.android.purebilibili.core.plugin.DesktopSingleSessionPlayerPlugin
 import com.android.purebilibili.core.plugin.BuiltinPlugin
 import com.android.purebilibili.data.model.response.*
 import com.android.purebilibili.data.repository.VideoNoteSnapshot
@@ -165,9 +165,9 @@ internal interface DesktopOriginalVideoOwnerDanmaku {
  */
 internal interface DesktopOriginalVideoOwnerPlugins {
     val sponsorBlock:SponsorBlockPlugin
-    fun enabledPlayerPlugins():List<PlayerPlugin>
-    fun enabledPlugins():List<Plugin>
-    fun <T:Plugin> enabledPlugins(type:KClass<T>):List<T>
+    fun enabledPlayerPlugins():List<DesktopSingleSessionPlayerPlugin>
+    fun enabledPlugins():List<BuiltinPlugin>
+    fun <T:BuiltinPlugin> enabledPlugins(type:KClass<T>):List<T>
     fun capturePlaybackDispatch():DesktopOriginalVideoAcceptedPublication?
     fun isPlaybackDispatchCurrent(expected:DesktopOriginalVideoAcceptedPublication):Boolean
     fun admitPlaybackDispatch(expected:DesktopOriginalVideoAcceptedPublication,action:()->Unit):Boolean
@@ -177,11 +177,11 @@ internal interface DesktopOriginalVideoOwnerPlugins {
      * publication establishes the one Runtime generation before this observer. */
     suspend fun ensureSponsorLoaded(expected:DesktopOriginalVideoAcceptedPublication,bvid:String,cid:Long)
     suspend fun onSponsorDisabled(expected:DesktopOriginalVideoAcceptedPublication)
-    suspend fun onPositionUpdate(expected:DesktopOriginalVideoAcceptedPublication,plugin:PlayerPlugin,positionMs:Long):com.android.purebilibili.plugin.sdk.SkipAction?
-    suspend fun onUserSeek(expected:DesktopOriginalVideoAcceptedPublication,plugin:PlayerPlugin,positionMs:Long)
+    suspend fun onPositionUpdate(expected:DesktopOriginalVideoAcceptedPublication,plugin:DesktopSingleSessionPlayerPlugin,positionMs:Long):com.android.purebilibili.plugin.sdk.SkipAction?
+    suspend fun onUserSeek(expected:DesktopOriginalVideoAcceptedPublication,plugin:DesktopSingleSessionPlayerPlugin,positionMs:Long)
     /** Root queues retirement on its existing Runtime scope with the OLD captured
      * generation. The closed VM's canceled scope must never perform this mutation. */
-    fun onVideoEnd(plugin:PlayerPlugin)
+    fun onVideoEnd(plugin:DesktopSingleSessionPlayerPlugin)
     suspend fun markSponsorSkipped(expected:DesktopOriginalVideoAcceptedPublication,plugin:SponsorBlockPlugin,segmentId:String):SponsorSegment?
     suspend fun voteSponsorSegment(expected:DesktopOriginalVideoAcceptedPublication,plugin:SponsorBlockPlugin,segmentId:String,vote:Int):Result<Unit>
     suspend fun submitSponsorSegment(expected:DesktopOriginalVideoAcceptedPublication,plugin:SponsorBlockPlugin,bvid:String,cid:Long,videoDurationSeconds:Float,startMs:Long,endMs:Long,category:String,actionType:String):Result<List<SponsorSegment>>

@@ -13,3 +13,16 @@
  import com.android.purebilibili.core.plugin.PluginStore
  import com.android.purebilibili.core.plugin.resolveEyeProtectionEffectHint
  import com.bilipai.desktop.plugins.DesktopPluginLog as Logger
+@@ -85,11 +85,11 @@
+     val scheduleRampMinutes: Int = 20,
+     val weakenDuringPlayback: Boolean = true,
+     val showEffectHint: Boolean = true
+ )
+ 
+-class EyeProtectionPlugin : Plugin {
++class EyeProtectionPlugin : BuiltinPlugin {
+ 
+     override val id = EYE_PROTECTION_PLUGIN_ID
+     override val name = "夜间护眼"
+     override val description = "柔和降蓝光、定时护眼与休息提醒"
+     override val version = "2.2.0"

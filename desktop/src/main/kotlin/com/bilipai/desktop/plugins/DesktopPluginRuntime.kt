@@ -1,16 +1,13 @@
 package com.bilipai.desktop.plugins
 
-import com.android.purebilibili.plugin.sdk.CdnHealthEvent
 import com.android.purebilibili.plugin.sdk.DanmakuItem
 import com.android.purebilibili.plugin.sdk.DanmakuStyle
 import com.android.purebilibili.plugin.sdk.FeedKind
 import com.android.purebilibili.plugin.sdk.FeedPlugin
-import com.android.purebilibili.plugin.sdk.PlaybackCdnPlugin
 import com.android.purebilibili.plugin.sdk.RecommendationPluginApi
 import com.android.purebilibili.plugin.sdk.RecommendationRequest
 import com.android.purebilibili.plugin.sdk.RecommendationResult
 import com.android.purebilibili.plugin.sdk.SkipAction
-import com.bilipai.desktop.plugins.asAndroidContext
 
 import com.android.purebilibili.core.plugin.*
 import com.android.purebilibili.core.plugin.json.JsonPluginManager
@@ -49,7 +46,7 @@ internal class DesktopPlayerPluginDispatch internal constructor(
     internal val generation: Long,
     internal val stillOwned: () -> Boolean,
     internal val admission: ((() -> Unit) -> Boolean),
-    internal val providers: List<Plugin>,
+    internal val providers: List<BuiltinPlugin>,
 ) {
     override fun toString() = "DesktopPlayerPluginDispatch(generation=$generation)"
 }
@@ -60,6 +57,8 @@ class DesktopPluginRuntime(val store: DesktopPluginStore,
     private val discovery: DesktopDiscoveryRepository? = null,
     private val beforeStoreFreeze: suspend () -> Unit = {}) : AutoCloseable {
     val context = DesktopPluginContext(store)
+    /** Upstream plugin manager and stores take an Android Context over this plugin platform. */
+    private val upstreamContext = context.asAndroidContext()
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
     private val configurationMutex = Mutex()
     private val playerMutex = Mutex()
@@ -103,9 +102,14 @@ class DesktopPluginRuntime(val store: DesktopPluginStore,
         if (repository != null && community != null && discovery != null) {
             DesktopPluginRepositoryBinding.initialize(repository, community, discovery)
         }
-        PluginManager.initialize(context)
+        PluginManager.initialize(upstreamContext)
         DesktopPluginAnalytics.initialize(context)
-        JsonPluginManager.initialize(context)
+        // Rules load on the plugin scope; the JSON manager rejects edits until they are visible (check(isInitialized)).
+        scope.launch {
+            try { JsonPluginManager.initialize(upstreamContext) }
+            catch (cancelled: CancellationException) { throw cancelled }
+            catch (failure: Exception) { DesktopPluginLog.e("json-plugins", "JSON rule load failed", failure) }
+        }
         PluginManager.register(sponsorBlock)
         PluginManager.register(danmakuEnhance)
         PluginManager.register(eyeProtection)
@@ -160,7 +164,7 @@ class DesktopPluginRuntime(val store: DesktopPluginStore,
             PluginManager.setEnabled(id, enabled, stillOwned)
             if (!stillOwned()) return@withLock
             check(plugins.value.firstOrNull { it.plugin.id == id }?.enabled == enabled) { "插件启用失败，请检查配置" }
-            if (enabled && info.plugin is PlayerPlugin) {
+            if (enabled && info.plugin is DesktopSingleSessionPlayerPlugin) {
                 currentVideo.get()?.takeIf { it.generation == playerGeneration.get() }?.let { video ->
                     info.plugin.onVideoLoad(video.bvid, video.cid)
                 }
@@ -168,7 +172,7 @@ class DesktopPluginRuntime(val store: DesktopPluginStore,
         }
     }
 
-    suspend fun configuration(id: String): String? = PluginStore.getConfigJson(context, id)
+    suspend fun configuration(id: String): String? = PluginStore.getConfigJson(upstreamContext, id)
 
     private fun checkOpen() = check(!closing.get()) { "插件服务已停止" }
     private suspend fun <T> configurationChange(block: suspend () -> T): T = configurationMutex.withLock {
@@ -177,7 +181,7 @@ class DesktopPluginRuntime(val store: DesktopPluginStore,
     }
 
     suspend fun saveDanmakuConfiguration(config: DanmakuEnhanceConfig) = configurationChange {
-        PluginStore.setConfigJson(context, "danmaku_enhance", json.encodeToString(config))
+        PluginStore.setConfigJson(upstreamContext, "danmaku_enhance", json.encodeToString(config))
         val enabled = plugins.value.any { it.plugin.id == "danmaku_enhance" && it.enabled }
         if (enabled) {
             PluginManager.setEnabled("danmaku_enhance", false)
@@ -188,7 +192,7 @@ class DesktopPluginRuntime(val store: DesktopPluginStore,
 
     suspend fun saveSponsorConfiguration(config: SponsorBlockConfig) = configurationChange {
         playerMutex.withLock {
-            PluginStore.setConfigJson(context, SPONSOR_BLOCK_PLUGIN_ID, json.encodeToString(config.normalized()))
+            PluginStore.setConfigJson(upstreamContext, SPONSOR_BLOCK_PLUGIN_ID, json.encodeToString(config.normalized()))
             if (plugins.value.any { it.plugin.id == SPONSOR_BLOCK_PLUGIN_ID && it.enabled }) {
                 currentVideo.get()?.takeIf { it.generation == playerGeneration.get() }?.let { sponsorBlock.onVideoLoad(it.bvid, it.cid) }
             }
@@ -197,7 +201,7 @@ class DesktopPluginRuntime(val store: DesktopPluginStore,
 
     suspend fun saveAdFilterConfiguration(config: AdFilterConfig) = configurationChange {
         require(config.minViewCount >= 0) { "最低播放量不能为负数" }
-        PluginStore.setConfigJson(context, ADFILTER_PLUGIN_ID, json.encodeToString(config))
+        PluginStore.setConfigJson(upstreamContext, ADFILTER_PLUGIN_ID, json.encodeToString(config))
         if (plugins.value.any { it.plugin.id == ADFILTER_PLUGIN_ID && it.enabled }) {
             PluginManager.setEnabled(ADFILTER_PLUGIN_ID, false)
             PluginManager.setEnabled(ADFILTER_PLUGIN_ID, true)
@@ -239,8 +243,8 @@ class DesktopPluginRuntime(val store: DesktopPluginStore,
         if (plugins.value.any { it.plugin.id == CDN_REGION_PLUGIN_ID && it.enabled }) cdn.recordPlaybackCdnEvent(url, event)
     }
 
-    fun buildRecommendations(request: RecommendationRequest): List<RecommendationResult> =
-        PluginManager.getEnabledPlugins(RecommendationPluginApi::class).map { it.buildRecommendations(request) }
+    fun buildRecommendations(request: RecommendationRequest<VideoItem>): List<RecommendationResult<VideoItem>> =
+        PluginManager.getEnabledRecommendationPlugins().map { it.buildRecommendations(request) }
     fun creatorSignals() = TodayWatchProfileStore.getCreatorSignals(DesktopPluginRepositoryBinding.recommendationContext().asAndroidContext())
     fun recordCreatorWatch(mid: Long, creator: String, deltaSeconds: Long) =
         TodayWatchProfileStore.recordWatchProgress(DesktopPluginRepositoryBinding.recommendationContext().asAndroidContext(), mid, creator, deltaSeconds)
@@ -292,7 +296,7 @@ class DesktopPluginRuntime(val store: DesktopPluginStore,
         try {
             playerMutex.withLock {
                 if (closing.get() || generation != playerGeneration.get()) return generation
-                for (plugin in PluginManager.getEnabledPlayerPlugins()) {
+                for (plugin in PluginManager.getEnabledDesktopPlayerPlugins()) {
                     currentCoroutineContext().ensureActive()
                     try { plugin.onVideoLoad(bvid, cid) }
                     catch (error: CancellationException) { throw error }
@@ -319,7 +323,7 @@ class DesktopPluginRuntime(val store: DesktopPluginStore,
             if (closing.get() || !stillOwned()) throw CancellationException("Original Runtime load retired")
         }
         checkOwner()
-        val providers = PluginManager.getEnabledPlayerPlugins().toList()
+        val providers = PluginManager.getEnabledDesktopPlayerPlugins().toList()
         var video: CurrentVideo? = null
         if (!admission {
             checkOwner()
@@ -364,7 +368,7 @@ class DesktopPluginRuntime(val store: DesktopPluginStore,
         if (closing.get() || video.generation != expectedGeneration || playerGeneration.get() != expectedGeneration ||
             video.bvid != bvid || video.cid != cid || !stillOwned()) return null
         val dispatch = DesktopPlayerPluginDispatch(this, video, expectedGeneration, stillOwned, admission,
-            PluginManager.getEnabledPlugins(Plugin::class).toList())
+            PluginManager.getEnabledPlugins(BuiltinPlugin::class).toList())
         return dispatch.takeIf(::isPlaybackPluginDispatchCurrent)
     }
 
@@ -372,7 +376,7 @@ class DesktopPluginRuntime(val store: DesktopPluginStore,
         dispatch.runtime === this && !closing.get() && currentVideo.get() === dispatch.videoIdentity &&
             playerGeneration.get() == dispatch.generation && dispatch.stillOwned()
 
-    private fun requirePlaybackPluginDispatch(dispatch: DesktopPlayerPluginDispatch, plugin: Plugin,
+    private fun requirePlaybackPluginDispatch(dispatch: DesktopPlayerPluginDispatch, plugin: BuiltinPlugin,
         allowDisabledSponsor: Boolean) {
         if (!isPlaybackPluginDispatchCurrent(dispatch)) throw CancellationException("Playback plugin dispatch retired")
         val retainedDisabledSponsor = allowDisabledSponsor && plugin === sponsorBlock
@@ -383,7 +387,7 @@ class DesktopPluginRuntime(val store: DesktopPluginStore,
 
     /** Wait for the SAME playerMutex outside Store/entry/native gates. Synchronous
      * provider mutations then use Root's short captured-source atomic admission. */
-    private suspend fun playbackPluginWriteOperation(dispatch: DesktopPlayerPluginDispatch, plugin: Plugin,
+    private suspend fun playbackPluginWriteOperation(dispatch: DesktopPlayerPluginDispatch, plugin: BuiltinPlugin,
         allowDisabledSponsor: Boolean, playbackCalls: okhttp3.Call.Factory?): DesktopPlayerPluginWriteAdmission.Operation {
         val origin = currentCoroutineContext()[Job] ?: error("Playback plugin requires a caller Job")
         return DesktopPlayerPluginWriteAdmission.Operation(context, origin, playbackCalls,
@@ -400,7 +404,7 @@ class DesktopPluginRuntime(val store: DesktopPluginStore,
             })
     }
 
-    internal suspend fun <T> mutatePlaybackPlugin(dispatch: DesktopPlayerPluginDispatch, plugin: Plugin,
+    internal suspend fun <T> mutatePlaybackPlugin(dispatch: DesktopPlayerPluginDispatch, plugin: BuiltinPlugin,
         allowDisabledSponsor: Boolean, action: () -> T): T = playerMutex.withLock {
         currentCoroutineContext().ensureActive()
         requirePlaybackPluginDispatch(dispatch, plugin, allowDisabledSponsor)
@@ -418,15 +422,15 @@ class DesktopPluginRuntime(val store: DesktopPluginStore,
     }
 
     /** Original three-argument ABI remains for callbacks which do not probe playback URLs. */
-    internal suspend fun <T> runPlaybackPluginCallback(dispatch: DesktopPlayerPluginDispatch, plugin: Plugin,
+    internal suspend fun <T> runPlaybackPluginCallback(dispatch: DesktopPlayerPluginDispatch, plugin: BuiltinPlugin,
         action: suspend () -> T): T = runPlaybackPluginCallbackOwned(dispatch, plugin, null, action)
 
     /** Root captures this SAME accepted lease Call.Factory before the callback's first await. */
-    internal suspend fun <T> runPlaybackPluginCallback(dispatch: DesktopPlayerPluginDispatch, plugin: Plugin,
+    internal suspend fun <T> runPlaybackPluginCallback(dispatch: DesktopPlayerPluginDispatch, plugin: BuiltinPlugin,
         playbackCalls: okhttp3.Call.Factory, action: suspend () -> T): T =
         runPlaybackPluginCallbackOwned(dispatch, plugin, playbackCalls, action)
 
-    private suspend fun <T> runPlaybackPluginCallbackOwned(dispatch: DesktopPlayerPluginDispatch, plugin: Plugin,
+    private suspend fun <T> runPlaybackPluginCallbackOwned(dispatch: DesktopPlayerPluginDispatch, plugin: BuiltinPlugin,
         playbackCalls: okhttp3.Call.Factory?, action: suspend () -> T): T = playerMutex.withLock {
         currentCoroutineContext().ensureActive()
         requirePlaybackPluginDispatch(dispatch, plugin, allowDisabledSponsor = false)
@@ -446,7 +450,7 @@ class DesktopPluginRuntime(val store: DesktopPluginStore,
      * rewriting/diagnostics run in the supplied captured request admission.
      * Caller captures its request and provider before waiting, never latest state.
      */
-    internal suspend fun <T> mutateCapturedPlaybackPluginRequest(plugin: Plugin,
+    internal suspend fun <T> mutateCapturedPlaybackPluginRequest(plugin: BuiltinPlugin,
         stillOwned: () -> Boolean, admission: ((() -> Unit) -> Boolean), action: () -> T): T = playerMutex.withLock {
         val caller = currentCoroutineContext()
         fun checkRequest() {
@@ -464,7 +468,7 @@ class DesktopPluginRuntime(val store: DesktopPluginStore,
 
     /** Root settings uses the same playerMutex and original Store even before a first
      * accepted source exists. Captured entry/native identity remains fixed across IO. */
-    internal suspend fun <T> runCapturedPlaybackPluginSettings(plugin: Plugin,
+    internal suspend fun <T> runCapturedPlaybackPluginSettings(plugin: BuiltinPlugin,
         stillOwned: () -> Boolean, admission: ((() -> Unit) -> Boolean), action: suspend () -> T): T = playerMutex.withLock {
         val caller = currentCoroutineContext()[Job] ?: error("CDN settings requires caller Job")
         fun checkSettings() {
@@ -496,7 +500,7 @@ class DesktopPluginRuntime(val store: DesktopPluginStore,
             !playerGeneration.compareAndSet(dispatch.generation, dispatch.generation + 1)) return false
         val oldVideo = currentVideo.get()?.takeIf { it === dispatch.videoIdentity }
         if (oldVideo != null) currentVideo.compareAndSet(oldVideo, null)
-        val capturedPlayers = dispatch.providers.filterIsInstance<PlayerPlugin>()
+        val capturedPlayers = dispatch.providers.filterIsInstance<DesktopSingleSessionPlayerPlugin>()
         scope.launch {
             playerMutex.withLock {
                 for (plugin in capturedPlayers) {
@@ -518,7 +522,7 @@ class DesktopPluginRuntime(val store: DesktopPluginStore,
         if (!playerMutex.tryLock()) return emptyList()
         try {
             if (generation != playerGeneration.get()) return emptyList()
-            return PluginManager.getEnabledPlayerPlugins().mapNotNull { plugin ->
+            return PluginManager.getEnabledDesktopPlayerPlugins().mapNotNull { plugin ->
                 try { plugin.onPositionUpdate(positionMs)?.takeUnless { it is SkipAction.None } }
                 catch (error: CancellationException) { throw error }
                 catch (error: Exception) { DesktopPluginLog.e(plugin.id, "Video plugin position failed", error); null }
@@ -530,7 +534,7 @@ class DesktopPluginRuntime(val store: DesktopPluginStore,
         scope.launch {
             playerMutex.withLock {
                 if (generation != playerGeneration.get()) return@withLock
-                PluginManager.getEnabledPlayerPlugins().forEach { plugin ->
+                PluginManager.getEnabledDesktopPlayerPlugins().forEach { plugin ->
                     try { plugin.onUserSeek(positionMs) }
                     catch (error: Exception) { DesktopPluginLog.e(plugin.id, "Video plugin seek failed", error) }
                 }
@@ -544,7 +548,7 @@ class DesktopPluginRuntime(val store: DesktopPluginStore,
         scope.launch {
             playerMutex.withLock {
                 if (playerGeneration.get() != generation + 1) return@withLock
-                PluginManager.getEnabledPlayerPlugins().forEach { plugin ->
+                PluginManager.getEnabledDesktopPlayerPlugins().forEach { plugin ->
                     try { plugin.onVideoEnd() }
                     catch (error: Exception) { DesktopPluginLog.e(plugin.id, "Video plugin end failed", error) }
                 }
@@ -578,17 +582,17 @@ class DesktopPluginRuntime(val store: DesktopPluginStore,
         require(generation == playerGeneration.get()) { "视频已切换，请重新选择片段" }
         sponsorBlock.voteOnCommunitySegment(segmentId, vote)
     }
-    fun resetJsonStats(id: String? = null) { checkOpen(); JsonPluginManager.resetStats(id) }
+    suspend fun resetJsonStats(id: String? = null) { checkOpen(); JsonPluginManager.resetStats(id) }
     suspend fun previewJsonUrl(url: String): Result<JsonRulePlugin> = JsonPluginManager.previewFromUrl(url)
     suspend fun importJsonUrl(url: String): Result<JsonRulePlugin> = configurationChange { JsonPluginManager.importFromUrl(url) }
     suspend fun importJsonText(text: String): Result<JsonRulePlugin> = configurationChange { JsonPluginManager.importFromText(text) }
-    fun setJsonEnabled(id: String, enabled: Boolean) { checkOpen(); JsonPluginManager.setEnabled(id, enabled) }
-    fun removeJsonPlugin(id: String) {
+    suspend fun setJsonEnabled(id: String, enabled: Boolean) { checkOpen(); JsonPluginManager.setEnabled(id, enabled) }
+    suspend fun removeJsonPlugin(id: String) {
         checkOpen()
         require(jsonPlugins.value.any { it.plugin.id == id }) { "插件不存在" }
         JsonPluginManager.removePlugin(id)
     }
-    fun updateJsonPlugin(plugin: JsonRulePlugin) { checkOpen(); JsonPluginManager.updatePlugin(plugin) }
+    suspend fun updateJsonPlugin(plugin: JsonRulePlugin) { checkOpen(); JsonPluginManager.updatePlugin(plugin) }
     fun exportJsonPlugin(id: String): String = json.encodeToString(
         jsonPlugins.value.firstOrNull { it.plugin.id == id }?.plugin ?: error("插件不存在"))
 
@@ -611,7 +615,7 @@ class DesktopPluginRuntime(val store: DesktopPluginStore,
                 DesktopPluginScopeRegistry.shutdown()
                 // Also close a never-enabled provider; restore must not leave any constructor-owned transport behind.
                 googleCast.onDisable()
-                PluginManager.getEnabledPlugins(Plugin::class).forEach { plugin ->
+                PluginManager.getEnabledPlugins(BuiltinPlugin::class).forEach { plugin ->
                     if (plugin === googleCast) return@forEach
                     try { plugin.onDisable() }
                     catch (cancelled: CancellationException) { throw cancelled }
@@ -655,13 +659,12 @@ private class DesktopPlaybackCdnPlugin(private val original: CdnRegionPlugin) : 
 }
 
 /** Configuration comes from the same live store used by Discovery's actual filter editor. */
-private class DesktopFeedFilterPlugin(private val store: DesktopPluginStore) : FeedPlugin {
+private class DesktopFeedFilterPlugin(private val store: DesktopPluginStore) : BuiltinPlugin, FeedPlugin<VideoItem> {
     override val id = "bilipai_feed_filter"
     override val name = "推荐流过滤"
     override val description = "时长/播放量/点赞率/标题关键词/屏蔽用户/白名单"
     override val version = "1.0.0"
     override val author = "qyo123oyq"
-    override fun shouldShowItem(item: VideoItem): Boolean = shouldShowItem(item, FeedKind.HOME_RECOMMEND)
     override fun shouldShowItem(item: VideoItem, feedKind: FeedKind): Boolean {
         val config = store.feedFilterConfig.value
         fun pattern(text: String) = DesktopFeedFilterEditor.parseBanWordToRegex(text)?.let { Regex(it, RegexOption.IGNORE_CASE) }

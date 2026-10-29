@@ -25,3 +25,64 @@
  import com.bilipai.desktop.cast.hasRawLocalNetworkAccess
  import com.android.purebilibili.feature.cast.LocalProxyServer
  import com.android.purebilibili.feature.cast.SsdpCastClient
+@@ -28,11 +28,11 @@
+ import kotlinx.coroutines.flow.combine
+ import kotlinx.coroutines.launch
+ 
+ const val DLNA_CAST_PLUGIN_ID = "dlna_cast"
+ 
+-class DlnaCastPlugin : CastPluginApi {
++class DlnaCastPlugin : com.android.purebilibili.core.plugin.BuiltinPlugin, CastPluginApi {
+ 
+     override val id = DLNA_CAST_PLUGIN_ID
+     override val name = "DLNA"
+     override val description = "通过 DLNA 协议将视频投屏到智能电视等设备"
+     override val version = "0.1.1"
+@@ -70,12 +70,12 @@
+ 
+     private var discoveryJob: Job? = null
+     private var ssdpJob: Job? = null
+     private var ssdpCache = emptyMap<String, SsdpDiscovery.SsdpDevice>()
+ 
+-    override fun startRouteDiscovery(context: Context) {
+-        val appContext = context.applicationContext
++    override fun startRouteDiscovery(context: android.content.Context) {
++        val appContext = com.bilipai.desktop.plugins.desktopPluginContext(context).applicationContext
+         if (!hasRawLocalNetworkAccess(appContext)) {
+             onDiscoveryAccessRevoked()
+             return
+         }
+ 
+@@ -85,12 +85,12 @@
+         // or when there is no cached route yet.
+         if (_routes.value.isNotEmpty() || ssdpJob?.isActive == true) return
+         refreshSsdpDevices(appContext)
+     }
+ 
+-    override fun refreshRouteDiscovery(context: Context) {
+-        val appContext = context.applicationContext
++    override fun refreshRouteDiscovery(context: android.content.Context) {
++        val appContext = com.bilipai.desktop.plugins.desktopPluginContext(context).applicationContext
+         if (!hasRawLocalNetworkAccess(appContext)) {
+             onDiscoveryAccessRevoked()
+             return
+         }
+         startRouteCollector()
+@@ -157,15 +157,15 @@
+         SsdpCastClient.clearPlaybackSession()
+         LocalProxyServer.stopAndClear()
+     }
+ 
+     override suspend fun cast(
+-        context: Context,
++        context: android.content.Context,
+         route: CastPluginRoute,
+         media: CastPluginMediaRequest
+     ): Result<Unit> {
+-        if (!hasRawLocalNetworkAccess(context)) {
++        if (!hasRawLocalNetworkAccess(com.bilipai.desktop.plugins.desktopPluginContext(context))) {
+             onDiscoveryAccessRevoked()
+             return Result.failure(SecurityException("DLNA 需要本地网络权限"))
+         }
+         val selection = resolveDlnaRouteSelection(route.routeId, ssdpCache)
+         return when (selection) {

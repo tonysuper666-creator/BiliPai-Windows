@@ -1570,7 +1570,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                 castAccountEpoch = sessionEpoch
             }
             if (dlnaDialog) cast.refreshDiscovery()
-            if (googleCastDialog) pluginRuntime.googleCast.startRouteDiscovery(pluginRuntime.context)
+            if (googleCastDialog) pluginRuntime.googleCast.startRouteDiscovery(pluginRuntime.context.asAndroidContext())
         }
     }
     LaunchedEffect(Unit) { runCatching { repository.refreshAccount() } }

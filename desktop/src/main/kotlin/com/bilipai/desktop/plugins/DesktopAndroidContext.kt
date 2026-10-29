@@ -18,6 +18,11 @@ internal fun DesktopPluginContext.asAndroidContext(checkRequest: () -> Unit,
 internal fun desktopPluginStore(context: android.content.Context): DesktopPluginStore =
     (context as? DesktopAndroidContext)?.desktop?.store
         ?: throw com.bilipai.desktop.compat.UnsupportedDesktopCapability("plugin store for ${context::class.java.name}", "only the plugin platform Context (asAndroidContext) holds plugin preferences")
+/** The plugin platform Context behind an Android Context this adapter created (callers that still take the desktop surface). */
+fun desktopPluginContext(context: android.content.Context): DesktopPluginContext {
+    desktopPluginStore(context)
+    return (context as DesktopAndroidContext).desktop
+}
 internal fun desktopPluginDataStore(context: android.content.Context): DesktopPluginDataStore {
     desktopPluginStore(context)
     return (context as DesktopAndroidContext).desktop.pluginDataStore

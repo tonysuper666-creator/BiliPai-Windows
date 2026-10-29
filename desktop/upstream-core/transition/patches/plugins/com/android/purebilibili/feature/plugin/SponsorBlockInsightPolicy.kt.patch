@@ -1,0 +1,39 @@
+--- a/plugins/com/android/purebilibili/feature/plugin/SponsorBlockInsightPolicy.kt
++++ b/plugins/com/android/purebilibili/feature/plugin/SponsorBlockInsightPolicy.kt
+@@ -1,9 +1,10 @@
+ // GENERATED from app/src/main/java/com/android/purebilibili/feature/plugin/SponsorBlockInsightPolicy.kt; do not edit.
+ // LF-normalized SHA-256: 981179d2b0828afc35df97bedb6b7d6c8283f7c7f9a1762415f40eb2b55fd113
+ package com.android.purebilibili.feature.plugin
+ 
++import com.bilipai.desktop.plugins.asAndroidContext
+ import com.bilipai.desktop.plugins.DesktopPluginContext as Context
+ import com.android.purebilibili.core.plugin.PluginStore
+ import kotlinx.serialization.Serializable
+ import kotlinx.serialization.builtins.ListSerializer
+ import kotlinx.serialization.decodeFromString
+@@ -316,11 +317,11 @@
+     }
+     private val writeMutex = Mutex()
+ 
+     suspend fun readRecords(context: Context): List<SponsorBlockSkipRecord> {
+         val value = PluginStore.getDataJson(
+-            context = context,
++            context = context.asAndroidContext(),
+             pluginId = SPONSOR_BLOCK_PLUGIN_ID,
+             name = SPONSOR_BLOCK_HISTORY_STORE_NAME
+         ) ?: return emptyList()
+         return runCatching {
+             json.decodeFromString(
+@@ -339,11 +340,11 @@
+             val nextRecords = (listOf(record) + readRecords(context))
+                 .distinctBy { it.segmentId to it.timestampMs }
+                 .sortedByDescending { it.timestampMs }
+                 .take(SPONSOR_BLOCK_HISTORY_LIMIT)
+             PluginStore.setDataJson(
+-                context = context,
++                context = context.asAndroidContext(),
+                 pluginId = SPONSOR_BLOCK_PLUGIN_ID,
+                 name = SPONSOR_BLOCK_HISTORY_STORE_NAME,
+                 dataJson = json.encodeToString(
+                     ListSerializer(SponsorBlockSkipRecord.serializer()),
+                     nextRecords

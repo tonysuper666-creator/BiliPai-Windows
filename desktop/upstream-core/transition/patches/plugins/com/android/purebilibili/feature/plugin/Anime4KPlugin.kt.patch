@@ -14,3 +14,16 @@
  import com.bilipai.desktop.plugins.DesktopPluginLog as Logger
  import com.android.purebilibili.feature.anime4k.Anime4KConfig
  import com.android.purebilibili.feature.anime4k.Anime4KPreset
+@@ -30,11 +30,11 @@
+ private const val TAG = "Anime4KPlugin"
+ 
+ /**
+  * Anime4K 是内置插件：插件层负责配置和可见性，播放器输出仍由 VideoOutputRouter 管理。
+  */
+-class Anime4KPlugin : Plugin {
++class Anime4KPlugin : BuiltinPlugin {
+ 
+     override val id: String = PLUGIN_ID
+     override val name: String = "画质增强"
+     override val description: String = "提供 Anime4K 与 AMD FSR 1.0 实时画质增强"
+     override val version: String = "0.4.0"

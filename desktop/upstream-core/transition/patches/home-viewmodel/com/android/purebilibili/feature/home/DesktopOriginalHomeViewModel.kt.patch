@@ -34,6 +34,19 @@
  import com.android.purebilibili.core.store.TodayWatchDislikedVideoSnapshot
  import com.android.purebilibili.core.store.TodayWatchFeedbackStore
  import com.android.purebilibili.core.store.TodayWatchProfileStore
+@@ -228,11 +230,11 @@
+         RecommendationMode.RELAX -> TodayWatchMode.RELAX
+         RecommendationMode.LEARN -> TodayWatchMode.LEARN
+     }
+ }
+ 
+-internal fun RecommendationResult.toTodayWatchPlan(): TodayWatchPlan {
++internal fun RecommendationResult<VideoItem>.toTodayWatchPlan(): TodayWatchPlan {
+     val creatorGroup = groups.firstOrNull { it.id == "preferred_creators" }
+     return TodayWatchPlan(
+         mode = mode.toTodayWatchMode(),
+         upRanks = creatorGroup.toTodayUpRanks().toImmutableList(),
+         videoQueue = items.map { it.video }.toImmutableList(),
 @@ -795,11 +797,11 @@
              sampleLimit = runtime.historySampleLimit
          )
@@ -47,6 +60,30 @@
              RecommendationCreatorSignal(
                  mid = it.mid,
                  name = it.name,
+@@ -810,21 +812,21 @@
+         val eyeCareNightActive = runtime.linkEyeCareSignal &&
+             EyeProtectionPlugin.getInstance()?.isNightModeActive?.value == true
+ 
+         val recommendationPlugin = PluginManager.plugins
+             .firstOrNull { it.enabled && it.plugin.id == TodayWatchPlugin.PLUGIN_ID }
+-            ?.plugin as? RecommendationPluginApi
++            ?.plugin as? TodayWatchPlugin
+         if (recommendationPlugin == null) {
+             _uiState.value = _uiState.value.copy(
+                 todayWatchPlan = null,
+                 todayWatchLoading = false,
+                 todayWatchError = "今日推荐插件不可用"
+             )
+             return
+         }
+ 
+-        fun buildResult(candidates: List<VideoItem>): RecommendationResult {
++        fun buildResult(candidates: List<VideoItem>): RecommendationResult<VideoItem> {
+             return recommendationPlugin.buildRecommendations(
+                 RecommendationRequest(
+                     historyVideos = historySample,
+                     candidateVideos = candidates,
+                     mode = runtime.mode.toRecommendationMode(),
 @@ -1286,11 +1288,11 @@
  
      private suspend fun recordTodayWatchNegativeFeedback(

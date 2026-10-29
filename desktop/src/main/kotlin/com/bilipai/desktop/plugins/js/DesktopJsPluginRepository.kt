@@ -1,5 +1,6 @@
 package com.bilipai.desktop.plugins.js
 
+import com.bilipai.desktop.plugins.asAndroidContext
 import com.android.purebilibili.plugin.sdk.PluginCapability
 import com.android.purebilibili.core.plugin.js.*
 import com.bilipai.desktop.plugins.DesktopPluginContext
@@ -29,7 +30,7 @@ data class DesktopJsPluginState(val plugins: List<DesktopJsInstalledState> = emp
 class DesktopJsPluginRepository(val context: DesktopPluginContext, val host: DesktopJsPluginHost,
     private val publicHttp: DesktopJsPublicHttp = DesktopJsPublicHttp()) {
     private val mutex = Mutex()
-    private val store = BiliPaiJsPluginInstallStore.createDefault(context)
+    private val store = BiliPaiJsPluginInstallStore.createDefault(context.asAndroidContext())
     private val json = Json { ignoreUnknownKeys = true; encodeDefaults = true; prettyPrint = true }
     private val manifestJson = Json { encodeDefaults = true }
     private val stateFlow = MutableStateFlow(DesktopJsPluginState())
