@@ -1,3 +1,5 @@
+@file:OptIn(androidx.compose.ui.ExperimentalComposeUiApi::class)
+
 package com.bilipai.desktop
 
 import com.bilipai.desktop.plugins.asAndroidContext
@@ -114,6 +116,15 @@ fun main(args: Array<String>) {
                 previous to handler
             }
         }
+        // An uncaught window exception is recorded and shown inside this window;
+        // Compose's default factory would open a system message box over the player.
+        val unexpectedFailure = remember { kotlinx.coroutines.flow.MutableStateFlow<String?>(null) }
+        val windowExceptionHandler = remember(diagnostics) {
+            DesktopWindowExceptionHandler(
+                record = { failure -> diagnostics?.let { runCatching { it.persistLocalCrash(failure) } } },
+                notify = { message -> unexpectedFailure.value = message },
+            )
+        }
         DisposableEffect(diagnosticHandler) {
             onDispose {
                 diagnosticHandler?.let { (previous, handler) ->
@@ -173,6 +184,8 @@ fun main(args: Array<String>) {
         DisposableEffect(windowsDisplayScale) { onDispose { windowsDisplayScale.close() } }
         val windowKeyFallback = remember { com.bilipai.desktop.ui.DesktopWindowKeyFallback() }
         DisposableEffect(windowKeyFallback) { onDispose { windowKeyFallback.close() } }
+        androidx.compose.runtime.CompositionLocalProvider(
+            androidx.compose.ui.window.LocalWindowExceptionHandlerFactory provides windowExceptionHandler) {
         Window(
             onCloseRequest = { closeApp() },
             onPreviewKeyEvent = windowKeyFallback::preview,
@@ -278,7 +291,15 @@ fun main(args: Array<String>) {
                     text = { androidx.compose.material3.Text(message) },
                     confirmButton = { androidx.compose.material3.TextButton(onClick = { restartFailure = null }) { androidx.compose.material3.Text("关闭") } })
             }
+            val unexpected by unexpectedFailure.collectAsState()
+            unexpected?.let { message ->
+                androidx.compose.material3.AlertDialog(onDismissRequest = { unexpectedFailure.value = null },
+                    title = { androidx.compose.material3.Text("客户端内部错误") },
+                    text = { androidx.compose.material3.Text(message) },
+                    confirmButton = { androidx.compose.material3.TextButton(onClick = { unexpectedFailure.value = null }) { androidx.compose.material3.Text("知道了") } })
+            }
             } // Windows user scale applies once to all Main content and its dialogs.
         }
+        } // Window exception notices stay inside this window.
     }
 }
