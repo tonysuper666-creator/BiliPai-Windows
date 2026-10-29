@@ -11,6 +11,7 @@ fun main(args: Array<String>) {
     when (action) {
         "write" -> store.saveAccount(mapOf("SESSDATA" to args[2], "bili_jct" to "probe-csrf", "DedeUserID" to args[3]),
             AccountSummary(args[3].toLong(), "probe", ""))
+        "logout" -> store.logout()
         "read" -> {
             val sent = store.loadForRequest("https://api.bilibili.com/x/web-interface/nav".toHttpUrl())
                 .firstOrNull { it.name == "SESSDATA" }?.value

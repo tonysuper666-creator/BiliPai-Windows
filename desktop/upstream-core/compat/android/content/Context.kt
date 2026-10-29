@@ -13,6 +13,10 @@ abstract class Context(val dataDir: File) {
     open val cacheDir: File get() = File(dataDir, "cache").apply { mkdirs() }
     open val contentResolver: ContentResolver = ContentResolver()
     abstract fun getSharedPreferences(name: String, mode: Int): SharedPreferences
+    /** Upstream app strings, following the system language (see [android.content.res.Resources]). */
+    open val resources: android.content.res.Resources get() = android.content.res.Resources.system
+    fun getString(resId: Int): String = resources.getString(resId)
+    fun getString(resId: Int, vararg formatArgs: Any?): String = resources.getString(resId, *formatArgs)
     companion object { const val MODE_PRIVATE = 0 }
 }
 
