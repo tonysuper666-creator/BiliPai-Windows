@@ -166,7 +166,8 @@ class RailKotlinTableTest(unittest.TestCase):
         for needle in (
             'fun zoomToast(percent: Int): String = "界面缩放 ${percent}%"',
             'fun unreadAnnouncement(label: String, unreadCount: Int): String = "${label}，${unreadCount} 条未读"',
-            'fun collapsedTooltip(label: String, number: Int?): String = if (number == null) label else "$label　Ctrl+$number"',
+            # squash normalizes the full-width separator; the raw spelling is checked below.
+            'fun collapsedTooltip(label: String, number: Int?): String = if (number == null) label else "$label Ctrl+$number"',
             'fun expandedTooltip(number: Int?): String? = if (number == null) null else "Ctrl+$number"',
             "DesktopRailGroup.BROWSE -> GROUP_BROWSE DesktopRailGroup.LIBRARY -> GROUP_LIBRARY DesktopRailGroup.FOOTER -> null",
         ):
