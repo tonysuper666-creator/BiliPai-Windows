@@ -12,6 +12,7 @@ sys.dont_write_bytecode = True
 REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(REPO / 'desktop/tools'))
 import v046_dynamic_category_merge as merge
+import check_slice_symbol_closure as gate
 
 TOOLS = REPO / 'desktop/tools'
 MAIN = REPO / 'desktop/src/main/kotlin/com/bilipai/desktop'
@@ -387,10 +388,21 @@ class V046DynamicCategoryMergeSourceTest(unittest.TestCase):
         # which is not compiled, still calls it. Compiling the v0.4.6 DynamicCommentSheet later must rewrite that call
         # to DesktopOriginalDynamicReactionSheet.
         self.assertFalse(any(group['closedBy'] == 'dyn-category-merge-and-detail-return' for group in expected['groups']))
-        # Two verbatim imports are replaced by their producers on purpose and stay accepted, explained gaps.
-        for symbol in ('com.android.purebilibili.core.network.grpc.DynamicReactionApi',
-                       'com.android.purebilibili.feature.dynamic.components.DynamicSelfAvatar'):
-            self.assertEqual('none (producer adaptation)', listed[symbol], symbol)
+        # The network API is now a real compiled module definition, not an
+        # accepted missing import. The avatar remains a producer adaptation.
+        api = 'com.android.purebilibili.core.network.grpc.DynamicReactionApi'
+        self.assertNotIn(api, listed)
+        model = gate.parse_gradle(text_of(REPO / 'desktop/build.gradle.kts'))
+        compiled, _notes = gate.collect_sources(REPO, model)
+        definers = set()
+        for source in compiled:
+            if source.set != 'main' or 'DynamicReactionApi' not in gate.read_source(source):
+                continue
+            info = gate.parse_kotlin(gate.read_source(source), source.logical, source.origin, source.set)
+            definers.update(info.package + '.' + declaration.name for declaration in info.decls)
+        self.assertIn(api, definers)
+        self.assertEqual('none (producer adaptation)',
+                         listed['com.android.purebilibili.feature.dynamic.components.DynamicSelfAvatar'])
         self.assertIn('import com.android.purebilibili.core.network.grpc.DynamicReactionApi', self.sources['DynamicReactionSheet.kt'])
         self.assertIn('import com.android.purebilibili.feature.dynamic.components.DynamicSelfAvatar', self.sources['DynamicScreen.kt'])
 

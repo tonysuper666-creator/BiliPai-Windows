@@ -6,15 +6,23 @@ import argparse
 import os
 from pathlib import Path
 import sys
+import subprocess
 import unittest
+
+from legacy_gate_workspace import legacy_gate_workspace
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--stage", choices=("policies", "generated"), required=True)
+    parser.add_argument("--stage", choices=("policies", "generated", "ux"), required=True)
+    parser.add_argument("--in-read-point", action="store_true", help=argparse.SUPPRESS)
     args = parser.parse_args()
     tools = Path(__file__).resolve().parent
-    tests = tools / "tests"
+    if not args.in_read_point:
+        with legacy_gate_workspace(tools.parents[1]) as repo:
+            return subprocess.call([sys.executable, "-B", str(repo / "desktop/tools/run-tool-tests.py"),
+                                    "--stage", args.stage, "--in-read-point"], cwd=repo)
+    tests = tools / ("ux" if args.stage == "ux" else "tests")
     # Dynamic extractor imports and their child processes use the same helper
     # modules, regardless of the caller's working directory or PYTHONPATH.
     sys.path.insert(0, str(tools))
