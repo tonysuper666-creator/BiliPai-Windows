@@ -3030,7 +3030,9 @@ val appCoreUpstreamTestPaths: Set<String> = appTestRoot.resolve("com/android/pur
     .filter { file -> !Regex("""^import (org\.junit|org\.robolectric|io\.mockk|androidx\.test)""", RegexOption.MULTILINE).containsMatchIn(file.readText()) }
     .map { it.relativeTo(appTestRoot).invariantSeparatorsPath }
     .filter { path -> path.removePrefix("com/android/purebilibili/").let { core -> core !in appCoreUpstreamTestsNotRun &&
-        (appCoreDesktopOwned.keys + appCoreLaterSteps.keys).none { core.startsWith(it) } } }
+        (appCoreDesktopOwned.keys + appCoreLaterSteps.keys).none { core.startsWith(it) } &&
+        // FooTest.kt tests Foo.kt: a test of a desktop-owned or later-step file is left out with its subject.
+        (appCoreDesktopOwned.keys + appCoreLaterSteps.keys).none { key -> key.endsWith(".kt") && core == key.removeSuffix(".kt") + "Test.kt" } } }
     .toSortedSet()
 val appCoreSourceReadingTestClasses: List<String> = appCoreUpstreamTestPaths.map { appTestRoot.resolve(it) }
     .filter { Regex("""\bFile\(|Paths\.get\(|\.readText\(""").containsMatchIn(it.readText()) }
