@@ -58,6 +58,8 @@ def generate(repo,out,standalone=False):
  def emit(path,s):
   from v037_tab_roles import apply as apply_tab_roles
   s=apply_tab_roles(BASE+path.removeprefix('com/android/purebilibili/'),s,out,path)
+  from desktop_refresh_adaptation import bind_refresh_lists
+  s=bind_refresh_lists(s)
   dest=out/path;dest.parent.mkdir(parents=True,exist_ok=True);dest.write_text(s,encoding='utf-8');files.append(str(dest))
  def function(s,n):
   matches=list(re.finditer(r'(?m)^[ \t]*(?:(?:internal|private|suspend)\s+)*fun\s+(?:[\w.]+\.)?'+re.escape(n)+r'\s*\(',s));assert len(matches)==1,(n,len(matches))

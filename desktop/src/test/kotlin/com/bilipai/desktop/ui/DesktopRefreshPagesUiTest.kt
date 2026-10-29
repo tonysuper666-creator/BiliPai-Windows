@@ -4,7 +4,7 @@ package com.bilipai.desktop.ui
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.lazy.LazyColumn
+import com.android.purebilibili.core.ui.components.AppLazyColumn as LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -147,15 +147,10 @@ class DesktopRefreshPagesUiTest {
                 CompositionLocalProvider(
                     LocalWindowInfo provides focused,
                     LocalDesktopToaster provides toaster,
-                    // The desktop scroller sends a wheel; here the same wheel goes into the scene's pointer input.
-                    LocalDesktopRefreshScroller provides DesktopRefreshScroller { box ->
-                        scene.sendPointerEvent(PointerEventType.Scroll, box.center, scrollDelta = Offset(0f, -100_000f), timeMillis = time())
-                        true
-                    },
                 ) {
                     MaterialTheme {
                         AdaptivePullToRefreshBox(isRefreshing = refreshing, modifier = Modifier.fillMaxSize(), onRefresh = {
-                            scope.launch(kotlinx.coroutines.Dispatchers.IO) {
+                            scope.desktopRefreshLaunch(kotlinx.coroutines.Dispatchers.IO) {
                                 refreshing = true
                                 try {
                                     requests++

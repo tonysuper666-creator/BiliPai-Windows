@@ -81,7 +81,8 @@ internal class DesktopOriginalDynamicReplySession(
 '''
     output.mkdir(parents=True,exist_ok=True)
     selected_original=__import__('v041_dynamic_comment_identity').dynamic_view_model()
-    emitted=[host.write(output,VM,selected_original,prefix+fields+body+'\n}\n','DesktopOriginalDynamicReplySession.kt')]
+    from desktop_refresh_adaptation import bind_refresh_launch
+    emitted=[host.write(output,VM,selected_original,bind_refresh_launch(prefix+fields+body+'\n}\n'),'DesktopOriginalDynamicReplySession.kt')]
     emitted.append(generate_policy(output))
     import json
     (output/'v036-dynamic-comment-source-proof.json').write_text(json.dumps(source_proof,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')

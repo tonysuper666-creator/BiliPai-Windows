@@ -74,7 +74,7 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
         .cookieJar(sessions)
         .connectTimeout(15, TimeUnit.SECONDS)
         .readTimeout(25, TimeUnit.SECONDS)
-        // TON-1026: counts failed requests while a refresh button's refresh runs, so a page that keeps its old rows still says so.
+        // TON-1026: final HTTP/read/decode outcomes belong to the initiating refresh operation.
         .addInterceptor(com.bilipai.desktop.ui.DesktopRefreshFailureWatch.interceptor)
         .addInterceptor { chain ->
             val original = chain.request()
@@ -157,15 +157,15 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
         }
         .build()
     private fun retrofit(baseUrl: String): Retrofit = Retrofit.Builder()
-        .baseUrl(baseUrl).client(client)
-        .addConverterFactory(json.asConverterFactory("application/json".toMediaType())).build()
+        .baseUrl(baseUrl).callFactory(com.bilipai.desktop.ui.DesktopRefreshFailureWatch.callFactory(client))
+        .addConverterFactory(com.bilipai.desktop.ui.DesktopRefreshResponseConverter(json.asConverterFactory("application/json".toMediaType()))).build()
     private val api = retrofit("https://api.bilibili.com/").create(BilibiliApi::class.java)
     private val searchApi = retrofit("https://api.bilibili.com/").create(SearchApi::class.java)
     private val passportApi = retrofit("https://passport.bilibili.com/").create(PassportApi::class.java)
     private val validationPassportRetrofit = Retrofit.Builder().baseUrl("https://passport.bilibili.com/")
         .client(client.newBuilder().cookieJar(CookieJar.NO_COOKIES)
             .retryOnConnectionFailure(false).followRedirects(false).followSslRedirects(false).build())
-        .addConverterFactory(json.asConverterFactory("application/json".toMediaType())).build()
+        .addConverterFactory(com.bilipai.desktop.ui.DesktopRefreshResponseConverter(json.asConverterFactory("application/json".toMediaType()))).build()
     private val validationPassportApi = validationPassportRetrofit.create(PassportApi::class.java)
     private val buvidApi = retrofit("https://api.bilibili.com/").create(BuvidApi::class.java)
     private val dynamicApi = retrofit("https://api.bilibili.com/").create(DynamicApi::class.java)
@@ -363,7 +363,7 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
     internal fun ownedPlaybackCallFactory(authorization: DesktopPlaybackAuthorization, stillOwned: () -> Boolean): okhttp3.Call.Factory =
         okhttp3.Call.Factory { request ->
             if (!sessions.isPlaybackAuthorizationCurrent(authorization.receipt) || !stillOwned()) throw java.io.IOException("Playback authorization retired")
-            client.newCall(request.newBuilder().tag(DesktopSessionEpoch::class.java,
+            com.bilipai.desktop.ui.DesktopRefreshFailureWatch.callFactory(client).newCall(request.newBuilder().tag(DesktopSessionEpoch::class.java,
                 DesktopSessionEpoch(authorization.receipt.accountEpoch, stillOwned, playbackAuthorization = authorization)).build())
         }
     internal fun <T> ownedPlaybackService(type: Class<T>, authorization: DesktopPlaybackAuthorization, stillOwned: () -> Boolean): T =
@@ -373,7 +373,7 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
         decorateCalls: ((okhttp3.Call.Factory) -> okhttp3.Call.Factory)?): T =
         Retrofit.Builder().baseUrl("https://api.bilibili.com/").callFactory(ownedPlaybackCallFactory(authorization, stillOwned)
             .let { decorateCalls?.invoke(it) ?: it })
-            .addConverterFactory(json.asConverterFactory("application/json".toMediaType())).build().create(type)
+            .addConverterFactory(com.bilipai.desktop.ui.DesktopRefreshResponseConverter(json.asConverterFactory("application/json".toMediaType()))).build().create(type)
 
     // Original guest CookieJar identity generation expression, now a scalar on the SAME
     // existing transport owner. No second CookieJar/cache/client or account credential copy.
@@ -385,7 +385,7 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
         okhttp3.Call.Factory { request ->
             if (expectedEpoch != sessions.generation || !stillOwned())
                 throw java.io.IOException("Home request owner retired")
-            transport.newCall(request.newBuilder().tag(DesktopSessionEpoch::class.java,
+            com.bilipai.desktop.ui.DesktopRefreshFailureWatch.callFactory(transport).newCall(request.newBuilder().tag(DesktopSessionEpoch::class.java,
                 DesktopSessionEpoch(expectedEpoch, stillOwned, if (guest) homeGuestBuvid3 else null)).build())
         }
 
@@ -428,7 +428,7 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
         decorateCalls: ((okhttp3.Call.Factory) -> okhttp3.Call.Factory)? = null): T = Retrofit.Builder().baseUrl(baseUrl)
         .callFactory(ownedHomeCallFactory(expectedEpoch, stillOwned, guest, transport)
             .let { decorateCalls?.invoke(it) ?: it })
-        .addConverterFactory(json.asConverterFactory("application/json".toMediaType())).build().create(type)
+        .addConverterFactory(com.bilipai.desktop.ui.DesktopRefreshResponseConverter(json.asConverterFactory("application/json".toMediaType()))).build().create(type)
 
     /** Original official QR authorization endpoints over the EXISTING validation transport.
      * Default system TLS is already used by this owner; no debug trust override, new pool,

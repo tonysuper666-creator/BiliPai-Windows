@@ -26,6 +26,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.staticCompositionLocalOf
@@ -35,7 +36,6 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Rect
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.layout.boundsInRoot
 import androidx.compose.ui.layout.findRootCoordinates
 import androidx.compose.ui.layout.onGloballyPositioned
@@ -51,7 +51,20 @@ import java.awt.EventQueue
 import java.awt.event.MouseEvent
 import java.awt.event.MouseWheelEvent
 import java.io.IOException
-import java.util.concurrent.atomic.AtomicInteger
+import java.util.concurrent.atomic.AtomicBoolean
+import kotlin.coroutines.CoroutineContext
+import kotlin.coroutines.EmptyCoroutineContext
+import kotlinx.coroutines.*
+import kotlinx.serialization.json.*
+import okhttp3.Call
+import okhttp3.Callback
+import okhttp3.ResponseBody.Companion.toResponseBody
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.calculateStartPadding
+import androidx.compose.foundation.layout.calculateEndPadding
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.grid.LazyGridState
+import androidx.compose.ui.platform.LocalLayoutDirection
 import okhttp3.Interceptor
 import okhttp3.Response
 import com.bilipai.desktop.diagnostics.DesktopDiagnosticsBridge
@@ -232,41 +245,102 @@ internal class DesktopAwtWheelScroller(
 }
 
 /**
- * Failed requests while a button-started refresh runs, counted on the app's HTTP client. A page that keeps its old rows when a refresh
- * fails shows nothing by itself; the button turns this count into one toast when the refresh ends. Counted: a failed connection, an
- * HTTP error status, and a JSON answer whose top-level "code" is not 0. A cancelled call and a retired request owner are not failures.
+ * One immutable operation per button invocation. Its launch context and Call.Factory bind requests before dispatch; the
+ * interceptor and Retrofit decoder publish their final outcomes to that operation. Unrelated requests and closed operations
+ * never contribute to a later refresh. A cancelled call and a retired request owner are not failures.
  */
 internal object DesktopRefreshFailureWatch {
-    private val failures = AtomicInteger(0)
-    @Volatile private var active = false
-
-    fun begin() { failures.set(0); active = true }
-
-    /** Stops watching and returns how many requests failed since begin. */
-    fun end(): Int { active = false; return failures.getAndSet(0) }
-
+    class Operation {
+        private var failures = 0
+        private var ended = false
+        @Synchronized fun active(): Boolean = !ended
+        @Synchronized fun failed() { if (!ended) failures++ }
+        @Synchronized fun end(): Int { ended = true; return failures }
+    }
+    private val current = ThreadLocal<Operation?>()
+    fun context(): CoroutineContext = current.asContextElement(current.get())
+    fun operation(): Operation? = current.get()
+    fun <T> within(operation: Operation?, block: () -> T): T {
+        val previous = current.get()
+        current.set(operation)
+        return try { block() } finally { current.set(previous) }
+    }
+    // Synchronous callers may also delimit an operation; no process-wide active counter.
+    fun begin() { current.set(Operation()) }
+    fun end(): Int = current.get()?.let { current.remove(); it.end() } ?: 0
+    private class RequestFailure(private val operation: Operation) {
+        private val counted = AtomicBoolean()
+        fun failed() { if (counted.compareAndSet(false, true)) operation.failed() }
+    }
+    private val decodingRequest = ThreadLocal<RequestFailure?>()
+    fun decodeFailed() { decodingRequest.get()?.failed() ?: current.get()?.failed() }
+    private fun <T> decoding(request: RequestFailure, block: () -> T): T {
+        val previous = decodingRequest.get()
+        decodingRequest.set(request)
+        return try { block() } finally { decodingRequest.set(previous) }
+    }
+    fun callFactory(client: Call.Factory): Call.Factory = Call.Factory { request ->
+        val operation = (request.tag(Operation::class.java) ?: current.get())?.takeIf { it.active() }
+        if (operation == null) client.newCall(request) else {
+            val outcome = RequestFailure(operation)
+            val tagged = request.newBuilder().tag(Operation::class.java, operation).tag(RequestFailure::class.java, outcome).build()
+            val call = client.newCall(tagged)
+            object : Call by call {
+                override fun enqueue(callback: Callback) {
+                    val caller = this
+                    call.enqueue(object : Callback {
+                        override fun onFailure(call: Call, e: IOException) = decoding(outcome) {
+                            if (e.message != "Canceled" && e.message != "Request owner retired") outcome.failed()
+                            within(operation) { callback.onFailure(caller, e) }
+                        }
+                        override fun onResponse(call: Call, response: Response) = decoding(outcome) {
+                            within(operation) { callback.onResponse(caller, response) }
+                        }
+                    })
+                }
+                override fun clone(): Call = callFactory(client).newCall(tagged)
+            }
+        }
+    }
     val interceptor = Interceptor { chain ->
-        if (!active) return@Interceptor chain.proceed(chain.request())
+        val operation = (chain.request().tag(Operation::class.java) ?: current.get())?.takeIf { it.active() }
+            ?: return@Interceptor chain.proceed(chain.request())
+        // One terminal outcome per request, tied to the immutable initiating operation.
+        val outcome = chain.request().tag(RequestFailure::class.java) ?: RequestFailure(operation)
+        fun failed() = outcome.failed()
         try {
             val response = chain.proceed(chain.request())
-            if (desktopRefreshResponseFailed(response)) failures.incrementAndGet()
-            response
-        } catch (failure: IOException) {
-            if (failure.message != "Canceled" && failure.message != "Request owner retired") failures.incrementAndGet()
+            if (response.code >= 400) failed()
+            val body = response.body
+            if (body != null && body.contentType()?.subtype?.let { it == "json" || it.endsWith("+json") } == true) {
+                // Complete the JSON read before returning it to Retrofit. No prefix heuristic:
+                // late disconnects and malformed JSON are part of this operation's result.
+                val bytes = body.use { it.bytes() }
+                val replacement = response.newBuilder().body(DesktopRefreshResponseBody(bytes.toResponseBody(body.contentType()), ::failed)).build()
+                try { if (desktopRefreshResponseFailed(replacement)) failed() }
+                catch (failure: kotlinx.serialization.SerializationException) { failed(); throw failure }
+                replacement
+            } else response.newBuilder().body(DesktopRefreshResponseBody(body, ::failed)).build()
+        } catch (failure: Exception) {
+            if (failure !is CancellationException && failure.message != "Canceled" && failure.message != "Request owner retired") failed()
             throw failure
         }
     }
 }
 
-private val businessCode = Regex("\"code\"\\s*:\\s*(-?\\d+)")
+/** Capture the button's operation when launching into a retained VM scope, before dispatch. */
+internal fun CoroutineScope.desktopRefreshLaunch(
+    context: CoroutineContext = EmptyCoroutineContext,
+    start: CoroutineStart = CoroutineStart.DEFAULT,
+    block: suspend CoroutineScope.() -> Unit,
+): Job = launch(DesktopRefreshFailureWatch.context() + context, start, block)
 
 internal fun desktopRefreshResponseFailed(response: Response): Boolean {
     if (response.code >= 400) return true
-    val type = response.body?.contentType()
-    if (type == null || type.subtype != "json") return false
-    val head = try { response.peekBody(2_048).string() } catch (_: IOException) { return false }
-    val code = businessCode.find(head)?.groupValues?.get(1)?.toIntOrNull() ?: return false
-    return code != 0
+    val type = response.body?.contentType() ?: return false
+    if (type.subtype != "json" && !type.subtype.endsWith("+json")) return false
+    val json = Json.parseToJsonElement(response.peekBody(Long.MAX_VALUE).string()) as? JsonObject ?: return false
+    return (json["code"] as? JsonPrimitive)?.intOrNull?.let { it != 0 } ?: false
 }
 
 internal fun desktopRefreshWatchedFailureMessage(count: Int): String =
@@ -290,11 +364,52 @@ internal object DesktopRefreshButtonPresence {
  * The content of a refresh box sees at least the scroll reserve as the bottom content padding that list pages already read
  * (LocalBottomBarContentPadding, zero on the desktop), so lists that honour it end clear of the corner button.
  */
+internal class DesktopRefreshLists {
+    val callbacks = LinkedHashMap<Any, () -> Unit>()
+    fun scrollToTop() { callbacks.values.toList().forEach { it() } }
+}
+internal val LocalDesktopRefreshLists = staticCompositionLocalOf<DesktopRefreshLists?> { null }
+
 @Composable
 internal fun DesktopRefreshReserve(content: @Composable () -> Unit) {
+    val lists = remember { DesktopRefreshLists() }
     val reserve = DESKTOP_REFRESH_SCROLL_RESERVE_DP.dp
     val current = LocalBottomBarContentPadding.current
-    CompositionLocalProvider(LocalBottomBarContentPadding provides if (current > reserve) current else reserve, content = content)
+    CompositionLocalProvider(
+        LocalDesktopRefreshLists provides lists,
+        LocalBottomBarContentPadding provides maxOf(current, reserve), content = content,
+    )
+}
+
+/** Only lists inside a refresh host reserve room; caller's existing insets are preserved. */
+@Composable
+internal fun desktopRefreshContentPadding(padding: PaddingValues): PaddingValues {
+    if (LocalDesktopRefreshLists.current == null) return padding
+    val direction = LocalLayoutDirection.current
+    return PaddingValues(
+        start = padding.calculateStartPadding(direction), end = padding.calculateEndPadding(direction),
+        top = padding.calculateTopPadding(),
+        bottom = maxOf(padding.calculateBottomPadding(), LocalBottomBarContentPadding.current),
+    )
+}
+
+@Composable
+internal fun DesktopRefreshList(state: LazyListState) {
+    val lists = LocalDesktopRefreshLists.current
+    val scope = rememberCoroutineScope()
+    DisposableEffect(lists, state) {
+        lists?.callbacks?.put(state) { scope.launch { state.scrollToItem(0) } }
+        onDispose { lists?.callbacks?.remove(state) }
+    }
+}
+@Composable
+internal fun DesktopRefreshList(state: LazyGridState) {
+    val lists = LocalDesktopRefreshLists.current
+    val scope = rememberCoroutineScope()
+    DisposableEffect(lists, state) {
+        lists?.callbacks?.put(state) { scope.launch { state.scrollToItem(0) } }
+        onDispose { lists?.callbacks?.remove(state) }
+    }
 }
 
 /** Extra offset for a floating button that shares the bottom right corner: zero without a refresh button, one button height and gap with it. */
@@ -319,21 +434,15 @@ internal fun BoxScope.DesktopRefreshButton(
         DesktopRefreshButtonPresence.enter()
         onDispose { DesktopRefreshButtonPresence.leave() }
     }
-    val boundsHolder = remember { arrayOf(Rect.Zero) }
-    fun latestScrollerBounds(): Rect? = boundsHolder[0].takeIf { it.width > 0f && it.height > 0f }
     var state by remember { mutableStateOf(DesktopRefreshButtonState()) }
     // The clock only has to wake the composition when a pending hold runs out; isRefreshing itself is snapshot state.
     var clock by remember { mutableStateOf(nowMs()) }
     val pendingSince = state.pendingSinceMs
     val toaster = rememberUpdatedState(LocalDesktopToaster.current)
-    val window = LocalDesktopWindowsPlayerWindow.current
-    val scale = LocalDensity.current.density
-    val scroller = LocalDesktopRefreshScroller.current ?: remember(window, scale) {
-        window?.let { DesktopAwtWheelScroller({ it }, { scale }) }
-    }
-    val latestScroller = rememberUpdatedState(scroller)
     // A refresh started here is watched for failed requests until the owner reports it finished (or never started).
-    var watching by remember { mutableStateOf(false) }
+    var operation by remember { mutableStateOf<DesktopRefreshFailureWatch.Operation?>(null) }
+    val lists = LocalDesktopRefreshLists.current
+    DisposableEffect(Unit) { onDispose { operation?.end() } }
     var scrolledHere by remember { mutableStateOf(false) }
     LaunchedEffect(pendingSince) {
         if (pendingSince != null) {
@@ -352,10 +461,10 @@ internal fun BoxScope.DesktopRefreshButton(
             runningSinceMs?.let {
                 DesktopDiagnosticsBridge.record("I", DESKTOP_REFRESH_LOG_TAG, desktopRefreshEndLog(it, nowMs()))
                 // The refreshed rows replaced the old ones: aim the scroll to the top again for lists that keep their position.
-                if (scrolledHere) latestScrollerBounds()?.let { box -> latestScroller.value?.scrollToTop(box) }
-                if (watching) {
-                    watching = false
-                    val failed = DesktopRefreshFailureWatch.end()
+                if (scrolledHere) lists?.scrollToTop()
+                operation?.let { completed ->
+                    operation = null
+                    val failed = completed.end()
                     if (failed > 0) toaster.value.show(desktopRefreshWatchedFailureMessage(failed))
                 }
             }
@@ -364,10 +473,15 @@ internal fun BoxScope.DesktopRefreshButton(
         }
     }
     // A refresh that the owner declined never reports isRefreshing: stop watching when the hold runs out.
-    LaunchedEffect(pendingSince, watching) {
-        if (pendingSince != null && watching) {
+    LaunchedEffect(pendingSince, operation) {
+        if (pendingSince != null && operation != null) {
             kotlinx.coroutines.delay(DESKTOP_REFRESH_PENDING_TIMEOUT_MS + 100)
-            if (runningSinceMs == null && watching) { watching = false; DesktopRefreshFailureWatch.end() }
+            if (runningSinceMs == null) {
+                val failed = operation?.end() ?: 0
+                operation = null
+                if (failed > 0) toaster.value.show(desktopRefreshWatchedFailureMessage(failed))
+                if (scrolledHere) lists?.scrollToTop()
+            }
         }
     }
     val busy = state.busy(refreshing, if (pendingSince != null) clock.coerceAtLeast(pendingSince) else clock)
@@ -383,10 +497,10 @@ internal fun BoxScope.DesktopRefreshButton(
             if (start) {
                 clock = nowMs()
                 DesktopDiagnosticsBridge.record("I", DESKTOP_REFRESH_LOG_TAG, desktopRefreshStartLog(sourceName))
-                if (reportFailures) { DesktopRefreshFailureWatch.begin(); watching = true }
+                if (reportFailures) operation = DesktopRefreshFailureWatch.Operation()
                 val prelude = latestPrelude.value
-                if (prelude != null) prelude() else scrolledHere = latestScrollerBounds()?.let { latestScroller.value?.scrollToTop(it) } == true
-                latestOnRefresh.value()
+                if (prelude != null) prelude() else { lists?.scrollToTop(); scrolledHere = lists != null }
+                DesktopRefreshFailureWatch.within(operation) { latestOnRefresh.value() }
             }
             start
         }
@@ -408,7 +522,6 @@ internal fun BoxScope.DesktopRefreshButton(
                 // The wrapper's parent is the refresh box itself: the list a scroll to the top has to reach.
                 coordinates.parentLayoutCoordinates?.let { parent ->
                     val box = parent.boundsInRoot()
-                    boundsHolder[0] = box
                     target.boxBounds = box
                 }
             }

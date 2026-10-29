@@ -102,6 +102,11 @@ def main():
  # v0.4.6 hub layer (roadmap slice bgm-hub-pages): whole v0.4.6 content, hash-pinned over the outputs written above.
  from v046_bangumi_hub_pages import advance_home
  v046=advance_home(root,out)
+ from desktop_refresh_adaptation import bind_refresh_launch
+ for name in ['BangumiHubViewModel.kt', 'HomeBangumiTabPage.kt', 'BangumiHubContent.kt']:
+  generated=out/'com/android/purebilibili/feature/bangumi'/name
+  if generated.is_file():
+   generated.write_text(bind_refresh_launch(generated.read_text(encoding='utf-8')),encoding='utf-8',newline='\n')
  (out/'bangumi-page-producer-inventory.json').write_text(json.dumps(dict(upstreamCommit='79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40',pins=PINS,emitted=rows,originalInverseTransformsVerified=True,v046HubPages=v046),indent=2)+'\n',encoding='utf-8')
  print('Complete original Home Bangumi Hub emitted')
 if __name__=='__main__':main()

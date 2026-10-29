@@ -37,6 +37,8 @@ def generate(repo,output,standalone=False,test_output=None):
  original=current_following.fixed(repo)['FollowingListScreen.kt']
  rows[-1].update(upstreamCommit=current_following.COMMIT,sha256LfUtf8=current_following.sha(original),
   currentFollowingPlatformBinding=audit,windowsBrandSuccessAdaptation=audit['windowsBrandSuccessAdaptation'])
+ from desktop_refresh_adaptation import bind_refresh_launch
+ body=bind_refresh_launch(body)
  emit('feature/following/FollowingListScreen',body)
  if test_output is not None:current_following.emit_tests(repo,test_output)
  rows.append(emit_fans(repo, out))
