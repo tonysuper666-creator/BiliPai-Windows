@@ -862,7 +862,7 @@ class Task:
 class GradleModel:
     def __init__(self):
         self.variables = {}      # name -> relative build path
-        self.tasks = {}          # name -> Task (Exec tasks only, file order)
+        self.tasks = {}          # name -> Task (Python Exec tasks and modelled source transformations)
         self.source_dirs = {'main': [], 'test': []}   # (kind, relative path)
         self.unresolved_source_dirs = []
         self.sync_excludes = []

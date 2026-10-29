@@ -1899,21 +1899,21 @@ class CurrentIntegrationTree(unittest.TestCase):
                              'a producer now writes a longer path: raise LONGEST_PRODUCER_PATH (and re-check '
                              'MAX_SCRATCH_ROOT)')
 
-    MISSING_PROJECT_SYMBOLS = (
+    PROJECT_SYMBOLS = (
         'BottomPagerPreloadedItemsSaver', 'DanmakuRenderPauseState',
         'DynamicFeedPageDataSource', 'PlaybackLoadException', 'RecentPlaybackStore', 'StartupAnimationStyle',
         'SubtitleContentRepository', 'VideoDetailPlaybackErrorNotice', 'VideoLoadStage', 'VideoLoadTimeline',
         'VideoNetworkPressureObserver')
 
     def test_a_missing_project_definer_is_never_taught_as_an_ambient_name(self):
-        # the carried archives bare-use these eleven names, whose definers no source declares; they used to be
-        # learned as ambient, so a generated file that bare-used one of them passed the gate and failed the compile
+        # These project names must never be learned as ambient library names.
+        # Some now have real definers in migrated modules; their bare use from
+        # another package must still require an import, as the probe below checks.
         ambient = self.result.ambient
         self.assertGreater(len(ambient), 500)
-        for name in self.MISSING_PROJECT_SYMBOLS:
+        for name in self.PROJECT_SYMBOLS:
             with self.subTest(name=name):
                 self.assertNotIn(name, ambient)
-                self.assertFalse(self.result.universe.named_anywhere(name), 'now declared: drop it from this list')
         # no capitalized ambient name is one that a scanned file imports from a project package
         providers = self.result.providers
         self.assertEqual([], sorted(n for n in ambient if n[:1].isupper()
@@ -1926,14 +1926,14 @@ class CurrentIntegrationTree(unittest.TestCase):
         # through an implicit SharedTransitionScope receiver: reviewed, not a project symbol
         for name in ('OverlayClip', 'Array', 'IllegalStateException', 'Runnable'):
             self.assertIn(name, ambient)
-        # the probe: a generated file without imports that bare-uses the missing symbols is reported, library names are not
-        calls = '\n'.join('    %s()' % name for name in self.MISSING_PROJECT_SYMBOLS)
+        # The probe: project names used without imports are reported, library names are not.
+        calls = '\n'.join('    %s()' % name for name in self.PROJECT_SYMBOLS)
         text = ('package probe\n\ninternal fun probe() {\n%s\n    MadeUpNeverExistsAnywhere()\n    OverlayClip(1)\n'
                 '    IllegalStateException("x")\n}\n' % calls)
         info = gate.parse_kotlin(text, 'build/generated/probe/Probe.kt', 'generated', 'main', keep_tokens=True)
         context = gate.FileContext(self.result.universe, info, providers)
         findings = gate.check_names(self.result.universe, info, context, ambient, {}, gate.OriginalCache({}), {'names'})
-        self.assertEqual(sorted(self.MISSING_PROJECT_SYMBOLS + ('MadeUpNeverExistsAnywhere',)),
+        self.assertEqual(sorted(self.PROJECT_SYMBOLS + ('MadeUpNeverExistsAnywhere',)),
                          sorted(f.symbol for f in findings if f.check == 'unresolved-name'))
 
     def test_the_compat_extension_retires_the_twelfth_seed_in_the_real_tree(self):

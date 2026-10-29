@@ -25,6 +25,15 @@ worktree and all objects in the original clone; the seven archive-only Git
 failures are addressed by this setup rather than by changing assertions.
 Missing history fails before discovery; fetch full history and retry.
 
+The current Gradle model records source ownership for migrated modules and the
+transition-patch task. The read point keeps the current module inputs separately
+under `.merged-root`, while generators still read pinned originals. The model
+materializes the current transition patches with the same strict, exactly-once
+unified-hunk semantics as the Gradle task, and respects the current generated-file
+exclusions when collecting compiled sources. It does not replace the live build
+recipe, add producer skips or run a JVM. The full producer and symbol-universe
+checks remain active; JVM/build validation is still separate.
+
 This is a compatibility gate for retained slices, not v0.6.7 product coverage.
 Migrated modules must still pass their current JVM/product tests. M5 removes
 the slice mechanism and these compatibility gates together (TON-1008).
