@@ -1,0 +1,41 @@
+--- a/com/android/purebilibili/core/ui/popup/AppGlassPopupHost.kt
++++ b/com/android/purebilibili/core/ui/popup/AppGlassPopupHost.kt
+@@ -72,17 +72,17 @@
+ import androidx.compose.ui.graphics.addOutline
+ import androidx.compose.ui.graphics.graphicsLayer
+ import androidx.compose.ui.graphics.layer.drawLayer
+ import androidx.compose.ui.input.pointer.pointerInput
+ import androidx.compose.ui.input.pointer.PointerEventPass
+ import androidx.compose.ui.layout.LayoutCoordinates
+ import androidx.compose.ui.layout.boundsInWindow
+ import androidx.compose.ui.draw.drawBehind
+-import androidx.compose.ui.platform.LocalView
++import androidx.compose.ui.platform.LocalWindowInfo
+ import androidx.compose.ui.platform.LocalInputModeManager
+ import androidx.compose.ui.input.InputMode
+ import androidx.compose.ui.focus.FocusRequester
+ import androidx.compose.ui.focus.focusRequester
+ import androidx.compose.ui.focus.focusProperties
+ import androidx.compose.ui.focus.focusRestorer
+ import androidx.compose.ui.input.key.Key
+ import androidx.compose.ui.input.key.KeyEventType
+@@ -346,17 +346,18 @@
+                     com.android.purebilibili.core.ui.blur.LocalAppGlassContainer provides null,
+                 ) {
+                     AppGlassPopupHost(glassAvailable = true, tuning = tuning, content = content)
+                 }
+             }
+         }
+     }
+     SideEffect { if (parentExiting) controller.dismissWithParent() }
+-    val hostView = LocalView.current
++    // Desktop: the window identity that the patched AppGlassMenu compares (no Android View).
++    val hostView: Any = LocalWindowInfo.current
+     val menuPresenter = if (!glassAvailable) null else remember(controller, hostView) {
+         object : AppGlassMenuPresenter {
+             override val ownerView = hostView
+             override fun show(owner: Any, request: AppGlassMenuRequest) {
+                 if (latestParentExiting) request.carriedPress?.cancel() else controller.showMenu(owner, request)
+             }
+             override fun dismiss(owner: Any) { controller.dismissMenu(owner) }
+         }
