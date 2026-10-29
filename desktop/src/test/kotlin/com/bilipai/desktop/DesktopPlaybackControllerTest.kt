@@ -228,6 +228,145 @@ class DesktopPlaybackControllerTest {
         }
     }
 
+    @Test fun `request lease survives owned quality reload and closes only its native source`() {
+        Fixture(FakeSource(::details, ::resolved)).use { f ->
+            lateinit var lease: com.bilipai.desktop.player.DesktopPlaybackRequestLease
+            onSwing { lease = f.controller.requestPlayback(card("BVA", 11), 12_000) }
+            f.await { !it.opening && it.details?.bvid == "BVA" }
+            val firstVersion = f.player.currentSourceVersion
+            onSwing { assertTrue(lease.isCurrent); assertTrue(lease.selectQuality(64)) }
+            f.await { !it.opening && !it.recovering && it.effectiveQuality == 64 }
+            // reloadSource intentionally retains the owned version and presentation lease.
+            assertEquals(firstVersion, f.player.currentSourceVersion)
+            assertEquals(64, f.controller.state.value.effectiveQuality)
+            onSwing {
+                assertTrue(lease.isCurrent)
+                lease.close(); lease.close()
+                assertFalse(lease.isCurrent)
+                assertFalse(lease.retry())
+                assertFalse(lease.selectQuality(80))
+                assertFalse(lease.selectAudioQuality(-1))
+                assertNull(f.controller.state.value.details)
+            }
+        }
+    }
+
+    @Test fun `replaced lease cannot retry change quality or close a newer ordinary entry`() {
+        Fixture(FakeSource(::details, ::resolved)).use { f ->
+            lateinit var old: com.bilipai.desktop.player.DesktopPlaybackRequestLease
+            onSwing { old = f.controller.requestPlayback(card("BVA")) }
+            f.await { !it.opening && it.details?.bvid == "BVA" }
+            onSwing { f.controller.open(card("BVB")) }
+            f.await { !it.opening && it.details?.bvid == "BVB" }
+            val version = f.player.currentSourceVersion
+            onSwing {
+                assertFalse(old.isCurrent); assertFalse(old.retry())
+                assertFalse(old.selectQuality(64)); assertFalse(old.selectAudioQuality(-1))
+                old.close()
+            }
+            assertEquals(version, f.player.currentSourceVersion)
+            assertEquals("BVB-21", f.player.state.value.sourceTitle)
+            assertEquals("BVB", f.controller.state.value.details?.bvid)
+        }
+    }
+
+    @Test fun `request lease rejects account change and foreign native takeover`() {
+        val epoch = AtomicLong()
+        val base = FakeSource(::details, ::resolved)
+        val source = object : DesktopPlaybackDataSource by base { override val sessionEpoch get() = epoch.get() }
+        Fixture(source).use { f ->
+            lateinit var lease: com.bilipai.desktop.player.DesktopPlaybackRequestLease
+            onSwing { lease = f.controller.requestPlayback(card("BVA")) }
+            f.await { !it.opening && it.details?.bvid == "BVA" }
+            onSwing {
+                epoch.incrementAndGet()
+                assertFalse(lease.isCurrent); assertFalse(lease.retry()); assertFalse(lease.selectQuality(64))
+                epoch.set(0)
+                val version = f.player.loadVersioned(PlaybackSource("file:///C:/lease-foreign.mp4", title = "Foreign"))
+                assertFalse(lease.isCurrent); assertFalse(lease.selectAudioQuality(-1))
+                lease.close()
+                assertEquals(version, f.player.currentSourceVersion)
+                assertEquals("Foreign", f.player.state.value.sourceTitle)
+            }
+        }
+    }
+
+    @Test fun `late old request completion and close cannot replace the new lease`() {
+        val started = CompletableDeferred<Unit>(); val gate = CompletableDeferred<Unit>()
+        val finished = CompletableDeferred<Unit>()
+        Fixture(FakeSource(::details) { info, index, qn ->
+            if (info.bvid == "BVA") {
+                started.complete(Unit)
+                withContext(NonCancellable) { gate.await() }
+                finished.complete(Unit)
+            }
+            resolved(info, index, qn)
+        }).use { f ->
+            lateinit var old: com.bilipai.desktop.player.DesktopPlaybackRequestLease
+            lateinit var next: com.bilipai.desktop.player.DesktopPlaybackRequestLease
+            try {
+                onSwing { old = f.controller.requestPlayback(card("BVA")) }
+                runBlocking { withTimeout(3_000) { started.await() } }
+                onSwing { next = f.controller.requestPlayback(card("BVB")) }
+                f.await { !it.opening && it.details?.bvid == "BVB" }
+                val version = f.player.currentSourceVersion
+                gate.complete(Unit)
+                runBlocking { withTimeout(3_000) { finished.await() } }
+                onSwing { old.close(); assertTrue(next.isCurrent) }
+                assertEquals(version, f.player.currentSourceVersion)
+                assertEquals("BVB-21", f.player.state.value.sourceTitle)
+            } finally { gate.complete(Unit) }
+        }
+    }
+
+    @Test fun `a new request supersedes an old lease retry even when its transport ignores cancellation`() {
+        val started = CompletableDeferred<Unit>(); val gate = CompletableDeferred<Unit>()
+        val finished = CompletableDeferred<Unit>(); var aLoads = 0
+        Fixture(FakeSource(::details) { info, index, qn ->
+            if (info.bvid == "BVA" && ++aLoads > 1) {
+                started.complete(Unit)
+                withContext(NonCancellable) { gate.await() }
+                finished.complete(Unit)
+            }
+            resolved(info, index, qn)
+        }).use { f ->
+            lateinit var old: com.bilipai.desktop.player.DesktopPlaybackRequestLease
+            lateinit var next: com.bilipai.desktop.player.DesktopPlaybackRequestLease
+            try {
+                onSwing { old = f.controller.requestPlayback(card("BVA")) }
+                f.await { !it.opening && it.details?.bvid == "BVA" }
+                onSwing { assertTrue(old.retry()) }
+                runBlocking { withTimeout(3_000) { started.await() } }
+                onSwing { next = f.controller.requestPlayback(card("BVB")) }
+                f.await { !it.opening && it.details?.bvid == "BVB" }
+                val version = f.player.currentSourceVersion
+                gate.complete(Unit)
+                runBlocking { withTimeout(3_000) { finished.await() } }
+                onSwing { old.close(); assertTrue(next.isCurrent) }
+                assertEquals(version, f.player.currentSourceVersion)
+                assertEquals("BVB-21", f.player.state.value.sourceTitle)
+                assertFalse(f.controller.state.value.recovering)
+            } finally { gate.complete(Unit) }
+        }
+    }
+
+    @Test fun `closing a loading request cancels it without closing the shared decoder`() {
+        val started = CompletableDeferred<Unit>(); val gate = CompletableDeferred<Unit>()
+        Fixture(FakeSource(::details) { info, index, qn ->
+            if (info.bvid == "BVA") { started.complete(Unit); gate.await() }
+            resolved(info, index, qn)
+        }).use { f ->
+            lateinit var lease: com.bilipai.desktop.player.DesktopPlaybackRequestLease
+            onSwing { lease = f.controller.requestPlayback(card("BVA")) }
+            runBlocking { withTimeout(3_000) { started.await() } }
+            onSwing { lease.close(); assertFalse(lease.isCurrent) }
+            gate.complete(Unit)
+            onSwing { f.controller.open(card("BVB")) }
+            f.await { !it.opening && it.details?.bvid == "BVB" }
+            assertEquals("BVB-21", f.player.state.value.sourceTitle)
+        }
+    }
+
     private class FakeSource(private val info: suspend (String) -> VideoDetails,
         private val resolve: suspend (VideoDetails, Int, Int) -> ResolvedSource) : DesktopPlaybackDataSource {
         override suspend fun videoDetails(bvid: String) = info(bvid)
