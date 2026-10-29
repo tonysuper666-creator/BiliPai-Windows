@@ -1,0 +1,20 @@
+# Desktop uses the current window insets; Android hidden status-bar geometry is not available.
+--- a/app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PlayerControlSafeArea.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PlayerControlSafeArea.kt
+@@ -5,7 +5,6 @@
+ import androidx.compose.foundation.layout.displayCutout
+ import androidx.compose.foundation.layout.only
+ import androidx.compose.foundation.layout.statusBars
+-import androidx.compose.foundation.layout.statusBarsIgnoringVisibility
+ import androidx.compose.foundation.layout.union
+ import androidx.compose.foundation.layout.windowInsetsPadding
+ import androidx.compose.runtime.Composable
+@@ -47,7 +46,7 @@
+     statusBarVisible: Boolean,
+ ): Modifier = when {
+     shouldReserveHiddenPlayerStatusBar(isFullscreen, isPortrait) -> windowInsetsPadding(
+-        WindowInsets.statusBarsIgnoringVisibility.union(WindowInsets.displayCutout)
++        WindowInsets.statusBars.union(WindowInsets.displayCutout)
+             .only(WindowInsetsSides.Top),
+     )
+     statusBarVisible -> windowInsetsPadding(WindowInsets.statusBars.only(WindowInsetsSides.Top))
