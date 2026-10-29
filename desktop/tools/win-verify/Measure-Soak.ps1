@@ -7,7 +7,8 @@
 # timeout). The run reports crash (process gone), hang (window not answering) and the
 # private-memory growth relative to the first sample after the feed settled.
 #
-# Exit codes: 0 measured, 3 paused by tools\PAUSE, 4 machine busy, 5 measurement failed.
+# Exit codes: 0 measured, 3 paused by tools\PAUSE, 4 machine busy, 5 measurement failed,
+# 6 refused because the launcher clamp is shorter than the requested run.
 [CmdletBinding()]
 param(
     [int]$Minutes = 30,
@@ -16,6 +17,7 @@ param(
     [int]$PlaybackCheckSeconds = 60,
     [int]$SampleSeconds = 30,
     [switch]$StartPlayback,
+    [switch]$PreflightOnly,
     [double]$ClickXRatio = 0.30,
     [double]$ClickYRatio = 0.45,
     [string]$Tag = 'run1'
@@ -24,25 +26,49 @@ $ErrorActionPreference = 'Stop'
 . (Join-Path $PSScriptRoot 'BpVerify.Common.ps1')
 
 $dataDir = Initialize-BpRun -Name "soak-$Tag"
-if (Test-BpPause) { Write-BpLog 'PAUSE file present: measurement paused, nothing was started.'; exit 3 }
-if (-not (Test-BpInteractiveSession)) { exit 7 }
-if (-not (Test-BpMachineQuiet)) { Write-BpLog 'machine busy: measurement skipped.'; exit 4 }
-# tools\launch.ps1 refuses max_seconds above 3600 and kills the client at that point, so a
-# single soak can only run inside that hour. The 8 hour night run needs a launch.ps1 change
-# (owner decision, recorded in the TON-998 report) - this script says so instead of
-# pretending the longer run happened.
-$limit = [int][math]::Floor((3600 - $SettleSeconds - 120) / 60)
-if ($Minutes -gt $limit) {
-    Write-BpLog ("Minutes=$Minutes exceeds the {0} minute ceiling imposed by the launcher check-in (max_seconds 3600). Long night runs need a launcher change first." -f $limit)
-    exit 6
-}
-
-$exe = Get-BpAppExe
-$samples = New-Object System.Collections.ArrayList
 $summary = [ordered]@{
     item = 23; tag = $Tag; minutes = $Minutes; startPlayback = [bool]$StartPlayback
     startedUtc = (Get-Date).ToUniversalTime().ToString('o')
 }
+if (Test-BpPause) { Write-BpLog 'PAUSE file present: measurement paused, nothing was started.'; exit 3 }
+if (-not (Test-BpInteractiveSession)) { exit 7 }
+if (-not (Test-BpMachineQuiet)) { Write-BpLog 'machine busy: measurement skipped.'; exit 4 }
+# tools\launch.ps1 clamps max_seconds (line: `if ($maxSec -gt 3600) { $maxSec = 3600 }`) and
+# stops the client at that point, so one soak can never outlive the clamp. The ceiling is read
+# from the launcher instead of being hard-coded: after the clamp is raised to 28800 the night
+# run works without touching this script, and until then a long request fails in seconds
+# instead of running for an hour and being killed.
+$launcherPath = Join-Path $script:BpRoot 'tools\launch.ps1'
+$launcherClamp = 3600
+try {
+    $m = Select-String -Path $launcherPath -Pattern 'maxSec -gt (\d+)' -ErrorAction Stop | Select-Object -First 1
+    if ($m) { $launcherClamp = [int]$m.Matches[0].Groups[1].Value }
+} catch {
+    Write-BpLog ("could not read the launcher clamp from {0}; assuming 3600 s" -f $launcherPath)
+}
+$ceilingMinutes = [int][math]::Floor(($launcherClamp - $SettleSeconds - 120) / 60)
+$summary.launcher_clamp_seconds = $launcherClamp
+$summary.max_minutes_this_machine = $ceilingMinutes
+Write-BpLog ("launcher clamp={0} s -> longest single soak {1} min; requested {2} min" -f $launcherClamp, $ceilingMinutes, $Minutes)
+if ($Minutes -gt $ceilingMinutes) {
+    $summary.ok = $false
+    $summary.requested_minutes = $Minutes
+    $summary.reason = "requested $Minutes min but tools\launch.ps1 clamps max_seconds to $launcherClamp s, which allows $ceilingMinutes min; raise the clamp in the launcher first"
+    Write-BpLog ('SUMMARY ' + ($summary | ConvertTo-Json -Depth 4 -Compress))
+    $summary | ConvertTo-Json -Depth 4 | Set-Content -Encoding utf8 -Path (Join-Path $dataDir 'summary.json')
+    exit 6
+}
+if ($PreflightOnly) {
+    Write-BpLog 'preflight only: the launcher allows this duration, nothing was started.'
+    $summary.preflight_only = $true
+    $summary.ok = $true
+    Write-BpLog ('SUMMARY ' + ($summary | ConvertTo-Json -Depth 4 -Compress))
+    $summary | ConvertTo-Json -Depth 4 | Set-Content -Encoding utf8 -Path (Join-Path $dataDir 'summary.json')
+    exit 0
+}
+
+$exe = Get-BpAppExe
+$samples = New-Object System.Collections.ArrayList
 $appPid = 0
 $since = [datetime]::MinValue
 $crash = $false
@@ -105,15 +131,17 @@ try {
     }
 
     $deadline = (Get-Date).AddMinutes($Minutes)
+    $nextCheck = Get-Date
     while ((Get-Date) -lt $deadline) {
         if (Test-BpPause) { Write-BpLog 'PAUSE appeared: soak stopped early'; break }
         $s = Get-BpProcessSample -ProcessId $uiPid
         if (-not $s) { $crash = $true; Write-BpLog 'process disappeared: crash/exit detected'; break }
         $responding = [BpMeasure]::Responds($hwnd)
         if (-not $responding) { $hang = $true; Write-BpLog 'window not responding: hang detected' }
-        # Playback has to still be running minutes later, not just at the start: every
-        # $PlaybackCheckSeconds take two thumbnails 1 s apart and require them to differ.
-        if ($StartPlayback) {
+        # Playback has to still be running minutes later, not just at the start. The sample
+        # loop runs every $SampleSeconds, the picture check every $PlaybackCheckSeconds.
+        if ($StartPlayback -and (Get-Date) -ge $nextCheck) {
+            $nextCheck = (Get-Date).AddSeconds($PlaybackCheckSeconds)
             # A 1 s gap between two thumbnails is too strict for calm scenes: a slow pan can be
             # almost identical across one second. Sample four frames over 3 s and take the
             # largest step; playback always produces at least one visible change in 3 s.

@@ -50,9 +50,24 @@ account is already administrator, so nothing is escalated and no group membershi
 * **Only the client this run started is stopped.** The staged exe is a launcher stub that
   exits and orphans the JVM, so the client is identified by image name plus "started at or
   after this launch" — a client from an earlier run is never touched.
-* **Input is injected, then undone.** Posted window messages are ignored by the Compose
-  surface, so the pointer is moved to the target, the event is sent with `mouse_event`, and
-  the pointer is put back where it was.
+* **Input reaches the window or the run fails.** Posted window messages are ignored by the
+  Compose surface, so input goes through `mouse_event`; the window has to be foreground
+  (`GetForegroundWindow` verified, topmost round-trip as the usual trick) and the pointer
+  stays inside the feed for the whole scroll. A cursor that keeps leaving drops wheel events
+  silently — that produced five runs with zero movement before it was found.
+* **A scroll run proves it scrolled.** Three horizontal bands of the card grid are sampled
+  every 500 ms; a sample counts when at least two bands changed inside a 1.5 s window. A
+  hover preview animates one card and cannot reach two bands. The same-sample version of
+  this rule scored 0.65-0.89 on runs that were visibly scrolling, so it was replaced.
+* **A picture is proven to be playing.** Click-to-picture and soak require sustained motion
+  in the centre of the window (15 of the last 20 one-frame steps), which a page transition
+  or a spinner cannot sustain.
+* **Failures stay in the numbers.** A launch that never shows a picture is a timeout;
+  percentiles are reported over every attempt with the timeout entering as "at least the
+  observation bound", and the smaller detected-only view is labelled separately.
+* **I/O comes from CIM.** `Get-Process` exposes no I/O counters on this platform and the
+  missing values were silently rounded to zero. `Win32_Process` provides them; when they
+  cannot be read the pause verdict says "not verified" instead of guessing.
 
 ## Requirements
 
@@ -84,11 +99,16 @@ re-computes from.
 
 ## Known limits (recorded, not hidden)
 
-* `tools\launch.ps1` refuses `max_seconds` above 3600 and stops the client at that point, so
-  one soak cannot exceed ~55 minutes. The 8 hour night run needs that cap raised by the
-  machine owner; `Measure-Soak.ps1` refuses longer runs instead of faking them.
+* `tools\launch.ps1` clamps `max_seconds` at 3600 (`if ($maxSec -gt 3600) { $maxSec = 3600 }`)
+  and stops the client at that point, so one soak cannot exceed ~55 minutes. `Measure-Soak.ps1`
+  reads that clamp from the launcher, refuses longer runs in seconds (`exit 6`) and records
+  `launcher_clamp_seconds` in the summary; `-PreflightOnly` checks the duration without
+  starting the client. Longest delivered run so far: 55 minutes. The 8 hour night run needs
+  the clamp raised by the machine owner — after that the same command works unchanged.
 * The client itself does not read `tools\PAUSE` (only the launcher does). `Measure-Idle.ps1`
-  measures the effect and reports `app_pause_effect`, so the gap is visible in the numbers.
+  measures CPU and I/O across foreground / minimized / pause / recovery and reports
+  `pause_verdict`; on the current build the background I/O is already near zero when
+  minimized, so the verdict is "not verified" rather than a claim either way.
 * "Home page usable" is measured as: window visible, keyboard focus held, window answering
   `WM_NULL`. The final human judgement still belongs to the acceptance pass (R1).
 * PresentMon occasionally writes no CSV for the per-click captures while it does for the
