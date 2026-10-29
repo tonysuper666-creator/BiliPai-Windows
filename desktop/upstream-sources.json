@@ -367,7 +367,7 @@
         "source-parity"
       ],
       "mode": "direct",
-      "sourceCommit": "402bc112713c2e24356b97949af87ac07d06c255"
+      "sourceCommit": "fc4437c7d78ffdf702bf495a41b8940bb19b2ecd"
     },
     {
       "path": "core-data/src/main/java/com/android/purebilibili/data/model/response/LiveFeedModels.kt",
@@ -643,7 +643,7 @@
         "source-parity"
       ],
       "sha256": "aa66437743880bcd04b2bc945330d6f44eee554a3d6d07e9aa087311a01aee28",
-      "sourceCommit": "ccb37f85a34b6986f7465e0e0fa0650a4c33e768"
+      "sourceCommit": "fc4437c7d78ffdf702bf495a41b8940bb19b2ecd"
     },
     {
       "path": "danmaku-engine/src/main/java/com/android/purebilibili/danmaku/parser/DanmakuParser.kt",
@@ -655,7 +655,7 @@
         "stable-danmaku-list-menu"
       ],
       "sha256": "2ea28407e5c7b333b2e7456f2507ad9c501ddd3db37f10afde4fb4f4d60abf59",
-      "sourceCommit": "ccb37f85a34b6986f7465e0e0fa0650a4c33e768"
+      "sourceCommit": "fc4437c7d78ffdf702bf495a41b8940bb19b2ecd"
     },
     {
       "path": "app/src/main/java/com/android/purebilibili/data/repository/DanmakuRepository.kt",
@@ -3752,7 +3752,7 @@
         "playback"
       ],
       "mode": "reference-only",
-      "sourceCommit": "250944d0aef4dd2dd68fc90729763f5c1d84eafd"
+      "sourceCommit": "fc4437c7d78ffdf702bf495a41b8940bb19b2ecd"
     },
     {
       "path": "app/src/main/java/com/android/purebilibili/feature/anime4k/gl/FboManager.kt",
@@ -4675,7 +4675,7 @@
         "settings-dynamic-full-card-parity"
       ],
       "sha256": "9a8bef8427fd75dce61a989b6574b15390fe2bd735b5d873acb90b52056fb2fb",
-      "sourceCommit": "402bc112713c2e24356b97949af87ac07d06c255"
+      "sourceCommit": "fc4437c7d78ffdf702bf495a41b8940bb19b2ecd"
     },
     {
       "path": "design-system/src/main/java/com/android/purebilibili/core/ui/adaptive/MotionTier.kt",
@@ -5417,7 +5417,7 @@
         "dynamic-editor-detail-parity"
       ],
       "sha256": "af4119fb7da72dbf4c42f7c61cf39339034fc4a1b50b0be4e1c065923bfc4106",
-      "sourceCommit": "45c65e29235ae9ffc7c8487c5fccc8ccac99a084"
+      "sourceCommit": "fc4437c7d78ffdf702bf495a41b8940bb19b2ecd"
     },
     {
       "path": "design-system/src/main/java/com/android/purebilibili/core/ui/OfficialVerifyBadgePolicy.kt",
@@ -6025,7 +6025,7 @@
       "features": [
         "stable-shared-liquid-tabs"
       ],
-      "sourceCommit": "402bc112713c2e24356b97949af87ac07d06c255"
+      "sourceCommit": "fc4437c7d78ffdf702bf495a41b8940bb19b2ecd"
     },
     {
       "path": "app/src/main/java/com/android/purebilibili/core/ui/components/LiquidDockViewport.kt",
@@ -6199,7 +6199,7 @@
       "features": [
         "stable-shared-liquid-tabs"
       ],
-      "sourceCommit": "402bc112713c2e24356b97949af87ac07d06c255"
+      "sourceCommit": "fc4437c7d78ffdf702bf495a41b8940bb19b2ecd"
     },
     {
       "path": "design-system/src/main/java/com/android/purebilibili/core/ui/OpticalContrastPalette.kt",
@@ -8303,7 +8303,7 @@
       "features": [
         "live-sub-navigation"
       ],
-      "sourceCommit": "402bc112713c2e24356b97949af87ac07d06c255"
+      "sourceCommit": "fc4437c7d78ffdf702bf495a41b8940bb19b2ecd"
     },
     {
       "path": "app/src/main/java/com/android/purebilibili/feature/video/share/VideoShareSheetMotion.kt",
@@ -10170,7 +10170,7 @@
       "features": [
         "stable-music-player-original"
       ],
-      "sourceCommit": "402bc112713c2e24356b97949af87ac07d06c255"
+      "sourceCommit": "fc4437c7d78ffdf702bf495a41b8940bb19b2ecd"
     },
     {
       "path": "app/src/main/java/com/android/purebilibili/feature/audio/lyrics/halcyon/HalcyonLyricSettings.kt",
