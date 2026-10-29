@@ -844,7 +844,9 @@ class DesktopBangumiBasSourceAdmissionAssemblyTest {
                 actor.drain(); actor.loaded()
                 player.setPaused(true); actor.drain()
                 assertEquals(120, state().quality)
-                assertEquals(audioPreference, state().selectedAudioQuality)
+                assertEquals(if (hiRes) AUDIO_QUALITY_HI_RES else 30280, state().selectedAudioQuality)
+                assertEquals(if (hiRes) AudioStreamKind.HI_RES else AudioStreamKind.STANDARD,
+                    state().availableAudioQualities.single { it.preferenceId == state().selectedAudioQuality }.kind)
                 assertEquals(audioPreference, state().requestedAudioQuality)
                 assertEquals(if (hiRes) HI_RES else AAC, state().audioUrl)
                 assertEquals(AV1, state().playUrl)
