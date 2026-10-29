@@ -1,3 +1,5 @@
+@file:OptIn(androidx.compose.ui.ExperimentalComposeUiApi::class)
+
 package com.bilipai.desktop
 
 import com.bilipai.desktop.plugins.asAndroidContext
@@ -114,6 +116,11 @@ fun main(args: Array<String>) {
                 previous to handler
             }
         }
+        // An uncaught window exception is recorded and shown in an app-owned window;
+        // Compose's default factory would open a system message box over the player.
+        val windowExceptionNotice = remember { DesktopWindowExceptionNotice() }
+        DisposableEffect(windowExceptionNotice) { onDispose { windowExceptionNotice.close() } }
+        val windowExceptionFallback = remember { DesktopWindowExceptionFallbackLog() }
         DisposableEffect(diagnosticHandler) {
             onDispose {
                 diagnosticHandler?.let { (previous, handler) ->
@@ -149,9 +156,12 @@ fun main(args: Array<String>) {
             }
         }
         var restartFailure by remember { mutableStateOf<String?>(null) }
-        fun closeApp(restart: Boolean = false) {
+        fun closeApp(restart: Boolean = false, onRestartFailure: ((String) -> Unit)? = null) {
             val restartPlan = if (restart) try { DesktopApplicationRestart.prepare() }
-                catch (failure: Exception) { restartFailure = failure.message ?: "重启准备失败"; return }
+                catch (failure: Exception) {
+                    val reason = failure.message ?: "重启准备失败"
+                    restartFailure = reason; onRestartFailure?.invoke(reason); return
+                }
                 else null
             if (closing.compareAndSet(false, true)) applicationScope.launch {
                 try {
@@ -162,10 +172,33 @@ fun main(args: Array<String>) {
                     exitApplication()
                 } catch (failure: Exception) {
                     closing.set(false)
-                    if (restart) restartFailure = "重启未成功，请关闭客户端后从原文件夹重新打开。"
+                    if (restart) {
+                        val reason = "重启未成功，请关闭客户端后从原文件夹重新打开。"
+                        restartFailure = reason; onRestartFailure?.invoke(reason)
+                    }
                     System.err.println("Application shutdown did not finish (${failure.javaClass.simpleName}).")
                 }
             }
+        }
+        val windowExceptionHandler = remember(diagnostics, windowExceptionFallback, windowExceptionNotice, applicationScope) {
+            DesktopWindowExceptionHandler(
+                // The actor reports every accepted write; an absent actor or a thrown
+                // write is a failure here, never an assumed success.
+                record = { failure ->
+                    diagnostics?.let { runCatching { it.persistLocalCrash(failure) }.getOrDefault(false) } == true
+                },
+                fallback = windowExceptionFallback::append,
+                // A fresh app-owned window: the failing window's own composition
+                // may already be dead, where an in-window dialog would never render.
+                // That composition cannot be revived, so the notice offers the one way
+                // back that works: the same client restart the settings page uses.
+                notify = { message ->
+                    windowExceptionNotice.show(message) { onFailure -> closeApp(restart = true, onRestartFailure = onFailure) }
+                },
+                // Same terminal direction as Compose's default handler: a fatal error
+                // must not be swallowed into an "everything is fine" notice.
+                fatal = { failure -> throw failure },
+            )
         }
         val windowsDisplayScale = remember(applicationPluginStore, applicationScope) {
             com.bilipai.desktop.appearance.DesktopWindowsDisplayScaleController(applicationPluginStore, applicationScope)
@@ -173,6 +206,8 @@ fun main(args: Array<String>) {
         DisposableEffect(windowsDisplayScale) { onDispose { windowsDisplayScale.close() } }
         val windowKeyFallback = remember { com.bilipai.desktop.ui.DesktopWindowKeyFallback() }
         DisposableEffect(windowKeyFallback) { onDispose { windowKeyFallback.close() } }
+        androidx.compose.runtime.CompositionLocalProvider(
+            androidx.compose.ui.window.LocalWindowExceptionHandlerFactory provides windowExceptionHandler) {
         Window(
             onCloseRequest = { closeApp() },
             onPreviewKeyEvent = windowKeyFallback::preview,
@@ -280,5 +315,6 @@ fun main(args: Array<String>) {
             }
             } // Windows user scale applies once to all Main content and its dialogs.
         }
+        } // Window exception notices stay inside this window.
     }
 }
