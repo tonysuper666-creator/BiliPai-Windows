@@ -164,7 +164,9 @@ class DesktopPremiumAudioRecoveryTest {
         equal("https://fixture.invalid/aac-high", result.audioUrl); equal(listOf("https://fixture.invalid/aac-backup"), result.audioAlternatives)
         equal(source.videoUrl, result.videoUrl); equal(source.videoAlternatives, result.videoAlternatives); equal(1, calls)
         equal(AUDIO_QUALITY_HI_RES, result.audioSelection?.requestedPreferenceId)
-        equal(AUDIO_QUALITY_AUTO, result.audioSelection?.selectedPreferenceId); equal(AudioFallbackReason.DECODER_ERROR, result.audioSelection?.fallbackReason)
+        equal(30280, result.audioSelection?.selectedPreferenceId)
+        equal(AudioStreamKind.STANDARD, result.audioSelection?.selected?.kind)
+        equal(AUDIO_QUALITY_AUTO, result.audioSelection?.effectivePreferenceId); equal(AudioFallbackReason.DECODER_ERROR, result.audioSelection?.fallbackReason)
         equal(AUDIO_QUALITY_AUTO, effectiveAudioPreferenceAfterFailure(result.audioSelection))
     }
     case("AAC and Dolby selected audio never trigger HiRes fallback") {
@@ -179,7 +181,7 @@ class DesktopPremiumAudioRecoveryTest {
             resolveDesktopPremiumAudioRecovery(source.copy(cachedDashData = dash().copy(audio = emptyList())), audioFailure(), 1.0))
     }
     case("invalid standard URLs cannot be turned into a successful fallback") {
-        val source = resolved().copy(cachedDashData = dash().copy(audio = listOf(DashAudio(baseUrl = "file:///C:/fake.m4a", bandwidth = 900))))
+        val source = resolved().copy(cachedDashData = dash().copy(audio = listOf(DashAudio(id = 30280, baseUrl = "file:///C:/fake.m4a", bandwidth = 900))))
         equal(DesktopPremiumAudioRecoveryPlan.Unavailable(DesktopPremiumAudioRecoveryPlan.Reason.NO_PLAYABLE_STANDARD_URL),
             resolveDesktopPremiumAudioRecovery(source, audioFailure(), 1.0))
     }

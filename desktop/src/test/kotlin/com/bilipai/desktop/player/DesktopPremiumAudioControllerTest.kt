@@ -27,7 +27,9 @@ class DesktopPremiumAudioControllerTest {
                 f.await { f.controller.currentCastSource(owner)?.audioUrl?.endsWith("aac-high") == true }
                 val source = assertNotNull(f.controller.currentCastSource(owner))
                 assertEquals(AUDIO_QUALITY_HI_RES, source.audioSelection?.requestedPreferenceId)
-                assertEquals(AUDIO_QUALITY_AUTO, source.audioSelection?.selectedPreferenceId)
+                assertEquals(30280, source.audioSelection?.selectedPreferenceId)
+                assertEquals(AudioStreamKind.STANDARD, source.audioSelection?.selected?.kind)
+                assertEquals(AUDIO_QUALITY_AUTO, source.audioSelection?.effectivePreferenceId)
                 assertEquals(AudioFallbackReason.DECODER_ERROR, source.audioSelection?.fallbackReason)
                 assertEquals(owner, f.player.currentSourceVersion)
                 assertEquals(7L, f.controller.state.value.details?.pages?.single()?.cid)
