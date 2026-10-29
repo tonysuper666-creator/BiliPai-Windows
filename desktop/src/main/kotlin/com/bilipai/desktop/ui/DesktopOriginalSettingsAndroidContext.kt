@@ -14,7 +14,6 @@ import kotlinx.serialization.json.longOrNull
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.currentCoroutineContext
-import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlin.coroutines.createCoroutine
@@ -67,12 +66,13 @@ internal class DesktopOriginalSettingsAndroidContext(private val settings: Deskt
     }
 
     /** Runs a DataStore transform to completion on this thread, so an operation can replay it on its actual snapshot.
-     * The transform runs in its own Job, a child of the caller's: a cancelled caller cancels it. A transform that
+     * The transform runs in its own Job, a child of the caller's while the caller runs: a cancelled caller cancels it.
+     * The operation may publish after the calling coroutine has completed normally; the replay then has no parent. A transform that
      * suspends cannot be replayed there: its Job is cancelled, so the suspended point resumes with a CancellationException
      * on this thread (its finally blocks run, a late resume is ignored), and the edit fails instead of committing. */
     private fun runReplayable(transform: suspend (Preferences) -> Preferences, before: Preferences, caller: Job?): Preferences {
-        caller?.ensureActive()
-        val job = Job(caller)
+        if (caller?.isCancelled == true) throw CancellationException("the caller of this settings_prefs edit was cancelled")
+        val job = Job(caller?.takeIf { it.isActive })
         var outcome: Result<Preferences>? = null
         transform.createCoroutine(before, kotlin.coroutines.Continuation(job) { outcome = it }).resume(Unit)
         outcome?.let { result -> job.complete(); return result.getOrThrow() }

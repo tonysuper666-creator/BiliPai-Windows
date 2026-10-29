@@ -11,6 +11,7 @@ import com.bilipai.desktop.plugins.asAndroidContext
 import kotlinx.coroutines.CancellableContinuation
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -139,6 +140,15 @@ class DesktopOriginalSettingsAndroidContextTest {
         operation.join()
         assertTrue(operation.isCancelled)
         assertNull(stored())
+    }
+
+    @Test fun `an edit made in a scope that completed before the operation publishes is still replayed`() = runBlocking {
+        DesktopOriginalPlaybackPreferenceOperation.run(context, current::get) {
+            // The coroutine that called edit has completed normally by the time the operation replays it.
+            coroutineScope { settings.edit { it[counter] = (it[counter] ?: 0) + 1 } }
+            plugin.store.update("settings", mapOf("fixture_counter" to JsonPrimitive(10)))
+        }
+        assertEquals(JsonPrimitive(11), stored())
     }
 
     @Test fun `a replayed transform leaves no child job running under the caller`() = runBlocking {
