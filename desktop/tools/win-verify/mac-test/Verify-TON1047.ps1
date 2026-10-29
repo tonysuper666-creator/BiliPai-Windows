@@ -75,7 +75,8 @@ function Session-Media {
         $_.SourceAppUserModelId -like '*BiliPai*'
     })
     # Read/control no unrelated app's media; exactly one BiliPai source is required.
-    if($sessions.Count -ne 1){throw 'expected exactly one BiliPai SMTC source'}
+    if($sessions.Count -eq 0){return $null}
+    if($sessions.Count -ne 1){throw 'ambiguous BiliPai SMTC source'}
     $session=$sessions[0]
     $properties=Await-WinRT ($session.TryGetMediaPropertiesAsync()) $mediaType
     return [pscustomobject]@{session=$session;title=$properties.Title;

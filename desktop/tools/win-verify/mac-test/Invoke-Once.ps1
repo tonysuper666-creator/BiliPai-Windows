@@ -11,6 +11,7 @@ if((Get-ScheduledTask BiliPai-MacTest).State -ne 'Ready'){throw 'MacTest occupie
 if(Test-Path "$tools\PAUSE"){throw 'PAUSE present'}
 if(Test-Path "$root\measure\job.lock"){throw 'measurement occupied'}
 if(Test-Path "$tools\job.lock"){throw 'shared tools occupied'}
+if(@(Get-Process -Name 'BiliPai Windows' -ErrorAction SilentlyContinue).Count){throw 'another client exists; no launch'}
 New-Item -ItemType Directory -Force $out | Out-Null
 $lease=[IO.File]::Open("$tools\job.lock",'CreateNew','Write','Read')
 $bytes=[Text.Encoding]::UTF8.GetBytes("TON-1047 approved single session pid=$PID")
