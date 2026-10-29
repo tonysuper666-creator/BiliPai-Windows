@@ -2,6 +2,7 @@ package com.bilipai.desktop.ui
 
 import androidx.compose.runtime.*
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import com.android.purebilibili.feature.home.*
 import com.android.purebilibili.core.ui.*
 import com.android.purebilibili.core.ui.transition.*
@@ -83,7 +84,7 @@ internal class DesktopOriginalHomeNavigation(
   LocalHomeFeedScrollInProgress provides feedScrollInProgress,
   LocalHomeScrollChannel provides scrollChannel,
   LocalBottomBarVisible provides bottomBarVisible,
-  LocalBottomBarContentPadding provides bottomBarContentPadding,
+  LocalBottomBarContentPadding provides (if (bottomBarContentPadding > DESKTOP_REFRESH_SCROLL_RESERVE_DP.dp) bottomBarContentPadding else DESKTOP_REFRESH_SCROLL_RESERVE_DP.dp),
   LocalSetBottomBarVisible provides setBottomBarVisible,
   LocalVideoCardTransitionBackgroundState provides transitionBackground,
   LocalVideoCardTransitionClock provides transitionClock,

@@ -183,7 +183,7 @@ internal fun DesktopDynamicTimelineFeed(
         FeedVerticalStaggeredGrid(columns=if(layout==DynamicFeedLayoutMode.LIST)StaggeredGridCells.Fixed(1)
             else StaggeredGridCells.Adaptive(resolveDynamicTimelineMinColumnWidth()),state=state.scroll,
             modifier=Modifier.widthIn(max=resolveDynamicTimelineMaxWidth()).fillMaxSize(),
-            contentPadding=PaddingValues(20.dp),
+            contentPadding=PaddingValues(start=20.dp,top=20.dp,end=20.dp,bottom=20.dp+DESKTOP_REFRESH_SCROLL_RESERVE_DP.dp),
             horizontalArrangement=Arrangement.spacedBy(resolveDynamicTimelineHorizontalSpacing()),
             verticalItemSpacing=resolveDynamicTimelineVerticalSpacing(),
             prependItemKeys=if(shouldUseDynamicManualPrependAnchor(layout))keys else emptyList(),

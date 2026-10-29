@@ -19,6 +19,7 @@ import androidx.compose.material.icons.rounded.Refresh
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -33,11 +34,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.layout.boundsInRoot
+import androidx.compose.ui.layout.findRootCoordinates
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.android.purebilibili.core.ui.LocalBottomBarContentPadding
 import com.bilipai.desktop.diagnostics.DesktopDiagnosticsBridge
 import com.bilipai.desktop.ui.kit.DesktopTooltipBox
 import com.bilipai.desktop.ui.kit.LocalDesktopKitReducedMotion
@@ -74,6 +79,9 @@ internal const val DESKTOP_REFRESH_STACK_LIFT_DP = DESKTOP_REFRESH_BUTTON_SIZE_D
 
 /** How long a click is held as "refreshing" while the owner has not yet reported isRefreshing (a refresh that the owner declines never reports it). */
 internal const val DESKTOP_REFRESH_PENDING_TIMEOUT_MS = 1_500L
+
+/** Space a list keeps free at its end so that its last row, and the menu of a card in the last column, can be scrolled clear of the button. */
+internal const val DESKTOP_REFRESH_SCROLL_RESERVE_DP = DESKTOP_REFRESH_BUTTON_MARGIN_DP + DESKTOP_REFRESH_BUTTON_SIZE_DP + DESKTOP_REFRESH_BUTTON_GAP_DP
 
 internal const val DESKTOP_REFRESH_LABEL = "刷新"
 internal const val DESKTOP_REFRESH_SHORTCUT = "F5"
@@ -113,9 +121,50 @@ internal fun desktopRefreshFailureMessage(failure: Throwable?): String {
 /** The diagnostic log lines of a refresh (tag DesktopRefresh): who asked, and how long the owner reported isRefreshing. */
 internal const val DESKTOP_REFRESH_LOG_TAG = "DesktopRefresh"
 internal fun desktopRefreshStartLog(source: String): String = "刷新开始：来源=$source"
-internal fun desktopRefreshShortcutStartLog(page: String): String = desktopRefreshStartLog("F5/Ctrl+R，页面=$page")
+internal const val DESKTOP_REFRESH_SHORTCUT_SOURCE = "F5/Ctrl+R"
 internal fun desktopRefreshRunningLog(): String = "刷新进行中：页面已报告正在刷新"
 internal fun desktopRefreshEndLog(startedMs: Long, endedMs: Long): String = "刷新结束：用时=${(endedMs - startedMs).coerceAtLeast(0)}ms"
+
+/**
+ * One refresh button as F5 and Ctrl+R see it. trigger is the same function the click runs (busy gate, scroll prelude, the page's own
+ * onRefresh, log line), so a key press and a click cannot differ. visible is false while the button is clipped away (a pager page
+ * that is not showing) or not laid out.
+ */
+internal class DesktopRefreshTarget(val trigger: (source: String) -> Boolean) {
+    @Volatile var visible: Boolean = false
+}
+
+/**
+ * The refresh buttons that are composed now, oldest first. The key goes to the newest visible one: a sheet or a page pushed over
+ * another list was composed later and is the one the user sees. A target that is busy still counts as the answer (the key is
+ * consumed and nothing starts twice).
+ */
+internal class DesktopRefreshTargets {
+    private val targets = mutableListOf<DesktopRefreshTarget>()
+    @Synchronized fun register(target: DesktopRefreshTarget) { targets += target }
+    @Synchronized fun unregister(target: DesktopRefreshTarget) { targets.remove(target) }
+    @Synchronized fun topmost(): DesktopRefreshTarget? = targets.lastOrNull { it.visible }
+    /** True when a visible button took the key (whether or not it started a refresh). */
+    fun refreshTopmost(source: String): Boolean = topmost()?.let { it.trigger(source); true } ?: false
+}
+
+/** The registry of the window shell, and the page the shell says is showing (null: the shortcuts are off, as in a detached window). */
+internal object DesktopRefreshRegistry {
+    val shared = DesktopRefreshTargets()
+    @Volatile var pageProvider: () -> DesktopShellPage? = { null }
+}
+
+/**
+ * Pages whose F5 / Ctrl+R reach a refresh button: the Home and Dynamic pages (the shell table) and every other list page (the host's
+ * fallback). The player page owns its keys and the search page has its own, so there the button must not promise F5.
+ */
+internal fun desktopRefreshShortcutPage(page: DesktopShellPage?): Boolean =
+    page == DesktopShellPage.HOME || page == DesktopShellPage.DYNAMIC || page == DesktopShellPage.OTHER
+
+/** The F5 or Ctrl+R chord of a key event reduced to data, with no other modifier. */
+internal fun desktopRefreshChord(data: DesktopShellKeyData): Boolean =
+    data.keyDown && !data.alt && !data.shift && !data.meta &&
+        ((data.key == "F5" && !data.ctrl) || (data.key == "R" && data.ctrl))
 
 /** The wording of the tooltip and the accessible name, one place for the button and for the tests. */
 internal fun desktopRefreshButtonName(busy: Boolean): String = if (busy) "正在刷新" else DESKTOP_REFRESH_LABEL
@@ -129,6 +178,17 @@ internal object DesktopRefreshButtonPresence {
     val present: Boolean get() = count.intValue > 0
     fun enter() { count.intValue += 1 }
     fun leave() { count.intValue = (count.intValue - 1).coerceAtLeast(0) }
+}
+
+/**
+ * The content of a refresh box sees at least the scroll reserve as the bottom content padding that list pages already read
+ * (LocalBottomBarContentPadding, zero on the desktop), so lists that honour it end clear of the corner button.
+ */
+@Composable
+internal fun DesktopRefreshReserve(content: @Composable () -> Unit) {
+    val reserve = DESKTOP_REFRESH_SCROLL_RESERVE_DP.dp
+    val current = LocalBottomBarContentPadding.current
+    CompositionLocalProvider(LocalBottomBarContentPadding provides if (current > reserve) current else reserve, content = content)
 }
 
 /** Extra offset for a floating button that shares the bottom right corner: zero without a refresh button, one button height and gap with it. */
@@ -177,12 +237,32 @@ internal fun BoxScope.DesktopRefreshButton(
     val latestOnRefresh = rememberUpdatedState(onRefresh)
     val latestRefreshing = rememberUpdatedState(refreshing)
     val latestPrelude = rememberUpdatedState(LocalDesktopRefreshPrelude.current)
+    val latestState = rememberUpdatedState(state)
+    // The one entry of a click and of F5 / Ctrl+R: true when this call started a refresh.
+    val trigger = remember {
+        { sourceName: String ->
+            val (next, start) = latestState.value.click(latestRefreshing.value, nowMs())
+            state = next
+            if (start) {
+                clock = nowMs()
+                DesktopDiagnosticsBridge.record("I", DESKTOP_REFRESH_LOG_TAG, desktopRefreshStartLog(sourceName))
+                latestPrelude.value?.invoke()
+                latestOnRefresh.value()
+            }
+            start
+        }
+    }
+    val target = remember { DesktopRefreshTarget(trigger) }
+    DisposableEffect(target) {
+        DesktopRefreshRegistry.shared.register(target)
+        onDispose { DesktopRefreshRegistry.shared.unregister(target) }
+    }
     val source = remember { MutableInteractionSource() }
     val colors = MaterialTheme.colorScheme
     val name = desktopRefreshButtonName(busy)
     DesktopTooltipBox(
         text = name,
-        shortcut = if (busy) null else DESKTOP_REFRESH_SHORTCUT,
+        shortcut = if (busy || !desktopRefreshShortcutPage(DesktopRefreshRegistry.pageProvider())) null else DESKTOP_REFRESH_SHORTCUT,
         positioning = TooltipAnchorPosition.Above,
         modifier = modifier
             .align(Alignment.BottomEnd)
@@ -191,20 +271,17 @@ internal fun BoxScope.DesktopRefreshButton(
         Box(
             Modifier
                 .size(DESKTOP_REFRESH_BUTTON_SIZE_DP.dp)
+                .onGloballyPositioned { coordinates ->
+                    val bounds = coordinates.boundsInRoot()
+                    val root = coordinates.findRootCoordinates().size
+                    target.visible = coordinates.isAttached && bounds.width > 0f && bounds.height > 0f &&
+                        bounds.right > 0f && bounds.bottom > 0f && bounds.left < root.width && bounds.top < root.height
+                }
                 .shadow(4.dp, CircleShape)
                 .background(colors.surfaceContainerHigh, CircleShape)
                 .desktopKitHairlineBorder(colors.outlineVariant, (DESKTOP_REFRESH_BUTTON_SIZE_DP / 2).dp)
                 .desktopKitInteraction(source, (DESKTOP_REFRESH_BUTTON_SIZE_DP / 2).dp, enabled = true)
-                .clickable(interactionSource = source, indication = null, role = Role.Button) {
-                    val (next, start) = state.click(latestRefreshing.value, nowMs())
-                    state = next
-                    if (start) {
-                        clock = nowMs()
-                        DesktopDiagnosticsBridge.record("I", DESKTOP_REFRESH_LOG_TAG, desktopRefreshStartLog("按钮"))
-                        latestPrelude.value?.invoke()
-                        latestOnRefresh.value()
-                    }
-                }
+                .clickable(interactionSource = source, indication = null, role = Role.Button) { trigger("按钮") }
                 .semantics { contentDescription = name },
             contentAlignment = Alignment.Center,
         ) {
