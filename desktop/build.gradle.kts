@@ -255,6 +255,14 @@ val appCoreLaterSteps: Map<String, String> = mapOf(
         "the desktop plugin platform and the legacy feature plugins move to it together",
     "core/theme/" to "upstream theme code uses materialkolor 6 (com.materialkolor.material3); the legacy appearance settings copies " +
         "and their producer use the 4.x API, and both versions cannot be on one classpath, so they move together",
+    "core/ui/components/PageAwareAsyncImage.kt" to "reads feature/home's LocalHomeCardCoverLoadingAllowed and Android drawables; moves with the home feature (M4b)",
+    "core/ui/wallpaper/WallpaperMedia" to "video wallpaper on Media3/AndroidView and BitmapFactory probing; needs a desktop replacement over the mpv player",
+    "core/util/PlayerOrientationPolicy.kt" to "Activity orientation of the player; moves with the video feature (M4a)",
+    "core/util/PlayerPresentationPolicy.kt" to "Activity orientation of the player; moves with the video feature (M4a)",
+    "core/ui/components/UserLevelBadge.kt" to "draws app R.drawable level badges; moves once drawable resources are generated",
+    "core/store/LocalPlaylistStore.kt" to "Room AudioLibraryDatabase; the desktop music library is JSON, moves with the audio feature (M4c)",
+    "core/store/PlayHistoryStore.kt" to "Room AudioLibraryDatabase; the desktop music library is JSON, moves with the audio feature (M4c)",
+    "core/store/UpdateHighlightsStore.kt" to "reads feature/settings/highlights; moves with the settings feature (M4d)",
 )
 val migratedAppCorePaths: Set<String> = appJavaRoot.resolve("com/android/purebilibili/core").walkTopDown()
     .filter { it.isFile && it.extension == "kt" }.map { it.relativeTo(appJavaRoot).invariantSeparatorsPath }
@@ -2483,7 +2491,6 @@ val upstreamOwnedGeneratedCopies = setOf(
     // app core (TON-1000): renamed subsets whose every declaration the upstream app core files now own.
     "appearance/com/android/purebilibili/core/store/DesktopOriginalWallpaperPaletteModels.kt",
     "appearance/com/android/purebilibili/core/store/ThemeSelectionStore.kt",
-    "blocked-list-ui/com/android/purebilibili/core/ui/components/DesktopUpstreamUserLevelBadge.kt",
     "dynamic-detail-container/com/android/purebilibili/core/store/DesktopOriginalDetailLiquidReusePolicy.kt",
     "dynamic-detail-container/com/android/purebilibili/core/ui/transition/DesktopOriginalDetailPredictiveBlurPolicy.kt",
     "dynamic-reply/com/android/purebilibili/core/store/DesktopOriginalReplySkeletonSettingsStore.kt",
@@ -2491,14 +2498,11 @@ val upstreamOwnedGeneratedCopies = setOf(
     "home-page/com/android/purebilibili/core/store/DesktopHomeNavigationMigration.kt",
     "home-page/com/android/purebilibili/core/store/navigation/DesktopHomeNavigationLabels.kt",
     "home-page/com/android/purebilibili/core/ui/transition/DesktopHomeDepthOwnershipPolicy.kt",
-    "home-page/com/android/purebilibili/core/ui/wallpaper/DesktopHomeWallpaperType.kt",
     "home-page/com/android/purebilibili/core/util/DesktopHomeCardTapEffect.kt",
     "home-page/com/android/purebilibili/core/util/DesktopHomeTapEffect.kt",
     "home-partition/com/android/purebilibili/core/ui/skeleton/DesktopOriginalMediaListSkeleton.kt",
     "independent-bangumi-pages/com/android/purebilibili/core/ui/skeleton/DesktopOriginalBangumiPosterDetailSkeleton.kt",
     "live-home-list/com/android/purebilibili/core/util/DesktopOriginalLiveApiErrors.kt",
-    "music-player-full/com/android/purebilibili/core/store/DesktopOriginalLocalPlaylistModels.kt",
-    "music-player-full/com/android/purebilibili/core/store/DesktopOriginalPlayHistoryModels.kt",
     "original-article-detail/com/android/purebilibili/core/ui/skeleton/DesktopOriginalArticleSkeleton.kt",
     "original-danmaku-list-menu/com/android/purebilibili/core/store/DanmakuSettingsScope.kt",
     "original-danmaku-settings/com/android/purebilibili/core/store/DesktopOriginalDanmakuSettingsModels.kt",
@@ -2666,7 +2670,8 @@ val applyTransitionPatches by tasks.registering {
 //    the upstream file declares.
 val upstreamReplacementDirectory = file("upstream-core/replacements")
 fun migratedUpstreamFile(relative: String): File {
-    val candidates = migratedUpstreamModules.map { mergedRepositoryRoot.resolve(it + "src/main/java/" + relative) }.filter { it.isFile }
+    val candidates = (migratedUpstreamModules.map { mergedRepositoryRoot.resolve(it + "src/main/java/" + relative) } +
+        listOfNotNull(appJavaRoot.resolve(relative).takeIf { relative in migratedAppCorePaths })).filter { it.isFile }
     require(candidates.size == 1) { "$relative must exist in exactly one migrated upstream module, found ${candidates.size}" }
     return candidates.single()
 }
@@ -2995,7 +3000,7 @@ kotlin.sourceSets.named("main") {
         }
     }
     // Migrated upstream files the desktop patches or replaces are compiled from their adapted form only.
-    val migratedRootPaths = migratedUpstreamModules.map { mergedRepositoryRoot.resolve(it + "src/main/java").toPath() }
+    val migratedRootPaths = migratedUpstreamModules.map { mergedRepositoryRoot.resolve(it + "src/main/java").toPath() } + listOf(appJavaRoot.toPath())
     kotlin.exclude { element ->
         migratedRootPaths.any { element.file.toPath().startsWith(it) } && upstreamIdentity(element.file) in desktopAdaptedUpstreamPaths
     }

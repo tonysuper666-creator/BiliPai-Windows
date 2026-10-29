@@ -30,6 +30,7 @@ internal class DesktopOriginalSettingsAndroidContext(private val settings: Deskt
     }
 
     override val applicationContext: android.content.Context get() = this
+    internal fun isLargeScreenOrFoldableConfiguration(): Boolean = settings.isLargeScreenOrFoldableConfiguration()
     override val filesDir: java.io.File get() = settings.pluginContext.filesDir
 
     override fun desktopPreferencesDataStore(name: String): DataStore<Preferences> = when (name) {
