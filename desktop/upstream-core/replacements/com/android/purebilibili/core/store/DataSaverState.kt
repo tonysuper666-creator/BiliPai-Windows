@@ -23,6 +23,9 @@ internal class DataSaverState private constructor() {
     companion object {
         @Volatile private var instance: DataSaverState? = null
 
+        /** The last resolved state, for callers without an Android Context (Coil requests on the desktop); off before the first get(). */
+        fun lastKnownActive(): Boolean = instance?.active?.value ?: false
+
         fun get(context: Context): DataSaverState = (instance ?: synchronized(this) {
             instance ?: DataSaverState().also { instance = it }
         }).also { it.refresh(context) }
