@@ -1,0 +1,14 @@
+# 上游 v0.6.7 matchesProxyDomain 回归；桌面补丁保持旧行为。
+# Preserve saved www URL rules, including matching the parent and sibling subdomains.
+# Applied only to the desktop source set; :upstream-core:test retains both upstream
+# failures unchanged (NetworkProxyPolicyTest and VideoStatusLabelsTest).
+--- a/network-core/src/main/java/com/android/purebilibili/core/network/policy/NetworkProxyPolicy.kt
++++ b/network-core/src/main/java/com/android/purebilibili/core/network/policy/NetworkProxyPolicy.kt
+@@ -74,6 +74,7 @@
+             .substringBefore('/')
+             .substringBefore(':')
+             .removePrefix("*.")
++            .removePrefix("www.")
+             .removeSuffix(".")
+             .trim()
+         rule.isNotEmpty() && (target == rule || target.endsWith(".$rule"))

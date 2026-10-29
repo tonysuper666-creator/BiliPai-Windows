@@ -18,7 +18,10 @@ import kotlin.test.*
 
 /** Real Store/Binding -> generated original protocol -> admitted Retrofit/OkHttp.
  * All HTTP origins are intercepted before a socket; no native/player success is
- * manufactured. Exception provenance is asserted through the real fallback. */
+ * manufactured. Exception provenance is asserted through the real fallback.
+ * 跟随上游有意改动：v0.6.7 起登录态回退只走 DASH，不是放宽测试。
+ * The four affected cases require zero guest calls; a successful guest fixture
+ * must never mask a logged-in DASH failure. Cancellation/visitor/IO cases stay intact. */
 class DesktopOriginalVideoFallbackCauseProtocolTest {
     private enum class Mode { HTTP412, HTTP503, BODY503, GUEST_SUCCESS, EMPTY }
     private class Fixture : AutoCloseable {
@@ -107,8 +110,8 @@ class DesktopOriginalVideoFallbackCauseProtocolTest {
             assertEquals(412, failure.apiCode)
             assertEquals(412, assertIs<VideoLoadError.ApiError>(desktopOriginalVideoLoadError(failure)).code)
             assertTrue(desktopOriginalVideoLoadCanRetry(failure))
-            assertTrue(f.ownedPlay.get() > 0); assertTrue(f.guestPlay.get() > 0)
-            assertTrue(f.requests.any { it.url.encodedPath == "/x/player/playurl" })
+            assertTrue(f.ownedPlay.get() > 0); assertEquals(0, f.guestPlay.get())
+            assertFalse(f.requests.any { it.url.encodedPath == "/x/player/playurl" })
             binding.assertCurrent(); assertTrue(f.repository.isPlaybackReceiptCurrent(binding.receipt))
         } }
     }
@@ -120,7 +123,7 @@ class DesktopOriginalVideoFallbackCauseProtocolTest {
             assertEquals(503, failure.code())
             assertEquals("/x/player/wbi/playurl", failure.response()?.raw()?.request?.url?.encodedPath)
             assertIs<VideoLoadError.UnknownError>(desktopOriginalVideoLoadError(failure))
-            assertTrue(f.ownedPlay.get() > 0); assertTrue(f.guestPlay.get() > 0); binding.assertCurrent()
+            assertTrue(f.ownedPlay.get() > 0); assertEquals(0, f.guestPlay.get()); binding.assertCurrent()
         } }
     }
 
@@ -145,16 +148,16 @@ class DesktopOriginalVideoFallbackCauseProtocolTest {
             val error = assertIs<VideoLoadError.ApiError>(desktopOriginalVideoLoadError(failure))
             assertEquals(503, error.code); assertFalse(desktopOriginalVideoLoadCanRetry(failure))
             assertFalse(desktopOriginalApiFailure(error).automaticRecovery)
-            assertTrue(f.ownedPlay.get() > 0); assertTrue(f.guestPlay.get() > 0); binding.assertCurrent()
+            assertTrue(f.ownedPlay.get() > 0); assertEquals(0, f.guestPlay.get()); binding.assertCurrent()
         } }
     }
 
-    @Test fun genuineGuestSuccessWinsEarlierPrimaryHttp412() = runBlocking<Unit> {
+    @Test fun possibleGuestSuccessDoesNotMaskLoggedInDashHttp412() = runBlocking<Unit> {
         withTimeout(12_000) { Fixture().use { f ->
             f.mode = Mode.GUEST_SUCCESS; f.warm(); val binding = f.binding()
-            val data = assertNotNull(binding.protocol.getInitialPlayUrlData("BV1GJ411x7h7", 22, 64, null))
-            assertEquals("https://fixture.invalid/guest-video", data.durl!!.single().url)
-            assertTrue(f.ownedPlay.get() > 0); assertTrue(f.guestPlay.get() > 0)
+            val failure = assertFailsWith<BiliApiException> { binding.protocol.getInitialPlayUrlData("BV1GJ411x7h7", 22, 64, null) }
+            assertEquals(412, failure.apiCode)
+            assertTrue(f.ownedPlay.get() > 0); assertEquals(0, f.guestPlay.get())
             binding.assertCurrent(); assertTrue(f.repository.isPlaybackReceiptCurrent(binding.receipt))
         } }
     }
