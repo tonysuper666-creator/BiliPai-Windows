@@ -1,5 +1,6 @@
 package com.bilipai.desktop.plugins
 
+import com.android.purebilibili.plugin.sdk.PluginCapability
 import com.android.purebilibili.core.plugin.*
 import com.android.purebilibili.core.plugin.kotlinpkg.*
 import com.android.purebilibili.core.plugin.skin.*

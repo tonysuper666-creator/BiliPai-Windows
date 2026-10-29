@@ -1,0 +1,21 @@
+--- a/original-video-player-full-controls/com/android/purebilibili/feature/video/ui/overlay/VideoPlayerOverlay.kt
++++ b/original-video-player-full-controls/com/android/purebilibili/feature/video/ui/overlay/VideoPlayerOverlay.kt
+@@ -146,14 +146,14 @@
+ import com.android.purebilibili.core.util.rememberHapticFeedback
+ import com.android.purebilibili.feature.video.usecase.applyPlaybackButtonUserAction
+ import com.android.purebilibili.feature.video.usecase.playPlayerFromUserAction
+ import com.android.purebilibili.feature.video.usecase.seekPlayerFromUserAction
+ import com.bilipai.desktop.ui.DesktopOriginalPlayerDeviceListDialog as DeviceListDialog
+-import com.android.purebilibili.core.plugin.CastPluginApi
+-import com.android.purebilibili.core.plugin.CastPluginMediaRequest
+-import com.android.purebilibili.core.plugin.CastPluginRoute
+-import com.android.purebilibili.core.plugin.CastPluginPlaybackState
++import com.android.purebilibili.plugin.sdk.CastPluginApi
++import com.android.purebilibili.plugin.sdk.CastPluginMediaRequest
++import com.android.purebilibili.plugin.sdk.CastPluginRoute
++import com.android.purebilibili.plugin.sdk.CastPluginPlaybackState
+ import androidx.compose.animation.core.LinearEasing
+ import androidx.compose.animation.core.animateFloatAsState
+ import androidx.compose.foundation.Canvas
+ import androidx.compose.foundation.gestures.detectDragGestures
+ import androidx.compose.foundation.gestures.detectTapGestures

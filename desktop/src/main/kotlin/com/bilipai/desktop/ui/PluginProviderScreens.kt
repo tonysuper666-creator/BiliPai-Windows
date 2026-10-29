@@ -21,7 +21,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.android.purebilibili.core.network.policy.HomeFeedAnonymizerRuntime
-import com.android.purebilibili.core.plugin.RecommendationStrategy
+import com.android.purebilibili.plugin.sdk.RecommendationStrategy
 import com.android.purebilibili.core.plugin.feed.*
 import com.android.purebilibili.feature.plugin.*
 import com.bilipai.desktop.data.VideoCard

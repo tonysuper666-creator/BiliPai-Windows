@@ -1,0 +1,19 @@
+--- a/plugins/com/android/purebilibili/feature/plugin/CdnRegionPlugin.kt
++++ b/plugins/com/android/purebilibili/feature/plugin/CdnRegionPlugin.kt
+@@ -1,13 +1,13 @@
+ // GENERATED from app/src/main/java/com/android/purebilibili/feature/plugin/CdnRegionPlugin.kt; do not edit.
+ // LF-normalized SHA-256: 09ea1ecd71cdf8fc2a703568160cf8b588d34bc26de1c0092dcff1c4ffd26f57
+ package com.android.purebilibili.feature.plugin
+ 
+ import com.bilipai.desktop.plugins.DesktopPluginContext as Context
+-import com.android.purebilibili.core.plugin.Plugin
+-import com.android.purebilibili.core.plugin.PluginCapability
+-import com.android.purebilibili.core.plugin.PluginCapabilityManifest
++import com.android.purebilibili.core.plugin.BuiltinPlugin
++import com.android.purebilibili.plugin.sdk.PluginCapability
++import com.android.purebilibili.plugin.sdk.PluginCapabilityManifest
+ import com.android.purebilibili.core.plugin.PluginManager
+ import com.android.purebilibili.core.plugin.PluginStore
+ import com.bilipai.desktop.plugins.DesktopPluginLog as Logger
+ import kotlinx.coroutines.delay
+ import kotlinx.coroutines.CancellationException

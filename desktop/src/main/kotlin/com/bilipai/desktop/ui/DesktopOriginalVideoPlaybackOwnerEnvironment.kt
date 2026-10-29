@@ -2,7 +2,7 @@ package com.bilipai.desktop.ui
 
 import com.android.purebilibili.core.network.BilibiliApi
 import com.android.purebilibili.core.plugin.PlayerPlugin
-import com.android.purebilibili.core.plugin.Plugin
+import com.android.purebilibili.core.plugin.BuiltinPlugin
 import com.android.purebilibili.data.model.response.*
 import com.android.purebilibili.data.repository.VideoNoteSnapshot
 import com.android.purebilibili.data.repository.VideoNoteSavePayload
@@ -177,7 +177,7 @@ internal interface DesktopOriginalVideoOwnerPlugins {
      * publication establishes the one Runtime generation before this observer. */
     suspend fun ensureSponsorLoaded(expected:DesktopOriginalVideoAcceptedPublication,bvid:String,cid:Long)
     suspend fun onSponsorDisabled(expected:DesktopOriginalVideoAcceptedPublication)
-    suspend fun onPositionUpdate(expected:DesktopOriginalVideoAcceptedPublication,plugin:PlayerPlugin,positionMs:Long):com.android.purebilibili.core.plugin.SkipAction?
+    suspend fun onPositionUpdate(expected:DesktopOriginalVideoAcceptedPublication,plugin:PlayerPlugin,positionMs:Long):com.android.purebilibili.plugin.sdk.SkipAction?
     suspend fun onUserSeek(expected:DesktopOriginalVideoAcceptedPublication,plugin:PlayerPlugin,positionMs:Long)
     /** Root queues retirement on its existing Runtime scope with the OLD captured
      * generation. The closed VM's canceled scope must never perform this mutation. */

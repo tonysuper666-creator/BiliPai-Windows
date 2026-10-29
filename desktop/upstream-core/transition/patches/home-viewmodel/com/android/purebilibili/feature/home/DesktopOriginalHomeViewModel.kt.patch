@@ -1,24 +1,40 @@
 --- a/home-viewmodel/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel.kt
 +++ b/home-viewmodel/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel.kt
-@@ -1,12 +1,14 @@
+@@ -1,21 +1,23 @@
  // Original source app/src/main/java/com/android/purebilibili/feature/home/HomeViewModel.kt
  // LF SHA256 63ffd0eadd3080e2b304612c9c1e672f5f2370ca9c9db4f8040a52e85cbc15aa
  // 文件路径: feature/home/HomeViewModel.kt
  package com.android.purebilibili.feature.home
-+
+ 
+-import com.android.purebilibili.core.plugin.FeedKind
 +import com.bilipai.desktop.plugins.asAndroidContext
- 
- import com.android.purebilibili.core.plugin.FeedKind
++
++import com.android.purebilibili.plugin.sdk.FeedKind
  import com.android.purebilibili.core.plugin.PluginManager
- import com.android.purebilibili.core.plugin.RecommendationCreatorSignal
- import com.android.purebilibili.core.plugin.RecommendationFeedbackSignals
- import com.android.purebilibili.core.plugin.RecommendationGroup
- import com.android.purebilibili.core.plugin.RecommendationMode
- import com.android.purebilibili.core.plugin.RecommendationPluginApi
-@@ -792,17 +794,17 @@
- 
-         val historySample = loadHistorySample(
-             forceReload = forceReloadHistory,
+-import com.android.purebilibili.core.plugin.RecommendationCreatorSignal
+-import com.android.purebilibili.core.plugin.RecommendationFeedbackSignals
+-import com.android.purebilibili.core.plugin.RecommendationGroup
+-import com.android.purebilibili.core.plugin.RecommendationMode
+-import com.android.purebilibili.core.plugin.RecommendationPluginApi
+-import com.android.purebilibili.core.plugin.RecommendationRequest
+-import com.android.purebilibili.core.plugin.RecommendationResult
+-import com.android.purebilibili.core.plugin.RecommendationSceneSignals
+-import com.android.purebilibili.core.plugin.RecommendationStrategy
++import com.android.purebilibili.plugin.sdk.RecommendationCreatorSignal
++import com.android.purebilibili.plugin.sdk.RecommendationFeedbackSignals
++import com.android.purebilibili.plugin.sdk.RecommendationGroup
++import com.android.purebilibili.plugin.sdk.RecommendationMode
++import com.android.purebilibili.plugin.sdk.RecommendationPluginApi
++import com.android.purebilibili.plugin.sdk.RecommendationRequest
++import com.android.purebilibili.plugin.sdk.RecommendationResult
++import com.android.purebilibili.plugin.sdk.RecommendationSceneSignals
++import com.android.purebilibili.plugin.sdk.RecommendationStrategy
+ import com.android.purebilibili.feature.plugin.ADFILTER_PLUGIN_ID
+ import com.android.purebilibili.feature.plugin.BILIPAI_FEED_FILTER_PLUGIN_ID
+ import com.android.purebilibili.core.store.TodayWatchDislikedVideoSnapshot
+ import com.android.purebilibili.core.store.TodayWatchFeedbackStore
+ import com.android.purebilibili.core.store.TodayWatchProfileStore
+@@ -795,11 +797,11 @@
              sampleLimit = runtime.historySampleLimit
          )
          currentCoroutineContext().ensureActive()
@@ -31,13 +47,7 @@
              RecommendationCreatorSignal(
                  mid = it.mid,
                  name = it.name,
-                 score = it.score,
-                 watchCount = it.watchCount
-             )
-@@ -1283,17 +1285,17 @@
-             environment.feedback(writeResult.message)
-         }
-     }
+@@ -1286,11 +1288,11 @@
  
      private suspend fun recordTodayWatchNegativeFeedback(
          video: VideoItem,
@@ -50,13 +60,7 @@
                  title = video.title,
                  creatorName = video.owner.name,
                  creatorMid = video.owner.mid,
-                 dislikedAtMillis = System.currentTimeMillis()
-             ),
-             keywords = action.keywords,
-@@ -1304,17 +1306,17 @@
-         todayDislikedCreatorMids.clear()
-         todayDislikedCreatorMids.addAll(snapshot.dislikedCreatorMids)
-         todayDislikedKeywords.clear()
+@@ -1307,11 +1309,11 @@
          todayDislikedKeywords.addAll(snapshot.dislikedKeywords)
          environment.todayWatchFeedback.saveSnapshot(snapshot)
      }
@@ -69,13 +73,7 @@
          todayDislikedCreatorMids.clear()
          todayDislikedCreatorMids.addAll(snapshot.dislikedCreatorMids)
          todayDislikedKeywords.clear()
-         todayDislikedKeywords.addAll(snapshot.dislikedKeywords)
-     }
- 
-@@ -1323,17 +1325,17 @@
-             videos = videos,
-             dislikedBvids = todayDislikedBvids,
-             dislikedCreatorMids = todayDislikedCreatorMids,
+@@ -1326,11 +1328,11 @@
              dislikedKeywords = todayDislikedKeywords
          )
      }
@@ -88,6 +86,3 @@
                  dislikedBvids = todayDislikedBvids.toSet(),
                  dislikedCreatorMids = todayDislikedCreatorMids.toSet(),
                  dislikedKeywords = todayDislikedKeywords.toSet(),
-                 recentDislikedVideos = currentSnapshot.recentDislikedVideos
-             )
-         )

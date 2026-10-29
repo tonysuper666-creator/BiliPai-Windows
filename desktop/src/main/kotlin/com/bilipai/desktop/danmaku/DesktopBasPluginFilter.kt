@@ -3,8 +3,8 @@
 package com.bilipai.desktop.danmaku
 
 import androidx.compose.ui.graphics.toArgb
-import com.android.purebilibili.core.plugin.DanmakuItem as PluginDanmakuItem
-import com.android.purebilibili.core.plugin.DanmakuStyle
+import com.android.purebilibili.plugin.sdk.DanmakuItem as PluginDanmakuItem
+import com.android.purebilibili.plugin.sdk.DanmakuStyle
 import com.android.purebilibili.danmaku.parser.bas.*
 import com.android.purebilibili.feature.video.danmaku.*
 

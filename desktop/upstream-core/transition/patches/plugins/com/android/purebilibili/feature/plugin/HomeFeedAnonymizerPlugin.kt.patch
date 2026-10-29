@@ -1,0 +1,19 @@
+--- a/plugins/com/android/purebilibili/feature/plugin/HomeFeedAnonymizerPlugin.kt
++++ b/plugins/com/android/purebilibili/feature/plugin/HomeFeedAnonymizerPlugin.kt
+@@ -2,13 +2,13 @@
+ // LF-normalized SHA-256: a20b4f40c3de9f5e508c9f23350a782b22137348a8b99b2d786e94a868586cf0
+ package com.android.purebilibili.feature.plugin
+ 
+ import com.android.purebilibili.core.network.policy.HomeFeedAnonymizerRuntime
+ import com.android.purebilibili.core.network.policy.HomeFeedAnonymizerStatsSnapshot
+-import com.android.purebilibili.core.plugin.Plugin
+-import com.android.purebilibili.core.plugin.PluginCapability
+-import com.android.purebilibili.core.plugin.PluginCapabilityManifest
++import com.android.purebilibili.core.plugin.BuiltinPlugin
++import com.android.purebilibili.plugin.sdk.PluginCapability
++import com.android.purebilibili.plugin.sdk.PluginCapabilityManifest
+ import com.bilipai.desktop.plugins.DesktopPluginLog as Logger
+ import java.time.Instant
+ import java.time.ZoneId
+ import java.time.format.DateTimeFormatter
+ 

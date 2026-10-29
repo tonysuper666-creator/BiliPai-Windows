@@ -1,8 +1,8 @@
 package com.bilipai.desktop.ui
 
 import com.android.purebilibili.core.plugin.PlayerPlugin
-import com.android.purebilibili.core.plugin.Plugin
-import com.android.purebilibili.core.plugin.SkipAction
+import com.android.purebilibili.core.plugin.BuiltinPlugin
+import com.android.purebilibili.plugin.sdk.SkipAction
 import com.android.purebilibili.data.model.response.SponsorSegment
 import com.android.purebilibili.feature.plugin.*
 import com.bilipai.desktop.plugins.DesktopPlayerPluginDispatch

@@ -1,0 +1,15 @@
+--- a/original-search-pages/com/android/purebilibili/feature/search/SearchViewModel.kt
++++ b/original-search-pages/com/android/purebilibili/feature/search/SearchViewModel.kt
+@@ -11,11 +11,11 @@
+ import com.android.purebilibili.data.model.response.SearchPhotoItem
+ import com.android.purebilibili.data.model.response.SearchTopicItem
+ import com.android.purebilibili.data.model.response.VideoItem
+ import com.android.purebilibili.data.model.response.SearchUpItem
+ import com.android.purebilibili.data.model.response.SearchType
+-import com.android.purebilibili.core.plugin.FeedKind
++import com.android.purebilibili.plugin.sdk.FeedKind
+ import com.android.purebilibili.data.model.response.BangumiSearchItem
+ import com.android.purebilibili.data.model.response.LiveRoomSearchItem
+ 
+ import com.android.purebilibili.data.repository.SearchOrder
+ import com.android.purebilibili.data.repository.SearchDuration

@@ -1,0 +1,19 @@
+--- a/plugins/com/android/purebilibili/feature/plugin/AdFilterPlugin.kt
++++ b/plugins/com/android/purebilibili/feature/plugin/AdFilterPlugin.kt
+@@ -4,13 +4,13 @@
+ package com.android.purebilibili.feature.plugin
+ 
+ 
+ import com.bilipai.desktop.plugins.DesktopPluginContext as Context
+ //  Material Icons
+-import com.android.purebilibili.core.plugin.FeedPlugin
+-import com.android.purebilibili.core.plugin.PluginCapability
+-import com.android.purebilibili.core.plugin.PluginCapabilityManifest
++import com.android.purebilibili.plugin.sdk.FeedPlugin
++import com.android.purebilibili.plugin.sdk.PluginCapability
++import com.android.purebilibili.plugin.sdk.PluginCapabilityManifest
+ import com.android.purebilibili.core.plugin.PluginManager
+ import com.android.purebilibili.core.plugin.PluginStore
+ import com.bilipai.desktop.plugins.DesktopPluginLog as Logger
+ import com.android.purebilibili.data.model.response.VideoItem
+ import kotlinx.coroutines.CoroutineScope

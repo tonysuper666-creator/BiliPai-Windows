@@ -1,0 +1,16 @@
+--- a/plugins/com/android/purebilibili/feature/plugin/Anime4KPlugin.kt
++++ b/plugins/com/android/purebilibili/feature/plugin/Anime4KPlugin.kt
+@@ -1,11 +1,11 @@
+ // GENERATED from app/src/main/java/com/android/purebilibili/feature/plugin/Anime4KPlugin.kt; do not edit.
+ // LF-normalized SHA-256: 0979f3131d293cddfdeec2b41e00eb89d90a49043c1782e1a105e1b99b11baab
+ package com.android.purebilibili.feature.plugin
+ 
+-import com.android.purebilibili.core.plugin.Plugin
+-import com.android.purebilibili.core.plugin.PluginCapabilityManifest
++import com.android.purebilibili.core.plugin.BuiltinPlugin
++import com.android.purebilibili.plugin.sdk.PluginCapabilityManifest
+ import com.android.purebilibili.core.plugin.PluginManager
+ import com.android.purebilibili.core.plugin.PluginStore
+ import com.bilipai.desktop.plugins.DesktopPluginLog as Logger
+ import com.android.purebilibili.feature.anime4k.Anime4KConfig
+ import com.android.purebilibili.feature.anime4k.Anime4KPreset

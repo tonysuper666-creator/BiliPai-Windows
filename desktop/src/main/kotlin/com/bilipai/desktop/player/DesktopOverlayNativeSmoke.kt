@@ -1,6 +1,6 @@
 package com.bilipai.desktop.player
 
-import com.android.purebilibili.core.plugin.DanmakuStyle
+import com.android.purebilibili.plugin.sdk.DanmakuStyle
 import com.bilipai.desktop.danmaku.*
 import java.awt.Color
 import java.awt.Rectangle

@@ -1,7 +1,7 @@
 package com.bilipai.desktop.danmaku
 
-import com.android.purebilibili.core.plugin.DanmakuItem
-import com.android.purebilibili.core.plugin.DanmakuStyle
+import com.android.purebilibili.plugin.sdk.DanmakuItem
+import com.android.purebilibili.plugin.sdk.DanmakuStyle
 import androidx.compose.ui.graphics.toArgb
 import kotlinx.coroutines.CancellationException
 import java.awt.AlphaComposite

@@ -1,0 +1,23 @@
+--- a/plugins/com/android/purebilibili/feature/plugin/SponsorBlockPlugin.kt
++++ b/plugins/com/android/purebilibili/feature/plugin/SponsorBlockPlugin.kt
+@@ -3,16 +3,16 @@
+ // 文件路径: feature/plugin/SponsorBlockPlugin.kt
+ package com.android.purebilibili.feature.plugin
+ 
+ 
+ //  Material Icons
+-import com.android.purebilibili.core.plugin.PlayerPluginApi
+-import com.android.purebilibili.core.plugin.PluginCapability
+-import com.android.purebilibili.core.plugin.PluginCapabilityManifest
++import com.android.purebilibili.plugin.sdk.PlayerPluginApi
++import com.android.purebilibili.plugin.sdk.PluginCapability
++import com.android.purebilibili.plugin.sdk.PluginCapabilityManifest
+ import com.android.purebilibili.core.plugin.PluginManager
+ import com.android.purebilibili.core.plugin.PluginStore
+-import com.android.purebilibili.core.plugin.SkipAction
++import com.android.purebilibili.plugin.sdk.SkipAction
+ import com.bilipai.desktop.plugins.DesktopPluginLog as Logger
+ import com.android.purebilibili.data.model.response.SponsorBlockMarkerMode
+ import com.android.purebilibili.data.model.response.SponsorSegment
+ import com.android.purebilibili.data.model.response.SponsorProgressMarker
+ import com.android.purebilibili.data.repository.SponsorBlockRepository

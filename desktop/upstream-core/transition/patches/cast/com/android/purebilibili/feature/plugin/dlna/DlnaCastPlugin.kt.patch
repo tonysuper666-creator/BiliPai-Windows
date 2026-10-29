@@ -1,0 +1,27 @@
+--- a/cast/com/android/purebilibili/feature/plugin/dlna/DlnaCastPlugin.kt
++++ b/cast/com/android/purebilibili/feature/plugin/dlna/DlnaCastPlugin.kt
+@@ -2,17 +2,17 @@
+ package com.android.purebilibili.feature.plugin.dlna
+ 
+ import com.bilipai.desktop.plugins.DesktopPluginContext as Context
+ import androidx.compose.material.icons.Icons
+ import androidx.compose.material.icons.rounded.Tv
+-import com.android.purebilibili.core.plugin.CastPluginApi
+-import com.android.purebilibili.core.plugin.CastDiscoveryRequirement
+-import com.android.purebilibili.core.plugin.CastPluginMediaRequest
+-import com.android.purebilibili.core.plugin.CastPluginPlaybackState
+-import com.android.purebilibili.core.plugin.CastPluginRoute
+-import com.android.purebilibili.core.plugin.PluginCapability
+-import com.android.purebilibili.core.plugin.PluginCapabilityManifest
++import com.android.purebilibili.plugin.sdk.CastPluginApi
++import com.android.purebilibili.plugin.sdk.CastDiscoveryRequirement
++import com.android.purebilibili.plugin.sdk.CastPluginMediaRequest
++import com.android.purebilibili.plugin.sdk.CastPluginPlaybackState
++import com.android.purebilibili.plugin.sdk.CastPluginRoute
++import com.android.purebilibili.plugin.sdk.PluginCapability
++import com.android.purebilibili.plugin.sdk.PluginCapabilityManifest
+ import com.bilipai.desktop.cast.DesktopCastLog as Logger
+ import com.android.purebilibili.feature.cast.associateNotNullBy
+ import com.bilipai.desktop.cast.hasRawLocalNetworkAccess
+ import com.android.purebilibili.feature.cast.LocalProxyServer
+ import com.android.purebilibili.feature.cast.SsdpCastClient

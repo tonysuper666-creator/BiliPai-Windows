@@ -178,7 +178,7 @@ val prepareNativeDiagnosticShare by tasks.registering(Exec::class) {
 // design-tokens and design-system (TON-997) are migrated whole: every file of their main source set is
 // compiled from the merged root, so every generated legacy copy at one of these paths is skipped, whatever
 // producer emits it. The list follows the upstream tree, not a snapshot of it.
-val migratedWholeModules = listOf("design-tokens/", "design-system/")
+val migratedWholeModules = listOf("design-tokens/", "design-system/", "plugin-sdk/")
 val migratedWholeModulePaths: Set<String> = migratedWholeModules.flatMap { module ->
     val root = mergedRepositoryRoot.resolve(module + "src/main/java")
     root.walkTopDown().filter { it.isFile && it.extension == "kt" }.map { it.relativeTo(root).invariantSeparatorsPath }.toList()
@@ -251,11 +251,12 @@ val appCoreDesktopOwned: Map<String, String> = mapOf(
     "core/util/ShareUtils.kt" to "Android 权限、相册、分享面板、ConnectivityManager 与应用缓存目录",
     "core/util/VideoSurfaceCompatibility.kt" to "Android 系统栏、折叠屏、挖孔与画中画窗口",
     "core/util/WindowSizeUtils.kt" to "Android 系统栏、折叠屏、挖孔与画中画窗口",
+    "core/plugin/js/BiliPaiJsRuntime.kt" to "Android WebView 执行 JS 插件；桌面 JS 插件走隔离的 JS worker（com.bilipai.desktop.plugins.js）",
+    "core/plugin/feed/PublicContentImageLoader.kt" to "Android Coil ImageLoader（GIF/动画解码器与 Android 磁盘缓存）；桌面公共内容图片走 DesktopPublicContentImageRouting，同一无凭据图片客户端",
+    "core/plugin/json/JsonPluginStatsSummaryWorker.kt" to "WorkManager 定时任务、Android 通知与 MainActivity 跳转；桌面不做后台定时通知（规则命中统计在插件页直接显示）",
 )
 // Areas that move in a later step and keep their legacy copies until then (an intermediate state that compiles).
 val appCoreLaterSteps: Map<String, String> = mapOf(
-    "core/plugin/" to "upstream moved the plugin contracts to plugin-sdk with a new identity model (capabilityManifest); " +
-        "the desktop plugin platform and the legacy feature plugins move to it together",
     "core/ui/components/PageAwareAsyncImage.kt" to "reads feature/home's LocalHomeCardCoverLoadingAllowed and Android drawables; moves with the home feature (M4b)",
     "core/ui/wallpaper/WallpaperMedia" to "video wallpaper on Media3/AndroidView and BitmapFactory probing; needs a desktop replacement over the mpv player",
     "core/util/PlayerOrientationPolicy.kt" to "Activity orientation of the player; moves with the video feature (M4a)",
@@ -269,12 +270,9 @@ val appCoreLaterSteps: Map<String, String> = mapOf(
     "core/store/FavoriteFolderCoverCache.kt" to "the desktop keeps one cover cache per favorites origin; moves with the favorites feature (M4d)",
     "core/ui/components/AppLiquidAwareTabRow.kt" to "calls feature/home's liquid tab components with their new parameters; moves with the home feature (M4b)",
 )
-// Files of a later-step area that other migrated files already need and that have no legacy copy (pure declarations).
-val appCoreAheadOfLaterSteps = setOf("core/plugin/BuiltinPluginIds.kt")
 val migratedAppCorePaths: Set<String> = appJavaRoot.resolve("com/android/purebilibili/core").walkTopDown()
     .filter { it.isFile && it.extension == "kt" }.map { it.relativeTo(appJavaRoot).invariantSeparatorsPath }
-    .filter { path -> path.removePrefix("com/android/purebilibili/").let { core -> core in appCoreAheadOfLaterSteps ||
-        (appCoreDesktopOwned.keys + appCoreLaterSteps.keys).none { core.startsWith(it) } } }
+    .filter { path -> path.removePrefix("com/android/purebilibili/").let { core -> (appCoreDesktopOwned.keys + appCoreLaterSteps.keys).none { core.startsWith(it) } } }
     .toSortedSet()
 val migratedUpstreamRelativePaths = migratedWholeModulePaths + migratedAppCorePaths + setOf(
     "com/android/purebilibili/core/network/AppSignUtils.kt",
@@ -2496,6 +2494,19 @@ val prepareJsWorkerResources by tasks.registering(Sync::class) {
 
 // Generated legacy files that re-declare migrated upstream declarations under another file name.
 val upstreamOwnedGeneratedCopies = setOf(
+    // core/plugin + plugin-sdk (TON-1028): legacy plugin contracts upstream moved to plugin-sdk (Plugin, the typed
+    // plugin APIs) or to core/plugin/BuiltinPlugin (host presentation); the merged upstream files own them now.
+    "upstream/app/src/main/java/com/android/purebilibili/core/plugin/Plugin.kt",
+    "upstream/app/src/main/java/com/android/purebilibili/core/plugin/DanmakuPlugin.kt",
+    "upstream/app/src/main/java/com/android/purebilibili/core/plugin/FeedPlugin.kt",
+    "upstream/app/src/main/java/com/android/purebilibili/core/plugin/PlayerPlugin.kt",
+    "upstream/app/src/main/java/com/android/purebilibili/core/plugin/RecommendationPluginApi.kt",
+    "upstream/app/src/main/java/com/android/purebilibili/core/plugin/TypedPluginApis.kt",
+    "plugins/com/android/purebilibili/core/plugin/CastPluginApi.kt",
+    // Renamed legacy subsets of upstream core/plugin files that now compile from the merged root (with their patches).
+    "plugins/com/android/purebilibili/core/plugin/feed/DesktopSavedSubscriptionFeed.kt",
+    "plugins/com/android/purebilibili/core/plugin/feed/DesktopFeedConditionalValidators.kt",
+    "packages/com/android/purebilibili/core/plugin/skin/DesktopUiSkinCompositionPolicy.kt",
     // app core (TON-1000): renamed subsets whose every declaration the upstream app core files now own.
     "appearance/com/android/purebilibili/core/store/DesktopOriginalWallpaperPaletteModels.kt",
     "appearance/com/android/purebilibili/core/store/ThemeSelectionStore.kt",
@@ -2581,6 +2592,13 @@ val transitionPatchProducers = mapOf(
     "settings-search" to "extractUpstreamSettingsSearch",
     "settings-privacy" to "extractUpstreamSettingsPrivacy",
     "plugins" to "extractUpstreamPlugins",
+    "cast" to "extractUpstreamCast",
+    "google-cast" to "extractGoogleCastPlatform",
+    "js" to "extractUpstreamJs",
+    "packages" to "extractUpstreamPackages",
+    "home-subscription-page" to "extractOriginalSubscriptionPage",
+    "frosted-audio-renderer" to "extractFrostedAudioRenderer",
+    "original-bangumi-player-ui" to "extractOriginalBangumiPlayerUi",
     "original-video-fullscreen-pager" to "extractOriginalVideoFullscreenPager",
     "original-video-full-owner" to "extractOriginalVideoFullOwner",
     "original-aicu" to "extractOriginalAicu",
@@ -3300,6 +3318,8 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-kotlinx-serialization:3.0.0")
     implementation("com.squareup.okhttp3:okhttp:5.3.2")
     implementation("org.jsoup:jsoup:1.21.2")
+    // Upstream core/plugin/feed/FeedArticleExtractor (TON-1028): article readability, same version as upstream app.
+    implementation("net.dankito.readability4j:readability4j:1.0.8")
     implementation("io.coil-kt.coil3:coil-compose:3.5.0")
     implementation("io.coil-kt.coil3:coil-network-okhttp:3.5.0")
     implementation("com.google.zxing:core:3.5.4")

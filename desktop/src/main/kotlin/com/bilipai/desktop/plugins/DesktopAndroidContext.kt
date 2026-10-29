@@ -1,5 +1,6 @@
 package com.bilipai.desktop.plugins
 
+import kotlinx.coroutines.launch
 import kotlinx.serialization.json.JsonPrimitive
 
 // Upstream code compiled from the merged tree takes android.content.Context.
@@ -12,10 +13,21 @@ internal fun DesktopPluginContext.asAndroidContext(checkRequest: () -> Unit,
     acquirePermit: () -> DesktopPluginStore.OriginalPreferenceWritePermit): android.content.Context =
     DesktopAndroidContext(this, DesktopAndroidContext.Admission(checkRequest, acquirePermit))
 
-private class DesktopAndroidContext(private val desktop: DesktopPluginContext, private val admission: Admission?) : android.content.Context(desktop.filesDir),
+/** The plugin store behind an Android Context this adapter created: upstream stores the desktop keeps in the plugin settings
+ * document (PluginStore's plugin_prefs, ArticleNoteStore) reach it through their build-time patches. */
+internal fun desktopPluginStore(context: android.content.Context): DesktopPluginStore =
+    (context as? DesktopAndroidContext)?.desktop?.store
+        ?: throw com.bilipai.desktop.compat.UnsupportedDesktopCapability("plugin store for ${context::class.java.name}", "only the plugin platform Context (asAndroidContext) holds plugin preferences")
+internal fun desktopPluginDataStore(context: android.content.Context): DesktopPluginDataStore {
+    desktopPluginStore(context)
+    return (context as DesktopAndroidContext).desktop.pluginDataStore
+}
+
+private class DesktopAndroidContext(val desktop: DesktopPluginContext, private val admission: Admission?) : android.content.Context(desktop.filesDir),
     androidx.datastore.preferences.DesktopPreferencesDataStoreOwner {
     override val applicationContext: android.content.Context get() = this
     override val filesDir: java.io.File get() = desktop.filesDir
+    override val assets: android.content.res.AssetManager = android.content.res.AssetManager(DesktopSkinCatalogResource::open)
     // Upstream settings_prefs is the "settings" namespace of the same document. With an admission it writes through that
     // admission, as the SharedPreferences below do; without one, through the store's own request admission (the plugin
     // preferences write the same way), with no page owner.
@@ -31,8 +43,8 @@ private class DesktopAndroidContext(private val desktop: DesktopPluginContext, p
         else -> throw com.bilipai.desktop.compat.UnsupportedDesktopCapability("DataStore \"$name\"", "the desktop keeps only settings_prefs in Root's settings document")
     }
     override fun getSharedPreferences(name: String, mode: Int): android.content.SharedPreferences =
-        if (admission == null) PluginSharedPreferences(desktop.getSharedPreferences(name, mode))
-        else AdmittedSharedPreferences(PluginSharedPreferences(desktop.getSharedPreferences(name, mode)), desktop.store, name, admission)
+        if (admission == null) PluginSharedPreferences(desktop.getSharedPreferences(name, mode), desktop.store, name)
+        else AdmittedSharedPreferences(PluginSharedPreferences(desktop.getSharedPreferences(name, mode), desktop.store, name), desktop.store, name, admission)
 
     class Admission(val checkRequest: () -> Unit, val acquirePermit: () -> DesktopPluginStore.OriginalPreferenceWritePermit)
 }
@@ -58,7 +70,31 @@ private class AdmittedSharedPreferences(private val reads: android.content.Share
     }
 }
 
-private class PluginSharedPreferences(private val prefs: DesktopPluginPreferences) : android.content.SharedPreferences {
+private class PluginSharedPreferences(private val prefs: DesktopPluginPreferences, private val store: DesktopPluginStore,
+    private val name: String) : android.content.SharedPreferences {
+    private val listeners = java.util.IdentityHashMap<android.content.SharedPreferences.OnSharedPreferenceChangeListener, kotlinx.coroutines.Job>()
+    private val listenerScope by lazy { DesktopPluginScopeRegistry.create("shared-preferences:$name", kotlinx.coroutines.Dispatchers.Default) }
+
+    /** Follows the namespace snapshot of the plugin store and reports every key whose stored value changed, as Android does
+     * after a commit. Delivery is on a background dispatcher of a scope the plugin platform cancels on shutdown. */
+    override fun registerOnSharedPreferenceChangeListener(listener: android.content.SharedPreferences.OnSharedPreferenceChangeListener) {
+        synchronized(listeners) {
+            if (listener in listeners) return
+            val snapshots = store.snapshot(name)
+            var previous = snapshots.value.json
+            listeners[listener] = listenerScope.launch {
+                    snapshots.collect { snapshot ->
+                        val current = snapshot.json
+                        val changed = (previous.keys + current.keys).filter { previous[it] != current[it] }
+                        previous = current
+                        changed.forEach { key -> listener.onSharedPreferenceChanged(this@PluginSharedPreferences, key) }
+                    }
+                }
+        }
+    }
+    override fun unregisterOnSharedPreferenceChangeListener(listener: android.content.SharedPreferences.OnSharedPreferenceChangeListener) {
+        synchronized(listeners) { listeners.remove(listener) }?.cancel()
+    }
     override fun getString(key: String, defValue: String?) = prefs.getString(key, defValue)
     override fun getStringSet(key: String, defValues: Set<String>?) = prefs.getStringSet(key, defValues)
     override fun getLong(key: String, defValue: Long) = prefs.getString(key, null)?.toLongOrNull() ?: defValue

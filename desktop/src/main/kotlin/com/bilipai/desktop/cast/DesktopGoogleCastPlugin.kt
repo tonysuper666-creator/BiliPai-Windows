@@ -1,5 +1,12 @@
 package com.bilipai.desktop.cast
 
+import com.android.purebilibili.plugin.sdk.CastDiscoveryRequirement
+import com.android.purebilibili.plugin.sdk.CastPluginApi
+import com.android.purebilibili.plugin.sdk.CastPluginMediaRequest
+import com.android.purebilibili.plugin.sdk.CastPluginPlaybackState
+import com.android.purebilibili.plugin.sdk.CastPluginRoute
+import com.android.purebilibili.plugin.sdk.PluginCapability
+import com.android.purebilibili.plugin.sdk.PluginCapabilityManifest
 import com.android.purebilibili.core.plugin.*
 import com.android.purebilibili.feature.plugin.googlecast.GoogleCastMediaLoader
 import com.android.purebilibili.feature.plugin.googlecast.toCastPluginRoute

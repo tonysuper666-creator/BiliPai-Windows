@@ -1,5 +1,15 @@
 package com.bilipai.desktop.plugins
 
+import com.android.purebilibili.plugin.sdk.CdnHealthEvent
+import com.android.purebilibili.plugin.sdk.DanmakuItem
+import com.android.purebilibili.plugin.sdk.DanmakuStyle
+import com.android.purebilibili.plugin.sdk.FeedKind
+import com.android.purebilibili.plugin.sdk.FeedPlugin
+import com.android.purebilibili.plugin.sdk.PlaybackCdnPlugin
+import com.android.purebilibili.plugin.sdk.RecommendationPluginApi
+import com.android.purebilibili.plugin.sdk.RecommendationRequest
+import com.android.purebilibili.plugin.sdk.RecommendationResult
+import com.android.purebilibili.plugin.sdk.SkipAction
 import com.bilipai.desktop.plugins.asAndroidContext
 
 import com.android.purebilibili.core.plugin.*

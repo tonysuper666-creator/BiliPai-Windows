@@ -7,7 +7,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.android.purebilibili.core.plugin.CastPluginMediaRequest
+import com.android.purebilibili.plugin.sdk.CastPluginMediaRequest
 import com.bilipai.desktop.plugins.DesktopPluginContext
 import kotlinx.coroutines.launch
 
@@ -19,13 +19,13 @@ fun DesktopGoogleCastDialog(context: DesktopPluginContext, plugin: DesktopGoogle
 
 @Composable
 internal fun DesktopGoogleCastDialog(context: DesktopPluginContext, plugin: DesktopGoogleCastPlugin,
-    onRouteSelected: (com.android.purebilibili.core.plugin.CastPluginApi, com.android.purebilibili.core.plugin.CastPluginRoute) -> Unit,
+    onRouteSelected: (com.android.purebilibili.plugin.sdk.CastPluginApi, com.android.purebilibili.plugin.sdk.CastPluginRoute) -> Unit,
     onDismiss: () -> Unit) = DesktopGoogleCastDialogContent(context, plugin, null, onRouteSelected, onDismiss)
 
 @Composable
 private fun DesktopGoogleCastDialogContent(context: DesktopPluginContext, plugin: DesktopGoogleCastPlugin,
     media: (suspend () -> DesktopCastMediaPublication?)?,
-    onRouteSelected: ((com.android.purebilibili.core.plugin.CastPluginApi, com.android.purebilibili.core.plugin.CastPluginRoute) -> Unit)?,
+    onRouteSelected: ((com.android.purebilibili.plugin.sdk.CastPluginApi, com.android.purebilibili.plugin.sdk.CastPluginRoute) -> Unit)?,
     onDismiss: () -> Unit, controlSource: DesktopCastMediaPublication? = null) {
     val latestSelection by rememberUpdatedState(onRouteSelected)
     val scope = rememberCoroutineScope()
