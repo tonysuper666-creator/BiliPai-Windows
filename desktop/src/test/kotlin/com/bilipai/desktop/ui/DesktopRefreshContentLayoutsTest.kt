@@ -1,6 +1,8 @@
 @file:OptIn(androidx.compose.ui.ExperimentalComposeUiApi::class, androidx.compose.ui.InternalComposeUiApi::class)
 package com.bilipai.desktop.ui
 
+import androidx.compose.foundation.background
+
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -57,7 +59,7 @@ class DesktopRefreshContentLayoutsTest {
             list = rememberLazyListState()
             CompositionLocalProvider(LocalWindowInfo provides focused, LocalDesktopToaster provides toaster) {
                 MaterialTheme {
-                    AdaptivePullToRefreshBox(refreshing, modifier = Modifier.fillMaxSize(), onRefresh = {
+                    AdaptivePullToRefreshBox(refreshing, modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background), onRefresh = {
                         scope.desktopRefreshLaunch(Dispatchers.IO) {
                             refreshing = true
                             try { requests++; client.newCall(Request.Builder().url("https://fixture.invalid/feed").build()).execute().use { it.body.string() } }

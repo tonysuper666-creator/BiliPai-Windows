@@ -1,6 +1,8 @@
 @file:OptIn(androidx.compose.ui.ExperimentalComposeUiApi::class, androidx.compose.ui.InternalComposeUiApi::class)
 package com.bilipai.desktop.ui
 
+import androidx.compose.foundation.background
+
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -149,7 +151,7 @@ class DesktopRefreshPagesUiTest {
                     LocalDesktopToaster provides toaster,
                 ) {
                     MaterialTheme {
-                        AdaptivePullToRefreshBox(isRefreshing = refreshing, modifier = Modifier.fillMaxSize(), onRefresh = {
+                        AdaptivePullToRefreshBox(isRefreshing = refreshing, modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background), onRefresh = {
                             scope.desktopRefreshLaunch(kotlinx.coroutines.Dispatchers.IO) {
                                 refreshing = true
                                 try {
