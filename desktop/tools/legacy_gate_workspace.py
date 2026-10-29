@@ -1,11 +1,10 @@
 """Temporary read point for pre-M5 Python gates; never a product/build input.
 
-Only canonical upstream source roots come from legacy-root.commit. Everything
-else (including desktop code, tests and publication workflows) is the live tree.
+Upstream originals (including plugin examples) come from legacy-root.commit.
+Desktop code, tests and publication workflows come from the live tree.
 A real linked worktree keeps git history queries rooted at this read point.
 """
 from contextlib import contextmanager
-import json
 import os
 from pathlib import Path
 import shutil
@@ -23,7 +22,10 @@ def legacy_gate_workspace(repo):
     commit, = [line.strip() for line in pin.read_text().splitlines()
                if line.strip() and not line.startswith("#")]
     subprocess.run(["git", "-C", str(repo), "cat-file", "-e", commit + "^{commit}"], check=True)
-    roots = json.loads((repo / "desktop/tools/v025-canonical-sources.json").read_bytes())["sourceRoots"]
+    protected = {"desktop", ".github", ".git"}
+    originals = subprocess.check_output(
+        ["git", "-C", str(repo), "ls-tree", "--name-only", commit], text=True).splitlines()
+    originals = [name for name in originals if name not in protected]
     with tempfile.TemporaryDirectory(prefix="bilipai-gates-", dir=repo.parent) as temporary:
         view = Path(temporary) / ".legacy-root"
         build_link = view / "desktop/build"
@@ -42,13 +44,16 @@ def legacy_gate_workspace(repo):
                 shutil.rmtree(view / name)
                 shutil.copytree(repo / name, view / name,
                                 ignore=ignore)
-            for root in roots:
-                target = view / root
-                if target.exists():
+            for target in view.iterdir():
+                if target.name in protected:
+                    continue
+                if target.is_dir() and not target.is_symlink():
                     shutil.rmtree(target)
+                else:
+                    target.unlink()
             archive = Path(temporary) / "originals.tar"
             subprocess.run(["git", "-c", "core.autocrlf=false", "-C", str(repo), "archive",
-                            "--format=tar", "-o", str(archive), commit, "--", *roots], check=True)
+                            "--format=tar", "-o", str(archive), commit, "--", *originals], check=True)
             subprocess.run(["tar", "-xf", str(archive), "-C", str(view)], check=True)
             live_build = repo / "desktop/build"
             if live_build.is_dir():

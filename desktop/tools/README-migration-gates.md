@@ -14,8 +14,8 @@ meaning: the complete `desktop/tools/tests` suite, including output contracts.
 Keep the normal generator/build prerequisites when checking generated output.
 
 The runner creates a disposable linked Git worktree named `.legacy-root`.
-Canonical upstream roots listed in `v025-canonical-sources.json` are restored
-from the same `desktop/upstream-core/legacy-root.commit` used by Gradle. Current
+Upstream originals, including plugin examples outside the canonical source roots,
+are restored from the same `desktop/upstream-core/legacy-root.commit` used by Gradle. Current
 desktop sources, producer scripts, tests, catalogs and `.github` workflows are
 copied from the caller's checkout (including uncommitted edits). Gradle caches and generated build outputs are excluded from copying; an existing
 live `desktop/build` is linked just as in Gradle so generated contracts inspect

@@ -24,12 +24,14 @@ class LegacyGateWorkspaceTest(unittest.TestCase):
 
             git("init", "-q")
             write("app/Original.kt", "old original")
+            write("examples/plugins/example.js", "old upstream example")
             write("desktop/Behavior.kt", "old behavior")
             write(".github/workflows/safety.yml", "old policy")
             git("add", ".")
             git("-c", "user.name=Fixture", "-c", "user.email=fixture@example.invalid", "commit", "-qm", "old")
             old = git("rev-parse", "HEAD")
             write("app/Original.kt", "new upstream")
+            write("examples/plugins/example.js", "new upstream example")
             write("desktop/upstream-core/legacy-root.commit", old + "\n")
             write("desktop/tools/v025-canonical-sources.json", json.dumps({"sourceRoots": ["app/"]}))
             git("add", ".")
@@ -40,6 +42,7 @@ class LegacyGateWorkspaceTest(unittest.TestCase):
             write(".github/workflows/safety.yml", "live publication policy")
             with legacy_gate_workspace(repo) as view:
                 self.assertEqual("old original", (view / "app/Original.kt").read_text())
+                self.assertEqual("old upstream example", (view / "examples/plugins/example.js").read_text())
                 self.assertEqual("live behavior regression", (view / "desktop/Behavior.kt").read_text())
                 self.assertEqual("tracked build recipe", (view / "desktop/third-party/libmpv/build/fixed-inputs.json").read_text())
                 self.assertEqual("live generated output", (view / "desktop/build/generated/current.kt").read_text())
