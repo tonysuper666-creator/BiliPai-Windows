@@ -13,7 +13,7 @@ $logs   = Join-Path $tools 'logs'
 New-Item -ItemType Directory -Force -Path $shots, $logs | Out-Null
 
 # Isolate C# compiler scratch files for opt-in requests as well.
-$earlyRequest = Get-Content $reqP -Raw -Encoding UTF8 | ConvertFrom-Json
+try { $earlyRequest = Get-Content $reqP -Raw -Encoding UTF8 | ConvertFrom-Json } catch { $earlyRequest = $null }
 if ($earlyRequest.capture_tree -eq $true) {
   $env:TEMP = Join-Path $root 'ton1020\profile\Temp'
   $env:TMP = $env:TEMP
@@ -175,4 +175,3 @@ try {
 } catch {
   $res.status = 'error'; $res.reason = $_.Exception.Message; Save-Result $res
 }
-
