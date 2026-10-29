@@ -1,0 +1,125 @@
+--- a/dynamic-settings/com/android/purebilibili/data/repository/DesktopOriginalDynamicTimelineRepository.kt
++++ b/dynamic-settings/com/android/purebilibili/data/repository/DesktopOriginalDynamicTimelineRepository.kt
+@@ -235,122 +235,3 @@
+         return feedPagination.hasMore(scope, type)
+     }
+ }
+-
+-internal fun shouldUseDynamicIncrementalRefresh(
+-    refresh: Boolean,
+-    incrementalRefreshEnabled: Boolean,
+-    updateBaseline: String
+-): Boolean {
+-    return refresh && incrementalRefreshEnabled && updateBaseline.isNotBlank()
+-}
+-
+-internal fun resolveDynamicPaginationStateAfterPage(
+-    paginationBeforeRefresh: DynamicPaginationState,
+-    responseOffset: String,
+-    responseUpdateBaseline: String,
+-    responseHasMore: Boolean,
+-    preserveExistingPagination: Boolean,
+-    reportedUpdateNum: Int = -1
+-): DynamicPaginationState {
+-    val nextBaseline = responseUpdateBaseline.ifBlank {
+-        paginationBeforeRefresh.updateBaseline
+-    }
+-    val canPreserve = preserveExistingPagination &&
+-        paginationBeforeRefresh.offset.isNotBlank() &&
+-        reportedUpdateNum != 0
+-
+-    return if (canPreserve) {
+-        paginationBeforeRefresh.copy(updateBaseline = nextBaseline)
+-    } else {
+-        DynamicPaginationState(
+-            offset = responseOffset,
+-            updateBaseline = nextBaseline,
+-            hasMore = responseHasMore
+-        )
+-    }
+-}
+-
+-enum class DynamicFeedScope {
+-    DYNAMIC_SCREEN,
+-    HOME_FOLLOW
+-}
+-
+-data class DynamicFeedFetchResult(
+-    val items: List<DynamicItem>,
+-    val updateNum: Int = 0,
+-    val usedUpdateBaseline: Boolean = false,
+-    val nextOffset: String = "",
+-    val hasMore: Boolean = true
+-)
+-
+-internal data class DynamicPaginationState(
+-    var offset: String = "",
+-    var updateBaseline: String = "",
+-    var hasMore: Boolean = true
+-)
+-
+-internal data class DynamicFeedPaginationKey(
+-    val scope: DynamicFeedScope,
+-    val type: String
+-)
+-
+-internal class DynamicFeedPaginationRegistry {
+-    private val stateByScope = mutableMapOf<DynamicFeedPaginationKey, DynamicPaginationState>()
+-
+-    fun reset(scope: DynamicFeedScope, type: String = "all") {
+-        stateByScope[DynamicFeedPaginationKey(scope = scope, type = type)] = DynamicPaginationState()
+-    }
+-
+-    fun update(
+-        scope: DynamicFeedScope,
+-        type: String = "all",
+-        offset: String,
+-        updateBaseline: String = "",
+-        hasMore: Boolean
+-    ) {
+-        stateByScope[DynamicFeedPaginationKey(scope = scope, type = type)] =
+-            DynamicPaginationState(
+-                offset = offset,
+-                updateBaseline = updateBaseline,
+-                hasMore = hasMore
+-            )
+-    }
+-
+-    fun updateState(
+-        scope: DynamicFeedScope,
+-        type: String = "all",
+-        state: DynamicPaginationState
+-    ) {
+-        stateByScope[DynamicFeedPaginationKey(scope = scope, type = type)] = state.copy()
+-    }
+-
+-    fun snapshot(
+-        scope: DynamicFeedScope,
+-        type: String = "all"
+-    ): DynamicPaginationState {
+-        return stateByScope[DynamicFeedPaginationKey(scope = scope, type = type)]?.copy()
+-            ?: DynamicPaginationState()
+-    }
+-
+-    fun offset(scope: DynamicFeedScope, type: String = "all"): String {
+-        return stateByScope[DynamicFeedPaginationKey(scope = scope, type = type)]?.offset.orEmpty()
+-    }
+-
+-    fun updateBaseline(scope: DynamicFeedScope, type: String = "all"): String {
+-        return stateByScope[DynamicFeedPaginationKey(scope = scope, type = type)]?.updateBaseline.orEmpty()
+-    }
+-
+-    fun updateBaseline(
+-        scope: DynamicFeedScope,
+-        type: String = "all",
+-        updateBaseline: String
+-    ) {
+-        val key = DynamicFeedPaginationKey(scope = scope, type = type)
+-        val current = stateByScope[key] ?: DynamicPaginationState()
+-        stateByScope[key] = current.copy(updateBaseline = updateBaseline)
+-    }
+-
+-    fun hasMore(scope: DynamicFeedScope, type: String = "all"): Boolean {
+-        return stateByScope[DynamicFeedPaginationKey(scope = scope, type = type)]?.hasMore ?: true
+-    }
+-}

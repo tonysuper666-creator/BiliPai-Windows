@@ -19,3 +19,4 @@ home-cards/com/android/purebilibili/feature/home/DesktopOriginalHomeCardGridPoli
 linked-dock/com/android/purebilibili/feature/home/components/DesktopOriginalLinkedDockControls.kt
 plugins/com/android/purebilibili/feature/home/DesktopTodayWatchModels.kt
 story-topic/com/android/purebilibili/feature/dynamic/components/DynamicTopicLinkPolicy.kt
+dynamic-full-card/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicVoteDialog.kt
