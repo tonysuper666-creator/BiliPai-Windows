@@ -3659,6 +3659,17 @@ val migratedVideoFeatureTestPaths = setOf(
     "com/android/purebilibili/feature/bangumi/BangumiDashManifestPolicyTest.kt",
     "com/android/purebilibili/feature/bangumi/ui/player/BangumiSeekHapticPolicyTest.kt",
 )
+// M4a: selected module behavior tests can be registered as their subjects migrate.
+val migratedPlaybackModuleTests = emptyMap<String, Set<String>>()
+kotlin.sourceSets.named("test") {
+    migratedPlaybackModuleTests.forEach { (root, selected) ->
+        val directory = mergedRepositoryRoot.resolve(root)
+        kotlin.srcDir(directory)
+        kotlin.exclude { element -> !element.isDirectory && element.file.toPath().startsWith(directory.toPath()) &&
+            element.file.relativeTo(directory).invariantSeparatorsPath !in selected }
+    }
+}
+
 // M4d (TON-1005): tests of the migrated feature areas join, except those listed in upstream-core/m4d/tests-not-run.tsv
 // (path <TAB> reason) and those whose subject (FooTest.kt tests Foo.kt) is a later step of the area.
 val appM4dTestsNotRun: Map<String, String> = m4dTable("tests-not-run.tsv").toMap()
