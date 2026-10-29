@@ -18,6 +18,7 @@ internal class RecordingNotificationCenter : DesktopNotificationCenter {
     val cleared = mutableListOf<String>()
     val visible = linkedSetOf<String>()
     @Volatile var failRemove = false
+    @Volatile var removeAttempts = 0
     @Volatile var failClear = false
     @Volatile var onShow: ((String) -> Unit)? = null
     private val clearEntered = CountDownLatch(1)
@@ -36,6 +37,7 @@ internal class RecordingNotificationCenter : DesktopNotificationCenter {
     }
 
     override fun remove(tag: String, group: String) {
+        removeAttempts++
         if (failRemove) throw IllegalStateException("history timeout")
         removed += "$tag@$group"
         visible -= tag
@@ -227,19 +229,20 @@ class DesktopNotificationSessionTest {
         assertEquals(listOf("messages-7"), center.cleared)
     }
 
-    @Test fun theWithdrawalTableSurvivesConcurrentCancelRetryAndResume() {
-        val center = RecordingNotificationCenter()
+    @Test fun aRefusedDeliveryKeepsItsPendingResponsibilityWhileThreadsShareTheTable() {
+        // Both surfaces refuse, so nothing disappears on its own: the toast stays visible and the
+        // table must keep its tag. pause() fails, which is what makes resume() reach remember().
+        val center = RecordingNotificationCenter().apply { failRemove = true; failClear = true }
         val session = session(center, 7L)
         assertTrue(session.publish(item("reply-1")))
-        session.pause() // a paused session: resume() will remember its deliveries
-        center.failRemove = false
+        assertFalse(session.pause(), "the group withdrawal is refused")
+        session.resume() // remembers the deliveries of the paused period
+        assertTrue(session.pendingTags().isNotEmpty(), "a delivered toast must carry pending responsibility")
 
         val errors = java.util.concurrent.ConcurrentLinkedQueue<Throwable>()
         val stop = java.util.concurrent.atomic.AtomicBoolean(false)
         val cleaner = thread {
-            while (!stop.get()) {
-                runCatching { session.retryCleanup() }.onFailure { errors += it }
-            }
+            while (!stop.get()) runCatching { session.retryCleanup() }.onFailure { errors += it }
         }
         val canceller = thread {
             repeat(300) {
@@ -251,12 +254,21 @@ class DesktopNotificationSessionTest {
         stop.set(true)
         cleaner.join(5_000)
 
+        assertFalse(canceller.isAlive, "the cancelling thread must have finished")
+        assertFalse(cleaner.isAlive, "the cleaning thread must have finished")
         assertTrue(errors.isEmpty(), "the table is shared across threads: ${errors.firstOrNull()}")
+        assertTrue(center.removeAttempts > 0, "the fixture must actually exercise single-toast removals")
+        val visible = center.texts()
+        assertTrue(visible.isNotEmpty(), "refused removals leave the toasts on screen")
+        assertTrue(visible.all { it in session.pendingTags() },
+            "a delivery still on screen must keep its pending responsibility: visible=$visible pending=${session.pendingTags()}")
+
+        // Recovery: the driver finishes both, and nothing is left claimed.
+        center.failRemove = false
+        center.failClear = false
         session.retryCleanup()
-        val stillPending = session.pendingTags()
-        val visible = center.texts().map { it.substringBefore('@') }.toSet()
-        assertTrue(stillPending.intersect(visible).isEmpty(),
-            "a refused delivery is either still pending or gone from the surface, never both")
+        assertTrue(session.pendingTags().isEmpty(), "after recovery nothing may stay pending")
+        assertTrue(center.texts().isEmpty(), "after recovery nothing may stay on screen")
     }
 
     @Test fun anOldSessionLosingTheLeaseEndsItsOwnCleanupInsteadOfRetryingForever() {
