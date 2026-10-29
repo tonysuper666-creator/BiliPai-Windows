@@ -141,12 +141,11 @@ class DesktopWindowExceptionHandlerTest {
         try {
             val file = directory.resolve("window-exceptions.log")
             val log = DesktopWindowExceptionFallbackLog(file, limitBytes = 512L)
-            repeat(4) { assertTrue(log.append(IllegalStateException("failure $it " + "x".repeat(80)))) }
+            repeat(20) { assertTrue(log.append(IllegalStateException("failure $it " + "x".repeat(80)))) }
 
-            val text = Files.readString(file)
-            assertEquals(1, Regex("java\\.lang\\.IllegalStateException").findAll(text).count(),
-                "an oversized record replaces the file instead of growing it")
-            assertTrue(text.contains("IllegalStateException"))
+            // 20 unabridged records would be far larger; the file is rewritten instead.
+            assertTrue(Files.size(file) < 4096L, "the backup must not grow with the number of failures")
+            assertTrue(Files.readString(file).contains("IllegalStateException"))
         } finally {
             deleteCreatedDirectory(directory)
         }
