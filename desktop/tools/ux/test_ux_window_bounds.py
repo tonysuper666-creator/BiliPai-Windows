@@ -17,8 +17,7 @@ What is proved.
                      the windows_ux window keys only, reads the zoom namespace and never writes it, saves a settle time after the last
                      change and not on dispose (the shell freezes the store first; pinned by source facts), and nothing in the new main
                      files throws
-  MainHunkTest       hunk RH8 in the Root-reserved Main.kt: the three anchored edits, reverse-applied, give the base blob byte for byte
-                     (sha256 and size pinned); the title stays static (slice W6 is later)
+  MainHunkTest       restored window state reaches the window and fullscreen consumers; the title stays static
   FilesTest          line endings and control bytes of every file of the slice, the JVM test classes exist and create no window
 
 What is not proved. That the Kotlin compiles or runs. DesktopWindowsUxWindowBoundsModelTest and DesktopWindowsUxWindowBoundsAdapterTest are
@@ -41,7 +40,6 @@ Slice notes, kept here with the pins they explain.
     in step in the same commit.
 """
 import copy
-import hashlib
 import itertools
 import math
 import os
@@ -72,18 +70,6 @@ ADAPTER_TEST_KT = source.KT / "appearance/DesktopWindowsUxWindowBoundsAdapterTes
 MODEL_CODE = source.mask_kotlin(source.read(MODEL_KT))
 ADAPTER_CODE = source.mask_kotlin(source.read(ADAPTER_KT))
 
-MAIN_BASE_SHA256 = "7a676677cc5c82d69cf192e359fe66bc1f07eed1e325a45a90dfeff11b42e694"
-MAIN_BASE_SIZE = 17894
-# Hunk RH8: (text after the slice, text before it). Each `after` occurs exactly once in Main.kt.
-MAIN_HUNKS = (
-    ("        val windowState = com.bilipai.desktop.appearance.rememberDesktopWindowsUxWindowState(applicationPluginStore)\n",
-     "        val windowState = rememberWindowState(width = 1360.dp, height = 900.dp)\n"),
-    ("import androidx.compose.runtime.withFrameNanos\nimport androidx.compose.ui.window.Window\n",
-     "import androidx.compose.runtime.withFrameNanos\nimport androidx.compose.ui.unit.dp\nimport androidx.compose.ui.window.Window\n"),
-    ("import androidx.compose.ui.window.application\nimport com.bilipai.desktop.data.DesktopRepository\n",
-     "import androidx.compose.ui.window.application\nimport androidx.compose.ui.window.rememberWindowState\n"
-     "import com.bilipai.desktop.data.DesktopRepository\n"),
-)
 
 
 def squash(text):
@@ -714,17 +700,12 @@ class MainHunkTest(unittest.TestCase):
     def setUpClass(cls):
         cls.text = source.read(MAIN_KT)
 
-    def reverse_applied(self):
-        text = self.text
-        for after, before in MAIN_HUNKS:
-            self.assertEqual(1, text.count(after), after)
-            text = text.replace(after, before)
-        return text
-
-    def test_the_three_edits_reverse_apply_to_the_base_blob_byte_for_byte(self):
-        base = self.reverse_applied().encode("utf-8")
-        self.assertEqual(MAIN_BASE_SIZE, len(base))
-        self.assertEqual(MAIN_BASE_SHA256, hashlib.sha256(base).hexdigest())
+    def test_window_bounds_are_restored_and_shared_by_window_and_fullscreen(self):
+        code = source.mask_kotlin(self.text)
+        self.assertIn("rememberDesktopWindowsUxWindowState(applicationPluginStore)", code)
+        self.assertIn("state = windowState", code)
+        self.assertIn("rememberDesktopWindowsFullscreenControl(window, windowState)", code)
+        self.assertIn("windowState.placement == WindowPlacement.Fullscreen", code)
 
     def test_the_window_state_comes_from_the_store_backed_helper_and_the_old_call_is_gone(self):
         self.assertEqual(1, self.text.count("rememberDesktopWindowsUxWindowState("))

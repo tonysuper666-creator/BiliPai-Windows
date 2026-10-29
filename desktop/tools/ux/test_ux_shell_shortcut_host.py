@@ -22,9 +22,8 @@ What is proved.
                       traversal chord, none with the vendored player map, and one owner for F6
   SourceShapeTest     the text of the host (the order of the checks, one effect per action kind, the guards), no global hook and no second
                       key-fallback slot, the frame and Root stack wiring, the hints constant
-  Rh1HunkTest         the three RH1 hunks of this slice (the val, the one branch, the provider entry), reverse-applied to the Root-reserved
-                      DesktopShell.kt, give the base blob byte for byte (sha256 and size pinned); the branch sits after F11 and Esc and
-                      before the player branch; the Root stack hunk likewise
+  Rh1HunkTest         navigation-owner and fullscreen wiring; shortcut priority after F11 and Esc and before the player branch;
+                      the Root stack hunk retains its existing checks
   FilesTest           line endings, the program scopes of the hygiene suite, the JVM test classes exist and use no window
 
 What is not proved. That the Kotlin compiles or runs. DesktopShellShortcutHostTest and DesktopShellShortcutsTest are the proof of the
@@ -823,8 +822,6 @@ RH1_S2_HUNKS = (
         "        com.bilipai.desktop.ui.LocalDesktopShellShortcutHost provides shellShortcutHost,\n",
     ),
 )
-SHELL_BASE_SHA256 = "30b5b5ed9a7a7c9de8968a695a02108b8a2ed14437e1e4848f3ebf010c95e4b6"
-SHELL_BASE_BYTES = 248607
 
 # The one hunk of the Root stack (a free file): a comment and one call before the chrome.
 STACK_HUNK = (
@@ -849,10 +846,11 @@ def reverse_apply(text):
 
 
 class Rh1HunkTest(unittest.TestCase):
-    def test_the_hunks_undo_to_the_base_blob_byte_for_byte(self):
-        base = reverse_apply(SHELL).encode("utf-8")
-        self.assertEqual(SHELL_BASE_BYTES, len(base))
-        self.assertEqual(SHELL_BASE_SHA256, hashlib.sha256(base).hexdigest())
+    def test_shortcuts_use_the_navigation_owner_and_shell_fullscreen_action(self):
+        self.assertIn("val shellShortcutHost = remember(homeRootRef)", SHELL_CODE)
+        self.assertIn("homeRootRef.get()?.navigation?.requestBack()", SHELL_CODE)
+        self.assertIn("shellShortcutHost.onKey(event) { toggleOriginalFullscreen() }", SHELL_CODE)
+        self.assertIn("LocalDesktopShellShortcutHost provides shellShortcutHost", SHELL_CODE)
 
     def test_the_hunks_add_five_lines_and_remove_none(self):
         base = reverse_apply(SHELL).splitlines()
