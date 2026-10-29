@@ -1,5 +1,6 @@
 package com.bilipai.desktop.download
 
+import com.android.purebilibili.data.repository.resolveDanmakuSegmentCount
 import com.android.purebilibili.feature.download.*
 import com.android.purebilibili.feature.download.DownloadTask as UpstreamDownloadTask
 import com.bilipai.desktop.data.DesktopRepository
@@ -1031,8 +1032,10 @@ class DesktopDownloadManager internal constructor(
                 if (result.metadataPath != null) {
                     val manifest = Json { ignoreUnknownKeys = true }.decodeFromString(LocalDanmakuManifest.serializer(),
                         Files.readString(Path.of(result.metadataPath)))
-                    if (manifest.standardSegmentCount != result.expectedStandardSegmentCount)
-                        throw IOException("弹幕标准分段未全部下载（" + manifest.standardSegmentCount + "/" + result.expectedStandardSegmentCount + "），媒体文件继续下载")
+                    // 上游 DownloadDanmakuAssetService 只回传实际写下的分段；应有段数按上游的时长换算规则算。
+                    val expectedStandardSegmentCount = resolveDanmakuSegmentCount(manifest.durationMs, null)
+                    if (manifest.standardSegmentCount != expectedStandardSegmentCount)
+                        throw IOException("弹幕标准分段未全部下载（" + manifest.standardSegmentCount + "/" + expectedStandardSegmentCount + "），媒体文件继续下载")
                 }
                 owner.assertCurrent()
                 result.segmentPaths to result.metadataPath

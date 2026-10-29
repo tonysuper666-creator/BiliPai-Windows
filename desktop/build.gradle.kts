@@ -276,7 +276,98 @@ val migratedAppCorePaths: Set<String> = appJavaRoot.resolve("com/android/purebil
     .filter { path -> path.removePrefix("com/android/purebilibili/").let { core -> core in appCoreAheadOfLaterSteps ||
         (appCoreDesktopOwned.keys + appCoreLaterSteps.keys).none { core.startsWith(it) } } }
     .toSortedSet()
-val migratedUpstreamRelativePaths = migratedWholeModulePaths + migratedAppCorePaths + setOf(
+// M4c (TON-1004): every upstream file of live, audio and download compiles from the merged root,
+// except the two maps below.
+// appFeatureDesktopOwned: Android-only files whose capability the desktop implements itself; the reason names it.
+val appFeatureDesktopOwned: Map<String, String> = mapOf(
+    "com/android/purebilibili/feature/audio/lyrics/halcyon/AppleCoverFlowBackground.kt" to "Android Canvas/Bitmap 封面流渲染",
+    "com/android/purebilibili/feature/audio/lyrics/halcyon/PlayerBlurBackground.kt" to "Bitmap 模糊取样",
+    "com/android/purebilibili/feature/audio/lyrics/halcyon/PlayerPalette.kt" to "Bitmap 取色",
+    "com/android/purebilibili/feature/audio/player/BackgroundAudioConnection.kt" to "Android 绑定 Service 与 Intent 连接",
+    "com/android/purebilibili/feature/audio/player/BackgroundAudioProtocol.kt" to "Bundle IPC 协议（服务端与客户端之间）",
+    "com/android/purebilibili/feature/audio/player/BackgroundAudioService.kt" to "Android 前台 MediaSessionService 与通知",
+    "com/android/purebilibili/feature/audio/screen/AudioNowPlayingWindowSnapshot.kt" to "Android Canvas/Bitmap 窗口快照",
+    "com/android/purebilibili/feature/download/DownloadForegroundServicePolicy.kt" to "Android 前台服务类型声明",
+    "com/android/purebilibili/feature/download/DownloadManager.kt" to "SAF DocumentFile 存储与 Android 下载管理；桌面持久队列是 DesktopDownloadManager + DesktopDownloadQueueAuthority",
+    "com/android/purebilibili/feature/download/DownloadWorker.kt" to "WorkManager 后台任务；桌面队列由 DesktopDownloadManager 自己调度",
+    "com/android/purebilibili/feature/download/OfflinePlaybackErrorPolicy.kt" to "Media3 PlaybackException 分类",
+    "com/android/purebilibili/feature/download/OfflineVideoPlaybackPolicy.kt" to "Media3 选轨与画质策略",
+    "com/android/purebilibili/feature/download/OfflineVideoPlayerScreen.kt" to "Media3 离线播放页；桌面离线播放走 DesktopOfflineMpvControl",
+    "com/android/purebilibili/feature/download/ResumableAssetDownloader.kt" to "Media3 DataSource 断点续传",
+    "com/android/purebilibili/feature/live/LiveAudioOnlyPlaybackPolicy.kt" to "Media3 TrackSelectionParameters 选轨",
+    "com/android/purebilibili/feature/live/LiveCoverSaveDialog.kt" to "MediaStore 相册写入与 Toast；桌面用文件保存对话框",
+    "com/android/purebilibili/feature/live/LivePlaybackPolicy.kt" to "Media3 PlaybackException/错误码分类；桌面的直播播放策略由 v030-live-stream 切片（DesktopOriginalLiveStreamPolicy.kt）按桌面播放失败码给出",
+    "com/android/purebilibili/feature/live/LivePlayerScreen.kt" to "Media3/ExoPlayer 直播间播放器与 Activity 方向；桌面直播播放走 mpv（MediaScreens.kt、DesktopRetainedMedia）",
+    "com/android/purebilibili/feature/live/LivePlayerViewModel.kt" to "Media3 播放状态机，且 LiveDanmakuItem 模型声明在该文件里；桌面直播会话是 DesktopLiveSession",
+    "com/android/purebilibili/feature/live/LiveRoomLayoutPolicy.kt" to "ActivityInfo 屏幕方向与窗口尺寸",
+    "com/android/purebilibili/feature/live/components/LivePlayerControls.kt" to "Media3 播放控件与 AudioManager 音量；桌面直播控件在 MediaScreens.kt 里自绘",
+    "com/android/purebilibili/feature/live/components/LivePlayerStatus.kt" to "Android 电量/时间的广播接收器",
+    "com/android/purebilibili/feature/live/components/LiveRichDanmakuEditor.kt" to "Android IME/Spanned 文本编辑器；桌面弹幕输入是 Compose 文本框",
+)
+// appFeatureLaterSteps: still on their legacy copy in this step; the reason names what has to move first.
+val appFeatureLaterSteps: Map<String, String> = mapOf(
+    "com/android/purebilibili/feature/audio/bgm/BgmDetailScreen.kt" to "依赖 ViewGrpcRepository 与 Toast/MediaStore；等 BGM 数据层迁移",
+    "com/android/purebilibili/feature/audio/bgm/BgmDetailViewModel.kt" to "依赖 ViewGrpcRepository（桌面未编译的视频详情 gRPC 仓库）",
+    "com/android/purebilibili/feature/audio/library/ListenVideoLibraryDataSource.kt" to "与切片产物 DesktopListenVideoLibraryLoader 同名声明冲突，需要先退役该切片生产者",
+    "com/android/purebilibili/feature/audio/lyrics/LyricsRepository.kt" to "依赖上游歌词缓存模型（fetchedAtMs/LyricDocument 新字段），等歌词落盘搬到桌面文件缓存",
+    "com/android/purebilibili/feature/audio/lyrics/halcyon/PlayerLyricPerspective.kt" to "依赖 Android Configuration.smallestScreenWidthDp",
+    "com/android/purebilibili/feature/audio/screen/AudioNowPlayingBar.kt" to "依赖 Android GL 音浪渲染（gl/dispose）",
+    "com/android/purebilibili/feature/audio/screen/AudioNowPlayingBarPresenceMotionPolicy.kt" to "上游删除了 LINKED_DOCK_* 合并动效常量，桌面硬底栏切片（linked-dock）还在用；等 M4b 底部栏改造",
+    "com/android/purebilibili/feature/audio/screen/ExternalPlaylistImportDialog.kt" to "依赖 ExternalPlaylistRepository 与 SAF 文件选择",
+    "com/android/purebilibili/feature/audio/screen/ListenVideoCollectionPlayer.kt" to "需要上面那份 ListenVideoViewModel；显式类型参数告警在桌面按错误处理",
+    "com/android/purebilibili/feature/audio/screen/ListenVideoScreen.kt" to "依赖上游新版 TabRow 选中 API",
+    "com/android/purebilibili/feature/audio/screen/MusicAtmosphereBackground.kt" to "依赖 Media3 音频波形（AudioWaveformSource）",
+    "com/android/purebilibili/feature/audio/screen/MusicDetailScreen.kt" to "依赖 VideoPlaybackViewModel（视频播放，M4a 范围）",
+    "com/android/purebilibili/feature/audio/screen/MusicPlayerContent.kt" to "依赖 Android Settings/媒体键（Settings、media）",
+    "com/android/purebilibili/feature/audio/screen/PlayHistorySheet.kt" to "依赖 PlayHistoryStore（Room 音乐库，桌面是 JSON 库）",
+    "com/android/purebilibili/feature/audio/viewmodel/ListenVideoCollectionViewModel.kt" to "依赖 PlaylistManager（桌面播放列表是 JSON 库）",
+    "com/android/purebilibili/feature/audio/viewmodel/ListenVideoViewModel.kt" to "需要上游 ListenVideoLibraryDataSource 接口（本卡保留旧副本，桌面有 DesktopOriginalListenVideoLibraryEnvironment）",
+    "com/android/purebilibili/feature/audio/viewmodel/MusicViewModel.kt" to "依赖 AudioRepository 与 Media3 Player",
+    "com/android/purebilibili/feature/download/DirectorySelectionDialog.kt" to "依赖 Android Environment 外部存储路径",
+    "com/android/purebilibili/feature/download/DownloadListScreen.kt" to "依赖 Toast 与上游新版视频卡排版（horizontalVideoCardTypography）",
+    "com/android/purebilibili/feature/home/components/LinkedBottomDock.kt" to "M4c 批次外：待下一轮处理（本文件上游原文在桌面上仍报编译错误）",
+    "com/android/purebilibili/feature/live/DesktopOriginalLiveStreamPolicy.kt" to "M4c 批次外：待下一轮处理（本文件上游原文在桌面上仍报编译错误）",
+    "com/android/purebilibili/feature/live/LiveAreaDetailScreen.kt" to "依赖 LiveRepository 与上游新版 TabRow 选中 API",
+    "com/android/purebilibili/feature/live/LiveAreaScreen.kt" to "依赖 LiveRepository",
+    "com/android/purebilibili/feature/live/LiveBiliPaiVisualPolicy.kt" to "上游新版 LiveVisualSpec 删掉了 maxContentWidthDp，而还在旧副本上的直播间/分区/搜索页仍在读它；等这些页面一起迁移",
+    "com/android/purebilibili/feature/live/LiveCardContainerTransition.kt" to "依赖上游组合式转场 API（SharedTransitionLayout 新版签名）",
+    "com/android/purebilibili/feature/live/LiveDanmakuAdvancedSettings.kt" to "依赖上游新的弹幕设置组件（DanmakuSettingsSectionTitle、LocalPlayerGlassSettingsSurface），随直播播放器拆分",
+    "com/android/purebilibili/feature/live/LiveDanmakuDraftPolicy.kt" to "依赖 LiveRichDanmakuEditor（Android IME，桌面自有）里的文本表情插入",
+    "com/android/purebilibili/feature/live/LiveDanmakuInfoPolicy.kt" to "同上：需要上游新的 LiveDanmakuItem.medal",
+    "com/android/purebilibili/feature/live/LiveDraftPreviewPolicy.kt" to "依赖 Android 富文本草稿模型（LiveDanmakuDraft 系列）",
+    "com/android/purebilibili/feature/live/LiveFeedbackDialog.kt" to "依赖 Android Toast 与上游新版举报分组组件；桌面举报面板在 MediaScreens.kt",
+    "com/android/purebilibili/feature/live/LiveFollowingScreen.kt" to "依赖 LiveRepository",
+    "com/android/purebilibili/feature/live/LiveListScreen.kt" to "依赖 LiveRepository（桌面直播数据层是 DesktopLiveSession，需要先把手游数据层接进来）",
+    "com/android/purebilibili/feature/live/LiveMessageEmoteResourcePolicy.kt" to "依赖 Android 资源尺寸（width/height）",
+    "com/android/purebilibili/feature/live/LivePlaybackPolicy.kt" to "M4c 批次外：待下一轮处理（本文件上游原文在桌面上仍报编译错误）",
+    "com/android/purebilibili/feature/live/LiveRealtimeMessagePolicy.kt" to "需要上游新的 LiveDanmakuItem 模型（声明在 Media3 的 LivePlayerViewModel.kt 里），等直播播放器拆分",
+    "com/android/purebilibili/feature/live/LiveRoomCard.kt" to "依赖上游直播卡新组件（解析歧义来自未迁移的卡片组合）",
+    "com/android/purebilibili/feature/live/LiveRoomLayout.kt" to "依赖 Android drawable 资源（直播间布局图标）",
+    "com/android/purebilibili/feature/live/LiveSearchScreen.kt" to "依赖上游新版 TabRow 选中 API",
+    "com/android/purebilibili/feature/live/components/LiveChatSection.kt" to "依赖 Android 剪贴板与 Toast，且用上游 LiveDanmakuItem 新字段",
+    "com/android/purebilibili/feature/live/components/LiveContributionRankSheet.kt" to "同上，依赖上游新版 TabRow 选中状态 API",
+    "com/android/purebilibili/feature/live/components/LiveDanmakuActionToolbar.kt" to "依赖 LiveDanmakuItem 的位置解析（DanmakuTapAnchor），随直播播放器拆分",
+    "com/android/purebilibili/feature/live/components/LiveInteractionSheets.kt" to "依赖上游新版 TabRow 的 tabSelectedPage/tabIndicatorPosition（桌面 tab 组件尚未跟上）",
+    "com/android/purebilibili/feature/live/components/LivePlaybackPreferencesDialog.kt" to "依赖 NetworkUtils（Android 网络工具，桌面自有）与 Toast",
+    "com/android/purebilibili/feature/live/components/LiveSendDanmakuSheet.kt" to "依赖 LiveRichDanmakuEditor（Android IME，桌面自有）",
+    "com/android/purebilibili/feature/live/components/LiveShareToMessageSheet.kt" to "依赖上游消息分享面板（ContentMessageShareSheet），随消息模块迁移",
+    "com/android/purebilibili/feature/live/components/LiveStreamSourceSheet.kt" to "依赖 Android Configuration（屏幕尺寸），等桌面尺寸接口",
+    "com/android/purebilibili/feature/live/components/LiveSuperChatFlashOverlay.kt" to "依赖 LiveSuperChatCard（在 Android 专属的 LiveSuperChatSection 里）",
+    "com/android/purebilibili/feature/live/components/LiveSuperChatSection.kt" to "依赖 Android Toast/Bitmap 与上游 LiveDanmakuItem 超管字段",
+)
+val migratedAppFeatureRoots = listOf(
+    "com/android/purebilibili/feature/live/",
+    "com/android/purebilibili/feature/audio/",
+    "com/android/purebilibili/feature/download/",
+)
+val migratedAppFeaturePaths: Set<String> = migratedAppFeatureRoots.flatMap { root ->
+    appJavaRoot.resolve(root).walkTopDown().filter { it.isFile && it.extension == "kt" }
+        .map { it.relativeTo(appJavaRoot).invariantSeparatorsPath }
+        .filter { path -> path !in appFeatureDesktopOwned && path !in appFeatureLaterSteps }
+        .toList()
+}.toSortedSet()
+val migratedAppPaths: Set<String> = migratedAppCorePaths + migratedAppFeaturePaths
+val migratedUpstreamRelativePaths = migratedWholeModulePaths + migratedAppPaths + setOf(
     "com/android/purebilibili/core/network/AppSignUtils.kt",
     "com/android/purebilibili/core/network/WbiUtils.kt",
     "com/android/purebilibili/core/network/grpc/ProtoWire.kt",
@@ -352,6 +443,8 @@ val migratedUpstreamRelativePaths = migratedWholeModulePaths + migratedAppCorePa
 )
 fun migratedUpstreamSource(path: String): Boolean = migratedUpstreamModules.any { path.startsWith(it) } ||
     migratedUpstreamRelativePaths.any { path.endsWith("/src/main/java/" + it) }
+
+
 
 val prepareUpstreamSources by tasks.registering(Sync::class) {
     from(repositoryRoot) {
@@ -2699,7 +2792,7 @@ val applyTransitionPatches by tasks.registering {
 val upstreamReplacementDirectory = file("upstream-core/replacements")
 fun migratedUpstreamFile(relative: String): File {
     val candidates = (migratedUpstreamModules.map { mergedRepositoryRoot.resolve(it + "src/main/java/" + relative) } +
-        listOfNotNull(appJavaRoot.resolve(relative).takeIf { relative in migratedAppCorePaths })).filter { it.isFile }
+        listOfNotNull(appJavaRoot.resolve(relative).takeIf { relative in migratedAppPaths })).filter { it.isFile }
     require(candidates.size == 1) { "$relative must exist in exactly one migrated upstream module, found ${candidates.size}" }
     return candidates.single()
 }
@@ -3097,7 +3190,7 @@ kotlin.sourceSets.named("main") {
     migratedUpstreamModules.forEach { kotlin.srcDir(mergedRepositoryRoot.resolve(it + "src/main/java")) }
     // Only the migrated app core files of the app source root; the rest of the app is not migrated yet.
     val appJavaRootPath = appJavaRoot.toPath()
-    kotlin.exclude { element -> !element.isDirectory && element.file.toPath().startsWith(appJavaRootPath) && upstreamIdentity(element.file) !in migratedAppCorePaths }
+    kotlin.exclude { element -> !element.isDirectory && element.file.toPath().startsWith(appJavaRootPath) && upstreamIdentity(element.file) !in migratedAppPaths }
     kotlin.srcDir(appJavaRoot)
     kotlin.srcDir(generatedUpstream)
     kotlin.srcDir(layout.buildDirectory.dir("generated/api"))
