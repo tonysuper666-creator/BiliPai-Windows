@@ -317,6 +317,7 @@ val appCoreLaterSteps: Map<String, String> = mapOf(
 // M4a: video/bangumi logic and unchanged Compose components compile from the merged upstream tree.
 // The remaining UI/player files move when their desktop platform adapters are wired.
 val migratedVideoFeaturePaths = setOf(
+    "com/android/purebilibili/feature/video/state/VideoPlayerState.kt",
     "com/android/purebilibili/feature/video/danmaku/DanmakuPlaybackSyncPolicy.kt",
     "com/android/purebilibili/feature/plugin/SponsorBlockPlaybackSession.kt",
     "com/android/purebilibili/feature/plugin/SponsorBlockConfigStore.kt",
@@ -2830,6 +2831,8 @@ val prepareJsWorkerResources = if (hostIsWindows) tasks.register<Sync>("prepareJ
 
 // Generated legacy files that re-declare migrated upstream declarations under another file name.
 val upstreamOwnedGeneratedCopies = setOf(
+    "original-video-detail-holder-full/com/android/purebilibili/feature/video/state/DesktopOriginalMiniEntryPolicy.kt",
+    "original-video-player-section-full/com/android/purebilibili/feature/video/state/DesktopOriginalApiDimensionPolicy.kt",
     "original-danmaku-list-menu/com/android/purebilibili/feature/video/danmaku/DesktopOriginalWebMaskRefreshPolicy.kt",
     // core/plugin + plugin-sdk (TON-1028): legacy plugin contracts upstream moved to plugin-sdk (Plugin, the typed
     // plugin APIs) or to core/plugin/BuiltinPlugin (host presentation); the merged upstream files own them now.
@@ -3443,6 +3446,9 @@ val appCoreUpstreamTestsNotRun: Map<String, String> = mapOf(
 // AudioBarReturnPolicyTest also needs MiniPlayerManager; PiliPlayerMenuPolicyTest needs Media3
 // track selection. Those two new upstream suites join with the playback-port migration.
 val migratedVideoFeatureTestPaths = setOf(
+    "com/android/purebilibili/feature/video/state/VideoPlayerVerticalDetectionPolicyTest.kt",
+    "com/android/purebilibili/feature/video/state/VideoPlayerBufferPolicyTest.kt",
+    "com/android/purebilibili/feature/video/state/VideoPlayerStateReusePolicyTest.kt",
     "com/android/purebilibili/feature/video/ambient/AmbientFramePolicyTest.kt",
     "com/android/purebilibili/feature/video/ui/overlay/PlayerControlSafeAreaTest.kt",
     "com/android/purebilibili/feature/video/ui/components/PlayerPanelViewportTest.kt",

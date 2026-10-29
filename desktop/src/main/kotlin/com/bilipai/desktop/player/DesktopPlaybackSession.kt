@@ -40,6 +40,7 @@ interface DesktopPlaybackSession : DesktopPlaybackRequestPort, AutoCloseable {
     fun seekToTracked(positionMs: Long): com.bilipai.desktop.ui.DesktopOriginalNativeSeekSubmission?
     fun addListener(listener: com.bilipai.desktop.ui.DesktopOriginalMpvOverlayControl.Listener)
     fun removeListener(listener: com.bilipai.desktop.ui.DesktopOriginalMpvOverlayControl.Listener)
+    val playbackStates: kotlinx.coroutines.flow.StateFlow<PlayerState>
     fun playbackSnapshot(): PlayerState
     fun playbackCapabilities(): DesktopPlaybackCapabilities
 }

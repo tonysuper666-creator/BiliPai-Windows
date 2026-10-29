@@ -9,6 +9,7 @@ import com.bilipai.desktop.plugins.DesktopPluginStore
 import com.bilipai.desktop.data.DesktopPlaybackAuthorizationReceipt
 import com.bilipai.desktop.player.*
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.swing.Swing
 import okhttp3.Call
@@ -171,6 +172,39 @@ class DesktopOriginalNativeRecoveryAdmissionTest {
         owner = false
         assertFalse(lease.retry()); lease.close()
         assertEquals(3, calls.size)
+    }
+
+    @Test fun upstreamPlayerStateObservesSameSessionAndRejectsRetiredMetadata() = runBlocking<Unit> {
+        Fixture().use { f ->
+            val scope = CoroutineScope(SupervisorJob() + Dispatchers.Swing)
+            val versions = MutableStateFlow<Long?>(f.accepted.sourceVersion)
+            val section = DesktopOriginalMpvSectionControl(f.player, { f.owner.current()?.sourceVersion }, { f.entry },
+                { action -> f.owner.admitPlaybackDispatch(f.accepted, action) }, { false }, {}, {},
+                { _, _, _, _ -> }, scope, versions, { it(); true })
+            val metadata = mutableListOf<String>()
+            val holder = DesktopOriginalMpvVideoPlayerState(section, scope, versions, { f.entry },
+                { action -> if (f.entry) { action(); true } else false },
+                { title, _, _ -> metadata += title })
+            val upstream: com.android.purebilibili.feature.video.state.VideoPlayerState = holder
+            try {
+                assertSame(section, upstream.playbackSession)
+                assertSame(section.state, upstream.playbackSession.playbackStates)
+                upstream.setApiDimension(1920, 1080, 90)
+                withTimeout(5_000) { upstream.isVerticalVideo.first { it } }
+                assertEquals(1080 to 1920, upstream.apiDimension.value)
+                upstream.updateMediaMetadata("owned", "artist", "cover")
+                f.actor.fail(-14)
+                withTimeout(5_000) { upstream.diagnosticEvents.first { it.isNotEmpty() } }
+                versions.value = null
+                withTimeout(5_000) { upstream.diagnosticEvents.first { it.isEmpty() } }
+                assertNull(upstream.videoInputFormat.value)
+                f.entry = false
+                assertFailsWith<CancellationException> { upstream.updateMediaMetadata("retired", "", "") }
+                assertFailsWith<CancellationException> { upstream.setPortraitFullscreen(true) }
+                assertEquals(listOf("owned"), metadata)
+                assertTrue(f.player.ownsSourceVersion(f.accepted.sourceVersion))
+            } finally { scope.cancel() }
+        }
     }
 
     @Test fun rawSharedSessionReusesSectionAndOriginalStoreWithoutClosingReplacementOrDecoder() {
