@@ -1,6 +1,5 @@
 package com.bilipai.desktop.download
 
-import com.android.purebilibili.data.repository.resolveDanmakuSegmentCount
 import com.android.purebilibili.feature.download.*
 import com.android.purebilibili.feature.download.DownloadTask as UpstreamDownloadTask
 import com.bilipai.desktop.data.DesktopRepository
@@ -1030,12 +1029,10 @@ class DesktopDownloadManager internal constructor(
                 val result = DownloadDanmakuAssetService.download(task.item, directory.toFile(), update)
                 owner.assertCurrent()
                 if (result.metadataPath != null) {
-                    val manifest = Json { ignoreUnknownKeys = true }.decodeFromString(LocalDanmakuManifest.serializer(),
-                        Files.readString(Path.of(result.metadataPath)))
-                    // 上游 DownloadDanmakuAssetService 只回传实际写下的分段；应有段数按上游的时长换算规则算。
-                    val expectedStandardSegmentCount = resolveDanmakuSegmentCount(manifest.durationMs, null)
-                    if (manifest.standardSegmentCount != expectedStandardSegmentCount)
-                        throw IOException("弹幕标准分段未全部下载（" + manifest.standardSegmentCount + "/" + expectedStandardSegmentCount + "），媒体文件继续下载")
+                    // 应有段数由上游下载器给出：dmSge.total 优先，没有再按时长换算。只用时长会在
+                    // dmSge 与时长不一致时误判（例如 1 分钟的稿件 dmSge=5，或 12 分钟 dmSge=1）。
+                    desktopDanmakuStandardSegmentShortfall(Files.readString(Path.of(result.metadataPath)),
+                        result.expectedStandardSegmentCount)?.let { throw IOException(it) }
                 }
                 owner.assertCurrent()
                 result.segmentPaths to result.metadataPath
@@ -1057,5 +1054,18 @@ class DesktopDownloadManager internal constructor(
             .trim(' ', '.').take(100).ifBlank { "video" }.let { name ->
                 if (name.substringBefore('.').uppercase() in setOf("CON", "PRN", "AUX", "NUL", "COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9", "LPT1", "LPT2", "LPT3", "LPT4", "LPT5", "LPT6", "LPT7", "LPT8", "LPT9")) "_$name" else name
             }
+    }
+}
+
+/**
+ * 弹幕完整性校验：清单里的标准分段数必须等于上游下载器算出的应有段数。
+ * 返回 null 表示完整；否则返回要抛给下载器的原因。校验本身不放过任何缺口。
+ */
+internal fun desktopDanmakuStandardSegmentShortfall(manifestJson: String, expectedStandardSegmentCount: Int): String? {
+    val manifest = Json { ignoreUnknownKeys = true }.decodeFromString(LocalDanmakuManifest.serializer(), manifestJson)
+    return if (manifest.standardSegmentCount != expectedStandardSegmentCount) {
+        "弹幕标准分段未全部下载（" + manifest.standardSegmentCount + "/" + expectedStandardSegmentCount + "），媒体文件继续下载"
+    } else {
+        null
     }
 }
