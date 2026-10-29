@@ -129,10 +129,29 @@ object WindowsVideoCrashRegressionFixture {
                             edt { routes.video(BiliPaiNavKey.VideoDetail(video)) }
                             await("public video first frame") {
                                 (latest.get()?.key as? BiliPaiNavKey.VideoDetail)?.bvid == video &&
+                                    refs.find<DesktopOriginalVideoShellOwner>()?.slot?.currentAssembly()
+                                        ?.native?.current()?.request?.bvid == video &&
                                     player()?.state?.value?.firstVideoFrameReady == true
                             }
                             val elapsed = (System.nanoTime() - started) / 1_000_000
                             shot(report, "video-${index + 1}")
+                            if (index == 4) {
+                                await("public comments") {
+                                    refs.find<DesktopOriginalVideoShellOwner>()?.slot?.currentAssembly()
+                                        ?.domains?.comments?.commentState?.value?.replies?.isNotEmpty() == true
+                                }
+                                val detail = edt {
+                                    val owner = checkNotNull(refs.find<DesktopOriginalVideoShellOwner>()?.slot?.currentAssembly())
+                                    BiliPaiNavKey.CommentDetail(checkNotNull(owner.native.current()).request.aid,
+                                        owner.domains.comments.commentState.value.replies.first().rpid)
+                                }
+                                edt { check(routes.push(detail)) }
+                                await("comment detail") { latest.get()?.key == detail }
+                                Thread.sleep(2_000)
+                                shot(report, "comment-detail")
+                                edt { check(routes.back()) }
+                                await("return to video") { (latest.get()?.key as? BiliPaiNavKey.VideoDetail)?.bvid == video }
+                            }
                             edt {
                                 val shell = checkNotNull(refs.find<DesktopOriginalVideoShellOwner>())
                                 val owner = checkNotNull(shell.slot.currentAssembly())
