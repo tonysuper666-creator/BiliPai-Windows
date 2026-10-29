@@ -1,0 +1,28 @@
+--- a/com/android/purebilibili/core/ui/AppContentDialogLayoutPolicy.kt
++++ b/com/android/purebilibili/core/ui/AppContentDialogLayoutPolicy.kt
+@@ -4,6 +4,7 @@
+ import androidx.compose.foundation.layout.padding
+ import androidx.compose.foundation.layout.widthIn
+ import androidx.compose.foundation.layout.wrapContentHeight
++import androidx.compose.foundation.layout.wrapContentWidth
+ import androidx.compose.runtime.Immutable
+ import androidx.compose.ui.Modifier
+ import androidx.compose.ui.unit.dp
+@@ -57,9 +58,7 @@
+     return DialogProperties(
+         dismissOnBackPress = base.dismissOnBackPress,
+         dismissOnClickOutside = base.dismissOnClickOutside,
+-        securePolicy = base.securePolicy,
+         usePlatformDefaultWidth = usePlatformDefaultWidth,
+-        decorFitsSystemWindows = base.decorFitsSystemWindows,
+     )
+ }
+ 
+@@ -74,6 +73,7 @@
+     val widthConstrained = this
+         .fillMaxWidth()
+         .padding(horizontal = policy.horizontalPaddingDp.dp)
++        .wrapContentWidth()
+         .widthIn(
+             min = policy.minWidthDp.dp,
+             max = policy.maxWidthDp.dp,

@@ -1,0 +1,51 @@
+--- a/com/android/purebilibili/core/ui/blur/ChromeBackdropSource.kt
++++ b/com/android/purebilibili/core/ui/blur/ChromeBackdropSource.kt
+@@ -3,6 +3,7 @@
+ import androidx.compose.runtime.Composable
+ import androidx.compose.runtime.LaunchedEffect
+ import androidx.compose.runtime.State
++import androidx.compose.runtime.getValue
+ import androidx.compose.runtime.mutableStateOf
+ import androidx.compose.runtime.Stable
+ import androidx.compose.runtime.remember
+@@ -11,6 +12,7 @@
+ import androidx.compose.ui.draw.drawWithContent
+ import androidx.compose.ui.graphics.layer.drawLayer
+ import androidx.compose.ui.graphics.Color
++import androidx.compose.ui.graphics.drawscope.DrawScope
+ import androidx.compose.ui.graphics.rememberGraphicsLayer
+ import kotlinx.coroutines.CompletableDeferred
+ import top.yukonga.miuix.kmp.blur.Backdrop
+@@ -43,12 +45,15 @@
+ fun rememberChromeBackdropSource(
+     drawContentToScreen: Boolean = true,
+     recordingBackground: Color = Color.Unspecified,
++    // Desktop: the player draws its video itself, so the backdrop records that instead of the composed children.
++    recordContent: (DrawScope.() -> Unit)? = null,
+ ): ChromeBackdropSource {
+     val contentLayer = rememberGraphicsLayer()
+     // Theme frames update the recording in draw, without replacing the source passed
+     // to consumers or rebuilding its modifier chain. Child-layer invalidations still
+     // record fresh content; this is not a frozen backdrop cache.
+     val recordingBackgroundState = rememberUpdatedState(recordingBackground)
++    val latestRecordContent by rememberUpdatedState(recordContent)
+     val recorded = remember(contentLayer) { mutableStateOf(false) }
+     val firstRecording = remember(contentLayer) { CompletableDeferred<Unit>() }
+     LaunchedEffect(firstRecording) {
+@@ -75,9 +80,14 @@
+                         if (background != Color.Unspecified) drawRect(background)
+                         // Page viewports own clipping. Hidden optical captures need their
+                         // overflow intact; a global clip also changes glass rim sampling.
+-                        this@drawWithContent.drawContent()
++                        val recording = latestRecordContent
++                        if (recording == null) this@drawWithContent.drawContent()
++                        else recording.invoke(this)
+                     }
+-                    if (drawContentToScreen) drawLayer(contentLayer)
++                    if (drawContentToScreen) {
++                        if (latestRecordContent == null) drawLayer(contentLayer)
++                        else this@drawWithContent.drawContent()
++                    }
+                 },
+         )
+     }

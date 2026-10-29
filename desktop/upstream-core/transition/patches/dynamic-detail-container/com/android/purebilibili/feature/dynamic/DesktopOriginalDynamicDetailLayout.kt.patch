@@ -1,0 +1,10 @@
+--- a/dynamic-detail-container/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicDetailLayout.kt
++++ b/dynamic-detail-container/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicDetailLayout.kt
+@@ -10,6 +10,7 @@
+ import androidx.compose.ui.unit.dp
+ import androidx.compose.material3.*
+ import com.android.purebilibili.core.ui.*
++import com.android.purebilibili.core.ui.AppSpacingTokens
+ import com.android.purebilibili.core.ui.components.*
+ import com.android.purebilibili.core.theme.*
+ import com.android.purebilibili.core.util.*

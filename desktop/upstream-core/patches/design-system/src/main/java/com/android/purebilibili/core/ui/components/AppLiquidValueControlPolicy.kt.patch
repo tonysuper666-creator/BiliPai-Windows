@@ -1,0 +1,9 @@
+--- a/com/android/purebilibili/core/ui/components/AppLiquidValueControlPolicy.kt
++++ b/com/android/purebilibili/core/ui/components/AppLiquidValueControlPolicy.kt
+@@ -78,5 +78,5 @@
+ /** Appearance is independent of native theme, enabled state and reduced-motion policy. */
+ @Composable
+ internal fun useAppLiquidValueControls(): Boolean =
+-    LocalAppThemeConfig.current.liquidGlassEnabled && Build.VERSION.SDK_INT >= 33
++    LocalAppThemeConfig.current.liquidGlassEnabled && com.bilipai.desktop.ui.desktopDetailRenderEffectsSupported()
+ 

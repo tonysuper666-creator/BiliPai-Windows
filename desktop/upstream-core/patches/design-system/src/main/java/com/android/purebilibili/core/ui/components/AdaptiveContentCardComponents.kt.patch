@@ -1,0 +1,10 @@
+--- a/com/android/purebilibili/core/ui/components/AdaptiveContentCardComponents.kt
++++ b/com/android/purebilibili/core/ui/components/AdaptiveContentCardComponents.kt
+@@ -188,7 +188,6 @@
+         } else {
+             baseLabelStyle.lineHeight
+         },
+-        platformStyle = PlatformTextStyle(includeFontPadding = false),
+     )
+     val colorScheme = MaterialTheme.colorScheme
+     when (LocalAppUiStyle.current) {

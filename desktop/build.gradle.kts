@@ -172,8 +172,16 @@ val prepareNativeDiagnosticShare by tasks.registering(Exec::class) {
 
 // core-data and network-core compile straight from the merged upstream root (main source set below);
 // these are the paths their generated legacy copies had, so producers no longer emit them.
-val migratedUpstreamModules = listOf("core-data/", "network-core/")
-val migratedUpstreamRelativePaths = setOf(
+// design-tokens and design-system (TON-997) are migrated whole: every file of their main source set is
+// compiled from the merged root, so every generated legacy copy at one of these paths is skipped, whatever
+// producer emits it. The list follows the upstream tree, not a snapshot of it.
+val migratedWholeModules = listOf("design-tokens/", "design-system/")
+val migratedWholeModulePaths: Set<String> = migratedWholeModules.flatMap { module ->
+    val root = mergedRepositoryRoot.resolve(module + "src/main/java")
+    root.walkTopDown().filter { it.isFile && it.extension == "kt" }.map { it.relativeTo(root).invariantSeparatorsPath }.toList()
+}.toSet()
+val migratedUpstreamModules = listOf("core-data/", "network-core/") + migratedWholeModules
+val migratedUpstreamRelativePaths = migratedWholeModulePaths + setOf(
     "com/android/purebilibili/core/network/AppSignUtils.kt",
     "com/android/purebilibili/core/network/WbiUtils.kt",
     "com/android/purebilibili/core/network/grpc/ProtoWire.kt",
@@ -2393,6 +2401,14 @@ val prepareJsWorkerResources by tasks.registering(Sync::class) {
 
 // Generated legacy files that re-declare migrated upstream declarations under another file name.
 val upstreamOwnedGeneratedCopies = setOf(
+    // design-system / design-tokens (TON-997): declarations that upstream's own files now own.
+    "dynamic-tabs/com/android/purebilibili/core/ui/components/DesktopOriginalDynamicNativeTabs.kt",
+    "dynamic-tabs/com/android/purebilibili/core/ui/DesktopOriginalDynamicImmersiveChrome.kt",
+    "dynamic-detail-container/com/android/purebilibili/core/ui/DesktopOriginalDetailAdaptiveChrome.kt",
+    "dynamic-detail-container/com/android/purebilibili/core/ui/DesktopOriginalDetailAppSheetComponents.kt",
+    "preferences/com/android/purebilibili/core/ui/AppWallpaperBackdropLocal.kt",
+    "home-page/com/android/purebilibili/core/ui/DesktopHomeOriginalPullThreshold.kt",
+    "components/com/android/purebilibili/core/ui/components/AppScrollableUnderlinePolicy.kt",
     "api/com/android/purebilibili/core/network/DesktopUpstreamApi.kt",
     "dynamic-reply-protocol/generated/com/android/purebilibili/data/repository/DesktopOriginalCommentReadAccessPolicy.kt",
     "bgm-detail/com/android/purebilibili/data/repository/CommentFraudDetectionPolicy.kt",
@@ -2420,23 +2436,28 @@ val transitionPatchedGeneratedFiles = fileTree(transitionPatchDirectory) { inclu
     .map { it.relativeTo(transitionPatchDirectory).invariantSeparatorsPath.removeSuffix(".patch") }.toSortedSet()
 val transitionPatchProducers = mapOf(
     "api" to "extractUpstreamApi",
+    "dynamic-detail-container" to "extractUpstreamDynamicDetailContainer",
     "dynamic-full-card" to "extractUpstreamDynamicFullCard",
+    "home-full-card" to "extractUpstreamHomeFullCard",
     "media" to "extractUpstreamMedia",
     "original-favorites" to "extractOriginalFavorites",
     "original-message-notifications" to "extractOriginalMessageNotifications",
+    "original-storage-settings" to "extractOriginalStorageSettings",
     "original-search-pages" to "extractOriginalSearchPages",
     "original-video-player-full-controls" to "extractOriginalPlayerFullControls",
     "original-video-state-core" to "extractOriginalVideoStateCore",
     "original-watchlater" to "extractOriginalWatchLater",
     "profile-main" to "extractOriginalProfileMain",
     "search" to "extractUpstreamSearch",
+    "upstream" to "prepareUpstreamSources",
     "whole-playback-settings" to "extractOriginalWholePlaybackSettings",
 )
 
 /** Applies a unified diff; every hunk must match the original exactly once. */
 fun applyUnifiedPatch(original: String, patch: String, label: String): String {
-    var lines = original.split("\n")
-    val body = patch.split("\n").dropWhile { !it.startsWith("--- ") }.drop(2)
+    // A Windows checkout may hold CRLF text; patches and their targets are compared and written with LF.
+    var lines = original.replace("\r\n", "\n").split("\n")
+    val body = patch.replace("\r\n", "\n").split("\n").dropWhile { !it.startsWith("--- ") }.drop(2)
     var index = 0
     while (index < body.size) {
         val header = body[index++]
@@ -2508,21 +2529,208 @@ val applyTransitionPatches by tasks.registering {
     }
 }
 
+// Desktop adaptations of migrated upstream files that are not stand-in classes (TON-997). Upstream files are never
+// edited and no copy of one is committed:
+//  - upstream-core/patches/<repository path>.patch is a unified diff applied to the merged file at build time (by
+//    applyDesktopUpstreamPatches, shared with the other desktop fixes of upstream files); a hunk that
+//    no longer matches exactly fails the build, so a changed upstream line is looked at by a person.
+//  - upstream-core/replacements/<path> is a desktop implementation of a file that is Android-only (windows, views,
+//    runtime shaders). Its first line pins the SHA-256 of the upstream file it replaces: when upstream changes
+//    that file the build fails until the replacement is reviewed, and it must declare every public top-level name
+//    the upstream file declares.
+val upstreamReplacementDirectory = file("upstream-core/replacements")
+fun migratedUpstreamFile(relative: String): File {
+    val candidates = migratedUpstreamModules.map { mergedRepositoryRoot.resolve(it + "src/main/java/" + relative) }.filter { it.isFile }
+    require(candidates.size == 1) { "$relative must exist in exactly one migrated upstream module, found ${candidates.size}" }
+    return candidates.single()
+}
+val upstreamReplacements = fileTree(upstreamReplacementDirectory) { include("**/*.kt") }.files
+    .map { it.relativeTo(upstreamReplacementDirectory).invariantSeparatorsPath }.toSortedSet()
+// Patched files (upstream-core/patches/<repository path>.patch, applied by applyDesktopUpstreamPatches) are excluded by their root
+// path; replaced files by their module-relative path. A file cannot be both.
+val patchedModuleRelativePaths = desktopUpstreamPatchedFiles.mapNotNull { root ->
+    migratedUpstreamModules.firstNotNullOfOrNull { module -> root.removePrefix(module + "src/main/java/").takeIf { root.startsWith(module + "src/main/java/") } }
+}.toSortedSet()
+val desktopAdaptedUpstreamPaths = upstreamReplacements
+require(patchedModuleRelativePaths.intersect(upstreamReplacements).isEmpty()) { "Patched and replaced at once: ${patchedModuleRelativePaths.intersect(upstreamReplacements)}" }
+
+fun lfSha256(file: File): String = MessageDigest.getInstance("SHA-256")
+    .digest(file.readText(Charsets.UTF_8).replace("\r\n", "\n").toByteArray(Charsets.UTF_8)).joinToString("") { "%02x".format(it) }
+fun publicTopLevelNames(text: String): Set<String> {
+    val declaration = Regex("^(?:@[\\w.]+(?:\\([^)]*\\))?\\s+)*((?:(?:public|inline|suspend|data|sealed|enum|value|abstract|open|const|operator|infix|tailrec|annotation|fun\\s+interface|external)\\s+)*)(fun|val|var|class|object|interface|typealias)\\s+(?:<[^>]*>\\s*)?(?:[\\w.<>?, ]+\\.)?([A-Za-z_]\\w*)")
+    return text.lines().filter { it.isNotEmpty() && !it[0].isWhitespace() }.mapNotNull { declaration.find(it)?.groupValues?.get(3) }.toSet()
+}
+
+// Android resources of migrated upstream modules (TON-997): `res/values/*.xml` and `res/values-night/*.xml` colors become
+// the module's `R.color` ids plus one table that the desktop colorResource reads (night values win under a dark app theme).
+// Every other resource type or qualifier fails the build instead of being skipped, so a resource kind the desktop does not
+// implement yet is a visible error the day upstream starts using it.
+val generateUpstreamColorResources by tasks.registering {
+    val output = layout.buildDirectory.dir("generated/upstream-resources")
+    val resourceDirectories = migratedUpstreamModules.map { mergedRepositoryRoot.resolve(it + "src/main/res") }.filter { it.isDirectory }
+    inputs.files(resourceDirectories.map { fileTree(it) }).withPathSensitivity(PathSensitivity.RELATIVE)
+    inputs.files(migratedUpstreamModules.map { mergedRepositoryRoot.resolve(it + "build.gradle.kts") }).withPathSensitivity(PathSensitivity.RELATIVE)
+    outputs.dir(output)
+    doLast {
+        val target = output.get().asFile
+        target.deleteRecursively()
+        val light = sortedMapOf<String, Int>() // "<namespace>.<name>" -> ARGB
+        val night = sortedMapOf<String, Int>()
+        val namespaceOf = sortedMapOf<String, String>()
+        fun argb(text: String, where: String): Int {
+            require(Regex("#([0-9a-fA-F]{6}|[0-9a-fA-F]{8})").matches(text)) { "$where: unsupported color value `$text`" }
+            val digits = text.substring(1)
+            return (if (digits.length == 6) 0xFF000000L or digits.toLong(16) else digits.toLong(16)).toInt()
+        }
+        migratedUpstreamModules.forEach { module ->
+            val resources = mergedRepositoryRoot.resolve(module + "src/main/res")
+            if (!resources.isDirectory) return@forEach
+            val namespace = Regex("namespace\\s*=\\s*\"([^\"]+)\"").find(mergedRepositoryRoot.resolve(module + "build.gradle.kts").readText())
+                ?.groupValues?.get(1) ?: throw GradleException("$module has resources but no android namespace")
+            resources.listFiles()!!.sortedBy { it.name }.forEach { directory ->
+                val table = when (directory.name) {
+                    "values" -> light
+                    "values-night" -> night
+                    else -> throw GradleException("${directory.relativeTo(mergedRepositoryRoot)}: the desktop implements only values and values-night resources")
+                }
+                directory.listFiles()!!.sortedBy { it.name }.forEach { file ->
+                    val document = javax.xml.parsers.DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(file)
+                    val children = document.documentElement.childNodes
+                    for (index in 0 until children.length) {
+                        val node = children.item(index)
+                        if (node.nodeType != org.w3c.dom.Node.ELEMENT_NODE) continue
+                        val element = node as org.w3c.dom.Element
+                        if (element.tagName != "color") throw GradleException("${file.relativeTo(mergedRepositoryRoot)}: <${element.tagName}> resources are not implemented on the desktop")
+                        val key = namespace + "." + element.getAttribute("name")
+                        table[key] = argb(element.textContent.trim(), "${file.relativeTo(mergedRepositoryRoot)} ${element.getAttribute("name")}")
+                        namespaceOf[key] = namespace
+                    }
+                }
+            }
+        }
+        val missingBase = night.keys - light.keys
+        require(missingBase.isEmpty()) { "Night-only color resources without a base value: $missingBase" }
+        val ids = light.keys.withIndex().associate { (index, key) -> key to (0x7f060000 + index + 1) }
+        namespaceOf.entries.groupBy({ it.value }, { it.key }).forEach { (namespace, keys) ->
+            val file = target.resolve(namespace.replace('.', '/') + "/R.kt").apply { parentFile.mkdirs() }
+            file.writeText("// Generated at build time from the upstream res/values XML.\npackage $namespace\n\nobject R {\n    object color {\n" +
+                keys.joinToString("") { "        const val ${it.removePrefix("$namespace.")}: Int = ${"0x%x".format(ids.getValue(it))}\n" } + "    }\n}\n")
+        }
+        target.resolve("androidx/compose/ui/res/DesktopColorTable.kt").apply { parentFile.mkdirs() }.writeText(
+            "// Generated at build time from the upstream res/values XML.\npackage androidx.compose.ui.res\n\ninternal object DesktopColorTable {\n" +
+                "    val light: Map<Int, Int> = mapOf(\n" + light.entries.joinToString("") { "        ${"0x%x".format(ids.getValue(it.key))} to ${"0x%08x".format(it.value)}.toInt(),\n" } + "    )\n" +
+                "    val night: Map<Int, Int> = mapOf(\n" + night.entries.joinToString("") { "        ${"0x%x".format(ids.getValue(it.key))} to ${"0x%08x".format(it.value)}.toInt(),\n" } + "    )\n}\n")
+    }
+}
+
+// The Build stand-in reports a fixed SDK level, so an `SDK_INT >= n` gate in a migrated design file would silently turn on
+// an Android-only path. Such gates must be patched or replaced; the ones left must be listed here with the reason.
+val sdkGatesKeptInDesignModules = mapOf(
+    // The factory the shell would inject for the scaffold blur is not provided on the desktop, so the handle stays null (no blur).
+    "com/android/purebilibili/core/ui/AdaptiveScaffoldHaze.kt" to "scaffold blur is opt-in through LocalAdaptiveScaffoldHazeFactory",
+)
+val verifyNoSilentSdkGates by tasks.registering {
+    inputs.files(fileTree(mergedRepositoryRoot) { migratedWholeModules.forEach { include(it + "src/main/java/**/*.kt") } })
+    inputs.dir(desktopUpstreamPatchDirectory).withPathSensitivity(PathSensitivity.RELATIVE)
+    inputs.dir(upstreamReplacementDirectory).withPathSensitivity(PathSensitivity.RELATIVE).optional()
+    doLast {
+        val gate = Regex("""\bSDK_INT\b""")
+        val offenders = migratedWholeModulePaths.filter { relative ->
+            val adapted = when (relative) {
+                in upstreamReplacements -> upstreamReplacementDirectory.resolve(relative).readText()
+                in patchedModuleRelativePaths -> migratedUpstreamFile(relative).relativeTo(mergedRepositoryRoot).invariantSeparatorsPath.let { root ->
+                    applyUnifiedPatch(migratedUpstreamFile(relative).readText(), desktopUpstreamPatchDirectory.resolve("$root.patch").readText(), relative)
+                }
+                else -> migratedUpstreamFile(relative).readText()
+            }
+            gate.containsMatchIn(adapted) && relative !in sdkGatesKeptInDesignModules
+        }
+        if (offenders.isNotEmpty()) throw GradleException(
+            "Migrated design files read SDK_INT, which the desktop Build stand-in fixes at a constant; patch or replace the gate " +
+                "(upstream-core/patches, upstream-core/replacements) or list it in sdkGatesKeptInDesignModules:\n" + offenders.sorted().joinToString("\n") { "  $it" })
+    }
+}
+
+val verifyUpstreamReplacements by tasks.registering {
+    inputs.dir(upstreamReplacementDirectory).withPathSensitivity(PathSensitivity.RELATIVE).optional()
+    inputs.files(upstreamReplacements.map { migratedUpstreamFile(it) }).withPathSensitivity(PathSensitivity.NAME_ONLY)
+    doLast {
+        upstreamReplacements.forEach { relative ->
+            val replacement = upstreamReplacementDirectory.resolve(relative)
+            val pin = Regex("^// Replaces upstream .* sha256=([0-9a-f]{64})").find(replacement.readLines().first())?.groupValues?.get(1)
+                ?: throw GradleException("$relative: the first line must be `// Replaces upstream <module>/<path> sha256=<hex>`")
+            val upstream = migratedUpstreamFile(relative)
+            if (lfSha256(upstream) != pin) throw GradleException(
+                "Upstream changed ${upstream.relativeTo(mergedRepositoryRoot).invariantSeparatorsPath}, which the desktop replaces " +
+                    "with upstream-core/replacements/$relative: review the replacement against the new upstream file, then update " +
+                    "the sha256 on its first line to ${lfSha256(upstream)}.")
+            val missing = publicTopLevelNames(upstream.readText()) - publicTopLevelNames(replacement.readText())
+            if (missing.isNotEmpty()) throw GradleException("upstream-core/replacements/$relative no longer declares $missing, which upstream declares.")
+        }
+    }
+}
+
+// Upstream's own unit tests of the migrated design modules run in the desktop test set; the pinned older copies of the
+// same test classes that the generators extract are skipped, since both cannot exist under one class name.
+val migratedWholeModuleTestRoots = migratedWholeModules.map { mergedRepositoryRoot.resolve(it + "src/test/java") }.filter { it.isDirectory }
+val migratedWholeModuleTestPaths: Set<String> = migratedWholeModuleTestRoots.flatMap { root ->
+    root.walkTopDown().filter { it.isFile && it.extension == "kt" }.map { it.relativeTo(root).invariantSeparatorsPath }.toList()
+}.toSet()
+// Upstream tests that read upstream source files relative to their Gradle module (design-system/) run in their own task
+// with that working directory; the other desktop tests keep theirs.
+val migratedSourceReadingTestClasses: List<String> = migratedWholeModuleTestRoots.flatMap { root ->
+    root.walkTopDown().filter { it.isFile && it.extension == "kt" }.filter { file ->
+        Regex("""\bFile\(|Paths\.get\(|\.readText\(""").containsMatchIn(file.readText())
+    }.map { file ->
+        val text = file.readText()
+        Regex("""^package\s+([\w.]+)""", RegexOption.MULTILINE).find(text)!!.groupValues[1] + "." + file.nameWithoutExtension
+    }.toList()
+}.sorted()
+kotlin.sourceSets.named("test") {
+    migratedWholeModuleTestRoots.forEach { kotlin.srcDir(it) }
+    val buildDirectoryPath = layout.buildDirectory.get().asFile.toPath()
+    kotlin.exclude { element ->
+        val file = element.file
+        val path = file.invariantSeparatorsPath
+        val index = path.lastIndexOf("/com/android/purebilibili/")
+        element.file.toPath().startsWith(buildDirectoryPath) && index >= 0 && path.substring(index + 1) in migratedWholeModuleTestPaths
+    }
+}
+
 kotlin.sourceSets.named("main") {
     // Migrated upstream modules compile straight from the merged root, in this module (same-module
     // smart casts and internal access as before); their generated legacy copies are skipped.
     val buildDirectoryPath = layout.buildDirectory.get().asFile.toPath()
     val generatedDirectoryPath = buildDirectoryPath.resolve("generated")
     kotlin.exclude { element -> desktopUpstreamPatchedFiles.any { element.file == mergedRepositoryRoot.resolve(it) } }
-    kotlin.exclude { element -> element.file.toPath().startsWith(buildDirectoryPath) && element.relativePath.pathString in migratedUpstreamRelativePaths }
+    // A producer may root its source directory at com/ itself, so the identity is read from the path.
+    fun upstreamIdentity(file: File): String {
+        val path = file.invariantSeparatorsPath
+        val index = path.lastIndexOf("/com/android/purebilibili/")
+        return if (index < 0) "" else path.substring(index + 1)
+    }
+    val patchedDirectoryPath = buildDirectoryPath.resolve("patched-upstream")
+    kotlin.exclude { element ->
+        val path = element.file.toPath()
+        path.startsWith(buildDirectoryPath) && !path.startsWith(patchedDirectoryPath) && upstreamIdentity(element.file) in migratedUpstreamRelativePaths
+    }
     kotlin.exclude { element ->
         val path = element.file.toPath()
         path.startsWith(generatedDirectoryPath) && generatedDirectoryPath.relativize(path).joinToString("/").let {
             it in upstreamOwnedGeneratedCopies || it in transitionPatchedGeneratedFiles
         }
     }
+    // Migrated upstream files the desktop patches or replaces are compiled from their adapted form only.
+    val migratedRootPaths = migratedUpstreamModules.map { mergedRepositoryRoot.resolve(it + "src/main/java").toPath() }
+    kotlin.exclude { element ->
+        migratedRootPaths.any { element.file.toPath().startsWith(it) } && upstreamIdentity(element.file) in desktopAdaptedUpstreamPaths
+    }
+    kotlin.srcDir(generateUpstreamColorResources)
+    kotlin.srcDir(upstreamReplacementDirectory)
     // Desktop stand-ins for the Android APIs the migrated modules use, and transition compat code.
     kotlin.srcDir("upstream-core/compat")
+    // Stand-ins that need Compose, Skia or Miuix; the JVM-only upstream-core test project does not compile them.
+    kotlin.srcDir("upstream-core/compat-ui")
     kotlin.srcDir("upstream-core/transition/src")
     kotlin.srcDir(applyTransitionPatches)
     kotlin.srcDir(applyDesktopUpstreamPatches)
@@ -2708,10 +2916,10 @@ dependencies {
     implementation(project(":miuix5157"))
     implementation("com.materialkolor:material-kolor:4.1.1")
     implementation("com.materialkolor:material-color-utilities:5.0.1")
-    implementation("dev.chrisbanes.haze:haze-jvm:2.0.0-alpha03")
-    implementation("dev.chrisbanes.haze:haze-utils-jvm:2.0.0-alpha03")
-    implementation("dev.chrisbanes.haze:haze-blur-jvm:2.0.0-alpha03")
-    implementation("dev.chrisbanes.haze:haze-blur-materials-jvm:2.0.0-alpha03")
+    implementation("dev.chrisbanes.haze:haze-jvm:2.0.1")
+    implementation("dev.chrisbanes.haze:haze-utils-jvm:2.0.1")
+    implementation("dev.chrisbanes.haze:haze-blur-jvm:2.0.1")
+    implementation("dev.chrisbanes.haze:haze-blur-materials-jvm:2.0.1")
     implementation("org.jetbrains.compose.material:material-icons-extended:1.7.3")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-swing:1.10.2")
@@ -4761,6 +4969,23 @@ val verifyUniqueClassNames by tasks.registering {
         logger.lifecycle("Unique class names: ${owners.size} classes in ${entries.size} classpath entries, no duplicates.")
     }
 }
+val upstreamDesignSourceTests by tasks.registering(Test::class) {
+    group = "verification"
+    description = "Upstream design-system tests that read upstream sources, run from the design-system module directory."
+    testClassesDirs = sourceSets["test"].output.classesDirs
+    classpath = sourceSets["test"].runtimeClasspath
+    workingDir = mergedRepositoryRoot.resolve("design-system")
+    useJUnitPlatform()
+    migratedSourceReadingTestClasses.forEach { filter.includeTestsMatching(it) }
+    filter.isFailOnNoMatchingTests = false
+    systemProperty("java.awt.headless", "true")
+    dependsOn(tasks.named("testClasses"), verifyUniqueClassNames)
+}
+tasks.test {
+    migratedSourceReadingTestClasses.forEach { filter.excludeTestsMatching(it) }
+    finalizedBy(upstreamDesignSourceTests)
+}
+tasks.named("compileKotlin") { dependsOn(verifyUpstreamReplacements, verifyNoSilentSdkGates) }
 tasks.named("check") { dependsOn(verifyUniqueClassNames) }
 tasks.named("jar") { dependsOn(verifyUniqueClassNames) }
 tasks.test { dependsOn(verifyUniqueClassNames) }

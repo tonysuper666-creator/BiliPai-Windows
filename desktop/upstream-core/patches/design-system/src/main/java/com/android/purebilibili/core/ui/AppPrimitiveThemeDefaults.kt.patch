@@ -1,0 +1,10 @@
+--- a/com/android/purebilibili/core/ui/AppPrimitiveThemeDefaults.kt
++++ b/com/android/purebilibili/core/ui/AppPrimitiveThemeDefaults.kt
+@@ -31,7 +31,6 @@
+ @Composable
+ @ReadOnlyComposable
+ fun appIconGlyphTextStyle(): TextStyle = currentAppTextStyle().copy(
+-    platformStyle = PlatformTextStyle(includeFontPadding = false),
+ )
+ 
+ /**

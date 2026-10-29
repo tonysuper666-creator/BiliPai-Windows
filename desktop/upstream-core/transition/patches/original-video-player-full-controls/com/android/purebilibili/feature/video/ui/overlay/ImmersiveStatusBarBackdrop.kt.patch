@@ -1,0 +1,23 @@
+--- a/original-video-player-full-controls/com/android/purebilibili/feature/video/ui/overlay/ImmersiveStatusBarBackdrop.kt
++++ b/original-video-player-full-controls/com/android/purebilibili/feature/video/ui/overlay/ImmersiveStatusBarBackdrop.kt
+@@ -41,13 +41,13 @@
+ internal const val VIDEO_STATUS_BAR_AMBIENT_SAMPLE_WIDTH_PX = 96
+ internal const val VIDEO_STATUS_BAR_AMBIENT_SAMPLE_HEIGHT_PX = 54
+ 
+-internal fun resolveVideoStatusBarAmbientHazeStyle(): HazeBlurStyle = HazeBlurStyle(
+-    backgroundColor = Color.Black,
+-    colorEffects = emptyList(),
+-    blurRadius = 24.dp,
+-    noiseFactor = 0f,
+-    fallbackColorEffect = HazeColorEffect.tint(Color.Black),
+-)
++internal fun resolveVideoStatusBarAmbientHazeStyle(): HazeBlurStyle = HazeBlurStyle {
++    backgroundColor(Color.Black)
++    colorEffects(emptyList())
++    blurRadius(24.dp)
++    noiseFactor(0f)
++    fallbackColorEffect(HazeColorEffect.tint(Color.Black))
++}
+ 
+ /**
+  * 播放器顶部为系统状态栏预留的背景条，保证系统状态图标在视频画面上清晰可见。
