@@ -317,6 +317,7 @@ val appCoreLaterSteps: Map<String, String> = mapOf(
 // M4a: video/bangumi logic and unchanged Compose components compile from the merged upstream tree.
 // The remaining UI/player files move when their desktop platform adapters are wired.
 val migratedVideoFeaturePaths = setOf(
+    "com/android/purebilibili/feature/video/danmaku/DanmakuPlaybackSyncPolicy.kt",
     "com/android/purebilibili/feature/plugin/SponsorBlockPlaybackSession.kt",
     "com/android/purebilibili/feature/plugin/SponsorBlockConfigStore.kt",
     "com/android/purebilibili/feature/video/ui/section/DanmakuViewportHost.kt",
@@ -555,6 +556,7 @@ val migratedAppCorePaths: Set<String> = appJavaRoot.resolve("com/android/purebil
 // M4a: migrate the platform-independent parts before the native session and frame scheduler.
 val migratedPlaybackModulePaths = mapOf(
     "core-player/src/main/java/" to setOf(
+        "com/android/purebilibili/core/player/SharedPlaybackSession.kt",
         "com/android/purebilibili/core/player/PlaybackProgressManager.kt",
         "com/android/purebilibili/core/player/PlayerErrorRecoveryPolicy.kt",
         "com/android/purebilibili/core/player/PlaybackResumePolicy.kt",
@@ -2828,6 +2830,7 @@ val prepareJsWorkerResources = if (hostIsWindows) tasks.register<Sync>("prepareJ
 
 // Generated legacy files that re-declare migrated upstream declarations under another file name.
 val upstreamOwnedGeneratedCopies = setOf(
+    "original-danmaku-list-menu/com/android/purebilibili/feature/video/danmaku/DesktopOriginalWebMaskRefreshPolicy.kt",
     // core/plugin + plugin-sdk (TON-1028): legacy plugin contracts upstream moved to plugin-sdk (Plugin, the typed
     // plugin APIs) or to core/plugin/BuiltinPlugin (host presentation); the merged upstream files own them now.
     "upstream/app/src/main/java/com/android/purebilibili/core/plugin/Plugin.kt",

@@ -173,6 +173,51 @@ class DesktopOriginalNativeRecoveryAdmissionTest {
         assertEquals(3, calls.size)
     }
 
+    @Test fun rawSharedSessionReusesSectionAndOriginalStoreWithoutClosingReplacementOrDecoder() {
+        Fixture().use { f ->
+            val scope = CoroutineScope(SupervisorJob() + Dispatchers.Swing)
+            val store = com.android.purebilibili.feature.video.playback.session.PlaybackSessionStore()
+            var lifetime = true
+            var closes = 0
+            var retries = 0
+            val requests = mutableListOf<DesktopPlaybackSessionRequest>()
+            val section = DesktopOriginalMpvSectionControl(f.player, { f.owner.current()?.sourceVersion }, { f.entry },
+                { action -> f.owner.admitPlaybackDispatch(f.accepted, action) }, { false }, {}, {},
+                { _, _, _, _ -> }, scope, MutableStateFlow<Long?>(f.accepted.sourceVersion), { it(); true },
+                sessionRequest = { request ->
+                    assertFalse(f.publication.held)
+                    requests += request
+                    store.beginLoadRequest(PlaybackRequest.create(request.bvid, request.aid, request.cid))
+                    DesktopOriginalPlaybackRequestLease({ lifetime }, { store.state.value },
+                        { retries++; store.beginLoadRequest(PlaybackRequest.create(request.bvid, request.aid, request.cid, force = true)) },
+                        { error("No quality operation requested") }, { error("No audio operation requested") },
+                        { closes++; lifetime = false })
+                }, closeSession = { error("Shared request must not close the entire session interface") })
+            val first = com.android.purebilibili.core.player.SharedPlaybackSession(section)
+            val second = com.android.purebilibili.core.player.SharedPlaybackSession(section)
+            try {
+                assertSame(section, first.player)
+                assertSame(first.player, second.player)
+                first.load(DesktopPlaybackSessionRequest("BVfixture", 9, 22, 27_750, false, false))
+                assertEquals(f.player.state.value, first.snapshot())
+                assertTrue(first.recover())
+                assertEquals(1, retries)
+                assertEquals(1, requests.size) // recovery uses the captured lease, not another load requester
+                assertTrue(f.player.ownsSourceVersion(f.accepted.sourceVersion))
+                second.load(DesktopPlaybackSessionRequest("BVnext", 10, 23))
+                assertFailsWith<CancellationException> { first.pause() }
+                assertFailsWith<CancellationException> { first.recover() }
+                first.close()
+                assertEquals(0, closes)
+                assertEquals(f.player.state.value, second.snapshot())
+                second.close(); second.close()
+                assertEquals(1, closes)
+                assertTrue(f.player.ownsSourceVersion(f.accepted.sourceVersion))
+                assertFailsWith<IllegalStateException> { second.load(DesktopPlaybackSessionRequest("BVclosed")) }
+            } finally { first.close(); second.close(); scope.cancel() }
+        }
+    }
+
     @Test fun sameActualAttemptPublishesOneAacReplacementPreservingSourceControlsAndReceipt() {
         Fixture().use { f ->
             val failure = f.actor.fail(-14)
