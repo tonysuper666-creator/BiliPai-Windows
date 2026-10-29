@@ -3056,15 +3056,20 @@ val appCoreUpstreamTestsNotRun: Map<String, String> = mapOf(
     "core/plugin/js/BiliPaiJsNativeExampleTest.kt" to "it reads examples/plugins/tv-live.bilipai.js, which the merge leaves out; the desktop copy runs the byte-identical script from desktop/src/test/fixtures",
     "core/ui/adaptive/DeviceUiProfilePolicyTest.kt" to "the same test class (same package and name) as design-system DeviceUiProfilePolicyTest, which runs",
 )
-val appCoreUpstreamTestPaths: Set<String> = appTestRoot.resolve("com/android/purebilibili/core").walkTopDown()
+// M4d (TON-1005): tests of the migrated feature areas join, except those listed in upstream-core/m4d/tests-not-run.tsv
+// (path <TAB> reason) and those whose subject (FooTest.kt tests Foo.kt) is a later step of the area.
+val appM4dTestsNotRun: Map<String, String> = m4dTable("tests-not-run.tsv").toMap()
+val appCoreUpstreamTestPaths: Set<String> = (appTestRoot.resolve("com/android/purebilibili/core").walkTopDown() +
+        migratedAppM4dAreas.asSequence().flatMap { appTestRoot.resolve("com/android/purebilibili/$it").walkTopDown() })
     .filter { it.isFile && it.extension == "kt" }
     // JUnit 4, Robolectric, mockk and androidx.test are not on the desktop test classpath; JUnit 5 (org.junit.jupiter) is.
     .filter { file -> !Regex("""^import (org\.junit\.(?!jupiter)|org\.robolectric|io\.mockk|androidx\.test)""", RegexOption.MULTILINE).containsMatchIn(file.readText()) }
     .map { it.relativeTo(appTestRoot).invariantSeparatorsPath }
     .filter { path -> path.removePrefix("com/android/purebilibili/").let { core -> core !in appCoreUpstreamTestsNotRun &&
+        core !in appM4dTestsNotRun &&
         (appCoreDesktopOwned.keys + appCoreLaterSteps.keys).none { core.startsWith(it) } &&
         // FooTest.kt tests Foo.kt: a test of a desktop-owned or later-step file is left out with its subject.
-        (appCoreDesktopOwned.keys + appCoreLaterSteps.keys).none { key -> key.endsWith(".kt") && core == key.removeSuffix(".kt") + "Test.kt" } } }
+        (appCoreDesktopOwned.keys + appCoreLaterSteps.keys + appM4dLaterSteps.keys).none { key -> key.endsWith(".kt") && core == key.removeSuffix(".kt") + "Test.kt" } } }
     .toSortedSet()
 val appCoreSourceReadingTestClasses: List<String> = appCoreUpstreamTestPaths.map { appTestRoot.resolve(it) }
     .filter { Regex("""\bFile\(|Paths\.get\(|\.readText\(""").containsMatchIn(it.readText()) }

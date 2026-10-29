@@ -1,0 +1,29 @@
+# path (relative to com/android/purebilibili/)	reason the upstream test does not run on the desktop
+feature/login/BiliPaiTransferPayloadTest.kt	编译不过（3 处）：未解析 BiliPaiTransferContentSelection×3；被测对象在 later-steps.tsv 里或依赖尚未迁移的类型，随被测对象迁移后一起跑
+feature/login/BilibiliLoginQrTest.kt	编译不过（8 处）：未解析 resolveQrAlbumSampleSize×8；被测对象在 later-steps.tsv 里或依赖尚未迁移的类型，随被测对象迁移后一起跑
+feature/login/LoginEntryPolicyTest.kt	编译不过（11 处）：未解析 LoginMethod×5；Cannot infer type for type parameter '_'. Specify ×2；未解析 resolveLoginPalette×2；被测对象在 later-steps.tsv 里或依赖尚未迁移的类型，随被测对象迁移后一起跑
+feature/message/ChatStructuredMessagesTest.kt	编译不过（1 处）：未解析 insertChatEmote×1；被测对象在 later-steps.tsv 里或依赖尚未迁移的类型，随被测对象迁移后一起跑
+feature/message/notification/MessageNotificationPolicyTest.kt	编译不过（25 处）：No parameter with name '_' found.×10；未解析 dynamicRedDotObservedIds×9；Cannot infer type for type parameter '_'. Specify ×6；被测对象在 later-steps.tsv 里或依赖尚未迁移的类型，随被测对象迁移后一起跑
+feature/plugin/TodayWatchRecommendationPluginTest.kt	编译不过（2 处）：No value passed for parameter '_'.×2；被测对象在 later-steps.tsv 里或依赖尚未迁移的类型，随被测对象迁移后一起跑
+feature/profile/AccountLedgerPolicyTest.kt	编译不过（7 处）：未解析 AccountLedgerSection×2；未解析 AccountLedgerState×2；Cannot infer type for type parameter '_'. Specify ×2；被测对象在 later-steps.tsv 里或依赖尚未迁移的类型，随被测对象迁移后一起跑
+feature/settings/AppearanceSettingsDisplayPolicyTest.kt	编译不过（3 处）：未解析 resolveDisplayedAppDpiPercent×3；被测对象在 later-steps.tsv 里或依赖尚未迁移的类型，随被测对象迁移后一起跑
+feature/settings/CacheClearUiPolicyTest.kt	编译不过（4 处）：未解析 shouldMarkCacheClearAnimationComplete×2；未解析 resolveCacheClearFailureMessage×2；被测对象在 later-steps.tsv 里或依赖尚未迁移的类型，随被测对象迁移后一起跑
+feature/settings/IconGroupsTest.kt	编译不过（4 处）：未解析 mipmap×4；被测对象在 later-steps.tsv 里或依赖尚未迁移的类型，随被测对象迁移后一起跑
+feature/settings/LiquidGlassPresetSliderPolicyTest.kt	编译不过（15 处）：未解析 resolveLiquidGlassPresetSliderSettings×9；未解析 liquidGlassPresetSliderValue×6；被测对象在 later-steps.tsv 里或依赖尚未迁移的类型，随被测对象迁移后一起跑
+feature/settings/LoginActivityNavigationPolicyTest.kt	编译不过（6 处）：未解析 LOGIN_ACTIVITY×2；未解析 LoginActivitySettings×1；未解析 resolveSettingsRootCategoryForNavKey×1；被测对象在 later-steps.tsv 里或依赖尚未迁移的类型，随被测对象迁移后一起跑
+feature/settings/SettingsContainerCapturePolicyTest.kt	编译不过（5 处）：未解析 resolveSettingsContainerTarget×5；被测对象在 later-steps.tsv 里或依赖尚未迁移的类型，随被测对象迁移后一起跑
+feature/settings/SettingsDescriptionSearchTest.kt	编译不过（8 处）：未解析 settingId×4；未解析 resolveSettingsSearchDescriptionSnippet×1；Too many arguments for '_'.×1；被测对象在 later-steps.tsv 里或依赖尚未迁移的类型，随被测对象迁移后一起跑
+feature/settings/SettingsDiagnosticsPolicyTest.kt	编译不过（6 处）：未解析 shouldStartSettingsDiagnostics×3；未解析 SettingsDiagnosticsLoadState×3；被测对象在 later-steps.tsv 里或依赖尚未迁移的类型，随被测对象迁移后一起跑
+feature/settings/SettingsItemSearchPolicyTest.kt	编译不过（33 处）：未解析 settingId×11；Cannot infer type for type parameter '_'. Specify ×4；未解析 path×3；被测对象在 later-steps.tsv 里或依赖尚未迁移的类型，随被测对象迁移后一起跑
+feature/settings/SettingsLanguageStateTest.kt	编译不过（4 处）：未解析 SettingsUiState×4；被测对象在 later-steps.tsv 里或依赖尚未迁移的类型，随被测对象迁移后一起跑
+feature/settings/SettingsSearchUiPolicyTest.kt	编译不过（4 处）：未解析 drawable×4；被测对象在 later-steps.tsv 里或依赖尚未迁移的类型，随被测对象迁移后一起跑
+feature/settings/SettingsTabletShellPolicyTest.kt	编译不过（6 处）：未解析 shouldRenderSettingsTabletDetailPane×3；未解析 isSettingsSearchNavKey×3；被测对象在 later-steps.tsv 里或依赖尚未迁移的类型，随被测对象迁移后一起跑
+feature/settings/SpacePrivacyPolicyTest.kt	编译不过（5 处）：未解析 SpacePrivacySettings×1；未解析 resolveSettingsRootCategoryForNavKey×1；Cannot infer type for type parameter '_'. Specify ×1；被测对象在 later-steps.tsv 里或依赖尚未迁移的类型，随被测对象迁移后一起跑
+feature/settings/screen/BottomBarSettingsScreenIconPolicyTest.kt	编译不过（8 处）：未解析 drawable×8；被测对象在 later-steps.tsv 里或依赖尚未迁移的类型，随被测对象迁移后一起跑
+feature/settings/screen/SkinCatalogSearchPolicyTest.kt	编译不过（4 处）：未解析 SkinCatalogUiState×2；未解析 it×2；被测对象在 later-steps.tsv 里或依赖尚未迁移的类型，随被测对象迁移后一起跑
+feature/settings/share/SettingsShareViewModelFactoryTest.kt	编译不过（9 处）：Cannot infer type for type parameter '_'. Specify ×3；Unresolved reference. None of the following candid×2；未解析 app×1；被测对象在 later-steps.tsv 里或依赖尚未迁移的类型，随被测对象迁移后一起跑
+feature/space/SpaceViewModelMainTabStateTest.kt	编译不过（3 处）：Argument type mismatch: actual type is '_', but '_×3；被测对象在 later-steps.tsv 里或依赖尚未迁移的类型，随被测对象迁移后一起跑
+feature/message/MessageGlassSurfacePolicyTest.kt	被测的玻璃底色委托给 feature/home 的 resolveVideoCardAmbientDrawSpec，桌面目前还是 v0.2.5 旧副本（frostedGlassEnabled 语义不同）；随 M4b 首页迁移合并后再跑
+feature/settings/SeedPaletteSettingsPolicyTest.kt	被测的 resolveColorSpecOptions 在 AppearanceThemeSegmentPolicy.kt（later-steps），桌面旧副本早于 CMF 2026 色彩规范；随该文件迁移后再跑
+feature/space/SpaceAggregatedModelMappingTest.kt	被测的 resolveSpaceInitialSeedFromAggregate 在 SpaceLoadPolicy.kt（later-steps），桌面空间页只有主页/动态/投稿三个主标签；随空间页迁移后再跑
+feature/space/SpaceViewModelConstructorTest.kt	被测的 SpaceViewModel 在 later-steps，桌面副本要求 DesktopOriginalSpaceEnvironment 构造参数；随空间页迁移后再跑
