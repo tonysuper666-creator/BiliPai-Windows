@@ -48,6 +48,8 @@ $since = [datetime]::MinValue
 $crash = $false
 $hang = $false
 $playbackChecks = New-Object System.Collections.ArrayList
+$recoveries = New-Object System.Collections.ArrayList
+$stillCount = 0
 
 try {
     $capSeconds = $Minutes * 60 + $SettleSeconds + 120
@@ -112,12 +114,35 @@ try {
         # Playback has to still be running minutes later, not just at the start: every
         # $PlaybackCheckSeconds take two thumbnails 1 s apart and require them to differ.
         if ($StartPlayback) {
-            $a = Get-BpScreenThumbCenter -Hwnd $hwnd
-            Start-Sleep -Milliseconds 1000
-            $b = Get-BpScreenThumbCenter -Hwnd $hwnd
-            $movingNow = ((Compare-BpThumb -A $a -B $b) -ge 2)
+            # A 1 s gap between two thumbnails is too strict for calm scenes: a slow pan can be
+            # almost identical across one second. Sample four frames over 3 s and take the
+            # largest step; playback always produces at least one visible change in 3 s.
+            $frames = @()
+            for ($fi = 0; $fi -lt 4; $fi++) {
+                $frames += , (Get-BpScreenThumbCenter -Hwnd $hwnd)
+                if ($fi -lt 3) { Start-Sleep -Milliseconds 900 }
+            }
+            $stepMax = 0
+            for ($fi = 1; $fi -lt $frames.Count; $fi++) {
+                $d = Compare-BpThumb -A $frames[$fi - 1] -B $frames[$fi]
+                if ($null -ne $d -and $d -gt $stepMax) { $stepMax = $d }
+            }
+            $movingNow = ($stepMax -ge 1)
             $playbackChecks.Add([pscustomobject]@{ ts = (Get-Date).ToUniversalTime().ToString('o'); moving = $movingNow })
-            if (-not $movingNow) { Write-BpLog 'picture stopped changing during the soak' }
+            if (-not $movingNow) {
+                Write-BpLog 'picture stopped changing during the soak'
+                $stillCount++
+                # A single video is shorter than the soak, so playback ends mid-run. Treat a
+                # stopped picture as "episode finished" and start the next one, recording every
+                # recovery instead of pretending the picture kept moving.
+                if ($stillCount -ge 2) {
+                    $clickUtc = Send-BpClickReal -Hwnd $hwnd -X ([int]($rect.Right * $ClickXRatio)) -Y ([int]($rect.Bottom * $clickYRatios[0]))
+                    $recoveries.Add([pscustomobject]@{ ts = (Get-Date).ToUniversalTime().ToString('o'); action = 'clicked to resume or advance' })
+                    Write-BpLog 'clicked the feed again to resume or advance to the next item'
+                    $stillCount = 0
+                    Start-Sleep -Seconds 5
+                }
+            } else { $stillCount = 0 }
         }
         [void]$samples.Add([pscustomobject]@{
             ts        = $s.TimestampUtc
@@ -141,6 +166,7 @@ try {
         $summary.private_max_mb = ($samples | Measure-Object -Property privateMB -Maximum).Maximum
         $summary.growth_pct = [math]::Round(100.0 * ($last - $first) / $first, 1)
     }
+    $summary.playback_recoveries = $recoveries.Count
     $summary.playback_checks = $playbackChecks.Count
     $summary.playback_checks_moving = @($playbackChecks | Where-Object { $_.moving }).Count
     if ($playbackChecks.Count -gt 0) {

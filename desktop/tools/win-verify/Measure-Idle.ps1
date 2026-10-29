@@ -137,8 +137,12 @@ try {
     $summary.pause_cpu_drop_ratio = [math]::Round($cpuDrop, 3)
     $summary.pause_io_drop_ratio = [math]::Round($ioDrop, 3)
     $summary.pause_io_comparable = $ioComparable
+    if ($ioComparable) { $summary.pause_io_ops_delta = ($pause.io_ops - $min.io_ops) }
     if ($pause.seconds -lt 10) {
         $summary.pause_verdict = 'not measured (phase too short)'
+    } elseif ($ioComparable -and $min.io_ops -lt 200) {
+        # 36 -> 25 operations per minute is noise, not a pause: the client was already idle.
+        $summary.pause_verdict = 'not verifiable (background I/O already below 200 operations per minute when minimized; CPU unchanged, so no evidence either way)'
     } elseif (-not $ioComparable) {
         # Without real I/O counters the CPU reading alone cannot tell "nothing to pause" from
         # "pause honoured"; say so instead of guessing.
