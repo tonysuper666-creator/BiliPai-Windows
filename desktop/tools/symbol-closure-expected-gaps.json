@@ -3,23 +3,6 @@
   "description": "Known gaps for desktop/tools/check_slice_symbol_closure.py. A gap listed here is accepted; a gap listed but no longer observed is stale and fails the gate (a partial run judges only the gaps its checks can observe). Every slice appends the gaps it knowingly leaves and removes the ones it closes. closedByEvidence says how firm the owner is: roadmap = that slice's roadmap text names the symbol; proposed = the gap author's inference, to be confirmed or reassigned by the slice owner; unassigned = no roadmap slice owns it. retiredSeeds are roadmap seeds a generated shim already defines; the gate fails if one loses its definer.",
   "groups": [
     {
-      "reason": "Policies upstream moved into core-data (data.model) that the pinned tree still keeps elsewhere or lacks (roadmap seeds: resolveVideoCardStatsTexts, resolveWatchLaterDisplayProgressState).",
-      "closedBy": "fnd-core-data-relocated-policies",
-      "closedByEvidence": "roadmap",
-      "gaps": [
-        {
-          "scope": "carried",
-          "check": "unresolved-import",
-          "symbol": "com.android.purebilibili.core.network.BuvidManager"
-        },
-        {
-          "scope": "carried",
-          "check": "unresolved-qualified",
-          "symbol": "com.android.purebilibili.core.network.BuvidManager"
-        }
-      ]
-    },
-    {
       "reason": "ForegroundSettleBudget is referenced by carried home archives and not declared (roadmap seed).",
       "closedBy": "fnd-motion-gate-and-resource-hooks",
       "closedByEvidence": "roadmap",
@@ -219,11 +202,6 @@
       "closedBy": "none (producer adaptation)",
       "closedByEvidence": "unassigned",
       "gaps": [
-        {
-          "scope": "carried",
-          "check": "unresolved-import",
-          "symbol": "com.android.purebilibili.core.network.grpc.DynamicReactionApi"
-        },
         {
           "scope": "carried",
           "check": "unresolved-import",
