@@ -39,14 +39,15 @@ class DesktopWindowsPageErrorCardTest {
         for (width in listOf(280, 800)) {
             val error = mutableStateOf(true)
             var retries = 0
-            ImageComposeScene(width, 400) {
+            val scene = ImageComposeScene(width, 400) {
                 MaterialTheme {
                     if (error.value) DesktopWindowsPageErrorCard("请检查网络连接后重试。", onRetry = {
                         retries++
                         error.value = false
                     }) else Text("视频内容")
                 }
-            }.use { scene ->
+            }
+            try {
                 scene.render(0).close()
                 val nodes = scene.semanticsOwners.flatMap { flatten(it.unmergedRootSemanticsNode) }
                 val card = nodes.single { it.config.getOrNull(SemanticsProperties.LiveRegion) != null }
@@ -59,7 +60,7 @@ class DesktopWindowsPageErrorCardTest {
                 assertEquals(1, retries)
                 assertTrue(after.any { "视频内容" in text(it) })
                 assertFalse(after.any { "暂时无法播放" in text(it) })
-            }
+            } finally { scene.close() }
         }
     }
 }
