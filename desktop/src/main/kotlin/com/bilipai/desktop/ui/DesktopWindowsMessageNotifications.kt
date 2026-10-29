@@ -19,7 +19,7 @@ internal class DesktopWindowsMessageNotifications(
     private val window: Window,
     private val center: com.bilipai.desktop.integration.DesktopNotificationCenter =
         com.bilipai.desktop.integration.DesktopToastNotifications,
-) : AutoCloseable, DesktopNotificationHandover {
+) : AutoCloseable {
     /** The account this presentation belongs to; cleanup must target it even after a switch. */
     private val session = DesktopNotificationSession(context.mid, center)
     private val closed = AtomicBoolean()
@@ -111,15 +111,8 @@ internal class DesktopWindowsMessageNotifications(
     /** Notifications were turned back on for the same account: publish again without a new port. */
     fun resumePublishing() { session.resume() }
 
-    /** The account this presentation belonged to is gone: retire only that group. */
-    override fun retireForAccountSwitch() {
-        Thread({
-            session.retire()
-            DesktopNotificationCleanup.track(session)
-        }, "BiliPai-notification-switch").apply { isDaemon = true }.start()
-    }
-
-    override fun accountId(): Long? = session.accountId()
+    /** The account handoff works on the session, which never references the window. */
+    internal fun notificationSession(): DesktopNotificationSession = session
 
     /** Keys the surface refused to withdraw; they stay active upstream until a retry succeeds. */
     internal fun pendingWithdrawals(): Set<String> = session.pendingWithdrawals()

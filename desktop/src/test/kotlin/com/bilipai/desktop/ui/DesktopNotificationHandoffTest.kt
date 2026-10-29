@@ -6,44 +6,64 @@ import kotlin.test.assertSame
 import kotlin.test.assertTrue
 
 class DesktopNotificationHandoffTest {
-    private class Holder(private val account: Long?) : DesktopNotificationHandover {
-        var retired = 0
-        override fun accountId(): Long? = account
-        override fun retireForAccountSwitch() { retired++ }
+    private fun session(account: Long, center: RecordingNotificationCenter = RecordingNotificationCenter()) =
+        DesktopNotificationSession(account, center)
+
+    private fun waitUntil(timeoutMs: Long, condition: () -> Boolean): Boolean {
+        val deadline = System.currentTimeMillis() + timeoutMs
+        while (System.currentTimeMillis() < deadline) {
+            if (condition()) return true
+            Thread.sleep(20)
+        }
+        return condition()
     }
 
-    @Test fun anotherAccountRetiresThePresentationThatWasStillRegistered() {
+    @Test fun theRegistryStillOwnsTheOldAccountAfterTheTestDropsEveryReference() {
         val window = Any()
-        val first = Holder(7L)
-        val second = Holder(8L)
-        // The consumer that owned `first` is torn down while the next account loads: no detach call,
-        // the registry is the only thing that still knows about it.
+        val center = RecordingNotificationCenter()
+        var first: DesktopNotificationSession? = session(7L, center)
+        DesktopNotificationHandoff.attach(window, first!!)
+        // The consumer that owned it is gone and nothing in this test holds it any more.
+        first = null
+        repeat(3) { System.gc(); System.runFinalization() }
+
+        DesktopNotificationHandoff.attach(window, session(8L, center))
+        assertTrue(waitUntil(3_000) { center.cleared.contains("messages-7") },
+            "the previous account must still be retired after a collection")
+    }
+
+    @Test fun anotherAccountRetiresThePreviousPresentation() {
+        val window = Any()
+        val center = RecordingNotificationCenter()
+        val first = session(7L, center)
+        val second = session(8L, center)
         DesktopNotificationHandoff.attach(window, first)
         DesktopNotificationHandoff.attach(window, second)
-        assertEquals(1, first.retired)
-        assertEquals(0, second.retired)
+        assertTrue(waitUntil(3_000) { center.cleared.contains("messages-7") })
+        assertEquals(1, center.cleared.size, "only the old account is withdrawn")
         assertSame(second, DesktopNotificationHandoff.current(window))
     }
 
     @Test fun theSameAccountRemountingDoesNotWithdrawItsOwnNotifications() {
         val window = Any()
-        val first = Holder(7L)
-        val remounted = Holder(7L)
+        val center = RecordingNotificationCenter()
+        val first = session(7L, center)
+        val remounted = session(7L, center)
         DesktopNotificationHandoff.attach(window, first)
         DesktopNotificationHandoff.attach(window, remounted)
-        assertEquals(0, first.retired, "a root reload for the same account must keep its notifications")
+        Thread.sleep(150)
+        assertTrue(center.cleared.isEmpty(), "a root reload for the same account must keep its notifications")
         assertSame(remounted, DesktopNotificationHandoff.current(window))
     }
 
     @Test fun windowsDoNotSeeEachOthersPresentations() {
         val windowA = Any()
         val windowB = Any()
-        val a = Holder(7L)
-        val b = Holder(8L)
-        DesktopNotificationHandoff.attach(windowA, a)
-        DesktopNotificationHandoff.attach(windowB, b)
-        assertEquals(0, a.retired)
-        assertSame(a, DesktopNotificationHandoff.current(windowA))
-        assertTrue(b.retired == 0)
+        val centerA = RecordingNotificationCenter()
+        val centerB = RecordingNotificationCenter()
+        DesktopNotificationHandoff.attach(windowA, session(7L, centerA))
+        DesktopNotificationHandoff.attach(windowB, session(8L, centerB))
+        Thread.sleep(150)
+        assertTrue(centerA.cleared.isEmpty() && centerB.cleared.isEmpty())
     }
 }

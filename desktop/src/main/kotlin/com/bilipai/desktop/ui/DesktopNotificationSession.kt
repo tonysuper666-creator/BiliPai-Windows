@@ -10,14 +10,19 @@ import java.util.concurrent.atomic.AtomicInteger
  * One account's notification lifetime.
  *
  * The exits are not the same:
- * - [detach] — the window is going away. Delivered notifications stay on screen and stay clickable;
- *   the protocol handler is what makes them useful after the process is gone.
+ * - [detach] — the window is going away. Delivered notifications stay on screen and stay clickable.
  * - [pause] — notifications were turned off. The group is withdrawn, but the account stays current:
  *   [resume] turns publishing back on without waiting for a new port.
  * - [retire] — the account itself is gone (switch, logout). Publishing never comes back here.
  *
- * A refused withdrawal, of one toast or of the whole group, is remembered and retried by
- * [DesktopNotificationCleanup] until the surface confirms it.
+ * Two rules keep a late cleanup away from what the user can still see:
+ * - Every delivery is tagged with the generation it belongs to, so retrying the withdrawal of an old
+ *   notification can never match a newer one that reuses the same message key (reply/like are stable).
+ * - While a group withdrawal is actually running, nothing is published: a started system operation
+ *   cannot be cancelled, so the only safe ordering is to let it finish first.
+ *
+ * Only the explicit [pause]/[retire] calls talk to the surface on the caller's thread; [resume]
+ * flips state and hands the remaining work to [DesktopNotificationCleanup].
  */
 internal class DesktopNotificationSession(
     private val accountId: Long?,
@@ -29,43 +34,49 @@ internal class DesktopNotificationSession(
     val group: String = "messages-$accountId"
     private val withdrawal = DesktopNotificationWithdrawal(
         withdraw = { tag, target -> center.remove(tag, target) }, report = report).apply { bind(group) }
-    private val publishedTags = ConcurrentHashMap.newKeySet<String>()
+    /** Message key -> the generation whose toast currently carries it. */
+    private val keyGeneration = ConcurrentHashMap<String, Int>()
     private val accountRetired = AtomicBoolean()
     private val groupClearPending = AtomicBoolean()
+    private val clearInFlight = AtomicBoolean()
     private val clearAttempts = AtomicInteger()
+    private val generation = AtomicInteger()
 
     @Volatile private var publishing = true
 
     fun accountId(): Long? = accountId
 
-    /** True while this session may still publish into its account. */
     fun isPublishing(): Boolean = publishing && !accountRetired.get()
 
     /** True while anything the surface refused — a toast or the group — is still outstanding. */
-    fun isCleanupPending(): Boolean = groupClearPending.get() || withdrawal.pendingKeys().isNotEmpty()
+    fun isCleanupPending(): Boolean =
+        groupClearPending.get() || clearInFlight.get() || withdrawal.pendingKeys().isNotEmpty()
 
     fun clearAttemptCount(): Int = clearAttempts.get()
 
-    fun pendingWithdrawals(): Set<String> = withdrawal.pendingKeys()
+    /** Message keys whose withdrawal the surface has not confirmed. */
+    fun pendingWithdrawals(): Set<String> = withdrawal.pendingKeys().mapTo(linkedSetOf()) { keyOf(it) }
 
-    /** Normal shutdown: stop publishing, leave what is already delivered where the user can click it. */
     fun detach() { publishing = false }
 
     /** Notifications turned off. Resumable through [resume]. */
     fun pause(): Boolean {
         publishing = false
-        return withdrawGroup()
+        groupClearPending.set(true)
+        return retryCleanup().also { trackIfOutstanding() }
     }
 
     /**
-     * Notifications turned back on for the same account. A group withdrawal that never completed is
-     * given up here: finishing it later would delete the notifications published after resuming.
-     * The toasts this session knows about are withdrawn one by one instead.
+     * Notifications turned back on for the same account. The next generation gives every new toast a
+     * distinct tag, and a group withdrawal that never completed is abandoned: old toasts are removed
+     * one by one instead. Called from the UI thread, so it must not touch the surface.
      */
     fun resume() {
         if (accountRetired.get()) return
-        if (groupClearPending.getAndSet(false)) withdrawal.withdraw(publishedTags.toList())
+        groupClearPending.set(false)
+        generation.incrementAndGet()
         publishing = true
+        withdrawal.remember(keyGeneration.entries.map { tagFor(it.key, it.value) })
         trackIfOutstanding()
     }
 
@@ -73,57 +84,65 @@ internal class DesktopNotificationSession(
     fun retire(): Boolean {
         publishing = false
         accountRetired.set(true)
-        return withdrawGroup()
+        groupClearPending.set(true)
+        return retryCleanup().also { trackIfOutstanding() }
     }
 
     /** One attempt at everything outstanding. False while something is still on screen. */
     fun retryCleanup(): Boolean {
-        val keys = withdrawal.pendingKeys()
-        if (keys.isNotEmpty()) withdrawal.withdraw(keys)
+        val tags = withdrawal.pendingKeys()
+        if (tags.isNotEmpty()) withdrawal.withdraw(tags)
         if (groupClearPending.get()) {
+            val generationAtStart = generation.get()
             clearAttempts.incrementAndGet()
-            val cleared = runCatching { center.clear(group) }.onFailure {
-                report("通知中心整组清理失败 group=$group", it)
-            }.isSuccess
-            if (cleared) {
-                groupClearPending.set(false)
-                publishedTags.clear()
+            clearInFlight.set(true)
+            val cleared = try {
+                runCatching { center.clear(group) }.onFailure {
+                    report("通知中心整组清理失败 group=$group", it)
+                }.isSuccess
+            } finally {
+                clearInFlight.set(false)
+            }
+            // A resume during the withdrawal already decided to abandon it; do not resurrect the retry.
+            if (generation.get() == generationAtStart) {
+                groupClearPending.set(!cleared)
+                if (cleared) keyGeneration.clear()
             }
         }
         return !isCleanupPending()
     }
 
-    /** False when the delivery was refused or the session stopped publishing while it was in flight. */
+    /** False when the delivery was refused, or when a group withdrawal is running right now. */
     fun publish(item: PendingMessageNotification): Boolean {
-        if (!isPublishing()) return false
+        if (!isPublishing() || clearInFlight.get()) return false
+        val current = generation.get()
+        val tag = tagFor(item.key, current)
         val outcome = runCatching {
-            center.show(item.title, item.text, "account:$accountId:${item.route}", item.key, group)
+            center.show(item.title, item.text, "account:$accountId:${item.route}", tag, group)
         }
-        if (!isPublishing()) {
-            // Landed after the session stopped publishing: take it back, and let the driver finish
-            // if the surface refuses that too.
-            withdrawal.withdraw(listOf(item.key))
+        if (!isPublishing() || clearInFlight.get()) {
+            withdrawal.remember(listOf(tag))
             trackIfOutstanding()
             return false
         }
         outcome.onFailure { report("通知中心提交失败 tag=${item.key}", it) }
-        if (outcome.isSuccess) publishedTags += item.key
+        if (outcome.isSuccess) keyGeneration[item.key] = current
         return outcome.isSuccess
     }
 
-    fun withdraw(keys: Collection<String>): Set<String> =
-        withdrawal.withdraw(keys).also { trackIfOutstanding() }
-
-    /** The subset of [keys] the surface confirmed it removed. */
-    fun withdrawn(keys: Collection<String>): Set<String> =
-        (keys.toSet() - withdrawal.withdraw(keys)).also { trackIfOutstanding() }
-
-    private fun withdrawGroup(): Boolean {
-        groupClearPending.set(true)
-        return retryCleanup().also { trackIfOutstanding() }
+    /** The subset of [keys] the surface confirmed it removed, in message-key terms. */
+    fun withdrawn(keys: Collection<String>): Set<String> {
+        val tags = keys.associateWith { currentTagOf(it) }
+        val stillOnScreen = withdrawal.withdraw(tags.values)
+        return keys.filterTo(linkedSetOf()) { tags[it] !in stillOnScreen }.also { trackIfOutstanding() }
     }
 
-    /** Anything the surface still shows is handed to the driver, whatever path noticed it. */
+    private fun currentTagOf(key: String): String = tagFor(key, keyGeneration[key] ?: generation.get())
+
+    private fun tagFor(key: String, generation: Int): String = "$key#$generation"
+
+    private fun keyOf(tag: String): String = tag.substringBeforeLast('#')
+
     private fun trackIfOutstanding() {
         if (isCleanupPending()) DesktopNotificationCleanup.track(this)
     }

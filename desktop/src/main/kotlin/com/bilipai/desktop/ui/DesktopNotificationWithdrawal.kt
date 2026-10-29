@@ -22,6 +22,9 @@ internal class DesktopNotificationWithdrawal(
     /** Keys the surface refused so far; they stay active upstream until a later attempt succeeds. */
     fun pendingKeys(): Set<String> = pending.keys.toSet()
 
+    /** Remembers tags that must be withdrawn later without talking to the surface now (no blocking IO). */
+    fun remember(tags: Collection<String>) { tags.forEach { pending.putIfAbsent(it, 0) } }
+
     /**
      * Tries every key that still needs withdrawal, including the ones requested now.
      * Returns the keys that are still on screen, i.e. the ones that must stay active.

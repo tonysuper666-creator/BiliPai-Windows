@@ -33,7 +33,7 @@ internal fun DesktopMessageNotificationRootConsumer(context: DesktopMessageNotif
     val port = remember(context, window) { context?.let { DesktopWindowsMessageNotifications(it, window) } }
     // The handoff lives outside this consumer: loading another account tears the consumer down first,
     // and the previous account's presentation must still be found when the new one arrives.
-    SideEffect { port?.let { DesktopNotificationHandoff.attach(window, it) } }
+    SideEffect { port?.let { DesktopNotificationHandoff.attach(window, it.notificationSession()) } }
     DisposableEffect(context, port) { onDispose { context?.close(); port?.close() } }
     LaunchedEffect(context, community, port) {
         val actual = context ?: return@LaunchedEffect

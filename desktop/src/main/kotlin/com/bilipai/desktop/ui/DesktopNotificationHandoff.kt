@@ -1,35 +1,32 @@
 package com.bilipai.desktop.ui
 
-import java.lang.ref.WeakReference
 import java.util.WeakHashMap
-
-/** What a presentation must be able to answer for the account handoff. */
-internal interface DesktopNotificationHandover {
-    fun accountId(): Long?
-    fun retireForAccountSwitch()
-}
 
 /**
  * The account handoff has to outlive the consumer that owns a presentation.
  *
  * Loading another account tears the whole notification consumer down (the retained root is briefly
- * absent), so a "previous port" remembered inside that consumer is lost exactly when it is needed.
- * This registry is keyed by the window, which survives the reload: the old account's presentation is
- * still here when the new one arrives, and retiring the wrong (same) account never happens.
+ * absent), so anything remembered inside that consumer is lost exactly when it is needed. This
+ * registry is keyed weakly by the window, which outlives the reload, and holds the session strongly:
+ * the previous account stays reachable until the handoff happens, and the entry disappears with the
+ * window. A session never references its window, so this direction creates no cycle.
  */
 internal object DesktopNotificationHandoff {
-    private val byWindow = WeakHashMap<Any, WeakReference<DesktopNotificationHandover>>()
+    private val byWindow = WeakHashMap<Any, DesktopNotificationSession>()
 
     @Synchronized
-    fun attach(window: Any, holder: DesktopNotificationHandover) {
-        val previous = byWindow.put(window, WeakReference(holder))?.get()
-        if (previous != null && previous !== holder && previous.accountId() != holder.accountId()) {
-            previous.retireForAccountSwitch()
-        }
+    fun attach(window: Any, session: DesktopNotificationSession) {
+        val previous = byWindow.put(window, session)
+        if (previous == null || previous === session || previous.accountId() == session.accountId()) return
+        // The old account is gone: retire it off the UI thread, which is where attach is called.
+        Thread({
+            previous.retire()
+            DesktopNotificationCleanup.track(previous)
+        }, "BiliPai-notification-switch").apply { isDaemon = true }.start()
     }
 
     @Synchronized
-    internal fun current(window: Any): DesktopNotificationHandover? = byWindow[window]?.get()
+    internal fun current(window: Any): DesktopNotificationSession? = byWindow[window]
 
     @Synchronized
     internal fun clearForTest(window: Any) { byWindow.remove(window) }
