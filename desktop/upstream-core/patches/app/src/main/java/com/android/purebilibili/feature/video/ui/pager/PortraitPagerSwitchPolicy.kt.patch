@@ -8,6 +8,19 @@
  import kotlinx.coroutines.async
  import kotlinx.coroutines.awaitAll
  import kotlinx.coroutines.coroutineScope
+@@ -85,9 +84,9 @@
+     hasRenderedFirstFrame: Boolean
+ ): Boolean {
+     if (!isCurrentPage) return true
+-    // 首帧出现后不因缓冲重新盖回封面，避免播放中画面跳变。
+-    if (isLoading && !hasRenderedFirstFrame) return true
+-    return !isPlayerReadyForThisVideo || !hasRenderedFirstFrame
++    // The Windows pager paints through the native window. Keep its current-page
++    // black transition instead of flashing a Compose cover over the native surface.
++    return false
+ }
+ 
+ internal fun shouldUseViewportBoundPortraitCover(
 @@ -335,6 +334,7 @@
  internal suspend fun filterPortraitOnlyVerticalRecommendations(
      recommendations: List<RelatedVideo>,
