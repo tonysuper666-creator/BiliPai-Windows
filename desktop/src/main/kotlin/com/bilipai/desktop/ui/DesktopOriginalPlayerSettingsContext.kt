@@ -125,6 +125,8 @@ internal class DesktopOriginalPlayerMirrorPreferences(private val context: Deskt
     fun getBoolean(key: String, default: Boolean) = (values()[key] as? JsonPrimitive)?.booleanOrNull ?: default
     fun getFloat(key: String, default: Float) = (values()[key] as? JsonPrimitive)?.floatOrNull ?: default
     fun getInt(key: String, default: Int) = (values()[key] as? JsonPrimitive)?.intOrNull ?: default
+    fun getLong(key: String, default: Long) = (values()[key] as? JsonPrimitive)?.longOrNull ?: default
+    internal fun all(): Map<String, JsonElement> = values()
     fun getString(key: String, default: String?) = (values()[key] as? JsonPrimitive)?.takeIf { it.isString }?.content ?: default
     fun getStringSet(key: String, default: Set<String>?): Set<String>? =
         (values()[key] as? JsonArray)?.mapNotNull { (it as? JsonPrimitive)?.takeIf { value -> value.isString }?.content }?.toSet() ?: default
@@ -134,6 +136,8 @@ internal class DesktopOriginalPlayerMirrorPreferences(private val context: Deskt
         fun putBoolean(key: String, value: Boolean) = apply { changes[key] = JsonPrimitive(value) }
         fun putFloat(key: String, value: Float) = apply { changes[key] = JsonPrimitive(value) }
         fun putInt(key: String, value: Int) = apply { changes[key] = JsonPrimitive(value) }
+        fun putLong(key: String, value: Long) = apply { changes[key] = JsonPrimitive(value) }
+        fun remove(key: String) = apply { changes[key] = null }
         fun putString(key: String, value: String?) = apply { changes[key] = value?.let(::JsonPrimitive) }
         fun putStringSet(key: String, value: Set<String>?) = apply {
             changes[key] = value?.let { JsonArray(it.map(::JsonPrimitive)) }

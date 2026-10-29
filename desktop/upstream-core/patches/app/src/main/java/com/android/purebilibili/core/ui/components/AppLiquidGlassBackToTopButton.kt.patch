@@ -1,18 +1,36 @@
 --- a/com/android/purebilibili/core/ui/components/AppLiquidGlassBackToTopButton.kt
 +++ b/com/android/purebilibili/core/ui/components/AppLiquidGlassBackToTopButton.kt
-@@ -31,5 +31,4 @@
+@@ -25,23 +25,21 @@
+ import androidx.compose.ui.Alignment
+ import androidx.compose.ui.Modifier
+ import androidx.compose.ui.draw.clip
+ import androidx.compose.ui.geometry.Offset
+ import androidx.compose.ui.graphics.graphicsLayer
+ import androidx.compose.ui.hapticfeedback.HapticFeedbackType
  import androidx.compose.ui.input.pointer.pointerInput
  import androidx.compose.ui.platform.LocalConfiguration
 -import androidx.compose.ui.platform.LocalContext
  import androidx.compose.ui.platform.LocalDensity
  import androidx.compose.ui.platform.LocalHapticFeedback
-@@ -37,5 +36,4 @@
+ import androidx.compose.ui.unit.IntOffset
  import androidx.compose.ui.unit.dp
  import androidx.lifecycle.compose.collectAsStateWithLifecycle
 -import com.android.purebilibili.core.store.BackToTopSettingsStore
  import com.android.purebilibili.core.ui.AppSurfaceTokens
  import com.android.purebilibili.core.ui.LocalAppThemeConfig
-@@ -64,5 +62,6 @@
+ import com.android.purebilibili.core.ui.motion.AppMotionTokens
+ import com.android.purebilibili.core.ui.performance.isLowBlurBudgetForced
+ import com.android.purebilibili.core.ui.rememberAppChevronUpIcon
+ import com.android.purebilibili.feature.home.components.biliPaiFloatingDockShell
+ import com.android.purebilibili.feature.home.components.LocalLiquidGlassRenderConfig
+ import kotlinx.coroutines.Dispatchers
+@@ -58,43 +56,44 @@
+ fun AppLiquidGlassBackToTopButton(
+     visible: Boolean,
+     onClick: () -> Unit,
+     modifier: Modifier = Modifier,
+     backdrop: Backdrop? = null,
+     contentDescription: String = "回到顶部",
      draggable: Boolean = true,
  ) {
 -    val context = LocalContext.current
@@ -20,7 +38,18 @@
 +    val backToTop = com.bilipai.desktop.ui.desktopBackToTopBindings()
      val density = LocalDensity.current
      val configuration = LocalConfiguration.current
-@@ -81,7 +80,7 @@
+     val scope = rememberCoroutineScope()
+     val haptic = com.android.purebilibili.core.ui.rememberAppHapticFeedback(com.android.purebilibili.core.ui.AppHapticScene.NAVIGATION)
+ 
+     val glassActive = LocalAppThemeConfig.current.liquidGlassEnabled && !isLowBlurBudgetForced()
+     // Glass may only sample a caller-owned source outside this button's subtree. The app
+     // shell's backdrop records the whole page, including this button: falling back to it
+     // creates a RenderNode cycle. Missing/unready sources use the existing solid branch;
+     // glass-off sizing, placement, color and interaction stay unchanged.
+     val glassTuning = LocalLiquidGlassRenderConfig.current.tuning
+     val elasticState = rememberAppElasticPressState(visualSize = 48.dp)
+     val glassMotion = glassActive && backdrop != null
+     val elasticEnabled = com.android.purebilibili.core.ui.LocalComponentMotionEnabled.current
      val dockColor = AppSurfaceTokens.surfaceContainerHigh()
  
 -    val persistedOffsetDp by remember(context) {
@@ -31,7 +60,7 @@
 +    }.collectAsStateWithLifecycle(initialValue = backToTop.initialOffset)
  
      var dragOffsetPx by remember {
-@@ -89,6 +88,6 @@
+         mutableStateOf(
              with(density) {
                  Offset(
 -                    BackToTopSettingsStore.getCachedOffsetDp().first.dp.toPx(),
@@ -40,7 +69,19 @@
 +                    backToTop.initialOffset.second.dp.toPx(),
                  )
              }
-@@ -194,7 +193,7 @@
+         )
+     }
+     var isDragging by remember { mutableStateOf(false) }
+     var dragJustFinished by remember { mutableStateOf(false) }
+ 
+     LaunchedEffect(persistedOffsetDp) {
+@@ -188,32 +187,32 @@
+                                             y = (dragOffsetPx.y + dragAmount.y).coerceIn(minOffsetY, maxOffsetY),
+                                         )
+                                     },
+                                     onDragEnd = {
+                                         isDragging = false
+                                         haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
                                          val finalXDp = with(density) { dragOffsetPx.x.toDp().value }
                                          val finalYDp = with(density) { dragOffsetPx.y.toDp().value }
 -                                        BackToTopSettingsStore.updateCachedOffset(finalXDp, finalYDp)
@@ -50,7 +91,12 @@
 +                                            backToTop.setOffset(finalXDp, finalYDp)
                                          }
                                          scope.launch {
-@@ -207,7 +206,7 @@
+                                             delay(250)
+                                             dragJustFinished = false
+                                         }
+                                     },
+                                     onDragCancel = {
+                                         isDragging = false
                                          val finalXDp = with(density) { dragOffsetPx.x.toDp().value }
                                          val finalYDp = with(density) { dragOffsetPx.y.toDp().value }
 -                                        BackToTopSettingsStore.updateCachedOffset(finalXDp, finalYDp)
@@ -60,3 +106,9 @@
 +                                            backToTop.setOffset(finalXDp, finalYDp)
                                          }
                                          scope.launch {
+                                             delay(250)
+                                             dragJustFinished = false
+                                         }
+                                     }
+                                 )
+                             }

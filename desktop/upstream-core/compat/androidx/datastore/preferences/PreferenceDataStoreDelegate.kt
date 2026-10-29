@@ -10,9 +10,19 @@ import kotlin.properties.ReadOnlyProperty
 
 fun Context.preferencesDataStoreFile(name: String): File = File(filesDir, "datastore/$name.preferences_pb")
 
+/**
+ * A desktop Context whose upstream preference DataStores are not files: the desktop settings document
+ * (DesktopSettingsDocumentDataStore). An owner answers every name it serves and fails for the others.
+ */
+interface DesktopPreferencesDataStoreOwner {
+    fun desktopPreferencesDataStore(name: String): DataStore<Preferences>
+}
+
 private val stores = ConcurrentHashMap<String, DataStore<Preferences>>()
 fun preferencesDataStore(name: String): ReadOnlyProperty<Context, DataStore<Preferences>> =
     ReadOnlyProperty { ctx, _ ->
-        val f = ctx.preferencesDataStoreFile(name)
-        stores.getOrPut(f.absolutePath) { PreferenceDataStoreFactory.create { f } }
+        (ctx as? DesktopPreferencesDataStoreOwner)?.desktopPreferencesDataStore(name) ?: run {
+            val f = ctx.preferencesDataStoreFile(name)
+            stores.getOrPut(f.absolutePath) { PreferenceDataStoreFactory.create { f } }
+        }
     }
