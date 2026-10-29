@@ -61,7 +61,10 @@ public static class BpWin {
 }
 '@
 
-function Save-Result($obj) { $obj | ConvertTo-Json -Depth 6 | Set-Content -Encoding utf8 -Path $resP }
+function Save-Result($obj) {
+  $json = $obj | ConvertTo-Json -Depth 6
+  [IO.File]::WriteAllText($resP, $json, [Text.UTF8Encoding]::new($false))
+}
 
 $res = [ordered]@{ started = (Get-Date).ToString('o'); status = 'error'; reason = $null; pid = $null; killed_by_script = $false; exit_code = $null; screenshot = $null; stdout = $null; stderr = $null; gate = [ordered]@{} }
 try {

@@ -1,5 +1,6 @@
 ﻿# Opt-in helpers for BiliPai-MacTest. Never select or stop a process by image name.
 $ErrorActionPreference = 'Stop'
+. "$PSScriptRoot\Json.ps1"
 Add-Type -ReferencedAssemblies System.Drawing -TypeDefinition @'
 using System;
 using System.Text;
@@ -40,12 +41,6 @@ public static class BpEvidence {
 }
 '@
 
-function Save-BpJson($Value, [string]$Path) {
-    # Atomic replacement prevents readers from seeing a half-written JSON document.
-    $Value | ConvertTo-Json -Depth 16 | Set-Content -LiteralPath "$Path.new" -Encoding UTF8
-    Move-Item -LiteralPath "$Path.new" -Destination $Path -Force
-}
-
 function Assert-BpEvidencePath([string]$Path, [string]$Boundary) {
     $full = [IO.Path]::GetFullPath($Path)
     if (!$full.StartsWith($Boundary.TrimEnd('\') + '\', [StringComparison]::OrdinalIgnoreCase) -or $full.Substring(2).Contains(':')) {
@@ -61,11 +56,15 @@ function Assert-BpEvidencePath([string]$Path, [string]$Boundary) {
     return $full
 }
 
-function Invoke-BpEvidenceSession([string]$SessionScript, [datetime]$Deadline) {
+function Invoke-BpEvidenceSession([string]$SessionScript, [datetime]$Deadline, [switch]$OfflineContextCheck) {
     if (!$script:BpTreeDirectory -or !$script:BpTree) { throw 'measured tree context is not initialized' }
     # A call operator (&) creates another script scope: the callback and helpers then
     # lose the tree's script: variables. Dot-source in the owning scope instead.
-    . $SessionScript -Deadline $Deadline
+    if ($OfflineContextCheck) {
+        . $SessionScript -Deadline $Deadline -OfflineContextCheck
+    } else {
+        . $SessionScript -Deadline $Deadline
+    }
 }
 
 function Initialize-BpTree([int]$RootProcessId, [string]$Directory) {

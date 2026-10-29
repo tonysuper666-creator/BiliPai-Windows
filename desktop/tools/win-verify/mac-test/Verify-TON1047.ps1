@@ -1,6 +1,6 @@
 ﻿# Loaded only by the opt-in launcher in the interactive session, after explicit approval.
 # One client launch, one settings restart, no retry on a failed action.
-param([datetime]$Deadline)
+param([datetime]$Deadline, [switch]$OfflineContextCheck)
 $ErrorActionPreference='Stop'
 $root='C:\Users\TONYS\bp-mac-verify'
 $taskProfile="$root\ton1020\profile"
@@ -9,6 +9,7 @@ $summary=[ordered]@{passed=$false;started=(Get-Date).ToString('o');steps=@();
     video1='BV1GJ411x7h7';video2='BV1JYsd6sE4k';restartKind='settings language confirmation -> closeApp(restart=true)'}
 Add-Type -AssemblyName System.Runtime.WindowsRuntime
 Add-Type -AssemblyName System.Windows.Forms
+if (-not ([System.Management.Automation.PSTypeName]'BpEvidenceInput').Type) {
 Add-Type -TypeDefinition @'
 using System; using System.Runtime.InteropServices;
 public static class BpEvidenceInput {
@@ -16,6 +17,7 @@ public static class BpEvidenceInput {
  [DllImport("user32.dll")] public static extern IntPtr GetForegroundWindow();
 }
 '@
+}
 $managerType=[Windows.Media.Control.GlobalSystemMediaTransportControlsSessionManager,Windows.Media.Control,ContentType=WindowsRuntime]
 $mediaType=[Windows.Media.Control.GlobalSystemMediaTransportControlsSessionMediaProperties,Windows.Media.Control,ContentType=WindowsRuntime]
 $asTask=[System.WindowsRuntimeSystemExtensions].GetMethods() | Where-Object {
@@ -105,6 +107,15 @@ function Record-Video([string]$Name,[string]$DifferentTitle='') {
     return $m
 }
 try {
+    if ($OfflineContextCheck) {
+        # Execute the first tree update and the real error/finally reporting path,
+        # without GUI, SMTC enumeration, input, launches or process termination.
+        $null=Update-BpTree
+        $summary.offlineContextCheck=$true
+        Save-BpJson ([ordered]@{rootPid=$script:BpRootProcessId;directory=$script:BpTreeDirectory;
+            deadline=$Deadline.ToString('o');clientStarts=0;guiStarts=0}) (Join-Path $script:BpTreeDirectory 'context-check.json')
+        return
+    }
     $script:window=Wait-BpTreeWindow 65
     Step 'initial-window' $script:window
     $script:mediaManager=Await-WinRT ($managerType::RequestAsync()) $managerType

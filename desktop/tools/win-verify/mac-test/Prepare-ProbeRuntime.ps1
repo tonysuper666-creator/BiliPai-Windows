@@ -1,6 +1,7 @@
 ﻿# Add only java.instrument to the SAME JDK 21 runtime for the test accessibility driver.
 # Product JARs, launcher and cfg are untouched. Retain the original runtime for comparison.
 $ErrorActionPreference='Stop'
+. "$PSScriptRoot\Json.ps1"
 $root='C:\Users\TONYS\bp-mac-verify'
 $target="$root\apps\TON1020"
 $jdk='C:\Program Files\Eclipse Adoptium\jdk-21.0.12.101-hotspot'
@@ -21,5 +22,5 @@ Move-Item $output "$target\runtime"
 $report=[ordered]@{purpose='test-only accessibility agent';javaVersion='21.0.12.1';
     originalModules=$modules;testModules=$newModules;addedModule='java.instrument';productJarsChanged=$false;
     originalRuntime="$root\ton1047\runtime-original";at=(Get-Date).ToString('o')}
-$report | ConvertTo-Json -Depth 5 | Set-Content "$root\ton1047\probe-runtime.json" -Encoding UTF8
+Save-BpJson $report "$root\ton1047\probe-runtime.json"
 Write-Output 'PROBE_RUNTIME_READY'

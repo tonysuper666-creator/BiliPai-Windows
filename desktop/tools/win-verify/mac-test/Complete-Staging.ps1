@@ -1,6 +1,7 @@
 ﻿# Finish a successful distributable after missing untracked mpv/ffmpeg assets are discovered.
 # Does not rebuild, start a client or replace the newly built diagnostic-share DLL.
 $ErrorActionPreference='Stop'
+. "$PSScriptRoot\Json.ps1"
 $root='C:\Users\TONYS\bp-mac-verify'
 $out="$root\ton1047"
 $target="$root\apps\TON1020"
@@ -31,6 +32,6 @@ $result=[ordered]@{head=$head;passed=$true;stage='ready-without-client-launch';b
     files=@(Get-ChildItem $target -Recurse -File | ForEach-Object {
         [ordered]@{path=$_.FullName.Substring($target.Length+1);length=$_.Length;sha256=(Get-FileHash $_.FullName -Algorithm SHA256).Hash}
     })}
-$result | ConvertTo-Json -Depth 8 | Set-Content "$out\package.json" -Encoding UTF8
+Save-BpJson $result "$out\package.json"
 Write-Output "STAGED_HEAD=$head"
 Write-Output "EXE_SHA256=$($result.exeSha256)"

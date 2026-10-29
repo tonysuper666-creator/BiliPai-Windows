@@ -20,7 +20,10 @@ also cannot prove that a transient dialog never existed between observations.
 Each PNG has a `.window.json` mapping to PID, HWND and process identity.
 `pid-tree.json` records measured edges, timestamps, window observations and
 dialog counts. Cleanup rechecks creation times before stopping the observed
-tree. JSON uses PowerShell's serializer with atomic replacement.
+tree. JSON uses PowerShell's serializer and a BOM-free UTF-8 writer with atomic
+replacement. PowerShell source scripts may retain their BOM for PS 5.1 Chinese
+source compatibility; JSON artifacts must not contain it. The launcher's legacy
+result writer also emits BOM-free UTF-8.
 
 TON-1047 order (do not run automatically):
 
@@ -66,5 +69,23 @@ the child's hidden AWT handles were measured; visible-window ownership,
 playback, SMTC and restart were not validated. `Invoke-BpEvidenceSession`
 now dot-sources the callback in the owning scope. `Test-CallbackContext.ps1`
 reproduces the original error and verifies the fix using this shell's real
-PID and file output, without a client, GUI or process termination. This fix
-has not had another client run. The existing single-use marker must remain.
+PID and file output, without a client, GUI or process termination. After review,
+the regression executes `Verify-TON1047.ps1 -OfflineContextCheck` through its
+real first tree update and error/finally reporting path. It requires the exact
+recorded null `Path` message, parameter name and Join-Path error ID; unrelated
+exceptions fail the test. It then exercises that same script via the fixed
+callback and checks the JSON has no BOM. This fix has not had another client run.
+The existing single-use marker must remain.
+
+`request-before.json` is the preceding shared configuration, not the request
+submitted for the acceptance attempt. Future sessions retain its exact bytes as
+`request-before.raw`, write a BOM-free JSON view, and separately save the actual
+`request-submitted.json`. The historical submitted request was not captured and
+must not be presented as an original observation when reconstructed from code.
+
+`Restore-OriginalRuntime.ps1` restores the retained original runtime only while
+MacTest is Ready, both cooperative locks are free, and Windows Restart Manager
+reports no owners of any current runtime resource. It retains the probe runtime,
+verifies the original release has no `java.instrument`, records file hashes and
+checks that the single-use launch marker is byte-for-byte unchanged. It neither
+edits the scheduled task/shared launcher nor starts a client.

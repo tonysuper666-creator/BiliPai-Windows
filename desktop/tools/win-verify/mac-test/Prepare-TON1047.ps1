@@ -1,6 +1,7 @@
 ﻿# Offline packaging only. Never starts a client or modifies PR #19 source.
 param([string]$ExpectedHead = '8ee3ab796cc81e4389c1a5688cb47a1e27434f08')
 $ErrorActionPreference = 'Stop'
+. "$PSScriptRoot\Json.ps1"
 $root='C:\Users\TONYS\bp-mac-verify'
 $out="$root\ton1047"
 New-Item -ItemType Directory -Force $out | Out-Null
@@ -86,5 +87,5 @@ try {
 } catch { $report.error=$_.Exception.Message }
 finally { if($leaseOwned){Remove-Item "$root\tools\job.lock" -ErrorAction SilentlyContinue} }
 $report.ended=(Get-Date).ToString('o')
-$report | ConvertTo-Json -Depth 8 | Set-Content "$out\package.json" -Encoding UTF8
+Save-BpJson $report "$out\package.json"
 if(!$report.passed){throw $report.error}
