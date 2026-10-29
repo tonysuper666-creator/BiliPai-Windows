@@ -1,3 +1,5 @@
+@file:OptIn(androidx.compose.ui.ExperimentalComposeUiApi::class)
+
 package com.bilipai.desktop.diagnostics
 
 import kotlin.test.*
@@ -11,7 +13,7 @@ class DesktopWindowExceptionHandlerTest {
         val handler = DesktopWindowExceptionHandler({ recorded += it }, { notices += it })
         val failure = IllegalStateException("Original resolved video metadata is required before transport publication")
 
-        handler.exceptionHandler(java.awt.Frame()).onException(failure)
+        handler.handle(failure)
 
         assertEquals(listOf<Throwable>(failure), recorded)
         val notice = notices.single()
@@ -23,7 +25,7 @@ class DesktopWindowExceptionHandlerTest {
         val notices = mutableListOf<String>()
         val handler = DesktopWindowExceptionHandler({ throw IllegalStateException("disk unavailable") }, { notices += it })
 
-        handler.exceptionHandler(java.awt.Frame()).onException(RuntimeException("window failure"))
+        handler.handle(RuntimeException("window failure"))
 
         assertEquals(1, notices.size)
     }
@@ -32,7 +34,7 @@ class DesktopWindowExceptionHandlerTest {
         val records = mutableListOf<Throwable>()
         val handler = DesktopWindowExceptionHandler({ records += it }, { throw IllegalArgumentException("ui unavailable") })
 
-        handler.exceptionHandler(java.awt.Frame()).onException(RuntimeException("window failure"))
+        handler.handle(RuntimeException("window failure"))
 
         assertEquals(1, records.size)
     }

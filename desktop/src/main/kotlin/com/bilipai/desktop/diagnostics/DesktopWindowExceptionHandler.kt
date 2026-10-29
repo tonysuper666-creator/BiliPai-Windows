@@ -1,3 +1,5 @@
+@file:OptIn(androidx.compose.ui.ExperimentalComposeUiApi::class)
+
 package com.bilipai.desktop.diagnostics
 
 import androidx.compose.ui.window.WindowExceptionHandler
@@ -14,11 +16,14 @@ internal class DesktopWindowExceptionHandler(
 ) : WindowExceptionHandlerFactory {
     override fun exceptionHandler(window: java.awt.Window): WindowExceptionHandler =
         object : WindowExceptionHandler {
-            override fun onException(failure: Throwable) {
-                runCatching { record(failure) }
-                runCatching { notify(unexpectedMessage(failure)) }
-            }
+            override fun onException(failure: Throwable) = handle(failure)
         }
+
+    /** The whole reaction, so it is exercised without an AWT window. */
+    fun handle(failure: Throwable) {
+        runCatching { record(failure) }
+        runCatching { notify(unexpectedMessage(failure)) }
+    }
 
     companion object {
         /** Stable user-facing text only; no exception text, URL or account detail. */
