@@ -11,16 +11,17 @@ import java.util.concurrent.locks.ReentrantLock
 /**
  * One account's notification lifetime.
  *
- * Delivery identity: a toast is identified by `key#nonce-seq`, unique for its whole life — across
- * sessions for the same account and across processes. Message keys (`reply`, `like`, …) are stable and
- * reused, so anything that removes a toast must carry the delivery tag it was created with; deriving
- * a tag from the key at removal time is what let an old retry delete a newer notification.
+ * Delivery identity: a toast is identified by `key#nonce-seq` for its whole life — across sessions
+ * for the same account and across processes. A message key is stable and reused, so one key can have
+ * several live deliveries (the unread count grows, the same reply is published again); cancelling a
+ * key must cover all of them, and confirming one delivery must not end the entry while another lives.
  *
  * Cleanup and publication are serialised: while any group withdrawal is running, publish refuses, and
- * withdrawals themselves run under one lock so two of them can never overlap.
+ * withdrawals run under one lock. Only the session holding the account lease may withdraw the whole
+ * group, so a returning account cannot be wiped by an older session's pending retry.
  *
  * The three exits:
- * - [detach] — window going away; delivered notifications stay, they stay clickable through the protocol.
+ * - [detach] — window going away; delivered notifications stay and stay clickable.
  * - [pause] — notifications turned off; withdraw the group, but the account stays current ([resume]).
  * - [retire] — the account is gone; publishing never comes back.
  */
@@ -34,16 +35,18 @@ internal class DesktopNotificationSession(
     val group: String = "messages-$accountId"
     private val withdrawal = DesktopNotificationWithdrawal(
         withdraw = { tag, target -> center.remove(tag, target) }, report = report).apply { bind(group) }
-    /** Message key -> the delivery tag currently on screen for it. */
-    private val keyTags = ConcurrentHashMap<String, String>()
+    /** Message key -> the deliveries of it that are still on screen. */
+    private val liveTags = ConcurrentHashMap<String, MutableSet<String>>()
+    /** Keys whose last delivery is confirmed gone, for the caller to drop from its list. */
+    private val resolved = java.util.concurrent.ConcurrentLinkedQueue<String>()
     private val paused = AtomicBoolean()
     private val accountRetired = AtomicBoolean()
     private val groupClearPending = AtomicBoolean()
     private val clearsInFlight = AtomicInteger()
     private val clearAttempts = AtomicInteger()
     private val cleanupLock = ReentrantLock()
-    /** Keys whose older delivery the driver finally removed, so the tray list can drop them. */
-    private val resolved = java.util.concurrent.ConcurrentLinkedQueue<String>()
+
+    init { DesktopNotificationAccountLeases.claim(accountId, this) }
 
     fun accountId(): Long? = accountId
 
@@ -55,14 +58,13 @@ internal class DesktopNotificationSession(
 
     fun clearAttemptCount(): Int = clearAttempts.get()
 
-    /** Delivery tags the surface has not confirmed removed. */
     fun pendingTags(): Set<String> = withdrawal.pendingKeys()
-
-    fun pendingWithdrawals(): Set<String> = withdrawal.pendingKeys().toSet()
 
     fun keyFor(tag: String): String = tag.substringBefore('#')
 
-    /** Keys whose older delivery is finally gone; the caller drops them from its list. */
+    /** Keys whose last delivery is gone; the caller drops them from its list. */
+    fun hasResolved(): Boolean = !resolved.isEmpty()
+
     fun takeResolved(): Set<String> {
         val out = linkedSetOf<String>()
         while (true) out += (resolved.poll() ?: break)
@@ -79,16 +81,16 @@ internal class DesktopNotificationSession(
     }
 
     /**
-     * Notifications turned back on. Idempotent: a settings emission that changes anything else while
-     * the master switch stayed on must not withdraw notifications the user has not read yet.
+     * Notifications turned back on. Idempotent: an emission that changes anything else while the
+     * master switch stayed on must not withdraw notifications the user has not read.
      * Called from the UI thread, so it never talks to the surface.
      */
     fun resume() {
         if (accountRetired.get()) return
         if (!paused.getAndSet(false)) return
         groupClearPending.set(false)
-        // Toasts of the paused period are removed one by one, by their own tags, by the driver.
-        withdrawal.remember(keyTags.values.toList())
+        // Deliveries of the paused period are removed one by one, by their own tags, by the driver.
+        withdrawal.remember(allLiveTags())
         trackIfOutstanding()
     }
 
@@ -100,30 +102,43 @@ internal class DesktopNotificationSession(
         return retryCleanup().also { trackIfOutstanding() }
     }
 
+    /** Another session took this account: this one may no longer withdraw the shared group. */
+    fun abandonGroupClear() {
+        groupClearPending.set(false)
+        // What this session delivered is still ours to withdraw, one tag at a time.
+        withdrawal.remember(allLiveTags())
+        trackIfOutstanding()
+    }
+
     /** One attempt at everything outstanding. False while something is still on screen. */
     fun retryCleanup(): Boolean {
         cleanupLock.withLockUninterruptibly {
             val tags = withdrawal.pendingKeys()
             if (tags.isNotEmpty()) {
                 withdrawal.withdraw(tags)
-                (tags - withdrawal.pendingKeys()).forEach { resolved += keyFor(it) }
+                (tags - withdrawal.pendingKeys()).forEach { settle(it) }
             }
             if (groupClearPending.get()) {
-                clearAttempts.incrementAndGet()
-                clearsInFlight.incrementAndGet()
-                val cleared = try {
-                    runCatching { center.clear(group) }.onFailure {
-                        report("通知中心整组清理失败 group=$group", it)
-                    }.isSuccess
-                } finally {
-                    clearsInFlight.decrementAndGet()
-                }
-                if (paused.get()) {
-                    groupClearPending.set(!cleared)
-                    if (cleared) keyTags.clear()
-                } else {
-                    // A resume happened while the withdrawal ran: it is over, and its retry is abandoned.
+                if (!DesktopNotificationAccountLeases.holds(accountId, this)) {
+                    // A newer session owns this account's group; only our own tags may be withdrawn.
                     groupClearPending.set(false)
+                } else {
+                    clearAttempts.incrementAndGet()
+                    clearsInFlight.incrementAndGet()
+                    val cleared = try {
+                        runCatching { center.clear(group) }.onFailure {
+                            report("通知中心整组清理失败 group=$group", it)
+                        }.isSuccess
+                    } finally {
+                        clearsInFlight.decrementAndGet()
+                    }
+                    if (paused.get()) {
+                        groupClearPending.set(!cleared)
+                        if (cleared) liveTags.clear()
+                    } else {
+                        // A resume happened while this withdrawal ran: it is over, its retry is abandoned.
+                        groupClearPending.set(false)
+                    }
                 }
             }
         }
@@ -131,14 +146,15 @@ internal class DesktopNotificationSession(
     }
 
     /**
-     * Withdraws the toasts for [keys] as they exist right now, and reports the keys the surface
-     * confirmed. Pending retries are never re-derived here: they keep the tag they were born with.
+     * Withdraws every live delivery of [keys] and reports the keys that are fully gone. Pending
+     * retries are never re-derived here: they keep the tag they were born with.
      */
     fun withdrawNow(keys: Collection<String>): Set<String> {
-        val tags = keys.mapNotNull { keyTags[it] }
+        val tags = keys.flatMap { key -> liveTags[key].orEmpty() }
         if (tags.isEmpty()) return emptySet()
         val stillOnScreen = withdrawal.withdraw(tags)
-        return keys.filterTo(linkedSetOf()) { keyTags[it] !in stillOnScreen }.also { trackIfOutstanding() }
+        (tags - stillOnScreen).forEach { settle(it) }
+        return keys.filter { key -> liveTags[key].isNullOrEmpty() }.toSet().also { trackIfOutstanding() }
     }
 
     /** False when the delivery was refused, or when a group withdrawal is running right now. */
@@ -154,9 +170,18 @@ internal class DesktopNotificationSession(
             return false
         }
         outcome.onFailure { report("通知中心提交失败 tag=${item.key}", it) }
-        if (outcome.isSuccess) keyTags[item.key] = tag
+        if (outcome.isSuccess) liveTags.getOrPut(item.key) { ConcurrentHashMap.newKeySet() }.add(tag)
         return outcome.isSuccess
     }
+
+    private fun settle(tag: String) {
+        val key = keyFor(tag)
+        val remaining = liveTags[key] ?: return
+        remaining.remove(tag)
+        if (remaining.isEmpty()) { liveTags.remove(key); resolved += key }
+    }
+
+    private fun allLiveTags(): List<String> = liveTags.values.flatMap { it.toList() }
 
     private fun deliveryTag(key: String): String = "$key#$PROCESS_NONCE-${DELIVERY_SEQUENCE.incrementAndGet()}"
 

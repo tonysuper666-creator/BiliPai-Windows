@@ -57,7 +57,9 @@ internal class DesktopWindowsMessageNotifications(
         currentCoroutineContext().ensureActive()
         check(EventQueue.isDispatchThread()) { "Message notifications require the actual Windows EDT" }
         if (!canPost()) return@withContext
-        if (pending.isEmpty() && cancelled.isEmpty()) return@withContext
+        // A round with nothing new still has to consume the confirmations the driver produced,
+        // otherwise an entry whose delivery is gone stays in the tray and upstream keeps it active.
+        if (pending.isEmpty() && cancelled.isEmpty() && !session.hasResolved()) return@withContext
         // Cancel this round's keys by the delivery they currently own; older deliveries keep their own
         // tags and are retried by the driver, so they can never be re-derived onto a newer toast.
         val withdrawn = withContext(Dispatchers.IO) { session.withdrawNow(cancelled) }
@@ -112,8 +114,8 @@ internal class DesktopWindowsMessageNotifications(
     /** The account handoff works on the session, which never references the window. */
     internal fun notificationSession(): DesktopNotificationSession = session
 
-    /** Keys the surface refused to withdraw; they stay active upstream until a retry succeeds. */
-    internal fun pendingWithdrawals(): Set<String> = session.pendingWithdrawals()
+    /** Deliveries the surface refused to withdraw; they stay active upstream until a retry succeeds. */
+    internal fun pendingWithdrawals(): Set<String> = session.pendingTags()
     private fun removeTrayOnEdt() {
         check(EventQueue.isDispatchThread())
         tray?.let { SystemTray.getSystemTray().remove(it) }

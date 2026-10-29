@@ -118,6 +118,46 @@ class DesktopNotificationSessionTest {
         assertEquals(1, center.texts().size)
     }
 
+    @Test fun cancellingAKeyCoversEveryDeliveryItStillHas() {
+        val center = RecordingNotificationCenter()
+        val session = session(center)
+        assertTrue(session.publish(item("reply-1")))
+        assertTrue(session.publish(item("reply-1")), "an unread count that grew publishes the same key again")
+        assertEquals(2, center.texts().size)
+
+        assertEquals(setOf("reply-1"), session.withdrawNow(setOf("reply-1")))
+        assertTrue(center.texts().isEmpty(), "marking read must not leave the older toast behind")
+    }
+
+    @Test fun aConfirmedOldDeliveryDoesNotEndTheEntryWhileANewerOneLives() {
+        val center = RecordingNotificationCenter().apply { failRemove = true }
+        val session = session(center)
+        assertTrue(session.publish(item("reply-1")))
+        assertEquals(emptySet(), session.withdrawNow(setOf("reply-1")))
+
+        center.failRemove = false
+        assertTrue(session.publish(item("reply-1")))
+        DesktopNotificationCleanup.retryOutstanding()
+        assertFalse(session.hasResolved(), "the key still has a live delivery, so its entry must stay")
+        assertEquals(1, center.texts().size)
+    }
+
+    @Test fun aReturningAccountIsNotWipedByAnOlderSessionsPendingGroupWithdrawal() {
+        val center = RecordingNotificationCenter().apply { failClear = true }
+        val oldSession = session(center, 7L)
+        assertTrue(oldSession.publish(item("reply-1")))
+        assertFalse(oldSession.pause(), "the group withdrawal is refused and stays pending")
+
+        session(center, 8L) // another account becomes current
+        center.failClear = false
+        val returning = session(center, 7L) // the user comes back to account 7
+        assertTrue(returning.publish(item("reply-1")))
+
+        DesktopNotificationCleanup.retryOutstanding()
+        assertEquals(1, center.texts().size, "the returning account's new notification must survive")
+        assertTrue(center.cleared.isEmpty(), "the old session may no longer withdraw the shared group")
+    }
+
     @Test fun twoSessionsForTheSameAccountNeverShareADeliveryTag() {
         val center = RecordingNotificationCenter()
         val first = session(center)
