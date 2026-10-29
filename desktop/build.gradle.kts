@@ -211,8 +211,6 @@ val appCoreDesktopOwned: Map<String, String> = mapOf(
     "core/player/waveform/AudioWaveformPolicy.kt" to "Media3/ExoPlayer 播放栈；桌面播放走 mpv（com.bilipai.desktop.player）",
     "core/player/waveform/AudioWaveformSource.kt" to "Media3/ExoPlayer 播放栈；桌面播放走 mpv（com.bilipai.desktop.player）",
     "core/player/waveform/WaveformAudioSink.kt" to "Media3/ExoPlayer 播放栈；桌面播放走 mpv（com.bilipai.desktop.player）",
-    "core/plugin/js/BiliPaiJsRuntime.kt" to "Android 内置 JS 引擎；桌面插件走 GraalJS 进程（DesktopJsWorker）",
-    "core/plugin/json/JsonPluginStatsSummaryWorker.kt" to "WorkManager 后台任务；桌面没有系统后台调度",
     "core/store/AudioLibraryDatabase.kt" to "Room 数据库；桌面用 JSON 存储（DesktopBlockedUpStore、DesktopCommentFraudJsonDao 等）",
     "core/theme/AppFontFileStore.kt" to "Android 系统壁纸取色、定时深色（AlarmManager）与字体文件 ContentResolver",
     "core/theme/ScheduledDarkThemeObserver.kt" to "Android 系统壁纸取色、定时深色（AlarmManager）与字体文件 ContentResolver",
@@ -256,9 +254,14 @@ val appCoreDesktopOwned: Map<String, String> = mapOf(
     "core/util/VideoSurfaceCompatibility.kt" to "Android 系统栏、折叠屏、挖孔与画中画窗口",
     "core/util/WindowSizeUtils.kt" to "Android 系统栏、折叠屏、挖孔与画中画窗口",
 )
+// Areas that move in a later step and keep their legacy copies until then (an intermediate state that compiles).
+val appCoreLaterSteps: Map<String, String> = mapOf(
+    "core/plugin/" to "upstream moved the plugin contracts to plugin-sdk with a new identity model (capabilityManifest); " +
+        "the desktop plugin platform and the legacy feature plugins move to it together",
+)
 val migratedAppCorePaths: Set<String> = appJavaRoot.resolve("com/android/purebilibili/core").walkTopDown()
     .filter { it.isFile && it.extension == "kt" }.map { it.relativeTo(appJavaRoot).invariantSeparatorsPath }
-    .filter { path -> appCoreDesktopOwned.keys.none { path.removePrefix("com/android/purebilibili/").startsWith(it) } }
+    .filter { path -> (appCoreDesktopOwned.keys + appCoreLaterSteps.keys).none { path.removePrefix("com/android/purebilibili/").startsWith(it) } }
     .toSortedSet()
 val migratedUpstreamRelativePaths = migratedWholeModulePaths + migratedAppCorePaths + setOf(
     "com/android/purebilibili/core/network/AppSignUtils.kt",
@@ -2516,10 +2519,7 @@ val upstreamOwnedGeneratedCopies = setOf(
     "original-video-player-full-controls/com/android/purebilibili/core/store/DesktopOriginalPlayerProgressBehaviorModels.kt",
     "original-video-player-full-controls/com/android/purebilibili/core/store/DesktopOriginalPlayerProgressPlacement.kt",
     "original-video-player-section-full/com/android/purebilibili/core/store/DesktopOriginalPlayerInteractionSettings.kt",
-    "packages/com/android/purebilibili/core/plugin/skin/DesktopUiSkinCompositionPolicy.kt",
     "playback-settings/com/android/purebilibili/core/store/player/DefaultAudioQuality.kt",
-    "plugins/com/android/purebilibili/core/plugin/feed/DesktopFeedConditionalValidators.kt",
-    "plugins/com/android/purebilibili/core/plugin/feed/DesktopSavedSubscriptionFeed.kt",
     "video-tablet-full/com/android/purebilibili/core/store/DesktopOriginalTabletSecondaryDefaultTab.kt",
     "whole-playback-settings/generated/com/android/purebilibili/core/store/DesktopOriginalHwDecodeMigrationPolicy.kt",
     "whole-playback-settings/generated/com/android/purebilibili/core/store/DesktopOriginalPlaybackSettingsDefaults.kt",
