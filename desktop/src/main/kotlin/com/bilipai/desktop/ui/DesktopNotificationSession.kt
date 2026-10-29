@@ -127,28 +127,40 @@ internal class DesktopNotificationSession(
                 (tags - withdrawal.pendingKeys()).forEach { settle(it) }
             }
             if (groupClearPending.get()) {
-                if (!DesktopNotificationAccountLeases.holds(accountId, this)) {
-                    // A newer session owns this account's group; only our own tags may be withdrawn.
-                    groupClearPending.set(false)
-                } else {
-                    clearAttempts.incrementAndGet()
-                    clearsInFlight.incrementAndGet()
-                    DesktopNotificationAccountLeases.beginGroupOperation(accountId)
-                    val cleared = try {
-                        runCatching { center.clear(group) }.onFailure {
-                            report("通知中心整组清理失败 group=$group", it)
-                        }.isSuccess
-                    } finally {
-                        clearsInFlight.decrementAndGet()
-                        DesktopNotificationAccountLeases.endGroupOperation(accountId)
-                    }
-                    if (paused.get()) {
-                        groupClearPending.set(!cleared)
-                        if (cleared) liveTags.clear()
-                    } else {
-                        // A resume happened while this withdrawal ran: it is over, its retry is abandoned.
+                val gate = DesktopNotificationAccountLeases.gate(accountId).writeLock()
+                // Exclusive against deliveries: the lease check and the operation registration both
+                // happen while no publisher can be inside the surface, so a takeover cannot slip in
+                // between them.
+                if (!gate.tryLock(250, java.util.concurrent.TimeUnit.MILLISECONDS)) {
+                    return@withLockUninterruptibly false
+                }
+                val cleared = try {
+                    if (!DesktopNotificationAccountLeases.holds(accountId, this)) {
+                        // A newer session owns this account's group; only our own tags may be withdrawn.
                         groupClearPending.set(false)
+                        false
+                    } else {
+                        clearAttempts.incrementAndGet()
+                        clearsInFlight.incrementAndGet()
+                        DesktopNotificationAccountLeases.beginGroupOperation(accountId)
+                        try {
+                            runCatching { center.clear(group) }.onFailure {
+                                report("通知中心整组清理失败 group=$group", it)
+                            }.isSuccess
+                        } finally {
+                            clearsInFlight.decrementAndGet()
+                            DesktopNotificationAccountLeases.endGroupOperation(accountId)
+                        }
                     }
+                } finally {
+                    gate.unlock()
+                }
+                if (paused.get()) {
+                    groupClearPending.set(!cleared)
+                    if (cleared) liveTags.clear()
+                } else {
+                    // A resume happened while this withdrawal ran: it is over, its retry is abandoned.
+                    groupClearPending.set(false)
                 }
             }
         }
@@ -171,19 +183,27 @@ internal class DesktopNotificationSession(
     fun publish(item: PendingMessageNotification): Boolean {
         if (!isPublishing() || clearsInFlight.get() > 0 ||
             DesktopNotificationAccountLeases.groupOperationInFlight(accountId)) return false
-        val tag = deliveryTag(item.key)
-        val outcome = runCatching {
-            center.show(item.title, item.text, "account:$accountId:${item.route}", tag, group)
+        val gate = DesktopNotificationAccountLeases.gate(accountId).readLock()
+        // A group operation of this account is exclusive; a delivery that cannot get in is refused
+        // rather than queued, because the caller retries on its next round.
+        if (!gate.tryLock(200, java.util.concurrent.TimeUnit.MILLISECONDS)) return false
+        try {
+            if (!isPublishing() || DesktopNotificationAccountLeases.groupOperationInFlight(accountId)) return false
+            val tag = deliveryTag(item.key)
+            val outcome = runCatching {
+                center.show(item.title, item.text, "account:$accountId:${item.route}", tag, group)
+            }
+            if (!isPublishing()) {
+                withdrawal.remember(listOf(tag))
+                trackIfOutstanding()
+                return false
+            }
+            outcome.onFailure { report("通知中心提交失败 tag=${item.key}", it) }
+            if (outcome.isSuccess) liveTags.getOrPut(item.key) { ConcurrentHashMap.newKeySet() }.add(tag)
+            return outcome.isSuccess
+        } finally {
+            gate.unlock()
         }
-        if (!isPublishing() || clearsInFlight.get() > 0 ||
-            DesktopNotificationAccountLeases.groupOperationInFlight(accountId)) {
-            withdrawal.remember(listOf(tag))
-            trackIfOutstanding()
-            return false
-        }
-        outcome.onFailure { report("通知中心提交失败 tag=${item.key}", it) }
-        if (outcome.isSuccess) liveTags.getOrPut(item.key) { ConcurrentHashMap.newKeySet() }.add(tag)
-        return outcome.isSuccess
     }
 
     private fun settle(tag: String) {

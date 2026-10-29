@@ -2,6 +2,7 @@ package com.bilipai.desktop.ui
 
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicInteger
+import java.util.concurrent.locks.ReentrantReadWriteLock
 
 /**
  * The notification group `messages-<mid>` is shared by every session of that account, in this process
@@ -16,6 +17,8 @@ internal object DesktopNotificationAccountLeases {
     private val ANONYMOUS = Any()
     private val byAccount = ConcurrentHashMap<Any, DesktopNotificationSession>()
     private val groupOps = ConcurrentHashMap<Any, AtomicInteger>()
+    /** One gate per account: a group operation is exclusive, a delivery is shared. */
+    private val gates = ConcurrentHashMap<Any, ReentrantReadWriteLock>()
 
     private fun key(accountId: Long?): Any = accountId ?: ANONYMOUS
 
@@ -30,6 +33,8 @@ internal object DesktopNotificationAccountLeases {
         return owner === session
     }
 
+    fun gate(accountId: Long?): ReentrantReadWriteLock = gates.getOrPut(key(accountId)) { ReentrantReadWriteLock() }
+
     /** A group withdrawal of this account is inside the surface right now, whichever session started it. */
     fun groupOperationInFlight(accountId: Long?): Boolean = (groupOps[key(accountId)]?.get() ?: 0) > 0
 
@@ -41,5 +46,5 @@ internal object DesktopNotificationAccountLeases {
         groupOps[key(accountId)]?.decrementAndGet()
     }
 
-    internal fun clearForTest() { byAccount.clear(); groupOps.clear() }
+    internal fun clearForTest() { byAccount.clear(); groupOps.clear(); gates.clear() }
 }

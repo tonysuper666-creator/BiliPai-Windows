@@ -212,6 +212,63 @@ class DesktopNotificationSessionTest {
         assertFalse(session.hasResolved())
     }
 
+    @Test fun aDeliveryThatIsStillInsideTheSurfaceKeepsTheGroupWithdrawalOut() {
+        val center = RecordingNotificationCenter()
+        val session = session(center, 7L)
+        val read = DesktopNotificationAccountLeases.gate(7L).readLock()
+        read.lock() // a delivery of this account is inside the surface
+        try {
+            assertFalse(session.pause(), "the group withdrawal cannot start while a delivery is running")
+            assertTrue(center.cleared.isEmpty())
+        } finally {
+            read.unlock()
+        }
+        assertTrue(session.retryCleanup())
+        assertEquals(listOf("messages-7"), center.cleared)
+    }
+
+    @Test fun aTakeoverCannotPublishBeforeTheOldGroupOperationIsRegistered() {
+        val center = RecordingNotificationCenter()
+        val oldSession = session(center, 7L)
+        // Another thread is inside the account's exclusive section, before it registers anything.
+        val held = java.util.concurrent.CountDownLatch(1)
+        val release = java.util.concurrent.CountDownLatch(1)
+        val holder = thread {
+            val write = DesktopNotificationAccountLeases.gate(7L).writeLock()
+            write.lock()
+            held.countDown()
+            release.await(5, TimeUnit.SECONDS)
+            write.unlock()
+        }
+        assertTrue(held.await(5, TimeUnit.SECONDS))
+        try {
+            val returning = session(center, 7L)
+            assertFalse(returning.publish(item("reply-2")), "no delivery may slip into a starting group operation")
+            assertTrue(center.shown.isEmpty())
+        } finally {
+            release.countDown()
+            holder.join(5_000)
+        }
+        assertTrue(session(center, 7L).publish(item("reply-2")))
+        assertTrue(center.shown.isNotEmpty())
+    }
+
+    @Test fun concurrentTakeoverNeverReportsAPublicationThatIsNotThere() {
+        repeat(400) {
+            val center = RecordingNotificationCenter()
+            val oldSession = session(center, 77L)
+            center.onShow = { Thread.yield() }
+            val clearing = thread { oldSession.pause() }
+            val returning = session(center, 77L)
+            val published = returning.publish(item("reply-$it"))
+            clearing.join(2_000)
+            if (published) {
+                assertTrue(center.texts().isNotEmpty(),
+                    "a delivery reported as published must still be on screen")
+            }
+        }
+    }
+
     @Test fun twoSessionsForTheSameAccountNeverShareADeliveryTag() {
         val center = RecordingNotificationCenter()
         val first = session(center)
