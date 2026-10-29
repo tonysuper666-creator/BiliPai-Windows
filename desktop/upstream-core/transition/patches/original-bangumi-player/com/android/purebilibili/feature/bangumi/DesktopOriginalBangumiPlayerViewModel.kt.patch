@@ -1,0 +1,39 @@
+# Retirable: remove this patch and its producer registration together when the upstream
+# BangumiPlayerViewModel migrates after TON-1028. Preserve native recovery ownership checks.
+--- a/original-bangumi-player/com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiPlayerViewModel.kt
++++ b/original-bangumi-player/com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiPlayerViewModel.kt
+@@ -622,8 +622,7 @@
+             var dashManifest: String? = null
+             var durlSegmentUrls: List<String> = emptyList()
+             val requestedAudioQuality = desktopRecoveryState?.requestedAudioQuality ?: resolveConfiguredAudioQuality()
+-            val effectiveAudioQuality = if (desktopRecoveryState?.audioFallbackReason == AudioFallbackReason.DECODER_ERROR &&
+-                desktopRecoveryState.selectedAudioQuality == AUDIO_QUALITY_AUTO) AUDIO_QUALITY_AUTO else requestedAudioQuality
++            val effectiveAudioQuality = if (desktopRecoveryState?.audioFallbackReason == AudioFallbackReason.DECODER_ERROR) AUDIO_QUALITY_AUTO else requestedAudioQuality
+             val audioSelection = playData.dash?.let { dash ->
+                 resolveAudioStreamSelection(
+                     dash = dash,
+@@ -800,13 +799,12 @@
+                 acceptDescription = qualityOptions.labels,
+                 cachedDash = playData.dash,
+                 cachedPlayData = playData,
+-                requestedAudioQuality = if (desktopRecoveryState?.audioFallbackReason == AudioFallbackReason.DECODER_ERROR &&
+-                    desktopRecoveryState.selectedAudioQuality == AUDIO_QUALITY_AUTO) desktopRecoveryState.requestedAudioQuality
++                requestedAudioQuality = if (desktopRecoveryState?.audioFallbackReason == AudioFallbackReason.DECODER_ERROR) desktopRecoveryState.requestedAudioQuality
+                     else audioSelection?.requestedPreferenceId ?: requestedAudioQuality,
+                 selectedAudioQuality = audioSelection?.selectedPreferenceId ?: -1,
+                 availableAudioQualities = audioSelection?.availableOptions.orEmpty(),
+                 audioFallbackReason = if (desktopRecoveryState?.audioFallbackReason == AudioFallbackReason.DECODER_ERROR &&
+-                    audioSelection?.selectedPreferenceId == AUDIO_QUALITY_AUTO) AudioFallbackReason.DECODER_ERROR
++                    audioSelection?.selected?.kind == com.android.purebilibili.feature.video.playback.audio.AudioStreamKind.STANDARD) AudioFallbackReason.DECODER_ERROR
+                     else audioSelection?.fallbackReason,
+                 isPreview = playData.isPreview,
+                 hasPaid = playData.hasPaid,
+@@ -1263,7 +1261,7 @@
+         val audioUrl = selection.selected?.track?.getValidUrl()
+             ?.takeIf { it.isNotBlank() }
+             ?: return false
+-        if (desktopPublication != null && selection.selectedPreferenceId != AUDIO_QUALITY_AUTO) return false
++        if (desktopPublication != null && selection.selected?.kind != com.android.purebilibili.feature.video.playback.audio.AudioStreamKind.STANDARD) return false
+         val selectedVideo = if (desktopPublication != null)
+             dash.video.firstOrNull { videoUrl == it.getValidUrl() || videoUrl in it.backupUrl.orEmpty() } ?: return false
+         else dash.video.firstOrNull { it.getValidUrl() == videoUrl }
