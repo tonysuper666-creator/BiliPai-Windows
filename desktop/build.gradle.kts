@@ -2922,7 +2922,7 @@ val generateUpstreamBuildConfig by tasks.registering {
         val text = script.readText()
         val versionCode = Regex("""versionCode\s*=\s*(\d+)""").find(text)?.groupValues?.get(1)
             ?: throw GradleException("app/build.gradle.kts: versionCode not found")
-        val versionName = Regex("""versionName\s*=\s*"([^"]+)"""").find(text)?.groupValues?.get(1)
+        val versionName = Regex("versionName\\s*=\\s*\"([^\"]+)\"").find(text)?.groupValues?.get(1)
             ?: throw GradleException("app/build.gradle.kts: versionName not found")
         val target = output.get().asFile
         target.deleteRecursively()
