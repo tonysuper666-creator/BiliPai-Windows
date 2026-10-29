@@ -3438,6 +3438,7 @@ val appCoreUpstreamTestsNotRun: Map<String, String> = mapOf(
 // AudioBarReturnPolicyTest also needs MiniPlayerManager; PiliPlayerMenuPolicyTest needs Media3
 // track selection. Those two new upstream suites join with the playback-port migration.
 val migratedVideoFeatureTestPaths = setOf(
+    "com/android/purebilibili/feature/video/ambient/AmbientFramePolicyTest.kt",
     "com/android/purebilibili/feature/video/ui/overlay/PlayerControlSafeAreaTest.kt",
     "com/android/purebilibili/feature/video/ui/components/PlayerPanelViewportTest.kt",
     "com/android/purebilibili/feature/video/screen/VideoDetailCoverContentScaleTest.kt",
