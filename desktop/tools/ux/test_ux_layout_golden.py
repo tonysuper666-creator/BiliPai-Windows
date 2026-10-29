@@ -134,13 +134,13 @@ class RailKotlinTableTest(unittest.TestCase):
         order = [name for name, _g, _b in ITEMS]
         self.assertEqual(fixed, [name for name in order if name in fixed], "the fixed numbers follow the display order")
 
-    def test_rail_labels_equal_the_vendored_labels(self):
+    def test_rail_labels_keep_upstream_names_except_the_desktop_home_entry(self):
         labels = shell.rail_labels(STRINGS_TEXT)
         self.assertEqual({name for name, _g, _b in ITEMS}, set(labels))
         vendored = dict(BOTTOM_NAV)
         for name, _group, bottom in ITEMS:
             if bottom is not None:
-                self.assertEqual(vendored[bottom], labels[name], name)
+                self.assertEqual("首页" if name == "HOME" else vendored[bottom], labels[name], name)
 
     def test_the_rows_the_rail_adds_and_the_chrome_texts_equal_the_existing_rail(self):
         chrome = shell.read(shell.ROOT_CHROME)

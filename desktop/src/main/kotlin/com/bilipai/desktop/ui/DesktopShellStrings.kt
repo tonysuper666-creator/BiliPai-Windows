@@ -5,8 +5,8 @@ package com.bilipai.desktop.ui
  * now-playing bar and the shortcut list. The UX source hygiene suite exempts only files named *Strings.kt from its
  * no-Chinese rule, so no other shell file may spell a label out.
  *
- * The rail labels of the BottomNavItem rows equal BottomNavItem.label (test_ux_layout_golden.py compares them with
- * the vendored enum), so a row may take its label from either place. The rows the rail adds itself have their own.
+ * The desktop Home row is named 首页; other BottomNavItem rows retain their upstream names.
+ * The rows the rail adds itself have their own labels.
  */
 internal object DesktopShellStrings {
     /** The accessible name of the rail container header, in both modes. */
@@ -56,7 +56,7 @@ internal object DesktopShellStrings {
     fun zoomToast(percent: Int): String = "界面缩放 ${percent}%"
 
     fun railLabel(item: DesktopRailItem): String = when (item) {
-        DesktopRailItem.HOME -> "推荐"
+        DesktopRailItem.HOME -> "首页"
         DesktopRailItem.DYNAMIC -> "动态"
         DesktopRailItem.LIVE -> "直播"
         DesktopRailItem.LISTEN_VIDEO -> "听视频"
