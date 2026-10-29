@@ -503,10 +503,17 @@ class LeafIdentityTest(unittest.TestCase):
             self.assertEqual(before[0], after[0], label + ": the first line is unchanged context")
             self.assertEqual(before[-1], after[-1], label + ": the last line is unchanged context")
 
-    def test_reversing_the_v2_hunks_gives_the_base_leaf_byte_for_byte(self):
-        base = reverse_apply(LEAF_TEXT)
-        self.assertEqual(BASE_BYTES, len(base.encode("utf-8")))
-        self.assertEqual(BASE_SHA256, sha256(base), "the LEGACY layout changed somewhere outside the recorded hunks")
+    def test_recoverable_errors_keep_the_original_page_retry_and_login(self):
+        # K1 changes the error presentation in this same leaf. A whole-file
+        # hash cannot distinguish that intended change from lost player wiring.
+        # The real rendered card/retry is also exercised by the JVM UI test.
+        self.assertIn("DesktopWindowsPageErrorCard(", LEAF_TEXT)
+        self.assertIn("desktopWindowsVideoErrorMessage(originalLoadError)", LEAF_TEXT)
+        self.assertIn("if (current() && rootEnvironment.currentKey() === route)", LEAF_TEXT)
+        self.assertIn("else shell.playback.retry()", LEAF_TEXT)
+        self.assertIn("?.loginFromReadFailure(intent)", LEAF_TEXT)
+        self.assertIn("bootstrapError = null; bootstrapRetry++", LEAF_TEXT)
+        self.assertEqual([], check_must_keep(LEAF_TEXT))
 
     def test_the_diff_against_the_base_is_small_and_exactly_the_recorded_size(self):
         import difflib

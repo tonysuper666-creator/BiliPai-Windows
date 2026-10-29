@@ -166,7 +166,7 @@ class RailKotlinTableTest(unittest.TestCase):
         for needle in (
             'fun zoomToast(percent: Int): String = "界面缩放 ${percent}%"',
             'fun unreadAnnouncement(label: String, unreadCount: Int): String = "${label}，${unreadCount} 条未读"',
-            'fun collapsedTooltip(label: String, number: Int?): String = if (number == null) label else "$label (Ctrl+$number)"',
+            'fun collapsedTooltip(label: String, number: Int?): String = if (number == null) label else "$label　Ctrl+$number"',
             'fun expandedTooltip(number: Int?): String? = if (number == null) null else "Ctrl+$number"',
             "DesktopRailGroup.BROWSE -> GROUP_BROWSE DesktopRailGroup.LIBRARY -> GROUP_LIBRARY DesktopRailGroup.FOOTER -> null",
         ):
@@ -181,7 +181,7 @@ class RailKotlinTableTest(unittest.TestCase):
                        'const val GROUP_LIBRARY = "媒体库"', 'const val RAIL_COLLAPSE = "折叠导航栏"',
                        'const val RAIL_EXPAND = "展开导航栏"', 'const val RAIL_AUTO = "导航栏恢复为自动"',
                        'const val RAIL_SAVE_FAILED = "无法保存导航栏设置"', '"界面缩放 ${percent}%"', '"${label}，${unreadCount} 条未读"',
-                       '"$label (Ctrl+$number)"', '"Ctrl+$number"'):
+                       '"$label　Ctrl+$number"', '"Ctrl+$number"'):
             self.assertEqual(1, STRINGS_TEXT.count(needle), needle)
         self.assertEqual({"BROWSE", "LIBRARY", "FOOTER"}, set(re.findall(r"DesktopRailGroup\.([A-Z]+) ->", STRINGS_TEXT)))
 

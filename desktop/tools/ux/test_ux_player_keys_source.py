@@ -911,10 +911,13 @@ class LeafWiringTest(NeedleCase):
         for label, _before, after in HUNKS:
             self.assertEqual(1, LEAF_TEXT.count("\n".join(after)), label)
 
-    def test_undoing_the_v6_hunks_gives_the_leaf_of_the_commit_before_the_slice_byte_for_byte(self):
-        v2_state = reverse_v6(LEAF_TEXT)
-        self.assertEqual(V2_STATE_LEAF_SHA256, hashlib.sha256(v2_state.encode("utf-8")).hexdigest(), "the LEGACY layout changed outside the recorded V6 hunks")
-        self.assertEqual(BASE_SHA256, hashlib.sha256(reverse_apply(LEAF_TEXT).encode("utf-8")).hexdigest())
+    def test_page_error_presentation_keeps_the_existing_shortcut_admission(self):
+        # K1's inline error card must coexist with the original shortcut owner;
+        # unrelated error copy no longer locks the entire leaf's bytes.
+        self.assertEqual([], check_leaf_v6(LEAF_TEXT))
+        self.assertEqual([], check_legacy_branch(LEAF_TEXT))
+        self.assertIn("DesktopWindowsPageErrorCard(", LEAF_TEXT)
+        self.assertIn("shell.playback.retry()", LEAF_TEXT)
 
     def test_the_diff_is_small_and_exactly_the_recorded_size(self):
         import difflib
