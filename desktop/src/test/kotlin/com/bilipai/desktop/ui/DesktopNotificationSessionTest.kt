@@ -50,6 +50,49 @@ class DesktopNotificationSessionTest {
         assertFalse(session.publish(item("reply-2")), "a detached session publishes nothing")
     }
 
+    @Test fun turningNotificationsBackOnResumesPublishingInTheSameSession() {
+        val center = RecordingCenter()
+        val session = DesktopNotificationSession(7L, center)
+        assertTrue(session.pause())
+        assertEquals(listOf("messages-7"), center.cleared)
+        assertFalse(session.publish(item("reply-1")), "paused means paused")
+
+        session.resume()
+        assertTrue(session.publish(item("reply-2")), "re-enabling must publish again without a new port")
+        assertEquals(setOf("reply-2"), center.visible)
+    }
+
+    @Test fun aGroupCleanupThatNeverFinishedCannotDeleteWhatWasPublishedAfterResuming() {
+        val center = RecordingCenter().apply { failClear = true }
+        val session = DesktopNotificationSession(7L, center)
+        session.publish(item("reply-1"))
+        assertFalse(session.pause(), "the surface refused the group withdrawal")
+        assertTrue(session.isCleanupPending())
+
+        center.failClear = false
+        session.resume()
+        assertTrue(session.publish(item("reply-2")))
+
+        // The abandoned group withdrawal must not run now: it would take reply-2 with it.
+        DesktopNotificationCleanup.retryOutstanding()
+        assertEquals(setOf("reply-2"), center.visible)
+        assertTrue(center.cleared.isEmpty())
+    }
+
+    @Test fun aLateToastWhoseWithdrawalFailsIsFinishedByTheDriver() {
+        val center = RecordingCenter().apply { failRemove = true }
+        val session = DesktopNotificationSession(7L, center)
+        center.onShow = { session.retire() }
+        assertFalse(session.publish(item("reply-1")))
+        assertEquals(setOf("reply-1"), session.pendingWithdrawals())
+
+        // No manual session call: the driver alone must pick the pending key up.
+        center.failRemove = false
+        assertEquals(0, DesktopNotificationCleanup.retryOutstanding())
+        assertEquals(emptySet(), session.pendingWithdrawals())
+        assertTrue(center.visible.isEmpty())
+    }
+
     @Test fun aRefusedGroupCleanupIsRememberedAndFinishesOnRetry() {
         val center = RecordingCenter().apply { failClear = true }
         val session = DesktopNotificationSession(7L, center)
@@ -61,26 +104,11 @@ class DesktopNotificationSessionTest {
         assertEquals(setOf("reply-1"), center.visible)
 
         center.failClear = false
-        assertTrue(session.retryCleanup())
+        assertEquals(0, DesktopNotificationCleanup.retryOutstanding())
         assertFalse(session.isCleanupPending())
         assertEquals(2, session.clearAttemptCount())
         assertTrue(center.visible.isEmpty())
         assertEquals(listOf("messages-7"), center.cleared)
-    }
-
-    @Test fun aLateDeliveryAfterRetirementIsTakenBackEvenWhenThatFailsFirst() {
-        val center = RecordingCenter().apply { failRemove = true }
-        val session = DesktopNotificationSession(7L, center)
-        center.onShow = { session.retire() }
-
-        assertFalse(session.publish(item("reply-1")))
-        assertEquals(setOf("reply-1"), session.pendingWithdrawals())
-        assertEquals(setOf("reply-1"), center.visible)
-
-        center.failRemove = false
-        session.retryCleanup()
-        assertEquals(emptySet(), session.pendingWithdrawals())
-        assertTrue(center.visible.isEmpty(), "the late toast must not survive the retirement")
     }
 
     @Test fun aRoundWithNoNewWorkStillRetriesTheKeysItCouldNotWithdraw() {
@@ -104,6 +132,7 @@ class DesktopNotificationSessionTest {
         assertEquals(listOf("messages-7"), center.cleared)
         assertEquals(1, session.clearAttemptCount())
         assertFalse(session.isCleanupPending())
+        assertFalse(session.isPublishing())
     }
 
     @Test fun aFreshProcessClearsEvenThoughItPublishedNothing() {
@@ -113,10 +142,11 @@ class DesktopNotificationSessionTest {
         assertTrue(center.shown.isEmpty())
     }
 
-    @Test fun nothingIsPublishedAfterRetirement() {
+    @Test fun nothingIsPublishedAfterRetirementAndResumeCannotUndoIt() {
         val center = RecordingCenter()
         val session = DesktopNotificationSession(7L, center)
         session.retire()
+        session.resume()
         assertFalse(session.publish(item("reply-1")))
         assertTrue(center.shown.isEmpty())
     }
