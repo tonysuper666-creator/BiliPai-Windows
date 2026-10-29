@@ -1,0 +1,46 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/video/ui/section/OwnerDecoratedAvatar.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/video/ui/section/OwnerDecoratedAvatar.kt
+@@ -16,7 +16,7 @@
+ import androidx.compose.ui.Modifier
+ import androidx.compose.ui.draw.clip
+ import androidx.compose.ui.layout.ContentScale
+-import androidx.compose.ui.platform.LocalContext
++import coil3.compose.LocalPlatformContext
+ import androidx.compose.ui.unit.Dp
+ import androidx.compose.ui.unit.dp
+ import coil3.compose.AsyncImage
+@@ -26,7 +26,7 @@
+ import com.android.purebilibili.core.ui.resolveUserAvatarCornerMark
+ import com.android.purebilibili.core.util.FormatUtils
+ import com.android.purebilibili.data.repository.CreatorCardStats
+-import com.android.purebilibili.data.repository.VideoRepository
++import com.bilipai.desktop.ui.LocalDesktopOriginalVideoInfoBindings
+ 
+ /**
+  * UP 头像：头像框挂件 + 大会员/认证角标。
+@@ -43,6 +43,7 @@
+     faceModifier: Modifier = Modifier,
+     contentDescription: String? = null,
+ ) {
++    val VideoRepository = LocalDesktopOriginalVideoInfoBindings.current
+     val displayFace = faceUrl
+     var card by remember(ownerMid) { mutableStateOf<CreatorCardStats?>(null) }
+     LaunchedEffect(ownerMid) {
+@@ -56,7 +57,7 @@
+     val vipStatus = card?.vipStatus ?: fallbackVipStatus
+     Box(modifier = modifier, contentAlignment = Alignment.Center) {
+         AsyncImage(
+-            model = ImageRequest.Builder(LocalContext.current)
++            model = ImageRequest.Builder(LocalPlatformContext.current)
+                 .data(FormatUtils.fixImageUrl(displayFace))
+                 .crossfade(true)
+                 .build(),
+@@ -69,7 +70,7 @@
+         )
+         if (hasPendant) {
+             AsyncImage(
+-                model = ImageRequest.Builder(LocalContext.current)
++                model = ImageRequest.Builder(LocalPlatformContext.current)
+                     .data(FormatUtils.fixImageUrl(pendantUrl))
+                     .crossfade(true)
+                     .build(),

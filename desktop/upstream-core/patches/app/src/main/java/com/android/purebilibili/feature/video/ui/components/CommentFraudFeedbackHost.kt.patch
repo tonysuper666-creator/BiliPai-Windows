@@ -1,0 +1,35 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/video/ui/components/CommentFraudFeedbackHost.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/video/ui/components/CommentFraudFeedbackHost.kt
+@@ -1,13 +1,12 @@
+ package com.android.purebilibili.feature.video.ui.components
+ 
+-import android.widget.Toast
+ import androidx.compose.runtime.Composable
+ import androidx.compose.runtime.LaunchedEffect
+ import androidx.compose.runtime.getValue
+ import androidx.compose.runtime.mutableStateOf
+ import androidx.compose.runtime.remember
+ import androidx.compose.runtime.setValue
+-import androidx.compose.ui.platform.LocalContext
++import com.bilipai.desktop.ui.LocalDesktopCommentBindings
+ import com.android.purebilibili.data.model.CommentFraudStatus
+ import com.android.purebilibili.data.repository.resolveCommentFraudLightMessage
+ import com.android.purebilibili.data.repository.shouldShowCommentFraudResultDialog
+@@ -19,14 +18,14 @@
+     commentViewModel: VideoCommentViewModel,
+     enabled: Boolean = true,
+ ) {
+-    val context = LocalContext.current
++    val platform = LocalDesktopCommentBindings.current
+     var dialogStatus by remember(commentViewModel, enabled) { mutableStateOf<CommentFraudStatus?>(null) }
+-    LaunchedEffect(commentViewModel, enabled, context.applicationContext) {
++    LaunchedEffect(commentViewModel, enabled, platform) {
+         if (!enabled) return@LaunchedEffect
+         commentViewModel.fraudEvent.collect { status ->
+             val lightMessage = resolveCommentFraudLightMessage(status)
+             if (lightMessage != null) {
+-                Toast.makeText(context, lightMessage, Toast.LENGTH_SHORT).show()
++                if (platform.isOwned()) platform.showFeedback(lightMessage)
+             } else if (shouldShowCommentFraudResultDialog(status)) {
+                 dialogStatus = status
+             }
