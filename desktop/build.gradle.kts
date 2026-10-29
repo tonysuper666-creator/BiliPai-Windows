@@ -263,6 +263,9 @@ val appCoreLaterSteps: Map<String, String> = mapOf(
     "core/store/LocalPlaylistStore.kt" to "Room AudioLibraryDatabase; the desktop music library is JSON, moves with the audio feature (M4c)",
     "core/store/PlayHistoryStore.kt" to "Room AudioLibraryDatabase; the desktop music library is JSON, moves with the audio feature (M4c)",
     "core/store/UpdateHighlightsStore.kt" to "reads feature/settings/highlights; moves with the settings feature (M4d)",
+    "core/events/BrandSuccessEvents.kt" to "the desktop success feedback carries its own origin model (DesktopBrandSuccessOrigin) that upstream's events do not have; moves with the feedback host",
+    "core/ui/BrandSuccessFeedbackHost.kt" to "the desktop success feedback carries its own origin model (DesktopBrandSuccessOrigin); moves with BrandSuccessEvents",
+    "core/store/FavoriteFolderCoverCache.kt" to "the desktop keeps one cover cache per favorites origin; moves with the favorites feature (M4d)",
     "core/ui/components/AppLiquidAwareTabRow.kt" to "calls feature/home's liquid tab components with their new parameters; moves with the home feature (M4b)",
 )
 // Files of a later-step area that other migrated files already need and that have no legacy copy (pure declarations).
@@ -2562,6 +2565,13 @@ val transitionPatchDirectory = file("upstream-core/transition/patches")
 val transitionPatchedGeneratedFiles = fileTree(transitionPatchDirectory) { include("**/*.patch") }.files
     .map { it.relativeTo(transitionPatchDirectory).invariantSeparatorsPath.removeSuffix(".patch") }.toSortedSet()
 val transitionPatchProducers = mapOf(
+    "video-tablet-full" to "extractOriginalVideoTabletFull",
+    "original-root-home-navigation" to "extractOriginalRootHomeNavigation",
+    "home-page" to "extractOriginalHomePage",
+    "appearance" to "extractUpstreamAppearance",
+    "original-offline-player" to "extractOriginalOfflinePlayer",
+    "home-bangumi-page" to "extractOriginalHomeBangumiPage",
+    "bgm-detail" to "extractBgmDetail",
     "settings-search" to "extractUpstreamSettingsSearch",
     "settings-privacy" to "extractUpstreamSettingsPrivacy",
     "plugins" to "extractUpstreamPlugins",

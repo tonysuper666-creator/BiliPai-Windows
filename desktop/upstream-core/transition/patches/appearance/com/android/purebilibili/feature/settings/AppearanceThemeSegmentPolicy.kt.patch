@@ -1,0 +1,21 @@
+--- a/appearance/com/android/purebilibili/feature/settings/AppearanceThemeSegmentPolicy.kt
++++ b/appearance/com/android/purebilibili/feature/settings/AppearanceThemeSegmentPolicy.kt
+@@ -40,17 +40,17 @@
+         AppSegmentOption(AppLanguage.FOLLOW_SYSTEM, followSystemLabel),
+         AppSegmentOption(AppLanguage.SIMPLIFIED_CHINESE, simplifiedChineseLabel),
+         AppSegmentOption(AppLanguage.TRADITIONAL_CHINESE_TAIWAN, traditionalChineseLabel),
+         AppSegmentOption(AppLanguage.ENGLISH, englishLabel)
+     )
+ }
+ 
+ internal fun resolveColorStyleOptions(): List<AppSegmentOption<PaletteStyle>> {
+-    return (listOf(PaletteStyle.TonalSpot) + PaletteStyle.entries.filterNot { it == PaletteStyle.TonalSpot })
++    return (listOf(PaletteStyle.TonalSpot) + PaletteStyle.KnownStyles.filterNot { it == PaletteStyle.TonalSpot })
+         .map { style ->
+             AppSegmentOption(style, style.name)
+         }
+ }
+ 
+ internal fun resolveColorSpecOptions(
+     style: PaletteStyle = PaletteStyle.TonalSpot,
+     seedStyle: SeedPaletteStyle = SeedPaletteStyle.Standard,

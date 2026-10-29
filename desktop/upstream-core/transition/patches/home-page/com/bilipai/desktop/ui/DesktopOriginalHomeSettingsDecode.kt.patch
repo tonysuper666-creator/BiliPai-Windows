@@ -1,0 +1,23 @@
+--- a/home-page/com/bilipai/desktop/ui/DesktopOriginalHomeSettingsDecode.kt
++++ b/home-page/com/bilipai/desktop/ui/DesktopOriginalHomeSettingsDecode.kt
+@@ -279,18 +279,18 @@
+     preferences: DesktopPreferenceSnapshot,
+     defaultTabletUseSidebar: Boolean = false
+ ): AppNavigationSettings {
+     val orderString = preferences[KEY_BOTTOM_BAR_ORDER] ?: DesktopOriginalHomeSettingConstants.DEFAULT_BOTTOM_BAR_ORDER
+     val tabsString = preferences[KEY_BOTTOM_BAR_VISIBLE_TABS] ?: DesktopOriginalHomeSettingConstants.DEFAULT_BOTTOM_BAR_VISIBLE_TABS
+     val order = orderString.split(",").filter { it.isNotBlank() }
+     val visible = tabsString.split(",").filter { it.isNotBlank() }
+     return AppNavigationSettings(
+-        bottomBarVisibilityMode = DesktopFavoriteNavigationTypes.BottomBarVisibilityMode.fromValue(
+-            preferences[KEY_BOTTOM_BAR_VISIBILITY_MODE] ?: DesktopFavoriteNavigationTypes.BottomBarVisibilityMode.ALWAYS_VISIBLE.value
++        bottomBarVisibilityMode = com.android.purebilibili.core.store.SettingsManager.BottomBarVisibilityMode.fromValue(
++            preferences[KEY_BOTTOM_BAR_VISIBILITY_MODE] ?: com.android.purebilibili.core.store.SettingsManager.BottomBarVisibilityMode.ALWAYS_VISIBLE.value
+         ),
+         orderedVisibleTabIds = resolveOrderedVisibleBottomTabs(order, visible),
+         bottomBarItemColors = parseBottomBarItemColors(preferences[KEY_BOTTOM_BAR_ITEM_COLORS] ?: ""),
+         bottomBarItemLabels = parseBottomBarItemLabels(
+             preferences[bottomBarItemLabelsPreferencesKey].orEmpty()
+         ),
+         tabletUseSidebar = preferences[KEY_TABLET_NAVIGATION_MODE] ?: defaultTabletUseSidebar,
+         sidebarExpanded = preferences[KEY_SIDEBAR_EXPANDED] ?: true,

@@ -9,7 +9,6 @@ import com.android.purebilibili.core.ui.blur.BlurIntensity
 import com.android.purebilibili.core.ui.components.AppTagChipSize
 import com.android.purebilibili.feature.video.subtitle.SubtitleAutoPreference
 import com.android.purebilibili.feature.video.subtitle.normalizeSubtitleVerticalOffsetFraction
-import com.bilipai.desktop.ui.DesktopFavoriteNavigationTypes
 import com.android.purebilibili.feature.settings.*
 import com.android.purebilibili.feature.settings.share.*
 import com.android.purebilibili.feature.video.danmaku.normalizeDanmakuOpacity
@@ -98,7 +97,7 @@ internal object DesktopSettingsShareWindowsCatalog {
         for (mode in listOf("light", "dark")) for (role in listOf("background", "primary_text", "secondary_text", "control_accent")) {
             color(appearance, "theme_${mode}_$role")
         }
-        names(appearance, "theme_color_style", PaletteStyle.entries.map { it.name }.toSet())
+        names(appearance, "theme_color_style", PaletteStyle.KnownStyles.map { it.name }.toSet())
         names(appearance, "theme_color_spec", ColorSpec.SpecVersion.values().map { it.name }.toSet())
         intRange(appearance, "theme_color_index", ThemeColors.indices)
         names(appearance, "app_icon_style", AppIconStyle.entries.map { it.name }.toSet())
@@ -211,7 +210,7 @@ internal object DesktopSettingsShareWindowsCatalog {
         ints(navigation, "home_top_layout_order", HomeTopLayoutOrder.entries.map { it.value }.toSet())
         ints(navigation, "home_header_collapse_mode", HomeHeaderCollapseMode.entries.map { it.value }.toSet())
         ints(navigation, "common_list_header_collapse_mode", CommonListHeaderCollapseMode.entries.map { it.value }.toSet())
-        ints(navigation, "bottom_bar_visibility_mode", DesktopFavoriteNavigationTypes.BottomBarVisibilityMode.entries.map { it.value }.toSet())
+        ints(navigation, "bottom_bar_visibility_mode", com.android.purebilibili.core.store.SettingsManager.BottomBarVisibilityMode.entries.map { it.value }.toSet())
         val bottomIds = DesktopOriginalHomeSettingConstants.DEFAULT_BOTTOM_BAR_ORDER.split(",").toSet() +
             setOf("STORY", "FAVORITE", "LIVE", "WATCHLATER", "SETTINGS", "PLUGINS")
         ids(navigation, "bottom_bar_order", bottomIds, emptyAllowed = false)

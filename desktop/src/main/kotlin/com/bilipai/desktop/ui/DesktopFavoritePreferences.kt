@@ -23,8 +23,8 @@ class DesktopFavoritePreferences(val store:DesktopPluginStore) {
     val personalRecapEnabled=DesktopPersonalRecapSettings.getSubscriptionRecapEnabled(DesktopPluginContext(store))
     val showOnlineCount=values.map{it[favoriteBooleanKey("show_online_count")]?:false}.distinctUntilChanged()
     private fun navigation(snapshot:DesktopPreferenceSnapshot)=DesktopFavoriteNavigationAppearance(
-        DesktopFavoriteNavigationTypes.BottomBarVisibilityMode.fromValue(snapshot[favoriteIntKey("bottom_bar_visibility_mode")]
-            ?:DesktopFavoriteNavigationTypes.BottomBarVisibilityMode.ALWAYS_VISIBLE.value))
+        com.android.purebilibili.core.store.SettingsManager.BottomBarVisibilityMode.fromValue(snapshot[favoriteIntKey("bottom_bar_visibility_mode")]
+            ?:com.android.purebilibili.core.store.SettingsManager.BottomBarVisibilityMode.ALWAYS_VISIBLE.value))
     val navigationSettings=values.map(::navigation).distinctUntilChanged()
     fun initialNavigationSettings()=navigation(values.value)
     val homeFeedCardStyle=values.map{HomeFeedCardStyle.fromValue(it[favoriteIntKey("home_feed_card_style")]?:HomeFeedCardStyle.BILIPAI.value)}.distinctUntilChanged()

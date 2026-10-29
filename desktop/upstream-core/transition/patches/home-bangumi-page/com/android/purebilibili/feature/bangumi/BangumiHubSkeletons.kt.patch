@@ -1,0 +1,44 @@
+--- a/home-bangumi-page/com/android/purebilibili/feature/bangumi/BangumiHubSkeletons.kt
++++ b/home-bangumi-page/com/android/purebilibili/feature/bangumi/BangumiHubSkeletons.kt
+@@ -27,18 +27,18 @@
+ import com.android.purebilibili.core.ui.skeleton.rememberContentSkeletonBlockColor
+ import com.android.purebilibili.core.ui.skeleton.rememberContentSkeletonPulse
+ 
+ @Composable
+ internal fun BangumiPosterSkeletonItem(
+     modifier: Modifier = Modifier,
+     blockColor: Color? = null,
+ ) {
+-    val pulse = if (blockColor == null) rememberContentSkeletonPulse() else 0f
+-    val color = blockColor ?: rememberContentSkeletonBlockColor(pulse)
++    val pulse = rememberContentSkeletonPulse()
++    val color: () -> Color = blockColor?.let { fixed -> { fixed } } ?: rememberContentSkeletonBlockColor(pulse)
+     Column(modifier = modifier.fillMaxWidth()) {
+         ContentSkeletonBlock(
+             color = color,
+             shape = AppShapes.container(ContainerLevel.Chip),
+             modifier = Modifier
+                 .fillMaxWidth()
+                 .aspectRatio(BANGUMI_POSTER_ASPECT_RATIO),
+         )
+@@ -60,18 +60,18 @@
+ }
+ 
+ @Composable
+ internal fun BangumiPosterSkeletonRow(
+     modifier: Modifier = Modifier,
+     itemCount: Int = 4,
+     blockColor: Color? = null,
+ ) {
+-    val pulse = if (blockColor == null) rememberContentSkeletonPulse() else 0f
+-    val color = blockColor ?: rememberContentSkeletonBlockColor(pulse)
++    val pulse = rememberContentSkeletonPulse()
++    val color: () -> Color = blockColor?.let { fixed -> { fixed } } ?: rememberContentSkeletonBlockColor(pulse)
+     LazyRow(
+         modifier = modifier.fillMaxWidth(),
+         contentPadding = PaddingValues(horizontal = 2.dp),
+         horizontalArrangement = Arrangement.spacedBy(10.dp),
+         userScrollEnabled = false,
+     ) {
+         items(List(itemCount.coerceAtLeast(0)) { it }, key = { "bangumi_poster_row_skeleton_$it" }) {
+             BangumiPosterSkeletonItem(

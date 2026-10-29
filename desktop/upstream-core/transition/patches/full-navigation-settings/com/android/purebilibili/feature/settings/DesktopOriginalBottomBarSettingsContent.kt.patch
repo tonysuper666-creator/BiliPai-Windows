@@ -1,0 +1,28 @@
+--- a/full-navigation-settings/com/android/purebilibili/feature/settings/DesktopOriginalBottomBarSettingsContent.kt
++++ b/full-navigation-settings/com/android/purebilibili/feature/settings/DesktopOriginalBottomBarSettingsContent.kt
+@@ -406,23 +406,23 @@
+                 Box(modifier = Modifier.entrance()) {
+                     AppPreferenceSectionTitle("底部导航")
+                 }
+             }
+ 
+             item {
+                 Box(modifier = Modifier.entrance()) {
+                     AppPreferenceGroup {
+-                        val visibilityMode by DesktopOriginalFullNavigationSettings.getBottomBarVisibilityMode(context).collectAsState(initial = com.bilipai.desktop.ui.DesktopFavoriteNavigationTypes.BottomBarVisibilityMode.ALWAYS_VISIBLE)
++                        val visibilityMode by DesktopOriginalFullNavigationSettings.getBottomBarVisibilityMode(context).collectAsState(initial = com.android.purebilibili.core.store.SettingsManager.BottomBarVisibilityMode.ALWAYS_VISIBLE)
+                         SettingsSingleChoicePreference(
+                             icon = rememberDesktopNavigationMaterialSymbol("ms_visibility_24"),
+                             iconTint = com.android.purebilibili.core.theme.iOSOrange,
+                             title = "显示模式",
+                             subtitle = visibilityMode.description,
+-                            options = com.bilipai.desktop.ui.DesktopFavoriteNavigationTypes.BottomBarVisibilityMode.entries.map { mode ->
++                            options = com.android.purebilibili.core.store.SettingsManager.BottomBarVisibilityMode.entries.map { mode ->
+                                 AppSegmentOption(mode, mode.label)
+                             },
+                             selectedValue = visibilityMode,
+                             onSelectionChange = { mode ->
+                                 scope.launch { DesktopOriginalFullNavigationSettings.setBottomBarVisibilityMode(context, mode) }
+                             },
+                         )
+                         AppPreferenceDivider()

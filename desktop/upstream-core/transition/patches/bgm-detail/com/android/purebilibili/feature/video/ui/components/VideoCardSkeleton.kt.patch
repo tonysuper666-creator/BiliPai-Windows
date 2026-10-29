@@ -1,0 +1,62 @@
+--- a/bgm-detail/com/android/purebilibili/feature/video/ui/components/VideoCardSkeleton.kt
++++ b/bgm-detail/com/android/purebilibili/feature/video/ui/components/VideoCardSkeleton.kt
+@@ -41,54 +41,54 @@
+             .background(MaterialTheme.colorScheme.surfaceVariant)
+             .padding(bottom = AppSpacingTokens.Medium)
+     ) {
+         Box(
+             modifier = Modifier
+                 .fillMaxWidth()
+                 .aspectRatio(coverAspectRatio)
+                 .clip(cardShape)
+-                .background(blockColor)
++                .background(blockColor())
+         )
+ 
+         Spacer(modifier = Modifier.height(10.dp))
+ 
+         Column(modifier = Modifier.padding(horizontal = AppSpacingTokens.Small)) {
+             Box(
+                 modifier = Modifier
+                     .fillMaxWidth(0.9f)
+                     .height(14.dp)
+                     .clip(detailShape)
+-                    .background(blockColor)
++                    .background(blockColor())
+             )
+             Spacer(modifier = Modifier.height(6.dp))
+             Box(
+                 modifier = Modifier
+                     .fillMaxWidth(0.6f)
+                     .height(14.dp)
+                     .clip(detailShape)
+-                    .background(blockColor)
++                    .background(blockColor())
+             )
+ 
+             Spacer(modifier = Modifier.height(10.dp))
+ 
+             Row(
+                 modifier = Modifier.fillMaxWidth(),
+                 verticalAlignment = Alignment.CenterVertically
+             ) {
+                 Box(
+                     modifier = Modifier
+                         .size(16.dp)
+                         .clip(CircleShape)
+-                        .background(blockColor)
++                        .background(blockColor())
+                 )
+                 Spacer(modifier = Modifier.width(6.dp))
+                 Box(
+                     modifier = Modifier
+                         .width(60.dp)
+                         .height(12.dp)
+                         .clip(detailShape)
+-                        .background(blockColor)
++                        .background(blockColor())
+                 )
+             }
+         }
+     }
+ }

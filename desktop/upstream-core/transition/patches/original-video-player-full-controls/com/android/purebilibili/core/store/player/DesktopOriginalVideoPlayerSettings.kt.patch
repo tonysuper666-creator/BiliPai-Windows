@@ -1,0 +1,119 @@
+--- a/original-video-player-full-controls/com/android/purebilibili/core/store/player/DesktopOriginalVideoPlayerSettings.kt
++++ b/original-video-player-full-controls/com/android/purebilibili/core/store/player/DesktopOriginalVideoPlayerSettings.kt
+@@ -11,19 +11,19 @@
+ import com.android.purebilibili.core.store.nearestPlaybackSpeed
+ import com.android.purebilibili.core.store.normalizeLongPressSpeed
+ import com.android.purebilibili.core.store.normalizePlaybackSpeedOptions
+ import com.android.purebilibili.core.store.resolvePlaybackSpeedOptions
+ import com.android.purebilibili.core.store.normalizePlaybackSpeed as normalizePlaybackSpeedPolicy
+ import kotlinx.coroutines.flow.Flow
+ import kotlinx.coroutines.flow.map
+ import kotlinx.coroutines.flow.combine
+-private val defaultAudioQualityPreferenceKey = intPreferencesKey("default_audio_quality")
+-private val longPressSpeedPreferenceKey = floatPreferencesKey("long_press_speed")
+-private val playbackSpeedOptionsPreferenceKey = stringPreferencesKey("playback_speed_options")
++private val legacyDefaultAudioQualityPreferenceKey = intPreferencesKey("default_audio_quality")
++private val legacyLongPressSpeedPreferenceKey = floatPreferencesKey("long_press_speed")
++private val legacyPlaybackSpeedOptionsPreferenceKey = stringPreferencesKey("playback_speed_options")
+ object DesktopOriginalVideoPlayerSettings {
+ 
+     enum class PlayerInsightMode {
+         OFF,
+         SMART,
+         ALWAYS
+     }
+ 
+@@ -81,17 +81,17 @@
+             defaultSpeed = defaultSpeed,
+             rememberLastSpeed = rememberLastSpeed,
+             lastSpeed = lastSpeed
+         )
+     }
+ 
+     internal fun playbackSpeedOptions(preferences: Preferences): List<Float> =
+         resolvePlaybackSpeedOptions(
+-            storedValues = preferences[playbackSpeedOptionsPreferenceKey],
++            storedValues = preferences[legacyPlaybackSpeedOptionsPreferenceKey],
+             legacyDefaultSpeed = preferences[keyDefaultPlaybackSpeed] ?: 1f,
+             legacyLastSpeed = preferences[keyLastPlaybackSpeed] ?: 1f
+         )
+ 
+     fun getPlaybackSpeedOptions(context: Context): Flow<List<Float>> =
+         context.settingsDataStore.data.map(::playbackSpeedOptions)
+ 
+     suspend fun addPlaybackSpeedOption(context: Context, speed: Float) {
+@@ -110,44 +110,44 @@
+ 
+     private suspend fun updatePlaybackSpeedOptions(
+         context: Context,
+         change: (List<Float>) -> List<Float>
+     ) {
+         com.bilipai.desktop.ui.DesktopOriginalPlaybackPreferenceOperation.runOriginalSetter(context) {
+         val preferences = context.settingsDataStore.edit { values ->
+             val options = normalizePlaybackSpeedOptions(change(playbackSpeedOptions(values)))
+-            values[playbackSpeedOptionsPreferenceKey] = options.joinToString(",")
++            values[legacyPlaybackSpeedOptionsPreferenceKey] = options.joinToString(",")
+             reconcilePlaybackSpeedSelections(values, options)
+         }
+         syncPlaybackSpeedCache(context, preferences)
+     
+         }
+     }
+ 
+     internal fun reconcilePlaybackSpeedSelections(
+         values: MutablePreferences,
+         options: List<Float> = playbackSpeedOptions(values)
+     ) {
+         values[keyDefaultPlaybackSpeed] =
+             nearestPlaybackSpeed(values[keyDefaultPlaybackSpeed] ?: 1f, options)
+-        values[longPressSpeedPreferenceKey] =
+-            normalizeLongPressSpeed(values[longPressSpeedPreferenceKey] ?: DEFAULT_LONG_PRESS_SPEED)
++        values[legacyLongPressSpeedPreferenceKey] =
++            normalizeLongPressSpeed(values[legacyLongPressSpeedPreferenceKey] ?: DEFAULT_LONG_PRESS_SPEED)
+         values[keyLastPlaybackSpeed] =
+             nearestPlaybackSpeed(values[keyLastPlaybackSpeed] ?: 1f, options)
+     }
+ 
+     fun getLongPressSpeed(context: Context): Flow<Float> =
+         DesktopOriginalLongPressSpeedSettings.getLongPressSpeed(context.pluginContext)
+ 
+ 
+     suspend fun setLongPressSpeed(context: Context, speed: Float) {
+         com.bilipai.desktop.ui.DesktopOriginalPlaybackPreferenceOperation.runOriginalSetter(context) {
+         context.settingsDataStore.edit { preferences ->
+-            preferences[longPressSpeedPreferenceKey] = normalizeLongPressSpeed(speed)
++            preferences[legacyLongPressSpeedPreferenceKey] = normalizeLongPressSpeed(speed)
+         }
+     
+         }
+     }
+ 
+     fun getDefaultPlaybackSpeed(context: Context): Flow<Float> = context.settingsDataStore.data
+         .map { preferences ->
+             nearestPlaybackSpeed(
+@@ -264,23 +264,23 @@
+         return normalizePlayerVolume(
+             context.getSharedPreferences(playbackSpeedCachePrefs, Context.MODE_PRIVATE)
+                 .getFloat(cacheKeyPreferredPlayerVolume, 1.0f)
+         )
+     }
+ 
+     fun getDefaultAudioQuality(context: Context): Flow<Int> = context.settingsDataStore.data
+         .map { preferences ->
+-            preferences[defaultAudioQualityPreferenceKey] ?: DEFAULT_AUDIO_QUALITY_FOLLOW_LAST
++            preferences[legacyDefaultAudioQualityPreferenceKey] ?: DEFAULT_AUDIO_QUALITY_FOLLOW_LAST
+         }
+ 
+     suspend fun setDefaultAudioQuality(context: Context, value: Int) {
+         com.bilipai.desktop.ui.DesktopOriginalPlaybackPreferenceOperation.runOriginalSetter(context) {
+         context.settingsDataStore.edit { preferences ->
+-            preferences[defaultAudioQualityPreferenceKey] = value
++            preferences[legacyDefaultAudioQualityPreferenceKey] = value
+         }
+         context.getSharedPreferences(audioQualityCachePrefs, Context.MODE_PRIVATE)
+             .edit()
+             .putInt(cacheKeyDefaultAudioQuality, value)
+             .commit()
+     
+         }
+     }

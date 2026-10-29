@@ -1,0 +1,23 @@
+--- a/original-favorites/com/android/purebilibili/feature/list/HistoryPersonalCard.kt
++++ b/original-favorites/com/android/purebilibili/feature/list/HistoryPersonalCard.kt
+@@ -101,18 +101,18 @@
+ internal fun canAddHistoryToWatchLater(item: HistoryItem): Boolean =
+     item.business == HistoryBusiness.ARCHIVE && item.videoItem.id > 0L
+ 
+ @Composable
+ internal fun HistoryPersonalCardSkeleton(
+     modifier: Modifier = Modifier,
+     blockColor: Color? = null,
+ ) {
+-    val pulse = if (blockColor == null) rememberContentSkeletonPulse() else 0f
+-    val color = blockColor ?: rememberContentSkeletonBlockColor(pulse)
++    val pulse = rememberContentSkeletonPulse()
++    val color: () -> Color = blockColor?.let { fixed -> { fixed } } ?: rememberContentSkeletonBlockColor(pulse)
+     val blockShape = AppShapes.container(ContainerLevel.Card)
+ 
+     HorizontalVideoCardFrame(
+         modifier = modifier
+             .fillMaxWidth(),
+         coverContent = {
+             ContentSkeletonBlock(
+                 color = color,

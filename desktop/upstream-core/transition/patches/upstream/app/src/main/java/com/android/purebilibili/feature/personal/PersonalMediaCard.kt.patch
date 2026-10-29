@@ -1,0 +1,23 @@
+--- a/upstream/app/src/main/java/com/android/purebilibili/feature/personal/PersonalMediaCard.kt
++++ b/upstream/app/src/main/java/com/android/purebilibili/feature/personal/PersonalMediaCard.kt
+@@ -198,18 +198,18 @@
+     }
+ }
+ 
+ @Composable
+ internal fun PersonalMediaCardSkeleton(
+     modifier: Modifier = Modifier,
+     blockColor: Color? = null,
+ ) {
+-    val pulse = if (blockColor == null) rememberContentSkeletonPulse() else 0f
+-    val color = blockColor ?: rememberContentSkeletonBlockColor(pulse)
++    val pulse = rememberContentSkeletonPulse()
++    val color: () -> Color = blockColor?.let { fixed -> { fixed } } ?: rememberContentSkeletonBlockColor(pulse)
+     val minimumHeight = resolvePersonalMediaCardMinHeightDp(LocalDensity.current.fontScale).dp
+     val cardShape = AppShapes.container(ContainerLevel.Card)
+ 
+     AppSurface(
+         modifier = modifier
+             .fillMaxWidth(),
+         shape = cardShape,
+         color = AppSurfaceTokens.cardContainer(),
