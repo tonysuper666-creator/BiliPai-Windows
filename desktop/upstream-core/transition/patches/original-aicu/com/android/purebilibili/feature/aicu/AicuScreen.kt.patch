@@ -1,0 +1,21 @@
+--- a/original-aicu/com/android/purebilibili/feature/aicu/AicuScreen.kt
++++ b/original-aicu/com/android/purebilibili/feature/aicu/AicuScreen.kt
+@@ -63,17 +63,17 @@
+     val context = LocalDesktopAicuBindings.current
+     val foreground = LocalDesktopDetailForeground.current
+     val factory = remember(context.settingsContext) {
+         object : ViewModelProvider.Factory {
+             @Suppress("UNCHECKED_CAST")
+             override fun <T : ViewModel> create(modelClass: KClass<T>, extras: CreationExtras): T =
+                 AicuViewModel(
+                     AicuRepository(),
+-                    DataStoreAicuConsentStore(context.settingsContext),
++                    DataStoreAicuConsentStore(context.settingsContext.androidContext),
+                     trendingLoader = { AicuRepository().getTrending() },
+                 ) as T
+         }
+     }
+     val model: AicuViewModel = viewModel(factory = factory)
+     val state by model.state.collectAsStateWithLifecycle()
+     var emoteMap by remember { mutableStateOf<Map<String, String>>(emptyMap()) }
+     val renderEmoteMap = remember(emoteMap) {

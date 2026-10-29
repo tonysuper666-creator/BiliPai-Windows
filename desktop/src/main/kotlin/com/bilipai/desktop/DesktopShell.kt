@@ -412,7 +412,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         DesktopPrivacySectionBindings(globalPluginContext, community.searchPreferences)
     }
     val defaultSearchHintEnabled by remember(globalPluginContext) {
-        SearchHintSettingsStore.isEnabled(globalPluginContext)
+        SearchHintSettingsStore.isEnabled(globalPluginContext.asAndroidContext())
     }.collectAsState(initial = true)
     val settingsNavigator = remember(backupUpdateHold) { DesktopSettingsNavigator { target ->
         target !in setOf(SettingsSearchTarget.WEBDAV_BACKUP, SettingsSearchTarget.SETTINGS_SHARE) ||

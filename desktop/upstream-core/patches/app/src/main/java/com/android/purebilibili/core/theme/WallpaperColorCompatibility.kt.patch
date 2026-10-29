@@ -1,0 +1,75 @@
+--- a/com/android/purebilibili/core/theme/WallpaperColorCompatibility.kt
++++ b/com/android/purebilibili/core/theme/WallpaperColorCompatibility.kt
+@@ -1,13 +1,11 @@
+ package com.android.purebilibili.core.theme
+ 
+-import android.app.WallpaperManager
+ import android.content.Context
+-import android.provider.Settings
+ import androidx.compose.runtime.Composable
+ import androidx.compose.runtime.State
+ import androidx.compose.runtime.produceState
+ import androidx.compose.runtime.compositionLocalOf
+ import androidx.compose.ui.graphics.Color
+ import androidx.datastore.preferences.core.edit
+ import androidx.datastore.preferences.core.intPreferencesKey
+ import androidx.lifecycle.Lifecycle
+@@ -15,17 +13,16 @@
+ import androidx.lifecycle.repeatOnLifecycle
+ import com.android.purebilibili.core.store.settingsDataStore
+ import com.materialkolor.hct.Hct
+ import kotlinx.coroutines.Dispatchers
+ import kotlinx.coroutines.flow.collectLatest
+ import kotlinx.coroutines.flow.distinctUntilChanged
+ import kotlinx.coroutines.flow.map
+ import kotlinx.coroutines.withContext
+-import org.json.JSONObject
+ import kotlin.math.abs
+ import kotlin.math.min
+ 
+ internal data class WallpaperColorCompatibility(
+     val wallpaperId: Int = -1,
+     val seed: Color? = null,
+     val wallpaperColorsAvailable: Boolean = false,
+     val manual: Boolean = false,
+@@ -53,36 +50,20 @@
+     if (colorSource != "home_wallpaper") return false
+     val wallpaper = Hct.fromInt(wallpaperArgb)
+     val system = Hct.fromInt(systemArgb)
+     val distance = abs(wallpaper.hue - system.hue)
+     return wallpaper.chroma >= 12 && system.chroma >= 12 &&
+         min(distance, 360 - distance) > 60
+ }
+ 
+-@androidx.annotation.RequiresApi(android.os.Build.VERSION_CODES.S)
+-private fun readWallpaperColors(context: Context): WallpaperColorCompatibility {
+-    val manager = runCatching { WallpaperManager.getInstance(context) }.getOrNull()
+-        ?: return WallpaperColorCompatibility()
+-    val id = runCatching { manager.getWallpaperId(WallpaperManager.FLAG_SYSTEM) }.getOrDefault(-1)
+-    val colors = runCatching { manager.getWallpaperColors(WallpaperManager.FLAG_SYSTEM) }.getOrNull()
+-        ?: return WallpaperColorCompatibility(wallpaperId = id)
+-    val primary = colors.primaryColor.toArgb()
+-    val candidates = listOfNotNull(colors.primaryColor, colors.secondaryColor, colors.tertiaryColor)
+-    val seed = if (Hct.fromInt(primary).chroma >= 12) primary else
+-        candidates.maxByOrNull { Hct.fromInt(it.toArgb()).chroma }?.toArgb() ?: primary
+-    val colorSource = runCatching {
+-        JSONObject(Settings.Secure.getString(context.contentResolver, "theme_customization_overlay_packages") ?: "{}")
+-            .optString("android.theme.customization.color_source")
+-    }.getOrNull()
+-    val useFallback = shouldUseWallpaperColorFallback(
+-        seed, context.getColor(android.R.color.system_accent1_500), colorSource,
+-    )
+-    return WallpaperColorCompatibility(id, if (useFallback) Color(seed) else null, true)
+-}
++// Desktop: no system wallpaper colors (WallpaperManager) and no theme overlay source; the automatic result is "no
++// wallpaper colors", as on Android before 12. The manual seed below still applies.
++@Suppress("UNUSED_PARAMETER")
++private fun readWallpaperColors(context: Context): WallpaperColorCompatibility = WallpaperColorCompatibility()
+ 
+ /** UI owns cancellation. Wallpaper IPC runs off main; source changes discard old results.
+  * This shared color input applies to glass on/off alike, without changing native layout. */
+ @Composable
+ internal fun rememberWallpaperColorCompatibility(enabled: Boolean, refreshToken: Int): State<WallpaperColorCompatibility> {
+     val context = androidx.compose.ui.platform.LocalContext.current
+     val lifecycleOwner = LocalLifecycleOwner.current
+     return produceState(WallpaperColorCompatibility(), context, lifecycleOwner, enabled, refreshToken) {

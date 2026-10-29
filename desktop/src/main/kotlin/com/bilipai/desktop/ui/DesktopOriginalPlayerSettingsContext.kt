@@ -26,6 +26,8 @@ class DesktopOriginalPlayerSettingsContext internal constructor(
 ) {
     companion object { const val MODE_PRIVATE = 0 }
     internal val settingsDataStore get() = DesktopOriginalPlayerSettingsDataStore(this)
+    /** This owner as the Android Context upstream code takes (settings_prefs is Root's settings document, admitted here). */
+    internal val androidContext: android.content.Context by lazy { DesktopOriginalSettingsAndroidContext(this) }
     internal val videoOverlay: DesktopOriginalVideoOverlayPlatform get() {
         requireCurrent()
         return checkNotNull(videoOverlayPlatform) { "Root original video overlay platform is required" }

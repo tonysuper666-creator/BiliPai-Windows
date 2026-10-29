@@ -1,5 +1,7 @@
 package com.bilipai.desktop.ui
 
+import com.bilipai.desktop.plugins.asAndroidContext
+
 import androidx.compose.runtime.*
 import androidx.navigationevent.NavigationEventInfo
 import androidx.navigationevent.compose.*
@@ -176,7 +178,7 @@ internal object DesktopOriginalSearchSettings {
     fun isSearchHistoryRecordingEnabledSync(context: DesktopOriginalSearchEnvironment) = context.isSearchHistoryRecordingEnabledSync()
     suspend fun setSearchHistoryRecordingEnabled(context: DesktopOriginalSearchEnvironment, value: Boolean) = context.setSearchHistoryRecordingEnabled(value)
     fun isEasterEggEnabledSync(context: DesktopOriginalSearchEnvironment) = DesktopOriginalSearchPreferenceMethods.isEasterEggEnabledSync(context.originalSettings)
-    fun getDefaultHintEnabled(context: DesktopOriginalSearchEnvironment) = SearchHintSettingsStore.isEnabled(context.pluginContext)
+    fun getDefaultHintEnabled(context: DesktopOriginalSearchEnvironment) = SearchHintSettingsStore.isEnabled(context.pluginContext.asAndroidContext())
     suspend fun setGridColumnCountCompact(context: DesktopOriginalSearchEnvironment, value: Int) = DesktopOriginalSearchPreferenceMethods.setGridColumnCountCompact(context.originalSettings,value)
     suspend fun setGridColumnCount(context: DesktopOriginalSearchEnvironment, value: Int) = DesktopOriginalSearchPreferenceMethods.setGridColumnCount(context.originalSettings,value)
 }

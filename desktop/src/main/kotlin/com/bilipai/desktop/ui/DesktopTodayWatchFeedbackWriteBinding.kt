@@ -1,5 +1,7 @@
 package com.bilipai.desktop.ui
 
+import com.bilipai.desktop.plugins.asAndroidContext
+
 import com.android.purebilibili.core.store.TodayWatchFeedbackSnapshot
 import com.android.purebilibili.core.store.TodayWatchFeedbackStore
 import com.bilipai.desktop.plugins.DesktopPluginContext
@@ -40,7 +42,7 @@ internal class DesktopTodayWatchFeedbackWriteBinding(
     }
     fun getSnapshot(): TodayWatchFeedbackSnapshot {
         requireCurrent()
-        return TodayWatchFeedbackStore.getSnapshot(context).also { requireCurrent() }
+        return TodayWatchFeedbackStore.getSnapshot(context.asAndroidContext()).also { requireCurrent() }
     }
     suspend fun saveSnapshot(snapshot: TodayWatchFeedbackSnapshot) = withContext(Dispatchers.IO) {
         val caller = currentCoroutineContext()
@@ -54,7 +56,7 @@ internal class DesktopTodayWatchFeedbackWriteBinding(
                 }) throw CancellationException("TodayWatch recommendation commit retired")
             return permit
         }
-        TodayWatchFeedbackStore.saveSnapshot(context, snapshot, ::checkRequest, ::acquirePermit)
+        TodayWatchFeedbackStore.saveSnapshot(context.asAndroidContext(), snapshot, ::checkRequest, ::acquirePermit)
     }
     suspend fun clear() = withContext(Dispatchers.IO) {
         val caller = currentCoroutineContext()
@@ -68,6 +70,6 @@ internal class DesktopTodayWatchFeedbackWriteBinding(
                 }) throw CancellationException("TodayWatch recommendation clear retired")
             return permit
         }
-        TodayWatchFeedbackStore.clear(context, ::checkRequest, ::acquirePermit)
+        TodayWatchFeedbackStore.clear(context.asAndroidContext(), ::checkRequest, ::acquirePermit)
     }
 }

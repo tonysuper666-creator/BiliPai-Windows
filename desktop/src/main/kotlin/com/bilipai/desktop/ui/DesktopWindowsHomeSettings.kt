@@ -1,5 +1,7 @@
 package com.bilipai.desktop.ui
 
+import com.bilipai.desktop.plugins.asAndroidContext
+
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import com.android.purebilibili.core.store.*
@@ -17,7 +19,7 @@ internal fun DesktopWindowsHomeSettings(state: HomeSettings, viewModel: DesktopO
     environment: DesktopProfileEnvironment, onBack: () -> Unit) {
     val wallpaper = desktopWindowsSettingsValue(remember(context) { Preferences.getHomeWallpaperUri(context) })
     val dynamicCommentPreview = desktopWindowsSettingsValue(remember(context) {
-        com.android.purebilibili.core.store.home.DynamicSettingsStore.observeCommentPreviewVisible(context.pluginContext)
+        com.android.purebilibili.core.store.home.DynamicSettingsStore.observeCommentPreviewVisible(context.pluginContext.asAndroidContext())
     })
     val wallpaperViewModel = remember(context, environment) { DesktopOriginalHomeWallpaperViewModel(environment, context) }
     val saveState by wallpaperViewModel.splashSaveState.collectAsState()
@@ -93,7 +95,7 @@ internal fun DesktopWindowsHomeSettings(state: HomeSettings, viewModel: DesktopO
             DesktopWindowsSettingsSwitch("显示动态评论预览", dynamicCommentPreview,
                 description = "在动态卡片中显示相关评论提示，点赞提示仍按原样显示。") { value ->
                 actions.launch {
-                    com.android.purebilibili.core.store.home.DynamicSettingsStore.setCommentPreviewVisible(context, value)
+                    com.android.purebilibili.core.store.home.DynamicSettingsStore.setCommentPreviewVisible(context.androidContext, value)
                 }
             }
         }

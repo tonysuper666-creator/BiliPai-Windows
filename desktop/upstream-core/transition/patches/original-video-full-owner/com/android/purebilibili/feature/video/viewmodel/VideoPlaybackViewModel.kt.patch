@@ -1,0 +1,33 @@
+--- a/original-video-full-owner/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt
++++ b/original-video-full-owner/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt
+@@ -1,9 +1,11 @@
+ package com.android.purebilibili.feature.video.viewmodel
++
++import com.bilipai.desktop.plugins.asAndroidContext
+ 
+ import com.android.purebilibili.feature.video.usecase.*
+ 
+ import com.android.purebilibili.core.cooldown.PlaybackCooldownManager
+ import com.android.purebilibili.core.plugin.SkipAction
+ import com.android.purebilibili.core.store.TodayWatchFeedbackSnapshot
+ import com.android.purebilibili.core.store.TodayWatchFeedbackStore
+ import com.android.purebilibili.core.store.TodayWatchProfileStore
+@@ -10128,17 +10130,17 @@
+         } else {
+             currentPositionSec - lastCreatorSignalPositionSec
+         }
+         val safeDelta = rawDelta.coerceIn(0L, 45L)
+         lastCreatorSignalPositionSec = currentPositionSec
+         if (safeDelta <= 0L) return
+ 
+         TodayWatchProfileStore.recordWatchProgress(
+-            context = context.pluginContext,
++            context = context.pluginContext.asAndroidContext(),
+             mid = mid,
+             creatorName = current.info.owner.name,
+             deltaWatchSec = safeDelta
+         )
+     }
+     
+     fun toast(
+         msg: String,

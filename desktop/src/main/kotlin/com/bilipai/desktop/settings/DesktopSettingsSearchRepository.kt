@@ -1,5 +1,7 @@
 package com.bilipai.desktop.settings
 
+import com.bilipai.desktop.plugins.asAndroidContext
+
 import com.android.purebilibili.core.store.SettingsSearchHistoryStore
 import com.android.purebilibili.feature.settings.SettingsSearchHistoryOperations
 import com.bilipai.desktop.plugins.*
@@ -16,7 +18,7 @@ import java.util.concurrent.ConcurrentHashMap
 /** Same original string key/JSON history; one supplied shared settings backing. */
 class DesktopSettingsSearchRepository(context: DesktopPluginContext, privacyModeEnabled: () -> Boolean) {
     private val operations = SettingsSearchHistoryOperations(context, privacyModeEnabled)
-    val history: Flow<List<String>> = SettingsSearchHistoryStore.observe(context)
+    val history: Flow<List<String>> = SettingsSearchHistoryStore.observe(context.asAndroidContext())
     suspend fun record(query: String) = operations.recordSearchQuery(query)
     suspend fun delete(query: String) = operations.deleteSearchHistory(query)
     suspend fun clear() = operations.clearSearchHistory()

@@ -1,5 +1,7 @@
 package com.bilipai.desktop.settings
 
+import com.bilipai.desktop.plugins.asAndroidContext
+
 import com.android.purebilibili.core.store.DesktopPrivacyAuthenticationSettings
 import com.android.purebilibili.core.store.SearchHintSettingsStore
 import com.bilipai.desktop.data.DesktopSearchPreferences
@@ -26,13 +28,13 @@ class DesktopPrivacySectionBindings(
     val searchPreferences: DesktopSearchPreferences,
 ) {
     val personalRecapEnabled = com.bilipai.desktop.ui.DesktopPersonalRecapSettings.getSubscriptionRecapEnabled(context)
-    val defaultHintEnabled: Flow<Boolean> = SearchHintSettingsStore.isEnabled(context)
+    val defaultHintEnabled: Flow<Boolean> = SearchHintSettingsStore.isEnabled(context.asAndroidContext())
     val authenticationConfigured: Flow<Boolean> = DesktopPrivacyAuthenticationSettings.getPrivacyContentAuthenticationEnabled(context)
     private val _error = MutableStateFlow<String?>(null)
     val error: StateFlow<String?> = _error.asStateFlow()
 
     suspend fun setDefaultHintEnabled(enabled: Boolean): Boolean = write {
-        SearchHintSettingsStore.setEnabled(context, enabled)
+        SearchHintSettingsStore.setEnabled(context.asAndroidContext(), enabled)
     }
     suspend fun setPersonalRecapEnabled(settings: com.bilipai.desktop.ui.DesktopOriginalPlayerSettingsContext, enabled: Boolean): Boolean = write {
         require(settings.pluginContext.store === context.store) { "Recap settings must use Root's existing Store" }

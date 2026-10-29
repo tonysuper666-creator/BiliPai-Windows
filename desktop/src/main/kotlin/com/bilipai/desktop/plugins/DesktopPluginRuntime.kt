@@ -1,5 +1,7 @@
 package com.bilipai.desktop.plugins
 
+import com.bilipai.desktop.plugins.asAndroidContext
+
 import com.android.purebilibili.core.plugin.*
 import com.android.purebilibili.core.plugin.json.JsonPluginManager
 import com.android.purebilibili.core.plugin.json.JsonRulePlugin
@@ -229,9 +231,9 @@ class DesktopPluginRuntime(val store: DesktopPluginStore,
 
     fun buildRecommendations(request: RecommendationRequest): List<RecommendationResult> =
         PluginManager.getEnabledPlugins(RecommendationPluginApi::class).map { it.buildRecommendations(request) }
-    fun creatorSignals() = TodayWatchProfileStore.getCreatorSignals(DesktopPluginRepositoryBinding.recommendationContext())
+    fun creatorSignals() = TodayWatchProfileStore.getCreatorSignals(DesktopPluginRepositoryBinding.recommendationContext().asAndroidContext())
     fun recordCreatorWatch(mid: Long, creator: String, deltaSeconds: Long) =
-        TodayWatchProfileStore.recordWatchProgress(DesktopPluginRepositoryBinding.recommendationContext(), mid, creator, deltaSeconds)
+        TodayWatchProfileStore.recordWatchProgress(DesktopPluginRepositoryBinding.recommendationContext().asAndroidContext(), mid, creator, deltaSeconds)
 
     fun filterFeedItems(items: List<VideoItem>, kind: FeedKind = FeedKind.GENERIC): List<VideoItem> =
         if (closing.get()) items else JsonPluginManager.filterVideos(PluginManager.filterFeedItems(items, kind))

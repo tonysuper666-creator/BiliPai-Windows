@@ -1,7 +1,11 @@
-# upstream added SubtitleAutoPreference.CHINESE_ONLY; both when-branches use the upstream v0.6.7 texts
 --- a/whole-playback-settings/generated/com/android/purebilibili/feature/settings/PlaybackSettingsScreen.kt
 +++ b/whole-playback-settings/generated/com/android/purebilibili/feature/settings/PlaybackSettingsScreen.kt
-@@ -1359,6 +1359,7 @@
+@@ -1354,16 +1354,17 @@
+         .collectAsStateWithLifecycle(initialValue = com.android.purebilibili.core.store.DesktopOriginalPlaybackSettingsPreferences
+                 .DEFAULT_COMMENT_COLLAPSED_REPLY_PREVIEW_LIMIT
+         )
+     val subtitlePreferenceDescription = when (subtitleAutoPreference) {
+         SubtitleAutoPreference.OFF -> "默认关闭字幕"
          SubtitleAutoPreference.ON -> "默认开启（优先当前可用轨道）"
          SubtitleAutoPreference.WITHOUT_AI -> "仅自动启用非 AI 字幕"
          SubtitleAutoPreference.AUTO -> "静音时可自动启用 AI 字幕"
@@ -9,7 +13,17 @@
      }
  
      AppPreferenceGroup {
-@@ -1477,6 +1478,7 @@
+         // --- Click to Play ---
+         val clickToPlayEnabled by com.android.purebilibili.core.store.DesktopOriginalPlaybackSettingsPreferences
+             .getClickToPlay(context).collectAsStateWithLifecycle(initialValue = true)
+ 
+ 	        AppSwitchPreference(
+@@ -1472,16 +1473,17 @@
+             AppPreferenceDivider()
+             SettingsSingleChoicePreference(
+                 title = "自动启用字幕：${
+                     when (subtitleAutoPreference) {
+                         SubtitleAutoPreference.OFF -> "关闭"
                          SubtitleAutoPreference.ON -> "开启"
                          SubtitleAutoPreference.WITHOUT_AI -> "无 AI"
                          SubtitleAutoPreference.AUTO -> "自动"
@@ -17,3 +31,42 @@
                      }
                  }",
                  subtitle = subtitlePreferenceDescription,
+                 options = listOf(
+                     AppSegmentOption(SubtitleAutoPreference.OFF, "关闭"),
+                     AppSegmentOption(SubtitleAutoPreference.ON, "开启"),
+                     AppSegmentOption(SubtitleAutoPreference.WITHOUT_AI, "无 AI"),
+                     AppSegmentOption(SubtitleAutoPreference.AUTO, "自动")
+@@ -1693,31 +1695,31 @@
+                 viewModel.toggleDoubleTapLike(it)
+                 //  [埋点] 设置变更追踪
+                 viewModel.logSettingChange("double_tap_like", it.toString())
+             },
+             iconTint = com.android.purebilibili.core.theme.iOSPink
+         )
+         AppPreferenceDivider()
+         val favoriteQuickSaveDefaultFolder by com.android.purebilibili.core.store.FavoriteInteractionSettingsStore
+-            .getQuickSaveDefaultFolder(context)
++            .getQuickSaveDefaultFolder(context.androidContext)
+             .collectAsStateWithLifecycle(initialValue = false)
+         AppSwitchPreference(
+             icon = rememberSettingsSemanticIcon(SettingsIconRole.FAVORITE_TAP_MODE),
+             title = "点按收藏进默认收藏夹",
+             subtitle = if (favoriteQuickSaveDefaultFolder) {
+                 "点按直接收藏到默认收藏夹，长按可选择收藏夹"
+             } else {
+                 "点按打开收藏夹选择"
+             },
+             checked = favoriteQuickSaveDefaultFolder,
+             onCheckedChange = {
+                 scope.launch {
+                     com.android.purebilibili.core.store.FavoriteInteractionSettingsStore
+-                        .setQuickSaveDefaultFolder(context, it)
++                        .setQuickSaveDefaultFolder(context.androidContext, it)
+                 }
+             },
+             iconTint = com.android.purebilibili.core.theme.iOSYellow
+         )
+         AppPreferenceDivider()
+         AppSwitchPreference(
+             icon = rememberSettingsSemanticIcon(SettingsIconRole.AUTO_SKIP_OP_ED),
+             title = "自动跳过片头片尾",

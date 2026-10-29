@@ -1,7 +1,6 @@
 package androidx.compose.ui.platform
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 
 /**
  * Desktop LocalContext for upstream app code: the Android Context of the settings owner the desktop page already
@@ -13,6 +12,6 @@ object LocalContext {
     val current: android.content.Context
         @Composable get() {
             val settings = com.bilipai.desktop.ui.LocalDesktopOriginalPlayerSettingsContext.current
-            return remember(settings) { com.bilipai.desktop.ui.DesktopOriginalSettingsAndroidContext(settings) }
+            return settings.androidContext
         }
 }

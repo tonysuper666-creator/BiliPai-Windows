@@ -1,5 +1,7 @@
 package com.bilipai.desktop.ui
 
+import com.bilipai.desktop.plugins.asAndroidContext
+
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.foundation.background
@@ -147,7 +149,7 @@ internal fun DesktopWindowsNavigationDisplay(
     val dynamicImagePreviewTextVisible by com.android.purebilibili.core.store.DesktopDynamicCardSettings
         .getDynamicImagePreviewTextVisible(environment.context).collectAsStateWithLifecycle(initialValue = true)
     val dynamicCommentPreviewVisible by com.android.purebilibili.core.store.home.DynamicSettingsStore
-        .observeCommentPreviewVisible(environment.context).collectAsStateWithLifecycle(initialValue = false)
+        .observeCommentPreviewVisible(environment.context.asAndroidContext()).collectAsStateWithLifecycle(initialValue = false)
     val globalWallpaperVisible = LocalGlobalWallpaperBackdropVisible.current
     val stackSnapshot = backStack.toList()
     val clockPhase = videoCardClock.phase

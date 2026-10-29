@@ -1,0 +1,33 @@
+--- a/settings-search/com/android/purebilibili/feature/settings/SettingsSearchHistoryOperations.kt
++++ b/settings-search/com/android/purebilibili/feature/settings/SettingsSearchHistoryOperations.kt
+@@ -1,25 +1,27 @@
+ // GENERATED from app/src/main/java/com/android/purebilibili/feature/settings/SettingsViewModel.kt; do not edit.
+ // LF-normalized SHA-256: eda6a70ef0e32386580c96badf27ea808d3a29af08acf2628e3439aecf5ad787
+ package com.android.purebilibili.feature.settings
++
++import com.bilipai.desktop.plugins.asAndroidContext
+ import com.bilipai.desktop.plugins.DesktopPluginContext
+ internal class SettingsSearchHistoryOperations(private val context:DesktopPluginContext,private val privacyModeEnabled:()->Boolean){
+ suspend fun recordSearchQuery(query: String) {
+     run {
+         if (!privacyModeEnabled()) {
+-            com.android.purebilibili.core.store.SettingsSearchHistoryStore.record(context, query)
++            com.android.purebilibili.core.store.SettingsSearchHistoryStore.record(context.asAndroidContext(), query)
+         }
+     }
+ }
+ 
+ suspend fun deleteSearchHistory(query: String) {
+     run {
+-        com.android.purebilibili.core.store.SettingsSearchHistoryStore.delete(context, query)
++        com.android.purebilibili.core.store.SettingsSearchHistoryStore.delete(context.asAndroidContext(), query)
+     }
+ }
+ 
+ suspend fun clearSearchHistory() {
+     run {
+-        com.android.purebilibili.core.store.SettingsSearchHistoryStore.clear(context)
++        com.android.purebilibili.core.store.SettingsSearchHistoryStore.clear(context.asAndroidContext())
+     }
+ }
+ }

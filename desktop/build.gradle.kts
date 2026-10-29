@@ -188,11 +188,8 @@ val migratedUpstreamModules = listOf("core-data/", "network-core/") + migratedWh
 // this module, except the Android-only areas the desktop implements itself (appCoreDesktopOwned, each with the reason).
 val appJavaRoot = mergedRepositoryRoot.resolve("app/src/main/java")
 val appCoreDesktopOwned: Map<String, String> = mapOf(
-    "core/theme/AppFontFileStore.kt" to "Android 系统壁纸取色、定时深色（AlarmManager）与字体文件 ContentResolver",
     "core/theme/ScheduledDarkThemeObserver.kt" to "Android 系统壁纸取色、定时深色（AlarmManager）与字体文件 ContentResolver",
     "core/theme/SeedWallpaperColorScheme.kt" to "Android 系统壁纸取色、定时深色（AlarmManager）与字体文件 ContentResolver",
-    "core/theme/SystemWallpaperSeed.kt" to "Android 系统壁纸取色、定时深色（AlarmManager）与字体文件 ContentResolver",
-    "core/theme/WallpaperColorCompatibility.kt" to "Android 系统壁纸取色、定时深色（AlarmManager）与字体文件 ContentResolver",
     "core/cache/PlayUrlCache.kt" to "Media3 播放地址缓存；桌面播放地址由 DesktopRepository 管理",
     "core/database/AppDatabase.kt" to "Room 数据库；桌面用 JSON 存储（DesktopBlockedUpStore、DesktopCommentFraudJsonDao 等）",
     "core/database/Converters.kt" to "Room 数据库；桌面用 JSON 存储（DesktopBlockedUpStore、DesktopCommentFraudJsonDao 等）",
@@ -266,8 +263,6 @@ val appCoreLaterSteps: Map<String, String> = mapOf(
     "core/store/LocalPlaylistStore.kt" to "Room AudioLibraryDatabase; the desktop music library is JSON, moves with the audio feature (M4c)",
     "core/store/PlayHistoryStore.kt" to "Room AudioLibraryDatabase; the desktop music library is JSON, moves with the audio feature (M4c)",
     "core/store/UpdateHighlightsStore.kt" to "reads feature/settings/highlights; moves with the settings feature (M4d)",
-    "core/theme/Theme.kt" to "the theme root reads Android system wallpaper colors, time/wallpaper broadcasts, dynamic color and system " +
-        "bars; it needs a desktop replacement pinned to the upstream file",
     "core/ui/components/AppLiquidAwareTabRow.kt" to "calls feature/home's liquid tab components with their new parameters; moves with the home feature (M4b)",
 )
 // Files of a later-step area that other migrated files already need and that have no legacy copy (pure declarations).
@@ -2567,6 +2562,14 @@ val transitionPatchDirectory = file("upstream-core/transition/patches")
 val transitionPatchedGeneratedFiles = fileTree(transitionPatchDirectory) { include("**/*.patch") }.files
     .map { it.relativeTo(transitionPatchDirectory).invariantSeparatorsPath.removeSuffix(".patch") }.toSortedSet()
 val transitionPatchProducers = mapOf(
+    "settings-search" to "extractUpstreamSettingsSearch",
+    "settings-privacy" to "extractUpstreamSettingsPrivacy",
+    "plugins" to "extractUpstreamPlugins",
+    "original-video-fullscreen-pager" to "extractOriginalVideoFullscreenPager",
+    "original-video-full-owner" to "extractOriginalVideoFullOwner",
+    "original-aicu" to "extractOriginalAicu",
+    "home-viewmodel" to "extractOriginalHomeViewModel",
+    "full-navigation-settings" to "extractUpstreamFullNavigation",
     "collection-sheet" to "extractStableCollectionSheet",
     "discovery" to "extractUpstreamDiscovery",
     "dynamic-reply" to "extractUpstreamDynamicReply",

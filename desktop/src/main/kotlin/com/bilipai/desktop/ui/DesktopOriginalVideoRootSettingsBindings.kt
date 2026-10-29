@@ -20,7 +20,7 @@ internal fun desktopOriginalRootDiagnosticLoggingEnabled(context: DesktopOrigina
 internal suspend fun desktopOriginalRootSetDiagnosticLogging(
     context: DesktopOriginalPlayerSettingsContext, enabled: Boolean,
 ) {
-    editSettingsAndCommitPrefs(context, "player_settings_cache",
+    editSettingsAndCommitPrefs(context.androidContext, "player_settings_cache",
         editSettings = { this[playerBooleanPreferencesKey("player_diagnostic_logging_enabled")] = enabled },
         editPrefs = { putBoolean("player_diagnostic_logging_enabled", enabled) })
 }

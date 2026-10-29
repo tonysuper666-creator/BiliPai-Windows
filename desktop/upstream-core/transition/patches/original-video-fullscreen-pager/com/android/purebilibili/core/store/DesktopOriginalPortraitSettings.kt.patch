@@ -1,0 +1,21 @@
+--- a/original-video-fullscreen-pager/com/android/purebilibili/core/store/DesktopOriginalPortraitSettings.kt
++++ b/original-video-fullscreen-pager/com/android/purebilibili/core/store/DesktopOriginalPortraitSettings.kt
+@@ -56,17 +56,17 @@
+         .map { preferences -> preferences[KEY_PREFETCH_VIDEO] ?: false }
+ 
+ 
+     private val KEY_AUDIO_QUALITY = intPreferencesKey("audio_quality_preference")
+ 
+     suspend fun setAudioQuality(context: Context, value: Int) {
+         android.util.Log.d("SettingsManager", "📻 setAudioQuality called with: $value")
+         val result = editSettingsAndCommitPrefs(
+-            context, "quality_settings",
++            context.androidContext, "quality_settings",
+             editSettings = {
+                 this[KEY_AUDIO_QUALITY] = value
+                 android.util.Log.d("SettingsManager", "📻 setAudioQuality DataStore written: $value")
+             },
+             editPrefs = { putInt("audio_quality", value) },
+         )
+         android.util.Log.d("SettingsManager", "📻 setAudioQuality SharedPrefs committed: $value, success=$result")
+     }

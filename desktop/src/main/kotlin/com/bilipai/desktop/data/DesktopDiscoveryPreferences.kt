@@ -1,5 +1,7 @@
 package com.bilipai.desktop.data
 
+import com.bilipai.desktop.plugins.asAndroidContext
+
 import com.android.purebilibili.core.store.*
 import com.bilipai.desktop.DesktopLibrary
 import com.bilipai.desktop.plugins.DesktopPluginContext
@@ -25,7 +27,7 @@ class DesktopDiscoveryPreferences(private val root: Path = DesktopLibrary.direct
     val blockedUps: DesktopBlockedUpStore = DesktopBlockedUpStore(DesktopPluginContext(DesktopPluginStore(root)))) {
     init { blockedUps.migrateLegacyDiscoveryMids() }
     private class AccountPreferences(val context: DesktopPluginContext) {
-        val feedback = DiscoveryPreferenceState(context, "today_watch_feedback") { TodayWatchFeedbackStore.getSnapshot(context) }
+        val feedback = DiscoveryPreferenceState(context, "today_watch_feedback") { TodayWatchFeedbackStore.getSnapshot(context.asAndroidContext()) }
     }
     private val lock = Any()
     private val restoreLock = Any()
@@ -66,7 +68,7 @@ class DesktopDiscoveryPreferences(private val root: Path = DesktopLibrary.direct
         checkWritesOpen()
         val state = state(mid)
         val snapshot = state.feedback.value.withDislikedVideoFeedback(video, keywords, includeCreatorSignal = blockCreator)
-        TodayWatchFeedbackStore.saveSnapshot(state.context, snapshot)
+        TodayWatchFeedbackStore.saveSnapshot(state.context.asAndroidContext(), snapshot)
         if (blockCreator && video.creatorMid > 0) blockedUps.upsert(com.android.purebilibili.core.database.entity.BlockedUp(
             video.creatorMid, video.creatorName, "", blockedAt = video.dislikedAtMillis))
     }
@@ -79,7 +81,7 @@ class DesktopDiscoveryPreferences(private val root: Path = DesktopLibrary.direct
         else blockedUps.remove(creatorMid)
         if (!blocked && creatorMid in state.feedback.value.dislikedCreatorMids) {
             val feedback = state.feedback.value.copy(dislikedCreatorMids = state.feedback.value.dislikedCreatorMids - creatorMid)
-            TodayWatchFeedbackStore.saveSnapshot(state.context, feedback)
+            TodayWatchFeedbackStore.saveSnapshot(state.context.asAndroidContext(), feedback)
         }
     }
 
@@ -87,7 +89,7 @@ class DesktopDiscoveryPreferences(private val root: Path = DesktopLibrary.direct
         synchronized(lock) {
             checkWritesOpen()
             val state = state(mid)
-            TodayWatchFeedbackStore.clear(state.context)
+            TodayWatchFeedbackStore.clear(state.context.asAndroidContext())
         }
     }
 
