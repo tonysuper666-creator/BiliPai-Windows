@@ -7,9 +7,14 @@ from functools import lru_cache
 def _catalog():
     file=Path(__file__).with_name("v025-canonical-sources.json")
     raw=file.read_bytes()
-    if hashlib.sha256(raw).hexdigest()!="f4b73f8d202ce266749c67b09525e4c3e807190d477274219bca6f133dee8689":
+    if hashlib.sha256(raw).hexdigest()!="2600739eef5521cfef71d6af16762ccc3b9df076dad7ccb79902944f1634130f":
         raise ValueError("v025 canonical source catalog digest mismatch")
     return json.loads(raw)
+
+def _legacy_snapshot(root):
+    # Gradle materializes the pre-merge tree at <repo>/.legacy-root. Extractors
+    # still patch that snapshot; the updater inventory pins the direct-compile tree.
+    return root.name==".legacy-root"
 
 def canonical_relative(repo, relative):
     """Translate one identity without reading it; unknown/removed upstream fails."""
@@ -24,9 +29,19 @@ def canonical_relative(repo, relative):
     if not name.startswith(tuple(catalog["sourceRoots"])):
         return name  # existing desktop metadata remains at its original owner
     target=catalog["previousPaths"].get(name,name)
+    # The snapshot still contains the pre-move file. Keep that identity so the
+    # legacy pin is compared to the bytes the patch was reviewed against.
+    if _legacy_snapshot(root) and name in catalog["paths"] and (root/name).is_file():
+        target=name
     if target is None:raise ValueError("Upstream removed this original source: "+name)
     if target not in catalog["paths"]:raise ValueError("Unregistered canonical upstream source: "+target)
     return target
+
+def reviewed_sha256(repo, pin):
+    """Exact pin for the tree being read. Live and legacy hashes are not interchangeable."""
+    if _legacy_snapshot(Path(repo).resolve()) and "legacySha256" in pin:
+        return pin["legacySha256"]
+    return pin["sha256"]
 
 def canonical_source(repo, relative):
     root=Path(repo).resolve()
@@ -40,6 +55,6 @@ def canonical_source(repo, relative):
     pin=catalog["paths"][target]
     raw=destination.read_bytes()
     normalized=raw.replace(b"\r\n",b"\n") if pin["hashNormalization"]=="lf" else raw
-    if hashlib.sha256(normalized).hexdigest()!=pin["sha256"]:
+    if hashlib.sha256(normalized).hexdigest()!=reviewed_sha256(root, pin):
         raise ValueError("Canonical original source digest mismatch: "+target)
     return destination
