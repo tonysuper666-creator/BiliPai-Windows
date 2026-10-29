@@ -1,10 +1,11 @@
 package com.bilipai.desktop.ui
 
-import com.android.purebilibili.core.plugin.DesktopSingleSessionPlayerPlugin
+import com.bilipai.desktop.player.DesktopPlayerPluginSessionHandle
 import com.android.purebilibili.core.plugin.BuiltinPlugin
 import com.android.purebilibili.plugin.sdk.SkipAction
 import com.android.purebilibili.data.model.response.SponsorSegment
 import com.android.purebilibili.feature.plugin.*
+import com.bilipai.desktop.player.DesktopSponsorPlayerSession as SponsorBlockPlugin
 import com.bilipai.desktop.plugins.DesktopPlayerPluginDispatch
 import com.bilipai.desktop.plugins.DesktopPluginRuntime
 import kotlinx.coroutines.CancellationException
@@ -35,7 +36,7 @@ internal class DesktopOriginalVideoOwnerPluginBridge(
     override val sponsorBlock get() = runtime.originalSponsorBlock
 
     override fun enabledPlugins(): List<BuiltinPlugin> = runtime.plugins.value.filter { it.enabled }.map { it.plugin }
-    override fun enabledPlayerPlugins(): List<DesktopSingleSessionPlayerPlugin> = enabledPlugins().filterIsInstance<DesktopSingleSessionPlayerPlugin>()
+    override fun enabledPlayerPlugins(): List<DesktopPlayerPluginSessionHandle> = runtime.enabledPlayerSessions()
     override fun <T : BuiltinPlugin> enabledPlugins(type: KClass<T>): List<T> =
         enabledPlugins().filter { type.isInstance(it) }.map { @Suppress("UNCHECKED_CAST") (it as T) }
 
@@ -100,20 +101,20 @@ internal class DesktopOriginalVideoOwnerPluginBridge(
         val dispatch = requireDispatch(expected)
         // The same Runtime already awaited its real onVideoLoad. An adopted
         // generation must keep the original provider's segments and skipped IDs.
-        runtime.mutatePlaybackPlugin(dispatch, sponsorBlock, allowDisabledSponsor = false) { Unit }
+        runtime.ensurePlayerSessionLoaded(dispatch, sponsorBlock)
     }
     override suspend fun onSponsorDisabled(expected: DesktopOriginalVideoAcceptedPublication) {
-        runtime.mutatePlaybackPlugin(requireDispatch(expected), sponsorBlock, allowDisabledSponsor = true) {
-            sponsorBlock.onVideoEnd()
-        }
+        // Host.update already ended the removed session once. No session exists
+        // when Sponsor was never enabled for this video; do not manufacture one.
+        requireDispatch(expected)
     }
     override suspend fun onPositionUpdate(expected: DesktopOriginalVideoAcceptedPublication,
-        plugin: DesktopSingleSessionPlayerPlugin, positionMs: Long): SkipAction? =
+        plugin: DesktopPlayerPluginSessionHandle, positionMs: Long): SkipAction? =
         runtime.runPlaybackPluginCallback(requireDispatch(expected), plugin) { plugin.onPositionUpdate(positionMs) }
-    override suspend fun onUserSeek(expected: DesktopOriginalVideoAcceptedPublication, plugin: DesktopSingleSessionPlayerPlugin, positionMs: Long) {
+    override suspend fun onUserSeek(expected: DesktopOriginalVideoAcceptedPublication, plugin: DesktopPlayerPluginSessionHandle, positionMs: Long) {
         runtime.mutatePlaybackPlugin(requireDispatch(expected), plugin, allowDisabledSponsor = false) { plugin.onUserSeek(positionMs) }
     }
-    override fun onVideoEnd(plugin: DesktopSingleSessionPlayerPlugin) {
+    override fun onVideoEnd(plugin: DesktopPlayerPluginSessionHandle) {
         val old = lastBinding.get() ?: return
         if (old.dispatch.providers.none { it === plugin }) return
         runtime.retirePlaybackPluginDispatch(old.dispatch)

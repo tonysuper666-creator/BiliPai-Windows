@@ -1,0 +1,31 @@
+# Desktop analytics and the already captured playback Store context; session logic remains upstream.
+--- a/app/src/main/java/com/android/purebilibili/feature/plugin/SponsorBlockPlaybackSession.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/plugin/SponsorBlockPlaybackSession.kt
+@@ -1,6 +1,7 @@
+ package com.android.purebilibili.feature.plugin
+ 
+ import com.android.purebilibili.core.plugin.PluginManager
++import com.bilipai.desktop.plugins.asAndroidContext
+ import com.android.purebilibili.core.plugin.SponsorBlockSessionApi
+ import com.android.purebilibili.core.util.Logger
+ import com.android.purebilibili.data.model.response.SponsorProgressMarker
+@@ -134,7 +135,7 @@
+             nextSegmentIndex += 1
+             activeSegment = null
+             //  记录空降助手跳过事件
+-            com.android.purebilibili.core.util.AnalyticsHelper.logSponsorBlockSkip(
++            com.bilipai.desktop.plugins.DesktopPluginAnalytics.logSponsorBlockSkip(
+                 videoId = segment.UUID,
+                 segmentType = segment.categoryName
+             )
+@@ -289,7 +290,9 @@
+     /**  suspend版本的配置加载 */
+     private suspend fun loadConfigSuspend() {
+         try {
+-            val context = PluginManager.getContext()
++            val context = com.bilipai.desktop.plugins.DesktopPlayerPluginWriteAdmission.contextOrOriginal {
++                com.bilipai.desktop.plugins.desktopPluginContext(PluginManager.getContext())
++            }.asAndroidContext()
+             config = loadSponsorBlockConfig(context, config)
+             Logger.d(TAG, "Loaded SponsorBlock config: autoSkip=${config.autoSkip}, markerMode=${config.markerMode}")
+         } catch (e: kotlinx.coroutines.CancellationException) {
