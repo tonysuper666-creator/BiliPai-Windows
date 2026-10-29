@@ -60,6 +60,7 @@ try {
     $since = $run.Since
     $win = Wait-BpWindow -ProcessId $appPid -Since $since -TimeoutMs 60000
     $hwnd = $win.Hwnd
+    $uiPid = $win.Pid
     if (-not (Set-BpForeground -Hwnd $hwnd)) { throw 'window could not be brought to the foreground' }
     Start-Sleep -Seconds $SettleSeconds
     Save-Shot $hwnd 'a-home.png'
@@ -85,7 +86,16 @@ try {
             $still = 0
             if ($stallOpen) {
                 $len = [math]::Round($elapsed - $stallStart, 1)
-                [void]$stalls.Add([pscustomobject]@{ startSeconds = $stallStart; lengthSeconds = $len })
+                $sampleAtEnd = Get-BpProcessSample -ProcessId $uiPid
+                $cpuUsed = $null
+                if ($null -ne $stallCpuStart -and $sampleAtEnd) {
+                    $cpuUsed = [math]::Round($sampleAtEnd.CpuSeconds - $stallCpuStart, 2)
+                }
+                [void]$stalls.Add([pscustomobject]@{
+                        startSeconds = $stallStart; lengthSeconds = $len
+                        cpuSecondsDuringStall = $cpuUsed
+                        cpuShareOneCore = $(if ($null -ne $cpuUsed -and $len -gt 0) { [math]::Round(100.0 * $cpuUsed / $len, 1) } else { $null })
+                    })
                 Write-BpLog ("stall #{0} ended after {1}s" -f $stalls.Count, $len)
                 $stallOpen = $false
             }
@@ -97,6 +107,11 @@ try {
                 if (-not $stallOpen) {
                     $stallOpen = $true
                     $stallStart = $elapsed
+                    # What is the client doing while the picture is frozen? Zero CPU over a long
+                    # stall means it is waiting (buffering / paused); steady CPU means it is
+                    # decoding and the picture is stuck elsewhere.
+                    $sampleAtStart = Get-BpProcessSample -ProcessId $uiPid
+                    $stallCpuStart = if ($sampleAtStart) { $sampleAtStart.CpuSeconds } else { $null }
                     if ($stalls.Count -lt 3) { [void](Save-Shot $hwnd ("b-stall-{0:d2}.png" -f ($stalls.Count + 1))) }
                     Write-BpLog ("stall #{0} begins at +{1}s" -f ($stalls.Count + 1), $stallStart)
                 }
@@ -111,7 +126,14 @@ try {
     }
 
     if ($stallOpen) {
-        [void]$stalls.Add([pscustomobject]@{ startSeconds = $stallStart; lengthSeconds = [math]::Round(((Get-Date) - $start).TotalSeconds - $stallStart, 1) })
+        $len = [math]::Round(((Get-Date) - $start).TotalSeconds - $stallStart, 1)
+        $sampleAtEnd = Get-BpProcessSample -ProcessId $uiPid
+        $cpuUsed = $null
+        if ($null -ne $stallCpuStart -and $sampleAtEnd) { $cpuUsed = [math]::Round($sampleAtEnd.CpuSeconds - $stallCpuStart, 2) }
+        [void]$stalls.Add([pscustomobject]@{
+                startSeconds = $stallStart; lengthSeconds = $len; cpuSecondsDuringStall = $cpuUsed
+                cpuShareOneCore = $(if ($null -ne $cpuUsed -and $len -gt 0) { [math]::Round(100.0 * $cpuUsed / $len, 1) } else { $null })
+            })
     }
     [void](Save-Shot $hwnd 'c-after.png')
     $summary.played_from_seconds = $playedFrom
