@@ -9,11 +9,16 @@ import com.android.purebilibili.core.store.SessionStorageCipher
 import com.android.purebilibili.core.store.StoredAccountSession
 import com.android.purebilibili.data.model.response.NavData
 import com.android.purebilibili.data.repository.legacyMemberSignCookie
+import com.bilipai.desktop.data.DesktopCredentialCipher
+import com.bilipai.desktop.data.DesktopCredentialProtectionException
+import com.bilipai.desktop.data.UnavailableCredentialProtection
 import com.bilipai.desktop.ui.DesktopProfileAccountPort
 import java.io.File
 import java.nio.file.Path
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
+import kotlin.test.assertFalse
+import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Test
@@ -22,12 +27,31 @@ import org.junit.jupiter.api.io.TempDir
 /** Upstream code compiled from the merged tree must not lose user state through a stand-in that "works". */
 class DesktopAndroidStandInsTest {
     @Test
-    fun `upstream session encryption fails loudly instead of skipping persistence`() {
+    fun `android keystore requests fail loudly instead of looking like a missing key`() {
         DesktopAndroidKeyStoreGuard.install()
-        // On a plain JVM upstream catches the missing provider and returns null, after which
-        // TokenManager deletes the persisted session fields. The guard turns that into an Error.
-        val failure = assertFailsWith<UnsupportedDesktopCapability> { SessionStorageCipher.encrypt("fixture-session") }
+        // On a plain JVM a missing provider is a KeyStoreException, which upstream catch blocks turn into
+        // "skip persistence". The guard turns any remaining Android Keystore use into an Error.
+        val failure = assertFailsWith<UnsupportedDesktopCapability> { java.security.KeyStore.getInstance("AndroidKeyStore") }
         assertTrue("DesktopSessionStore" in failure.message.orEmpty(), failure.message)
+    }
+
+    @Test
+    fun `upstream session encryption uses the desktop credential protection and never skips persistence`() {
+        DesktopAndroidKeyStoreGuard.install()
+        // Upstream answers an encryption failure with null, after which TokenManager deletes the persisted session
+        // fields. The desktop patch seals through the platform protection and throws on failure instead.
+        val sealed = assertNotNull(SessionStorageCipher.encrypt("fixture-session"))
+        assertFalse("fixture-session" in sealed)
+        assertTrue(DesktopCredentialCipher.isProtected(sealed), sealed)
+        assertEquals("fixture-session", SessionStorageCipher.decrypt(sealed))
+        val platform = DesktopCredentialCipher.protection
+        try {
+            DesktopCredentialCipher.protection = UnavailableCredentialProtection("TestOS")
+            assertFailsWith<DesktopCredentialProtectionException> { SessionStorageCipher.encrypt("fixture-session") }
+            assertFailsWith<DesktopCredentialProtectionException> { SessionStorageCipher.decrypt(sealed) }
+        } finally { DesktopCredentialCipher.protection = platform }
+        // An Android Keystore value cannot be opened on the desktop; it does not read as a logged-out "".
+        assertFailsWith<DesktopCredentialProtectionException> { SessionStorageCipher.decrypt("v1:AAAA:BBBB") }
     }
 
     @Test

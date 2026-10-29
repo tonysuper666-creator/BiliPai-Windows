@@ -2963,6 +2963,12 @@ tasks.test {
     systemProperty("java.awt.headless", "true")
     systemProperty("bilipai.js.workerResources", jsWorkerOutput.get().asFile.absolutePath)
 }
+// Saved credentials are protected by Windows DPAPI only. A non-Windows test host has no system protection, so its
+// test JVMs explicitly select the test-only implementation (DesktopCredentialProtection); Windows tests use DPAPI.
+tasks.withType<Test>().configureEach {
+    if (!System.getProperty("os.name").startsWith("Windows", ignoreCase = true))
+        systemProperty("bilipai.credentialProtection", "test-only")
+}
 tasks.register<Test>("jsWorkerSmoke") {
     group = "verification"
     description = "Execute original JS scripts through the verified, separately linked Windows worker."
