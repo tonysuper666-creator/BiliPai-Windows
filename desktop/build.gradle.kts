@@ -329,27 +329,25 @@ val appFeatureLaterSteps: Map<String, String> = mapOf(
     "com/android/purebilibili/feature/live/LiveBiliPaiVisualPolicy.kt" to "上游新版 LiveVisualSpec 删掉了 maxContentWidthDp，而还在旧副本上的直播间/分区/搜索页仍在读它；等这些页面一起迁移",
     "com/android/purebilibili/feature/live/LiveCardContainerTransition.kt" to "依赖上游组合式转场 API（SharedTransitionLayout 新版签名）",
     "com/android/purebilibili/feature/live/LiveDanmakuAdvancedSettings.kt" to "依赖上游新的弹幕设置组件（DanmakuSettingsSectionTitle、LocalPlayerGlassSettingsSurface），随直播播放器拆分",
-    "com/android/purebilibili/feature/live/LiveDanmakuDraftPolicy.kt" to "依赖 LiveRichDanmakuEditor（Android IME，桌面自有）里的文本表情插入",
-    "com/android/purebilibili/feature/live/LiveDanmakuInfoPolicy.kt" to "需要上游新的 LiveDanmakuItem.medal（模型声明在 Media3 的 LivePlayerViewModel.kt 里），等直播播放器拆分",
-    "com/android/purebilibili/feature/live/LiveDraftPreviewPolicy.kt" to "依赖 Android 富文本草稿模型（LiveDanmakuDraft 系列）",
+    "com/android/purebilibili/feature/live/LiveDanmakuDraftPolicy.kt" to "依赖 data/repository/LiveInteractionModels.kt 的 appendLiveTextEmoticon（直播数据层未进桌面）",
+    "com/android/purebilibili/feature/live/LiveDraftPreviewPolicy.kt" to "依赖 Android 富文本草稿模型（dmType/图片宽高），随 LiveRichDanmakuEditor 一族",
     "com/android/purebilibili/feature/live/LiveFeedbackDialog.kt" to "依赖 Android Toast 与上游新版举报分组组件；桌面举报面板在 MediaScreens.kt",
     "com/android/purebilibili/feature/live/LiveFollowingScreen.kt" to "依赖 LiveRepository",
     "com/android/purebilibili/feature/live/LiveListScreen.kt" to "依赖 LiveRepository（桌面直播数据层是 DesktopLiveSession，需要先把手游数据层接进来）",
-    "com/android/purebilibili/feature/live/LiveMessageEmoteResourcePolicy.kt" to "依赖 Android 资源尺寸（width/height）",
-    "com/android/purebilibili/feature/live/LiveRealtimeMessagePolicy.kt" to "需要上游新的 LiveDanmakuItem 模型（声明在 Media3 的 LivePlayerViewModel.kt 里），等直播播放器拆分",
+    "com/android/purebilibili/feature/live/LiveMessageEmoteResourcePolicy.kt" to "依赖 Android 资源尺寸与富文本草稿的 displayText/dmType，随富文本编辑器一族",
     "com/android/purebilibili/feature/live/LiveRoomCard.kt" to "依赖上游直播卡新组件（解析歧义来自未迁移的卡片组合）",
     "com/android/purebilibili/feature/live/LiveRoomLayout.kt" to "依赖 Android drawable 资源（直播间布局图标）",
     "com/android/purebilibili/feature/live/LiveSearchScreen.kt" to "依赖上游新版 TabRow 选中 API",
-    "com/android/purebilibili/feature/live/components/LiveChatSection.kt" to "依赖 Android 剪贴板与 Toast，且用上游 LiveDanmakuItem 新字段",
+    "com/android/purebilibili/feature/live/components/LiveChatSection.kt" to "依赖 Android 剪贴板（ClipData/ClipboardManager）与 Toast；桌面弹幕面板在 ui/MediaScreens.kt 自绘",
     "com/android/purebilibili/feature/live/components/LiveContributionRankSheet.kt" to "同上，依赖上游新版 TabRow 选中状态 API",
-    "com/android/purebilibili/feature/live/components/LiveDanmakuActionToolbar.kt" to "依赖 LiveDanmakuItem 的位置解析（DanmakuTapAnchor），随直播播放器拆分",
+    "com/android/purebilibili/feature/live/components/LiveDanmakuActionToolbar.kt" to "依赖 feature/video 的 DanmakuTapAnchor 与 resolveDanmakuToolbarPosition（M4a 视频模块范围），等视频模块迁移",
     "com/android/purebilibili/feature/live/components/LiveInteractionSheets.kt" to "依赖上游新版 TabRow 的 tabSelectedPage/tabIndicatorPosition（桌面 tab 组件尚未跟上）",
     "com/android/purebilibili/feature/live/components/LivePlaybackPreferencesDialog.kt" to "依赖 NetworkUtils（Android 网络工具，桌面自有）与 Toast",
     "com/android/purebilibili/feature/live/components/LiveSendDanmakuSheet.kt" to "依赖 LiveRichDanmakuEditor（Android IME，桌面自有）",
     "com/android/purebilibili/feature/live/components/LiveShareToMessageSheet.kt" to "依赖上游消息分享面板（ContentMessageShareSheet），随消息模块迁移",
     "com/android/purebilibili/feature/live/components/LiveStreamSourceSheet.kt" to "依赖 Android Configuration（屏幕尺寸），等桌面尺寸接口",
     "com/android/purebilibili/feature/live/components/LiveSuperChatFlashOverlay.kt" to "依赖 LiveSuperChatCard（在 Android 专属的 LiveSuperChatSection 里）",
-    "com/android/purebilibili/feature/live/components/LiveSuperChatSection.kt" to "依赖 Android Toast/Bitmap 与上游 LiveDanmakuItem 超管字段",
+    "com/android/purebilibili/feature/live/components/LiveSuperChatSection.kt" to "依赖 Android Toast 与 Bitmap（asAndroidBitmap）分享；桌面 SC 只在弹幕浮层里画",
 )
 val migratedAppFeatureRoots = listOf(
     "com/android/purebilibili/feature/live/",
@@ -2585,6 +2583,8 @@ val prepareJsWorkerResources by tasks.registering(Sync::class) {
 
 // Generated legacy files that re-declare migrated upstream declarations under another file name.
 val upstreamOwnedGeneratedCopies = setOf(
+    // M4c (TON-1004): the live danmaku model now lives in desktop/src/main/kotlin/.../feature/live.
+    "media/com/android/purebilibili/feature/live/DesktopLiveDanmakuItem.kt",
     // app core (TON-1000): renamed subsets whose every declaration the upstream app core files now own.
     "appearance/com/android/purebilibili/core/store/DesktopOriginalWallpaperPaletteModels.kt",
     "appearance/com/android/purebilibili/core/store/ThemeSelectionStore.kt",
