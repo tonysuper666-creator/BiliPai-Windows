@@ -1,7 +1,6 @@
 --- a/home-page/com/android/purebilibili/feature/home/DesktopOriginalHomeScreen.kt
 +++ b/home-page/com/android/purebilibili/feature/home/DesktopOriginalHomeScreen.kt
-@@ -1,9 +1,10 @@
- // Original source app/src/main/java/com/android/purebilibili/feature/home/HomeScreen.kt
+@@ -2,6 +2,7 @@
  // LF SHA256 2c959020dec595839527d8c51ebbfb0a8fbf991290ec102cd18ac7b82054d176
  package com.android.purebilibili.feature.home
  
@@ -9,11 +8,7 @@
  import com.android.purebilibili.core.ui.components.AppText
  import com.bilipai.desktop.ui.DesktopHomeClock as SystemClock
  import androidx.compose.animation.*
- import androidx.compose.animation.core.animate
- import androidx.compose.animation.core.animateDpAsState
-@@ -445,11 +446,11 @@
-         installedPlugins,
-         isSubscriptionPluginPersistedEnabled,
+@@ -447,7 +448,7 @@
          homeTopTabSettings,
      ) {
          com.android.purebilibili.core.plugin.feed.isSubscriptionPluginOrFeedEnabled(
@@ -22,11 +17,16 @@
              installedPlugins = installedPlugins,
              isPluginPersistedEnabled = isSubscriptionPluginPersistedEnabled,
          )
+@@ -464,7 +465,7 @@
      }
-     val topTabEntries = remember(homeTopTabSettings, subscriptionFeedsEnabled) {
-@@ -1696,11 +1697,11 @@
-             }
+     val localizedTopTabLabels = topTabEntries.map { entry ->
+         when (entry) {
+-            is HomeTopTabEntry.Category -> stringResource(resolveHomeCategoryLabelRes(entry.category))
++            is HomeTopTabEntry.Category -> androidx.compose.ui.res.stringResource(resolveHomeCategoryLabelRes(entry.category))
+             HomeTopTabEntry.Partition -> resolveHomeTopTabEntryLabel(entry)
+             HomeTopTabEntry.Subscriptions -> resolveHomeTopTabEntryLabel(entry)
          }
+@@ -1698,7 +1699,7 @@
      }
      
      // [Feature] Bottom Bar Auto-Hide (based on scroll hide mode)
@@ -35,5 +35,3 @@
      val bottomBarVisibleState = LocalSetBottomBarVisible.current
      
      // [Feature] Global Scroll Offset for Liquid Glass
-     val activeGridState = if (currentCategory == HomeCategory.POPULAR) {
-         popularGridStates[popularSubCategory]

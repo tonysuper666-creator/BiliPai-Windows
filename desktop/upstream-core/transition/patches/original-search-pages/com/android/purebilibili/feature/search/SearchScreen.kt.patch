@@ -1,0 +1,11 @@
+--- a/original-search-pages/com/android/purebilibili/feature/search/SearchScreen.kt
++++ b/original-search-pages/com/android/purebilibili/feature/search/SearchScreen.kt
+@@ -1442,8 +1442,6 @@
+                                                 if (state.searchType == SearchType.VIDEO || state.searchType == SearchType.ALL) {
+                                                     val videoFilters: @Composable RowScope.() -> Unit = {
+                                                         SearchVideoFilterActions(
+-                                                            singleColumn = listLayout.singleColumn,
+-                                                            onLayoutToggle = listLayout.toggle,
+                                                             currentDurations = state.searchDurations,
+                                                             currentVideoTid = state.videoTid,
+                                                             currentPubTimeType = state.pubTimeType,
