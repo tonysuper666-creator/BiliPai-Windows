@@ -1,11 +1,6 @@
 --- a/upstream/app/src/main/java/com/android/purebilibili/feature/personal/PersonalMediaCard.kt
 +++ b/upstream/app/src/main/java/com/android/purebilibili/feature/personal/PersonalMediaCard.kt
-@@ -38,17 +38,17 @@
- import com.android.purebilibili.core.ui.AppShapes
- import com.android.purebilibili.core.ui.AppSpacingTokens
- import com.android.purebilibili.core.ui.AppSurfaceTokens
- import com.android.purebilibili.core.ui.ContainerLevel
- import com.android.purebilibili.core.ui.components.AppIcon
+@@ -43,7 +43,7 @@
  import com.android.purebilibili.core.ui.components.AppSurface
  import com.android.purebilibili.core.ui.skeleton.ContentSkeletonBlock
  import com.android.purebilibili.core.ui.skeleton.rememberContentSkeletonBlockColor
@@ -14,17 +9,17 @@
  import com.android.purebilibili.feature.home.components.cards.HORIZONTAL_VIDEO_CARD_COVER_WIDTH_DP
  import com.android.purebilibili.feature.home.components.cards.HorizontalVideoCardFrame
  
- /**
-  * Shared visual frame for personal-list media rows.
-  *
-  * The frame owns geometry and selection chrome only. History, favorites and
-  * watch-later cards provide their own badges, metadata and actions through slots.
-@@ -196,20 +196,20 @@
-             }
-         }
-     }
- }
- 
+@@ -123,9 +123,7 @@
+                     coverModifier = coverModifier,
+                     coverOverlayModifier = coverOverlayModifier,
+                     coverOverlayContent = coverOverlayContent,
+-                    coverWidth = coverWidth ?: HORIZONTAL_VIDEO_CARD_COVER_WIDTH_DP.dp,
+                     coverAspectRatio = coverAspectRatio,
+-                    minimumHeight = minimumHeight,
+                     infoContent = {
+                         overlineContent?.invoke()
+                         headlineContent()
+@@ -201,10 +199,10 @@
  @Composable
  internal fun PersonalMediaCardSkeleton(
      modifier: Modifier = Modifier,
@@ -38,8 +33,19 @@
      val minimumHeight = resolvePersonalMediaCardMinHeightDp(LocalDensity.current.fontScale).dp
      val cardShape = AppShapes.container(ContainerLevel.Card)
  
-     AppSurface(
-         modifier = modifier
-             .fillMaxWidth(),
-         shape = cardShape,
+@@ -215,7 +213,6 @@
          color = AppSurfaceTokens.cardContainer(),
+     ) {
+         HorizontalVideoCardFrame(
+-            minimumHeight = minimumHeight,
+             coverContent = {
+                 ContentSkeletonBlock(
+                     color = color,
+@@ -223,7 +220,6 @@
+                     modifier = Modifier.fillMaxSize(),
+                 )
+             },
+-            infoVerticalArrangement = Arrangement.spacedBy(AppSpacingTokens.Small),
+             infoContent = {
+                 ContentSkeletonBlock(
+                     color = color,
