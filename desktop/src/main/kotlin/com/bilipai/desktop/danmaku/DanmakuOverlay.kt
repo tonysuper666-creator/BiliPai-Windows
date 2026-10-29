@@ -794,8 +794,11 @@ class DanmakuOverlay internal constructor(
             } finally { context.dispose() }
         }
     }.apply { isOpaque = false }
-    private val framePlatform = SwingDesktopDanmakuFramePlatform()
-    private val frameRequests = DesktopOriginalDanmakuFrameRequests(framePlatform, ::canRenderOverlay, ::tick)
+    private val framePlatform = SwingDesktopDanmakuFramePlatform {
+        (overlay?.takeIf { it.isShowing }?.graphicsConfiguration ?: player.surface.graphicsConfiguration)
+            ?.device?.displayMode?.refreshRate ?: 0
+    }
+    private val frameRequests = DesktopDanmakuFrameRequests(framePlatform, ::canRenderOverlay, ::tick)
     private val frameInvalidationQueued = AtomicBoolean(false)
     private var observedHost: Window? = null
     private val geometryListener = object : ComponentAdapter() {
@@ -873,7 +876,7 @@ class DanmakuOverlay internal constructor(
             !state.ended && !state.audioOnly
     }
 
-    /** All invalidations enter the same original request path, including parked seeks/live appends. */
+    /** All invalidations enter the same desktop request path, including parked seeks/live appends. */
     private fun requestRenderFrame() {
         if (closed.get()) return
         // Queue even EDT publications: source/settings setters may still hold
