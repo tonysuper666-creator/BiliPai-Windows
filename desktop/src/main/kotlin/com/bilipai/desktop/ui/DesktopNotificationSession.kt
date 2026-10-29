@@ -134,10 +134,15 @@ internal class DesktopNotificationSession(
                 if (!gate.tryLock(250, java.util.concurrent.TimeUnit.MILLISECONDS)) {
                     return@withLockUninterruptibly false
                 }
+                var lostLease = false
                 val cleared = try {
                     if (!DesktopNotificationAccountLeases.holds(accountId, this)) {
-                        // A newer session owns this account's group; only our own tags may be withdrawn.
+                        // A newer session owns this account's group. This is not a failed cleanup: the
+                        // group is no longer ours, so the task ends here and only our own deliveries
+                        // are withdrawn, one tag at a time.
+                        lostLease = true
                         groupClearPending.set(false)
+                        withdrawal.remember(allLiveTags())
                         false
                     } else {
                         clearAttempts.incrementAndGet()
@@ -155,12 +160,14 @@ internal class DesktopNotificationSession(
                 } finally {
                     gate.unlock()
                 }
-                if (paused.get()) {
-                    groupClearPending.set(!cleared)
-                    if (cleared) liveTags.clear()
-                } else {
+                when {
+                    lostLease -> groupClearPending.set(false) // never requeue a task we may not perform
+                    paused.get() -> {
+                        groupClearPending.set(!cleared)
+                        if (cleared) liveTags.clear()
+                    }
                     // A resume happened while this withdrawal ran: it is over, its retry is abandoned.
-                    groupClearPending.set(false)
+                    else -> groupClearPending.set(false)
                 }
             }
         }
@@ -184,8 +191,8 @@ internal class DesktopNotificationSession(
         if (!isPublishing() || clearsInFlight.get() > 0 ||
             DesktopNotificationAccountLeases.groupOperationInFlight(accountId)) return false
         val gate = DesktopNotificationAccountLeases.gate(accountId).readLock()
-        // A group operation of this account is exclusive; a delivery that cannot get in is refused
-        // rather than queued, because the caller retries on its next round.
+        // A group operation of this account is exclusive. There is no native pending-delivery queue:
+        // a refused delivery is reported to the caller, which falls back to a tray balloon.
         if (!gate.tryLock(200, java.util.concurrent.TimeUnit.MILLISECONDS)) return false
         try {
             if (!isPublishing() || DesktopNotificationAccountLeases.groupOperationInFlight(accountId)) return false

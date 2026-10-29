@@ -227,6 +227,21 @@ class DesktopNotificationSessionTest {
         assertEquals(listOf("messages-7"), center.cleared)
     }
 
+    @Test fun anOldSessionLosingTheLeaseEndsItsOwnCleanupInsteadOfRetryingForever() {
+        val center = RecordingNotificationCenter()
+        val oldSession = session(center, 7L)
+        assertTrue(oldSession.publish(item("reply-1")))
+
+        session(center, 7L) // the account is claimed by a new session first
+        assertFalse(oldSession.retire(), "the group is not this session's any more")
+        assertTrue(oldSession.pendingTags().isNotEmpty(), "its own delivery is withdrawn by tag instead")
+
+        assertTrue(oldSession.retryCleanup())
+        assertFalse(oldSession.isCleanupPending(), "a lost lease must not leave an endless retry")
+        assertEquals(0, DesktopNotificationCleanup.retryOutstanding())
+        assertTrue(center.texts().isEmpty(), "the old session still clears what it delivered")
+    }
+
     @Test fun aTakeoverCannotPublishBeforeTheOldGroupOperationIsRegistered() {
         val center = RecordingNotificationCenter()
         val oldSession = session(center, 7L)
