@@ -21,6 +21,6 @@ internal suspend fun desktopOriginalRootSetDiagnosticLogging(
     context: DesktopOriginalPlayerSettingsContext, enabled: Boolean,
 ) {
     editSettingsAndCommitPrefs(context.androidContext, "player_settings_cache",
-        editSettings = { this[playerBooleanPreferencesKey("player_diagnostic_logging_enabled")] = enabled },
+        editSettings = { this[androidx.datastore.preferences.core.booleanPreferencesKey(playerBooleanPreferencesKey.name)("player_diagnostic_logging_enabled")] = enabled },
         editPrefs = { putBoolean("player_diagnostic_logging_enabled", enabled) })
 }

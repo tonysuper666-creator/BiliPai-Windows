@@ -1,0 +1,21 @@
+--- a/dynamic-full-card/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicCard.kt
++++ b/dynamic-full-card/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicCard.kt
+@@ -2451,16 +2451,18 @@
+             val rawUrl = action.url
+             scope.launch {
+                 val target = BilibiliNavigationTargetParser.parse(rawUrl)
+                     ?: if (rawUrl.contains("b23.tv", ignoreCase = true)) {
+                         BilibiliNavigationTargetParser.resolve(rawUrl)
+                     } else null
+                 if (target != null) {
+                     val handled = when (target) {
++                        // Upstream added match targets; this legacy card does not open them (upstream DynamicCard answers false too).
++                        is BilibiliNavigationTarget.Match -> false
+                         is BilibiliNavigationTarget.Dynamic -> {
+                             if (onDynamicDetailClick != null) {
+                                 onDynamicDetailClick(target.dynamicId)
+                                 true
+                             } else false
+                         }
+                         is BilibiliNavigationTarget.Video -> {
+                             if (onVideoClick != null) {

@@ -1,0 +1,22 @@
+--- a/upstream/app/src/main/java/com/android/purebilibili/feature/video/ui/components/VideoAspectRatioPreferenceMapper.kt
++++ b/upstream/app/src/main/java/com/android/purebilibili/feature/video/ui/components/VideoAspectRatioPreferenceMapper.kt
+@@ -4,16 +4,19 @@
+ 
+ internal fun FullscreenAspectRatio.toVideoAspectRatio(): VideoAspectRatio {
+     return when (this) {
+         FullscreenAspectRatio.FIT -> VideoAspectRatio.FIT
+         FullscreenAspectRatio.FILL -> VideoAspectRatio.FILL
+         FullscreenAspectRatio.RATIO_16_9 -> VideoAspectRatio.RATIO_16_9
+         FullscreenAspectRatio.RATIO_4_3 -> VideoAspectRatio.RATIO_4_3
+         FullscreenAspectRatio.STRETCH -> VideoAspectRatio.STRETCH
++        // Upstream added these four; the legacy desktop player offers none of them yet and fits the frame.
++        FullscreenAspectRatio.FIT_WIDTH, FullscreenAspectRatio.FIT_HEIGHT, FullscreenAspectRatio.ORIGINAL,
++        FullscreenAspectRatio.SCALE_DOWN -> VideoAspectRatio.FIT
+     }
+ }
+ 
+ internal fun VideoAspectRatio.toFullscreenAspectRatio(): FullscreenAspectRatio {
+     return when (this) {
+         VideoAspectRatio.FIT -> FullscreenAspectRatio.FIT
+         VideoAspectRatio.FILL -> FullscreenAspectRatio.FILL
+         VideoAspectRatio.RATIO_16_9 -> FullscreenAspectRatio.RATIO_16_9

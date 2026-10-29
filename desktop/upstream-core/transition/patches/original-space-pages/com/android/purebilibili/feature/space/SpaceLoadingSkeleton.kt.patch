@@ -1,0 +1,40 @@
+--- a/original-space-pages/com/android/purebilibili/feature/space/SpaceLoadingSkeleton.kt
++++ b/original-space-pages/com/android/purebilibili/feature/space/SpaceLoadingSkeleton.kt
+@@ -26,17 +26,17 @@
+ import androidx.compose.ui.unit.dp
+ import androidx.compose.runtime.collectAsState
+ import com.bilipai.desktop.ui.LocalDesktopOriginalSpacePlatform
+ import com.android.purebilibili.core.store.HomeSettings
+ import com.android.purebilibili.core.ui.AppShapes
+ import com.android.purebilibili.core.ui.ContainerLevel
+ import com.android.purebilibili.core.ui.skeleton.ContentSkeletonBlock
+ import com.android.purebilibili.core.ui.skeleton.rememberContentSkeletonBlockColor
+-import com.android.purebilibili.core.ui.skeleton.rememberContentSkeletonPulse
++import com.android.purebilibili.core.ui.skeleton.rememberContentSkeletonPulseState
+ import com.android.purebilibili.core.util.LocalWindowSizeClass
+ import com.android.purebilibili.core.util.responsiveContentWidth
+ import com.android.purebilibili.feature.home.resolveHomeFeedCardLayout
+ import com.android.purebilibili.feature.home.resolveHomeFeedStoredColumnCount
+ import kotlin.math.roundToInt
+ 
+ /** UP 空间首屏骨架：资料头、主标签和投稿网格均与真实 SpaceContent 同构。 */
+ @Composable
+@@ -64,17 +64,17 @@
+         contentMaxWidthDp = adaptiveLayoutSpec.contentMaxWidthDp,
+         widthSizeClass = windowSizeClass.widthSizeClass,
+     )
+     val cardLayout = resolveHomeFeedCardLayout(
+         style = settings.homeFeedCardStyle,
+         gridColumns = columns,
+         widthSizeClass = windowSizeClass.widthSizeClass,
+     )
+-    val pulse = rememberContentSkeletonPulse()
++    val pulse = rememberContentSkeletonPulseState()
+     val blockColor = rememberContentSkeletonBlockColor(pulse)
+ 
+     LazyVerticalGrid(
+         columns = GridCells.Fixed(columns),
+         modifier = modifier
+             .responsiveContentWidth(maxWidth = adaptiveLayoutSpec.contentMaxWidthDp.dp)
+             .fillMaxSize(),
+         contentPadding = PaddingValues(

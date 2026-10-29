@@ -1,0 +1,21 @@
+--- a/original-favorites/com/android/purebilibili/feature/list/CommonListScreen.kt
++++ b/original-favorites/com/android/purebilibili/feature/list/CommonListScreen.kt
+@@ -2759,17 +2759,17 @@
+         .fillMaxSize()
+         .padding(top = if (scrollUnderHeader) AppSpacingTokens.None else fixedHeaderInset)
+     val emptyViewportModifier = Modifier
+         .fillMaxSize()
+         .padding(top = fixedHeaderInset, bottom = padding.calculateBottomPadding())
+     if (isLoading && items.isEmpty()) {
+         val historySkeletonBlockColor = if (isPersonalList) {
+             com.android.purebilibili.core.ui.skeleton.rememberContentSkeletonBlockColor(
+-                com.android.purebilibili.core.ui.skeleton.rememberContentSkeletonPulse()
++                com.android.purebilibili.core.ui.skeleton.rememberContentSkeletonPulseState()
+             )
+         } else {
+             null
+         }
+         LazyVerticalGrid(
+             columns = GridCells.Fixed(columns),
+             contentPadding = PaddingValues(
+                 start = gridOuterPaddingDp.dp,

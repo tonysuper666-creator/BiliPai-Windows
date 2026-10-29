@@ -26,3 +26,21 @@
                              },
                          )
                          AppPreferenceDivider()
+@@ -518,16 +518,17 @@
+                                 icon = rememberDesktopNavigationMaterialSymbol("ms_troubleshoot_24"),
+                                 iconTint = com.android.purebilibili.core.theme.iOSTeal,
+                                 title = "全局顶栏显示",
+                                 subtitle = when (homeHeaderCollapseMode) {
+                                     HomeHeaderCollapseMode.OFF -> "首页和二级列表的沉浸顶栏始终显示"
+                                     HomeHeaderCollapseMode.SEARCH_ONLY -> "下滑时仅收起顶部搜索框，标签页留在顶部"
+                                     HomeHeaderCollapseMode.BOTH -> "首页、历史、收藏和稍后再看等页面离开顶部后收起沉浸顶栏，回顶后恢复"
+                                     HomeHeaderCollapseMode.TABS_ONLY -> "下滑时仅收起标签页，搜索框保持显示"
++                                    HomeHeaderCollapseMode.SHOW_AT_TOP_ONLY -> HomeHeaderCollapseMode.SHOW_AT_TOP_ONLY.description
+                                 },
+                                 options = listOf(
+                                     AppSegmentOption(HomeHeaderCollapseMode.OFF, "始终显示"),
+                                     AppSegmentOption(HomeHeaderCollapseMode.SEARCH_ONLY, "仅收起搜索"),
+                                     AppSegmentOption(HomeHeaderCollapseMode.BOTH, "全部收起"),
+                                 ),
+                                 selectedValue = if (homeHeaderCollapseMode == HomeHeaderCollapseMode.TABS_ONLY) {
+                                     HomeHeaderCollapseMode.BOTH
