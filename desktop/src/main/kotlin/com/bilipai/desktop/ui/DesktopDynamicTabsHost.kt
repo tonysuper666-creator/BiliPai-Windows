@@ -170,6 +170,6 @@ import kotlinx.coroutines.sync.withLock
             if(!state.userLoading&&state.hasUserMore&&state.userError==null&&emptyState!=DesktopDynamicEmptyState.LOADING)item(span=StaggeredGridItemSpan.FullLine){AppPrimaryButton(text="加载更多",onClick=state::loadMoreUser)}
         }
     }
-    DesktopRefreshButton(refreshing=state.userLoading,onRefresh={scope.launch{grid.scrollToItem(0);refreshNow()}})
+    DesktopRefreshButton(refreshing=state.userLoading,reportFailures=false,onRefresh={scope.launch{grid.scrollToItem(0);refreshNow()}})
     }
 }

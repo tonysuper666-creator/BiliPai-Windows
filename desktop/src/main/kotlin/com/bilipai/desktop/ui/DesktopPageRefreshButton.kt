@@ -34,6 +34,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.layout.boundsInRoot
 import androidx.compose.ui.layout.findRootCoordinates
 import androidx.compose.ui.layout.onGloballyPositioned
@@ -43,6 +45,15 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.android.purebilibili.core.ui.LocalBottomBarContentPadding
+import java.awt.Component
+import java.awt.Container
+import java.awt.EventQueue
+import java.awt.event.MouseEvent
+import java.awt.event.MouseWheelEvent
+import java.io.IOException
+import java.util.concurrent.atomic.AtomicInteger
+import okhttp3.Interceptor
+import okhttp3.Response
 import com.bilipai.desktop.diagnostics.DesktopDiagnosticsBridge
 import com.bilipai.desktop.ui.kit.DesktopTooltipBox
 import com.bilipai.desktop.ui.kit.LocalDesktopKitReducedMotion
@@ -132,6 +143,8 @@ internal fun desktopRefreshEndLog(startedMs: Long, endedMs: Long): String = "刷
  */
 internal class DesktopRefreshTarget(val trigger: (source: String) -> Boolean) {
     @Volatile var visible: Boolean = false
+    /** The box the button sits in, in root pixels: where a scroll to the top has to be aimed. */
+    @Volatile var boxBounds: Rect = Rect.Zero
 }
 
 /**
@@ -165,6 +178,99 @@ internal fun desktopRefreshShortcutPage(page: DesktopShellPage?): Boolean =
 internal fun desktopRefreshChord(data: DesktopShellKeyData): Boolean =
     data.keyDown && !data.alt && !data.shift && !data.meta &&
         ((data.key == "F5" && !data.ctrl) || (data.key == "R" && data.ctrl))
+
+/**
+ * Scrolls whatever list a refresh box holds back to its top, for pages that do not hand their list state to the box. The desktop
+ * implementation sends the list the same mouse wheel a user would turn, aimed at the middle of the box, so it works for any
+ * Compose scrollable without the page's cooperation. Home has its own pager request (LocalDesktopRefreshPrelude) and does not use it.
+ */
+internal fun interface DesktopRefreshScroller {
+    /** True when a scroll was sent; boxInRoot is the refresh box in root pixels. */
+    fun scrollToTop(boxInRoot: Rect): Boolean
+}
+
+internal val LocalDesktopRefreshScroller = staticCompositionLocalOf<DesktopRefreshScroller?> { null }
+
+/** The wheel notches of the one upward scroll: far more than any feed is long, so it ends at the top. */
+internal const val DESKTOP_REFRESH_WHEEL_NOTCHES = 4_000
+
+/** The showing component of the window that takes the mouse wheel (the Compose layer): the largest one with a wheel listener. */
+internal fun desktopFindWheelTarget(root: Container): Component? {
+    var best: Component? = null
+    var bestArea = 0L
+    fun visit(component: Component) {
+        if (component.isShowing && component.mouseWheelListeners.isNotEmpty()) {
+            val area = component.width.toLong() * component.height
+            if (area > bestArea) { best = component; bestArea = area }
+        }
+        if (component is Container) component.components.forEach(::visit)
+    }
+    visit(root)
+    return best
+}
+
+/** The wheel event of the scroll to the top, at the given point of the target. */
+internal fun desktopRefreshWheelEvent(target: Component, x: Int, y: Int): MouseWheelEvent =
+    MouseWheelEvent(target, MouseEvent.MOUSE_WHEEL, System.currentTimeMillis(), 0, x, y, 0, false,
+        MouseWheelEvent.WHEEL_UNIT_SCROLL, 3, -DESKTOP_REFRESH_WHEEL_NOTCHES)
+
+internal class DesktopAwtWheelScroller(
+    private val root: () -> Container?,
+    private val density: () -> Float,
+    private val post: (Runnable) -> Unit = { EventQueue.invokeLater(it) },
+) : DesktopRefreshScroller {
+    override fun scrollToTop(boxInRoot: Rect): Boolean {
+        val container = root() ?: return false
+        val target = desktopFindWheelTarget(container) ?: return false
+        if (boxInRoot.width <= 0f || boxInRoot.height <= 0f) return false
+        val scale = density().coerceAtLeast(0.1f)
+        val x = (boxInRoot.center.x / scale).toInt()
+        val y = (boxInRoot.center.y / scale).toInt()
+        post(Runnable { repeat(2) { target.dispatchEvent(desktopRefreshWheelEvent(target, x, y)) } })
+        return true
+    }
+}
+
+/**
+ * Failed requests while a button-started refresh runs, counted on the app's HTTP client. A page that keeps its old rows when a refresh
+ * fails shows nothing by itself; the button turns this count into one toast when the refresh ends. Counted: a failed connection, an
+ * HTTP error status, and a JSON answer whose top-level "code" is not 0. A cancelled call and a retired request owner are not failures.
+ */
+internal object DesktopRefreshFailureWatch {
+    private val failures = AtomicInteger(0)
+    @Volatile private var active = false
+
+    fun begin() { failures.set(0); active = true }
+
+    /** Stops watching and returns how many requests failed since begin. */
+    fun end(): Int { active = false; return failures.getAndSet(0) }
+
+    val interceptor = Interceptor { chain ->
+        if (!active) return@Interceptor chain.proceed(chain.request())
+        try {
+            val response = chain.proceed(chain.request())
+            if (desktopRefreshResponseFailed(response)) failures.incrementAndGet()
+            response
+        } catch (failure: IOException) {
+            if (failure.message != "Canceled" && failure.message != "Request owner retired") failures.incrementAndGet()
+            throw failure
+        }
+    }
+}
+
+private val businessCode = Regex("\"code\"\\s*:\\s*(-?\\d+)")
+
+internal fun desktopRefreshResponseFailed(response: Response): Boolean {
+    if (response.code >= 400) return true
+    val type = response.body?.contentType()
+    if (type == null || type.subtype != "json") return false
+    val head = try { response.peekBody(2_048).string() } catch (_: IOException) { return false }
+    val code = businessCode.find(head)?.groupValues?.get(1)?.toIntOrNull() ?: return false
+    return code != 0
+}
+
+internal fun desktopRefreshWatchedFailureMessage(count: Int): String =
+    if (count <= 1) "刷新未完全成功：有 1 个请求失败，已保留原内容" else "刷新未完全成功：有 $count 个请求失败，已保留原内容"
 
 /** The wording of the tooltip and the accessible name, one place for the button and for the tests. */
 internal fun desktopRefreshButtonName(busy: Boolean): String = if (busy) "正在刷新" else DESKTOP_REFRESH_LABEL
@@ -206,15 +312,29 @@ internal fun BoxScope.DesktopRefreshButton(
     refreshing: Boolean,
     onRefresh: () -> Unit,
     modifier: Modifier = Modifier,
+    /** False for a page that announces its own failures precisely (the dynamic feed). */
+    reportFailures: Boolean = true,
 ) {
     DisposableEffect(Unit) {
         DesktopRefreshButtonPresence.enter()
         onDispose { DesktopRefreshButtonPresence.leave() }
     }
+    val boundsHolder = remember { arrayOf(Rect.Zero) }
+    fun latestScrollerBounds(): Rect? = boundsHolder[0].takeIf { it.width > 0f && it.height > 0f }
     var state by remember { mutableStateOf(DesktopRefreshButtonState()) }
     // The clock only has to wake the composition when a pending hold runs out; isRefreshing itself is snapshot state.
     var clock by remember { mutableStateOf(nowMs()) }
     val pendingSince = state.pendingSinceMs
+    val toaster = rememberUpdatedState(LocalDesktopToaster.current)
+    val window = LocalDesktopWindowsPlayerWindow.current
+    val scale = LocalDensity.current.density
+    val scroller = LocalDesktopRefreshScroller.current ?: remember(window, scale) {
+        window?.let { DesktopAwtWheelScroller({ it }, { scale }) }
+    }
+    val latestScroller = rememberUpdatedState(scroller)
+    // A refresh started here is watched for failed requests until the owner reports it finished (or never started).
+    var watching by remember { mutableStateOf(false) }
+    var scrolledHere by remember { mutableStateOf(false) }
     LaunchedEffect(pendingSince) {
         if (pendingSince != null) {
             kotlinx.coroutines.delay(DESKTOP_REFRESH_PENDING_TIMEOUT_MS)
@@ -229,8 +349,25 @@ internal fun BoxScope.DesktopRefreshButton(
             runningSinceMs = nowMs()
             DesktopDiagnosticsBridge.record("I", DESKTOP_REFRESH_LOG_TAG, desktopRefreshRunningLog())
         } else {
-            runningSinceMs?.let { DesktopDiagnosticsBridge.record("I", DESKTOP_REFRESH_LOG_TAG, desktopRefreshEndLog(it, nowMs())) }
+            runningSinceMs?.let {
+                DesktopDiagnosticsBridge.record("I", DESKTOP_REFRESH_LOG_TAG, desktopRefreshEndLog(it, nowMs()))
+                // The refreshed rows replaced the old ones: aim the scroll to the top again for lists that keep their position.
+                if (scrolledHere) latestScrollerBounds()?.let { box -> latestScroller.value?.scrollToTop(box) }
+                if (watching) {
+                    watching = false
+                    val failed = DesktopRefreshFailureWatch.end()
+                    if (failed > 0) toaster.value.show(desktopRefreshWatchedFailureMessage(failed))
+                }
+            }
             runningSinceMs = null
+            scrolledHere = false
+        }
+    }
+    // A refresh that the owner declined never reports isRefreshing: stop watching when the hold runs out.
+    LaunchedEffect(pendingSince, watching) {
+        if (pendingSince != null && watching) {
+            kotlinx.coroutines.delay(DESKTOP_REFRESH_PENDING_TIMEOUT_MS + 100)
+            if (runningSinceMs == null && watching) { watching = false; DesktopRefreshFailureWatch.end() }
         }
     }
     val busy = state.busy(refreshing, if (pendingSince != null) clock.coerceAtLeast(pendingSince) else clock)
@@ -246,7 +383,9 @@ internal fun BoxScope.DesktopRefreshButton(
             if (start) {
                 clock = nowMs()
                 DesktopDiagnosticsBridge.record("I", DESKTOP_REFRESH_LOG_TAG, desktopRefreshStartLog(sourceName))
-                latestPrelude.value?.invoke()
+                if (reportFailures) { DesktopRefreshFailureWatch.begin(); watching = true }
+                val prelude = latestPrelude.value
+                if (prelude != null) prelude() else scrolledHere = latestScrollerBounds()?.let { latestScroller.value?.scrollToTop(it) } == true
                 latestOnRefresh.value()
             }
             start
@@ -265,6 +404,14 @@ internal fun BoxScope.DesktopRefreshButton(
         shortcut = if (busy || !desktopRefreshShortcutPage(DesktopRefreshRegistry.pageProvider())) null else DESKTOP_REFRESH_SHORTCUT,
         positioning = TooltipAnchorPosition.Above,
         modifier = modifier
+            .onGloballyPositioned { coordinates ->
+                // The wrapper's parent is the refresh box itself: the list a scroll to the top has to reach.
+                coordinates.parentLayoutCoordinates?.let { parent ->
+                    val box = parent.boundsInRoot()
+                    boundsHolder[0] = box
+                    target.boxBounds = box
+                }
+            }
             .align(Alignment.BottomEnd)
             .padding(end = DESKTOP_REFRESH_BUTTON_MARGIN_DP.dp, bottom = DESKTOP_REFRESH_BUTTON_MARGIN_DP.dp),
     ) {
@@ -274,6 +421,7 @@ internal fun BoxScope.DesktopRefreshButton(
                 .onGloballyPositioned { coordinates ->
                     val bounds = coordinates.boundsInRoot()
                     val root = coordinates.findRootCoordinates().size
+
                     target.visible = coordinates.isAttached && bounds.width > 0f && bounds.height > 0f &&
                         bounds.right > 0f && bounds.bottom > 0f && bounds.left < root.width && bounds.top < root.height
                 }

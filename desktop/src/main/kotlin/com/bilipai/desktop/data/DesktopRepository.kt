@@ -74,6 +74,8 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
         .cookieJar(sessions)
         .connectTimeout(15, TimeUnit.SECONDS)
         .readTimeout(25, TimeUnit.SECONDS)
+        // TON-1026: counts failed requests while a refresh button's refresh runs, so a page that keeps its old rows still says so.
+        .addInterceptor(com.bilipai.desktop.ui.DesktopRefreshFailureWatch.interceptor)
         .addInterceptor { chain ->
             val original = chain.request()
             // An owner-bound Call.Factory stamps this before newCall/enqueue. Preserve it here;

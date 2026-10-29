@@ -199,7 +199,7 @@ internal fun DesktopDynamicTimelineFeed(
                 Text(if(emptyState==DesktopDynamicEmptyState.EMPTY)"暂无内容"else"当前筛选隐藏了这一批内容",color=MaterialTheme.colorScheme.onSurfaceVariant)}
             if(!state.busy&&state.initialized&&state.page.hasMore&&state.error==null)item(span=StaggeredGridItemSpan.FullLine){Button(onClick={scope.launch{state.loadMore(incremental)}}){Text("加载更多")}}
         }
-        DesktopRefreshButton(refreshing=refreshing||state.busy,onRefresh={scope.launch{state.scroll.scrollToItem(0);refreshNow()}})
+        DesktopRefreshButton(refreshing=refreshing||state.busy,reportFailures=false,onRefresh={scope.launch{state.scroll.scrollToItem(0);refreshNow()}})
     }
     }
 }
