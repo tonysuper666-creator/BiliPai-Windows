@@ -36,6 +36,7 @@ interface DesktopPlaybackSession : DesktopPlaybackRequestPort, AutoCloseable {
     fun requestPlayback(request: DesktopPlaybackSessionRequest): DesktopPlaybackRequestLease
     fun play()
     fun pause()
+    fun setPlaybackSpeed(value: Float)
     fun seekToTracked(positionMs: Long): com.bilipai.desktop.ui.DesktopOriginalNativeSeekSubmission?
     fun addListener(listener: com.bilipai.desktop.ui.DesktopOriginalMpvOverlayControl.Listener)
     fun removeListener(listener: com.bilipai.desktop.ui.DesktopOriginalMpvOverlayControl.Listener)

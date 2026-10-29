@@ -1,0 +1,35 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuPlaybackSyncPolicy.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuPlaybackSyncPolicy.kt
+@@ -140,9 +140,9 @@
+     resumedFromBuffering: Boolean
+ ): DanmakuSyncAction {
+     return when (playbackState) {
+-        androidx.media3.common.Player.STATE_BUFFERING -> DanmakuSyncAction.PauseOnly
+-        androidx.media3.common.Player.STATE_ENDED -> DanmakuSyncAction.PauseOnly
+-        androidx.media3.common.Player.STATE_READY ->
++        com.bilipai.desktop.ui.DesktopOriginalPlaybackStates.STATE_BUFFERING -> DanmakuSyncAction.PauseOnly
++        com.bilipai.desktop.ui.DesktopOriginalPlaybackStates.STATE_ENDED -> DanmakuSyncAction.PauseOnly
++        com.bilipai.desktop.ui.DesktopOriginalPlaybackStates.STATE_READY ->
+             if (resumedFromBuffering && isPlayerPlaying && danmakuEnabled && hasData) {
+                 DanmakuSyncAction.HardResync
+             } else {
+@@ -158,8 +158,8 @@
+ ): DanmakuSyncAction {
+     if (!hasData) return DanmakuSyncAction.None
+     val isSeekDiscontinuity =
+-        reason == androidx.media3.common.Player.DISCONTINUITY_REASON_SEEK ||
+-            reason == androidx.media3.common.Player.DISCONTINUITY_REASON_SEEK_ADJUSTMENT
++        reason == 1 /* explicit-seek reason in the original pure policy */ ||
++            reason == 2 /* adjusted-seek reason in the original pure policy */
+     return if (isSeekDiscontinuity) DanmakuSyncAction.HardResync else DanmakuSyncAction.None
+ }
+ 
+@@ -173,7 +173,7 @@
+     timelineAlreadySynced: Boolean = false
+ ): DanmakuSyncAction {
+     if (!danmakuEnabled || !hasData) return DanmakuSyncAction.None
+-    if (playbackState == androidx.media3.common.Player.STATE_ENDED) {
++    if (playbackState == com.bilipai.desktop.ui.DesktopOriginalPlaybackStates.STATE_ENDED) {
+         return DanmakuSyncAction.PauseOnly
+     }
+     return if (playWhenReady || isPlayerPlaying) {

@@ -55,6 +55,7 @@ internal class DesktopOriginalVideoOwnerAssembly private constructor(
         private set
     lateinit var section: DesktopOriginalMpvSectionControl
         private set
+    private lateinit var sharedPlayback: com.android.purebilibili.core.player.SharedPlaybackSession
     lateinit var playback: VideoPlaybackViewModel
         private set
     lateinit var domains: DesktopOriginalVideoDomainOwners
@@ -105,8 +106,7 @@ internal class DesktopOriginalVideoOwnerAssembly private constructor(
         assertOwned()
         val accepted = native.current() ?: throw CancellationException("Native adoption is required")
         check(accepted.sourceVersion == handoff.nativeSource.sourceVersion && accepted.request == handoff.request)
-        val session: DesktopPlaybackSession = section
-        session.requestPlayback(DesktopPlaybackSessionRequest(handoff.request.bvid, handoff.request.aid,
+        sharedPlayback.load(DesktopPlaybackSessionRequest(handoff.request.bvid, handoff.request.aid,
             cid = handoff.request.cid,
             autoPlay = !(handoff.readback.nativePaused ?: handoff.readback.paused),
             resumePositionMs = (handoff.readback.positionSeconds.coerceAtLeast(0.0) * 1000).toLong(),
@@ -140,6 +140,7 @@ internal class DesktopOriginalVideoOwnerAssembly private constructor(
                 if (first == null) first = failure else first!!.addSuppressed(failure)
             }
         }
+        if (::sharedPlayback.isInitialized) clean(sharedPlayback::close)
         if (::nextWatch.isInitialized) clean(nextWatch::close)
         if (::playback.isInitialized) clean(playback::close)
         if (::invocations.isInitialized) clean(invocations::close)
@@ -278,6 +279,7 @@ internal class DesktopOriginalVideoOwnerAssembly private constructor(
                             capabilities.isDolbyAtmosAudioSupported(), capabilities.isDolbySoftwareAudioDecoderRequired())
                     },
                     closeSession = owner::close)
+                owner.sharedPlayback = com.android.purebilibili.core.player.SharedPlaybackSession(owner.section)
                 owner.domains = DesktopOriginalVideoDomainOwners.create(context, root, capturedEpoch,
                     owner::owns, owner::commit, { owner.playback.uiState.value }, interactionAnalytics)
                 // Original attach has no media loading side effect. Preferred volume
