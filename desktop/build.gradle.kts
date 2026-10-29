@@ -3041,6 +3041,7 @@ val appCoreUpstreamTestsNotRun: Map<String, String> = mapOf(
     "core/util/PlayerOrientationPolicyTest.kt" to "its subject moves in a later step (player orientation, M4a)",
     "core/util/PlayerPresentationPolicyTest.kt" to "its subject moves in a later step (player orientation, M4a)",
     "core/theme/AppThemeEndpointPolicyTest.kt" to "it calls feature/video resolvePlaybackNotificationAccentColor, which moves with M4a",
+    "core/plugin/js/BiliPaiJsNativeExampleTest.kt" to "it reads examples/plugins/tv-live.bilipai.js, which the merge leaves out; the desktop copy runs the byte-identical script from desktop/src/test/fixtures",
     "core/ui/adaptive/DeviceUiProfilePolicyTest.kt" to "the same test class (same package and name) as design-system DeviceUiProfilePolicyTest, which runs",
 )
 val appCoreUpstreamTestPaths: Set<String> = appTestRoot.resolve("com/android/purebilibili/core").walkTopDown()
