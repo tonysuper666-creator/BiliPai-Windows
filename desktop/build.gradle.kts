@@ -2916,6 +2916,8 @@ val transitionPatchDirectory = file("upstream-core/transition/patches")
 val transitionPatchedGeneratedFiles = fileTree(transitionPatchDirectory) { include("**/*.patch") }.files
     .map { it.relativeTo(transitionPatchDirectory).invariantSeparatorsPath.removeSuffix(".patch") }.toSortedSet()
 val transitionPatchProducers = mapOf(
+    // Retirable with the original-bangumi-player transition patch when its upstream VM migrates.
+    "original-bangumi-player" to "extractOriginalBangumiPlayer",
     "shared-liquid-tabs" to "extractSharedLiquidTabs",
     "original-following" to "extractOriginalFollowing",
     "original-space-pages" to "extractOriginalSpacePages",
