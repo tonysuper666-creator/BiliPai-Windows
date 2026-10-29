@@ -1,79 +1,79 @@
 # M4b (TON-1003): upstream files of home/search/dynamic/comment that keep their legacy copy for now.
 # path<TAB>what it waits for
-feature/comment/CommentDetailScreen.kt	auto: 22 compile errors (sessionId, Toast, widget)
-feature/comment/CommentDetailViewModel.kt	auto: 93 compile errors (LoadState, SubReplyPageRequest, refresh)
-feature/comment/CommentPagingSession.kt	auto: 37 compile errors (paging, LoadState, refresh)
-feature/comment/SubReplyPagingSource.kt	auto: 22 compile errors (SubReplyPageRequest, paging, PagingSource)
-feature/dynamic/DynamicCommentLoadPolicy.kt	auto: 5 compile errors (SubReplyPageRequest, retryRequest)
-feature/dynamic/DynamicDeferredStartupPolicy.kt	auto: 2 compile errors (DynamicUiState)
-feature/dynamic/DynamicDetailScreen.kt	auto: 78 compile errors (widget, imageLoader, share)
-feature/dynamic/DynamicDetailViewModel.kt	auto: 3 compile errors (DynamicRepository)
-feature/dynamic/DynamicPagingSource.kt	auto: 8 compile errors (paging, PagingSource, ForwardPagingSource)
-feature/dynamic/DynamicScreen.kt	auto: 50 compile errors (widget, tabIndicatorPosition, imageLoader)
-feature/dynamic/DynamicScreenStatePolicy.kt	auto: 105 compile errors (DynamicUiState, timelineRequestType, timelinePages)
-feature/dynamic/DynamicViewModel.kt	auto: 206 compile errors (LoadState, refresh, DynamicRepository)
-feature/dynamic/components/DrawGrid.kt	auto: 4 compile errors (imageLoader, data)
-feature/dynamic/components/DynamicCard.kt	auto: 90 compile errors (Intent, widget, startActivity)
-feature/dynamic/components/DynamicCardClickPolicy.kt	auto: 2 compile errors (DynamicRepository)
-feature/dynamic/components/DynamicCommentEntryBar.kt	auto: 3 compile errors (CommentEntryBarContent)
-feature/dynamic/components/DynamicCommentInputHost.kt	auto: 14 compile errors (sessionId, drafts)
-feature/dynamic/components/DynamicCommentPreviewPolicy.kt	auto: 2 compile errors (Cannot infer type for type parameter '_'. Specify )
-feature/dynamic/components/DynamicCommentSheet.kt	auto: 19 compile errors (widget)
-feature/dynamic/components/DynamicCreateReserveDialog.kt	auto: 11 compile errors (DynamicCreateRepository, live_plan_start_time, title)
-feature/dynamic/components/DynamicCreateVoteDialog.kt	auto: 34 compile errors (DynamicCreateRepository, rememberLauncherForActivityResult, result)
-feature/dynamic/components/DynamicDraftStore.kt	auto: 1 compile errors (webkit)
-feature/dynamic/components/DynamicImageCropDialog.kt	auto: 19 compile errors (Bitmap, AppScreenshotRegionOverlay, cropAppScreenshotBitmap)
-feature/dynamic/components/DynamicPublishComposer.kt	auto: 34 compile errors (rememberLauncherForActivityResult, result, app)
-feature/dynamic/components/DynamicPublishPickers.kt	auto: 10 compile errors (topic_items, DynamicCreateRepository, it)
-feature/dynamic/components/DynamicSaveImage.kt	auto: 4 compile errors (share, DynamicRepository)
-feature/dynamic/components/DynamicShareToMessageDialog.kt	auto: 3 compile errors (share, it)
-feature/dynamic/components/DynamicSidebar.kt	auto: 2 compile errors (Argument type mismatch: actual type is '_', but '_)
-feature/dynamic/components/DynamicTopBar.kt	auto: 2 compile errors (No parameter with name '_' found.)
-feature/dynamic/components/DynamicUserAvatarRequest.kt	auto: 3 compile errors (data, build)
-feature/dynamic/components/DynamicVoteDialog.kt	auto: 14 compile errors (DynamicVoteRepository, my_votes, options)
-feature/dynamic/components/ForwardedContent.kt	auto: 7 compile errors (Intent, DynamicRepository, packageName)
-feature/dynamic/components/ImagePreviewDialog.kt	auto: 213 compile errors (MediaStore, put, Intent)
-feature/dynamic/components/ImageSaveLocationPolicy.kt	auto: 18 compile errors (Bitmap, DocumentFile, openOutputStream)
-feature/dynamic/components/LiveCard.kt	auto: 4 compile errors (data)
-feature/dynamic/components/LivePhotoPlayback.kt	auto: 68 compile errors (media3, ViewGroup, Player)
-feature/dynamic/components/OriginalImageFile.kt	auto: 18 compile errors (BitmapFactory, imageLoader, PublicContentImageLoader)
-feature/dynamic/components/OriginalImageRegion.kt	auto: 42 compile errors (Bitmap, Matrix, width)
-feature/dynamic/components/RepostDialog.kt	auto: 17 compile errors (name, share, ShareRichTextTools)
-feature/dynamic/components/VideoCards.kt	auto: 3 compile errors (data, drawable)
-feature/dynamic/components/ZoomableImage.kt	auto: 2 compile errors (OriginalImageRegion)
-feature/dynamic/notification/LiveReserveReminderScheduler.kt	auto: 9 compile errors (work, WorkManager, OneTimeWorkRequestBuilder)
-feature/dynamic/notification/LiveReserveReminderWorker.kt	auto: 61 compile errors (applicationContext, Intent, inputData)
-feature/home/HomeCategoryPage.kt	auto: 10 compile errors (DissolveAnimationPreset, DissolvableVideoCard, MaybeDissolvableVideoCard)
-feature/home/HomeComponents.kt	auto: 1 compile errors (No parameter with name '_' found.)
-feature/home/HomeScreen.kt	auto: 48 compile errors (core, widget, AnalyticsHelper)
-feature/home/HomeVideoClickRequest.kt	auto: 2 compile errors (VideoRepository)
-feature/home/HomeViewModel.kt	auto: 222 compile errors (getApplication, VideoRepository, it)
-feature/home/HomeWallpaperBackdrop.kt	auto: 11 compile errors (WallpaperMediaLoadState, data, build)
+feature/comment/CommentDetailScreen.kt	Android Intent/Toast/ActivityResult: needs a desktop interface (file chooser, share, toast)
+feature/comment/CommentDetailViewModel.kt	androidx.paging: the desktop has no paging dependency yet
+feature/comment/CommentPagingSession.kt	androidx.paging: the desktop has no paging dependency yet
+feature/comment/SubReplyPagingSource.kt	androidx.paging: the desktop has no paging dependency yet
+feature/dynamic/DynamicCommentLoadPolicy.kt	calls into other files of this list (unresolved: SubReplyPageRequest, retryRequest)
+feature/dynamic/DynamicDeferredStartupPolicy.kt	calls into other files of this list (unresolved: DynamicUiState)
+feature/dynamic/DynamicDetailScreen.kt	Android Intent/Toast/ActivityResult: needs a desktop interface (file chooser, share, toast); Coil ImageRequest.Builder(Context): Android Context is not a coil3 PlatformContext on the desktop
+feature/dynamic/DynamicDetailViewModel.kt	app data repositories (app/data/repository) are not migrated by any card yet
+feature/dynamic/DynamicPagingSource.kt	androidx.paging: the desktop has no paging dependency yet
+feature/dynamic/DynamicScreen.kt	Android Intent/Toast/ActivityResult: needs a desktop interface (file chooser, share, toast); Coil ImageRequest.Builder(Context): Android Context is not a coil3 PlatformContext on the desktop
+feature/dynamic/DynamicScreenStatePolicy.kt	calls into other files of this list (unresolved: DynamicUiState, timelineRequestType, timelinePages)
+feature/dynamic/DynamicViewModel.kt	androidx.paging: the desktop has no paging dependency yet; AndroidViewModel/Application: needs injected services instead (Toast through the desktop notifier); app data repositories (app/data/repository) are not migrated by any card yet
+feature/dynamic/components/DrawGrid.kt	Coil ImageRequest.Builder(Context): Android Context is not a coil3 PlatformContext on the desktop
+feature/dynamic/components/DynamicCard.kt	app data repositories (app/data/repository) are not migrated by any card yet; Android Intent/Toast/ActivityResult: needs a desktop interface (file chooser, share, toast); Coil ImageRequest.Builder(Context): Android Context is not a coil3 PlatformContext on the desktop
+feature/dynamic/components/DynamicCardClickPolicy.kt	app data repositories (app/data/repository) are not migrated by any card yet
+feature/dynamic/components/DynamicCommentEntryBar.kt	calls into other files of this list (unresolved: CommentEntryBarContent)
+feature/dynamic/components/DynamicCommentInputHost.kt	calls into other files of this list (unresolved: sessionId, drafts)
+feature/dynamic/components/DynamicCommentPreviewPolicy.kt	calls into other files of this list (unresolved: Cannot infer type for type parameter '_'. Specify )
+feature/dynamic/components/DynamicCommentSheet.kt	Android Intent/Toast/ActivityResult: needs a desktop interface (file chooser, share, toast)
+feature/dynamic/components/DynamicCreateReserveDialog.kt	app data repositories (app/data/repository) are not migrated by any card yet
+feature/dynamic/components/DynamicCreateVoteDialog.kt	app data repositories (app/data/repository) are not migrated by any card yet; Android Intent/Toast/ActivityResult: needs a desktop interface (file chooser, share, toast)
+feature/dynamic/components/DynamicDraftStore.kt	MediaStore/ContentResolver/WebView: needs a desktop interface (file chooser, save dialog)
+feature/dynamic/components/DynamicImageCropDialog.kt	android.graphics.Bitmap/Palette: no desktop stand-in yet; Coil ImageRequest.Builder(Context): Android Context is not a coil3 PlatformContext on the desktop
+feature/dynamic/components/DynamicPublishComposer.kt	Android Intent/Toast/ActivityResult: needs a desktop interface (file chooser, share, toast)
+feature/dynamic/components/DynamicPublishPickers.kt	app data repositories (app/data/repository) are not migrated by any card yet
+feature/dynamic/components/DynamicSaveImage.kt	app data repositories (app/data/repository) are not migrated by any card yet
+feature/dynamic/components/DynamicShareToMessageDialog.kt	calls into other files of this list (unresolved: share, it)
+feature/dynamic/components/DynamicSidebar.kt	Coil ImageRequest.Builder(Context): Android Context is not a coil3 PlatformContext on the desktop
+feature/dynamic/components/DynamicTopBar.kt	calls into other files of this list (unresolved: No parameter with name '_' found.)
+feature/dynamic/components/DynamicUserAvatarRequest.kt	Coil ImageRequest.Builder(Context): Android Context is not a coil3 PlatformContext on the desktop
+feature/dynamic/components/DynamicVoteDialog.kt	app data repositories (app/data/repository) are not migrated by any card yet
+feature/dynamic/components/ForwardedContent.kt	app data repositories (app/data/repository) are not migrated by any card yet; Android Intent/Toast/ActivityResult: needs a desktop interface (file chooser, share, toast)
+feature/dynamic/components/ImagePreviewDialog.kt	imports plugin.sdk / core.plugin: waits for TON-1028 (plugin-sdk), the legacy copy keeps compiling meanwhile; Android Intent/Toast/ActivityResult: needs a desktop interface (file chooser, share, toast); MediaStore/ContentResolver/WebView: needs a desktop interface (file chooser, save dialog)
+feature/dynamic/components/ImageSaveLocationPolicy.kt	MediaStore/ContentResolver/WebView: needs a desktop interface (file chooser, save dialog); android.graphics.Bitmap/Palette: no desktop stand-in yet
+feature/dynamic/components/LiveCard.kt	Coil ImageRequest.Builder(Context): Android Context is not a coil3 PlatformContext on the desktop
+feature/dynamic/components/LivePhotoPlayback.kt	Media3/AndroidView: the desktop plays through mpv
+feature/dynamic/components/OriginalImageFile.kt	imports plugin.sdk / core.plugin: waits for TON-1028 (plugin-sdk), the legacy copy keeps compiling meanwhile; android.graphics.Bitmap/Palette: no desktop stand-in yet; Coil ImageRequest.Builder(Context): Android Context is not a coil3 PlatformContext on the desktop
+feature/dynamic/components/OriginalImageRegion.kt	android.graphics.Bitmap/Palette: no desktop stand-in yet
+feature/dynamic/components/RepostDialog.kt	calls into other files of this list (unresolved: name, share, ShareRichTextTools)
+feature/dynamic/components/VideoCards.kt	R.drawable resources are not generated for the desktop yet; Coil ImageRequest.Builder(Context): Android Context is not a coil3 PlatformContext on the desktop
+feature/dynamic/components/ZoomableImage.kt	Coil ImageRequest.Builder(Context): Android Context is not a coil3 PlatformContext on the desktop
+feature/dynamic/notification/LiveReserveReminderScheduler.kt	WorkManager: needs a desktop scheduler
+feature/dynamic/notification/LiveReserveReminderWorker.kt	Android Intent/Toast/ActivityResult: needs a desktop interface (file chooser, share, toast); WorkManager: needs a desktop scheduler; R.drawable resources are not generated for the desktop yet
+feature/home/HomeCategoryPage.kt	calls into other files of this list (unresolved: DissolveAnimationPreset, DissolvableVideoCard, MaybeDissolvableVideoCard)
+feature/home/HomeComponents.kt	calls into other files of this list (unresolved: No parameter with name '_' found.)
+feature/home/HomeScreen.kt	imports plugin.sdk / core.plugin: waits for TON-1028 (plugin-sdk), the legacy copy keeps compiling meanwhile; Android Intent/Toast/ActivityResult: needs a desktop interface (file chooser, share, toast); Coil ImageRequest.Builder(Context): Android Context is not a coil3 PlatformContext on the desktop
+feature/home/HomeVideoClickRequest.kt	app data repositories (app/data/repository) are not migrated by any card yet
+feature/home/HomeViewModel.kt	imports plugin.sdk / core.plugin: waits for TON-1028 (plugin-sdk), the legacy copy keeps compiling meanwhile; AndroidViewModel/Application: needs injected services instead (Toast through the desktop notifier); app data repositories (app/data/repository) are not migrated by any card yet
+feature/home/HomeWallpaperBackdrop.kt	Coil ImageRequest.Builder(Context): Android Context is not a coil3 PlatformContext on the desktop
 feature/home/TodayWatchPolicy.kt	waits for TON-1028: imports plugin.sdk / core.plugin, which still compile from the legacy copy
-feature/home/WeeklySeriesScreen.kt	auto: 1 compile errors (Type argument for reified type parameter '_' was i)
-feature/home/WeeklySeriesViewModel.kt	auto: 16 compile errors (VideoRepository, config, list)
+feature/home/WeeklySeriesScreen.kt	calls into other files of this list (unresolved: Type argument for reified type parameter '_' was i)
+feature/home/WeeklySeriesViewModel.kt	app data repositories (app/data/repository) are not migrated by any card yet
 feature/home/components/BottomBarUiSkin.kt	waits for TON-1028: imports plugin.sdk / core.plugin, which still compile from the legacy copy
-feature/home/components/CrashTrackingConsentDialog.kt	auto: 2 compile errors (CrashReporter)
-feature/home/components/HomeHeader.kt	auto: 4 compile errors (No parameter with name '_' found.)
-feature/home/components/HomeHeroCarousel.kt	auto: 16 compile errors (data, OptIn, media3)
-feature/home/components/HomeHeroCarouselImmersive.kt	auto: 7 compile errors (data, build)
-feature/home/components/HomeNavigationIconPolicy.kt	auto: 27 compile errors (drawable, vectorResource)
-feature/home/components/HomeTopControls.kt	auto: 4 compile errors (data, build)
-feature/home/components/LiquidGlassAdaptiveReadability.kt	auto: 47 compile errors (Rect, Bitmap, width)
-feature/home/components/TopBar.kt	auto: 15 compile errors (tabIndicatorPosition, isTabSelectionInProgress, tabSelectedPage)
-feature/home/components/VideoPreviewDialog.kt	auto: 53 compile errors (media3, widget, Player)
-feature/home/components/cards/HomeStyleSingleColumnVideoCard.kt	auto: 11 compile errors (data, build, memoryCacheKey)
-feature/home/components/cards/StoryVideoCard.kt	auto: 14 compile errors (data, memoryCacheKey, build)
-feature/home/components/cards/VideoCard.kt	auto: 36 compile errors (widget, copyPlainTextToClipboard, data)
-feature/home/components/cards/VideoCardCoverColorStore.kt	auto: 33 compile errors (Bitmap, Palette, LruCache)
-feature/home/components/cards/WallpaperPaletteStore.kt	auto: 27 compile errors (width, height, Bitmap)
+feature/home/components/CrashTrackingConsentDialog.kt	calls into other files of this list (unresolved: CrashReporter)
+feature/home/components/HomeHeader.kt	calls into other files of this list (unresolved: No parameter with name '_' found.)
+feature/home/components/HomeHeroCarousel.kt	Media3/AndroidView: the desktop plays through mpv; Coil ImageRequest.Builder(Context): Android Context is not a coil3 PlatformContext on the desktop
+feature/home/components/HomeHeroCarouselImmersive.kt	Coil ImageRequest.Builder(Context): Android Context is not a coil3 PlatformContext on the desktop
+feature/home/components/HomeNavigationIconPolicy.kt	R.drawable resources are not generated for the desktop yet
+feature/home/components/HomeTopControls.kt	Coil ImageRequest.Builder(Context): Android Context is not a coil3 PlatformContext on the desktop
+feature/home/components/LiquidGlassAdaptiveReadability.kt	android.graphics.Bitmap/Palette: no desktop stand-in yet
+feature/home/components/TopBar.kt	R.drawable resources are not generated for the desktop yet; Coil ImageRequest.Builder(Context): Android Context is not a coil3 PlatformContext on the desktop
+feature/home/components/VideoPreviewDialog.kt	Android Intent/Toast/ActivityResult: needs a desktop interface (file chooser, share, toast); Media3/AndroidView: the desktop plays through mpv; Coil ImageRequest.Builder(Context): Android Context is not a coil3 PlatformContext on the desktop
+feature/home/components/cards/HomeStyleSingleColumnVideoCard.kt	Coil ImageRequest.Builder(Context): Android Context is not a coil3 PlatformContext on the desktop
+feature/home/components/cards/StoryVideoCard.kt	Coil ImageRequest.Builder(Context): Android Context is not a coil3 PlatformContext on the desktop
+feature/home/components/cards/VideoCard.kt	app data repositories (app/data/repository) are not migrated by any card yet; Android Intent/Toast/ActivityResult: needs a desktop interface (file chooser, share, toast); Coil ImageRequest.Builder(Context): Android Context is not a coil3 PlatformContext on the desktop
+feature/home/components/cards/VideoCardCoverColorStore.kt	android.graphics.Bitmap/Palette: no desktop stand-in yet; Coil ImageRequest.Builder(Context): Android Context is not a coil3 PlatformContext on the desktop
+feature/home/components/cards/WallpaperPaletteStore.kt	android.graphics.Bitmap/Palette: no desktop stand-in yet; Coil ImageRequest.Builder(Context): Android Context is not a coil3 PlatformContext on the desktop
 feature/home/subscription/ArticleNoteDraftPolicy.kt	waits for TON-1028: imports plugin.sdk / core.plugin, which still compile from the legacy copy
 feature/home/subscription/SubscriptionArticleReadingPolicy.kt	waits for TON-1028: imports plugin.sdk / core.plugin, which still compile from the legacy copy
-feature/home/subscription/SubscriptionFeedPage.kt	auto: 68 compile errors (widget, Intent, SelectionContainer)
-feature/search/SearchPagingSession.kt	auto: 16 compile errors (paging, LoadResult, PagingSource)
-feature/search/SearchScreen.kt	auto: 38 compile errors (data, build, tabIndicatorPosition)
-feature/search/SearchTrendingScreen.kt	auto: 1 compile errors (Type argument for reified type parameter '_' was i)
-feature/search/SearchTrendingViewModel.kt	auto: 5 compile errors (AndroidViewModel, app, Application)
-feature/search/SearchViewModel.kt	auto: 56 compile errors (getApplication, app, paging)
-feature/search/TopicDetailScreen.kt	auto: 11 compile errors (widget, imageLoader, drawable)
-feature/search/TopicDetailViewModel.kt	auto: 42 compile errors (getTopicFeed, items, offset)
+feature/home/subscription/SubscriptionFeedPage.kt	imports plugin.sdk / core.plugin: waits for TON-1028 (plugin-sdk), the legacy copy keeps compiling meanwhile; Android Intent/Toast/ActivityResult: needs a desktop interface (file chooser, share, toast); Coil ImageRequest.Builder(Context): Android Context is not a coil3 PlatformContext on the desktop
+feature/search/SearchPagingSession.kt	androidx.paging: the desktop has no paging dependency yet
+feature/search/SearchScreen.kt	Coil ImageRequest.Builder(Context): Android Context is not a coil3 PlatformContext on the desktop
+feature/search/SearchTrendingScreen.kt	calls into other files of this list (unresolved: Type argument for reified type parameter '_' was i)
+feature/search/SearchTrendingViewModel.kt	AndroidViewModel/Application: needs injected services instead (Toast through the desktop notifier); Media3/AndroidView: the desktop plays through mpv
+feature/search/SearchViewModel.kt	imports plugin.sdk / core.plugin: waits for TON-1028 (plugin-sdk), the legacy copy keeps compiling meanwhile; androidx.paging: the desktop has no paging dependency yet; AndroidViewModel/Application: needs injected services instead (Toast through the desktop notifier)
+feature/search/TopicDetailScreen.kt	Android Intent/Toast/ActivityResult: needs a desktop interface (file chooser, share, toast); R.drawable resources are not generated for the desktop yet; Coil ImageRequest.Builder(Context): Android Context is not a coil3 PlatformContext on the desktop
+feature/search/TopicDetailViewModel.kt	app data repositories (app/data/repository) are not migrated by any card yet
