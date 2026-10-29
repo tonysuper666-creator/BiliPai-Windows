@@ -657,6 +657,8 @@ class DanmakuOverlay internal constructor(
     private var presentationTimeReady = false
     private var presentationTimeSource: OwnedPlaybackSourceSnapshot? = null
     private var renderedFrameTime: Pair<OwnedPlaybackSourceSnapshot,Double>? = null
+    // EDT-only paint completions. Snapshot deltas measure Java2D paints, not display scanout fps.
+    private var completedPaints = 0L
     @Volatile private var liveMode = false
     private val liveRenderer = LiveDanmakuRenderer(requests)
     private data class PendingLive(val generation: Long, val item: LiveDanmakuItem)
@@ -791,6 +793,7 @@ class DanmakuOverlay internal constructor(
                 }
                 ownedViewportBrightness()?.let { (_,brightness) -> DesktopEyeTint(1f-brightness,0f).paint(context,width,height) }
                 eyeTint.paint(context, width, height)
+                completedPaints++
             } finally { context.dispose() }
         }
     }.apply { isOpaque = false }
@@ -1423,6 +1426,7 @@ class DanmakuOverlay internal constructor(
         } ?: "nativeWindow=absent"
         return "surface=${surface.bounds}, showing=${surface.isShowing}, ancestor=${ancestor?.javaClass?.simpleName}, ancestorVisible=${ancestor?.isVisible}, ancestorFrameState=${(ancestor as? Frame)?.extendedState}, " +
             "owner=${owner?.javaClass?.simpleName}, ownerActive=${owner?.isActive}, ownerTopmost=${owner?.isAlwaysOnTop}, timerRunning=${framePlatform.isRunning}, enabled=$enabled, " +
+            "displayRefreshRateHz=${framePlatform.refreshRateHz()}, completedPaints=$completedPaints, sampleNanos=${System.nanoTime()}, " +
             "overlay=${window?.bounds}, showing=${window?.isShowing}, overlayTopmost=${window?.isAlwaysOnTop}, panel=${panel.bounds}, comments=${mutableCount.value}, " +
             "mediaTime=$displayTime, ready=${playerState.ready}, firstFrame=${playerState.firstVideoFrameReady}, nativePaused=${playerState.nativePaused}, " +
             "videoCodecPresent=${playerState.videoCodec != null}, ended=${playerState.ended}, audioOnly=${playerState.audioOnly}, errorPresent=${playerState.error != null}, $native"
