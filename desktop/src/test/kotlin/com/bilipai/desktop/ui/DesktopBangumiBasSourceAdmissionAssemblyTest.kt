@@ -848,6 +848,7 @@ class DesktopBangumiBasSourceAdmissionAssemblyTest {
                 assertEquals(if (hiRes) AudioStreamKind.HI_RES else AudioStreamKind.STANDARD,
                     state().availableAudioQualities.single { it.preferenceId == state().selectedAudioQuality }.kind)
                 assertEquals(audioPreference, state().requestedAudioQuality)
+                assertEquals(audioPreference, state().effectiveAudioQuality)
                 assertEquals(if (hiRes) HI_RES else AAC, state().audioUrl)
                 assertEquals(AV1, state().playUrl)
                 assertTrue(native.ownsPlaybackSource()); assertFalse(player.state.value.ready)
@@ -908,6 +909,7 @@ class DesktopBangumiBasSourceAdmissionAssemblyTest {
             assertEquals(original.seasonDetail.seasonId, actual.seasonDetail.seasonId)
             assertEquals(original.requestedAudioQuality, actual.requestedAudioQuality)
             assertEquals(original.selectedAudioQuality, actual.selectedAudioQuality)
+            assertEquals(original.effectiveAudioQuality, actual.effectiveAudioQuality)
             assertEquals(original.audioFallbackReason, actual.audioFallbackReason)
             assertEquals(expectedAudio, actual.audioUrl); assertEquals(url, source.videoUrl)
             assertEquals(actual.audioUrl, source.audioUrl)

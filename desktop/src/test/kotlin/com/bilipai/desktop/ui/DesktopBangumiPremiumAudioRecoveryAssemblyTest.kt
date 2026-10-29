@@ -938,6 +938,7 @@ class DesktopBangumiPremiumAudioRecoveryAssemblyTest {
             assertEquals(original.quality, actual.quality); assertEquals(120, actual.quality)
             assertEquals(AUDIO_QUALITY_HI_RES, actual.requestedAudioQuality)
             assertEquals(30280, actual.selectedAudioQuality)
+            assertEquals(AUDIO_QUALITY_AUTO, actual.effectiveAudioQuality)
             assertEquals(AudioStreamKind.STANDARD, actual.availableAudioQualities.single { it.preferenceId == 30280 }.kind)
             assertEquals(AudioFallbackReason.DECODER_ERROR, actual.audioFallbackReason)
             assertEquals(original.currentEpisode, actual.currentEpisode)
