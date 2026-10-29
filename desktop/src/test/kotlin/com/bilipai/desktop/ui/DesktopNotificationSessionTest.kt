@@ -227,6 +227,38 @@ class DesktopNotificationSessionTest {
         assertEquals(listOf("messages-7"), center.cleared)
     }
 
+    @Test fun theWithdrawalTableSurvivesConcurrentCancelRetryAndResume() {
+        val center = RecordingNotificationCenter()
+        val session = session(center, 7L)
+        assertTrue(session.publish(item("reply-1")))
+        session.pause() // a paused session: resume() will remember its deliveries
+        center.failRemove = false
+
+        val errors = java.util.concurrent.ConcurrentLinkedQueue<Throwable>()
+        val stop = java.util.concurrent.atomic.AtomicBoolean(false)
+        val cleaner = thread {
+            while (!stop.get()) {
+                runCatching { session.retryCleanup() }.onFailure { errors += it }
+            }
+        }
+        val canceller = thread {
+            repeat(300) {
+                runCatching { session.withdrawNow(setOf("reply-1")) }.onFailure { errors += it }
+                runCatching { session.resume(); session.pause() }.onFailure { errors += it }
+            }
+        }
+        canceller.join(20_000)
+        stop.set(true)
+        cleaner.join(5_000)
+
+        assertTrue(errors.isEmpty(), "the table is shared across threads: ${errors.firstOrNull()}")
+        session.retryCleanup()
+        val stillPending = session.pendingTags()
+        val visible = center.texts().map { it.substringBefore('@') }.toSet()
+        assertTrue(stillPending.intersect(visible).isEmpty(),
+            "a refused delivery is either still pending or gone from the surface, never both")
+    }
+
     @Test fun anOldSessionLosingTheLeaseEndsItsOwnCleanupInsteadOfRetryingForever() {
         val center = RecordingNotificationCenter()
         val oldSession = session(center, 7L)

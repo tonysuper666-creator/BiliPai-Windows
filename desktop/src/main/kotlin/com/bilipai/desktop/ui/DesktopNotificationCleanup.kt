@@ -24,7 +24,14 @@ internal object DesktopNotificationCleanup {
     /** One pass; returns how many sessions still need work. */
     fun retryOutstanding(): Int {
         for (session in outstanding) {
-            if (session.retryCleanup() || !session.isCleanupPending()) outstanding -= session
+            // One session that fails must not stop the driver or drop the others from the queue.
+            val finished = try {
+                session.retryCleanup()
+            } catch (failure: Throwable) {
+                System.err.println("通知清理重试失败: ${failure.javaClass.simpleName}: ${failure.message}")
+                false
+            }
+            if (finished || !session.isCleanupPending()) outstanding -= session
         }
         return outstanding.size
     }
@@ -37,7 +44,7 @@ internal object DesktopNotificationCleanup {
             try {
                 while (outstanding.isNotEmpty()) {
                     Thread.sleep(2_000)
-                    retryOutstanding()
+                    runCatching { retryOutstanding() }
                 }
             } finally { driving.set(false) }
         }, "BiliPai-notification-cleanup").apply { isDaemon = true }.start()
