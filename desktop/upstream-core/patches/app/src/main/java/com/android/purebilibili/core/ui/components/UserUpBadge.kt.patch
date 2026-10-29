@@ -1,0 +1,21 @@
+--- a/com/android/purebilibili/core/ui/components/UserUpBadge.kt
++++ b/com/android/purebilibili/core/ui/components/UserUpBadge.kt
+@@ -48,17 +48,17 @@
+                 vertical = spec.verticalPaddingDp.dp
+             ),
+         contentAlignment = Alignment.Center,
+     ) {
+         Text(
+             text = "UP",
+             style = MaterialTheme.typography.labelSmall.copy(
+                 lineHeight = MaterialTheme.typography.labelSmall.fontSize,
+-                platformStyle = PlatformTextStyle(includeFontPadding = false),
++                // Desktop: Skia text has no Android font padding to turn off (as in the design-system patches).
+                 lineHeightStyle = LineHeightStyle(
+                     alignment = LineHeightStyle.Alignment.Center,
+                     trim = LineHeightStyle.Trim.Both,
+                 ),
+             ),
+             maxLines = 1,
+             softWrap = false,
+             fontWeight = FontWeight.Bold,

@@ -263,10 +263,14 @@ val appCoreLaterSteps: Map<String, String> = mapOf(
     "core/store/LocalPlaylistStore.kt" to "Room AudioLibraryDatabase; the desktop music library is JSON, moves with the audio feature (M4c)",
     "core/store/PlayHistoryStore.kt" to "Room AudioLibraryDatabase; the desktop music library is JSON, moves with the audio feature (M4c)",
     "core/store/UpdateHighlightsStore.kt" to "reads feature/settings/highlights; moves with the settings feature (M4d)",
+    "core/ui/components/AppLiquidAwareTabRow.kt" to "calls feature/home's liquid tab components with their new parameters; moves with the home feature (M4b)",
 )
+// Files of a later-step area that other migrated files already need and that have no legacy copy (pure declarations).
+val appCoreAheadOfLaterSteps = setOf("core/plugin/BuiltinPluginIds.kt")
 val migratedAppCorePaths: Set<String> = appJavaRoot.resolve("com/android/purebilibili/core").walkTopDown()
     .filter { it.isFile && it.extension == "kt" }.map { it.relativeTo(appJavaRoot).invariantSeparatorsPath }
-    .filter { path -> (appCoreDesktopOwned.keys + appCoreLaterSteps.keys).none { path.removePrefix("com/android/purebilibili/").startsWith(it) } }
+    .filter { path -> path.removePrefix("com/android/purebilibili/").let { core -> core in appCoreAheadOfLaterSteps ||
+        (appCoreDesktopOwned.keys + appCoreLaterSteps.keys).none { core.startsWith(it) } } }
     .toSortedSet()
 val migratedUpstreamRelativePaths = migratedWholeModulePaths + migratedAppCorePaths + setOf(
     "com/android/purebilibili/core/network/AppSignUtils.kt",

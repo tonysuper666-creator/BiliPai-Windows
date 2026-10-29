@@ -11,6 +11,8 @@ abstract class Context(val dataDir: File) {
     open val applicationContext: Context get() = this
     open val filesDir: File get() = File(dataDir, "files").apply { mkdirs() }
     open val cacheDir: File get() = File(dataDir, "cache").apply { mkdirs() }
+    /** App-specific "external" storage: on the desktop a directory inside the app data directory, created on demand. */
+    open fun getExternalFilesDir(type: String?): File? = File(dataDir, if (type == null) "external" else "external/$type").apply { mkdirs() }
     open val contentResolver: ContentResolver = ContentResolver()
     abstract fun getSharedPreferences(name: String, mode: Int): SharedPreferences
     /** Upstream app strings, following the system language (see [android.content.res.Resources]). */

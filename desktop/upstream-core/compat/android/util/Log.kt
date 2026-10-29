@@ -18,4 +18,7 @@ object Log {
     @JvmStatic fun e(tag: String, msg: String): Int = sink.write("E", tag, msg, null)
     @JvmStatic fun e(tag: String, msg: String, tr: Throwable?): Int = sink.write("E", tag, msg, tr)
     @JvmStatic fun getStackTraceString(tr: Throwable?): String = tr?.stackTraceToString() ?: ""
+    const val VERBOSE = 2; const val DEBUG = 3; const val INFO = 4; const val WARN = 5; const val ERROR = 6; const val ASSERT = 7
+    /** Android's default threshold without a `log.tag.*` property: INFO and above. */
+    @JvmStatic fun isLoggable(tag: String, level: Int): Boolean = level >= INFO
 }

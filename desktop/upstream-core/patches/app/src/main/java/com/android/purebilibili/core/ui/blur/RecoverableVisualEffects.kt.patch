@@ -1,0 +1,80 @@
+--- a/com/android/purebilibili/core/ui/blur/RecoverableVisualEffects.kt
++++ b/com/android/purebilibili/core/ui/blur/RecoverableVisualEffects.kt
+@@ -7,17 +7,16 @@
+ import androidx.compose.runtime.SideEffect
+ import androidx.compose.runtime.State
+ import androidx.compose.runtime.getValue
+ import androidx.compose.runtime.mutableIntStateOf
+ import androidx.compose.runtime.mutableStateOf
+ import androidx.compose.runtime.remember
+ import androidx.compose.runtime.setValue
+ import androidx.compose.ui.Modifier
+-import com.android.purebilibili.core.lifecycle.BackgroundManager
+ import com.android.purebilibili.core.ui.AdaptiveScaffoldHazeHandle
+ import dev.chrisbanes.haze.HazeState
+ import dev.chrisbanes.haze.hazeSource
+ import java.util.Collections
+ import java.util.WeakHashMap
+ 
+ /**
+  * Haze 2 移除了 [HazeState.blurEnabled]。后台/前台门控按 state 记录，
+@@ -107,51 +106,54 @@
+ }
+ 
+ @Composable
+ fun rememberRecoverableHazeState(
+     userEnabled: Boolean = true,
+     initialBlurEnabled: Boolean = true,
+     sdkInt: Int = Build.VERSION.SDK_INT
+ ): HazeState {
+-    var isAppInBackground by remember { mutableStateOf(BackgroundManager.isInBackground) }
++    // Desktop: the window's foreground/background port replaces Android's process lifecycle (BackgroundManager), and
++    // the desktop platform decides whether a resumed window re-records the haze source (no fixed-SDK_INT gate).
++    val platform = com.bilipai.desktop.ui.LocalDesktopHomePlatform.current
++    var isAppInBackground by remember(platform.background) { mutableStateOf(platform.background.isInBackground) }
+     var recreationKey by remember { mutableIntStateOf(0) }
+-    val shouldRecreateState = shouldRecreateRecoverableHazeState(sdkInt)
++    val shouldRecreateState = platform.recreateHazeOnResume
+     val hazeState = remember(recreationKey) {
+         HazeState()
+     }
+     val blurGate = remember(hazeState, initialBlurEnabled) {
+         mutableStateOf(initialBlurEnabled).also { recoverableBlurGates[hazeState] = it }
+     }
+ 
+     DisposableEffect(hazeState) {
+         recoverableBlurGates[hazeState] = blurGate
+         onDispose {
+             recoverableBlurGates.remove(hazeState)
+         }
+     }
+ 
+     DisposableEffect(shouldRecreateState) {
+-        val listener = object : BackgroundManager.BackgroundStateListener {
++        val listener = object : com.bilipai.desktop.ui.DesktopHomeWindowBackgroundPort.Listener {
+             override fun onEnterBackground() {
+                 isAppInBackground = true
+                 // 进后台时不重建：界面不可见，重录全屏 haze source 没有意义，反而会让回前台
+                 // 后的第一帧额外承担一次重建成本。blurGate 已经通过 isAppInBackground 关掉了。
+             }
+ 
+             override fun onEnterForeground() {
+                 isAppInBackground = false
+                 if (shouldRecreateState) {
+                     recreationKey += 1
+                 }
+             }
+         }
+-        BackgroundManager.addListener(listener)
++        platform.background.addListener(listener)
+         onDispose {
+-            BackgroundManager.removeListener(listener)
++            platform.background.removeListener(listener)
+         }
+     }
+ 
+     SideEffect {
+         blurGate.value = shouldEnableRecoverableHeavyVisualEffects(
+             userEnabled = userEnabled,
+             isAppInBackground = isAppInBackground
+         )
