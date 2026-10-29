@@ -727,7 +727,8 @@ class SourceShapeTest(unittest.TestCase):
         for needle in ("page = { if (routes.owns()) desktopShellPageOf(routes.loginReadDestination()) else null },",
                        "if (routes.owns()) { chrome.actions.searchClick() true } else { false }",
                        "DesktopShellPage.HOME -> { chrome.actions.homeDoubleTap() true }",
-                       "DesktopShellPage.DYNAMIC -> { chrome.actions.dynamicDoubleTap() true }",
+                       # TON-1026: F5 / Ctrl+R on the dynamic page always refreshes (the second click on its row only refreshes from the top).
+                       "DesktopShellPage.DYNAMIC -> { chrome.actions.dynamicRefresh() true }",
                        "if (routes.currentKey != BiliPaiNavKey.DownloadList) routes.push(BiliPaiNavKey.DownloadList)",
                        "val bottom = item.bottomNavName?.let { name -> visibleItems.firstOrNull { it.name == name } } ?: return false",
                        "val target = bottomPagerNavKeyForItem(bottom) if (routes.loginReadDestination() != target) routes.push(target)",

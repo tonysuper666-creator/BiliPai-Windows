@@ -1,8 +1,7 @@
 package com.bilipai.desktop.danmaku
 
-import com.android.purebilibili.core.plugin.DanmakuItem
-import com.android.purebilibili.core.plugin.DanmakuStyle
-import androidx.compose.ui.graphics.toArgb
+import com.android.purebilibili.plugin.sdk.DanmakuItem
+import com.android.purebilibili.plugin.sdk.DanmakuStyle
 import kotlinx.coroutines.CancellationException
 import java.awt.AlphaComposite
 import java.awt.Color
@@ -24,14 +23,13 @@ internal fun applyDesktopDanmakuPlugin(comment: DanmakuComment, processor: Danma
     val item = transformed.first
     val text = item.content.replace("\u0000", "").take(2_000)
     if (text.isBlank()) return null
-    val color = transformed.second?.textColor?.let { runCatching { it.toArgb() }.getOrNull() } ?: item.color
+    val color = transformed.second?.textColor ?: item.color
     val style = transformed.second?.let { it.copy(scale = it.scale.takeIf(Float::isFinite)?.coerceIn(0.3f, 4f) ?: 1f) }
     return StyledDesktopDanmaku(comment.copy(text = text, timeSeconds = item.timeMs.coerceAtLeast(0) / 1_000.0,
         mode = item.type.takeIf { it in 1..6 } ?: 1, color = color and 0xffffff), style)
 }
 
-internal fun pluginAwtColor(value: androidx.compose.ui.graphics.Color?): Color? =
-    value?.let { runCatching { Color(it.toArgb(), true) }.getOrNull() }
+internal fun pluginAwtColor(argb: Int?): Color? = argb?.let { Color(it, true) }
 
 /** AWT paint adapter for values produced by the original EyeProtectionPolicy. */
 internal data class DesktopEyeTint(val dimAlpha: Float = 0f, val warmAlpha: Float = 0f, val warmArgb: Int = 0xffffc07a.toInt()) {

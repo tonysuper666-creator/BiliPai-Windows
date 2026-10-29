@@ -46,7 +46,7 @@ class BasFilterExtractionTest(unittest.TestCase):
 
     def test_entire_selected_original_pipeline_roundtrips_all_counted_changes(self):
         original, adapted, edits = tool.adapt_pipeline(tool.read(REPO, "DanmakuManager.kt"))
-        self.assertEqual(10, len(edits))
+        self.assertEqual(11, len(edits))  # 11th: plugin-sdk DanmakuStyle ARGB (TON-1028)
         self.assertTrue(all(count == 1 for _, _, count in edits))
         self.assertEqual(original, tool.inverse(adapted, edits))
         self.assertIn("type = 9,", adapted)

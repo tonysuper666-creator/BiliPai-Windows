@@ -176,6 +176,9 @@ def generate(repo,output):
             body=apply_tab_roles("app/src/main/java/com/android/purebilibili/feature/video/ui/components/CommentInputDialog.kt",body,output,Path(relative).name)
         elif Path(relative).name=="DesktopOriginalCommentSortHeader.kt":
             body=apply_tab_roles("app/src/main/java/com/android/purebilibili/feature/video/ui/components/CommentSortFilterBar.kt",body,output,Path(relative).name)
+        from desktop_refresh_adaptation import bind_refresh_lists, bind_refresh_launch
+        if not relative.startswith('bgm-original-retained/'):
+            body=bind_refresh_lists(bind_refresh_launch(body))
         body=comment_detail_root_entry_delta(relative,body)
         if relative=='com/android/purebilibili/feature/audio/bgm/BgmDetailScreen.kt':
             from v046_comment_list import advance_bgm_comment_content

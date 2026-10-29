@@ -1,7 +1,7 @@
 package com.bilipai.desktop.ui
 
 import com.android.purebilibili.core.network.BilibiliApi
-import com.android.purebilibili.core.plugin.SkipAction
+import com.android.purebilibili.plugin.sdk.SkipAction
 import com.android.purebilibili.data.model.response.*
 import com.android.purebilibili.data.repository.DesktopOriginalFavoriteFolderProtocol
 import com.android.purebilibili.data.repository.DesktopOriginalVideoEngagementProtocol
@@ -89,7 +89,7 @@ class DesktopWindowsSponsorSkipCommandTest {
         private val plugins = Proxy.newProxyInstance(DesktopOriginalVideoOwnerPlugins::class.java.classLoader,
             arrayOf(DesktopOriginalVideoOwnerPlugins::class.java)) { _, method, args ->
             when (method.name) {
-                "enabledPlayerPlugins" -> emptyList<com.android.purebilibili.core.plugin.PlayerPlugin>()
+                "enabledPlayerPlugins" -> emptyList<com.android.purebilibili.core.plugin.DesktopSingleSessionPlayerPlugin>()
                 "capturePlaybackDispatch" -> accepted.takeIf { owned() }
                 "isPlaybackDispatchCurrent" -> sourceCurrent(args!![0] as DesktopOriginalVideoAcceptedPublication)
                 "admitPlaybackDispatch" -> {

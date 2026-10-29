@@ -46,6 +46,8 @@ internal class DesktopOriginalFrostedNavigationActions(
     val navigate: (BottomNavItem) -> Unit,
     val homeDoubleTap: () -> Unit,
     val dynamicDoubleTap: () -> Unit,
+    /** F5 / Ctrl+R on the dynamic page: scroll to the top and always refresh (the double tap only refreshes from the top). */
+    val dynamicRefresh: () -> Unit,
     val searchClick: () -> Unit,
     val openSearch: (String) -> Unit,
     val openNativeTarget: (BilibiliNavigationTarget) -> Unit,

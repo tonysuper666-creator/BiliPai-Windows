@@ -113,9 +113,11 @@ class DesktopAppearanceTest {
     @Test fun nativeMiuixNeutralsAndMaterialCanvasMatchExactUpstreamRoles() {
         val settings = DesktopThemeSettings(uiStyle = AppUiStyle.MIUIX, themeMode = AppThemeMode.LIGHT, md3ColorSource = Md3ColorSource.CUSTOM, md3CustomColorHex = "#FF0088")
         val palette = buildDesktopAppearancePalette(settings, false)
-        val original = top.yukonga.miuix.kmp.theme.lightColorScheme()
-        assertEquals(original.background, palette.miuixLight.background)
-        assertEquals(original.surface, palette.miuixLight.surface)
+        // Upstream AppThemeEndpointPolicy: under MIUIX the Miuix colors come from the seeded Material scheme through the
+        // Monet bridge, so the canvas follows the custom color instead of the native Miuix neutrals.
+        val native = top.yukonga.miuix.kmp.theme.lightColorScheme()
+        assertEquals(Color(android.graphics.Color.parseColor(palette.baseRoles.light.backgroundHex)), palette.miuixLight.background)
+        assertNotEquals(native.background, palette.miuixLight.background)
         assertEquals(palette.miuixLight.surface, palette.material.background)
         assertEquals(palette.miuixLight.surfaceContainer, palette.material.surfaceContainer)
         assertEquals(palette.miuixLight.primary, palette.material.primary)
@@ -125,7 +127,8 @@ class DesktopAppearanceTest {
         val settings = DesktopThemeSettings(themeMode = AppThemeMode.LIGHT, md3ColorSource = Md3ColorSource.CUSTOM, themeRoleOverrides = overrides)
         assertEquals(Color(0xFF112233), buildDesktopAppearancePalette(settings, false).material.background)
         assertNotEquals(Color(0xFF112233), buildDesktopAppearancePalette(settings.copy(md3ColorSource = Md3ColorSource.FOLLOW_WALLPAPER), false).material.background)
-        assertNotEquals(Color(0xFF112233), buildDesktopAppearancePalette(settings.copy(uiStyle = AppUiStyle.MIUIX), false).material.background)
+        // Upstream resolveEffectiveThemeRoleOverrides applies the custom roles for the CUSTOM source in either UI style.
+        assertEquals(Color(0xFF112233), buildDesktopAppearancePalette(settings.copy(uiStyle = AppUiStyle.MIUIX), false).material.background)
     }
     @Test fun fontAndScaleTransformActualThemeTypographyAndDensity() {
         val base = resolveMaterialTypography(AppUiStyle.MATERIAL3)

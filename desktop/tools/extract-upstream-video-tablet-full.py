@@ -88,6 +88,8 @@ def emit(rel,t,original):
   from v046_detail_holder_collapse import advance_layout as advance_detail_holder_collapse_layout
   t=advance_detail_holder_collapse_layout(REPO,t,OUT,Path(rel).stem)
  if BASE+original in DIRECT and not args.standalone:return
+ from desktop_refresh_adaptation import bind_refresh_lists
+ t=bind_refresh_lists(t)
  p=OUT/'com/android/purebilibili'/rel;write(p,t)
  OUTPUTS.append({'path':str(p),'sha256LF':sha(t),'original':BASE+original})
 def common(t):

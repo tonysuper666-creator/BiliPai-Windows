@@ -24,6 +24,8 @@ def generate(repo,output):
     original,identities=shared.load_pinned_sources(repo,SOURCES)
     selections=[]
     def emit(path,body,origin,strategy):
+        from desktop_refresh_adaptation import bind_refresh_lists
+        body=bind_refresh_lists(body)
         p=output/'com/android/purebilibili'/path;v=str(p.absolute());p=Path('\\\\?\\'+v) if not v.startswith('\\\\?\\') else p
         p.parent.mkdir(parents=True,exist_ok=True);p.write_text(body,encoding='utf-8',newline='\n')
         selections.append(dict(source=origin,path=str(path),strategy=strategy,generatedLfSha256=hashlib.sha256(body.encode()).hexdigest()))

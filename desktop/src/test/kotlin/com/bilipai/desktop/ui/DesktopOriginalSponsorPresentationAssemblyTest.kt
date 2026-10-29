@@ -97,7 +97,7 @@ class DesktopOriginalSponsorPresentationAssemblyTest {
             "home_feed_anonymizer", "adfilter", "subscription_feed", "today_watch", "cdn_region", "dlna_cast", "google_cast")
         store.update("plugin_prefs", ids.associate { "plugin_enabled_$it" to JsonPrimitive(false) })
         runtime = withContext(Dispatchers.Swing) { DesktopPluginRuntime(store) }
-        assertSame(runtime.context.applicationContext, PluginManager.getContext(),
+        assertSame(runtime.context, com.bilipai.desktop.plugins.desktopPluginContext(PluginManager.getContext()),
             "PluginManager belongs to a prior Runtime; run SponsorPresentation in a fresh test worker")
         withTimeout(8_000) { for (id in ids) PluginManager.awaitPluginReady(id) }
         assertTrue(runtime.plugins.value.none { it.enabled })

@@ -117,10 +117,20 @@ import kotlinx.coroutines.sync.withLock
     val rows=transform(state.visibleItems(categoryTimeline.page.items))
     val grid=remember(state.selectedUid,state.selectedLogicalTab){LazyStaggeredGridState()}
     val rootScroll = LocalDesktopRootDynamicScroll.current
+    // TON-1026: the corner button and F5 / Ctrl+R share one refresh; a failed one is announced by toast once the request has ended.
+    val toaster=LocalDesktopToaster.current
+    var manualRefresh by remember(state,state.selectedUid){mutableStateOf(false)}
+    fun refreshNow() {manualRefresh=true;state.refreshUser()}
+    LaunchedEffect(state.userLoading) {
+        if(!state.userLoading&&manualRefresh) {
+            manualRefresh=false
+            state.userError?.let{toaster.show(desktopRefreshFailureMessage(it))}
+        }
+    }
     LaunchedEffect(rootScroll, state, state.selectedUid, active) {
         if(!active)return@LaunchedEffect
         rootScroll?.receiveAsFlow()?.collectLatest { request ->
-            applyDesktopRootDynamicScroll(request, grid) { state.refreshUser() }
+            applyDesktopRootDynamicScroll(request, grid) { refreshNow() }
         }
     }
     // The category filters the author's rows; a page without a match keeps paging through the original chain.
@@ -138,13 +148,14 @@ import kotlinx.coroutines.sync.withLock
     // A page without a row of this category is normal: the slot says "loading" while more pages exist (v0.4.6 DynamicScreen).
     val emptyState=resolveDesktopDynamicAuthorEmptyState(loading=state.userLoading,failed=state.userError!=null,
         hasMore=state.hasUserMore,hasDisplayedItems=rows.isNotEmpty())
+    val scope=rememberCoroutineScope()
+    Box(Modifier.fillMaxSize()) {
     Column(Modifier.fillMaxSize()) {
         DynamicSelectedUserFeedHeader(state.panelUsers().firstOrNull{it.uid==state.selectedUid}?.name.orEmpty(),
             state.selectedLogicalTab,{state.selectedUid?.let(onOpenUser)})
-        AppTextButton(enabled=!state.userLoading,onClick=state::refreshUser){AppText("刷新")}
         FeedVerticalStaggeredGrid(columns=if(layout==DynamicFeedLayoutMode.LIST)StaggeredGridCells.Fixed(1)
             else StaggeredGridCells.Adaptive(resolveDynamicTimelineMinColumnWidth()),state=grid,
-            modifier=Modifier.widthIn(max=resolveDynamicTimelineMaxWidth()).fillMaxSize(),contentPadding=PaddingValues(20.dp),
+            modifier=Modifier.widthIn(max=resolveDynamicTimelineMaxWidth()).fillMaxSize(),contentPadding=PaddingValues(start=20.dp,top=20.dp,end=20.dp,bottom=20.dp+DESKTOP_REFRESH_SCROLL_RESERVE_DP.dp),
             horizontalArrangement=Arrangement.spacedBy(resolveDynamicTimelineHorizontalSpacing()),verticalItemSpacing=resolveDynamicTimelineVerticalSpacing()) {
             rows.forEach {item->item(key="dynamic_${dynamicFeedItemKey(item)}"){row(item)}}
             state.userError?.let{error->item(span=StaggeredGridItemSpan.FullLine){CommunityFailure(error,onLogin,state::retryUser)}}
@@ -158,5 +169,7 @@ import kotlinx.coroutines.sync.withLock
                 }}
             if(!state.userLoading&&state.hasUserMore&&state.userError==null&&emptyState!=DesktopDynamicEmptyState.LOADING)item(span=StaggeredGridItemSpan.FullLine){AppPrimaryButton(text="加载更多",onClick=state::loadMoreUser)}
         }
+    }
+    DesktopRefreshButton(refreshing=state.userLoading,reportFailures=false,onRefresh={scope.launch{grid.scrollToItem(0);refreshNow()}})
     }
 }

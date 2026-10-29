@@ -51,9 +51,8 @@ def inverse(text, edits):
 
 SUPPORT = '''package com.bilipai.desktop.danmaku
 
-import androidx.compose.ui.graphics.toArgb
-import com.android.purebilibili.core.plugin.DanmakuItem as PluginDanmakuItem
-import com.android.purebilibili.core.plugin.DanmakuStyle
+import com.android.purebilibili.plugin.sdk.DanmakuItem as PluginDanmakuItem
+import com.android.purebilibili.plugin.sdk.DanmakuStyle
 import com.android.purebilibili.danmaku.parser.bas.*
 import com.android.purebilibili.feature.video.danmaku.*
 
@@ -145,6 +144,8 @@ def adapt_pipeline(original):
         "                    onRejected(item.id, DesktopBasRejection.INVALID_SCRIPT)", edits)
     text = replace(text, "collectDanmakuStyle(filtered, nativePlugins, useJsonRules)",
         "checkNotNull(processor).style(filtered)", edits)
+    # plugin-sdk DanmakuStyle carries packed ARGB ints (TON-1028), not Compose colors.
+    text = replace(text, "style?.textColor?.toArgb()?.and(0x00FFFFFF)", "style?.textColor?.and(0x00FFFFFF)", edits)
     text = replace(text, "                result.add(visible)",
         "                if (retainDesktopBasPluginItem(item, visible, budget, onRejected)) result.add(visible)", edits)
     assert inverse(text, edits) == body

@@ -2,6 +2,7 @@ package com.bilipai.desktop.ui
 
 import androidx.compose.runtime.*
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import com.android.purebilibili.feature.home.*
 import com.android.purebilibili.core.ui.*
 import com.android.purebilibili.core.ui.transition.*
@@ -69,7 +70,11 @@ internal class DesktopOriginalHomeNavigation(
  isQuickReturningFromVideoDetail:Boolean,
  onVideoDetailReturnAnimationConsumed:()->Unit,
 ) {
+ // TON-1026: the corner refresh button of any list inside Home first sends the Home pager's own scroll to the top of the
+ // page that is showing (feed, live, bangumi, partition or subscription), then runs that list's refresh.
+ val refreshPrelude = remember(scrollChannel) { { scrollChannel.trySend(HomeScrollRequest.SCROLL_TO_TOP); Unit } }
  CompositionLocalProvider(
+  LocalDesktopRefreshPrelude provides refreshPrelude,
   LocalDesktopHomeEnvironment provides environment,
   LocalDesktopHomeMediaPorts provides media,
   LocalDesktopHomePlatform provides platform,
@@ -79,7 +84,7 @@ internal class DesktopOriginalHomeNavigation(
   LocalHomeFeedScrollInProgress provides feedScrollInProgress,
   LocalHomeScrollChannel provides scrollChannel,
   LocalBottomBarVisible provides bottomBarVisible,
-  LocalBottomBarContentPadding provides bottomBarContentPadding,
+  LocalBottomBarContentPadding provides (if (bottomBarContentPadding > DESKTOP_REFRESH_SCROLL_RESERVE_DP.dp) bottomBarContentPadding else DESKTOP_REFRESH_SCROLL_RESERVE_DP.dp),
   LocalSetBottomBarVisible provides setBottomBarVisible,
   LocalVideoCardTransitionBackgroundState provides transitionBackground,
   LocalVideoCardTransitionClock provides transitionClock,

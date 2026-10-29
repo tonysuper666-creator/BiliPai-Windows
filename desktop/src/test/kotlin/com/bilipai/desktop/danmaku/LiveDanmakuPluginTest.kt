@@ -1,6 +1,7 @@
 package com.bilipai.desktop.danmaku
 
-import com.android.purebilibili.core.plugin.DanmakuStyle
+import androidx.compose.ui.graphics.toArgb
+import com.android.purebilibili.plugin.sdk.DanmakuStyle
 import com.android.purebilibili.feature.live.LiveDanmakuItem
 import com.android.purebilibili.feature.video.danmaku.resolveDesktopOriginalLiveDanmakuRenderConfig
 import androidx.compose.ui.graphics.Color
@@ -35,7 +36,7 @@ class LiveDanmakuPluginTest {
         try {
             val renderer = LiveDanmakuRenderer(scope)
             renderer.setProcessor { item -> item.copy(content = "PLUGIN", type = 5) to
-                DanmakuStyle(textColor = Color.Red, borderColor = Color.Blue, backgroundColor = Color.Green, bold = true, scale = 1.5f) }
+                DanmakuStyle(textColor = Color.Red.toArgb(), borderColor = Color.Blue.toArgb(), backgroundColor = Color.Green.toArgb(), bold = true, scale = 1.5f) }
             renderer.add(LiveDanmakuItem("raw", mode = 1))
             val image = BufferedImage(640, 360, BufferedImage.TYPE_INT_ARGB)
             val graphics = image.createGraphics()

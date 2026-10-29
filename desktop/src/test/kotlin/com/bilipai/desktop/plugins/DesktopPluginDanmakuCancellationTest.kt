@@ -1,8 +1,9 @@
 package com.bilipai.desktop.plugins
 
-import com.android.purebilibili.core.plugin.DanmakuItem
-import com.android.purebilibili.core.plugin.DanmakuPlugin
-import com.android.purebilibili.core.plugin.DanmakuStyle
+import com.android.purebilibili.core.plugin.BuiltinPlugin
+import com.android.purebilibili.plugin.sdk.DanmakuItem
+import com.android.purebilibili.plugin.sdk.DanmakuPluginApi
+import com.android.purebilibili.plugin.sdk.DanmakuStyle
 import com.android.purebilibili.core.plugin.json.JsonPluginManager
 import com.android.purebilibili.core.plugin.json.LoadedJsonPlugin
 import com.android.purebilibili.feature.video.danmaku.DesktopPluginDanmakuPolicy
@@ -18,7 +19,7 @@ class DesktopPluginDanmakuCancellationTest {
     private fun plugin(
         filter: (DanmakuItem) -> DanmakuItem? = { it },
         style: (DanmakuItem) -> DanmakuStyle? = { null },
-    ) = object : DanmakuPlugin {
+    ) = object : BuiltinPlugin, DanmakuPluginApi {
         override val id = "private-cancellation-fixture"
         override val name = "Private cancellation fixture"
         override val description = "In-memory generated-policy test"
