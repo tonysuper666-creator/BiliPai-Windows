@@ -5,6 +5,7 @@ from pathlib import Path
 
 UPSTREAM = "79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40"
 CATALOG_SHA = "2600739eef5521cfef71d6af16762ccc3b9df076dad7ccb79902944f1634130f"
+LEGACY_CATALOG_SHA = "2fa53aa78cc27c76a3923cc44750128b3657c340dbcfe44ec13810cbc48becbc"
 SCREEN = "app/src/main/java/com/android/purebilibili/feature/settings/screen/IconSettingsScreen.kt"
 NORMALIZER = "app/src/main/java/com/android/purebilibili/core/store/AppIconKeyNormalizer.kt"
 MANAGER = "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt"
@@ -18,6 +19,10 @@ def wide(path):
     return Path("\\\\?\\" + value) if os.name == "nt" and not value.startswith("\\\\?\\") else Path(value)
 
 def sha(raw): return hashlib.sha256(raw).hexdigest()
+def catalog_sha(repo):
+    # Gradle passes the pre-merge snapshot at <repo>/.legacy-root. That catalog
+    # file is the v0.2.5 pin set. A live checkout carries the direct-compile catalog.
+    return LEGACY_CATALOG_SHA if Path(repo).resolve().name == ".legacy-root" else CATALOG_SHA
 def emit(path, raw):
     wide(path.parent).mkdir(parents=True, exist_ok=True)
     wide(path).write_bytes(raw if isinstance(raw, bytes) else raw.encode("utf-8"))
@@ -26,7 +31,7 @@ class Original:
     def __init__(self, repo):
         self.repo = repo
         raw = wide(repo / "desktop/tools/v025-canonical-sources.json").read_bytes()
-        if sha(raw) != CATALOG_SHA: raise ValueError("Canonical catalog digest changed")
+        if sha(raw) != catalog_sha(repo): raise ValueError("Canonical catalog digest changed")
         self.catalog = json.loads(raw)
         if self.catalog["upstreamCommit"] != UPSTREAM: raise ValueError("Canonical commit changed")
     def raw(self, path):
