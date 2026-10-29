@@ -74,21 +74,32 @@ try {
     $playedFrom = $null
     $stoppedAt = $null
     $still = 0
+    $stallOpen = $false
+    $stallStart = 0
+    $stalls = New-Object System.Collections.ArrayList
     while ((Get-Date) -lt $deadline) {
         $d = Test-Moving -Hwnd $hwnd
         $elapsed = [math]::Round(((Get-Date) - $start).TotalSeconds, 1)
         [void]$series.Add([pscustomobject]@{ secondsAfterClick = $elapsed; meanStep = $d.mean; changedCells = $d.cells })
         if ($d.cells -ge 5) {
             $still = 0
+            if ($stallOpen) {
+                $len = [math]::Round($elapsed - $stallStart, 1)
+                [void]$stalls.Add([pscustomobject]@{ startSeconds = $stallStart; lengthSeconds = $len })
+                Write-BpLog ("stall #{0} ended after {1}s" -f $stalls.Count, $len)
+                $stallOpen = $false
+            }
             if ($null -eq $playedFrom) { $playedFrom = $elapsed; Write-BpLog ("picture moving at +{0}s" -f $elapsed) }
         } else {
             $still++
             Write-BpLog ("picture still at +{0}s" -f $elapsed)
             if ($still -ge 2 -and $null -ne $playedFrom) {
-                $stoppedAt = $elapsed
-                [void](Save-Shot $hwnd 'b-stopped.png')
-                Write-BpLog ("picture stopped for good at +{0}s; screenshot saved" -f $stoppedAt)
-                break
+                if (-not $stallOpen) {
+                    $stallOpen = $true
+                    $stallStart = $elapsed
+                    if ($stalls.Count -lt 3) { [void](Save-Shot $hwnd ("b-stall-{0:d2}.png" -f ($stalls.Count + 1))) }
+                    Write-BpLog ("stall #{0} begins at +{1}s" -f ($stalls.Count + 1), $stallStart)
+                }
             }
             if ($still -ge 3 -and $null -eq $playedFrom) {
                 [void](Save-Shot $hwnd 'b-never-played.png')
@@ -99,16 +110,19 @@ try {
         }
     }
 
-    # After it stopped, does anything come back on its own?
-    $resumed = $false
-    for ($i = 0; $i -lt 10; $i++) {
-        Start-Sleep -Seconds 3
-        if ((Test-Moving -Hwnd $hwnd).cells -ge 5) { $resumed = $true; break }
+    if ($stallOpen) {
+        [void]$stalls.Add([pscustomobject]@{ startSeconds = $stallStart; lengthSeconds = [math]::Round(((Get-Date) - $start).TotalSeconds - $stallStart, 1) })
     }
     [void](Save-Shot $hwnd 'c-after.png')
     $summary.played_from_seconds = $playedFrom
-    $summary.stopped_after_seconds = $stoppedAt
-    $summary.resumed_without_input = $resumed
+    $summary.stall_count = $stalls.Count
+    if ($stalls.Count -gt 0) {
+        $lens = @($stalls | ForEach-Object { $_.lengthSeconds } | Sort-Object)
+        $summary.stall_median_s = $lens[[int][math]::Floor(($lens.Count - 1) / 2)]
+        $summary.stall_max_s = $lens[$lens.Count - 1]
+        $summary.stalled_seconds_total = [math]::Round(($lens | Measure-Object -Sum).Sum, 1)
+    }
+    @($stalls) | Export-Csv -LiteralPath (Join-Path $dataDir 'stalls.csv') -NoTypeInformation -Encoding utf8
     $summary.ok = $true
     Write-BpLog ('SUMMARY ' + ($summary | ConvertTo-Json -Depth 4 -Compress))
 } catch {
