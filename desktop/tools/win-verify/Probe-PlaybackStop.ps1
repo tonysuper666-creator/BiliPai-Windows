@@ -107,9 +107,9 @@ try {
                 if (-not $stallOpen) {
                     $stallOpen = $true
                     $stallStart = $elapsed
-                    # What is the client doing while the picture is frozen? Zero CPU over a long
-                    # stall means it is waiting (buffering / paused); steady CPU means it is
-                    # decoding and the picture is stuck elsewhere.
+                    # CPU burned while the picture is frozen. Note the limit: this is the whole
+                    # process, so it cannot separate "rendering the UI" from "decoding video".
+                    # It only supports statements like "the process was not idle".
                     $sampleAtStart = Get-BpProcessSample -ProcessId $uiPid
                     $stallCpuStart = if ($sampleAtStart) { $sampleAtStart.CpuSeconds } else { $null }
                     if ($stalls.Count -lt 3) { [void](Save-Shot $hwnd ("b-stall-{0:d2}.png" -f ($stalls.Count + 1))) }
