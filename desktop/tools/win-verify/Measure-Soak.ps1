@@ -74,6 +74,9 @@ $since = [datetime]::MinValue
 $crash = $false
 $hang = $false
 $playbackChecks = New-Object System.Collections.ArrayList
+$playbackLost = $false
+$playbackLostUtc = $null
+$failedResumes = 0
 $recoveries = New-Object System.Collections.ArrayList
 $stillCount = 0
 
@@ -163,7 +166,7 @@ try {
                 # A single video is shorter than the soak, so playback ends mid-run. Treat a
                 # stopped picture as "episode finished" and start the next one, recording every
                 # recovery instead of pretending the picture kept moving.
-                if ($stillCount -ge 2) {
+                if ($stillCount -ge 2 -and -not $playbackLost) {
                     # Space toggles play/pause in the player; clicking at a screen position can
                     # land on a control that navigates away (observed: the client disappeared
                     # 4 s after such a click).
@@ -172,6 +175,22 @@ try {
                     Write-BpLog 'sent space to resume playback'
                     $stillCount = 0
                     Start-Sleep -Seconds 5
+                    if (-not $playbackLost) {
+                        # If a resume does not bring the picture back, stop pretending the run is a
+                        # playback soak: mark when playback was lost and how many attempts failed,
+                        # and keep sampling the process without further input.
+                        $recheckA = Get-BpScreenThumbCenter -Hwnd $hwnd
+                        Start-Sleep -Milliseconds 900
+                        $recheckB = Get-BpScreenThumbCenter -Hwnd $hwnd
+                        if ((Compare-BpThumb -A $recheckA -B $recheckB) -lt 1) {
+                            $failedResumes++
+                            if ($failedResumes -ge 2) {
+                                $playbackLost = $true
+                                $playbackLostUtc = (Get-Date).ToUniversalTime().ToString('o')
+                                Write-BpLog ("playback lost at {0}: two resumes did not bring the picture back; sampling continues without input" -f $playbackLostUtc)
+                            }
+                        } else { $failedResumes = 0 }
+                    }
                 }
             } else { $stillCount = 0 }
         }
@@ -198,6 +217,9 @@ try {
         $summary.growth_pct = [math]::Round(100.0 * ($last - $first) / $first, 1)
     }
     $summary.playback_recoveries = $recoveries.Count
+    $summary.playback_lost = $playbackLost
+    if ($playbackLost) { $summary.playback_lost_utc = $playbackLostUtc }
+    $summary.failed_resumes = $failedResumes
     $summary.playback_checks = $playbackChecks.Count
     $summary.playback_checks_moving = @($playbackChecks | Where-Object { $_.moving }).Count
     if ($playbackChecks.Count -gt 0) {
