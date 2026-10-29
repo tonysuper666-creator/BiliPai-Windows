@@ -127,7 +127,7 @@ internal class DesktopMessagePageAdmission(
                 lateinit var actual: Job
                 val allowed = { actual.isActive && caller?.isActive != false && isOwned() && (channel == null || revision[channel] == ticket) &&
                     (dependsOn == null || (revision[dependsOn] ?: 0L) == dependency) }
-                actual = scope.launch(permit.asContextElement(allowed), start = CoroutineStart.LAZY) {
+                actual = scope.launch(DesktopRefreshFailureWatch.context() + permit.asContextElement(allowed), start = CoroutineStart.LAZY) {
                     assertCurrent(); block(); assertCurrent()
                 }
                 job = actual

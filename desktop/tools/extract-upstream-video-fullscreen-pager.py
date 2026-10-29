@@ -154,6 +154,8 @@ def generate(repo,output,standalone=False):
   from v046_portrait_pager import advance_pager as advance_portrait_pager, record_spec as record_portrait_pager_spec
   text=advance_portrait_pager(repo,spec['output'],text,output)
   record_portrait_pager_spec(repo,spec['output'],text,output)
+  from desktop_refresh_adaptation import bind_refresh_lists, bind_refresh_launch
+  text=bind_refresh_lists(text)
   generated=standalone or spec['mode']!='direct';rows.append(dict(path=spec['output'],origin=spec['origin'],mode=spec['mode'],sha256LF=digest(text),generated=generated))
   if generated:
    p=wide(output/spec['output']);p.parent.mkdir(parents=True,exist_ok=True);p.write_text(text,encoding='utf-8',newline='\n')
