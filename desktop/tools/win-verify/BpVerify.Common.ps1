@@ -173,6 +173,22 @@ function Move-BpCursorIntoWindow {
     return $pt
 }
 
+# Keyboard injection for the focused window; used to resume a paused player without
+# clicking on screen, where a stray click can hit a control that closes the page.
+function Send-BpKey {
+    param([byte]$VirtualKey = 0x20, [int]$HoldMs = 60)
+    Add-Type -TypeDefinition @'
+using System;
+using System.Runtime.InteropServices;
+public static class BpKeyNative {
+  [DllImport("user32.dll")] public static extern void keybd_event(byte vk, byte scan, uint flags, UIntPtr extra);
+}
+'@ -ErrorAction SilentlyContinue
+    [BpKeyNative]::keybd_event($VirtualKey, 0, 0, [UIntPtr]::Zero)
+    Start-Sleep -Milliseconds $HoldMs
+    [BpKeyNative]::keybd_event($VirtualKey, 0, 2, [UIntPtr]::Zero)
+}
+
 function Save-BpCursor {
     $p = New-Object BpMeasure+POINT
     [void][BpMeasure]::GetCursorPos([ref]$p)

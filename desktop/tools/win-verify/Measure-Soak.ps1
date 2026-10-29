@@ -136,9 +136,12 @@ try {
                 # stopped picture as "episode finished" and start the next one, recording every
                 # recovery instead of pretending the picture kept moving.
                 if ($stillCount -ge 2) {
-                    $clickUtc = Send-BpClickReal -Hwnd $hwnd -X ([int]($rect.Right * $ClickXRatio)) -Y ([int]($rect.Bottom * $clickYRatios[0]))
-                    $recoveries.Add([pscustomobject]@{ ts = (Get-Date).ToUniversalTime().ToString('o'); action = 'clicked to resume or advance' })
-                    Write-BpLog 'clicked the feed again to resume or advance to the next item'
+                    # Space toggles play/pause in the player; clicking at a screen position can
+                    # land on a control that navigates away (observed: the client disappeared
+                    # 4 s after such a click).
+                    Send-BpKey -VirtualKey 0x20
+                    $recoveries.Add([pscustomobject]@{ ts = (Get-Date).ToUniversalTime().ToString('o'); action = 'sent space to resume' })
+                    Write-BpLog 'sent space to resume playback'
                     $stillCount = 0
                     Start-Sleep -Seconds 5
                 }

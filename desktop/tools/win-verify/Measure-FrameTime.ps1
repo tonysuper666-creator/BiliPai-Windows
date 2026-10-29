@@ -102,8 +102,11 @@ try {
                 $diffs += $d
                 if ($null -ne $d -and $d -gt $maxDiff) { $maxDiff = $d }
             }
-            # Scrolling replaces every row of the grid, so all three bands have to change. Any
-            # single band can be moved by a hover preview or an autoplaying thumbnail.
+            # A smooth scroll moves the grid by a fraction of a row, so the three bands change at
+            # different moments; requiring all three inside one 500 ms sample rejected scrolling
+            # runs that were visibly scrolling (0.65-0.67). The band hits are therefore judged
+            # over a 1.5 s window (three samples) below, and a hover preview still cannot reach
+            # two bands because it only animates the card under the pointer.
             $allBands = (@($diffs | Where-Object { $null -ne $_ -and $_ -ge 2 }).Count -eq 3)
             [void]$motion.Add([pscustomobject]@{
                     offsetMs = [math]::Round(((Get-Date).ToUniversalTime() - $scrollStart).TotalMilliseconds, 0)
@@ -121,16 +124,30 @@ try {
     Restore-BpCursor -Point $savedCursor
 
     $samples = @($motion | Where-Object { $null -ne $_.diff })
-    $moved = @($samples | Where-Object { $_.moved }).Count
+    # v3: a sample counts as moving when at least two of the three bands changed within the
+    # last three samples (1.5 s). Same raw data as before, only the scoring window differs.
+    $moved = 0
+    for ($si = 2; $si -lt $samples.Count; $si++) {
+        $win = @($samples[($si - 2)..$si])
+        $hitBands = 0
+        for ($bi = 1; $bi -le 3; $bi++) {
+            $prop = "band$bi"
+            if (@($win | Where-Object { $null -ne $_.$prop -and $_.$prop -ge 2 }).Count -gt 0) { $hitBands++ }
+        }
+        if ($hitBands -ge 2) { $moved++ }
+    }
+    $moved_samples = $moved
+    $moved_all3 = @($samples | Where-Object { $_.moved }).Count
     $ratio = 0
     if ($samples.Count -gt 0) { $ratio = [math]::Round(1.0 * $moved / $samples.Count, 2) }
     $summary.scroll_motion_samples = $samples.Count
-    $summary.scroll_motion_moving = $moved
+    $summary.scroll_motion_moving = $moved_samples
+    $summary.scroll_motion_rule = 'v3: at least two of the three grid bands changed at least once inside a 1.5 s window (three 500 ms samples)'
     $summary.scroll_motion_moved_any_band = @($samples | Where-Object { $_.diff -ge 2 }).Count
-    $summary.scroll_motion_rule = 'moved = all three grid bands changed by >= 2 / 255 in the same 500 ms sample'
+    $summary.scroll_motion_all3_same_sample = $moved_all3
     $summary.scroll_motion_ratio = $ratio
     $summary.scroll_continuous = ($samples.Count -ge 10 -and $ratio -ge $MotionMinRatio)
-    $summary.scroll_motion_region = 'three horizontal bands of the card grid (22-78 % x at 18-30 %, 34-46 %, 52-64 % y); the header and banner do not scroll and a hover preview moves only one card, so all three changing is what scrolling looks like'
+    $summary.scroll_motion_region = 'three horizontal bands of the card grid (22-78 % x at 18-30 %, 34-46 %, 52-64 % y); the header and banner do not scroll and a hover preview animates only the card under the pointer'
     $summary.scroll_wholesale_diff = Compare-BpThumb -A $thumbBeforeAll -B $thumbAfter
     Write-BpLog ("scroll finished: {0} wheel events, motion {1}/{2} samples ({3}), continuous={4}" -f $posted, $moved, $samples.Count, $ratio, $summary.scroll_continuous)
     @($samples) | Export-Csv -LiteralPath (Join-Path $dataDir 'scroll-motion.csv') -NoTypeInformation -Encoding utf8
