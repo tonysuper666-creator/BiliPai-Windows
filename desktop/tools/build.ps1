@@ -16,6 +16,65 @@ param(
 )
 $ErrorActionPreference = 'Stop'
 $repoRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../..'))
+# Keep the winbox disk guard self-contained and ahead of all build writes.
+# A child scope leaves ordinary builds and the existing build variables unchanged.
+& {
+    if (-not $env:USERPROFILE) { return }
+    $verifyRoot = [IO.Path]::GetFullPath((Join-Path $env:USERPROFILE 'bp-mac-verify'))
+    $separator = [IO.Path]::DirectorySeparatorChar
+    $comparison = [StringComparison]::OrdinalIgnoreCase
+    if (-not $PSCommandPath.StartsWith($verifyRoot + $separator, $comparison)) { return }
+
+    $minFreeGB = 20.0
+    if ($env:BP_MIN_FREE_GB) {
+        $requestedGB = 0.0
+        if (-not [double]::TryParse($env:BP_MIN_FREE_GB, [Globalization.NumberStyles]::Float,
+                [Globalization.CultureInfo]::InvariantCulture, [ref]$requestedGB) -or
+            [double]::IsNaN($requestedGB) -or [double]::IsInfinity($requestedGB) -or $requestedGB -le 0) {
+            throw 'BP_MIN_FREE_GB must be a positive finite number (minimum floor: 20 GB).'
+        }
+        $minFreeGB = [Math]::Max($minFreeGB, $requestedGB)
+    }
+    $freeBytes = (Get-PSDrive -Name C -ErrorAction Stop).Free
+    if ($null -eq $freeBytes) { throw 'Cannot read C: free space; refusing verification build.' }
+    if ($freeBytes -lt $minFreeGB * 1GB) {
+        throw ('C: has {0:N2} GB free, below the {1} GB floor; refusing verification build. Free space before retrying. BP_ALLOW_FULL_CLONE does not bypass this check.' -f ($freeBytes / 1GB), $minFreeGB)
+    }
+
+    $sharedRoot = [IO.Path]::GetFullPath((Join-Path $verifyRoot 'src/BiliPai-Windows'))
+    if ($repoRoot.Equals($sharedRoot, $comparison)) { return }
+    $gitPath = Join-Path $repoRoot '.git'
+    if (Test-Path -LiteralPath $gitPath -PathType Container) {
+        if ($env:BP_ALLOW_FULL_CLONE -eq '1') {
+            Write-Warning 'BP_ALLOW_FULL_CLONE=1: allowing a full clone in bp-mac-verify; the C: free-space floor still applies.'
+            return
+        }
+        $reason = 'Full clones are forbidden in bp-mac-verify.'
+    } else {
+        if (Test-Path -LiteralPath $gitPath -PathType Leaf) {
+            $gitFile = (Get-Content -LiteralPath $gitPath -Raw).Trim()
+            if ($gitFile -match '\Agitdir:\s*(.+?)\s*\z') {
+                $gitDir = $matches[1]
+                if (-not [IO.Path]::IsPathRooted($gitDir)) { $gitDir = Join-Path $repoRoot $gitDir }
+                $gitDir = [IO.Path]::GetFullPath($gitDir).TrimEnd($separator)
+                $worktreesRoot = [IO.Path]::GetFullPath((Join-Path $sharedRoot '.git/worktrees'))
+                if ([IO.Path]::GetDirectoryName($gitDir).Equals($worktreesRoot, $comparison) -and
+                    (Test-Path -LiteralPath $gitDir -PathType Container)) { return }
+            }
+        }
+        $reason = 'Verification sources must be a worktree of src/BiliPai-Windows.'
+    }
+
+    $card = $repoRoot.Substring($verifyRoot.Length + 1).Split($separator)[0]
+    if ($card -notmatch '^ton\d+[a-z0-9-]*$') { $card = 'tonNNNN' }
+    $sha = '<sha>'
+    try {
+        $head = & git -C $repoRoot rev-parse HEAD 2>$null
+        if ($LASTEXITCODE -eq 0 -and $head -match '^[0-9a-f]{40}$') { $sha = $head }
+    } catch { } # The recovery instructions still work when Git is unavailable.
+    $quotedRoot = $verifyRoot.Replace("'", "''")
+    throw "$reason Preserve/move the existing card source first (New-BpCardSource refuses an existing src). Then run:`nSet-Location -LiteralPath '$quotedRoot'`n.\tools\New-BpCardSource.ps1 -Card $card -Sha '$sha'`n.\tools\build-card.ps1 -Card $card -Sha '$sha'"
+}
 $desktopRoot = Join-Path $repoRoot 'desktop'
 # Even parameter/JDK failures must invalidate evidence from an earlier build.
 $gatePath = Join-Path $desktopRoot 'build/release-gate.json'
