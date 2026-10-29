@@ -1,0 +1,17 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuKeywordFilterPolicy.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuKeywordFilterPolicy.kt
+@@ -394,6 +394,14 @@
+     val hashInput = userHash.trim().let { if (it.isNotEmpty() && it.all(Char::isDigit)) "hash:$it" else it }
+     val normalizedUserHash = normalizeDanmakuUserHashManagerInput(hashInput) ?: return parseDanmakuBlockRules(rawRules)
+         .joinToString(separator = "\n")
++    // Compare the same resolved hash used by the matcher. Legacy uid:hex and
++    // explicit hash:hex identify one sender; numeric UID still resolves via CRC32.
++    val existingRules = parseDanmakuBlockRules(rawRules)
++    val senderHash = DanmakuCloudRuleSyncPolicy.localUidRuleToCloudFilter(normalizedUserHash)
++    if (senderHash != null && existingRules.any { rule ->
++            normalizeDanmakuUserHashRule(rule)?.let { DanmakuCloudRuleSyncPolicy.localUidRuleToCloudFilter(it) }
++                ?.equals(senderHash, ignoreCase = true) == true
++        }) return existingRules.joinToString(separator = "\n")
+     return appendDanmakuBlockRule(rawRules = rawRules, rule = normalizedUserHash)
+ }
+ 
