@@ -20,9 +20,11 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
 /**
- * Compile and behaviour check of the v0.4.6 design-system leaf files carried whole by the
- * v046-design-system-leaves-a archive (MediaContrastPalette, AppPopupSurface, AppSemanticVisualPolicy,
- * AppEntryIconPalette, AppChromeSizeTokens). Pure values and policies: no window, no GPU, no network.
+ * Compile and behaviour check of the design-system leaf files MediaContrastPalette, AppPopupSurface,
+ * AppSemanticVisualPolicy, AppEntryIconPalette and AppChromeSizeTokens, which the desktop compiles straight from the
+ * merged upstream root since TON-997 (they were carried whole from the v0.4.6 archive before). The expected values follow
+ * the current upstream sources and upstream's own AppChromeSizeTokensTest. Pure values and policies: no window, no GPU,
+ * no network.
  */
 class DesktopDesignSystemLeavesATest {
     @Test fun mediaContrastPaletteCarriesTheContentRolesThatCarriedPlayerCodeReads() {
@@ -43,8 +45,16 @@ class DesktopDesignSystemLeavesATest {
         assertEquals(48.dp, AppChromeSizeTokens.MinimumTouchTarget)
         assertEquals(40.dp, AppChromeSizeTokens.TopBarIconVisualSize)
         assertEquals(44, AppChromeSizeTokens.CompactControlHeightDp)
-        assertEquals(56, resolveCompactCapsuleChromeSpec(AppUiStyle.MATERIAL3).primaryHeightDp)
-        assertEquals(48, resolveCompactCapsuleChromeSpec(AppUiStyle.MIUIX).primaryHeightDp)
+    }
+
+    // Upstream v0.4.6 -> v0.6.7 made the compact capsule one step lower in both styles (Material3 56 -> 48,
+    // Miuix 48 -> 44; AppChromeSizeTokens.kt, upstream AppChromeSizeTokensTest). One test per style so one cannot hide the other.
+    @Test fun compactCapsuleHeightOfMaterial3FollowsTheUpstreamChromeTokens() {
+        assertEquals(48, resolveCompactCapsuleChromeSpec(AppUiStyle.MATERIAL3).primaryHeightDp)
+    }
+
+    @Test fun compactCapsuleHeightOfMiuixFollowsTheUpstreamChromeTokens() {
+        assertEquals(44, resolveCompactCapsuleChromeSpec(AppUiStyle.MIUIX).primaryHeightDp)
     }
 
     @Test fun semanticVisualPolicyKeepsTheNativeIconFamilyAndGroupingPerUiStyle() {

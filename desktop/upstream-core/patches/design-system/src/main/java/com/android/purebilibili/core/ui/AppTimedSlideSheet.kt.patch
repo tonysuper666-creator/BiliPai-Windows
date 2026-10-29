@@ -1,0 +1,10 @@
+--- a/com/android/purebilibili/core/ui/AppTimedSlideSheet.kt
++++ b/com/android/purebilibili/core/ui/AppTimedSlideSheet.kt
+@@ -116,7 +116,6 @@
+         onDismissRequest = { if (dismissOnBackPress) requestDismiss() },
+         properties = DialogProperties(
+             usePlatformDefaultWidth = false,
+-            decorFitsSystemWindows = false,
+             dismissOnBackPress = dismissOnBackPress,
+         ),
+     ) {

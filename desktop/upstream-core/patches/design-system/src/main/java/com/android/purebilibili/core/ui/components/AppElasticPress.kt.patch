@@ -1,0 +1,36 @@
+--- a/com/android/purebilibili/core/ui/components/AppElasticPress.kt
++++ b/com/android/purebilibili/core/ui/components/AppElasticPress.kt
+@@ -249,12 +249,13 @@
+ 
+ /** 共享按压叠光与指尖位置渐变，供控件表面和标签捕获层使用。 */
+ class AppPressHighlight {
+-    private val shader = if (Build.VERSION.SDK_INT >= 33) PressShader() else null
++    private val shader = runCatching { PressShader() }
++        .onFailure { android.util.Log.e("AppElasticPress", "Press shader unavailable; using the flat highlight", it) }.getOrNull()
+ 
+     fun draw(scope: DrawScope, progress: Float, position: Offset) = with(scope) {
+         val amount = progress.coerceIn(0f, 1f)
+         if (amount <= 0f || size.minDimension <= 0f) return@with
+-        if (Build.VERSION.SDK_INT >= 33 && shader != null) {
++        if (shader != null) {
+             drawRect(Color.White.copy(alpha = 0.08f * amount), blendMode = BlendMode.Plus)
+             shader.draw(this, amount, position)
+         } else {
+@@ -274,13 +275,12 @@
+             return color * smoothstep(radius, radius * 0.5, dist);
+         }
+     """.trimIndent())
+-    private val brush = ShaderBrush(shader)
+ 
+     fun draw(scope: DrawScope, progress: Float, position: Offset) = with(scope) {
+         shader.setColorUniform("color", android.graphics.Color.argb(0.15f * progress, 1f, 1f, 1f))
+         shader.setFloatUniform("radius", size.minDimension * 1.5f)
+         shader.setFloatUniform("position", position.x.coerceIn(0f, size.width), position.y.coerceIn(0f, size.height))
+-        drawRect(brush, blendMode = BlendMode.Plus)
+-    }
+-}
+-
++        drawRect(ShaderBrush(shader), blendMode = BlendMode.Plus)
++    }
++}
++

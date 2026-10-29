@@ -1,0 +1,11 @@
+--- a/com/android/purebilibili/core/ui/components/AppSelectionPreferenceComponents.kt
++++ b/com/android/purebilibili/core/ui/components/AppSelectionPreferenceComponents.kt
+@@ -141,7 +141,7 @@
+     // 液态玻璃材质分支：玻璃宿主提供 presenter 时，行尾与弹窗整体交给宿主渲染；
+     // 未提供时以下 Miuix/MD3 原生路径保持不变。
+     val menuPresenter = LocalAppGlassMenuPresenter.current
+-    val sameWindow = menuPresenter == null || menuPresenter.ownerView === androidx.compose.ui.platform.LocalView.current
++    val sameWindow = menuPresenter == null || menuPresenter.ownerView === androidx.compose.ui.platform.LocalWindowInfo.current
+     val glassPresenter = LocalAppSingleChoicePopupPresenter.current.takeIf {
+         sameWindow && LocalAppThemeConfig.current.liquidGlassEnabled
+     }

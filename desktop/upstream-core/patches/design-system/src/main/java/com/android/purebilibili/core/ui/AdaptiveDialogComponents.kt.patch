@@ -1,0 +1,22 @@
+--- a/com/android/purebilibili/core/ui/AdaptiveDialogComponents.kt
++++ b/com/android/purebilibili/core/ui/AdaptiveDialogComponents.kt
+@@ -119,9 +119,7 @@
+                     properties = DialogProperties(
+                         dismissOnBackPress = properties.dismissOnBackPress,
+                         dismissOnClickOutside = properties.dismissOnClickOutside,
+-                        securePolicy = properties.securePolicy,
+                         usePlatformDefaultWidth = false,
+-                        decorFitsSystemWindows = false,
+                     ),
+                 ) {
+                     AppDialogWindowExitEffect(exit.progress)
+@@ -189,9 +187,7 @@
+             properties = DialogProperties(
+                 dismissOnBackPress = properties.dismissOnBackPress,
+                 dismissOnClickOutside = properties.dismissOnClickOutside,
+-                securePolicy = properties.securePolicy,
+                 usePlatformDefaultWidth = false,
+-                decorFitsSystemWindows = false,
+             ),
+         ) {
+             com.android.purebilibili.core.ui.ModalWindowBlurBehindEffect()

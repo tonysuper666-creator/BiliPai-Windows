@@ -1,0 +1,81 @@
+--- a/com/android/purebilibili/core/ui/AppSheetComponents.kt
++++ b/com/android/purebilibili/core/ui/AppSheetComponents.kt
+@@ -60,7 +60,7 @@
+ import androidx.compose.ui.unit.DpSize
+ import androidx.compose.ui.unit.dp
+ import androidx.compose.ui.platform.LocalConfiguration
+-import androidx.compose.ui.platform.LocalView
++import androidx.compose.ui.platform.LocalWindowInfo
+ import androidx.compose.ui.window.Dialog
+ import androidx.compose.ui.window.DialogProperties
+ import androidx.navigationevent.NavigationEventInfo
+@@ -68,7 +68,6 @@
+ import androidx.navigationevent.compose.LocalNavigationEventDispatcherOwner
+ import androidx.navigationevent.compose.NavigationBackHandler
+ import androidx.navigationevent.compose.rememberNavigationEventState
+-import androidx.navigationevent.findViewTreeNavigationEventDispatcherOwner
+ import com.android.purebilibili.core.theme.AppUiStyle
+ import com.android.purebilibili.core.theme.LocalAppUiStyle
+ import com.android.purebilibili.core.theme.resolveAndroidNativeChromeTokens
+@@ -214,7 +213,8 @@
+     onDismissRequest: () -> Unit,
+     content: @Composable (Modifier) -> Unit,
+ ) {
+-    val owner = LocalView.current.findViewTreeNavigationEventDispatcherOwner()
++    // No view tree on the desktop: the dialog layer owns Escape and the back event (DesktopCommentDialogNavigationHost).
++    val owner: androidx.navigationevent.NavigationEventDispatcherOwner? = null
+     val host: @Composable () -> Unit = {
+         val backState = rememberNavigationEventState(NavigationEventInfo.None)
+         NavigationBackHandler(
+@@ -239,7 +239,7 @@
+         })
+     }
+     if (owner == null) {
+-        host()
++        com.bilipai.desktop.ui.DesktopCommentDialogNavigationHost { host() }
+     } else {
+         CompositionLocalProvider(LocalNavigationEventDispatcherOwner provides owner) {
+             host()
+@@ -309,7 +309,7 @@
+     } else containerColor
+     // 仅背景模糊已获调用方启用的玻璃面板透出下层；原生拖动与清晰背景策略保持原样。
+     val glassWindowMaterial = LocalAppThemeConfig.current.liquidGlassEnabled && blurBehind &&
+-        android.os.Build.VERSION.SDK_INT >= 33
++        com.bilipai.desktop.ui.desktopDetailRenderEffectsSupported()
+     val windowColor = if (glassWindowMaterial) {
+         resolvedColor.copy(alpha = resolvedColor.alpha * if (isAppInDarkTheme()) 0.84f else 0.88f)
+     } else resolvedColor
+@@ -323,7 +323,6 @@
+             properties = DialogProperties(
+                 dismissOnBackPress = false,
+                 usePlatformDefaultWidth = false,
+-                decorFitsSystemWindows = false,
+             ),
+         ) {
+             AppPopupWindowHost(enableWindowMaterial = LocalAppThemeConfig.current.liquidGlassEnabled) {
+@@ -440,7 +439,6 @@
+             properties = DialogProperties(
+                 dismissOnBackPress = false,
+                 usePlatformDefaultWidth = false,
+-                decorFitsSystemWindows = false,
+             ),
+         ) {
+             ModalWindowBlurBehindEffect(enabled = blurBehind)
+@@ -583,7 +581,7 @@
+ /** Follow the native sheet motion without a second animation or frame-rate recomposition. */
+ @Composable
+ private fun rememberSheetBlurMotionModifier(enabled: Boolean, trackPosition: Boolean = true): Modifier {
+-    val view = LocalView.current
++    val windowInfo = LocalWindowInfo.current
+     val coordinates = remember { arrayOfNulls<LayoutCoordinates>(1) }
+     ModalWindowBlurBehindEffect(enabled = enabled, progress = {
+         if (!trackPosition) 1f else {
+@@ -591,7 +589,7 @@
+             if (layout == null || !layout.isAttached || layout.size.height == 0) 0f
+             else {
+                 val top = layout.localToWindow(Offset.Zero).y
+-                ((view.rootView.height - top) / layout.size.height.toFloat()).coerceIn(0f, 1f)
++                ((windowInfo.containerSize.height - top) / layout.size.height.toFloat()).coerceIn(0f, 1f)
+             }
+         }
+     })

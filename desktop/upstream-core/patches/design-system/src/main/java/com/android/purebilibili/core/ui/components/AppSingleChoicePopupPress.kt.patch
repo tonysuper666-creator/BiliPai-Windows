@@ -1,0 +1,18 @@
+--- a/com/android/purebilibili/core/ui/components/AppSingleChoicePopupPress.kt
++++ b/com/android/purebilibili/core/ui/components/AppSingleChoicePopupPress.kt
+@@ -1,6 +1,5 @@
+ package com.android.purebilibili.core.ui.components
+ 
+-import android.view.ViewConfiguration as AndroidViewConfiguration
+ import androidx.compose.foundation.gestures.awaitEachGesture
+ import androidx.compose.foundation.gestures.awaitFirstDown
+ import androidx.compose.runtime.Composable
+@@ -63,7 +62,7 @@
+         awaitEachGesture {
+             val down = awaitFirstDown(requireUnconsumed = false)
+             var extraPointer = false
+-            val stillHeld = withTimeoutOrNull(AndroidViewConfiguration.getTapTimeout().toLong()) {
++            val stillHeld = withTimeoutOrNull(100L /* android.view.ViewConfiguration.TAP_TIMEOUT */) {
+                 var waiting = true
+                 while (waiting) {
+                     val event = awaitPointerEvent(PointerEventPass.Final)

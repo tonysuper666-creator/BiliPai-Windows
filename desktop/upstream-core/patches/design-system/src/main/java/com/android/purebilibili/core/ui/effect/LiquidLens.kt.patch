@@ -1,0 +1,44 @@
+--- a/com/android/purebilibili/core/ui/effect/LiquidLens.kt
++++ b/com/android/purebilibili/core/ui/effect/LiquidLens.kt
+@@ -13,6 +13,7 @@
+ import top.yukonga.miuix.kmp.blur.BackdropEffectScope
+ import top.yukonga.miuix.kmp.blur.isRuntimeShaderSupported
+ import top.yukonga.miuix.kmp.blur.runtimeShaderEffect
++import com.bilipai.desktop.ui.withDesktopWindowsGlassUniformCache
+ import kotlin.math.ceil
+ 
+ /**
+@@ -80,6 +81,7 @@
+         shaderString = shaderString,
+         uniformShaderName = "content",
+     ) {
++        withDesktopWindowsGlassUniformCache {
+         setFloatUniform("size", scaledSizeW, scaledSizeH)
+         setFloatUniform("offset", -scaledPadding - (outlineBounds?.left ?: 0f) / sf,
+             -scaledPadding - (outlineBounds?.top ?: 0f) / sf)
+@@ -91,6 +93,7 @@
+             setFloatUniform("chromaticBandHorizontal", if (chromaticBandHorizontal) 1f else 0f)
+             setFloatUniform("chromaticAberration", chromaticAberration)
+             setFloatUniform("chromaticEdgeBand", chromaticEdgeBand?.coerceAtLeast(0f)?.div(sf) ?: -1f)
++        }
+         }
+     }
+ }
+@@ -141,7 +144,7 @@
+ }
+ """
+ 
+-private const val ROUNDED_RECT_REFRACTION_SHADER = """
++internal const val ROUNDED_RECT_REFRACTION_SHADER = """
+ uniform shader content;
+ 
+ uniform float2 size;
+@@ -177,7 +180,7 @@
+ }
+ """
+ 
+-private const val ROUNDED_RECT_REFRACTION_WITH_DISPERSION_SHADER = """
++internal const val ROUNDED_RECT_REFRACTION_WITH_DISPERSION_SHADER = """
+ uniform shader content;
+ 
+ uniform float2 size;
