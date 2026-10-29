@@ -8,7 +8,12 @@ import com.bilipai.desktop.compat.UnsupportedDesktopCapability
 import com.bilipai.desktop.plugins.DesktopPluginContext
 import com.bilipai.desktop.plugins.DesktopPluginStore
 import com.bilipai.desktop.plugins.asAndroidContext
+import kotlinx.coroutines.CancellableContinuation
 import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.job
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.first
@@ -20,6 +25,9 @@ import java.util.concurrent.atomic.AtomicBoolean
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
+import kotlin.coroutines.resume
 import kotlin.test.assertNull
 
 /** The page's upstream settings_prefs DataStore serializes edits like DataStore: a transform always runs on the values
@@ -90,12 +98,58 @@ class DesktopOriginalSettingsAndroidContextTest {
         assertEquals(setOf("first", "second"), SettingsSearchHistoryStore.observe(context.androidContext).first().toSet())
     }
 
-    @Test fun `a transform that suspends inside an operation fails and commits nothing`() = runBlocking {
-        assertFailsWith<UnsupportedDesktopCapability> {
+    @Test fun `a transform that suspends inside an operation is cancelled, cleans up and never resumes`() = runBlocking {
+        var pending: CancellableContinuation<Unit>? = null
+        var cleanedUp = false
+        var ranAfterRejection = false
+        try {
+            assertFailsWith<UnsupportedDesktopCapability> {
+                DesktopOriginalPlaybackPreferenceOperation.run(context, current::get) {
+                    settings.edit { prefs ->
+                        try {
+                            suspendCancellableCoroutine<Unit> { pending = it }
+                            ranAfterRejection = true
+                            prefs[counter] = 1
+                        } finally { cleanedUp = true }
+                    }
+                }
+            }
+            val continuation = checkNotNull(pending)
+            assertFalse(continuation.isActive, "the rejected transform is still suspended")
+            assertTrue(continuation.isCancelled)
+            assertTrue(cleanedUp, "the rejected transform's finally did not run")
+            // A late resume of the cancelled continuation must not run the rest of the transform.
+            continuation.resume(Unit)
+            assertFalse(ranAfterRejection)
+            assertNull(stored())
+        } finally { pending?.cancel() }
+    }
+
+    @Test fun `a cancelled caller cancels the replayed transform instead of reporting a capability`() = runBlocking {
+        val operation = launch {
             DesktopOriginalPlaybackPreferenceOperation.run(context, current::get) {
-                settings.edit { prefs -> CompletableDeferred<Unit>().await(); prefs[counter] = 1 }
+                val caller = coroutineContext.job
+                settings.edit { prefs ->
+                    caller.cancel()
+                    suspendCancellableCoroutine<Unit> { }
+                    prefs[counter] = 1
+                }
             }
         }
+        operation.join()
+        assertTrue(operation.isCancelled)
         assertNull(stored())
+    }
+
+    @Test fun `a replayed transform leaves no child job running under the caller`() = runBlocking {
+        lateinit var caller: Job
+        DesktopOriginalPlaybackPreferenceOperation.run(context, current::get) {
+            caller = coroutineContext.job
+            // The operation's own coroutine is already a child; the edit must not leave another one behind.
+            val before = caller.children.toSet()
+            settings.edit { it[counter] = 1 }
+            assertEquals(before, caller.children.toSet(), "a replayed transform's job was left running")
+        }
+        assertEquals(JsonPrimitive(1), stored())
     }
 }
