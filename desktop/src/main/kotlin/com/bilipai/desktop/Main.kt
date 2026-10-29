@@ -119,10 +119,19 @@ fun main(args: Array<String>) {
         // An uncaught window exception is recorded and shown inside this window;
         // Compose's default factory would open a system message box over the player.
         val unexpectedFailure = remember { kotlinx.coroutines.flow.MutableStateFlow<String?>(null) }
-        val windowExceptionHandler = remember(diagnostics) {
+        val windowExceptionFallback = remember { DesktopWindowExceptionFallbackLog() }
+        val windowExceptionHandler = remember(diagnostics, windowExceptionFallback) {
             DesktopWindowExceptionHandler(
-                record = { failure -> diagnostics?.let { runCatching { it.persistLocalCrash(failure) } } },
+                // The actor reports every accepted write; an absent actor or a thrown
+                // write is a failure here, never an assumed success.
+                record = { failure ->
+                    diagnostics?.let { runCatching { it.persistLocalCrash(failure) }.getOrDefault(false) } == true
+                },
+                fallback = windowExceptionFallback::append,
                 notify = { message -> unexpectedFailure.value = message },
+                // Same terminal direction as Compose's default handler: a fatal error
+                // must not be swallowed into an "everything is fine" notice.
+                fatal = { failure -> throw failure },
             )
         }
         DisposableEffect(diagnosticHandler) {
