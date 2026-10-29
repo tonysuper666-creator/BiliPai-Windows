@@ -447,6 +447,7 @@ internal class DesktopReadyOriginalRootHandle(
         }
         val actions = DesktopOriginalFrostedNavigationActions({ item -> routes.push(bottomPagerNavKeyForItem(item)) },
             { homeScroll.trySend(HomeScrollRequest.SCROLL_TO_TOP_AND_REFRESH) }, { if (routes.owns()) dynamicScroll.trySend(DynamicScrollRequest.SCROLL_TO_TOP_OR_REFRESH) },
+            { if (routes.owns()) dynamicScroll.trySend(DynamicScrollRequest.SCROLL_TO_TOP_AND_REFRESH) },
             { searchLaunch++
                 val key=BiliPaiNavKey.Search(openId=DesktopHomeClock.elapsedRealtime())
                 if(routes.push(key))originalSearch.bottomBarEntry(key,searchLaunch)

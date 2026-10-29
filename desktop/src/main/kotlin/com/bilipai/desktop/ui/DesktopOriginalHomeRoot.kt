@@ -69,7 +69,11 @@ internal class DesktopOriginalHomeNavigation(
  isQuickReturningFromVideoDetail:Boolean,
  onVideoDetailReturnAnimationConsumed:()->Unit,
 ) {
+ // TON-1026: the corner refresh button of any list inside Home first sends the Home pager's own scroll to the top of the
+ // page that is showing (feed, live, bangumi, partition or subscription), then runs that list's refresh.
+ val refreshPrelude = remember(scrollChannel) { { scrollChannel.trySend(HomeScrollRequest.SCROLL_TO_TOP); Unit } }
  CompositionLocalProvider(
+  LocalDesktopRefreshPrelude provides refreshPrelude,
   LocalDesktopHomeEnvironment provides environment,
   LocalDesktopHomeMediaPorts provides media,
   LocalDesktopHomePlatform provides platform,

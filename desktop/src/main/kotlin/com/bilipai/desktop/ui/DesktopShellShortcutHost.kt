@@ -356,20 +356,28 @@ internal fun DesktopShellRootBinding(
     DisposableEffect(host, routes) { onDispose { host.unbindRoot(routes) } }
 }
 
-/** F5 and Ctrl+R: the scroll to the top and refresh that a second click on the selected recommend or dynamic row runs. */
+/**
+ * F5 and Ctrl+R: the scroll to the top and refresh of a second click on the selected recommend row, and for the dynamic page
+ * the same scroll with an unconditional refresh (the second click on its row only refreshes when the list is already at the top).
+ * The corner refresh button of the page does the same two steps (TON-1026).
+ */
 private fun desktopShellRefresh(
     routes: DesktopOriginalRootRouteAssembly,
     chrome: DesktopOriginalRootChromeBindings,
     page: DesktopShellPage,
 ): Boolean {
     if (!routes.owns()) return false
+    if (page == DesktopShellPage.HOME || page == DesktopShellPage.DYNAMIC) {
+        com.bilipai.desktop.diagnostics.DesktopDiagnosticsBridge.record(
+            "I", DESKTOP_REFRESH_LOG_TAG, desktopRefreshShortcutStartLog(page.name))
+    }
     return when (page) {
         DesktopShellPage.HOME -> {
             chrome.actions.homeDoubleTap()
             true
         }
         DesktopShellPage.DYNAMIC -> {
-            chrome.actions.dynamicDoubleTap()
+            chrome.actions.dynamicRefresh()
             true
         }
         else -> false

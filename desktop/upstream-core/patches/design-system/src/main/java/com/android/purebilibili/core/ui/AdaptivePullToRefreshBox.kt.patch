@@ -1,0 +1,65 @@
+--- a/com/android/purebilibili/core/ui/AdaptivePullToRefreshBox.kt
++++ b/com/android/purebilibili/core/ui/AdaptivePullToRefreshBox.kt
+@@ -21,6 +21,7 @@
+ import androidx.compose.ui.platform.LocalLayoutDirection
+ import androidx.compose.ui.unit.Dp
+ import androidx.compose.ui.unit.dp
++import com.bilipai.desktop.ui.DesktopRefreshButton
+ import top.yukonga.miuix.kmp.basic.PullToRefresh as MiuixPullToRefresh
+ import top.yukonga.miuix.kmp.basic.rememberPullToRefreshState as rememberMiuixPullToRefreshState
+ 
+@@ -57,6 +58,11 @@
+     val contentHaptic = LocalHapticFeedback.current
+     val refreshHaptic = rememberAppHapticFeedback(AppHapticScene.REFRESH)
+     val layoutDirection = LocalLayoutDirection.current
++    // Desktop (TON-1026): the pull gesture is off and the corner button refreshes; a caller that disabled refresh gets no button.
++    val desktopContent: @Composable BoxScope.() -> Unit = {
++        content()
++        if (enabled) DesktopRefreshButton(refreshing = isRefreshing, onRefresh = onRefresh)
++    }
+     val mergedContentPadding = remember(contentPadding, indicatorTopInset, layoutDirection) {
+         PaddingValues(
+             start = contentPadding.calculateStartPadding(layoutDirection),
+@@ -79,7 +85,7 @@
+                     )
+                 }
+             }
+-            if (enabled) {
++            if (com.bilipai.desktop.ui.desktopPullGestureEnabled(enabled)) {
+                 // The native container owns its drag/refresh animation scope. Discard that
+                 // state with the container when player expansion temporarily disables refresh;
+                 // otherwise a cancelled Pulling/RefreshComplete session can consume later
+@@ -96,14 +102,17 @@
+                         refreshTexts = resolveMiuixPullToRefreshTexts(),
+                         content = {
+                             CompositionLocalProvider(LocalHapticFeedback provides contentHaptic) {
+-                                stableContent(contentAlignment, content)
++                                stableContent(contentAlignment, desktopContent)
+                             }
+                         },
+                     )
+                 }
+             } else {
+-                Box(modifier = modifier, contentAlignment = contentAlignment) {
+-                    stableContent(contentAlignment, content)
++                Box(
++                    modifier = if (enabled) modifier.padding(mergedContentPadding) else modifier,
++                    contentAlignment = contentAlignment,
++                ) {
++                    stableContent(contentAlignment, desktopContent)
+                 }
+             }
+         }
+@@ -115,10 +124,10 @@
+                     modifier = modifier,
+                     state = state,
+                     contentAlignment = contentAlignment,
+-                    enabled = enabled,
++                    enabled = com.bilipai.desktop.ui.desktopPullGestureEnabled(enabled),
+                     indicator = indicator,
+                     content = {
+-                        CompositionLocalProvider(LocalHapticFeedback provides contentHaptic) { content() }
++                        CompositionLocalProvider(LocalHapticFeedback provides contentHaptic) { desktopContent() }
+                     },
+                 )
+             }
