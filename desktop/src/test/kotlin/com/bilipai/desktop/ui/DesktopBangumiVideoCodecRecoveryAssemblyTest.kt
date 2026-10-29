@@ -127,6 +127,7 @@ class DesktopBangumiVideoCodecRecoveryAssemblyTest {
             f.assertVideoPreservesAudio(aac, AVC_NETWORK, 112, preferences, calls + 1, AAC_NETWORK)
             assertEquals(112, f.playQualities.last())
             assertEquals(30280, f.state().selectedAudioQuality)
+            assertEquals(AUDIO_QUALITY_AUTO, f.state().effectiveAudioQuality)
             assertEquals(AudioStreamKind.STANDARD, f.state().availableAudioQualities.single { it.preferenceId == 30280 }.kind)
             assertEquals(AUDIO_QUALITY_HI_RES, f.state().requestedAudioQuality)
             assertEquals(AudioFallbackReason.DECODER_ERROR, f.state().audioFallbackReason)
@@ -652,6 +653,7 @@ class DesktopBangumiVideoCodecRecoveryAssemblyTest {
                 assertEquals(if (hiRes) AudioStreamKind.HI_RES else AudioStreamKind.STANDARD,
                     state().availableAudioQualities.single { it.preferenceId == state().selectedAudioQuality }.kind)
                 assertEquals(audioPreference, state().requestedAudioQuality)
+                assertEquals(audioPreference, state().effectiveAudioQuality)
                 assertEquals(if (hiRes) HI_RES else AAC, state().audioUrl)
                 assertEquals(AV1, state().playUrl)
                 assertTrue(native.ownsPlaybackSource()); assertFalse(player.state.value.ready)
@@ -712,6 +714,7 @@ class DesktopBangumiVideoCodecRecoveryAssemblyTest {
             assertEquals(original.seasonDetail.seasonId, actual.seasonDetail.seasonId)
             assertEquals(original.requestedAudioQuality, actual.requestedAudioQuality)
             assertEquals(original.selectedAudioQuality, actual.selectedAudioQuality)
+            assertEquals(original.effectiveAudioQuality, actual.effectiveAudioQuality)
             assertEquals(original.audioFallbackReason, actual.audioFallbackReason)
             assertEquals(expectedAudio, actual.audioUrl); assertEquals(url, source.videoUrl)
             assertEquals(actual.audioUrl, source.audioUrl)
