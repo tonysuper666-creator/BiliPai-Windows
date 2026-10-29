@@ -493,6 +493,25 @@ val migratedAppCorePaths: Set<String> = appJavaRoot.resolve("com/android/purebil
     .filter { it.isFile && it.extension == "kt" }.map { it.relativeTo(appJavaRoot).invariantSeparatorsPath }
     .filter { path -> path.removePrefix("com/android/purebilibili/").let { core -> (appCoreDesktopOwned.keys + appCoreLaterSteps.keys).none { core.startsWith(it) } } }
     .toSortedSet() + migratedVideoFeaturePaths
+// M4a: migrate the platform-independent parts before the native session and frame scheduler.
+val migratedPlaybackModulePaths = mapOf(
+    "core-player/src/main/java/" to setOf(
+        "com/android/purebilibili/core/player/PlaybackProgressPolicy.kt",
+        "com/android/purebilibili/core/player/dash/AdaptiveDashPlaybackSource.kt",
+        "com/android/purebilibili/core/player/dash/LocalDashManifestBuilder.kt",
+        "com/android/purebilibili/core/player/policy/PlaybackQualityMode.kt",
+    ),
+    "danmaku-engine/src/main/java/" to setOf(
+        "com/android/purebilibili/danmaku/parser/SpecialDanmakuIndexReader.kt",
+        "com/android/purebilibili/danmaku/parser/DanmakuProto.kt",
+        "com/android/purebilibili/danmaku/parser/WeightedTextData.kt",
+        "com/android/purebilibili/danmaku/parser/bas/BasModels.kt",
+        "com/android/purebilibili/danmaku/parser/bas/BasTimeline.kt",
+        "com/android/purebilibili/danmaku/parser/bas/BasEasing.kt",
+        "com/android/purebilibili/danmaku/parser/bas/BasScriptParser.kt",
+        "com/android/purebilibili/danmaku/parser/bas/BasLexer.kt",
+    ),
+)
 // M4d (TON-1005): the feature areas plugin, profile, space, message, settings and login compile from the merged root as
 // well. A file stays on its legacy copy while upstream-core/m4d/later-steps.tsv lists it (path <TAB> what it waits for);
 // upstream-core/m4d/retired-generated.tsv lists the producer copies that re-declare names of the migrated files.
@@ -520,7 +539,8 @@ val migratedAppSingleFiles: Set<String> = setOf(
     "com/android/purebilibili/data/repository/AccountLedgerRepository.kt",
 )
 val migratedAppPaths: Set<String> = migratedAppCorePaths + migratedAppM4dPaths + migratedAppSingleFiles
-val migratedUpstreamRelativePaths = migratedWholeModulePaths + migratedAppPaths + setOf(
+val migratedUpstreamRelativePaths = migratedWholeModulePaths + migratedAppPaths +
+    migratedPlaybackModulePaths.values.flatten().toSet() + setOf(
     "com/android/purebilibili/core/network/AppSignUtils.kt",
     "com/android/purebilibili/core/network/WbiUtils.kt",
     "com/android/purebilibili/core/network/grpc/ProtoWire.kt",
@@ -3465,6 +3485,15 @@ kotlin.sourceSets.named("main") {
     kotlin.srcDir(applyTransitionPatches)
     kotlin.srcDir(applyDesktopUpstreamPatches)
     migratedUpstreamModules.forEach { kotlin.srcDir(mergedRepositoryRoot.resolve(it + "src/main/java")) }
+    // Partial playback modules: compile only the registered upstream files. Their generated copies
+    // are excluded by migratedUpstreamRelativePaths above, just like the app feature files.
+    migratedPlaybackModulePaths.forEach { (relativeRoot, paths) ->
+        val root = mergedRepositoryRoot.resolve(relativeRoot)
+        val rootPath = root.toPath()
+        kotlin.srcDir(root)
+        kotlin.exclude { element -> !element.isDirectory && element.file.toPath().startsWith(rootPath) &&
+            element.file.relativeTo(root).invariantSeparatorsPath !in paths }
+    }
     // Only the migrated app core files of the app source root; the rest of the app is not migrated yet.
     val appJavaRootPath = appJavaRoot.toPath()
     kotlin.exclude { element -> !element.isDirectory && element.file.toPath().startsWith(appJavaRootPath) && upstreamIdentity(element.file) !in migratedAppPaths }
