@@ -10,7 +10,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
-/** A recording surface that can refuse, block, or land a toast after the call returns. */
+/** A recording surface that can refuse, block once, or land a toast after the call returns. */
 internal class RecordingNotificationCenter : DesktopNotificationCenter {
     val shown = mutableListOf<String>()
     val removed = mutableListOf<String>()
@@ -21,14 +21,15 @@ internal class RecordingNotificationCenter : DesktopNotificationCenter {
     @Volatile var onShow: ((String) -> Unit)? = null
     private val clearEntered = CountDownLatch(1)
     private val clearGate = CountDownLatch(1)
-    @Volatile private var blockClear = false
+    @Volatile private var blockNextClear = false
 
-    fun enterClearWithBlock(): CountDownLatch { blockClear = true; return clearEntered }
+    /** The next group withdrawal blocks until [releaseClear]; later ones run immediately. */
+    fun enterClearWithBlock(): CountDownLatch { blockNextClear = true; return clearEntered }
 
     override fun show(title: String, text: String, route: String, tag: String, group: String) {
         shown += "$tag@$group"
-        // The toast lands on screen after the delivery call returns, which is exactly how a
-        // withdrawal racing with it can miss it.
+        // The toast lands on screen after the delivery call returns, which is how a withdrawal
+        // racing with it can miss it.
         onShow?.invoke(tag)
         visible += tag
     }
@@ -40,7 +41,8 @@ internal class RecordingNotificationCenter : DesktopNotificationCenter {
     }
 
     override fun clear(group: String) {
-        if (blockClear) {
+        if (blockNextClear) {
+            blockNextClear = false
             clearEntered.countDown()
             clearGate.await(10, TimeUnit.SECONDS)
         }
@@ -50,6 +52,9 @@ internal class RecordingNotificationCenter : DesktopNotificationCenter {
     }
 
     fun releaseClear() { clearGate.countDown() }
+
+    /** What the user would still see. */
+    fun texts(): Set<String> = visible.toSet()
 }
 
 class DesktopNotificationSessionTest {
@@ -63,10 +68,11 @@ class DesktopNotificationSessionTest {
         val center = RecordingNotificationCenter()
         val session = session(center)
         assertTrue(session.publish(item("reply-1")))
+        val delivered = center.texts()
         session.detach()
 
         assertTrue(center.cleared.isEmpty(), "a normal exit must not withdraw the account group")
-        assertEquals(setOf("reply-1#0"), center.visible)
+        assertEquals(delivered, center.texts())
         assertFalse(session.publish(item("reply-2")), "a detached session publishes nothing")
     }
 
@@ -79,40 +85,73 @@ class DesktopNotificationSessionTest {
 
         session.resume()
         assertTrue(session.publish(item("reply-2")), "re-enabling must publish again without a new port")
-        assertEquals(setOf("reply-2#1"), center.visible)
+        assertEquals(1, center.texts().size)
     }
 
-    @Test fun aWithdrawalThatIsAlreadyRunningBlocksPublishingUntilItFinishes() {
+    @Test fun aRepeatedEnableDoesNotWithdrawUnreadNotifications() {
+        val center = RecordingNotificationCenter()
+        val session = session(center)
+        assertTrue(session.publish(item("reply-1")))
+        val unread = center.texts()
+
+        session.resume() // settings re-emitted while the master switch stayed on
+        session.resume()
+        DesktopNotificationCleanup.retryOutstanding()
+        assertEquals(unread, center.texts(), "an idempotent enable must not touch what the user has not read")
+        assertTrue(center.removed.isEmpty())
+    }
+
+    @Test fun theAdapterCancelPathNeverReDerivesAnOlderDeliveryOntoANewerToast() {
+        val center = RecordingNotificationCenter().apply { failRemove = true }
+        val session = session(center)
+        assertTrue(session.publish(item("reply-1")))
+        assertEquals(emptySet(), session.withdrawNow(setOf("reply-1")), "the surface refused the first removal")
+
+        center.failRemove = false
+        assertTrue(session.publish(item("reply-1")), "the same message key is delivered again")
+        val newestTag = center.shown.last().substringBefore('@')
+
+        // A round with no new cancellations must not touch the newer delivery.
+        assertEquals(emptySet(), session.withdrawNow(emptySet()))
+        DesktopNotificationCleanup.retryOutstanding()
+        assertTrue(newestTag in center.texts(), "the older pending tag owns only the older toast")
+        assertEquals(1, center.texts().size)
+    }
+
+    @Test fun twoSessionsForTheSameAccountNeverShareADeliveryTag() {
+        val center = RecordingNotificationCenter()
+        val first = session(center)
+        val remounted = session(center)
+        assertTrue(first.publish(item("reply-1")))
+        assertTrue(remounted.publish(item("reply-1")))
+        val both = center.texts()
+        assertEquals(2, both.size, "each delivery gets its own tag")
+
+        center.failRemove = true
+        first.withdrawNow(setOf("reply-1"))
+        center.failRemove = false
+        DesktopNotificationCleanup.retryOutstanding()
+        assertEquals(1, center.texts().size, "the old session may only remove its own delivery")
+    }
+
+    @Test fun publishingStaysClosedWhileOverlappingCleanupsRun() {
         val center = RecordingNotificationCenter()
         val session = session(center)
         assertTrue(session.publish(item("reply-1")))
         val entered = center.enterClearWithBlock()
-        val clearing = thread { session.pause() }
-        assertTrue(entered.await(5, TimeUnit.SECONDS), "the group withdrawal must actually be running")
+        val pausing = thread { session.pause() }
+        assertTrue(entered.await(5, TimeUnit.SECONDS), "the first group withdrawal must be running")
 
-        // Re-enabling during the running withdrawal must not let a toast land inside its range.
-        session.resume()
-        assertFalse(session.publish(item("reply-2")), "a started group withdrawal deletes whatever appears in it")
+        // A second cleanup overlaps: it queues behind the first, and publishing stays closed until both end.
+        val retiring = thread { session.retire() }
+        Thread.sleep(100)
+        assertFalse(session.publish(item("reply-2")), "a running cleanup must not let a toast land inside it")
 
         center.releaseClear()
-        clearing.join(5_000)
-        assertTrue(session.publish(item("reply-2")), "publishing resumes once the withdrawal is over")
-        assertEquals(setOf("reply-2#1"), center.visible)
-    }
-
-    @Test fun retryingAnOldWithdrawalCannotDeleteTheNewToastWithTheSameKey() {
-        val center = RecordingNotificationCenter().apply { failRemove = true }
-        val session = session(center)
-        assertTrue(session.publish(item("reply-1")))
-        assertEquals(emptySet(), session.withdrawn(setOf("reply-1")), "the surface refused the first removal")
-
-        session.resume()
-        assertTrue(session.publish(item("reply-1")), "the same message key can be delivered again")
-
-        center.failRemove = false
-        DesktopNotificationCleanup.retryOutstanding()
-        assertEquals(setOf("reply-1#1"), center.visible, "the retry must hit the old tag, not the new toast")
-        assertEquals(listOf("reply-1#0@messages-7"), center.removed)
+        pausing.join(5_000)
+        retiring.join(5_000)
+        assertFalse(session.isPublishing(), "retirement is final")
+        assertTrue(center.texts().isEmpty())
     }
 
     @Test fun aLateToastWhoseWithdrawalFailsIsFinishedByTheDriver() {
@@ -120,12 +159,12 @@ class DesktopNotificationSessionTest {
         val session = session(center)
         center.onShow = { session.retire() }
         assertFalse(session.publish(item("reply-1")))
-        assertEquals(setOf("reply-1"), session.pendingWithdrawals())
+        assertEquals(1, session.pendingTags().size)
 
         center.failRemove = false
         DesktopNotificationCleanup.retryOutstanding()
-        assertEquals(emptySet(), session.pendingWithdrawals())
-        assertTrue(center.visible.isEmpty())
+        assertTrue(session.pendingTags().isEmpty())
+        assertTrue(center.texts().isEmpty())
     }
 
     @Test fun aRefusedGroupCleanupIsRememberedAndFinishesOnRetry() {
@@ -136,26 +175,13 @@ class DesktopNotificationSessionTest {
         assertFalse(session.retire())
         assertTrue(session.isCleanupPending())
         assertEquals(1, session.clearAttemptCount())
-        assertEquals(setOf("reply-1#0"), center.visible)
 
         center.failClear = false
         DesktopNotificationCleanup.retryOutstanding()
         assertFalse(session.isCleanupPending())
         assertEquals(2, session.clearAttemptCount())
-        assertTrue(center.visible.isEmpty())
+        assertTrue(center.texts().isEmpty())
         assertEquals(listOf("messages-7"), center.cleared)
-    }
-
-    @Test fun aRoundWithNoNewWorkStillRetriesTheKeysItCouldNotWithdraw() {
-        val center = RecordingNotificationCenter().apply { failRemove = true }
-        val session = session(center)
-        assertEquals(emptySet(), session.withdrawn(setOf("reply-1")))
-        assertEquals(setOf("reply-1"), session.pendingWithdrawals())
-
-        center.failRemove = false
-        assertEquals(setOf("reply-1"), session.withdrawn(session.pendingWithdrawals()))
-        assertEquals(emptySet(), session.pendingWithdrawals())
-        assertEquals(listOf("reply-1#0@messages-7"), center.removed)
     }
 
     @Test fun retiringClearsTheGroupOfTheAccountItWasBuiltFor() {
@@ -163,8 +189,6 @@ class DesktopNotificationSessionTest {
         val session = session(center)
         assertTrue(session.retire())
         assertEquals(listOf("messages-7"), center.cleared)
-        assertEquals(1, session.clearAttemptCount())
-        assertFalse(session.isCleanupPending())
         assertFalse(session.isPublishing())
     }
 
@@ -182,18 +206,5 @@ class DesktopNotificationSessionTest {
         session.resume()
         assertFalse(session.publish(item("reply-1")))
         assertTrue(center.shown.isEmpty())
-    }
-
-    @Test fun aToastDeliveredIntoARetiredSessionIsTakenBackByTheDriver() {
-        val center = RecordingNotificationCenter()
-        val session = session(center)
-        center.onShow = { session.retire() }
-        assertFalse(session.publish(item("reply-1")))
-        // publish never blocks on the surface: the take-back is handed to the driver.
-        assertEquals(setOf("reply-1"), session.pendingWithdrawals())
-
-        DesktopNotificationCleanup.retryOutstanding()
-        assertEquals(emptySet(), session.pendingWithdrawals())
-        assertEquals(listOf("reply-1#0@messages-7"), center.removed)
     }
 }

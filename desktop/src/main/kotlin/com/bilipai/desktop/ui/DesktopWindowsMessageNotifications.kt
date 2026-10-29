@@ -57,14 +57,12 @@ internal class DesktopWindowsMessageNotifications(
         currentCoroutineContext().ensureActive()
         check(EventQueue.isDispatchThread()) { "Message notifications require the actual Windows EDT" }
         if (!canPost()) return@withContext
-        if (pending.isEmpty() && cancelled.isEmpty() && session.pendingWithdrawals().isEmpty()) return@withContext
-        // A refused withdrawal stays pending: the toast is still on screen, so its key must stay
-        // active for the upstream checker. Every round retries the outstanding ones first, including
-        // a round with no new work at all, and drops the entries they finally removed.
-        val requested = cancelled + session.pendingWithdrawals()
-        val withdrawn = withContext(Dispatchers.IO) { session.withdrawn(requested) }
+        if (pending.isEmpty() && cancelled.isEmpty()) return@withContext
+        // Cancel this round's keys by the delivery they currently own; older deliveries keep their own
+        // tags and are retried by the driver, so they can never be re-derived onto a newer toast.
+        val withdrawn = withContext(Dispatchers.IO) { session.withdrawNow(cancelled) }
         withContext(Dispatchers.IO) { DesktopNotificationCleanup.retryOutstanding() }
-        entries.apply(pending, withdrawn, pendingCounts)
+        entries.apply(pending, withdrawn + session.takeResolved(), pendingCounts)
         val visible = entries.snapshot()
         if (visible.isEmpty()) { removeTrayOnEdt(); return@withContext }
         val icon = tray ?: TrayIcon(requireNotNull(ImageIO.read(
