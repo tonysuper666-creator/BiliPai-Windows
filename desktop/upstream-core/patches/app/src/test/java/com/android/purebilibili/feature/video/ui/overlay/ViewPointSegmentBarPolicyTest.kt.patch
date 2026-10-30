@@ -1,0 +1,29 @@
+Upstream commit: f9821e767
+Reason: upstream test intent merges overlaps, but released normalizeViewPointSegments
+trims starts and preserves all distinct chapter titles. Desktop follows the released
+implementation, identical to its previous production algorithm, rather than dropping
+one chapter title to satisfy the conflicting test intent. Assert all three boundaries
+and exact title order; preserve invalid-input coverage and the other eight cases.
+Production source: app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/ViewPointSegmentBarPolicy.kt
+Upstream-source-sha256: af5428c41e16d14cf66d3c98877b3b90b11b404daabf46dc83fe0d2f35adb4c4
+Upstream-production-source-sha256: fd64c12ec324abc4bae7a8916114751c5585e0c4ec40e877926086fd2fd5d763
+Any change to either source requires review of this test/implementation disagreement.
+
+--- a/app/src/test/java/com/android/purebilibili/feature/video/ui/overlay/ViewPointSegmentBarPolicyTest.kt
++++ b/app/src/test/java/com/android/purebilibili/feature/video/ui/overlay/ViewPointSegmentBarPolicyTest.kt
+@@ -24,10 +24,12 @@
+             durationMs = 250_000L
+         )
+ 
+-        assertEquals(2, segments.size)
++        assertEquals(3, segments.size)
+         assertEquals(0L to 50_000L, segments[0].fromMs to segments[0].toMs)
+-        // 40s 起点被前段截断到 50s；重叠部分被吸收
+-        assertEquals(50_000L to 200_000L, segments[1].fromMs to segments[1].toMs)
++        // Overlap is trimmed while preserving each distinct chapter title.
++        assertEquals(50_000L to 120_000L, segments[1].fromMs to segments[1].toMs)
++        assertEquals(120_000L to 200_000L, segments[2].fromMs to segments[2].toMs)
++        assertEquals(listOf("A", "B", "重叠段"), segments.map { it.content })
+     }
+ 
+     @Test

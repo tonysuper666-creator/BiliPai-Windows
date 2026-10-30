@@ -3911,6 +3911,7 @@ kotlin.sourceSets.named("test") {
 // Approved upstream test corrections are isolated from production patch outputs.
 // The complete LF-normalized source is pinned: even an edit outside a hunk needs review.
 val correctedVideoTestPaths = setOf(
+    "com/android/purebilibili/feature/video/ui/overlay/ViewPointSegmentBarPolicyTest.kt",
     "com/android/purebilibili/feature/video/progress/PbpProgressPolicyTest.kt",
     "com/android/purebilibili/feature/video/ui/section/VideoInfoDisplayPolicyTest.kt",
 )
