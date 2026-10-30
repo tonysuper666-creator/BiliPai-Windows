@@ -315,6 +315,10 @@ val appCoreLaterSteps: Map<String, String> = mapOf(
 // M4a: video/bangumi logic and unchanged Compose components compile from the merged upstream tree.
 // The remaining UI/player files move when their desktop platform adapters are wired.
 val migratedVideoFeaturePaths = setOf(
+    "com/android/purebilibili/feature/bangumi/ui/detail/BangumiDetailComponents.kt",
+    "com/android/purebilibili/feature/bangumi/policy/BangumiUiPolicy.kt",
+    "com/android/purebilibili/feature/bangumi/BangumiTimelineScreen.kt",
+
     "com/android/purebilibili/feature/video/ui/overlay/PlaybackOrderSelectionSheet.kt",
     "com/android/purebilibili/feature/video/ui/overlay/PlaybackOrderSelectionSheetPolicy.kt",
     "com/android/purebilibili/feature/video/ui/components/glass/PlayerMiuixListPopup.kt",
@@ -2866,6 +2870,12 @@ val upstreamOwnedGeneratedCopies = setOf(
     // core/ui/components/UserLevelBadge (TON-1072): the upstream file draws its R.drawable level badges through the generated
     // desktop drawable table, so the blocked-list producer's classpath-PNG copy is retired.
     "blocked-list-ui/com/android/purebilibili/core/ui/components/DesktopUpstreamUserLevelBadge.kt",
+    "independent-bangumi-pages/com/android/purebilibili/feature/bangumi/ui/detail/DesktopOriginalBangumiDetailComponents.kt",
+    "independent-bangumi-pages/com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiTimelineScreen.kt",
+    "independent-bangumi-pages/com/android/purebilibili/feature/bangumi/policy/DesktopOriginalBangumiEpisodePagePolicy.kt",
+    "original-bangumi-player-ui/com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiPlayerUiPolicy.kt",
+    "home-bangumi-page/com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiBadgePolicy.kt",
+
     "original-video-player-full-controls/com/android/purebilibili/feature/video/ui/overlay/PlaybackOrderSelectionSheet.kt",
     "original-video-player-full-controls/com/android/purebilibili/feature/video/ui/components/PlayerMiuixListPopup.kt",
     "original-video-player-full-controls/com/android/purebilibili/feature/video/ui/components/DanmakuSettingsPanelHost.kt",
@@ -3008,7 +3018,6 @@ val transitionPatchProducers = mapOf(
     "original-following" to "extractOriginalFollowing",
     "original-space-pages" to "extractOriginalSpacePages",
     "original-message-pages" to "extractOriginalMessagePages",
-    "independent-bangumi-pages" to "extractOriginalBangumiPages",
     "video-tablet-full" to "extractOriginalVideoTabletFull",
     "original-root-home-navigation" to "extractOriginalRootHomeNavigation",
     "home-page" to "extractOriginalHomePage",
