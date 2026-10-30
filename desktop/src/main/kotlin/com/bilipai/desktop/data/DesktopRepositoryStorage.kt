@@ -51,3 +51,8 @@ internal fun desktopBlockedUpDao(context: Context): DesktopBlockedUpDao =
 internal fun desktopCommentFraudDao(context: Context): DesktopCommentFraudDao =
     (context as? DesktopRepositoryStorageContext)?.commentFraudDao
         ?: throw UnsupportedDesktopCapability("CommentFraudDao", "Root must supply its account-owned DesktopCommentFraudJsonDao")
+
+/** Upstream MessageCenterPreferences uses MultiProcess DataStore on Android. Its
+ * namespace and key live in the caller's existing JSON preference document here. */
+internal fun desktopMessageLikesDisabled(context: Context): Boolean =
+    context.getSharedPreferences("message_center_preferences", Context.MODE_PRIVATE).getBoolean("disable_likes", false)

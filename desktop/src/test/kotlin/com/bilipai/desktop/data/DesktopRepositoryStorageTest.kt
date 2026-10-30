@@ -5,7 +5,6 @@ import com.android.purebilibili.core.network.BilibiliApi
 import com.android.purebilibili.core.network.MessageApi
 import com.android.purebilibili.data.model.response.MessageFeedUnreadData
 import com.android.purebilibili.data.model.response.MessageFeedUnreadResponse
-import com.android.purebilibili.core.store.MessageCenterPreferences
 import com.android.purebilibili.data.model.CommentFraudStatus
 import com.android.purebilibili.data.repository.BlockedUpRepository
 import com.android.purebilibili.data.repository.CommentFraudRepository
@@ -123,10 +122,11 @@ class DesktopRepositoryStorageTest {
         val first = plugin("one").asAndroidContext()
         val second = plugin("two").asAndroidContext()
         val wrapped = DesktopRepositoryStorageContext(first)
-        MessageCenterPreferences.setDisabledLikes(wrapped, true)
-        assertTrue(MessageCenterPreferences.disabledLikes(first).first())
-        assertTrue(MessageCenterPreferences.disabledLikes(wrapped.applicationContext).first())
-        assertFalse(MessageCenterPreferences.disabledLikes(second).first())
+        wrapped.getSharedPreferences("message_center_preferences", android.content.Context.MODE_PRIVATE).edit().putBoolean("disable_likes", true).commit()
+        assertTrue(desktopMessageLikesDisabled(first))
+        assertTrue(desktopMessageLikesDisabled(wrapped.applicationContext))
+        assertFalse(desktopMessageLikesDisabled(second))
+        assertTrue(desktopMessageLikesDisabled(plugin("one").asAndroidContext()))
         val response = MessageFeedUnreadData(reply = 2, at = 3, like = 8, sysMsg = 4)
         val api = Proxy.newProxyInstance(MessageApi::class.java.classLoader, arrayOf(MessageApi::class.java)) { _, method, _ ->
             check(method.name == "getFeedUnread")
