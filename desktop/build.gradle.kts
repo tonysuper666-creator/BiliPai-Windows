@@ -331,6 +331,7 @@ val migratedVideoFeaturePaths = setOf(
     "com/android/purebilibili/feature/video/screen/TabletDanmakuChromeState.kt",
     "com/android/purebilibili/feature/video/ui/section/VideoDetailSecondaryButton.kt",
     "com/android/purebilibili/feature/video/ui/components/AudioQualitySelectionMenu.kt",
+    "com/android/purebilibili/feature/video/share/VideoShareMoreTargetsSheet.kt",
     "com/android/purebilibili/feature/video/share/VideoShareSheetMotion.kt",
     "com/android/purebilibili/feature/video/ui/components/SpeedSelectionPanel.kt",
     "com/android/purebilibili/feature/video/ui/components/DanmakuColorOptions.kt",
@@ -2884,6 +2885,7 @@ val prepareJsWorkerResources = if (hostIsWindows) tasks.register<Sync>("prepareJ
 
 // Generated legacy files that re-declare migrated upstream declarations under another file name.
 val upstreamOwnedGeneratedCopies = setOf(
+    "video-share-consent/com/android/purebilibili/feature/video/share/VideoShareMoreTargetsSheet.kt",
     "original-video-fullscreen-pager/com/android/purebilibili/feature/video/ui/pager/PortraitAudioPlaybackController.kt",
     "original-video-player-full-controls/com/android/purebilibili/feature/video/ui/overlay/CenterPlaybackControl.kt",
     "collection-sheet/com/android/purebilibili/feature/video/ui/components/DesktopOriginalCollectionSubscriptionButton.kt",
