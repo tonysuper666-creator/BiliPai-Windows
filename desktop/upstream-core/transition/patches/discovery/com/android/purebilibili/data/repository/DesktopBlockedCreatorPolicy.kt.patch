@@ -1,12 +1,12 @@
 --- a/discovery/com/android/purebilibili/data/repository/DesktopBlockedCreatorPolicy.kt
 +++ b/discovery/com/android/purebilibili/data/repository/DesktopBlockedCreatorPolicy.kt
-@@ -1,56 +1,4 @@
+@@ -1,56 +1,7 @@
 -// GENERATED original declarations and Windows platform bindings.
  package com.android.purebilibili.data.repository
+ 
+ private const val BILIBILI_RELATION_ACT_BLOCK = 5
 -
--private const val BILIBILI_RELATION_ACT_BLOCK = 5
--
--private const val BILIBILI_RELATION_ACT_UNBLOCK = 6
+ private const val BILIBILI_RELATION_ACT_UNBLOCK = 6
 -
 -private const val BILIBILI_RELATION_PROFILE_BLOCK_RE_SRC = 11
 -
