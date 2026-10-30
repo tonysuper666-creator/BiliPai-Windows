@@ -1,9 +1,9 @@
 Upstream-source-sha256: 9415f2472e1c120467ffe98a05310530425600bb82e75d390b51c759d4a0aa0c
-Reason: animateToValue 改成具名参数多行签名后旧字符串全失效；改为钉住 updateIndex 的三段调用、animateToValue 的签名与 animatePress 分支，并在 release 里按先 snapshotFlow/first、再 onSettled?.invoke()、最后 pressProgressAnimation.animateTo(0f 的顺序断言。
+Reason: animateToValue 改成具名参数多行签名后旧字符串全失效；改为钉住 updateIndex 的三段调用、animateToValue 的签名与 animatePress 分支，并在 release 里按位置断言 snapshotFlow 落定等待 → .first { it <= threshold } → onSettled?.invoke() → pressProgressAnimation.animateTo(0f 依次出现。
 
 --- a/design-system/src/test/java/com/android/purebilibili/core/ui/animation/DampedDragAnimationPolicyTest.kt
 +++ b/design-system/src/test/java/com/android/purebilibili/core/ui/animation/DampedDragAnimationPolicyTest.kt
-@@ -143,12 +143,22 @@
+@@ -143,12 +143,24 @@
              .substringAfter("fun updateIndex(index: Int)")
              .substringBefore("private const val BILIPAI_PRESSED_SCALE")
  
@@ -21,11 +21,13 @@ Reason: animateToValue 改成具名参数多行签名后旧字符串全失效；
 -        assertTrue(source.contains("if (value != targetValue)"))
 -        assertTrue(source.contains("abs(it - valueAnimation.targetValue) < threshold"))
 +        val releaseSource = source.substringAfter("fun release(onSettled: (() -> Unit)? = null)")
-+        assertTrue(releaseSource.contains("snapshotFlow { abs(valueAnimation.value - targetValue) }"))
-+        assertTrue(releaseSource.contains(".first { it <= threshold }"))
++        val settleWaitIndex = releaseSource.indexOf("snapshotFlow { abs(valueAnimation.value - targetValue) }")
++        val thresholdWaitIndex = releaseSource.indexOf(".first { it <= threshold }")
 +        val settledIndex = releaseSource.indexOf("onSettled?.invoke()")
 +        val pressResetIndex = releaseSource.indexOf("pressProgressAnimation.animateTo(0f")
-+        assertTrue(settledIndex >= 0)
++        assertTrue(settleWaitIndex >= 0)
++        assertTrue(thresholdWaitIndex > settleWaitIndex)
++        assertTrue(settledIndex > thresholdWaitIndex)
 +        assertTrue(pressResetIndex > settledIndex)
      }
  

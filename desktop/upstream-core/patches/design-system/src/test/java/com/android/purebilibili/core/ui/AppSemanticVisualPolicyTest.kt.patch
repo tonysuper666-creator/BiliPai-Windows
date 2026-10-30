@@ -1,5 +1,5 @@
 Upstream-source-sha256: 693059679683b16d3be31b489a6eab098dd005274c35a880707dc7d9dcaf832f
-Reason: 2821415c5 让设置入口视觉策略按风格选色。图标策略继续整组禁止风格 token；入口视觉策略只放行 AppUiStyle / LocalAppUiStyle，并钉住两处风格判断；其余风格 token 仍禁止。生产不动。
+Reason: 2821415c5 让设置入口视觉策略按风格选色。图标策略继续整组禁止 8 个 token；入口视觉策略只放行 AppUiStyle / LocalAppUiStyle，禁止 UiPreset、裸 UiStyle、AndroidNativeVariant 与 Local* 变体，并钉住两处风格判断。裸 UiStyle 用 \bUiStyle\b 加进去，不会命中 AppUiStyle。生产不动。
 
 --- a/design-system/src/test/java/com/android/purebilibili/core/ui/AppSemanticVisualPolicyTest.kt
 +++ b/design-system/src/test/java/com/android/purebilibili/core/ui/AppSemanticVisualPolicyTest.kt
@@ -20,9 +20,9 @@ Reason: 2821415c5 让设置入口视觉策略按风格选色。图标策略继�
              """\b(UiPreset|UiStyle|AppUiStyle|AndroidNativeVariant|LocalUiPreset|LocalUiStyle|LocalAppUiStyle|LocalAndroidNativeVariant)\b"""
          )
 +        // 2821415c5 之后入口视觉策略要按风格选色，只有 AppUiStyle / LocalAppUiStyle 放行；
-+        // 其余风格 token（UiPreset / AndroidNativeVariant / Local* 变体）仍然禁止。
++        // 裸 UiStyle、UiPreset、AndroidNativeVariant 与 Local* 变体仍然禁止。
 +        val stillBanned = Regex(
-+            """\b(UiPreset|AndroidNativeVariant|LocalUiPreset|LocalUiStyle|LocalAndroidNativeVariant)\b"""
++            """\b(UiPreset|UiStyle|AndroidNativeVariant|LocalUiPreset|LocalUiStyle|LocalAndroidNativeVariant)\b"""
 +        )
  
 -        paths.forEach { path ->
