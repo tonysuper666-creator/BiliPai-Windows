@@ -1,0 +1,18 @@
+Upstream-commit: de16d51ee2154abeedb1e0d2dd2fa1a89894c9f3
+Upstream-source-sha256: 26f1352adc369033737c804bf44166f3e998525c6f3224a842077f5e3afe8f60
+Reason: The retained desktop extraction predates upstream de16d51ee2154abeedb1e0d2dd2fa1a89894c9f3. Carry the exact current upstream sidebar breakpoint predicate: tablet medium width retains the rail, compact split/cover falls back, medium-width phones do not gain a rail. Do not change device detection or posture policy.
+
+--- a/dynamic-detail-container/com/android/purebilibili/core/util/DesktopOriginalDetailWindowModels.kt
++++ b/dynamic-detail-container/com/android/purebilibili/core/util/DesktopOriginalDetailWindowModels.kt
+@@ -58,9 +58,9 @@
+     val shouldUseSplitLayout: Boolean
+         get() = isTablet && heightSizeClass != WindowHeightSizeClass.Compact
+     
+-    /** 是否应该使用侧边导航栏（仅大屏） */
++    /** 平板在中等宽度竖屏保留侧栏；紧凑分屏回退底栏，恢复宽度后自动还原。 */
+     val shouldUseSideNavigation: Boolean
+-        get() = widthSizeClass >= WindowWidthSizeClass.Expanded
++        get() = isTablet && (isTabletDevice || widthSizeClass >= WindowWidthSizeClass.Expanded)
+ 
+     val shouldUseExpandedNavigationRail: Boolean
+         get() = widthSizeClass >= WindowWidthSizeClass.Large
