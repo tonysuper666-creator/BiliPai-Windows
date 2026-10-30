@@ -9,3 +9,8 @@ settings/com/android/purebilibili/feature/settings/webdav/WebDavBackupService.kt
 appearance/com/android/purebilibili/feature/settings/DesktopOriginalSeedPaletteSettingsPolicy.kt
 system-about/com/android/purebilibili/feature/settings/Material3AppUpdateDialog.kt
 system-about/com/android/purebilibili/feature/settings/MiuixAppUpdateDialog.kt
+original-space-pages/com/android/purebilibili/feature/space/DesktopOriginalSpaceRemainingLoadPolicy.kt
+space-contributions/com/android/purebilibili/feature/space/DesktopOriginalSpaceProfileDeclarations.kt
+space-contributions/com/android/purebilibili/feature/space/DesktopOriginalSpaceSubTab.kt
+original-favorites/com/android/purebilibili/feature/space/DesktopFavoriteArchiveMappings.kt
+video-tablet-full/com/android/purebilibili/feature/space/DesktopOriginalSpaceUiState.kt

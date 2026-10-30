@@ -1,0 +1,69 @@
+--- a/space/com/android/purebilibili/feature/space/DesktopUpstreamSpaceDeclarations.kt
++++ b/space/com/android/purebilibili/feature/space/DesktopUpstreamSpaceDeclarations.kt
+@@ -3,66 +3,16 @@
+ package com.android.purebilibili.feature.space
+ 
+ import com.android.purebilibili.data.model.response.*
+ 
+ import com.android.purebilibili.core.util.BilibiliNavigationTarget
+ 
+ import com.android.purebilibili.core.util.BilibiliNavigationTargetParser
+ 
+-internal fun resolveSpaceFavoriteFoldersForDisplay(folders: List<FavFolder>): List<FavFolder> {
+-    if (folders.isEmpty()) return emptyList()
+-    val seenIds = HashSet<Long>()
+-    return folders.filter { folder ->
+-        val valid = folder.id > 0L &&
+-            folder.title.isNotBlank() &&
+-            folder.media_count > 0
+-        valid && seenIds.add(folder.id)
+-    }
+-}
+-
+-internal sealed interface SpaceDynamicClickAction {
+-    data class OpenVideo(val bvid: String) : SpaceDynamicClickAction
+-    data class OpenArticle(val articleId: Long, val title: String) : SpaceDynamicClickAction
+-    data class OpenDynamicDetail(val dynamicId: String) : SpaceDynamicClickAction
+-    data class OpenUser(val mid: Long) : SpaceDynamicClickAction
+-    data object None : SpaceDynamicClickAction
+-}
+-
+-internal fun resolveSpaceArticleClickAction(article: SpaceArticleItem): SpaceDynamicClickAction {
+-    when (val target = BilibiliNavigationTargetParser.parse(article.jump_url)) {
+-        is BilibiliNavigationTarget.Dynamic -> {
+-            return SpaceDynamicClickAction.OpenDynamicDetail(target.dynamicId)
+-        }
+-        is BilibiliNavigationTarget.Article -> {
+-            return SpaceDynamicClickAction.OpenArticle(
+-                articleId = target.articleId,
+-                title = article.title
+-            )
+-        }
+-        else -> Unit
+-    }
+-
+-    val articleId = article.id.takeIf { it > 0L } ?: return SpaceDynamicClickAction.None
+-    return if (articleId >= OPUS_ID_MIN_VALUE) {
+-        SpaceDynamicClickAction.OpenDynamicDetail(articleId.toString())
+-    } else {
+-        SpaceDynamicClickAction.OpenArticle(articleId, article.title)
+-    }
+-}
+-
+-private const val OPUS_ID_MIN_VALUE = 1_000_000_000_000_000L
+-
+-internal fun resolveSpaceGuardLevelLabel(level: Int): String = when (level) {
+-    1 -> "总督"
+-    2 -> "提督"
+-    3 -> "舰长"
+-    else -> "舰长"
+-}
+-
+ internal fun desktopSpaceSupporterParams(mid: Long): Map<String,String> = mapOf(
+                 "vmid" to mid.toString(),
+                 "build" to "8430300",
+                 "mobi_app" to "android",
+                 "platform" to "android",
+                 "channel" to "master",
+                 "s_locale" to "zh_CN",
+                 "c_locale" to "zh_CN",

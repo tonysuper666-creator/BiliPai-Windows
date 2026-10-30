@@ -142,17 +142,4 @@ feature/settings/update/AppUpdateInstaller.kt	编译不过（24 处）：未解�
 feature/settings/webdav/WebDavAutoBackupWorker.kt	编译不过（26 处）：未解析 work×7；Cannot infer type for type parameter '_'. Specify ×4；No value passed for parameter '_'.×3；等对应桌面替身或桌面实现
 feature/settings/webdav/WebDavBackupScreen.kt	编译不过（18 处）：未解析 drawable×13；未解析 Reset×2；未解析 UploadCloud×2；等对应桌面替身或桌面实现
 feature/settings/webdav/WebDavBackupViewModel.kt	编译不过（11 处）：Unresolved reference. None of the following candid×4；未解析 AndroidViewModel×2；未解析 Application×2；等对应桌面替身或桌面实现
-feature/space/CollectionDetailPagingSource.kt	编译不过（12 处）：未解析 paging×3；未解析 serverPage×3；Suspend function '_' can only be called from a cor×2；等对应桌面替身或桌面实现
-feature/space/SeasonSeriesDetailViewModel.kt	编译不过（102 处）：Suspend function '_' can only be called from a cor×13；未解析 accountRequests×11；Cannot infer type for type parameter '_'. Specify ×10；等对应桌面替身或桌面实现
-feature/space/SpaceBannerFusionEffect.kt	编译不过（80 处）：Cannot infer type for type parameter '_'. Specify ×11；未解析 width×6；未解析 height×6；等对应桌面替身或桌面实现
-feature/space/SpaceContributionPagingSource.kt	编译不过（12 处）：未解析 paging×3；Suspend function '_' can only be called from a cor×2；Cannot infer type for type parameter '_'. Specify ×2；等对应桌面替身或桌面实现
-feature/space/SpaceDynamicNavigationPolicy.kt	编译不过（1 处）：Redeclaration:×1；等对应桌面替身或桌面实现
-feature/space/SpaceLoadPolicy.kt	编译不过（34 处）：Overload resolution ambiguity between candidates:×18；Cannot infer type for type parameter '_'. Specify ×6；Operator call '_' is ambiguous for destructuring o×2；等对应桌面替身或桌面实现
-feature/space/SpaceLoadingSkeleton.kt	旧 SpaceScreen 副本按旧签名调用；随 SpaceScreen 迁移
-feature/space/SpaceMemberGuardViewModel.kt	同 SpaceUpowerRankViewModel：桌面请求要经过 DesktopOriginalSpaceEnvironment 的 Root 门控
-feature/space/SpaceProfileEnhancementPolicy.kt	编译不过（36 处）：Overload resolution ambiguity between candidates:×21；Cannot infer type for type parameter '_'. Specify ×7；未解析 add×3；等对应桌面替身或桌面实现
-feature/space/SpaceScreen.kt	编译不过（297 处）：Cannot infer type for type parameter '_'. Specify ×57；Overload resolution ambiguity between candidates:×42；未解析 widget×18；等对应桌面替身或桌面实现
-feature/space/SpaceSupporterScreens.kt	编译不过（4 处）：Overload resolution ambiguity between candidates:×1；None of the following candidates is applicable:×1；未解析 data×1；等对应桌面替身或桌面实现
-feature/space/SpaceUpowerRankViewModel.kt	上游 ViewModel 直接用全局网络单例；桌面空间页的请求要经过 DesktopOriginalSpaceEnvironment 的 Root 门控，构造函数多一个 environment 参数
-feature/space/SpaceVideoPagingSource.kt	编译不过（26 处）：Cannot infer type for type parameter '_'. Specify ×8；未解析 paging×3；未解析 number×2；等对应桌面替身或桌面实现
-feature/space/SpaceViewModel.kt	编译不过（300 处）：Overload resolution ambiguity between candidates:×69；Cannot infer type for type parameter '_'. Specify ×44；未解析 not×28；等对应桌面替身或桌面实现
+feature/space/SeasonSeriesDetailViewModel.kt	上游改为继承 feature/list 的 BaseListViewModel（accountRequests、onAccountChanged、Application 与 Toast），feature/list 还没迁；合集/系列详情页继续用 original-favorites 生产者的副本，由 DesktopOriginalFavoritesHost 承接，随 feature/list 一起迁

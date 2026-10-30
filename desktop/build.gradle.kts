@@ -246,8 +246,6 @@ val appCoreDesktopOwned: Map<String, String> = mapOf(
     "core/database/dao/CommentFraudDao.kt" to "Room 数据库；桌面用 JSON 存储（DesktopBlockedUpStore、DesktopCommentFraudJsonDao 等）",
     "core/lifecycle/BackgroundManager.kt" to "Android 进程前后台与内存回收回调",
     "core/lifecycle/BackgroundMemoryTrimPolicy.kt" to "Android 进程前后台与内存回收回调",
-    "core/paging/ForwardPagingSession.kt" to "androidx.paging（桌面无此依赖）",
-    "core/paging/ForwardPagingSource.kt" to "androidx.paging（桌面无此依赖）",
     "core/performance/Android17Diagnostics.kt" to "Android 进程退出与 Android 17 诊断；桌面诊断走 DesktopDiagnostics",
     "core/performance/NativeExitTrace.kt" to "Android 进程退出与 Android 17 诊断；桌面诊断走 DesktopDiagnostics",
     "core/performance/ProcessExitContext.kt" to "Android 进程退出与 Android 17 诊断；桌面诊断走 DesktopDiagnostics",
@@ -332,9 +330,11 @@ val migratedAppM4dPaths: Set<String> = migratedAppM4dAreas.asSequence().flatMap 
     .filter { it.isFile && it.extension == "kt" }.map { it.relativeTo(appJavaRoot).invariantSeparatorsPath }
     .filter { path -> path.removePrefix("com/android/purebilibili/") !in appM4dLaterSteps }
     .toSortedSet()
-// Single pure files of not yet migrated areas that a migrated file reads in their current form (TON-1107: ProfileScreen).
+// Single files of not yet migrated areas that a migrated file reads in their current form (TON-1107: ProfileScreen;
+// TON-1108: SpaceScreen's grid column preference, its settings writes go to LocalDesktopFeedGridColumnSettings).
 val migratedAppSingleFiles: Set<String> = setOf(
     "com/android/purebilibili/feature/home/components/cards/HorizontalVideoCardLayoutPolicy.kt",
+    "com/android/purebilibili/feature/home/FeedGridColumnPreference.kt",
 )
 val migratedAppPaths: Set<String> = migratedAppCorePaths + migratedAppM4dPaths + migratedAppSingleFiles
 val migratedUpstreamRelativePaths = migratedWholeModulePaths + migratedAppPaths + setOf(
@@ -2664,6 +2664,9 @@ val transitionPatchProducers = mapOf(
     "shared-liquid-tabs" to "extractSharedLiquidTabs",
     "original-following" to "extractOriginalFollowing",
     "original-space-pages" to "extractOriginalSpacePages",
+    "space" to "extractUpstreamSpace",
+    "space-contributions" to "extractUpstreamSpaceContributions",
+    "space-overview" to "extractUpstreamSpaceOverview",
     "original-message-pages" to "extractOriginalMessagePages",
     "independent-bangumi-pages" to "extractOriginalBangumiPages",
     "video-tablet-full" to "extractOriginalVideoTabletFull",
@@ -3384,6 +3387,8 @@ dependencies {
     // Libraries the migrated upstream modules need (versions as in the desktop graph).
     implementation("androidx.datastore:datastore-preferences-core:1.2.1")
     implementation("androidx.collection:collection:1.5.0")
+    // Upstream's ForwardPagingSource/Session and the paging sources of migrated features (TON-1108); paging-common has a JVM target.
+    implementation("androidx.paging:paging-common:3.4.2")
     implementation(compose.desktop.currentOs)
     // Expose existing exact runtime97 Lifecycle modules through Miuix's implementation boundary.
     implementation("org.jetbrains.androidx.lifecycle:lifecycle-viewmodel:2.11.0")
