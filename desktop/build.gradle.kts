@@ -318,6 +318,8 @@ val migratedVideoFeaturePaths = setOf(
     "com/android/purebilibili/feature/video/ui/overlay/CenterPlaybackControl.kt",
     "com/android/purebilibili/feature/video/ui/overlay/NextWatchOverlay.kt",
     "com/android/purebilibili/feature/video/ui/components/glass/ChapterListPanel.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/ViewPointSegmentBar.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/ViewPointSegmentBarPolicy.kt",
     "com/android/purebilibili/feature/video/viewmodel/VideoSubjectSnapshot.kt",
     "com/android/purebilibili/feature/video/viewmodel/VideoSupplementViewModel.kt",
     "com/android/purebilibili/feature/video/ui/components/CollectionRow.kt",
@@ -3789,6 +3791,7 @@ val appCoreUpstreamTestsNotRun: Map<String, String> = mapOf(
 // AudioBarReturnPolicyTest also needs MiniPlayerManager; PiliPlayerMenuPolicyTest needs Media3
 // track selection. Those two new upstream suites join with the playback-port migration.
 val migratedVideoFeatureTestPaths = setOf(
+    "com/android/purebilibili/feature/video/ui/overlay/ViewPointSegmentBarPolicyTest.kt",
     "com/android/purebilibili/feature/video/ui/components/UpPreviewSheetPolicyTest.kt",
     "com/android/purebilibili/feature/video/ui/overlay/PlaybackOrderSelectionSheetPolicyTest.kt",
     "com/android/purebilibili/feature/video/ui/components/PlayerPopupGeometryTest.kt",
