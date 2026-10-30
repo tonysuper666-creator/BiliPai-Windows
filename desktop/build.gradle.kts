@@ -316,6 +316,7 @@ val appCoreLaterSteps: Map<String, String> = mapOf(
 // The remaining UI/player files move when their desktop platform adapters are wired.
 val migratedVideoFeaturePaths = setOf(
     "com/android/purebilibili/feature/video/ui/overlay/CenterPlaybackControl.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/NextWatchOverlay.kt",
     "com/android/purebilibili/feature/video/ui/components/CollectionRow.kt",
     "com/android/purebilibili/feature/video/ui/components/CollectionSubscriptionButton.kt",
     "com/android/purebilibili/feature/video/ui/components/RelatedVideoActionSheet.kt",
@@ -2898,6 +2899,7 @@ val upstreamOwnedGeneratedCopies = setOf(
     // core/ui/components/UserLevelBadge (TON-1072): the upstream file draws its R.drawable level badges through the generated
     // desktop drawable table, so the blocked-list producer's classpath-PNG copy is retired.
     "blocked-list-ui/com/android/purebilibili/core/ui/components/DesktopUpstreamUserLevelBadge.kt",
+    "original-video-player-full-controls/com/android/purebilibili/feature/video/ui/overlay/NextWatchOverlay.kt",
     "video-share-consent/com/android/purebilibili/feature/video/share/VideoShareMoreTargetsSheet.kt",
     "original-video-fullscreen-pager/com/android/purebilibili/feature/video/ui/pager/PortraitAudioPlaybackController.kt",
     "original-video-player-full-controls/com/android/purebilibili/feature/video/ui/overlay/CenterPlaybackControl.kt",
