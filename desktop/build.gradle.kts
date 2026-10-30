@@ -318,6 +318,7 @@ val appCoreLaterSteps: Map<String, String> = mapOf(
 // The remaining UI/player files move when their desktop platform adapters are wired.
 val migratedVideoFeaturePaths = setOf(
     "com/android/purebilibili/feature/video/screen/VideoDetailRouteCommentEffect.kt",
+    "com/android/purebilibili/feature/video/ui/components/DanmakuSettingsSlider.kt",
     "com/android/purebilibili/feature/video/ui/overlay/PlayerControlGlass.kt",
     "com/android/purebilibili/feature/video/ui/components/SubReplySheet.kt",
     "com/android/purebilibili/feature/video/ui/components/CelebrationAnimations.kt",
@@ -3128,6 +3129,7 @@ val transitionPatchProducers = mapOf(
     "original-storage-settings" to "extractOriginalStorageSettings",
     "original-search-pages" to "extractOriginalSearchPages",
     "original-video-player-full-controls" to "extractOriginalPlayerFullControls",
+    "original-danmaku-settings" to "extractOriginalDanmakuSettings",
     "original-video-state-core" to "extractOriginalVideoStateCore",
     "original-watchlater" to "extractOriginalWatchLater",
     "original-listen-video-pages" to "extractOriginalListenVideoPages",
