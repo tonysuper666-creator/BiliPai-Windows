@@ -1,0 +1,56 @@
+--- a/com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiPlayerScreen.kt
++++ b/com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiPlayerScreen.kt
+@@ -2,6 +2,7 @@
+ // 文件路径: feature/bangumi/BangumiPlayerScreen.kt
+ package com.android.purebilibili.feature.bangumi
+ 
++import com.bilipai.desktop.player.desktopInlineCollapseScrollBoundary
+ import com.android.purebilibili.core.util.LocalWindowSizeClass
+ import com.android.purebilibili.core.util.LocalAppWindowAdaptiveInfo
+ import com.android.purebilibili.core.util.layoutHinges
+@@ -729,29 +730,27 @@
+         val nestedScrollConnection = remember(inlineCollapseEnabled, isFullscreen, collapseRangePx) {
+             object : NestedScrollConnection {
+                 override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
+-                    if (available.y != 0f) inlinePlayerCollapseState.beginScroll()
+                     val scrollUpdate = reduceVideoDetailPreScroll(
+                         currentOffsetPx = inlinePlayerCollapseState.offsetPx,
+                         deltaPx = available.y,
+                         minOffsetPx = -collapseRangePx,
+                         inlinePortraitScrollEnabled = inlineCollapseEnabled,
+-                        isPortraitFullscreen = isFullscreen
+-                    ) ?: return Offset.Zero
+-                    inlinePlayerCollapseState.updateOffset(scrollUpdate.nextOffsetPx)
+-                    return Offset(0f, scrollUpdate.consumedDeltaPx)
++                        isPortraitFullscreen = isFullscreen,
++                        minUpdateDeltaPx = 0f,
++                    )
++                    return Offset(0f, inlinePlayerCollapseState.consumeScroll(scrollUpdate))
+                 }
+ 
+                 override fun onPostScroll(consumed: Offset, available: Offset, source: NestedScrollSource): Offset {
+-                    if (available.y != 0f) inlinePlayerCollapseState.beginScroll()
+                     val scrollUpdate = reduceVideoDetailPostScroll(
+                         currentOffsetPx = inlinePlayerCollapseState.offsetPx,
+                         deltaPx = available.y,
+                         minOffsetPx = -collapseRangePx,
+                         inlinePortraitScrollEnabled = inlineCollapseEnabled,
+-                        isPortraitFullscreen = isFullscreen
+-                    ) ?: return Offset.Zero
+-                    inlinePlayerCollapseState.updateOffset(scrollUpdate.nextOffsetPx)
+-                    return Offset(0f, scrollUpdate.consumedDeltaPx)
++                        isPortraitFullscreen = isFullscreen,
++                        minUpdateDeltaPx = 0f,
++                    )
++                    return Offset(0f, inlinePlayerCollapseState.consumeScroll(scrollUpdate))
+                 }
+             }
+         }
+@@ -843,6 +842,7 @@
+             Column(
+                 modifier = Modifier
+                     .fillMaxSize()
++                    .desktopInlineCollapseScrollBoundary(nestedScrollConnection)
+                     .nestedScroll(nestedScrollConnection)
+             ) {
+                 // 播放器区域 - 动态高度计算
