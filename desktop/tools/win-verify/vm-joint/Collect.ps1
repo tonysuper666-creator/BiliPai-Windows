@@ -5,7 +5,8 @@ $src='C:\BuildVM\accept\vm-joint-20261030'
 $app="$src\desktop\build\compose\binaries\main\app\BiliPai Windows"
 $profile="$card\profile";$local="$profile\Temp\BiliPai-v025-root-routes-ton1111"
 $signatures=@('DesktopOriginalVideoShellOwner.factoryFor','DesktopWindowsVideoFeedbackSource','Original resolved video metadata is required before transport publication')
-$logs=@(Get-ChildItem "$local\BiliPaiWindows" -Recurse -File -ErrorAction SilentlyContinue|Where-Object {$_.Extension-in '.txt','.log'})
+$diagnosticFiles=@(Get-ChildItem "$local\BiliPaiWindows" -Recurse -File -ErrorAction SilentlyContinue)
+$logs=@($diagnosticFiles|Where-Object {$_.Extension-in '.txt','.log'})
 $logs+=@(Get-ChildItem $out -File|Where-Object {$_.Name-like 'client.*.log'})
 $logs+=@(Get-ChildItem $card,$app -Filter 'hs_err_pid*.log' -File -ErrorAction SilentlyContinue)
 $counts=@();$manifest=@();$snippet=@()
@@ -20,9 +21,9 @@ foreach($sig in $signatures){
 }
 foreach($f in $logs){$manifest+=@([ordered]@{name=$f.Name;bytes=$f.Length;sha256=(Get-FileHash $f.FullName).Hash})}
 Save-BpJson ([ordered]@{counts=$counts;scannedFiles=$manifest;method='literal occurrences across collected guest logs/stdout/stderr; repeated stack text in separate files is counted separately'}) "$out\signature-counts.json"
-$crashes=@($logs|Where-Object {$_.Name-match 'last_crash|window-exception|hs_err_pid|crash'})
+$crashes=@(@($diagnosticFiles)+@($logs)|Where-Object {$_.FullName-match 'last_crash|window-exception|hs_err_pid|crash'}|Sort-Object FullName -Unique)
 Save-BpJson ([ordered]@{freshProfile=$true;newCrashFiles=$crashes.Count;files=@($crashes|ForEach-Object {$_.Name})}) "$out\crash-files.json"
-foreach($f in $crashes){
+foreach($f in @($crashes|Where-Object {$_.Extension-in '.txt','.log'})){
  $text=[IO.File]::ReadAllText($f.FullName)
  $text=[regex]::Replace($text,'https?://[^\s"<>]+','[URL]')
  $text=[regex]::Replace($text,'(?i)(SESSDATA|bili_jct|cookie|access_token|refresh_token|auth_key)\s*[:=]\s*[^\s,;]+','$1=[REDACTED]')
