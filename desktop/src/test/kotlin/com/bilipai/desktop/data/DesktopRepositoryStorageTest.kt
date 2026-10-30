@@ -99,6 +99,10 @@ class DesktopRepositoryStorageTest {
             }
             assertFailsWith<UnsupportedDesktopCapability> { CommentFraudRepository.exportToJson(context) }
             assertFailsWith<UnsupportedDesktopCapability> { CommentFraudRepository.importFromJson("""[{"rpid":17,"oid":19}]""", context).getOrThrow() }
+            assertFailsWith<UnsupportedDesktopCapability> { CommentFraudRepository.importFromJson("[]", context) }
+            val record = com.android.purebilibili.core.database.entity.CommentFraudRecord(17, 19)
+            assertFailsWith<UnsupportedDesktopCapability> { CommentFraudRepository.recheckRecord(record, context) }
+            assertFailsWith<UnsupportedDesktopCapability> { CommentFraudRepository.deleteBiliComment(record, context) }
         }
     }
 
