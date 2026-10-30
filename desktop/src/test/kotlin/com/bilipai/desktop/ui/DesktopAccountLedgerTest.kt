@@ -51,7 +51,7 @@ class DesktopAccountLedgerTest {
     }
 
     @Test
-    fun bothKindsUseTheProfileSessionAndKeepIndependentCachedResults() = runBlocking {
+    fun bothKindsUseTheProfileSessionAndKeepIndependentCachedResults() = runBlocking<Unit> {
         val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
         try {
             val visit = Visit(scope)
