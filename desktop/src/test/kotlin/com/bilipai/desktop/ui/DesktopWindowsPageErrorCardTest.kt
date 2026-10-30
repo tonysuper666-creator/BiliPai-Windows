@@ -4,9 +4,15 @@ package com.bilipai.desktop.ui
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.ImageComposeScene
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.KeyEvent
 import androidx.compose.ui.input.key.KeyEventType
@@ -24,6 +30,45 @@ import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 class DesktopWindowsPageErrorCardTest {
+    @Test fun inlineErrorCardNeverTakesFocusFromAnEditorOnMountOrWindowReturn() {
+        val showError = mutableStateOf(false)
+        val foreground = mutableStateOf(true)
+        val editorFocus = FocusRequester()
+        val windowInfo = object : WindowInfo {
+            override val isWindowFocused: Boolean get() = foreground.value
+        }
+        val scene = ImageComposeScene(800, 600) {
+            CompositionLocalProvider(LocalWindowInfo provides windowInfo) {
+                MaterialTheme {
+                    Column {
+                        TextField("正在写评论", {}, modifier = Modifier.focusRequester(editorFocus))
+                        if (showError.value) DesktopWindowsPageErrorCard("请检查网络连接后重试。", {})
+                    }
+                    LaunchedEffect(Unit) { editorFocus.requestFocus() }
+                }
+            }
+        }
+        try {
+            var time = 0L
+            fun settle() { repeat(3) { scene.render(time).close(); time += 16_000_000 } }
+            fun assertEditorFocused() {
+                val focused = scene.semanticsOwners.flatMap { flatten(it.unmergedRootSemanticsNode) }
+                    .single { it.config.getOrNull(SemanticsProperties.Focused) == true }
+                assertEquals("正在写评论", focused.config.getOrNull(SemanticsProperties.EditableText)?.text)
+            }
+            settle()
+            assertEditorFocused()
+            showError.value = true
+            settle()
+            assertEditorFocused()
+            foreground.value = false
+            settle()
+            foreground.value = true
+            settle()
+            assertEditorFocused()
+        } finally { scene.close() }
+    }
+
     @Test fun transportAndApiDetailsNeverBecomeVisibleCopy() {
         val raw = "java.lang.IllegalStateException: secret fixture detail\n at example.Player.start(Player.kt:42)"
         for (error in listOf(VideoLoadError.UnknownError(IllegalStateException(raw)),

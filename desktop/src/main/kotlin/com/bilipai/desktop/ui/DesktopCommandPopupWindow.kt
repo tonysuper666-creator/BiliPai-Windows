@@ -63,6 +63,10 @@ private object DesktopEmptyCommandRegion {
 
 private val LocalDesktopCommandHitRegions = staticCompositionLocalOf<DesktopCommandHitRegions?> { null }
 
+/** Internal window-to-window focus changes must preserve the user's chosen input target. */
+internal fun desktopCommandShouldFocusOnOwnerActivation(ownerActive: Boolean, hasOppositeWindow: Boolean): Boolean =
+    ownerActive && !hasOppositeWindow
+
 /** Native hit region uses actual laid-out cards, rather than reimplementing layout policy. */
 internal fun Modifier.desktopCommandHitRegion(id: String): Modifier = composed {
     val regions = LocalDesktopCommandHitRegions.current
@@ -177,7 +181,10 @@ private class DesktopCommandPopupWindow(
         override fun componentHidden(event: ComponentEvent) = updateGeometry()
     }
     private val windowListener = object : WindowAdapter() {
-        override fun windowActivated(event: WindowEvent) = focusModalWhenOwnerActive()
+        override fun windowActivated(event: WindowEvent) {
+            if (desktopCommandShouldFocusOnOwnerActivation(owner.isActive, event.oppositeWindow != null))
+                focusModalWhenOwnerActive()
+        }
         override fun windowIconified(event: WindowEvent) = updateGeometry()
         override fun windowDeiconified(event: WindowEvent) = updateGeometry()
         override fun windowClosed(event: WindowEvent) = close()
