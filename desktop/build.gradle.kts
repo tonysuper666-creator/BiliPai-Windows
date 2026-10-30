@@ -3753,6 +3753,7 @@ val sponsorPresentationTests by tasks.registering(Test::class) {
     maxParallelForks = 1
     forkEvery = 1
     systemProperty("java.awt.headless", "true")
+    systemProperty("bilipai.js.workerResources", jsWorkerOutput.get().asFile.absolutePath)
 }
 tasks.test { finalizedBy(sponsorPresentationTests) }
 // Saved credentials are protected by Windows DPAPI only. A non-Windows test host has no system protection, so its
