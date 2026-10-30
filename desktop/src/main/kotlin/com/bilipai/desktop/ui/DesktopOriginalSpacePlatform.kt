@@ -18,6 +18,10 @@ import kotlinx.coroutines.flow.*
 internal val LocalDesktopOriginalSpacePlatform=staticCompositionLocalOf<DesktopOriginalSpacePlatform> {
     error("Original Space requires the retained same Root entry and actual shared consumers")
 }
+/** Where upstream's rememberFeedGridColumnPreference saves a pinch-selected column count shared across pages. */
+internal val LocalDesktopFeedGridColumnSettings=staticCompositionLocalOf<DesktopHomeSettingsPort> {
+    error("A feed grid column preference needs the Root home settings")
+}
 
 /** Renderer/side-effect ports over existing owners. A Space leaf owns its original
  * VM state and child jobs; image, comments, native media, blocked records, playlist

@@ -1,0 +1,170 @@
+--- a/com/android/purebilibili/feature/space/SpaceSupporterScreens.kt
++++ b/com/android/purebilibili/feature/space/SpaceSupporterScreens.kt
+@@ -13,80 +13,71 @@
+ import androidx.compose.foundation.layout.PaddingValues
+ import androidx.compose.foundation.layout.Row
+ import androidx.compose.foundation.layout.Spacer
+ import androidx.compose.foundation.layout.fillMaxSize
+ import androidx.compose.foundation.layout.fillMaxWidth
+ import androidx.compose.foundation.layout.padding
+ import androidx.compose.foundation.layout.size
+ import androidx.compose.foundation.layout.width
+ import com.android.purebilibili.core.ui.components.AppLazyColumn as LazyColumn
+ import androidx.compose.foundation.lazy.rememberLazyListState
+ import androidx.compose.foundation.shape.CircleShape
+ import androidx.compose.material.icons.Icons
+-import androidx.lifecycle.viewmodel.initializer
+-import androidx.lifecycle.viewmodel.viewModelFactory
+ import androidx.compose.material.icons.automirrored.outlined.ArrowBack
+ import coil3.compose.AsyncImage
+ import coil3.request.ImageRequest
+ import coil3.request.crossfade
+ import androidx.compose.material3.ExperimentalMaterial3Api
+ import androidx.compose.material3.MaterialTheme
+ import androidx.compose.material3.TopAppBarDefaults
+ import androidx.compose.runtime.Composable
+ import androidx.compose.runtime.derivedStateOf
+ import androidx.compose.runtime.getValue
+ import androidx.compose.runtime.remember
+ import androidx.compose.ui.Alignment
+ import androidx.compose.ui.Modifier
+ import androidx.compose.ui.draw.clip
+ import androidx.compose.ui.graphics.Color
+ import androidx.compose.ui.layout.ContentScale
+ import androidx.compose.ui.text.font.FontStyle
+ import androidx.compose.ui.text.font.FontWeight
+ import androidx.compose.ui.unit.dp
+ import androidx.compose.ui.unit.sp
+-import androidx.lifecycle.compose.collectAsStateWithLifecycle
+-import androidx.lifecycle.viewmodel.compose.viewModel
++import androidx.compose.runtime.collectAsState
++import com.bilipai.desktop.ui.LocalDesktopOriginalSpacePlatform
+ import com.android.purebilibili.core.ui.AppScaffold
+ import com.android.purebilibili.core.ui.AppTopBar
+ import com.android.purebilibili.core.ui.components.AppCircularProgressIndicator
+ import com.android.purebilibili.core.ui.components.AppIcon
+ import com.android.purebilibili.core.ui.components.AppIconButton
+ import com.android.purebilibili.core.ui.components.AppNativeTabRow
+ import com.android.purebilibili.core.ui.components.AppSegmentOption
+ import com.android.purebilibili.core.ui.components.AppTabRowIndicatorPresentation
+ import com.android.purebilibili.core.ui.components.AppText
+ import com.android.purebilibili.core.ui.components.AppTextButton
+ import com.android.purebilibili.core.util.FormatUtils
+ import com.android.purebilibili.data.model.response.SpaceGuardMemberItem
+ 
+ /** UP主充电排行页（对齐 PiliPlus member_upower_rank）。 */
+ @OptIn(androidx.compose.material3.ExperimentalMaterial3Api::class)
+ @Composable
+ fun SpaceUpowerRankScreen(
+     mid: Long,
+     name: String,
+     count: Long,
+     onBack: () -> Unit,
+     onUserClick: (Long) -> Unit,
+ ) {
+-    val viewModel: SpaceUpowerRankViewModel = viewModel(
+-        key = "space_upower_rank_$mid",
+-        factory = viewModelFactory {
+-            initializer {
+-                SpaceUpowerRankViewModel(upMid = mid, upName = name, initialCount = count)
+-            }
+-        },
+-    )
+-    val state by viewModel.uiState.collectAsStateWithLifecycle()
++    val viewModel = LocalDesktopOriginalSpacePlatform.current.rank(mid, name, count)
++    val state by viewModel.uiState.collectAsState()
+     val onSelectLevel: (Int?) -> Unit = viewModel::selectLevel
+     val onRetry: () -> Unit = viewModel::retry
+     AppScaffold(
+         topBar = {
+             AppTopBar(
+                 title = "${state.upName}的充电排行榜",
+                 navigationIcon = {
+                     AppIconButton(onClick = onBack) {
+                         AppIcon(
+                             imageVector = Icons.AutoMirrored.Outlined.ArrowBack,
+                             contentDescription = "返回"
+                         )
+@@ -218,33 +209,26 @@
+ }
+ 
+ /** UP主大航海（舰队）页（对齐 PiliPlus member_guard）。 */
+ @OptIn(androidx.compose.material3.ExperimentalMaterial3Api::class)
+ @Composable
+ fun SpaceMemberGuardScreen(
+     mid: Long,
+     name: String,
+     count: Long,
+     onBack: () -> Unit,
+     onUserClick: (Long) -> Unit,
+ ) {
+-    val viewModel: SpaceMemberGuardViewModel = viewModel(
+-        key = "space_member_guard_$mid",
+-        factory = viewModelFactory {
+-            initializer {
+-                SpaceMemberGuardViewModel(ruid = mid, upName = name, initialCount = count)
+-            }
+-        },
+-    )
+-    val state by viewModel.uiState.collectAsStateWithLifecycle()
++    val viewModel = LocalDesktopOriginalSpacePlatform.current.guard(mid, name, count)
++    val state by viewModel.uiState.collectAsState()
+     val onRetry: () -> Unit = viewModel::retry
+     val onLoadMore: () -> Unit = viewModel::loadMore
+     val listState = rememberLazyListState()
+     val shouldLoadMore by remember {
+         derivedStateOf {
+             val lastVisible = listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0
+             val total = listState.layoutInfo.totalItemsCount
+             total > 0 && lastVisible >= total - 3
+         }
+     }
+     androidx.compose.runtime.LaunchedEffect(shouldLoadMore, state.hasMore) {
+         if (shouldLoadMore && state.hasMore && !state.isLoadingMore && !state.isLoading) {
+@@ -413,25 +397,25 @@
+             modifier = Modifier.weight(1f),
+         )
+         AppText(
+             text = resolveSpaceGuardLevelLabel(guardLevel),
+             style = MaterialTheme.typography.labelSmall,
+             color = AppContentColors.accent(),
+         )
+     }
+ }
+ 
+ @Composable
+ private fun SpaceSupporterAvatar(url: String, size: androidx.compose.ui.unit.Dp) {
+-    val context = androidx.compose.ui.platform.LocalContext.current
++    val context = coil3.compose.LocalPlatformContext.current
+     AsyncImage(
+         model = ImageRequest.Builder(context)
+             .data(FormatUtils.buildSizedImageUrl(url, width = 120, height = 120))
+             .crossfade(true)
+             .build(),
+         contentDescription = null,
+         contentScale = ContentScale.Crop,
+         modifier = Modifier
+             .size(size)
+             .clip(CircleShape)
+             .border(1.dp, MaterialTheme.colorScheme.surfaceVariant, CircleShape)
+             .background(MaterialTheme.colorScheme.surfaceVariant),
+@@ -466,18 +450,18 @@
+     Box(
+         modifier = Modifier.fillMaxSize(),
+         contentAlignment = Alignment.Center,
+     ) {
+         AppText(
+             text = text,
+             style = MaterialTheme.typography.bodyMedium,
+             color = AppContentColors.secondaryText(),
+         )
+     }
+ }
+ 
+-private fun resolveSpaceGuardLevelLabel(level: Int): String = when (level) {
++internal fun resolveSpaceGuardLevelLabel(level: Int): String = when (level) {
+     1 -> "总督"
+     2 -> "提督"
+     3 -> "舰长"
+     else -> "舰长"
+ }
