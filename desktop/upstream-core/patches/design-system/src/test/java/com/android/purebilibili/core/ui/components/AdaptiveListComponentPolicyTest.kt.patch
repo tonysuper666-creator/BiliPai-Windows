@@ -1,0 +1,108 @@
+Upstream-source-sha256: dee25e5185b46e190b7a5d6789c41248a063f4913c3bcc34eee22bcd27c9dbe5
+Reason: 七条断言都停在生产已被改掉的旧契约上。A 组：2821415c5 让容器色只看 iconStyle（FILLED 不再回 surfaceContainerHigh），并让非 Material 3 直接返回入口色；
+用例分别期望 colorScheme.secondary 与传入的 iOSPurple/iOSRed，FILLED 的 alpha 1f、Material 3 的 onSurfaceVariant 全部保留。
+B 组：force-expanded 渲染改为断言 AdaptiveSearchFieldRenderer 体内含 autoFocusEnabled = forceExpandedInput、AppCompactInputField( 与 focusRequester = focusRequester；
+设置搜索页滚动换成 AppLazyColumn(（e27f11b9f 起无 .verticalScroll）；委托对象是 AppLiquidAwareSearchField(（ef27758f9）；miuix 输入框是 AppCompactInputField(；
+rememberSaveable 改为块形式（6d277c1b5）。条数与否定断言全部保留。
+
+--- a/design-system/src/test/java/com/android/purebilibili/core/ui/components/AdaptiveListComponentPolicyTest.kt
++++ b/design-system/src/test/java/com/android/purebilibili/core/ui/components/AdaptiveListComponentPolicyTest.kt
+@@ -100,8 +100,10 @@
+             Color.White,
+             resolveAdaptivePreferenceIconContentColor(iOSBlue, colorScheme),
+         )
+-        assertEquals(
+-            colorScheme.surfaceContainerHigh,
++        // 2821415c5 之后容器色只看 iconStyle：不传 iconStyle（AUTO）就是传入的入口色，
++        // FILLED 不再单独回到 surfaceContainerHigh；上面的 alpha = 1f 仍由 treatment 决定。
++        assertEquals(
++            colorScheme.secondary,
+             resolveAdaptivePreferenceIconContainerColor(
+                 iconTint = iOSBlue,
+                 semanticTint = colorScheme.secondary,
+@@ -242,11 +244,12 @@
+     }
+ 
+     @Test
+-    fun `miuix style should use the same neutral settings icon role`() {
++    fun `miuix style keeps the entry icon colours`() {
+         val colorScheme = darkColorScheme()
+ 
+-        assertEquals(
+-            colorScheme.onSurfaceVariant,
++        // 2821415c5：非 Material 3 直接返回入口色，Miuix 恢复多彩图标。
++        assertEquals(
++            iOSPurple,
+             resolveAdaptiveSemanticIconTint(
+                 iconTint = iOSPurple,
+                 uiStyle = AppUiStyle.MIUIX,
+@@ -254,7 +257,7 @@
+             ),
+         )
+         assertEquals(
+-            colorScheme.onSurfaceVariant,
++            iOSRed,
+             resolveAdaptiveSemanticIconTint(
+                 iconTint = iOSRed,
+                 uiStyle = AppUiStyle.MIUIX,
+@@ -395,11 +398,12 @@
+             java.io.File("design-system/src/main/java/com/android/purebilibili/core/ui/components/AdaptivePreferenceComponents.kt"),
+             java.io.File("src/main/java/com/android/purebilibili/core/ui/components/AdaptivePreferenceComponents.kt"),
+         ).first { it.exists() }.readText()
+-        val forceExpandedStart = source.indexOf("if (forceExpandedInput) {")
+-        val outlinedFieldStart = source.indexOf("OutlinedTextField(", forceExpandedStart)
+-        assertTrue(forceExpandedStart >= 0)
+-        assertTrue(outlinedFieldStart > forceExpandedStart)
+-        assertTrue(source.substring(forceExpandedStart, outlinedFieldStart).contains("focusRequester"))
++        val rendererStart = source.indexOf("fun AdaptiveSearchFieldRenderer")
++        assertTrue(rendererStart >= 0)
++        val rendererBody = source.substring(rendererStart)
++        assertTrue(rendererBody.contains("autoFocusEnabled: Boolean = forceExpandedInput"))
++        assertTrue(rendererBody.contains("AppCompactInputField("))
++        assertTrue(rendererBody.contains("focusRequester = focusRequester"))
+     }
+ 
+     @Test
+@@ -413,7 +417,7 @@
+         assertTrue(source.contains("header = {"))
+         assertTrue(source.contains("SettingsSearchBarSection("))
+         val headerIndex = source.indexOf("header = {")
+-        val scrollIndex = source.indexOf(".verticalScroll(", headerIndex)
++        val scrollIndex = source.indexOf("AppLazyColumn(", headerIndex)
+         assertTrue(headerIndex >= 0)
+         assertTrue(scrollIndex > headerIndex)
+     }
+@@ -426,7 +430,7 @@
+             java.io.File("src/main/java/com/android/purebilibili/feature/settings/screen/SettingsSearchUi.kt"),
+         ).first { it.exists() }.readText()
+         assertTrue(source.contains("fun SettingsSearchBarSection"))
+-        assertTrue(source.contains("AppSearchField("))
++        assertTrue(source.contains("AppLiquidAwareSearchField("))
+         assertFalse(source.contains("BasicTextField("))
+         assertFalse(source.contains("AdaptiveSearchFieldRenderer("))
+     }
+@@ -450,7 +454,7 @@
+         assertTrue(rendererSource.contains("InputField("))
+         assertTrue(rendererSource.contains("expanded = true"))
+         assertTrue(rendererSource.contains("OutlinedTextField("))
+-        assertTrue(rendererSource.contains("BasicTextField("))
++        assertTrue(rendererSource.contains("AppCompactInputField("))
+     }
+ 
+     @Test
+@@ -461,13 +465,13 @@
+         val text = source.readText()
+         val miuixSearchBarStart = text.indexOf("private fun MiuixAdaptiveSearchBar")
+         assertTrue(miuixSearchBarStart >= 0)
+-        val collapsedPathStart = text.indexOf("var expanded by rememberSaveable(query.isNotBlank())", miuixSearchBarStart)
++        val collapsedPathStart = text.indexOf("var expanded by rememberSaveable {", miuixSearchBarStart)
+         assertTrue(collapsedPathStart >= 0)
+         val collapsedPathEnd = text.indexOf("InputField(", collapsedPathStart)
+         assertTrue(collapsedPathEnd > collapsedPathStart)
+         val collapsedPathBlock = text.substring(collapsedPathStart, collapsedPathEnd)
+ 
+-        assertTrue(collapsedPathBlock.contains("var expanded by rememberSaveable(query.isNotBlank())"))
++        assertTrue(collapsedPathBlock.contains("mutableStateOf(query.isNotBlank())"))
+         assertTrue(text.substring(collapsedPathStart).contains("expanded = expanded || query.isNotBlank()"))
+         assertTrue(text.contains("forceExpandedInput"))
+     }
