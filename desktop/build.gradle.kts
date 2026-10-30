@@ -2973,6 +2973,14 @@ val generateUpstreamBuildConfig by tasks.registering {
             ?: throw GradleException("app/build.gradle.kts: versionCode not found")
         val versionName = Regex("versionName\\s*=\\s*\"([^\"]+)\"").find(text)?.groupValues?.get(1)
             ?: throw GradleException("app/build.gradle.kts: versionName not found")
+        fun kotlinLiteral(raw: String): String {
+            val escaped = raw.replace("\\", "\\\\").replace("\"", "\\\"").replace("$", "\\$")
+            return "\"" + escaped + "\""
+        }
+        val provenanceFields = provenance.joinToString("") { (field, value) ->
+            val literal = kotlinLiteral(value.get())
+            "    const val $field: String = $literal\n"
+        }
         val target = output.get().asFile
         target.deleteRecursively()
         target.resolve("com/android/purebilibili/BuildConfig.kt").apply { parentFile.mkdirs() }.writeText(
@@ -2980,9 +2988,7 @@ val generateUpstreamBuildConfig by tasks.registering {
                 "object BuildConfig {\n    const val DEBUG: Boolean = false\n    const val BUILD_TYPE: String = \"release\"\n" +
                 "    const val VERSION_CODE: Int = $versionCode\n    const val VERSION_NAME: String = \"$versionName\"\n" +
                 "    const val BUILD_COMMIT_SHA: String = \"${commitSha.get()}\"\n" +
-                provenance.joinToString("") { (field, value) ->
-                    "    const val $field: String = \"${value.get().replace("\\", "\\\\").replace("\"", "\\\"").replace("$", "\\$")}\"\n"
-                } +
+                provenanceFields +
                 "    const val ENABLE_VERBOSE_DEBUG_LOGS: Boolean = false\n    const val ENABLE_VERBOSE_RUNTIME_LOG_PERSISTENCE: Boolean = false\n" +
                 "    const val ALLOW_HARDCODED_DNS_FALLBACK: Boolean = false\n}\n")
     }
