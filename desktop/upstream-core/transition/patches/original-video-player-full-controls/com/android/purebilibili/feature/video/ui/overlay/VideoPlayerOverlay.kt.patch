@@ -1,17 +1,13 @@
---- a/original-video-player-full-controls/com/android/purebilibili/feature/video/ui/overlay/VideoPlayerOverlay.kt
-+++ b/original-video-player-full-controls/com/android/purebilibili/feature/video/ui/overlay/VideoPlayerOverlay.kt
-@@ -1,7 +1,8 @@
+--- a/com/android/purebilibili/feature/video/ui/overlay/VideoPlayerOverlay.kt
++++ b/com/android/purebilibili/feature/video/ui/overlay/VideoPlayerOverlay.kt
+@@ -1,5 +1,6 @@
  // 文件路径: feature/video/VideoPlayerOverlay.kt
  package com.android.purebilibili.feature.video.ui.overlay
 +import com.bilipai.desktop.plugins.asAndroidContext
  import com.android.purebilibili.core.ui.components.rememberFollowActionWithConfirmation
  import com.android.purebilibili.core.ui.components.appElasticPress
  import com.android.purebilibili.core.ui.components.AppIcon
- import com.android.purebilibili.core.ui.components.AppText
- import com.android.purebilibili.core.ui.components.AppHorizontalDivider
-@@ -146,14 +147,14 @@
- import com.android.purebilibili.core.util.rememberHapticFeedback
- import com.android.purebilibili.feature.video.usecase.applyPlaybackButtonUserAction
+@@ -148,10 +149,10 @@
  import com.android.purebilibili.feature.video.usecase.playPlayerFromUserAction
  import com.android.purebilibili.feature.video.usecase.seekPlayerFromUserAction
  import com.bilipai.desktop.ui.DesktopOriginalPlayerDeviceListDialog as DeviceListDialog
@@ -26,11 +22,79 @@
  import androidx.compose.animation.core.LinearEasing
  import androidx.compose.animation.core.animateFloatAsState
  import androidx.compose.foundation.Canvas
- import androidx.compose.foundation.gestures.detectDragGestures
- import androidx.compose.foundation.gestures.detectTapGestures
-@@ -2394,11 +2395,11 @@
-                             url = pluginCastUrl,
-                             title = videoTitle,
+@@ -1637,30 +1638,16 @@
+                     .align(Alignment.CenterEnd)
+                     .padding(end = overlayVisualPolicy.lockButtonEndPaddingDp.dp)
+             ) {
+-                PlayerControlGlassDock(enabled = true, shape = androidx.compose.foundation.shape.CircleShape) {
+-                    AppSurface(
+-                        onClick = onLockToggle,
+-                        color = Color.Transparent,
+-                        shape = RoundedCornerShape(overlayVisualPolicy.lockButtonCornerRadiusDp.dp),
+-                        modifier = Modifier.size(PlayerChromeLayout.CircularButtonSizeDp.dp)
+-                    ) {
+-                        Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
+-                            AppIcon(
+-                                when (fullscreenLockButtonState.icon) {
+-                                    FullscreenLockButtonIcon.LOCKED -> Icons.Outlined.Lock
+-                                    FullscreenLockButtonIcon.UNLOCKED -> Icons.Outlined.LockOpen
+-                                },
+-                                contentDescription = fullscreenLockButtonState.contentDescription,
+-                                tint = if (fullscreenLockButtonState.highlighted) {
+-                                    MaterialTheme.colorScheme.primary
+-                                } else {
+-                                    Color.White
+-                                },
+-                                modifier = Modifier.size(overlayVisualPolicy.lockIconSizeDp.dp)
+-                            )
+-                        }
+-                    }
+-                }
++                PlayerSideButton(
++                    icon = when (fullscreenLockButtonState.icon) {
++                        FullscreenLockButtonIcon.LOCKED -> Icons.Outlined.Lock
++                        FullscreenLockButtonIcon.UNLOCKED -> Icons.Outlined.LockOpen
++                    },
++                    contentDescription = fullscreenLockButtonState.contentDescription,
++                    onClick = onLockToggle,
++                    cornerRadiusDp = overlayVisualPolicy.lockButtonCornerRadiusDp,
++                    iconSizeDp = overlayVisualPolicy.lockIconSizeDp,
++                )
+             }
+         }
+ 
+@@ -1673,23 +1660,13 @@
+                     .align(Alignment.CenterStart)
+                     .padding(start = overlayVisualPolicy.lockButtonEndPaddingDp.dp)
+             ) {
+-                PlayerControlGlassDock(enabled = true, shape = androidx.compose.foundation.shape.CircleShape) {
+-                    AppSurface(
+-                        onClick = onCaptureScreenshot,
+-                        color = Color.Transparent,
+-                        shape = RoundedCornerShape(overlayVisualPolicy.lockButtonCornerRadiusDp.dp),
+-                        modifier = Modifier.size(PlayerChromeLayout.CircularButtonSizeDp.dp)
+-                    ) {
+-                        Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
+-                            AppIcon(
+-                                imageVector = Icons.Outlined.Camera,
+-                                contentDescription = "截图",
+-                                tint = Color.White,
+-                                modifier = Modifier.size(overlayVisualPolicy.lockIconSizeDp.dp)
+-                            )
+-                        }
+-                    }
+-                }
++                PlayerSideButton(
++                    icon = Icons.Outlined.Camera,
++                    contentDescription = "截图",
++                    onClick = onCaptureScreenshot,
++                    cornerRadiusDp = overlayVisualPolicy.lockButtonCornerRadiusDp,
++                    iconSizeDp = overlayVisualPolicy.lockIconSizeDp,
++                )
+             }
+         }
+ 
+@@ -2396,7 +2373,7 @@
                              creator = videoOwnerName,
                              contentType = resolution.contentType
                          )
@@ -39,11 +103,7 @@
                          showCastDialog = false
                          if (result.isSuccess) {
                              val state = plugin.playbackState.value
-                             if (shouldActivatePluginPlaybackAfterCast(state)) {
-                                 player.pause()
-@@ -2456,11 +2457,11 @@
-                 contentType = resolution.contentType,
-                 startPositionMs = pluginPlaybackState.value.currentPositionMs.coerceAtLeast(0L),
+@@ -2458,7 +2435,7 @@
                  autoplay = pluginPlaybackState.value.isPlaying
              )
  
@@ -52,5 +112,3 @@
              if (result.isSuccess) {
                  lastCastMediaSignature = currentCastSignature
                  lastCastMediaUrl = resolution.url
-             } else {
-                 com.bilipai.desktop.ui.DesktopOriginalPlayerFeedback.makeText(
