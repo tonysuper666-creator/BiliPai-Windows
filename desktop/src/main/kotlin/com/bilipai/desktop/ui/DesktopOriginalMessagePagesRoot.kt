@@ -101,7 +101,7 @@ internal class DesktopOriginalMessagePageOwner(private val repository: DesktopRe
     private val readEvents: MutableSharedFlow<com.android.purebilibili.data.repository.MessageReadEvent> = MutableSharedFlow()) : AutoCloseable {
     private val live=AtomicBoolean(true)
     /** The Root account this entry was opened for (upstream screens compare it where Android reads TokenManager). */
-    val accountIdentity = com.android.purebilibili.core.store.AccountSessionIdentity(mid, epoch)
+    val messageAccountIdentity = com.android.purebilibili.core.store.AccountSessionIdentity(mid, epoch)
     private val admission=createAdmission { live.get() && retained() }
     private val chatsLock=Any()
     private class ChatSlot(val admission: DesktopMessagePageAdmission, talkerId: Long, sessionType: Int) {

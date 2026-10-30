@@ -59,7 +59,7 @@
  ) {
 -    val account by TokenManager.accountIdentity.collectAsStateWithLifecycle()
 +    val pageOwner = LocalDesktopMessagePageOwner.current
-+    val account = pageOwner.accountIdentity
++    val account = pageOwner.messageAccountIdentity
      val context = LocalContext.current
      val scope = rememberCoroutineScope()
      val disabledLikesFlow = remember(context) { MessageCenterPreferences.disabledLikes(context) }

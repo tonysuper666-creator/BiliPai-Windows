@@ -44,7 +44,7 @@
 +) {
      
 -    private val _uiState = MutableStateFlow(ChatUiState())
-+    private val _uiState = owner.stateFlow(ChatUiState(accountIdentity = owner.accountIdentity))
++    private val _uiState = owner.stateFlow(ChatUiState(accountIdentity = owner.messageAccountIdentity))
      val uiState: StateFlow<ChatUiState> = _uiState.asStateFlow()
 -    private val accountRequests = AccountScopedRequests(viewModelScope)
 +    private val accountRequests = owner.requestLauncher()

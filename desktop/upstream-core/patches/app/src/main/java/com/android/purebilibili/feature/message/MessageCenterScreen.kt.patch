@@ -13,7 +13,7 @@
      onOpenBilibiliLink: (String) -> Unit,
  ) {
 -    val accountIdentity by com.android.purebilibili.core.store.TokenManager.accountIdentity.collectAsStateWithLifecycle()
-+    val accountIdentity = LocalDesktopMessagePageOwner.current.accountIdentity
++    val accountIdentity = LocalDesktopMessagePageOwner.current.messageAccountIdentity
      val useTwoPane =
          LocalWindowSizeClass.current.let {
              it.widthSizeClass != com.android.purebilibili.core.util.WindowWidthSizeClass.Compact &&

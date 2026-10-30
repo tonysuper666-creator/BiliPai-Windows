@@ -28,7 +28,7 @@ internal class DesktopMessagePageAdmission(
     private val readEventFlow: MutableSharedFlow<MessageReadEvent> = MutableSharedFlow(),
 ) {
     /** The Root account this child was opened for; upstream's view models compare it where Android reads TokenManager. */
-    val accountIdentity = AccountSessionIdentity(mid, epoch)
+    val messageAccountIdentity = AccountSessionIdentity(mid, epoch)
     private val lock = Any()
     private val live = AtomicBoolean(true)
     private val lifetime = SupervisorJob(parent.coroutineContext[Job])
@@ -195,7 +195,7 @@ internal class DesktopMessagePageAdmission(
  * original in-place account switch has nothing to observe here. Launches keep this child's caller permit.
  * A retired child cancels its caller (as its state writes do) rather than letting it return quietly. */
 internal class DesktopMessageRequestLauncher(private val owner: DesktopMessagePageAdmission) {
-    val identity: AccountSessionIdentity get() = owner.accountIdentity
+    val identity: AccountSessionIdentity get() = owner.messageAccountIdentity
     fun isCurrent(requestedIdentity: AccountSessionIdentity = identity): Boolean {
         if (requestedIdentity != identity) return false
         if (!owner.isOwned()) throw CancellationException("Message caller retired")

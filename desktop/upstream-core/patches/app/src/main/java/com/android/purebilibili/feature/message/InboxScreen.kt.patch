@@ -24,7 +24,7 @@
  ) {
 -    val accountIdentity by com.android.purebilibili.core.store.TokenManager.accountIdentity.collectAsStateWithLifecycle()
 +    val pageOwner = LocalDesktopMessagePageOwner.current
-+    val accountIdentity = pageOwner.accountIdentity
++    val accountIdentity = pageOwner.messageAccountIdentity
      val context = LocalContext.current
      val outsideActionLimit = if (LocalConfiguration.current.screenWidthDp < 360) 0 else 2
      val webThemeQuery = if (AppSurfaceTokens.surface().luminance() < 0.5f) "native.theme=2&night=1" else "native.theme=1&night=0"

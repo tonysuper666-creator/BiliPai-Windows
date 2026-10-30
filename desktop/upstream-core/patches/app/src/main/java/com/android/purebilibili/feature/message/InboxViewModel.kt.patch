@@ -33,7 +33,7 @@
 -class InboxViewModel : ViewModel() {
 -    private val _uiState = MutableStateFlow(InboxUiState())
 +internal class InboxViewModel(private val owner: DesktopMessagePageAdmission) {
-+    private val _uiState = owner.stateFlow(InboxUiState(accountIdentity = owner.accountIdentity))
++    private val _uiState = owner.stateFlow(InboxUiState(accountIdentity = owner.messageAccountIdentity))
      val uiState = _uiState.asStateFlow()
 -    private val requests = AccountScopedRequests(viewModelScope)
 +    private val requests = owner.requestLauncher()

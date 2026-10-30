@@ -70,7 +70,7 @@
  ) {
 -    val accountIdentity by com.android.purebilibili.core.store.TokenManager.accountIdentity.collectAsStateWithLifecycle()
 +    val pageOwner = LocalDesktopMessagePageOwner.current
-+    val accountIdentity = pageOwner.accountIdentity
++    val accountIdentity = pageOwner.messageAccountIdentity
      val rawUiState by viewModel.uiState.collectAsStateWithLifecycle()
      val uiState = rawUiState.takeIf { it.accountIdentity == accountIdentity }
          ?: ChatUiState(accountIdentity = accountIdentity)
@@ -99,7 +99,7 @@
 -    ) { uri ->
 -        if (uri != null && imagePickIdentity == com.android.purebilibili.core.store.TokenManager.accountIdentity.value) {
 +    val imagePickerLauncher = rememberDesktopMessageImagePicker { uri ->
-+        if (uri != null && imagePickIdentity == pageOwner.accountIdentity) {
++        if (uri != null && imagePickIdentity == pageOwner.messageAccountIdentity) {
              viewModel.sendImageMessage(context, uri)
          }
          imagePickIdentity = null
