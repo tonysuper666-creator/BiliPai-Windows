@@ -317,6 +317,9 @@ val appCoreLaterSteps: Map<String, String> = mapOf(
 // M4a: video/bangumi logic and unchanged Compose components compile from the merged upstream tree.
 // The remaining UI/player files move when their desktop platform adapters are wired.
 val migratedVideoFeaturePaths = setOf(
+    "com/android/purebilibili/feature/video/screen/VideoDetailFavoriteFolderOverlayAdapter.kt",
+    "com/android/purebilibili/feature/video/screen/VideoDetailCommentFraudOverlayAdapter.kt",
+
     "com/android/purebilibili/feature/video/ui/overlay/BasScenePainter.kt",
     "com/android/purebilibili/feature/video/ui/components/UpPreviewSheet.kt",
     "com/android/purebilibili/feature/video/ambient/PlayerAmbientGlow.kt",
@@ -2862,6 +2865,9 @@ val prepareJsWorkerResources = if (hostIsWindows) tasks.register<Sync>("prepareJ
 
 // Generated legacy files that re-declare migrated upstream declarations under another file name.
 val upstreamOwnedGeneratedCopies = setOf(
+    "original-video-detail-holder-full/com/android/purebilibili/feature/video/screen/VideoDetailFavoriteFolderOverlayAdapter.kt",
+    "video-comment-ui/com/android/purebilibili/feature/video/screen/VideoDetailCommentFraudOverlayAdapter.kt",
+
     "original-bas-renderer/com/bilipai/desktop/danmaku/DesktopOriginalBasScenePainter.kt",
     "original-video-fullscreen-pager/com/android/purebilibili/feature/video/ui/components/UpPreviewSheet.kt",
     "original-video-ambient-windows/com/android/purebilibili/feature/video/ambient/PlayerAmbientGlow.kt",
