@@ -1,0 +1,15 @@
+Upstream-commit: bed2b6d9e9c05519c04cc39d10d75f1f694de12b
+Upstream-source-sha256: 8bd6be992f8c7660210de495db6b1ed48500a454edc12d12619604d8227fb309
+Reason: Normalize CRLF only at the source-text read boundary; all existing source/behavior assertions and method names remain unchanged.
+
+--- a/app/src/test/java/com/android/purebilibili/core/ui/OfficialUserIdentityStructureTest.kt
++++ b/app/src/test/java/com/android/purebilibili/core/ui/OfficialUserIdentityStructureTest.kt
+@@ -40,7 +40,7 @@
+ 
+     private fun loadSource(relativePath: String): String {
+         val candidates = listOf(File(relativePath), File("../$relativePath"))
+-        return candidates.firstOrNull(File::exists)?.readText()
++        return candidates.firstOrNull(File::exists)?.readText().replace("\r\n", "\n")
+             ?: error("Unable to locate $relativePath")
+     }
+ }
