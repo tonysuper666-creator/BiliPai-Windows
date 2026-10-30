@@ -49,7 +49,7 @@ $hashes=@()
 foreach($f in @("$app\BiliPai Windows.exe","$card\crash-harness.jar","$card\ui-probe.jar")+@(Get-ChildItem "$app\app" -Filter '*.jar'|Where-Object {$_.Name-like '*desktop*'}|ForEach-Object {$_.FullName})){
  if(Test-Path $f){$hashes+=@([ordered]@{file=[IO.Path]::GetFileName($f);sha256=(Get-FileHash $f).Hash;bytes=(Get-Item $f).Length})}
 }
-Save-BpJson ([ordered]@{packageSha=(& git -C $src rev-parse HEAD).Trim();hashes=$hashes;renderApi='OPENGL';mainInvocations=1;restartIsSeparateMeasuredDescendant=$true}) "$out\artifact.json"
+Save-BpJson ([ordered]@{packageSha=(& git -C $src rev-parse HEAD).Trim();hashes=$hashes;renderApi='OPENGL';initialLaunchAttempts=1;manualRelaunches=0;restartIsSeparateMeasuredDescendant=$true}) "$out\artifact.json"
 $shots=@(Get-ChildItem $out -Filter '*.png'|ForEach-Object {[ordered]@{file=$_.Name;bytes=$_.Length;sha256=(Get-FileHash $_.FullName).Hash}})
 Save-BpJson $shots "$out\screenshot-hashes.json"
 if(Test-Path "$out\pid-tree.json"){
