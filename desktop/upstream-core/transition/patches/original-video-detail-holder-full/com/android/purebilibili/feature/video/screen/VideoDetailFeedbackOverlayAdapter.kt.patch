@@ -1,0 +1,10 @@
+--- a/com/android/purebilibili/feature/video/screen/VideoDetailFeedbackOverlayAdapter.kt
++++ b/com/android/purebilibili/feature/video/screen/VideoDetailFeedbackOverlayAdapter.kt
+@@ -81,6 +81,7 @@
+             modifier = Modifier.align(
+                 when (tripleCelebrationPlacement) {
+                     TripleCelebrationPlacement.CenterOverlay -> Alignment.Center
++                    TripleCelebrationPlacement.BottomTrailing -> Alignment.BottomEnd
+                 },
+             ),
+         ) {
