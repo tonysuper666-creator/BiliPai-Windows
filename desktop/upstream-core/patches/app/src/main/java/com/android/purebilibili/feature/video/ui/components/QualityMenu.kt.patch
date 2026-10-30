@@ -1,0 +1,15 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/video/ui/components/QualityMenu.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/video/ui/components/QualityMenu.kt
+@@ -4,10 +4,10 @@
+ import androidx.compose.runtime.getValue
+ import androidx.compose.runtime.remember
+ import androidx.compose.ui.Modifier
+-import androidx.compose.ui.platform.LocalContext
++import com.bilipai.desktop.ui.LocalDesktopOriginalPlayerSettingsContext as LocalContext
+ import androidx.compose.ui.unit.IntRect
+ import androidx.lifecycle.compose.collectAsStateWithLifecycle
+-import com.android.purebilibili.core.store.SettingsManager
++import com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings as SettingsManager
+ 
+ @Composable
+ fun QualitySelectionMenu(
