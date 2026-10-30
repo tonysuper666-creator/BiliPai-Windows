@@ -96,7 +96,7 @@ val revisionNeutralSourceImportContextMatches =
     revisionNeutralSourceImportRoots.none { file("tools/$it").exists() } && revisionNeutralSourceImportShadowFiles.isEmpty
 // Pin the whole Gradle recipe, including canonical helpers and later wiring.
 // Mask exactly this self-digest assignment; raw build bytes remain task inputs.
-val revisionNeutralSourceGradleRecipeSha256 = "48a5888b8124ef3861eae3e9cdb601db8004815959038ca29f04d9157c74ded6"
+val revisionNeutralSourceGradleRecipeSha256 = "b943e53a7474a41bcdcf313c616378abae4b4402999f322e4ba3ee02b75346f3"
 val revisionNeutralSourceGradleRecipeMatches = runCatching {
     val recipe = file("build.gradle.kts").readText(Charsets.UTF_8).replace("\r\n", "\n")
     val ownPin = "val revisionNeutralSourceGradleRecipeSha256 = \"$revisionNeutralSourceGradleRecipeSha256\""
@@ -341,6 +341,8 @@ val migratedAppSingleFiles: Set<String> = setOf(
     "com/android/purebilibili/data/repository/MessageManagementRepository.kt",
     "com/android/purebilibili/data/repository/MessageImRepository.kt",
     "com/android/purebilibili/data/repository/MessageReadEvent.kt",
+    // TON-1124: the upstream ledger repository takes the calling Profile page environment.
+    "com/android/purebilibili/data/repository/AccountLedgerRepository.kt",
 )
 val migratedAppPaths: Set<String> = migratedAppCorePaths + migratedAppM4dPaths + migratedAppSingleFiles
 val migratedUpstreamRelativePaths = migratedWholeModulePaths + migratedAppPaths + setOf(
@@ -2680,6 +2682,7 @@ val transitionPatchProducers = mapOf(
     "original-video-player-full-controls" to "extractOriginalPlayerFullControls",
     "original-video-state-core" to "extractOriginalVideoStateCore",
     "original-watchlater" to "extractOriginalWatchLater",
+    "original-listen-video-pages" to "extractOriginalListenVideoPages",
     "profile-main" to "extractOriginalProfileMain",
     "search" to "extractUpstreamSearch",
     "upstream" to "prepareUpstreamSources",

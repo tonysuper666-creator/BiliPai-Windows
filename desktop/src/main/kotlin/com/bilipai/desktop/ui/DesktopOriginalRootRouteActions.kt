@@ -95,6 +95,7 @@ internal fun desktopOriginalRootProfileNavigation(
     onLogoutSuccess = logoutSucceeded,
     onAccountSwitchSuccess = accountSwitchSucceeded,
     onSettingsClick = { commands.push(BiliPaiNavKey.Settings) },
+    onAccountLedgerClick = { kind -> commands.push(BiliPaiNavKey.AccountLedger(kind)) },
     onSearchClick = { commands.push(BiliPaiNavKey.Search()) },
     onHistoryClick = { commands.push(BiliPaiNavKey.History) },
     onFavoriteClick = { commands.push(BiliPaiNavKey.Favorite) },
