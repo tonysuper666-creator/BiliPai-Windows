@@ -44,7 +44,7 @@
 +            dao.insertOrUpdate(record)
              Logger.d("CommentFraudRepo", "✅ 反诈记录已入库: rpid=$rpid, status=$status")
          } catch (e: Exception) {
-+            if (e is kotlinx.coroutines.CancellationException || e is com.bilipai.desktop.compat.UnsupportedDesktopCapability) throw e
++            if (e is kotlinx.coroutines.CancellationException) throw e
              Logger.e("CommentFraudRepo", "反诈记录入库失败", e)
          }
      }
@@ -74,7 +74,7 @@
              Logger.d("CommentFraudRepo", "✅ 历史评论复检完成: rpid=${record.rpid}, 新状态=$newStatus")
              Result.success(newStatus)
          } catch (e: Exception) {
-+            if (e is kotlinx.coroutines.CancellationException || e is com.bilipai.desktop.compat.UnsupportedDesktopCapability) throw e
++            if (e is kotlinx.coroutines.CancellationException) throw e
              Logger.e("CommentFraudRepo", "历史评论复检异常", e)
              Result.failure(e)
          }
@@ -102,7 +102,7 @@
                  Result.failure(error)
              }
          } catch (e: Exception) {
-+            if (e is kotlinx.coroutines.CancellationException || e is com.bilipai.desktop.compat.UnsupportedDesktopCapability) throw e
++            if (e is kotlinx.coroutines.CancellationException) throw e
              Result.failure(e)
          }
      }
@@ -140,7 +140,7 @@
              }
              Result.success(importedList.size)
          } catch (e: Exception) {
-+            if (e is kotlinx.coroutines.CancellationException || e is com.bilipai.desktop.compat.UnsupportedDesktopCapability) throw e
++            if (e is kotlinx.coroutines.CancellationException) throw e
              Logger.e("CommentFraudRepo", "导入 JSON 备份失败", e)
              Result.failure(e)
          }
