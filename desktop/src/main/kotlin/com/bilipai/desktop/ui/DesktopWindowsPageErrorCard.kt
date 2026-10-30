@@ -52,9 +52,14 @@ internal fun DesktopWindowsPageErrorOverlay(
 ) {
     val mounted by rememberUpdatedState(onMounted)
     val returnFocus by rememberUpdatedState(onReturnFocus)
-    DisposableEffect(Unit) {
+    val shortcutHost = LocalDesktopShellShortcutHost.current
+    DisposableEffect(shortcutHost) {
+        val navigation = shortcutHost?.admitPageErrorNavigation()
         mounted()
-        onDispose { returnFocus() }
+        onDispose {
+            navigation?.close()
+            returnFocus()
+        }
     }
     // The retained native carrier starts with an empty shape and cannot take keyboard focus.
     // Admit drawing and input only inside this failed stage while its recovery card is mounted.

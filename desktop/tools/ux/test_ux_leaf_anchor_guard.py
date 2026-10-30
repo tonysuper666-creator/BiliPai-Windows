@@ -120,7 +120,6 @@ HIT_AND_FOCUS_ANCHORS = (
     (1, "val shortcuts = DesktopWindowsVideoShortcutInput("),
     (1, "desktopWindowsRequestPageEntryFocus("),
     (1, "surface.isFocusable = true"),
-    (2, "viewportFocus.requestFocus()"),
     (1, "surface.requestFocusInWindow()"),
     (1, "val chromeCanAutoHide = desktopWindowsFullscreenChromeCanAutoHide("),
     (1, "val chrome = remember(assembly, DesktopWindowsFullscreenChromeEntryKey(route), chromeSource) { DesktopWindowsFullscreenChromeState() }"),
@@ -295,6 +294,13 @@ def check_legacy_branch(leaf):
         found.need(argument_names(leaf, DETAILS_PANEL) == PANEL_ARGUMENTS, "the details panel keeps its ten named arguments in order")
     for expected, needle in HIT_AND_FOCUS_ANCHORS + LEAF_NAMES:
         found.need(leaf.count(needle) == expected, "%d x %s" % (expected, needle))
+    # The recovery overlay also returns focus. Check the original admission paths rather than
+    # freezing the total number of calls to the shared focus target.
+    found.need("observeNativePointer(null)" in leaf and
+               "viewportFocus.requestFocus()\n                    surface.requestFocusInWindow()" in leaf,
+               "a native surface press restores viewport and surface focus")
+    found.need("desktopWindowsRequestPageEntryFocus(desktopWindowsTextEditorFocused()) { viewportFocus.requestFocus() }" in leaf,
+               "page entry retains the text-editor focus guard")
     return found.items
 
 
