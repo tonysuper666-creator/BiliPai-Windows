@@ -64,24 +64,11 @@ feature/plugin/googlecast/GoogleCastRoutePolicy.kt	编译不过（1 处）：未
 feature/plugin/js/BiliPaiJsLayoutPresetStore.kt	旧 JS 插件内容页副本按 DesktopPluginContext 调用；随 BiliPaiJsPluginContentScreen 一起迁
 feature/plugin/js/BiliPaiJsPluginContentScreen.kt	编译不过（72 处）：Cannot infer type for type parameter '_'. Specify ×25；Overload resolution ambiguity between candidates:×13；未解析 Intent×5；等对应桌面替身或桌面实现
 feature/plugin/js/ExternalMediaPlayerScreen.kt	编译不过（79 处）：Cannot infer type for type parameter '_'. Specify ×12；未解析 media3×10；未解析 engine×6；等对应桌面替身或桌面实现
-feature/profile/AccountLedgerScreen.kt	编译不过（1 处）：No parameter with name '_' found.×1；等对应桌面替身或桌面实现
-feature/profile/AccountLedgerViewModel.kt	编译不过（4 处）：未解析 AccountLedgerRepository×2；Cannot infer type for type parameter '_'. Specify ×2；等对应桌面替身或桌面实现
-feature/profile/HomeWallpaperAdjustmentSheet.kt	编译不过（24 处）：未解析 WallpaperMediaLoadState×9；No parameter with name '_' found.×7；Cannot infer type for type parameter '_'. Specify ×3；等对应桌面替身或桌面实现
-feature/profile/OfficialWallpaperSheet.kt	编译不过（8 处）：未解析 Toast×4；未解析 widget×1；None of the following candidates is applicable:×1；等对应桌面替身或桌面实现
-feature/profile/ProfileAccountRepository.kt	编译不过（26 处）：未解析 BitmapFactory×5；Cannot infer type for type parameter '_'. Specify ×5；未解析 Bitmap×4；等对应桌面替身或桌面实现
-feature/profile/ProfileAvatarEffect.kt	编译不过（60 处）：Cannot infer type for type parameter '_'. Specify ×11；未解析 ComposeView×3；未解析 prepareFrame×3；等对应桌面替身或桌面实现
-feature/profile/ProfileAvatarExpansion.kt	编译不过（4 处）：未解析 LocalView×2；未解析 view×2；等对应桌面替身或桌面实现
-feature/profile/ProfileChromePolicy.kt	旧 ProfileScreen 副本引用 resolveProfileHeroFallbackGradient；随 ProfileScreen 迁移
-feature/profile/ProfileExpandedAvatar.kt	编译不过（3 处）：Cannot infer type for type parameter '_'. Specify ×1；None of the following candidates is applicable:×1；未解析 data×1；等对应桌面替身或桌面实现
-feature/profile/ProfileFusionImageRequest.kt	编译不过（2 处）：未解析 allowHardware×2；等对应桌面替身或桌面实现
-feature/profile/ProfileIdentityHeader.kt	编译不过（3 处）：未解析 ProfileAvatarExpansionState×1；未解析 ProfileAvatarEffect×1；未解析 ProfileExpandedAvatar×1；等对应桌面替身或桌面实现
-feature/profile/ProfileScreen.kt	编译不过（151 处）：未解析 Toast×26；Cannot infer type for type parameter '_'. Specify ×14；None of the following candidates is applicable:×5；等对应桌面替身或桌面实现
-feature/profile/ProfileSkinVideoView.kt	编译不过（37 处）：未解析 width×5；未解析 height×5；未解析 media3×3；等对应桌面替身或桌面实现
-feature/profile/ProfileViewModel.kt	编译不过（128 处）：未解析 getApplication×29；Unresolved reference. None of the following candid×22；Cannot infer type for type parameter '_'. Specify ×22；等对应桌面替身或桌面实现
-feature/profile/SplashWallpaperPickerSheet.kt	编译不过（30 处）：未解析 Toast×10；Cannot infer type for value parameter '_'. Specify×3；未解析 rememberLauncherForActivityResult×2；等对应桌面替身或桌面实现
-feature/profile/SplashWallpaperRandomPoolPolicy.kt	上游给 WallpaperPickerTarget 新增 SUBSCRIPTION_ARTICLE；桌面壁纸选择页按旧两值 when，随桌面壁纸页一起迁
-feature/profile/WallpaperAdjustmentSheet.kt	编译不过（9 处）：None of the following candidates is applicable:×2；未解析 data×2；未解析 build×2；等对应桌面替身或桌面实现
-feature/profile/WallpaperImageImport.kt	编译不过（14 处）：Cannot infer type for type parameter '_'. Specify ×4；未解析 BitmapFactory×3；未解析 media×2；等对应桌面替身或桌面实现
+feature/profile/AccountLedgerScreen.kt	上游新增的硬币/经验明细页，桌面导航还没有这个目的地（ProfileScreen 的 onAccountLedgerClick 传 null，入口不显示）；接入导航时与 AccountLedgerRepository 一起迁
+feature/profile/AccountLedgerViewModel.kt	同 AccountLedgerScreen；AccountLedgerRepository 读进程级 TokenManager，桌面要改成页面账号环境
+feature/profile/HomeWallpaperAdjustmentSheet.kt	调用 core/ui/wallpaper/WallpaperMedia 的新接口（WallpaperMediaLoadState、loadWallpaperPalette、playbackPriority 等）；WallpaperMedia 在 appCoreLaterSteps 等 mpv 版壁纸替换，桌面首页壁纸调整仍是 DesktopHomeWallpaperAdjustmentSheet。随 WallpaperMedia 一起迁
+feature/profile/SplashWallpaperPickerSheet.kt	同 HomeWallpaperAdjustmentSheet：依赖 WallpaperMedia 新接口与 HomeWallpaperAdjustmentSheet，桌面壁纸选择仍由 home-settings 生成的 DesktopOriginalSplashWallpaperPickerContent 承担。随 WallpaperMedia 一起迁
+feature/profile/WallpaperImageImport.kt	桌面导入走 DesktopProfileOwnedFiles 的受控文件 actor（DesktopProfileWallpaperImportContext）；上游新增的按 MIME 改扩展名步骤要扩展该接口，与 SplashWallpaperPickerSheet 一起迁
 feature/settings/AppSegmentedControl.kt	编译不过（2 处）：No parameter with name '_' found.×2；等对应桌面替身或桌面实现
 feature/settings/AppearanceThemeSegmentPolicy.kt	编译不过（9 处）：Overload resolution ambiguity between candidates:×7；未解析 name×2；等对应桌面替身或桌面实现
 feature/settings/FullscreenActionCountPreference.kt	编译不过（1 处）：未解析 PLAYER_ACTION_COUNTS×1；等对应桌面替身或桌面实现
