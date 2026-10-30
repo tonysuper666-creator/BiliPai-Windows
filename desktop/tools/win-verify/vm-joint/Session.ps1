@@ -16,7 +16,14 @@ public class BpFocus {
 $summary=[ordered]@{clientStarts=1;steps=@();started=(Get-Date).ToString('o')}
 function Step($name,[scriptblock]$body){
  try{$value=& $body;$row=[ordered]@{name=$name;passed=$true;value=$value}}
- catch{$row=[ordered]@{name=$name;passed=$false;error=$_.Exception.ToString()}}
+ catch{
+  $row=[ordered]@{name=$name;passed=$false;error=$_.Exception.ToString()}
+  try{
+   $active=[BpFocus]::GetForegroundWindow().ToInt64()
+   $owned=@(Update-BpTree)|Where-Object {$_.visible -and $_.hwnd-eq $active -and $_.width-gt 200 -and $_.height-gt 150 -and $_.windowClass-notmatch 'ConsoleWindowClass'}|Select-Object -First 1
+   if($owned){$row.failureScreenshot=Save-BpTreeShot $owned ("failure-"+$name)}
+  }catch{$row.failureCaptureError=$_.Exception.Message}
+ }
  $script:summary.steps+=@($row);Save-BpJson $summary "$out\session.json"
 }
 function Tick{ $null=Update-BpTree;Start-Sleep -Milliseconds 180 }
