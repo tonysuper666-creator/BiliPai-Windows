@@ -65,7 +65,64 @@
                      if (!isFullscreenStyle && settingsScope.subtitle.isNotBlank()) {
                          Spacer(modifier = Modifier.height(6.dp))
                          AppText(
-@@ -769,7 +737,7 @@
+@@ -606,44 +574,18 @@
+                     }
+ 
+                     if (showSectionBasic && onShowDanmakuPool != null) {
+-                        AppSurface(
+-                            modifier = Modifier
+-                                .fillMaxWidth()
+-                                .clickable {
+-                                    onDismiss()
+-                                    onShowDanmakuPool()
+-                                },
+-                            color = panelColors.itemColor,
+-                            shape = AppShapes.container(ContainerLevel.Card)
+-                        ) {
+-                            Row(
+-                                modifier = Modifier
+-                                    .fillMaxWidth()
+-                                    .padding(16.dp),
+-                                horizontalArrangement = Arrangement.SpaceBetween,
+-                                verticalAlignment = Alignment.CenterVertically
+-                            ) {
+-                                Row(verticalAlignment = Alignment.CenterVertically) {
+-                                    AppIcon(
+-                                        imageVector = Icons.Outlined.FormatListBulleted,
+-                                        contentDescription = null,
+-                                        modifier = Modifier.size(20.dp),
+-                                        tint = AppContentColors.accent()
+-                                    )
+-                                    Spacer(modifier = Modifier.width(12.dp))
+-                                     AppText(
+-                                        text = "查看弹幕列表",
+-                                        color = panelColors.titleColor,
+-                                        style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Medium)
+-                                    )
+-                                }
+-                                AppText(
+-                                    text = "搜索 · 筛选 · 跳转",
+-                                    color = panelColors.supportingColor,
+-                                    style = MaterialTheme.typography.bodySmall
+-                                )
+-                            }
+-                        }
++                        DanmakuSettingsAction(
++                            title = "查看弹幕列表",
++                            onClick = {
++                                onDismiss()
++                                onShowDanmakuPool()
++                            },
++                        )
++                        AppText(
++                            text = "搜索 · 筛选 · 跳转",
++                            color = panelColors.supportingColor,
++                            style = MaterialTheme.typography.bodySmall,
++                        )
+                         Spacer(modifier = Modifier.height(12.dp))
+                     }
+ 
+@@ -769,7 +711,7 @@
                              DanmakuSliderItem(
                                  label = if (isFullscreenStyle) "字体" else "字体大小",
                                  value = fontScale,
@@ -74,7 +131,7 @@
                                  displayValue = { "${(it * 100).toInt()}%" },
                                  onValueChange = onFontScaleChange,
                                      onValuePreview = { next ->
-@@ -785,7 +753,7 @@
+@@ -785,7 +727,7 @@
                                  DanmakuSliderItem(
                                      label = "滚动弹幕时长",
                                      value = scrollDurationSeconds,
@@ -83,7 +140,7 @@
                                      displayValue = { "${it.roundToInt()}s" },
                                      onValueChange = onScrollDurationSecondsChange,
                                      onValuePreview = { next ->
-@@ -800,7 +768,7 @@
+@@ -800,7 +742,7 @@
                                  DanmakuSliderItem(
                                      label = "静态弹幕时长",
                                      value = staticDurationSeconds,
@@ -92,7 +149,7 @@
                                      displayValue = { "${it.roundToInt()}s" },
                                      onValueChange = onStaticDurationSecondsChange,
                                      onValuePreview = { next ->
-@@ -815,7 +783,7 @@
+@@ -815,7 +757,7 @@
                                  DanmakuSliderItem(
                                      label = "弹幕行高",
                                      value = lineHeight,
@@ -101,7 +158,7 @@
                                      displayValue = { String.format("%.1f", it) },
                                      onValueChange = onLineHeightChange,
                                      onValuePreview = { next ->
-@@ -921,7 +889,7 @@
+@@ -921,7 +863,7 @@
                                      DanmakuSliderItem(
                                          label = "弹幕行高",
                                          value = lineHeight,
@@ -110,7 +167,7 @@
                                          displayValue = { String.format("%.1f", it) },
                                          onValueChange = onLineHeightChange,
                                      onValuePreview = { next ->
-@@ -935,7 +903,7 @@
+@@ -935,7 +877,7 @@
                                      DanmakuSliderItem(
                                          label = "滚动弹幕时长",
                                          value = scrollDurationSeconds,
@@ -119,7 +176,7 @@
                                          displayValue = { "${it.roundToInt()}s" },
                                          onValueChange = onScrollDurationSecondsChange,
                                      onValuePreview = { next ->
-@@ -950,7 +918,7 @@
+@@ -950,7 +892,7 @@
                                      DanmakuSliderItem(
                                          label = "静态弹幕时长",
                                          value = staticDurationSeconds,
@@ -128,7 +185,7 @@
                                          displayValue = { "${it.roundToInt()}s" },
                                          onValueChange = onStaticDurationSecondsChange,
                                      onValuePreview = { next ->
-@@ -1333,9 +1301,7 @@
+@@ -1333,9 +1275,7 @@
      val context = LocalContext.current
      val scope = rememberCoroutineScope()
      val colorScheme = MaterialTheme.colorScheme
@@ -139,7 +196,7 @@
      val initialSections = remember(rawRules) {
          resolveDanmakuBlockManagerSections(rawRules)
      }
-@@ -1713,24 +1679,11 @@
+@@ -1713,24 +1653,11 @@
      showDivider: Boolean = true
  ) {
      Column(modifier = Modifier.fillMaxWidth()) {
@@ -169,7 +226,7 @@
          if (showDivider) {
              AppHorizontalDivider(color = colors.dividerColor)
          }
-@@ -1933,121 +1886,18 @@
+@@ -1933,121 +1860,18 @@
      tickCount: Int = 0,
      valueText: (Float) -> String = displayValue
  ) {
