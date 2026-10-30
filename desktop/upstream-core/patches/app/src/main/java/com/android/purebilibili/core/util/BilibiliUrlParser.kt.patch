@@ -1,0 +1,15 @@
+Upstream-commit: c9d672afd4792a5efd9c7fabb1344151492e2500
+Upstream-source-sha256: bae695d7bec9f041e5111fc621ba2ab9b39ddd23aaabc166acd52015637b500b
+Reason: URI stores video as the host in bilibili://video/170001. Reconstruct the explicit route segment before the existing numeric video-path matcher, without accepting tracking/query values or other hosts.
+
+--- a/app/src/main/java/com/android/purebilibili/core/util/BilibiliUrlParser.kt
++++ b/app/src/main/java/com/android/purebilibili/core/util/BilibiliUrlParser.kt
+@@ -85,7 +85,7 @@
+             val path = inputUri.path.orEmpty()
+             when {
+                 inputUri.scheme.lowercase() in listOf("bilibili", "bili") &&
+-                    inputUri.host.equals("video", ignoreCase = true) -> path
++                    inputUri.host.equals("video", ignoreCase = true) -> "/video$path"
+                 isBilibiliShortHost(inputUri.host) -> path
+                 isBilibiliHost(inputUri.host) &&
+                     path.startsWith("/video/", ignoreCase = true) -> path
