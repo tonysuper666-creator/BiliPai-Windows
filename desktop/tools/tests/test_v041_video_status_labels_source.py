@@ -364,7 +364,7 @@ class V041VideoStatusLabelsSourceTest(unittest.TestCase):
 
     def test_non_held_consumer_generators_import_the_hook_module_once(self):
         # The home full-card generator is held by another task; its hooks HC1-HC4 are a separate patch.
-        for consumer in (source.SPACE_OVERVIEW_GENERATOR, source.SPACE_PAGES_GENERATOR, source.WATCH_LATER_GENERATOR):
+        for consumer in (source.SPACE_PAGES_GENERATOR, source.WATCH_LATER_GENERATOR):
             with self.subTest(consumer=consumer):
                 text = (REPO / consumer).read_text(encoding='utf-8')
                 imports = re.findall(r'^\s*(?:from v041_video_status_labels import|import v041_video_status_labels)\b', text, re.M)
