@@ -3395,12 +3395,28 @@ dependencies {
 
 tasks.test {
     useJUnitPlatform { excludeTags("packaged-updater", "native-mux", "js-worker") }
+    // PluginManager and the original Sponsor repository retain process-wide state.
+    // This class runs, with all of its assertions, in the packaging gate's fresh worker below.
+    filter { excludeTestsMatching("com.bilipai.desktop.ui.DesktopOriginalSponsorPresentationAssemblyTest") }
     // The verbatim v0.4.6 suite compares a zero offset with assertEquals(0f, ...), but the zero there is -0.0f (negative width times +0f),
     // and the generic equals() rejects it. The rendered offset is the same zero; the other cases of that class still run.
     filter { excludeTestsMatching("com.android.purebilibili.core.ui.wallpaper.WallpaperTransformPolicyTest.landscapeImageFillsPortraitViewportAndCanReachBothEdges") }
     systemProperty("java.awt.headless", "true")
     systemProperty("bilipai.js.workerResources", jsWorkerOutput.get().asFile.absolutePath)
 }
+val sponsorPresentationTests by tasks.registering(Test::class) {
+    group = "verification"
+    description = "Run actual Sponsor presentation against its own process-lifetime Runtime and loopback transport."
+    dependsOn(tasks.named("testClasses"))
+    testClassesDirs = sourceSets["test"].output.classesDirs
+    classpath = sourceSets["test"].runtimeClasspath
+    useJUnitPlatform()
+    filter { includeTestsMatching("com.bilipai.desktop.ui.DesktopOriginalSponsorPresentationAssemblyTest") }
+    maxParallelForks = 1
+    forkEvery = 1
+    systemProperty("java.awt.headless", "true")
+}
+tasks.test { finalizedBy(sponsorPresentationTests) }
 // Saved credentials are protected by Windows DPAPI only. A non-Windows test host has no system protection, so its
 // test JVMs explicitly select the test-only implementation (DesktopCredentialProtection); Windows tests use DPAPI.
 tasks.withType<Test>().configureEach {
