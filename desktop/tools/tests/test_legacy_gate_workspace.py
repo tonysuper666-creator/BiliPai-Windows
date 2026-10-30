@@ -4,6 +4,7 @@ from pathlib import Path
 import subprocess
 import tempfile
 import unittest
+from unittest.mock import patch
 
 from legacy_gate_workspace import legacy_gate_workspace
 
@@ -20,7 +21,7 @@ class LegacyGateWorkspaceTest(unittest.TestCase):
             def write(name, body):
                 path = repo / name
                 path.parent.mkdir(parents=True, exist_ok=True)
-                path.write_text(body)
+                path.write_text(body, encoding="utf-8")
 
             git("init", "-q")
             write("app/Original.kt", "old original")
@@ -40,13 +41,23 @@ class LegacyGateWorkspaceTest(unittest.TestCase):
             write("desktop/third-party/libmpv/build/fixed-inputs.json", "tracked build recipe")
             write("desktop/build/generated/current.kt", "live generated output")
             write(".github/workflows/safety.yml", "live publication policy")
-            with legacy_gate_workspace(repo) as view:
+            write("desktop/build.gradle.kts", '// 迁移到直编\nval migratedUpstreamModules = listOf("app")\n')
+            write("app/src/main/java/Current.kt", "live migrated source")
+            read_text = Path.read_text
+
+            def windows_read_text(path, encoding=None, errors=None):
+                return read_text(path, encoding=encoding or "cp1252", errors=errors)
+
+            # Windows Python 3.12 defaults to an ANSI codec. Reading a UTF-8
+            # recipe must work regardless of that process default.
+            with patch.object(Path, "read_text", windows_read_text), legacy_gate_workspace(repo) as view:
                 self.assertEqual("old original", (view / "app/Original.kt").read_text())
                 self.assertEqual("old upstream example", (view / "examples/plugins/example.js").read_text())
                 self.assertEqual("live behavior regression", (view / "desktop/Behavior.kt").read_text())
                 self.assertEqual("tracked build recipe", (view / "desktop/third-party/libmpv/build/fixed-inputs.json").read_text())
                 self.assertEqual("live generated output", (view / "desktop/build/generated/current.kt").read_text())
                 self.assertEqual("live publication policy", (view / ".github/workflows/safety.yml").read_text())
+                self.assertEqual("live migrated source", (view / ".merged-root/app/src/main/java/Current.kt").read_text())
                 root = subprocess.check_output(["git", "-C", str(view), "rev-parse", "--show-toplevel"], text=True).strip()
                 self.assertEqual(view.resolve(), Path(root).resolve())
                 self.assertEqual(b"old original", subprocess.check_output(
