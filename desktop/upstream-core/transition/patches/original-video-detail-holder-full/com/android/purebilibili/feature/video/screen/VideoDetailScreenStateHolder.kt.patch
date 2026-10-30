@@ -134,15 +134,17 @@
                                  }
                              }
                          }
-@@ -4085,6 +4056,7 @@
+@@ -4085,6 +4056,9 @@
                          Column(
                              modifier = Modifier
                                  .fillMaxSize()
-+                                .desktopInlineCollapseScrollBoundary(nestedScrollConnection)
++                                .desktopInlineCollapseScrollBoundary(nestedScrollConnection) {
++                                    !(if (videoContentPagerState.currentPage == 0) introListState else commentListState).canScrollBackward
++                                }
                                  .nestedScroll(nestedScrollConnection)
                          ) {
  
-@@ -4122,7 +4094,7 @@
+@@ -4122,7 +4096,7 @@
                          // the compact viewport back to its full size instead of jumping in one frame.
                          val animatedCollapseProgress by animateFloatAsState(
                              targetValue = effectiveCollapseProgress,

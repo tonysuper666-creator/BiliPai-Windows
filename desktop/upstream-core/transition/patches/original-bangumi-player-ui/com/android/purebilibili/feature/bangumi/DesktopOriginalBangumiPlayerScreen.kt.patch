@@ -8,7 +8,13 @@
  import com.android.purebilibili.core.util.LocalWindowSizeClass
  import com.android.purebilibili.core.util.LocalAppWindowAdaptiveInfo
  import com.android.purebilibili.core.util.layoutHinges
-@@ -729,29 +730,27 @@
+@@ -726,32 +727,33 @@
+             }
+         }
+ 
++        var desktopBoundaryListState by remember {
++            mutableStateOf<androidx.compose.foundation.lazy.LazyListState?>(null)
++        }
          val nestedScrollConnection = remember(inlineCollapseEnabled, isFullscreen, collapseRangePx) {
              object : NestedScrollConnection {
                  override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
@@ -46,11 +52,21 @@
                  }
              }
          }
-@@ -843,6 +842,7 @@
+@@ -793,6 +795,7 @@
+ 
+                     is BangumiPlayerState.Success -> {
+                         BangumiPlayerContent(
++                            onScrollBoundaryState = { desktopBoundaryListState = it },
+                             detail = state.seasonDetail,
+                             currentEpisode = state.currentEpisode,
+                             commentViewModel = commentViewModel,
+@@ -843,6 +846,9 @@
              Column(
                  modifier = Modifier
                      .fillMaxSize()
-+                    .desktopInlineCollapseScrollBoundary(nestedScrollConnection)
++                    .desktopInlineCollapseScrollBoundary(nestedScrollConnection) {
++                        desktopBoundaryListState?.canScrollBackward == false
++                    }
                      .nestedScroll(nestedScrollConnection)
              ) {
                  // 播放器区域 - 动态高度计算
