@@ -172,7 +172,7 @@ class DesktopAccountLedgerTest {
         } as DesktopOriginalRootRouteCommands
         val navigation = desktopOriginalRootProfileNavigation(commands, {}, {})
         AccountLedgerKind.entries.forEach(navigation.onAccountLedgerClick)
-        assertEquals(AccountLedgerKind.entries.map { BiliPaiNavKey.AccountLedger(it) }, pushed)
+        assertEquals<List<BiliPaiNavKey>>(AccountLedgerKind.entries.map { BiliPaiNavKey.AccountLedger(it) }, pushed)
         pushed.forEach { key ->
             val stack = BiliPaiNavBackStackController(listOf(BiliPaiNavKey.MainHost, BiliPaiNavKey.Profile)).push(key)
             assertEquals(key, stack.currentKey)
