@@ -1279,8 +1279,10 @@ internal class DesktopWindowsVideoActions(
                                 }
                             }, native.surface)
                         } else Text("正在浮窗播放", color=Color.White, modifier=Modifier.align(Alignment.Center))
-                        if (presentationAlive && !pipActive && !showPageError) engagementBinding?.let { binding ->
-                            DesktopWindowsConfirmedVideoFeedback(binding, viewportSize, native.surface, feedbackBounds)
+                        if (presentationAlive && !pipActive) {
+                            if (!showPageError) engagementBinding?.let { binding ->
+                                DesktopWindowsConfirmedVideoFeedback(binding, viewportSize, native.surface, feedbackBounds)
+                            }
                         }
                     }
                 }
