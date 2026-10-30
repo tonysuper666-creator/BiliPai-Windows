@@ -1,0 +1,25 @@
+# Retirable when the complete upstream consumer migrates; approved draft session wiring.
+--- a/original-video-detail-holder-full/com/android/purebilibili/feature/video/screen/VideoDetailInputOverlayAdapter.kt
++++ b/original-video-detail-holder-full/com/android/purebilibili/feature/video/screen/VideoDetailInputOverlayAdapter.kt
+@@ -161,6 +161,7 @@
+     val replyingToComment by viewModel.replyingToComment.collectAsStateWithLifecycle()
+     val emotePackages by viewModel.emotePackages.collectAsStateWithLifecycle()
+     val mentionSearchState by viewModel.commentMentionSearchState.collectAsStateWithLifecycle()
++    val draftSessionId = composerDrafts.comments.sessionId
+     val commentDraft = composerDrafts.comments[commentComposerDraftKey(replyingToComment?.rpid)]
+         ?: CommentComposerDraft()
+     VideoDetailCommentInputOverlayContent(
+@@ -179,9 +180,11 @@
+         actions = DesktopOriginalHolderCommentInputActions(
+             dismiss = viewModel::hideCommentInputDialog,
+             searchMentions = viewModel::searchCommentMentionUsers,
+-            updateDraft = viewModel::updateCommentDraft,
++            updateDraft = { text, images, sync, start, end ->
++                viewModel.updateCommentDraft(text, images, sync, start, end, draftSessionId)
++            },
+             send = { message, imageUris, syncToDynamic ->
+-                viewModel.sendComment(message, imageUris, syncToDynamic)
++                viewModel.sendComment(message, imageUris, syncToDynamic, draftSessionId = draftSessionId)
+             },
+         ),
+         currentVideoPositionMsProvider = currentVideoPositionMsProvider,

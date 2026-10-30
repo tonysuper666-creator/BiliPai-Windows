@@ -1,4 +1,4 @@
-# Retirable: remove with complete upstream VideoPlaybackViewModel migration; session consumers only.
+# Retirable when the complete upstream consumer migrates; approved draft session wiring.
 --- a/original-video-full-owner/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt
 +++ b/original-video-full-owner/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt
 @@ -1,9 +1,12 @@
@@ -36,7 +36,90 @@
          }
  
      // Windows reads ONE immutable publication: source and original UI values are
-@@ -8620,7 +8623,7 @@
+@@ -5029,7 +5032,8 @@
+     private fun ensureComposerDraftVideo() {
+         val videoId = (_uiState.value as? VideoPlaybackUiState.Success)?.info?.bvid.orEmpty()
+         if (_composerDrafts.value.videoId != videoId) {
+-            _composerDrafts.value = VideoComposerDraftState(videoId = videoId)
++            val reset = _composerDrafts.value.comments.reset().copy(desktopSelections = emptyMap())
++            _composerDrafts.value = VideoComposerDraftState(videoId = videoId, comments = reset)
+         }
+     }
+ 
+@@ -5054,6 +5058,7 @@
+     fun showCommentInputDialog() {
+         android.util.Log.d("VideoPlaybackViewModel", "📝 showCommentInputDialog called")
+         ensureComposerDraftVideo()
++        _composerDrafts.update { it.copy(comments = it.comments.open()) }
+         _showCommentDialog.value = true
+         // 懒加载表情包
+         loadEmotes()
+@@ -5146,7 +5151,8 @@
+         imageUris: List<String>,
+         syncToDynamic: Boolean,
+         selectionStart: Int = -1,
+-        selectionEnd: Int = -1
++        selectionEnd: Int = -1,
++        draftSessionId: Long = _composerDrafts.value.comments.sessionId
+     ) {
+         ensureComposerDraftVideo()
+         val key = commentComposerDraftKey(_replyingToComment.value?.rpid)
+@@ -5156,7 +5162,7 @@
+         )
+         val draft = CommentComposerDraft(text, imageUris, syncToDynamic, resolvedSelectionStart, resolvedSelectionEnd)
+         _composerDrafts.update { state ->
+-            state.copy(comments = state.comments + (key to draft))
++            state.copy(comments = state.comments.updateDesktopDraft(draftSessionId, _replyingToComment.value?.rpid, draft))
+         }
+     }
+     
+@@ -5546,8 +5552,10 @@
+         inputMessage: String? = null,
+         imageUris: List<String> = emptyList(),
+         syncToDynamic: Boolean = false,
+-        targetAid: Long? = null
++        targetAid: Long? = null,
++        draftSessionId: Long = _composerDrafts.value.comments.sessionId
+     ) {
++        if (draftSessionId != _composerDrafts.value.comments.sessionId) return
+         if (inputMessage != null) {
+             _commentInput.value = inputMessage
+         }
+@@ -5573,6 +5581,9 @@
+             replyRoot = replyTo?.root
+         )
+ 
++        val sendVideoId = _composerDrafts.value.videoId
++        val sentDraftKey = commentComposerDraftKey(replyTo?.rpid)
++        val sentDraft = _composerDrafts.value.comments.drafts[sentDraftKey]
+         environment.invocations.launch {
+             _isSendingComment.value = true
+             
+@@ -5603,14 +5614,16 @@
+                 )
+                 .onSuccess { reply ->
+                     toast(if (replyTo != null) "回复成功" else "评论成功")
+-                    _commentInput.value = ""
+-                    val sentDraftKey = commentComposerDraftKey(replyTo?.rpid)
+-                    _composerDrafts.update { state ->
+-                        state.copy(comments = state.comments - sentDraftKey)
++                    if (_composerDrafts.value.videoId == sendVideoId &&
++                        _composerDrafts.value.comments.sessionId == draftSessionId &&
++                        _composerDrafts.value.comments.drafts[sentDraftKey] === sentDraft) {
++                        _composerDrafts.update { state -> state.copy(comments =
++                            state.comments.completeDesktopDraft(draftSessionId, replyTo?.rpid, sentDraft)) }
++                        _commentInput.value = ""
++                        _replyingToComment.value = null
++                        _showCommentDialog.value = false
++                        clearCommentMentionSearch()
+                     }
+-                    _replyingToComment.value = null
+-                    _showCommentDialog.value = false
+-                    clearCommentMentionSearch()
+                     
+                     // 通知 UI 刷新评论列表
+                     _commentSentEvent.trySend(reply)
+@@ -8620,7 +8633,7 @@
      /** Cached detail restoration bypasses the normal post-load plugin plan. */
      private fun restoreSponsorPlaybackState(state: VideoPlaybackUiState.Success) {
          val sponsorEnabled = getSessionPlayerPlugins().any {
@@ -45,7 +128,7 @@
          }
          if (sponsorEnabled && state.sponsorVideoLabel.isNotEmpty()) {
              val key = state.info.bvid to state.info.cid
-@@ -8859,7 +8862,7 @@
+@@ -8859,7 +8872,7 @@
                  refreshSponsorContributionAvailability(plugins)
                  val currentVideo = _uiState.value as? VideoPlaybackUiState.Success
                  val sponsorPlugin = plugins
@@ -54,7 +137,7 @@
                      .firstOrNull()
                  if (sponsorPlugin == null) {
                      sponsorBlockLoadedVideo = null
-@@ -8908,7 +8911,7 @@
+@@ -8908,7 +8921,7 @@
                          }
                      }
                  }
@@ -63,7 +146,7 @@
                      _sponsorProgressMarkers.value.isNotEmpty()
                  ) {
                      _sponsorProgressMarkers.value = emptyList()
-@@ -8939,7 +8942,7 @@
+@@ -8939,7 +8952,7 @@
                  lastPluginDispatchPositionMs = currentPos
                  
                  for (plugin in plugins) {
@@ -72,7 +155,7 @@
                          val activeVideo = _uiState.value as? VideoPlaybackUiState.Success
                          val activeKey = activeVideo?.let { it.info.bvid to it.info.cid }
                          if (activeKey == null || sponsorBlockLoadedVideo != activeKey) continue
-@@ -8995,7 +8998,7 @@
+@@ -8995,7 +9008,7 @@
                                      _sponsorSkipUiState.value = nextUiState
                                      _showSkipButton.value = nextUiState.visible
                                      _currentSkipReason.value = action.label
@@ -81,7 +164,7 @@
                                          _currentSponsorSegment.value = plugin.getActiveSegment()
                                      }
                                      publishDesktopSponsorSkip(expected)
-@@ -9029,7 +9032,7 @@
+@@ -9029,7 +9042,7 @@
          environment.invocations.launch {
              if (!environment.plugins.isPlaybackDispatchCurrent(expected)) return@launch
          capturedPlugins.forEach { plugin ->
@@ -90,7 +173,7 @@
                  environment.plugins.markSponsorSkipped(expected,plugin,segmentId ?: return@forEach)
                  if (!environment.plugins.isPlaybackDispatchCurrent(expected)) return@launch
              }
-@@ -9043,7 +9046,7 @@
+@@ -9043,7 +9056,7 @@
          val expected = environment.plugins.capturePlaybackDispatch() ?: return
          val segmentId = _sponsorSkipUiState.value.segmentId ?: return
          val plugin = getSessionPlayerPlugins()
@@ -99,7 +182,7 @@
              .firstOrNull() ?: return
          environment.invocations.launch(Dispatchers.IO) {
              environment.plugins.voteSponsorSegment(expected, plugin, segmentId, voteType)
-@@ -9065,7 +9068,7 @@
+@@ -9065,7 +9078,7 @@
          // publication waits for the actual queued seek belonging to this action.
          val pendingRecords = mutableListOf<SponsorBlockSkipRecord>()
          capturedPlugins.forEach { plugin ->
@@ -108,7 +191,7 @@
                  val segment = environment.plugins.markSponsorSkipped(expected,plugin,segmentId)
                  if (!environment.plugins.isPlaybackDispatchCurrent(expected)) return@launch
                  segmentCategory = segment?.category
-@@ -9158,7 +9161,7 @@
+@@ -9158,7 +9171,7 @@
          capturedPlugins.forEach { plugin ->
              environment.plugins.onUserSeek(expected, plugin, positionMs)
              if (!environment.plugins.isPlaybackDispatchCurrent(expected)) return@launch
@@ -117,7 +200,7 @@
                  environment.admitNativePublication(expected) { _currentSponsorSegment.value = plugin.getActiveSegment() }
              }
          }
-@@ -9409,7 +9412,7 @@
+@@ -9409,7 +9422,7 @@
      }
  
      private fun refreshSponsorContributionAvailability(
@@ -126,7 +209,7 @@
              getSessionPlayerPlugins(),
      ) {
          val current = _sponsorContributionUiState.value
-@@ -9426,11 +9429,11 @@
+@@ -9426,11 +9439,11 @@
      }
  
      private fun resolveSponsorContributionContext(
@@ -140,7 +223,7 @@
              .firstOrNull { it.isCommunityContributionEnabled() }
              ?: return null
          val snapshot = buildSponsorBlockVideoSnapshot(_uiState.value) ?: return null
-@@ -10133,7 +10136,7 @@
+@@ -10133,7 +10146,7 @@
          if (safeDelta <= 0L) return
  
          TodayWatchProfileStore.recordWatchProgress(
