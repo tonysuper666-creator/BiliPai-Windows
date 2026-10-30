@@ -319,6 +319,7 @@ val appCoreLaterSteps: Map<String, String> = mapOf(
 val migratedVideoFeaturePaths = setOf(
     "com/android/purebilibili/feature/video/ui/overlay/CenterPlaybackControl.kt",
     "com/android/purebilibili/feature/video/ui/overlay/NextWatchOverlay.kt",
+    "com/android/purebilibili/feature/video/viewmodel/VideoSubjectSnapshot.kt",
     "com/android/purebilibili/feature/video/viewmodel/VideoSupplementViewModel.kt",
     "com/android/purebilibili/feature/video/ui/components/CollectionRow.kt",
     "com/android/purebilibili/feature/video/ui/components/CollectionSubscriptionButton.kt",

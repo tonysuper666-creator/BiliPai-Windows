@@ -1,0 +1,17 @@
+--- a/com/android/purebilibili/feature/video/viewmodel/VideoSubjectSnapshot.kt
++++ b/com/android/purebilibili/feature/video/viewmodel/VideoSubjectSnapshot.kt
+@@ -14,7 +14,13 @@
+     val durationMs: Long,
+     val isRepost: Boolean = false,
+     val generation: Long
+-)
++) {
++    // Compatibility for retained desktop callers until their complete source migrates.
++    constructor(
++        bvid: String, cid: Long, aid: Long, ownerMid: Long,
++        title: String, coverUrl: String, durationMs: Long, legacyGeneration: Long
++    ) : this(bvid, cid, aid, ownerMid, title, coverUrl, durationMs, false, legacyGeneration)
++}
+ 
+ internal fun VideoPlaybackUiState.Success.toSubjectSnapshot(
+     generation: Long
