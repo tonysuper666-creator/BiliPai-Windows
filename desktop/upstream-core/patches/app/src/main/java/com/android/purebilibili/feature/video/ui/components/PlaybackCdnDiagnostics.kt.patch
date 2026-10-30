@@ -1,0 +1,64 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/video/ui/components/PlaybackCdnDiagnostics.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/video/ui/components/PlaybackCdnDiagnostics.kt
+@@ -12,11 +12,9 @@
+ import androidx.compose.ui.Modifier
+ import androidx.compose.ui.unit.dp
+ import androidx.lifecycle.compose.collectAsStateWithLifecycle
+-import com.android.purebilibili.core.plugin.PluginManager
+ import com.android.purebilibili.core.ui.components.AppButton
+ import com.android.purebilibili.core.ui.components.AppText
+-import com.android.purebilibili.plugin.sdk.CdnLineDiagnostic
+-import com.android.purebilibili.feature.plugin.CdnTransferControls
++import com.android.purebilibili.feature.plugin.CdnLineDiagnostic
+ import com.android.purebilibili.feature.plugin.CdnTransferPanel
+ import com.android.purebilibili.feature.plugin.CdnTransferRuntime
+ import kotlinx.coroutines.CancellationException
+@@ -33,7 +31,8 @@
+     modifier: Modifier = Modifier
+ ) {
+     val state by CdnTransferRuntime.state.collectAsStateWithLifecycle()
+-    val plugin = PluginManager.getEnabledPlugin(CdnTransferControls::class)
++    val owner = com.bilipai.desktop.ui.rememberDesktopCdnTransferPanelBinding()
++    val plugin = owner.plugin
+     val scope = rememberCoroutineScope()
+     var message by remember { mutableStateOf<String?>(null) }
+     Column(
+@@ -44,11 +43,12 @@
+             modifier = Modifier.fillMaxWidth(),
+             enabled = canCheck,
+             onClick = {
+-                CdnTransferRuntime.restoreRoutes()
++                owner.mutate { CdnTransferRuntime.restoreRoutes() }
+                 val best = diagnostics.maxByOrNull { diagnostic ->
+                     state.nodes.firstOrNull { it.host == diagnostic.host }?.speedBps
+                         ?: ((diagnostic.speedKbps ?: 0) * 125L)
+                 }
++                owner.assertCurrent()
+                 best?.let { onSwitchTo(it.index) }
+                 message = "已恢复自动选线，后续请求按节点表现调度"
+             }
+@@ -63,11 +63,11 @@
+             checking = checking,
+             canCheck = canCheck,
+             parallelEnabled = state.parallelEnabled,
+-            experimentalRewriteEnabled = plugin?.canUseParallelDownload() != true,
++            experimentalRewriteEnabled = !owner.canUseParallelDownload(),
+             onParallelChange = { enabled ->
+                 scope.launch {
+                     try {
+-                        plugin?.setParallelDownloadEnabled(enabled)
++                        owner.setParallelDownloadEnabled(enabled)
+                         message = if (enabled) "并发下载已开启，仅在 Wi-Fi 下生效" else "并发下载已关闭"
+                     } catch (error: CancellationException) {
+                         throw error
+@@ -77,8 +77,8 @@
+                 }
+             },
+             onCheck = onCheck,
+-            onAvoid = CdnTransferRuntime::avoid,
+-            onRestore = CdnTransferRuntime::restoreRoutes,
++            onAvoid = { host -> owner.mutate { CdnTransferRuntime.avoid(host) } },
++            onRestore = { owner.mutate { CdnTransferRuntime.restoreRoutes() } },
+             parallelUnavailableReason = if (plugin == null) "启用 CDN 智能选线插件后可使用并发下载" else null,
+             modifier = Modifier.fillMaxWidth()
+         )
