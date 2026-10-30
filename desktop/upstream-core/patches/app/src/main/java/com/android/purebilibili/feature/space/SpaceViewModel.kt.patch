@@ -115,7 +115,7 @@
      private var articlePagingSession: ForwardPagingSession<Int, SpaceContributionPage<SpaceArticleItem>>? = null
      private var articlePagingReportsErrors = false
 -    private var contributionAccount = TokenManager.accountIdentity.value
-+    private var contributionAccount = environment.accountIdentity
++    private var contributionAccount = environment.spaceAccountIdentity()
      private var activeSpaceCheeseJob: Job? = null
      private var activeSpaceSearchJob: Job? = null
      private var activeVideoListJob: Job? = null
@@ -534,7 +534,7 @@
          val requestOrder = currentOrder
          val requestKeyword = currentKeyword
 -        val identity = TokenManager.accountIdentity.value
-+        val identity = environment.accountIdentity
++        val identity = environment.spaceAccountIdentity()
          val seed = SpaceVideoPageChunk(currentPage, current.videos, current.totalVideos)
          var appliedPages = 0
          var lastFailed = false
@@ -552,7 +552,7 @@
              },
              onChanged = { pages, states ->
 -                if (videoPagingSession === session && identity == TokenManager.accountIdentity.value &&
-+                if (videoPagingSession === session && identity == environment.accountIdentity &&
++                if (videoPagingSession === session && identity == environment.spaceAccountIdentity() &&
                      shouldApplySpaceVideoResult(requestMid, currentMid, generation, activeVideoListGeneration,
                          requestTid, currentTid, requestOrder, currentOrder, requestKeyword, currentKeyword) && states != null
                  ) {
@@ -1172,7 +1172,7 @@
      
      private fun ensureContributionAccount() {
 -        val identity = TokenManager.accountIdentity.value
-+        val identity = environment.accountIdentity
++        val identity = environment.spaceAccountIdentity()
          if (identity == contributionAccount) return
          contributionAccount = identity
          activeSpaceAudioJob?.cancel()
@@ -1199,7 +1199,7 @@
              },
              onChanged = { pages, states ->
 -                if (audioPagingSession === session && identity == TokenManager.accountIdentity.value &&
-+                if (audioPagingSession === session && identity == environment.accountIdentity &&
++                if (audioPagingSession === session && identity == environment.spaceAccountIdentity() &&
                      shouldApplySpaceLoadResult(requestMid, currentMid, generation, activeSpaceLoadGeneration) && states != null
                  ) {
                      val failure = (states.refresh as? LoadState.Error)?.error ?: (states.append as? LoadState.Error)?.error
@@ -1226,7 +1226,7 @@
              },
              onChanged = { pages, states ->
 -                if (articlePagingSession === session && identity == TokenManager.accountIdentity.value &&
-+                if (articlePagingSession === session && identity == environment.accountIdentity &&
++                if (articlePagingSession === session && identity == environment.spaceAccountIdentity() &&
                      shouldApplySpaceLoadResult(requestMid, currentMid, generation, activeSpaceLoadGeneration) && states != null
                  ) {
                      val failure = (states.refresh as? LoadState.Error)?.error ?: (states.append as? LoadState.Error)?.error
