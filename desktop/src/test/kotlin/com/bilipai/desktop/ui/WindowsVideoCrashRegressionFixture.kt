@@ -4,10 +4,13 @@ package com.bilipai.desktop.ui
 import androidx.compose.runtime.*
 import androidx.compose.runtime.tooling.*
 import com.android.purebilibili.navigation3.BiliPaiNavKey
+import com.android.purebilibili.feature.comment.CommentDetailViewModel
 import com.bilipai.desktop.player.MpvPlayer
 import com.bilipai.desktop.player.PlayerPreferences
 import com.bilipai.desktop.player.PlayerPreferencesStore
 import com.bilipai.desktop.settings.DESKTOP_SETTINGS_RAIL_CATEGORIES
+import com.bilipai.desktop.settings.DesktopSettingsNavigator
+import com.bilipai.desktop.settings.desktopSettingsPageCategory
 import kotlinx.coroutines.*
 import kotlinx.serialization.json.*
 import java.awt.*
@@ -73,7 +76,8 @@ private class ProductReferences(private val scope: CoroutineScope) : AutoCloseab
 }
 /** One actual Main, fresh guest profile, public media. Only real route commands
  * and owner retirement are used; no replacement player, state, HTTP or credentials.
- * Run only through BiliPai-MacTest on winbox. Not a headless JVM unit test. */
+ * Run through the approved interactive winvm entry with OpenGL and a fresh
+ * guest profile. Not a headless JVM unit test. */
 object WindowsVideoCrashRegressionFixture {
     private val latest = AtomicReference<DesktopOriginalRootValidationTap.Frame?>()
     private fun <T> edt(block: () -> T): T {
@@ -103,6 +107,9 @@ object WindowsVideoCrashRegressionFixture {
     }
     private fun shot(report: Path, name: String) = edt {
         val frame = window()
+        check(Window.getWindows().none { it.isShowing && it is Dialog && it.title == "Error" }) {
+            "Compose reported a window exception"
+        }
         check(frame.isActive) { "Owned window is not foreground" }
         ImageIO.write(Robot().createScreenCapture(frame.bounds), "png", report.resolve("$name.png").toFile())
     }
@@ -147,6 +154,11 @@ object WindowsVideoCrashRegressionFixture {
                                 }
                                 edt { check(routes.push(detail)) }
                                 await("comment detail") { latest.get()?.key == detail }
+                                await("loaded public comment detail") {
+                                    refs.find<CommentDetailViewModel>()?.subReplyState?.value?.let {
+                                        !it.isLoading && it.error == null && it.rootReply?.rpid == detail.rootId
+                                    } == true
+                                }
                                 Thread.sleep(2_000)
                                 shot(report, "comment-detail")
                                 edt { check(routes.back()) }
@@ -178,9 +190,17 @@ object WindowsVideoCrashRegressionFixture {
                         for (category in DESKTOP_SETTINGS_RAIL_CATEGORIES) {
                             val key = BiliPaiNavKey.SettingsCategory(category)
                             edt { check(routes.push(key)) }
-                            await("settings category $category") { latest.get()?.key == key }
+                            await("settings category $category") {
+                                latest.get()?.key == key && refs.find<DesktopSettingsNavigator>()?.state?.value?.let {
+                                    desktopSettingsPageCategory(it.current) == category
+                                } == true
+                            }
                             Thread.sleep(800)
                             shot(report, "settings-${category.name}")
+                        }
+                        for (relative in listOf("BiliPaiWindows/logs/last_crash_log.txt",
+                            "BiliPaiWindows/diagnostics/window-exceptions.log")) {
+                            check(!Files.exists(local.resolve(relative))) { "Runtime recorded a window exception: $relative" }
                         }
                         Files.writeString(report.resolve("result.json"), buildJsonObject {
                             put("videoOpens", rows.size); put("firstFrames", rows.size)
