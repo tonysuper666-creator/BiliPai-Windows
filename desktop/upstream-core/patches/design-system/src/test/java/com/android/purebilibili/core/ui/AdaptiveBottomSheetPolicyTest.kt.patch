@@ -1,0 +1,14 @@
+Upstream-source-sha256: 67f45242f532bb29fb1ae2a8866bbe849e95862926977d19b5cdcfb75c68546b
+Reason: ca8a6cac6 把 ModalSheetNavigationHost 改名为 AppModalSheetNavigationHost（AppSheetComponents.kt 第 212 行），只换这一条 fun marker；其余断言不变。
+
+--- a/design-system/src/test/java/com/android/purebilibili/core/ui/AdaptiveBottomSheetPolicyTest.kt
++++ b/design-system/src/test/java/com/android/purebilibili/core/ui/AdaptiveBottomSheetPolicyTest.kt
+@@ -106,7 +106,7 @@
+             ?: error("Cannot locate AppSheetComponents.kt from ${File(".").absolutePath}")
+ 
+         // MD3 使用原生预测返回；居中/折叠屏 Dialog 单独绑定窗口并提供跟手反馈。
+-        assertTrue(source.contains("fun ModalSheetNavigationHost("))
++        assertTrue(source.contains("fun AppModalSheetNavigationHost("))
+         assertTrue(source.contains("findViewTreeNavigationEventDispatcherOwner()"))
+         assertTrue(source.contains("LocalNavigationEventDispatcherOwner provides owner"))
+         assertTrue(source.contains("NavigationBackHandler("))

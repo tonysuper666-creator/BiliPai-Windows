@@ -1,0 +1,32 @@
+Upstream-source-sha256: 9415f2472e1c120467ffe98a05310530425600bb82e75d390b51c759d4a0aa0c
+Reason: animateToValue 改成具名参数多行签名后旧字符串全失效；改为钉住 updateIndex 的三段调用、animateToValue 的签名与 animatePress 分支，并在 release 里按先 snapshotFlow/first、再 onSettled?.invoke()、最后 pressProgressAnimation.animateTo(0f 的顺序断言。
+
+--- a/design-system/src/test/java/com/android/purebilibili/core/ui/animation/DampedDragAnimationPolicyTest.kt
++++ b/design-system/src/test/java/com/android/purebilibili/core/ui/animation/DampedDragAnimationPolicyTest.kt
+@@ -143,12 +143,22 @@
+             .substringAfter("fun updateIndex(index: Int)")
+             .substringBefore("private const val BILIPAI_PRESSED_SCALE")
+ 
+-        assertTrue(updateIndexSource.contains("animateToValue(safeIndex.toFloat())"))
+-        assertTrue(source.contains("fun animateToValue(value: Float, onSettled: (() -> Unit)? = null)"))
++        assertTrue(updateIndexSource.contains("animateToValue("))
++        assertTrue(updateIndexSource.contains("value = safeIndex.toFloat()"))
++        assertTrue(updateIndexSource.contains("onSettled = { settledSelectionCount += 1 }"))
++        assertTrue(source.contains("fun animateToValue("))
++        assertTrue(source.contains("onSettled: (() -> Unit)? = null"))
++        assertTrue(source.contains("animatePress: Boolean = true"))
++        assertTrue(source.contains("if (animatePress) press()"))
+         assertTrue(source.contains("press()"))
+         assertTrue(source.contains("release(onSettled = onSettled)"))
+-        assertTrue(source.contains("if (value != targetValue)"))
+-        assertTrue(source.contains("abs(it - valueAnimation.targetValue) < threshold"))
++        val releaseSource = source.substringAfter("fun release(onSettled: (() -> Unit)? = null)")
++        assertTrue(releaseSource.contains("snapshotFlow { abs(valueAnimation.value - targetValue) }"))
++        assertTrue(releaseSource.contains(".first { it <= threshold }"))
++        val settledIndex = releaseSource.indexOf("onSettled?.invoke()")
++        val pressResetIndex = releaseSource.indexOf("pressProgressAnimation.animateTo(0f")
++        assertTrue(settledIndex >= 0)
++        assertTrue(pressResetIndex > settledIndex)
+     }
+ 
+ }

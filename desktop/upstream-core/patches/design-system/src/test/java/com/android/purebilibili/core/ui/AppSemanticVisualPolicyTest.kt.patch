@@ -1,0 +1,44 @@
+Upstream-source-sha256: 693059679683b16d3be31b489a6eab098dd005274c35a880707dc7d9dcaf832f
+Reason: 2821415c5 让设置入口视觉策略按风格选色。图标策略继续整组禁止风格 token；入口视觉策略只放行 AppUiStyle / LocalAppUiStyle，并钉住两处风格判断；其余风格 token 仍禁止。生产不动。
+
+--- a/design-system/src/test/java/com/android/purebilibili/core/ui/AppSemanticVisualPolicyTest.kt
++++ b/design-system/src/test/java/com/android/purebilibili/core/ui/AppSemanticVisualPolicyTest.kt
+@@ -74,18 +74,31 @@
+ 
+     @Test
+     fun settingsSemanticPoliciesDoNotReadConcreteStyles() {
+-        val paths = listOf(
+-            "app/src/main/java/com/android/purebilibili/feature/settings/SettingsEntryVisualPolicy.kt",
+-            "app/src/main/java/com/android/purebilibili/feature/settings/SettingsSemanticIconPolicy.kt",
++        val iconPolicy = loadSource(
++            "app/src/main/java/com/android/purebilibili/feature/settings/SettingsSemanticIconPolicy.kt"
++        )
++        val entryPolicy = loadSource(
++            "app/src/main/java/com/android/purebilibili/feature/settings/SettingsEntryVisualPolicy.kt"
+         )
+         val styleDependency = Regex(
+             """\b(UiPreset|UiStyle|AppUiStyle|AndroidNativeVariant|LocalUiPreset|LocalUiStyle|LocalAppUiStyle|LocalAndroidNativeVariant)\b"""
+         )
++        // 2821415c5 之后入口视觉策略要按风格选色，只有 AppUiStyle / LocalAppUiStyle 放行；
++        // 其余风格 token（UiPreset / AndroidNativeVariant / Local* 变体）仍然禁止。
++        val stillBanned = Regex(
++            """\b(UiPreset|AndroidNativeVariant|LocalUiPreset|LocalUiStyle|LocalAndroidNativeVariant)\b"""
++        )
+ 
+-        paths.forEach { path ->
+-            val source = loadSource(path)
+-            assertFalse(styleDependency.containsMatchIn(source), "Concrete style dependency remains in $path")
+-        }
++        assertFalse(
++            styleDependency.containsMatchIn(iconPolicy),
++            "Concrete style dependency remains in SettingsSemanticIconPolicy.kt",
++        )
++        assertFalse(
++            stillBanned.containsMatchIn(entryPolicy),
++            "Unscoped style dependency remains in SettingsEntryVisualPolicy.kt",
++        )
++        assertTrue(entryPolicy.contains("if (uiStyle == AppUiStyle.MIUIX) iosTint else neutralColor"))
++        assertTrue(entryPolicy.contains("LocalAppUiStyle.current == AppUiStyle.MIUIX"))
+     }
+ 
+     private fun loadSource(path: String): String {
