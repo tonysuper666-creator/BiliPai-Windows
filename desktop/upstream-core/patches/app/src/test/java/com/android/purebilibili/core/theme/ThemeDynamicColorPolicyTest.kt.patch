@@ -1,6 +1,6 @@
 Upstream-commit: 563b7481e41e0e4a9d070582ad745e82f0c3e23b
 Upstream-source-sha256: 6d4e947651cf33029399b908f15b8a8ef6dd64deeb91d9ba4dfe342aca7d6f96
-Reason: Resolve the same retained upstream source from repository root or the app module working directory. Every source-content and behavioral assertion stays unchanged; missing sources still fail loudly.
+Reason: Resolve the same retained upstream source from repository root or the app module working directory. Every source-content and behavioral assertion stays unchanged; missing sources still fail loudly. 另：自定义种子深色的 surfaceTint 现为 materialkolor 调和值，不再等于原始种子，第 411 行的 assertEquals 改为 assertNotEquals（只钉不等于原始种子，不钉具体色）；同方法 onPrimary >= 4.5 与 primary/surface >= 3 的对比度断言不变，浅色 brightSeed 的 assertNotEquals 不动。
 
 --- a/app/src/test/java/com/android/purebilibili/core/theme/ThemeDynamicColorPolicyTest.kt
 +++ b/app/src/test/java/com/android/purebilibili/core/theme/ThemeDynamicColorPolicyTest.kt
@@ -13,7 +13,17 @@ Reason: Resolve the same retained upstream source from repository root or the ap
              "app/src/main/java/com/android/purebilibili/core/theme/Theme.kt"
          ).readText()
          val observer = source
-@@ -502,4 +502,6 @@
+@@ -408,7 +408,8 @@
+ 
+         // 原始种子色不再强塞进 primary(避免亮色种子产生黑 onPrimary),
+         // 品牌一致性由 surfaceTint 承载,控制色使用 HCT 映射后的可读角色。
+-        assertEquals(selectedThemeColor, scheme.surfaceTint)
++        // 现行生产（materialkolor 调和后的 surfaceTint）不再把原始种子写回；只钉“不等于原始种子”，不钉具体色。
++        assertNotEquals(selectedThemeColor, scheme.surfaceTint)
+         assertTrue(calculateContrastRatio(scheme.onPrimary, scheme.primary) >= 4.5f)
+         assertTrue(calculateContrastRatio(scheme.primary, scheme.surface) >= 3f)
+     }
+@@ -502,4 +503,6 @@
              "$label text is below 4.5:1",
          )
      }
