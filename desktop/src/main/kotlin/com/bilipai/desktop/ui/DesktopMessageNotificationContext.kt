@@ -215,6 +215,7 @@ internal fun desktopMessageNotificationAccount(context: android.content.Context)
     DesktopMessageNotificationAccount(desktopMessageNotificationContext(context))
 
 /** What Android's boot_count stands for in the recent-check suppression: the origin of the elapsed clock. The desktop
- * elapsed clock (SystemClock) is this process's monotonic clock, so it is this process's start. */
-private val processClockEpoch: Long = java.lang.management.ManagementFactory.getRuntimeMXBean().startTime
-internal fun desktopMessageNotificationClockEpoch(): Long = processClockEpoch
+ * elapsed clock (SystemClock) is this process's monotonic clock, so any value fixed once per process identifies it.
+ * Only java.base: the packaged Windows runtime has no java.management module. */
+private object DesktopMessageNotificationClockEpoch { val value: Long = System.currentTimeMillis() }
+internal fun desktopMessageNotificationClockEpoch(): Long = DesktopMessageNotificationClockEpoch.value
