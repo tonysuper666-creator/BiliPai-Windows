@@ -1,0 +1,19 @@
+--- a/original-message-pages/com/android/purebilibili/data/repository/DesktopOriginalMessageRepository.kt
++++ b/original-message-pages/com/android/purebilibili/data/repository/DesktopOriginalMessageRepository.kt
+@@ -18,16 +18,6 @@
+  * 私信相关数据仓库
+  * 负责处理会话列表、私信消息的获取和发送
+  */
+-data class MessageSessionControlInfo(
+-    val isLimit: Boolean? = null,
+-    val reportLimit: Boolean? = null,
+-    val isDnd: Boolean? = null,
+-    val pushMuted: Boolean? = null,
+-    val showPushSetting: Boolean = false,
+-    val followStatus: Int? = null,
+-    val isIntercept: Boolean? = null
+-)
+-
+ internal class DesktopOriginalMessageRepository(private val api: MessageApi, private val bilibiliApi: BilibiliApi, private val owner: DesktopMessagePageAdmission, private val deviceId: () -> String) {
+     
+     // 设备ID缓存 (用于发送私信)
