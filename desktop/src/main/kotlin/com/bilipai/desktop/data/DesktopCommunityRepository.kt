@@ -85,9 +85,32 @@ class DesktopCommunityRepository(private val repository: DesktopRepository,
                 requireNotNull(response.data) { "视频信息为空" }
             } },
             com.android.purebilibili.data.repository.MessageManagementRepository(ownedApi, ownedMessages, { owner.mid }, owner::csrf) {
-                // The private-message emote panel still runs on its legacy copy (later-steps.tsv); nothing reads this yet.
-                Result.failure(UnsupportedOperationException("私信表情面板尚未接入桌面消息页"))
-            })
+                owner.runCatching { messageEmotePackages(ownedApi, owner::assertCurrent) }
+            },
+            // Upstream's IM gRPC (bilibili.app.im.v1.im) over this child's gated call, cookies and App token.
+            com.bilipai.desktop.data.DesktopMessageImTransport(com.android.purebilibili.core.network.grpc.DesktopDynamicBiliGrpcClient(factory,
+                { listOf("SESSDATA", "bili_jct", "buvid3").mapNotNull { name -> owner.cookie(name)?.let { name to it } }.toMap() },
+                { owner.mid }, owner::accessToken, owner::isOwned)::request) { owner.requests.notifyReadStateChanged() })
+    }
+
+    /** Upstream CommentRepository.getEmotePackages (the private-message emote panel reads the reply emote packages):
+     * the user's panel, completed with the standard packages it lacks, over this caller's API. */
+    private suspend fun messageEmotePackages(api: BilibiliApi, assertCurrent: suspend () -> Unit): List<EmotePackage> {
+        val standardIds = listOf(1L, 2L, 53L, 4L)
+        val response = api.getEmotes(mapOf("business" to "reply"))
+        assertCurrent()
+        val userData = if (response.code == 0) response.data else null
+        val userPackages = userData?.packages?.takeIf { it.isNotEmpty() } ?: userData?.all_packages.orEmpty()
+        val missingIds = standardIds.filter { id -> userPackages.none { it.id == id && !it.emote.isNullOrEmpty() } }
+        if (missingIds.isEmpty()) return userPackages
+        // The user panel can succeed with an empty list; the missing standard packages come from the detail endpoint.
+        val details = api.getEmotePackageDetails(mapOf("business" to "reply", "ids" to missingIds.joinToString(",")))
+        assertCurrent()
+        check(details.code == 0) { details.message.orEmpty() }
+        val packages = userPackages.associateByTo(linkedMapOf()) { it.id }
+        details.data?.packages.orEmpty().forEach { pkg -> if (packages[pkg.id]?.emote.isNullOrEmpty()) packages[pkg.id] = pkg }
+        check(missingIds.all { id -> packages[id]?.emote?.isNotEmpty() == true }) { "基础表情包加载失败" }
+        return packages.values.toList()
     }
 
 

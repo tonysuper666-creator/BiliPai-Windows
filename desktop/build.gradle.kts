@@ -332,11 +332,15 @@ val migratedAppM4dPaths: Set<String> = migratedAppM4dAreas.asSequence().flatMap 
     .toSortedSet()
 // Single files of not yet migrated areas that a migrated file reads in their current form (TON-1107: ProfileScreen;
 // TON-1108: SpaceScreen's grid column preference, its settings writes go to LocalDesktopFeedGridColumnSettings;
-// TON-1109: the message feed pages' MessageManagementRepository, built per message page child over its gated services).
+// TON-1109: the message feed pages' MessageManagementRepository, built per message page child over its gated services;
+// TON-1120: the private messages' MessageImRepository, whose gRPC calls go over the calling message page child's gated call,
+// and the read events the message Root shares between its pages).
 val migratedAppSingleFiles: Set<String> = setOf(
     "com/android/purebilibili/feature/home/components/cards/HorizontalVideoCardLayoutPolicy.kt",
     "com/android/purebilibili/feature/home/FeedGridColumnPreference.kt",
     "com/android/purebilibili/data/repository/MessageManagementRepository.kt",
+    "com/android/purebilibili/data/repository/MessageImRepository.kt",
+    "com/android/purebilibili/data/repository/MessageReadEvent.kt",
 )
 val migratedAppPaths: Set<String> = migratedAppCorePaths + migratedAppM4dPaths + migratedAppSingleFiles
 val migratedUpstreamRelativePaths = migratedWholeModulePaths + migratedAppPaths + setOf(
@@ -3115,7 +3119,9 @@ val appCoreUpstreamTestsNotRun: Map<String, String> = mapOf(
 // (path <TAB> reason) and those whose subject (FooTest.kt tests Foo.kt) is a later step of the area.
 val appM4dTestsNotRun: Map<String, String> = m4dTable("tests-not-run.tsv").toMap()
 val appCoreUpstreamTestPaths: Set<String> = (appTestRoot.resolve("com/android/purebilibili/core").walkTopDown() +
-        migratedAppM4dAreas.asSequence().flatMap { appTestRoot.resolve("com/android/purebilibili/$it").walkTopDown() })
+        migratedAppM4dAreas.asSequence().flatMap { appTestRoot.resolve("com/android/purebilibili/$it").walkTopDown() } +
+        // TON-1120: upstream's IM wire tests run against the directly compiled MessageImRepository.
+        sequenceOf(appTestRoot.resolve("com/android/purebilibili/data/repository/MessageImRepositoryTest.kt")))
     .filter { it.isFile && it.extension == "kt" }
     // JUnit 4, Robolectric, mockk and androidx.test are not on the desktop test classpath; JUnit 5 (org.junit.jupiter) is.
     .filter { file -> !Regex("""^import (org\.junit\.(?!jupiter)|org\.robolectric|io\.mockk|androidx\.test)""", RegexOption.MULTILINE).containsMatchIn(file.readText()) }
