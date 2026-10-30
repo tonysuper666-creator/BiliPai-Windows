@@ -153,3 +153,29 @@
                                  tween(
                                      durationMillis = resolveInlinePortraitPlayerCommentCollapseDurationMillis(
                                          videoContentTabSwitchAnimationSpec
+@@ -4852,6 +4826,17 @@
+ 
+                                 uiState is VideoPlaybackUiState.Error -> {
+                                     val errorState = uiState as VideoPlaybackUiState.Error
++                                    val keepAccountRecovery =
++                                        errorState.error is com.android.purebilibili.data.model.VideoLoadError.VipRequired ||
++                                            (errorState.error as? com.android.purebilibili.data.model.VideoLoadError.ApiError)?.code == -10403 ||
++                                            (errorState.error as? com.android.purebilibili.data.model.VideoLoadError.UnknownError)
++                                                ?.throwable?.message?.contains("大会员") == true
++                                    if (!keepAccountRecovery) {
++                                        VideoDetailPlaybackErrorNotice(
++                                            state = errorState,
++                                            onRetry = { viewModel.retry() },
++                                        )
++                                    } else {
+                                     Box(
+                                         modifier = Modifier.fillMaxSize(),
+                                         contentAlignment = Alignment.Center
+@@ -4982,6 +4967,7 @@
+                                             }
+                                     }
+                                 }
++                                    }
+                             }
+                     }  // Detail body
+                     }  // 📱 手机竖屏布局结束（Column）
