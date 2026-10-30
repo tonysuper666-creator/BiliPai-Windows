@@ -147,7 +147,10 @@ private class DesktopCommandPopupWindow(
                         !DesktopDecorativeWindowStyle.applyTo(shown))) {
                         publishWindowAvailability(false, force = true); shown.isVisible = false
                         checkNotNull(onDecorativeRejection).invoke()
-                    } else publishWindowAvailability(true)
+                    } else {
+                        publishWindowAvailability(true)
+                        focusModalWhenOwnerActive()
+                    }
                 }
             }
         }
@@ -161,7 +164,11 @@ private class DesktopCommandPopupWindow(
         modal = modalVisible
         popup?.focusableWindowState = modalVisible
         applyShape()
-        if (modalVisible && !wasModal && owner.isActive) popup?.let { it.toFront(); it.requestFocus() }
+        if (modalVisible && !wasModal) focusModalWhenOwnerActive()
+    }
+    private fun focusModalWhenOwnerActive() {
+        if (!closed && modal && owner.isActive)
+            popup?.takeIf { it.isShowing }?.let { it.toFront(); it.requestFocus() }
     }
     private val moveListener = object : ComponentAdapter() {
         override fun componentMoved(event: ComponentEvent) = updateGeometry()
@@ -170,6 +177,7 @@ private class DesktopCommandPopupWindow(
         override fun componentHidden(event: ComponentEvent) = updateGeometry()
     }
     private val windowListener = object : WindowAdapter() {
+        override fun windowActivated(event: WindowEvent) = focusModalWhenOwnerActive()
         override fun windowIconified(event: WindowEvent) = updateGeometry()
         override fun windowDeiconified(event: WindowEvent) = updateGeometry()
         override fun windowClosed(event: WindowEvent) = close()

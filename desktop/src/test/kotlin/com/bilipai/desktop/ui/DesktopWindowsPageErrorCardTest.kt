@@ -5,11 +5,14 @@ package com.bilipai.desktop.ui
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.ImageComposeScene
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.KeyEvent
 import androidx.compose.ui.input.key.KeyEventType
 import androidx.compose.ui.input.key.key
+import androidx.compose.ui.platform.LocalWindowInfo
+import androidx.compose.ui.platform.WindowInfo
 import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.semantics.SemanticsNode
 import androidx.compose.ui.semantics.SemanticsProperties
@@ -64,7 +67,7 @@ class DesktopWindowsPageErrorCardTest {
         assertFalse(focus.ownerActivated(stillCurrent = true))
     }
 
-    @Test fun navigationBubblesToTheWindowButRetryKeysStayWithTheButton() {
+    @Test fun navigationBubblesWithoutTabButRetryKeysStayWithTheButton() {
         val forwarded = mutableListOf<Key>()
         var retries = 0
         val left = Key(java.awt.event.KeyEvent.VK_LEFT)
@@ -87,7 +90,9 @@ class DesktopWindowsPageErrorCardTest {
                 settle()
             }
             settle()
-            press(Key.Tab)
+            val focused = scene.semanticsOwners.flatMap { flatten(it.unmergedRootSemanticsNode) }
+                .single { it.config.getOrNull(SemanticsProperties.Focused) == true }
+            assertTrue("重试" in text(focused))
             forwarded.clear()
             press(left, alt = true)
             press(Key.Escape)
@@ -105,6 +110,47 @@ class DesktopWindowsPageErrorCardTest {
         } finally { scene.close() }
     }
 
+    @Test fun aBackgroundCardWaitsForWindowFocusAndRefocusesRetryOnReturn() {
+        val foreground = mutableStateOf(false)
+        val windowInfo = object : WindowInfo {
+            override val isWindowFocused: Boolean get() = foreground.value
+        }
+        var retries = 0
+        val scene = ImageComposeScene(800, 400) {
+            CompositionLocalProvider(LocalWindowInfo provides windowInfo) {
+                MaterialTheme {
+                    DesktopWindowsPageErrorOverlay {
+                        DesktopWindowsPageErrorCard("请检查网络连接后重试。", { retries++ }, onLogin = {})
+                    }
+                }
+            }
+        }
+        try {
+            var time = 0L
+            fun settle() { repeat(3) { scene.render(time).close(); time += 16_000_000 } }
+            fun focusedText(): List<String> = scene.semanticsOwners.flatMap { flatten(it.unmergedRootSemanticsNode) }
+                .filter { it.config.getOrNull(SemanticsProperties.Focused) == true }.flatMap(::text)
+            settle()
+            assertTrue(focusedText().isEmpty())
+            foreground.value = true
+            settle()
+            assertTrue("重试" in focusedText())
+            scene.sendKeyEvent(KeyEvent(Key.Tab, KeyEventType.KeyDown))
+            scene.sendKeyEvent(KeyEvent(Key.Tab, KeyEventType.KeyUp))
+            settle()
+            assertTrue("登录并返回" in focusedText())
+            foreground.value = false
+            settle()
+            assertTrue("登录并返回" in focusedText()) // No focus request while backgrounded.
+            foreground.value = true
+            settle()
+            assertTrue("重试" in focusedText())
+            scene.sendKeyEvent(KeyEvent(Key.Enter, KeyEventType.KeyDown))
+            scene.sendKeyEvent(KeyEvent(Key.Enter, KeyEventType.KeyUp))
+            assertEquals(1, retries)
+        } finally { scene.close() }
+    }
+
     @Test fun tabCanReachRetryAndEnterOrSpaceRestoresThePage() {
         for (activation in listOf(Key.Enter, Key.Spacebar)) {
             val error = mutableStateOf(true)
@@ -115,20 +161,24 @@ class DesktopWindowsPageErrorCardTest {
                         DesktopWindowsPageErrorCard("请检查网络连接后重试。", onRetry = {
                             retries++
                             error.value = false
-                        })
+                        }, onLogin = {})
                     } else Text("视频内容")
                 }
             }
             try {
                 var time = 0L
                 fun settle() { repeat(3) { scene.render(time).close(); time += 16_000_000 } }
-                fun press(key: Key) {
-                    scene.sendKeyEvent(KeyEvent(key, KeyEventType.KeyDown))
-                    scene.sendKeyEvent(KeyEvent(key, KeyEventType.KeyUp))
+                fun press(key: Key, shift: Boolean = false) {
+                    scene.sendKeyEvent(KeyEvent(key, KeyEventType.KeyDown, isShiftPressed = shift))
+                    scene.sendKeyEvent(KeyEvent(key, KeyEventType.KeyUp, isShiftPressed = shift))
                     settle()
                 }
                 settle()
                 press(Key.Tab)
+                val next = scene.semanticsOwners.flatMap { flatten(it.unmergedRootSemanticsNode) }
+                    .single { it.config.getOrNull(SemanticsProperties.Focused) == true }
+                assertTrue("登录并返回" in text(next))
+                press(Key.Tab, shift = true)
                 val focused = scene.semanticsOwners.flatMap { flatten(it.unmergedRootSemanticsNode) }
                     .single { it.config.getOrNull(SemanticsProperties.Focused) == true }
                 assertTrue("重试" in text(focused))

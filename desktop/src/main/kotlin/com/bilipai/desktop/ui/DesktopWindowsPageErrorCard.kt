@@ -7,13 +7,18 @@ import androidx.compose.material.icons.outlined.ErrorOutline
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.input.key.KeyEvent
 import androidx.compose.ui.input.key.onKeyEvent
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.semantics.LiveRegionMode
 import androidx.compose.ui.semantics.liveRegion
 import androidx.compose.ui.semantics.semantics
@@ -72,6 +77,13 @@ internal fun DesktopWindowsPageErrorOverlay(
 /** Contract player.overlay.error_card: 360dp, or the available width on a smaller stage. */
 @Composable
 internal fun DesktopWindowsPageErrorCard(message: String, onRetry: () -> Unit, onLogin: (() -> Unit)? = null) {
+    val retryFocus = remember { FocusRequester() }
+    val windowFocused = LocalWindowInfo.current.isWindowFocused
+    LaunchedEffect(windowFocused) {
+        // Native activation is guarded by the existing popup's owner.isActive policy.
+        // Also runs when a card first shown in the background gains foreground focus.
+        if (windowFocused) retryFocus.requestFocus()
+    }
     Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
         Surface(Modifier.widthIn(max = 360.dp).fillMaxWidth()
             .desktopCommandHitRegion("windows-page-error-card").semantics { liveRegion = LiveRegionMode.Polite },
@@ -82,7 +94,7 @@ internal fun DesktopWindowsPageErrorCard(message: String, onRetry: () -> Unit, o
                 Text(message, style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant)
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Button(onClick = onRetry) { Text("重试") }
+                    Button(onClick = onRetry, modifier = Modifier.focusRequester(retryFocus)) { Text("重试") }
                     if (onLogin != null) TextButton(onClick = onLogin) { Text("登录并返回") }
                 }
             }
