@@ -1,0 +1,17 @@
+gradle.projectsEvaluated {
+ def target = gradle.rootProject
+ target.tasks.register('exportTon1077Harness') {
+  dependsOn('testClasses')
+  doLast {
+   target.copy {
+    from target.extensions.getByName('sourceSets').getByName('test').output.classesDirs
+    include 'com/bilipai/desktop/ui/WindowsVideoCrashRegressionFixture*'
+    include 'com/bilipai/desktop/ui/ProductReferences*'
+    into new File(target.projectDir.parentFile, 'evidence/harness-classes')
+   }
+  }
+ }
+ target.tasks.withType(org.gradle.api.tasks.testing.Test).configureEach {
+  systemProperty 'java.io.tmpdir', new File(target.projectDir.parentFile, 'evidence/test-tmp').canonicalPath
+ }
+}
