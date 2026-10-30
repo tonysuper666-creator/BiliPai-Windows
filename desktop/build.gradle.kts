@@ -3561,7 +3561,10 @@ kotlin.sourceSets.named("test") {
 
 // Approved upstream test corrections are isolated from production patch outputs.
 // The complete LF-normalized source is pinned: even an edit outside a hunk needs review.
-val correctedVideoTestPaths = emptySet<String>()
+val correctedVideoTestPaths = setOf(
+    "com/android/purebilibili/feature/video/progress/PbpProgressPolicyTest.kt",
+    "com/android/purebilibili/feature/video/ui/section/VideoInfoDisplayPolicyTest.kt",
+)
 val correctedVideoTestOutput = layout.buildDirectory.dir("patched-upstream-tests")
 val applyVideoTestCorrections by tasks.registering {
     val patches = correctedVideoTestPaths.map { desktopUpstreamPatchDirectory.resolve("app/src/test/java/$it.patch") }
