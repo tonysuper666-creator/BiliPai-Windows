@@ -67,6 +67,9 @@ internal interface DesktopProfilePreferences {
     suspend fun setSplashEnabled(enabled: Boolean)
     suspend fun setSplashRandomEnabled(enabled: Boolean)
     suspend fun setHomeWallpaperUri(uri: String)
+    suspend fun setHomeWallpaperSelection(selection: com.android.purebilibili.core.store.home.HomeWallpaperSelection)
+    suspend fun setSubscriptionArticleWallpaperUri(uri: String)
+    suspend fun setSubscriptionArticleWallpaperEnabled(enabled: Boolean)
     fun getTripleJumpEnabled(): Flow<Boolean>
     suspend fun setTripleJumpEnabled(enabled: Boolean)
 }
@@ -97,6 +100,9 @@ internal interface DesktopProfilePlatform {
     fun pickMedia(onSelected: (String?) -> Unit)
     fun pickQrImage(onSelected: (String?) -> Unit)
     suspend fun readQrImage(uri: String): java.awt.image.BufferedImage
+    /** The encoded bytes of the local image file chosen for the account avatar. Fails with a message the page shows
+     * (not a local file, missing, too large, not a decodable image); never returns empty bytes. */
+    suspend fun readAvatarImage(uri: String): ByteArray
     fun feedback(message: String)
     fun copyText(label: String, text: String)
     suspend fun importWallpaperMedia(uri: String, directory: File): File
@@ -107,6 +113,10 @@ internal interface DesktopProfilePlatform {
     suspend fun writeOwnedFile(destination: File, bytes: ByteArray)
     suspend fun deleteOwnedFile(file: File)
     suspend fun saveImageToGallery(bytes: ByteArray, fileName: String)
+    /** A not yet existing file under stateDirectory/cache for writeOwnedFile; the caller deletes it. */
+    fun createTemporaryFile(prefix: String, suffix: String): File
+    /** Whether the file is an image Skia can decode (the desktop BitmapFactory bounds check). */
+    suspend fun isDecodableImage(file: File): Boolean
 }
 
 /** Same existing Home media lifetime/software lease, never a second playback actor.

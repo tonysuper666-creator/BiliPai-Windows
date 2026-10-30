@@ -1,0 +1,56 @@
+--- a/com/android/purebilibili/feature/profile/ProfileExpandedAvatar.kt
++++ b/com/android/purebilibili/feature/profile/ProfileExpandedAvatar.kt
+@@ -14,50 +14,51 @@
+ import androidx.compose.runtime.remember
+ import androidx.compose.ui.Modifier
+ import androidx.compose.ui.draw.drawWithContent
+ import androidx.compose.ui.geometry.Offset
+ import androidx.compose.ui.geometry.Size
+ import androidx.compose.ui.graphics.Brush
+ import androidx.compose.ui.graphics.Color
+ import androidx.compose.ui.graphics.graphicsLayer
+ import androidx.compose.ui.graphics.BlendMode
+ import androidx.compose.ui.graphics.CompositingStrategy
+ import androidx.compose.ui.layout.ContentScale
+ import androidx.compose.ui.layout.Layout
+-import androidx.compose.ui.platform.LocalContext
++import coil3.compose.LocalPlatformContext
+ import androidx.compose.ui.platform.LocalDensity
+ import androidx.compose.ui.semantics.clearAndSetSemantics
+ import androidx.compose.ui.unit.Constraints
+ import androidx.compose.ui.unit.Dp
+ import androidx.compose.ui.unit.dp
+ import coil3.compose.AsyncImage
+ import coil3.request.ImageRequest
+ import com.android.purebilibili.feature.home.UserState
+ import com.android.purebilibili.core.ui.components.AppIcon
+ import kotlin.math.min
+ import kotlin.math.roundToInt
+ 
+ @Composable
+ internal fun ProfileExpandedAvatar(
+     user: UserState,
+     state: ProfileAvatarExpansionState,
+     fractionProvider: () -> Float,
+     photoBottomProvider: () -> Float,
+     statusBarTopPadding: Dp,
+     listState: LazyListState,
+     flingBehavior: FlingBehavior,
+     onCollapse: () -> Unit,
+     modifier: Modifier = Modifier,
+ ) {
+-    val context = LocalContext.current
++    // Desktop: Coil requests take its platform context, not an Android Context.
++    val context = LocalPlatformContext.current
+     val density = LocalDensity.current
+     val configuration = androidx.compose.ui.platform.LocalConfiguration.current
+     // Decode once at viewport resolution, rather than restarting Coil for every drag size.
+     val decodeWidth = with(density) { configuration.screenWidthDp.dp.roundToPx() }
+     val request = remember(context, user.face, decodeWidth) {
+         ImageRequest.Builder(context).data(user.face).size(decodeWidth.coerceAtLeast(1)).build()
+     }
+     val visible by remember(fractionProvider) { derivedStateOf { fractionProvider() > 0f } }
+     val blurCache = remember { com.android.purebilibili.core.ui.transition.BlurRenderEffectCache() }
+     val blurEnabled = com.android.purebilibili.core.ui.LocalComponentMotionEnabled.current &&
+         !com.android.purebilibili.core.ui.motion.rememberSystemReduceMotion() &&
+         !com.android.purebilibili.core.ui.performance.isLowBlurBudgetForced() &&

@@ -15,6 +15,9 @@ import java.util.concurrent.atomic.AtomicReference
 import javax.swing.*
 import javax.swing.filechooser.FileNameExtensionFilter
 
+private const val MAX_AVATAR_BYTES=20L*1024*1024
+private const val MAX_AVATAR_PIXELS=64L*1024*1024
+
 /** Every capability/actor below is the real retained Root; no optional/default effect ports. */
 internal class DesktopWindowsProfilePlatform(
     override val stateDirectory:Path,
@@ -90,12 +93,48 @@ internal class DesktopWindowsProfilePlatform(
         try {checkpoint(job);image} catch(error:Throwable) {image.flush();throw error}
     }
 
+    override suspend fun readAvatarImage(uri:String):ByteArray = withContext(Dispatchers.IO) {
+        val job=currentCoroutineContext()[Job];checkpoint(job)
+        val selected=runCatching {java.net.URI(uri)}.getOrNull()
+        require(selected?.scheme=="file") {"请选择本机上的图片文件"}
+        val path=java.nio.file.Path.of(selected).toAbsolutePath().normalize()
+        com.bilipai.desktop.update.UpdateStorage.existingPathWithoutLinks(path)
+        require(java.nio.file.Files.isRegularFile(path,java.nio.file.LinkOption.NOFOLLOW_LINKS)) {"找不到所选图片，请重新选择"}
+        val size=java.nio.file.Files.size(path)
+        require(size>0) {"所选图片是空文件，请重新选择"}
+        require(size<=MAX_AVATAR_BYTES) {"图片文件过大（最大 20 MB），请换一张图片"}
+        val raw=java.nio.file.Files.newInputStream(path,java.nio.file.StandardOpenOption.READ,java.nio.file.LinkOption.NOFOLLOW_LINKS).use { input ->
+            val result=java.io.ByteArrayOutputStream();val buffer=ByteArray(8192)
+            while(true) {checkpoint(job);val count=input.read(buffer);if(count<0)break;require(result.size()+count<=MAX_AVATAR_BYTES) {"图片文件过大（最大 20 MB），请换一张图片"};result.write(buffer,0,count)}
+            result.toByteArray()
+        }
+        checkpoint(job)
+        val pixels=try {
+            org.jetbrains.skia.Data.makeFromBytes(raw).use { data -> org.jetbrains.skia.Codec.makeFromData(data).use { it.width.toLong()*it.height } }
+        } catch(_:IllegalArgumentException) {
+            throw IllegalArgumentException("无法识别这张图片，请选择 JPG、PNG、WebP、GIF 或 BMP 图片")
+        }
+        require(pixels in 1L..MAX_AVATAR_PIXELS) {"图片尺寸过大，请换一张图片"}
+        checkpoint(job);raw
+    }
+
     override suspend fun importWallpaperMedia(uri:String,directory:File)=files.import(uri,directory,false)
     override suspend fun importWallpaperImage(uri:String,directory:File)=files.import(uri,directory,true)
     override suspend fun readOwnedBytes(body:ResponseBody)=files.read(body)
     override suspend fun writeOwnedFile(destination:File,body:ResponseBody)=files.write(destination,body)
     override suspend fun writeOwnedFile(destination:File,bytes:ByteArray)=files.write(destination,bytes)
     override suspend fun deleteOwnedFile(file:File)=files.delete(file)
+    override fun createTemporaryFile(prefix:String,suffix:String):File {
+        checkpoint();return stateDirectory.resolve("cache").resolve(prefix+java.util.UUID.randomUUID()+suffix).toFile()
+    }
+    override suspend fun isDecodableImage(file:File):Boolean = withContext(Dispatchers.IO) {
+        val job=currentCoroutineContext()[Job];checkpoint(job)
+        val path=file.toPath().toAbsolutePath().normalize()
+        if(!java.nio.file.Files.isRegularFile(path,java.nio.file.LinkOption.NOFOLLOW_LINKS) || java.nio.file.Files.size(path) !in 1..MAX_AVATAR_BYTES) return@withContext false
+        val raw=java.nio.file.Files.readAllBytes(path);checkpoint(job)
+        try {org.jetbrains.skia.Data.makeFromBytes(raw).use {data->org.jetbrains.skia.Codec.makeFromData(data).use {it.width>0 && it.height>0}}}
+        catch(_:IllegalArgumentException) {false}
+    }
     override suspend fun saveImageToGallery(bytes:ByteArray,fileName:String) {checkpoint(currentCoroutineContext()[Job]);check(assets.saveProfileGalleryBytes(bytes,fileName,owns,commit)){"图片保存未完成"}}
     override suspend fun openOwnedDownload(request:Request):Response {
         val job=currentCoroutineContext()[Job];checkpoint(job)
