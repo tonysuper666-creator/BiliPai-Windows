@@ -1,12 +1,12 @@
 --- a/com/android/purebilibili/feature/space/SpaceViewModel.kt
 +++ b/com/android/purebilibili/feature/space/SpaceViewModel.kt
-@@ -1,29 +1,21 @@
+@@ -1,29 +1,20 @@
  package com.android.purebilibili.feature.space
  
  import androidx.paging.LoadState
  import androidx.paging.PagingConfig
  import com.android.purebilibili.core.paging.ForwardPagingSession
- import com.android.purebilibili.core.store.TokenManager
+-import com.android.purebilibili.core.store.TokenManager
 -import androidx.lifecycle.ViewModel
  import androidx.lifecycle.SavedStateHandle
 -import androidx.lifecycle.viewModelScope
@@ -30,7 +30,7 @@
  import kotlinx.coroutines.flow.asStateFlow
  import kotlinx.coroutines.flow.update
  import kotlinx.coroutines.launch
-@@ -123,71 +115,73 @@
+@@ -123,143 +114,125 @@
          val lastWatchedVideo: SpaceWatchProgress? = null,
          val pendingLocateBvid: String? = null,
          val locateMessage: String? = null,
@@ -111,7 +111,16 @@
      private var activeSpaceSupplementalJob: Job? = null
      private var activeSpaceArticleJob: Job? = null
      private var activeSpaceAudioJob: Job? = null
-@@ -203,63 +197,46 @@
+     private var audioPagingSession: ForwardPagingSession<Int, SpaceContributionPage<SpaceAudioItem>>? = null
+     private var articlePagingSession: ForwardPagingSession<Int, SpaceContributionPage<SpaceArticleItem>>? = null
+     private var articlePagingReportsErrors = false
+-    private var contributionAccount = TokenManager.accountIdentity.value
++    private var contributionAccount = environment.accountIdentity
+     private var activeSpaceCheeseJob: Job? = null
+     private var activeSpaceSearchJob: Job? = null
+     private var activeVideoListJob: Job? = null
+     private var videoPagingJob: Job? = null
+     private var videoPagingSession: ForwardPagingSession<SpaceVideoPageKey, SpaceVideoPageChunk>? = null
      private var activeSpaceWatchHistoryJob: Job? = null
      private var activeVideoListGeneration: Long = 0
  
@@ -142,9 +151,9 @@
 -            }
 -        }
 -        viewModelScope.launch {
-             TokenManager.accountIdentity.collect { ensureContributionAccount() }
-         }
-         viewModelScope.launch {
+-            TokenManager.accountIdentity.collect { ensureContributionAccount() }
+-        }
+-        viewModelScope.launch {
 -            ActionRepository.followStateChanges.collect { change ->
 +            environment.followStateChanges.collect { change ->
                  val currentState = _uiState.value as? SpaceUiState.Success ?: return@collect
@@ -177,7 +186,7 @@
          currentTid = 0
          currentOrder = VideoSortOrder.PUBDATE
          currentKeyword = ""
-@@ -356,41 +333,42 @@
+@@ -356,41 +329,42 @@
  
                  if (!loadSpaceInfoLegacy(mid, requestGeneration, userCardVisuals)) {
                      if (shouldApplySpaceLoadResult(mid, currentMid, requestGeneration, activeSpaceLoadGeneration)) {
@@ -222,7 +231,7 @@
                  keyword = currentKeyword
              )
          }
-@@ -420,26 +398,24 @@
+@@ -420,26 +394,24 @@
          val userInfo = userInfoRaw.copy(
              topPhoto = resolvedTopPhoto,
              isFollowed = followStatus,
@@ -249,7 +258,7 @@
                  currentPage = currentPage,
                  totalCount = videoData?.page?.count ?: 0,
                  pageSize = pageSize
-@@ -478,69 +454,70 @@
+@@ -478,69 +450,70 @@
                  val currentState = _uiState.value as? SpaceUiState.Success ?: return@launch
                  val mergedRelation = relationStat ?: currentState.relationStat
                  val mergedUpStat = upStat ?: currentState.upStat
@@ -325,7 +334,7 @@
  
              val progressByBvid = resolveSpaceWatchProgressByBvid(records, upMid = mid)
              val current = _uiState.value as? SpaceUiState.Success ?: return@launch
-@@ -595,25 +572,26 @@
+@@ -595,25 +568,26 @@
                      topPhoto = resolvedTopPhoto,
                      liveRoom = info.liveRoom ?: currentState.userInfo.liveRoom,
                      livePlace = info.livePlace ?: currentState.userInfo.livePlace,
@@ -353,7 +362,7 @@
                  pageSize = pageSize,
                  selectedSubTab = current.selectedSubTab,
                  selectedTid = current.selectedTid,
-@@ -656,25 +634,26 @@
+@@ -656,25 +630,26 @@
                      videos = result.data.list.vlist,
                      totalVideos = result.data.page.count,
                      hasMoreVideos = resolveNextSpaceVideoPage(
@@ -381,7 +390,7 @@
      private fun loadSpaceSupplemental(mid: Long, requestGeneration: Long) {
          activeSpaceSupplementalJob?.cancel()
          activeSpaceSupplementalJob = viewModelScope.launch {
-@@ -683,110 +662,122 @@
+@@ -683,110 +658,122 @@
                  val createdFavoriteFoldersDeferred = async { fetchCreatedFavoriteFolders(mid) }
                  val collectedFavoriteFoldersDeferred = async { fetchCollectedFavoriteFolders(mid) }
                  val supportersDeferred = async { fetchSpaceSupporters(mid) }
@@ -511,7 +520,45 @@
          if (!shouldApplySpaceLoadResult(mid, currentMid, requestGeneration, activeSpaceLoadGeneration)) return
          val current = _uiState.value as? SpaceUiState.Success ?: return
          _uiState.value = current.copy(chargeGroup = groups.first, guardGroup = groups.second)
-@@ -872,127 +863,117 @@
+@@ -836,174 +823,172 @@
+         return activeVideoListGeneration
+     }
+ 
+     fun loadMoreVideos() {
+         val current = _uiState.value as? SpaceUiState.Success ?: return
+         if (current.isLoadingMore || !current.hasMoreVideos) return
+         videoPagingSession?.let { it.appendOrRetry(); return }
+         val generation = activeVideoListGeneration
+         val requestMid = currentMid
+         val requestTid = currentTid
+         val requestOrder = currentOrder
+         val requestKeyword = currentKeyword
+-        val identity = TokenManager.accountIdentity.value
++        val identity = environment.accountIdentity
+         val seed = SpaceVideoPageChunk(currentPage, current.videos, current.totalVideos)
+         var appliedPages = 0
+         var lastFailed = false
+         lateinit var session: ForwardPagingSession<SpaceVideoPageKey, SpaceVideoPageChunk>
+         session = ForwardPagingSession(
+             config = PagingConfig(pageSize = 1, initialLoadSize = 1, prefetchDistance = 1, enablePlaceholders = false),
+             sourceFactory = {
+                 spaceVideoPagingSource(seed, requestOrder, pageSize) { number ->
+                     check(ensureWbiKeysLoaded()) { "无法获取视频请求签名" }
+                     val result = checkNotNull(fetchSpaceVideos(
+                         requestMid, number, cachedImgKey, cachedSubKey, requestTid, requestOrder, requestKeyword
+                     )) { "视频加载失败，请重试" }
+                     SpaceVideoPageChunk(number, normalizeSpaceVideoPage(requestOrder, result.list.vlist), result.page.count)
+                 }
+             },
+             onChanged = { pages, states ->
+-                if (videoPagingSession === session && identity == TokenManager.accountIdentity.value &&
++                if (videoPagingSession === session && identity == environment.accountIdentity &&
+                     shouldApplySpaceVideoResult(requestMid, currentMid, generation, activeVideoListGeneration,
+                         requestTid, currentTid, requestOrder, currentOrder, requestKeyword, currentKeyword) && states != null
+                 ) {
+                     val failed = states.refresh is LoadState.Error || states.append is LoadState.Error
+                     val ready = states.refresh is LoadState.NotLoading && pages.size > appliedPages
+                     val completed = (ready && pages.size > 1) || (failed && !lastFailed)
                      _uiState.update { state ->
                          val latest = state as? SpaceUiState.Success
                          if (latest == null) state else latest.copy(
@@ -585,10 +632,9 @@
          return try {
              val params = WbiUtils.sign(mapOf("mid" to mid.toString()), imgKey, subKey)
 -            com.android.purebilibili.core.util.Logger.d("SpaceVM", "🔍 fetchSpaceInfo params: $params")
--            val response = spaceApi.getSpaceInfo(params)
--            com.android.purebilibili.core.util.Logger.d("SpaceVM", " fetchSpaceInfo response: code=${response.code}, message=${response.message}")
 +            Unit
-+            val response = spaceApi.getSpaceInfo(params)
+             val response = spaceApi.getSpaceInfo(params)
+-            com.android.purebilibili.core.util.Logger.d("SpaceVM", " fetchSpaceInfo response: code=${response.code}, message=${response.message}")
 +            Unit
              if (response.code == 0) response.data else {
 -                android.util.Log.e("SpaceVM", " fetchSpaceInfo failed: code=${response.code}, message=${response.message}")
@@ -651,10 +697,31 @@
      //  支持 tid 和 order 参数的视频获取
      private suspend fun fetchSpaceVideos(mid: Long, page: Int, imgKey: String, subKey: String,
          tid: Int = 0, order: VideoSortOrder = VideoSortOrder.PUBDATE, keyword: String = ""): SpaceVideoData? =
-         com.android.purebilibili.data.repository.UserContentRepository.videos(mid, page, pageSize, order.apiValue,
-             tid, keyword, imgKey, subKey).getOrNull()
+-        com.android.purebilibili.data.repository.UserContentRepository.videos(mid, page, pageSize, order.apiValue,
+-            tid, keyword, imgKey, subKey).getOrNull()
++        ownedSpaceRunCatching {
++            val params = buildMap {
++                put("mid", mid.toString()); put("pn", page.toString()); put("ps", pageSize.toString()); put("order", order.apiValue)
++                if (tid > 0) put("tid", tid.toString())
++                if (keyword.isNotBlank()) put("keyword", keyword)
++            }
++            val response = spaceApi.getSpaceVideos(WbiUtils.sign(params, imgKey, subKey))
++            if (response.code != 0) throw com.android.purebilibili.data.repository.ContentRequestException(response.code, response.message)
++            response.data ?: error("UP 主投稿数据为空")
++        }.getOrNull()
  
-@@ -1083,25 +1064,25 @@
+     private suspend fun fetchSpaceVideosWithRetry(
+         mid: Long,
+         page: Int,
+         imgKey: String,
+         subKey: String,
+         tid: Int = 0,
+         order: VideoSortOrder = VideoSortOrder.PUBDATE,
+         keyword: String = ""
+     ): SpaceVideoData? {
+         fetchSpaceVideos(
+             mid = mid,
+@@ -1083,25 +1068,25 @@
          )
      }
      
@@ -681,7 +748,7 @@
                  videos = emptyList(),
                  isLoadingMore = true
              )
-@@ -1136,38 +1117,39 @@
+@@ -1136,38 +1121,39 @@
                          hasMoreVideos = resolveNextSpaceVideoPage(
                              order = order,
                              currentPage = currentPage,
@@ -722,7 +789,7 @@
                  videos = emptyList(),
                  isLoadingMore = true
              )
-@@ -1187,42 +1169,43 @@
+@@ -1187,42 +1173,43 @@
                      subKey = cachedSubKey,
                      tid = tid,
                      order = requestOrder,
@@ -769,7 +836,7 @@
      //  解析分类信息 - 从视频列表中统计分类
      private fun extractCategories(videos: List<SpaceVideoItem>): List<SpaceVideoCategory> {
          // 即使 typename 为空，也使用 typeid 创建分类
-@@ -1240,75 +1223,78 @@
+@@ -1240,75 +1227,78 @@
                  )
              }
              .sortedByDescending { it.count }
@@ -856,7 +923,7 @@
      /**
       *  加载主页数据（置顶视频 + 公告）
       */
-@@ -1330,27 +1316,28 @@
+@@ -1330,27 +1320,28 @@
                      notice = notice ?: "",
                      headerState = buildHeaderState(
                          userInfo = latest.userInfo,
@@ -887,7 +954,7 @@
      /**
       * 用路由里的 mid 立刻预取 HOME Tab 数据（置顶视频 + 公告）。
       *
-@@ -1392,43 +1379,45 @@
+@@ -1392,43 +1383,45 @@
                  notice = noticeDeferred.await(),
              )
          }
@@ -936,7 +1003,7 @@
      fun loadSpaceDynamic(refresh: Boolean = false) {
          val current = _uiState.value as? SpaceUiState.Success ?: return
          if (current.isLoadingDynamics) return
-@@ -1444,25 +1433,25 @@
+@@ -1444,25 +1437,25 @@
              try {
                  currentState = _uiState.value as? SpaceUiState.Success ?: return@launch
                  var offset = if (refresh) "" else current.dynamicOffset
@@ -963,7 +1030,7 @@
                      hasMore = responseData.has_more
                      val newlyAccumulatedVisibleCount = if (refresh) {
                          accumulated.size
-@@ -1510,30 +1499,28 @@
+@@ -1510,30 +1503,28 @@
                      userInfo = nextUserInfo,
                      headerState = nextHeaderState,
                      dynamics = accumulated,
@@ -997,7 +1064,7 @@
                  )
              }
          }
-@@ -1547,25 +1534,25 @@
+@@ -1547,25 +1538,25 @@
      }
  
      fun loadSpaceBangumi(refresh: Boolean = false) {
@@ -1024,7 +1091,7 @@
                      val previousItems = if (refresh) emptyList() else latest.bangumiItems
                      val mergedItems = if (refresh) {
                          incomingItems
-@@ -1650,24 +1637,25 @@
+@@ -1650,24 +1641,25 @@
                  } else {
                      _uiState.value = latest.copy(
                          isLoadingCheese = false,
@@ -1050,7 +1117,7 @@
                  )
              }
          }
-@@ -1831,25 +1819,26 @@
+@@ -1831,25 +1823,26 @@
      }
  
      fun updateSearchQuery(query: String) {
@@ -1078,7 +1145,7 @@
                  }
              }
              SpaceSearchScope.DYNAMIC -> {
-@@ -2019,25 +2008,26 @@
+@@ -2019,36 +2012,37 @@
                  isLoadingDynamics = false,
                  hasLoadedDynamicsOnce = true,
                  lastDynamicLoadFailed = false
@@ -1104,9 +1171,75 @@
      }
      
      private fun ensureContributionAccount() {
-         val identity = TokenManager.accountIdentity.value
+-        val identity = TokenManager.accountIdentity.value
++        val identity = environment.accountIdentity
          if (identity == contributionAccount) return
-@@ -2191,95 +2181,96 @@
+         contributionAccount = identity
+         activeSpaceAudioJob?.cancel()
+         activeSpaceArticleJob?.cancel()
+         audioPagingSession = null
+         articlePagingSession = null
+         videoPagingJob?.cancel()
+         videoPagingSession = null
+         _uiState.update { state ->
+             (state as? SpaceUiState.Success)?.copy(isLoadingAudios = false, isLoadingArticles = false, isLoadingMore = false) ?: state
+         }
+     }
+@@ -2070,25 +2064,25 @@
+             sourceFactory = {
+                 spaceContributionPagingSource<SpaceAudioItem>(itemKey = { it.id }) { number ->
+                     val response = checkNotNull(fetchSpaceAudioList(requestMid, number)) { "音频加载失败" }
+                     check(response.code == 0) { "音频加载失败：${response.code}" }
+                     val data = checkNotNull(response.data) { "音频内容响应不完整" }
+                     val items = data.data.orEmpty()
+                     val more = if (data.pageCount > 0) number < data.pageCount else
+                         (number.toLong() * SPACE_AUDIO_PAGE_SIZE_CONST < data.totalSize || items.size >= SPACE_AUDIO_PAGE_SIZE_CONST)
+                     SpaceContributionPage(number, items, data.totalSize, more)
+                 }
+             },
+             onChanged = { pages, states ->
+-                if (audioPagingSession === session && identity == TokenManager.accountIdentity.value &&
++                if (audioPagingSession === session && identity == environment.accountIdentity &&
+                     shouldApplySpaceLoadResult(requestMid, currentMid, generation, activeSpaceLoadGeneration) && states != null
+                 ) {
+                     val failure = (states.refresh as? LoadState.Error)?.error ?: (states.append as? LoadState.Error)?.error
+                     val ready = states.refresh is LoadState.NotLoading && pages.isNotEmpty()
+                     val loading = states.refresh is LoadState.Loading || states.append is LoadState.Loading
+                     _uiState.update { state ->
+                         val latest = state as? SpaceUiState.Success
+                         if (latest == null) state else {
+                             val items = if (ready) pages.flatMap { it.items } else latest.audios
+                             val next = latest.copy(
+                                 audios = items,
+                                 totalAudios = if (ready) maxOf(pages.last().total, items.size) else latest.totalAudios,
+@@ -2125,25 +2119,25 @@
+         lateinit var session: ForwardPagingSession<Int, SpaceContributionPage<SpaceArticleItem>>
+         session = ForwardPagingSession(
+             config = PagingConfig(pageSize = 1, initialLoadSize = 1, prefetchDistance = 1, enablePlaceholders = false),
+             sourceFactory = {
+                 spaceContributionPagingSource<SpaceArticleItem>(itemKey = { it.id }) { number ->
+                     val response = checkNotNull(fetchSpaceArticleList(requestMid, number)) { "专栏加载失败" }
+                     check(response.code == 0) { "专栏加载失败：${response.code}" }
+                     val data = checkNotNull(response.data) { "专栏内容响应不完整" }
+                     SpaceContributionPage(number, data.lists, data.total, data.has_more, data.offset)
+                 }
+             },
+             onChanged = { pages, states ->
+-                if (articlePagingSession === session && identity == TokenManager.accountIdentity.value &&
++                if (articlePagingSession === session && identity == environment.accountIdentity &&
+                     shouldApplySpaceLoadResult(requestMid, currentMid, generation, activeSpaceLoadGeneration) && states != null
+                 ) {
+                     val failure = (states.refresh as? LoadState.Error)?.error ?: (states.append as? LoadState.Error)?.error
+                     val ready = states.refresh is LoadState.NotLoading && pages.isNotEmpty()
+                     val loading = states.refresh is LoadState.Loading || states.append is LoadState.Loading
+                     _uiState.update { state ->
+                         val latest = state as? SpaceUiState.Success
+                         if (latest == null) state else {
+                             val items = if (ready) pages.flatMap { it.items } else latest.articles
+                             val next = latest.copy(
+                                 articles = items,
+                                 totalArticles = if (ready) maxOf(pages.last().total, items.size) else latest.totalArticles,
+@@ -2191,95 +2185,96 @@
                  }
                  _uiState.value = currentState.copy(
                      hasCheeseTab = true,
@@ -1212,7 +1345,7 @@
                                  userInfo = latestState.userInfo.copy(
                                      isFollowed = nextFollowed,
                                      relationStatus = nextRelationStatus
-@@ -2295,26 +2286,27 @@
+@@ -2295,26 +2290,27 @@
                      val relationStat = fetchRelationStat(mid)
                      if (relationStat != null) {
                          val currentState = _uiState.value as? SpaceUiState.Success
@@ -1241,7 +1374,7 @@
  
      fun showFollowGroupDialogForUser(mid: Long) {
          if (mid <= 0L) return
-@@ -2326,53 +2318,51 @@
+@@ -2326,53 +2322,51 @@
      fun dismissFollowGroupDialog() {
          _followGroupDialogVisible.value = false
      }
@@ -1301,7 +1434,7 @@
              }.onFailure {
                  _followGroupSelectedTagIds.value = emptySet()
              }
-@@ -2499,24 +2489,25 @@
+@@ -2499,24 +2493,25 @@
                              totalCount = result.data.page.count,
                              pageSize = pageSize
                          ) != null,
