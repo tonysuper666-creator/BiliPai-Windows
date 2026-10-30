@@ -96,7 +96,7 @@ val revisionNeutralSourceImportContextMatches =
     revisionNeutralSourceImportRoots.none { file("tools/$it").exists() } && revisionNeutralSourceImportShadowFiles.isEmpty
 // Pin the whole Gradle recipe, including canonical helpers and later wiring.
 // Mask exactly this self-digest assignment; raw build bytes remain task inputs.
-val revisionNeutralSourceGradleRecipeSha256 = "803549490ba2fc3447139b4ffc7c1324ff70c1fc7c540e0244a9f31b2b8b2bfc"
+val revisionNeutralSourceGradleRecipeSha256 = "c969fe62c56721177a309255aae3789d22816bc1a796eb49cf3ac9227ba9b716"
 val revisionNeutralSourceGradleRecipeMatches = runCatching {
     val recipe = file("build.gradle.kts").readText(Charsets.UTF_8).replace("\r\n", "\n")
     val ownPin = "val revisionNeutralSourceGradleRecipeSha256 = \"$revisionNeutralSourceGradleRecipeSha256\""
