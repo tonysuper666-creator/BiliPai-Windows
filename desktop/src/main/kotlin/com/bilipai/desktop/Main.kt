@@ -88,12 +88,13 @@ fun main(args: Array<String>) {
         ?.split(',')?.mapNotNull { it.trim().toIntOrNull() }?.takeIf { it.size == 4 }?.toIntArray()
     val integrationSmtcDelay = args.firstOrNull { it.startsWith("--integration-smtc-delay=") }
         ?.substringAfter('=')?.toIntOrNull()?.coerceIn(0, 300) ?: 0
+    val integrationDirectory = DesktopLibrary.directoryForAccount(null).resolve("desktop-integration")
     val instance = try {
-        com.bilipai.desktop.integration.DesktopSingleInstance.acquire(
-            DesktopLibrary.directoryForAccount(null).resolve("desktop-integration"), activationRoute)
-    } catch (failure: IllegalStateException) {
-        javax.swing.JOptionPane.showMessageDialog(null, failure.message, "BiliPai Windows",
-            javax.swing.JOptionPane.WARNING_MESSAGE)
+        com.bilipai.desktop.integration.DesktopSingleInstance.acquire(integrationDirectory, activationRoute)
+    } catch (failure: Exception) {
+        javax.swing.JOptionPane.showMessageDialog(null,
+            com.bilipai.desktop.integration.DesktopSingleInstance.startupFailureMessage(integrationDirectory, failure),
+            "BiliPai Windows", javax.swing.JOptionPane.WARNING_MESSAGE)
         return
     }
     if (successorReport != null) {

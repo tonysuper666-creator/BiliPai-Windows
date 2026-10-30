@@ -4,6 +4,7 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertNull
+import kotlin.test.assertTrue
 import java.nio.file.Files
 import java.net.Socket
 import java.net.InetAddress
@@ -11,6 +12,21 @@ import java.io.DataInputStream
 import java.io.DataOutputStream
 
 class DesktopSingleInstanceTest {
+    @Test fun startupDialogShowsOneChineseSentenceAndKeepsTheCauseInTheLog() {
+        val directory = Files.createTempDirectory("instance-failure")
+        try {
+            val raw = java.io.IOException("Access is denied: C:\\Users\\x\\instance.lock")
+            val unexpected = DesktopSingleInstance.startupFailureMessage(directory, raw)
+            assertEquals(DesktopSingleInstance.UNEXPECTED_FAILURE_MESSAGE, unexpected)
+            assertFalse(unexpected.contains("Access") || unexpected.contains("IOException"))
+            val log = Files.readString(directory.resolve(DesktopSingleInstance.FAILURE_LOG))
+            assertTrue(log.contains("java.io.IOException") && log.contains("Access is denied") && log.contains("startupDialog"))
+            val ours = DesktopSingleInstance.AcquireFailure("已有客户端未响应，请稍后重试。", raw)
+            assertEquals("已有客户端未响应，请稍后重试。", DesktopSingleInstance.startupFailureMessage(directory, ours))
+            assertFalse(DesktopSingleInstance.startupFailureMessage(directory, IllegalStateException("English only")).contains("English"))
+        } finally { directory.toFile().deleteRecursively() }
+    }
+
     @Test fun secondLaunchActivatesExistingOwnerAndShutdownReleasesLock() {
         val directory = Files.createTempDirectory("instance-test")
         try {
