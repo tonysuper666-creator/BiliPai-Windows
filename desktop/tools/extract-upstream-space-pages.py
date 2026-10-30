@@ -183,16 +183,7 @@ internal class DesktopOriginalSpaceBangumiRequests(private val api:BangumiApi,pr
         s=edit(s,'} catch (e: Exception) {','} catch (cancelled:CancellationException) { throw cancelled\n        } catch (e: Exception) {',1)
         return s
     produce(BASE+'data/repository/BangumiRepository.kt','com/bilipai/desktop/ui/DesktopOriginalSpaceBangumiRequests.kt',bangumi)
-    # Existing selected Space policy bodies keep their one original producer.
-    # Their shared generated outputs are explicit inputs; integration depends on
-    # those existing tasks before this one. Only previously uncompiled declarations
-    # from the complete original pure file enter the new source set.
-    policyOwners=[repo/'desktop/build/generated/space-overview/com/android/purebilibili/feature/space/DesktopOriginalSpaceOverview.kt',
-        repo/'desktop/build/generated/space-contributions/com/android/purebilibili/feature/space/DesktopUpstreamSpaceContributionDeclarations.kt']
-    names=set()
-    for owner in policyOwners:
-        existing=owner.read_text(encoding='utf8').replace('\r\n','\n')
-        names.update(helper.members(parser,existing))
+    # Only the retained favorites owner shares these archive mappings.
     archiveOwner=repo/'desktop/build/generated/original-favorites/com/android/purebilibili/feature/space/DesktopFavoriteArchiveMappings.kt'
     archiveDeclarations=helper.members(parser,archiveOwner.read_text(encoding='utf8'))
     def verify_sole_declaration(original,existing):
@@ -207,9 +198,6 @@ internal class DesktopOriginalSpaceBangumiRequests(private val api:BangumiApi,pr
             declaration=declarations[name][0]['text']
             verify_sole_declaration(declaration,archiveDeclarations[name][0]['text'])
             s=edit(s,declaration,'',1)
-        for name in names:
-            if name in declarations:
-                for declaration in declarations[name]:s=edit(s,declaration['text'],'',1)
         return s
     produce(BASE+'feature/space/SpaceLoadPolicy.kt',pkg+'DesktopOriginalSpaceRemainingLoadPolicy.kt',remaining)
     # No existing producer or class is present for this complete pure file in actual88.
@@ -289,9 +277,6 @@ internal class DesktopOriginalSpaceBangumiRequests(private val api:BangumiApi,pr
                 'viewModel: SpaceViewModel = LocalDesktopOriginalSpacePlatform.current.viewModel',1)
             s=edit(s,'val context = LocalContext.current',
                 'val context = LocalContext.current\n    val desktopSpacePlatform = LocalDesktopOriginalSpacePlatform.current')
-            # Whole original handler already belongs to extract-space-overview.
-            declaration=helper.members(parser,s)['handleAggregateArchiveClick'][0]['text']
-            s=edit(s,declaration,'',1)
             # v0.4.6 resolveUpNameColor reads `secondary` as the annual-VIP colour; this original still passes the theme colour.
             from v046_identity_badge_palette import up_name_vip_pink
             pink_before,pink_after=up_name_vip_pink('SpaceScreen.kt',s)
@@ -317,12 +302,6 @@ internal class DesktopOriginalSpaceBangumiRequests(private val api:BangumiApi,pr
             for name,method in [('SpaceUpowerRankViewModel','rank'),('SpaceMemberGuardViewModel','guard')]:
                 start=s.index('    val viewModel: '+name+' = viewModel(');end=s.index('    val state by viewModel.uiState',start)
                 s=edit(s,s[start:end],'    val viewModel = LocalDesktopOriginalSpacePlatform.current.'+method+'(mid, name, count)\n',1)
-            originalGuardLabel=helper.members(parser,s)['resolveSpaceGuardLevelLabel']
-            guardOwner=repo/'desktop/build/generated/space/com/android/purebilibili/feature/space/DesktopUpstreamSpaceDeclarations.kt'
-            soleGuardLabel=helper.members(parser,guardOwner.read_text(encoding='utf8'))['resolveSpaceGuardLevelLabel']
-            assert len(originalGuardLabel)==len(soleGuardLabel)==1
-            verify_sole_declaration(originalGuardLabel[0]['text'],soleGuardLabel[0]['text'])
-            s=edit(s,originalGuardLabel[0]['text'],'',1)
             return logs(s)
         produce(BASE+'feature/space/SpaceSupporterScreens.kt',pkg+'SpaceSupporterScreens.kt',supporter_screen)
         def skeleton(s,edit,logs):
