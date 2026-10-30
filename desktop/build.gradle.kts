@@ -315,6 +315,8 @@ val appCoreLaterSteps: Map<String, String> = mapOf(
 // M4a: video/bangumi logic and unchanged Compose components compile from the merged upstream tree.
 // The remaining UI/player files move when their desktop platform adapters are wired.
 val migratedVideoFeaturePaths = setOf(
+    "com/android/purebilibili/feature/video/ui/overlay/glass/PortraitProgressBar.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/PlayerProgressGlassHighlight.kt",
     "com/android/purebilibili/feature/bangumi/ui/detail/BangumiDetailComponents.kt",
     "com/android/purebilibili/feature/bangumi/policy/BangumiUiPolicy.kt",
     "com/android/purebilibili/feature/bangumi/BangumiTimelineScreen.kt",
@@ -2870,6 +2872,7 @@ val upstreamOwnedGeneratedCopies = setOf(
     // core/ui/components/UserLevelBadge (TON-1072): the upstream file draws its R.drawable level badges through the generated
     // desktop drawable table, so the blocked-list producer's classpath-PNG copy is retired.
     "blocked-list-ui/com/android/purebilibili/core/ui/components/DesktopUpstreamUserLevelBadge.kt",
+    "original-video-fullscreen-pager/com/android/purebilibili/feature/video/ui/overlay/PortraitProgressBar.kt",
     "independent-bangumi-pages/com/android/purebilibili/feature/bangumi/ui/detail/DesktopOriginalBangumiDetailComponents.kt",
     "independent-bangumi-pages/com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiTimelineScreen.kt",
     "independent-bangumi-pages/com/android/purebilibili/feature/bangumi/policy/DesktopOriginalBangumiEpisodePagePolicy.kt",
