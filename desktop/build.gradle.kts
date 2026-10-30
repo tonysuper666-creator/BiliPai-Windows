@@ -318,6 +318,7 @@ val appCoreLaterSteps: Map<String, String> = mapOf(
 // The remaining UI/player files move when their desktop platform adapters are wired.
 val migratedVideoFeaturePaths = setOf(
     "com/android/purebilibili/feature/video/viewmodel/VideoComposerDraftState.kt",
+    "com/android/purebilibili/feature/video/ui/components/RelatedVideoList.kt",
     "com/android/purebilibili/feature/video/ui/overlay/LandscapeDanmakuInput.kt",
     "com/android/purebilibili/feature/video/ui/components/VideoCommentSheetHost.kt",
     "com/android/purebilibili/feature/video/ui/components/PlayerOptionStyle.kt",
@@ -3101,6 +3102,7 @@ val transitionPatchDirectory = file("upstream-core/transition/patches")
 val transitionPatchedGeneratedFiles = fileTree(transitionPatchDirectory) { include("**/*.patch") }.files
     .map { it.relativeTo(transitionPatchDirectory).invariantSeparatorsPath.removeSuffix(".patch") }.toSortedSet()
 val transitionPatchProducers = mapOf(
+    "original-video-content-full" to "extractOriginalVideoContentFull",
     "shared-liquid-tabs" to "extractSharedLiquidTabs",
     "original-following" to "extractOriginalFollowing",
     "original-space-pages" to "extractOriginalSpacePages",
