@@ -553,8 +553,6 @@ class WindowsOwnedWiringTests(unittest.TestCase):
         self.assertEqual(1, support.count('val click = if (followTarget == null) start else rememberFollowActionWithConfirmation('))
         self.assertEqual(1, support.count('TextButton(enabled = !busy, onClick = click)'))
         guarded = {'CommunitySearchScreens.kt': ('user.mid', 'user.name', 'user.isFollowed'),
-                   'DesktopSpaceScreens.kt': ('user.mid', 'user.name', 'user.isFollowed'),
-                   'DesktopCompleteSpaceScreen.kt': ('mid', 'user.name', 'user.isFollowed'),
                    'PersonalScreens.kt': ('user.mid', 'user.uname', 'true'),
                    'VideoEngagementPanel.kt': ('details.authorMid', 'details.author', 'followed')}
         seen = 0
@@ -599,8 +597,7 @@ class WindowsOwnedWiringTests(unittest.TestCase):
 
     def test_every_changed_and_new_kotlin_file_keeps_balanced_delimiters_and_the_jvm_counts(self):
         files = [UI / name for name in ('DesktopAdmittedWrite.kt', 'DesktopWindowsFollowConfirmationDialog.kt',
-                                        'CommunityUiSupport.kt', 'CommunitySearchScreens.kt',
-                                        'DesktopSpaceScreens.kt', 'DesktopCompleteSpaceScreen.kt', 'PersonalScreens.kt',
+                                        'CommunityUiSupport.kt', 'CommunitySearchScreens.kt', 'PersonalScreens.kt',
                                         'VideoEngagementPanel.kt', 'DesktopWindowsVideoPhysicalLeaf.kt')]
         tests = REPO / 'desktop/src/test/kotlin/com/bilipai/desktop/ui'
         files += [tests / 'DesktopAdmittedWriteTest.kt', tests / 'DesktopFollowConfirmationEmissionTest.kt',

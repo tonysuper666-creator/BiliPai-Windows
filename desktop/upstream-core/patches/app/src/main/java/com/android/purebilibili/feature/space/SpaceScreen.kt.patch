@@ -1033,30 +1033,3 @@
                          .data(skinBackgroundPaths[page])
                          .crossfade(true)
                          .buildForProfileFusion(),
-@@ -5997,25 +5915,25 @@
-                 text = message,
-                 style = MaterialTheme.typography.bodyLarge,
-                 color = AppContentColors.secondaryText()
-             )
-             Spacer(modifier = Modifier.height(12.dp))
-             AppButton(onClick = onRetry) {
-                 AppText("重试")
-             }
-         }
-     }
- }
- 
--private fun handleAggregateArchiveClick(
-+internal fun handleAggregateArchiveClick(
-     item: SpaceAggregateArchiveItem,
-     onVideoClick: (String) -> Unit,
-     onAudioClick: (Long) -> Unit,
-     onBangumiClick: (Long) -> Unit,
-     onWebClick: (String, String) -> Unit
- ) {
-     val videoId = resolveSpaceAggregateVideoId(item)
-     when {
-         videoId != null -> onVideoClick(videoId)
-         item.goto.contains("bangumi", ignoreCase = true) ||
-             item.isPgc ||
-             item.coverIcon.contains("bangumi", ignoreCase = true) -> {

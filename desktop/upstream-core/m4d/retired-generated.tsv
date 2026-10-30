@@ -14,3 +14,9 @@ space-contributions/com/android/purebilibili/feature/space/DesktopOriginalSpaceP
 space-contributions/com/android/purebilibili/feature/space/DesktopOriginalSpaceSubTab.kt
 original-favorites/com/android/purebilibili/feature/space/DesktopFavoriteArchiveMappings.kt
 video-tablet-full/com/android/purebilibili/feature/space/DesktopOriginalSpaceUiState.kt
+space/com/android/purebilibili/feature/space/DesktopUpstreamSpaceDeclarations.kt
+space-overview/com/android/purebilibili/feature/space/DesktopOriginalSpaceOverview.kt
+space-contributions/com/android/purebilibili/feature/space/DesktopUpstreamSpaceContributionDeclarations.kt
+space-contributions/com/android/purebilibili/data/repository/DesktopOriginalSpaceInteraction.kt
+space-contributions/com/android/purebilibili/feature/list/DesktopOriginalSpaceInteractionPagination.kt
+space-image-previews/com/android/purebilibili/feature/space/DesktopOriginalSpaceImagePreviewCallers.kt

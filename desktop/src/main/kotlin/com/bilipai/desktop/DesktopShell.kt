@@ -283,7 +283,6 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
     val social = remember(repository) { DesktopSocialRepository(repository) }
     val community = remember(repository, discovery.blockedUps) { DesktopCommunityRepository(repository, discovery.blockedUps) }
     val space = remember(repository) { DesktopSpaceRepository(repository) }
-    val spaceContributions = remember(repository) { DesktopSpaceContributionsRepository(repository) }
     val storyTopic = remember(repository, discovery) { DesktopStoryTopicRepository(repository, discovery) }
     val browseMemory = remember(account?.mid, sessionEpoch) { DesktopBrowseMemory() }
     val originalBrowseCachedPosition: (String, Long, () -> Boolean) -> Long? =
