@@ -1,0 +1,10 @@
+--- a/core-data/src/main/java/com/android/purebilibili/core/network/WbiKeyManager.kt
++++ b/core-data/src/main/java/com/android/purebilibili/core/network/WbiKeyManager.kt
+@@ -86,6 +86,7 @@ object WbiKeyManager {
+                 val imgKey = wbiImg.img_url.substringAfterLast("/").substringBefore(".")
+                 val subKey = wbiImg.sub_url.substringAfterLast("/").substringBefore(".")
+                 
++                com.bilipai.desktop.data.DesktopUpstreamCalls.admit("WbiKeyManager keys") // Desktop (TON-1082)
+                 cachedKeys = Pair(imgKey, subKey)
+                 cacheTimestamp = System.currentTimeMillis()
+                 

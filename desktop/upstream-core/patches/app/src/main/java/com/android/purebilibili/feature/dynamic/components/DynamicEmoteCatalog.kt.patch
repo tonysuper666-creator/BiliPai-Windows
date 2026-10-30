@@ -1,0 +1,10 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicEmoteCatalog.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicEmoteCatalog.kt
+@@ -75,6 +75,7 @@ internal object DynamicEmoteCatalog {
+                 fullyLoaded = false
+             }
+             val loadResult = loadEmoteUrlMap()
++            com.bilipai.desktop.data.DesktopUpstreamCalls.admit("DynamicEmoteCatalog") // Desktop (TON-1082)
+             cached = loadResult.entries
+             cachedPackages = loadResult.packages
+             fullyLoaded = loadResult.complete

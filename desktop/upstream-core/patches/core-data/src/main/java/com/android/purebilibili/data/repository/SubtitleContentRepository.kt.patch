@@ -1,0 +1,16 @@
+--- a/core-data/src/main/java/com/android/purebilibili/data/repository/SubtitleContentRepository.kt
++++ b/core-data/src/main/java/com/android/purebilibili/data/repository/SubtitleContentRepository.kt
+@@ -25,11 +25,12 @@ object SubtitleContentRepository {
+         val url = normalizeBilibiliSubtitleUrl(subtitleUrl)
+         require(isTrustedBilibiliSubtitleUrl(url)) { "字幕地址无效" }
+         val key = "$bvid:$cid:$subtitleId:$subtitleIdStr:$subtitleLan:$url"
+-        cache[key] ?: NetworkModule.okHttpClient.newCall(Request.Builder().url(url)
++        cache[key] ?: com.bilipai.desktop.data.DesktopUpstreamCalls.main.newCall(Request.Builder().url(url) // Desktop: caller's owner (TON-1082)
+             .cacheControl(CacheControl.FORCE_NETWORK).header("Referer", "https://www.bilibili.com").build())
+             .execute().use { response ->
+                 check(response.isSuccessful) { "字幕请求失败（HTTP ${response.code}）" }
+                 parseBiliSubtitleBody(response.body.string()).also {
++                    com.bilipai.desktop.data.DesktopUpstreamCalls.admit("SubtitleContentRepository cache") // Desktop (TON-1082)
+                     if (cache.size >= 48) cache.clear()
+                     cache[key] = it
+                 }
