@@ -13,9 +13,10 @@ public class BpFocus {
 }
 '@
 [BpFocus]::SetProcessDPIAware() | Out-Null
+$deadline=[datetime]'2026-10-30T07:37:21Z' # Leave two minutes for evidence export inside the card's 90-minute limit.
 $summary=[ordered]@{clientStarts=1;steps=@();started=(Get-Date).ToString('o')}
 function Step($name,[scriptblock]$body){
- try{$value=& $body;$row=[ordered]@{name=$name;passed=$true;value=$value}}
+ try{if((Get-Date)-gt $deadline){throw 'Card time budget reached'};$value=& $body;$row=[ordered]@{name=$name;passed=$true;value=$value}}
  catch{
   $row=[ordered]@{name=$name;passed=$false;error=$_.Exception.ToString()}
   try{
@@ -26,7 +27,8 @@ function Step($name,[scriptblock]$body){
  }
  $script:summary.steps+=@($row);Save-BpJson $summary "$out\session.json"
 }
-function Tick{ $null=Update-BpTree;Start-Sleep -Milliseconds 180 }
+function Tick{ if((Get-Date)-gt $deadline){throw 'Card time budget reached'};$null=Update-BpTree;Start-Sleep -Milliseconds 180 }
+function Window-Seconds{if((Get-Date)-gt $deadline){throw 'Card time budget reached'};return [int][math]::Min(100,[math]::Max(1,($deadline-(Get-Date)).TotalSeconds))}
 function Wait-File($file,[int]$seconds=900){$end=(Get-Date).AddSeconds($seconds);while(!(Test-Path $file)){
  if((Get-Date)-gt $end){throw "Timed out waiting for $file"};Tick
  if(Test-Path "$out\fixture-finished"){throw 'Fixture ended before checkpoint'}
@@ -69,7 +71,7 @@ try{
  $p=Start-Process "$tools\run.cmd" -WorkingDirectory $card -PassThru
  Initialize-BpTree $p.Id $out | Out-Null
  Step 'initial-window' {
-  $script:window=Wait-BpTreeWindow 100
+  $script:window=Wait-BpTreeWindow (Window-Seconds)
   [BpFocus]::ShowWindow([IntPtr]$script:window.hwnd,3)|Out-Null
   [BpFocus]::SetForegroundWindow([IntPtr]$script:window.hwnd)|Out-Null
   $script:window
@@ -104,7 +106,7 @@ try{
    Save-BpTreeShot $script:window 'settings-restart' | Out-Null
    $null=Update-BpTree
    $null=Probe 'click' '立即重启|立即重啟|Restart Now'
-   $script:window=Wait-BpTreeWindow 100 $oldPid
+   $script:window=Wait-BpTreeWindow (Window-Seconds) $oldPid
    [BpFocus]::SetForegroundWindow([IntPtr]$script:window.hwnd)|Out-Null
    $readyUntil=(Get-Date).AddSeconds(60)
    do{

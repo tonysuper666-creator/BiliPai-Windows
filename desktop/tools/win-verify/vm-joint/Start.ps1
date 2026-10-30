@@ -13,6 +13,7 @@ $scriptName=if($SelfTest){'SelfTest.ps1'}else{'Session.ps1'}
 $out="$card\$stage"
 New-Item -ItemType Directory -Force $out | Out-Null
 if(!$SelfTest){
+ if((Get-Date)-gt [datetime]'2026-10-30T07:32:21Z'){throw 'Too little card time remains to spend the single client attempt'}
  $build=Get-Content '\\Mac\vmio\accept-vm-joint-20261030-last.json' -Raw | ConvertFrom-Json
  if($build.sha-ne '4d1cda2b45de5c9ff808b716f4895d3073b628c1'){throw 'Wrong package SHA'}
  $test=Get-Content "$card\selftest\summary.json" -Raw|ConvertFrom-Json
