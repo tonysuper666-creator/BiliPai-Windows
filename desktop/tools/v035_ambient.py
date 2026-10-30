@@ -1,4 +1,5 @@
 from pathlib import Path
+from desktop_paths import long_path
 import copy, hashlib, json
 from v025_source_paths import canonical_source
 
@@ -8,7 +9,7 @@ COMMIT = '46eaf277e83512061785be9759d1f07aba3c4839'
 
 def wide(p):
     s = str(p.resolve())
-    return Path(s if s.startswith('\\\\?\\') else '\\\\?\\' + s)
+    return long_path(s)
 
 def entries():
     raw = wide(ARCHIVE / 'manifest.json').read_bytes()

@@ -9,11 +9,15 @@ plugins {
 group = "com.bilipai.windows.sourcefork"
 version = "0.9.4-5c91d5e5-windows-source1"
 
+// Same interpreter rule as the desktop build: Windows keeps `python`, other hosts only have `python3`.
+val pythonExecutable = System.getenv("PYTHON_EXECUTABLE")
+    ?: if (System.getProperty("os.name").startsWith("Windows", ignoreCase = true)) "python" else "python3"
+
 val verifyPinnedSource by tasks.registering(Exec::class) {
     // The pinned v0.2.5 navigation originals live in the legacy read point (see settings.gradle.kts):
     // the merged root carries upstream's current miuix-navigation.
     val legacyRoot = file(gradle.extra["bilipai.legacyRoot"] as String)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "verify-source.py", "--root", projectDir.absolutePath,
+    commandLine(pythonExecutable, "verify-source.py", "--root", projectDir.absolutePath,
         "--originals-root", legacyRoot.absolutePath)
     inputs.file("upstream-provenance.json")
     inputs.file("verify-source.py")

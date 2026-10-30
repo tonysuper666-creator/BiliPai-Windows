@@ -7,6 +7,7 @@ import argparse
 import hashlib
 import json
 from pathlib import Path
+from desktop_paths import long_path
 
 AUDIO = "app/src/main/java/com/android/purebilibili/feature/audio/"
 SOURCES = {
@@ -48,7 +49,7 @@ def write(output: Path, relative: str, source: str, original: str, body: str) ->
 def generate(repo: Path, output: Path) -> list[Path]:
     from v044_favorite_detail import validate_outputs, playlist_source
     validate_outputs(repo, output)
-    output = Path(str(output) if str(output).startswith("\\\\?\\") else "\\\\?\\" + str(output.absolute()))
+    output = long_path(output.absolute())
     generated = []
     source = AUDIO + "viewmodel/MusicViewModel.kt"
     original = read_source(repo, source)

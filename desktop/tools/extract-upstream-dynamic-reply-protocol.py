@@ -2,6 +2,7 @@
 from v025_source_paths import canonical_source as _desktop_canonical_source, canonical_relative as _desktop_canonical_relative
 from v025_source_paths import _catalog, reviewed_sha256
 from pathlib import Path
+from desktop_paths import long_path
 import v029_comment_search as comment_search
 import v036_comment_route as comment_route
 import hashlib, re, subprocess, json
@@ -9,7 +10,7 @@ def load_pinned_sources(repo: Path, paths):
     """One fixed manifest commit plus Git blobs; never silently accept a local edit."""
     def normalized(path):
         value = str(path.absolute())
-        safe = Path(value if value.startswith('\\\\?\\') else '\\\\?\\' + value)
+        safe = long_path(value)
         return safe.read_text(encoding='utf-8').replace('\r\n', '\n').replace('\r', '\n')
     manifest = json.loads(normalized(repo / 'desktop/upstream-sources.json'))
     baseline_commit = manifest['upstreamCommit']
@@ -132,7 +133,7 @@ def generate(repo: Path, output: Path):
 
     def safe(path):
         value = str(path.absolute())
-        return Path(value if value.startswith('\\\\?\\') else '\\\\?\\' + value)
+        return long_path(value)
 
     def read(path):
         return safe(path).read_text(encoding='utf-8').replace('\r\n', '\n').replace('\r', '\n')

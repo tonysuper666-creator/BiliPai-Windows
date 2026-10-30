@@ -1,3 +1,4 @@
+from desktop_paths import long_path
 from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
 import argparse, hashlib, importlib.util, json, os, textwrap
@@ -6,9 +7,8 @@ TARGET='3d5d19a2f994daccd0e2f8b5f522b6d82f43d589'
 APP='app/src/main/java/com/android/purebilibili/navigation/AppNavigation.kt'
 PAGER='app/src/main/java/com/android/purebilibili/navigation/MainBottomPagerState.kt'
 TOP='app/src/main/java/com/android/purebilibili/navigation/AppTopLevelNavigationPolicy.kt'
-PREFIX=chr(92)*2+'?'+chr(92)
 def safe(p):
-    s=os.path.abspath(p); return Path(s if s.startswith(PREFIX) else PREFIX+s)
+    s=os.path.abspath(p); return long_path(s)
 def digest(s): return hashlib.sha256(s.encode()).hexdigest()
 def load(path):
     spec=importlib.util.spec_from_file_location('root_nav_tokens',safe(path))
