@@ -3,3 +3,4 @@ dynamic-full-card/com/android/purebilibili/feature/message/DesktopOriginalMessag
 home-settings/generated/com/android/purebilibili/feature/settings/AppearanceSettingsLayoutPolicy.kt
 original-storage-settings/com/android/purebilibili/feature/settings/CacheClearAnimation.kt
 settings/com/android/purebilibili/feature/settings/webdav/DesktopWebDavConfig.kt
+system-about/com/android/purebilibili/feature/settings/DesktopOriginalAboutBuildProvenance.kt
