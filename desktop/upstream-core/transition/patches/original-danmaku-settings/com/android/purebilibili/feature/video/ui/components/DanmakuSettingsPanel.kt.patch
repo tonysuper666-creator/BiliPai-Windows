@@ -1,0 +1,136 @@
+--- a/original-danmaku-settings/com/android/purebilibili/feature/video/ui/components/DanmakuSettingsPanel.kt
++++ b/original-danmaku-settings/com/android/purebilibili/feature/video/ui/components/DanmakuSettingsPanel.kt
+@@ -1933,121 +1933,18 @@
+     tickCount: Int = 0,
+     valueText: (Float) -> String = displayValue
+ ) {
+-    var localValue by remember(valueRange) { mutableFloatStateOf(value) }
+-    var previewing by remember { mutableStateOf(false) }
+-    val latestCommit by androidx.compose.runtime.rememberUpdatedState(onValueChange)
+-    androidx.compose.runtime.LaunchedEffect(value) {
+-        if (!previewing) localValue = value
+-    }
+-    androidx.compose.runtime.DisposableEffect(Unit) {
+-        onDispose { if (previewing) latestCommit(localValue) }
+-    }
+-    val liquidSlider = com.android.purebilibili.core.ui.LocalAppThemeConfig.current.liquidGlassEnabled &&
+-        com.bilipai.desktop.ui.desktopDetailRenderEffectsSupported()
+-    val sliderProgress = remember(localValue, valueRange) {
+-        val total = valueRange.endInclusive - valueRange.start
+-        if (total <= 0f) {
+-            0f
+-        } else {
+-            ((localValue - valueRange.start) / total).coerceIn(0f, 1f)
+-        }
+-    }
+-
+-    Column {
+-        Row(
+-            modifier = Modifier.fillMaxWidth(),
+-            horizontalArrangement = Arrangement.SpaceBetween,
+-            verticalAlignment = Alignment.CenterVertically
+-        ) {
+-            if (fullscreenStyle) {
+-                AppText(
+-                    text = "$label ${valueText(localValue)}",
+-                    color = colors.titleColor,
+-                    style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Medium),
+-                    modifier = Modifier.weight(1f)
+-                )
+-                if (resetValue != null) {
+-                    AppIconButton(
+-                        onClick = {
+-                            localValue = resetValue
+-                            previewing = false
+-                            onValueChange(resetValue)
+-                        },
+-                        modifier = Modifier
+-                            .size(32.dp)
+-                            .background(colors.resetButtonBackgroundColor, CircleShape)
+-                    ) {
+-                        AppIcon(
+-                            imageVector = Icons.Outlined.Refresh,
+-                            contentDescription = "重置",
+-                            tint = colors.resetButtonColor,
+-                            modifier = Modifier.size(20.dp)
+-                        )
+-                    }
+-                }
+-            } else {
+-                AppText(
+-                    text = label,
+-                    color = colors.titleColor,
+-                    style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Medium)
+-                )
+-                AppSurface(
+-                    color = colors.itemColor,
+-                    shape = AppShapes.container(ContainerLevel.Pill)
+-                ) {
+-                    AppText(
+-                        text = displayValue(localValue),
+-                        color = colors.sliderActiveTrackColor,
+-                        style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.SemiBold),
+-                        modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp)
+-                    )
+-                }
+-            }
+-        }
+-
+-        Spacer(modifier = Modifier.height(if (fullscreenStyle) 10.dp else 12.dp))
+-
+-        Box(
+-            modifier = Modifier
+-                .fillMaxWidth()
+-                .height(if (liquidSlider) 48.dp else if (fullscreenStyle) 32.dp else 28.dp),
+-            contentAlignment = Alignment.Center
+-        ) {
+-            if (!liquidSlider && fullscreenStyle && tickCount > 1) {
+-                DanmakuSliderTicks(
+-                    tickCount = tickCount,
+-                    progress = sliderProgress,
+-                    colors = colors,
+-                    modifier = Modifier
+-                        .fillMaxWidth()
+-                        .padding(horizontal = 6.dp)
+-                )
+-            }
+-
+-            AppSlider(
+-                value = localValue,
+-                onValueChange = { newValue ->
+-                    localValue = newValue
+-                    previewing = true
+-                    onValuePreview?.invoke(newValue)
+-                },
+-                onValueChangeFinished = {
+-                    previewing = false
+-                    onValueChange(localValue)
+-                },
+-                valueRange = valueRange,
+-                steps = steps,
+-                // Glass uses the same resource palette and lens as settings controls.
+-                // Native themes retain the panel's existing contrast palette.
+-                colors = if (liquidSlider) null else AppSliderDefaults.colors(
+-                    thumbColor = colors.sliderThumbColor,
+-                    activeTrackColor = colors.sliderActiveTrackColor,
+-                    inactiveTrackColor = colors.sliderInactiveTrackColor
+-                ),
+-                modifier = Modifier.fillMaxWidth().semantics { contentDescription = label }
+-            )
+-        }
+-    }
++    // Keep the existing desktop callbacks and close-during-drag commit boundary.
++    DanmakuSettingsSlider(
++        label = label,
++        valueText = if (fullscreenStyle) valueText else displayValue,
++        value = value,
++        valueRange = valueRange,
++        steps = steps,
++        defaultValue = if (fullscreenStyle) resetValue else null,
++        onValuePreview = { onValuePreview?.invoke(it) },
++        onValueChangeFinished = onValueChange,
++        commitOnDispose = true,
++    )
+ }
+ 
+ @Composable
