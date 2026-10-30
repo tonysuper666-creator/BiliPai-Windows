@@ -40,8 +40,6 @@ feature/plugin/googlecast/GoogleCastRoutePolicy.kt	编译不过（1 处）：未
 feature/plugin/js/BiliPaiJsLayoutPresetStore.kt	旧 JS 插件内容页副本按 DesktopPluginContext 调用；随 BiliPaiJsPluginContentScreen 一起迁
 feature/plugin/js/BiliPaiJsPluginContentScreen.kt	编译不过（72 处）：Cannot infer type for type parameter '_'. Specify ×25；Overload resolution ambiguity between candidates:×13；未解析 Intent×5；等对应桌面替身或桌面实现
 feature/plugin/js/ExternalMediaPlayerScreen.kt	编译不过（79 处）：Cannot infer type for type parameter '_'. Specify ×12；未解析 media3×10；未解析 engine×6；等对应桌面替身或桌面实现
-feature/profile/AccountLedgerScreen.kt	上游新增的硬币/经验明细页，桌面导航还没有这个目的地（ProfileScreen 的 onAccountLedgerClick 传 null，入口不显示）；接入导航时与 AccountLedgerRepository 一起迁
-feature/profile/AccountLedgerViewModel.kt	同 AccountLedgerScreen；AccountLedgerRepository 读进程级 TokenManager，桌面要改成页面账号环境
 feature/profile/HomeWallpaperAdjustmentSheet.kt	调用 core/ui/wallpaper/WallpaperMedia 的新接口（WallpaperMediaLoadState、loadWallpaperPalette、playbackPriority 等）；WallpaperMedia 在 appCoreLaterSteps 等 mpv 版壁纸替换，桌面首页壁纸调整仍是 DesktopHomeWallpaperAdjustmentSheet。随 WallpaperMedia 一起迁
 feature/profile/SplashWallpaperPickerSheet.kt	同 HomeWallpaperAdjustmentSheet：依赖 WallpaperMedia 新接口与 HomeWallpaperAdjustmentSheet，桌面壁纸选择仍由 home-settings 生成的 DesktopOriginalSplashWallpaperPickerContent 承担。随 WallpaperMedia 一起迁
 feature/profile/WallpaperImageImport.kt	桌面导入走 DesktopProfileOwnedFiles 的受控文件 actor（DesktopProfileWallpaperImportContext）；上游新增的按 MIME 改扩展名步骤要扩展该接口，与 SplashWallpaperPickerSheet 一起迁
