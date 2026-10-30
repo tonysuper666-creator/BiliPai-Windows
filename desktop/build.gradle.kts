@@ -560,6 +560,7 @@ val migratedVideoFeaturePaths = setOf(
     "com/android/purebilibili/feature/video/ui/pager/PortraitControlsVisibilityPolicy.kt",
     "com/android/purebilibili/feature/video/ui/pager/PortraitDetailVideoListPolicy.kt",
     "com/android/purebilibili/feature/video/ui/pager/PortraitMainPlayerSyncPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/pager/PortraitAudioPlaybackController.kt",
     "com/android/purebilibili/feature/video/ui/pager/PortraitPlaybackAdvancePolicy.kt",
     "com/android/purebilibili/feature/video/ui/pager/PortraitProgressSyncPolicy.kt",
     "com/android/purebilibili/feature/video/ui/pager/PortraitSharePolicy.kt",
@@ -2883,6 +2884,7 @@ val prepareJsWorkerResources = if (hostIsWindows) tasks.register<Sync>("prepareJ
 
 // Generated legacy files that re-declare migrated upstream declarations under another file name.
 val upstreamOwnedGeneratedCopies = setOf(
+    "original-video-fullscreen-pager/com/android/purebilibili/feature/video/ui/pager/PortraitAudioPlaybackController.kt",
     "original-video-player-full-controls/com/android/purebilibili/feature/video/ui/overlay/CenterPlaybackControl.kt",
     "collection-sheet/com/android/purebilibili/feature/video/ui/components/DesktopOriginalCollectionSubscriptionButton.kt",
     "video-share-consent/com/android/purebilibili/feature/video/share/VideoShareSheetMotion.kt",
