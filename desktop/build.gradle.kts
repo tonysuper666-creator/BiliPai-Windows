@@ -3061,6 +3061,8 @@ val appCoreUpstreamTestsNotRun: Map<String, String> = mapOf(
 // Approved upstream test corrections are isolated from production patch outputs.
 // The complete LF-normalized source is pinned: even an edit outside a hunk needs review.
 val correctedUpstreamTestPaths = setOf(
+    "app/src/test/java/com/android/purebilibili/core/util/NavigationUiPolicyTabletTest.kt",
+    "app/src/test/java/com/android/purebilibili/core/theme/SeedColorSchemeTest.kt",
     "app/src/test/java/com/android/purebilibili/core/ui/BottomBarScrollHidePolicyTest.kt",
     "design-system/src/test/java/com/android/purebilibili/core/ui/blur/ProgressiveFadeTest.kt",
     "design-system/src/test/java/com/android/purebilibili/core/ui/adaptive/DeviceUiProfilePolicyTest.kt",

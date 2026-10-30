@@ -1,0 +1,96 @@
+Upstream-commit: 24841a6137ece748f345179fce0425c7c6f4a9f1
+Upstream-source-sha256: fd0cf5ccc254fc0b077ebae6340581fd89dbc321f60115d7f69a1e93d5c7b336
+Reason: Compose ColorScheme has reference equality; two separately generated identical palettes must be compared by all 48 color roles, including fixed roles and deprecated surfaceVariant. Keep independent createSeedColorScheme expectations, the non-raw-primary check, and expand the same method to both light/dark, 2021/2025 specs and two unrelated standard styles. No product colors or completeness test changes.
+
+--- a/app/src/test/java/com/android/purebilibili/core/theme/SeedColorSchemeTest.kt
++++ b/app/src/test/java/com/android/purebilibili/core/theme/SeedColorSchemeTest.kt
+@@ -1,5 +1,6 @@
+ package com.android.purebilibili.core.theme
+ 
++import androidx.compose.material3.ColorScheme
+ import androidx.compose.ui.graphics.Color
+ import com.android.purebilibili.feature.settings.Md3ColorSource
+ import com.materialkolor.PaletteStyle
+@@ -92,12 +93,19 @@
+ 
+     @Test
+     fun legacyOnlyStylesKeepTheirOwnRulesRegardlessOfStandardColorSpec() {
+-        val actual = createBiliPaiStyleColorScheme(
+-            seed, false, false, PaletteStyle.Monochrome, ColorSpec.SpecVersion.SPEC_2025,
+-            seedPaletteStyle = SeedPaletteStyle.CandyPop,
+-        )
+-        assertEquals(createSeedColorScheme(seed, false, SeedPaletteStyle.CandyPop), actual)
+-        assertNotEquals(actual.primary, seed)
++        for (dark in listOf(false, true)) {
++            val expected = createSeedColorScheme(seed, dark, SeedPaletteStyle.CandyPop)
++            for (spec in listOf(ColorSpec.SpecVersion.SPEC_2021, ColorSpec.SpecVersion.SPEC_2025)) {
++                for (standardStyle in listOf(PaletteStyle.Monochrome, PaletteStyle.Vibrant)) {
++                    val actual = createBiliPaiStyleColorScheme(
++                        seed, dark, false, standardStyle, spec,
++                        seedPaletteStyle = SeedPaletteStyle.CandyPop,
++                    )
++                    assertEquals(expected.colorRoles(), actual.colorRoles(), "legacy CandyPop dark=$dark spec=$spec style=$standardStyle")
++                    assertNotEquals(actual.primary, seed)
++                }
++            }
++        }
+     }
+ 
+     @Test
+@@ -122,4 +130,56 @@
+         assertEquals(60, SeedTones.forStyle(SeedPaletteStyle.CandyPop, false).secondaryTone)
+         assertEquals(50, SeedTones.forStyle(SeedPaletteStyle.Chroma, false).secondaryTone)
+     }
++
++    @Suppress("DEPRECATION")
++    private fun ColorScheme.colorRoles(): Map<String, Color> = linkedMapOf(
++        "primary" to primary,
++        "onPrimary" to onPrimary,
++        "primaryContainer" to primaryContainer,
++        "onPrimaryContainer" to onPrimaryContainer,
++        "secondary" to secondary,
++        "onSecondary" to onSecondary,
++        "secondaryContainer" to secondaryContainer,
++        "onSecondaryContainer" to onSecondaryContainer,
++        "tertiary" to tertiary,
++        "onTertiary" to onTertiary,
++        "tertiaryContainer" to tertiaryContainer,
++        "onTertiaryContainer" to onTertiaryContainer,
++        "error" to error,
++        "onError" to onError,
++        "errorContainer" to errorContainer,
++        "onErrorContainer" to onErrorContainer,
++        "background" to background,
++        "onBackground" to onBackground,
++        "surface" to surface,
++        "onSurface" to onSurface,
++        "surfaceVariant" to surfaceVariant,
++        "onSurfaceVariant" to onSurfaceVariant,
++        "surfaceTint" to surfaceTint,
++        "inversePrimary" to inversePrimary,
++        "inverseSurface" to inverseSurface,
++        "inverseOnSurface" to inverseOnSurface,
++        "outline" to outline,
++        "outlineVariant" to outlineVariant,
++        "scrim" to scrim,
++        "surfaceBright" to surfaceBright,
++        "surfaceDim" to surfaceDim,
++        "surfaceContainerLowest" to surfaceContainerLowest,
++        "surfaceContainerLow" to surfaceContainerLow,
++        "surfaceContainer" to surfaceContainer,
++        "surfaceContainerHigh" to surfaceContainerHigh,
++        "surfaceContainerHighest" to surfaceContainerHighest,
++        "primaryFixed" to primaryFixed,
++        "primaryFixedDim" to primaryFixedDim,
++        "onPrimaryFixed" to onPrimaryFixed,
++        "onPrimaryFixedVariant" to onPrimaryFixedVariant,
++        "secondaryFixed" to secondaryFixed,
++        "secondaryFixedDim" to secondaryFixedDim,
++        "onSecondaryFixed" to onSecondaryFixed,
++        "onSecondaryFixedVariant" to onSecondaryFixedVariant,
++        "tertiaryFixed" to tertiaryFixed,
++        "tertiaryFixedDim" to tertiaryFixedDim,
++        "onTertiaryFixed" to onTertiaryFixed,
++        "onTertiaryFixedVariant" to onTertiaryFixedVariant,
++    )
+ }
