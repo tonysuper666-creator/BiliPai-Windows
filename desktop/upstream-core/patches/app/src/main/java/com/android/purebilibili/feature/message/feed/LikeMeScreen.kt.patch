@@ -1,0 +1,229 @@
+--- a/com/android/purebilibili/feature/message/feed/LikeMeScreen.kt
++++ b/com/android/purebilibili/feature/message/feed/LikeMeScreen.kt
+@@ -23,41 +23,37 @@
+ import androidx.compose.foundation.combinedClickable
+ import androidx.compose.runtime.*
+ import androidx.compose.runtime.saveable.rememberSaveable
+ import com.android.purebilibili.feature.message.*
+ import androidx.compose.runtime.Composable
+ import androidx.lifecycle.compose.collectAsStateWithLifecycle
+ import androidx.compose.runtime.getValue
+ import androidx.compose.ui.Alignment
+ import androidx.compose.ui.Modifier
+ import androidx.compose.ui.text.font.FontWeight
+ import androidx.compose.ui.text.style.TextOverflow
+ import androidx.compose.ui.unit.dp
+-import androidx.lifecycle.ViewModel
+-import androidx.lifecycle.viewModelScope
+-import androidx.lifecycle.viewmodel.compose.viewModel
+ import com.android.purebilibili.feature.message.MessageAppScaffold as AppScaffold
+ import com.android.purebilibili.core.ui.AppTopBar
+ import com.android.purebilibili.core.ui.AdaptivePullToRefreshBox
+ import com.android.purebilibili.core.ui.rememberAppBackIcon
+ import com.android.purebilibili.core.ui.components.AppIconButton
+ import com.android.purebilibili.data.model.response.MessageFeedLikeItem
+-import com.android.purebilibili.data.repository.MessageRepository
++import com.bilipai.desktop.ui.DesktopMessagePageAdmission
++import com.bilipai.desktop.ui.LocalDesktopMessagePageOwner
+ import kotlinx.coroutines.flow.MutableStateFlow
+ import kotlinx.coroutines.flow.StateFlow
+ import kotlinx.coroutines.flow.asStateFlow
+ import kotlinx.coroutines.launch
+ import kotlinx.coroutines.Job
+-import com.android.purebilibili.core.coroutines.AccountScopedRequests
+-import com.android.purebilibili.core.store.TokenManager
+ 
+ data class LikeMeUiState(
+     val isLoading: Boolean = true,
+     val isRefreshing: Boolean = false,
+     val isLoadingMore: Boolean = false,
+     val latestItems: List<MessageFeedLikeItem> = emptyList(),
+     val totalItems: List<MessageFeedLikeItem> = emptyList(),
+     val cursor: Long? = null,
+     val cursorTime: Long? = null,
+     val hasMore: Boolean = false,
+     val error: String? = null,
+     val operationError: String? = null,
+@@ -68,137 +64,137 @@
+ private fun mergeLikeItems(
+     existing: List<MessageFeedLikeItem>,
+     incoming: List<MessageFeedLikeItem>
+ ): List<MessageFeedLikeItem> {
+     val seen = linkedSetOf<Long>()
+     return buildList {
+         (existing + incoming).forEach { item ->
+             if (seen.add(item.id)) add(item)
+         }
+     }
+ }
+ 
+-class LikeMeViewModel : ViewModel() {
+-    private val _uiState = MutableStateFlow(LikeMeUiState())
++internal class LikeMeViewModel(private val owner: DesktopMessagePageAdmission) {
++    private val _uiState = owner.stateFlow(LikeMeUiState())
+     val uiState: StateFlow<LikeMeUiState> = _uiState.asStateFlow()
+-    private val accountRequests = AccountScopedRequests(viewModelScope)
++    private val accountRequests = owner.accountRequests()
+     private var listJob: Job? = null
+     private var moreJob: Job? = null
+     private var requestVersion = 0L
+ 
+     init {
+         accountRequests.observe {
+             requestVersion++
+             _uiState.value = LikeMeUiState()
+             loadInitial()
+         }
+         loadInitial()
+     }
+ 
+     fun loadInitial() {
+         listJob?.cancel()
+         moreJob?.cancel()
+         requestVersion++
+         listJob = accountRequests.launch {
+             _uiState.value = _uiState.value.copy(isLoading = true, isLoadingMore = false, error = null, loadMoreError = null)
+-            MessageRepository.getLikeFeed().fold(
++            owner.requests.getLikeFeed().fold(
+                 onSuccess = { data ->
+                     _uiState.value = _uiState.value.copy(
+                         isLoading = false,
+                         latestItems = data.latest?.items.orEmpty(),
+                         totalItems = data.total?.items.orEmpty(),
+                         cursor = data.total?.cursor?.id,
+                         cursorTime = data.total?.cursor?.time,
+                         hasMore = data.total?.cursor?.isEnd != true && !data.total?.items.isNullOrEmpty()
+                     )
+                 },
+                 onFailure = { error ->
+                     _uiState.value = _uiState.value.copy(isLoading = false, error = error.message ?: "加载失败")
+                 }
+             )
+         }
+     }
+ 
+     fun refresh() {
+         listJob?.cancel()
+         moreJob?.cancel()
+         requestVersion++
+         listJob = accountRequests.launch {
+             _uiState.value = _uiState.value.copy(isRefreshing = true, isLoadingMore = false, error = null, loadMoreError = null)
+-            MessageRepository.getLikeFeed().fold(
++            owner.requests.getLikeFeed().fold(
+                 onSuccess = { data ->
+                     _uiState.value = _uiState.value.copy(
+                         isRefreshing = false,
+                         latestItems = data.latest?.items.orEmpty(),
+                         totalItems = data.total?.items.orEmpty(),
+                         cursor = data.total?.cursor?.id,
+                         cursorTime = data.total?.cursor?.time,
+                         hasMore = data.total?.cursor?.isEnd != true && !data.total?.items.isNullOrEmpty()
+                     )
+                 },
+                 onFailure = { error ->
+                     _uiState.value = _uiState.value.copy(isRefreshing = false, error = error.message ?: "刷新失败")
+                 }
+             )
+         }
+     }
+ 
+     fun loadMore() {
+         val current = _uiState.value
+         if (current.isLoadingMore || current.isLoading || current.isRefreshing || !current.hasMore) return
+         val version = requestVersion
+         moreJob = accountRequests.launch {
+             _uiState.value = current.copy(isLoadingMore = true, loadMoreError = null)
+-            MessageRepository.getLikeFeed(cursor = current.cursor, cursorTime = current.cursorTime).fold(
++            owner.requests.getLikeFeed(cursor = current.cursor, cursorTime = current.cursorTime).fold(
+                 onSuccess = { data ->
+                     if (version != requestVersion) return@fold
+                     _uiState.value = _uiState.value.copy(
+                         isLoadingMore = false,
+                         latestItems = mergeLikeItems(_uiState.value.latestItems, data.latest?.items.orEmpty()),
+                         totalItems = mergeLikeItems(_uiState.value.totalItems, data.total?.items.orEmpty()),
+                         cursor = data.total?.cursor?.id,
+                         cursorTime = data.total?.cursor?.time,
+                         hasMore = data.total?.cursor?.isEnd != true && !data.total?.items.isNullOrEmpty() && (data.total?.cursor?.id != current.cursor || data.total?.cursor?.time != current.cursorTime)
+                     )
+                 },
+                 onFailure = { error ->
+                     if (version != requestVersion) return@fold
+                     _uiState.value = _uiState.value.copy(isLoadingMore = false, loadMoreError = error.message ?: "加载更多失败")
+                 }
+             )
+         }
+     }
+ 
+     fun remove(id: Long, latest: Boolean) {
+         if (_uiState.value.operationBusy) return
+         _uiState.value = _uiState.value.copy(operationBusy = true, operationError = null)
+         accountRequests.launch {
+-            MessageRepository.deleteFeedItem(type = 0, id = id).onSuccess {
++            owner.requests.deleteFeedItem(type = 0, id = id).onSuccess {
+                 _uiState.value = _uiState.value.copy(
+                     latestItems = if (latest) _uiState.value.latestItems.filterNot { it.id == id } else _uiState.value.latestItems,
+                     totalItems = if (latest) _uiState.value.totalItems else _uiState.value.totalItems.filterNot { it.id == id }
+                 )
+             }.onFailure { error ->
+                 _uiState.value = _uiState.value.copy(operationError = error.message ?: "操作失败")
+             }
+             _uiState.value = _uiState.value.copy(operationBusy = false)
+         }
+     }
+ 
+     fun toggleNotice(item: MessageFeedLikeItem) {
+         if (_uiState.value.operationBusy) return
+         _uiState.value = _uiState.value.copy(operationBusy = true, operationError = null)
+         accountRequests.launch {
+             val enableNotifications = item.noticeState == 1
+-            MessageRepository.setLikeFeedNotice(id = item.id, enabled = enableNotifications).onSuccess {
++            owner.requests.setLikeFeedNotice(id = item.id, enabled = enableNotifications).onSuccess {
+                 fun update(list: List<MessageFeedLikeItem>): List<MessageFeedLikeItem> {
+                     return list.map {
+                         if (it.id == item.id) {
+                             it.copy(noticeState = if (enableNotifications) 0 else 1)
+                         } else {
+                             it
+                         }
+                     }
+                 }
+ 
+                 _uiState.value = _uiState.value.copy(
+                     latestItems = update(_uiState.value.latestItems),
+@@ -207,33 +203,33 @@
+             }.onFailure { error ->
+                 _uiState.value = _uiState.value.copy(operationError = error.message ?: "操作失败")
+             }
+             _uiState.value = _uiState.value.copy(operationBusy = false)
+         }
+     }
+     fun clearOperationError() { _uiState.value = _uiState.value.copy(operationError = null) }
+ 
+ }
+ 
+ @OptIn(ExperimentalMaterial3Api::class)
+ @Composable
+-fun LikeMeScreen(
++internal fun LikeMeScreen(
+     onBack: () -> Unit,
+     onOpenLink: (String) -> Unit,
+     onOpenSpace: (Long) -> Unit,
+-    viewModel: LikeMeViewModel = viewModel(key = "message_LikeMe_" + TokenManager.accountIdentity.collectAsStateWithLifecycle().value)
++    viewModel: LikeMeViewModel = LocalDesktopMessagePageOwner.current.likeMe
+ ) {
+     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+     uiState.operationError?.let { error -> MessageConfirmDialog("操作失败", error, onDismiss = viewModel::clearOperationError, onConfirm = viewModel::clearOperationError) }
+-    val account by com.android.purebilibili.core.store.TokenManager.accountIdentity.collectAsStateWithLifecycle()
++    val account = LocalDesktopMessagePageOwner.current.mid
+     var detailId by rememberSaveable(account) { mutableLongStateOf(0L) }
+     var detailLink by rememberSaveable(account) { mutableStateOf("") }
+     if (detailId > 0L) {
+         LikeDetailScreen(cardId = detailId, contentLink = detailLink,
+             onBack = { detailId = 0L }, onOpenLink = onOpenLink, onOpenSpace = onOpenSpace)
+         return
+     }
+ 
+     AppScaffold(
+         blurContentReady = !uiState.isLoading,
+         topBar = {
+             AppTopBar(

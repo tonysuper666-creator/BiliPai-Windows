@@ -20,3 +20,6 @@ space-contributions/com/android/purebilibili/feature/space/DesktopUpstreamSpaceC
 space-contributions/com/android/purebilibili/data/repository/DesktopOriginalSpaceInteraction.kt
 space-contributions/com/android/purebilibili/feature/list/DesktopOriginalSpaceInteractionPagination.kt
 space-image-previews/com/android/purebilibili/feature/space/DesktopOriginalSpaceImagePreviewCallers.kt
+original-message-pages/com/android/purebilibili/feature/message/feed/DesktopOriginalMessageFeedCommon.kt
+bgm-detail/com/android/purebilibili/feature/message/feed/DesktopCommentDetailError.kt
+home-viewmodel/com/android/purebilibili/feature/message/DesktopHomeTotalUnreadCount.kt

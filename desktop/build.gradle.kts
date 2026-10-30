@@ -331,10 +331,12 @@ val migratedAppM4dPaths: Set<String> = migratedAppM4dAreas.asSequence().flatMap 
     .filter { path -> path.removePrefix("com/android/purebilibili/") !in appM4dLaterSteps }
     .toSortedSet()
 // Single files of not yet migrated areas that a migrated file reads in their current form (TON-1107: ProfileScreen;
-// TON-1108: SpaceScreen's grid column preference, its settings writes go to LocalDesktopFeedGridColumnSettings).
+// TON-1108: SpaceScreen's grid column preference, its settings writes go to LocalDesktopFeedGridColumnSettings;
+// TON-1109: the message feed pages' MessageManagementRepository, built per message page child over its gated services).
 val migratedAppSingleFiles: Set<String> = setOf(
     "com/android/purebilibili/feature/home/components/cards/HorizontalVideoCardLayoutPolicy.kt",
     "com/android/purebilibili/feature/home/FeedGridColumnPreference.kt",
+    "com/android/purebilibili/data/repository/MessageManagementRepository.kt",
 )
 val migratedAppPaths: Set<String> = migratedAppCorePaths + migratedAppM4dPaths + migratedAppSingleFiles
 val migratedUpstreamRelativePaths = migratedWholeModulePaths + migratedAppPaths + setOf(
