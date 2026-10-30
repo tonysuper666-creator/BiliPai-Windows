@@ -46,6 +46,34 @@ import kotlin.test.*
  * Root Entry initialize, PluginRuntime, native initialization, decoder or SDK.
  * HTTP and muxing are CPU fixtures; Load/ABI acceptance is not hardware evidence. */
 class DesktopBangumiCourseDownloadOwnershipTest {
+    @Test fun upstreamMiniAndSharedPlaybackUseTheAcceptedOwnerSessionWithoutReloading(): Unit = runBlocking {
+        Fixture().useSuspending { f ->
+            f.load()
+            f.ui {
+                val mini = DesktopOriginalVideoMiniBinding({ f.owner },
+                    { _, _ -> error("This Mini readback must not publish metadata") }, { f.gate.owns() })
+                val before = assertNotNull(f.player.currentSourceSnapshot())
+                val shared = com.android.purebilibili.core.player.SharedPlaybackSession(mini.ensurePlayer())
+                assertSame(f.owner.section, shared.player)
+                assertSame<DesktopPlaybackSession>(shared.player, assertNotNull(mini.player))
+                assertTrue(mini.isActive)
+                assertEquals(f.accepted().request.bvid, mini.currentBvid)
+                assertEquals(f.accepted().request.cid, mini.currentCid)
+                val seek = assertNotNull(mini.ensurePlayer().seekToTracked(1_250))
+                assertEquals(before.sourceVersion, seek.sourceVersion)
+                assertEquals(1_250, seek.targetPositionMs)
+                assertEquals(before.sourceVersion, f.player.currentSourceSnapshot()?.sourceVersion)
+                assertEquals(before.source, f.player.currentSourceSnapshot()?.source)
+                assertTrue(f.player.ownsSourceSnapshot(before))
+                shared.close() // No request was created: a projection cannot close the owned source.
+                assertEquals(before.sourceVersion, f.player.currentSourceSnapshot()?.sourceVersion)
+                assertEquals(before.source, f.player.currentSourceSnapshot()?.source)
+                assertTrue(f.player.ownsSourceSnapshot(before))
+                assertTrue(f.player.ownsSourceSnapshot(before))
+            }
+        }
+    }
+
     @Test fun originalVmCapturesOnEdtAndQueuesCompleteTaskThroughRealIoAndLaunchCaller(): Unit = runBlocking {
         Fixture().useSuspending { f ->
             f.load()
