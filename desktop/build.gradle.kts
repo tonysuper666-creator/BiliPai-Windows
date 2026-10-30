@@ -624,6 +624,7 @@ val migratedPlaybackModulePaths = mapOf(
         "com/android/purebilibili/core/player/policy/PlaybackQualityMode.kt",
     ),
     "danmaku-engine/src/main/java/" to setOf(
+        "com/bytedance/danmaku/render/engine/RenderFrameCadence.kt",
         "com/android/purebilibili/danmaku/engine/DanmakuModels.kt",
         "com/android/purebilibili/danmaku/engine/DanmakuVisibility.kt",
         "com/android/purebilibili/danmaku/parser/AdvancedDanmakuData.kt",
@@ -2381,6 +2382,8 @@ tasks.named("compileKotlin") { dependsOn(extractOriginalDanmakuListMenu) }
 tasks.named("compileTestKotlin") { dependsOn(extractOriginalDanmakuListMenu) }
 kotlin.sourceSets.named("test") {
     kotlin.srcDir(layout.buildDirectory.dir("generated/original-danmaku-list-menu/policy-tests"))
+    // Current upstream cadence and its unchanged tests replace the fixed 60fps snapshot.
+    kotlin.exclude { it.file == layout.buildDirectory.file("generated/original-danmaku-list-menu/policy-tests/com/bytedance/danmaku/render/engine/RenderFrameCadenceTest.kt").get().asFile }
 }
 
 // Explicit fixed-v027 slice; the overall canonical baseline remains v025.
@@ -2892,6 +2895,7 @@ val prepareJsWorkerResources = if (hostIsWindows) tasks.register<Sync>("prepareJ
 
 // Generated legacy files that re-declare migrated upstream declarations under another file name.
 val upstreamOwnedGeneratedCopies = setOf(
+    "original-danmaku-list-menu/com/bytedance/danmaku/render/engine/RenderFrameCadence.kt",
     "upstream/app/src/main/java/com/android/purebilibili/feature/video/ui/components/ChapterListPanel.kt",
     "original-video-state-core/com/android/purebilibili/feature/video/viewmodel/DesktopOriginalVideoSupplementViewModel.kt",
     "original-video-player-full-controls/com/android/purebilibili/feature/video/ui/overlay/NextWatchOverlay.kt",
@@ -3642,6 +3646,7 @@ val migratedVideoFeatureTestPaths = setOf(
 val migratedPlaybackModuleTests = mapOf(
     "core-player/src/test/java/" to setOf("com/android/purebilibili/core/player/PlaybackResumePolicyTest.kt"),
     "danmaku-engine/src/test/java/" to setOf(
+        "com/bytedance/danmaku/render/engine/RenderFrameCadenceTest.kt",
         "com/bytedance/danmaku/render/engine/render/RenderClockTest.kt",
         "com/bytedance/danmaku/render/engine/render/DrawOrderPolicyTest.kt",
         "com/bytedance/danmaku/render/engine/render/cache/BufferAdmissionTest.kt",

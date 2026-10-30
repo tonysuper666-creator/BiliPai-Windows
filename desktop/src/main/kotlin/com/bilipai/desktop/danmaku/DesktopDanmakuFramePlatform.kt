@@ -1,5 +1,6 @@
 package com.bilipai.desktop.danmaku
 
+import com.bytedance.danmaku.render.engine.RenderFrameCadence
 import javax.swing.SwingUtilities
 import javax.swing.Timer
 
@@ -15,6 +16,7 @@ internal class DesktopDanmakuFrameRequests(
     private val visible: () -> Boolean,
     private val render: () -> Boolean,
 ) {
+    private val cadence = RenderFrameCadence()
     private var pending: ((Long) -> Unit)? = null
     private var needsFrame = false
     private var generation = 0L
@@ -61,6 +63,7 @@ internal class DesktopDanmakuFrameRequests(
         wakeAtMs = 0L
         nextFrameNs = 0L
         lastFrameNs = null
+        cadence.reset()
     }
 
     fun updateVisibilityScheduling() {
@@ -87,12 +90,13 @@ internal class DesktopDanmakuFrameRequests(
             if (pending !== callback || ticket != generation) return@frame
             pending = null
             if (!needsFrame || !visible()) return@frame
-            if (nextFrameNs != 0L && timeNs < nextFrameNs) {
+            if (!cadence.shouldRender(timeNs) || (nextFrameNs != 0L && timeNs < nextFrameNs)) {
                 enqueueFrame()
                 return@frame
             }
             needsFrame = false
             lastFrameNs = timeNs
+            cadence.onFrame(timeNs)
             nextFrameNs = if (nextFrameNs == 0L || timeNs - nextFrameNs > intervalNs * 4) {
                 timeNs + intervalNs
             } else {
