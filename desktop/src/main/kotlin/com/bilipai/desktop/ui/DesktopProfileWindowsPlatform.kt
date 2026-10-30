@@ -15,9 +15,37 @@ import java.util.concurrent.atomic.AtomicReference
 import javax.swing.*
 import javax.swing.filechooser.FileNameExtensionFilter
 
-private const val MAX_AVATAR_BYTES=20L*1024*1024
+internal const val MAX_AVATAR_BYTES=20L*1024*1024
 private const val MAX_AVATAR_PIXELS=64L*1024*1024
 private val AVATAR_EXTENSIONS=listOf("jpg","jpeg","png","webp","bmp")
+
+/** The avatar file the Windows dialog returned: a local regular file without links, at most 20 MB and 64 MP, that Skia can
+ * decode. Every rejection is an IllegalArgumentException whose message the Profile page shows. */
+internal fun readDesktopProfileAvatarImage(uri:String,checkpoint:()->Unit):ByteArray {
+    checkpoint()
+    val selected=runCatching {java.net.URI(uri)}.getOrNull()
+    require(selected?.scheme=="file") {"请选择本机上的图片文件"}
+    val path=java.nio.file.Path.of(selected).toAbsolutePath().normalize()
+    require(java.nio.file.Files.isRegularFile(path,java.nio.file.LinkOption.NOFOLLOW_LINKS)) {"找不到所选图片，请重新选择"}
+    try {com.bilipai.desktop.update.UpdateStorage.existingPathWithoutLinks(path)}
+    catch(_:IllegalArgumentException) {throw IllegalArgumentException("所选图片的路径包含快捷方式链接或特殊文件，请选择普通文件夹里的图片")}
+    val size=java.nio.file.Files.size(path)
+    require(size>0) {"所选图片是空文件，请重新选择"}
+    require(size<=MAX_AVATAR_BYTES) {"图片文件过大（最大 20 MB），请换一张图片"}
+    val raw=java.nio.file.Files.newInputStream(path,java.nio.file.StandardOpenOption.READ,java.nio.file.LinkOption.NOFOLLOW_LINKS).use { input ->
+        val result=java.io.ByteArrayOutputStream();val buffer=ByteArray(8192)
+        while(true) {checkpoint();val count=input.read(buffer);if(count<0)break;require(result.size()+count<=MAX_AVATAR_BYTES) {"图片文件过大（最大 20 MB），请换一张图片"};result.write(buffer,0,count)}
+        result.toByteArray()
+    }
+    checkpoint()
+    val pixels=try {
+        org.jetbrains.skia.Data.makeFromBytes(raw).use { data -> org.jetbrains.skia.Codec.makeFromData(data).use { it.width.toLong()*it.height } }
+    } catch(_:IllegalArgumentException) {
+        throw IllegalArgumentException("无法识别这张图片，请选择 JPG、PNG、WebP 或 BMP 图片")
+    }
+    require(pixels in 1L..MAX_AVATAR_PIXELS) {"图片尺寸过大，请换一张图片"}
+    checkpoint();return raw
+}
 
 /** Every capability/actor below is the real retained Root; no optional/default effect ports. */
 internal class DesktopWindowsProfilePlatform(
@@ -133,28 +161,7 @@ internal class DesktopWindowsProfilePlatform(
     }
 
     override suspend fun readAvatarImage(uri:String):ByteArray = withContext(Dispatchers.IO) {
-        val job=currentCoroutineContext()[Job];checkpoint(job)
-        val selected=runCatching {java.net.URI(uri)}.getOrNull()
-        require(selected?.scheme=="file") {"请选择本机上的图片文件"}
-        val path=java.nio.file.Path.of(selected).toAbsolutePath().normalize()
-        com.bilipai.desktop.update.UpdateStorage.existingPathWithoutLinks(path)
-        require(java.nio.file.Files.isRegularFile(path,java.nio.file.LinkOption.NOFOLLOW_LINKS)) {"找不到所选图片，请重新选择"}
-        val size=java.nio.file.Files.size(path)
-        require(size>0) {"所选图片是空文件，请重新选择"}
-        require(size<=MAX_AVATAR_BYTES) {"图片文件过大（最大 20 MB），请换一张图片"}
-        val raw=java.nio.file.Files.newInputStream(path,java.nio.file.StandardOpenOption.READ,java.nio.file.LinkOption.NOFOLLOW_LINKS).use { input ->
-            val result=java.io.ByteArrayOutputStream();val buffer=ByteArray(8192)
-            while(true) {checkpoint(job);val count=input.read(buffer);if(count<0)break;require(result.size()+count<=MAX_AVATAR_BYTES) {"图片文件过大（最大 20 MB），请换一张图片"};result.write(buffer,0,count)}
-            result.toByteArray()
-        }
-        checkpoint(job)
-        val pixels=try {
-            org.jetbrains.skia.Data.makeFromBytes(raw).use { data -> org.jetbrains.skia.Codec.makeFromData(data).use { it.width.toLong()*it.height } }
-        } catch(_:IllegalArgumentException) {
-            throw IllegalArgumentException("无法识别这张图片，请选择 JPG、PNG、WebP、GIF 或 BMP 图片")
-        }
-        require(pixels in 1L..MAX_AVATAR_PIXELS) {"图片尺寸过大，请换一张图片"}
-        checkpoint(job);raw
+        val job=currentCoroutineContext()[Job];readDesktopProfileAvatarImage(uri) {checkpoint(job)}
     }
 
     override suspend fun importWallpaperMedia(uri:String,directory:File)=files.import(uri,directory,false)

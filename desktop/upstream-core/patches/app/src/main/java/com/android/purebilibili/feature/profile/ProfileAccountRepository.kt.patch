@@ -1,6 +1,6 @@
 --- a/com/android/purebilibili/feature/profile/ProfileAccountRepository.kt
 +++ b/com/android/purebilibili/feature/profile/ProfileAccountRepository.kt
-@@ -1,90 +1,99 @@
+@@ -1,90 +1,108 @@
  package com.android.purebilibili.feature.profile
  
 -import android.content.Context
@@ -26,7 +26,18 @@
 -internal object ProfileAccountRepository {
 +/** Desktop: one per Profile entry. Windows has no process-wide TokenManager, so the credentials and the API are
 + * this entry's account epoch (DesktopProfileEnvironment); the requests and the image policy are upstream's. */
-+internal class ProfileAccountRepository(private val environment: DesktopProfileEnvironment) {
++internal class ProfileAccountRepository(
++    private val api: com.android.purebilibili.core.network.BilibiliApi,
++    private val session: () -> com.android.purebilibili.feature.login.QrAuthorizationSession,
++    private val readAvatarImage: suspend (String) -> ByteArray,
++) {
++    constructor(environment: DesktopProfileEnvironment) : this(
++        environment.api,
++        // The entry is retired when its account changes, so an owned read is the current account.
++        { environment.ensureOwned(); environment.accounts.qrAuthorizationSession() },
++        { uri -> environment.platform.readAvatarImage(uri) },
++    )
++
      private data class Credentials(val cookie: String, val csrf: String, val token: String, val platform: String)
  
 -    private fun credentials(identity: AccountSessionIdentity): Credentials = synchronized(TokenManager) {
@@ -37,9 +48,7 @@
 -        val csrf = TokenManager.csrfCache.orEmpty()
 -        Credentials("SESSDATA=$session; bili_jct=$csrf; DedeUserID=$mid", csrf, TokenManager.accessTokenCache.orEmpty(), TokenManager.accessTokenPlatformCache)
 +    private fun credentials(@Suppress("UNUSED_PARAMETER") identity: AccountSessionIdentity): Credentials {
-+        // The entry is retired when its account changes, so an owned read is the current account.
-+        environment.ensureOwned()
-+        val current = environment.accounts.qrAuthorizationSession()
++        val current = session()
 +        val mid = requireNotNull(current.mid?.takeIf { it > 0 }) { "请先登录" }
 +        val session = requireNotNull(current.sessData.takeIf { it.isNotBlank() }) { "登录已失效，请重新登录" }
 +        val csrf = current.csrf
@@ -50,7 +59,7 @@
          val auth = credentials(identity)
          require(auth.csrf.isNotBlank()) { "登录已失效，请重新登录" }
 -        val response = NetworkModule.api.updateMemberSign(sign, auth.csrf, auth.cookie)
-+        val response = environment.api.updateMemberSign(sign, auth.csrf, auth.cookie)
++        val response = api.updateMemberSign(sign, auth.csrf, auth.cookie)
          check(response.code == 0) { response.message.ifBlank { "签名保存失败（${response.code}）" } }
      }
  
@@ -72,7 +81,7 @@
          val userAgent = if (hd) "Mozilla/5.0 BiliDroid/2.0.1 (bbcallen@gmail.com) os/android model/android_hd mobi_app/android_hd build/2001100 channel/master innerVer/2001100 osVer/15 network/2"
              else "Mozilla/5.0 BiliDroid/8.43.0 (bbcallen@gmail.com) os/android model/android mobi_app/android build/8430300 channel/master innerVer/8430300 osVer/15 network/2"
 -        val response = NetworkModule.api.updateMemberAppProfile(field.path, signed, auth.cookie, userAgent)
-+        val response = environment.api.updateMemberAppProfile(field.path, signed, auth.cookie, userAgent)
++        val response = api.updateMemberAppProfile(field.path, signed, auth.cookie, userAgent)
          check(response.code == 0) { response.message.ifBlank { "修改失败（${response.code}）" } }
      }
  
@@ -95,11 +104,11 @@
 +            // Desktop: the file comes from the Windows picker through the entry's file actor (size and type checked
 +            // there); Skia replaces BitmapFactory. Same policy: at most 2048 px decoded, centre square, at most
 +            // 512 px, JPEG quality 90.
-+            val encoded = environment.platform.readAvatarImage(uri)
++            val encoded = readAvatarImage(uri)
 +            val image = try {
 +                org.jetbrains.skia.Image.makeFromEncoded(encoded)
 +            } catch (_: IllegalArgumentException) {
-+                error("无法读取图片，请选择 JPG、PNG、WebP 或 GIF 图片")
++                error("无法读取图片，请选择 JPG、PNG、WebP 或 BMP 图片")
 +            }
 +            image.use {
 +                require(image.width > 0 && image.height > 0) { "无法读取图片" }
@@ -131,7 +140,7 @@
          }
          val face = MultipartBody.Part.createFormData("face", "avatar.jpg", bytes.toRequestBody("image/jpeg".toMediaType()))
 -        val response = NetworkModule.api.updateMemberAvatar(auth.csrf, "save".toRequestBody(), "10000".toRequestBody(), face, auth.cookie)
-+        val response = environment.api.updateMemberAvatar(auth.csrf, "save".toRequestBody(), "10000".toRequestBody(), face, auth.cookie)
++        val response = api.updateMemberAvatar(auth.csrf, "save".toRequestBody(), "10000".toRequestBody(), face, auth.cookie)
          check(response.code == 0) { response.message.ifBlank { "头像上传失败（${response.code}）" } }
      }
  }

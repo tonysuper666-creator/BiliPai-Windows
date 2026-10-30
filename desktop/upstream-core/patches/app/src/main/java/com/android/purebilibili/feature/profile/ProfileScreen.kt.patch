@@ -632,7 +632,7 @@
      editableAccount: ProfileEditableAccountState,
      favoriteFolderShortcuts: List<ProfileFavoriteFolderShortcut>,
      onTabSelected: (ProfileSpaceMainTab) -> Unit,
-@@ -1189,86 +1083,78 @@
+@@ -1189,86 +1083,80 @@
          if (user.face.isNotBlank()) {
              prepareImagePreviewSourceTransition(avatarSourceRect.value)
              avatarPreview = user.face
@@ -668,6 +668,8 @@
 +    val accountAvatarPicker = rememberDesktopProfileAvatarPicker() { uri: String? ->
          val mid = accountAvatarPickerMid
          accountAvatarPickerMid = null
++        // Desktop: closing the file dialog says so rather than leaving the edit silently unchanged.
++        if (uri == null) platform.feedback("没有选择图片，头像未更改")
          if (uri != null && mid == user.mid) {
 -            if (context.contentResolver.getType(uri)?.equals("image/gif", ignoreCase = true) == true) {
 -                Toast.makeText(context, "不能选择 GIF 头像", Toast.LENGTH_SHORT).show()
@@ -732,7 +734,7 @@
              field = field,
              initialValue = if (field == ProfileAccountField.NAME) editableAccount.name else editableAccount.birthday,
              onDismiss = { editingAccountField = null },
-@@ -1290,25 +1176,25 @@
+@@ -1290,25 +1178,25 @@
                              viewModel.updateAccountField(ProfileAccountField.SEX, value)
                          }) { AppText(label) }
                      }
@@ -759,7 +761,7 @@
                  showAdjustmentSheet = false
                  tempSelectedUri?.let { uri ->
                      viewModel.updateCustomBackground(uri, mobileTransform, tabletTransform)
-@@ -1337,27 +1223,25 @@
+@@ -1337,27 +1225,25 @@
              isResetEnabled = !customBackgroundUri.isNullOrEmpty()
          )
      }
@@ -788,7 +790,7 @@
              }
          )
      }
-@@ -1427,29 +1311,29 @@
+@@ -1427,29 +1313,29 @@
      // Finish identity collapse before the statistics enter the toolbar.
      val profileCollapseRangeProvider: () -> Float = {
          with(density) {
@@ -820,7 +822,7 @@
          scrollOffsetPx = {
              if (mobileListState.firstVisibleItemIndex > 0) Float.POSITIVE_INFINITY
              else mobileListState.firstVisibleItemScrollOffset.toFloat()
-@@ -2154,25 +2038,25 @@
+@@ -2154,25 +2040,25 @@
      layoutTokens: ProfileLayoutTokens,
      showWallpaperAction: Boolean,
      showEditProfileButton: Boolean = false,
@@ -847,7 +849,7 @@
      ) else heroChrome
      val heroHeight = resolveProfileHeroHeightDp(
          screenHeightDp = configuration.screenHeightDp,
-@@ -2512,25 +2396,25 @@
+@@ -2512,25 +2398,25 @@
          )
      }
  }
@@ -874,7 +876,7 @@
              ),
          horizontalAlignment = Alignment.CenterHorizontally
      ) {
-@@ -2547,30 +2431,32 @@
+@@ -2547,30 +2433,32 @@
  @Composable
  private fun ProfileSpaceTabs(
      selectedTab: ProfileSpaceMainTab,
@@ -909,7 +911,7 @@
  
  @Composable
  private fun ProfileSpaceTabBody(
-@@ -3074,25 +2960,25 @@
+@@ -3074,25 +2962,25 @@
                  horizontalAlignment = Alignment.CenterHorizontally,
                  verticalArrangement = Arrangement.spacedBy(12.dp)
              ) {
@@ -936,7 +938,7 @@
              val cardWidth = (maxWidth - 10.dp * (columns - 1)) / columns
              LookaheadScope {
                  FlowRow(
-@@ -3201,25 +3087,26 @@
+@@ -3201,25 +3089,26 @@
      item: SpaceDynamicItem,
      onVideoClick: (String) -> Unit,
      onDeleteClick: (DynamicDeleteAction) -> Unit
@@ -964,7 +966,7 @@
              text = { AppText(action.content) },
              confirmButton = {
                  AppTextButton(
-@@ -3291,30 +3178,26 @@
+@@ -3291,30 +3180,26 @@
                      AppDropdownMenuItem(
                          text = { AppText("复制链接") },
                          leadingIcon = {
@@ -997,7 +999,7 @@
                                      tint = AppContentColors.error(),
                                      modifier = Modifier.size(20.dp)
                                  )
-@@ -3394,25 +3277,26 @@
+@@ -3394,25 +3279,26 @@
  private fun ProfileDynamicMajorContent(item: SpaceDynamicItem, onVideoClick: (String) -> Unit) {
      val dynamic = item.modules.module_dynamic
      val major = dynamic?.major
@@ -1025,7 +1027,7 @@
  
      Column(
          modifier = Modifier.then(
-@@ -3605,55 +3489,51 @@
+@@ -3605,55 +3491,51 @@
  @Composable
  private fun ProfileEditAccountDialog(
      state: ProfileEditableAccountState,
@@ -1086,7 +1088,7 @@
  private fun ProfileAccountEditRow(
      title: String,
      value: String,
-@@ -3939,25 +3819,25 @@
+@@ -3939,25 +3821,25 @@
                      }
                  }
              }
@@ -1113,7 +1115,7 @@
      onDownloadClick: () -> Unit,
      onWatchLaterClick: () -> Unit,
      onInboxClick: () -> Unit = {},  //  [新增] 私信入口
-@@ -3969,31 +3849,29 @@
+@@ -3969,31 +3851,29 @@
      hazeState: HazeState? = null,
      onHeaderClick: () -> Unit = {}, // [New] Support header click for guest login
      paddingValues: PaddingValues = PaddingValues(0.dp),
@@ -1147,7 +1149,7 @@
          ProfileWallpaperAdjustmentSheet(
              imageUri = tempSelectedUri.toString(),
              initialMobileTransform = ProfileWallpaperTransform(),
-@@ -4053,27 +3931,25 @@
+@@ -4053,27 +3933,25 @@
              text = {
                  AppText(
                      "将打开系统相册选择一张照片作为背景。\n\n" +
@@ -1176,7 +1178,7 @@
              }
          )
      }
-@@ -4296,26 +4172,26 @@
+@@ -4296,26 +4174,26 @@
                  .padding(horizontal = 32.dp)
                  .navigationBarsPadding(),
              horizontalAlignment = Alignment.CenterHorizontally,
@@ -1205,7 +1207,7 @@
  
              AppText(
                  text = "欢迎使用 BiliPai",
-@@ -4376,25 +4252,25 @@
+@@ -4376,25 +4254,25 @@
  ) {
      Row(
          modifier = Modifier
@@ -1232,7 +1234,7 @@
              Column {
                  UserInfoText(user, forceWhite = transparent)
              }
-@@ -4544,26 +4420,27 @@
+@@ -4544,26 +4422,27 @@
      }
  }
  
