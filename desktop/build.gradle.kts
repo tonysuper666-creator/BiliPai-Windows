@@ -318,6 +318,7 @@ val migratedVideoFeaturePaths = setOf(
     "com/android/purebilibili/feature/video/ui/components/PlainLandscapeDanmakuComposer.kt",
     "com/android/purebilibili/feature/video/ui/components/LandscapeDanmakuComposer.kt",
     "com/android/purebilibili/feature/video/ui/components/VideoScreenshotSharePrompt.kt",
+    "com/android/purebilibili/feature/video/screen/VideoNavigationCidPolicy.kt",
     "com/android/purebilibili/feature/bangumi/ui/list/BangumiListComponents.kt",
     "com/android/purebilibili/feature/video/ui/feedback/VideoActionFeedbackPolicy.kt",
     "com/android/purebilibili/feature/video/ui/overlay/CenterPlaybackControl.kt",
@@ -2912,6 +2913,7 @@ val upstreamOwnedGeneratedCopies = setOf(
     // core/ui/components/UserLevelBadge (TON-1072): the upstream file draws its R.drawable level badges through the generated
     // desktop drawable table, so the blocked-list producer's classpath-PNG copy is retired.
     "blocked-list-ui/com/android/purebilibili/core/ui/components/DesktopUpstreamUserLevelBadge.kt",
+    "original-video-detail-holder-full/com/android/purebilibili/feature/video/screen/VideoNavigationCidPolicy.kt",
     "original-video-ambient-windows/com/android/purebilibili/feature/video/ui/components/VideoScreenshotSharePrompt.kt",
     "original-video-player-full-controls/com/android/purebilibili/feature/video/ui/components/PlainLandscapeDanmakuComposer.kt",
     "original-video-player-full-controls/com/android/purebilibili/feature/video/ui/components/LandscapeDanmakuComposer.kt",
@@ -3809,6 +3811,7 @@ val appCoreUpstreamTestsNotRun: Map<String, String> = mapOf(
 val migratedVideoFeatureTestPaths = setOf(
     "com/android/purebilibili/feature/video/ui/overlay/ViewPointSegmentBarPolicyTest.kt",
     "com/android/purebilibili/feature/video/ui/components/UpPreviewSheetPolicyTest.kt",
+    "com/android/purebilibili/feature/video/screen/VideoNavigationCidPolicyTest.kt",
     "com/android/purebilibili/feature/video/ui/overlay/PlaybackOrderSelectionSheetPolicyTest.kt",
     "com/android/purebilibili/feature/video/ui/components/PlayerPopupGeometryTest.kt",
     "com/android/purebilibili/feature/video/ui/components/CommentAvatarPushPolicyTest.kt",
