@@ -1,5 +1,6 @@
 """Verify the reviewed v0.2.3 packing/gallery bodies against fresh extraction."""
 from pathlib import Path
+from desktop_paths import read_point_tool
 import argparse
 import hashlib
 import importlib.util
@@ -11,7 +12,7 @@ sys.dont_write_bytecode = True
 EXPECTED = {'com/android/purebilibili/core/util/DesktopOriginalGalleryResultPolicy.kt': '4c6dff09291ee1c6732fc8af45fdb6d3fd288b228985599fcc47b9dedb45be1a', 'com/android/purebilibili/feature/dynamic/components/DesktopOriginalMotionPhotoPacking.kt': '51ba3403185f6d7cad1cc2e7975b1a2ecb2362641c42994ba57b2c7d46998e8e'}
 
 def verify(repo, generated, output):
-    tool = repo / 'desktop/tools/extract-upstream-dynamic-gallery-motion-photo.py'
+    tool = read_point_tool(repo, 'extract-upstream-dynamic-gallery-motion-photo.py')
     spec = importlib.util.spec_from_file_location('original_dynamic_media', tool)
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)

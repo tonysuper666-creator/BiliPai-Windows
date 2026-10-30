@@ -1,5 +1,6 @@
 from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
+from desktop_paths import long_path
 import hashlib,importlib.util,json,re,subprocess,sys,difflib
 sys.dont_write_bytecode=True;sys.stdout.reconfigure(encoding='utf-8')
 import argparse
@@ -18,7 +19,7 @@ OUT=LANE;SOURCES={};CHANGES={};OUTPUTS=[]
 from v046_episode_selector import validate_outputs as validate_episode_selector_outputs
 validate_episode_selector_outputs(REPO,LANE)
 def safe(p):
- s=str(Path(p).absolute());prefix=chr(92)*2+'?'+chr(92);return Path(s if s.startswith(prefix)else prefix+s)
+ return long_path(Path(p).absolute())
 def sha(t):return hashlib.sha256(t.encode()if isinstance(t,str)else t).hexdigest()
 def write(p,t):safe(p).parent.mkdir(parents=True,exist_ok=True);safe(p).write_bytes(t.encode()if isinstance(t,str)else t)
 def module(name,p):

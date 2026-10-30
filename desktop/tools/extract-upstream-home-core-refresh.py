@@ -1,5 +1,6 @@
 """Extend the existing sole Home producer with fixed complete refresh APIs."""
 from pathlib import Path
+from desktop_paths import read_point_tool
 import argparse,subprocess,sys
 from v036_comment_refresh_dependencies import extend_same_home_producer
 
@@ -13,7 +14,7 @@ def main():
     validate_identity_badge_palette_outputs(args.repo,args.output,args.test_output)
     from v046_wallpaper_foundation import validate_outputs as validate_wallpaper_foundation_outputs
     validate_wallpaper_foundation_outputs(args.repo,args.output,args.test_output)
-    command=[sys.executable,str(args.repo/'desktop/tools/extract-upstream-home-page.py'),
+    command=[sys.executable,str(read_point_tool(args.repo,'extract-upstream-home-page.py')),
              '--repo',str(args.repo),'--output',str(args.output)]
     result=subprocess.run(command)
     if result.returncode:return result.returncode

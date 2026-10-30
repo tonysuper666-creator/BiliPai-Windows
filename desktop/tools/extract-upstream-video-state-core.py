@@ -5,6 +5,7 @@ Full original PlaybackVM/5464 Holder remain next; this core is not a mounted pag
 from v025_source_paths import canonical_source as _desktop_canonical_source
 from v029_failure_recovery import typed_protocol_delta as _typed_failure_protocol, usecase_delta as _typed_failure_usecase, verified_sources as _failure_sources
 from pathlib import Path
+from desktop_paths import long_path, read_point_tool
 import argparse,hashlib,importlib.util,json,re,types
 from v025_source_paths import canonical_source as _desktop_canonical_source, canonical_relative as _desktop_canonical_relative
 COMMIT='79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40'
@@ -39,7 +40,7 @@ def generate_shared_playback_sources(repo,output):
  return rows
 
 def wide(p):
- s=str(Path(p).absolute());prefix=chr(92)*2+'?'+chr(92);return Path(s if s.startswith(prefix) else prefix+s)
+ return long_path(Path(p).absolute())
 def digest(t):return hashlib.sha256(t.encode() if isinstance(t,str) else t).hexdigest()
 def original(path):
  path=_desktop_canonical_relative(REPO,path)
@@ -381,7 +382,7 @@ s=s.replace('Result.success(Pair(info, playData))','environment.assertOwned()\n 
 s=s.replace('return@withContext cachedPlayData','environment.assertOwned()\n                return@withContext cachedPlayData')
 # env APIs/cache are already admitted; these public response checks are supplementary, not the network ownership authority.
 header='package com.android.purebilibili.data.repository\nimport com.android.purebilibili.data.model.response.*\nimport com.android.purebilibili.core.network.WbiUtils\nimport com.android.purebilibili.core.network.AppSignUtils\nimport android.util.Log as Logger\nimport kotlinx.coroutines.*\nimport com.bilipai.desktop.ui.DesktopOriginalVideoLoadRepository\nimport com.bilipai.desktop.ui.DesktopOriginalVideoLoadProtocolEnvironment\n\ninternal class DesktopOriginalVideoLoadProtocol(private val environment:DesktopOriginalVideoLoadProtocolEnvironment) : DesktopOriginalVideoLoadRepository {\n    private val api get() = environment.api\n    private val SharedContentRepository = DesktopOriginalSharedContentRequests { environment.api }\n    private val PlaybackStreamDataSource = DesktopOriginalPlaybackStreamDataSource { environment.playbackApi }\n    private val APP_API_COOLDOWN_MS = 120_000L\n    private var appApiCooldownUntilMs:Long\n        get() = environment.state.appApiCooldownUntilMs\n        set(value) { environment.state.appApiCooldownUntilMs = value }\n    private var wbiKeysCache:Pair<String,String>?\n        get() = environment.state.wbiKeys\n        set(value) { environment.state.wbiKeys = value }\n    private var wbiKeysTimestamp:Long\n        get() = environment.state.wbiKeysTimestamp\n        set(value) { environment.state.wbiKeysTimestamp = value }\n    private var last412Time:Long\n        get() = environment.state.last412Time\n        set(value) { environment.state.last412Time = value }\n    private val WBI_CACHE_DURATION = 1000 * 60 * 30\n    private suspend fun ensureBuvid3FromSpi() = environment.ensureBuvid()\n    private fun playbackAccount() = environment.playbackAccount()\n    private fun hasPlaybackSessionCookie() = environment.hasPlaybackSessionCookie()\n    private fun playbackAccessToken() = environment.playbackAccessToken()\n    private fun playbackAccessTokenPlatform() = environment.playbackAccessTokenPlatform()\n    override fun isUsingDedicatedPlaybackAccount() = playbackAccount() != null\n    override fun isPlaybackLoggedIn() = resolveVideoPlaybackAuthState(hasPlaybackSessionCookie(), !playbackAccessToken().isNullOrEmpty())\n    override fun isPlaybackVip() = environment.isPlaybackVip()\n    override fun isAppApiCoolingDown() = (appApiCooldownUntilMs-System.currentTimeMillis()).coerceAtLeast(0L)>0L\n    private fun isDirectedTrafficModeActive() = shouldEnableDirectedTrafficMode(environment.directedTrafficEnabled(),environment.isMobileData())\n'
-pager=mod('original_portrait_protocol_members',REPO/'desktop/tools/extract-upstream-video-fullscreen-pager.py')
+pager=mod('original_portrait_protocol_members',read_point_tool(REPO,'extract-upstream-video-fullscreen-pager.py'))
 header=header.replace('import kotlinx.coroutines.*','import kotlinx.coroutines.*\nimport com.android.purebilibili.feature.video.ui.pager.PORTRAIT_PLAYBACK_TARGET_QUALITY\nimport com.android.purebilibili.feature.video.ui.pager.shouldUsePortraitParallelPlaybackBootstrap')
 s+='\n'+pager.protocol_members(REPO)
 s=s.replace('private suspend fun getWbiKeys()', 'internal suspend fun getWbiKeys()', 1)
