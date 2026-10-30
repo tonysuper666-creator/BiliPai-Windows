@@ -85,7 +85,37 @@
      val initialSections = remember(rawRules) {
          resolveDanmakuBlockManagerSections(rawRules)
      }
-@@ -1933,121 +1929,18 @@
+@@ -1713,24 +1709,11 @@
+     showDivider: Boolean = true
+ ) {
+     Column(modifier = Modifier.fillMaxWidth()) {
+-        Row(
+-            modifier = Modifier
+-                .fillMaxWidth()
+-                .clickable { onCheckedChange(!checked) }
+-                .padding(vertical = if (fullscreenStyle) 10.dp else 6.dp),
+-            horizontalArrangement = Arrangement.SpaceBetween,
+-            verticalAlignment = Alignment.CenterVertically
+-        ) {
+-            AppText(
+-                text = label,
+-                color = colors.titleColor,
+-                style = if (fullscreenStyle) MaterialTheme.typography.bodyLarge else MaterialTheme.typography.bodyMedium
+-            )
+-            AppSwitch(
+-                checked = checked,
+-                onCheckedChange = onCheckedChange,
+-            )
+-        }
++        DanmakuSettingsToggle(
++            title = label,
++            checked = checked,
++            onCheckedChange = onCheckedChange,
++        )
+         if (showDivider) {
+             AppHorizontalDivider(color = colors.dividerColor)
+         }
+@@ -1933,121 +1916,18 @@
      tickCount: Int = 0,
      valueText: (Float) -> String = displayValue
  ) {
