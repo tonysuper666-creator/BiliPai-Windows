@@ -1,0 +1,39 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/video/ui/components/BottomInputBar.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/video/ui/components/BottomInputBar.kt
+@@ -52,7 +52,6 @@
+ import androidx.compose.ui.graphics.Color
+ import androidx.compose.ui.graphics.luminance
+ import androidx.compose.ui.graphics.vector.ImageVector
+-import androidx.compose.ui.platform.LocalContext
+ import androidx.compose.ui.text.TextStyle
+ import androidx.compose.ui.text.style.TextOverflow
+ import androidx.compose.ui.semantics.Role
+@@ -62,7 +61,7 @@
+ import androidx.lifecycle.compose.collectAsStateWithLifecycle
+ import com.android.purebilibili.core.store.AppNavigationSettings
+ import com.android.purebilibili.core.store.HomeSettings
+-import com.android.purebilibili.core.store.SettingsManager
++import com.bilipai.desktop.ui.LocalDesktopOriginalHomeSettingsRootServices
+ import com.android.purebilibili.core.store.resolveGlobalLiquidGlassReuseEnabled
+ import com.android.purebilibili.core.theme.calculateContrastRatio
+ import com.android.purebilibili.core.ui.rememberAppBookmarkIcon
+@@ -154,15 +153,11 @@
+     scrollPositionProvider: () -> Pair<Int, Int>? = { null },
+     showActionButtons: Boolean = true,
+ ) {
+-    val context = LocalContext.current
+-    val homeSettings by SettingsManager
+-        .getHomeSettings(context)
+-        .collectAsStateWithLifecycle(initialValue = HomeSettings())
+-    val appNavigationSettings by SettingsManager
+-        .getAppNavigationSettings(context)
+-        .collectAsStateWithLifecycle(initialValue = AppNavigationSettings())
++    val settings = LocalDesktopOriginalHomeSettingsRootServices.current.home
++    val homeSettings by settings.homeSettings.collectAsStateWithLifecycle()
++    val appNavigationSettings by settings.navigation.collectAsStateWithLifecycle()
+     val autoHideOnScroll = appNavigationSettings.bottomBarVisibilityMode ==
+-        SettingsManager.BottomBarVisibilityMode.SCROLL_HIDE
++        com.android.purebilibili.core.store.SettingsManager.BottomBarVisibilityMode.SCROLL_HIDE
+     var isVisible by remember { mutableStateOf(true) }
+     val currentScrollPositionProvider by rememberUpdatedState(scrollPositionProvider)
+ 
