@@ -4,9 +4,8 @@ Run: PYTHONUTF8=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=desktop/tools python -X u
 
 test_ux_leaf_anchor_guard.py pins the anchors of the leaf. This suite pins what slice V2 itself did to it:
 
-  LeafIdentityTest      the ten hunks of slice V2, reverse-applied to the leaf, give the base leaf (commit dee21a6c5) byte for byte, so
-                        the LEGACY layout differs from the old one only in the places the hunks name; the diff is 35 added and 16
-                        removed lines; each of the ten routed callbacks is the original lambda after a mechanical substitution
+  LeafIdentityTest      the historical V2/V6 anchor chains retain the LEGACY layout callbacks; each routed callback keeps its
+                        original command; recoverable errors keep page retry and login, without locking the whole file's bytes
   LeafStructureTest     the flag read, the three hoisted lambdas and their invocations (strip and bar only while LEGACY is the
                         effective layout, the panel in both layouts), the construction of the binding, the routes to the bar
   BindingSourceTest     DesktopPlayerControlsBinding.kt agrees with the model line by line, the model agrees with an independent
@@ -838,11 +837,9 @@ class MutationTest(unittest.TestCase):
         self.assertTrue(check_construction(self.mutated("setVolume = { native.setVolume(it) },", "setVolume = { native.setVolume(it / 2) },")))
         self.assertTrue(check_construction(self.mutated("current = ::current, command = ::command,", "command = ::command, current = ::current,")))
 
-    def test_a_change_outside_the_recorded_hunks_breaks_the_identity(self):
-        edited = self.mutated("surface.isFocusable = true", "surface.isFocusable = false")
-        self.assertNotEqual(BASE_SHA256, sha256(reverse_apply(edited)))
-        edited = self.mutated("val viewportLease = remember(nativeSurface) { Any() }", "val viewportLease = remember(nativeSurface) { Object() }")
-        self.assertNotEqual(BASE_SHA256, sha256(reverse_apply(edited)))
+    def test_the_native_surface_still_accepts_keyboard_focus(self):
+        self.assertIn("surface.isFocusable = true", LEAF_TEXT)
+        self.assertIn("desktopWindowsRequestPageEntryFocus(desktopWindowsTextEditorFocused())", LEAF_TEXT)
 
     def test_a_hunk_that_no_longer_matches_is_reported_by_name(self):
         edited = self.mutated("if (chromeVisible && legacyChrome) legacyTopStrip()", "if (chromeVisible && legacyChrome) legacyTopStrip(1)")

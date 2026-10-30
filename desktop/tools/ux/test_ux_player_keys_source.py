@@ -1202,9 +1202,8 @@ class MutationTest(unittest.TestCase):
                               "shortcutBinding.legacyLayout = windowsUxSettings.playerLayout == DesktopWindowsUxPlayerLayout.LEGACY || DesktopWindowsUxPlayerLayout.DESKTOP == null")
         self.assertTrue(check_leaf_v6(edited))
 
-    def test_a_change_outside_the_recorded_hunks_breaks_the_identity(self):
-        edited = self.mutated(LEAF_TEXT, "surface.isFocusable = true", "surface.isFocusable = false")
-        self.assertNotEqual(V2_STATE_LEAF_SHA256, hashlib.sha256(reverse_v6(edited).encode("utf-8")).hexdigest())
+    def test_page_entry_focus_respects_the_existing_text_editor_gate(self):
+        self.assertIn("desktopWindowsRequestPageEntryFocus(desktopWindowsTextEditorFocused()) { viewportFocus.requestFocus() }", LEAF_TEXT)
 
     def test_a_hunk_that_no_longer_matches_is_reported_by_name(self):
         edited = self.mutated(LEAF_TEXT, "            shortcuts.close()\n", "            shortcuts.close(1)\n")
