@@ -1,0 +1,22 @@
+Upstream-commit: 2d987c4b85dd5b75902a9d05f5438bfc8d214d56
+Upstream-source-sha256: dbe32fbff009b39ced65d0e460996e605f4c713d32422b784b50909a1c12e265
+Reason: sRGB Color quantizes alpha into 8 bits; the unquantized mathematical expectation can differ by over .001. Compare exact complete Color values at all five fixed positions, preserving RGB and factor/monotonicity assertions. No tolerance increased.
+
+--- a/design-system/src/test/java/com/android/purebilibili/core/ui/blur/ProgressiveFadeTest.kt
++++ b/design-system/src/test/java/com/android/purebilibili/core/ui/blur/ProgressiveFadeTest.kt
+@@ -38,12 +38,9 @@
+         assertEquals(0.75f, stops[3].first)
+         assertEquals(1.00f, stops[4].first)
+ 
+-        // 检查颜色与 Alpha 比例
+-        assertEquals(0.8f * 1.0f, stops[0].second.alpha, 0.001f)
+-        assertEquals(0.8f * (232f / 255f), stops[1].second.alpha, 0.001f)
+-        assertEquals(0.8f * (176f / 255f), stops[2].second.alpha, 0.001f)
+-        assertEquals(0.8f * (96f / 255f), stops[3].second.alpha, 0.001f)
+-        assertEquals(0.0f, stops[4].second.alpha, 0.001f)
++        // sRGB Color stores 8-bit alpha. Compare the exact quantized color at every stop.
++        val expectedAlphas = listOf(0.8f, 0.8f * (232f / 255f), 0.8f * (176f / 255f), 0.8f * (96f / 255f), 0f)
++        assertEquals(expectedAlphas.map { Color(red = 1f, green = 1f, blue = 1f, alpha = it) }, stops.map { it.second })
+ 
+         // RGB 通道不变
+         for (stop in stops) {
