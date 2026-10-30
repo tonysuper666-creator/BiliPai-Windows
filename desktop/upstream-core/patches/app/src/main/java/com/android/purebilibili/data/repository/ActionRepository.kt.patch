@@ -27,3 +27,12 @@
          }
      }
      
+@@ -266,7 +266,7 @@ object ActionRepository {
+     fun followingStatusRevision(account: Any): Long? = followingGuard.snapshotVersion(account)
+     fun acceptFollowingSnapshot(account: Any, version: Long, publish: () -> Unit): Boolean =
+         followingGuard.accept(account, version, publish)
+-    fun interactionSession(): Any = TokenManager.accountIdentity.value to TokenManager.sessDataCache
++    fun interactionSession(): Any = com.bilipai.desktop.data.DesktopUpstreamCalls.sessionIdentity("ActionRepository.interactionSession") // Desktop: the request owner's account (TON-1082)
+     fun cachedLikeStatus(aid: Long): Boolean? = interactionCache.read(interactionSession(), "like:$aid").first
+     fun cachedFollowStatus(mid: Long): Boolean? = interactionCache.read(interactionSession(), "follow:$mid").first
+     fun likeStatusVersion(aid: Long): Long = interactionCache.read(interactionSession(), "like:$aid").second

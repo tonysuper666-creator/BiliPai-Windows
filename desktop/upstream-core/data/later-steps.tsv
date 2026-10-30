@@ -8,6 +8,6 @@ data/repository/MessageImRepository.kt	calls into other files of this list (Mess
 data/repository/VideoRepository.kt	core/cache/PlayUrlCache and core/util/NetworkUtils are desktop-owned; danmaku density calls danmaku-engine DanmakuParser.parseProtobuf, which moves with the video feature (M4a, PR #18)
 data/repository/DanmakuRepository.kt	danmaku-engine DanmakuParser/DanmakuProto move with the video feature (M4a, PR #18)
 data/repository/SpecialDanmakuSource.kt	desktop danmaku sources construct the legacy public Remote/LocalSpecialDanmakuSource; upstream made them private; moves with the video feature (M4a)
-data/repository/TopicRepository.kt	the desktop story/topic page builds TopicRepository(DynamicApi) over the authorized desktop client; upstream is an object over NetworkModule, which is not bound to the desktop session yet
+data/repository/TopicRepository.kt	the desktop story/topic page builds TopicRepository(DynamicApi) over the authorized desktop client; upstream is an object over NetworkModule, which now needs a desktop request owner (TON-1082); waits for the story/topic page to call it inside its window's owner instead of the per-page desktop client
 data/repository/AudioRepository.kt	calls into other files of this list (VideoRepository)
 data/repository/StoryRepository.kt	calls into other files of this list (VideoRepository)
