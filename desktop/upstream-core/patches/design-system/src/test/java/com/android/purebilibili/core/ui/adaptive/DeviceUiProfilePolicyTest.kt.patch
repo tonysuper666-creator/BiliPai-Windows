@@ -1,0 +1,17 @@
+Upstream-commit: 672f6ddd3756c5eb221cb3652961fc24c571c4da
+Upstream-source-sha256: 813dab335f62f0bb74baa00786d5d3189111c61a8198aac64872d51e8042b4a0
+Reason: Upstream d02d37792 raised the shared enhanced-motion boundary from Expanded to Large. Assert exact Normal at Expanded AND Enhanced at Large; preserve tablet identity and every compact/medium test. Method identity retained for baseline comparison.
+
+--- a/design-system/src/test/java/com/android/purebilibili/core/ui/adaptive/DeviceUiProfilePolicyTest.kt
++++ b/design-system/src/test/java/com/android/purebilibili/core/ui/adaptive/DeviceUiProfilePolicyTest.kt
+@@ -13,7 +13,9 @@
+             widthClass = AdaptiveWidthClass.Expanded,
+         )
+ 
+-        assertEquals(MotionTier.Enhanced, profile.motionTier)
++        // Large is the enhanced-motion threshold; Expanded remains Normal.
++        assertEquals(MotionTier.Normal, profile.motionTier)
++        assertEquals(MotionTier.Enhanced, resolveDeviceUiProfileSpec(widthClass = AdaptiveWidthClass.Large).motionTier)
+         assertTrue(profile.isTablet)
+     }
+ 

@@ -1,0 +1,71 @@
+Upstream-commit: 04bdd77afd1a7c68c46fc9155ddb253a3e1cace5
+Upstream-source-sha256: e6dbc8b94502e2b6baa933043c8a9516c8cc9bc39f76ecac95a3f20ebbe9d12c
+Reason: The resolver intentionally accepts only b23 hosts. Keep real b23 URLs and proxy only those requests into an owned loopback HTTP server; deny all other transport destinations. Verify both exact relative-hop URI and final destination within the production hop limit. No production host policy changes.
+
+--- a/app/src/test/java/com/android/purebilibili/core/util/BilibiliUrlParserShortLinkTest.kt
++++ b/app/src/test/java/com/android/purebilibili/core/util/BilibiliUrlParserShortLinkTest.kt
+@@ -4,9 +4,16 @@
+ import com.sun.net.httpserver.HttpServer
+ import kotlinx.coroutines.runBlocking
+ import java.net.InetSocketAddress
++import java.net.Proxy
++import java.net.ProxySelector
++import java.net.URI
++import java.net.SocketAddress
++import java.io.IOException
++import java.util.concurrent.CopyOnWriteArrayList
+ import kotlin.test.Test
+ import kotlin.test.assertEquals
+ import kotlin.test.assertNull
++import kotlin.test.assertTrue
+ 
+ /**
+  * Covers the b23.tv redirect decoding used by link routing (share intents, in-app links).
+@@ -24,10 +31,25 @@
+             respond(exchange)
+             exchange.close()
+         }
++        val previous = ProxySelector.getDefault()
++        val selections = CopyOnWriteArrayList<URI>()
++        val selector = object : ProxySelector() {
++            override fun select(uri: URI): List<Proxy> {
++                check(uri.scheme == "http" && uri.host == "b23.tv" && uri.port == server.address.port) {
++                    "Fixture transport refuses every destination except the owned b23 request: $uri"
++                }
++                selections += uri
++                return listOf(Proxy(Proxy.Type.HTTP, InetSocketAddress("127.0.0.1", server.address.port)))
++            }
++            override fun connectFailed(uri: URI, address: SocketAddress, failure: IOException) = Unit
++        }
+         server.start()
++        ProxySelector.setDefault(selector)
+         try {
+-            block("http://127.0.0.1:${server.address.port}/WKzSIzs")
++            block("http://b23.tv:${server.address.port}/WKzSIzs")
++            assertTrue(selections.isNotEmpty(), "The actual resolver must reach the loopback transport")
+         } finally {
++            ProxySelector.setDefault(previous)
+             server.stop(0)
+         }
+     }
+@@ -49,12 +71,15 @@
+ 
+     @Test
+     fun `resolveShortUrl completes relative redirect target`() = runBlocking {
+-        withRedirectServer({ it.redirect("/video/BV1FbKP6aEsY") }) { baseUrl ->
++        val requests = CopyOnWriteArrayList<URI>()
++        val target = "https://www.bilibili.com/video/BV1FbKP6aEsY"
++        withRedirectServer({ exchange ->
++            requests += exchange.requestURI
++            exchange.redirect(if (exchange.requestURI.path == "/WKzSIzs") "/video/BV1FbKP6aEsY" else target)
++        }) { baseUrl ->
+             val expectedHost = baseUrl.substringBefore("/WKzSIzs")
+-            assertEquals(
+-                "$expectedHost/video/BV1FbKP6aEsY",
+-                BilibiliUrlParser.resolveShortUrl(baseUrl)
+-            )
++            assertEquals(target, BilibiliUrlParser.resolveShortUrl(baseUrl))
++            assertEquals(listOf(URI(baseUrl), URI("$expectedHost/video/BV1FbKP6aEsY")), requests.toList())
+         }
+     }
+ 

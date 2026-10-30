@@ -1,0 +1,61 @@
+Upstream-source-sha256: cbef27234611f19437d210638fab2b7b00b045128eee3a0bb7f5b9a6d10a9de6
+Reason: 四个开关的用例契约写在 3f95d7b59（旧顶栏键不再继承、缺省关闭）、308eb8168（isLiquidGlassEnabled 收成 androidNativeLiquidGlassEnabled）、9f60b0c97（字段默认 false）之前。
+按现行生产改断言：空 prefs 两个开关均为 false；populated 的 isLiquidGlassEnabled 随 androidNative 为 true；旧顶栏键不回填（方法名同步）；旧共享键 true 只回填底栏，isLiquidGlassEnabled 仍为 false。
+populated 存过 liquid_glass_style=IOS26 且没有 v2 值，进度按已存储旧选择迁移为 0.32f * 0.42f；其余结构、SUKISU/BALANCED/0.52、CLEAR/0.42 全部保留。
+
+--- a/app/src/test/java/com/android/purebilibili/core/store/HomeSettingsMappingPolicyTest.kt
++++ b/app/src/test/java/com/android/purebilibili/core/store/HomeSettingsMappingPolicyTest.kt
+@@ -48,8 +48,9 @@
+         assertFalse(result.listScopedSearchEnabled)
+         assertEquals(BottomBarSearchAutoExpandMode.EXPAND_AT_HOME_TOP, result.bottomBarSearchAutoExpandMode)
+         assertEquals(BottomBarSearchLayoutMode.FULL_DOCK, result.bottomBarSearchLayoutMode)
+-        assertTrue(result.androidNativeLiquidGlassEnabled)
+-        assertTrue(result.isLiquidGlassEnabled)
++        // 3f95d7b59 / 308eb8168 / 9f60b0c97 之后：原生玻璃要显式开启，缺省关闭。
++        assertFalse(result.androidNativeLiquidGlassEnabled)
++        assertFalse(result.isLiquidGlassEnabled)
+         assertEquals(LiquidGlassStyle.SUKISU, result.liquidGlassStyle)
+         assertEquals(LiquidGlassMode.BALANCED, result.liquidGlassMode)
+         assertEquals(0.52f, result.liquidGlassStrength)
+@@ -161,11 +162,12 @@
+         assertEquals(BottomBarSearchAutoExpandMode.DISABLED, result.bottomBarSearchAutoExpandMode)
+         assertEquals(BottomBarSearchLayoutMode.HOME_AND_SEARCH, result.bottomBarSearchLayoutMode)
+         assertTrue(result.androidNativeLiquidGlassEnabled)
+-        assertFalse(result.isLiquidGlassEnabled)
++        assertTrue(result.isLiquidGlassEnabled)
+         assertEquals(LiquidGlassStyle.IOS26, result.liquidGlassStyle)
+         assertEquals(LiquidGlassMode.CLEAR, result.liquidGlassMode)
+         assertEquals(0.42f, result.liquidGlassStrength)
+-        assertEquals(0.5f, result.liquidGlassProgress)
++        // 存过 liquid_glass_style=IOS26 就走旧选择迁移：CLEAR 段 0 + 0.32 × 0.42。
++        assertEquals(0.32f * 0.42f, result.liquidGlassProgress)
+         assertEquals(LiquidGlassReadabilityMode.ADAPTIVE, result.liquidGlassReadabilityMode)
+         assertEquals(LiquidGlassAdvancedPreset.CUSTOM, result.liquidGlassAdvancedSettings.preset)
+         assertEquals(0.84f, result.liquidGlassAdvancedSettings.contentReadability)
+@@ -409,14 +411,15 @@
+     }
+ 
+     @Test
+-    fun legacyAndroidNativeTopTabLiquidGlassKey_mapsToGlobalOptIn() {
++    fun legacyAndroidNativeTopTabLiquidGlassKey_doesNotBackfillGlobalOptIn() {
+         val prefs = mutablePreferencesOf(
+             booleanPreferencesKey("android_native_top_tab_liquid_glass_enabled") to true
+         )
+ 
+         val result = mapHomeSettingsFromPreferences(prefs)
+ 
+-        assertTrue(result.androidNativeLiquidGlassEnabled)
++        // 3f95d7b59 明确不再从旧顶栏键继承，未显式开启的用户保持关闭。
++        assertFalse(result.androidNativeLiquidGlassEnabled)
+     }
+ 
+     @Test
+@@ -497,7 +500,7 @@
+ 
+         assertFalse(result.isTopBarLiquidGlassEnabled)
+         assertTrue(result.isBottomBarLiquidGlassEnabled)
+-        assertTrue(result.isLiquidGlassEnabled)
++        assertFalse(result.isLiquidGlassEnabled)
+     }
+ 
+     @Test

@@ -1,0 +1,65 @@
+Upstream-commit: 563b7481e41e0e4a9d070582ad745e82f0c3e23b
+Upstream-source-sha256: 846654697ba3d62e9474d2eea159e5c89214680eee3fcc9e7af6357824e52be3
+Reason: Fix the two-element error/errorContainer index without weakening foreground guards. Independent Compose baselines identify default colors: error and errorContainer, like onError and onErrorContainer, fail only when equal to baseline. No comparison color comes from the tested scheme.
+
+--- a/app/src/test/java/com/android/purebilibili/core/theme/ThemeColorSchemeCompletenessTest.kt
++++ b/app/src/test/java/com/android/purebilibili/core/theme/ThemeColorSchemeCompletenessTest.kt
+@@ -19,6 +19,7 @@
+  */
+ class ThemeColorSchemeCompletenessTest {
+ 
++    private val errorRoles = listOf("error", "errorContainer")
+     private val seed = Color(0xFF007AFF)
+     private val lightBaseline = lightColorScheme()
+     private val darkBaseline = darkColorScheme()
+@@ -68,10 +69,11 @@
+         label: String,
+         expectedError: List<Color>,
+     ) {
++        assertEquals(errorRoles.size, expectedError.size, "Both error background roles need independent expectations")
+         val missing = scheme.roles().filter { (role, value) ->
+             val isErrorRole = role.startsWith("error")
+             if (isErrorRole) {
+-                value != expectedError[listOf("error", "onError", "errorContainer", "onErrorContainer").indexOf(role)]
++                value == expectedError[errorRoles.indexOf(role)]
+             } else {
+                 value == baseline.roles().first { it.first == role }.second
+             }
+@@ -110,7 +112,7 @@
+         )
+         assertAllRolesExplicit(
+             scheme, lightBaseline, "自定义种子 MD3 light",
+-            expectedError = scheme.roles().filter { it.first.startsWith("error") }.map { it.second }
++            expectedError = lightBaseline.roles().filter { it.first in errorRoles }.map { it.second }
+         )
+         assertSurfaceContainerOrdered(scheme, "自定义种子 MD3 light")
+         assertEquals(Color.Black, scheme.scrim)
+@@ -128,7 +130,7 @@
+         )
+         assertAllRolesExplicit(
+             scheme, darkBaseline, "自定义种子 MD3 dark",
+-            expectedError = scheme.roles().filter { it.first.startsWith("error") }.map { it.second }
++            expectedError = darkBaseline.roles().filter { it.first in errorRoles }.map { it.second }
+         )
+         assertSurfaceContainerOrdered(scheme, "自定义种子 MD3 dark")
+         assertEquals(Color.Black, scheme.scrim)
+@@ -146,7 +148,7 @@
+         )
+         assertAllRolesExplicit(
+             scheme, darkBaseline, "自定义种子 MD3 amoled",
+-            expectedError = scheme.roles().filter { it.first.startsWith("error") }.map { it.second }
++            expectedError = darkBaseline.roles().filter { it.first in errorRoles }.map { it.second }
+         )
+         // amoled 覆盖会把 surfaceContainer 压到近纯黑,五级单调性由既有覆盖逻辑保证,不再断言
+         assertEquals(Color.Black, scheme.background)
+@@ -171,8 +173,8 @@
+             specVersion = ColorSpec.SpecVersion.SPEC_2021,
+         )
+ 
+-        assertAllRolesExplicit(light, lightBaseline, "materialkolor light", expectedError = light.roles().filter { it.first.startsWith("error") }.map { it.second })
+-        assertAllRolesExplicit(dark, darkBaseline, "materialkolor dark", expectedError = dark.roles().filter { it.first.startsWith("error") }.map { it.second })
++        assertAllRolesExplicit(light, lightBaseline, "materialkolor light", expectedError = lightBaseline.roles().filter { it.first in errorRoles }.map { it.second })
++        assertAllRolesExplicit(dark, darkBaseline, "materialkolor dark", expectedError = darkBaseline.roles().filter { it.first in errorRoles }.map { it.second })
+         assertSurfaceContainerOrdered(light, "materialkolor light")
+         assertSurfaceContainerOrdered(dark, "materialkolor dark")
+         assertEquals(Color.Black, light.scrim)

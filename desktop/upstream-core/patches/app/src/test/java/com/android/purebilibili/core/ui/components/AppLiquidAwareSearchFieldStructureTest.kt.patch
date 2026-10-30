@@ -1,0 +1,44 @@
+Upstream-commit: 3f3ef2193c9d84b5f7809f962e1b851c03bedac7
+Upstream-source-sha256: 43c167d6551bf41a4fdb092e4783310f15479e93dc7f6017341cbc494622d6e0
+Reason: Resolve the same retained upstream source from repository root or the app module working directory. Every source-content and behavioral assertion stays unchanged; missing sources still fail loudly.
+
+--- a/app/src/test/java/com/android/purebilibili/core/ui/components/AppLiquidAwareSearchFieldStructureTest.kt
++++ b/app/src/test/java/com/android/purebilibili/core/ui/components/AppLiquidAwareSearchFieldStructureTest.kt
+@@ -7,7 +7,7 @@
+ class AppLiquidAwareSearchFieldStructureTest {
+     @Test
+     fun `liquid search keeps native input above the shared glass surface`() {
+-        val source = File(
++        val source = sourceFile(
+             "app/src/main/java/com/android/purebilibili/core/ui/components/AppLiquidAwareSearchField.kt"
+         ).readText()
+ 
+@@ -21,7 +21,7 @@
+ 
+     @Test
+     fun `comment search uses dock indicators and one shared popup surface`() {
+-        val source = File(
++        val source = sourceFile(
+             "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CommentSearchSheet.kt"
+         ).readText()
+ 
+@@ -39,10 +39,10 @@
+ 
+     @Test
+     fun `popup renderer uses standard surface for every popup type`() {
+-        val navigation = File(
++        val navigation = sourceFile(
+             "app/src/main/java/com/android/purebilibili/navigation/AppNavigation.kt"
+         ).readText()
+-        val renderer = File(
++        val renderer = sourceFile(
+             "app/src/main/java/com/android/purebilibili/core/ui/components/" +
+                 "BiliPaiPopupSurfaceRenderer.kt"
+         ).readText()
+@@ -53,4 +53,6 @@
+         assertTrue(renderer.contains("Surface("))
+         assertTrue(!renderer.contains("BottomBarMatchedReusableLiquidDock("))
+     }
++    private fun sourceFile(path: String): File = listOf(File(path), File("../$path"))
++        .firstOrNull(File::isFile) ?: error("Missing retained upstream source: $path")
+ }
