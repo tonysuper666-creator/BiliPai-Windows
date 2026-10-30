@@ -2675,7 +2675,7 @@ fun applyUnifiedPatch(original: String, patch: String, label: String): String {
 // Desktop-only fixes against the merged upstream tree. The independent upstream-core
 // project deliberately compiles the unpatched originals so upstream regressions stay visible.
 val desktopUpstreamPatchDirectory = file("upstream-core/patches")
-val desktopUpstreamPatchedFiles = fileTree(desktopUpstreamPatchDirectory) { include("**/*.patch"); exclude("app/src/test/**") }.files
+val desktopUpstreamPatchedFiles = fileTree(desktopUpstreamPatchDirectory) { include("**/*.patch"); exclude("**/src/test/**") }.files
     .map { it.relativeTo(desktopUpstreamPatchDirectory).invariantSeparatorsPath.removeSuffix(".patch") }.toSortedSet()
 val applyDesktopUpstreamPatches by tasks.registering {
     val output = layout.buildDirectory.dir("patched-upstream")
@@ -3060,19 +3060,19 @@ val appCoreUpstreamTestsNotRun: Map<String, String> = mapOf(
 )
 // Approved upstream test corrections are isolated from production patch outputs.
 // The complete LF-normalized source is pinned: even an edit outside a hunk needs review.
-val correctedVideoTestPaths = emptySet<String>()
-val correctedVideoTestOutput = layout.buildDirectory.dir("patched-upstream-tests")
-val applyVideoTestCorrections by tasks.registering {
-    val patches = correctedVideoTestPaths.map { desktopUpstreamPatchDirectory.resolve("app/src/test/java/$it.patch") }
+val correctedUpstreamTestPaths = emptySet<String>()
+val correctedUpstreamTestOutput = layout.buildDirectory.dir("patched-upstream-tests")
+val applyUpstreamTestCorrections by tasks.registering {
+    val patches = correctedUpstreamTestPaths.map { desktopUpstreamPatchDirectory.resolve("$it.patch") }
     inputs.files(patches).withPathSensitivity(PathSensitivity.RELATIVE)
-    inputs.files(correctedVideoTestPaths.map { appTestRoot.resolve(it) }).withPathSensitivity(PathSensitivity.RELATIVE)
-    outputs.dir(correctedVideoTestOutput)
+    inputs.files(correctedUpstreamTestPaths.map { mergedRepositoryRoot.resolve(it) }).withPathSensitivity(PathSensitivity.RELATIVE)
+    outputs.dir(correctedUpstreamTestOutput)
     doLast {
-        val output = correctedVideoTestOutput.get().asFile
+        val output = correctedUpstreamTestOutput.get().asFile
         output.deleteRecursively()
-        correctedVideoTestPaths.forEach { relative ->
-            val original = appTestRoot.resolve(relative).readText().replace("\r\n", "\n")
-            val patch = desktopUpstreamPatchDirectory.resolve("app/src/test/java/$relative.patch").readText()
+        correctedUpstreamTestPaths.forEach { relative ->
+            val original = mergedRepositoryRoot.resolve(relative).readText().replace("\r\n", "\n")
+            val patch = desktopUpstreamPatchDirectory.resolve("$relative.patch").readText()
             val expected = Regex("(?m)^Upstream-source-sha256: ([0-9a-f]{64})$").find(patch)?.groupValues?.get(1)
                 ?: throw GradleException("$relative: missing upstream source digest")
             val actual = MessageDigest.getInstance("SHA-256").digest(original.toByteArray(Charsets.UTF_8))
@@ -3086,8 +3086,8 @@ val applyVideoTestCorrections by tasks.registering {
         }
     }
 }
-tasks.named("compileTestKotlin") { dependsOn(applyVideoTestCorrections) }
-kotlin.sourceSets.named("test") { kotlin.srcDir(correctedVideoTestOutput) }
+tasks.named("compileTestKotlin") { dependsOn(applyUpstreamTestCorrections) }
+kotlin.sourceSets.named("test") { kotlin.srcDir(correctedUpstreamTestOutput) }
 
 val appCoreUpstreamTestPaths: Set<String> = appTestRoot.resolve("com/android/purebilibili/core").walkTopDown()
     .filter { it.isFile && it.extension == "kt" }
@@ -3105,17 +3105,20 @@ val appCoreSourceReadingTestClasses: List<String> = appCoreUpstreamTestPaths.map
     .sorted()
 kotlin.sourceSets.named("test") {
     migratedWholeModuleTestRoots.forEach { kotlin.srcDir(it) }
+    kotlin.exclude { element -> !element.isDirectory &&
+        element.file.toPath().startsWith(mergedRepositoryRoot.toPath()) &&
+        element.file.relativeTo(mergedRepositoryRoot).invariantSeparatorsPath in correctedUpstreamTestPaths }
     kotlin.srcDir(appTestRoot)
     val appTestRootPath = appTestRoot.toPath()
     kotlin.exclude { element -> !element.isDirectory && element.file.toPath().startsWith(appTestRootPath) &&
-        element.file.relativeTo(appTestRoot).invariantSeparatorsPath.let { it !in appCoreUpstreamTestPaths || it in correctedVideoTestPaths } }
+        element.file.relativeTo(appTestRoot).invariantSeparatorsPath.let { it !in appCoreUpstreamTestPaths || "app/src/test/java/$it" in correctedUpstreamTestPaths } }
     val buildDirectoryPath = layout.buildDirectory.get().asFile.toPath()
     kotlin.exclude { element ->
         val file = element.file
         val path = file.invariantSeparatorsPath
         val index = path.lastIndexOf("/com/android/purebilibili/")
         element.file.toPath().startsWith(buildDirectoryPath) &&
-            !element.file.toPath().startsWith(correctedVideoTestOutput.get().asFile.toPath()) && index >= 0 &&
+            !element.file.toPath().startsWith(correctedUpstreamTestOutput.get().asFile.toPath()) && index >= 0 &&
             path.substring(index + 1).let { it in migratedWholeModuleTestPaths || it in appCoreUpstreamTestPaths }
     }
 }
@@ -5426,7 +5429,7 @@ val upstreamDesignSourceTests by tasks.registering(Test::class) {
     migratedSourceReadingTestClasses.forEach { filter.includeTestsMatching(it) }
     filter.isFailOnNoMatchingTests = false
     systemProperty("java.awt.headless", "true")
-    dependsOn(tasks.named("testClasses"), verifyUniqueClassNames)
+    dependsOn(tasks.named("testClasses"), verifyUniqueClassNames, applyUpstreamTestCorrections)
 }
 val upstreamAppCoreSourceTests by tasks.registering(Test::class) {
     group = "verification"
@@ -5438,7 +5441,7 @@ val upstreamAppCoreSourceTests by tasks.registering(Test::class) {
     appCoreSourceReadingTestClasses.forEach { filter.includeTestsMatching(it) }
     filter.isFailOnNoMatchingTests = false
     systemProperty("java.awt.headless", "true")
-    dependsOn(tasks.named("testClasses"), verifyUniqueClassNames)
+    dependsOn(tasks.named("testClasses"), verifyUniqueClassNames, applyUpstreamTestCorrections)
 }
 tasks.test {
     migratedSourceReadingTestClasses.forEach { filter.excludeTestsMatching(it) }
