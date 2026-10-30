@@ -1,6 +1,31 @@
---- a/com/android/purebilibili/feature/video/ui/pager/PortraitVideoPager.kt
-+++ b/com/android/purebilibili/feature/video/ui/pager/PortraitVideoPager.kt
-@@ -3929,7 +3929,7 @@
+# Retirable with complete upstream migration; captured draft session through the existing owned port.
+--- a/original-video-fullscreen-pager/com/android/purebilibili/feature/video/ui/pager/PortraitVideoPager.kt
++++ b/original-video-fullscreen-pager/com/android/purebilibili/feature/video/ui/pager/PortraitVideoPager.kt
+@@ -3628,6 +3628,7 @@
+             val composerDrafts by viewModel.composerDrafts.collectAsStateWithLifecycle()
+             val commentDraftKey = com.android.purebilibili.feature.video.viewmodel
+                 .commentComposerDraftKey(replyingToComment?.rpid)
++            val draftSessionId = composerDrafts.comments.sessionId
+             val commentDraft = composerDrafts.comments[commentDraftKey]
+                 ?: com.android.purebilibili.feature.video.viewmodel.CommentComposerDraft()
+             val commentState by commentViewModel.commentState.collectAsStateWithLifecycle()
+@@ -3662,10 +3663,13 @@
+                 initialSelectionEnd = commentDraft.selectionEnd,
+                 initialImageUris = commentDraft.imageUris,
+                 initialSyncToDynamic = commentDraft.syncToDynamic,
+-                onDraftChange = viewModel::updateCommentDraft,
++                onDraftChange = { text, images, sync, start, end ->
++                    if (viewModel.composerDrafts.value.comments.sessionId == draftSessionId)
++                        viewModel.updateCommentDraft(text, images, sync, start, end)
++                },
+                 currentVideoPositionMsProvider = { exoPlayer.currentPosition.coerceAtLeast(0L) },
+                 onSend = { message, imageUris, syncToDynamic ->
+-                    viewModel.sendComment(
++                    if (viewModel.composerDrafts.value.comments.sessionId == draftSessionId) viewModel.sendComment(
+                         inputMessage = message,
+                         imageUris = imageUris,
+                         syncToDynamic = syncToDynamic,
+@@ -3929,7 +3933,7 @@
  }
  
  internal fun resolvePortraitDanmakuReadableFontScale(fontScale: Float): Float {

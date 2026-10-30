@@ -1,0 +1,86 @@
+# Retirable when the complete upstream consumer migrates; approved draft session wiring.
+--- a/original-video-detail-holder-full/com/android/purebilibili/feature/video/viewmodel/VideoComposerViewModel.kt
++++ b/original-video-detail-holder-full/com/android/purebilibili/feature/video/viewmodel/VideoComposerViewModel.kt
+@@ -115,9 +115,11 @@
+             val info = environment.commentInfo() ?: return@dispatch
+             if (subject.aid <= 0L || info.aid != subject.aid || info.bvid != subject.bvid || info.cid != subject.cid) return@dispatch
+             retireCommentUi()
+-            val stamp = com.bilipai.desktop.ui.DesktopOriginalVideoCommentComposerStamp(presentation, subject)
++            setReplyingTo(reply)
++            ensureComposerDraftVideo()
++            val stamp = com.bilipai.desktop.ui.DesktopOriginalVideoCommentComposerStamp(
++                presentation, subject, _composerDrafts.value.comments.sessionId + 1L)
+             _commentStamp.value = stamp
+-            setReplyingTo(reply)
+             showCommentInputDialog()
+             result = stamp
+         }
+@@ -126,7 +128,7 @@
+     fun dismissCommentComposer(stamp: com.bilipai.desktop.ui.DesktopOriginalVideoCommentComposerStamp): Boolean =
+         dispatchCommentUi(stamp) { hideCommentInputDialog(); _commentStamp.value = null }
+     fun changeCommentDraft(stamp: com.bilipai.desktop.ui.DesktopOriginalVideoCommentComposerStamp, text: String, images: List<String>, sync: Boolean, selectionStart: Int = -1, selectionEnd: Int = -1): Boolean =
+-        dispatchCommentUi(stamp) { updateCommentDraft(text, images.toList(), sync, selectionStart, selectionEnd) }
++        dispatchCommentUi(stamp) { updateCommentDraft(text, images.toList(), sync, selectionStart, selectionEnd, stamp.draftSessionId) }
+     fun searchCommentMentions(stamp: com.bilipai.desktop.ui.DesktopOriginalVideoCommentComposerStamp, query: String): Boolean =
+         dispatchCommentUi(stamp) {
+             searchCommentMentionUsers(query)
+@@ -162,7 +164,8 @@
+     private fun ensureComposerDraftVideo() {
+         val videoId = _uiState.value.subject?.bvid.orEmpty()
+         if (_composerDrafts.value.videoId != videoId) {
+-            _composerDrafts.value = VideoComposerDraftState(videoId = videoId)
++            val reset = _composerDrafts.value.comments.reset().copy(desktopSelections = emptyMap())
++            _composerDrafts.value = VideoComposerDraftState(videoId = videoId, comments = reset)
+         }
+     }
+ 
+@@ -193,6 +196,7 @@
+     private fun showCommentInputDialog() {
+ 
+         ensureComposerDraftVideo()
++        _composerDrafts.update { it.copy(comments = it.comments.open()) }
+         _showCommentDialog.value = true
+         // 懒加载表情包
+         loadEmotes()
+@@ -214,7 +218,8 @@
+         imageUris: List<String>,
+         syncToDynamic: Boolean,
+         selectionStart: Int = -1,
+-        selectionEnd: Int = -1
++        selectionEnd: Int = -1,
++        draftSessionId: Long = _composerDrafts.value.comments.sessionId
+     ) {
+         ensureComposerDraftVideo()
+         val key = commentComposerDraftKey(_replyingToComment.value?.rpid)
+@@ -224,7 +229,7 @@
+         )
+         val draft = CommentComposerDraft(text, imageUris, syncToDynamic, resolvedSelectionStart, resolvedSelectionEnd)
+         _composerDrafts.update { state ->
+-            state.copy(comments = state.comments + (key to draft))
++            state.copy(comments = state.comments.updateDesktopDraft(draftSessionId, _replyingToComment.value?.rpid, draft))
+         }
+     }
+     private val _isSendingComment = MutableStateFlow(false)
+@@ -338,7 +343,8 @@
+         if (!environment.commentRequests.isOwned() || _isSendingComment.value) return
+         val stamp = _commentStamp.value ?: return
+         val sentDraftKey = commentComposerDraftKey(replyTo?.rpid)
+-        val sentDraft = _composerDrafts.value.comments[sentDraftKey]
++        val sentDraft = _composerDrafts.value.comments.drafts[sentDraftKey]
++        val sendSessionId = stamp.draftSessionId
+         val capturedImages = imageUris.toList()
+         val submission = ++commentSubmissionSequence
+         _isSendingComment.value = true
+@@ -372,9 +378,10 @@
+                     // A dismissed A send may complete while B is being edited.
+                     // Preserve the original mutation/receipt, retire only A's UI.
+                     dispatchCommentUi(stamp) {
+-                        if (sameCommentDraftSubmissionContent(_composerDrafts.value.comments[sentDraftKey], sentDraft)) {
++                        if (_composerDrafts.value.comments.sessionId == sendSessionId &&
++                            _composerDrafts.value.comments.drafts[sentDraftKey] === sentDraft) {
+                             _commentInput.value = ""
+-                            _composerDrafts.update { state -> state.copy(comments = state.comments - sentDraftKey) }
++                            _composerDrafts.update { state -> state.copy(comments = state.comments.completeDesktopDraft(sendSessionId, replyTo?.rpid, sentDraft)) }
+                             hideCommentInputDialog()
+                             _commentStamp.value = null
+                         }
