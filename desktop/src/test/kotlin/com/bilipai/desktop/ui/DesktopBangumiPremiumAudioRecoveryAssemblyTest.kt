@@ -506,10 +506,10 @@ class DesktopBangumiPremiumAudioRecoveryAssemblyTest {
     }
 
     private inner class Fixture(private val includeAac: Boolean = true, private val seasonType: Int = 10) {
-        val directory = Files.createTempDirectory("pgc-audio-real-owner-")
+        val directory = Files.createTempDirectory("pgc-audio-real-owner-").toRealPath()
         private val createdAbsolute = directory.toAbsolutePath().normalize()
         private val createdReal = directory.toRealPath()
-        private val tempAbsolute = Path.of(System.getProperty("java.io.tmpdir")).toAbsolutePath().normalize()
+        private val tempAbsolute = Path.of(System.getProperty("java.io.tmpdir")).toRealPath()
         private val tempReal = tempAbsolute.toRealPath()
         val sessions = DesktopSessionStore.temporary()
         val repository = DesktopRepository(sessions)
