@@ -6,6 +6,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.ImageComposeScene
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.KeyEvent
+import androidx.compose.ui.input.key.KeyEventType
 import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.semantics.SemanticsNode
 import androidx.compose.ui.semantics.SemanticsProperties
@@ -33,6 +36,40 @@ class DesktopWindowsPageErrorCardTest {
     private fun flatten(node: SemanticsNode): List<SemanticsNode> = listOf(node) + node.children.flatMap(::flatten)
     private fun text(node: SemanticsNode): List<String> = flatten(node).flatMap {
         it.config.getOrNull(SemanticsProperties.Text).orEmpty().map { value -> value.text }
+    }
+
+    @Test fun tabCanReachRetryAndEnterOrSpaceRestoresThePage() {
+        for (activation in listOf(Key.Enter, Key.Spacebar)) {
+            val error = mutableStateOf(true)
+            var retries = 0
+            val scene = ImageComposeScene(800, 400) {
+                MaterialTheme {
+                    if (error.value) DesktopWindowsPageErrorOverlay {
+                        DesktopWindowsPageErrorCard("请检查网络连接后重试。", onRetry = {
+                            retries++
+                            error.value = false
+                        })
+                    } else Text("视频内容")
+                }
+            }
+            try {
+                var time = 0L
+                fun settle() { repeat(3) { scene.render(time).close(); time += 16_000_000 } }
+                fun press(key: Key) {
+                    scene.sendKeyEvent(KeyEvent(key, KeyEventType.KeyDown))
+                    scene.sendKeyEvent(KeyEvent(key, KeyEventType.KeyUp))
+                    settle()
+                }
+                settle()
+                press(Key.Tab)
+                val focused = scene.semanticsOwners.flatMap { flatten(it.unmergedRootSemanticsNode) }
+                    .single { it.config.getOrNull(SemanticsProperties.Focused) == true }
+                assertTrue("重试" in text(focused))
+                press(activation)
+                assertEquals(1, retries)
+                assertTrue(scene.semanticsOwners.any { "视频内容" in text(it.unmergedRootSemanticsNode) })
+            } finally { scene.close() }
+        }
     }
 
     @Test fun theErrorFitsTheStageAndRetryReturnsToPageContent() {

@@ -20,6 +20,10 @@ internal val LocalDesktopPageErrorReporter = staticCompositionLocalOf<((String, 
 /** Fill the existing player overlay, keeping the recovery card at the centre of the video stage. */
 @Composable
 internal fun DesktopWindowsPageErrorOverlay(content: @Composable () -> Unit) {
+    // The retained native carrier starts with an empty shape and cannot take keyboard focus.
+    // Admit drawing and input only inside this failed stage while its recovery card is mounted.
+    // This does not change AWT modality or create another window/playback owner.
+    DesktopCommandModalRegion(present = true)
     Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { content() }
 }
 
@@ -27,7 +31,8 @@ internal fun DesktopWindowsPageErrorOverlay(content: @Composable () -> Unit) {
 @Composable
 internal fun DesktopWindowsPageErrorCard(message: String, onRetry: () -> Unit, onLogin: (() -> Unit)? = null) {
     Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-        Surface(Modifier.widthIn(max = 360.dp).fillMaxWidth().semantics { liveRegion = LiveRegionMode.Polite },
+        Surface(Modifier.widthIn(max = 360.dp).fillMaxWidth()
+            .desktopCommandHitRegion("windows-page-error-card").semantics { liveRegion = LiveRegionMode.Polite },
             shape = RoundedCornerShape(16.dp), color = MaterialTheme.colorScheme.surfaceContainerHigh) {
             Column(Modifier.padding(24.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 Icon(Icons.Outlined.ErrorOutline, contentDescription = null, tint = MaterialTheme.colorScheme.error)
