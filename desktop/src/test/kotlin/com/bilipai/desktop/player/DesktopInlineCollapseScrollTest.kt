@@ -58,8 +58,8 @@ class DesktopInlineCollapseScrollTest {
                             -range.floatValue, true, false, minUpdateDeltaPx = 0f))) }
                 }
             }
-            Box(Modifier.fillMaxSize().desktopInlineCollapseScrollBoundary(connection).nestedScroll(connection)) {
-                val scroll = rememberLazyListState()
+            val scroll = rememberLazyListState()
+            Box(Modifier.fillMaxSize().desktopInlineCollapseScrollBoundary(connection) { !scroll.canScrollBackward }.nestedScroll(connection)) {
                 listPosition = scroll.firstVisibleItemIndex * 40 + scroll.firstVisibleItemScrollOffset
                 LazyColumn(Modifier.fillMaxSize(), state = scroll) {
                     items(20) { Box(Modifier.height(40.dp).fillMaxWidth()) }
