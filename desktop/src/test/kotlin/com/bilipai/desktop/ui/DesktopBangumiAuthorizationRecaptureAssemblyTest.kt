@@ -239,10 +239,10 @@ class DesktopBangumiAuthorizationRecaptureAssemblyTest {
     private class Notice(val launch: Job, private val delivery: () -> Unit) { fun deliver() = delivery() }
 
     private inner class Fixture(visitor: Boolean, private val automaticDelivery: Boolean = true) {
-        val directory = Files.createTempDirectory("pgc-auth-real-assembly-")
+        val directory = Files.createTempDirectory("pgc-auth-real-assembly-").toRealPath()
         private val createdAbsoluteDirectory = directory.toAbsolutePath().normalize()
         private val createdRealDirectory = directory.toRealPath()
-        private val systemTempDirectory = Path.of(System.getProperty("java.io.tmpdir")).toAbsolutePath().normalize()
+        private val systemTempDirectory = Path.of(System.getProperty("java.io.tmpdir")).toRealPath()
         private val systemRealTempDirectory = systemTempDirectory.toRealPath()
         val sessions = DesktopSessionStore.temporary()
         val repository = DesktopRepository(sessions)
