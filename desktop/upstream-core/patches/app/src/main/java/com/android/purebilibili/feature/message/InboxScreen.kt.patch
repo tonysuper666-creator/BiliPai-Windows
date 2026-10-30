@@ -1,0 +1,48 @@
+--- a/com/android/purebilibili/feature/message/InboxScreen.kt
++++ b/com/android/purebilibili/feature/message/InboxScreen.kt
+@@ -48,7 +48,7 @@
+ import androidx.compose.ui.text.style.TextOverflow
+ import androidx.compose.ui.unit.dp
+ import androidx.compose.ui.unit.sp
+-import androidx.lifecycle.viewmodel.compose.viewModel
++import com.bilipai.desktop.ui.LocalDesktopMessagePageOwner
+ import com.android.purebilibili.core.ui.AppAlertDialog
+ import com.android.purebilibili.feature.message.MessageAppScaffold as AppScaffold
+ import com.android.purebilibili.core.ui.AppTopBar
+@@ -89,14 +89,15 @@
+ 
+ @OptIn(ExperimentalMaterial3Api::class)
+ @Composable
+-fun InboxScreen(
++internal fun InboxScreen(
+     onBack: () -> Unit,
+     onTopItemClick: (MessageCenterDestination) -> Unit,
+     onSessionClick: (talkerId: Long, sessionType: Int, userName: String) -> Unit,
+     onOpenLink: (String) -> Unit = {},
+-    viewModel: InboxViewModel = viewModel()
++    viewModel: InboxViewModel = LocalDesktopMessagePageOwner.current.inbox
+ ) {
+-    val accountIdentity by com.android.purebilibili.core.store.TokenManager.accountIdentity.collectAsStateWithLifecycle()
++    val pageOwner = LocalDesktopMessagePageOwner.current
++    val accountIdentity = pageOwner.accountIdentity
+     val context = LocalContext.current
+     val outsideActionLimit = if (LocalConfiguration.current.screenWidthDp < 360) 0 else 2
+     val webThemeQuery = if (AppSurfaceTokens.surface().luminance() < 0.5f) "native.theme=2&night=1" else "native.theme=1&night=0"
+@@ -133,7 +134,7 @@
+                 val id = Regex("""/(\d{3,})""").find(item.url)?.groupValues?.get(1)?.toLongOrNull()
+                 if (id != null) onSessionClick(id, 1, item.title) else if (item.url.isNotBlank()) onOpenLink(item.url)
+             }
+-            else -> if (item.url.isNotBlank()) onOpenLink(item.url) else android.widget.Toast.makeText(context, "当前入口暂不可用", android.widget.Toast.LENGTH_SHORT).show()
++            else -> if (item.url.isNotBlank()) onOpenLink(item.url) else pageOwner.feedback("当前入口暂不可用")
+         }
+     }
+     if (pendingBatch != null) MessageConfirmDialog(
+@@ -214,7 +215,7 @@
+                             MessageCenterTopShortcutRow(
+                                 items = buildMessageCenterTopItems(uiState.feedUnreadData).map { if (disabledLikes && it.destination == MessageCenterDestination.LikeMe) it.copy(unreadCount = 0) else it },
+                                 onItemClick = { destination ->
+-                                    if (disabledLikes && destination == MessageCenterDestination.LikeMe) android.widget.Toast.makeText(context, "已禁用", android.widget.Toast.LENGTH_SHORT).show()
++                                    if (disabledLikes && destination == MessageCenterDestination.LikeMe) pageOwner.feedback("已禁用")
+                                     else onTopItemClick(destination)
+                                 }
+                             )

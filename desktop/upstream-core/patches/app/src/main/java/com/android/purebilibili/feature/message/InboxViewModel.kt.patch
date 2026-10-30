@@ -1,0 +1,92 @@
+--- a/com/android/purebilibili/feature/message/InboxViewModel.kt
++++ b/com/android/purebilibili/feature/message/InboxViewModel.kt
+@@ -1,8 +1,5 @@
+ package com.android.purebilibili.feature.message
+ 
+-import androidx.lifecycle.ViewModel
+-import androidx.lifecycle.viewModelScope
+-import com.android.purebilibili.core.coroutines.AccountScopedRequests
+ import com.android.purebilibili.core.store.AccountSessionIdentity
+ import com.android.purebilibili.core.store.TokenManager
+ import com.android.purebilibili.data.model.response.MessageFeedUnreadData
+@@ -10,7 +7,6 @@
+ import com.android.purebilibili.data.repository.ImMenuItem
+ import com.android.purebilibili.data.repository.ImSession
+ import com.android.purebilibili.data.repository.MessageImRepository
+-import com.android.purebilibili.data.repository.MessageRepository
+ import com.android.purebilibili.data.repository.MessageReadEvent
+ import kotlinx.coroutines.Job
+ import kotlinx.coroutines.async
+@@ -18,7 +14,7 @@
+ import kotlinx.coroutines.flow.MutableStateFlow
+ import kotlinx.coroutines.flow.asStateFlow
+ import kotlinx.coroutines.flow.update
+-import kotlinx.coroutines.launch
++import com.bilipai.desktop.ui.DesktopMessagePageAdmission
+ 
+ data class InboxUiState(
+     val accountIdentity: AccountSessionIdentity = TokenManager.accountIdentity.value,
+@@ -42,10 +38,10 @@
+     val outside: List<ImMenuItem> = emptyList(),
+ )
+ 
+-class InboxViewModel : ViewModel() {
+-    private val _uiState = MutableStateFlow(InboxUiState())
++internal class InboxViewModel(private val owner: DesktopMessagePageAdmission) {
++    private val _uiState = owner.stateFlow(InboxUiState(accountIdentity = owner.accountIdentity))
+     val uiState = _uiState.asStateFlow()
+-    private val requests = AccountScopedRequests(viewModelScope)
++    private val requests = owner.requestLauncher()
+     private var generation = 0L
+     private var listJob: Job? = null
+     private var moreJob: Job? = null
+@@ -62,12 +58,12 @@
+             loadSessions()
+         }
+         loadSessions()
+-        viewModelScope.launch {
+-            MessageRepository.readEvents.collect { event ->
++        owner.launch {
++            owner.requests.readEvents.collect { event ->
+                 if (event is MessageReadEvent.PrivateSession) applyReadAck(event)
+                 readStateJob?.cancel()
+                 readStateJob = requests.launch {
+-                    val result = MessageRepository.getFeedUnread()
++                    val result = owner.requests.getFeedUnread()
+                     if (requests.isCurrent()) {
+                         result.onSuccess { unread ->
+                             _uiState.update { it.copy(feedUnreadData = unread) }
+@@ -150,7 +146,7 @@
+         _uiState.update { it.copy(isLoading = it.sessions.isEmpty(), isRefreshing = refresh, isLoadingMore = false, error = null, loadMoreError = null) }
+         listJob = requests.launch {
+             coroutineScope {
+-                val feed = async { MessageRepository.getFeedUnread() }
++                val feed = async { owner.requests.getFeedUnread() }
+                 val sessions = async { MessageImRepository.sessions(pageType) }
+                 val result = sessions.await()
+                 val feedResult = feed.await()
+@@ -208,8 +204,8 @@
+     private fun operate(action: suspend () -> Result<Unit>) {
+         if (_uiState.value.isBatchOperating) return
+         val version = generation
+-        _uiState.update { it.copy(isBatchOperating = true, operationError = null) }
+-        requests.launch {
++        owner.launchMutation("inbox-operate") {
++            _uiState.update { it.copy(isBatchOperating = true, operationError = null) }
+             action().fold(onSuccess = { if (version == generation) refresh() }, onFailure = { error ->
+                 if (version == generation) _uiState.update { it.copy(isBatchOperating = false, operationError = error.message ?: "操作失败") }
+             })
+@@ -222,10 +218,10 @@
+     }
+     fun markAllRead() { val page = _uiState.value.pageType; operate { MessageImRepository.clearUnread(page) } }
+     fun clearSessions() { val page = _uiState.value.pageType; operate { MessageImRepository.clearList(page) } }
+-    fun removeSession(session: SessionItem) = operate { MessageRepository.removeSession(session.talker_id, session.session_type) }
++    fun removeSession(session: SessionItem) = operate { owner.requests.removeSession(session.talker_id, session.session_type) }
+     fun toggleTop(session: SessionItem) { val entry = entry(session) ?: return; operate { MessageImRepository.pin(entry) } }
+-    fun toggleDnd(session: SessionItem) = operate { MessageRepository.setSessionDnd(session.talker_id, session.session_type, session.is_dnd != 1) }
+-    fun toggleIntercept(session: SessionItem) = operate { MessageRepository.setSessionIntercept(session.talker_id, session.is_intercept != 1) }
++    fun toggleDnd(session: SessionItem) = operate { owner.requests.setSessionDnd(session.talker_id, session.session_type, session.is_dnd != 1) }
++    fun toggleIntercept(session: SessionItem) = operate { owner.requests.setSessionIntercept(session.talker_id, session.is_intercept != 1) }
+     fun clearError() { _uiState.update { it.copy(error = null) } }
+     fun clearOperationError() { _uiState.update { it.copy(operationError = null) } }
+ }

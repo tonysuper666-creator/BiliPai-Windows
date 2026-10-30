@@ -1,0 +1,58 @@
+--- a/com/android/purebilibili/feature/message/MessageCenterScreen.kt
++++ b/com/android/purebilibili/feature/message/MessageCenterScreen.kt
+@@ -20,6 +20,7 @@
+ import androidx.lifecycle.compose.collectAsStateWithLifecycle
+ import com.android.purebilibili.core.util.LocalWindowSizeClass
+ import com.android.purebilibili.core.util.WindowHeightSizeClass
++import com.bilipai.desktop.ui.LocalDesktopMessagePageOwner
+ 
+ @OptIn(ExperimentalMaterial3AdaptiveApi::class)
+ @Composable
+@@ -30,13 +31,15 @@
+     onNavigateToVideo: (String) -> Unit,
+     onOpenBilibiliLink: (String) -> Unit,
+ ) {
+-    val accountIdentity by com.android.purebilibili.core.store.TokenManager.accountIdentity.collectAsStateWithLifecycle()
++    val accountIdentity = LocalDesktopMessagePageOwner.current.accountIdentity
+     val useTwoPane =
+         LocalWindowSizeClass.current.let {
+             it.widthSizeClass != com.android.purebilibili.core.util.WindowWidthSizeClass.Compact &&
+                 it.heightSizeClass != WindowHeightSizeClass.Compact
+         }
+     if (!useTwoPane) {
++        val compactPageOwner = LocalDesktopMessagePageOwner.current
++        androidx.compose.runtime.SideEffect { compactPageOwner.keepPaneChat(0L, 0) }
+         InboxScreen(
+             onBack = onBack,
+             onTopItemClick = onTopItemClick,
+@@ -50,6 +53,9 @@
+     var activeSessionType by rememberSaveable(accountIdentity) { mutableIntStateOf(0) }
+     var activeUserName by rememberSaveable(accountIdentity) { mutableStateOf("") }
+ 
++    val pageOwner = LocalDesktopMessagePageOwner.current
++    val retainedPaneChat = activeTalkerId != 0L && pageOwner.retainPaneChat(activeTalkerId, activeSessionType)
++    androidx.compose.runtime.SideEffect { pageOwner.keepPaneChat(activeTalkerId, activeSessionType) }
+     val windowAdaptiveInfo = currentWindowAdaptiveInfoV2()
+     val directive = calculatePaneScaffoldDirective(windowAdaptiveInfo)
+     val scaffoldValue = ThreePaneScaffoldValue(
+@@ -72,14 +78,16 @@
+                 onTopItemClick = onTopItemClick,
+                 onOpenLink = onOpenBilibiliLink,
+                 onSessionClick = { talkerId, sessionType, userName ->
+-                    activeTalkerId = talkerId
+-                    activeSessionType = sessionType
+-                    activeUserName = userName
++                    pageOwner.selectPaneChat(talkerId, sessionType) {
++                        activeTalkerId = talkerId
++                        activeSessionType = sessionType
++                        activeUserName = userName
++                    }
+                 },
+             )
+         },
+         supportingPane = {
+-            if (activeTalkerId != 0L) {
++            if (activeTalkerId != 0L && retainedPaneChat) {
+                 key(accountIdentity, activeTalkerId, activeSessionType) {
+                     ChatScreen(
+                         talkerId = activeTalkerId,

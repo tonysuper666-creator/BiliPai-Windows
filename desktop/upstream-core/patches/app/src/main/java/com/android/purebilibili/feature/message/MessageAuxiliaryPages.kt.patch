@@ -1,0 +1,83 @@
+--- a/com/android/purebilibili/feature/message/MessageAuxiliaryPages.kt
++++ b/com/android/purebilibili/feature/message/MessageAuxiliaryPages.kt
+@@ -11,11 +11,9 @@
+ import androidx.compose.ui.Alignment
+ import androidx.compose.ui.Modifier
+ import androidx.compose.ui.unit.dp
+-import androidx.lifecycle.ViewModel
+-import androidx.lifecycle.viewModelScope
+ import androidx.lifecycle.compose.collectAsStateWithLifecycle
+-import androidx.lifecycle.viewmodel.compose.viewModel
+-import com.android.purebilibili.core.coroutines.AccountScopedRequests
++import com.bilipai.desktop.ui.DesktopMessagePageAdmission
++import com.bilipai.desktop.ui.LocalDesktopMessagePageOwner
+ import com.android.purebilibili.core.ui.AppAlertDialog
+ import com.android.purebilibili.core.ui.AppContentColors
+ import com.android.purebilibili.core.ui.AppTopBar
+@@ -24,7 +22,6 @@
+ import com.android.purebilibili.core.ui.components.AppLazyColumn as LazyColumn
+ import com.android.purebilibili.data.model.response.FollowingUser
+ import com.android.purebilibili.data.repository.*
+-import com.android.purebilibili.core.store.TokenManager
+ import kotlinx.coroutines.launch
+ import com.android.purebilibili.core.store.MessageCenterPreferences
+ import androidx.compose.ui.platform.LocalContext
+@@ -49,9 +46,9 @@
+     val mutationSuccess: Long = 0L,
+ )
+ 
+-internal class MessageAuxViewModel : ViewModel() {
+-    private val requests = AccountScopedRequests(viewModelScope)
+-    private val state = MutableStateFlow(MessageAuxState())
++internal class MessageAuxViewModel(private val owner: DesktopMessagePageAdmission) {
++    private val requests = owner.requestLauncher()
++    private val state = owner.stateFlow(MessageAuxState())
+     val uiState = state.asStateFlow()
+     private var loadJob: Job? = null
+     private var version = 0L
+@@ -87,7 +84,7 @@
+     private suspend fun loadUsers(requestedVersion: Long, page: Int) {
+         val current = state.value
+         val kind = if (current.page == "blacklist") "blacklist" else current.page.substringAfter(':', "following")
+-        MessageManagementRepository.contacts(kind, page, current.query).fold(onSuccess = { users ->
++        owner.management.contacts(kind, page, current.query).fold(onSuccess = { users ->
+             if (requestedVersion == version) state.update { state ->
+                 val merged = (if (page == 1) users else state.users + users).distinctBy { it.mid }
+                 state.copy(loading = false, busy = false, users = merged, userPage = page,
+@@ -116,7 +113,7 @@
+         }
+     }
+     fun removeWord(word: String) = mutate { MessageImRepository.removeKeyword(word) }
+-    fun unblock(user: FollowingUser) = mutate { MessageManagementRepository.block(user.mid, false) }
++    fun unblock(user: FollowingUser) = mutate { owner.management.block(user.mid, false) }
+     private fun mutate(action: suspend () -> Result<Unit>) {
+         if (state.value.busy) return
+         val currentVersion = version
+@@ -138,7 +135,8 @@
+     onOpenLink: (String) -> Unit,
+     modifier: Modifier = Modifier,
+ ) {
+-    val account by TokenManager.accountIdentity.collectAsStateWithLifecycle()
++    val pageOwner = LocalDesktopMessagePageOwner.current
++    val account = pageOwner.accountIdentity
+     val context = LocalContext.current
+     val scope = rememberCoroutineScope()
+     val disabledLikesFlow = remember(context) { MessageCenterPreferences.disabledLikes(context) }
+@@ -148,7 +146,7 @@
+     val messageBadgeMode by remember(context) { MessageCenterPreferences.messageBadgeMode(context) }
+         .collectAsStateWithLifecycle(initialValue = com.android.purebilibili.core.store.UnreadBadgeMode.NUMBER)
+     var badgeEditor by remember { mutableStateOf<Boolean?>(null) }
+-    val model: MessageAuxViewModel = viewModel(key = "message_aux_$account")
++    val model: MessageAuxViewModel = pageOwner.aux
+     val rawState by model.uiState.collectAsStateWithLifecycle()
+     val state = rawState.takeIf { it.page == page || (page.startsWith("contacts:") && it.page.startsWith("contacts:")) }
+         ?: MessageAuxState(page = page)
+@@ -173,8 +171,6 @@
+                             options = listOf(AppSegmentOption("contacts:following", "我的关注"), AppSegmentOption("contacts:fans", "我的粉丝")),
+                             selectedValue = state.page.takeIf { it.startsWith("contacts:") } ?: page,
+                             onSelectionChange = onPage,
+-                            // 玻璃指示器覆盖完整槽位；原生路径保留默认策略。
+-                            liquidGlassAdaptIndicatorToLabel = !com.android.purebilibili.core.ui.LocalAppThemeConfig.current.liquidGlassEnabled,
+                             modifier = Modifier.fillMaxWidth().padding(12.dp),
+                         )
+                         Row(Modifier.fillMaxWidth().padding(horizontal = 16.dp), verticalAlignment = Alignment.CenterVertically) {

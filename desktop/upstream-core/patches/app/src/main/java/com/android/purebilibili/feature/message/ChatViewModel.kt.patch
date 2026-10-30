@@ -1,0 +1,296 @@
+--- a/com/android/purebilibili/feature/message/ChatViewModel.kt
++++ b/com/android/purebilibili/feature/message/ChatViewModel.kt
+@@ -4,20 +4,14 @@
+ import android.content.Context
+ import android.net.Uri
+ import android.provider.OpenableColumns
+-import androidx.lifecycle.ViewModel
+-import androidx.lifecycle.ViewModelProvider
+-import androidx.lifecycle.viewModelScope
+-import com.android.purebilibili.core.coroutines.AccountScopedRequests
+ import com.android.purebilibili.core.store.AccountSessionIdentity
+ import com.android.purebilibili.core.store.TokenManager
+ import com.android.purebilibili.data.model.response.EmoteInfo
+ import com.android.purebilibili.data.model.response.PrivateMessageItem
+ import com.android.purebilibili.data.model.response.ViewInfo
+ import com.android.purebilibili.data.repository.MessageSessionControlInfo
+-import com.android.purebilibili.data.repository.MessageManagementRepository
+ import com.android.purebilibili.data.model.response.EmotePackage
+-import com.android.purebilibili.data.repository.MessageRepository
+-import com.android.purebilibili.data.repository.VideoRepository
++import com.bilipai.desktop.ui.DesktopMessagePageAdmission
+ import kotlinx.coroutines.CancellationException
+ import kotlinx.coroutines.Dispatchers
+ import kotlinx.coroutines.Job
+@@ -25,7 +19,6 @@
+ import kotlinx.coroutines.flow.StateFlow
+ import kotlinx.coroutines.flow.asStateFlow
+ import kotlinx.coroutines.flow.update
+-import kotlinx.coroutines.launch
+ import kotlinx.coroutines.sync.Mutex
+ import kotlinx.coroutines.sync.withLock
+ import kotlinx.coroutines.withContext
+@@ -78,14 +71,15 @@
+     val videoPreviews: Map<String, VideoPreviewInfo> = emptyMap()  // bvid -> VideoPreviewInfo
+ )
+ 
+-class ChatViewModel(
++internal class ChatViewModel(
+     private val talkerId: Long,
+-    private val sessionType: Int
+-) : ViewModel() {
++    private val sessionType: Int,
++    private val owner: DesktopMessagePageAdmission,
++) {
+     
+-    private val _uiState = MutableStateFlow(ChatUiState())
++    private val _uiState = owner.stateFlow(ChatUiState(accountIdentity = owner.accountIdentity))
+     val uiState: StateFlow<ChatUiState> = _uiState.asStateFlow()
+-    private val accountRequests = AccountScopedRequests(viewModelScope)
++    private val accountRequests = owner.requestLauncher()
+     private var messageLoadMutex = Mutex()
+     private var readAckMutex = Mutex()
+     private var latestMessagesJob: Job? = null
+@@ -99,7 +93,7 @@
+     
+     // 当前用户 mid
+     val currentUserMid: Long
+-        get() = TokenManager.midCache ?: 0
++        get() = owner.mid
+     
+     // BV号匹配正则
+     private val bvPattern = Regex("BV[a-zA-Z0-9]{10}")
+@@ -126,7 +120,7 @@
+      */
+     fun loadMessages(scrollToLatest: Boolean = false) {
+         if (latestMessagesJob?.isActive == true && !scrollToLatest) return
+-        latestMessagesJob = accountRequests.launch {
++        latestMessagesJob = owner.launchRead("chat-latest") {
+             loadLatestMessages(showLoading = true, scrollToLatest = scrollToLatest)
+         }
+     }
+@@ -134,7 +128,9 @@
+     /** Called by the visible screen; cancellation stops the current refresh too. */
+     suspend fun refreshMessages() {
+         if (!_uiState.value.messagesLoaded || latestMessagesJob?.isActive == true) return
+-        loadLatestMessages(showLoading = false, scrollToLatest = false)
++        owner.awaitRead("chat-refresh") {
++            loadLatestMessages(showLoading = false, scrollToLatest = false)
++        }
+     }
+ 
+     private suspend fun loadLatestMessages(showLoading: Boolean, scrollToLatest: Boolean) {
+@@ -148,7 +144,7 @@
+                 }
+             }
+             try {
+-                val data = MessageRepository.getMessages(
++                val data = owner.requests.getMessages(
+                     talkerId = talkerId,
+                     sessionType = sessionType,
+                     size = 30,
+@@ -165,7 +161,7 @@
+                     incoming.none { chatMessageKey(it) in existingKeys }
+                 ) {
+                     if (!accountRequests.isCurrent(requestedIdentity)) return@withLock
+-                    val gapPage = MessageRepository.getMessages(
++                    val gapPage = owner.requests.getMessages(
+                         talkerId = talkerId,
+                         sessionType = sessionType,
+                         size = 30,
+@@ -248,8 +244,8 @@
+         
+         accountRequests.launch {
+             try {
+-                val result = VideoRepository.getVideoDetails(bvid)
+-                result.onSuccess { (viewInfo, _) ->
++                val result = owner.getVideoDetails(bvid)
++                result.onSuccess { viewInfo ->
+                     val preview = VideoPreviewInfo(
+                         bvid = viewInfo.bvid,
+                         title = viewInfo.title,
+@@ -315,11 +311,11 @@
+         val current = _uiState.value
+         if (current.isLoadingMore || current.isLoading || !current.hasMore || current.minSeqno <= 0L) return
+         _uiState.update { it.copy(isLoadingMore = true, loadMoreError = null) }
+-        accountRequests.launch {
++        owner.launchRead("chat-more") {
+             try {
+                 messageLoadMutex.withLock {
+                     val cursor = _uiState.value.minSeqno
+-                    val data = MessageRepository.getMessages(
++                    val data = owner.requests.getMessages(
+                         talkerId = talkerId,
+                         sessionType = sessionType,
+                         size = 30,
+@@ -352,11 +348,10 @@
+      */
+     fun sendMessage(content: String) {
+         if (content.isBlank() || _uiState.value.isSending || _uiState.value.isUploadingImage) return
+-        _uiState.update { it.copy(isSending = true, sendError = null) }
+-        
+-        accountRequests.launch {
++        owner.launchMutation("chat-send") {
++            _uiState.update { it.copy(isSending = true, sendError = null) }
+             try {
+-                MessageRepository.sendTextMessage(
++                owner.requests.sendTextMessage(
+                     receiverId = talkerId,
+                     content = content.trim(),
+                     receiverType = sessionType,
+@@ -380,7 +375,7 @@
+     fun sendImageMessage(context: Context, imageUri: Uri) {
+         if (_uiState.value.isUploadingImage || _uiState.value.isSending) return
+ 
+-        accountRequests.launch {
++        owner.launchMutation("chat-send") {
+             _uiState.value = _uiState.value.copy(isUploadingImage = true, sendError = null)
+ 
+             withContext(Dispatchers.IO) {
+@@ -395,13 +390,13 @@
+                     val fileName = queryDisplayName(context, imageUri)
+                         ?: "message_${System.currentTimeMillis()}.jpg"
+ 
+-                    val uploadData = MessageRepository.uploadPrivateImage(
++                    val uploadData = owner.requests.uploadPrivateImage(
+                         fileName = fileName,
+                         mimeType = mimeType,
+                         bytes = bytes
+                     ).getOrElse { throw it }
+ 
+-                    MessageRepository.sendImageMessage(
++                    owner.requests.sendImageMessage(
+                         receiverId = talkerId,
+                         imageUrl = uploadData.imageUrl,
+                         width = uploadData.imageWidth,
+@@ -428,9 +423,9 @@
+     }
+ 
+     fun loadSessionControlInfo() {
+-        accountRequests.launch {
++        owner.launchRead("chat-control") {
+             _uiState.value = _uiState.value.copy(isSessionControlLoading = true)
+-            MessageRepository.getSessionControlInfo(talkerId, sessionType)
++            owner.requests.getSessionControlInfo(talkerId, sessionType)
+                 .onSuccess { info ->
+                     _uiState.value = _uiState.value.copy(
+                         sessionControlInfo = info,
+@@ -447,7 +442,7 @@
+         if (_uiState.value.isEmoteLoading || _uiState.value.emotePackages.isNotEmpty()) return
+         _uiState.update { it.copy(isEmoteLoading = true, emoteError = null) }
+         accountRequests.launch {
+-            MessageManagementRepository.emotes().fold(
++            owner.management.emotes().fold(
+                 onSuccess = { packages -> _uiState.update { it.copy(isEmoteLoading = false, emotePackages = packages) } },
+                 onFailure = { error -> _uiState.update { it.copy(isEmoteLoading = false, emoteError = error.message ?: "加载表情失败") } },
+             )
+@@ -462,24 +457,24 @@
+         )
+         _uiState.update { it.copy(userInfo = InboxUserInfoResolver.mergeFetchedUserInfo(it.userInfo, initial)) }
+         accountRequests.launch {
+-            val user = MessageUserInfoLoader.fetch(talkerId)
++            val user = owner.fetchUserInfo(talkerId)
+             _uiState.update { it.copy(userInfo = InboxUserInfoResolver.mergeFetchedUserInfo(it.userInfo, user)) }
+         }
+     }
+     fun togglePinned() {
+         val pinned = _uiState.value.sessionControlInfo.isPinned ?: return
+-        updateSessionControl { MessageRepository.setSessionTop(talkerId, sessionType, !pinned) }
++        updateSessionControl { owner.requests.setSessionTop(talkerId, sessionType, !pinned) }
+     }
+     fun toggleBlocked() {
+         val blocked = _uiState.value.sessionControlInfo.followStatus == 128
+-        updateSessionControl { MessageManagementRepository.block(talkerId, !blocked) }
++        updateSessionControl { owner.management.block(talkerId, !blocked) }
+     }
+     fun clearReportError() { _uiState.update { it.copy(reportError = null) } }
+     fun report(messageKey: Long?, reason: Int, description: String, accusedUid: Long = talkerId) {
+         if (_uiState.value.isReporting) return
+         _uiState.update { it.copy(isReporting = true, reportError = null) }
+         accountRequests.launch {
+-            MessageManagementRepository.report(accusedUid, messageKey, reason, description).fold(
++            owner.management.report(accusedUid, messageKey, reason, description).fold(
+                 onSuccess = { _uiState.update { it.copy(isReporting = false, reportSuccessVersion = it.reportSuccessVersion + 1, notice = "举报已提交") } },
+                 onFailure = { error -> _uiState.update { it.copy(isReporting = false, reportError = error.message ?: "举报失败") } },
+             )
+@@ -489,7 +484,7 @@
+     fun toggleDnd() {
+         val current = _uiState.value.sessionControlInfo.isDnd == true
+         updateSessionControl {
+-            MessageRepository.setSessionDnd(talkerId, sessionType, !current)
++            owner.requests.setSessionDnd(talkerId, sessionType, !current)
+         }
+     }
+ 
+@@ -497,7 +492,7 @@
+         if (sessionType != 1) return
+         val current = _uiState.value.sessionControlInfo.pushMuted == true
+         updateSessionControl {
+-            MessageRepository.setSessionPushMuted(talkerId, !current)
++            owner.requests.setSessionPushMuted(talkerId, !current)
+         }
+     }
+ 
+@@ -505,13 +500,13 @@
+         if (sessionType != 1) return
+         val current = _uiState.value.sessionControlInfo.isIntercept == true
+         updateSessionControl {
+-            MessageRepository.setSessionIntercept(talkerId, !current)
++            owner.requests.setSessionIntercept(talkerId, !current)
+         }
+     }
+ 
+     private fun updateSessionControl(action: suspend () -> Result<Unit>) {
+         if (_uiState.value.isSessionControlUpdating) return
+-        accountRequests.launch {
++        owner.launchMutation("updateSessionControl") {
+             _uiState.value = _uiState.value.copy(isSessionControlUpdating = true, sendError = null)
+             action().fold(
+                 onSuccess = {
+@@ -531,13 +526,13 @@
+     fun withdrawMessage(message: PrivateMessageItem) {
+         if (message.msg_key <= 0L || message.msg_status == 1 || _uiState.value.withdrawingMessageKey != null) return
+ 
+-        accountRequests.launch {
++        owner.launchMutation("withdrawMessage") {
+             _uiState.value = _uiState.value.copy(
+                 withdrawingMessageKey = message.msg_key,
+                 sendError = null
+             )
+ 
+-            MessageRepository.withdrawMessage(
++            owner.requests.withdrawMessage(
+                 receiverId = talkerId,
+                 msgKey = message.msg_key,
+                 receiverType = sessionType
+@@ -568,10 +563,10 @@
+         if (seqno <= lastReadSeqno) return
+         val requestedIdentity = accountRequests.identity
+         val requestMutex = readAckMutex
+-        accountRequests.launch {
++        owner.launchMutation("markAsRead") {
+             requestMutex.withLock {
+                 if (!accountRequests.isCurrent(requestedIdentity) || seqno <= lastReadSeqno) return@withLock
+-                val result = MessageRepository.markAsRead(talkerId, sessionType, seqno)
++                val result = owner.requests.markAsRead(talkerId, sessionType, seqno)
+                 if (!accountRequests.isCurrent(requestedIdentity)) return@withLock
+                 result.onSuccess {
+                     lastReadSeqno = maxOf(lastReadSeqno, seqno)
+@@ -628,17 +623,4 @@
+             output.toByteArray()
+         } ?: error("无法读取图片文件")
+     }
+-    
+-    /**
+-     * 工厂类
+-     */
+-    class Factory(
+-        private val talkerId: Long,
+-        private val sessionType: Int
+-    ) : ViewModelProvider.Factory {
+-        @Suppress("UNCHECKED_CAST")
+-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+-            return ChatViewModel(talkerId, sessionType) as T
+-        }
+     }
+-}

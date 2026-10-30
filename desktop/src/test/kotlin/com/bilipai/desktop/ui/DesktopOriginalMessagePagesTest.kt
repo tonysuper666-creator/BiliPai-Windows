@@ -3,6 +3,9 @@ package com.bilipai.desktop.ui
 import com.android.purebilibili.feature.message.*
 import com.android.purebilibili.feature.message.feed.*
 import com.android.purebilibili.data.model.response.*
+import com.android.purebilibili.core.network.grpc.ProtoWire
+import com.android.purebilibili.data.repository.ImFields
+import com.android.purebilibili.data.repository.MessageImRepository
 import com.bilipai.desktop.data.*
 import com.bilipai.desktop.plugins.*
 import com.sun.net.httpserver.HttpServer
@@ -23,7 +26,8 @@ import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicInteger
 
 private data class MessagePageTestHit(val method:String,val path:String,val query:Map<String,String>,val fields:Map<String,String>,val rawBody:ByteArray)
-private data class MessagePageTestReply(val body:String="""{"code":0,"data":{}}""",val status:Int=200,val headers:Map<String,String> = emptyMap())
+private data class MessagePageTestReply(val body:String="""{"code":0,"data":{}}""",val status:Int=200,val headers:Map<String,String> = emptyMap(),
+    val bytes:ByteArray?=null)
 private fun decode(raw:String)=raw.split('&').filter { it.isNotBlank() }.associate { item ->
     val parts=item.split('=',limit=2);URLDecoder.decode(parts[0],Charsets.UTF_8) to URLDecoder.decode(parts.getOrElse(1){""},Charsets.UTF_8)
 }
@@ -49,7 +53,7 @@ private class MessagePageTestFixture : AutoCloseable {
     lateinit var services:DesktopMessagePageServices
     val hostAttempts=AtomicInteger()
     init {
-        sessions.saveAccount(mapOf("SESSDATA" to "synthetic-only-A","bili_jct" to "synthetic-only-csrf"),AccountSummary(42,"MessagePageTestFixture",""))
+        sessions.saveAccount(mapOf("SESSDATA" to "synthetic-only-A","bili_jct" to "synthetic-only-csrf","buvid3" to "synthetic-only-buvid"),AccountSummary(42,"MessagePageTestFixture",""),imported=true)
         server.executor=executor
         server.createContext("/") { exchange ->
             val body=exchange.requestBody.use { it.readBytes() }
@@ -57,7 +61,7 @@ private class MessagePageTestFixture : AutoCloseable {
                 if(exchange.requestHeaders.getFirst("Content-Type")?.startsWith("application/x-www-form-urlencoded")==true)decode(body.toString(Charsets.UTF_8))else emptyMap(),body)
             hits+=hit
             try {
-                val reply=respond(hit);val bytes=reply.body.toByteArray()
+                val reply=respond(hit);val bytes=reply.bytes ?: reply.body.toByteArray()
                 exchange.responseHeaders.set("Content-Type","application/json")
                 reply.headers.forEach { (name,value)->exchange.responseHeaders.set(name,value) }
                 exchange.sendResponseHeaders(reply.status,bytes.size.toLong());exchange.responseBody.use { it.write(bytes) }
@@ -67,11 +71,11 @@ private class MessagePageTestFixture : AutoCloseable {
         val transport=repository.httpClient.newBuilder().retryOnConnectionFailure(false).proxy(Proxy.NO_PROXY)
             // Keep the API origin for the production credential gate; only DNS/port use loopback.
             .dns { host ->
-                check(host in setOf("api.vc.bilibili.com","api.bilibili.com","message.bilibili.com"))
+                check(host in hosts)
                 listOf(java.net.InetAddress.getByName("127.0.0.1"))
             }
             .addInterceptor { chain ->
-                val request=chain.request();check(request.url.host in setOf("api.vc.bilibili.com","api.bilibili.com","message.bilibili.com"))
+                val request=chain.request();check(request.url.host in hosts)
                 check(request.url.encodedPath in allowedPaths) { "Unexpected fixture route" };hostAttempts.incrementAndGet()
                 chain.proceed(request.newBuilder().url(request.url.newBuilder().scheme("http").port(server.address.port).build()).build())
             }.build()
@@ -83,6 +87,7 @@ private class MessagePageTestFixture : AutoCloseable {
         // MessagePageTestFixture transport ONLY: actual Community factory and protocol/body/settings are unchanged.
         community.javaClass.getDeclaredField("client").apply { isAccessible=true;set(community,transport) }
         services=community.originalMessagePages(admission);admission.requests=services.requests;admission.management=services.management
+        admission.im=services.im
     }
     suspend fun pageOwner():DesktopOriginalMessagePageOwner {
         val lifecycleOwner=object:androidx.lifecycle.LifecycleOwner {
@@ -123,12 +128,18 @@ private class MessagePageTestFixture : AutoCloseable {
         "/x/sys-msg/query_notify_list" -> MessagePageTestReply("""{"code":0,"data":[{"id":4,"cursor":99,"title":"MessagePageTestFixture notice","content":"Actual original content","time_at":"2026-10-02 12:00:00"}]}""")
         "/x/dynamic/feed/draw/upload_bfs" -> MessagePageTestReply("""{"code":0,"data":{"image_url":"https://synthetic.invalid/image.png","image_width":2,"image_height":2,"img_size":9}}""")
         "/web_im/v1/web_im/send_msg" -> MessagePageTestReply("""{"code":0,"data":{"msg_key":101}}""")
+        "/bilibili.app.im.v1.im/SessionMain" -> grpcReply(imPage(listOf(imSession(7,"Known7",700),imSession(8,"Known8",600)),imCursor(1,true)))
+        in imPaths -> grpcReply(byteArrayOf())
         else -> MessagePageTestReply("""{"code":0}""")
     }
     suspend fun shutdown() { retained.set(false);pageOwners.forEach { it.closeAndJoin() };admission.retireAndJoin();scope.cancel();server.stop(0);executor.shutdownNow();repository.httpClient.dispatcher.executorService.shutdownNow();repository.httpClient.connectionPool.evictAll() }
     override fun close() { runBlocking { shutdown() } }
     companion object {
-        val allowedPaths=setOf("/session_svr/v1/session_svr/single_unread","/x/msgfeed/unread","/session_svr/v1/session_svr/get_sessions",
+        // The IM gRPC host keeps its production origin too (upstream MessageImRepository, bilibili.app.im.v1.im).
+        val hosts=setOf("api.vc.bilibili.com","api.bilibili.com","message.bilibili.com","app.bilibili.com")
+        val imPaths=listOf("SessionMain","SessionSecondary","ClearUnread","DeleteSessionList","PinSession","UnpinSession",
+            "GetImSettings","SetImSettings","KeywordBlockingList","KeywordBlockingAdd","KeywordBlockingDelete").map { "/bilibili.app.im.v1.im/$it" }.toSet()
+        val allowedPaths=imPaths+setOf("/x/emote/user/panel/web","/x/emote/package","/session_svr/v1/session_svr/single_unread","/x/msgfeed/unread","/session_svr/v1/session_svr/get_sessions",
             "/svr_sync/v1/svr_sync/fetch_session_msgs","/session_svr/v1/session_svr/session_detail","/link_setting/v1/link_setting/get_msg_dnd",
             "/link_setting/v1/link_setting/is_limit","/link_setting/v1/link_setting/get_session_ss","/x/msgfeed/reply","/x/msgfeed/at","/x/msgfeed/like",
             "/x/sys-msg/query_notify_list","/x/sys-msg/update_cursor","/x/msgfeed/del","/x/msgfeed/notice","/x/dynamic/feed/draw/upload_bfs",
@@ -143,6 +154,22 @@ private fun sessionsJson(items:List<Pair<Long,Long>>,more:Boolean) = buildJsonOb
         put("talker_id",id);put("session_type",1);put("session_ts",time);put("account_info",buildJsonObject { put("mid",id);put("name","Known$id");put("pic_url","known-$id") })
     } })) })
 }.toString()
+/** gRPC reply: one uncompressed frame, status in the HTTP headers (BiliGrpcClient reads either headers or trailers). */
+private fun grpcReply(message:ByteArray,status:String="0",grpcMessage:String="") = MessagePageTestReply(
+    bytes=ProtoWire.frame(message,gzipMinLength=Int.MAX_VALUE),
+    headers=mapOf("Content-Type" to "application/grpc","grpc-status" to status)+(if(grpcMessage.isEmpty()) emptyMap() else mapOf("grpc-message" to grpcMessage)))
+/** The request message of a gRPC hit (BiliGrpcClient frames, and gzips longer messages). */
+private fun grpcRequest(hit:MessagePageTestHit)=ImFields(ProtoWire.unframe(hit.rawBody))
+/** An IM session (upstream MessageImRepository.parseSession): private talker or a fold folder, name, time, unread, seqno. */
+private fun imSession(talker:Long,name:String,time:Long,fold:Int=0,unread:Long=0,maxSeqno:Long=0)=ProtoWire.message(
+    ProtoWire.bytes(1,if(fold>0) ProtoWire.bytes(3,ProtoWire.int64(1,fold.toLong())) else ProtoWire.bytes(1,ProtoWire.int64(1,talker))),
+    ProtoWire.bytes(2,ProtoWire.string(1,name)),
+    ProtoWire.bytes(3,if(unread>0) ProtoWire.message(ProtoWire.int32(1,2),ProtoWire.int64(2,unread),ProtoWire.string(3,unread.toString())) else byteArrayOf()),
+    ProtoWire.int64(5,time),ProtoWire.int64(7,maxSeqno))
+private fun imCursor(value:Long,more:Boolean)=ProtoWire.message(ProtoWire.int64(1,value),ProtoWire.bool(2,more))
+/** SessionMain lists sessions in field 5; a folder page (SessionSecondary) in field 3. */
+private fun imPage(sessions:List<ByteArray>,cursor:ByteArray,folder:Boolean=false)=ProtoWire.message(
+    ProtoWire.bytes(1,cursor),*sessions.map { ProtoWire.bytes(if(folder)3 else 5,it) }.toTypedArray())
 private fun feedJson(ids:List<Int>,cursor:Long,time:Long,end:Boolean) = buildJsonObject {
     put("code",0);put("data",buildJsonObject {put("cursor",buildJsonObject {put("id",cursor);put("time",time);put("is_end",end)});put("items",JsonArray(ids.map { buildJsonObject { put("id",it);put("reply_time",time) } }))})
 }.toString()
@@ -283,32 +310,47 @@ class DesktopV029ChatTimelineIntegrationTest {
 
 
 class DesktopOriginalMessagePagesTest {
-    @Test fun originalInboxCategoriesUnreadAndCursorDuplicateRetry(): Unit = runBlocking {
-        // original Inbox categories unread and cursor duplicate retry
+    // TON-1120: upstream's inbox lists sessions over IM gRPC (SessionMain/SessionSecondary, opaque pagination, folder
+    // pages) instead of the web get_sessions categories; these two replace the category tests with the same behaviour.
+    @Test fun imInboxPagesByOpaquePaginationAndStopsWhenItDoesNotAdvance(): Unit = runBlocking {
         MessagePageTestFixture().use { f ->
-        val vm=InboxViewModel(f.admission);f.waitFor { !vm.uiState.value.isLoading }
-        check(vm.uiState.value.sessions.map { it.talker_id }==listOf(7L,8L)) { "Original initial sessions state=${vm.uiState.value} hits=${f.hits.map {it.path}}" };check(vm.uiState.value.endTs==599_999_999L)
-        check(vm.uiState.value.unreadData?.follow_unread==2);check(MessageSessionCategory.values().map { it.apiSessionType }==listOf(4,9,2,8,3,5,7))
-        val pages=AtomicInteger();f.respond={ hit->if(hit.path.endsWith("get_sessions") && hit.query["end_ts"]!="0") {
-            if(pages.incrementAndGet()==1) MessagePageTestReply(sessionsJson(listOf(8L to 600L),true)) else MessagePageTestReply(sessionsJson(listOf(9L to 500L),false))
-        }else f.default(hit) }
-        vm.loadMoreSessions();f.waitFor { !vm.uiState.value.isLoadingMore && vm.uiState.value.sessions.size==3 }
-        check(pages.get()==2);check(vm.uiState.value.endTs==499_999_999L)
-        check(f.hits.filter { it.path.endsWith("get_sessions") }.all {it.query["size"]=="100" && it.query["unfollow_fold"]=="0" && it.query["group_fold"]=="1"})
-            }
+            val vm=InboxViewModel(f.admission);f.waitFor { !vm.uiState.value.isLoading }
+            check(vm.uiState.value.sessions.map { it.talker_id }==listOf(7L,8L)) { "Initial IM sessions state=${vm.uiState.value} hits=${f.hits.map {it.path}}" }
+            check(vm.uiState.value.hasMore && vm.uiState.value.feedUnreadData?.reply==3)
+            check(grpcRequest(f.hits.single { it.path.endsWith("/SessionMain") }).bytes(2).isEmpty()) { "The first page sends no pagination" }
+            val pages=ConcurrentLinkedQueue<ByteArray>()
+            f.respond={ hit->if(hit.path.endsWith("/SessionMain")) {
+                val cursor=grpcRequest(hit).bytes(2);pages+=cursor
+                // A duplicate session and a new one, then a page whose pagination does not advance.
+                if(cursor.contentEquals(imCursor(1,true))) grpcReply(imPage(listOf(imSession(8,"Known8",600),imSession(9,"Known9",500)),imCursor(2,true)))
+                else grpcReply(imPage(emptyList(),imCursor(2,true)))
+            }else f.default(hit) }
+            vm.loadMoreSessions();f.waitFor { !vm.uiState.value.isLoadingMore && vm.uiState.value.sessions.size==3 }
+            check(vm.uiState.value.sessions.map { it.talker_id }==listOf(7L,8L,9L) && vm.uiState.value.hasMore)
+            vm.loadMoreSessions();f.waitFor { !vm.uiState.value.isLoadingMore && pages.size==2 }
+            check(pages.map { ImFields(it).number(1) }==listOf(1L,2L)) { "More sends the server's opaque pagination back unchanged" }
+            check(!vm.uiState.value.hasMore && vm.uiState.value.sessions.size==3) { "A page that does not advance ends the list" }
+        }
     }
-    @Test fun latePreviousCategoryCannotOverwriteSelectedCategory(): Unit = runBlocking {
-        // late previous category cannot overwrite selected category
+    @Test fun lateMainPageCannotOverwriteAnOpenedImFolder(): Unit = runBlocking {
         MessagePageTestFixture().use { f ->
-        val entered=CountDownLatch(1);val release=CountDownLatch(1)
-        f.respond={ hit->if(hit.path.endsWith("get_sessions")) {
-            if(hit.query["session_type"]=="4") {entered.countDown();release.await(3,TimeUnit.SECONDS);MessagePageTestReply(sessionsJson(listOf(100L to 200L),false))}
-            else MessagePageTestReply(sessionsJson(listOf(200L to 300L),false))
-        }else f.default(hit) }
-        val vm=InboxViewModel(f.admission);check(withContext(Dispatchers.IO){entered.await(3,TimeUnit.SECONDS)})
-        vm.selectCategory(MessageSessionCategory.Follow);f.waitFor { !vm.uiState.value.isLoading && vm.uiState.value.sessions.firstOrNull()?.talker_id==200L }
-        release.countDown();delay(100);check(vm.uiState.value.selectedCategory==MessageSessionCategory.Follow);check(vm.uiState.value.sessions.single().talker_id==200L)
-            }
+            f.respond={ hit->if(hit.path.endsWith("/SessionMain")) grpcReply(imPage(listOf(imSession(0,"拦截",800,fold=4),imSession(7,"Known7",700)),imCursor(1,false)))
+                else f.default(hit) }
+            val vm=InboxViewModel(f.admission);f.waitFor { !vm.uiState.value.isLoading && vm.uiState.value.sessions.size==2 }
+            val folder=vm.uiState.value.sessions.first();check(vm.entry(folder)?.folderPage==2)
+            val entered=CountDownLatch(1);val release=CountDownLatch(1)
+            f.respond={ hit->when {
+                hit.path.endsWith("/SessionMain") -> {entered.countDown();release.await(3,TimeUnit.SECONDS);grpcReply(imPage(listOf(imSession(100,"Late",900)),imCursor(1,false)))}
+                hit.path.endsWith("/SessionSecondary") -> grpcReply(imPage(listOf(imSession(200,"Folded",300)),imCursor(1,false),folder=true))
+                else -> f.default(hit)
+            } }
+            vm.refresh();check(withContext(Dispatchers.IO){entered.await(3,TimeUnit.SECONDS)})
+            check(vm.openFolder(folder));f.waitFor { !vm.uiState.value.isLoading && vm.uiState.value.sessions.firstOrNull()?.talker_id==200L }
+            release.countDown();delay(100)
+            check(vm.uiState.value.pageType==2 && vm.uiState.value.title=="拦截" && vm.uiState.value.sessions.single().talker_id==200L)
+            check(grpcRequest(f.hits.single { it.path.endsWith("/SessionSecondary") }).number(3)==2L) { "The folder page asks for its own page type" }
+            check(vm.back() && vm.uiState.value.pageType==1)
+        }
     }
     @Test fun replyPaginationUsesExactIdTimeAndRefreshCancelsStaleMore(): Unit = runBlocking {
         // Reply pagination uses exact id time and refresh cancels stale more
@@ -409,14 +451,61 @@ class DesktopOriginalMessagePagesTest {
         check(f.hits.filter {it.method=="POST"}.all {it.fields["csrf"]=="synthetic-only-csrf" && it.fields["csrf_token"]=="synthetic-only-csrf"})
             }
     }
-    @Test fun originalOptimisticTopFailureRefreshesAuthoritativeSessions(): Unit = runBlocking {
-        // original optimistic top failure refreshes authoritative sessions
+    // TON-1120: upstream pins an inbox session over IM (PinSession with the session's IM identity) and refreshes only on
+    // success; a rejection keeps the server's sessions and reports the error (replaces the optimistic web set_top test).
+    @Test fun imPinFailureKeepsAuthoritativeSessionsAndSuccessRefreshes(): Unit = runBlocking {
         MessagePageTestFixture().use { f ->
-        val vm=InboxViewModel(f.admission);f.waitFor { !vm.uiState.value.isLoading };val before=f.hits.size
-        f.respond={hit->if(hit.path.endsWith("set_top"))MessagePageTestReply("""{"code":-400,"message":"controlled rejection"}""")else f.default(hit)}
-        vm.toggleTop(vm.uiState.value.sessions.first());f.waitFor {f.hits.size>before && f.hits.count {it.path.endsWith("get_sessions")}>=2 && !vm.uiState.value.isRefreshing}
-        check(vm.uiState.value.sessions.all {it.top_ts==0L});check(f.hits.count {it.path.endsWith("set_top")}==1)
-            }
+            val vm=InboxViewModel(f.admission);f.waitFor { !vm.uiState.value.isLoading }
+            val session=vm.uiState.value.sessions.first();val lists=f.hits.count { it.path.endsWith("/SessionMain") }
+            f.respond={hit->if(hit.path.endsWith("/PinSession")) grpcReply(byteArrayOf(),"7","controlled rejection") else f.default(hit)}
+            vm.toggleTop(session);f.waitFor { vm.uiState.value.operationError!=null && !vm.uiState.value.isBatchOperating }
+            check(vm.uiState.value.sessions.all { it.top_ts==0L } && f.hits.count { it.path.endsWith("/SessionMain") }==lists)
+            val pin=f.hits.single { it.path.endsWith("/PinSession") }
+            check(grpcRequest(pin).bytes(1).contentEquals(vm.entry(session)!!.id)) { "PinSession carries the session's IM identity" }
+            f.respond={ f.default(it) };vm.clearOperationError();vm.toggleTop(session)
+            f.waitFor { f.hits.count { it.path.endsWith("/SessionMain") }>lists && !vm.uiState.value.isBatchOperating && !vm.uiState.value.isRefreshing }
+            check(vm.uiState.value.operationError==null)
+        }
+    }
+    @Test fun retiredChildCannotSendAnImRequest(): Unit = runBlocking {
+        MessagePageTestFixture().use { f ->
+            val vm=InboxViewModel(f.admission);f.waitFor { !vm.uiState.value.isLoading }
+            val im=f.hits.count { it.path in MessagePageTestFixture.imPaths }
+            check(f.admission.retireAndJoin())
+            runCatching { vm.refresh() };runCatching { vm.markAllRead() };delay(200)
+            check(f.hits.count { it.path in MessagePageTestFixture.imPaths }==im) { "A retired message page must not send IM requests for the account" }
+        }
+    }
+    @Test fun imCallOutsideAMessagePageFailsLoudly(): Unit = runBlocking {
+        MessagePageTestFixture().use { f ->
+            // No process-wide gRPC client: without a message page's channel the call fails with a reason and sends nothing.
+            val result=MessageImRepository.sessions()
+            check(result.exceptionOrNull()?.message=="私信请求只能在消息页内发起") { "result=$result" }
+            check(f.hits.none { it.path in MessagePageTestFixture.imPaths })
+        }
+    }
+    @Test fun chatReadReceiptClearsTheSameSessionInTheInbox(): Unit = runBlocking {
+        MessagePageTestFixture().use { f ->
+            f.respond={ hit->if(hit.path.endsWith("/SessionMain")) grpcReply(imPage(listOf(imSession(7,"Known7",700,unread=2,maxSeqno=9)),imCursor(1,false)))
+                else f.default(hit) }
+            val page=f.pageOwner();val inbox=page.inbox
+            f.waitFor { !inbox.uiState.value.isLoading && inbox.uiState.value.sessions.singleOrNull()?.unread_count==2 }
+            // The chat child is a separate admission of the same page; its read receipt (seqno 9) is the inbox's read event.
+            val chat=page.chat(7,1);f.waitFor { f.hits.any { it.path.endsWith("update_ack") } && chat.uiState.value.messagesLoaded }
+            f.waitFor { inbox.uiState.value.sessions.single().unread_count==0 }
+            check(inbox.entry(inbox.uiState.value.sessions.single())?.unreadLabel=="")
+        }
+    }
+    @Test fun chatEmotesLoadTheReplyPanelOverThisChildsApi(): Unit = runBlocking {
+        MessagePageTestFixture().use { f ->
+            val panel=listOf(1L,2L,53L,4L).joinToString(",") { """{"id":$it,"text":"P$it","emote":[{"id":$it,"text":"[e$it]","url":"https://synthetic.invalid/$it.png"}]}""" }
+            f.respond={ hit->if(hit.path=="/x/emote/user/panel/web") MessagePageTestReply("""{"code":0,"data":{"packages":[$panel]}}""") else f.default(hit) }
+            val vm=ChatViewModel(7,1,f.admission);f.waitFor { !vm.uiState.value.isLoading }
+            vm.loadEmotes();f.waitFor { !vm.uiState.value.isEmoteLoading && vm.uiState.value.emotePackages.isNotEmpty() }
+            check(vm.uiState.value.emotePackages.map { it.id }==listOf(1L,2L,53L,4L) && vm.uiState.value.emoteError==null)
+            check(f.hits.single { it.path=="/x/emote/user/panel/web" }.query["business"]=="reply")
+            check(f.hits.none { it.path=="/x/emote/package" }) { "A complete panel needs no standard-package lookup" }
+        }
     }
     @Test fun sendPreservesTextCRTABAndWithdrawalPayloadModel(): Unit = runBlocking {
         // send preserves text CR TAB and withdrawal payload model
@@ -441,14 +530,15 @@ class DesktopOriginalMessagePagesTest {
         MessagePageTestFixture().use { f ->
         val vm=ChatViewModel(7,1,f.admission);f.waitFor { !vm.uiState.value.isLoading }
         val image=f.root.resolve("selected.png");Files.write(image,byteArrayOf(1,2,3,4))
-        vm.sendImageMessage(DesktopMessageLocalImage(image,"image/png"));f.waitFor { f.hits.any { it.path.endsWith("send_msg") } && !vm.uiState.value.isUploadingImage }
+        val context=object:android.content.Context(f.root.toFile()) { override fun getSharedPreferences(name:String,mode:Int)=error("unused") }
+        vm.sendImageMessage(context,android.net.Uri.fromFile(image.toFile()));f.waitFor { f.hits.any { it.path.endsWith("send_msg") } && !vm.uiState.value.isUploadingImage }
         val upload=f.hits.first { it.path.endsWith("upload_bfs") };check(upload.rawBody.toString(Charsets.ISO_8859_1).contains("selected.png"))
         val sent=f.hits.first { it.path.endsWith("send_msg") };check(sent.fields["msg[msg_type]"]=="2")
         check(sent.fields["msg[content]"]!!.contains("synthetic.invalid/image.png"));check(sent.fields["msg[content]"]!!.contains("\"width\":2"))
         // The successful send deliberately refreshes/ACKs the chat. The size cap must
         // prevent another upload/send, while those original read requests may finish.
         val before=f.hits.count { it.path.endsWith("upload_bfs") || it.path.endsWith("send_msg") }
-        Files.write(image,ByteArray(15*1024*1024+1));vm.sendImageMessage(DesktopMessageLocalImage(image,"image/png"))
+        Files.write(image,ByteArray(15*1024*1024+1));vm.sendImageMessage(context,android.net.Uri.fromFile(image.toFile()))
         f.waitFor { vm.uiState.value.sendError!=null };check(vm.uiState.value.sendError!!.contains("15MB"))
         check(f.hits.count { it.path.endsWith("upload_bfs") || it.path.endsWith("send_msg") }==before)
             }
