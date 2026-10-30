@@ -1,23 +1,28 @@
 Upstream-source-sha256: 3e505f0830b6b473ee1e8172688dfba32ffb6538408a41820af4106d396f7f2a
-Reason: 形状令牌按 0.1dp 取整
+Reason: 令牌按 0.1dp 定义，推导值会带 float 尾数（12 × 0.9 = 10.79999924）。只把离 0.1dp 网格不足 0.001dp 的值吸附回去，半步值（ContainerLevel.Micro 的 1.35、MIUIX 的 1.725）保持原值。比例、令牌与夹取规则不变。
 
 --- a/design-system/src/main/java/com/android/purebilibili/core/ui/AppShapes.kt
 +++ b/design-system/src/main/java/com/android/purebilibili/core/ui/AppShapes.kt
-@@ -13,6 +13,7 @@
- import com.android.purebilibili.core.theme.AppUiStyle
- import com.android.purebilibili.core.theme.LocalAppUiStyle
+@@ -15,6 +15,8 @@
  import com.android.purebilibili.core.theme.resolveAndroidNativeChromeTokens
-+import kotlin.math.round
  import com.android.purebilibili.core.theme.resolveCornerRadiusScale
  import top.yukonga.miuix.kmp.squircle.addSquircleRect
++import kotlin.math.abs
++import kotlin.math.round
  
-@@ -53,7 +54,8 @@
+ /** Uses the same upstream path geometry as native Miuix controls. */
+ internal data class MiuixContainerShape(val radius: Dp) : Shape {
+@@ -53,7 +55,12 @@
              return resolveAndroidNativeChromeTokens(uiStyle).pillCornerRadiusDp.dp
          }
          val scale = resolveCornerRadiusScale(uiStyle)
 -        return (AppShapeTokens.baseCornerDp(level) * scale).dp
-+        // 设计令牌按 0.1dp 定义；float 相乘的尾数（36 * 0.3 = 10.799999）不得漏进几何值。
-+        return (round(AppShapeTokens.baseCornerDp(level) * scale * 10f) / 10f).dp
++        // 令牌按 0.1dp 定义，但只收 float 尾数：离网格不足 0.001dp 才吸附，
++        // 半步值（Micro 的 1.35 / 1.725）保持原值，不被抬到网格上。
++        val rawDp = AppShapeTokens.baseCornerDp(level) * scale
++        val tenths = rawDp * 10f
++        val snapped = round(tenths)
++        return (if (abs(tenths - snapped) < 0.01f) snapped / 10f else rawDp).dp
      }
  
      fun resolveContainerShape(
