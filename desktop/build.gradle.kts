@@ -317,6 +317,7 @@ val appCoreLaterSteps: Map<String, String> = mapOf(
 val migratedVideoFeaturePaths = setOf(
     "com/android/purebilibili/feature/video/ui/overlay/CenterPlaybackControl.kt",
     "com/android/purebilibili/feature/video/ui/overlay/NextWatchOverlay.kt",
+    "com/android/purebilibili/feature/video/ui/components/glass/ChapterListPanel.kt",
     "com/android/purebilibili/feature/video/viewmodel/VideoSubjectSnapshot.kt",
     "com/android/purebilibili/feature/video/viewmodel/VideoSupplementViewModel.kt",
     "com/android/purebilibili/feature/video/ui/components/CollectionRow.kt",
@@ -2901,6 +2902,7 @@ val upstreamOwnedGeneratedCopies = setOf(
     // core/ui/components/UserLevelBadge (TON-1072): the upstream file draws its R.drawable level badges through the generated
     // desktop drawable table, so the blocked-list producer's classpath-PNG copy is retired.
     "blocked-list-ui/com/android/purebilibili/core/ui/components/DesktopUpstreamUserLevelBadge.kt",
+    "upstream/app/src/main/java/com/android/purebilibili/feature/video/ui/components/ChapterListPanel.kt",
     "original-video-state-core/com/android/purebilibili/feature/video/viewmodel/DesktopOriginalVideoSupplementViewModel.kt",
     "original-video-player-full-controls/com/android/purebilibili/feature/video/ui/overlay/NextWatchOverlay.kt",
     "video-share-consent/com/android/purebilibili/feature/video/share/VideoShareMoreTargetsSheet.kt",
