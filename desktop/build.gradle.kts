@@ -317,6 +317,7 @@ val appCoreLaterSteps: Map<String, String> = mapOf(
 val migratedVideoFeaturePaths = setOf(
     "com/android/purebilibili/feature/video/ui/components/CommentSortFilterBar.kt",
     "com/android/purebilibili/feature/video/ui/components/VideoCommentFloatingHeader.kt",
+    "com/android/purebilibili/feature/bangumi/ui/player/BangumiCommentPanel.kt",
     "com/android/purebilibili/feature/video/screen/VideoDetailRouteCommentEffect.kt",
     "com/android/purebilibili/feature/video/ui/components/DanmakuSettingsSlider.kt",
     "com/android/purebilibili/feature/video/danmaku/DanmakuConfig.kt",
@@ -2964,6 +2965,7 @@ val upstreamOwnedGeneratedCopies = setOf(
     "independent-bangumi-pages/com/android/purebilibili/feature/bangumi/policy/DesktopOriginalBangumiEpisodePagePolicy.kt",
     "original-bangumi-player-ui/com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiPlayerUiPolicy.kt",
     "original-bangumi-player-ui/com/android/purebilibili/feature/video/ui/components/DesktopOriginalVideoCommentFloatingHeader.kt",
+    "original-bangumi-player-ui/com/android/purebilibili/feature/bangumi/ui/player/DesktopOriginalBangumiCommentPanel.kt",
     "home-bangumi-page/com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiBadgePolicy.kt",
 
     "original-video-player-full-controls/com/android/purebilibili/feature/video/ui/overlay/PlaybackOrderSelectionSheet.kt",
