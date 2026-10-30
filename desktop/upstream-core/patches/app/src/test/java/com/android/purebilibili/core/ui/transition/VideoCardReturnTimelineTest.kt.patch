@@ -1,0 +1,43 @@
+Upstream-source-sha256: 2f7d242f08b9ba07fe567a03f98c0c1509b182fdf12789740e43feaee8c9e71a
+Reason: 两条上游契约测试的输入落后于生产，生产不动。
+(1) Reduced 档 alpha 就是 depth（motionTier == Reduced -> depth，自 7a6c881ac 起如此），期望 0.5 需要 0.5 的输入；0.1f 是后来改 returnTransform 时漏改的残留，恢复为 0.5f，alpha/平移/scale/140ms 断言不变。
+(2) fafb6d26f 把 VIDEO_CARD_RETURN_LIVE_CONTENT_YIELD 窗口移到 0.82–0.98，旧输入 0.6/0.45 的 settle=0.4/0.55 都在窗口前，两边 alpha 都是 1。改为由 YIELD_START/END 派生窗口内 1/4、3/4 两点，保留 withDepth < withoutDepth 与前面 0.7/0.2 的 settle 断言，另加 withoutDepth < 1 防止再次落到窗口外。容差不变，不跳测试。
+
+--- a/app/src/test/java/com/android/purebilibili/core/ui/transition/VideoCardReturnTimelineTest.kt
++++ b/app/src/test/java/com/android/purebilibili/core/ui/transition/VideoCardReturnTimelineTest.kt
+@@ -720,8 +720,9 @@ class VideoCardReturnTimelineTest {
+         // Mid-handoff: secondary has started shrinking toward card-info size.
+         assertTrue(returnTransform.scale in VIDEO_CARD_SECONDARY_YIELD_MIN_SCALE..0.999f)
+ 
++        // Reduced 档的 alpha 就是 depth（生产 `motionTier == Reduced -> depth`），所以 0.5 的期望要配 0.5 的输入。
+         val reduced = resolveVideoCardSecondaryContentVisualFrame(
+-            morphDepthProgress = 0.1f,
++            morphDepthProgress = 0.5f,
+             phase = VideoCardTransitionBackgroundPhase.OPENING,
+             isReturnGestureInProgress = false,
+             motionTier = MotionTier.Reduced,
+@@ -1024,13 +1025,21 @@ class VideoCardReturnTimelineTest {
+             0.001f,
+         )
+         // 两路 settle 都进入整卡 chrome 窗口时，景深更靠后应更早让位。
++        // 窗口是 [YIELD_START, YIELD_END]；两点由常量派生（窗口 1/4 与 3/4 处），窗口再挪也不会落到窗口外。
++        val yieldSpan = VIDEO_CARD_RETURN_LIVE_CONTENT_YIELD_END - VIDEO_CARD_RETURN_LIVE_CONTENT_YIELD_START
++        val transitionSettle = VIDEO_CARD_RETURN_LIVE_CONTENT_YIELD_START + yieldSpan * 0.25f
++        val depthSettle = VIDEO_CARD_RETURN_LIVE_CONTENT_YIELD_START + yieldSpan * 0.75f
+         val withDepth = resolveVideoCardLiveMorphSecondaryContentAlpha(
+-            transitionProgress = 0.6f,
+-            depthBlurProgress = 0.45f,
++            transitionProgress = 1f - transitionSettle,
++            depthBlurProgress = 1f - depthSettle,
+         )
+         val withoutDepth = resolveVideoCardLiveMorphSecondaryContentAlpha(
+-            transitionProgress = 0.6f,
++            transitionProgress = 1f - transitionSettle,
+         )
++        // 先确认两点真的在让位窗口内（alpha < 1），否则 `<` 只是 1 对 1 的假通过/假失败。
++        assertTrue(withoutDepth < 1f)
++        assertEquals(0.75f, withoutDepth, 0.001f)
++        assertEquals(0.25f, withDepth, 0.001f)
+         assertTrue(withDepth < withoutDepth)
+     }
+ 
