@@ -1,0 +1,23 @@
+Upstream-commit: 482eed6652fddd29031dbefa4f77647ceb69f19f
+Upstream-source-sha256: 1b73056fc07ae9d33d38e25e888296f2294e9cc51e369ab7af2e3e46e17bcb1d
+Reason: Normalize CRLF only at the source-text read boundary; all existing source/behavior assertions and method names remain unchanged.
+
+--- a/app/src/test/java/com/android/purebilibili/core/ui/AdaptiveNativeControlAdoptionStructureTest.kt
++++ b/app/src/test/java/com/android/purebilibili/core/ui/AdaptiveNativeControlAdoptionStructureTest.kt
+@@ -10,13 +10,13 @@
+     fun `standard feature controls use shared component entry points`() {
+         val login = File(
+             "src/main/java/com/android/purebilibili/feature/login/LoginComponents.kt"
+-        ).readText()
++        ).readText().replace("\r\n", "\n")
+         val liveArea = File(
+             "src/main/java/com/android/purebilibili/feature/live/LiveListScreen.kt"
+-        ).readText()
++        ).readText().replace("\r\n", "\n")
+         val timeline = File(
+             "src/main/java/com/android/purebilibili/feature/bangumi/BangumiTimelineScreen.kt"
+-        ).readText()
++        ).readText().replace("\r\n", "\n")
+ 
+         val loginButton = login.substringAfter("fun ModernButton(").substringBefore("\n}\n\n@Composable\nfun TopBar")
+         val liveSortChip = liveArea.substringAfter("internal fun LiveSortTagChipRow(").substringBefore("\n}\n\n@Composable")
