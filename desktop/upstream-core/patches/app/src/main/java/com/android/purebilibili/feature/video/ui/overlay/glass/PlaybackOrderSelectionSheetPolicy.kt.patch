@@ -1,9 +1,10 @@
 --- a/app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/glass/PlaybackOrderSelectionSheetPolicy.kt
 +++ b/app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/glass/PlaybackOrderSelectionSheetPolicy.kt
-@@ -1,6 +1,4 @@
+@@ -1,6 +1,5 @@
 -package com.android.purebilibili.feature.video.ui.overlay.glass
 -
 -import com.android.purebilibili.feature.video.ui.overlay.*
++@file:JvmName("DesktopGlassPlaybackOrderSelectionSheetPolicy")
 +package com.android.purebilibili.feature.video.ui.overlay
  
  /**

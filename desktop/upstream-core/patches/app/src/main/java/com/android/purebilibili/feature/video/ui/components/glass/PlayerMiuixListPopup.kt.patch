@@ -1,0 +1,8 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/video/ui/components/glass/PlayerMiuixListPopup.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/video/ui/components/glass/PlayerMiuixListPopup.kt
+@@ -1,4 +1,4 @@
+-package com.android.purebilibili.feature.video.ui.components.glass
++package com.android.purebilibili.feature.video.ui.components
+ 
+ import androidx.compose.runtime.Composable
+ import androidx.compose.ui.Modifier
