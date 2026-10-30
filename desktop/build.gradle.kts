@@ -318,6 +318,7 @@ val appCoreLaterSteps: Map<String, String> = mapOf(
 // The remaining UI/player files move when their desktop platform adapters are wired.
 val migratedVideoFeaturePaths = setOf(
     "com/android/purebilibili/feature/video/ui/overlay/CenterPlaybackControl.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/NextWatchOverlay.kt",
     "com/android/purebilibili/feature/video/ui/components/CollectionRow.kt",
     "com/android/purebilibili/feature/video/ui/components/CollectionSubscriptionButton.kt",
     "com/android/purebilibili/feature/video/ui/components/RelatedVideoActionSheet.kt",
@@ -2885,6 +2886,7 @@ val prepareJsWorkerResources = if (hostIsWindows) tasks.register<Sync>("prepareJ
 
 // Generated legacy files that re-declare migrated upstream declarations under another file name.
 val upstreamOwnedGeneratedCopies = setOf(
+    "original-video-player-full-controls/com/android/purebilibili/feature/video/ui/overlay/NextWatchOverlay.kt",
     "video-share-consent/com/android/purebilibili/feature/video/share/VideoShareMoreTargetsSheet.kt",
     "original-video-fullscreen-pager/com/android/purebilibili/feature/video/ui/pager/PortraitAudioPlaybackController.kt",
     "original-video-player-full-controls/com/android/purebilibili/feature/video/ui/overlay/CenterPlaybackControl.kt",
