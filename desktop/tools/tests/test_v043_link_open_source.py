@@ -66,7 +66,7 @@ class V043LinkOpenSourceTest(unittest.TestCase):
 
     def test_gradle_declares_the_shared_archive_and_module_on_the_existing_producer(self):
         text=(REPO/'desktop/build.gradle.kts').read_text(encoding='utf-8')
-        block=text.split('val extractUpstreamSpace by tasks.registering',1)[1].split('val extractUpstreamSpaceImagePreviews',1)[0]
+        block=text.split('val extractUpstreamSpace by tasks.registering',1)[1].split('val extractUpstreamSpaceOverview',1)[0]
         self.assertIn('"tools/v043_link_open.py"',block)
         self.assertIn('inputs.dir("upstream-slices/v043-link-open")',block)
 

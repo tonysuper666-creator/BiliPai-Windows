@@ -136,7 +136,7 @@ class V043NavigationSourceTest(unittest.TestCase):
     def test_gradle_has_one_navigation_owner_and_compiles_the_original_tests(self):
         gradle = (REPO/'desktop/build.gradle.kts').read_text(encoding='utf-8')
         self.assertEqual(1, gradle.count('exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/core/util/BilibiliNavigationTargetParser.kt"))'))
-        block = gradle.split('val extractUpstreamSpace by tasks.registering', 1)[1].split('val extractUpstreamSpaceImagePreviews', 1)[0]
+        block = gradle.split('val extractUpstreamSpace by tasks.registering', 1)[1].split('val extractUpstreamSpaceOverview', 1)[0]
         self.assertIn('"tools/v043_navigation.py"', block)
         self.assertIn('inputs.dir("upstream-slices/v043-navigation")', block)
         self.assertIn('"--test-output"', block)

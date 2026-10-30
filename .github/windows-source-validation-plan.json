@@ -123,7 +123,7 @@
     {
       "path": "desktop/build.gradle.kts",
       "normalization": "lf",
-      "sha256": "78e4e8607f7ab57a0dc40edb4a3cbe3e4919843183412246c0f58ca7f9afe133"
+      "sha256": "fa0d9e3a8365ad2365bfdad2177a6fc8743b3b256d3d01b6fb64facc304ea111"
     },
     {
       "path": "desktop/native/mpv-rtx-bridge/bilipai_rtx_frame_provenance.h",
@@ -1778,12 +1778,12 @@
     {
       "path": "desktop/tools/extract-space-overview.py",
       "normalization": "lf",
-      "sha256": "746cd7850a3dae183fb5c6d0d990dce80dcd1c5b7fdb026a91470aac80fff78c"
+      "sha256": "b69480c8d53543a49165d6d5fe625923a39dfbf9ee89a0f23050094ec151187a"
     },
     {
       "path": "desktop/tools/extract-space-platform.py",
       "normalization": "lf",
-      "sha256": "6cbc72cd67c2051e1b2a655be6227caae6f74a898b2c8e9a57872d525b4db9a7"
+      "sha256": "b8ce63c931606e99a3a527aa3fe18a617d13b0ebbc5a13246e285d4b15a6c61f"
     },
     {
       "path": "desktop/tools/extract-upstream-api.py",
@@ -1918,7 +1918,7 @@
     {
       "path": "desktop/tools/extract-upstream-space-pages.py",
       "normalization": "lf",
-      "sha256": "acac31f87e931ce62d6348b8e772b640ff80ed28762e1ee35b108e30e4ce386b"
+      "sha256": "de46e75796c136fddb931263b0a6cf693af27a668e295558275344cb8c58b0dd"
     },
     {
       "path": "desktop/tools/extract-upstream-system-about.py",
@@ -2478,7 +2478,7 @@
     {
       "path": "desktop/tools/tests/test_v041_video_status_labels_source.py",
       "normalization": "lf",
-      "sha256": "ab8a825a0069f7d90af4cb85d54e81b13b53297c8d55fcb76d9162eadae2099c"
+      "sha256": "35c28ec0bec393c0aad96e8dbd36b5bc081a22850f6dcfff2e0d91ee77198df9"
     },
     {
       "path": "desktop/tools/tests/test_v041_video_status_personal_consumers.py",
@@ -2523,17 +2523,17 @@
     {
       "path": "desktop/tools/tests/test_v043_link_open_source.py",
       "normalization": "lf",
-      "sha256": "cb91ce8d32c7f83bbda7dca9d05db9f945369f1a84380823238957b37ef0ef39"
+      "sha256": "0fbdb957139353ef3f10b6c4a095b89e9eeee1350cc7cc9b2e3ba86d4090396f"
     },
     {
       "path": "desktop/tools/tests/test_v043_message_link_host_source.py",
       "normalization": "lf",
-      "sha256": "eda08d54bc0b3a2e64156fae264e504865fc94b28825fe0b078c5cd2ee4f1f49"
+      "sha256": "7d25ea3a3ec0a3dbf92c73a24101d627960559c300a77e8a85cb61acaf9b67a8"
     },
     {
       "path": "desktop/tools/tests/test_v043_navigation_source.py",
       "normalization": "lf",
-      "sha256": "85dba7fee17fa63498a2dd07605a12ce17d71a200cae2de79df697a1ca4e33bd"
+      "sha256": "451d81f1daa379248d8b5130f5d179fb1115e702dfdc3c34dba0d9a7285c26fb"
     },
     {
       "path": "desktop/tools/tests/test_v043_search_up_author_source.py",
@@ -4958,7 +4958,7 @@
     {
       "path": "desktop/upstream-sources.json",
       "normalization": "lf",
-      "sha256": "fcff9bd9c7e3f83446eec9839d7f5207e8eb48c925cbfa871413f380dae79d6e"
+      "sha256": "57bea36d472f04cfaee93a618bc139a82ed4bfa6c4c5441a10a664c285a48a54"
     }
   ],
   "classes": {

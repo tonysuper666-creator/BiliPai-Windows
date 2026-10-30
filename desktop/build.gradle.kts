@@ -96,7 +96,7 @@ val revisionNeutralSourceImportContextMatches =
     revisionNeutralSourceImportRoots.none { file("tools/$it").exists() } && revisionNeutralSourceImportShadowFiles.isEmpty
 // Pin the whole Gradle recipe, including canonical helpers and later wiring.
 // Mask exactly this self-digest assignment; raw build bytes remain task inputs.
-val revisionNeutralSourceGradleRecipeSha256 = "f7d773b075b2adcfb9e52692b4d580c5a39303847213038d1ebcb2117e558fdf"
+val revisionNeutralSourceGradleRecipeSha256 = "48a5888b8124ef3861eae3e9cdb601db8004815959038ca29f04d9157c74ded6"
 val revisionNeutralSourceGradleRecipeMatches = runCatching {
     val recipe = file("build.gradle.kts").readText(Charsets.UTF_8).replace("\r\n", "\n")
     val ownPin = "val revisionNeutralSourceGradleRecipeSha256 = \"$revisionNeutralSourceGradleRecipeSha256\""
@@ -2339,7 +2339,7 @@ val extractUpstreamSpace by tasks.registering(Exec::class) {
         "--repo", repositoryRoot.absolutePath, "--policy-only",
         "--output", layout.buildDirectory.dir("generated/space").get().asFile.absolutePath,
         "--test-output", layout.buildDirectory.dir("generated/space-original-tests").get().asFile.absolutePath)
-    inputs.files("tools/extract-space-platform.py", "tools/sync-upstream.py", "tools/v043_navigation.py", "tools/v043_message_link_host.py", "tools/v043_link_open.py")
+    inputs.files("tools/extract-space-platform.py", "tools/v043_navigation.py", "tools/v043_message_link_host.py", "tools/v043_link_open.py")
     inputs.dir("upstream-slices/v043-link-open")
     inputs.dir("upstream-slices/v043-message-link-host")
     inputs.file(canonicalOriginalSource("app/src/main/java/com/android/purebilibili/navigation/MessageLinkNavigationPolicy.kt"))
@@ -2353,36 +2353,7 @@ val extractUpstreamSpace by tasks.registering(Exec::class) {
 kotlin.sourceSets.named("test") { kotlin.srcDir(layout.buildDirectory.dir("generated/space-original-tests")) }
 tasks.named("compileTestKotlin") { dependsOn(extractUpstreamSpace) }
 
-val extractUpstreamSpaceImagePreviews by tasks.registering(Exec::class) {
-    dependsOn(prepareUpstreamSources)
-    workingDir(projectDir)
-    commandLine(pythonExecutable, "tools/extract-space-image-preview-callers.py",
-        repositoryRoot.absolutePath, layout.buildDirectory.dir("generated/space-image-previews").get().asFile.absolutePath)
-    inputs.files("tools/extract-space-image-preview-callers.py", "tools/sync-upstream.py")
-    inputs.files(sources.filter { "space-image-preview" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { canonicalOriginalSource(it["path"].toString()) })
-    outputs.dir(layout.buildDirectory.dir("generated/space-image-previews"))
-}
-
-val extractUpstreamSpaceContributions by tasks.registering(Exec::class) {
-    dependsOn(prepareUpstreamSources)
-    workingDir(projectDir)
-    commandLine(pythonExecutable, "tools/extract-space-contributions.py",
-        "--repo", repositoryRoot.absolutePath,
-        "--output", layout.buildDirectory.dir("generated/space-contributions").get().asFile.absolutePath)
-    inputs.files("tools/extract-space-contributions.py", "tools/sync-upstream.py")
-    inputs.files(sources.filter { "space-contributions" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { canonicalOriginalSource(it["path"].toString()) })
-    outputs.dir(layout.buildDirectory.dir("generated/space-contributions"))
-}
-
 val extractUpstreamSpaceOverview by tasks.registering(Exec::class) {
-    inputs.file("tools/v044_favorite_subscription.py")
-    inputs.file("tools/v044_fans.py")
-    inputs.dir("upstream-slices/v044-following-fans")
-    inputs.file("tools/v044_favorite_search.py")
-    inputs.dir("upstream-slices/v044-favorite-search")
-    inputs.dir("upstream-slices/v044-favorite-subscription")
     inputs.file("tools/v044_favorite_detail.py")
     inputs.dir("upstream-slices/v044-favorite-detail")
     dependsOn(prepareUpstreamSources)
@@ -2391,10 +2362,7 @@ val extractUpstreamSpaceOverview by tasks.registering(Exec::class) {
         "--repo", repositoryRoot.absolutePath, "--policy-only",
         "--output", layout.buildDirectory.dir("generated/space-overview").get().asFile.absolutePath,
         "--test-output", layout.buildDirectory.dir("generated/original-space-playback-tests").get().asFile.absolutePath)
-    inputs.files("tools/extract-space-overview.py", "tools/sync-upstream.py")
-    inputs.file("tools/v041_video_status_labels.py")
-    inputs.file("tools/v043_search_up_author.py")
-    inputs.dir("upstream-slices/v041-video-status-labels")
+    inputs.files("tools/extract-space-overview.py")
     inputs.files(sources.filter { "space-overview" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/space-overview"))
@@ -2649,7 +2617,6 @@ val upstreamOwnedGeneratedCopies = setOf(
     "api/com/android/purebilibili/core/network/DesktopCoreDataLog.kt",
     "api/com/android/purebilibili/data/model/response/FavoriteInfoResponse.kt",
     "audio/com/android/purebilibili/data/repository/DesktopFavoriteRequestException.kt",
-    "space-contributions/com/android/purebilibili/core/network/DesktopOriginalSpaceAggregateParams.kt",
     "bgm-detail/com/android/purebilibili/data/model/CommentFraudStatus.kt",
     "original-favorites/com/android/purebilibili/core/store/DesktopFavoriteAccountIdentity.kt",
     "original-video-state-core/com/android/purebilibili/data/repository/DesktopOriginalVideoRequestAccountScope.kt"
@@ -3246,9 +3213,7 @@ kotlin.sourceSets.named("main") {
     kotlin.srcDir(layout.buildDirectory.dir("generated/playback-settings"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/subtitle-load"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/space"))
-    kotlin.srcDir(layout.buildDirectory.dir("generated/space-contributions"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/space-overview"))
-    kotlin.srcDir(layout.buildDirectory.dir("generated/space-image-previews"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/components"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/preferences"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/settings-search"))
@@ -3302,7 +3267,7 @@ tasks.named("compileKotlin") { dependsOn(extractUpstreamAppearance, verifyAppear
 tasks.named("compileKotlin") { dependsOn(extractUpstreamSettingsSearch, extractUpstreamSettingsCategories, extractUpstreamSettingsHome, extractUpstreamSettingsPrivacy, extractUpstreamSettingsEntries, extractUpstreamNavigationInteraction, extractUpstreamSettingsStorageEntries, extractNativeMusicRoot, verifySettingsSearchDependencies) }
 tasks.named("compileKotlin") { dependsOn(extractUpstreamComponents, extractUpstreamPreferences) }
 tasks.named("compileKotlin") { dependsOn(extractUpstreamBlockedUp, extractUpstreamBlockedListUi, extractUpstreamNetworkProxy) }
-tasks.named("compileKotlin") { dependsOn(extractUpstreamSpace, extractUpstreamSpaceContributions, extractUpstreamSpaceOverview, extractUpstreamSpaceImagePreviews) }
+tasks.named("compileKotlin") { dependsOn(extractUpstreamSpace, extractUpstreamSpaceOverview) }
 tasks.named("compileKotlin") { dependsOn(extractUpstreamDiagnostics) }
 tasks.named("compileKotlin") { dependsOn(extractUpstreamDynamicSettings) }
 tasks.named("compileKotlin") { dependsOn(extractUpstreamCrashPrompt) }
@@ -4243,8 +4208,7 @@ tasks.named("compileKotlin") { dependsOn(extractOriginalMessagePages) }
 // Existing SpaceUiState/SubTab/selected policies, dynamic cards and gallery stay sole-owned.
 val extractOriginalSpacePages by tasks.registering(Exec::class) {
     inputs.file("tools/v046_identity_badge_palette.py")
-    dependsOn(prepareUpstreamSources, extractUpstreamSpace, extractUpstreamSpaceOverview, extractUpstreamSpaceContributions,
-        extractOriginalVideoTabletFull, extractOriginalFavorites)
+    dependsOn(prepareUpstreamSources, extractOriginalVideoTabletFull, extractOriginalFavorites)
     workingDir(projectDir)
     commandLine(pythonExecutable, "tools/extract-upstream-space-pages.py",
         "--repo", repositoryRoot.absolutePath,
@@ -4253,10 +4217,7 @@ val extractOriginalSpacePages by tasks.registering(Exec::class) {
     inputs.file("tools/v041_video_status_labels.py")
     inputs.file("tools/v043_search_up_author.py")
     inputs.dir("upstream-slices/v041-video-status-labels")
-    inputs.files(layout.buildDirectory.file("generated/space-overview/com/android/purebilibili/feature/space/DesktopOriginalSpaceOverview.kt"),
-        layout.buildDirectory.file("generated/space-contributions/com/android/purebilibili/feature/space/DesktopUpstreamSpaceContributionDeclarations.kt"),
-        layout.buildDirectory.file("generated/space/com/android/purebilibili/feature/space/DesktopUpstreamSpaceDeclarations.kt"),
-        layout.buildDirectory.file("generated/original-favorites/com/android/purebilibili/feature/space/DesktopFavoriteArchiveMappings.kt"))
+    inputs.file(layout.buildDirectory.file("generated/original-favorites/com/android/purebilibili/feature/space/DesktopFavoriteArchiveMappings.kt"))
     inputs.files(sources.filter { "stable-original-space-pages-root-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/original-space-pages"))
@@ -4585,8 +4546,6 @@ val canonicalOriginalInputTasks = setOf(
     "extractUpstreamCrashPrompt",
     "extractNativeMusicRoot",
     "extractUpstreamSpace",
-    "extractUpstreamSpaceImagePreviews",
-    "extractUpstreamSpaceContributions",
     "extractUpstreamSpaceOverview",
     "extractUpstreamStoryTopic",
     "extractPlaybackSettings",
