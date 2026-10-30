@@ -715,6 +715,10 @@ fun migratedUpstreamSource(path: String): Boolean = migratedUpstreamModules.any 
 
 val prepareUpstreamSources by tasks.registering(Sync::class) {
     from(repositoryRoot) {
+        // The installed legacy PagesSelector still consumes this distinct policy.
+        // Its catalog successor PlayerEpisodeMenuPolicy does not declare these APIs.
+        // Retire this pinned source together with the legacy PagesSelector consumer.
+        include("app/src/main/java/com/android/purebilibili/feature/video/ui/components/PagesSelectorLayoutPolicy.kt")
         include(sources.filter { (it["mode"] ?: "direct") == "direct" && !migratedUpstreamSource(it["path"].toString()) }.map { canonicalOriginalIdentity(it["path"].toString()) })
         // Whole v043 typed navigation is emitted by its existing space producer.
         exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/core/util/BilibiliNavigationTargetParser.kt"))
