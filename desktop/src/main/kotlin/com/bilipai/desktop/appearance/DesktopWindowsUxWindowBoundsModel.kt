@@ -5,7 +5,8 @@ package com.bilipai.desktop.appearance
  *
  * Units. Every number is in the units java.awt.Window reports (AWT user space). They equal the Compose dp of the
  * window state, because Compose writes window.width as Dp, and they are NOT scaled by the app zoom: a 5120x2160
- * panel at Windows scale 150% is 3413x1440 units. A fresh window prefers 1600x1000, within the usable screen.
+ * panel at Windows scale 150% is 3413x1440 units. A fresh window targets a 1600x1000 client area, adds the
+ * measured frame allowance, then fits and centres the outer rectangle within the usable screen.
  *
  * What it decides.
  *   * planDesktopWindowsUxWindow: the size, the position and the maximised state the window opens with, from the
@@ -22,6 +23,9 @@ package com.bilipai.desktop.appearance
 // UX-WINDOW-BOUNDS-BEGIN
 internal const val WINDOWS_UX_WINDOW_DEFAULT_WIDTH = 1600
 internal const val WINDOWS_UX_WINDOW_DEFAULT_HEIGHT = 1000
+// Windows 11 AWT Frame probe: 100% = 16x39, 150% = 14x37. Reserve the larger pair.
+internal const val WINDOWS_UX_WINDOW_FRAME_WIDTH = 16
+internal const val WINDOWS_UX_WINDOW_FRAME_HEIGHT = 39
 internal const val WINDOWS_UX_WINDOW_MIN_BASE_WIDTH = 960
 internal const val WINDOWS_UX_WINDOW_MIN_BASE_HEIGHT = 680
 internal const val WINDOWS_UX_WINDOW_EDGE_TOLERANCE = 16
@@ -38,7 +42,7 @@ internal data class DesktopWindowsUxRect(val x: Int, val y: Int, val width: Int,
 internal data class DesktopWindowsUxScreen(val usable: DesktopWindowsUxRect, val primary: Boolean = false)
 
 internal enum class DesktopWindowsUxPlanKind {
-    /** Nothing usable was saved: the default size, the platform picks the position. */
+    /** Nothing usable was saved: the client target plus frame, centred on the primary usable screen when known. */
     DEFAULT,
 
     /** Bounds were saved but no monitor is known: the saved size, the platform picks the position. */
@@ -94,7 +98,8 @@ internal fun desktopWindowsUxOverlapArea(a: DesktopWindowsUxRect, b: DesktopWind
 /**
  * The window the saved bounds ask for, made to fit the monitors that exist now.
  *
- *  1. Nothing saved, or bounds that are not sane: the default size and the platform position (DEFAULT).
+ *  1. Nothing saved, or bounds that are not sane: the client target plus frame allowance, fitted and centred on
+ *     the primary usable monitor (or first usable monitor); only an unknown screen uses the platform position (DEFAULT).
  *  2. The size is at least the minimum for the zoom, and never larger than the monitor it lands on.
  *  3. The monitor is the one that shares the largest area with the saved rectangle; on a tie the first one listed.
  *  4. A rectangle that shares nothing with any monitor (one was unplugged) is centred on the primary monitor, or on
@@ -114,12 +119,15 @@ internal fun planDesktopWindowsUxWindow(
     val minHeight = desktopWindowsUxMinimumExtent(WINDOWS_UX_WINDOW_MIN_BASE_HEIGHT, zoomPercent)
     val candidates = screens.withIndex().filter { it.value.usable.width > 0 && it.value.usable.height > 0 }
     if (saved == null || !saved.isSane()) {
-        val usable = (candidates.firstOrNull { it.value.primary } ?: candidates.firstOrNull())?.value?.usable
+        val target = candidates.firstOrNull { it.value.primary } ?: candidates.firstOrNull()
+        val usable = target?.value?.usable
+        val width = minOf(maxOf(WINDOWS_UX_WINDOW_DEFAULT_WIDTH + WINDOWS_UX_WINDOW_FRAME_WIDTH, minWidth), usable?.width ?: Int.MAX_VALUE)
+        val height = minOf(maxOf(WINDOWS_UX_WINDOW_DEFAULT_HEIGHT + WINDOWS_UX_WINDOW_FRAME_HEIGHT, minHeight), usable?.height ?: Int.MAX_VALUE)
         return DesktopWindowsUxWindowPlan(
-            width = minOf(maxOf(WINDOWS_UX_WINDOW_DEFAULT_WIDTH, minWidth), usable?.width ?: Int.MAX_VALUE),
-            height = minOf(maxOf(WINDOWS_UX_WINDOW_DEFAULT_HEIGHT, minHeight), usable?.height ?: Int.MAX_VALUE),
-            x = null, y = null,
-            maximized = false, kind = DesktopWindowsUxPlanKind.DEFAULT, screenIndex = null)
+            width = width, height = height,
+            x = usable?.let { it.x + (it.width - width) / 2 },
+            y = usable?.let { it.y + (it.height - height) / 2 },
+            maximized = false, kind = DesktopWindowsUxPlanKind.DEFAULT, screenIndex = target?.index)
     }
     if (candidates.isEmpty()) {
         return DesktopWindowsUxWindowPlan(

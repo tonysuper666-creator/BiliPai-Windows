@@ -82,12 +82,15 @@ def plan(contract, saved, screens, zoom_percent):
     candidates = [(index, screen) for index, screen in enumerate(screens) if screen["width"] > 0 and screen["height"] > 0]
     if saved is None or not is_sane(contract, saved):
         primary = [candidate for candidate in candidates if candidate[1]["primary"]]
-        usable = (primary or candidates)[0][1] if candidates else None
-        width, height = max(default_width, min_width), max(default_height, min_height)
+        target = (primary or candidates)[0] if candidates else None
+        usable = target[1] if target else None
+        frame_width, frame_height = sec["frame_allowance"]
+        width, height = max(default_width + frame_width, min_width), max(default_height + frame_height, min_height)
         if usable:
             width, height = min(width, usable["width"]), min(height, usable["height"])
-        return {"kind": "DEFAULT", "x": None, "y": None, "width": width, "height": height,
-                "maximized": False, "screen": None}
+        return {"kind": "DEFAULT", "x": usable["x"] + (usable["width"] - width) // 2 if usable else None,
+                "y": usable["y"] + (usable["height"] - height) // 2 if usable else None,
+                "width": width, "height": height, "maximized": False, "screen": target[0] if target else None}
     if not candidates:
         return {"kind": "UNVALIDATED", "x": None, "y": None, "width": max(saved["width"], min_width),
                 "height": max(saved["height"], min_height), "maximized": saved["maximized"], "screen": None}

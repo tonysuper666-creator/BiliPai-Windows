@@ -1,6 +1,8 @@
 package com.bilipai.desktop.appearance
 
 import com.bilipai.desktop.ux.DesktopUxContract
+import com.bilipai.desktop.ui.DesktopRailPresentation
+import com.bilipai.desktop.ui.desktopRailPresentation
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.boolean
@@ -47,6 +49,8 @@ class DesktopWindowsUxWindowBoundsModelTest {
     @Test fun everyConstantHasItsContractValue() {
         assertEquals(DesktopUxContract.ints(section.getValue("default_size")),
             listOf(WINDOWS_UX_WINDOW_DEFAULT_WIDTH, WINDOWS_UX_WINDOW_DEFAULT_HEIGHT))
+        assertEquals(DesktopUxContract.ints(section.getValue("frame_allowance")),
+            listOf(WINDOWS_UX_WINDOW_FRAME_WIDTH, WINDOWS_UX_WINDOW_FRAME_HEIGHT))
         assertEquals(DesktopUxContract.ints(section.getValue("min_base")),
             listOf(WINDOWS_UX_WINDOW_MIN_BASE_WIDTH, WINDOWS_UX_WINDOW_MIN_BASE_HEIGHT))
         assertEquals(DesktopUxContract.int(section, "edge_tolerance"), WINDOWS_UX_WINDOW_EDGE_TOLERANCE)
@@ -61,20 +65,22 @@ class DesktopWindowsUxWindowBoundsModelTest {
         assertEquals(1600, WINDOWS_UX_WINDOW_DEFAULT_WIDTH)
         assertEquals(1000, WINDOWS_UX_WINDOW_DEFAULT_HEIGHT)
         val plan = planDesktopWindowsUxWindow(null, screensOf("primary-5k2k-150"), 125)
-        assertEquals(DesktopWindowsUxWindowPlan(1600, 1000, null, null, false, DesktopWindowsUxPlanKind.DEFAULT, null), plan)
-        assertNull(plan.bounds())
+        assertEquals(DesktopWindowsUxWindowPlan(1616, 1039, 898, 176, false, DesktopWindowsUxPlanKind.DEFAULT, 0), plan)
+        assertEquals(DesktopWindowsUxWindowBounds(898, 176, 1616, 1039), plan.bounds())
     }
 
     @Test fun aFreshWindowFitsTheUsableScreenEvenWhenItIsBelowTheZoomMinimum() {
         val small = planDesktopWindowsUxWindow(null, screensOf("laptop-1080-125"), 200)
         assertEquals(1536, small.width)
         assertEquals(816, small.height)
+        assertEquals(0, small.x)
+        assertEquals(0, small.y)
         val noScreens = planDesktopWindowsUxWindow(null, emptyList(), 200)
         assertEquals(1920, noScreens.width)
         assertEquals(1360, noScreens.height)
         val screens = listOf(DesktopWindowsUxScreen(DesktopWindowsUxRect(-800, 0, 800, 600)),
             DesktopWindowsUxScreen(DesktopWindowsUxRect(0, 0, 1920, 1032), primary = true))
-        assertEquals(1600, planDesktopWindowsUxWindow(null, screens, 125).width)
+        assertEquals(1616, planDesktopWindowsUxWindow(null, screens, 125).width)
         assertEquals(800, planDesktopWindowsUxWindow(null, screens.take(1), 125).width)
     }
 
@@ -86,6 +92,28 @@ class DesktopWindowsUxWindowBoundsModelTest {
             assertEquals(DesktopUxContract.int(row, "width"), desktopWindowsUxMinimumExtent(WINDOWS_UX_WINDOW_MIN_BASE_WIDTH, percent), "width at $percent")
             assertEquals(DesktopUxContract.int(row, "height"), desktopWindowsUxMinimumExtent(WINDOWS_UX_WINDOW_MIN_BASE_HEIGHT, percent), "height at $percent")
         }
+    }
+
+    @Test fun freshWindowsStayInsideUsableBoundsAndMeasuredClientsMeetTheUnchangedAutoThreshold() {
+        // Probe sums at Windows 100% and 150%; app zoom remains its default 125%.
+        for ((usable, insets) in listOf(DesktopWindowsUxRect(0, 0, 1920, 1032) to 16,
+            DesktopWindowsUxRect(0, 0, 3413, 1392) to 14)) {
+            val plan = planDesktopWindowsUxWindow(null, listOf(DesktopWindowsUxScreen(usable, true)), 125)
+            val x = assertNotNull(plan.x)
+            val y = assertNotNull(plan.y)
+            assertTrue(x >= usable.x && x + plan.width <= usable.right)
+            assertTrue(y >= usable.y && y + plan.height <= usable.bottom)
+            assertEquals(usable.x + (usable.width - plan.width) / 2, x)
+            assertEquals(usable.y + (usable.height - plan.height) / 2, y)
+            val clientDp = (plan.width - insets) * 100 / 125
+            assertEquals(DesktopRailPresentation.EXPANDED,
+                desktopRailPresentation(DesktopWindowsUxRailMode.AUTO, clientDp))
+        }
+        val negative = DesktopWindowsUxRect(-1536, -816, 1536, 816)
+        val small = planDesktopWindowsUxWindow(null, listOf(DesktopWindowsUxScreen(negative)), 125)
+        assertEquals(DesktopWindowsUxWindowBounds(-1536, -816, 1536, 816), small.bounds())
+        assertEquals(DesktopRailPresentation.COLLAPSED,
+            desktopRailPresentation(DesktopWindowsUxRailMode.AUTO, (small.width - 16) * 100 / 125))
     }
 
     @Test fun everyGoldenPlanRowOfTheContract() {
@@ -125,7 +153,10 @@ class DesktopWindowsUxWindowBoundsModelTest {
         assertNull(unknown.plan.bounds())
         assertEquals(saved, unknown.seed)
         val nothing = desktopWindowsUxStartup(null, screensOf("primary-5k2k-150"), 125)
-        assertNull(nothing.seed)
+        assertEquals(nothing.plan.bounds(), assertNotNull(nothing.seed))
+        val unknownFresh = desktopWindowsUxStartup(null, emptyList(), 125)
+        assertNull(unknownFresh.plan.bounds())
+        assertNull(unknownFresh.seed)
     }
 
     @Test fun aHugeButSaneWindowOnNoMonitorIsRelocatedAndShrunkToTheMonitor() {

@@ -15,7 +15,13 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 
 /** The actual Root diagnostic actor, shared by recoverable page errors; never a second log sink. */
-internal val LocalDesktopPageErrorReporter = staticCompositionLocalOf<((Throwable) -> Unit)?> { null }
+internal val LocalDesktopPageErrorReporter = staticCompositionLocalOf<((String, Throwable?) -> Unit)?> { null }
+
+/** Fill the existing player overlay, keeping the recovery card at the centre of the video stage. */
+@Composable
+internal fun DesktopWindowsPageErrorOverlay(content: @Composable () -> Unit) {
+    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { content() }
+}
 
 /** Contract player.overlay.error_card: 360dp, or the available width on a smaller stage. */
 @Composable

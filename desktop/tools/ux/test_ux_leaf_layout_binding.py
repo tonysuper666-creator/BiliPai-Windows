@@ -103,11 +103,11 @@ HUNKS = (
         "                // One retained native slot; original fixed ratios letterbox the same viewport.",
     )),
     ("control bar lambda opens", (
-        "                if (bootstrapError != null || playback.error != null) failureContent()",
+        "                    Text(playback.recoveryMessage.orEmpty(), Modifier.fillMaxWidth(), style = MaterialTheme.typography.bodySmall)",
         "                if (chromeVisible) DesktopWindowsVideoControlBar(",
         "                    state = state, sourceVersion = native.currentSourceSnapshot()?.sourceVersion ?: 0L,",
     ), (
-        "                if (bootstrapError != null || playback.error != null) failureContent()",
+        "                    Text(playback.recoveryMessage.orEmpty(), Modifier.fillMaxWidth(), style = MaterialTheme.typography.bodySmall)",
         "                val legacyControlBar: @Composable () -> Unit = { DesktopWindowsVideoControlBar(",
         "                    state = state, sourceVersion = native.currentSourceSnapshot()?.sourceVersion ?: 0L,",
     )),
@@ -435,7 +435,7 @@ def check_v2_structure(leaf):
             need(leaf.index(opener) < leaf.index(call), "defined before it is called: " + opener)
     order = [EFFECTIVE, "val controls = DesktopPlayerControlsBinding(", "BoxWithConstraints(Modifier.fillMaxSize().padding(if (fullscreen)",
              STRIP_OPEN, STRIP_CALL, "BoxWithConstraints(Modifier.fillMaxWidth().weight(1f).background(Color.Black)) {",
-             "if (bootstrapError != null || playback.error != null) failureContent()", BAR_OPEN, BAR_CALL, PANEL_OPEN, PANEL_CALL,
+             "if (showPageError) DesktopWindowsPageErrorOverlay { failureContent() }", BAR_OPEN, BAR_CALL, PANEL_OPEN, PANEL_CALL,
              "audioLanguageMenu?.takeIf { shell.playback.isAudioSelectionCurrent(it) }"]
     if all(item in leaf for item in order):
         indices = [leaf.index(item) for item in order]
@@ -508,6 +508,11 @@ class LeafIdentityTest(unittest.TestCase):
         # The real rendered card/retry is also exercised by the JVM UI test.
         self.assertIn("DesktopWindowsPageErrorCard(", LEAF_TEXT)
         self.assertIn("desktopWindowsVideoErrorMessage(originalLoadError)", LEAF_TEXT)
+        self.assertIn("message = bootstrapError ?: desktopWindowsVideoErrorMessage(originalLoadError)", LEAF_TEXT)
+        self.assertIn("if (current() && originalLoadError != null)", LEAF_TEXT)
+        self.assertIn("reportPageError?.invoke(originalLoadError.javaClass.simpleName,", LEAF_TEXT)
+        self.assertIn("if (showPageError) DesktopWindowsPageErrorOverlay { failureContent() }", LEAF_TEXT)
+        self.assertNotIn("if (bootstrapError != null || playback.error != null) failureContent()", LEAF_TEXT)
         self.assertIn("if (current() && rootEnvironment.currentKey() === route)", LEAF_TEXT)
         self.assertIn("else shell.playback.retry()", LEAF_TEXT)
         self.assertIn("?.loginFromReadFailure(intent)", LEAF_TEXT)

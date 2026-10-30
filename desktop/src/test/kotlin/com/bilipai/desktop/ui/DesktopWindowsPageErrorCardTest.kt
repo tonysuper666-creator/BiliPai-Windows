@@ -41,10 +41,10 @@ class DesktopWindowsPageErrorCardTest {
             var retries = 0
             val scene = ImageComposeScene(width, 400) {
                 MaterialTheme {
-                    if (error.value) DesktopWindowsPageErrorCard("请检查网络连接后重试。", onRetry = {
+                    if (error.value) DesktopWindowsPageErrorOverlay { DesktopWindowsPageErrorCard("请检查网络连接后重试。", onRetry = {
                         retries++
                         error.value = false
-                    }) else Text("视频内容")
+                    }) } else Text("视频内容")
                 }
             }
             try {
@@ -52,6 +52,8 @@ class DesktopWindowsPageErrorCardTest {
                 val nodes = scene.semanticsOwners.flatMap { flatten(it.unmergedRootSemanticsNode) }
                 val card = nodes.single { it.config.getOrNull(SemanticsProperties.LiveRegion) != null }
                 assertEquals(minOf(360, width).toFloat(), card.boundsInRoot.width)
+                assertEquals(width / 2f, card.boundsInRoot.center.x, .5f)
+                assertEquals(200f, card.boundsInRoot.center.y, .5f)
                 assertTrue(nodes.any { "暂时无法播放" in text(it) })
                 val retry = nodes.single { it.config.getOrNull(SemanticsActions.OnClick) != null && "重试" in text(it) }
                 assertTrue(retry.config[SemanticsActions.OnClick].action!!.invoke())

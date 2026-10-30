@@ -2266,13 +2266,15 @@
   "window_bounds": {
     "about": "Slice W3 (spec 3.5, hunk RH8): which window bounds Main.kt opens with and which are saved. Units are AWT user space units as java.awt.Window reports them; they equal the Compose dp of the window state and are not scaled by the app zoom. Mirrored by ux_window_model.py and checked by test_ux_window_bounds.py and DesktopWindowsUxWindowBoundsModelTest. The golden rows are written by hand (ux_model.py --write leaves them alone).",
     "default_size": [1600, 1000],
+    "frame_allowance": [16, 39],
     "min_base": [960, 680],
     "edge_tolerance": 16,
     "settle_ms": 400,
     "plan_kinds": ["DEFAULT", "UNVALIDATED", "KEPT", "ADJUSTED", "RELOCATED"],
     "placements": ["FLOATING", "MAXIMIZED", "FULLSCREEN"],
     "rules": [
-      "Nothing saved, or saved bounds that are not sane: DEFAULT, prefer 1600x1000 raised to the zoom minimum and clamped to the primary usable monitor (or first usable monitor); the platform picks the position.",
+      "Nothing saved, or saved bounds that are not sane: DEFAULT. default_size is the target client area (1600x1000). Add frame_allowance to obtain outer bounds, raise to the zoom minimum, then clamp and centre within the primary usable monitor (or first usable monitor). Only when no usable monitor is known does the platform choose the position.",
+      "frame_allowance is the conservative AWT-unit sum of opposing Frame.getInsets() sides measured on Parallels Windows 11 with JDK 21: system scale 100% gave left/top/right/bottom 8/31/8/8 (16x39); 150% gave 7/30/7/7 (14x37). Reserve the component-wise maximum 16x39. The client may be slightly larger at 150%; small screens can reduce it below the target. No rail AUTO threshold changes.",
       "No usable monitor is known: UNVALIDATED, the saved size raised to the minimum, the platform picks the position.",
       "The minimum window extent is min_base times the app zoom percent (clamped to the zoom range), rounded half up; a monitor smaller than that wins, so the size never exceeds the usable area of the monitor.",
       "The monitor is the one that shares the largest area with the saved rectangle; a tie goes to the first listed.",
@@ -2354,14 +2356,14 @@
         "saved": null,
         "expect": {
           "kind": "DEFAULT",
-          "x": null,
-          "y": null,
-          "width": 1600,
-          "height": 1000,
+          "x": 898,
+          "y": 176,
+          "width": 1616,
+          "height": 1039,
           "maximized": false,
-          "screen": null
+          "screen": 0
         },
-        "note": "A fresh window prefers 1600x1000 AWT units; the platform picks its position."
+        "note": "1600x1000 client target plus measured frame allowance, centred inside the primary usable area."
       },
       {
         "id": "saved-bounds-not-sane",
@@ -2369,12 +2371,12 @@
         "saved": {"x": 0, "y": 0, "width": 50, "height": 50, "maximized": false},
         "expect": {
           "kind": "DEFAULT",
-          "x": null,
-          "y": null,
-          "width": 1600,
-          "height": 1000,
+          "x": 898,
+          "y": 176,
+          "width": 1616,
+          "height": 1039,
           "maximized": false,
-          "screen": null
+          "screen": 0
         }
       },
       {
@@ -2689,15 +2691,7 @@
         "layout": "laptop-1080-125",
         "zoom_percent": 125,
         "saved": null,
-        "expect": {
-          "kind": "DEFAULT",
-          "x": null,
-          "y": null,
-          "width": 1536,
-          "height": 816,
-          "maximized": false,
-          "screen": null
-        }
+        "expect": {"kind": "DEFAULT", "x": 0, "y": 0, "width": 1536, "height": 816, "maximized": false, "screen": 0}
       },
       {
         "id": "first-launch-no-screens",
@@ -2708,8 +2702,8 @@
           "kind": "DEFAULT",
           "x": null,
           "y": null,
-          "width": 1600,
-          "height": 1000,
+          "width": 1616,
+          "height": 1039,
           "maximized": false,
           "screen": null
         }
@@ -2719,15 +2713,7 @@
         "layout": "primary-5k2k-150",
         "zoom_percent": 200,
         "saved": null,
-        "expect": {
-          "kind": "DEFAULT",
-          "x": null,
-          "y": null,
-          "width": 1920,
-          "height": 1360,
-          "maximized": false,
-          "screen": null
-        }
+        "expect": {"kind": "DEFAULT", "x": 746, "y": 16, "width": 1920, "height": 1360, "maximized": false, "screen": 0}
       },
       {
         "id": "first-launch-primary-listed-second",
@@ -2736,12 +2722,12 @@
         "saved": null,
         "expect": {
           "kind": "DEFAULT",
-          "x": null,
-          "y": null,
-          "width": 1600,
-          "height": 1000,
+          "x": 898,
+          "y": 176,
+          "width": 1616,
+          "height": 1039,
           "maximized": false,
-          "screen": null
+          "screen": 1
         }
       }
     ],

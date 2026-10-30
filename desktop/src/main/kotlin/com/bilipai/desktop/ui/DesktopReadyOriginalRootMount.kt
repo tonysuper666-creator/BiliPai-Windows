@@ -498,8 +498,8 @@ internal class DesktopReadyOriginalRootHandle(
             originalAboutMetadata, { latest.rootAlive() }, { latest.feedback(it) })
         CompositionLocalProvider(com.bilipai.desktop.settings.LocalDesktopOriginalAboutReleaseMetadata provides originalAboutMetadata,
             LocalDesktopOriginalHomeSettingsRootServices provides originalHomeSettings,
-            LocalDesktopPageErrorReporter provides { failure: Throwable ->
-                services.diagnostics?.record("E", "VideoPage", "视频页面加载失败", failure)
+            LocalDesktopPageErrorReporter provides { type: String, failure: Throwable? ->
+                services.diagnostics?.record("E", "VideoPage", "视频页面加载失败: $type", failure)
                 Unit
             },
             LocalDesktopMessageNotificationContext provides messageNotificationContext,

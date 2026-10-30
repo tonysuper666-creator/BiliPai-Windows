@@ -565,8 +565,9 @@ internal class DesktopWindowsVideoActions(
     val reportPageError = LocalDesktopPageErrorReporter.current
     val originalLoadError = (original as? VideoPlaybackUiState.Error)?.error
     LaunchedEffect(originalLoadError) {
-        if (current() && originalLoadError is com.android.purebilibili.data.model.VideoLoadError.UnknownError)
-            reportPageError?.invoke(originalLoadError.throwable)
+        if (current() && originalLoadError != null)
+            reportPageError?.invoke(originalLoadError.javaClass.simpleName,
+                (originalLoadError as? com.android.purebilibili.data.model.VideoLoadError.UnknownError)?.throwable)
     }
     val latestBootstrapError by rememberUpdatedState(bootstrapError)
     val failureLogin = DesktopVideoFailureLoginIntent.capture(rootEnvironment, shell, assembly, route,
@@ -577,7 +578,7 @@ internal class DesktopWindowsVideoActions(
     // Reuse the same real failure/login/retry content in the finite details pane.
     val failureContent: @Composable () -> Unit = {
         DesktopWindowsPageErrorCard(
-            message = desktopWindowsVideoErrorMessage(originalLoadError),
+            message = bootstrapError ?: desktopWindowsVideoErrorMessage(originalLoadError),
             onRetry = {
                 if (current() && rootEnvironment.currentKey() === route) {
                     if (bootstrapError != null) { bootstrapError = null; bootstrapRetry++ }
@@ -703,7 +704,7 @@ internal class DesktopWindowsVideoActions(
         } catch (cancelled: CancellationException) { throw cancelled }
         catch (failure: Exception) {
             if (current()) {
-                reportPageError?.invoke(failure)
+                reportPageError?.invoke(failure.javaClass.simpleName, failure)
                 bootstrapError = "播放器初始化失败，请重试。"
             }
         }
@@ -1175,6 +1176,7 @@ internal class DesktopWindowsVideoActions(
                 if (chromeVisible && legacyChrome) legacyTopStrip()
                 // One retained native slot; original fixed ratios letterbox the same viewport.
                 BoxWithConstraints(Modifier.fillMaxWidth().weight(1f).background(Color.Black)) {
+                    val showPageError = bootstrapError != null || playback.error != null || originalLoadError != null
                     val viewportLayout = resolveVideoViewportLayout(constraints.maxWidth, constraints.maxHeight, pictureAspectRatio)
                     val density = LocalDensity.current
                     val viewportWidth = with(density) { viewportLayout.width.toDp() }
@@ -1205,7 +1207,10 @@ internal class DesktopWindowsVideoActions(
                         }
                         if (active && !pipActive) {
                             DesktopVideoCommandPopup(viewportSize, {
-                                Box(Modifier.fillMaxSize()) {
+                                // Use the existing viewport overlay carrier so the retained heavyweight Canvas
+                                // cannot cover the page card. No native surface or playback owner is replaced.
+                                if (showPageError) DesktopWindowsPageErrorOverlay { failureContent() }
+                                else Box(Modifier.fillMaxSize()) {
                                     DesktopWindowsVideoEntryCover(
                                         contentKey = coverContentKey, bvid = coverBvid,
                                         entryCoverUrl = if (coverBvid == route.bvid) route.coverUrl else "",
@@ -1274,14 +1279,13 @@ internal class DesktopWindowsVideoActions(
                                 }
                             }, native.surface)
                         } else Text("正在浮窗播放", color=Color.White, modifier=Modifier.align(Alignment.Center))
-                        if (presentationAlive && !pipActive) engagementBinding?.let { binding ->
+                        if (presentationAlive && !pipActive && !showPageError) engagementBinding?.let { binding ->
                             DesktopWindowsConfirmedVideoFeedback(binding, viewportSize, native.surface, feedbackBounds)
                         }
                     }
                 }
                 if (playback.recovering && playback.recoveryMessage != null)
                     Text(playback.recoveryMessage.orEmpty(), Modifier.fillMaxWidth(), style = MaterialTheme.typography.bodySmall)
-                if (bootstrapError != null || playback.error != null) failureContent()
                 val legacyControlBar: @Composable () -> Unit = { DesktopWindowsVideoControlBar(
                     state = state, sourceVersion = native.currentSourceSnapshot()?.sourceVersion ?: 0L,
                     enabled = current() && success != null, fullscreen = fullscreen, detailsOpen = detailsOpen,
