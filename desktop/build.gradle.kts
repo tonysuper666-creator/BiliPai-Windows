@@ -3060,7 +3060,11 @@ val appCoreUpstreamTestsNotRun: Map<String, String> = mapOf(
 )
 // Approved upstream test corrections are isolated from production patch outputs.
 // The complete LF-normalized source is pinned: even an edit outside a hunk needs review.
-val correctedUpstreamTestPaths = emptySet<String>()
+val correctedUpstreamTestPaths = setOf(
+    "app/src/test/java/com/android/purebilibili/core/network/NetworkClientPolicyTest.kt",
+    "app/src/test/java/com/android/purebilibili/core/theme/ThemeColorSchemeCompletenessTest.kt",
+    "app/src/test/java/com/android/purebilibili/core/util/BilibiliUrlParserShortLinkTest.kt",
+)
 val correctedUpstreamTestOutput = layout.buildDirectory.dir("patched-upstream-tests")
 val applyUpstreamTestCorrections by tasks.registering {
     val patches = correctedUpstreamTestPaths.map { desktopUpstreamPatchDirectory.resolve("$it.patch") }
