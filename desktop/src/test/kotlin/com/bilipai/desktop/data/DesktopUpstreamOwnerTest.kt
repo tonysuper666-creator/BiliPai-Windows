@@ -504,6 +504,61 @@ class DesktopUpstreamOwnerTest {
         assertFailsWith<BiliApiException> { DesktopUpstreamCalls.withOwner(owner) { DesktopUpstreamCalls.admitted("fixture publish") { fail("retired owner published") } } }
     }
 
+    @Test fun emoteFastPathDoesNotReturnAnotherStoresCatalog() = runBlocking {
+        val fixture = fixture()
+        fixture.route = { exchange ->
+            val label = if (exchange.requestHeaders.getFirst("Cookie").orEmpty().contains("sess-review-a")) "A" else "B"
+            fixture.respond(exchange, 200,
+                """{"code":0,"data":{"packages":[{"id":1,"text":"fixture","emote":[{"id":1,"text":"[review]","url":"https://i0.hdslb.com/$label.png"}]}]}}""")
+        }
+        val (repoA, _) = repository(fixture, 77101L to "sess-review-a")
+        val (repoB, _) = repository(fixture, 77102L to "sess-review-b")
+        val ownerB = repoB.upstreamOwner(DesktopUpstreamPurpose.Main, { true })
+        var interleave = false
+        val aReading = CountDownLatch(1)
+        val bPublished = CountDownLatch(1)
+        val workerFailure = AtomicReference<Throwable?>()
+        val ownerA = repoA.upstreamOwner(DesktopUpstreamPurpose.Main, {
+            if (interleave) {
+                interleave = false
+                // This callback runs when A enters admission, after the fast-path cache-key check.
+                // A and B have different Store locks; B can publish while A is paused at this point.
+                aReading.countDown()
+                check(bPublished.await(10, TimeUnit.SECONDS)) { "B did not publish" }
+            }
+            true
+        })
+        val first = DesktopUpstreamCalls.withOwnerScope(ownerA) {
+            com.android.purebilibili.feature.dynamic.components.DynamicEmoteCatalog.ensureLoaded()
+        }
+        assertEquals("https://i0.hdslb.com/A.png", first["[review]"])
+        val worker = Thread {
+            try {
+                check(aReading.await(10, TimeUnit.SECONDS))
+                runBlocking { DesktopUpstreamCalls.withOwnerScope(ownerB) {
+                    com.android.purebilibili.feature.dynamic.components.DynamicEmoteCatalog.ensureLoaded()
+                } }
+            } catch (failure: Throwable) { workerFailure.set(failure) }
+            finally { bPublished.countDown() }
+        }.also { it.start() }
+        interleave = true
+        val second = DesktopUpstreamCalls.withOwnerScope(ownerA) {
+            com.android.purebilibili.feature.dynamic.components.DynamicEmoteCatalog.ensureLoaded()
+        }
+        worker.join(10_000)
+        assertFalse(worker.isAlive)
+        assertNull(workerFailure.get())
+        assertFalse(interleave, "interleaving hook must have run")
+        assertTrue(ownerA.isCurrent() && ownerB.isCurrent())
+        assertEquals("https://i0.hdslb.com/A.png", second["[review]"], "A must not receive B's catalog")
+        // The snapshot readers return the entries and packages of the reader's own account, from one value.
+        val catalog = com.android.purebilibili.feature.dynamic.components.DynamicEmoteCatalog
+        for ((owner, label) in listOf(ownerA to "A", ownerB to "B")) DesktopUpstreamCalls.withOwner(owner) {
+            assertEquals("https://i0.hdslb.com/$label.png", catalog.snapshot()["[review]"])
+            assertEquals("https://i0.hdslb.com/$label.png", catalog.snapshotPackages().single().emote?.single()?.url)
+        }
+    }
+
     private fun nav() = Request.Builder().url("https://api.bilibili.com/x/web-interface/nav").build()
 
     private fun assertRetired(failure: Throwable) {
