@@ -1,0 +1,27 @@
+# 可退役：完整上游消费者迁入后删除；仅连接原文浮动头的测量高度。
+--- a/com/android/purebilibili/feature/video/screen/DesktopOriginalVideoCommentTab.kt
++++ b/com/android/purebilibili/feature/video/screen/DesktopOriginalVideoCommentTab.kt
+@@ -64,6 +64,7 @@
+     /** 详情页评论栏与切换后的浮动栏使用同一紧凑字阶；其他宿主保留原生默认。 */
+     compactSortHeader: Boolean = false,
+     floatingHeaderContentPadding: Dp = 0.dp,
++    floatingHeaderContentPaddingPx: (() -> Float)? = null,
+     onSearchClick: (() -> Unit)? = null,
+     pullToRefreshEnabled: Boolean = true,
+     pinnedReplyIds: Set<Long> = emptySet(),
+@@ -122,8 +123,13 @@
+                 compactTypography = compactSortHeader,
+             )
+         }
+-        val commentContentPadding = remember(contentPadding, floatingHeaderContentPadding) {
+-            videoContentAdditionalTopPadding(contentPadding, floatingHeaderContentPadding)
++        val density = androidx.compose.ui.platform.LocalDensity.current
++        val commentContentPadding = remember(contentPadding, floatingHeaderContentPadding, floatingHeaderContentPaddingPx, density) {
++            if (floatingHeaderContentPaddingPx != null) {
++                videoContentAdditionalTopPadding(contentPadding, floatingHeaderContentPaddingPx, density)
++            } else {
++                videoContentAdditionalTopPadding(contentPadding, floatingHeaderContentPadding)
++            }
+         }
+         VideoCommentRefreshContainer(
+             isRefreshing = isRepliesRefreshing,
