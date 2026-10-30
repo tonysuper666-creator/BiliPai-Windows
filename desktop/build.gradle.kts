@@ -317,6 +317,7 @@ val appCoreLaterSteps: Map<String, String> = mapOf(
 // M4a: video/bangumi logic and unchanged Compose components compile from the merged upstream tree.
 // The remaining UI/player files move when their desktop platform adapters are wired.
 val migratedVideoFeaturePaths = setOf(
+    "com/android/purebilibili/feature/video/ui/components/UpPreviewSheet.kt",
     "com/android/purebilibili/feature/video/ambient/PlayerAmbientGlow.kt",
     "com/android/purebilibili/feature/video/ui/overlay/glass/PortraitProgressBar.kt",
     "com/android/purebilibili/feature/video/ui/overlay/PlayerProgressGlassHighlight.kt",
@@ -2860,6 +2861,7 @@ val prepareJsWorkerResources = if (hostIsWindows) tasks.register<Sync>("prepareJ
 
 // Generated legacy files that re-declare migrated upstream declarations under another file name.
 val upstreamOwnedGeneratedCopies = setOf(
+    "original-video-fullscreen-pager/com/android/purebilibili/feature/video/ui/components/UpPreviewSheet.kt",
     "original-video-ambient-windows/com/android/purebilibili/feature/video/ambient/PlayerAmbientGlow.kt",
     "original-video-fullscreen-pager/com/android/purebilibili/feature/video/ui/overlay/PortraitProgressBar.kt",
     "independent-bangumi-pages/com/android/purebilibili/feature/bangumi/ui/detail/DesktopOriginalBangumiDetailComponents.kt",
@@ -3493,6 +3495,7 @@ val appCoreUpstreamTestsNotRun: Map<String, String> = mapOf(
 // AudioBarReturnPolicyTest also needs MiniPlayerManager; PiliPlayerMenuPolicyTest needs Media3
 // track selection. Those two new upstream suites join with the playback-port migration.
 val migratedVideoFeatureTestPaths = setOf(
+    "com/android/purebilibili/feature/video/ui/components/UpPreviewSheetPolicyTest.kt",
     "com/android/purebilibili/feature/video/ui/overlay/PlaybackOrderSelectionSheetPolicyTest.kt",
     "com/android/purebilibili/feature/video/ui/components/PlayerPopupGeometryTest.kt",
     "com/android/purebilibili/feature/video/ui/components/CommentAvatarPushPolicyTest.kt",
