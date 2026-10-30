@@ -11,7 +11,61 @@
      val isFullscreenStyle = isFullscreen
      // 横屏分区 Tab（基础/高级/屏蔽）；竖屏不分区，全部展示。
      var fullscreenActiveSection by remember { mutableIntStateOf(0) }
-@@ -769,7 +767,7 @@
+@@ -524,26 +522,9 @@
+                 tonalElevation = if (isFullscreenStyle) 6.dp else 16.dp,
+                 shadowElevation = if (isFullscreenStyle) 8.dp else 24.dp
+             ) {
+-                Column(
+-                    modifier = Modifier
+-                        .verticalScroll(rememberScrollState())
+-                        .padding(if (isFullscreenStyle) 20.dp else 24.dp)
+-                ) {
+-                    // Header：窄侧栏只放标题+徽章+关闭，长副标题不挤进横排（避免竖字）
+-                    Row(
+-                        modifier = Modifier.fillMaxWidth(),
+-                        horizontalArrangement = Arrangement.SpaceBetween,
+-                        verticalAlignment = Alignment.CenterVertically
+-                    ) {
+-                        AppText(
+-                            text = "弹幕设置",
+-                            color = panelColors.titleColor,
+-                            style = (if (isFullscreenStyle) MaterialTheme.typography.titleMedium else MaterialTheme.typography.titleLarge)
+-                                .copy(fontWeight = FontWeight.SemiBold),
+-                            maxLines = 1,
+-                            modifier = Modifier.weight(1f, fill = false)
+-                        )
+-                        Spacer(modifier = Modifier.width(8.dp))
++                DanmakuSettingsPanelBody(
++                    onDismiss = onDismiss,
++                    navigation = {
+                         Box(
+                             modifier = Modifier
+                                 .clip(AppShapes.container(ContainerLevel.Pill))
+@@ -562,21 +543,8 @@
+                                 maxLines = 1
+                             )
+                         }
+-                        Spacer(modifier = Modifier.width(8.dp))
+-                        AppIconButton(
+-                            onClick = onDismiss,
+-                            modifier = Modifier
+-                                .size(32.dp)
+-                                .background(panelColors.resetButtonBackgroundColor, CircleShape)
+-                        ) {
+-                            AppIcon(
+-                                Icons.Outlined.Close,
+-                                contentDescription = "关闭",
+-                                tint = panelColors.resetButtonColor,
+-                                modifier = Modifier.size(18.dp)
+-                            )
+-                        }
+-                    }
++                    },
++                ) {
+                     if (!isFullscreenStyle && settingsScope.subtitle.isNotBlank()) {
+                         Spacer(modifier = Modifier.height(6.dp))
+                         AppText(
+@@ -769,7 +737,7 @@
                              DanmakuSliderItem(
                                  label = if (isFullscreenStyle) "字体" else "字体大小",
                                  value = fontScale,
@@ -20,7 +74,7 @@
                                  displayValue = { "${(it * 100).toInt()}%" },
                                  onValueChange = onFontScaleChange,
                                      onValuePreview = { next ->
-@@ -785,7 +783,7 @@
+@@ -785,7 +753,7 @@
                                  DanmakuSliderItem(
                                      label = "滚动弹幕时长",
                                      value = scrollDurationSeconds,
@@ -29,7 +83,7 @@
                                      displayValue = { "${it.roundToInt()}s" },
                                      onValueChange = onScrollDurationSecondsChange,
                                      onValuePreview = { next ->
-@@ -800,7 +798,7 @@
+@@ -800,7 +768,7 @@
                                  DanmakuSliderItem(
                                      label = "静态弹幕时长",
                                      value = staticDurationSeconds,
@@ -38,7 +92,7 @@
                                      displayValue = { "${it.roundToInt()}s" },
                                      onValueChange = onStaticDurationSecondsChange,
                                      onValuePreview = { next ->
-@@ -815,7 +813,7 @@
+@@ -815,7 +783,7 @@
                                  DanmakuSliderItem(
                                      label = "弹幕行高",
                                      value = lineHeight,
@@ -47,7 +101,7 @@
                                      displayValue = { String.format("%.1f", it) },
                                      onValueChange = onLineHeightChange,
                                      onValuePreview = { next ->
-@@ -921,7 +919,7 @@
+@@ -921,7 +889,7 @@
                                      DanmakuSliderItem(
                                          label = "弹幕行高",
                                          value = lineHeight,
@@ -56,7 +110,7 @@
                                          displayValue = { String.format("%.1f", it) },
                                          onValueChange = onLineHeightChange,
                                      onValuePreview = { next ->
-@@ -935,7 +933,7 @@
+@@ -935,7 +903,7 @@
                                      DanmakuSliderItem(
                                          label = "滚动弹幕时长",
                                          value = scrollDurationSeconds,
@@ -65,7 +119,7 @@
                                          displayValue = { "${it.roundToInt()}s" },
                                          onValueChange = onScrollDurationSecondsChange,
                                      onValuePreview = { next ->
-@@ -950,7 +948,7 @@
+@@ -950,7 +918,7 @@
                                      DanmakuSliderItem(
                                          label = "静态弹幕时长",
                                          value = staticDurationSeconds,
@@ -74,7 +128,7 @@
                                          displayValue = { "${it.roundToInt()}s" },
                                          onValueChange = onStaticDurationSecondsChange,
                                      onValuePreview = { next ->
-@@ -1333,9 +1331,7 @@
+@@ -1333,9 +1301,7 @@
      val context = LocalContext.current
      val scope = rememberCoroutineScope()
      val colorScheme = MaterialTheme.colorScheme
@@ -85,7 +139,7 @@
      val initialSections = remember(rawRules) {
          resolveDanmakuBlockManagerSections(rawRules)
      }
-@@ -1713,24 +1709,11 @@
+@@ -1713,24 +1679,11 @@
      showDivider: Boolean = true
  ) {
      Column(modifier = Modifier.fillMaxWidth()) {
@@ -115,7 +169,7 @@
          if (showDivider) {
              AppHorizontalDivider(color = colors.dividerColor)
          }
-@@ -1933,121 +1916,18 @@
+@@ -1933,121 +1886,18 @@
      tickCount: Int = 0,
      valueText: (Float) -> String = displayValue
  ) {
