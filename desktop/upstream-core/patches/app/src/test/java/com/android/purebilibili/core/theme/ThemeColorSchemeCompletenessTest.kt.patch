@@ -1,6 +1,6 @@
 Upstream-commit: 563b7481e41e0e4a9d070582ad745e82f0c3e23b
 Upstream-source-sha256: 846654697ba3d62e9474d2eea159e5c89214680eee3fcc9e7af6357824e52be3
-Reason: The error-role list omitted onError/onErrorContainer but indexed errorContainer at position 2. Map all four named roles; retain role completeness, ordering and exact color assertions.
+Reason: Fix the two-element error/errorContainer index without weakening foreground guards. Expected error background colors come from independent Compose baselines; onError and onErrorContainer still must differ from baseline. No expected color comes from the tested scheme.
 
 --- a/app/src/test/java/com/android/purebilibili/core/theme/ThemeColorSchemeCompletenessTest.kt
 +++ b/app/src/test/java/com/android/purebilibili/core/theme/ThemeColorSchemeCompletenessTest.kt
@@ -8,7 +8,7 @@ Reason: The error-role list omitted onError/onErrorContainer but indexed errorCo
   */
  class ThemeColorSchemeCompletenessTest {
  
-+    private val errorRoles = listOf("error", "onError", "errorContainer", "onErrorContainer")
++    private val errorRoles = listOf("error", "errorContainer")
      private val seed = Color(0xFF007AFF)
      private val lightBaseline = lightColorScheme()
      private val darkBaseline = darkColorScheme()
@@ -16,10 +16,9 @@ Reason: The error-role list omitted onError/onErrorContainer but indexed errorCo
          label: String,
          expectedError: List<Color>,
      ) {
-+        assertEquals(errorRoles.size, expectedError.size, "Every error role must have an explicit expectation")
++        assertEquals(errorRoles.size, expectedError.size, "Both error background roles need independent expectations")
          val missing = scheme.roles().filter { (role, value) ->
--            val isErrorRole = role.startsWith("error")
-+            val isErrorRole = role in errorRoles
+             val isErrorRole = role.startsWith("error")
              if (isErrorRole) {
 -                value != expectedError[listOf("error", "onError", "errorContainer", "onErrorContainer").indexOf(role)]
 +                value != expectedError[errorRoles.indexOf(role)]
@@ -31,7 +30,7 @@ Reason: The error-role list omitted onError/onErrorContainer but indexed errorCo
          assertAllRolesExplicit(
              scheme, lightBaseline, "自定义种子 MD3 light",
 -            expectedError = scheme.roles().filter { it.first.startsWith("error") }.map { it.second }
-+            expectedError = scheme.roles().filter { it.first in errorRoles }.map { it.second }
++            expectedError = lightBaseline.roles().filter { it.first in errorRoles }.map { it.second }
          )
          assertSurfaceContainerOrdered(scheme, "自定义种子 MD3 light")
          assertEquals(Color.Black, scheme.scrim)
@@ -40,7 +39,7 @@ Reason: The error-role list omitted onError/onErrorContainer but indexed errorCo
          assertAllRolesExplicit(
              scheme, darkBaseline, "自定义种子 MD3 dark",
 -            expectedError = scheme.roles().filter { it.first.startsWith("error") }.map { it.second }
-+            expectedError = scheme.roles().filter { it.first in errorRoles }.map { it.second }
++            expectedError = darkBaseline.roles().filter { it.first in errorRoles }.map { it.second }
          )
          assertSurfaceContainerOrdered(scheme, "自定义种子 MD3 dark")
          assertEquals(Color.Black, scheme.scrim)
@@ -49,7 +48,7 @@ Reason: The error-role list omitted onError/onErrorContainer but indexed errorCo
          assertAllRolesExplicit(
              scheme, darkBaseline, "自定义种子 MD3 amoled",
 -            expectedError = scheme.roles().filter { it.first.startsWith("error") }.map { it.second }
-+            expectedError = scheme.roles().filter { it.first in errorRoles }.map { it.second }
++            expectedError = darkBaseline.roles().filter { it.first in errorRoles }.map { it.second }
          )
          // amoled 覆盖会把 surfaceContainer 压到近纯黑,五级单调性由既有覆盖逻辑保证,不再断言
          assertEquals(Color.Black, scheme.background)
@@ -59,8 +58,8 @@ Reason: The error-role list omitted onError/onErrorContainer but indexed errorCo
  
 -        assertAllRolesExplicit(light, lightBaseline, "materialkolor light", expectedError = light.roles().filter { it.first.startsWith("error") }.map { it.second })
 -        assertAllRolesExplicit(dark, darkBaseline, "materialkolor dark", expectedError = dark.roles().filter { it.first.startsWith("error") }.map { it.second })
-+        assertAllRolesExplicit(light, lightBaseline, "materialkolor light", expectedError = light.roles().filter { it.first in errorRoles }.map { it.second })
-+        assertAllRolesExplicit(dark, darkBaseline, "materialkolor dark", expectedError = dark.roles().filter { it.first in errorRoles }.map { it.second })
++        assertAllRolesExplicit(light, lightBaseline, "materialkolor light", expectedError = lightBaseline.roles().filter { it.first in errorRoles }.map { it.second })
++        assertAllRolesExplicit(dark, darkBaseline, "materialkolor dark", expectedError = darkBaseline.roles().filter { it.first in errorRoles }.map { it.second })
          assertSurfaceContainerOrdered(light, "materialkolor light")
          assertSurfaceContainerOrdered(dark, "materialkolor dark")
          assertEquals(Color.Black, light.scrim)
