@@ -317,6 +317,7 @@ val appCoreLaterSteps: Map<String, String> = mapOf(
 // M4a: video/bangumi logic and unchanged Compose components compile from the merged upstream tree.
 // The remaining UI/player files move when their desktop platform adapters are wired.
 val migratedVideoFeaturePaths = setOf(
+    "com/android/purebilibili/feature/video/ui/components/CelebrationAnimations.kt",
     "com/android/purebilibili/feature/video/ui/components/BottomInputBar.kt",
     "com/android/purebilibili/feature/video/ui/section/VideoNoteSection.kt",
     "com/android/purebilibili/feature/video/danmaku/BasDanmakuFilterPolicy.kt",
@@ -2906,6 +2907,7 @@ val prepareJsWorkerResources = if (hostIsWindows) tasks.register<Sync>("prepareJ
 
 // Generated legacy files that re-declare migrated upstream declarations under another file name.
 val upstreamOwnedGeneratedCopies = setOf(
+    "original-video-detail-units/com/android/purebilibili/feature/video/ui/components/DesktopWindowsConfirmedCelebrationAnimations.kt",
     "video-tablet-full/com/android/purebilibili/feature/video/ui/components/DesktopOriginalBottomInputBar.kt",
     "dynamic-detail-container/com/android/purebilibili/feature/video/ui/components/DesktopOriginalDetailInputPadding.kt",
     "original-video-detail-holder-full/com/android/purebilibili/feature/video/screen/VideoNavigationCidPolicy.kt",
