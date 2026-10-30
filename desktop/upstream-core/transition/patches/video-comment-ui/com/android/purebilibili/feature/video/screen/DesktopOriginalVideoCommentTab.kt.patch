@@ -1,15 +1,26 @@
-# 可退役：完整上游消费者迁入后删除；仅连接原文浮动头的测量高度。
+# 可退役：完整上游列表迁入后删除；连接真实浮动头高度与分页状态。
 --- a/com/android/purebilibili/feature/video/screen/DesktopOriginalVideoCommentTab.kt
 +++ b/com/android/purebilibili/feature/video/screen/DesktopOriginalVideoCommentTab.kt
-@@ -64,6 +64,7 @@
+@@ -63,7 +63,9 @@
+     showHeader: Boolean = true,
      /** 详情页评论栏与切换后的浮动栏使用同一紧凑字阶；其他宿主保留原生默认。 */
      compactSortHeader: Boolean = false,
++    paginationPage: Int = 1,
      floatingHeaderContentPadding: Dp = 0.dp,
 +    floatingHeaderContentPaddingPx: (() -> Float)? = null,
      onSearchClick: (() -> Unit)? = null,
      pullToRefreshEnabled: Boolean = true,
      pinnedReplyIds: Set<Long> = emptySet(),
-@@ -122,8 +123,13 @@
+@@ -93,7 +95,7 @@
+             )
+         }
+     }
+-    LaunchedEffect(shouldLoadMore, isRepliesRefreshing, repliesError) {
++    LaunchedEffect(shouldLoadMore, isRepliesRefreshing, repliesError, paginationPage) {
+         if (shouldLoadMore && !isRepliesRefreshing && repliesError == null) {
+             onLoadMoreReplies()
+         }
+@@ -122,8 +124,13 @@
                  compactTypography = compactSortHeader,
              )
          }
