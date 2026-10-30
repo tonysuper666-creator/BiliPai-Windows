@@ -49,11 +49,11 @@ data class DanmakuSettings(
     private val rules = (blockedKeywords + blockedRules).distinct()
     fun normalized(): DanmakuSettings = copy(
         opacity = finite(opacity, 0.85f, 0.1f, 1f),
-        fontScale = finite(fontScale, 1f, 0.3f, 2f),
+        fontScale = com.android.purebilibili.core.store.normalizeDanmakuFontScale(fontScale),
         fontWeight = fontWeight.coerceIn(1, 9),
         weightFilterLevel = weightFilterLevel.coerceIn(0, 10),
         speedFactor = finite(speedFactor, 1f, 0.5f, 3f),
-        displayAreaRatio = com.android.purebilibili.core.store.normalizeDanmakuDisplayArea(finite(displayAreaRatio, 0.5f, 0.125f, 1f)),
+        displayAreaRatio = com.android.purebilibili.core.store.normalizeDanmakuDisplayArea(displayAreaRatio),
         scrollDurationSeconds = finite(scrollDurationSeconds, 7f, 1f, 50f),
         staticDurationSeconds = finite(staticDurationSeconds, 4f, 1f, 50f),
         lineHeight = finite(lineHeight, 1.6f, 1f, 3f),

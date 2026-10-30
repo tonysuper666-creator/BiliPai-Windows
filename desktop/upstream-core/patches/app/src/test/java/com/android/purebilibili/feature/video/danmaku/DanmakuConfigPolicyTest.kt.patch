@@ -1,0 +1,17 @@
+JUnit platform import adaptation only; complete upstream class body unchanged.
+Upstream-source-sha256: 7c56f442eed826d6644e08ad96c30c68225a5a5fce541ed68e616a6800bf132f
+--- a/app/src/test/java/com/android/purebilibili/feature/video/danmaku/DanmakuConfigPolicyTest.kt
++++ b/app/src/test/java/com/android/purebilibili/feature/video/danmaku/DanmakuConfigPolicyTest.kt
+@@ -6,9 +6,9 @@
+ import com.android.purebilibili.danmaku.engine.DANMAKU_LAYER_SCROLL
+ import com.android.purebilibili.danmaku.engine.DANMAKU_LAYER_TOP
+ import com.android.purebilibili.danmaku.engine.DANMAKU_LAYER_REVERSE
+-import org.junit.Assert.assertEquals
+-import org.junit.Assert.assertTrue
+-import org.junit.Test
++import org.junit.jupiter.api.Assertions.assertEquals
++import org.junit.jupiter.api.Assertions.assertTrue
++import org.junit.jupiter.api.Test
+ 
+ class DanmakuConfigPolicyTest {
+ 

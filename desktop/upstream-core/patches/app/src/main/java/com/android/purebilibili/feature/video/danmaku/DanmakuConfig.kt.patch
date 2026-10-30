@@ -1,0 +1,96 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuConfig.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuConfig.kt
+@@ -1,9 +1,9 @@
+ // 文件路径: feature/video/danmaku/DanmakuConfig.kt
+ package com.android.purebilibili.feature.video.danmaku
+ 
+-import android.content.Context
+-import android.graphics.Typeface
+-import android.os.Build
++import com.bilipai.desktop.danmaku.DesktopOriginalDanmakuRenderPlatform
++import java.awt.Font as Typeface
++import com.bilipai.desktop.danmaku.DesktopDanmakuConfigLog
+ import com.android.purebilibili.danmaku.engine.DanmakuRenderConfig
+ 
+ /**
+@@ -12,7 +12,7 @@
+  * 管理弹幕的样式、速度、透明度等设置
+  * 适配 ByteDance DanmakuRenderEngine
+  */
+-class DanmakuConfig {
++class DanmakuConfig internal constructor(private val platform: DesktopOriginalDanmakuRenderPlatform) {
+     
+     // 弹幕开关
+     var isEnabled = true
+@@ -80,7 +80,7 @@
+     var hotBarReservedHeightPx = 0f
+     
+     /** Resolve app settings into the renderer-neutral configuration contract. */
+-    fun resolveRenderConfig(viewport: DanmakuViewport, isFullscreen: Boolean): DanmakuRenderConfig {
++    fun resolveRenderConfig(viewport: DanmakuViewport, isFullscreen: Boolean = false): DanmakuRenderConfig {
+         val viewWidth = viewport.widthPx
+         val viewHeight = viewport.heightPx
+         val resolvedTextSize = resolveDanmakuTextSizePx(viewport.density, fontScale, isFullscreen)
+@@ -127,9 +127,9 @@
+         return DanmakuRenderConfig(
+             alpha = (opacity * 255).toInt(),
+             textSizePx = resolvedTextSize,
+-            typeface = resolveDanmakuTypeface(fontWeight),
++            typeface = resolveDanmakuTypeface(fontWeight, platform),
+             strokeWidthPx = resolvedStrokeWidth,
+-            strokeColor = android.graphics.Color.BLACK,
++            strokeColor = java.awt.Color.BLACK.rgb,
+             scrollDurationMs = scrollDuration,
+             lineHeightPx = layerLineHeightPx,
+             lineMarginPx = 0f,
+@@ -156,36 +156,11 @@
+         /**
+          * 获取状态栏高度（像素）
+          */
+-        fun getStatusBarHeight(context: Context): Int {
+-            val resourceId = context.resources.getIdentifier(
+-                "status_bar_height", "dimen", "android"
+-            )
+-            return if (resourceId > 0) {
+-                context.resources.getDimensionPixelSize(resourceId)
+-            } else {
+-                (24 * context.resources.displayMetrics.density).toInt()
+-            }
+-        }
+-    }
+-}
+-
+-internal fun resolveDanmakuTypeface(fontWeight: Int): Typeface {
+-    val normalizedWeight = fontWeight.coerceIn(1, 9) * 100
+-    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+-        Typeface.create(Typeface.DEFAULT, normalizedWeight, false)
+-    } else {
+-        val familyName = when {
+-            normalizedWeight <= 200 -> "sans-serif-thin"
+-            normalizedWeight <= 300 -> "sans-serif-light"
+-            normalizedWeight <= 400 -> "sans-serif"
+-            normalizedWeight <= 600 -> "sans-serif-medium"
+-            normalizedWeight <= 700 -> "sans-serif"
+-            else -> "sans-serif-black"
+-        }
+-        val style = if (normalizedWeight == 700) Typeface.BOLD else Typeface.NORMAL
+-        Typeface.create(familyName, style)
+-    }
+-}
++        internal fun getStatusBarHeight(platform: DesktopOriginalDanmakuRenderPlatform): Int = platform.systemChromeInsetPx()
++    }
++}
++
++internal fun resolveDanmakuTypeface(fontWeight: Int, platform: DesktopOriginalDanmakuRenderPlatform): Typeface = platform.resolveTypeface(fontWeight)
+ 
+ /** Logical-pixel baselines matching PiliPlus; neither depends on the picture box or app UI scale. */
+ private const val DANMAKU_BASE_TEXT_SIZE_DP = 15f
+@@ -272,7 +247,7 @@
+     val budgetedLines = requestedLines.coerceAtMost(maxLinesByBudget)
+ 
+     return budgetedLines.also {
+-        android.util.Log.i(
++        DesktopDanmakuConfigLog.i(
+             "DanmakuConfig",
+             "DisplayArea: visibleHeight=$visibleHeightPx, estimatedLineHeight=$estimatedLineHeight, " +
+                 "lineHeight=$engineLineHeight, " +
