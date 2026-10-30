@@ -3919,6 +3919,9 @@ val applyVideoTestCorrections by tasks.registering {
     val patches = correctedVideoTestPaths.map { desktopUpstreamPatchDirectory.resolve("app/src/test/java/$it.patch") }
     inputs.files(patches).withPathSensitivity(PathSensitivity.RELATIVE)
     inputs.files(correctedVideoTestPaths.map { appTestRoot.resolve(it) }).withPathSensitivity(PathSensitivity.RELATIVE)
+    val productionRoot = mergedRepositoryRoot.resolve("app/src/main/java")
+    inputs.files(correctedVideoTestPaths.map { productionRoot.resolve(it.removeSuffix("Test.kt") + ".kt") }
+        .filter { it.isFile }).withPathSensitivity(PathSensitivity.RELATIVE)
     outputs.dir(correctedVideoTestOutput)
     doLast {
         val output = correctedVideoTestOutput.get().asFile
@@ -3932,6 +3935,18 @@ val applyVideoTestCorrections by tasks.registering {
                 .joinToString("") { "%02x".format(it) }
             check(actual == expected) {
                 "$relative: upstream test changed; review and remove or regenerate the correction, never silently reuse it"
+            }
+            // A correction resolving test/implementation disagreement also pins its production policy.
+            val productionExpected = Regex("(?m)^Upstream-production-source-sha256: ([0-9a-f]{64})$")
+                .find(patch)?.groupValues?.get(1)
+            if (productionExpected != null) {
+                val production = productionRoot.resolve(relative.removeSuffix("Test.kt") + ".kt")
+                    .readText().replace("\r\n", "\n")
+                val productionActual = MessageDigest.getInstance("SHA-256").digest(production.toByteArray(Charsets.UTF_8))
+                    .joinToString("") { "%02x".format(it) }
+                check(productionActual == productionExpected) {
+                    "$relative: upstream production policy changed; review the test/implementation disagreement"
+                }
             }
             val destination = output.resolve(relative)
             destination.parentFile.mkdirs()
