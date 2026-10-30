@@ -148,23 +148,3 @@
              .clip(CircleShape)
              .border(1.dp, MaterialTheme.colorScheme.surfaceVariant, CircleShape)
              .background(MaterialTheme.colorScheme.surfaceVariant),
-@@ -466,18 +450,18 @@
-     Box(
-         modifier = Modifier.fillMaxSize(),
-         contentAlignment = Alignment.Center,
-     ) {
-         AppText(
-             text = text,
-             style = MaterialTheme.typography.bodyMedium,
-             color = AppContentColors.secondaryText(),
-         )
-     }
- }
- 
--private fun resolveSpaceGuardLevelLabel(level: Int): String = when (level) {
-+internal fun resolveSpaceGuardLevelLabel(level: Int): String = when (level) {
-     1 -> "总督"
-     2 -> "提督"
-     3 -> "舰长"
-     else -> "舰长"
- }
