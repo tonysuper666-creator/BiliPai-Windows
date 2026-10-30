@@ -1,4 +1,5 @@
 $ErrorActionPreference='Stop'
+. "$PSScriptRoot\Native.ps1"
 $card='C:\BuildVM\cards\ton1111';$profile="$card\profile";$report="$card\evidence"
 $app='C:\BuildVM\accept\vm-joint-20261030\desktop\build\compose\binaries\main\app\BiliPai Windows\app'
 if(Test-Path $profile){throw 'Profile exists: a second client invocation is forbidden'}
@@ -17,7 +18,8 @@ $cp=@("$card\crash-harness.jar")+@($cfg | Where-Object {$_.StartsWith('app.class
 foreach($f in $cp){if(!(Test-Path $f -PathType Leaf)){throw "Missing runtime classpath: $f"}}
 $opts=@($cfg | Where-Object {$_.StartsWith('java-options=')} | ForEach-Object {$_.Substring(13).Replace('$APPDIR',$app)})
 $opts+="-Dbilipai.rootValidationToken=$token"
-& "$jdk\bin\java.exe" @opts '-cp' ($cp -join ';') 'com.bilipai.desktop.ui.WindowsVideoCrashRegressionFixture' $report 'BV1v6xj6gE6u' > "$report\client.stdout.log" 2> "$report\client.stderr.log"
-[IO.File]::WriteAllText("$report\initial-exit.json",('{"exitCode":'+$LASTEXITCODE+'}'))
+$arguments=@($opts)+@('-cp',($cp-join ';'),'com.bilipai.desktop.ui.WindowsVideoCrashRegressionFixture',$report,'BV1v6xj6gE6u')
+$clientExit=Invoke-BpNativeWithLogs "$jdk\bin\java.exe" $arguments "$report\client.stdout.log" "$report\client.stderr.log"
+[IO.File]::WriteAllText("$report\initial-exit.json",('{"exitCode":'+$clientExit+'}'))
 # Keep the launch root alive while the real restarted descendant is measured.
 while(!(Test-Path "$report\cleanup-ready")){Start-Sleep -Milliseconds 250}

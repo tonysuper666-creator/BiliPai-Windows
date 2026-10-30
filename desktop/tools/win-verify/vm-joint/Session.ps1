@@ -1,6 +1,7 @@
 ﻿$ErrorActionPreference='Stop'
 $card='C:\BuildVM\cards\ton1111';$out="$card\evidence";$tools="$card\tools"
 . "$tools\TreeEvidence.ps1"
+. "$tools\Native.ps1"
 Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Runtime.WindowsRuntime
 Add-Type @'
@@ -32,6 +33,7 @@ function Window-Seconds{if((Get-Date)-gt $deadline){throw 'Card time budget reac
 function Wait-File($file,[int]$seconds=900){$end=(Get-Date).AddSeconds($seconds);while(!(Test-Path $file)){
  if((Get-Date)-gt $end){throw "Timed out waiting for $file"};Tick
  if(Test-Path "$out\fixture-finished"){throw 'Fixture ended before checkpoint'}
+ if(Test-Path "$out\initial-exit.json"){throw ('Initial JVM exited before checkpoint: '+(Get-Content "$out\initial-exit.json" -Raw))}
 }}
 function Keys($keys){
  if(![BpFocus]::SetForegroundWindow([IntPtr]$script:window.hwnd)){throw 'Cannot focus measured window'}
@@ -48,8 +50,9 @@ function Probe($cmd,$value=''){
  $value64=[Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes($value))
  [IO.File]::WriteAllText($config,"command=$cmd`nvalue=$value64`nresult=$($result.Replace('\','/'))`n",[Text.UTF8Encoding]::new($false))
  $jdk=[Environment]::GetEnvironmentVariable('JAVA_HOME','Machine')
- & "$jdk\bin\java.exe" --add-modules jdk.attach -cp "$card\ui-probe.jar" UiProbe $script:window.pid "$card\ui-probe.jar" $config > "$out\attach-$tag.log" 2>&1
- if($LASTEXITCODE-ne 0){throw "UI attach failed: $LASTEXITCODE"}
+ $arguments=@('--add-modules','jdk.attach','-cp',"$card\ui-probe.jar",'UiProbe',[string]$script:window.pid,"$card\ui-probe.jar",$config)
+ $probeExit=Invoke-BpNativeWithLogs "$jdk\bin\java.exe" $arguments "$out\attach-$tag.out.log" "$out\attach-$tag.err.log"
+ if($probeExit-ne 0){throw "UI attach failed: $probeExit"}
  $lines=Get-Content $result -Encoding UTF8
  $dump=[Text.Encoding]::UTF8.GetString([Convert]::FromBase64String($lines[1]))
  [IO.File]::WriteAllText("$out\ui-$cmd-$tag.txt",$dump,[Text.UTF8Encoding]::new($false))
