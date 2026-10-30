@@ -315,6 +315,7 @@ val appCoreLaterSteps: Map<String, String> = mapOf(
 // M4a: video/bangumi logic and unchanged Compose components compile from the merged upstream tree.
 // The remaining UI/player files move when their desktop platform adapters are wired.
 val migratedVideoFeaturePaths = setOf(
+    "com/android/purebilibili/feature/video/ui/components/CelebrationAnimations.kt",
     "com/android/purebilibili/feature/video/ui/components/BottomInputBar.kt",
     "com/android/purebilibili/feature/video/ui/section/VideoNoteSection.kt",
     "com/android/purebilibili/feature/video/danmaku/BasDanmakuFilterPolicy.kt",
@@ -2919,6 +2920,7 @@ val upstreamOwnedGeneratedCopies = setOf(
     // core/ui/components/UserLevelBadge (TON-1072): the upstream file draws its R.drawable level badges through the generated
     // desktop drawable table, so the blocked-list producer's classpath-PNG copy is retired.
     "blocked-list-ui/com/android/purebilibili/core/ui/components/DesktopUpstreamUserLevelBadge.kt",
+    "original-video-detail-units/com/android/purebilibili/feature/video/ui/components/DesktopWindowsConfirmedCelebrationAnimations.kt",
     "video-tablet-full/com/android/purebilibili/feature/video/ui/components/DesktopOriginalBottomInputBar.kt",
     "dynamic-detail-container/com/android/purebilibili/feature/video/ui/components/DesktopOriginalDetailInputPadding.kt",
     "original-video-detail-holder-full/com/android/purebilibili/feature/video/screen/VideoNavigationCidPolicy.kt",

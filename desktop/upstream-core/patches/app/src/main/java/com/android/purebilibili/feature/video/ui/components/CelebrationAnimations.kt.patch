@@ -1,0 +1,36 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/video/ui/components/CelebrationAnimations.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/video/ui/components/CelebrationAnimations.kt
+@@ -25,13 +25,13 @@
+ import androidx.compose.ui.unit.Dp
+ import com.android.purebilibili.core.ui.AppIcons
+ import com.android.purebilibili.core.plugin.skin.LocalUiSkinState
+-import com.android.purebilibili.core.plugin.skin.UiSkinAnimatedAsset
++import com.bilipai.desktop.ui.DesktopOriginalPlayerSkinAsset as UiSkinAnimatedAsset
+ import com.android.purebilibili.core.plugin.skin.UiSkinSurface
+ import com.android.purebilibili.core.plugin.skin.assetPath
+ import kotlinx.coroutines.delay
+ 
+ @Composable
+-fun LikeBurstAnimation(
++fun DesktopWindowsConfirmedLikeBurstAnimation(
+     visible: Boolean,
+     reducedMotion: Boolean = false,
+     modifier: Modifier = Modifier,
+@@ -70,7 +70,7 @@
+ }
+ 
+ @Composable
+-fun TripleSuccessAnimation(
++fun DesktopWindowsConfirmedTripleSuccessAnimation(
+     visible: Boolean,
+     isCompact: Boolean = false,
+     reducedMotion: Boolean = false,
+@@ -101,7 +101,7 @@
+ }
+ 
+ @Composable
+-fun CoinSuccessAnimation(
++fun DesktopWindowsConfirmedCoinSuccessAnimation(
+     visible: Boolean,
+     coinCount: Int = 1,
+     onAnimationEnd: () -> Unit = {}
