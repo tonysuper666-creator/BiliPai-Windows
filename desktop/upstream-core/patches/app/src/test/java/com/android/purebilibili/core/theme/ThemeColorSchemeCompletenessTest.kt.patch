@@ -1,8 +1,8 @@
 Upstream-commit: 563b7481e41e0e4a9d070582ad745e82f0c3e23b
 Upstream-source-sha256: 846654697ba3d62e9474d2eea159e5c89214680eee3fcc9e7af6357824e52be3
-Reason: 完备性守卫只能看「与 Compose 默认同值」。scrim 恒为 Color.Black、浅色 onPrimary/onSecondary/onTertiary/onError/surfaceContainerLowest 恒为 Color.White，
-这些角色已由同一方法的精确颜色断言钉住，改色会与黑 scrim、浅色白字冲突，因此只把它们移出「等于 baseline 即缺失」的过滤；其余角色仍按原判据。
-error/errorContainer 与 expectedError 的独立比较不动。
+Reason: 完备性守卫只能看「与 Compose 默认同值」；scrim 恒 Black、浅色 on*/surfaceContainerLowest 恒 White 已由同方法精确断言钉住，只把它们移出过滤。
+ac85cd97a 起 createBiliPaiStyleColorScheme 不再把原始种子写进 surfaceTint（materialkolor 那两条早已是 assertNotEquals），自定义种子的 light/dark 同步改成 assertNotEquals(seed, surfaceTint)，不钉具体色。
+error/errorContainer 与 expectedError 的独立比较不动，生产不动。
 
 --- a/app/src/test/java/com/android/purebilibili/core/theme/ThemeColorSchemeCompletenessTest.kt
 +++ b/app/src/test/java/com/android/purebilibili/core/theme/ThemeColorSchemeCompletenessTest.kt
@@ -48,7 +48,7 @@ error/errorContainer 与 expectedError 的独立比较不动。
              } else {
                  value == baseline.roles().first { it.first == role }.second
              }
-@@ -110,7 +127,8 @@
+@@ -110,11 +127,13 @@
          )
          assertAllRolesExplicit(
              scheme, lightBaseline, "自定义种子 MD3 light",
@@ -58,7 +58,13 @@ error/errorContainer 与 expectedError 的独立比较不动。
          )
          assertSurfaceContainerOrdered(scheme, "自定义种子 MD3 light")
          assertEquals(Color.Black, scheme.scrim)
-@@ -128,7 +146,7 @@
+-        assertEquals(seed, scheme.surfaceTint)
++        // ac85cd97a 起 surfaceTint 保留调和值，不再被原始种子 hex 覆盖。
++        assertNotEquals(seed, scheme.surfaceTint)
+     }
+ 
+     @Test
+@@ -128,11 +147,11 @@
          )
          assertAllRolesExplicit(
              scheme, darkBaseline, "自定义种子 MD3 dark",
@@ -67,7 +73,12 @@ error/errorContainer 与 expectedError 的独立比较不动。
          )
          assertSurfaceContainerOrdered(scheme, "自定义种子 MD3 dark")
          assertEquals(Color.Black, scheme.scrim)
-@@ -146,7 +164,7 @@
+-        assertEquals(seed, scheme.surfaceTint)
++        assertNotEquals(seed, scheme.surfaceTint)
+     }
+ 
+     @Test
+@@ -146,7 +165,7 @@
          )
          assertAllRolesExplicit(
              scheme, darkBaseline, "自定义种子 MD3 amoled",
@@ -76,7 +87,7 @@ error/errorContainer 与 expectedError 的独立比较不动。
          )
          // amoled 覆盖会把 surfaceContainer 压到近纯黑,五级单调性由既有覆盖逻辑保证,不再断言
          assertEquals(Color.Black, scheme.background)
-@@ -171,8 +189,8 @@
+@@ -171,8 +190,8 @@
              specVersion = ColorSpec.SpecVersion.SPEC_2021,
          )
  
