@@ -1,0 +1,23 @@
+Upstream-source-sha256: 3e505f0830b6b473ee1e8172688dfba32ffb6538408a41820af4106d396f7f2a
+Reason: 形状令牌按 0.1dp 取整
+
+--- a/design-system/src/main/java/com/android/purebilibili/core/ui/AppShapes.kt
++++ b/design-system/src/main/java/com/android/purebilibili/core/ui/AppShapes.kt
+@@ -13,6 +13,7 @@
+ import com.android.purebilibili.core.theme.AppUiStyle
+ import com.android.purebilibili.core.theme.LocalAppUiStyle
+ import com.android.purebilibili.core.theme.resolveAndroidNativeChromeTokens
++import kotlin.math.round
+ import com.android.purebilibili.core.theme.resolveCornerRadiusScale
+ import top.yukonga.miuix.kmp.squircle.addSquircleRect
+ 
+@@ -53,7 +54,8 @@
+             return resolveAndroidNativeChromeTokens(uiStyle).pillCornerRadiusDp.dp
+         }
+         val scale = resolveCornerRadiusScale(uiStyle)
+-        return (AppShapeTokens.baseCornerDp(level) * scale).dp
++        // 设计令牌按 0.1dp 定义；float 相乘的尾数（36 * 0.3 = 10.799999）不得漏进几何值。
++        return (round(AppShapeTokens.baseCornerDp(level) * scale * 10f) / 10f).dp
+     }
+ 
+     fun resolveContainerShape(
