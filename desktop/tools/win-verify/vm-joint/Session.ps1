@@ -68,6 +68,7 @@ function Media{
 function Wait-State($state){$end=(Get-Date).AddSeconds(15);do{$m=Media;if($m.state-eq $state){return $m};Tick}while((Get-Date)-lt $end);throw "SMTC did not become $state"}
 function MediaRecord($m){return [ordered]@{title=$m.title;state=$m.state;source=$m.source;position=$m.position}}
 try{
+ if((Get-Date)-gt $deadline){throw 'Card time budget reached before the initial client invocation'}
  $p=Start-Process "$tools\run.cmd" -WorkingDirectory $card -PassThru
  Initialize-BpTree $p.Id $out | Out-Null
  Step 'initial-window' {

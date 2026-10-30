@@ -27,12 +27,15 @@ $a=New-ScheduledTaskAction -Execute 'C:\BuildVM\toolchain\pwsh\pwsh.exe' -Argume
 $p=New-ScheduledTaskPrincipal -UserId builder -LogonType Interactive -RunLevel Highest
 $s=New-ScheduledTaskSettingsSet -ExecutionTimeLimit ([timespan]::FromMinutes(35)) -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries
 Register-ScheduledTask -TaskName 'BiliPai-VM-Test' -Action $a -Principal $p -Settings $s -Force|Out-Null
+$lastRunBefore=(Get-ScheduledTaskInfo BiliPai-VM-Test).LastRunTime
 Start-ScheduledTask BiliPai-VM-Test
 $deadline=(Get-Date).AddMinutes(34)
-Start-Sleep -Milliseconds 700
-while((Get-ScheduledTask BiliPai-VM-Test).State-eq 'Running'){
+while($true){
+ Start-Sleep -Milliseconds 500
+ $state=(Get-ScheduledTask BiliPai-VM-Test).State
+ $lastRun=(Get-ScheduledTaskInfo BiliPai-VM-Test).LastRunTime
+ if($state-notin @('Queued','Running') -and $lastRun-gt $lastRunBefore){break}
  if((Get-Date)-gt $deadline){throw 'Session deadline reached; inspect exact task descendants before cleanup'}
- Start-Sleep -Seconds 2
 }
 $info=Get-ScheduledTaskInfo BiliPai-VM-Test
 Save-BpJson ([ordered]@{stage=$stage;lastTaskResult=$info.LastTaskResult;at=(Get-Date).ToString('o')}) "$out\task-result.json"
