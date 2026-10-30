@@ -106,10 +106,22 @@ try{
    $null=Probe 'click' '立即重启|立即重啟|Restart Now'
    $script:window=Wait-BpTreeWindow 100 $oldPid
    [BpFocus]::SetForegroundWindow([IntPtr]$script:window.hwnd)|Out-Null
-   $before=Probe 'dump'
+   $readyUntil=(Get-Date).AddSeconds(60)
+   do{
+    $before=Probe 'dump'
+    $ui=($before -split "`n"|Where-Object {$_ -notmatch '^JVM '})-join "`n"
+    if($ui-match '首页|Home|推荐|Popular|搜索|Search'){break}
+    Tick
+   }while((Get-Date)-lt $readyUntil)
+   if($ui-notmatch '首页|Home|推荐|Popular|搜索|Search'){throw 'New PID did not draw navigation before deadline'}
    Keys '^,'
-   $after=Probe 'dump'
-   if($before-eq $after -or $after-notmatch 'Settings|Appearance'){throw 'New PID window failed settings interaction'}
+   $interactionUntil=(Get-Date).AddSeconds(30)
+   do{
+    $after=Probe 'dump'
+    if($before-ne $after -and $after-match 'Settings|Appearance|Windows 设置'){break}
+    Tick
+   }while((Get-Date)-lt $interactionUntil)
+   if($before-eq $after -or $after-notmatch 'Settings|Appearance|Windows 设置'){throw 'New PID window failed settings interaction'}
    $shot=Save-BpTreeShot $script:window 'restarted-settings'
    [ordered]@{oldPid=$oldPid;newPid=$script:window.pid;uiChanged=$true;screenshot=$shot}
   }finally{[IO.File]::WriteAllText("$out\restart-done",'true')}
