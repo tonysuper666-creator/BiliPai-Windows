@@ -81,7 +81,7 @@ LAYOUT_ORDER = (
     ("back name", 'contentDescription = "返回")'),
     ("video box", "BoxWithConstraints(Modifier.fillMaxWidth().weight(1f).background(Color.Black)) {"),
     ("command popup", POPUP),
-    ("failure content", "if (showPageError) DesktopWindowsPageErrorOverlay { failureContent() }"),
+    ("failure content", "if (showPageError) DesktopWindowsPageErrorOverlay("),
     ("entry cover", ENTRY_COVER),
     ("original overlay", OVERLAY),
     ("subtitle host", "VideoSubtitleOverlayHost("),

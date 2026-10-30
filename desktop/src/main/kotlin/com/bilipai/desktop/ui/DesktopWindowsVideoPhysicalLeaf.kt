@@ -165,6 +165,7 @@ internal class DesktopWindowsVideoActions(
         shell.slot.currentAssembly() === assembly && assembly.owns()
     val latestActions by rememberUpdatedState(actions)
     val viewportFocus = remember(assembly) { androidx.compose.ui.focus.FocusRequester() }
+    val pageErrorFocus = remember(assembly, route) { DesktopWindowsPageErrorFocusReturn() }
     // UI state only: the original Root/entry/source owns every operation.
     val chromeSource = assembly.native.current()
     val chrome = remember(assembly, DesktopWindowsFullscreenChromeEntryKey(route), chromeSource) { DesktopWindowsFullscreenChromeState() }
@@ -243,6 +244,7 @@ internal class DesktopWindowsVideoActions(
         val listener = object : java.awt.event.WindowFocusListener {
             override fun windowGainedFocus(event: java.awt.event.WindowEvent) {
                 chromeWindowFocused = true
+                if (pageErrorFocus.ownerActivated(feedbackPresentationCurrent())) viewportFocus.requestFocus()
                 chromeActivity(DesktopWindowsFullscreenChromeActivity.WINDOW_FOCUS_GAINED)
             }
             override fun windowLostFocus(event: java.awt.event.WindowEvent) {
@@ -1209,7 +1211,23 @@ internal class DesktopWindowsVideoActions(
                             DesktopVideoCommandPopup(viewportSize, {
                                 // Use the existing viewport overlay carrier so the retained heavyweight Canvas
                                 // cannot cover the page card. No native surface or playback owner is replaced.
-                                if (showPageError) DesktopWindowsPageErrorOverlay { failureContent() }
+                                if (showPageError) DesktopWindowsPageErrorOverlay(
+                                    onUnhandledKey = { event ->
+                                        feedbackPresentationCurrent() && windowKeyFallback?.dispatch(event) == true
+                                    },
+                                    onMounted = pageErrorFocus::mount,
+                                    onReturnFocus = {
+                                        val window = chromeWindow
+                                        val foreground = java.awt.KeyboardFocusManager.getCurrentKeyboardFocusManager().activeWindow
+                                        val foregroundOwned = window != null &&
+                                            generateSequence(foreground) { it.owner }.any { it === window }
+                                        if (pageErrorFocus.release(feedbackPresentationCurrent(), foregroundOwned) && window != null) {
+                                            if (window.isActive) {
+                                                if (pageErrorFocus.ownerActivated(feedbackPresentationCurrent())) viewportFocus.requestFocus()
+                                            } else window.requestFocus()
+                                        }
+                                    },
+                                ) { failureContent() }
                                 else Box(Modifier.fillMaxSize()) {
                                     DesktopWindowsVideoEntryCover(
                                         contentKey = coverContentKey, bvid = coverBvid,

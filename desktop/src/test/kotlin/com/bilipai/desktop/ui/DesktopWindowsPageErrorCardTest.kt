@@ -38,6 +38,72 @@ class DesktopWindowsPageErrorCardTest {
         it.config.getOrNull(SemanticsProperties.Text).orEmpty().map { value -> value.text }
     }
 
+    @Test fun recoveryWaitsForItsOwnerAndNeverActivatesABackgroundOrRetiredPage() {
+        val focus = DesktopWindowsPageErrorFocusReturn()
+        focus.mount()
+        assertFalse(focus.release(stillCurrent = true, foregroundOwned = false))
+        assertFalse(focus.ownerActivated(stillCurrent = true))
+        focus.mount()
+        assertFalse(focus.release(stillCurrent = false, foregroundOwned = true))
+        assertFalse(focus.ownerActivated(stillCurrent = true))
+        focus.mount()
+        assertTrue(focus.release(stillCurrent = true, foregroundOwned = true))
+        assertTrue(focus.ownerActivated(stillCurrent = true))
+        assertFalse(focus.ownerActivated(stillCurrent = true))
+    }
+
+    @Test fun anotherErrorOrNavigationCancelsThePendingViewportReturn() {
+        val focus = DesktopWindowsPageErrorFocusReturn()
+        focus.mount()
+        assertTrue(focus.release(stillCurrent = true, foregroundOwned = true))
+        focus.mount()
+        assertFalse(focus.ownerActivated(stillCurrent = true))
+        assertTrue(focus.release(stillCurrent = true, foregroundOwned = true))
+        assertFalse(focus.ownerActivated(stillCurrent = false))
+        assertFalse(focus.ownerActivated(stillCurrent = true))
+    }
+
+    @Test fun navigationBubblesToTheWindowButRetryKeysStayWithTheButton() {
+        val forwarded = mutableListOf<Key>()
+        var retries = 0
+        val left = Key(java.awt.event.KeyEvent.VK_LEFT)
+        val one = Key(java.awt.event.KeyEvent.VK_1)
+        val navigation = setOf(left, Key.Escape, Key.K, one, Key.F11)
+        val scene = ImageComposeScene(800, 400) {
+            MaterialTheme {
+                DesktopWindowsPageErrorOverlay(onUnhandledKey = { event ->
+                    forwarded += event.key
+                    event.key in navigation
+                }) { DesktopWindowsPageErrorCard("请检查网络连接后重试。", onRetry = { retries++ }) }
+            }
+        }
+        try {
+            var time = 0L
+            fun settle() { repeat(3) { scene.render(time).close(); time += 16_000_000 } }
+            fun press(key: Key, ctrl: Boolean = false, alt: Boolean = false) {
+                scene.sendKeyEvent(KeyEvent(key, KeyEventType.KeyDown, isCtrlPressed = ctrl, isAltPressed = alt))
+                scene.sendKeyEvent(KeyEvent(key, KeyEventType.KeyUp, isCtrlPressed = ctrl, isAltPressed = alt))
+                settle()
+            }
+            settle()
+            press(Key.Tab)
+            forwarded.clear()
+            press(left, alt = true)
+            press(Key.Escape)
+            press(Key.K, ctrl = true)
+            press(one, ctrl = true)
+            press(Key.F11)
+            assertTrue(forwarded.containsAll(navigation))
+            assertEquals(0, retries)
+            forwarded.clear()
+            press(Key.Enter)
+            press(Key.Spacebar)
+            assertEquals(2, retries)
+            assertFalse(Key.Enter in forwarded)
+            assertFalse(Key.Spacebar in forwarded)
+        } finally { scene.close() }
+    }
+
     @Test fun tabCanReachRetryAndEnterOrSpaceRestoresThePage() {
         for (activation in listOf(Key.Enter, Key.Spacebar)) {
             val error = mutableStateOf(true)

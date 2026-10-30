@@ -435,7 +435,7 @@ def check_v2_structure(leaf):
             need(leaf.index(opener) < leaf.index(call), "defined before it is called: " + opener)
     order = [EFFECTIVE, "val controls = DesktopPlayerControlsBinding(", "BoxWithConstraints(Modifier.fillMaxSize().padding(if (fullscreen)",
              STRIP_OPEN, STRIP_CALL, "BoxWithConstraints(Modifier.fillMaxWidth().weight(1f).background(Color.Black)) {",
-             "if (showPageError) DesktopWindowsPageErrorOverlay { failureContent() }", BAR_OPEN, BAR_CALL, PANEL_OPEN, PANEL_CALL,
+             "if (showPageError) DesktopWindowsPageErrorOverlay(", BAR_OPEN, BAR_CALL, PANEL_OPEN, PANEL_CALL,
              "audioLanguageMenu?.takeIf { shell.playback.isAudioSelectionCurrent(it) }"]
     if all(item in leaf for item in order):
         indices = [leaf.index(item) for item in order]
@@ -511,7 +511,7 @@ class LeafIdentityTest(unittest.TestCase):
         self.assertIn("message = bootstrapError ?: desktopWindowsVideoErrorMessage(originalLoadError)", LEAF_TEXT)
         self.assertIn("if (current() && originalLoadError != null)", LEAF_TEXT)
         self.assertIn("reportPageError?.invoke(originalLoadError.javaClass.simpleName,", LEAF_TEXT)
-        self.assertIn("if (showPageError) DesktopWindowsPageErrorOverlay { failureContent() }", LEAF_TEXT)
+        self.assertIn("if (showPageError) DesktopWindowsPageErrorOverlay(", LEAF_TEXT)
         self.assertNotIn("if (bootstrapError != null || playback.error != null) failureContent()", LEAF_TEXT)
         self.assertIn("if (current() && rootEnvironment.currentKey() === route)", LEAF_TEXT)
         self.assertIn("else shell.playback.retry()", LEAF_TEXT)

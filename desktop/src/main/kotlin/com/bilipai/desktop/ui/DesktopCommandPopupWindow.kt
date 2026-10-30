@@ -161,7 +161,7 @@ private class DesktopCommandPopupWindow(
         modal = modalVisible
         popup?.focusableWindowState = modalVisible
         applyShape()
-        if (modalVisible && !wasModal) popup?.let { it.toFront(); it.requestFocus() }
+        if (modalVisible && !wasModal && owner.isActive) popup?.let { it.toFront(); it.requestFocus() }
     }
     private val moveListener = object : ComponentAdapter() {
         override fun componentMoved(event: ComponentEvent) = updateGeometry()
