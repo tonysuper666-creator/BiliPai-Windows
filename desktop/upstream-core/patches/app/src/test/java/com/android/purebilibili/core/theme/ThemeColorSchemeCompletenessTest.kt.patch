@@ -1,6 +1,8 @@
 Upstream-commit: 563b7481e41e0e4a9d070582ad745e82f0c3e23b
 Upstream-source-sha256: 846654697ba3d62e9474d2eea159e5c89214680eee3fcc9e7af6357824e52be3
-Reason: Fix the two-element error/errorContainer index without weakening foreground guards. Independent Compose baselines identify default colors: error and errorContainer, like onError and onErrorContainer, fail only when equal to baseline. No comparison color comes from the tested scheme.
+Reason: 完备性守卫只能看「与 Compose 默认同值」。scrim 恒为 Color.Black、浅色 onPrimary/onSecondary/onTertiary/onError/surfaceContainerLowest 恒为 Color.White，
+这些角色已由同一方法的精确颜色断言钉住，改色会与黑 scrim、浅色白字冲突，因此只把它们移出「等于 baseline 即缺失」的过滤；其余角色仍按原判据。
+error/errorContainer 与 expectedError 的独立比较不动。
 
 --- a/app/src/test/java/com/android/purebilibili/core/theme/ThemeColorSchemeCompletenessTest.kt
 +++ b/app/src/test/java/com/android/purebilibili/core/theme/ThemeColorSchemeCompletenessTest.kt
@@ -12,12 +14,33 @@ Reason: Fix the two-element error/errorContainer index without weakening foregro
      private val seed = Color(0xFF007AFF)
      private val lightBaseline = lightColorScheme()
      private val darkBaseline = darkColorScheme()
-@@ -68,10 +69,11 @@
+@@ -62,16 +63,32 @@
+         "surfaceContainerHighest" to surfaceContainerHighest,
+     )
+ 
++    // 已经用精确颜色钉住、且与 Compose 默认同值的角色：不再参与「等于 baseline 即缺失」的过滤。
++    private val lightPinnedRoles = mapOf(
++        "scrim" to Color.Black,
++        "onPrimary" to Color.White,
++        "onSecondary" to Color.White,
++        "onTertiary" to Color.White,
++        "onError" to Color.White,
++        "surfaceContainerLowest" to Color.White,
++    )
++
+     private fun assertAllRolesExplicit(
+         scheme: ColorScheme,
+         baseline: ColorScheme,
          label: String,
          expectedError: List<Color>,
++        pinnedRoles: Map<String, Color> = mapOf("scrim" to Color.Black),
      ) {
 +        assertEquals(errorRoles.size, expectedError.size, "Both error background roles need independent expectations")
++        pinnedRoles.forEach { (role, expected) ->
++            assertEquals(expected, scheme.roles().first { it.first == role }.second, "$label pinned $role")
++        }
          val missing = scheme.roles().filter { (role, value) ->
++            if (role in pinnedRoles) return@filter false
              val isErrorRole = role.startsWith("error")
              if (isErrorRole) {
 -                value != expectedError[listOf("error", "onError", "errorContainer", "onErrorContainer").indexOf(role)]
@@ -25,16 +48,17 @@ Reason: Fix the two-element error/errorContainer index without weakening foregro
              } else {
                  value == baseline.roles().first { it.first == role }.second
              }
-@@ -110,7 +112,7 @@
+@@ -110,7 +127,8 @@
          )
          assertAllRolesExplicit(
              scheme, lightBaseline, "自定义种子 MD3 light",
 -            expectedError = scheme.roles().filter { it.first.startsWith("error") }.map { it.second }
-+            expectedError = lightBaseline.roles().filter { it.first in errorRoles }.map { it.second }
++            expectedError = lightBaseline.roles().filter { it.first in errorRoles }.map { it.second },
++            pinnedRoles = lightPinnedRoles,
          )
          assertSurfaceContainerOrdered(scheme, "自定义种子 MD3 light")
          assertEquals(Color.Black, scheme.scrim)
-@@ -128,7 +130,7 @@
+@@ -128,7 +146,7 @@
          )
          assertAllRolesExplicit(
              scheme, darkBaseline, "自定义种子 MD3 dark",
@@ -43,7 +67,7 @@ Reason: Fix the two-element error/errorContainer index without weakening foregro
          )
          assertSurfaceContainerOrdered(scheme, "自定义种子 MD3 dark")
          assertEquals(Color.Black, scheme.scrim)
-@@ -146,7 +148,7 @@
+@@ -146,7 +164,7 @@
          )
          assertAllRolesExplicit(
              scheme, darkBaseline, "自定义种子 MD3 amoled",
@@ -52,13 +76,13 @@ Reason: Fix the two-element error/errorContainer index without weakening foregro
          )
          // amoled 覆盖会把 surfaceContainer 压到近纯黑,五级单调性由既有覆盖逻辑保证,不再断言
          assertEquals(Color.Black, scheme.background)
-@@ -171,8 +173,8 @@
+@@ -171,8 +189,8 @@
              specVersion = ColorSpec.SpecVersion.SPEC_2021,
          )
  
 -        assertAllRolesExplicit(light, lightBaseline, "materialkolor light", expectedError = light.roles().filter { it.first.startsWith("error") }.map { it.second })
 -        assertAllRolesExplicit(dark, darkBaseline, "materialkolor dark", expectedError = dark.roles().filter { it.first.startsWith("error") }.map { it.second })
-+        assertAllRolesExplicit(light, lightBaseline, "materialkolor light", expectedError = lightBaseline.roles().filter { it.first in errorRoles }.map { it.second })
++        assertAllRolesExplicit(light, lightBaseline, "materialkolor light", expectedError = lightBaseline.roles().filter { it.first in errorRoles }.map { it.second }, pinnedRoles = lightPinnedRoles)
 +        assertAllRolesExplicit(dark, darkBaseline, "materialkolor dark", expectedError = darkBaseline.roles().filter { it.first in errorRoles }.map { it.second })
          assertSurfaceContainerOrdered(light, "materialkolor light")
          assertSurfaceContainerOrdered(dark, "materialkolor dark")

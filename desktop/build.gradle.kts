@@ -3086,6 +3086,7 @@ val correctedUpstreamTestPaths = setOf(
     "design-system/src/test/java/com/android/purebilibili/core/ui/AppSemanticVisualPolicyTest.kt",
     "design-system/src/test/java/com/android/purebilibili/core/ui/animation/DampedDragAnimationPolicyTest.kt",
     "design-system/src/test/java/com/android/purebilibili/core/ui/components/AppPrimitiveComponentsStructureTest.kt",
+    "app/src/test/java/com/android/purebilibili/core/theme/ThemeRoleOverridePolicyTest.kt",
 )
 val correctedUpstreamTestOutput = layout.buildDirectory.dir("patched-upstream-tests")
 val applyUpstreamTestCorrections by tasks.registering {
