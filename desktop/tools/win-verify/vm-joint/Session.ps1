@@ -89,8 +89,8 @@ try{
    Keys '^,'
    $null=Probe 'click' '(?s).*外观与显示.*'
    1..6|ForEach-Object {Tick}
-   $null=Probe 'reveal' '(?s).*应用语言.*'
-   $null=Probe 'click' '(?s).*应用语言.*'
+   $null=Probe 'reveal' '(?s).*(应用语言|應用語言|App language).*'
+   $null=Probe 'click' '(?s).*(应用语言|應用語言|App language).*'
    1..3|ForEach-Object {Tick}
    $null=Probe 'click' 'English'
    1..4|ForEach-Object {Tick}
