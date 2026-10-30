@@ -2675,7 +2675,7 @@ fun applyUnifiedPatch(original: String, patch: String, label: String): String {
 // Desktop-only fixes against the merged upstream tree. The independent upstream-core
 // project deliberately compiles the unpatched originals so upstream regressions stay visible.
 val desktopUpstreamPatchDirectory = file("upstream-core/patches")
-val desktopUpstreamPatchedFiles = fileTree(desktopUpstreamPatchDirectory) { include("**/*.patch") }.files
+val desktopUpstreamPatchedFiles = fileTree(desktopUpstreamPatchDirectory) { include("**/*.patch"); exclude("app/src/test/**") }.files
     .map { it.relativeTo(desktopUpstreamPatchDirectory).invariantSeparatorsPath.removeSuffix(".patch") }.toSortedSet()
 val applyDesktopUpstreamPatches by tasks.registering {
     val output = layout.buildDirectory.dir("patched-upstream")
@@ -3058,6 +3058,37 @@ val appCoreUpstreamTestsNotRun: Map<String, String> = mapOf(
     "core/plugin/js/BiliPaiJsNativeExampleTest.kt" to "it reads examples/plugins/tv-live.bilipai.js, which the merge leaves out; the desktop copy runs the byte-identical script from desktop/src/test/fixtures",
     "core/ui/adaptive/DeviceUiProfilePolicyTest.kt" to "the same test class (same package and name) as design-system DeviceUiProfilePolicyTest, which runs",
 )
+// Approved upstream test corrections are isolated from production patch outputs.
+// The complete LF-normalized source is pinned: even an edit outside a hunk needs review.
+val correctedVideoTestPaths = emptySet<String>()
+val correctedVideoTestOutput = layout.buildDirectory.dir("patched-upstream-tests")
+val applyVideoTestCorrections by tasks.registering {
+    val patches = correctedVideoTestPaths.map { desktopUpstreamPatchDirectory.resolve("app/src/test/java/$it.patch") }
+    inputs.files(patches).withPathSensitivity(PathSensitivity.RELATIVE)
+    inputs.files(correctedVideoTestPaths.map { appTestRoot.resolve(it) }).withPathSensitivity(PathSensitivity.RELATIVE)
+    outputs.dir(correctedVideoTestOutput)
+    doLast {
+        val output = correctedVideoTestOutput.get().asFile
+        output.deleteRecursively()
+        correctedVideoTestPaths.forEach { relative ->
+            val original = appTestRoot.resolve(relative).readText().replace("\r\n", "\n")
+            val patch = desktopUpstreamPatchDirectory.resolve("app/src/test/java/$relative.patch").readText()
+            val expected = Regex("(?m)^Upstream-source-sha256: ([0-9a-f]{64})$").find(patch)?.groupValues?.get(1)
+                ?: throw GradleException("$relative: missing upstream source digest")
+            val actual = MessageDigest.getInstance("SHA-256").digest(original.toByteArray(Charsets.UTF_8))
+                .joinToString("") { "%02x".format(it) }
+            check(actual == expected) {
+                "$relative: upstream test changed; review and remove or regenerate the correction, never silently reuse it"
+            }
+            val destination = output.resolve(relative)
+            destination.parentFile.mkdirs()
+            destination.writeText(applyUnifiedPatch(original, patch, relative))
+        }
+    }
+}
+tasks.named("compileTestKotlin") { dependsOn(applyVideoTestCorrections) }
+kotlin.sourceSets.named("test") { kotlin.srcDir(correctedVideoTestOutput) }
+
 val appCoreUpstreamTestPaths: Set<String> = appTestRoot.resolve("com/android/purebilibili/core").walkTopDown()
     .filter { it.isFile && it.extension == "kt" }
     // JUnit 4, Robolectric, mockk and androidx.test are not on the desktop test classpath; JUnit 5 (org.junit.jupiter) is.
@@ -3077,13 +3108,14 @@ kotlin.sourceSets.named("test") {
     kotlin.srcDir(appTestRoot)
     val appTestRootPath = appTestRoot.toPath()
     kotlin.exclude { element -> !element.isDirectory && element.file.toPath().startsWith(appTestRootPath) &&
-        element.file.relativeTo(appTestRoot).invariantSeparatorsPath !in appCoreUpstreamTestPaths }
+        element.file.relativeTo(appTestRoot).invariantSeparatorsPath.let { it !in appCoreUpstreamTestPaths || it in correctedVideoTestPaths } }
     val buildDirectoryPath = layout.buildDirectory.get().asFile.toPath()
     kotlin.exclude { element ->
         val file = element.file
         val path = file.invariantSeparatorsPath
         val index = path.lastIndexOf("/com/android/purebilibili/")
-        element.file.toPath().startsWith(buildDirectoryPath) && index >= 0 &&
+        element.file.toPath().startsWith(buildDirectoryPath) &&
+            !element.file.toPath().startsWith(correctedVideoTestOutput.get().asFile.toPath()) && index >= 0 &&
             path.substring(index + 1).let { it in migratedWholeModuleTestPaths || it in appCoreUpstreamTestPaths }
     }
 }
