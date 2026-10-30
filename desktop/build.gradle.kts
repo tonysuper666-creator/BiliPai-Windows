@@ -315,6 +315,15 @@ val appCoreLaterSteps: Map<String, String> = mapOf(
 // M4a: video/bangumi logic and unchanged Compose components compile from the merged upstream tree.
 // The remaining UI/player files move when their desktop platform adapters are wired.
 val migratedVideoFeaturePaths = setOf(
+    "com/android/purebilibili/feature/video/ui/overlay/glass/TopControlBarLayoutPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/glass/PlaybackOrderSelectionSheetPolicy.kt",
+    "com/android/purebilibili/feature/video/screen/VideoDetailEntryLoadPolicy.kt",
+
+    "com/android/purebilibili/feature/video/ui/components/CommentAvatarPush.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/ImmersiveStatusBarBackdrop.kt",
+    "com/android/purebilibili/feature/video/screen/VideoDetailScreenContent.kt",
+    "com/android/purebilibili/feature/bangumi/BangumiHubSkeletons.kt",
+
     "com/android/purebilibili/feature/video/player/MiniPlayerManager.kt",
     "com/android/purebilibili/feature/video/state/VideoPlayerState.kt",
     "com/android/purebilibili/feature/video/danmaku/DanmakuPlaybackSyncPolicy.kt",
@@ -2845,6 +2854,12 @@ val upstreamOwnedGeneratedCopies = setOf(
     // core/ui/components/UserLevelBadge (TON-1072): the upstream file draws its R.drawable level badges through the generated
     // desktop drawable table, so the blocked-list producer's classpath-PNG copy is retired.
     "blocked-list-ui/com/android/purebilibili/core/ui/components/DesktopUpstreamUserLevelBadge.kt",
+    "upstream/app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/TopControlBarLayoutPolicy.kt",
+    "upstream/app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PlaybackOrderSelectionSheetPolicy.kt",
+    "original-video-player-full-controls/com/android/purebilibili/feature/video/ui/overlay/TopControlBarLayoutPolicy.kt",
+    "original-video-player-full-controls/com/android/purebilibili/feature/video/ui/overlay/PlaybackOrderSelectionSheetPolicy.kt",
+
+    "dynamic-reply/com/android/purebilibili/feature/video/ui/components/DesktopOriginalCommentAvatarPush.kt",
     "original-background-playback-policy/generated-main/com/android/purebilibili/feature/video/player/DesktopOriginalWindowsBackgroundPolicy.kt",
     "original-video-detail-holder-full/com/android/purebilibili/feature/video/state/DesktopOriginalMiniEntryPolicy.kt",
     "original-video-player-section-full/com/android/purebilibili/feature/video/state/DesktopOriginalApiDimensionPolicy.kt",
@@ -3700,6 +3715,8 @@ val appCoreUpstreamTestsNotRun: Map<String, String> = mapOf(
 // AudioBarReturnPolicyTest also needs MiniPlayerManager; PiliPlayerMenuPolicyTest needs Media3
 // track selection. Those two new upstream suites join with the playback-port migration.
 val migratedVideoFeatureTestPaths = setOf(
+    "com/android/purebilibili/feature/video/ui/components/CommentAvatarPushPolicyTest.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/ImmersiveStatusBarBackdropPolicyTest.kt",
     "com/android/purebilibili/feature/video/state/VideoPlayerVerticalDetectionPolicyTest.kt",
     "com/android/purebilibili/feature/video/state/VideoPlayerBufferPolicyTest.kt",
     "com/android/purebilibili/feature/video/state/VideoPlayerStateReusePolicyTest.kt",

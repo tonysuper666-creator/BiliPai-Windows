@@ -1,0 +1,12 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailEntryLoadPolicy.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailEntryLoadPolicy.kt
+@@ -68,3 +68,9 @@
+     preserveLivePlayer: Boolean,
+ ): Boolean = alreadyMounted || !deferEntryLoad || entryPlaybackReady ||
+     !hasResidentCover || preserveLivePlayer
++
++// The installed desktop entry observer preloads during the resident-cover morph.
++// Keep its existing timing until that real consumer migrates; navigation admission above stays upstream.
++internal const val VIDEO_DETAIL_ENTRY_PLAYBACK_PRELOAD_RATIO = 0.32f
++internal fun resolveVideoDetailEntryPlaybackPreloadDelayMillis(morphDurationMillis: Int): Int =
++    (morphDurationMillis.coerceAtLeast(0) * VIDEO_DETAIL_ENTRY_PLAYBACK_PRELOAD_RATIO).toInt()

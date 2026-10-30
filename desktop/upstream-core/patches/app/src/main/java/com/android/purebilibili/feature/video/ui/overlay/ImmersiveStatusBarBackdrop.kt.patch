@@ -1,0 +1,14 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/ImmersiveStatusBarBackdrop.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/ImmersiveStatusBarBackdrop.kt
+@@ -34,6 +34,11 @@
+ import dev.chrisbanes.haze.blur.HazeBlurStyle
+ import dev.chrisbanes.haze.blur.HazeColorEffect
+ import kotlin.math.roundToInt
++
++// Desktop portrait pager capture budget, until its raw consumer migrates.
++internal const val VIDEO_STATUS_BAR_AMBIENT_CAPTURE_INTERVAL_MS = 500L
++internal const val VIDEO_STATUS_BAR_AMBIENT_SAMPLE_WIDTH_PX = 96
++internal const val VIDEO_STATUS_BAR_AMBIENT_SAMPLE_HEIGHT_PX = 54
+ 
+ internal fun resolveVideoStatusBarAmbientHazeStyle(): HazeBlurStyle = HazeBlurStyle {
+     backgroundColor(Color.Black)
