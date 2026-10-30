@@ -1,0 +1,16 @@
+--- a/com/android/purebilibili/feature/video/ui/feedback/VideoActionFeedbackPolicy.kt
++++ b/com/android/purebilibili/feature/video/ui/feedback/VideoActionFeedbackPolicy.kt
+@@ -103,3 +103,13 @@
+         emphasis = VideoFeedbackEmphasis.Emphasized
+     )
+ }
++
++// Retained desktop action sections still supply the former tertiary role.
++// Delegate to the current upstream policy so they receive the same primary tint.
++@Suppress("UNUSED_PARAMETER")
++fun resolveVideoDetailActionActiveColors(
++    primary: Color,
++    secondary: Color,
++    tertiary: Color,
++    uiStyle: AppUiStyle = AppUiStyle.MATERIAL3,
++): VideoDetailActionActiveColors = resolveVideoDetailActionActiveColors(primary, secondary, uiStyle)

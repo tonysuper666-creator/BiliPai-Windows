@@ -317,6 +317,7 @@ val appCoreLaterSteps: Map<String, String> = mapOf(
 // M4a: video/bangumi logic and unchanged Compose components compile from the merged upstream tree.
 // The remaining UI/player files move when their desktop platform adapters are wired.
 val migratedVideoFeaturePaths = setOf(
+    "com/android/purebilibili/feature/video/ui/feedback/VideoActionFeedbackPolicy.kt",
     "com/android/purebilibili/feature/video/ui/overlay/CenterPlaybackControl.kt",
     "com/android/purebilibili/feature/video/ui/overlay/NextWatchOverlay.kt",
     "com/android/purebilibili/feature/video/ui/components/glass/ChapterListPanel.kt",
@@ -2894,6 +2895,9 @@ val upstreamOwnedGeneratedCopies = setOf(
     "upstream/app/src/main/java/com/android/purebilibili/feature/video/ui/components/ChapterListPanel.kt",
     "original-video-state-core/com/android/purebilibili/feature/video/viewmodel/DesktopOriginalVideoSupplementViewModel.kt",
     "original-video-player-full-controls/com/android/purebilibili/feature/video/ui/overlay/NextWatchOverlay.kt",
+    "original-video-player-full-controls/com/android/purebilibili/feature/video/ui/feedback/VideoActionFeedbackPolicy.kt",
+    "original-video-detail-units/com/android/purebilibili/feature/video/ui/feedback/DesktopOriginalFollowActionPolicy.kt",
+    "video-votes/com/android/purebilibili/feature/video/ui/feedback/DesktopOriginalTripleActionPolicy.kt",
     "video-share-consent/com/android/purebilibili/feature/video/share/VideoShareMoreTargetsSheet.kt",
     "original-video-fullscreen-pager/com/android/purebilibili/feature/video/ui/pager/PortraitAudioPlaybackController.kt",
     "original-video-player-full-controls/com/android/purebilibili/feature/video/ui/overlay/CenterPlaybackControl.kt",
