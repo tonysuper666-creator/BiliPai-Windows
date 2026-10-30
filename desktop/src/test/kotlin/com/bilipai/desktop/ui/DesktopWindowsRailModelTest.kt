@@ -434,10 +434,11 @@ class DesktopWindowsRailModelTest {
         assertEquals(shellItems, vendored.filter { it != "STORY" })
     }
 
-    @Test fun railLabelsEqualTheVendoredBottomNavLabels() {
+    @Test fun railLabelsKeepTheUpstreamNamesExceptTheDesktopHomeEntry() {
         for (item in DesktopRailItem.entries) {
             val name = item.bottomNavName ?: continue
-            assertEquals(BottomNavItem.valueOf(name).label, DesktopShellStrings.railLabel(item), item.name)
+            val expected = if (item == DesktopRailItem.HOME) "首页" else BottomNavItem.valueOf(name).label
+            assertEquals(expected, DesktopShellStrings.railLabel(item), item.name)
         }
         assertEquals("下载与离线", DesktopShellStrings.railLabel(DesktopRailItem.DOWNLOADS))
         assertEquals("切换账号", DesktopShellStrings.railLabel(DesktopRailItem.ACCOUNT_SWITCH))
