@@ -1,0 +1,35 @@
+Upstream-source-sha256: 3f21dd0fdccc0ba71aaf160edc96cccf53bd82cb9e2134dcf781a7981f32630e
+Reason: 3b4dc48f9 之后 onPrimary 取 dynamicColorScheme(seed = 控制色) 的 onPrimary；ThemeModeRoleOverrides 的第四项 #007AFF 才是控制色种子。
+第 120 行改成与同一次调用（TonalSpot / SPEC_2025 / Contrast.Default）的 onPrimary 比较，并把 light.primary 钉成该 scheme 的 primary；明度比较、dark.onPrimary != Black、primaryFixed 与对比度 >= 3 保留，生产不动。
+
+--- a/app/src/test/java/com/android/purebilibili/core/theme/ThemeRoleOverridePolicyTest.kt
++++ b/app/src/test/java/com/android/purebilibili/core/theme/ThemeRoleOverridePolicyTest.kt
+@@ -7,6 +7,10 @@
+ import com.android.purebilibili.core.store.ThemeModeRoleOverrides
+ import com.android.purebilibili.core.store.ThemeRoleOverrides
+ import com.android.purebilibili.feature.settings.Md3ColorSource
++import com.materialkolor.Contrast
++import com.materialkolor.PaletteStyle
++import com.materialkolor.dynamiccolor.ColorSpec
++import com.materialkolor.material3.dynamicColorScheme
+ import kotlin.test.Test
+ import kotlin.test.assertEquals
+ import kotlin.test.assertFalse
+@@ -117,7 +121,16 @@
+         val light = applyThemeRoleOverrides(lightColorScheme(), overrides, darkTheme = false)
+         val dark = applyThemeRoleOverrides(darkColorScheme(), overrides, darkTheme = true)
+ 
+-        assertEquals(Color.White, light.onPrimary)
++        // 3b4dc48f9 之后 onPrimary 由控制色种子（#007AFF）在 dynamicColorScheme 里生成，不再是纯白。
++        val controlScheme = dynamicColorScheme(
++            seedColor = Color(0xFF007AFF),
++            isDark = false,
++            style = PaletteStyle.TonalSpot,
++            specVersion = resolveMaterialPaletteSpec(PaletteStyle.TonalSpot, ColorSpec.SpecVersion.SPEC_2025),
++            contrastLevel = Contrast.Default.value,
++        )
++        assertEquals(controlScheme.onPrimary, light.onPrimary)
++        assertEquals(controlScheme.primary, light.primary)
+         assertTrue(light.primary.luminance() < light.onPrimary.luminance())
+         assertTrue(dark.primary.luminance() > dark.onPrimary.luminance())
+         assertTrue(dark.onPrimary != Color.Black)
