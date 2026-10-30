@@ -4,3 +4,8 @@ home-settings/generated/com/android/purebilibili/feature/settings/AppearanceSett
 original-storage-settings/com/android/purebilibili/feature/settings/CacheClearAnimation.kt
 settings/com/android/purebilibili/feature/settings/webdav/DesktopWebDavConfig.kt
 system-about/com/android/purebilibili/feature/settings/DesktopOriginalAboutBuildProvenance.kt
+whole-playback-settings/generated/com/android/purebilibili/feature/settings/PlaybackSettingsSelectionPolicy.kt
+settings/com/android/purebilibili/feature/settings/webdav/WebDavBackupService.kt
+appearance/com/android/purebilibili/feature/settings/DesktopOriginalSeedPaletteSettingsPolicy.kt
+system-about/com/android/purebilibili/feature/settings/Material3AppUpdateDialog.kt
+system-about/com/android/purebilibili/feature/settings/MiuixAppUpdateDialog.kt

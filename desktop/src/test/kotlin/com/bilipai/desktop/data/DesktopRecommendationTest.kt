@@ -165,6 +165,14 @@ class DesktopRecommendationTest {
         }
     }
 
+    @Test fun desktopRecommendationModeIsTheUpstreamFeedApiTypeWithItsStoredValues() {
+        // One type: the desktop store and upstream's SettingsManager (and its selection policy) share it.
+        assertEquals(SettingsManager.FeedApiType::class, DesktopRecommendationMode::class)
+        assertEquals(listOf(0, 1, 2), SettingsManager.FeedApiType.entries.map { it.value })
+        assertEquals(SettingsManager.FeedApiType.MERGED, DesktopRecommendationMode.fromValue(2))
+        assertEquals(SettingsManager.FeedApiType.WEB, DesktopRecommendationMode.fromValue(99))
+    }
+
     @Test fun localNegativeFeedbackIsPersistedPerAccountAndCreatorBlocksSurviveFeedbackClear(): Unit = runBlocking {
         val root = Files.createTempDirectory("bp-feed-")
         val preferences = DesktopDiscoveryPreferences(root)

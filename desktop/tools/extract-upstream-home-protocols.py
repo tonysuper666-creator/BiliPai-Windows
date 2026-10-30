@@ -34,8 +34,7 @@ def generate(repo,output,standalone=False):
 
     videoPath,video=source('VideoRepository')
     def video_adapt(name,body):
-     s=body.replace('com.android.purebilibili.core.store.SettingsManager.FeedApiType','DesktopFeedSettings.FeedApiType')
-     s=s.replace('SettingsManager.FeedApiType','DesktopFeedSettings.FeedApiType')
+     s=body
      s=s.replace('TokenManager.accessTokenCache','environment.accessToken()')
      s=s.replace('TokenManager.buvid3Cache','environment.buvid3()')
      s=s.replace('TokenManager.awaitRestore()','environment.awaitSessionRestored()')
@@ -64,7 +63,7 @@ def generate(repo,output,standalone=False):
     helperBody='\n\n'.join(method(videoPath,video,n,lambda s,n=n:video_adapt(n,s)) for n in helpers)
     imports='''package com.android.purebilibili.data.repository
 import com.android.purebilibili.core.network.*
-import com.android.purebilibili.core.store.DesktopFeedSettings
+import com.android.purebilibili.core.store.SettingsManager
 import com.android.purebilibili.data.model.response.*
 import com.bilipai.desktop.ui.DesktopHomeProtocolEnvironment
 import kotlinx.coroutines.*

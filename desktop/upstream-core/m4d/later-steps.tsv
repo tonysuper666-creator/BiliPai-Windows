@@ -83,7 +83,6 @@ feature/profile/SplashWallpaperRandomPoolPolicy.kt	上游给 WallpaperPickerTarg
 feature/profile/WallpaperAdjustmentSheet.kt	编译不过（9 处）：None of the following candidates is applicable:×2；未解析 data×2；未解析 build×2；等对应桌面替身或桌面实现
 feature/profile/WallpaperImageImport.kt	编译不过（14 处）：Cannot infer type for type parameter '_'. Specify ×4；未解析 BitmapFactory×3；未解析 media×2；等对应桌面替身或桌面实现
 feature/settings/AppSegmentedControl.kt	编译不过（2 处）：No parameter with name '_' found.×2；等对应桌面替身或桌面实现
-feature/settings/AppearanceThemeSegmentPolicy.kt	编译不过（9 处）：Overload resolution ambiguity between candidates:×7；未解析 name×2；等对应桌面替身或桌面实现
 feature/settings/FullscreenActionCountPreference.kt	编译不过（1 处）：未解析 PLAYER_ACTION_COUNTS×1；等对应桌面替身或桌面实现
 feature/settings/HapticScenePreference.kt	编译不过（4 处）：未解析 SettingsItemAnchor×2；@Composable invocations can only happen from the c×2；等对应桌面替身或桌面实现
 feature/settings/HomeFeedSettingsSection.kt	编译不过（2 处）：未解析 widget×2；等对应桌面替身或桌面实现
@@ -91,7 +90,6 @@ feature/settings/LiquidGlassLivePreview.kt	编译不过（24 处）：未解析 
 feature/settings/LiquidGlassSavedPresets.kt	编译不过（17 处）：未解析 Intent×7；未解析 Toast×2；Cannot infer type for type parameter '_'. Specify ×2；等对应桌面替身或桌面实现
 feature/settings/LoginActivityViewModel.kt	编译不过（7 处）：Cannot infer type for type parameter '_'. Specify ×4；未解析 AccountLoginActivityRepository×3；等对应桌面替身或桌面实现
 feature/settings/PlaybackSettingDirectory.kt	编译不过（9 处）：未解析 SettingsUiState×2；未解析 additionalSettingsDirectory×1；未解析 GRID_CUSTOMIZATION_SETTING_ID×1；等对应桌面替身或桌面实现
-feature/settings/PlaybackSettingsSelectionPolicy.kt	桌面首页推荐来源用 DesktopFeedSettings.FeedApiType，上游用 SettingsManager.FeedApiType；等桌面设置存储迁到上游 SettingsManager
 feature/settings/SettingsAdditionalDirectory.kt	编译不过（1 处）：未解析 SUBTITLE_APPEARANCE_TITLE×1；等对应桌面替身或桌面实现
 feature/settings/SettingsAppNavigationPolicy.kt	编译不过（2 处）：Overload resolution ambiguity between candidates:×2；等对应桌面替身或桌面实现
 feature/settings/SettingsCardMotionPreview.kt	编译不过（20 处）：未解析 SettingsFeaturePreview×19；Cannot infer type for type parameter '_'. Specify ×1；等对应桌面替身或桌面实现
@@ -154,8 +152,6 @@ feature/settings/update/AppUpdateDialogHost.kt	编译不过（7 处）：Overloa
 feature/settings/update/AppUpdateDownloadWorker.kt	编译不过（83 处）：未解析 work×11；Cannot infer type for type parameter '_'. Specify ×9；未解析 WorkInfo×9；等对应桌面替身或桌面实现
 feature/settings/update/AppUpdateDownloader.kt	编译不过（1 处）：未解析 sanitizeAppUpdateFileName×1；等对应桌面替身或桌面实现
 feature/settings/update/AppUpdateInstaller.kt	编译不过（24 处）：未解析 Intent×7；Cannot infer type for type parameter '_'. Specify ×4；未解析 addFlags×3；等对应桌面替身或桌面实现
-feature/settings/update/Material3AppUpdateDialog.kt	编译不过（9 处）：Overload resolution ambiguity between candidates:×7；未解析 not×2；等对应桌面替身或桌面实现
-feature/settings/update/MiuixAppUpdateDialog.kt	编译不过（9 处）：Overload resolution ambiguity between candidates:×7；未解析 not×2；等对应桌面替身或桌面实现
 feature/settings/webdav/WebDavAutoBackupWorker.kt	编译不过（26 处）：未解析 work×7；Cannot infer type for type parameter '_'. Specify ×4；No value passed for parameter '_'.×3；等对应桌面替身或桌面实现
 feature/settings/webdav/WebDavBackupScreen.kt	编译不过（18 处）：未解析 drawable×13；未解析 Reset×2；未解析 UploadCloud×2；等对应桌面替身或桌面实现
 feature/settings/webdav/WebDavBackupViewModel.kt	编译不过（11 处）：Unresolved reference. None of the following candid×4；未解析 AndroidViewModel×2；未解析 Application×2；等对应桌面替身或桌面实现
@@ -173,4 +169,3 @@ feature/space/SpaceSupporterScreens.kt	编译不过（4 处）：Overload resolu
 feature/space/SpaceUpowerRankViewModel.kt	上游 ViewModel 直接用全局网络单例；桌面空间页的请求要经过 DesktopOriginalSpaceEnvironment 的 Root 门控，构造函数多一个 environment 参数
 feature/space/SpaceVideoPagingSource.kt	编译不过（26 处）：Cannot infer type for type parameter '_'. Specify ×8；未解析 paging×3；未解析 number×2；等对应桌面替身或桌面实现
 feature/space/SpaceViewModel.kt	编译不过（300 处）：Overload resolution ambiguity between candidates:×69；Cannot infer type for type parameter '_'. Specify ×44；未解析 not×28；等对应桌面替身或桌面实现
-feature/settings/webdav/WebDavBackupService.kt	编译不过（2 处）：未解析 applicationInfo×2；等对应桌面替身或桌面实现
