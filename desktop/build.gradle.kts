@@ -3498,6 +3498,18 @@ tasks.register<JavaExec>("originalAicuRootUiSmoke") {
     }
 }
 
+tasks.register<JavaExec>("desktopWindowExceptionUiSmoke") {
+    group = "verification"
+    description = "Throw from a composed effect and verify the desktop window exception handler."
+    dependsOn("testClasses", "classes")
+    classpath = sourceSets["test"].runtimeClasspath
+    mainClass.set("com.bilipai.desktop.diagnostics.DesktopWindowExceptionHandlerUiFixture")
+    systemProperty("file.encoding", "UTF-8")
+    // Deterministic frames in a remote session without D3D access.
+    systemProperty("skiko.renderApi", "SOFTWARE")
+    doFirst { args(requireNotNull(providers.gradleProperty("windowExceptionReport").orNull)) }
+}
+
 compose.desktop {
     application {
         mainClass = "com.bilipai.desktop.MainKt"
