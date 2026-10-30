@@ -558,6 +558,7 @@ val migratedVideoFeaturePaths = setOf(
     "com/android/purebilibili/feature/video/ui/pager/PortraitControlsVisibilityPolicy.kt",
     "com/android/purebilibili/feature/video/ui/pager/PortraitDetailVideoListPolicy.kt",
     "com/android/purebilibili/feature/video/ui/pager/PortraitMainPlayerSyncPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/pager/PortraitAudioPlaybackController.kt",
     "com/android/purebilibili/feature/video/ui/pager/PortraitPlaybackAdvancePolicy.kt",
     "com/android/purebilibili/feature/video/ui/pager/PortraitProgressSyncPolicy.kt",
     "com/android/purebilibili/feature/video/ui/pager/PortraitSharePolicy.kt",
@@ -2896,6 +2897,7 @@ val upstreamOwnedGeneratedCopies = setOf(
     // core/ui/components/UserLevelBadge (TON-1072): the upstream file draws its R.drawable level badges through the generated
     // desktop drawable table, so the blocked-list producer's classpath-PNG copy is retired.
     "blocked-list-ui/com/android/purebilibili/core/ui/components/DesktopUpstreamUserLevelBadge.kt",
+    "original-video-fullscreen-pager/com/android/purebilibili/feature/video/ui/pager/PortraitAudioPlaybackController.kt",
     "original-video-player-full-controls/com/android/purebilibili/feature/video/ui/overlay/CenterPlaybackControl.kt",
     "collection-sheet/com/android/purebilibili/feature/video/ui/components/DesktopOriginalCollectionSubscriptionButton.kt",
     "video-share-consent/com/android/purebilibili/feature/video/share/VideoShareSheetMotion.kt",
