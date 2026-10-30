@@ -1,0 +1,26 @@
+--- a/app/src/main/java/com/android/purebilibili/data/repository/MessageRepository.kt
++++ b/app/src/main/java/com/android/purebilibili/data/repository/MessageRepository.kt
+@@ -8,7 +8,7 @@
+ import kotlinx.coroutines.flow.MutableSharedFlow
+ import kotlinx.coroutines.flow.asSharedFlow
+ import com.android.purebilibili.core.store.MessageCenterPreferences
+-import com.android.purebilibili.app.PureApplication
++import android.content.Context
+ import kotlinx.coroutines.CancellationException
+ import kotlinx.coroutines.Dispatchers
+ import kotlinx.coroutines.withContext
+@@ -143,12 +143,12 @@
+         }
+     }
+ 
+-    suspend fun getFeedUnread(): Result<MessageFeedUnreadData> = withContext(Dispatchers.IO) {
++    suspend fun getFeedUnread(context: Context): Result<MessageFeedUnreadData> = withContext(Dispatchers.IO) {
+         try {
+             val response = api.getFeedUnread()
+             if (response.code == 0 && response.data != null) {
+                 val checkedResponseData = requireNotNull(response.data)
+-                val disableLikes = MessageCenterPreferences.disabledLikes(PureApplication.instance).first()
++                val disableLikes = MessageCenterPreferences.disabledLikes(context).first()
+                 Result.success(if (disableLikes) checkedResponseData.copy(like = 0) else checkedResponseData)
+             } else {
+                 Result.failure(Exception(response.message.ifEmpty { "获取消息中心未读数失败 (${response.code})" }))

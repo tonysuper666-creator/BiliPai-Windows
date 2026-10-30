@@ -1,17 +1,24 @@
-# upstream v0.4.6+ session pin state and read events; the read events go over the message Root's one shared flow
+# Keep the shared read events and session mapping; the upstream MessageRepository supplies MessageSessionControlInfo.
 --- a/original-message-pages/com/android/purebilibili/data/repository/DesktopOriginalMessageRepository.kt
 +++ b/original-message-pages/com/android/purebilibili/data/repository/DesktopOriginalMessageRepository.kt
-@@ -25,7 +25,8 @@
-     val pushMuted: Boolean? = null,
-     val showPushSetting: Boolean = false,
-     val followStatus: Int? = null,
+@@ -18,16 +18,6 @@
+  * 私信相关数据仓库
+  * 负责处理会话列表、私信消息的获取和发送
+  */
+-data class MessageSessionControlInfo(
+-    val isLimit: Boolean? = null,
+-    val reportLimit: Boolean? = null,
+-    val isDnd: Boolean? = null,
+-    val pushMuted: Boolean? = null,
+-    val showPushSetting: Boolean = false,
+-    val followStatus: Int? = null,
 -    val isIntercept: Boolean? = null
-+    val isIntercept: Boolean? = null,
-+    val isPinned: Boolean? = null,
- )
- 
+-)
+-
  internal class DesktopOriginalMessageRepository(private val api: MessageApi, private val bilibiliApi: BilibiliApi, private val owner: DesktopMessagePageAdmission, private val deviceId: () -> String) {
-@@ -37,6 +38,12 @@
+     
+     // 设备ID缓存 (用于发送私信)
+@@ -37,6 +27,12 @@
       * 获取或生成设备ID (UUID v4格式)
       */
      private fun getDeviceId(): String = deviceId()
@@ -24,7 +31,7 @@
  
      private fun requireCsrf(): Result<String> {
          val csrf = owner.csrf()
-@@ -153,6 +160,7 @@
+@@ -153,6 +149,7 @@
                  val response = api.getReplyFeed(cursor = cursor, cursorTime = cursorTime)
                  if (response.code == 0 && response.data != null) {
                      val checkedResponseData = requireNotNull(response.data)
@@ -32,7 +39,7 @@
                      owner.success(checkedResponseData)
                  } else {
                      Result.failure(Exception(response.message.ifEmpty { "获取回复消息失败 (${response.code})" }))
-@@ -171,6 +179,7 @@
+@@ -171,6 +168,7 @@
                  val response = api.getAtFeed(cursor = cursor, cursorTime = cursorTime)
                  if (response.code == 0 && response.data != null) {
                      val checkedResponseData = requireNotNull(response.data)
@@ -40,7 +47,7 @@
                      owner.success(checkedResponseData)
                  } else {
                      Result.failure(Exception(response.message.ifEmpty { "获取@我消息失败 (${response.code})" }))
-@@ -189,6 +198,7 @@
+@@ -189,6 +187,7 @@
                  val response = api.getLikeFeed(cursor = cursor, cursorTime = cursorTime)
                  if (response.code == 0 && response.data != null) {
                      val checkedResponseData = requireNotNull(response.data)
@@ -48,7 +55,7 @@
                      owner.success(checkedResponseData)
                  } else {
                      Result.failure(Exception(response.message.ifEmpty { "获取点赞消息失败 (${response.code})" }))
-@@ -227,6 +237,7 @@
+@@ -227,6 +226,7 @@
  
              val response = api.updateSystemNoticeCursor(csrf = csrf, cursor = cursor)
              if (response.code == 0) {
@@ -56,7 +63,7 @@
                  owner.success(Unit)
              } else {
                  Result.failure(Exception(response.message.ifEmpty { "更新系统通知已读失败" }))
-@@ -427,7 +438,8 @@
+@@ -427,7 +427,8 @@
                      pushMuted = push?.let { it.push_setting == 1 },
                      showPushSetting = push?.show_push_setting == 1,
                      followStatus = push?.follow_status,
@@ -66,7 +73,7 @@
                  )
              )
          } catch (e: Exception) {
-@@ -521,6 +533,7 @@
+@@ -521,6 +522,7 @@
              val csrf = requireCsrf().getOrElse { return@withContext Result.failure(it) }
              val response = api.batchUpdateDustbinAck(csrf = csrf, csrfToken = csrf)
              if (response.code == 0) {
@@ -74,7 +81,7 @@
                  owner.success(Unit)
              } else {
                  Result.failure(Exception(response.message.ifEmpty { "拦截会话已读失败 (${response.code})" }))
-@@ -713,6 +726,7 @@
+@@ -713,6 +715,7 @@
              )
              
              if (response.code == 0) {
