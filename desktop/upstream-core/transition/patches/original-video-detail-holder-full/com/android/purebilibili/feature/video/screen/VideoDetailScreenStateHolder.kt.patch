@@ -7,7 +7,57 @@
  import kotlinx.coroutines.ensureActive
  import kotlinx.coroutines.flow.map
  
-@@ -3931,22 +3932,11 @@
+@@ -1021,35 +1022,22 @@
+     }
+ 
+     //  监听评论状态
+-    val commentState by commentViewModel.commentState.collectAsStateWithLifecycle()
+-    val subReplyState by commentViewModel.subReplyState.collectAsStateWithLifecycle()
++    val commentStateHolder = commentViewModel.commentState.collectAsStateWithLifecycle()
++    val subReplyStateHolder = commentViewModel.subReplyState.collectAsStateWithLifecycle()
++    val commentState by commentStateHolder
++    val subReplyState by subReplyStateHolder
+     var subReplyCoveredBlurProgress by remember { mutableFloatStateOf(0f) }
+ 
+-    LaunchedEffect(
+-        openCommentRootRpidFromRoute,
+-        openCommentTargetRpidFromRoute,
+-        commentState.replies,
+-        commentState.isRepliesLoading,
+-        subReplyState.visible
+-    ) {
+-        if (openCommentRootRpidFromRoute <= 0L || hasHandledCommentRootFromRoute || subReplyState.visible) {
+-            return@LaunchedEffect
+-        }
+-
+-        val rootReply = commentState.replies.firstOrNull { it.rpid == openCommentRootRpidFromRoute }
+-        if (rootReply != null) {
+-            commentViewModel.openSubReply(rootReply, openCommentTargetRpidFromRoute)
+-            hasHandledCommentRootFromRoute = true
+-        } else if (!commentState.isRepliesLoading) {
+-            val openStarted = commentViewModel.openSubReplyFromRoute(
+-                rootReplyId = openCommentRootRpidFromRoute,
+-                targetReplyId = openCommentTargetRpidFromRoute
+-            )
+-            if (openStarted) {
+-                hasHandledCommentRootFromRoute = true
+-            }
+-        }
+-    }
++    VideoDetailRouteCommentEffect(
++        rootReplyId = openCommentRootRpidFromRoute,
++        targetReplyId = openCommentTargetRpidFromRoute,
++        handled = hasHandledCommentRootFromRoute,
++        commentState = commentStateHolder,
++        subReplyState = subReplyStateHolder,
++        onOpenReply = { reply, target -> commentViewModel.openSubReply(reply, target) },
++        onOpenReplyFromRoute = { root, target -> commentViewModel.openSubReplyFromRoute(root, target) },
++        onHandled = { hasHandledCommentRootFromRoute = true },
++    )
+     val commentDefaultSortMode by com.android.purebilibili.core.store.DesktopOriginalReplySettings.getCommentDefaultSortMode(context.pluginContext)
+         .collectAsStateWithLifecycle(
+             initialValue = com.android.purebilibili.core.store.DesktopOriginalReplySettings.getCommentDefaultSortModeSync(context.pluginContext),
+@@ -3931,22 +3919,11 @@
                                  videoHeight.toPx()
                              }
                          }
@@ -35,7 +85,7 @@
                          }
                          var previousTrackedCollapseOffsetPx by remember(currentBvid) {
                              mutableFloatStateOf(inlinePlayerCollapseState.offsetPx)
-@@ -3982,10 +3972,6 @@
+@@ -3982,10 +3959,6 @@
                              }
                          }
  
@@ -46,7 +96,7 @@
  
                          // 简介/相关列表过阈值或评论页已把播放器压扁时，手势 nestedScroll 不得再消费位移，
                          // 否则相关推荐上滑会先空吃一整段折叠距离，表现为不跟手、突然回弹。
-@@ -4053,7 +4039,6 @@
+@@ -4053,7 +4026,6 @@
                          ) {
                              object : NestedScrollConnection {
                                  override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
@@ -54,7 +104,7 @@
                                      val scrollUpdate = reduceVideoDetailPreScroll(
                                          currentOffsetPx = inlinePlayerCollapseState.offsetPx,
                                          deltaPx = available.y,
-@@ -4061,13 +4046,12 @@
+@@ -4061,13 +4033,12 @@
                                          inlinePortraitScrollEnabled = inlinePortraitScrollEnabled,
                                          isPortraitFullscreen = isPortraitFullscreen,
                                          layoutAlreadyCollapsed = skipGesturePlayerCollapse,
@@ -71,7 +121,7 @@
                                      val scrollUpdate = reduceVideoDetailPostScroll(
                                          currentOffsetPx = inlinePlayerCollapseState.offsetPx,
                                          deltaPx = available.y,
-@@ -4075,9 +4059,9 @@
+@@ -4075,9 +4046,9 @@
                                          inlinePortraitScrollEnabled = inlinePortraitScrollEnabled,
                                          isPortraitFullscreen = isPortraitFullscreen,
                                          layoutAlreadyCollapsed = skipGesturePlayerCollapse,
@@ -84,7 +134,7 @@
                                  }
                              }
                          }
-@@ -4085,6 +4069,7 @@
+@@ -4085,6 +4056,7 @@
                          Column(
                              modifier = Modifier
                                  .fillMaxSize()
@@ -92,7 +142,7 @@
                                  .nestedScroll(nestedScrollConnection)
                          ) {
  
-@@ -4122,7 +4107,7 @@
+@@ -4122,7 +4094,7 @@
                          // the compact viewport back to its full size instead of jumping in one frame.
                          val animatedCollapseProgress by animateFloatAsState(
                              targetValue = effectiveCollapseProgress,
