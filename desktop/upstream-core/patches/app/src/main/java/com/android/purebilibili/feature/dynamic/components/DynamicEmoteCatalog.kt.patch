@@ -1,10 +1,68 @@
 --- a/app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicEmoteCatalog.kt
 +++ b/app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicEmoteCatalog.kt
-@@ -75,6 +75,7 @@ internal object DynamicEmoteCatalog {
+@@ -31,18 +31,18 @@ internal object DynamicEmoteCatalog {
+     @Volatile
+     private var lastAttemptMs = 0L
+ 
+-    fun snapshot(): Map<String, String> = cached.takeIf {
++    fun snapshot(): Map<String, String> = com.bilipai.desktop.data.DesktopUpstreamCalls.admitted("DynamicEmoteCatalog") { cached.takeIf { // Desktop (TON-1082)
+         loadedSessionKey == currentSessionKey()
+-    }.orEmpty()
++    }.orEmpty() }
+ 
+-    fun snapshotPackages(): List<EmotePackage> = cachedPackages.takeIf {
++    fun snapshotPackages(): List<EmotePackage> = com.bilipai.desktop.data.DesktopUpstreamCalls.admitted("DynamicEmoteCatalog") { cachedPackages.takeIf {
+         loadedSessionKey == currentSessionKey()
+-    }.orEmpty()
++    }.orEmpty() }
+ 
+-    fun currentSessionKey(): DynamicEmoteCatalogSessionKey = DynamicEmoteCatalogSessionKey(
+-        mid = TokenManager.midCache ?: 0L,
+-        authenticated = !TokenManager.sessDataCache.isNullOrBlank(),
+-    )
++    // Desktop (TON-1082): the request owner's account, not the process-wide TokenManager.
++    fun currentSessionKey(): DynamicEmoteCatalogSessionKey = com.bilipai.desktop.data.DesktopUpstreamCalls.account("DynamicEmoteCatalog").let { (mid, authenticated) ->
++        DynamicEmoteCatalogSessionKey(mid = mid, authenticated = authenticated)
++    }
+ 
+     suspend fun ensureLoaded(): Map<String, String> {
+         val requestedSessionKey = currentSessionKey()
+@@ -55,7 +55,7 @@ internal object DynamicEmoteCatalog {
+                 nowMs = nowMs,
+             )
+         ) {
+-            return cached
++            return com.bilipai.desktop.data.DesktopUpstreamCalls.admitted("DynamicEmoteCatalog") { cached } // Desktop (TON-1082)
+         }
+         return mutex.withLock {
+             val lockedNowMs = System.currentTimeMillis()
+@@ -67,7 +67,7 @@ internal object DynamicEmoteCatalog {
+                     nowMs = lockedNowMs,
+                 )
+             ) {
+-                return@withLock cached
++                return@withLock com.bilipai.desktop.data.DesktopUpstreamCalls.admitted("DynamicEmoteCatalog") { cached } // Desktop (TON-1082)
+             }
+             if (loadedSessionKey != requestedSessionKey) {
+                 cached = emptyMap()
+@@ -75,12 +75,14 @@ internal object DynamicEmoteCatalog {
                  fullyLoaded = false
              }
              val loadResult = loadEmoteUrlMap()
-+            com.bilipai.desktop.data.DesktopUpstreamCalls.admit("DynamicEmoteCatalog") // Desktop (TON-1082)
-             cached = loadResult.entries
-             cachedPackages = loadResult.packages
-             fullyLoaded = loadResult.complete
+-            cached = loadResult.entries
+-            cachedPackages = loadResult.packages
+-            fullyLoaded = loadResult.complete
+-            loadedSessionKey = requestedSessionKey
+-            lastAttemptMs = lockedNowMs
+-            cached
++            com.bilipai.desktop.data.DesktopUpstreamCalls.admitted("DynamicEmoteCatalog") { // Desktop (TON-1082)
++                cached = loadResult.entries
++                cachedPackages = loadResult.packages
++                fullyLoaded = loadResult.complete
++                loadedSessionKey = requestedSessionKey
++                lastAttemptMs = lockedNowMs
++                cached
++            }
+         }
+     }
+ 

@@ -451,7 +451,10 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
                 ownedPlaybackCallFactory(purpose.authorization, owner::owned)
             }
             DesktopUpstreamPurpose.Guest -> ownedHomeCallFactory(owner.epoch, owner::owned, guest = true,
-                transport = upstreamTransports.guest(client).configured())
+                transport = upstreamTransports.guest(client).configured()).let { calls ->
+                    // An explicit guest sends no account credential, whatever the upstream code put in the request.
+                    okhttp3.Call.Factory { request -> calls.newCall(com.bilipai.desktop.network.stripDesktopGuestCredentials(request, networkHop = false)) }
+                }
             DesktopUpstreamPurpose.Main -> ownedHomeCallFactory(owner.epoch, owner::owned,
                 transport = withUpstreamOwnerAdmission(owner) { upstreamTransports.account(client, owner.identity) }.configured())
         }

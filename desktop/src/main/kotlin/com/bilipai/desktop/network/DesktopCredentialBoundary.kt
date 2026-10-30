@@ -65,3 +65,21 @@ internal fun enforceDesktopCredentialBoundary(request: Request): Request {
         }
     }.build()
 }
+
+/** TON-1082: an explicit upstream guest request carries no account credential in its URL, form or headers. A network
+ * hop ([networkHop]: redirects included) cleans its URL only; the headers there are the desktop guest path's own
+ * (its visitor Cookie) and the body is the one already cleaned before the call was created. */
+internal fun stripDesktopGuestCredentials(request: Request, networkHop: Boolean): Request {
+    val url = request.url.newBuilder().username("").password("")
+    removeDesktopCredentialQueryParameters(url, request.url) { isCredentialName(credentialName(it)) }
+    return request.newBuilder().url(url.build()).apply {
+        if (networkHop) return@apply
+        request.headers.names().filter { isCredentialName(credentialName(it)) }.forEach { removeHeader(it) }
+        (request.body as? okhttp3.FormBody)?.let { form ->
+            val kept = okhttp3.FormBody.Builder()
+            for (index in 0 until form.size) if (!isCredentialName(credentialName(form.name(index))))
+                kept.addEncoded(form.encodedName(index), form.encodedValue(index))
+            method(request.method, kept.build())
+        }
+    }.build()
+}
