@@ -1,5 +1,6 @@
 """Fixed complete original v037 tab and progress source closure."""
 from pathlib import Path
+from desktop_paths import long_path
 import hashlib,json
 COMMIT='8b47769d22c0d5bc88ae5248cee4aa04ff10d62c'
 MANIFEST_SHA='413cfd2afaee35d0ed584a9688749e65b1f5cacd405ed6660d4a4bac528ba0f9'
@@ -8,8 +9,8 @@ RESOURCE_PINS=[{'path': 'app/src/main/res/font/piliplus_custom_icons.ttf', 'file
 
 def sha(raw):return hashlib.sha256(raw).hexdigest()
 def wide(p):
- s=str(Path(p).absolute());prefix=chr(92)*2+'?'+chr(92)
- return Path(s if s.startswith(prefix) else prefix+s)
+ s=str(Path(p).absolute())
+ return long_path(s)
 def fixed_sources():
  root=Path(__file__).resolve().parent.parent/'upstream-slices/v037-shared-tabs-progress-closure'
  raw=(root/'manifest.json').read_bytes();assert sha(raw)==MANIFEST_SHA

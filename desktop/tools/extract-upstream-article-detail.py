@@ -1,12 +1,13 @@
 """Full original Article screen/skeleton; canonical policies remain sole upstream sync outputs."""
 from pathlib import Path
+from desktop_paths import long_path, read_point_tool
 import hashlib,importlib.util,json,re
 def wide(p):
- s=str(Path(p).absolute()); prefix=chr(92)*2+'?'+chr(92); return Path(s if s.startswith(prefix) else prefix+s)
+ return long_path(Path(p).absolute())
 def generate(repo:Path,output:Path):
     from v046_mfx_small_protocol_fixes import validate_outputs as validate_mfx_outputs
     validate_mfx_outputs(repo,output)
-    spec=importlib.util.spec_from_file_location('article_source_lexer',repo/'desktop/tools/extract-upstream-dynamic-reply-protocol.py')
+    spec=importlib.util.spec_from_file_location('article_source_lexer',read_point_tool(repo,'extract-upstream-dynamic-reply-protocol.py'))
     lexer=importlib.util.module_from_spec(spec); spec.loader.exec_module(lexer)
     base='app/src/main/java/com/android/purebilibili/'
     paths=[base+'feature/article/ArticleDetailScreen.kt',base+'core/ui/skeleton/ContentLoadingSkeletons.kt']
