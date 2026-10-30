@@ -317,6 +317,10 @@ val appCoreLaterSteps: Map<String, String> = mapOf(
 // M4a: video/bangumi logic and unchanged Compose components compile from the merged upstream tree.
 // The remaining UI/player files move when their desktop platform adapters are wired.
 val migratedVideoFeaturePaths = setOf(
+    "com/android/purebilibili/feature/video/screen/VideoDetailEntryTransitionObserver.kt",
+    "com/android/purebilibili/feature/video/screen/VideoDetailDomainEffects.kt",
+    "com/android/purebilibili/feature/video/ui/components/glass/DanmakuSettingsPanelHost.kt",
+
     "com/android/purebilibili/feature/video/ui/overlay/glass/TopControlBarLayoutPolicy.kt",
     "com/android/purebilibili/feature/video/ui/overlay/glass/PlaybackOrderSelectionSheetPolicy.kt",
     "com/android/purebilibili/feature/video/screen/VideoDetailEntryLoadPolicy.kt",
@@ -2841,6 +2845,8 @@ val prepareJsWorkerResources = if (hostIsWindows) tasks.register<Sync>("prepareJ
 
 // Generated legacy files that re-declare migrated upstream declarations under another file name.
 val upstreamOwnedGeneratedCopies = setOf(
+    "original-video-player-full-controls/com/android/purebilibili/feature/video/ui/components/DanmakuSettingsPanelHost.kt",
+    "upstream/app/src/main/java/com/android/purebilibili/feature/video/ui/components/DanmakuSettingsPanelHost.kt",
     "upstream/app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/TopControlBarLayoutPolicy.kt",
     "upstream/app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PlaybackOrderSelectionSheetPolicy.kt",
     "original-video-player-full-controls/com/android/purebilibili/feature/video/ui/overlay/TopControlBarLayoutPolicy.kt",

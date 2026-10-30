@@ -1,0 +1,43 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailEntryTransitionObserver.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailEntryTransitionObserver.kt
+@@ -102,3 +102,40 @@
+ 
+     return finished
+ }
++
++// Retained actual desktop preload consumer; no second entry completion latch.
++/**
++ * 冷启动不必等整个 shared morph 完成才请求媒体：在后段开始解码，实际画面仍由
++ * [VideoPlayerSection] 的首帧揭开策略接管封面，所以慢网不会露黑帧。
++ */
++@Composable
++internal fun rememberVideoDetailEntryPlaybackReady(
++    deferLoad: Boolean,
++    morphDurationMillis: Int,
++    heroDriver: MiuixVideoCardTransitionState? = null,
++): Boolean {
++    if (!deferLoad) return true
++
++    var ready by remember(deferLoad) { mutableStateOf(false) }
++    val preloadDelayMillis = remember(morphDurationMillis) {
++        resolveVideoDetailEntryPlaybackPreloadDelayMillis(morphDurationMillis)
++    }
++    LaunchedEffect(deferLoad, preloadDelayMillis, heroDriver) {
++        if (!deferLoad) {
++            ready = true
++            return@LaunchedEffect
++        }
++        if (heroDriver != null) {
++            val spec = heroDriver.motionSpec
++            val duration = spec?.enterDurationMillis ?: morphDurationMillis
++            val fraction = resolveVideoDetailEntryPlaybackPreloadDelayMillis(duration).toFloat() /
++                duration.coerceAtLeast(1)
++            val threshold = spec?.enterSpatialSpec?.transform(fraction.coerceIn(0f, 1f)) ?: fraction
++            snapshotFlow { heroDriver.progressProvider() >= threshold }.first { it }
++        } else {
++            kotlinx.coroutines.delay(preloadDelayMillis.toLong())
++        }
++        ready = true
++    }
++    return ready
++}
