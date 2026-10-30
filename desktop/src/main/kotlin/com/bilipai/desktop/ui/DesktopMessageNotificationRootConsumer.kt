@@ -31,12 +31,20 @@ internal val LocalDesktopMessageNotificationContext =
 internal fun DesktopMessageNotificationRootConsumer(context: DesktopMessageNotificationContext?,
     community: DesktopCommunityRepository, window: Window) {
     val port = remember(context, window) { context?.let { DesktopWindowsMessageNotifications(it, window) } }
+    // The handoff lives outside this consumer: loading another account tears the consumer down first,
+    // and the previous account's presentation must still be found when the new one arrives.
+    SideEffect { port?.let { DesktopNotificationHandoff.attach(window, it.notificationSession()) } }
     DisposableEffect(context, port) { onDispose { context?.close(); port?.close() } }
     LaunchedEffect(context, community, port) {
         val actual = context ?: return@LaunchedEffect
         val notifications = port ?: return@LaunchedEffect
         MessageNotificationSettingsStore.getSettings(actual).distinctUntilChanged().collectLatest { settings ->
             actual.check()
+            if (settings.enabled) {
+                // Turning notifications back on resumes the same presentation; the port is remembered
+                // per account, so waiting for a new one would leave it retired until the next account switch.
+                notifications.resumePublishing()
+            }
             if (!settings.enabled) {
                 // Original Sync contract: turning notifications off resets every per-account
                 // baseline under the SAME mutex. Enabling again never replays old history.

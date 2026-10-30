@@ -5,7 +5,8 @@ import java.nio.file.Path
 
 /** Restart the current installation; update health tokens are deliberately single-use. */
 internal class DesktopApplicationRestart private constructor(internal val command: List<String>, private val directory: Path) {
-    fun launch(): Process = ProcessBuilder(command).directory(directory.toFile()).start()
+    fun launch(extra: List<String> = emptyList()): Process =
+        ProcessBuilder(command + extra).directory(directory.toFile()).start()
 
     companion object {
         fun prepare(): DesktopApplicationRestart = plan(

@@ -93,7 +93,7 @@ fun DesktopAppearanceTheme(
     windowSmallestWidthDp: Int = 0,
     content: @Composable () -> Unit,
 ) {
-    val systemDark = isSystemInDarkTheme()
+    val systemDark = rememberDesktopSystemDarkTheme()
     val scheduledDark = rememberDesktopScheduledDarkTheme(settings.darkThemeSchedule)
     val palette = remember(settings, systemDark, scheduledDark) {
         buildDesktopAppearancePalette(settings, systemDark, scheduledDark)

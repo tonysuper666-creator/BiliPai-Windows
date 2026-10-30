@@ -105,6 +105,7 @@ internal class DesktopDownloadNotifications(
     private val scope = CoroutineScope(parentScope.coroutineContext + SupervisorJob(parentScope.coroutineContext[Job]))
     private val mutableStatus = MutableStateFlow(DesktopDownloadNotificationStatus())
     val status: StateFlow<DesktopDownloadNotificationStatus> = mutableStatus.asStateFlow()
+    private var completed = manager.tasks.value.filter { it.status == DownloadStatus.COMPLETED }.map { it.id }.toSet()
     private var tray: TrayIcon? = null
     private var taskbar: Taskbar? = null
     private val hierarchyListener = HierarchyListener { event ->
@@ -139,7 +140,17 @@ internal class DesktopDownloadNotifications(
 
     private fun publish() {
         if (closed.get()) return
-        val projection = projectDesktopDownloadNotification(manager.tasks.value)
+        val tasks = manager.tasks.value
+        val finished = tasks.filter { it.status == DownloadStatus.COMPLETED }
+        val arrivals = finished.filter { it.id !in completed }
+        completed = finished.map { it.id }.toSet()
+        for (task in arrivals) scope.launch(kotlinx.coroutines.Dispatchers.IO) {
+            try {
+                if (!closed.get() && stillOwned()) com.bilipai.desktop.integration.DesktopToastNotifications.show(
+                    "下载完成", task.title, "downloads", task.id.toString(), "downloads")
+            } catch (failure: Exception) { SwingUtilities.invokeLater { if (ownedOnEdt()) reportFailure("下载完成通知失败", failure) } }
+        }
+        val projection = projectDesktopDownloadNotification(tasks)
         val generation = renderGeneration.incrementAndGet()
         SwingUtilities.invokeLater {
             if (!ownedOnEdt() || renderGeneration.get() != generation) return@invokeLater
