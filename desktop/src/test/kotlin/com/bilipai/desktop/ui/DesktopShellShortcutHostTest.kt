@@ -28,6 +28,47 @@ import kotlin.test.assertTrue
 class DesktopShellShortcutHostTest {
     private val host = DesktopUxContract.section("shell_host")
 
+    @Test fun recoverablePlayerErrorUsesOriginalGlobalNavigationAndThenRestoresPlayerPolicy() {
+        val rig = rig(DesktopShellPage.PLAYER)
+        for (chord in listOf("Ctrl+K", "Ctrl+1", "Ctrl+B")) assertFalse(rig.down(chord), chord)
+        val recovery = rig.host.admitPageErrorNavigation()
+        for (chord in listOf("Ctrl+K", "Ctrl+1", "Ctrl+B", "Alt+Left", "F11")) {
+            assertTrue(rig.down(chord), chord)
+            assertTrue(rig.up(chord), chord)
+        }
+        assertEquals(listOf("openSearch", "goTo:HOME", "toggleRail", "requestBack", "fullscreen"), rig.calls)
+        assertFalse(rig.down("F5"))
+        rig.editor = true
+        assertFalse(rig.down("Ctrl+K"))
+        rig.editor = false
+        recovery.close()
+        assertFalse(rig.down("Ctrl+K"))
+        assertFalse(rig.down("Ctrl+1"))
+        assertFalse(rig.down("Ctrl+B"))
+    }
+
+    @Test fun aRetiredErrorCannotClearItsSuccessorOrKeepNavigationOnAReplacementRoot() {
+        val rig = rig(DesktopShellPage.PLAYER)
+        val retired = rig.host.admitPageErrorNavigation()
+        val current = rig.host.admitPageErrorNavigation()
+        retired.close()
+        rig.bindRoot() // Rebinding the same owner keeps its mounted card.
+        assertTrue(rig.down("Ctrl+K"))
+        assertTrue(rig.up("Ctrl+K"))
+        val replacementOwner = Any()
+        rig.host.bindRoot(DesktopShellRootCommands(replacementOwner, { DesktopShellPage.PLAYER }, { true },
+            { error("retired error leaked navigation") }, { false }, { true }, { false }))
+        assertFalse(rig.down("Ctrl+K"))
+        current.close()
+        val replacement = rig.host.admitPageErrorNavigation()
+        rig.host.unbindRoot(rig) // A stale owner cannot clear the current binding or its card.
+        assertTrue(rig.down("Ctrl+1"))
+        assertTrue(rig.up("Ctrl+1"))
+        rig.host.unbindRoot(replacementOwner)
+        assertFalse(rig.down("Ctrl+1"))
+        replacement.close()
+    }
+
     private companion object {
         const val K = 75
         const val L = 76

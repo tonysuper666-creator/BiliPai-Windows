@@ -422,7 +422,7 @@ internal fun DesktopWindowsRailHost(
         val selected = item != null && desktopRailItemSelected(onMainHost, currentItem.name, item.name, legacyRoute, item.route)
         DesktopRailRowState(
             entry = entry,
-            label = item?.label ?: entry.item?.let { DesktopShellStrings.railLabel(it) }.orEmpty(),
+            label = entry.item?.let { DesktopShellStrings.railLabel(it) } ?: item?.label.orEmpty(),
             selected = selected,
             icon = desktopRailIcon(entry, item, selected),
             unreadCount = if (entry.item == DesktopRailItem.DYNAMIC) unreadCount else 0,

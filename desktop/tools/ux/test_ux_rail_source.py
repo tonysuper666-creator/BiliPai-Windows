@@ -492,7 +492,7 @@ class RailSourceTest(unittest.TestCase):
         self.assertEqual(1, flat.count("val entries = remember(names, hasAccountSwitcher) { desktopRailEntries(names, hasAccountSwitcher) }"))
         self.assertIn("val onMainHost = key == BiliPaiNavKey.MainHost", flat)
         self.assertIn("val legacyRoute = key.toLegacyRoute()", flat)
-        self.assertIn("label = item?.label ?: entry.item?.let { DesktopShellStrings.railLabel(it) }.orEmpty(),", flat)
+        self.assertIn("label = entry.item?.let { DesktopShellStrings.railLabel(it) } ?: item?.label.orEmpty(),", flat)
         self.assertIn("icon = desktopRailIcon(entry, item, selected),", flat)
         self.assertIn("item != null -> resolveMaterialBottomBarIcon(item, selected)", flat)
         # The old expression is still in the classic block, and the model keeps its own copy of it.
