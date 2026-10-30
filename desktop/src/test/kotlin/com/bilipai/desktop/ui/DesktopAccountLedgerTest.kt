@@ -115,6 +115,8 @@ class DesktopAccountLedgerTest {
         val visit = Visit(backgroundScope)
         visit.model.load(coins)
         visit.owned = false
+        // The physical stack can retire the entry before composition cancels its scope.
+        assertTrue(backgroundScope.coroutineContext[Job]!!.isActive)
         runCurrent()
         visit.model.load(experience, refresh = true)
         assertTrue(visit.sent.isEmpty())

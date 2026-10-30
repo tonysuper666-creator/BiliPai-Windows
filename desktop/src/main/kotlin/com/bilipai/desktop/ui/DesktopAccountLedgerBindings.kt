@@ -3,13 +3,14 @@ package com.bilipai.desktop.ui
 import androidx.compose.runtime.*
 import com.android.purebilibili.core.network.BilibiliApi
 import com.android.purebilibili.core.store.AccountSessionIdentity
-import com.android.purebilibili.data.model.AccountLedgerKind
 import com.android.purebilibili.feature.login.QrAuthorizationSession
 import com.android.purebilibili.feature.profile.AccountLedgerScreen
 import com.android.purebilibili.feature.profile.AccountLedgerViewModel
+import com.android.purebilibili.navigation3.BiliPaiNavKey
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancel
 
 /** A ledger visit borrows Profile's gated services and account port. Its child scope ends on back;
  * Profile's admission also ends it on account changes, including re-login with the same MID. */
@@ -49,15 +50,20 @@ internal class DesktopAccountLedgerEnvironment(
 @Composable
 internal fun DesktopOriginalAccountLedgerHost(
     profile: DesktopOriginalProfileBinding,
-    kind: AccountLedgerKind,
-    onBack: () -> Unit,
+    routes: DesktopOriginalRootRouteAssembly,
+    key: BiliPaiNavKey.AccountLedger,
 ) {
     val scope = rememberCoroutineScope()
     val parent = profile.environment
-    val environment = remember(parent, scope) {
-        DesktopAccountLedgerEnvironment(scope, parent.api, parent.owns,
+    val environment = remember(parent, scope, routes, key) {
+        // Navigation removes the entry before Compose disposes it. Read the actual stack at
+        // admission so a queued callback cannot send or publish in that interval.
+        DesktopAccountLedgerEnvironment(scope, parent.api,
+            { parent.owns() && routes.owns() && routes.currentKey == key },
             { parent.ensureOwned(); parent.accounts.qrAuthorizationSession() }, parent.commit)
     }
     val model = remember(environment) { AccountLedgerViewModel(environment) }
-    AccountLedgerScreen(initialKind = kind, onBack = onBack, model = model)
+    AccountLedgerScreen(initialKind = key.kind, model = model, onBack = {
+        routes.callbackFor(key) { scope.cancel(); routes.back() }
+    })
 }
