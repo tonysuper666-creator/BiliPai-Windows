@@ -2959,8 +2959,13 @@ val generateUpstreamBuildConfig by tasks.registering {
     val script = mergedRepositoryRoot.resolve("app/build.gradle.kts")
     val output = layout.buildDirectory.dir("generated/upstream-buildconfig")
     val commitSha = providers.gradleProperty("bili.build.commitSha").orElse("local")
+    // Same properties and empty defaults as upstream's app/build.gradle.kts, so a CI build can stamp its provenance.
+    val provenance = listOf("gitRef" to "BUILD_GIT_REF", "workflowRunId" to "BUILD_WORKFLOW_RUN_ID",
+        "workflowRunUrl" to "BUILD_WORKFLOW_RUN_URL", "releaseTag" to "BUILD_RELEASE_TAG")
+        .map { (property, field) -> field to providers.gradleProperty("bili.build.$property").orElse("") }
     inputs.file(script).withPathSensitivity(PathSensitivity.RELATIVE)
     inputs.property("commitSha", commitSha)
+    provenance.forEach { (field, value) -> inputs.property(field, value) }
     outputs.dir(output)
     doLast {
         val text = script.readText()
@@ -2975,6 +2980,9 @@ val generateUpstreamBuildConfig by tasks.registering {
                 "object BuildConfig {\n    const val DEBUG: Boolean = false\n    const val BUILD_TYPE: String = \"release\"\n" +
                 "    const val VERSION_CODE: Int = $versionCode\n    const val VERSION_NAME: String = \"$versionName\"\n" +
                 "    const val BUILD_COMMIT_SHA: String = \"${commitSha.get()}\"\n" +
+                provenance.joinToString("") { (field, value) ->
+                    "    const val $field: String = \"${value.get().replace("\\", "\\\\").replace("\"", "\\\"").replace("$", "\\$")}\"\n"
+                } +
                 "    const val ENABLE_VERBOSE_DEBUG_LOGS: Boolean = false\n    const val ENABLE_VERBOSE_RUNTIME_LOG_PERSISTENCE: Boolean = false\n" +
                 "    const val ALLOW_HARDCODED_DNS_FALLBACK: Boolean = false\n}\n")
     }
