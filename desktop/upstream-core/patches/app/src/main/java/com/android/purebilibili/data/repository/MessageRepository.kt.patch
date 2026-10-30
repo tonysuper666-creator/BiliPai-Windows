@@ -14,9 +14,11 @@
      }
  
 -    suspend fun getFeedUnread(): Result<MessageFeedUnreadData> = withContext(Dispatchers.IO) {
-+    suspend fun getFeedUnread(context: Context): Result<MessageFeedUnreadData> = withContext(Dispatchers.IO) {
-         try {
-             val response = api.getFeedUnread()
+-        try {
+-            val response = api.getFeedUnread()
++    suspend fun getFeedUnread(context: Context, messageApi: com.android.purebilibili.core.network.MessageApi = api): Result<MessageFeedUnreadData> = withContext(Dispatchers.IO) {
++        try {
++            val response = messageApi.getFeedUnread()
              if (response.code == 0 && response.data != null) {
                  val checkedResponseData = requireNotNull(response.data)
 -                val disableLikes = MessageCenterPreferences.disabledLikes(PureApplication.instance).first()

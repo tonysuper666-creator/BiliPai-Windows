@@ -2,10 +2,14 @@ package com.bilipai.desktop.data
 
 import com.android.purebilibili.core.database.entity.BlockedUp
 import com.android.purebilibili.core.network.BilibiliApi
+import com.android.purebilibili.core.network.MessageApi
+import com.android.purebilibili.data.model.response.MessageFeedUnreadData
+import com.android.purebilibili.data.model.response.MessageFeedUnreadResponse
 import com.android.purebilibili.core.store.MessageCenterPreferences
 import com.android.purebilibili.data.model.CommentFraudStatus
 import com.android.purebilibili.data.repository.BlockedUpRepository
 import com.android.purebilibili.data.repository.CommentFraudRepository
+import com.android.purebilibili.data.repository.MessageRepository
 import com.bilipai.desktop.compat.UnsupportedDesktopCapability
 import com.bilipai.desktop.plugins.*
 import java.lang.reflect.Proxy
@@ -119,5 +123,12 @@ class DesktopRepositoryStorageTest {
         assertTrue(MessageCenterPreferences.disabledLikes(first).first())
         assertTrue(MessageCenterPreferences.disabledLikes(wrapped.applicationContext).first())
         assertFalse(MessageCenterPreferences.disabledLikes(second).first())
+        val response = MessageFeedUnreadData(reply = 2, at = 3, like = 8, sysMsg = 4)
+        val api = Proxy.newProxyInstance(MessageApi::class.java.classLoader, arrayOf(MessageApi::class.java)) { _, method, _ ->
+            check(method.name == "getFeedUnread")
+            MessageFeedUnreadResponse(data = response)
+        } as MessageApi
+        assertEquals(response.copy(like = 0), MessageRepository.getFeedUnread(wrapped, api).getOrThrow())
+        assertEquals(response, MessageRepository.getFeedUnread(second, api).getOrThrow())
     }
 }
