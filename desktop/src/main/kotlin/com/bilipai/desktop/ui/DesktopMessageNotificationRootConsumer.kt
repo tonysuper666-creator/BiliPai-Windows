@@ -14,42 +14,46 @@ import com.bilipai.desktop.data.DesktopDynamicGrpcRequestSource
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.sync.withLock
 import java.awt.Frame
 import java.awt.Window
-import java.io.IOException
+import java.awt.event.ComponentAdapter
+import java.awt.event.ComponentEvent
+import java.awt.event.WindowAdapter
+import java.awt.event.WindowEvent
+import java.awt.event.WindowStateListener
 import java.util.logging.Level
 import java.util.logging.Logger
 
 internal val LocalDesktopMessageNotificationContext =
     staticCompositionLocalOf<DesktopMessageNotificationContext?> { null }
 
-/** Windows scheduling adapter for the unchanged original Poller/Policy. One actual retained
- * Root lifetime; no background Android service or promise of polling after this window exits. */
+/** Windows host of upstream's message notification files for one actual retained Root lifetime. Upstream syncs the
+ * schedule at interactive startup and after every settings change; here both are this Root's settings flow. The
+ * Worker's periodic work and the resident Service then run as this window's tasks; nothing polls after it exits. */
 @Composable
 internal fun DesktopMessageNotificationRootConsumer(context: DesktopMessageNotificationContext?,
     community: DesktopCommunityRepository, window: Window) {
     val port = remember(context, window) { context?.let { DesktopWindowsMessageNotifications(it, window) } }
-    DisposableEffect(context, port) { onDispose { context?.close(); port?.close() } }
+    // Same keys as the Root lifetime: disposing closes the context for good.
+    DisposableEffect(context, port) {
+        val actual = context
+        val watcher = if (actual != null && port != null) {
+            actual.attach(port, DesktopNetworkMessageNotificationSources(community))
+            DesktopMessageNotificationWindowWatcher(window, actual::windowShownChanged)
+        } else null
+        onDispose { watcher?.close(); context?.close(); port?.close() }
+    }
     LaunchedEffect(context, community, port) {
         val actual = context ?: return@LaunchedEffect
-        val notifications = port ?: return@LaunchedEffect
+        port ?: return@LaunchedEffect
         MessageNotificationSettingsStore.getSettings(actual).distinctUntilChanged().collectLatest { settings ->
             actual.check()
-            if (!settings.enabled) {
-                // Original Sync contract: turning notifications off resets every per-account
-                // baseline under the SAME mutex. Enabling again never replays old history.
-                try { messageNotificationMutex.withLock { MessageNotificationStateStore.clearAll(actual) } }
-                catch (cancelled: CancellationException) { throw cancelled }
-                catch (failure: Exception) { Logger.getLogger("MessageNotification").log(Level.WARNING, "Notification reset failed", failure) }
-                notifications.clear()
-                return@collectLatest
+            try { MessageNotificationSync.sync(actual) }
+            catch (cancelled: CancellationException) { throw cancelled }
+            catch (failure: Exception) {
+                Logger.getLogger("MessageNotification").log(Level.WARNING, "Notification scheduling failed", failure)
             }
-            val mid = actual.mid ?: return@collectLatest
-            if (!actual.hasAuthenticatedSession()) return@collectLatest
-            if (!notifications.canPost()) return@collectLatest
-            if (settings.notifyDynamicUpdates) {
+            if (settings.enabled && settings.notifyDynamicUpdates && actual.hasAuthenticatedSession()) {
                 // Token-dependent path: without an App access token the original preload refuses before
                 // any request. Say so once per settings session instead of failing silently every cycle.
                 desktopDynamicPreloadBlockedReason(actual.appAccessToken())?.let { reason ->
@@ -57,78 +61,80 @@ internal fun DesktopMessageNotificationRootConsumer(context: DesktopMessageNotif
                         "Dynamic update notifications are inactive for this account: $reason")
                 }
             }
-            val admission = DesktopMessagePageAdmission(actual.repository, actual.epoch, mid,
-                actual.root.entry.gate.scope, actual::isCurrent, actual::isCurrent,
-                actual::admit,
-                { error("Notification snapshots do not issue user-profile reads") },
-                { error("Notification snapshots do not issue video-detail reads") })
-            try {
-                admission.requests = community.originalMessagePages(admission).requests
-                while (currentCoroutineContext().isActive) {
-                    actual.check()
-                    val activeKeys = notifications.activeMessageKeys()
-                    var batch = emptyList<PendingMessageNotification>()
-                    var cancelledKeys = emptySet<String>()
-                    var pendingCounts: Map<String, Int>? = null
-                    var retry = false
-                    try {
-                    messageNotificationMutex.withLock {
-                        val before = MessageNotificationSettingsStore.getSettings(actual).first()
-                        if (before != settings || !before.enabled || !actual.hasAuthenticatedSession() || !notifications.canPost()) return@withLock
-                        var result: MessageNotificationCheckResult? = null
-                        admission.awaitRead("message-notification-check") {
-                            val caller = currentCoroutineContext()
-                            fun sameSession() { caller.ensureActive(); actual.check(); admission.isOwned().also {
-                                if (!it) throw CancellationException("Message notification request retired")
-                            } }
-                            val source = DesktopOwnedMessageNotificationSource(actual, admission,
-                                requireNotNull(caller[Job]), ::sameSession)
-                            result = MessageNotificationPoller(source, ::sameSession).check(settings,
-                                MessageNotificationStateStore.getState(actual, mid), mid, activeKeys)
-                        }
-                        currentCoroutineContext().ensureActive(); actual.check()
-                        val value = requireNotNull(result)
-                        retry = value.shouldRetry
-                        if (MessageNotificationSettingsStore.getSettings(actual).first() == settings && notifications.canPost()) {
-                            MessageNotificationStateStore.putState(actual, mid, value.state)
-                            batch = value.notifications
-                            cancelledKeys = value.cancelNotificationKeys
-                            pendingCounts = desktopPendingSummaryCounts(value.state)
-                        }
-                    }
-                    // Shell/OS delivery is outside Store/entry and state mutex. The actual
-                    // settings coroutine and fixed same-account receipt are checked on EDT.
-                    currentCoroutineContext().ensureActive(); actual.check()
-                    if (MessageNotificationSettingsStore.getSettings(actual).first() == settings)
-                        notifications.postAll(batch, cancelledKeys, pendingCounts)
-                    } catch (cancelled: CancellationException) { throw cancelled }
-                    catch (_: IOException) { retry = true }
-                    catch (failure: Exception) {
-                        // Original Worker boundary logs non-IO failures without throwing through
-                        // the UI Root. Preserve the Poller's category-local rollback above.
-                        Logger.getLogger("MessageNotification").log(Level.WARNING, "Background check failed", failure)
-                    }
-                    val delayMs = if (settings.residentEnabled) {
-                        val visible = withContext(Dispatchers.Main) {
-                            window.isDisplayable && window.isVisible &&
-                                (window !is Frame || window.extendedState and Frame.ICONIFIED == 0)
-                        }
-                        // Window visibility is this platform's fast-poll condition. Charging
-                        // is unknown here, never guessed from an Android or GPU capability.
-                        resolveResidentPollDelayMs(settings.mode, visible, charging = false)
-                    } else if (retry) 5 * 60_000L // Original WorkManager's initial linear retry backoff.
-                    else resolveMessageNotificationTiming(settings.mode).periodicMinutes * 60_000L
-                    delay(delayMs)
-                }
-            } finally {
-                withContext(NonCancellable) { admission.retireAndJoin() }
-            }
         }
     }
 }
 
-/** Exactly the original read-only source mappings, replacing Android singleton services by
- * the existing same-Root request admission and Repository's original Call.Factory. */
+/** "Screen on" of upstream's resident Service: the window is displayable, visible and not minimised. EDT only. */
+private class DesktopMessageNotificationWindowWatcher(private val window: Window, private val changed: (Boolean) -> Unit) :
+    AutoCloseable {
+    private fun publish() {
+        changed(window.isDisplayable && window.isVisible && (window !is Frame || window.extendedState and Frame.ICONIFIED == 0))
+    }
+    private val state = WindowStateListener { publish() }
+    private val components = object : ComponentAdapter() {
+        override fun componentShown(e: ComponentEvent) = publish()
+        override fun componentHidden(e: ComponentEvent) = publish()
+    }
+    private val windows = object : WindowAdapter() {
+        override fun windowIconified(e: WindowEvent) = publish()
+        override fun windowDeiconified(e: WindowEvent) = publish()
+        override fun windowClosed(e: WindowEvent) = publish()
+    }
+    init {
+        window.addWindowStateListener(state)
+        window.addComponentListener(components)
+        window.addWindowListener(windows)
+        publish()
+    }
+    override fun close() {
+        window.removeWindowStateListener(state)
+        window.removeComponentListener(components)
+        window.removeWindowListener(windows)
+        changed(false)
+    }
+}
+
+internal suspend fun <T> desktopMessageNotificationPoll(context: android.content.Context,
+    block: suspend (MessageNotificationSource) -> T): T {
+    val actual = desktopMessageNotificationContext(context)
+    val sources = actual.sources ?: throw CancellationException("Message notification window detached")
+    return sources.poll(actual, block)
+}
+
+/** One original Checker poll over this window's Root: a notification child of the message pages (same Store/Root
+ * admission, the original Repository Call.Factory), retired when the poll ends. */
+internal class DesktopNetworkMessageNotificationSources(private val community: DesktopCommunityRepository) :
+    DesktopMessageNotificationSources {
+    override suspend fun <T> poll(context: DesktopMessageNotificationContext, block: suspend (MessageNotificationSource) -> T): T {
+        val actual = context
+        val mid = actual.mid ?: throw CancellationException("Message notification Root has no account")
+        val admission = DesktopMessagePageAdmission(actual.repository, actual.epoch, mid,
+            actual.root.entry.gate.scope, actual::isCurrent, actual::isCurrent,
+            actual::admit,
+            { error("Notification snapshots do not issue user-profile reads") },
+            { error("Notification snapshots do not issue video-detail reads") })
+        try {
+            admission.requests = community.originalMessagePages(admission).requests
+            val result = java.util.concurrent.atomic.AtomicReference<Result<T>>()
+            admission.awaitRead("message-notification-check") {
+                val caller = currentCoroutineContext()
+                fun sameSession() { caller.ensureActive(); actual.check(); admission.isOwned().also {
+                    if (!it) throw CancellationException("Message notification request retired")
+                } }
+                val source = DesktopOwnedMessageNotificationSource(actual, admission,
+                    requireNotNull(caller[Job]), ::sameSession)
+                result.set(Result.success(block(source)))
+            }
+            return result.get().getOrThrow()
+        } finally {
+            withContext(NonCancellable) { admission.retireAndJoin() }
+        }
+    }
+}
+
+/** Exactly the original read-only source mappings (upstream's NetworkMessageNotificationSource), replacing Android
+ * singleton services by the existing same-Root request admission and Repository's original Call.Factory. */
 private class DesktopOwnedMessageNotificationSource(
     private val context: DesktopMessageNotificationContext,
     private val owner: DesktopMessagePageAdmission,

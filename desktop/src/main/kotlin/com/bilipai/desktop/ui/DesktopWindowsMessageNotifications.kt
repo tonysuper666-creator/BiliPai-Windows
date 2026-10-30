@@ -17,7 +17,7 @@ import javax.imageio.ImageIO
 internal class DesktopWindowsMessageNotifications(
     private val context: DesktopMessageNotificationContext,
     private val window: Window,
-) : AutoCloseable {
+) : DesktopMessageNotificationPresentation, AutoCloseable {
     private val closed = AtomicBoolean()
     private var tray: TrayIcon? = null // EDT only; created solely after master is enabled.
     private val entries = DesktopMessageNotificationEntries()
@@ -29,7 +29,7 @@ internal class DesktopWindowsMessageNotifications(
         window.addHierarchyListener(hierarchy)
     }
 
-    fun canPost(): Boolean = !closed.get() && window.isDisplayable && context.isCurrent() &&
+    override fun canPost(): Boolean = !closed.get() && window.isDisplayable && context.isCurrent() &&
         !GraphicsEnvironment.isHeadless() && SystemTray.isSupported()
 
     private fun open(route: String) {
@@ -41,7 +41,7 @@ internal class DesktopWindowsMessageNotifications(
     }
 
     /** These are this Root's menu entries; Windows balloons expose no active per-item IDs. */
-    suspend fun activeMessageKeys(): Set<String> = withContext(Dispatchers.Main) {
+    override suspend fun activeMessageKeys(): Set<String> = withContext(Dispatchers.Main) {
         currentCoroutineContext().ensureActive()
         if (canPost()) entries.keys() else emptySet()
     }
@@ -49,8 +49,8 @@ internal class DesktopWindowsMessageNotifications(
     /** [cancelled] are items the server now reports as read. A Windows balloon that was already submitted
      * cannot be withdrawn, so a cancellation removes the item (and, via [pendingCounts], an emptied group
      * summary) from the tray menu only; the OS may still show or keep the balloon. */
-    suspend fun postAll(pending: List<PendingMessageNotification>, cancelled: Set<String> = emptySet(),
-        pendingCounts: Map<String, Int>? = null) = withContext(Dispatchers.Main) {
+    override suspend fun postAll(pending: List<PendingMessageNotification>, cancelled: Set<String>,
+        pendingCounts: Map<String, Int>?) = withContext(Dispatchers.Main) {
         currentCoroutineContext().ensureActive()
         check(EventQueue.isDispatchThread()) { "Message notifications require the actual Windows EDT" }
         if (!canPost()) return@withContext
@@ -85,7 +85,7 @@ internal class DesktopWindowsMessageNotifications(
         // and a previously submitted balloon cannot be atomically withdrawn on account switch.
     }
 
-    suspend fun clear() = withContext(Dispatchers.Main) { removeTrayOnEdt() }
+    override suspend fun clear() = withContext(Dispatchers.Main) { removeTrayOnEdt() }
     private fun removeTrayOnEdt() {
         check(EventQueue.isDispatchThread())
         tray?.let { SystemTray.getSystemTray().remove(it) }

@@ -128,7 +128,7 @@ internal val desktopSettingsItemDirectory: List<DesktopSettingsItem> = listOf(
     appearanceItem("animation.ui_entrance_animation_enabled", "入场动画", "", null, "打开页面时淡入", "进场动画", "界面入场动画", "动画"),
     appearanceItem("animation.maid_lottie_animation_enabled", "女仆动画", "关闭后隐藏女仆动画和静态图", null, "蓝雪女仆动画", "女仆", "动画"),
     // DesktopMessageNotificationSettingsContent
-    notificationItem("notification.enabled", "消息通知", "BiliPai 运行期间检查新消息；首次检查只记录基线。", "通知", "后台消息通知", "新消息提醒"),
+    notificationItem("notification.enabled", "消息通知", "BiliPai 开着时检查新消息，最小化也会检查；首次检查只记录基线。", "通知", "后台消息通知", "新消息提醒"),
     notificationItem("notification.mode", "检查频率", "节能每 30 分钟，更及时每 15 分钟。", "节能", "更及时", "通知"),
     notificationItem("notification.resident_enabled", "窗口显示时更及时检查", "显示窗口时每 1–2 分钟；最小化后每 15 分钟。", "更及时", "通知"),
     notificationItem("notification.notify_private_messages", "私信", "", "私信通知", "通知"),
