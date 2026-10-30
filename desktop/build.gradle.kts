@@ -317,6 +317,11 @@ val appCoreLaterSteps: Map<String, String> = mapOf(
 // M4a: video/bangumi logic and unchanged Compose components compile from the merged upstream tree.
 // The remaining UI/player files move when their desktop platform adapters are wired.
 val migratedVideoFeaturePaths = setOf(
+    "com/android/purebilibili/feature/video/ui/overlay/PlaybackOrderSelectionSheet.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/PlaybackOrderSelectionSheetPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/components/glass/PlayerMiuixListPopup.kt",
+    "com/android/purebilibili/feature/video/ui/components/PlayerSelectionPopup.kt",
+    "com/android/purebilibili/feature/video/ui/components/PlayerPopupGeometry.kt",
     "com/android/purebilibili/feature/video/screen/VideoDetailEntryTransitionObserver.kt",
     "com/android/purebilibili/feature/video/screen/VideoDetailDomainEffects.kt",
     "com/android/purebilibili/feature/video/ui/components/glass/DanmakuSettingsPanelHost.kt",
@@ -520,7 +525,6 @@ val migratedVideoFeaturePaths = setOf(
     "com/android/purebilibili/feature/video/ui/overlay/glass/PortraitFullscreenOverlayLayoutPolicy.kt",
     "com/android/purebilibili/feature/video/ui/overlay/glass/PortraitInteractionBarLayoutPolicy.kt",
     "com/android/purebilibili/feature/video/ui/overlay/glass/PortraitTopBarLayoutPolicy.kt",
-    "com/android/purebilibili/feature/video/ui/overlay/glass/TopControlBarLayoutPolicy.kt",
     "com/android/purebilibili/feature/video/ui/pager/PortraitCollectionPolicy.kt",
     "com/android/purebilibili/feature/video/ui/pager/PortraitCommentPresentationPolicy.kt",
     "com/android/purebilibili/feature/video/ui/pager/PortraitControlsVisibilityPolicy.kt",
@@ -2849,6 +2853,8 @@ val prepareJsWorkerResources = if (hostIsWindows) tasks.register<Sync>("prepareJ
 
 // Generated legacy files that re-declare migrated upstream declarations under another file name.
 val upstreamOwnedGeneratedCopies = setOf(
+    "original-video-player-full-controls/com/android/purebilibili/feature/video/ui/overlay/PlaybackOrderSelectionSheet.kt",
+    "original-video-player-full-controls/com/android/purebilibili/feature/video/ui/components/PlayerMiuixListPopup.kt",
     "original-video-player-full-controls/com/android/purebilibili/feature/video/ui/components/DanmakuSettingsPanelHost.kt",
     "upstream/app/src/main/java/com/android/purebilibili/feature/video/ui/components/DanmakuSettingsPanelHost.kt",
     "upstream/app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/TopControlBarLayoutPolicy.kt",
@@ -3473,6 +3479,8 @@ val appCoreUpstreamTestsNotRun: Map<String, String> = mapOf(
 // AudioBarReturnPolicyTest also needs MiniPlayerManager; PiliPlayerMenuPolicyTest needs Media3
 // track selection. Those two new upstream suites join with the playback-port migration.
 val migratedVideoFeatureTestPaths = setOf(
+    "com/android/purebilibili/feature/video/ui/overlay/PlaybackOrderSelectionSheetPolicyTest.kt",
+    "com/android/purebilibili/feature/video/ui/components/PlayerPopupGeometryTest.kt",
     "com/android/purebilibili/feature/video/ui/components/CommentAvatarPushPolicyTest.kt",
     "com/android/purebilibili/feature/video/ui/overlay/ImmersiveStatusBarBackdropPolicyTest.kt",
     "com/android/purebilibili/feature/video/state/VideoPlayerVerticalDetectionPolicyTest.kt",
