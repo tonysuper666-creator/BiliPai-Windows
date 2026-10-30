@@ -67,6 +67,23 @@ class DesktopOriginalVideoCdnSelectionAssemblyTest {
         if (::runtimeDirectory.isInitialized) deleteCreatedDirectory(runtimeDirectory, "cdn-actual-runtime-")
     }
 
+    @Test fun sameRequestMediaPreparationUsesCommittedMetadataBeforeUiProjectionCatchesUp(): Unit = runBlocking {
+        Fixture().useSuspending { f ->
+            val prepared = CompletableDeferred<Result<PlaybackSource>>()
+            f.beforeProjectedSuccess = {
+                val committed = assertIs<VideoPlaybackUiState.Success>(f.owner.playback.captureDesktopPlaybackState())
+                assertIs<VideoPlaybackUiState.Loading>(f.owner.playback.uiState.value)
+                prepared.complete(runCatching {
+                    f.owner.environment.invocations.withInvocation {
+                        f.owner.environment.useCase.media.prepareLegacyDash(backupVideo(A), null, emptyMap())
+                    }.also { assertEquals(committed.info.title, it.title) }
+                })
+            }
+            f.load(A, 101, 104)
+            withTimeout(8_000) { prepared.await() }.getOrThrow()
+        }
+    }
+
     @Test fun delayedOriginalCdnJobCannotRetargetClickedAUrlsToLaterActualB(): Unit = runBlocking {
         Fixture().useSuspending { f ->
             f.load(A, 101, 104)
@@ -744,6 +761,7 @@ class DesktopOriginalVideoCdnSelectionAssemblyTest {
         val directory = Files.createTempDirectory("cdn-original-owner-")
         val sessions = DesktopSessionStore.temporary()
         val repository = DesktopRepository(sessions)
+        var beforeProjectedSuccess: (suspend () -> Unit)? = null
         private val parentJob = SupervisorJob()
         private val failures = CopyOnWriteArrayList<Throwable>()
         private val dispatcher = OneDispatchHold()
@@ -956,6 +974,12 @@ class DesktopOriginalVideoCdnSelectionAssemblyTest {
             // the original public combine(...).stateIn projection on Main.
             gate.scope.launch(Dispatchers.Unconfined) {
                 originalState().collect { state ->
+                    if (state is VideoPlaybackUiState.Success) {
+                        beforeProjectedSuccess?.let { probe ->
+                            beforeProjectedSuccess = null
+                            probe()
+                        }
+                    }
                     if (state is VideoPlaybackUiState.Success && state.currentCdnIndex == 1) {
                         owner.native.current()?.let { child -> cdnEmissions.add(CdnEmission(child, state.currentCdnIndex, runtimeBinding.generation(child))) }
                     }
