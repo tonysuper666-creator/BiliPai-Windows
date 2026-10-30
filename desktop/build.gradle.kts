@@ -315,6 +315,7 @@ val appCoreLaterSteps: Map<String, String> = mapOf(
 // M4a: video/bangumi logic and unchanged Compose components compile from the merged upstream tree.
 // The remaining UI/player files move when their desktop platform adapters are wired.
 val migratedVideoFeaturePaths = setOf(
+    "com/android/purebilibili/feature/video/ui/components/VideoCardSkeleton.kt",
     "com/android/purebilibili/feature/video/screen/VideoDetailInputOverlayAdapter.kt",
     "com/android/purebilibili/feature/video/viewmodel/VideoComposerDraftState.kt",
     "com/android/purebilibili/feature/video/ui/components/RelatedVideoList.kt",
@@ -710,6 +711,7 @@ val migratedAppM4dPaths: Set<String> = migratedAppM4dAreas.asSequence().flatMap 
 // TON-1120: the private messages' MessageImRepository, whose gRPC calls go over the calling message page child's gated call,
 // and the read events the message Root shares between its pages).
 val migratedAppSingleFiles: Set<String> = setOf(
+    "com/android/purebilibili/feature/home/HomeFeedSkeletonCard.kt",
     "com/android/purebilibili/feature/home/components/cards/HorizontalVideoCardLayoutPolicy.kt",
     "com/android/purebilibili/feature/home/FeedGridColumnPreference.kt",
     "com/android/purebilibili/data/repository/MessageManagementRepository.kt",
@@ -3845,6 +3847,7 @@ val appCoreUpstreamTestsNotRun: Map<String, String> = mapOf(
 // AudioBarReturnPolicyTest also needs MiniPlayerManager; PiliPlayerMenuPolicyTest needs Media3
 // track selection. Those two new upstream suites join with the playback-port migration.
 val migratedVideoFeatureTestPaths = setOf(
+    "com/android/purebilibili/feature/home/HomeFeedSkeletonCardStructureTest.kt",
     "com/android/purebilibili/feature/video/danmaku/DanmakuConfigPolicyTest.kt",
     "com/android/purebilibili/feature/video/ui/overlay/ViewPointSegmentBarPolicyTest.kt",
     "com/android/purebilibili/feature/video/ui/components/UpPreviewSheetPolicyTest.kt",
