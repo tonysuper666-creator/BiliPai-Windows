@@ -315,6 +315,9 @@ val appCoreLaterSteps: Map<String, String> = mapOf(
 // M4a: video/bangumi logic and unchanged Compose components compile from the merged upstream tree.
 // The remaining UI/player files move when their desktop platform adapters are wired.
 val migratedVideoFeaturePaths = setOf(
+    "com/android/purebilibili/feature/video/screen/VideoDetailFavoriteFolderOverlayAdapter.kt",
+    "com/android/purebilibili/feature/video/screen/VideoDetailCommentFraudOverlayAdapter.kt",
+
     "com/android/purebilibili/feature/video/ui/overlay/BasScenePainter.kt",
     "com/android/purebilibili/feature/video/ui/components/UpPreviewSheet.kt",
     "com/android/purebilibili/feature/video/ambient/PlayerAmbientGlow.kt",
@@ -2875,6 +2878,9 @@ val upstreamOwnedGeneratedCopies = setOf(
     // core/ui/components/UserLevelBadge (TON-1072): the upstream file draws its R.drawable level badges through the generated
     // desktop drawable table, so the blocked-list producer's classpath-PNG copy is retired.
     "blocked-list-ui/com/android/purebilibili/core/ui/components/DesktopUpstreamUserLevelBadge.kt",
+    "original-video-detail-holder-full/com/android/purebilibili/feature/video/screen/VideoDetailFavoriteFolderOverlayAdapter.kt",
+    "video-comment-ui/com/android/purebilibili/feature/video/screen/VideoDetailCommentFraudOverlayAdapter.kt",
+
     "original-bas-renderer/com/bilipai/desktop/danmaku/DesktopOriginalBasScenePainter.kt",
     "original-video-fullscreen-pager/com/android/purebilibili/feature/video/ui/components/UpPreviewSheet.kt",
     "original-video-ambient-windows/com/android/purebilibili/feature/video/ambient/PlayerAmbientGlow.kt",

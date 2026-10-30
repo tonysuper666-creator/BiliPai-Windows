@@ -1,0 +1,26 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailFavoriteFolderOverlayAdapter.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailFavoriteFolderOverlayAdapter.kt
+@@ -10,7 +10,9 @@
+ internal fun VideoDetailFavoriteFolderOverlayAdapter(
+     visible: Boolean,
+     viewModel: VideoPlaybackViewModel,
++    admitAction: ((() -> Unit) -> Boolean) = { action -> action(); true },
+ ) {
++    val holderPlatform = com.bilipai.desktop.ui.LocalDesktopOriginalVideoHolderPlatform.current
+     if (!visible) return
+ 
+     val folders by viewModel.favoriteFolders.collectAsStateWithLifecycle()
+@@ -23,9 +25,9 @@
+         isLoading = isLoading,
+         selectedFolderIds = selectedFolderIds,
+         isSaving = isSaving,
+-        onFolderToggle = viewModel::toggleFavoriteFolderSelection,
+-        onSaveClick = viewModel::saveFavoriteFolderSelection,
+-        onDismissRequest = viewModel::dismissFavoriteFolderDialog,
+-        onCreateFolder = viewModel::createFavoriteFolder,
++        onFolderToggle = { id -> admitAction { viewModel.toggleFavoriteFolderSelection(id) }; Unit },
++        onSaveClick = { admitAction { viewModel.saveFavoriteFolderSelection() }; Unit },
++        onDismissRequest = { admitAction { viewModel.dismissFavoriteFolderDialog() }; Unit },
++        onCreateFolder = { title, intro, privacy -> admitAction { viewModel.createFavoriteFolder(title, intro, privacy) }; Unit },
+     )
+ }
