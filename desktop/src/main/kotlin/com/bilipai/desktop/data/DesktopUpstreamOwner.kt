@@ -37,6 +37,9 @@ internal sealed interface DesktopUpstreamPurpose {
 
 /** The account an owner was captured for. Holds a digest of the session credential, never the credential. */
 internal data class DesktopUpstreamIdentity(private val store: Any, val epoch: Long, val mid: Long?, val credentialDigest: String?) {
+    /** A cache partition name for this identity: equal identities share it, any other Store, epoch or account does not. */
+    fun scope(guest: Boolean): String = requireNotNull(digest("${System.identityHashCode(store)}:$epoch:$mid:$credentialDigest:$guest"))
+
     companion object {
         fun digest(credential: String?): String? = credential?.takeIf { it.isNotBlank() }?.let {
             MessageDigest.getInstance("SHA-256").digest(it.toByteArray()).joinToString("") { byte -> "%02x".format(byte) }
@@ -64,15 +67,16 @@ internal class DesktopUpstreamOwner internal constructor(
     /** Runs [block] inside the owner's Store admission, so no account switch can happen while it publishes. */
     fun <T> admitted(block: () -> T): T = repository.withUpstreamOwnerAdmission(this, block)
 
-    /** The same repository, lifetime and epoch for another purpose. An explicit guest never becomes an account owner,
-     * and a playback owner can only be captured with its authorization. */
+    /** The same repository, lifetime and epoch for another purpose. The derived owner keeps every retirement condition
+     * of this one (a playback owner's receipt and revision included), so it retires together with it. An explicit
+     * guest never becomes an account owner, and a playback owner can only be captured with its authorization. */
     fun withPurpose(next: DesktopUpstreamPurpose): DesktopUpstreamOwner = when {
         next === purpose -> this
         next is DesktopUpstreamPurpose.Playback -> throw UnsupportedDesktopCapability(
             "An upstream playback request from a ${purpose::class.simpleName} owner", "capture a Playback owner with its authorization (TON-1082)")
         purpose === DesktopUpstreamPurpose.Guest && next === DesktopUpstreamPurpose.Main -> throw UnsupportedDesktopCapability(
             "An upstream account request from an explicit guest owner", "a guest owner never carries account credentials (TON-1082)")
-        else -> DesktopUpstreamOwner(repository, identity, stillOwned, next)
+        else -> DesktopUpstreamOwner(repository, identity, ::isCurrent, next)
     }
 
     /** Requests through the repository's own client, dispatcher, pool and CookieJar, stamped with this owner. */
@@ -142,8 +146,17 @@ internal object DesktopUpstreamCalls {
         accountOwner("NetworkModule WebSocket ${request.url.host}${request.url.encodedPath}").webSocketFactory().newWebSocket(request, listener)
     }
 
-    /** Before an upstream repository publishes a result into account-scoped cache or state. */
-    fun admit(entry: String) = requireOwner(entry).admit(entry)
+    /** Reads or writes of account-scoped upstream cache and state: the owner check and [block] run in one Store
+     * admission, so no account switch, window close or playback change can land between them. */
+    fun <T> admitted(entry: String, block: () -> T): T = requireOwner(entry).admitted(block)
+
+    /** The cache partition of the current owner's account (a guest owner has its own). */
+    fun cacheScope(entry: String): String = requireOwner(entry).let { it.identity.scope(it.purpose === DesktopUpstreamPurpose.Guest) }
+
+    /** The current owner's account as (mid, authenticated); (0, false) for an explicit guest. */
+    fun account(entry: String): Pair<Long, Boolean> = requireOwner(entry).let {
+        if (it.purpose === DesktopUpstreamPurpose.Guest) 0L to false else (it.identity.mid ?: 0L) to (it.identity.credentialDigest != null)
+    }
 
     /** The account an upstream account-scoped cache belongs to; a guest owner has its own identity. */
     fun sessionIdentity(entry: String): Any = requireOwner(entry).let { it.identity to (it.purpose === DesktopUpstreamPurpose.Guest) }
@@ -179,7 +192,14 @@ internal object DesktopUpstreamCalls {
                         "Bilibili requests need a desktop request owner (TON-1082)")
                 chain.proceed(request)
             }
-            .addNetworkInterceptor { chain -> chain.proceed(com.bilipai.desktop.network.enforceDesktopCredentialBoundary(chain.request())) }
+            // A redirect does not rerun application interceptors: every hop is checked again here.
+            .addNetworkInterceptor { chain ->
+                val request = chain.request()
+                if (DesktopSessionStore.isBilibiliHost(request.url.host) || usesDefaultBilibiliHeaders(request.url.host))
+                    throw UnsupportedDesktopCapability("A third-party upstream request redirected to ${request.url.host}",
+                        "Bilibili requests need a desktop request owner (TON-1082)")
+                chain.proceed(com.bilipai.desktop.network.enforceDesktopCredentialBoundary(request))
+            }
             .build()
     }
 }
@@ -219,8 +239,11 @@ internal class DesktopUpstreamTransports(private val storeRoot: () -> Path?) {
     private var guest: Pair<OkHttpClient, OkHttpClient>? = null
     private var account: Partition? = null
 
+    // Every hop of a guest request, redirects included, drops account credentials from its URL.
     @Synchronized fun guest(base: OkHttpClient): OkHttpClient = guest?.takeIf { it.first === base }?.second
-        ?: base.newBuilder().cache(DesktopUpstreamHttpCache.guest).build().also { guest = base to it }
+        ?: base.newBuilder().cache(DesktopUpstreamHttpCache.guest)
+            .addNetworkInterceptor { chain -> chain.proceed(com.bilipai.desktop.network.stripDesktopGuestCredentials(chain.request(), networkHop = true)) }
+            .build().also { guest = base to it }
 
     /** Callers hold the owner's Store admission, so a retired owner can never replace the current partition. */
     @Synchronized fun account(base: OkHttpClient, identity: DesktopUpstreamIdentity): OkHttpClient {

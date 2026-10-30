@@ -358,6 +358,152 @@ class DesktopUpstreamOwnerTest {
         assertEquals(1, fixture.seen.size)
     }
 
+    @Test fun guestMustRemoveCredentialQueryParameters() {
+        val fixture = fixture()
+        val (repository, _) = repository(fixture, 11L to "sess-a")
+        val guest = repository.upstreamOwner(DesktopUpstreamPurpose.Guest, { true })
+        DesktopUpstreamCalls.withOwner(guest) {
+            DesktopUpstreamCalls.main.newCall(nav().newBuilder()
+                .url("https://api.bilibili.com/x/web-interface/nav?access_key=fixture-secret&csrf=fixture-csrf")
+                .build()).execute().close()
+        }
+        assertEquals("/x/web-interface/nav", fixture.seen.single().target)
+    }
+
+    @Test fun retiredPlaybackMustNotSendViaMainService() = runBlocking {
+        val fixture = fixture()
+        val (repository, sessions) = repository(fixture, 22L to "sess-playback", 11L to "sess-main")
+        assertTrue(sessions.setPlaybackAccountMid(22, sessions.generation) { true })
+        val authorization = repository.capturePlaybackAuthorization(repository.sessionEpoch) { true }
+        val playback = repository.upstreamOwner(DesktopUpstreamPurpose.Playback(authorization), { true })
+        assertTrue(sessions.setPlaybackAccountMid(null, sessions.generation) { true })
+        assertFalse(playback.isCurrent())
+        val result = runCatching { DesktopUpstreamCalls.withOwnerScope(playback) { NetworkModule.api.getNavInfo() } }
+        assertTrue(result.isFailure, "retired playback owner sent main request: ${fixture.seen}")
+        assertTrue(fixture.seen.isEmpty())
+    }
+
+    @Test fun thirdPartyRedirectMustRefuseBilibili() {
+        val fixture = fixture()
+        fixture.route = { exchange ->
+            if (exchange.requestHeaders.getFirst("Host").startsWith("sponsor.fixture.test")) {
+                exchange.responseHeaders.add("Location", "https://api.bilibili.com/x/web-interface/nav?access_key=fixture-secret")
+                exchange.sendResponseHeaders(302, -1)
+                exchange.close()
+            } else fixture.respond(exchange, 200, "{}")
+        }
+        val client = fixture.routed(DesktopUpstreamCalls.publicTransport.newBuilder()).build()
+        runCatching { client.newCall(Request.Builder().url("https://sponsor.fixture.test/redirect").build()).execute().close() }
+        assertEquals(1, fixture.seen.size, "redirect reached Bilibili: ${fixture.seen}")
+    }
+
+    @Test fun retiredOwnerMustNotReadSubtitleCache() = runBlocking {
+        val fixture = fixture()
+        val (repository, sessions) = repository(fixture, 11L to "sess-a", 22L to "sess-b")
+        SubtitleContentRepository.clearCache()
+        fixture.route = { exchange -> fixture.respond(exchange, 200,
+            """{"body":[{"from":0.0,"to":1.0,"content":"private-fixture"}]}""") }
+        val owner = repository.upstreamOwner(DesktopUpstreamPurpose.Main, { true })
+        val url = "https://www.bilibili.com/fixture/subtitle/cache-review.json"
+        DesktopUpstreamCalls.withOwnerScope(owner) { SubtitleContentRepository.cues(url, "BV1cacheReview", 1).getOrThrow() }
+        assertTrue(sessions.activateAccount(11))
+        val result = runCatching { DesktopUpstreamCalls.withOwnerScope(owner) {
+            SubtitleContentRepository.cues(url, "BV1cacheReview", 1).getOrThrow()
+        } }
+        assertTrue(result.isFailure, "retired owner successfully reads global cached result")
+    }
+
+    @Test fun guestStripsCredentialsFromFormsHeadersAndRedirectHops() {
+        val fixture = fixture()
+        val (repository, _) = repository(fixture, 11L to "sess-a")
+        fixture.route = { exchange ->
+            if (exchange.requestURI.path == "/x/fixture/hop") {
+                exchange.responseHeaders.add("Location", "https://api.bilibili.com/x/fixture/landing?access_key=fixture-secret&keep=1")
+                exchange.sendResponseHeaders(302, -1); exchange.close()
+            } else fixture.respond(exchange, 200, """{"code":0,"form":"${exchange.requestBody.readAllBytes().decodeToString()}"}""")
+        }
+        val guest = repository.upstreamOwner(DesktopUpstreamPurpose.Guest, { true })
+        val form = okhttp3.FormBody.Builder().add("csrf", "fixture-csrf").add("access_key", "fixture-secret").add("oid", "7").build()
+        val posted = DesktopUpstreamCalls.withOwner(guest) {
+            DesktopUpstreamCalls.guest.newCall(Request.Builder().url("https://api.bilibili.com/x/fixture/form").post(form)
+                .header("Authorization", "Bearer fixture").header("X-CSRF-Token", "fixture-csrf").build()).execute().use { it.body.string() }
+        }
+        assertTrue("\"form\":\"oid=7\"" in posted, posted)
+        val sent = fixture.seen.single()
+        assertNull(sent.authorization)
+        assertTrue(Regex("^buvid3=[0-9a-f]{32}infoc$").matches(sent.cookie.orEmpty()), sent.toString())
+        DesktopUpstreamCalls.withOwner(guest) { DesktopUpstreamCalls.guest.newCall(Request.Builder().url("https://api.bilibili.com/x/fixture/hop").build()).execute().close() }
+        assertEquals(listOf("/x/fixture/hop", "/x/fixture/landing?keep=1"), fixture.seen.drop(1).map { it.target })
+    }
+
+    @Test fun ownersDerivedFromPlaybackRetireWithItOnEveryPath() = runBlocking {
+        val fixture = fixture()
+        val (repository, sessions) = repository(fixture, 22L to "sess-playback", 11L to "sess-main")
+        assertTrue(sessions.setPlaybackAccountMid(22, sessions.generation) { true })
+        val authorization = repository.capturePlaybackAuthorization(repository.sessionEpoch) { true }
+        val playback = repository.upstreamOwner(DesktopUpstreamPurpose.Playback(authorization), { true })
+        // Created while current, revoked before it runs: the main call, its clone and a guest call all retire.
+        val created = DesktopUpstreamCalls.withOwner(playback) { listOf(DesktopUpstreamCalls.main.newCall(nav()), DesktopUpstreamCalls.guest.newCall(nav())) }
+        val socketDelivered = CountDownLatch(1)
+        assertTrue(sessions.setPlaybackAccountMid(null, sessions.generation) { true })
+        for (call in created + created.map { it.clone() }) assertRetired(assertFailsWith<IOException> { call.execute() })
+        assertFailsWith<BiliApiException> { DesktopUpstreamCalls.withOwner(playback) { DesktopUpstreamCalls.main.newCall(nav()) } }
+        DesktopUpstreamCalls.withOwner(playback) {
+            DesktopUpstreamCalls.webSocket.newWebSocket(Request.Builder().url("https://broadcast.chat.bilibili.com/sub").build(), object : WebSocketListener() {
+                override fun onOpen(webSocket: WebSocket, response: Response) { socketDelivered.countDown() }
+                override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) { socketDelivered.countDown() }
+            })
+        }
+        assertFalse(socketDelivered.await(1, TimeUnit.SECONDS))
+        assertTrue(fixture.seen.isEmpty(), "a revoked playback owner sent ${fixture.seen}")
+    }
+
+    @Test fun retiredOwnerReadsNoWbiOrEmoteCacheAndAccountsDoNotShareSubtitles() = runBlocking {
+        val fixture = fixture()
+        val (repository, sessions) = repository(fixture, 11L to "sess-a", 22L to "sess-b")
+        WbiKeyManager.invalidateCache(); SubtitleContentRepository.clearCache()
+        fixture.route = { exchange ->
+            val body = if (exchange.requestURI.path.contains("subtitle")) """{"body":[{"from":0.0,"to":1.0,"content":"${exchange.requestHeaders.getFirst("Cookie")}"}]}"""
+                else """{"code":0,"data":{"isLogin":true,"mid":22,"wbi_img":{"img_url":"https://i0.hdslb.com/bfs/wbi/cccc.png","sub_url":"https://i0.hdslb.com/bfs/wbi/dddd.png"}}}"""
+            fixture.respond(exchange, 200, body)
+        }
+        val url = "https://www.bilibili.com/fixture/subtitle/partition.json"
+        val ownerB = repository.upstreamOwner(DesktopUpstreamPurpose.Main, { true })
+        DesktopUpstreamCalls.withOwnerScope(ownerB) {
+            WbiKeyManager.getWbiKeys().getOrThrow()
+            assertEquals(com.android.purebilibili.feature.dynamic.components.DynamicEmoteCatalogSessionKey(22, true),
+                com.android.purebilibili.feature.dynamic.components.DynamicEmoteCatalog.currentSessionKey())
+            SubtitleContentRepository.cues(url, "BV1partition", 1).getOrThrow()
+        }
+        assertTrue(sessions.activateAccount(11))
+        assertRetired(assertFails { DesktopUpstreamCalls.withOwnerScope(ownerB) { WbiKeyManager.getWbiKeys().getOrThrow() } })
+        assertRetired(assertFails { DesktopUpstreamCalls.withOwner(ownerB) { com.android.purebilibili.feature.dynamic.components.DynamicEmoteCatalog.snapshot() } })
+        // A same-epoch-number store or a later account gets its own subtitle partition, not B's cached cues.
+        val ownerA = repository.upstreamOwner(DesktopUpstreamPurpose.Main, { true })
+        val forA = DesktopUpstreamCalls.withOwnerScope(ownerA) { SubtitleContentRepository.cues(url, "BV1partition", 1).getOrThrow() }
+        assertTrue("sess-a" in forA.single().content && "sess-b" !in forA.single().content, forA.toString())
+        WbiKeyManager.invalidateCache()
+    }
+
+    @Test fun admittedBlockHoldsOffAnAccountSwitchUntilItFinishes() {
+        val fixture = fixture()
+        val (repository, sessions) = repository(fixture, 11L to "sess-a", 22L to "sess-b")
+        val owner = repository.upstreamOwner(DesktopUpstreamPurpose.Main, { true })
+        val switched = CountDownLatch(1)
+        val switcher = Thread { sessions.activateAccount(11); switched.countDown() }
+        DesktopUpstreamCalls.withOwner(owner) {
+            DesktopUpstreamCalls.admitted("fixture publish") {
+                switcher.start()
+                // The switch needs the same Store admission: it cannot land between the check and this write.
+                assertFalse(switched.await(500, TimeUnit.MILLISECONDS), "an account switch interleaved with an admitted write")
+                assertTrue(owner.isCurrent())
+            }
+        }
+        assertTrue(switched.await(10, TimeUnit.SECONDS))
+        assertFalse(owner.isCurrent())
+        assertFailsWith<BiliApiException> { DesktopUpstreamCalls.withOwner(owner) { DesktopUpstreamCalls.admitted("fixture publish") { fail("retired owner published") } } }
+    }
+
     private fun nav() = Request.Builder().url("https://api.bilibili.com/x/web-interface/nav").build()
 
     private fun assertRetired(failure: Throwable) {
