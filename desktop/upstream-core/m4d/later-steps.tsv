@@ -10,15 +10,6 @@ feature/login/LoginScreen.kt	编译不过（21 处）：Cannot infer type for ty
 feature/login/LoginViewModel.kt	编译不过（43 处）：Unresolved reference. None of the following candid×16；未解析 Bitmap×7；Cannot infer type for type parameter '_'. Specify ×7；等对应桌面替身或桌面实现
 feature/login/OfficialQrAuthorizationContent.kt	编译不过（1 处）：未解析 BiliPaiTransferScanner×1；等对应桌面替身或桌面实现
 feature/login/OfficialQrAuthorizationViewModel.kt	桌面构造函数带 DesktopProfileEnvironment（请求经 Root 门控）；上游无参。登录流程整体迁移时一起处理（需求 2）
-feature/message/notification/MessageNotificationBootReceiver.kt	消息提醒，TON-1121：Android 开机广播（BroadcastReceiver/Intent），桌面做不到退出后提醒，需替换为明确的桌面实现或不支持说明
-feature/message/notification/MessageNotificationChecker.kt	消息提醒，TON-1121：读私信侧 MessageRepository 与 IM 数据，等 TON-1120
-feature/message/notification/MessageNotificationNotifier.kt	消息提醒，TON-1121：Android NotificationManager/NotificationCompat/PendingIntent，桌面走 DesktopWindowsMessageNotifications（Windows 通知中心）
-feature/message/notification/MessageNotificationProcess.kt	消息提醒，TON-1121：Android Application/进程判定，桌面需替换
-feature/message/notification/MessageNotificationService.kt	消息提醒，TON-1121：Android 前台服务与 BatteryManager，桌面需替换为客户端开着时的轮询
-feature/message/notification/MessageNotificationSettingsStore.kt	消息提醒，TON-1121：上游用 Context + DataStore 读写设置；桌面通知设置走 Root 门控的 DesktopMessageNotificationContext（退役的 Root 不能再写），需把该上下文做成带 DataStore 归属的 Context 后再迁
-feature/message/notification/MessageNotificationStateStore.kt	消息提醒，TON-1121：上游读 Android Settings，与 SettingsStore 一起改到带 DataStore 归属的 Context
-feature/message/notification/MessageNotificationSync.kt	消息提醒，TON-1121：Android 服务启停（stopService/ContextCompat），随 Service 替换
-feature/message/notification/MessageNotificationWorker.kt	消息提醒，TON-1121：WorkManager 定时任务，桌面走持久任务
 feature/plugin/AdFilterInsightPolicy.kt	旧 AdFilterPlugin 副本和桌面插件页按 DesktopPluginContext 调用这个存储；随 AdFilterPlugin 一起迁
 feature/plugin/AdFilterPlugin.kt	编译不过（9 处）：None of the following candidates is applicable:×3；未解析 data×3；未解析 build×3；等对应桌面替身或桌面实现
 feature/plugin/Anime4KPlugin.kt	编译不过（7 处）：Argument type mismatch: actual type is '_', but '_×6；Assignment type mismatch: actual type is '_', but ×1；等对应桌面替身或桌面实现

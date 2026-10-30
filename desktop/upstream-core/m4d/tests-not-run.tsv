@@ -2,7 +2,6 @@
 feature/login/BiliPaiTransferPayloadTest.kt	编译不过（3 处）：未解析 BiliPaiTransferContentSelection×3；被测对象在 later-steps.tsv 里或依赖尚未迁移的类型，随被测对象迁移后一起跑
 feature/login/BilibiliLoginQrTest.kt	编译不过（8 处）：未解析 resolveQrAlbumSampleSize×8；被测对象在 later-steps.tsv 里或依赖尚未迁移的类型，随被测对象迁移后一起跑
 feature/login/LoginEntryPolicyTest.kt	编译不过（11 处）：未解析 LoginMethod×5；Cannot infer type for type parameter '_'. Specify ×2；未解析 resolveLoginPalette×2；被测对象在 later-steps.tsv 里或依赖尚未迁移的类型，随被测对象迁移后一起跑
-feature/message/notification/MessageNotificationPolicyTest.kt	编译不过（25 处）：No parameter with name '_' found.×10；未解析 dynamicRedDotObservedIds×9；Cannot infer type for type parameter '_'. Specify ×6；被测对象在 later-steps.tsv 里或依赖尚未迁移的类型，随被测对象迁移后一起跑
 feature/plugin/TodayWatchRecommendationPluginTest.kt	编译不过（2 处）：No value passed for parameter '_'.×2；被测对象在 later-steps.tsv 里或依赖尚未迁移的类型，随被测对象迁移后一起跑
 feature/profile/AccountLedgerPolicyTest.kt	编译不过（7 处）：未解析 AccountLedgerSection×2；未解析 AccountLedgerState×2；Cannot infer type for type parameter '_'. Specify ×2；被测对象在 later-steps.tsv 里或依赖尚未迁移的类型，随被测对象迁移后一起跑
 feature/settings/AppearanceSettingsDisplayPolicyTest.kt	编译不过（3 处）：未解析 resolveDisplayedAppDpiPercent×3；被测对象在 later-steps.tsv 里或依赖尚未迁移的类型，随被测对象迁移后一起跑
