@@ -1,6 +1,28 @@
---- a/original-danmaku-settings/com/android/purebilibili/feature/video/ui/components/DanmakuSettingsPanel.kt
-+++ b/original-danmaku-settings/com/android/purebilibili/feature/video/ui/components/DanmakuSettingsPanel.kt
-@@ -1933,121 +1933,18 @@
+--- a/com/android/purebilibili/feature/video/ui/components/DanmakuSettingsPanel.kt
++++ b/com/android/purebilibili/feature/video/ui/components/DanmakuSettingsPanel.kt
+@@ -416,9 +416,7 @@
+     val configuration = LocalConfiguration.current
+     val viewConfiguration = LocalViewConfiguration.current
+     val colorScheme = MaterialTheme.colorScheme
+-    val panelColors = remember(colorScheme) {
+-        resolveDanmakuSettingsPanelSurfaceColors(colorScheme)
+-    }
++    val panelColors = rememberDanmakuPanelColors(colorScheme)
+     val isFullscreenStyle = isFullscreen
+     // 横屏分区 Tab（基础/高级/屏蔽）；竖屏不分区，全部展示。
+     var fullscreenActiveSection by remember { mutableIntStateOf(0) }
+@@ -1333,9 +1331,7 @@
+     val context = LocalContext.current
+     val scope = rememberCoroutineScope()
+     val colorScheme = MaterialTheme.colorScheme
+-    val panelColors = remember(colorScheme) {
+-        resolveDanmakuSettingsPanelSurfaceColors(colorScheme)
+-    }
++    val panelColors = rememberDanmakuPanelColors(colorScheme)
+     val initialSections = remember(rawRules) {
+         resolveDanmakuBlockManagerSections(rawRules)
+     }
+@@ -1933,121 +1929,18 @@
      tickCount: Int = 0,
      valueText: (Float) -> String = displayValue
  ) {

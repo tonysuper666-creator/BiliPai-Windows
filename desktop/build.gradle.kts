@@ -319,6 +319,7 @@ val appCoreLaterSteps: Map<String, String> = mapOf(
 val migratedVideoFeaturePaths = setOf(
     "com/android/purebilibili/feature/video/screen/VideoDetailRouteCommentEffect.kt",
     "com/android/purebilibili/feature/video/ui/components/DanmakuSettingsSlider.kt",
+    "com/android/purebilibili/feature/video/ui/components/DanmakuSettingsPanelAppearance.kt",
     "com/android/purebilibili/feature/video/ui/overlay/PlayerControlGlass.kt",
     "com/android/purebilibili/feature/video/ui/components/SubReplySheet.kt",
     "com/android/purebilibili/feature/video/ui/components/CelebrationAnimations.kt",
