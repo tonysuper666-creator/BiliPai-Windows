@@ -9,7 +9,7 @@ Reason: Normalize CRLF only at the source-text read boundary; all existing sourc
      private fun loadSource(relativePath: String): String {
          val candidates = listOf(File(relativePath), File("../$relativePath"))
 -        return candidates.firstOrNull(File::exists)?.readText()
-+        return candidates.firstOrNull(File::exists)?.readText().replace("\r\n", "\n")
++        return candidates.firstOrNull(File::exists)?.readText()?.replace("\r\n", "\n")
              ?: error("Unable to locate $relativePath")
      }
  }
