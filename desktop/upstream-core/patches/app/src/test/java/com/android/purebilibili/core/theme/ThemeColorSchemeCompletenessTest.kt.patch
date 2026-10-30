@@ -1,6 +1,6 @@
 Upstream-commit: 563b7481e41e0e4a9d070582ad745e82f0c3e23b
 Upstream-source-sha256: 846654697ba3d62e9474d2eea159e5c89214680eee3fcc9e7af6357824e52be3
-Reason: Fix the two-element error/errorContainer index without weakening foreground guards. Expected error background colors come from independent Compose baselines; onError and onErrorContainer still must differ from baseline. No expected color comes from the tested scheme.
+Reason: Fix the two-element error/errorContainer index without weakening foreground guards. Independent Compose baselines identify default colors: error and errorContainer, like onError and onErrorContainer, fail only when equal to baseline. No comparison color comes from the tested scheme.
 
 --- a/app/src/test/java/com/android/purebilibili/core/theme/ThemeColorSchemeCompletenessTest.kt
 +++ b/app/src/test/java/com/android/purebilibili/core/theme/ThemeColorSchemeCompletenessTest.kt
@@ -21,7 +21,7 @@ Reason: Fix the two-element error/errorContainer index without weakening foregro
              val isErrorRole = role.startsWith("error")
              if (isErrorRole) {
 -                value != expectedError[listOf("error", "onError", "errorContainer", "onErrorContainer").indexOf(role)]
-+                value != expectedError[errorRoles.indexOf(role)]
++                value == expectedError[errorRoles.indexOf(role)]
              } else {
                  value == baseline.roles().first { it.first == role }.second
              }
