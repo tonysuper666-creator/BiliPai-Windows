@@ -1,0 +1,21 @@
+# Producer copies (build/generated/<path>) retired because a migrated file of the same area declares their names (TON-1003).
+discovery/com/android/purebilibili/feature/home/DesktopDiscoveryHomeUiState.kt
+dynamic-detail/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicReplyPagingGuard.kt
+dynamic-full-card/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicCardLayout.kt
+dynamic-full-card/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicCommentTargetPolicy.kt
+dynamic-full-card/com/android/purebilibili/feature/dynamic/components/DesktopOriginalActionButton.kt
+dynamic-full-card/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicMenuActionPolicy.kt
+dynamic-full-card/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicRichText.kt
+dynamic-reply/com/android/purebilibili/feature/home/components/DesktopOriginalReplyCapsuleShape.kt
+dynamic-settings/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicIncrementalPolicy.kt
+dynamic-settings/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicTimelineLayout.kt
+dynamic-tabs/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicUserItemFilter.kt
+dynamic-tabs/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicUserLayout.kt
+dynamic-tabs/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicUserRequestPolicy.kt
+dynamic-tabs/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicNativeSegmentedControl.kt
+frosted-audio-renderer/com/android/purebilibili/feature/home/components/DesktopOriginalFrostedNavigation.kt
+frosted-audio-renderer/com/android/purebilibili/feature/home/components/DesktopOriginalSideBarMotion.kt
+home-cards/com/android/purebilibili/feature/home/DesktopOriginalHomeCardGridPolicy.kt
+linked-dock/com/android/purebilibili/feature/home/components/DesktopOriginalLinkedDockControls.kt
+plugins/com/android/purebilibili/feature/home/DesktopTodayWatchModels.kt
+story-topic/com/android/purebilibili/feature/dynamic/components/DynamicTopicLinkPolicy.kt

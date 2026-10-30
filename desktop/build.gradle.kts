@@ -316,9 +316,19 @@ val appCoreLaterSteps: Map<String, String> = mapOf(
     "core/store/FavoriteFolderCoverCache.kt" to "the desktop keeps one cover cache per favorites origin; moves with the favorites feature (M4d)",
     "core/ui/components/AppLiquidAwareTabRow.kt" to "calls feature/home's liquid tab components with their new parameters; moves with the home feature (M4b)",
 )
-val migratedAppCorePaths: Set<String> = appJavaRoot.resolve("com/android/purebilibili/core").walkTopDown()
+// Feature areas compiled from the merged root as well (TON-1003, M4b): home, search, dynamic and comment. A file of those
+// areas stays on its legacy copy while upstream-core/m4b/later-steps.tsv lists it (path <TAB> what it waits for);
+// upstream-core/m4b/retired-generated.tsv lists the producer copies that re-declare names of the migrated files.
+val migratedAppFeatureAreas = listOf("feature/home/", "feature/search/", "feature/dynamic/", "feature/comment/")
+val appFeatureLaterSteps: Map<String, String> = file("upstream-core/m4b/later-steps.tsv").takeIf { it.isFile }?.readLines().orEmpty()
+    .filter { it.isNotBlank() && !it.startsWith("#") }.associate { line -> line.substringBefore('\t') to line.substringAfter('\t') }
+val appFeatureRetiredGeneratedCopies: Set<String> = file("upstream-core/m4b/retired-generated.tsv").takeIf { it.isFile }?.readLines().orEmpty()
+    .map { it.trim() }.filter { it.isNotEmpty() && !it.startsWith("#") }.toSet()
+val migratedAppCorePaths: Set<String> = (appJavaRoot.resolve("com/android/purebilibili/core").walkTopDown() +
+        migratedAppFeatureAreas.asSequence().flatMap { appJavaRoot.resolve("com/android/purebilibili/$it").walkTopDown() })
     .filter { it.isFile && it.extension == "kt" }.map { it.relativeTo(appJavaRoot).invariantSeparatorsPath }
-    .filter { path -> path.removePrefix("com/android/purebilibili/").let { core -> (appCoreDesktopOwned.keys + appCoreLaterSteps.keys).none { core.startsWith(it) } } }
+    .filter { path -> path.removePrefix("com/android/purebilibili/").let { core ->
+        (appCoreDesktopOwned.keys + appCoreLaterSteps.keys).none { core.startsWith(it) } && core !in appFeatureLaterSteps } }
     .toSortedSet()
 // M4d (TON-1005): the feature areas plugin, profile, space, message, settings and login compile from the merged root as
 // well. A file stays on its legacy copy while upstream-core/m4d/later-steps.tsv lists it (path <TAB> what it waits for);
@@ -2706,6 +2716,9 @@ val transitionPatchProducers = mapOf(
     "profile-main" to "extractOriginalProfileMain",
     "search" to "extractUpstreamSearch",
     "upstream" to "prepareUpstreamSources",
+    "frosted-audio-renderer" to "extractFrostedAudioRenderer",
+    "linked-dock" to "extractLinkedDock",
+    "story-topic" to "extractUpstreamStoryTopic",
     "whole-playback-settings" to "extractOriginalWholePlaybackSettings",
 )
 
@@ -3179,8 +3192,16 @@ kotlin.sourceSets.named("main") {
     kotlin.exclude { element ->
         val path = element.file.toPath()
         path.startsWith(generatedDirectoryPath) && generatedDirectoryPath.relativize(path).joinToString("/").let {
-            it in upstreamOwnedGeneratedCopies || it in appM4dRetiredGeneratedCopies || it in transitionPatchedGeneratedFiles
+            it in upstreamOwnedGeneratedCopies || it in appM4dRetiredGeneratedCopies || it in appFeatureRetiredGeneratedCopies || it in transitionPatchedGeneratedFiles
         }
+    }
+    // A retired producer copy that also has a transition patch is dropped in its patched form too.
+    val transitionPatchedDirectoryPath = buildDirectoryPath.resolve("transition-patched")
+    val retiredPatchedOutputs = appFeatureRetiredGeneratedCopies.filter { it in transitionPatchedGeneratedFiles }
+        .map { it.substringAfter('/').removePrefix("generated/") }.toSet()
+    kotlin.exclude { element ->
+        val path = element.file.toPath()
+        path.startsWith(transitionPatchedDirectoryPath) && transitionPatchedDirectoryPath.relativize(path).joinToString("/") in retiredPatchedOutputs
     }
     // Migrated upstream files the desktop patches or replaces are compiled from their adapted form only.
     val migratedRootPaths = migratedUpstreamModules.map { mergedRepositoryRoot.resolve(it + "src/main/java").toPath() } + listOf(appJavaRoot.toPath())
