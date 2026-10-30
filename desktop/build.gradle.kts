@@ -321,6 +321,7 @@ val migratedVideoFeaturePaths = setOf(
     "com/android/purebilibili/feature/video/ui/components/LandscapeDanmakuComposer.kt",
     "com/android/purebilibili/feature/video/ui/components/VideoScreenshotSharePrompt.kt",
     "com/android/purebilibili/feature/video/screen/VideoNavigationCidPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/PortraitProgressBar.kt",
     "com/android/purebilibili/feature/bangumi/ui/list/BangumiListComponents.kt",
     "com/android/purebilibili/feature/video/ui/feedback/VideoActionFeedbackPolicy.kt",
     "com/android/purebilibili/feature/video/ui/overlay/CenterPlaybackControl.kt",
