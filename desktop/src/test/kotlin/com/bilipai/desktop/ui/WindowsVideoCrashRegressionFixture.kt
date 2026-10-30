@@ -5,6 +5,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.tooling.*
 import com.android.purebilibili.navigation3.BiliPaiNavKey
 import com.android.purebilibili.feature.comment.CommentDetailViewModel
+import com.bilipai.desktop.data.DesktopRepository
 import com.bilipai.desktop.player.MpvPlayer
 import com.bilipai.desktop.player.PlayerPreferences
 import com.bilipai.desktop.player.PlayerPreferencesStore
@@ -124,70 +125,116 @@ object WindowsVideoCrashRegressionFixture {
         PlayerPreferencesStore().save(PlayerPreferences(volume = 0.0, muted = true))
         val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
         val rows = mutableListOf<JsonObject>()
-        var succeeded = false
+        val steps = mutableListOf<JsonObject>()
+        var accountEmpty = false
+        fun save() = Files.writeString(report.resolve("result.json"), buildJsonObject {
+            put("pid", ProcessHandle.current().pid()); put("steps", JsonArray(steps))
+            put("videoResults", JsonArray(rows)); put("freshGuestProfile", true); put("accountEmpty", accountEmpty)
+        }.toString())
+        fun step(name: String, block: () -> Unit) {
+            val start = System.currentTimeMillis()
+            val failure = runCatching(block).exceptionOrNull()
+            steps += buildJsonObject {
+                put("name", name); put("passed", failure == null)
+                put("elapsedMs", System.currentTimeMillis() - start)
+                failure?.let { put("error", it.stackTraceToString()) }
+            }
+            save()
+        }
+        fun handshake(name: String) {
+            Files.writeString(report.resolve("$name-ready"), ProcessHandle.current().pid().toString())
+            await("external $name evidence") { Files.exists(report.resolve("$name-done")) }
+        }
         DesktopOriginalRootValidationTap.install { latest.set(it) }.use {
             ProductReferences(scope).use { refs ->
                 Thread({
                     try {
-                        await("first drawn Root") { latest.get() != null }
-                        val routes = edt { checkNotNull(latest.get()).routes }
-                        repeat(5) { index ->
-                            val started = System.nanoTime()
-                            edt { routes.video(BiliPaiNavKey.VideoDetail(video)) }
-                            await("public video first frame") {
-                                (latest.get()?.key as? BiliPaiNavKey.VideoDetail)?.bvid == video &&
-                                    refs.find<DesktopOriginalVideoShellOwner>()?.slot?.currentAssembly()
-                                        ?.native?.current()?.request?.bvid == video &&
-                                    player()?.state?.value?.firstVideoFrameReady == true
-                            }
-                            val elapsed = (System.nanoTime() - started) / 1_000_000
-                            shot(report, "video-${index + 1}")
-                            if (index == 4) {
-                                await("public comments") {
-                                    refs.find<DesktopOriginalVideoShellOwner>()?.slot?.currentAssembly()
-                                        ?.domains?.comments?.commentState?.value?.replies?.isNotEmpty() == true
-                                }
-                                val detail = edt {
-                                    val owner = checkNotNull(refs.find<DesktopOriginalVideoShellOwner>()?.slot?.currentAssembly())
-                                    BiliPaiNavKey.CommentDetail(checkNotNull(owner.native.current()).request.aid,
-                                        owner.domains.comments.commentState.value.replies.first().rpid)
-                                }
-                                edt { check(routes.push(detail)) }
-                                await("comment detail") { latest.get()?.key == detail }
-                                await("loaded public comment detail") {
-                                    refs.find<CommentDetailViewModel>()?.subReplyState?.value?.let {
-                                        !it.isLoading && it.error == null && it.rootReply?.rpid == detail.rootId
-                                    } == true
-                                }
-                                Thread.sleep(2_000)
-                                shot(report, "comment-detail")
-                                edt { check(routes.back()) }
-                                await("return to video") { (latest.get()?.key as? BiliPaiNavKey.VideoDetail)?.bvid == video }
-                            }
+                        step("root") {
+                            await("first drawn Root") { latest.get() != null }
+                            edt { window().extendedState = JFrame.MAXIMIZED_BOTH; window().toFront(); window().requestFocus() }
+                            Thread.sleep(2000)
                             edt {
-                                val shell = checkNotNull(refs.find<DesktopOriginalVideoShellOwner>())
-                                val owner = checkNotNull(shell.slot.currentAssembly())
-                                val accepted = checkNotNull(owner.native.current())
-                                val factory = shell.factoryFor(owner)
-                                rows += buildJsonObject {
-                                    put("open", index + 1); put("firstFrameMs", elapsed)
-                                    put("nativeSourceVersion", accepted.nativeSource.sourceVersion)
-                                    put("processAlive", true)
-                                }
-                                check(routes.back())
-                                shell.slot.retireAssembly(owner)
-                                // Precisely the stale DisposableEffect case: a UI reference
-                                // outlives its permit, and must reject rather than crash.
-                                check(shell.factoryFor(owner) === factory)
-                                check(!factory.isPresentationCurrent(owner, accepted))
-                                check(!factory.withPresentationAdmission(owner, accepted) { error("Retired command admitted") })
+                                val repository = checkNotNull(refs.find<DesktopRepository>())
+                                accountEmpty = repository.account.value == null && repository.savedAccounts.value.isEmpty()
+                                check(accountEmpty) { "Regression must use a guest with no saved account" }
                             }
-                            await("fresh factory") { refs.find<DesktopOriginalVideoShellOwner>()?.navigationReady() == true }
-                            Files.writeString(report.resolve("video-results.json"), JsonArray(rows).toString())
                         }
-                        edt { window().extendedState = JFrame.MAXIMIZED_BOTH; check(routes.push(BiliPaiNavKey.Settings)) }
-                        await("settings root") { latest.get()?.key == BiliPaiNavKey.Settings }
-                        for (category in DESKTOP_SETTINGS_RAIL_CATEGORIES) {
+                        val routes = edt { checkNotNull(latest.get()).routes }
+                        fun waitVideo(bvid: String) = await("public video first frame $bvid") {
+                            (latest.get()?.key as? BiliPaiNavKey.VideoDetail)?.bvid == bvid &&
+                                refs.find<DesktopOriginalVideoShellOwner>()?.slot?.currentAssembly()
+                                    ?.native?.current()?.request?.bvid == bvid &&
+                                player()?.state?.value?.firstVideoFrameReady == true
+                        }
+                        repeat(5) { index ->
+                            step("video-${index + 1}") {
+                                val started = System.nanoTime()
+                                edt { routes.video(BiliPaiNavKey.VideoDetail(video)) }
+                                waitVideo(video)
+                                val elapsed = (System.nanoTime() - started) / 1_000_000
+                                edt {
+                                    val accepted = checkNotNull(refs.find<DesktopOriginalVideoShellOwner>()?.slot?.currentAssembly()?.native?.current())
+                                    rows += buildJsonObject {
+                                        put("open", index + 1); put("firstFrameMs", elapsed)
+                                        put("nativeSourceVersion", accepted.nativeSource.sourceVersion)
+                                    }
+                                }
+                                Thread.sleep(800)
+                                shot(report, "video-${index + 1}")
+                            }
+                            step("retire-${index + 1}") {
+                                edt {
+                                    val shell = checkNotNull(refs.find<DesktopOriginalVideoShellOwner>())
+                                    val owner = checkNotNull(shell.slot.currentAssembly())
+                                    val accepted = checkNotNull(owner.native.current())
+                                    val factory = shell.factoryFor(owner)
+                                    check(routes.back()); shell.slot.retireAssembly(owner)
+                                    check(shell.factoryFor(owner) === factory)
+                                    check(!factory.isPresentationCurrent(owner, accepted))
+                                    check(!factory.withPresentationAdmission(owner, accepted) { error("Retired command admitted") })
+                                }
+                                await("fresh factory") { refs.find<DesktopOriginalVideoShellOwner>()?.navigationReady() == true }
+                            }
+                        }
+                        // A real in-app route to a different public video; no new Main.
+                        step("second-video") {
+                            val second = requireNotNull(System.getenv("BP_SECOND_VIDEO"))
+                            val started = System.nanoTime()
+                            edt { routes.video(BiliPaiNavKey.VideoDetail(second)) }
+                            waitVideo(second)
+                            Files.writeString(report.resolve("second-video.json"), buildJsonObject {
+                                put("bvid", second); put("firstFrameMs", (System.nanoTime()-started)/1_000_000)
+                                put("nativeSourceVersion", edt { refs.find<DesktopOriginalVideoShellOwner>()!!.slot.currentAssembly()!!.native.current()!!.nativeSource.sourceVersion })
+                            }.toString())
+                            Thread.sleep(1000); shot(report, "second-video")
+                        }
+                        step("smtc-checkpoint") { handshake("smtc") }
+                        step("comment-detail") {
+                            await("public comments") {
+                                refs.find<DesktopOriginalVideoShellOwner>()?.slot?.currentAssembly()
+                                    ?.domains?.comments?.commentState?.value?.replies?.isNotEmpty() == true
+                            }
+                            val detail = edt {
+                                val owner = checkNotNull(refs.find<DesktopOriginalVideoShellOwner>()?.slot?.currentAssembly())
+                                BiliPaiNavKey.CommentDetail(checkNotNull(owner.native.current()).request.aid,
+                                    owner.domains.comments.commentState.value.replies.first().rpid)
+                            }
+                            edt { check(routes.push(detail)) }
+                            await("comment detail") { latest.get()?.key == detail }
+                            await("loaded public comment detail") {
+                                refs.find<CommentDetailViewModel>()?.subReplyState?.value?.let {
+                                    !it.isLoading && it.error == null && it.rootReply?.rpid == detail.rootId &&
+                                        it.rootReply?.content?.message?.isNotBlank() == true
+                                } == true
+                            }
+                            Thread.sleep(2000); shot(report, "comment-detail")
+                        }
+                        step("settings-root") {
+                            edt { window().extendedState = JFrame.MAXIMIZED_BOTH; check(routes.push(BiliPaiNavKey.Settings)) }
+                            await("settings root") { latest.get()?.key == BiliPaiNavKey.Settings }
+                            Thread.sleep(2000)
+                        }
+                        for (category in DESKTOP_SETTINGS_RAIL_CATEGORIES) step("settings-${category.name}") {
                             val key = BiliPaiNavKey.SettingsCategory(category)
                             edt { check(routes.push(key)) }
                             await("settings category $category") {
@@ -195,30 +242,24 @@ object WindowsVideoCrashRegressionFixture {
                                     desktopSettingsPageCategory(it.current) == category
                                 } == true
                             }
-                            Thread.sleep(800)
-                            shot(report, "settings-${category.name}")
+                            Thread.sleep(2000); shot(report, "settings-${category.name}")
                         }
-                        for (relative in listOf("BiliPaiWindows/logs/last_crash_log.txt",
-                            "BiliPaiWindows/diagnostics/window-exceptions.log")) {
-                            check(!Files.exists(local.resolve(relative))) { "Runtime recorded a window exception: $relative" }
+                        step("no-crash-files") {
+                            for (relative in listOf("BiliPaiWindows/logs/last_crash_log.txt", "BiliPaiWindows/diagnostics/window-exceptions.log"))
+                                check(!Files.exists(local.resolve(relative))) { "Runtime recorded a window exception: $relative" }
                         }
-                        Files.writeString(report.resolve("result.json"), buildJsonObject {
-                            put("videoOpens", rows.size); put("firstFrames", rows.size)
-                            put("settingsSections", DESKTOP_SETTINGS_RAIL_CATEGORIES.size)
-                            put("crashes", 0); put("freshGuestProfile", true)
-                            put("source", "actual Main, public video, native playback-restart")
-                        }.toString())
-                        succeeded = true
-                        edt { window().dispatchEvent(WindowEvent(window(), WindowEvent.WINDOW_CLOSING)) }
+                        // Driver uses real settings controls, then verifies the restarted PID.
+                        step("restart-ready") { handshake("restart") }
+                        save()
                     } catch (failure: Throwable) {
                         failure.printStackTrace()
                         Files.writeString(report.resolve("failure.txt"), failure.stackTraceToString())
-                        kotlin.system.exitProcess(91)
+                    } finally {
+                        Files.writeString(report.resolve("fixture-finished"), "true")
                     }
-                }, "TON1077 actual Main regression").apply { isDaemon = true; start() }
+                }, "TON1111 single Main joint acceptance").apply { isDaemon = true; start() }
                 com.bilipai.desktop.main(emptyArray())
                 scope.cancel()
-                check(succeeded) { "Main exited before regression completed" }
             }
         }
     }
