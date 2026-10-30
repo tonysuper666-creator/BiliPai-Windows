@@ -105,7 +105,11 @@ class V038NotificationSourceTest(unittest.TestCase):
         rows = [r for r in manifest["sources"] if r["path"] == "app/src/main/java/com/android/purebilibili/feature/message/notification/MessageNotificationPolicy.kt"]
         self.assertEqual(1, len(rows))
         self.assertEqual("policy-extract", rows[0]["mode"])
-        self.assertEqual("b11892a23659db840095df6ed5d73593bb47238c8f58586236c49cc10ad59f39", rows[0]["sha256"])
+        catalog = json.loads((REPO/"desktop/tools/v025-canonical-sources.json").read_bytes())
+        pin = catalog["paths"][rows[0]["path"]]
+        self.assertEqual("b11892a23659db840095df6ed5d73593bb47238c8f58586236c49cc10ad59f39",
+                         pin.get("legacySha256", pin["sha256"]))
+        self.assertEqual(pin["sha256"], rows[0]["sha256"])
 
 
 if __name__ == "__main__":

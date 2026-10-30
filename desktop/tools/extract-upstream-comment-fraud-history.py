@@ -1,5 +1,6 @@
 """Whole canonical CommentFraudHistoryScreen; only owned Windows platform leaves."""
 from __future__ import annotations
+from v025_source_paths import reviewed_sha256
 import argparse, hashlib, importlib.util, json, os, re, sys
 from pathlib import Path
 sys.dont_write_bytecode = True
@@ -18,7 +19,7 @@ def sha(raw): return hashlib.sha256(raw).hexdigest()
 def catalog_sha(repo):
     # Gradle passes the pre-merge snapshot at <repo>/.legacy-root. That catalog
     # file is the v0.2.5 pin set. A live checkout carries the direct-compile catalog.
-    return LEGACY_CATALOG_SHA if Path(repo).resolve().name == ".legacy-root" else CATALOG_SHA
+    return LEGACY_CATALOG_SHA if (Path(repo).resolve().name == ".legacy-root" and not (Path(repo) / ".merged-root").is_dir()) else CATALOG_SHA
 def emit(path, raw):
     wide(path.parent).mkdir(parents=True, exist_ok=True)
     wide(path).write_bytes(raw if isinstance(raw, bytes) else raw.encode("utf-8"))
@@ -37,7 +38,7 @@ class Original:
         raw = file.read_bytes()
         row = self.catalog["paths"][path]
         normalized = raw.replace(b"\r\n", b"\n") if row["hashNormalization"] == "lf" else raw
-        if sha(normalized) != row["sha256"]: raise ValueError("Original digest mismatch: " + path)
+        if sha(normalized) != reviewed_sha256(self.repo, row): raise ValueError("Original digest mismatch: " + path)
         return raw
     def text(self, path): return self.raw(path).decode("utf-8").replace("\r\n", "\n")
     def row(self, path, mode=None):

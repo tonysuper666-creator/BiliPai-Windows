@@ -37,7 +37,7 @@ val revisionNeutralSourceRecipePins = mapOf(
     "tools/extract-upstream-api.py" to "c7571703fdaaa33f4fe6ae6fcd370d182efa4623e0dbd6e89d56544b447f313e",
     "tools/extract-upstream-bgm-detail.py" to "965546d1db99f5d1b667d0f0fff0dbabcecaa51e835d0bab058af6820faa6be3",
     "tools/v036_video_comment_cache.py" to "81cb90c8236ea4ac0b04d1eec7a96aea46e6f2becb2ad24a4cdce8b6563683e2",
-    "tools/extract-upstream-dynamic-reply-protocol.py" to "95ba70a1ea5366cf295620a8fe6f34492f2ba4d9152cb8549e3102de0c786377",
+    "tools/extract-upstream-dynamic-reply-protocol.py" to "7e4ec3c32827e56e6135068e6593a1ef70b0436c04adbfbc868ce7397264f854",
     "tools/v036_comment_route.py" to "3edce0c4518b1b6aa25c1be68a4db186af7fb33c563db5d6194a257277e48b60",
     "tools/extract-upstream-frosted-audio-renderer.py" to "3f8a55cc5ae3643be4774f78bc948668fe9ba3cc348903544d916bc35024497f",
     "tools/extract-upstream-linked-dock.py" to "c27347c4f3a16569a4d588a06ce6dea2a8fcb2d885ac2a1dfd4d321f2dc3b5fb",
@@ -82,7 +82,7 @@ val revisionNeutralSourceImportContextMatches =
     revisionNeutralSourceImportRoots.none { file("tools/$it").exists() } && revisionNeutralSourceImportShadowFiles.isEmpty
 // Pin the whole Gradle recipe, including canonical helpers and later wiring.
 // Mask exactly this self-digest assignment; raw build bytes remain task inputs.
-val revisionNeutralSourceGradleRecipeSha256 = "72436b1ba6490d42cd449636d129e2d257d6723c2406cf8f7857df17d8c0a8ca"
+val revisionNeutralSourceGradleRecipeSha256 = "30f8161e39c6ffb79b53dfbc5f3eb90e09c5119581b457ba865246235a2eceef"
 val revisionNeutralSourceGradleRecipeMatches = runCatching {
     val recipe = file("build.gradle.kts").readText(Charsets.UTF_8).replace("\r\n", "\n")
     val ownPin = "val revisionNeutralSourceGradleRecipeSha256 = \"$revisionNeutralSourceGradleRecipeSha256\""
