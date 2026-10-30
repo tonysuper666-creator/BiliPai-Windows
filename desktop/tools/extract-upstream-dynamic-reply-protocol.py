@@ -1,5 +1,6 @@
 """Original selected protocol producer; no snapshot or .local dependency."""
 from v025_source_paths import canonical_source as _desktop_canonical_source, canonical_relative as _desktop_canonical_relative
+from v025_source_paths import _catalog, reviewed_sha256
 from pathlib import Path
 import v029_comment_search as comment_search
 import v036_comment_route as comment_route
@@ -11,27 +12,39 @@ def load_pinned_sources(repo: Path, paths):
         safe = Path(value if value.startswith('\\\\?\\') else '\\\\?\\' + value)
         return safe.read_text(encoding='utf-8').replace('\r\n', '\n').replace('\r', '\n')
     manifest = json.loads(normalized(repo / 'desktop/upstream-sources.json'))
-    commit = manifest['upstreamCommit']
-    assert re.fullmatch(r'[0-9a-f]{40}', commit), 'upstreamCommit must be a full fixed commit'
+    baseline_commit = manifest['upstreamCommit']
+    assert re.fullmatch(r'[0-9a-f]{40}', baseline_commit), 'upstreamCommit must be a full fixed commit'
     assert manifest['hashNormalization'] == 'lf'
     assert manifest['upstreamRepository'] == 'jay3-yy/BiliPai'
     pins = {}
     for row in manifest['sources']:
         assert row['path'] not in pins, 'duplicate source identity'
-        pins[row['path']] = row['sha256']
+        pins[row['path']] = row
+    catalog = _catalog()
+    # Gradle's snapshot carries its historical manifest. The Python read point
+    # keeps today's manifest beside .merged-root, while reading the same originals.
+    live_manifest = repo.resolve().name != '.legacy-root' or (repo / '.merged-root').is_dir()
     sources = {}; identities = []
     for path in paths:
         canonical_path = _desktop_canonical_relative(repo, path)
+        manifest_path = catalog['previousPaths'].get(canonical_path, canonical_path) if live_manifest else canonical_path
+        row = pins[manifest_path]
+        manifest_pin = catalog['paths'][manifest_path]
+        manifest_sha = manifest_pin['sha256'] if live_manifest else reviewed_sha256(repo, manifest_pin)
+        assert row['sha256'] == manifest_sha, 'manifest and catalog differ: ' + manifest_path
+        commit = baseline_commit if repo.resolve().name == '.legacy-root' else row.get('sourceCommit', baseline_commit)
+        assert re.fullmatch(r'[0-9a-f]{40}', commit), 'source commit must be a full fixed commit'
         selected = _desktop_canonical_source(repo, path)
         assert not selected.is_symlink() and selected.resolve().is_relative_to(repo.resolve()), path
         text = normalized(selected)
         actual_sha = hashlib.sha256(text.encode('utf-8')).hexdigest()
-        assert actual_sha == pins[canonical_path], path + ' differs from fixed source manifest'
+        assert actual_sha == reviewed_sha256(repo, catalog['paths'][canonical_path]), path + ' differs from fixed source manifest'
         blob = subprocess.check_output(['git', '-c', 'core.longpaths=true', 'rev-parse', commit + ':' + canonical_path], cwd=repo, text=True).strip()
         current = subprocess.check_output(['git', '-c', 'core.longpaths=true', 'hash-object', '--path=' + canonical_path, canonical_path], cwd=repo, text=True).strip()
         assert blob == current, path + ' differs from fixed Git commit blob'
         sources[path] = text
-        identities.append(dict(path=canonical_path, requestedPath=path, pinnedCommit=commit, pinnedTag=manifest['upstreamTag'],
+        identities.append(dict(path=canonical_path, requestedPath=path, pinnedCommit=commit,
+            pinnedTag=manifest['upstreamTag'] if commit == baseline_commit else None,
             pinnedGitBlob=blob, currentGitBlob=current, sha256LfUtf8=actual_sha, matchesPinnedCommit=True))
     return sources, identities
 

@@ -37,7 +37,7 @@ val revisionNeutralSourceRecipePins = mapOf(
     "tools/extract-upstream-api.py" to "c7571703fdaaa33f4fe6ae6fcd370d182efa4623e0dbd6e89d56544b447f313e",
     "tools/extract-upstream-bgm-detail.py" to "965546d1db99f5d1b667d0f0fff0dbabcecaa51e835d0bab058af6820faa6be3",
     "tools/v036_video_comment_cache.py" to "81cb90c8236ea4ac0b04d1eec7a96aea46e6f2becb2ad24a4cdce8b6563683e2",
-    "tools/extract-upstream-dynamic-reply-protocol.py" to "95ba70a1ea5366cf295620a8fe6f34492f2ba4d9152cb8549e3102de0c786377",
+    "tools/extract-upstream-dynamic-reply-protocol.py" to "7e4ec3c32827e56e6135068e6593a1ef70b0436c04adbfbc868ce7397264f854",
     "tools/v036_comment_route.py" to "3edce0c4518b1b6aa25c1be68a4db186af7fb33c563db5d6194a257277e48b60",
     "tools/extract-upstream-frosted-audio-renderer.py" to "3f8a55cc5ae3643be4774f78bc948668fe9ba3cc348903544d916bc35024497f",
     "tools/extract-upstream-linked-dock.py" to "c27347c4f3a16569a4d588a06ce6dea2a8fcb2d885ac2a1dfd4d321f2dc3b5fb",
@@ -46,10 +46,10 @@ val revisionNeutralSourceRecipePins = mapOf(
     "tools/extract-upstream-special-danmaku.py" to "979060ce22a625c76651b24fee264268385ccb96de8956fb1447defca1dedc56",
     "tools/extract-upstream-video-comment-ui.py" to "6537f13ea46e584244a6384c4b43b8df68fb7c3028b210f49bee34e6aafabb31",
     "tools/extract-video-enhancement.py" to "0046195e1914059a841aacf69ed704c86a85e5a9e3a432fbcce3d3628f2d9195",
-    "tools/run-tool-tests.py" to "0ccdc350020d68fd5d7bf515cf16fcb45147dc9f2549d436ebda7f8936008403",
-    "tools/sync-upstream.py" to "4f2777086628182caf945f5c225a0e9f629eaf698823e2d4fef3b427086e303f",
-    "tools/v025-canonical-sources.json" to "2fa53aa78cc27c76a3923cc44750128b3657c340dbcfe44ec13810cbc48becbc",
-    "tools/v025_source_paths.py" to "43ae1635c64aa3eb695dd3f3babdfaeacdf8899680e6823a44179163facb848f",
+    "tools/run-tool-tests.py" to "0114c7c7ecea5c45e26843ed025eae4a7fd991b6d50edf09bf9185ed7f20cd44",
+    "tools/sync-upstream.py" to "62e1bab0f3101a76f80d1ec2aa16c0b2f2aacba194df67c291324638adce1fa0",
+    "tools/v025-canonical-sources.json" to "2600739eef5521cfef71d6af16762ccc3b9df076dad7ccb79902944f1634130f",
+    "tools/v025_source_paths.py" to "3b84ba1b1b0907cfb3cb610bd6f713c37521a79f6a0d78ce185f764547ebc460",
     "tools/v029_brand_consumers.py" to "89648e569d074aaeaa456a12220efb4de3e8ecfcefbbe05f74ea55ef47c3742e",
     "tools/v029_comment_composer.py" to "49321836c7e0b49dbdbd226872f85df8cb391feb8ac7dadd27b56e345bbbca52",
     "tools/v029_comment_search.py" to "b80189f64014e373c136bc38e0fbb4171933203ba0cf2a2e76bf0053e17c1a9d",
@@ -82,7 +82,7 @@ val revisionNeutralSourceImportContextMatches =
     revisionNeutralSourceImportRoots.none { file("tools/$it").exists() } && revisionNeutralSourceImportShadowFiles.isEmpty
 // Pin the whole Gradle recipe, including canonical helpers and later wiring.
 // Mask exactly this self-digest assignment; raw build bytes remain task inputs.
-val revisionNeutralSourceGradleRecipeSha256 = "44bc808bb4891e2afd901ce5970dafa61690bc883d00bb4bc1345afceb4d799e"
+val revisionNeutralSourceGradleRecipeSha256 = "30f8161e39c6ffb79b53dfbc5f3eb90e09c5119581b457ba865246235a2eceef"
 val revisionNeutralSourceGradleRecipeMatches = runCatching {
     val recipe = file("build.gradle.kts").readText(Charsets.UTF_8).replace("\r\n", "\n")
     val ownPin = "val revisionNeutralSourceGradleRecipeSha256 = \"$revisionNeutralSourceGradleRecipeSha256\""
@@ -107,7 +107,7 @@ val canonicalOriginalCatalogFile = file("tools/v025-canonical-sources.json")
 val canonicalOriginalHelperFile = file("tools/v025_source_paths.py")
 val canonicalOriginalCatalogBytes = canonicalOriginalCatalogFile.readBytes().also { bytes ->
     require(MessageDigest.getInstance("SHA-256").digest(bytes)
-        .joinToString("") { "%02x".format(it) } == "2fa53aa78cc27c76a3923cc44750128b3657c340dbcfe44ec13810cbc48becbc") {
+        .joinToString("") { "%02x".format(it) } == "2600739eef5521cfef71d6af16762ccc3b9df076dad7ccb79902944f1634130f") {
         "The v025 canonical original source catalog changed without review."
     }
 }
@@ -117,7 +117,7 @@ val canonicalOriginalCatalog = (JsonSlurper().parse(canonicalOriginalCatalogByte
 val canonicalOriginalRoots = (canonicalOriginalCatalog["sourceRoots"] as List<*>).map { it.toString() }
 val canonicalOriginalPrevious = canonicalOriginalCatalog["previousPaths"] as Map<*, *>
 val canonicalOriginalPins = canonicalOriginalCatalog["paths"] as Map<*, *>
-fun canonicalOriginalIdentity(relative: String): String {
+fun liveOriginalIdentity(relative: String): String {
     val path = JvmPaths.get(relative)
     require(!path.isAbsolute && path.none { it.toString() == ".." }) { "Invalid original source identity: $relative" }
     val name = path.normalize().toString().replace('\\', '/')
@@ -128,11 +128,25 @@ fun canonicalOriginalIdentity(relative: String): String {
     require(canonicalOriginalPins.containsKey(identity)) { "Unknown canonical original source: $identity" }
     return identity
 }
+fun canonicalOriginalIdentity(relative: String): String {
+    val identity = liveOriginalIdentity(relative)
+    // prepareUpstreamSources copies the pre-merge snapshot. A retargeted pin names
+    // the direct-compile file, which that snapshot does not contain. Copy the one
+    // predecessor still in the snapshot. The live pin check stays on the new path.
+    if (File(repositoryRoot, identity).isFile) return identity
+    val predecessors = canonicalOriginalPrevious.entries.mapNotNull { (key, value) ->
+        val name = key?.toString() ?: return@mapNotNull null
+        if (value?.toString() == identity && File(repositoryRoot, name).isFile) name else null
+    }.distinct()
+    return if (predecessors.size == 1) predecessors.single() else identity
+}
 fun canonicalOriginalSource(relative: String): File {
-    val identity = canonicalOriginalIdentity(relative)
-    val destination = File(repositoryRoot, identity)
+    val identity = liveOriginalIdentity(relative)
+    // Inventory pins now name the merged direct-compile tree. Unmigrated producers
+    // still copy repositoryRoot, and this check stays an exact byte compare.
+    val destination = File(mergedRepositoryRoot, identity)
     require(!JvmFiles.isSymbolicLink(destination.toPath())) { "Original source is a symbolic link: $relative" }
-    require(destination.canonicalFile.toPath().startsWith(repositoryRoot.canonicalFile.toPath())) { "Original source escapes repository: $relative" }
+    require(destination.canonicalFile.toPath().startsWith(mergedRepositoryRoot.canonicalFile.toPath())) { "Original source escapes repository: $relative" }
     if (canonicalOriginalRoots.any { identity.startsWith(it) }) {
         val pin = canonicalOriginalPins[identity] as Map<*, *>
         val raw = destination.readBytes()
