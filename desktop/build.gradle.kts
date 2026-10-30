@@ -315,6 +315,7 @@ val appCoreLaterSteps: Map<String, String> = mapOf(
 // M4a: video/bangumi logic and unchanged Compose components compile from the merged upstream tree.
 // The remaining UI/player files move when their desktop platform adapters are wired.
 val migratedVideoFeaturePaths = setOf(
+    "com/android/purebilibili/feature/video/ui/components/VideoCommentSheetHost.kt",
     "com/android/purebilibili/feature/video/ui/components/PlayerOptionStyle.kt",
     "com/android/purebilibili/feature/video/ui/overlay/NativePlayerSideControls.kt",
     "com/android/purebilibili/feature/video/screen/VideoDetailPlaybackErrorNotice.kt",
@@ -2940,6 +2941,7 @@ val upstreamOwnedGeneratedCopies = setOf(
     "dynamic-detail-container/com/android/purebilibili/feature/video/ui/components/DesktopOriginalDetailInputPadding.kt",
     "original-video-detail-holder-full/com/android/purebilibili/feature/video/screen/VideoNavigationCidPolicy.kt",
     "original-video-ambient-windows/com/android/purebilibili/feature/video/ui/components/VideoScreenshotSharePrompt.kt",
+    "dynamic-detail-container/com/android/purebilibili/feature/video/ui/components/DesktopOriginalDetailThreadPolicies.kt",
     "original-video-player-full-controls/com/android/purebilibili/feature/video/ui/components/PlainLandscapeDanmakuComposer.kt",
     "original-video-player-full-controls/com/android/purebilibili/feature/video/ui/components/LandscapeDanmakuComposer.kt",
     "home-bangumi-page/com/android/purebilibili/feature/bangumi/ui/list/DesktopOriginalBangumiBadge.kt",
