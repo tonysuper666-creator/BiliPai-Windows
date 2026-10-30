@@ -22,3 +22,6 @@ upstreamAppCoreSourceTests	SettingsTabletLayoutPolicyTest×1	读取上游源码�
 upstreamAppCoreSourceTests	SpaceLocatePagingStructureTest×1	读取上游源码文本，断言的字符串在上游文件里不存在
 upstreamAppCoreSourceTests	SpaceScreenStructureTest×8	读取上游源码文本，断言的字符串在上游文件里不存在
 upstreamAppCoreSourceTests	VisualEffectTogglePolicyTest×1	读取上游源码文本，断言的字符串在上游文件里不存在
+test	SpaceLoadPolicyTest×2	测试构造的 SpaceAggregateCard 缺 name/face，上游 resolveSpaceInitialSeedFromAggregate 对此直接返回 null（上游测试陈旧，TON-1108）
+test	SpaceAggregatedModelMappingTest×1	测试期望主标签含收藏、追番；上游 resolveSpaceDisplayedMainTabs 现只保留主页/动态/投稿（同包的 SpaceProfileEnhancementPolicyTest 按新行为通过；上游测试陈旧，TON-1108）
+test	SpaceDynamicNavigationPolicyTest×1	opus 跳转链接的专栏动态：桌面动态卡片仍用 dynamic-full-card 生产者的旧点击策略（判为专栏），上游新策略判为动态详情；桌面补丁保持旧行为，随 feature/dynamic 迁移（TON-1108）

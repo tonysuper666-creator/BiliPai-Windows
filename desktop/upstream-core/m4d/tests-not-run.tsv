@@ -22,9 +22,8 @@ feature/settings/SpacePrivacyPolicyTest.kt	编译不过（5 处）：未解析 S
 feature/settings/screen/BottomBarSettingsScreenIconPolicyTest.kt	编译不过（8 处）：未解析 drawable×8；被测对象在 later-steps.tsv 里或依赖尚未迁移的类型，随被测对象迁移后一起跑
 feature/settings/screen/SkinCatalogSearchPolicyTest.kt	编译不过（4 处）：未解析 SkinCatalogUiState×2；未解析 it×2；被测对象在 later-steps.tsv 里或依赖尚未迁移的类型，随被测对象迁移后一起跑
 feature/settings/share/SettingsShareViewModelFactoryTest.kt	编译不过（9 处）：Cannot infer type for type parameter '_'. Specify ×3；Unresolved reference. None of the following candid×2；未解析 app×1；被测对象在 later-steps.tsv 里或依赖尚未迁移的类型，随被测对象迁移后一起跑
-feature/space/SpaceViewModelMainTabStateTest.kt	编译不过（3 处）：Argument type mismatch: actual type is '_', but '_×3；被测对象在 later-steps.tsv 里或依赖尚未迁移的类型，随被测对象迁移后一起跑
+feature/space/SpaceViewModelMainTabStateTest.kt	上游测试用 SpaceViewModel(SavedStateHandle) 构造；桌面的 SpaceViewModel 必须带 DesktopOriginalSpaceEnvironment（请求走 Root 门控），构造不出来。主标签状态由 DesktopOriginalSpacePagesTest 经真实宿主覆盖
 feature/message/MessageGlassSurfacePolicyTest.kt	被测的玻璃底色委托给 feature/home 的 resolveVideoCardAmbientDrawSpec，桌面目前还是 v0.2.5 旧副本（frostedGlassEnabled 语义不同）；随 M4b 首页迁移合并后再跑
-feature/space/SpaceAggregatedModelMappingTest.kt	被测的 resolveSpaceInitialSeedFromAggregate 在 SpaceLoadPolicy.kt（later-steps），桌面空间页只有主页/动态/投稿三个主标签；随空间页迁移后再跑
-feature/space/SpaceViewModelConstructorTest.kt	被测的 SpaceViewModel 在 later-steps，桌面副本要求 DesktopOriginalSpaceEnvironment 构造参数；随空间页迁移后再跑
+feature/space/SpaceViewModelConstructorTest.kt	测的是 Android 默认 ViewModel 工厂要的无参构造；桌面的 SpaceViewModel 由 DesktopOriginalSpacePageEntry 带 DesktopOriginalSpaceEnvironment 构造，不走该工厂
 feature/settings/SettingsDestinationCopyPolicyTest.kt	被测的 settingsDestinationCopy 在 SettingsDestinationCopy.kt（later-steps），桌面旧副本把播放页标题写成「播放设置」，上游是「播放器与画质」；随该文件迁移后再跑
 feature/settings/share/SettingsSharePolicyTest.kt	编译不过（1 处）：未解析 LIQUID_GLASS_SETTINGS_SHARE_PROFILE_NAME×1；该常量在 LiquidGlassSavedPresets.kt（later-steps），随该文件迁移后一起跑
