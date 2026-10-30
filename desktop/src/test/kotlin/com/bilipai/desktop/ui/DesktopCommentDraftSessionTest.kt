@@ -239,4 +239,108 @@ class DesktopCommentDraftSessionTest {
         }
     }
 
+    @OptIn(androidx.compose.ui.ExperimentalComposeUiApi::class, ExperimentalCoroutinesApi::class, coil3.annotation.DelicateCoilApi::class)
+    @Test fun migratedAdapterContentUsesDraftKeyToReplaceTheLiveEditor(): Unit = runBlocking {
+        Harness().use { h ->
+            val folder=java.nio.file.Files.createTempDirectory("draft-overlay")
+            val context=DesktopPluginContext(DesktopPluginStore(folder))
+            val previousLoader=coil3.SingletonImageLoader.get(coil3.PlatformContext.INSTANCE)
+            coil3.SingletonImageLoader.reset()
+            val images=DesktopApplicationImageLoader(
+                com.bilipai.desktop.data.DesktopRepository(com.bilipai.desktop.data.DesktopSessionStore.temporary()),
+                folder.resolve("images"), { h.account })
+            val port=java.lang.reflect.Proxy.newProxyInstance(DesktopCommentPlatform::class.java.classLoader,
+                arrayOf(DesktopCommentPlatform::class.java)) { proxy, method, args ->
+                when(method.name) {
+                    "equals" -> proxy === args?.get(0)
+                    "hashCode" -> System.identityHashCode(proxy)
+                    "toString" -> "DraftEditorNoNetworkPort"
+                    "getContext" -> context
+                    "isOwned" -> h.account
+                    else -> error("Unexpected editor port: ${method.name}")
+                }
+            } as DesktopCommentPlatform
+            val scheduler=TestCoroutineScheduler()
+            val errors=mutableListOf<Throwable>()
+            val scope=CoroutineScope(SupervisorJob()+UnconfinedTestDispatcher(scheduler)+CoroutineExceptionHandler { _,e -> errors+=e })
+            val presentation=h.presentation()
+            val first=h.open(presentation)
+            h.vm.changeCommentDraft(first,"first",emptyList(),false,5,1)
+            val active=mutableStateOf(first)
+            val graphics=java.awt.image.BufferedImage(1,1,java.awt.image.BufferedImage.TYPE_INT_ARGB).createGraphics()
+            val configuration=graphics.deviceConfiguration
+            graphics.dispose()
+            val swingRoot=object:javax.swing.JPanel() {
+                override fun getGraphicsConfiguration()=configuration
+            }
+            val interop=androidx.compose.ui.viewinterop.SwingInteropContainer(swingRoot, true, {})
+            val snapshotConstructor = Class.forName("com.android.purebilibili.feature.video.screen.DesktopOriginalHolderCommentInputSnapshot")
+                .declaredConstructors.single().apply { isAccessible = true }
+            val actionsConstructor = Class.forName("com.android.purebilibili.feature.video.screen.DesktopOriginalHolderCommentInputActions")
+                .declaredConstructors.single().apply { isAccessible = true }
+            val contentMethod = Class.forName("com.android.purebilibili.feature.video.screen.VideoDetailInputOverlayAdapterKt")
+                .declaredMethods.single { it.name == "VideoDetailCommentInputOverlayContent" }.apply { isAccessible = true }
+            val scene=ImageComposeScene(900,800,Density(1f),coroutineContext=scope.coroutineContext) {
+                MaterialTheme {
+                    CompositionLocalProvider(LocalDesktopCommentBindings provides port, LocalDesktopApplicationImageLoader provides images) {
+                        // No caller key: the migrated content must apply snapshot.draftKey itself.
+                        interop {
+                            val stamp = active.value
+                            val drafts by h.vm.composerDrafts.collectAsState()
+                            val draft = drafts.comments[if (stamp === first) 0L else 99L] ?: CommentComposerDraft()
+                            val snapshot = snapshotConstructor.newInstance(true, stamp.toString(), false, null,
+                                "comment", true, emptyList<Any>(), emptyList<Any>(), false, null, draft)
+                            val update: (String, List<String>, Boolean, Int, Int) -> Unit = { text, images, sync, begin, end ->
+                                h.vm.changeCommentDraft(stamp, text, images, sync, begin, end)
+                            }
+                            val actions = actionsConstructor.newInstance(({} as () -> Unit),
+                                ({ _: String -> } as (String) -> Unit), update,
+                                ({ _: String, _: List<String>, _: Boolean -> } as (String, List<String>, Boolean) -> Unit))
+                            contentMethod.invoke(null, snapshot, actions, ({ 0L } as () -> Long), currentComposer, 0)
+                        }
+                    }
+                }
+            }
+            fun settle() { repeat(30) {
+                javax.swing.SwingUtilities.invokeAndWait {
+                    interop.postponingExecutingScheduledUpdates {
+                        Snapshot.sendApplyNotifications();scheduler.advanceTimeBy(16);scheduler.runCurrent()
+                        scene.render(scheduler.currentTime*1_000_000L).close();scheduler.runCurrent()
+                    }
+                }
+                assertTrue(errors.isEmpty(),errors.toString())
+            } }
+            fun nodes(n:SemanticsNode):List<SemanticsNode> = listOf(n)+n.children.flatMap(::nodes)
+            fun editor()=scene.semanticsOwners.flatMap { nodes(it.unmergedRootSemanticsNode) }
+                .single { it.config.getOrNull(SemanticsActions.SetText)!=null }
+            try {
+                settle()
+                fun components(c:java.awt.Component):List<java.awt.Component> =
+                    listOf(c)+(if(c is java.awt.Container)c.components.flatMap(::components) else emptyList())
+                val native=components(swingRoot).filterIsInstance<DesktopInlineEmotePane>().single()
+                val lateNativeChange=native.valueChanged
+                val stale=assertNotNull(editor().config[SemanticsActions.SetText].action)
+                javax.swing.SwingUtilities.invokeAndWait { assertTrue(stale(AnnotatedString("edited first"))) };settle()
+                assertEquals("edited first",h.vm.composerDrafts.value.comments[0L]?.text)
+                h.vm.dismissCommentComposer(first)
+                val second=h.open(presentation,ReplyItem(rpid=99,root=90))
+                h.vm.changeCommentDraft(second,"second",emptyList(),false,6,2)
+                active.value=second;settle()
+                assertTrue(editor().config[SemanticsProperties.EditableText].text=="second")
+                javax.swing.SwingUtilities.invokeAndWait {
+                    stale(AnnotatedString("late callback"))
+                    // Capture the real callback before disposal; do not rely only on the retired Swing widget.
+                    lateNativeChange(TextFieldValue("late native callback",TextRange(2)))
+                };settle()
+                assertEquals("edited first",h.vm.composerDrafts.value.comments[0L]?.text)
+                assertEquals("second",h.vm.composerDrafts.value.comments[99L]?.text)
+                val current=assertNotNull(editor().config[SemanticsActions.SetText].action)
+                javax.swing.SwingUtilities.invokeAndWait { assertTrue(current(AnnotatedString("current"))) };settle()
+                assertEquals("current",h.vm.composerDrafts.value.comments[99L]?.text)
+                assertSame(second,h.vm.commentStamp.value)
+                assertTrue(h.adds.isEmpty());assertTrue(h.uploads.isEmpty());assertTrue(h.failures.isEmpty())
+            } finally { scene.close();scope.cancel();scheduler.runCurrent();javax.swing.SwingUtilities.invokeAndWait { interop.dispose() };presentation.close();images.close();coil3.SingletonImageLoader.setUnsafe(previousLoader);folder.toFile().deleteRecursively() }
+        }
+    }
+
 }
