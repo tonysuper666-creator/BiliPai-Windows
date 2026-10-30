@@ -319,6 +319,7 @@ val appCoreLaterSteps: Map<String, String> = mapOf(
 val migratedVideoFeaturePaths = setOf(
     "com/android/purebilibili/feature/video/ui/overlay/CenterPlaybackControl.kt",
     "com/android/purebilibili/feature/video/ui/overlay/NextWatchOverlay.kt",
+    "com/android/purebilibili/feature/video/ui/components/glass/ChapterListPanel.kt",
     "com/android/purebilibili/feature/video/viewmodel/VideoSubjectSnapshot.kt",
     "com/android/purebilibili/feature/video/viewmodel/VideoSupplementViewModel.kt",
     "com/android/purebilibili/feature/video/ui/components/CollectionRow.kt",
@@ -2888,6 +2889,7 @@ val prepareJsWorkerResources = if (hostIsWindows) tasks.register<Sync>("prepareJ
 
 // Generated legacy files that re-declare migrated upstream declarations under another file name.
 val upstreamOwnedGeneratedCopies = setOf(
+    "upstream/app/src/main/java/com/android/purebilibili/feature/video/ui/components/ChapterListPanel.kt",
     "original-video-state-core/com/android/purebilibili/feature/video/viewmodel/DesktopOriginalVideoSupplementViewModel.kt",
     "original-video-player-full-controls/com/android/purebilibili/feature/video/ui/overlay/NextWatchOverlay.kt",
     "video-share-consent/com/android/purebilibili/feature/video/share/VideoShareMoreTargetsSheet.kt",
