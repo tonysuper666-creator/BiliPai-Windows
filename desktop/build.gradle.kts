@@ -96,7 +96,7 @@ val revisionNeutralSourceImportContextMatches =
     revisionNeutralSourceImportRoots.none { file("tools/$it").exists() } && revisionNeutralSourceImportShadowFiles.isEmpty
 // Pin the whole Gradle recipe, including canonical helpers and later wiring.
 // Mask exactly this self-digest assignment; raw build bytes remain task inputs.
-val revisionNeutralSourceGradleRecipeSha256 = "540b50a2851b8ae1c4dd3a50ae7f9c5f9ead97b0e652bb46239b36b046005f04"
+val revisionNeutralSourceGradleRecipeSha256 = "f7d773b075b2adcfb9e52692b4d580c5a39303847213038d1ebcb2117e558fdf"
 val revisionNeutralSourceGradleRecipeMatches = runCatching {
     val recipe = file("build.gradle.kts").readText(Charsets.UTF_8).replace("\r\n", "\n")
     val ownPin = "val revisionNeutralSourceGradleRecipeSha256 = \"$revisionNeutralSourceGradleRecipeSha256\""
@@ -331,10 +331,12 @@ val migratedAppM4dPaths: Set<String> = migratedAppM4dAreas.asSequence().flatMap 
     .filter { path -> path.removePrefix("com/android/purebilibili/") !in appM4dLaterSteps }
     .toSortedSet()
 // Single files of not yet migrated areas that a migrated file reads in their current form (TON-1107: ProfileScreen;
-// TON-1108: SpaceScreen's grid column preference, its settings writes go to LocalDesktopFeedGridColumnSettings).
+// TON-1108: SpaceScreen's grid column preference, its settings writes go to LocalDesktopFeedGridColumnSettings;
+// TON-1109: the message feed pages' MessageManagementRepository, built per message page child over its gated services).
 val migratedAppSingleFiles: Set<String> = setOf(
     "com/android/purebilibili/feature/home/components/cards/HorizontalVideoCardLayoutPolicy.kt",
     "com/android/purebilibili/feature/home/FeedGridColumnPreference.kt",
+    "com/android/purebilibili/data/repository/MessageManagementRepository.kt",
 )
 val migratedAppPaths: Set<String> = migratedAppCorePaths + migratedAppM4dPaths + migratedAppSingleFiles
 val migratedUpstreamRelativePaths = migratedWholeModulePaths + migratedAppPaths + setOf(

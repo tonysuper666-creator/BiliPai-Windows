@@ -83,7 +83,11 @@ class DesktopCommunityRepository(private val repository: DesktopRepository,
                 val response = ownedApi.getVideoInfo(bvid)
                 if (response.code != 0) error(response.message)
                 requireNotNull(response.data) { "视频信息为空" }
-            } })
+            } },
+            com.android.purebilibili.data.repository.MessageManagementRepository(ownedApi, ownedMessages, { owner.mid }, owner::csrf) {
+                // The private-message emote panel still runs on its legacy copy (later-steps.tsv); nothing reads this yet.
+                Result.failure(UnsupportedOperationException("私信表情面板尚未接入桌面消息页"))
+            })
     }
 
 

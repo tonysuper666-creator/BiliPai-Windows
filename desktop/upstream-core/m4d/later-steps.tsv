@@ -10,30 +10,23 @@ feature/login/LoginScreen.kt	编译不过（21 处）：Cannot infer type for ty
 feature/login/LoginViewModel.kt	编译不过（43 处）：Unresolved reference. None of the following candid×16；未解析 Bitmap×7；Cannot infer type for type parameter '_'. Specify ×7；等对应桌面替身或桌面实现
 feature/login/OfficialQrAuthorizationContent.kt	编译不过（1 处）：未解析 BiliPaiTransferScanner×1；等对应桌面替身或桌面实现
 feature/login/OfficialQrAuthorizationViewModel.kt	桌面构造函数带 DesktopProfileEnvironment（请求经 Root 门控）；上游无参。登录流程整体迁移时一起处理（需求 2）
-feature/message/ChatEmotePanel.kt	编译不过（1 处）：No parameter with name '_' found.×1；等对应桌面替身或桌面实现
-feature/message/ChatScreen.kt	编译不过（20 处）：未解析 Intent×3；未解析 rememberLauncherForActivityResult×2；未解析 result×2；等对应桌面替身或桌面实现
-feature/message/ChatSettingsScreen.kt	编译不过（3 处）：未解析 isPinned×3；等对应桌面替身或桌面实现
-feature/message/ChatViewModel.kt	编译不过（87 处）：Cannot infer type for type parameter '_'. Specify ×20；未解析 MessageRepository×14；Argument type mismatch: actual type is '_', but '_×10；等对应桌面替身或桌面实现
-feature/message/InboxScreen.kt	编译不过（49 处）：Cannot infer type for type parameter '_'. Specify ×11；未解析 url×5；未解析 type×4；等对应桌面替身或桌面实现
-feature/message/InboxViewModel.kt	编译不过（86 处）：Cannot infer type for type parameter '_'. Specify ×17；未解析 item×12；未解析 ImSession×7；等对应桌面替身或桌面实现
-feature/message/MessageAuxiliaryPages.kt	编译不过（95 处）：Cannot infer type for type parameter '_'. Specify ×24；未解析 MessageImRepository×5；未解析 title×5；等对应桌面替身或桌面实现
-feature/message/MessageCenterPolicy.kt	编译不过（2 处）：Overload resolution ambiguity between candidates:×2；等对应桌面替身或桌面实现
-feature/message/MessageCenterScreen.kt	编译不过（2 处）：No parameter with name '_' found.×2；等对应桌面替身或桌面实现
-feature/message/feed/AtMeScreen.kt	编译不过（50 处）：Cannot infer type for type parameter '_'. Specify ×12；未解析 cursor×11；Overload resolution ambiguity between candidates:×7；等对应桌面替身或桌面实现
-feature/message/feed/LikeDetailScreen.kt	编译不过（18 处）：Overload resolution ambiguity between candidates:×5；Function invocation '_' expected.×4；未解析 MessageManagementRepository×2；等对应桌面替身或桌面实现
-feature/message/feed/LikeMeScreen.kt	编译不过（64 处）：未解析 total×17；Cannot infer type for type parameter '_'. Specify ×16；Overload resolution ambiguity between candidates:×10；等对应桌面替身或桌面实现
-feature/message/feed/MessageFeedCommon.kt	编译不过（4 处）：Overload resolution ambiguity between candidates:×2；@Composable invocations can only happen from the c×2；等对应桌面替身或桌面实现
-feature/message/feed/ReplyMeScreen.kt	编译不过（55 处）：Cannot infer type for type parameter '_'. Specify ×15；未解析 cursor×11；Overload resolution ambiguity between candidates:×8；等对应桌面替身或桌面实现
-feature/message/feed/SystemNoticeScreen.kt	编译不过（40 处）：Cannot infer type for type parameter '_'. Specify ×18；未解析 MessageRepository×6；未解析 cursor×6；等对应桌面替身或桌面实现
-feature/message/notification/MessageNotificationBootReceiver.kt	编译不过（9 处）：未解析 Intent×3；未解析 BroadcastReceiver×2；未解析 core×1；等对应桌面替身或桌面实现
-feature/message/notification/MessageNotificationChecker.kt	编译不过（9 处）：未解析 MessageRepository×4；Cannot infer type for type parameter '_'. Specify ×3；Return type of '_' is not a subtype of the return ×1；等对应桌面替身或桌面实现
-feature/message/notification/MessageNotificationNotifier.kt	编译不过（103 处）：Cannot infer type for type parameter '_'. Specify ×16；未解析 it×12；未解析 NotificationManager×7；等对应桌面替身或桌面实现
-feature/message/notification/MessageNotificationProcess.kt	编译不过（12 处）：未解析 app×2；未解析 Process×1；未解析 Application×1；等对应桌面替身或桌面实现
-feature/message/notification/MessageNotificationService.kt	编译不过（80 处）：Argument type mismatch: actual type is '_', but '_×11；未解析 Intent×10；未解析 BatteryManager×4；等对应桌面替身或桌面实现
-feature/message/notification/MessageNotificationSettingsStore.kt	上游用 Context + DataStore 读写设置；桌面通知设置走 Root 门控的 DesktopMessageNotificationContext（退役的 Root 不能再写）。需要把该上下文做成带 DataStore 归属的 Context 后再迁（消息提醒，验收项 4）
-feature/message/notification/MessageNotificationStateStore.kt	编译不过（2 处）：未解析 Settings×2；等对应桌面替身或桌面实现
-feature/message/notification/MessageNotificationSync.kt	编译不过（4 处）：未解析 stopService×2；未解析 core×1；未解析 ContextCompat×1；等对应桌面替身或桌面实现
-feature/message/notification/MessageNotificationWorker.kt	编译不过（24 处）：未解析 work×8；Cannot infer type for type parameter '_'. Specify ×2；No value passed for parameter '_'.×2；等对应桌面替身或桌面实现
+feature/message/ChatEmotePanel.kt	私信，TON-1120：随 ChatScreen 迁移；表情包走 MessageManagementRepository.emotes，桌面接真实请求后再迁
+feature/message/ChatScreen.kt	私信，TON-1120：随 ChatViewModel 迁移；图片选择走桌面文件选择器（rememberLauncherForActivityResult/Intent），聊天面板保留与更新安装拦截保持桌面行为
+feature/message/ChatSettingsScreen.kt	私信，TON-1120：读 IM 会话的置顶状态（ImSession.isPinned），随 InboxViewModel 迁移
+feature/message/ChatViewModel.kt	私信，TON-1120：上游收件箱与聊天改走 gRPC IM（MessageImRepository，object，全局 BiliGrpcClient），桌面先要一条按消息页子生命周期门控的 IM 通道；发送、撤回、已读回执沿用 DesktopOriginalMessageRepository 的门控请求
+feature/message/InboxScreen.kt	私信，TON-1120：上游收件箱与聊天改走 gRPC IM（MessageImRepository，object，全局 BiliGrpcClient），桌面先要一条按消息页子生命周期门控的 IM 通道；会话置顶、清未读、分页都在 IM 上
+feature/message/InboxViewModel.kt	私信，TON-1120：上游收件箱与聊天改走 gRPC IM（MessageImRepository，object，全局 BiliGrpcClient），桌面先要一条按消息页子生命周期门控的 IM 通道
+feature/message/MessageAuxiliaryPages.kt	私信，TON-1120：上游收件箱与聊天改走 gRPC IM（MessageImRepository，object，全局 BiliGrpcClient），桌面先要一条按消息页子生命周期门控的 IM 通道；屏蔽词与 IM 设置在 IM 上，MessageCenterPreferences 走 Context + DataStore。迁入时删掉 transition/src 下的 MessageConfirmDialog.kt
+feature/message/MessageCenterScreen.kt	私信，TON-1120：双栏壳直接调用 InboxScreen/ChatScreen 的新参数（onOpenLink），随两者一起迁移
+feature/message/notification/MessageNotificationBootReceiver.kt	消息提醒，TON-1121：Android 开机广播（BroadcastReceiver/Intent），桌面做不到退出后提醒，需替换为明确的桌面实现或不支持说明
+feature/message/notification/MessageNotificationChecker.kt	消息提醒，TON-1121：读私信侧 MessageRepository 与 IM 数据，等 TON-1120
+feature/message/notification/MessageNotificationNotifier.kt	消息提醒，TON-1121：Android NotificationManager/NotificationCompat/PendingIntent，桌面走 DesktopWindowsMessageNotifications（Windows 通知中心）
+feature/message/notification/MessageNotificationProcess.kt	消息提醒，TON-1121：Android Application/进程判定，桌面需替换
+feature/message/notification/MessageNotificationService.kt	消息提醒，TON-1121：Android 前台服务与 BatteryManager，桌面需替换为客户端开着时的轮询
+feature/message/notification/MessageNotificationSettingsStore.kt	消息提醒，TON-1121：上游用 Context + DataStore 读写设置；桌面通知设置走 Root 门控的 DesktopMessageNotificationContext（退役的 Root 不能再写），需把该上下文做成带 DataStore 归属的 Context 后再迁
+feature/message/notification/MessageNotificationStateStore.kt	消息提醒，TON-1121：上游读 Android Settings，与 SettingsStore 一起改到带 DataStore 归属的 Context
+feature/message/notification/MessageNotificationSync.kt	消息提醒，TON-1121：Android 服务启停（stopService/ContextCompat），随 Service 替换
+feature/message/notification/MessageNotificationWorker.kt	消息提醒，TON-1121：WorkManager 定时任务，桌面走持久任务
 feature/plugin/AdFilterInsightPolicy.kt	旧 AdFilterPlugin 副本和桌面插件页按 DesktopPluginContext 调用这个存储；随 AdFilterPlugin 一起迁
 feature/plugin/AdFilterPlugin.kt	编译不过（9 处）：None of the following candidates is applicable:×3；未解析 data×3；未解析 build×3；等对应桌面替身或桌面实现
 feature/plugin/Anime4KPlugin.kt	编译不过（7 处）：Argument type mismatch: actual type is '_', but '_×6；Assignment type mismatch: actual type is '_', but ×1；等对应桌面替身或桌面实现

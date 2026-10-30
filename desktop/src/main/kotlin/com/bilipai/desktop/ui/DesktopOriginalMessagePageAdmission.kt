@@ -42,6 +42,10 @@ internal class DesktopMessagePageAdmission(
     } catch (_: CancellationException) { false }
     lateinit var requests: DesktopOriginalMessageRepository
         internal set
+    lateinit var management: com.android.purebilibili.data.repository.MessageManagementRepository
+        internal set
+    /** The launcher the original view models' account-scoped requests run on, over this child lifetime. */
+    fun requestLauncher() = DesktopMessageRequestLauncher(this)
 
     fun isOwned(): Boolean = live.get() && lifetime.isActive && retained() && repository.sessionEpoch == epoch && repository.account.value?.mid == mid
     private fun <T> admit(block: () -> T): T = repository.withProfileAccountAdmission(epoch, mid, ::isOwned, commitEntry) {
@@ -171,6 +175,13 @@ internal class DesktopMessagePageAdmission(
         retire()
         return withContext(NonCancellable) { withTimeoutOrNull(timeoutMillis) { lifetime.join(); true } ?: false }
     }
+}
+
+/** This child belongs to one account: an account change retires the Root entry and with it this child, so the
+ * original in-place account switch has nothing to observe here. Launches keep this child's caller permit. */
+internal class DesktopMessageRequestLauncher(private val owner: DesktopMessagePageAdmission) {
+    fun observe(onAccountChanged: () -> Unit): Job = Job().also { it.complete() }
+    fun launch(block: suspend CoroutineScope.() -> Unit): Job = owner.launch(block)
 }
 
 /** Selected Windows file only. No folder scans or persisted gallery grants. Original 15MiB cap. */

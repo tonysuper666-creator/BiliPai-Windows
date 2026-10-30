@@ -82,7 +82,7 @@ private class MessagePageTestFixture : AutoCloseable {
         community=DesktopCommunityRepository(repository,store)
         // MessagePageTestFixture transport ONLY: actual Community factory and protocol/body/settings are unchanged.
         community.javaClass.getDeclaredField("client").apply { isAccessible=true;set(community,transport) }
-        services=community.originalMessagePages(admission);admission.requests=services.requests
+        services=community.originalMessagePages(admission);admission.requests=services.requests;admission.management=services.management
     }
     suspend fun pageOwner():DesktopOriginalMessagePageOwner {
         val lifecycleOwner=object:androidx.lifecycle.LifecycleOwner {
@@ -134,7 +134,8 @@ private class MessagePageTestFixture : AutoCloseable {
             "/x/sys-msg/query_notify_list","/x/sys-msg/update_cursor","/x/msgfeed/del","/x/msgfeed/notice","/x/dynamic/feed/draw/upload_bfs",
             "/web_im/v1/web_im/send_msg","/session_svr/v1/session_svr/update_ack","/session_svr/v1/session_svr/set_top","/session_svr/v1/session_svr/remove_session",
             "/link_setting/v1/link_setting/set_msg_dnd","/link_setting/v1/link_setting/set_push_ss","/session_svr/v1/session_svr/update_intercept",
-            "/session_svr/v1/session_svr/batch_update_dustbin_ack","/session_svr/v1/session_svr/batch_rm_dustbin","/x/web-interface/card","/x/web-interface/view")
+            "/session_svr/v1/session_svr/batch_update_dustbin_ack","/session_svr/v1/session_svr/batch_rm_dustbin","/x/web-interface/card","/x/web-interface/view",
+            "/x/msgfeed/like_detail","/x/sys-msg/del_notify_list")
     }
 }
 private fun sessionsJson(items:List<Pair<Long,Long>>,more:Boolean) = buildJsonObject {
@@ -341,6 +342,46 @@ class DesktopOriginalMessagePagesTest {
         val notice=f.hits.first { it.path=="/x/msgfeed/notice" };check(notice.fields["notice_state"]=="0")
         check(listOf(delete,notice).all { it.fields["csrf"]=="synthetic-only-csrf" && it.fields["csrf_token"]=="synthetic-only-csrf" })
             }
+    }
+    @Test fun upstreamLikeDetailPagesByLastMidOverThisChildsGatedTransport(): Unit = runBlocking {
+        // TON-1109: upstream LikeDetailViewModel + MessageManagementRepository, built per message page child.
+        MessagePageTestFixture().use { f ->
+            f.respond={ hit->if(hit.path=="/x/msgfeed/like_detail") {
+                if(hit.query["pn"]=="1") MessagePageTestReply("""{"code":0,"data":{"page":{"is_end":false},"card":{"business":"视频","title":"Synthetic card"},"items":[{"user":{"mid":71,"nickname":"A"},"like_time":1700000000},{"user":{"mid":72,"nickname":"B"},"like_time":1700000001}]}}""")
+                else MessagePageTestReply("""{"code":0,"data":{"page":{"is_end":true},"items":[{"user":{"mid":73,"nickname":"C"},"like_time":1700000002}]}}""")
+            } else f.default(hit) }
+            val page=f.pageOwner();val vm=page.likeDetail(55)
+            check(page.likeDetail(55)===vm) { "The open like detail keeps its view model" }
+            vm.load(55);f.waitFor { !vm.uiState.value.loading && !vm.uiState.value.refreshing }
+            check(vm.uiState.value.card?.title=="Synthetic card" && vm.uiState.value.items.map { it.user?.mid }==listOf(71L,72L) && vm.uiState.value.hasMore)
+            vm.more();f.waitFor { !vm.uiState.value.loadingMore && vm.uiState.value.items.size==3 }
+            check(!vm.uiState.value.hasMore)
+            val pages=f.hits.filter { it.path=="/x/msgfeed/like_detail" }
+            check(pages.map { it.query["card_id"] to it.query["pn"] }==listOf("55" to "1","55" to "2"))
+            check(pages.last().query["last_mid"]=="72") { "More continues after the last loaded liker" }
+            check(page.likeDetail(56)!==vm) { "Another card opens its own view model" }
+        }
+    }
+    @Test fun upstreamSystemNoticeDeleteUsesThisChildsCsrfAndRemovesTheNotice(): Unit = runBlocking {
+        MessagePageTestFixture().use { f ->
+            val vm=SystemNoticeViewModel(f.admission);f.waitFor { !vm.uiState.value.isLoading && vm.uiState.value.items.isNotEmpty() }
+            vm.remove(4);f.waitFor { !vm.uiState.value.operationBusy }
+            check(vm.uiState.value.operationError==null) { "Delete error=${vm.uiState.value.operationError}" }
+            check(vm.uiState.value.items.none { it.id==4 })
+            val delete=f.hits.single { it.path=="/x/sys-msg/del_notify_list" }
+            check(delete.method=="POST" && delete.query["csrf"]=="synthetic-only-csrf")
+            val body=Json.parseToJsonElement(delete.rawBody.toString(Charsets.UTF_8)).jsonObject
+            check(body["ids"]?.jsonArray?.map { it.jsonPrimitive.long }==listOf(4L) && body["type"]?.jsonPrimitive?.int==4 && body["csrf"]?.jsonPrimitive?.content=="synthetic-only-csrf")
+        }
+    }
+    @Test fun retiredChildCannotSendAManagementRequest(): Unit = runBlocking {
+        MessagePageTestFixture().use { f ->
+            val vm=SystemNoticeViewModel(f.admission);f.waitFor { !vm.uiState.value.isLoading }
+            check(f.admission.retireAndJoin())
+            // A retired child rejects even the busy-state write: nothing is published or sent.
+            runCatching { vm.remove(4) };delay(200)
+            check(f.hits.none { it.path=="/x/sys-msg/del_notify_list" }) { "A retired message page must not delete for the account" }
+        }
     }
     @Test fun chatOriginalOrderingEmotesControlAndActualACK(): Unit = runBlocking {
         // Chat original ordering emotes control and actual ACK

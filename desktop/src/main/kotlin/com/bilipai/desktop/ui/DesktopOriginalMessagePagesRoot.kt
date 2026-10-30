@@ -21,7 +21,8 @@ import java.awt.EventQueue
 import java.nio.file.Files
 
 internal class DesktopMessagePageServices(val requests: DesktopOriginalMessageRepository,
-    val userInfo: suspend (Long) -> UserBasicInfo?, val videoInfo: suspend (String) -> Result<ViewInfo>)
+    val userInfo: suspend (Long) -> UserBasicInfo?, val videoInfo: suspend (String) -> Result<ViewInfo>,
+    val management: com.android.purebilibili.data.repository.MessageManagementRepository)
 
 internal val LocalDesktopMessagePageOwner = staticCompositionLocalOf<DesktopOriginalMessagePageOwner> {
     error("Full message pages require the actual retained Root entry")
@@ -107,12 +108,18 @@ internal class DesktopOriginalMessagePageOwner(private val repository: DesktopRe
     val atMe by lazy { AtMeViewModel(admission) }
     val likeMe by lazy { LikeMeViewModel(admission) }
     val systemNotice by lazy { SystemNoticeViewModel(admission) }
+    private var likeDetailSlot: Pair<Long, LikeDetailViewModel>? = null
+    /** The like detail page inside 收到的赞; one card at a time, like the original per-card ViewModel key. */
+    fun likeDetail(cardId: Long): LikeDetailViewModel = synchronized(chatsLock) {
+        likeDetailSlot?.takeIf { it.first == cardId }?.second
+            ?: LikeDetailViewModel(admission).also { likeDetailSlot = cardId to it }
+    }
     fun isOwned() = admission.isOwned()
     private fun createAdmission(owns:()->Boolean): DesktopMessagePageAdmission {
         lateinit var services:DesktopMessagePageServices
         val child=DesktopMessagePageAdmission(repository,epoch,mid,parent,owns,visible,commitEntry,
             { services.userInfo(it) }, { services.videoInfo(it) }, canBeginEditorWork, editorActivityChanged)
-        services=community.originalMessagePages(child);child.requests=services.requests
+        services=community.originalMessagePages(child);child.requests=services.requests;child.management=services.management
         return child
     }
     /** Existing retained slot is reusable while covered; new slots require Main/start admission. */
