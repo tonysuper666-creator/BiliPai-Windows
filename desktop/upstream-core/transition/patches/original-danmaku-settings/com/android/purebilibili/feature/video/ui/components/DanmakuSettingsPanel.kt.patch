@@ -11,6 +11,69 @@
      val isFullscreenStyle = isFullscreen
      // 横屏分区 Tab（基础/高级/屏蔽）；竖屏不分区，全部展示。
      var fullscreenActiveSection by remember { mutableIntStateOf(0) }
+@@ -769,7 +767,7 @@
+                             DanmakuSliderItem(
+                                 label = if (isFullscreenStyle) "字体" else "字体大小",
+                                 value = fontScale,
+-                                valueRange = 0.3f..2f,
++                                valueRange = com.android.purebilibili.core.store.normalizeDanmakuFontScale(0f)..com.android.purebilibili.core.store.normalizeDanmakuFontScale(Float.MAX_VALUE),
+                                 displayValue = { "${(it * 100).toInt()}%" },
+                                 onValueChange = onFontScaleChange,
+                                     onValuePreview = { next ->
+@@ -785,7 +783,7 @@
+                                 DanmakuSliderItem(
+                                     label = "滚动弹幕时长",
+                                     value = scrollDurationSeconds,
+-                                    valueRange = 2f..15f,
++                                    valueRange = (com.android.purebilibili.feature.video.danmaku.resolveDanmakuPinnedDurationMillis(0f) / 1000f)..(com.android.purebilibili.feature.video.danmaku.resolveDanmakuPinnedDurationMillis(Float.MAX_VALUE) / 1000f),
+                                     displayValue = { "${it.roundToInt()}s" },
+                                     onValueChange = onScrollDurationSecondsChange,
+                                     onValuePreview = { next ->
+@@ -800,7 +798,7 @@
+                                 DanmakuSliderItem(
+                                     label = "静态弹幕时长",
+                                     value = staticDurationSeconds,
+-                                    valueRange = 2f..15f,
++                                    valueRange = (com.android.purebilibili.feature.video.danmaku.resolveDanmakuPinnedDurationMillis(0f) / 1000f)..(com.android.purebilibili.feature.video.danmaku.resolveDanmakuPinnedDurationMillis(Float.MAX_VALUE) / 1000f),
+                                     displayValue = { "${it.roundToInt()}s" },
+                                     onValueChange = onStaticDurationSecondsChange,
+                                     onValuePreview = { next ->
+@@ -815,7 +813,7 @@
+                                 DanmakuSliderItem(
+                                     label = "弹幕行高",
+                                     value = lineHeight,
+-                                    valueRange = 0.8f..2.2f,
++                                    valueRange = com.android.purebilibili.feature.video.danmaku.resolveDanmakuLayerLineHeightPx(1f, 0f)..com.android.purebilibili.feature.video.danmaku.resolveDanmakuLayerLineHeightPx(1f, Float.MAX_VALUE),
+                                     displayValue = { String.format("%.1f", it) },
+                                     onValueChange = onLineHeightChange,
+                                     onValuePreview = { next ->
+@@ -921,7 +919,7 @@
+                                     DanmakuSliderItem(
+                                         label = "弹幕行高",
+                                         value = lineHeight,
+-                                        valueRange = 0.8f..2.2f,
++                                        valueRange = com.android.purebilibili.feature.video.danmaku.resolveDanmakuLayerLineHeightPx(1f, 0f)..com.android.purebilibili.feature.video.danmaku.resolveDanmakuLayerLineHeightPx(1f, Float.MAX_VALUE),
+                                         displayValue = { String.format("%.1f", it) },
+                                         onValueChange = onLineHeightChange,
+                                     onValuePreview = { next ->
+@@ -935,7 +933,7 @@
+                                     DanmakuSliderItem(
+                                         label = "滚动弹幕时长",
+                                         value = scrollDurationSeconds,
+-                                        valueRange = 2f..15f,
++                                        valueRange = (com.android.purebilibili.feature.video.danmaku.resolveDanmakuPinnedDurationMillis(0f) / 1000f)..(com.android.purebilibili.feature.video.danmaku.resolveDanmakuPinnedDurationMillis(Float.MAX_VALUE) / 1000f),
+                                         displayValue = { "${it.roundToInt()}s" },
+                                         onValueChange = onScrollDurationSecondsChange,
+                                     onValuePreview = { next ->
+@@ -950,7 +948,7 @@
+                                     DanmakuSliderItem(
+                                         label = "静态弹幕时长",
+                                         value = staticDurationSeconds,
+-                                        valueRange = 2f..15f,
++                                        valueRange = (com.android.purebilibili.feature.video.danmaku.resolveDanmakuPinnedDurationMillis(0f) / 1000f)..(com.android.purebilibili.feature.video.danmaku.resolveDanmakuPinnedDurationMillis(Float.MAX_VALUE) / 1000f),
+                                         displayValue = { "${it.roundToInt()}s" },
+                                         onValueChange = onStaticDurationSecondsChange,
+                                     onValuePreview = { next ->
 @@ -1333,9 +1331,7 @@
      val context = LocalContext.current
      val scope = rememberCoroutineScope()

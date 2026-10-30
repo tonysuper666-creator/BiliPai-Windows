@@ -317,6 +317,7 @@ val appCoreLaterSteps: Map<String, String> = mapOf(
 val migratedVideoFeaturePaths = setOf(
     "com/android/purebilibili/feature/video/screen/VideoDetailRouteCommentEffect.kt",
     "com/android/purebilibili/feature/video/ui/components/DanmakuSettingsSlider.kt",
+    "com/android/purebilibili/feature/video/danmaku/DanmakuConfig.kt",
     "com/android/purebilibili/feature/video/ui/components/DanmakuSettingsPanelAppearance.kt",
     "com/android/purebilibili/feature/video/ui/overlay/PlayerControlGlass.kt",
     "com/android/purebilibili/feature/video/ui/components/SubReplySheet.kt",
@@ -3825,6 +3826,7 @@ val appCoreUpstreamTestsNotRun: Map<String, String> = mapOf(
 // AudioBarReturnPolicyTest also needs MiniPlayerManager; PiliPlayerMenuPolicyTest needs Media3
 // track selection. Those two new upstream suites join with the playback-port migration.
 val migratedVideoFeatureTestPaths = setOf(
+    "com/android/purebilibili/feature/video/danmaku/DanmakuConfigPolicyTest.kt",
     "com/android/purebilibili/feature/video/ui/overlay/ViewPointSegmentBarPolicyTest.kt",
     "com/android/purebilibili/feature/video/ui/components/UpPreviewSheetPolicyTest.kt",
     "com/android/purebilibili/feature/video/screen/VideoNavigationCidPolicyTest.kt",
@@ -3948,6 +3950,7 @@ kotlin.sourceSets.named("test") {
 // Approved upstream test corrections are isolated from production patch outputs.
 // The complete LF-normalized source is pinned: even an edit outside a hunk needs review.
 val correctedVideoTestPaths = setOf(
+    "com/android/purebilibili/feature/video/danmaku/DanmakuConfigPolicyTest.kt",
     "com/android/purebilibili/feature/video/ui/overlay/ViewPointSegmentBarPolicyTest.kt",
     "com/android/purebilibili/feature/video/progress/PbpProgressPolicyTest.kt",
     "com/android/purebilibili/feature/video/ui/section/VideoInfoDisplayPolicyTest.kt",

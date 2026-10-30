@@ -1,0 +1,11 @@
+--- a/com/android/purebilibili/feature/video/ui/pager/PortraitVideoPager.kt
++++ b/com/android/purebilibili/feature/video/ui/pager/PortraitVideoPager.kt
+@@ -3929,7 +3929,7 @@
+ }
+ 
+ internal fun resolvePortraitDanmakuReadableFontScale(fontScale: Float): Float {
+-    return (fontScale * 1.18f).coerceIn(0.3f, 2.0f)
++    return com.android.purebilibili.core.store.normalizeDanmakuFontScale(fontScale * 1.18f)
+ }
+ 
+ 
