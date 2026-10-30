@@ -1,0 +1,40 @@
+--- a/com/android/purebilibili/feature/video/viewmodel/DesktopOriginalVideoSuccessExtensions.kt
++++ b/com/android/purebilibili/feature/video/viewmodel/DesktopOriginalVideoSuccessExtensions.kt
+@@ -2,24 +2,6 @@
+ import com.android.purebilibili.data.model.response.AiSummaryData
+ import com.android.purebilibili.data.model.response.VideoTag
+ import com.android.purebilibili.feature.video.note.VideoNoteUiState
+-data class VideoSupplementSeed(
+-    val aiSummary: AiSummaryData? = null,
+-    val videoNoteState: VideoNoteUiState = VideoNoteUiState(),
+-    val videoTags: List<VideoTag> = emptyList(),
+-    val onlineCount: String = "",
+-    val ownerFollowerCount: Int? = null,
+-    val ownerVideoCount: Int? = null
+-)
+-data class VideoSupplementUiState(
+-    val subject: VideoSubjectSnapshot? = null,
+-    val visible: Boolean = true,
+-    val aiSummary: AiSummaryData? = null,
+-    val videoNoteState: VideoNoteUiState = VideoNoteUiState(),
+-    val videoTags: List<VideoTag> = emptyList(),
+-    val onlineCount: String = "",
+-    val ownerFollowerCount: Int? = null,
+-    val ownerVideoCount: Int? = null
+-)
+ internal fun VideoPlaybackUiState.Success.toSubjectSnapshot(
+     generation: Long
+ ): VideoSubjectSnapshot = VideoSubjectSnapshot(
+@@ -82,12 +64,3 @@
+     )
+ }
+ 
+-internal fun VideoPlaybackUiState.Success.toSupplementSeed(): VideoSupplementSeed =
+-    VideoSupplementSeed(
+-        aiSummary = aiSummary,
+-        videoNoteState = videoNoteState,
+-        videoTags = videoTags,
+-        onlineCount = onlineCount,
+-        ownerFollowerCount = ownerFollowerCount,
+-        ownerVideoCount = ownerVideoCount
+-    )
