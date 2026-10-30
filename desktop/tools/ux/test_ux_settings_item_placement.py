@@ -18,6 +18,7 @@ carry a reason, and a replaced row names the desktop item that takes over.
 
 What is not proved. That a page really renders the item: the Windows fixtures judge that.
 """
+import os
 import re
 import sys
 import unittest
@@ -28,9 +29,13 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import ux_settings_model as sm  # noqa: E402
 import ux_source as source  # noqa: E402
 
-M4D = source.REPO / "desktop/upstream-core/m4d"
-SETTINGS = source.REPO / "app/src/main/java/com/android/purebilibili/feature/settings"
-HAPTIC = source.REPO / "design-system/src/main/java/com/android/purebilibili/core/ui/AppHapticSettings.kt"
+# The upstream files are the merged ones of the live checkout. run-tool-tests.py runs this suite inside a read point whose
+# app/ tree is the older legacy commit and passes the live checkout in BILIPAI_LIVE_ROOT.
+LIVE = Path(os.environ.get("BILIPAI_LIVE_ROOT") or source.REPO)
+M4D = LIVE / "desktop/upstream-core/m4d"
+SETTINGS = LIVE / "app/src/main/java/com/android/purebilibili/feature/settings"
+HAPTIC = LIVE / "design-system/src/main/java/com/android/purebilibili/core/ui/AppHapticSettings.kt"
+CATEGORY_POLICY = SETTINGS / "SettingsRootCategoryPolicy.kt"
 ITEM_DIRECTORY_KT = source.K / "settings/DesktopSettingsItemDirectory.kt"
 HANDLING = {"available", "hidden", "unavailable", "replaced"}
 # Groups whose upstream category has no rail category: the appearance pane holds them.
@@ -70,8 +75,20 @@ def upstream_targets():
     return re.findall(r"^\s+([A-Z_]+),?\s*$", body, re.M)
 
 
+def target_owner():
+    """{target: upstream category} read from the merged resolveSettingsRootCategoryForSearchTarget."""
+    text = CATEGORY_POLICY.read_text(encoding="utf-8")
+    start = text.index("internal fun resolveSettingsRootCategoryForSearchTarget(")
+    body = text[start:text.index("\n}\n", start)]
+    owner = {}
+    for targets, category in re.findall(r"((?:SettingsSearchTarget\.\w+,\s*)*SettingsSearchTarget\.\w+)\s*->\s*SettingsRootCategory\.(\w+)", body):
+        for target in re.findall(r"SettingsSearchTarget\.(\w+)", targets):
+            owner[target] = category
+    return owner
+
+
 def canonical_map():
-    text = sm.read(sm.VENDORED_CATEGORY_POLICY)
+    text = CATEGORY_POLICY.read_text(encoding="utf-8")
     start = text.index("internal fun canonicalSettingsRootCategory(")
     body = text[start:text.index("\n    }\n", start)]
     result = {}
@@ -85,7 +102,7 @@ class SettingsPlacementTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.canonical = canonical_map()
-        cls.owner = sm.vendored_category_policy()[1]
+        cls.owner = target_owner()
         cls.rail = sm.rail_categories(sm.read(sm.TREE_MODEL_KT))[0]
         cls.items = table("settings-item-placement.tsv")
         cls.targets = table("settings-target-placement.tsv")
