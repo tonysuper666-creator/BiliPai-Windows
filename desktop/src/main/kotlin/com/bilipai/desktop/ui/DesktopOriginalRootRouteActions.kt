@@ -102,6 +102,7 @@ internal fun desktopOriginalRootProfileNavigation(
     onFavoriteFolderClick = { id, mid, title -> commands.push(BiliPaiNavKey.SeasonSeriesDetail(
         type = "favorite", id = id, mid = mid, title = title)) },
     onFollowingClick = { mid -> commands.push(BiliPaiNavKey.Following(mid)) },
+    onFansClick = { mid -> commands.push(BiliPaiNavKey.Following(mid, fans = true)) },
     onDownloadClick = { commands.push(BiliPaiNavKey.DownloadList) },
     onWatchLaterClick = { commands.push(BiliPaiNavKey.WatchLater) },
     onInboxClick = { commands.push(BiliPaiNavKey.Inbox) },

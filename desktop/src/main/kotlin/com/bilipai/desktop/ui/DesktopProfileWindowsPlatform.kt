@@ -17,6 +17,7 @@ import javax.swing.filechooser.FileNameExtensionFilter
 
 private const val MAX_AVATAR_BYTES=20L*1024*1024
 private const val MAX_AVATAR_PIXELS=64L*1024*1024
+private val AVATAR_EXTENSIONS=listOf("jpg","jpeg","png","webp","bmp")
 
 /** Every capability/actor below is the real retained Root; no optional/default effect ports. */
 internal class DesktopWindowsProfilePlatform(
@@ -43,16 +44,54 @@ internal class DesktopWindowsProfilePlatform(
     override fun copyText(label:String,text:String) {
         EventQueue.invokeLater {if(owns() && scope.coroutineContext[Job]?.isActive==true)commit {if(!clipboard.copyText(text))actualFeedback("无法写入系统剪贴板，请稍后重试")}}
     }
-    override fun pickMedia(onSelected:(String?)->Unit) = pickVisualFile(false, onSelected)
-    override fun pickQrImage(onSelected:(String?)->Unit) = pickVisualFile(true, onSelected)
-    private fun pickVisualFile(qr:Boolean,onSelected:(String?)->Unit) {
+    override fun pickMedia(onSelected:(String?)->Unit) = pickVisualFile(PickerKind.MEDIA, onSelected)
+    override fun pickQrImage(onSelected:(String?)->Unit) = pickVisualFile(PickerKind.QR, onSelected)
+    /** The avatar uses the system's own open-file dialog (java.awt.FileDialog is the native common dialog on Windows). */
+    override fun pickAvatarImage(onSelected:(String?)->Unit) {
+        checkpoint()
+        scope.launch(Dispatchers.Swing) {
+            val pickerJob=currentCoroutineContext()[Job];checkpoint(pickerJob)
+            val dialog=when(window) {
+                is java.awt.Frame->java.awt.FileDialog(window,"选择头像图片",java.awt.FileDialog.LOAD)
+                is java.awt.Dialog->java.awt.FileDialog(window,"选择头像图片",java.awt.FileDialog.LOAD)
+                else->java.awt.FileDialog(null as java.awt.Frame?,"选择头像图片",java.awt.FileDialog.LOAD)
+            }.apply {
+                isMultipleMode=false
+                // Windows reads the filter from the file pattern; the name filter covers the other hosts.
+                file=AVATAR_EXTENSIONS.joinToString(";") {"*.$it"}
+                filenameFilter=java.io.FilenameFilter {_,name->name.substringAfterLast('.',"").lowercase() in AVATAR_EXTENSIONS}
+            }
+            val watcher=scope.launch(Dispatchers.Default) {
+                try {while(true){if(pickerJob?.isActive!=true || !owns())break;delay(50)}}
+                finally {EventQueue.invokeLater {dialog.dispose()}}
+            }
+            try {
+                dialog.isVisible=true
+                checkpoint(pickerJob)
+                val uri=dialog.files.firstOrNull()?.toPath()?.toAbsolutePath()?.normalize()?.toUri()?.toString()
+                if(!commit {checkpoint(pickerJob);onSelected(uri)})throw CancellationException("Profile picker result retired")
+            } finally {watcher.cancel();dialog.dispose()}
+        }
+    }
+    override fun mimeType(uri:String):String? = runCatching {java.nio.file.Files.probeContentType(java.nio.file.Path.of(java.net.URI(uri)))}.getOrNull()
+        ?: when(uri.substringAfterLast('.',"").lowercase()) {"gif"->"image/gif";"png"->"image/png";"jpg","jpeg"->"image/jpeg";"webp"->"image/webp";"bmp"->"image/bmp";else->null}
+    override fun openExternalUrl(url:String):Boolean {
+        checkpoint()
+        val target=runCatching {java.net.URI(url)}.getOrNull()?.takeIf {it.scheme=="https"} ?: return false
+        return runCatching {java.awt.Desktop.getDesktop().browse(target)}.isSuccess
+    }
+    private enum class PickerKind {MEDIA,QR}
+    private fun pickVisualFile(kind:PickerKind,onSelected:(String?)->Unit) {
         checkpoint()
         scope.launch(Dispatchers.Swing) {
             checkpoint(currentCoroutineContext()[Job]);val dialog=AtomicReference<JDialog?>()
             val chooser=object:JFileChooser() {
                 override fun createDialog(parent:java.awt.Component?):JDialog=super.createDialog(parent).also(dialog::set)
-            }.apply {dialogTitle=if(qr) "选择登录二维码图片" else "选择壁纸图片 / 视频";isMultiSelectionEnabled=false;fileSelectionMode=JFileChooser.FILES_ONLY
-                fileFilter=if(qr) FileNameExtensionFilter("二维码图片","jpg","jpeg","png","gif","webp","bmp") else FileNameExtensionFilter("图片 / 视频","jpg","jpeg","png","gif","webp","bmp","mp4","m4v","webm","mkv","mov","3gp")}
+            }.apply {dialogTitle=when(kind) {PickerKind.QR->"选择登录二维码图片";PickerKind.MEDIA->"选择壁纸图片 / 视频"};isMultiSelectionEnabled=false;fileSelectionMode=JFileChooser.FILES_ONLY
+                fileFilter=when(kind) {
+                    PickerKind.QR->FileNameExtensionFilter("二维码图片","jpg","jpeg","png","gif","webp","bmp")
+                    PickerKind.MEDIA->FileNameExtensionFilter("图片 / 视频","jpg","jpeg","png","gif","webp","bmp","mp4","m4v","webm","mkv","mov","3gp")
+                }}
             val pickerJob=currentCoroutineContext()[Job]
             val watcher=scope.launch(Dispatchers.Default) {
                 try {while(true){if(pickerJob?.isActive!=true || !owns())break;delay(50)}}

@@ -81,7 +81,11 @@ internal interface DesktopProfileAnalytics {
 }
 
 /** Actual Root window content size in DP, updated with physical DPI/window size changes. */
-internal data class DesktopProfileWindowConfiguration(val screenWidthDp: Int, val screenHeightDp: Int)
+internal data class DesktopProfileWindowConfiguration(val screenWidthDp: Int, val screenHeightDp: Int) {
+    /** Android Configuration.orientation of this window size. */
+    val orientation: Int get() = if (screenWidthDp > screenHeightDp) androidx.compose.ui.platform.Configuration.ORIENTATION_LANDSCAPE
+        else androidx.compose.ui.platform.Configuration.ORIENTATION_PORTRAIT
+}
 
 /** Physical file import/download/publication goes through existing Root file/gallery actors.
  * openOwnedDownload uses SAME owned Call.Factory; cancellation cancels its Call.
@@ -99,6 +103,12 @@ internal interface DesktopProfilePlatform {
     fun acquireSystemBars(control: Boolean, lightStatusBars: Boolean): AutoCloseable
     fun pickMedia(onSelected: (String?) -> Unit)
     fun pickQrImage(onSelected: (String?) -> Unit)
+    /** The Windows file dialog for a still avatar image (cancel reports null). */
+    fun pickAvatarImage(onSelected: (String?) -> Unit)
+    /** MIME type of a local file URI, or null when the system cannot tell. */
+    fun mimeType(uri: String): String?
+    /** Opens an https link in the default browser; false when the system refused it. */
+    fun openExternalUrl(url: String): Boolean
     suspend fun readQrImage(uri: String): java.awt.image.BufferedImage
     /** The encoded bytes of the local image file chosen for the account avatar. Fails with a message the page shows
      * (not a local file, missing, too large, not a decodable image); never returns empty bytes. */
@@ -185,6 +195,15 @@ internal val LocalDesktopProfileEnvironment = staticCompositionLocalOf<DesktopPr
     LocalDesktopProfileEnvironment.current.platform.configuration.collectAsState().value
 
 internal class DesktopProfileMediaPicker(private val launchActual: () -> Unit) { fun launch() = launchActual() }
+/** Upstream's PickVisualMedia.ImageOnly avatar picker: the Windows file dialog limited to still images. */
+@Composable internal fun rememberDesktopProfileAvatarPicker(onSelected: (String?) -> Unit): DesktopProfileMediaPicker {
+    val environment = LocalDesktopProfileEnvironment.current
+    val callback by rememberUpdatedState(onSelected)
+    return remember(environment) { DesktopProfileMediaPicker {
+        environment.ensureOwned()
+        environment.platform.pickAvatarImage { uri -> environment.commit { callback(uri) } }
+    } }
+}
 @Composable internal fun rememberDesktopProfileMediaPicker(onSelected: (String?) -> Unit): DesktopProfileMediaPicker {
     val environment = LocalDesktopProfileEnvironment.current
     val callback by rememberUpdatedState(onSelected)
@@ -207,6 +226,7 @@ internal class DesktopProfileNavigation(
     val onSubscriptionClick: () -> Unit,
     val onFavoriteFolderClick: (Long, Long, String) -> Unit,
     val onFollowingClick: (Long) -> Unit,
+    val onFansClick: (Long) -> Unit,
     val onDownloadClick: () -> Unit,
     val onWatchLaterClick: () -> Unit,
     val onInboxClick: () -> Unit,
@@ -283,14 +303,37 @@ internal class DesktopOriginalProfileBinding(val environment: DesktopProfileEnvi
     scrollToTopChannel: Channel<Unit>?,
 ) {
     CompositionLocalProvider(LocalDesktopProfileEnvironment provides binding.environment) {
-        ProfileScreen(binding.viewModel, isCurrentPage, accountSessionRefreshGeneration,
-            navigation.onBack, navigation.onGoToLogin, navigation.onLogoutSuccess,
-            navigation.onAccountSwitchSuccess, navigation.onSettingsClick, navigation.onSearchClick,
-            navigation.onHistoryClick, showHistoryService, navigation.onFavoriteClick,
-            navigation.onSubscriptionClick, navigation.onFavoriteFolderClick, navigation.onFollowingClick,
-            navigation.onDownloadClick, navigation.onWatchLaterClick, navigation.onInboxClick,
-            navigation.onVideoClick, navigation.onBangumiClick, navigation.onBangumiMoreClick,
-            skinBackgroundImagePath, skinSquaredBackgroundImagePath, skinVideoBackgroundPath,
-            skinVideoPlayMode, deferImmersiveRenderBudget, scrollToTopChannel)
+        ProfileScreen(
+            viewModel = binding.viewModel,
+            isCurrentPage = isCurrentPage,
+            accountSessionRefreshGeneration = accountSessionRefreshGeneration,
+            onBack = navigation.onBack,
+            onGoToLogin = navigation.onGoToLogin,
+            onLogoutSuccess = navigation.onLogoutSuccess,
+            onAccountSwitchSuccess = navigation.onAccountSwitchSuccess,
+            onSettingsClick = navigation.onSettingsClick,
+            // The coin/experience ledger page has no desktop destination yet: null hides upstream's entry.
+            onAccountLedgerClick = null,
+            onSearchClick = navigation.onSearchClick,
+            onHistoryClick = navigation.onHistoryClick,
+            showHistoryService = showHistoryService,
+            onFavoriteClick = navigation.onFavoriteClick,
+            onSubscriptionClick = navigation.onSubscriptionClick,
+            onFavoriteFolderClick = navigation.onFavoriteFolderClick,
+            onFollowingClick = navigation.onFollowingClick,
+            onFansClick = navigation.onFansClick,
+            onDownloadClick = navigation.onDownloadClick,
+            onWatchLaterClick = navigation.onWatchLaterClick,
+            onInboxClick = navigation.onInboxClick,
+            onVideoClick = navigation.onVideoClick,
+            onBangumiClick = navigation.onBangumiClick,
+            onBangumiMoreClick = navigation.onBangumiMoreClick,
+            skinBackgroundImagePath = skinBackgroundImagePath,
+            skinSquaredBackgroundImagePath = skinSquaredBackgroundImagePath,
+            skinVideoBackgroundPath = skinVideoBackgroundPath,
+            skinVideoPlayMode = skinVideoPlayMode,
+            deferImmersiveRenderBudget = deferImmersiveRenderBudget,
+            scrollToTopChannel = scrollToTopChannel,
+        )
     }
 }

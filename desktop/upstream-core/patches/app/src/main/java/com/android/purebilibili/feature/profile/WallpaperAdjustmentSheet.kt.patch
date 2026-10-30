@@ -1,0 +1,160 @@
+--- a/com/android/purebilibili/feature/profile/WallpaperAdjustmentSheet.kt
++++ b/com/android/purebilibili/feature/profile/WallpaperAdjustmentSheet.kt
+@@ -1,38 +1,39 @@
+ package com.android.purebilibili.feature.profile
++import com.bilipai.desktop.ui.LocalDesktopProfileEnvironment
++import com.bilipai.desktop.ui.rememberDesktopProfileMediaPicker
+ 
+ import com.android.purebilibili.core.ui.AppContentColors
+ 
+ import coil3.request.crossfade
+-import coil3.request.allowHardware
+ 
+ import com.android.purebilibili.core.ui.components.AppSegmentOption
+ import com.android.purebilibili.core.ui.components.AppThemeAdaptiveTabRow
+ import com.android.purebilibili.core.ui.components.AppText
+ 
+ import androidx.compose.foundation.background
+ import androidx.compose.foundation.border
+ import androidx.compose.foundation.clickable
+ import androidx.compose.foundation.layout.*
+ import androidx.compose.foundation.shape.RoundedCornerShape
+ import androidx.compose.material3.*
+ import androidx.compose.runtime.*
+ import androidx.compose.ui.Alignment
+ import androidx.compose.ui.Modifier
+ import androidx.compose.ui.draw.shadow
+ import androidx.compose.ui.graphics.Color
+ import androidx.compose.ui.graphics.Brush
+ import androidx.compose.ui.graphics.graphicsLayer
+ import androidx.compose.ui.layout.ContentScale
+-import androidx.compose.ui.platform.LocalContext
++import coil3.compose.LocalPlatformContext
+ import androidx.compose.ui.text.font.FontWeight
+ import androidx.compose.ui.unit.dp
+ import androidx.compose.ui.unit.sp
+ import androidx.compose.ui.unit.IntSize
+ import androidx.compose.ui.layout.onSizeChanged
+ import androidx.compose.foundation.gestures.detectTransformGestures
+ import androidx.compose.ui.input.pointer.pointerInput
+ import com.android.purebilibili.core.ui.wallpaper.ProfileWallpaperTransform
+ import com.android.purebilibili.core.ui.wallpaper.applyGestureToProfileWallpaperTransform
+ import com.android.purebilibili.core.ui.wallpaper.sanitizeProfileWallpaperTransform
+ import coil3.compose.AsyncImage
+ import coil3.request.ImageRequest
+@@ -46,31 +47,32 @@
+ import com.android.purebilibili.core.ui.ContainerLevel
+ import com.android.purebilibili.core.util.Logger
+ 
+ @OptIn(ExperimentalMaterial3Api::class)
+ @Composable
+ fun WallpaperAdjustmentSheet(
+     imageUri: String,
+     initialMobileBias: Float = 0f,
+     initialTabletBias: Float = 0f,
+     onSave: (mobileBias: Float, tabletBias: Float) -> Unit,
+     onDismiss: () -> Unit
+ ) {
+-    val context = LocalContext.current
++    val platform = LocalDesktopProfileEnvironment.current
++    val context = LocalPlatformContext.current
+     var previewLoaded by remember(imageUri) { mutableStateOf(false) }
+     var previewFailed by remember(imageUri) { mutableStateOf(false) }
+     val previewRequest = remember(context, imageUri) {
+         ImageRequest.Builder(context)
+             .data(imageUri)
+-            .allowHardware(false)
++            
+             .crossfade(true)
+             .build()
+     }
+     var selectedTab by remember { mutableIntStateOf(0) } // 0: Mobile, 1: Tablet
+     var mobileBias by remember { mutableFloatStateOf(initialMobileBias) }
+     var tabletBias by remember { mutableFloatStateOf(initialTabletBias) }
+ 
+     val currentBias = if (selectedTab == 0) mobileBias else tabletBias
+ 
+     // Bottom Sheet
+     AppModalBottomSheet(
+         onDismissRequest = onDismiss,
+@@ -152,25 +154,25 @@
+                             model = previewRequest,
+                             onLoading = {
+                                 previewLoaded = false
+                                 previewFailed = false
+                             },
+                             onSuccess = {
+                                 previewLoaded = true
+                                 previewFailed = false
+                             },
+                             onError = {
+                                 previewLoaded = false
+                                 previewFailed = true
+-                                Logger.w("WallpaperAdjustment", "Wallpaper preview failed", it.result.throwable)
++                                platform.platform.reportWallpaperPreviewFailure(it.result.throwable)
+                             },
+                             contentDescription = null,
+                             alignment = androidx.compose.ui.BiasAlignment(0f, currentBias),
+                             contentScale = ContentScale.Crop,
+                             modifier = Modifier.fillMaxSize()
+                         )
+ 
+                         // Fake UI Overlay to help context
+                         // Gradient Overlay
+                         Box(
+                             modifier = Modifier
+                                 .fillMaxWidth()
+@@ -363,25 +365,25 @@
+                                             panX = pan.x,
+                                             panY = pan.y,
+                                             zoomChange = zoom,
+                                             containerWidthPx = previewSize.width.toFloat(),
+                                             containerHeightPx = previewSize.height.toFloat()
+                                         )
+                                     )
+                                 }
+                             }
+                     ) {
+                         com.android.purebilibili.core.ui.wallpaper.WallpaperMedia(
+                             uri = imageUri,
+-                            imageModel = ImageRequest.Builder(LocalContext.current)
++                            imageModel = ImageRequest.Builder(LocalPlatformContext.current)
+                                 .data(imageUri)
+                                 .crossfade(true)
+                                 .build(),
+                             alignment = androidx.compose.ui.BiasAlignment(
+                                 currentTransform.offsetX,
+                                 currentTransform.offsetY
+                             ),
+                             modifier = Modifier
+                                 .fillMaxSize()
+                                 .graphicsLayer(
+                                     scaleX = currentTransform.scale,
+                                     scaleY = currentTransform.scale
+@@ -477,25 +479,25 @@
+     selectedTab: Int,
+     modifier: Modifier = Modifier,
+     onSelectedTabChange: (Int) -> Unit,
+ ) {
+     val options = remember {
+         listOf(
+             AppSegmentOption(0, "手机端"),
+             AppSegmentOption(1, "平板端"),
+         )
+     }
+     AppThemeAdaptiveTabRow(
+         // Glass indicator fills the measured slot; native geometry keeps its defaults.
+-        liquidGlassAdaptIndicatorToLabel = !com.android.purebilibili.core.ui.LocalAppThemeConfig.current.liquidGlassEnabled,
++        // Desktop: the tab row is still the home producer's copy (moves with M4b), which has no label-adapted indicator option.
+         role = com.android.purebilibili.core.ui.components.AppTabRowRole.SECONDARY,
+         options = options,
+         selectedValue = selectedTab,
+         onSelectionChange = onSelectedTabChange,
+         modifier = modifier.wrapContentWidth(Alignment.CenterHorizontally),
+         compactMiuixWhenTwoOptions = true,
+         height = 48.dp,
+         indicatorHeight = com.android.purebilibili.core.ui
+             .roundMatchedLiquidIndicatorHeightDp(48f).dp,
+         labelFontSize = com.android.purebilibili.core.ui.appTabLabelFontSize(),
+         dragSelectionEnabled = true,
+         tapPressRefractionEnabled = true,

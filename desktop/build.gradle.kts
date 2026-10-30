@@ -332,7 +332,11 @@ val migratedAppM4dPaths: Set<String> = migratedAppM4dAreas.asSequence().flatMap 
     .filter { it.isFile && it.extension == "kt" }.map { it.relativeTo(appJavaRoot).invariantSeparatorsPath }
     .filter { path -> path.removePrefix("com/android/purebilibili/") !in appM4dLaterSteps }
     .toSortedSet()
-val migratedAppPaths: Set<String> = migratedAppCorePaths + migratedAppM4dPaths
+// Single pure files of not yet migrated areas that a migrated file reads in their current form (TON-1107: ProfileScreen).
+val migratedAppSingleFiles: Set<String> = setOf(
+    "com/android/purebilibili/feature/home/components/cards/HorizontalVideoCardLayoutPolicy.kt",
+)
+val migratedAppPaths: Set<String> = migratedAppCorePaths + migratedAppM4dPaths + migratedAppSingleFiles
 val migratedUpstreamRelativePaths = migratedWholeModulePaths + migratedAppPaths + setOf(
     "com/android/purebilibili/core/network/AppSignUtils.kt",
     "com/android/purebilibili/core/network/WbiUtils.kt",
