@@ -11,6 +11,16 @@ internal class DesktopWindowsVideoFeedbackSource(
     val subject: VideoSubjectSnapshot,
 ) {
     init { require(accepted.request.bvid == subject.bvid && accepted.request.cid == subject.cid) }
+
+    companion object {
+        fun matches(accepted: DesktopOriginalVideoAcceptedPublication, subject: VideoSubjectSnapshot): Boolean =
+            accepted.request.bvid == subject.bvid && accepted.request.cid == subject.cid
+
+        // Native publication and engagement state are separate observable flows.
+        // Their transient mismatch is a disabled presentation, not a fatal error.
+        fun capture(accepted: DesktopOriginalVideoAcceptedPublication, subject: VideoSubjectSnapshot): DesktopWindowsVideoFeedbackSource? =
+            if (matches(accepted, subject)) DesktopWindowsVideoFeedbackSource(accepted, subject) else null
+    }
 }
 
 /** Published together with the original confirmed per-channel state. The
