@@ -1,6 +1,7 @@
 Upstream-source-sha256: 3f21dd0fdccc0ba71aaf160edc96cccf53bd82cb9e2134dcf781a7981f32630e
-Reason: 3b4dc48f9 之后 onPrimary 取 dynamicColorScheme(seed = 控制色) 的 onPrimary；ThemeModeRoleOverrides 的第四项 #007AFF 才是控制色种子。
-第 120 行改成与同一次调用（TonalSpot / SPEC_2025 / Contrast.Default）的 onPrimary 比较，并把 light.primary 钉成该 scheme 的 primary；明度比较、dark.onPrimary != Black、primaryFixed 与对比度 >= 3 保留，生产不动。
+Reason: 3b4dc48f9 之后 onPrimary 取 dynamicColorScheme(seed = 控制色) 的 onPrimary；第 120 行改成与同一次调用比较。
+primaryFixed 由明暗各自的 dynamicColorScheme(isDark) 决定，不再要求两边相等：删掉 light/dark 相等断言，改为分别钉 controlScheme 与 darkControlScheme 的 primaryFixed，不钉具体色。
+明度、dark.onPrimary != Black、对比度 >= 3 保留，生产不动。
 
 --- a/app/src/test/java/com/android/purebilibili/core/theme/ThemeRoleOverridePolicyTest.kt
 +++ b/app/src/test/java/com/android/purebilibili/core/theme/ThemeRoleOverridePolicyTest.kt
@@ -15,7 +16,7 @@ Reason: 3b4dc48f9 之后 onPrimary 取 dynamicColorScheme(seed = 控制色) 的 
  import kotlin.test.Test
  import kotlin.test.assertEquals
  import kotlin.test.assertFalse
-@@ -117,7 +121,16 @@
+@@ -117,12 +121,30 @@
          val light = applyThemeRoleOverrides(lightColorScheme(), overrides, darkTheme = false)
          val dark = applyThemeRoleOverrides(darkColorScheme(), overrides, darkTheme = true)
  
@@ -33,3 +34,18 @@ Reason: 3b4dc48f9 之后 onPrimary 取 dynamicColorScheme(seed = 控制色) 的 
          assertTrue(light.primary.luminance() < light.onPrimary.luminance())
          assertTrue(dark.primary.luminance() > dark.onPrimary.luminance())
          assertTrue(dark.onPrimary != Color.Black)
+         assertTrue(light.primary != dark.primary)
+-        assertEquals(light.primaryFixed, dark.primaryFixed)
++        // 明暗各走一次 dynamicColorScheme，primaryFixed 可以不同；各自钉自己的生成结果。
++        val darkControlScheme = dynamicColorScheme(
++            seedColor = Color(0xFF007AFF),
++            isDark = true,
++            style = PaletteStyle.TonalSpot,
++            specVersion = resolveMaterialPaletteSpec(PaletteStyle.TonalSpot, ColorSpec.SpecVersion.SPEC_2025),
++            contrastLevel = Contrast.Default.value,
++        )
++        assertEquals(controlScheme.primaryFixed, light.primaryFixed)
++        assertEquals(darkControlScheme.primaryFixed, dark.primaryFixed)
+         for (scheme in listOf(light, dark)) {
+             assertTrue(themeRoleContrastRatio(
+                 formatMd3CustomColorHex(scheme.onPrimary), formatMd3CustomColorHex(scheme.primary)

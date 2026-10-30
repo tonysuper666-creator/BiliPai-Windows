@@ -20,6 +20,60 @@ SELECTED = ['Theme.kt', 'ThemeRoleOverridePolicy.kt', 'WallpaperPaletteOverrides
     'PlaybackNotificationColorPolicy.kt', 'AppearanceThemeSegmentPolicy.kt', 'SettingsManager.kt', 'AppSegmentedControl.kt']
 LICENSES = ['flex_seed_scheme.LICENSE', 'material_color_utilities.LICENSE']
 
+# v043 前进后的端点测试仍按「自定义色直接进 primary」写。MATERIAL3 保持这个契约；
+# MIUIX 走 createMiuixMaterialBridge / resolveMiuixColorsFromMaterialBridge，
+# primary、onPrimary、secondaryContainer 都取自桥接色板，不再透传自定义色。
+ENDPOINT_TEST_EDITS = (
+    ('import com.android.purebilibili.core.store.AppThemeSettings',
+     'import com.bilipai.desktop.appearance.DesktopThemeSettings as AppThemeSettings'),
+    ("""                assertEquals(accent, endpoint.material.primary)
+                assertEquals(accent, endpoint.miuix.primary)
+                // A bright custom accent legitimately needs dark text. Fixing
+                // Miuix handles must not force the shared foreground to white;
+                // MD3's native SwitchDefaults also consumes this semantic role.
+                assertEquals(resolveReadableForeground(accent), endpoint.material.onPrimary)
+""",
+     """                val bridged = resolveMiuixColorsFromMaterialBridge(
+                    createMiuixMaterialBridge(base), dark, useMonetMapping = true,
+                )
+                if (style == AppUiStyle.MATERIAL3) {
+                    assertEquals(accent, endpoint.material.primary)
+                    assertEquals(accent, endpoint.miuix.primary)
+                    // A bright custom accent legitimately needs dark text. Fixing
+                    // Miuix handles must not force the shared foreground to white;
+                    // MD3's native SwitchDefaults also consumes this semantic role.
+                    assertEquals(resolveReadableForeground(accent), endpoint.material.onPrimary)
+                } else {
+                    // MIUIX 的强调色由桥接色板决定，自定义色只进玻璃强调色。
+                    assertEquals(bridged.primary, endpoint.miuix.primary)
+                    assertEquals(bridged.primary, endpoint.material.primary)
+                    assertEquals(bridged.onPrimary, endpoint.material.onPrimary)
+                }
+"""),
+    ("""                val expectedContainer = opaqueCompositeOver(accent.copy(alpha = 0.14f), endpoint.material.surface)
+                assertEquals(expectedContainer, endpoint.material.secondaryContainer)
+                assertEquals(expectedContainer, endpoint.miuix.secondaryContainer)
+""",
+     """                val expectedContainer = if (style == AppUiStyle.MATERIAL3) {
+                    opaqueCompositeOver(accent.copy(alpha = 0.14f), endpoint.material.surface)
+                } else {
+                    bridged.secondaryContainer
+                }
+                assertEquals(expectedContainer, endpoint.material.secondaryContainer)
+                assertEquals(expectedContainer, endpoint.miuix.secondaryContainer)
+"""),
+    ("""                } else {
+                    val native = resolveNativeMiuixColors(base, dark)
+                    assertEquals(native.secondaryContainer, glassEndpoint.miuix.secondaryContainer)
+                }
+""",
+     """                } else {
+                    assertEquals(bridged.secondaryContainer, glassEndpoint.miuix.secondaryContainer)
+                }
+"""),
+)
+
+
 
 def sha(raw):
     return hashlib.sha256(raw.encode() if isinstance(raw, str) else raw).hexdigest()
@@ -146,12 +200,12 @@ import com.android.purebilibili.feature.settings.Md3ColorSource
             selected = raw
             edits = []
             if filename == 'AppThemeEndpointPolicyTest.kt':
-                before = 'import com.android.purebilibili.core.store.AppThemeSettings'
-                after = 'import com.bilipai.desktop.appearance.DesktopThemeSettings as AppThemeSettings'
-                if selected.count(before) != 1:
-                    raise ValueError('Original endpoint settings test boundary changed')
-                edits.append(dict(before=before, after=after, offset=selected.index(before)))
-                selected = selected.replace(before, after, 1)
+                for before, after in ENDPOINT_TEST_EDITS:
+                    if selected.count(before) != 1:
+                        raise ValueError('Original endpoint settings test boundary changed: %s'
+                            % before.splitlines()[0])
+                    edits.append(dict(before=before, after=after, offset=selected.index(before)))
+                    selected = selected.replace(before, after, 1)
             if filename == 'SeedColorSchemeTest.kt':
                 before = 'import kotlin.test.assertEquals'
                 after = 'import com.bilipai.desktop.appearance.assertDesktopPaletteEquals as assertEquals'
