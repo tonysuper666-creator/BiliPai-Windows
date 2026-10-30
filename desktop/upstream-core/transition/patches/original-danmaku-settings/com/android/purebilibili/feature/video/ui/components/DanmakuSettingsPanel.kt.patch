@@ -158,7 +158,20 @@
                                      displayValue = { String.format("%.1f", it) },
                                      onValueChange = onLineHeightChange,
                                      onValuePreview = { next ->
-@@ -921,7 +863,7 @@
+@@ -877,11 +819,7 @@
+                                 modifier = Modifier.padding(16.dp),
+                                 verticalArrangement = Arrangement.spacedBy(20.dp)
+                             ) {
+-                                AppText(
+-                                    text = "高级渲染",
+-                                    color = panelColors.titleColor,
+-                                    style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Medium)
+-                                )
++                                DanmakuSettingsSectionTitle(title = "高级渲染")
+                                 AppText(
+                                     text = "更细的弹幕渲染控制",
+                                     color = panelColors.supportingColor,
+@@ -921,7 +859,7 @@
                                      DanmakuSliderItem(
                                          label = "弹幕行高",
                                          value = lineHeight,
@@ -167,7 +180,7 @@
                                          displayValue = { String.format("%.1f", it) },
                                          onValueChange = onLineHeightChange,
                                      onValuePreview = { next ->
-@@ -935,7 +877,7 @@
+@@ -935,7 +873,7 @@
                                      DanmakuSliderItem(
                                          label = "滚动弹幕时长",
                                          value = scrollDurationSeconds,
@@ -176,7 +189,7 @@
                                          displayValue = { "${it.roundToInt()}s" },
                                          onValueChange = onScrollDurationSecondsChange,
                                      onValuePreview = { next ->
-@@ -950,7 +892,7 @@
+@@ -950,7 +888,7 @@
                                      DanmakuSliderItem(
                                          label = "静态弹幕时长",
                                          value = staticDurationSeconds,
@@ -185,7 +198,20 @@
                                          displayValue = { "${it.roundToInt()}s" },
                                          onValueChange = onStaticDurationSecondsChange,
                                      onValuePreview = { next ->
-@@ -1333,9 +1275,7 @@
+@@ -1154,11 +1092,7 @@
+                             shape = AppShapes.container(ContainerLevel.Card)
+                         ) {
+                             Column(modifier = Modifier.padding(16.dp)) {
+-                                AppText(
+-                                    text = "屏蔽类型",
+-                                    color = panelColors.titleColor,
+-                                    style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Medium)
+-                                )
++                                DanmakuSettingsSectionTitle(title = "屏蔽类型")
+                                 Spacer(modifier = Modifier.height(4.dp))
+                                 AppText(
+                                     text = "关闭对应开关即可屏蔽",
+@@ -1333,9 +1267,7 @@
      val context = LocalContext.current
      val scope = rememberCoroutineScope()
      val colorScheme = MaterialTheme.colorScheme
@@ -196,7 +222,7 @@
      val initialSections = remember(rawRules) {
          resolveDanmakuBlockManagerSections(rawRules)
      }
-@@ -1713,24 +1653,11 @@
+@@ -1713,24 +1645,11 @@
      showDivider: Boolean = true
  ) {
      Column(modifier = Modifier.fillMaxWidth()) {
@@ -226,7 +252,7 @@
          if (showDivider) {
              AppHorizontalDivider(color = colors.dividerColor)
          }
-@@ -1933,121 +1860,18 @@
+@@ -1933,121 +1852,18 @@
      tickCount: Int = 0,
      valueText: (Float) -> String = displayValue
  ) {
