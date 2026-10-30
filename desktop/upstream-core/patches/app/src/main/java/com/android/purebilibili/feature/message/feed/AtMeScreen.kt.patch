@@ -53,7 +53,7 @@
 +    private val _uiState = owner.stateFlow(AtMeUiState())
      val uiState: StateFlow<AtMeUiState> = _uiState.asStateFlow()
 -    private val accountRequests = AccountScopedRequests(viewModelScope)
-+    private val accountRequests = owner.accountRequests()
++    private val accountRequests = owner.requestLauncher()
      private var listJob: Job? = null
      private var moreJob: Job? = null
      private var requestVersion = 0L

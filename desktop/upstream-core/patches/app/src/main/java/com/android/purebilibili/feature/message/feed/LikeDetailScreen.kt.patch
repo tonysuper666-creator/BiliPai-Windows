@@ -47,7 +47,7 @@
 -    private val requests = AccountScopedRequests(viewModelScope)
 -    private val state = MutableStateFlow(LikeDetailState())
 +internal class LikeDetailViewModel(private val owner: DesktopMessagePageAdmission) {
-+    private val requests = owner.accountRequests()
++    private val requests = owner.requestLauncher()
 +    private val state = owner.stateFlow(LikeDetailState())
      val uiState = state.asStateFlow()
      private var id = 0L
