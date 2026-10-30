@@ -126,7 +126,7 @@ internal fun desktopWindowsUxSampleOf(state: WindowState): DesktopWindowsUxWindo
  * 1360 by 900, position chosen by the platform.
  */
 @Composable
-internal fun rememberDesktopWindowsUxWindowState(store: DesktopPluginStore, registerFlush: ((() -> Unit) -> Unit) = {}): WindowState {
+internal fun rememberDesktopWindowsUxWindowState(store: DesktopPluginStore): WindowState {
     val bounds = remember(store) { DesktopWindowsUxWindowBoundsStore(store) }
     val startup = remember(bounds) {
         desktopWindowsUxStartup(bounds.load(), desktopWindowsUxProbeScreens(), desktopWindowsUxStoredZoomPercent(store))
@@ -138,16 +138,7 @@ internal fun rememberDesktopWindowsUxWindowState(store: DesktopPluginStore, regi
         placement = if (plan.maximized) WindowPlacement.Maximized else WindowPlacement.Floating,
         position = if (planX != null && planY != null) WindowPosition(planX.dp, planY.dp) else WindowPosition.PlatformDefault,
         size = DpSize(plan.width.dp, plan.height.dp))
-    val tracker = remember(state) { DesktopWindowsUxWindowTracker(startup.seed) }
-    val flush: () -> Unit = remember(state, tracker, bounds) {
-        {
-            desktopWindowsUxSampleOf(state)?.let(tracker::accept)
-            // A refused write must not abort shutdown; the operation still reports itself.
-            tracker.bounds()?.let { if (!bounds.save(it)) System.err.println("窗口位置保存失败：退出前写入被拒绝") }
-        }
-    }
-    androidx.compose.runtime.SideEffect { registerFlush(flush) }
-    DesktopWindowsUxWindowBoundsEffect(state, bounds, tracker)
+    DesktopWindowsUxWindowBoundsEffect(state, bounds, startup.seed)
     return state
 }
 
@@ -163,15 +154,16 @@ internal fun rememberDesktopWindowsUxWindowState(store: DesktopPluginStore, regi
 private fun DesktopWindowsUxWindowBoundsEffect(
     state: WindowState,
     bounds: DesktopWindowsUxWindowBoundsStore,
-    tracker: DesktopWindowsUxWindowTracker,
+    seed: DesktopWindowsUxWindowBounds?,
 ) {
+    val tracker = remember(state, seed) { DesktopWindowsUxWindowTracker(seed) }
     LaunchedEffect(state, bounds, tracker) {
         snapshotFlow { desktopWindowsUxSampleOf(state) }.collectLatest { sample ->
             if (sample == null) return@collectLatest
-            tracker.accept(sample)
             delay(WINDOWS_UX_WINDOW_SETTLE_MS)
+            tracker.accept(sample)
             val next = tracker.bounds()
-            if (next != null) withContext(Dispatchers.IO) { check(bounds.save(next)) { "窗口位置保存失败" } }
+            if (next != null) withContext(Dispatchers.IO) { bounds.save(next) }
         }
     }
 }

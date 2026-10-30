@@ -166,8 +166,8 @@ fun main(args: Array<String>) {
         // Read-only GPU probe on a daemon thread; the player waits for it only bounded, at each native session start.
         val gpuCapability = remember { DesktopNvidiaCapabilityMonitor.process().also { it.warmUp() } }
         val playerResult = remember(veyraComponent) { runCatching { MpvPlayer(veyraComponent = veyraComponent, gpuCapability = gpuCapability) } }
-        val flushWindow = remember { java.util.concurrent.atomic.AtomicReference<() -> Unit>({}) }
-        val windowState = com.bilipai.desktop.appearance.rememberDesktopWindowsUxWindowState(applicationPluginStore) { flushWindow.set(it) }
+        val windowFlush = remember(applicationPluginStore) { com.bilipai.desktop.appearance.DesktopWindowsUxWindowFlush(applicationPluginStore) }
+        val windowState = com.bilipai.desktop.appearance.rememberDesktopWindowsUxWindowState(applicationPluginStore).also { windowFlush.attach(it) }
         val applicationScope = rememberCoroutineScope()
         val shutdown = remember(diagnosticLifecycle) {
             java.util.concurrent.atomic.AtomicReference<suspend () -> Unit>({ diagnosticLifecycle?.shutdownForRestore() })
@@ -191,7 +191,7 @@ fun main(args: Array<String>) {
                 else null
             if (closing.compareAndSet(false, true)) applicationScope.launch {
                 try {
-                    flushWindow.get().invoke()
+                    windowFlush.flush()
                     shutdown.get().invoke()
                     withContext(Dispatchers.IO) { applicationImages.close() }
                     if (restartPlan != null) withContext(Dispatchers.IO) { instance.close(); restartPlan.launch() }
