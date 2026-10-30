@@ -84,7 +84,12 @@ class DesktopOriginalVideoCdnSelectionAssemblyTest {
                     val state = assertIs<VideoPlaybackUiState.Success>(f.owner.playback.captureDesktopPlaybackState())
                     assertIs<VideoPlaybackUiState.Loading>(f.owner.playback.uiState.value)
                     f.owner.environment.invocations.withInvocation {
-                        f.owner.environment.useCase.media.prepareLegacyDash(backupVideo(A), null, emptyMap())
+                        val media = f.owner.environment.useCase.media
+                        var source: PlaybackSource? = null
+                        media.withPlaybackIntent(0L, false) {
+                            source = media.prepareLegacyDash(backupVideo(A), null, emptyMap())
+                        }
+                        assertNotNull(source)
                     }.also { assertEquals(state.info.title, it.title) }
                 }
             } finally { f.ui { f.resumeUiDispatch() } }
