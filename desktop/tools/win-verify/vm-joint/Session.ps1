@@ -96,7 +96,7 @@ try{
    1..4|ForEach-Object {Tick}
    Save-BpTreeShot $script:window 'settings-restart' | Out-Null
    $null=Update-BpTree
-   $null=Probe 'click' '立即重启'
+   $null=Probe 'click' '立即重启|立即重啟|Restart Now'
    $script:window=Wait-BpTreeWindow 100 $oldPid
    [BpFocus]::SetForegroundWindow([IntPtr]$script:window.hwnd)|Out-Null
    $before=Probe 'dump'
