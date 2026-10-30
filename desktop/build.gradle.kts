@@ -316,6 +316,7 @@ val appCoreLaterSteps: Map<String, String> = mapOf(
 // The remaining UI/player files move when their desktop platform adapters are wired.
 val migratedVideoFeaturePaths = setOf(
     "com/android/purebilibili/feature/video/ui/components/CommentSortFilterBar.kt",
+    "com/android/purebilibili/feature/video/ui/components/VideoCommentFloatingHeader.kt",
     "com/android/purebilibili/feature/video/screen/VideoDetailRouteCommentEffect.kt",
     "com/android/purebilibili/feature/video/ui/components/DanmakuSettingsSlider.kt",
     "com/android/purebilibili/feature/video/danmaku/DanmakuConfig.kt",
@@ -2962,6 +2963,7 @@ val upstreamOwnedGeneratedCopies = setOf(
     "independent-bangumi-pages/com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiTimelineScreen.kt",
     "independent-bangumi-pages/com/android/purebilibili/feature/bangumi/policy/DesktopOriginalBangumiEpisodePagePolicy.kt",
     "original-bangumi-player-ui/com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiPlayerUiPolicy.kt",
+    "original-bangumi-player-ui/com/android/purebilibili/feature/video/ui/components/DesktopOriginalVideoCommentFloatingHeader.kt",
     "home-bangumi-page/com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiBadgePolicy.kt",
 
     "original-video-player-full-controls/com/android/purebilibili/feature/video/ui/overlay/PlaybackOrderSelectionSheet.kt",
@@ -3125,6 +3127,7 @@ val transitionPatchProducers = mapOf(
     // Retirable with the original-bangumi-player transition patch when its upstream VM migrates.
     "original-bangumi-player" to "extractOriginalBangumiPlayer",
     "original-bangumi-player-ui" to "extractOriginalBangumiPlayerUi",
+    "video-comment-ui" to "extractVideoCommentUi",
     "original-video-fullscreen-pager" to "extractOriginalVideoFullscreenPager",
     "original-video-full-owner" to "extractOriginalVideoFullOwner",
     "original-aicu" to "extractOriginalAicu",

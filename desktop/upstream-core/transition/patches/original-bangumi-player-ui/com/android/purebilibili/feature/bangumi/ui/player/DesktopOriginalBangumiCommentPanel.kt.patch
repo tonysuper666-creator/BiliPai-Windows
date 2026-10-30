@@ -1,0 +1,93 @@
+# 可退役：完整上游消费者迁入后删除；仅连接原文浮动头的测量高度。
+--- a/com/android/purebilibili/feature/bangumi/ui/player/DesktopOriginalBangumiCommentPanel.kt
++++ b/com/android/purebilibili/feature/bangumi/ui/player/DesktopOriginalBangumiCommentPanel.kt
+@@ -16,6 +16,9 @@
+ import androidx.compose.runtime.Composable
+ import androidx.compose.runtime.derivedStateOf
+ import androidx.compose.runtime.getValue
++import androidx.compose.runtime.mutableFloatStateOf
++import androidx.compose.ui.platform.LocalDensity
++import androidx.compose.ui.layout.onSizeChanged
+ import androidx.compose.runtime.mutableStateOf
+ import androidx.compose.runtime.remember
+ import androidx.compose.runtime.rememberCoroutineScope
+@@ -82,13 +85,12 @@
+     val progressiveHeaderEnabled = themeConfig.progressiveTopBlurEnabled && !themeConfig.headerBlurEnabled
+     val solidHeaderEnabled = themeConfig.progressiveTopFadeEnabled && !themeConfig.headerBlurEnabled
+     val floatingHeader = liquidGlassEnabled || progressiveHeaderEnabled || solidHeaderEnabled
+-    val motionEnabled = LocalComponentMotionEnabled.current && !LocalSystemReduceMotion.current
+-    val listAtTop by remember(listState) {
+-        derivedStateOf {
+-            isVideoContentCommentListAtTop(
+-                listState.firstVisibleItemIndex, listState.firstVisibleItemScrollOffset
+-            )
+-        }
++    val density = LocalDensity.current
++    val commentHeaderHeightPx = remember(density, liquidGlassEnabled) {
++        mutableFloatStateOf(with(density) { 46.dp.toPx() })
++    }
++    val commentHeaderHeightProvider = remember(commentHeaderHeightPx) {
++        { commentHeaderHeightPx.floatValue }
+     }
+     val showBackToTop by remember(listState) {
+         derivedStateOf {
+@@ -174,25 +176,27 @@
+                 showSortControlInHeader = true,
+                 showHeader = !floatingHeader,
+                 compactSortHeader = true,
+-                floatingHeaderContentPadding = if (floatingHeader) 46.dp else 0.dp,
++                floatingHeaderContentPaddingPx = if (floatingHeader) commentHeaderHeightProvider else null,
+                 onSearchClick = { showSearch = true },
+             )
+             if (floatingHeader) {
+-                // Keep background and list inset stable while only the glass controls fade.
++                // 渐隐只覆盖列表采样层，标题和排序控件始终绘制在材质上方。
+                 Box(
+                     modifier = Modifier
+-                        .fillMaxWidth()
+-                        .heightIn(min = 46.dp)
+-                        .biliPaiProgressiveTopBlur(
+-                            backdrop = backdrop,
+-                            enabled = progressiveHeaderEnabled,
+-                            surfaceColor = androidx.compose.ui.graphics.Color.Transparent,
+-                        )
+-                        .topSolidProgressiveFade(
+-                            surfaceColor = MaterialTheme.colorScheme.surface,
+-                            enabled = solidHeaderEnabled,
+-                        ),
++                        .fillMaxWidth(),
+                 ) {
++                    Box(
++                        modifier = Modifier.matchParentSize()
++                            .biliPaiProgressiveTopBlur(
++                                backdrop = backdrop,
++                                enabled = progressiveHeaderEnabled,
++                                surfaceColor = androidx.compose.ui.graphics.Color.Transparent,
++                            )
++                            .topSolidProgressiveFade(
++                                surfaceColor = MaterialTheme.colorScheme.surface,
++                                enabled = solidHeaderEnabled,
++                            ),
++                    )
+                     VideoCommentFloatingHeader(
+                         count = state.replyCount,
+                         sortMode = state.sortMode,
+@@ -200,11 +204,14 @@
+                         onSearchClick = { showSearch = true },
+                         backdrop = backdrop,
+                         liquidGlassEnabled = liquidGlassEnabled,
+-                        listAtTop = listAtTop,
+-                        motionEnabled = motionEnabled,
+-                        showNativeTitle = listAtTop,
+                         compactTitleTypography = true,
+-                        modifier = Modifier.fillMaxWidth(),
++                        modifier = Modifier
++                            .fillMaxWidth()
++                            .onSizeChanged { size ->
++                                if (size.height > 0 && commentHeaderHeightPx.floatValue != size.height.toFloat()) {
++                                    commentHeaderHeightPx.floatValue = size.height.toFloat()
++                                }
++                            },
+                     )
+                 }
+             }
