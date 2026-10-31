@@ -317,6 +317,8 @@ val appCoreLaterSteps: Map<String, String> = mapOf(
 // M4a: video/bangumi logic and unchanged Compose components compile from the merged upstream tree.
 // The remaining UI/player files move when their desktop platform adapters are wired.
 val migratedVideoFeaturePaths = setOf(
+    "com/android/purebilibili/feature/video/ui/components/FavoriteFolderSheet.kt",
+    "com/android/purebilibili/feature/video/ui/components/FavoriteFolderMenuSource.kt",
     "com/android/purebilibili/feature/video/ui/components/DanmakuReportForm.kt",
     "com/android/purebilibili/feature/video/ui/gesture/GestureLevelOverlay.kt",
     "com/android/purebilibili/feature/video/ui/components/QualityMenu.kt",
