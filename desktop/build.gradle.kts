@@ -3132,6 +3132,7 @@ val transitionPatchDirectory = file("upstream-core/transition/patches")
 val transitionPatchedGeneratedFiles = fileTree(transitionPatchDirectory) { include("**/*.patch") }.files
     .map { it.relativeTo(transitionPatchDirectory).invariantSeparatorsPath.removeSuffix(".patch") }.toSortedSet()
 val transitionPatchProducers = mapOf(
+    "independent-bangumi-pages" to "extractOriginalBangumiPages",
     "original-danmaku-list-menu" to "extractOriginalDanmakuListMenu",
     "original-video-content-full" to "extractOriginalVideoContentFull",
     "shared-liquid-tabs" to "extractSharedLiquidTabs",
