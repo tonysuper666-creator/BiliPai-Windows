@@ -559,6 +559,21 @@ class DesktopUpstreamOwnerTest {
         }
     }
 
+    @Test fun windowReadRunsUnderAnOwnerCapturedNowAndAClosedWindowReadsTheCallersValue() = runBlocking {
+        val fixture = fixture()
+        val (repository, _) = repository(fixture, 21L to "sess-read")
+        var windowOpen = true
+        val session = DesktopUpstreamSession(repository) { windowOpen }
+        assertEquals(null, DesktopUpstreamCalls.currentOwner())
+        assertEquals(21L, session.read(-1L) { DesktopUpstreamCalls.tokens("window read").mid ?: 0L })
+        assertEquals(null, DesktopUpstreamCalls.currentOwner(), "the read restores the previous owner")
+        windowOpen = false
+        var ran = false
+        assertEquals(-1L, session.read(-1L) { ran = true; 0L })
+        assertFalse(ran, "a closed window starts no upstream read")
+        assertEquals(0, fixture.seen.size)
+    }
+
     private fun nav() = Request.Builder().url("https://api.bilibili.com/x/web-interface/nav").build()
 
     private fun assertRetired(failure: Throwable) {

@@ -20,3 +20,5 @@ linked-dock/com/android/purebilibili/feature/home/components/DesktopOriginalLink
 plugins/com/android/purebilibili/feature/home/DesktopTodayWatchModels.kt
 story-topic/com/android/purebilibili/feature/dynamic/components/DynamicTopicLinkPolicy.kt
 dynamic-full-card/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicVoteDialog.kt
+dynamic-editor/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicCreateReserveDialog.kt
+dynamic-editor/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicPublishPickers.kt
