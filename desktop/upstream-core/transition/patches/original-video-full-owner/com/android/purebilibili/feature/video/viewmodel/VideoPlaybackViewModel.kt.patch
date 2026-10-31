@@ -1,6 +1,8 @@
+# Retirable when the complete upstream consumer migrates; approved draft session wiring.
 --- a/original-video-full-owner/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt
 +++ b/original-video-full-owner/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt
-@@ -1,11 +1,13 @@
+@@ -1,9 +1,12 @@
++// Generated at build time: build/generated/original-video-full-owner/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt + upstream-core/transition/patches/original-video-full-owner/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt.patch
  package com.android.purebilibili.feature.video.viewmodel
  
 +import com.bilipai.desktop.plugins.asAndroidContext
@@ -13,50 +15,215 @@
  import com.android.purebilibili.core.store.TodayWatchFeedbackSnapshot
  import com.android.purebilibili.core.store.TodayWatchFeedbackStore
  import com.android.purebilibili.core.store.TodayWatchProfileStore
- import android.util.Log as Logger
- import com.android.purebilibili.data.model.VideoLoadError
-@@ -1387,11 +1389,11 @@
-     private var sponsorBlockRetryVideo: Pair<String, Long>? = null
-     private var sponsorBlockRetryAtMs = 0L
+@@ -140,7 +143,7 @@
+ private const val PLAYBACK_STALL_RECOVERY_TIMEOUT_MS = 10_000L
+ 
+ private data class SponsorContributionRequest(
+-    val plugin: com.android.purebilibili.feature.plugin.SponsorBlockPlugin,
++    val plugin: com.bilipai.desktop.player.DesktopSponsorPlayerSession,
+     val bvid: String,
+     val cid: Long,
+     val durationSeconds: Float,
+@@ -1389,9 +1392,9 @@
      private var sponsorBlockLoadFailures = 0
  
      /** environment.plugins owns settings; mutable playback state belongs to this ViewModel. */
 -    private fun getSessionPlayerPlugins(): List<com.android.purebilibili.core.plugin.PlayerPlugin> =
-+    private fun getSessionPlayerPlugins(): List<com.android.purebilibili.core.plugin.DesktopSingleSessionPlayerPlugin> =
++    private fun getSessionPlayerPlugins(): List<com.bilipai.desktop.player.DesktopPlayerPluginSessionHandle> =
          environment.plugins.enabledPlayerPlugins().map { plugin ->
-             if (plugin is com.android.purebilibili.feature.plugin.SponsorBlockPlugin) sponsorPlaybackPlugin else plugin
+-            if (plugin is com.android.purebilibili.feature.plugin.SponsorBlockPlugin) sponsorPlaybackPlugin else plugin
++            if (plugin is com.bilipai.desktop.player.DesktopSponsorPlayerSession) sponsorPlaybackPlugin else plugin
          }
  
      // Windows reads ONE immutable publication: source and original UI values are
-@@ -9407,11 +9409,11 @@
-         publishDesktopSponsorContribution(SponsorContributionUiState(), expected)
-         refreshSponsorContributionAvailability()
+@@ -5029,7 +5032,8 @@
+     private fun ensureComposerDraftVideo() {
+         val videoId = (_uiState.value as? VideoPlaybackUiState.Success)?.info?.bvid.orEmpty()
+         if (_composerDrafts.value.videoId != videoId) {
+-            _composerDrafts.value = VideoComposerDraftState(videoId = videoId)
++            val reset = _composerDrafts.value.comments.reset().copy(desktopSelections = emptyMap())
++            _composerDrafts.value = VideoComposerDraftState(videoId = videoId, comments = reset)
+         }
+     }
+ 
+@@ -5054,6 +5058,7 @@
+     fun showCommentInputDialog() {
+         android.util.Log.d("VideoPlaybackViewModel", "📝 showCommentInputDialog called")
+         ensureComposerDraftVideo()
++        _composerDrafts.update { it.copy(comments = it.comments.open()) }
+         _showCommentDialog.value = true
+         // 懒加载表情包
+         loadEmotes()
+@@ -5146,7 +5151,8 @@
+         imageUris: List<String>,
+         syncToDynamic: Boolean,
+         selectionStart: Int = -1,
+-        selectionEnd: Int = -1
++        selectionEnd: Int = -1,
++        draftSessionId: Long = _composerDrafts.value.comments.sessionId
+     ) {
+         ensureComposerDraftVideo()
+         val key = commentComposerDraftKey(_replyingToComment.value?.rpid)
+@@ -5156,7 +5162,7 @@
+         )
+         val draft = CommentComposerDraft(text, imageUris, syncToDynamic, resolvedSelectionStart, resolvedSelectionEnd)
+         _composerDrafts.update { state ->
+-            state.copy(comments = state.comments + (key to draft))
++            state.copy(comments = state.comments.updateDesktopDraft(draftSessionId, _replyingToComment.value?.rpid, draft))
+         }
+     }
+     
+@@ -5546,8 +5552,10 @@
+         inputMessage: String? = null,
+         imageUris: List<String> = emptyList(),
+         syncToDynamic: Boolean = false,
+-        targetAid: Long? = null
++        targetAid: Long? = null,
++        draftSessionId: Long = _composerDrafts.value.comments.sessionId
+     ) {
++        if (draftSessionId != _composerDrafts.value.comments.sessionId) return
+         if (inputMessage != null) {
+             _commentInput.value = inputMessage
+         }
+@@ -5573,6 +5581,9 @@
+             replyRoot = replyTo?.root
+         )
+ 
++        val sendVideoId = _composerDrafts.value.videoId
++        val sentDraftKey = commentComposerDraftKey(replyTo?.rpid)
++        val sentDraft = _composerDrafts.value.comments.drafts[sentDraftKey]
+         environment.invocations.launch {
+             _isSendingComment.value = true
+             
+@@ -5603,14 +5614,16 @@
+                 )
+                 .onSuccess { reply ->
+                     toast(if (replyTo != null) "回复成功" else "评论成功")
+-                    _commentInput.value = ""
+-                    val sentDraftKey = commentComposerDraftKey(replyTo?.rpid)
+-                    _composerDrafts.update { state ->
+-                        state.copy(comments = state.comments - sentDraftKey)
++                    if (_composerDrafts.value.videoId == sendVideoId &&
++                        _composerDrafts.value.comments.sessionId == draftSessionId &&
++                        _composerDrafts.value.comments.drafts[sentDraftKey] === sentDraft) {
++                        _composerDrafts.update { state -> state.copy(comments =
++                            state.comments.completeDesktopDraft(draftSessionId, replyTo?.rpid, sentDraft)) }
++                        _commentInput.value = ""
++                        _replyingToComment.value = null
++                        _showCommentDialog.value = false
++                        clearCommentMentionSearch()
+                     }
+-                    _replyingToComment.value = null
+-                    _showCommentDialog.value = false
+-                    clearCommentMentionSearch()
+                     
+                     // 通知 UI 刷新评论列表
+                     _commentSentEvent.trySend(reply)
+@@ -8620,7 +8633,7 @@
+     /** Cached detail restoration bypasses the normal post-load plugin plan. */
+     private fun restoreSponsorPlaybackState(state: VideoPlaybackUiState.Success) {
+         val sponsorEnabled = getSessionPlayerPlugins().any {
+-            it is com.android.purebilibili.feature.plugin.SponsorBlockPlugin
++            it is com.bilipai.desktop.player.DesktopSponsorPlayerSession
+         }
+         if (sponsorEnabled && state.sponsorVideoLabel.isNotEmpty()) {
+             val key = state.info.bvid to state.info.cid
+@@ -8859,7 +8872,7 @@
+                 refreshSponsorContributionAvailability(plugins)
+                 val currentVideo = _uiState.value as? VideoPlaybackUiState.Success
+                 val sponsorPlugin = plugins
+-                    .filterIsInstance<com.android.purebilibili.feature.plugin.SponsorBlockPlugin>()
++                    .filterIsInstance<com.bilipai.desktop.player.DesktopSponsorPlayerSession>()
+                     .firstOrNull()
+                 if (sponsorPlugin == null) {
+                     sponsorBlockLoadedVideo = null
+@@ -8908,7 +8921,7 @@
+                         }
+                     }
+                 }
+-                if (plugins.none { it is com.android.purebilibili.feature.plugin.SponsorBlockPlugin } &&
++                if (plugins.none { it is com.bilipai.desktop.player.DesktopSponsorPlayerSession } &&
+                     _sponsorProgressMarkers.value.isNotEmpty()
+                 ) {
+                     _sponsorProgressMarkers.value = emptyList()
+@@ -8939,7 +8952,7 @@
+                 lastPluginDispatchPositionMs = currentPos
+                 
+                 for (plugin in plugins) {
+-                    if (plugin is com.android.purebilibili.feature.plugin.SponsorBlockPlugin) {
++                    if (plugin is com.bilipai.desktop.player.DesktopSponsorPlayerSession) {
+                         val activeVideo = _uiState.value as? VideoPlaybackUiState.Success
+                         val activeKey = activeVideo?.let { it.info.bvid to it.info.cid }
+                         if (activeKey == null || sponsorBlockLoadedVideo != activeKey) continue
+@@ -8995,7 +9008,7 @@
+                                     _sponsorSkipUiState.value = nextUiState
+                                     _showSkipButton.value = nextUiState.visible
+                                     _currentSkipReason.value = action.label
+-                                    if (plugin is com.android.purebilibili.feature.plugin.SponsorBlockPlugin) {
++                                    if (plugin is com.bilipai.desktop.player.DesktopSponsorPlayerSession) {
+                                         _currentSponsorSegment.value = plugin.getActiveSegment()
+                                     }
+                                     publishDesktopSponsorSkip(expected)
+@@ -9029,7 +9042,7 @@
+         environment.invocations.launch {
+             if (!environment.plugins.isPlaybackDispatchCurrent(expected)) return@launch
+         capturedPlugins.forEach { plugin ->
+-            if (plugin is com.android.purebilibili.feature.plugin.SponsorBlockPlugin) {
++            if (plugin is com.bilipai.desktop.player.DesktopSponsorPlayerSession) {
+                 environment.plugins.markSponsorSkipped(expected,plugin,segmentId ?: return@forEach)
+                 if (!environment.plugins.isPlaybackDispatchCurrent(expected)) return@launch
+             }
+@@ -9043,7 +9056,7 @@
+         val expected = environment.plugins.capturePlaybackDispatch() ?: return
+         val segmentId = _sponsorSkipUiState.value.segmentId ?: return
+         val plugin = getSessionPlayerPlugins()
+-            .filterIsInstance<com.android.purebilibili.feature.plugin.SponsorBlockPlugin>()
++            .filterIsInstance<com.bilipai.desktop.player.DesktopSponsorPlayerSession>()
+             .firstOrNull() ?: return
+         environment.invocations.launch(Dispatchers.IO) {
+             environment.plugins.voteSponsorSegment(expected, plugin, segmentId, voteType)
+@@ -9065,7 +9078,7 @@
+         // publication waits for the actual queued seek belonging to this action.
+         val pendingRecords = mutableListOf<SponsorBlockSkipRecord>()
+         capturedPlugins.forEach { plugin ->
+-            if (plugin is com.android.purebilibili.feature.plugin.SponsorBlockPlugin && segmentId != null) {
++            if (plugin is com.bilipai.desktop.player.DesktopSponsorPlayerSession && segmentId != null) {
+                 val segment = environment.plugins.markSponsorSkipped(expected,plugin,segmentId)
+                 if (!environment.plugins.isPlaybackDispatchCurrent(expected)) return@launch
+                 segmentCategory = segment?.category
+@@ -9158,7 +9171,7 @@
+         capturedPlugins.forEach { plugin ->
+             environment.plugins.onUserSeek(expected, plugin, positionMs)
+             if (!environment.plugins.isPlaybackDispatchCurrent(expected)) return@launch
+-            if (plugin is com.android.purebilibili.feature.plugin.SponsorBlockPlugin) {
++            if (plugin is com.bilipai.desktop.player.DesktopSponsorPlayerSession) {
+                 environment.admitNativePublication(expected) { _currentSponsorSegment.value = plugin.getActiveSegment() }
+             }
+         }
+@@ -9409,7 +9422,7 @@
      }
  
      private fun refreshSponsorContributionAvailability(
 -        enabledPlugins: List<com.android.purebilibili.core.plugin.PlayerPlugin> =
-+        enabledPlugins: List<com.android.purebilibili.core.plugin.DesktopSingleSessionPlayerPlugin> =
++        enabledPlugins: List<com.bilipai.desktop.player.DesktopPlayerPluginSessionHandle> =
              getSessionPlayerPlugins(),
      ) {
          val current = _sponsorContributionUiState.value
-         if (current.phase !in setOf(SponsorContributionPhase.HIDDEN, SponsorContributionPhase.READY)) return
-         val context = resolveSponsorContributionContext(enabledPlugins)
-@@ -9424,11 +9426,11 @@
-             )
-         }, environment.captureNativePublication())
+@@ -9426,11 +9439,11 @@
      }
  
      private fun resolveSponsorContributionContext(
 -        enabledPlugins: List<com.android.purebilibili.core.plugin.PlayerPlugin> =
-+        enabledPlugins: List<com.android.purebilibili.core.plugin.DesktopSingleSessionPlayerPlugin> =
++        enabledPlugins: List<com.bilipai.desktop.player.DesktopPlayerPluginSessionHandle> =
              getSessionPlayerPlugins(),
      ): SponsorContributionRequest? {
          val plugin = enabledPlugins
-             .filterIsInstance<com.android.purebilibili.feature.plugin.SponsorBlockPlugin>()
+-            .filterIsInstance<com.android.purebilibili.feature.plugin.SponsorBlockPlugin>()
++            .filterIsInstance<com.bilipai.desktop.player.DesktopSponsorPlayerSession>()
              .firstOrNull { it.isCommunityContributionEnabled() }
-@@ -10131,11 +10133,11 @@
-         val safeDelta = rawDelta.coerceIn(0L, 45L)
-         lastCreatorSignalPositionSec = currentPositionSec
+             ?: return null
+         val snapshot = buildSponsorBlockVideoSnapshot(_uiState.value) ?: return null
+@@ -10133,7 +10146,7 @@
          if (safeDelta <= 0L) return
  
          TodayWatchProfileStore.recordWatchProgress(
@@ -65,5 +232,3 @@
              mid = mid,
              creatorName = current.info.owner.name,
              deltaWatchSec = safeDelta
-         )
-     }

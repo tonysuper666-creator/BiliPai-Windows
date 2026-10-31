@@ -1,0 +1,23 @@
+--- a/danmaku-engine/src/main/java/com/android/purebilibili/danmaku/engine/DanmakuModels.kt
++++ b/danmaku-engine/src/main/java/com/android/purebilibili/danmaku/engine/DanmakuModels.kt
+@@ -1,8 +1,8 @@
+ package com.android.purebilibili.danmaku.engine
+ 
+-import android.graphics.Bitmap
+-import android.graphics.Path
+-import android.graphics.Typeface
++import java.awt.image.BufferedImage as Bitmap
++import com.bilipai.desktop.danmaku.DesktopWebMaskPath as Path
++import java.awt.Font as Typeface
+ 
+ const val DANMAKU_LAYER_SCROLL = 1001
+ const val DANMAKU_LAYER_TOP = 1002
+@@ -93,7 +93,7 @@
+ data class DanmakuRenderConfig(
+     val alpha: Int = 255,
+     val textSizePx: Float = 48f,
+-    val typeface: Typeface? = Typeface.DEFAULT,
++    val typeface: Typeface,
+     val strokeWidthPx: Float = 2.75f,
+     val strokeColor: Int = 0x61000000,
+     val scrollDurationMs: Long = 7_000L,

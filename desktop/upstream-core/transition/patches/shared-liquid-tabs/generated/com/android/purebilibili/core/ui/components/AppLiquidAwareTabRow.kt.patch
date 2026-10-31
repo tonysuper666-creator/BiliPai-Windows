@@ -1,11 +1,31 @@
+# 可退役：上游 BottomBarLiquidSegmentedControl 完整迁入时删除此透传；默认 true 保持旧调用。
 --- a/shared-liquid-tabs/generated/com/android/purebilibili/core/ui/components/AppLiquidAwareTabRow.kt
 +++ b/shared-liquid-tabs/generated/com/android/purebilibili/core/ui/components/AppLiquidAwareTabRow.kt
-@@ -199,17 +199,16 @@
-             )
-             val indicatorOverflow = indicatorCaptureInsets.verticalDp.dp
-             val indicatorHorizontalOverflow = indicatorCaptureInsets.horizontalDp.dp
-             val scrollState = rememberScrollState()
-             val density = LocalDensity.current
+@@ -67,6 +67,7 @@
+     indicatorPositionProvider: (() -> Float)? = null,
+     isScrollInProgressProvider: () -> Boolean = { false },
+     liquidGlassAnimateLabelWidthChanges: Boolean = false,
++    liquidGlassAdaptIndicatorToLabel: Boolean = true,
+ ) {
+     AppLiquidAwareTabRow(
+         options = options,
+@@ -90,6 +91,7 @@
+         indicatorPositionProvider = indicatorPositionProvider,
+         isScrollInProgressProvider = isScrollInProgressProvider,
+         liquidGlassAnimateLabelWidthChanges = liquidGlassAnimateLabelWidthChanges,
++        liquidGlassAdaptIndicatorToLabel = liquidGlassAdaptIndicatorToLabel,
+     )
+ }
+ 
+@@ -121,6 +123,7 @@
+     indicatorPositionProvider: (() -> Float)? = null,
+     isScrollInProgressProvider: () -> Boolean = { false },
+     liquidGlassAnimateLabelWidthChanges: Boolean = false,
++    liquidGlassAdaptIndicatorToLabel: Boolean = true,
+ ) {
+     if (options.isEmpty()) return
+     // Material boundary: glass-only spacing, wrapping and typography must never change
+@@ -204,7 +207,6 @@
              BoxWithConstraints(
                  modifier = Modifier.liquidDockViewport(
                      verticalOverflow = indicatorOverflow,
@@ -13,17 +33,15 @@
                  ),
                  contentAlignment = Alignment.CenterStart,
              ) {
-                 val viewportWidthPx = with(density) { maxWidth.toPx() }
-                 val itemWidthPx = with(density) { readableTabWidth.toPx() }
-                 val dragFollowEdgePaddingPx = with(density) { AppSpacingTokens.Medium.toPx() }
-                 val pagerPositionProvider = indicatorPositionProvider
-                 val pagerMotionActiveProvider = isScrollInProgressProvider
-@@ -230,17 +229,16 @@
+@@ -228,6 +230,7 @@
+                 BottomBarLiquidSegmentedControl(
+                     items = labels,
                      liquidGlassAnimateLabelWidthChanges = liquidGlassAnimateLabelWidthChanges,
++                    liquidGlassAdaptIndicatorToLabel = liquidGlassAdaptIndicatorToLabel,
                      liquidGlassLabelHorizontalPadding = liquidGlassLabelHorizontalPadding,
                      selectedIndex = selectedIndex,
                      onSelected = { index ->
-                         options.getOrNull(index)?.let { onSelectionChange(it.value) }
+@@ -235,7 +238,6 @@
                      },
                      modifier = Modifier.liquidDockViewport(
                      verticalOverflow = indicatorOverflow,
@@ -31,8 +49,11 @@
                  ),
                      scrollState = scrollState,
                      enabled = enabled,
-                     itemWidth = readableTabWidth,
-                     height = height,
-                     indicatorHeight = indicatorHeight,
-                     labelFontSize = resolvedLabelFontSize,
-                     allowNativeLabelOverflow = true,
+@@ -298,6 +300,7 @@
+             BottomBarLiquidSegmentedControl(
+                 items = labels,
+                 liquidGlassAnimateLabelWidthChanges = liquidGlassAnimateLabelWidthChanges,
++                liquidGlassAdaptIndicatorToLabel = liquidGlassAdaptIndicatorToLabel,
+                 liquidGlassLabelHorizontalPadding = liquidGlassLabelHorizontalPadding,
+                 selectedIndex = selectedIndex,
+                 onSelected = { index ->

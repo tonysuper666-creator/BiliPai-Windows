@@ -89,7 +89,7 @@ class DesktopWindowsSponsorSkipCommandTest {
         private val plugins = Proxy.newProxyInstance(DesktopOriginalVideoOwnerPlugins::class.java.classLoader,
             arrayOf(DesktopOriginalVideoOwnerPlugins::class.java)) { _, method, args ->
             when (method.name) {
-                "enabledPlayerPlugins" -> emptyList<com.android.purebilibili.core.plugin.DesktopSingleSessionPlayerPlugin>()
+                "enabledPlayerPlugins" -> emptyList<com.bilipai.desktop.player.DesktopPlayerPluginSessionHandle>()
                 "capturePlaybackDispatch" -> accepted.takeIf { owned() }
                 "isPlaybackDispatchCurrent" -> sourceCurrent(args!![0] as DesktopOriginalVideoAcceptedPublication)
                 "admitPlaybackDispatch" -> {

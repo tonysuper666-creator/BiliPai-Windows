@@ -1,0 +1,388 @@
+--- a/com/android/purebilibili/feature/video/ui/components/DanmakuSettingsPanel.kt
++++ b/com/android/purebilibili/feature/video/ui/components/DanmakuSettingsPanel.kt
+@@ -416,9 +416,7 @@
+     val configuration = LocalConfiguration.current
+     val viewConfiguration = LocalViewConfiguration.current
+     val colorScheme = MaterialTheme.colorScheme
+-    val panelColors = remember(colorScheme) {
+-        resolveDanmakuSettingsPanelSurfaceColors(colorScheme)
+-    }
++    val panelColors = rememberDanmakuPanelColors(colorScheme)
+     val isFullscreenStyle = isFullscreen
+     // 横屏分区 Tab（基础/高级/屏蔽）；竖屏不分区，全部展示。
+     var fullscreenActiveSection by remember { mutableIntStateOf(0) }
+@@ -524,26 +522,9 @@
+                 tonalElevation = if (isFullscreenStyle) 6.dp else 16.dp,
+                 shadowElevation = if (isFullscreenStyle) 8.dp else 24.dp
+             ) {
+-                Column(
+-                    modifier = Modifier
+-                        .verticalScroll(rememberScrollState())
+-                        .padding(if (isFullscreenStyle) 20.dp else 24.dp)
+-                ) {
+-                    // Header：窄侧栏只放标题+徽章+关闭，长副标题不挤进横排（避免竖字）
+-                    Row(
+-                        modifier = Modifier.fillMaxWidth(),
+-                        horizontalArrangement = Arrangement.SpaceBetween,
+-                        verticalAlignment = Alignment.CenterVertically
+-                    ) {
+-                        AppText(
+-                            text = "弹幕设置",
+-                            color = panelColors.titleColor,
+-                            style = (if (isFullscreenStyle) MaterialTheme.typography.titleMedium else MaterialTheme.typography.titleLarge)
+-                                .copy(fontWeight = FontWeight.SemiBold),
+-                            maxLines = 1,
+-                            modifier = Modifier.weight(1f, fill = false)
+-                        )
+-                        Spacer(modifier = Modifier.width(8.dp))
++                DanmakuSettingsPanelBody(
++                    onDismiss = onDismiss,
++                    navigation = {
+                         Box(
+                             modifier = Modifier
+                                 .clip(AppShapes.container(ContainerLevel.Pill))
+@@ -562,21 +543,8 @@
+                                 maxLines = 1
+                             )
+                         }
+-                        Spacer(modifier = Modifier.width(8.dp))
+-                        AppIconButton(
+-                            onClick = onDismiss,
+-                            modifier = Modifier
+-                                .size(32.dp)
+-                                .background(panelColors.resetButtonBackgroundColor, CircleShape)
+-                        ) {
+-                            AppIcon(
+-                                Icons.Outlined.Close,
+-                                contentDescription = "关闭",
+-                                tint = panelColors.resetButtonColor,
+-                                modifier = Modifier.size(18.dp)
+-                            )
+-                        }
+-                    }
++                    },
++                ) {
+                     if (!isFullscreenStyle && settingsScope.subtitle.isNotBlank()) {
+                         Spacer(modifier = Modifier.height(6.dp))
+                         AppText(
+@@ -606,44 +574,18 @@
+                     }
+ 
+                     if (showSectionBasic && onShowDanmakuPool != null) {
+-                        AppSurface(
+-                            modifier = Modifier
+-                                .fillMaxWidth()
+-                                .clickable {
+-                                    onDismiss()
+-                                    onShowDanmakuPool()
+-                                },
+-                            color = panelColors.itemColor,
+-                            shape = AppShapes.container(ContainerLevel.Card)
+-                        ) {
+-                            Row(
+-                                modifier = Modifier
+-                                    .fillMaxWidth()
+-                                    .padding(16.dp),
+-                                horizontalArrangement = Arrangement.SpaceBetween,
+-                                verticalAlignment = Alignment.CenterVertically
+-                            ) {
+-                                Row(verticalAlignment = Alignment.CenterVertically) {
+-                                    AppIcon(
+-                                        imageVector = Icons.Outlined.FormatListBulleted,
+-                                        contentDescription = null,
+-                                        modifier = Modifier.size(20.dp),
+-                                        tint = AppContentColors.accent()
+-                                    )
+-                                    Spacer(modifier = Modifier.width(12.dp))
+-                                     AppText(
+-                                        text = "查看弹幕列表",
+-                                        color = panelColors.titleColor,
+-                                        style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Medium)
+-                                    )
+-                                }
+-                                AppText(
+-                                    text = "搜索 · 筛选 · 跳转",
+-                                    color = panelColors.supportingColor,
+-                                    style = MaterialTheme.typography.bodySmall
+-                                )
+-                            }
+-                        }
++                        DanmakuSettingsAction(
++                            title = "查看弹幕列表",
++                            onClick = {
++                                onDismiss()
++                                onShowDanmakuPool()
++                            },
++                        )
++                        AppText(
++                            text = "搜索 · 筛选 · 跳转",
++                            color = panelColors.supportingColor,
++                            style = MaterialTheme.typography.bodySmall,
++                        )
+                         Spacer(modifier = Modifier.height(12.dp))
+                     }
+ 
+@@ -769,7 +711,7 @@
+                             DanmakuSliderItem(
+                                 label = if (isFullscreenStyle) "字体" else "字体大小",
+                                 value = fontScale,
+-                                valueRange = 0.3f..2f,
++                                valueRange = com.android.purebilibili.core.store.normalizeDanmakuFontScale(0f)..com.android.purebilibili.core.store.normalizeDanmakuFontScale(Float.MAX_VALUE),
+                                 displayValue = { "${(it * 100).toInt()}%" },
+                                 onValueChange = onFontScaleChange,
+                                     onValuePreview = { next ->
+@@ -785,7 +727,7 @@
+                                 DanmakuSliderItem(
+                                     label = "滚动弹幕时长",
+                                     value = scrollDurationSeconds,
+-                                    valueRange = 2f..15f,
++                                    valueRange = (com.android.purebilibili.feature.video.danmaku.resolveDanmakuPinnedDurationMillis(0f) / 1000f)..(com.android.purebilibili.feature.video.danmaku.resolveDanmakuPinnedDurationMillis(Float.MAX_VALUE) / 1000f),
+                                     displayValue = { "${it.roundToInt()}s" },
+                                     onValueChange = onScrollDurationSecondsChange,
+                                     onValuePreview = { next ->
+@@ -800,7 +742,7 @@
+                                 DanmakuSliderItem(
+                                     label = "静态弹幕时长",
+                                     value = staticDurationSeconds,
+-                                    valueRange = 2f..15f,
++                                    valueRange = (com.android.purebilibili.feature.video.danmaku.resolveDanmakuPinnedDurationMillis(0f) / 1000f)..(com.android.purebilibili.feature.video.danmaku.resolveDanmakuPinnedDurationMillis(Float.MAX_VALUE) / 1000f),
+                                     displayValue = { "${it.roundToInt()}s" },
+                                     onValueChange = onStaticDurationSecondsChange,
+                                     onValuePreview = { next ->
+@@ -815,7 +757,7 @@
+                                 DanmakuSliderItem(
+                                     label = "弹幕行高",
+                                     value = lineHeight,
+-                                    valueRange = 0.8f..2.2f,
++                                    valueRange = com.android.purebilibili.feature.video.danmaku.resolveDanmakuLayerLineHeightPx(1f, 0f)..com.android.purebilibili.feature.video.danmaku.resolveDanmakuLayerLineHeightPx(1f, Float.MAX_VALUE),
+                                     displayValue = { String.format("%.1f", it) },
+                                     onValueChange = onLineHeightChange,
+                                     onValuePreview = { next ->
+@@ -877,11 +819,7 @@
+                                 modifier = Modifier.padding(16.dp),
+                                 verticalArrangement = Arrangement.spacedBy(20.dp)
+                             ) {
+-                                AppText(
+-                                    text = "高级渲染",
+-                                    color = panelColors.titleColor,
+-                                    style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Medium)
+-                                )
++                                DanmakuSettingsSectionTitle(title = "高级渲染")
+                                 AppText(
+                                     text = "更细的弹幕渲染控制",
+                                     color = panelColors.supportingColor,
+@@ -921,7 +859,7 @@
+                                     DanmakuSliderItem(
+                                         label = "弹幕行高",
+                                         value = lineHeight,
+-                                        valueRange = 0.8f..2.2f,
++                                        valueRange = com.android.purebilibili.feature.video.danmaku.resolveDanmakuLayerLineHeightPx(1f, 0f)..com.android.purebilibili.feature.video.danmaku.resolveDanmakuLayerLineHeightPx(1f, Float.MAX_VALUE),
+                                         displayValue = { String.format("%.1f", it) },
+                                         onValueChange = onLineHeightChange,
+                                     onValuePreview = { next ->
+@@ -935,7 +873,7 @@
+                                     DanmakuSliderItem(
+                                         label = "滚动弹幕时长",
+                                         value = scrollDurationSeconds,
+-                                        valueRange = 2f..15f,
++                                        valueRange = (com.android.purebilibili.feature.video.danmaku.resolveDanmakuPinnedDurationMillis(0f) / 1000f)..(com.android.purebilibili.feature.video.danmaku.resolveDanmakuPinnedDurationMillis(Float.MAX_VALUE) / 1000f),
+                                         displayValue = { "${it.roundToInt()}s" },
+                                         onValueChange = onScrollDurationSecondsChange,
+                                     onValuePreview = { next ->
+@@ -950,7 +888,7 @@
+                                     DanmakuSliderItem(
+                                         label = "静态弹幕时长",
+                                         value = staticDurationSeconds,
+-                                        valueRange = 2f..15f,
++                                        valueRange = (com.android.purebilibili.feature.video.danmaku.resolveDanmakuPinnedDurationMillis(0f) / 1000f)..(com.android.purebilibili.feature.video.danmaku.resolveDanmakuPinnedDurationMillis(Float.MAX_VALUE) / 1000f),
+                                         displayValue = { "${it.roundToInt()}s" },
+                                         onValueChange = onStaticDurationSecondsChange,
+                                     onValuePreview = { next ->
+@@ -1154,11 +1092,7 @@
+                             shape = AppShapes.container(ContainerLevel.Card)
+                         ) {
+                             Column(modifier = Modifier.padding(16.dp)) {
+-                                AppText(
+-                                    text = "屏蔽类型",
+-                                    color = panelColors.titleColor,
+-                                    style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Medium)
+-                                )
++                                DanmakuSettingsSectionTitle(title = "屏蔽类型")
+                                 Spacer(modifier = Modifier.height(4.dp))
+                                 AppText(
+                                     text = "关闭对应开关即可屏蔽",
+@@ -1333,9 +1267,7 @@
+     val context = LocalContext.current
+     val scope = rememberCoroutineScope()
+     val colorScheme = MaterialTheme.colorScheme
+-    val panelColors = remember(colorScheme) {
+-        resolveDanmakuSettingsPanelSurfaceColors(colorScheme)
+-    }
++    val panelColors = rememberDanmakuPanelColors(colorScheme)
+     val initialSections = remember(rawRules) {
+         resolveDanmakuBlockManagerSections(rawRules)
+     }
+@@ -1713,24 +1645,11 @@
+     showDivider: Boolean = true
+ ) {
+     Column(modifier = Modifier.fillMaxWidth()) {
+-        Row(
+-            modifier = Modifier
+-                .fillMaxWidth()
+-                .clickable { onCheckedChange(!checked) }
+-                .padding(vertical = if (fullscreenStyle) 10.dp else 6.dp),
+-            horizontalArrangement = Arrangement.SpaceBetween,
+-            verticalAlignment = Alignment.CenterVertically
+-        ) {
+-            AppText(
+-                text = label,
+-                color = colors.titleColor,
+-                style = if (fullscreenStyle) MaterialTheme.typography.bodyLarge else MaterialTheme.typography.bodyMedium
+-            )
+-            AppSwitch(
+-                checked = checked,
+-                onCheckedChange = onCheckedChange,
+-            )
+-        }
++        DanmakuSettingsToggle(
++            title = label,
++            checked = checked,
++            onCheckedChange = onCheckedChange,
++        )
+         if (showDivider) {
+             AppHorizontalDivider(color = colors.dividerColor)
+         }
+@@ -1933,121 +1852,18 @@
+     tickCount: Int = 0,
+     valueText: (Float) -> String = displayValue
+ ) {
+-    var localValue by remember(valueRange) { mutableFloatStateOf(value) }
+-    var previewing by remember { mutableStateOf(false) }
+-    val latestCommit by androidx.compose.runtime.rememberUpdatedState(onValueChange)
+-    androidx.compose.runtime.LaunchedEffect(value) {
+-        if (!previewing) localValue = value
+-    }
+-    androidx.compose.runtime.DisposableEffect(Unit) {
+-        onDispose { if (previewing) latestCommit(localValue) }
+-    }
+-    val liquidSlider = com.android.purebilibili.core.ui.LocalAppThemeConfig.current.liquidGlassEnabled &&
+-        com.bilipai.desktop.ui.desktopDetailRenderEffectsSupported()
+-    val sliderProgress = remember(localValue, valueRange) {
+-        val total = valueRange.endInclusive - valueRange.start
+-        if (total <= 0f) {
+-            0f
+-        } else {
+-            ((localValue - valueRange.start) / total).coerceIn(0f, 1f)
+-        }
+-    }
+-
+-    Column {
+-        Row(
+-            modifier = Modifier.fillMaxWidth(),
+-            horizontalArrangement = Arrangement.SpaceBetween,
+-            verticalAlignment = Alignment.CenterVertically
+-        ) {
+-            if (fullscreenStyle) {
+-                AppText(
+-                    text = "$label ${valueText(localValue)}",
+-                    color = colors.titleColor,
+-                    style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Medium),
+-                    modifier = Modifier.weight(1f)
+-                )
+-                if (resetValue != null) {
+-                    AppIconButton(
+-                        onClick = {
+-                            localValue = resetValue
+-                            previewing = false
+-                            onValueChange(resetValue)
+-                        },
+-                        modifier = Modifier
+-                            .size(32.dp)
+-                            .background(colors.resetButtonBackgroundColor, CircleShape)
+-                    ) {
+-                        AppIcon(
+-                            imageVector = Icons.Outlined.Refresh,
+-                            contentDescription = "重置",
+-                            tint = colors.resetButtonColor,
+-                            modifier = Modifier.size(20.dp)
+-                        )
+-                    }
+-                }
+-            } else {
+-                AppText(
+-                    text = label,
+-                    color = colors.titleColor,
+-                    style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Medium)
+-                )
+-                AppSurface(
+-                    color = colors.itemColor,
+-                    shape = AppShapes.container(ContainerLevel.Pill)
+-                ) {
+-                    AppText(
+-                        text = displayValue(localValue),
+-                        color = colors.sliderActiveTrackColor,
+-                        style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.SemiBold),
+-                        modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp)
+-                    )
+-                }
+-            }
+-        }
+-
+-        Spacer(modifier = Modifier.height(if (fullscreenStyle) 10.dp else 12.dp))
+-
+-        Box(
+-            modifier = Modifier
+-                .fillMaxWidth()
+-                .height(if (liquidSlider) 48.dp else if (fullscreenStyle) 32.dp else 28.dp),
+-            contentAlignment = Alignment.Center
+-        ) {
+-            if (!liquidSlider && fullscreenStyle && tickCount > 1) {
+-                DanmakuSliderTicks(
+-                    tickCount = tickCount,
+-                    progress = sliderProgress,
+-                    colors = colors,
+-                    modifier = Modifier
+-                        .fillMaxWidth()
+-                        .padding(horizontal = 6.dp)
+-                )
+-            }
+-
+-            AppSlider(
+-                value = localValue,
+-                onValueChange = { newValue ->
+-                    localValue = newValue
+-                    previewing = true
+-                    onValuePreview?.invoke(newValue)
+-                },
+-                onValueChangeFinished = {
+-                    previewing = false
+-                    onValueChange(localValue)
+-                },
+-                valueRange = valueRange,
+-                steps = steps,
+-                // Glass uses the same resource palette and lens as settings controls.
+-                // Native themes retain the panel's existing contrast palette.
+-                colors = if (liquidSlider) null else AppSliderDefaults.colors(
+-                    thumbColor = colors.sliderThumbColor,
+-                    activeTrackColor = colors.sliderActiveTrackColor,
+-                    inactiveTrackColor = colors.sliderInactiveTrackColor
+-                ),
+-                modifier = Modifier.fillMaxWidth().semantics { contentDescription = label }
+-            )
+-        }
+-    }
++    // Keep the existing desktop callbacks and close-during-drag commit boundary.
++    DanmakuSettingsSlider(
++        label = label,
++        valueText = if (fullscreenStyle) valueText else displayValue,
++        value = value,
++        valueRange = valueRange,
++        steps = steps,
++        defaultValue = if (fullscreenStyle) resetValue else null,
++        onValuePreview = { onValuePreview?.invoke(it) },
++        onValueChangeFinished = onValueChange,
++        commitOnDispose = true,
++    )
+ }
+ 
+ @Composable

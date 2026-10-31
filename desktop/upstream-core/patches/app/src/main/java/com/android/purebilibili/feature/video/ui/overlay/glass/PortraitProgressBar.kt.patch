@@ -1,0 +1,11 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/glass/PortraitProgressBar.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/glass/PortraitProgressBar.kt
+@@ -29,7 +29,7 @@
+ import androidx.compose.ui.graphics.Color
+ import androidx.compose.ui.input.pointer.pointerInput
+ import androidx.compose.ui.layout.onSizeChanged
+-import androidx.compose.ui.platform.LocalConfiguration
++import com.bilipai.desktop.ui.DesktopHomeCardWindowMetrics as LocalConfiguration
+ import androidx.compose.ui.platform.LocalDensity
+ import androidx.compose.ui.unit.IntOffset
+ import androidx.compose.ui.unit.dp

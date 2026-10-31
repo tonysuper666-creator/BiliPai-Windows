@@ -1,0 +1,59 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/video/ui/components/UpPreviewSheet.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/video/ui/components/UpPreviewSheet.kt
+@@ -55,7 +55,7 @@
+ import androidx.compose.ui.input.nestedscroll.NestedScrollSource
+ import androidx.compose.ui.input.nestedscroll.nestedScroll
+ import androidx.compose.ui.layout.ContentScale
+-import androidx.compose.ui.platform.LocalConfiguration
++import com.bilipai.desktop.ui.DesktopHomeCardWindowMetrics as LocalConfiguration
+ import androidx.compose.ui.platform.LocalDensity
+ import androidx.compose.ui.text.font.FontWeight
+ import androidx.compose.ui.text.style.TextOverflow
+@@ -64,7 +64,6 @@
+ import androidx.compose.ui.unit.Velocity
+ import androidx.compose.ui.zIndex
+ import coil3.compose.AsyncImage
+-import com.android.purebilibili.core.network.NetworkModule
+ import com.android.purebilibili.core.network.WbiUtils
+ import com.android.purebilibili.core.ui.AppShapes
+ import com.android.purebilibili.core.ui.videoCardTitleMaxLines
+@@ -109,6 +108,7 @@
+ ) {
+     if (!visible && owner.mid <= 0L) return
+ 
++    val platform = com.bilipai.desktop.ui.LocalDesktopOriginalPortraitPlatform.current
+     val configuration = LocalConfiguration.current
+     val screenHeight = configuration.screenHeightDp.dp
+     val sheetMotion = rememberAppBottomSheetMotion()
+@@ -144,7 +144,7 @@
+                 var nextVideoCount: Int? = null
+                 var nextFollower: Int? = null
+                 var nextLikes: Int? = null
+-                val nav = NetworkModule.api.getNavInfo()
++                val nav = platform.requests.api.getNavInfo()
+                 val wbi = nav.data?.wbi_img
+                 val imgKey = wbi?.img_url?.substringAfterLast("/")?.substringBefore(".")
+                 val subKey = wbi?.sub_url?.substringAfterLast("/")?.substringBefore(".")
+@@ -159,7 +159,7 @@
+                         imgKey,
+                         subKey,
+                     )
+-                    val videoResp = NetworkModule.spaceApi.getSpaceVideos(videoParams)
++                    val videoResp = platform.requests.spaceApi.getSpaceVideos(videoParams)
+                     if (videoResp.code == 0) {
+                         val list = videoResp.data?.list?.vlist.orEmpty()
+                             .map { it.toUpPreviewVideoItem() }
+@@ -168,11 +168,11 @@
+                         if (count != null && count > 0) nextVideoCount = count
+                     }
+                 }
+-                val relation = NetworkModule.spaceApi.getRelationStat(owner.mid)
++                val relation = platform.requests.spaceApi.getRelationStat(owner.mid)
+                 if (relation.code == 0) {
+                     relation.data?.follower?.let { nextFollower = it }
+                 }
+-                val upStat = NetworkModule.spaceApi.getUpStat(owner.mid)
++                val upStat = platform.requests.spaceApi.getUpStat(owner.mid)
+                 if (upStat.code == 0) {
+                     upStat.data?.likes?.let {
+                         nextLikes = it.coerceIn(0L, Int.MAX_VALUE.toLong()).toInt()

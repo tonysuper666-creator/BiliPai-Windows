@@ -314,10 +314,387 @@ val appCoreLaterSteps: Map<String, String> = mapOf(
     "core/store/FavoriteFolderCoverCache.kt" to "the desktop keeps one cover cache per favorites origin; moves with the favorites feature (M4d)",
     "core/ui/components/AppLiquidAwareTabRow.kt" to "calls feature/home's liquid tab components with their new parameters; moves with the home feature (M4b)",
 )
+// M4a: video/bangumi logic and unchanged Compose components compile from the merged upstream tree.
+// The remaining UI/player files move when their desktop platform adapters are wired.
+val migratedVideoFeaturePaths = setOf(
+    "com/android/purebilibili/feature/bangumi/BangumiDetailHeroBackdrop.kt",
+    "com/android/purebilibili/feature/bangumi/BangumiDetailScreen.kt",
+    "com/android/purebilibili/feature/bangumi/BangumiViewModel.kt",
+    "com/android/purebilibili/feature/video/ui/components/DanmakuContextMenu.kt",
+    "com/android/purebilibili/feature/video/ui/components/DanmakuActionToolbar.kt",
+    "com/android/purebilibili/feature/video/ui/components/DanmakuPoolSheet.kt",
+    "com/android/purebilibili/feature/video/ui/components/DanmakuSendDialog.kt",
+    "com/android/purebilibili/feature/video/ui/components/FavoriteFolderSheet.kt",
+    "com/android/purebilibili/feature/video/ui/components/FavoriteFolderMenuSource.kt",
+    "com/android/purebilibili/feature/video/ui/components/DanmakuReportForm.kt",
+    "com/android/purebilibili/feature/video/ui/gesture/GestureLevelOverlay.kt",
+    "com/android/purebilibili/feature/video/ui/components/QualityMenu.kt",
+    "com/android/purebilibili/feature/video/ui/components/VideoCardSkeleton.kt",
+    "com/android/purebilibili/feature/video/screen/VideoDetailInputOverlayAdapter.kt",
+    "com/android/purebilibili/feature/video/viewmodel/VideoComposerDraftState.kt",
+    "com/android/purebilibili/feature/video/ui/components/RelatedVideoList.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/LandscapeDanmakuInput.kt",
+    "com/android/purebilibili/feature/video/ui/components/VideoCommentSheetHost.kt",
+    "com/android/purebilibili/feature/video/ui/components/PlayerOptionStyle.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/NativePlayerSideControls.kt",
+    "com/android/purebilibili/feature/video/screen/VideoDetailPlaybackErrorNotice.kt",
+    "com/android/purebilibili/feature/video/ui/components/DanmakuSettingsPanelBody.kt",
+    "com/android/purebilibili/feature/video/ui/components/CommentSortFilterBar.kt",
+    "com/android/purebilibili/feature/video/ui/components/VideoCommentFloatingHeader.kt",
+    "com/android/purebilibili/feature/bangumi/ui/player/BangumiCommentPanel.kt",
+    "com/android/purebilibili/feature/video/screen/VideoDetailRouteCommentEffect.kt",
+    "com/android/purebilibili/feature/video/ui/components/DanmakuSettingsSlider.kt",
+    "com/android/purebilibili/feature/video/danmaku/DanmakuConfig.kt",
+    "com/android/purebilibili/feature/video/ui/components/DanmakuSettingsPanelAppearance.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/PlayerControlGlass.kt",
+    "com/android/purebilibili/feature/video/ui/components/SubReplySheet.kt",
+    "com/android/purebilibili/feature/video/ui/components/CelebrationAnimations.kt",
+    "com/android/purebilibili/feature/video/ui/components/BottomInputBar.kt",
+    "com/android/purebilibili/feature/video/ui/section/VideoNoteSection.kt",
+    "com/android/purebilibili/feature/video/danmaku/BasDanmakuFilterPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/components/PlainLandscapeDanmakuComposer.kt",
+    "com/android/purebilibili/feature/video/ui/components/LandscapeDanmakuComposer.kt",
+    "com/android/purebilibili/feature/video/ui/components/VideoScreenshotSharePrompt.kt",
+    "com/android/purebilibili/feature/video/screen/VideoNavigationCidPolicy.kt",
+    "com/android/purebilibili/feature/video/screen/VideoDetailInlineCollapseState.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/PortraitProgressBar.kt",
+    "com/android/purebilibili/feature/bangumi/ui/list/BangumiListComponents.kt",
+    "com/android/purebilibili/feature/video/ui/feedback/VideoActionFeedbackPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/feedback/TripleActionMotionSpec.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/CenterPlaybackControl.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/NextWatchOverlay.kt",
+    "com/android/purebilibili/feature/video/ui/components/glass/ChapterListPanel.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/ViewPointSegmentBar.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/ViewPointSegmentBarPolicy.kt",
+    "com/android/purebilibili/feature/video/viewmodel/VideoSubjectSnapshot.kt",
+    "com/android/purebilibili/feature/video/viewmodel/VideoSupplementViewModel.kt",
+    "com/android/purebilibili/feature/video/ui/components/CollectionRow.kt",
+    "com/android/purebilibili/feature/video/ui/components/CollectionSubscriptionButton.kt",
+    "com/android/purebilibili/feature/video/ui/components/RelatedVideoActionSheet.kt",
+    "com/android/purebilibili/feature/video/ui/components/VideoCommentVoteCard.kt",
+    "com/android/purebilibili/feature/video/screen/VideoContentDeferredLayout.kt",
+    "com/android/purebilibili/feature/video/ui/components/PlaybackCdnDiagnostics.kt",
+    "com/android/purebilibili/feature/video/ui/components/AnimatedGesturePercentText.kt",
+    "com/android/purebilibili/feature/video/ui/section/VideoSupplementSection.kt",
+    "com/android/purebilibili/feature/video/ui/components/TwoFingerSpeedFeedbackOverlay.kt",
+    "com/android/purebilibili/feature/video/ui/components/InteractiveChoiceOverlay.kt",
+    "com/android/purebilibili/feature/video/screen/TabletDanmakuChromeState.kt",
+    "com/android/purebilibili/feature/video/ui/section/VideoDetailSecondaryButton.kt",
+    "com/android/purebilibili/feature/video/ui/components/AudioQualitySelectionMenu.kt",
+    "com/android/purebilibili/feature/video/share/VideoShareMoreTargetsSheet.kt",
+    "com/android/purebilibili/feature/video/share/VideoShareSheetMotion.kt",
+    "com/android/purebilibili/feature/video/ui/components/SpeedSelectionPanel.kt",
+    "com/android/purebilibili/feature/video/ui/components/DanmakuColorOptions.kt",
+    "com/android/purebilibili/feature/video/ui/components/ReportReasonDialog.kt",
+    "com/android/purebilibili/feature/video/screen/VideoDetailFavoriteFolderOverlayAdapter.kt",
+    "com/android/purebilibili/feature/video/screen/VideoDetailCommentFraudOverlayAdapter.kt",
+
+    "com/android/purebilibili/feature/video/ui/overlay/BasScenePainter.kt",
+    "com/android/purebilibili/feature/video/ui/components/UpPreviewSheet.kt",
+    "com/android/purebilibili/feature/video/ambient/PlayerAmbientGlow.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/glass/PortraitProgressBar.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/PlayerProgressGlassHighlight.kt",
+    "com/android/purebilibili/feature/bangumi/ui/detail/BangumiDetailComponents.kt",
+    "com/android/purebilibili/feature/bangumi/policy/BangumiUiPolicy.kt",
+    "com/android/purebilibili/feature/bangumi/BangumiTimelineScreen.kt",
+
+    "com/android/purebilibili/feature/video/ui/overlay/PlaybackOrderSelectionSheet.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/PlaybackOrderSelectionSheetPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/components/glass/PlayerMiuixListPopup.kt",
+    "com/android/purebilibili/feature/video/ui/components/PlayerSelectionPopup.kt",
+    "com/android/purebilibili/feature/video/ui/components/PlayerPopupGeometry.kt",
+    "com/android/purebilibili/feature/video/screen/VideoDetailEntryTransitionObserver.kt",
+    "com/android/purebilibili/feature/video/screen/VideoDetailDomainEffects.kt",
+    "com/android/purebilibili/feature/video/ui/components/glass/DanmakuSettingsPanelHost.kt",
+
+    "com/android/purebilibili/feature/video/ui/overlay/glass/TopControlBarLayoutPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/glass/PlaybackOrderSelectionSheetPolicy.kt",
+    "com/android/purebilibili/feature/video/screen/VideoDetailEntryLoadPolicy.kt",
+
+    "com/android/purebilibili/feature/video/ui/components/CommentAvatarPush.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/ImmersiveStatusBarBackdrop.kt",
+    "com/android/purebilibili/feature/video/screen/VideoDetailScreenContent.kt",
+    "com/android/purebilibili/feature/bangumi/BangumiHubSkeletons.kt",
+
+    "com/android/purebilibili/feature/video/player/MiniPlayerManager.kt",
+    "com/android/purebilibili/feature/video/state/VideoPlayerState.kt",
+    "com/android/purebilibili/feature/video/danmaku/DanmakuPlaybackSyncPolicy.kt",
+    "com/android/purebilibili/feature/plugin/SponsorBlockPlaybackSession.kt",
+    "com/android/purebilibili/feature/plugin/SponsorBlockConfigStore.kt",
+    "com/android/purebilibili/feature/video/ui/section/DanmakuViewportHost.kt",
+    "com/android/purebilibili/feature/video/ui/components/SponsorSkipUI.kt",
+    "com/android/purebilibili/feature/video/screen/TabletOwnerUploadsPane.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/PlayerControlSizing.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/PlayerControlSafeArea.kt",
+    "com/android/purebilibili/feature/video/ui/components/VideoCommentSkeletonSlots.kt",
+    "com/android/purebilibili/feature/video/ui/components/PlayerPanelViewport.kt",
+    "com/android/purebilibili/feature/video/screen/VideoDetailCoverContentScale.kt",
+    "com/android/purebilibili/feature/video/screen/VideoDetailCommentStateScope.kt",
+    "com/android/purebilibili/feature/video/ui/components/EpisodeSheetLayoutPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/components/VideoCommentLoadError.kt",
+    "com/android/purebilibili/feature/video/danmaku/DanmakuSegmentWindowPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/components/CommentThreadNavigationBlur.kt",
+    "com/android/purebilibili/feature/video/ui/section/OwnerDecoratedAvatar.kt",
+    "com/android/purebilibili/feature/video/ui/components/CommentFraudFeedbackHost.kt",
+    "com/android/purebilibili/feature/video/ui/components/PiliPlusDanmakuSendIcon.kt",
+    "com/android/purebilibili/feature/video/screen/VideoDetailReturnMediaLayout.kt",
+    "com/android/purebilibili/feature/video/screen/VideoDetailTransitionPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/glass/CenterPlaybackControl.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/glass/PortraitInteractionBar.kt",
+    "com/android/purebilibili/feature/video/ui/components/CoinDialog.kt",
+    "com/android/purebilibili/feature/video/ui/feedback/LikeBurstAnchor.kt",
+    "com/android/purebilibili/feature/bangumi/ui/player/BangumiCollapsedPlayerBar.kt",
+    "com/android/purebilibili/feature/video/screen/VideoDetailTransitionHost.kt",
+    "com/android/purebilibili/feature/video/ui/components/CommentFraudDialog.kt",
+    "com/android/purebilibili/feature/video/screen/VideoDetailSessionPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/section/PlayerPageBackdrop.kt",
+    "com/android/purebilibili/feature/video/ui/pager/PortraitDetailSheet.kt",
+    "com/android/purebilibili/feature/video/ui/pager/PortraitCommentSheet.kt",
+    "com/android/purebilibili/feature/video/ui/components/SeekPreviewBubble.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/PlayerOverlayModels.kt",
+    "com/android/purebilibili/feature/video/ui/components/CircularGesturePercentText.kt",
+    "com/android/purebilibili/feature/video/ui/components/glass/DanmakuSettingsPanelAppearance.kt",
+    "com/android/purebilibili/feature/video/playback/session/PlaybackUserActionTracker.kt",
+    "com/android/purebilibili/feature/video/ui/components/LandscapeSidePanel.kt",
+    "com/android/purebilibili/feature/video/ui/feedback/VideoTriplePressState.kt",
+    "com/android/purebilibili/feature/video/screen/VideoInputDiagnostics.kt",
+    "com/android/purebilibili/feature/bangumi/BangumiCardTransition.kt",
+    "com/android/purebilibili/feature/video/ui/feedback/VideoActionCountText.kt",
+    "com/android/purebilibili/feature/video/screen/VideoDetailCommonOverlayAdapter.kt",
+    "com/android/purebilibili/feature/video/ui/pager/PortraitPagerSwitchPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/glass/PortraitBottomInputBar.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/HotDanmakuBar.kt",
+    "com/android/purebilibili/feature/video/state/PlayerLifecyclePlaybackPolicy.kt",
+    "com/android/purebilibili/feature/video/ambient/AmbientEnvironment.kt",
+    "com/android/purebilibili/feature/bangumi/policy/BangumiHubPolicy.kt",
+    "com/android/purebilibili/feature/bangumi/BangumiPlayerOverlayPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/CommandDanmakuOverlayState.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/VideoPlayerOverlayProgressState.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/FullscreenDoubleTapPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/components/DanmakuSameSendConfirmation.kt",
+    "com/android/purebilibili/feature/video/playback/session/PlaybackLifecycleCoordinator.kt",
+    "com/android/purebilibili/feature/video/playback/session/PlaybackSeekController.kt",
+    "com/android/purebilibili/feature/video/playback/audio/PremiumAudioPlaybackFailurePolicy.kt",
+    "com/android/purebilibili/feature/video/danmaku/WebMaskParser.kt",
+    "com/android/purebilibili/feature/video/danmaku/DanmakuMerger.kt",
+    "com/android/purebilibili/feature/video/state/PlayerErrorRecoveryPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/VideoDetailShapes.kt",
+    "com/android/purebilibili/feature/video/ambient/PlayerAmbientLayout.kt",
+    "com/android/purebilibili/feature/video/screen/VideoDetailPresentationState.kt",
+    "com/android/purebilibili/feature/video/screen/VideoDetailParentUiSnapshot.kt",
+    "com/android/purebilibili/feature/video/screen/TabletVideoLayoutPolicy.kt",
+    "com/android/purebilibili/feature/video/screen/VideoDetailInlineScrollRecovery.kt",
+    "com/android/purebilibili/feature/video/screen/VideoCommentRefreshContainer.kt",
+    "com/android/purebilibili/feature/video/player/PlayerKeyboardPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/components/CommentThreadDrag.kt",
+    "com/android/purebilibili/feature/video/ui/components/ModalChildScroll.kt",
+    "com/android/purebilibili/feature/video/ui/components/ControlCenterMotionSpec.kt",
+    "com/android/purebilibili/feature/video/ui/components/VideoActionFeedbackHost.kt",
+    "com/android/purebilibili/feature/video/ui/components/CommentContentReveal.kt",
+    "com/android/purebilibili/feature/video/ui/components/NativeDanmakuToggleButton.kt",
+    "com/android/purebilibili/feature/video/ui/components/CommentCascadingContent.kt",
+    "com/android/purebilibili/feature/video/ui/components/UpPreviewSheetPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/components/VideoCommentAppearance.kt",
+    "com/android/purebilibili/feature/video/ui/components/CommentMentionInsertPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/components/EpisodeListNavigationActions.kt",
+    "com/android/purebilibili/feature/video/ui/components/VideoControlCenterMotion.kt",
+    "com/android/purebilibili/feature/video/ui/gesture/GestureLevelOverlayPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/PlaybackButtonComponents.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/PersistentProgressBar.kt",
+
+    "com/android/purebilibili/feature/video/usecase/VideoInteractionUseCase.kt",
+    "com/android/purebilibili/feature/video/ambient/AmbientFramePolicy.kt",
+    "com/android/purebilibili/feature/video/controller/QualityManager.kt",
+    "com/android/purebilibili/feature/video/danmaku/CommandDanmakuPolicy.kt",
+    "com/android/purebilibili/feature/video/danmaku/DanmakuCloudRuleSyncPolicy.kt",
+    "com/android/purebilibili/feature/video/danmaku/DanmakuContentSegments.kt",
+    "com/android/purebilibili/feature/video/danmaku/DanmakuKeywordFilterPolicy.kt",
+    "com/android/purebilibili/feature/video/danmaku/DanmakuNativePrototypePolicy.kt",
+    "com/android/purebilibili/feature/video/danmaku/DanmakuRenderPauseState.kt",
+    "com/android/purebilibili/feature/video/danmaku/DanmakuSettingsPolicy.kt",
+    "com/android/purebilibili/feature/video/danmaku/DanmakuSyncStatusPolicy.kt",
+    "com/android/purebilibili/feature/video/danmaku/DanmakuTapAnchor.kt",
+    "com/android/purebilibili/feature/video/danmaku/DanmakuTypeFilterPolicy.kt",
+    "com/android/purebilibili/feature/video/danmaku/DanmakuViewportPolicy.kt",
+    "com/android/purebilibili/feature/video/danmaku/HotDanmakuPolicy.kt",
+    "com/android/purebilibili/feature/video/interaction/InteractiveVideoChoicePolicy.kt",
+    "com/android/purebilibili/feature/video/interaction/InteractiveVideoVariablePolicy.kt",
+    "com/android/purebilibili/feature/video/note/AiSummaryNoteDraftPolicy.kt",
+    "com/android/purebilibili/feature/video/note/VideoNoteContentCodec.kt",
+    "com/android/purebilibili/feature/video/note/VideoNoteEditorStatePolicy.kt",
+    "com/android/purebilibili/feature/video/note/VideoNoteEmotionPolicy.kt",
+    "com/android/purebilibili/feature/video/note/VideoNoteModels.kt",
+    "com/android/purebilibili/feature/video/note/VideoNoteSharePolicy.kt",
+    "com/android/purebilibili/feature/video/note/VideoNoteTagPolicy.kt",
+    "com/android/purebilibili/feature/video/note/VideoNoteVisibilityPolicy.kt",
+    "com/android/purebilibili/feature/video/playback/audio/AudioStreamModels.kt",
+    "com/android/purebilibili/feature/video/playback/audio/AudioStreamSelectionPolicy.kt",
+    "com/android/purebilibili/feature/video/playback/loader/PlaybackLoadResult.kt",
+    "com/android/purebilibili/feature/video/playback/loader/PlaybackLoader.kt",
+    "com/android/purebilibili/feature/video/playback/loader/PlaybackRequest.kt",
+    "com/android/purebilibili/feature/video/playback/next/NextWatchSuggestion.kt",
+    "com/android/purebilibili/feature/video/playback/next/PiliPlaybackOrder.kt",
+    "com/android/purebilibili/feature/video/playback/policy/AdaptiveDashTrackPolicy.kt",
+    "com/android/purebilibili/feature/video/playback/policy/PlaybackAncillaryTaskPolicy.kt",
+    "com/android/purebilibili/feature/video/playback/policy/PlaybackPostLoadPlan.kt",
+    "com/android/purebilibili/feature/video/playback/policy/PlaybackTransitionPolicy.kt",
+    "com/android/purebilibili/feature/video/playback/policy/PluginPollingPolicy.kt",
+    "com/android/purebilibili/feature/video/playback/session/PlaybackSessionStore.kt",
+    "com/android/purebilibili/feature/video/player/AudioBarReturnPolicy.kt",
+    "com/android/purebilibili/feature/video/player/PlaybackPageOwnership.kt",
+    "com/android/purebilibili/feature/video/policy/FavoriteFolderIdPolicy.kt",
+    "com/android/purebilibili/feature/video/policy/ResumePlaybackPolicy.kt",
+    "com/android/purebilibili/feature/video/policy/VideoDetailScrollCoordinator.kt",
+    "com/android/purebilibili/feature/video/progress/PbpProgressPolicy.kt",
+    "com/android/purebilibili/feature/video/screen/AudioModeCoverLayoutPolicy.kt",
+    "com/android/purebilibili/feature/video/screen/AudioModeRenderPolicy.kt",
+    "com/android/purebilibili/feature/video/screen/AudioModeSourcePolicy.kt",
+    "com/android/purebilibili/feature/video/screen/ContinuousPlayerTransitionPolicy.kt",
+    "com/android/purebilibili/feature/video/screen/LargeScreenVideoLayoutPolicy.kt",
+    "com/android/purebilibili/feature/video/screen/LargeScreenVideoReturnPolicy.kt",
+    "com/android/purebilibili/feature/video/screen/PlayerCollapseAutoPausePolicy.kt",
+    "com/android/purebilibili/feature/video/screen/TabletVideoInfoEntrancePolicy.kt",
+    "com/android/purebilibili/feature/video/screen/VideoCommentPerformancePolicy.kt",
+    "com/android/purebilibili/feature/video/screen/VideoDetailBackPolicy.kt",
+    "com/android/purebilibili/feature/video/screen/VideoDetailReturnLoadBudgetPolicy.kt",
+    "com/android/purebilibili/feature/video/screen/VideoDetailTopBarActionPolicy.kt",
+    "com/android/purebilibili/feature/video/screen/VideoFavoriteActionPolicy.kt",
+    "com/android/purebilibili/feature/video/screen/VideoInitialPagePolicy.kt",
+    "com/android/purebilibili/feature/video/share/VideoShareFeedbackEvents.kt",
+    "com/android/purebilibili/feature/video/subtitle/BiliSubtitlePolicy.kt",
+    "com/android/purebilibili/feature/video/subtitle/SubtitleFeaturePolicy.kt",
+    "com/android/purebilibili/feature/video/ui/VideoFollowVisualPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/components/CircularGesturePercentMotionPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/components/CollectionEpisodePolicy.kt",
+    "com/android/purebilibili/feature/video/ui/components/CommentTranslationPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/components/DanmakuComposerPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/components/InputOverlayLayoutPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/components/NagramChatAvatarPlacement.kt",
+    "com/android/purebilibili/feature/video/ui/components/PlayerEpisodeMenuPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/components/PlayerSettingsMenuLayoutPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/components/PlayerSleepTimerPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/components/QualitySelectionPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/components/RelatedVideoActionPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/components/RelatedVideoCardLayoutPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/components/VideoCommentBackToTopPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/components/VideoSettingsPanelActionPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/feedback/TripleActionVisualStatePolicy.kt",
+    "com/android/purebilibili/feature/video/ui/feedback/VideoActionFeedbackMessagePolicy.kt",
+    "com/android/purebilibili/feature/video/ui/gesture/Md3GestureLevelHapticPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/gesture/TwoFingerSpeedGesturePolicy.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/BottomRightControlsLayoutPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/FullscreenKeyboardPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/FullscreenPlayerOverlayPollingPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/LandscapeEndDrawerLayoutPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/LiveDanmakuRenderPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/MiniPlayerOverlayChromePolicy.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/MiniPlayerOverlayLayoutPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/MiniPlayerOverlayPollingPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/MiniPlayerOverlayPositionPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/MiniPlayerOverlayShellPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/PiliCdnService.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/PiliEpisodeNavigation.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/PiliPlayerMenuPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/PlaybackOrderDisplayPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/PlayerChromeLayout.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/PortraitProgressBarLayoutPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/SubtitleControlModel.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/VideoPlayerOverlayVisualPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/VideoProgressBarLayoutPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/glass/BottomControlBarLayoutPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/glass/PortraitBottomInputBarLayoutPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/glass/PortraitFullscreenOverlayLayoutPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/glass/PortraitInteractionBarLayoutPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/glass/PortraitTopBarLayoutPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/pager/PortraitCollectionPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/pager/PortraitCommentPresentationPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/pager/PortraitControlsVisibilityPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/pager/PortraitDetailVideoListPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/pager/PortraitMainPlayerSyncPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/pager/PortraitAudioPlaybackController.kt",
+    "com/android/purebilibili/feature/video/ui/pager/PortraitPlaybackAdvancePolicy.kt",
+    "com/android/purebilibili/feature/video/ui/pager/PortraitProgressSyncPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/pager/PortraitSharePolicy.kt",
+    "com/android/purebilibili/feature/video/ui/section/VideoDetailMotionBudgetPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/section/VideoInfoDisplayPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/section/VideoPlayerDanmakuLoadPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/section/VideoPlayerSubtitleControlCallbacks.kt",
+    "com/android/purebilibili/feature/video/ui/section/VideoPlayerTopBarPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/section/VideoPlayerUiLayoutPolicy.kt",
+    "com/android/purebilibili/feature/video/usecase/VideoEngagementRelationship.kt",
+    "com/android/purebilibili/feature/video/viewmodel/AiSummaryRetryPolicy.kt",
+    "com/android/purebilibili/feature/video/viewmodel/AiSummaryUiPolicy.kt",
+    "com/android/purebilibili/feature/video/viewmodel/CommentPaginationPolicy.kt",
+    "com/android/purebilibili/feature/video/viewmodel/CommentSearchLoader.kt",
+    "com/android/purebilibili/feature/video/viewmodel/FavoriteSaveUiPolicy.kt",
+    "com/android/purebilibili/feature/video/viewmodel/PlaybackResumeNoticePolicy.kt",
+    "com/android/purebilibili/feature/video/viewmodel/PlayerToastPolicy.kt",
+    "com/android/purebilibili/feature/video/viewmodel/RelatedVideoLoadScheduler.kt",
+    "com/android/purebilibili/feature/video/viewmodel/RelatedVideoPublicationGate.kt",
+    "com/android/purebilibili/feature/video/viewmodel/VideoCodecSessionPolicy.kt",
+    "com/android/purebilibili/feature/video/viewmodel/VideoCommentLoadPolicy.kt",
+    "com/android/purebilibili/feature/video/viewmodel/VideoDetailUiState.kt",
+    "com/android/purebilibili/feature/video/viewmodel/VideoDomainBinding.kt",
+    "com/android/purebilibili/feature/video/viewmodel/VideoInteractionStatusRetry.kt",
+    "com/android/purebilibili/feature/video/viewmodel/VideoLoadTimeline.kt",
+    "com/android/purebilibili/feature/bangumi/BangumiDashManifestPolicy.kt",
+    "com/android/purebilibili/feature/bangumi/BangumiHubBlurPolicy.kt",
+    "com/android/purebilibili/feature/bangumi/MyFollowStats.kt",
+    "com/android/purebilibili/feature/bangumi/policy/BangumiEpisodeSkipPolicy.kt",
+    "com/android/purebilibili/feature/bangumi/policy/BangumiPlaybackUrlPolicy.kt",
+    "com/android/purebilibili/feature/bangumi/policy/BangumiResumePolicy.kt",
+    "com/android/purebilibili/feature/bangumi/policy/BangumiSeasonActionPolicy.kt",
+    "com/android/purebilibili/feature/bangumi/policy/CourseNavigationPolicy.kt",
+    "com/android/purebilibili/feature/bangumi/policy/MyFollowPolicy.kt",
+    "com/android/purebilibili/feature/bangumi/policy/MyFollowStatsDetailPolicy.kt",
+    "com/android/purebilibili/feature/bangumi/policy/MyFollowWatchInsightPolicy.kt",
+    "com/android/purebilibili/feature/bangumi/ui/player/BangumiSeekHapticPolicy.kt",
+)
 val migratedAppCorePaths: Set<String> = appJavaRoot.resolve("com/android/purebilibili/core").walkTopDown()
     .filter { it.isFile && it.extension == "kt" }.map { it.relativeTo(appJavaRoot).invariantSeparatorsPath }
     .filter { path -> path.removePrefix("com/android/purebilibili/").let { core -> (appCoreDesktopOwned.keys + appCoreLaterSteps.keys).none { core.startsWith(it) } } }
-    .toSortedSet()
+    .toSortedSet() + migratedVideoFeaturePaths
+// M4a: migrate the platform-independent parts before the native session and frame scheduler.
+val migratedPlaybackModulePaths = mapOf(
+    "core-player/src/main/java/" to setOf(
+        "com/android/purebilibili/core/player/SharedPlaybackSession.kt",
+        "com/android/purebilibili/core/player/PlaybackProgressManager.kt",
+        "com/android/purebilibili/core/player/PlayerErrorRecoveryPolicy.kt",
+        "com/android/purebilibili/core/player/PlaybackResumePolicy.kt",
+        "com/android/purebilibili/core/player/PlaybackProgressPolicy.kt",
+        "com/android/purebilibili/core/player/dash/AdaptiveDashPlaybackSource.kt",
+        "com/android/purebilibili/core/player/dash/LocalDashManifestBuilder.kt",
+        "com/android/purebilibili/core/player/policy/PlaybackQualityMode.kt",
+    ),
+    "danmaku-engine/src/main/java/" to setOf(
+        "com/bytedance/danmaku/render/engine/RenderFrameCadence.kt",
+        "com/android/purebilibili/danmaku/engine/DanmakuModels.kt",
+        "com/android/purebilibili/danmaku/engine/DanmakuVisibility.kt",
+        "com/android/purebilibili/danmaku/parser/AdvancedDanmakuData.kt",
+        "com/android/purebilibili/danmaku/parser/DanmakuParser.kt",
+        "com/android/purebilibili/danmaku/parser/SpecialDanmakuWindow.kt",
+        "com/android/purebilibili/danmaku/parser/TimedDanmakuWindow.kt",
+        "com/bytedance/danmaku/render/engine/render/RenderClock.kt",
+        "com/bytedance/danmaku/render/engine/render/DrawOrderPolicy.kt",
+        "com/bytedance/danmaku/render/engine/render/cache/BufferAdmission.kt",
+        "com/bytedance/danmaku/render/engine/data/DanmakuData.kt",
+        "com/bytedance/danmaku/render/engine/utils/Constants.kt",
+        "com/bytedance/danmaku/render/engine/control/AbsConfig.kt",
+        "com/bytedance/danmaku/render/engine/control/ICommandMonitor.kt",
+        "com/bytedance/danmaku/render/engine/control/IEventListener.kt",
+        "com/bytedance/danmaku/render/engine/control/DanmakuCommand.kt",
+        "com/bytedance/danmaku/render/engine/control/DanmakuEvent.kt",
+        "com/bytedance/danmaku/render/engine/control/ConfigChangeListener.kt",
+        "com/android/purebilibili/danmaku/parser/SpecialDanmakuIndexReader.kt",
+        "com/android/purebilibili/danmaku/parser/DanmakuProto.kt",
+        "com/android/purebilibili/danmaku/parser/WeightedTextData.kt",
+        "com/android/purebilibili/danmaku/parser/bas/BasModels.kt",
+        "com/android/purebilibili/danmaku/parser/bas/BasTimeline.kt",
+        "com/android/purebilibili/danmaku/parser/bas/BasEasing.kt",
+        "com/android/purebilibili/danmaku/parser/bas/BasScriptParser.kt",
+        "com/android/purebilibili/danmaku/parser/bas/BasLexer.kt",
+    ),
+)
 // M4d (TON-1005): the feature areas plugin, profile, space, message, settings and login compile from the merged root as
 // well. A file stays on its legacy copy while upstream-core/m4d/later-steps.tsv lists it (path <TAB> what it waits for);
 // upstream-core/m4d/retired-generated.tsv lists the producer copies that re-declare names of the migrated files.
@@ -336,6 +713,7 @@ val migratedAppM4dPaths: Set<String> = migratedAppM4dAreas.asSequence().flatMap 
 // TON-1120: the private messages' MessageImRepository, whose gRPC calls go over the calling message page child's gated call,
 // and the read events the message Root shares between its pages).
 val migratedAppSingleFiles: Set<String> = setOf(
+    "com/android/purebilibili/feature/home/HomeFeedSkeletonCard.kt",
     "com/android/purebilibili/feature/home/components/cards/HorizontalVideoCardLayoutPolicy.kt",
     "com/android/purebilibili/feature/home/FeedGridColumnPreference.kt",
     "com/android/purebilibili/data/repository/MessageManagementRepository.kt",
@@ -345,7 +723,8 @@ val migratedAppSingleFiles: Set<String> = setOf(
     "com/android/purebilibili/data/repository/AccountLedgerRepository.kt",
 )
 val migratedAppPaths: Set<String> = migratedAppCorePaths + migratedAppM4dPaths + migratedAppSingleFiles
-val migratedUpstreamRelativePaths = migratedWholeModulePaths + migratedAppPaths + setOf(
+val migratedUpstreamRelativePaths = migratedWholeModulePaths + migratedAppPaths +
+    migratedPlaybackModulePaths.values.flatten().toSet() + setOf(
     "com/android/purebilibili/core/network/AppSignUtils.kt",
     "com/android/purebilibili/core/network/WbiUtils.kt",
     "com/android/purebilibili/core/network/grpc/ProtoWire.kt",
@@ -424,6 +803,10 @@ fun migratedUpstreamSource(path: String): Boolean = migratedUpstreamModules.any 
 
 val prepareUpstreamSources by tasks.registering(Sync::class) {
     from(repositoryRoot) {
+        // The installed legacy PagesSelector still consumes this distinct policy.
+        // Its catalog successor PlayerEpisodeMenuPolicy does not declare these APIs.
+        // Retire this pinned source together with the legacy PagesSelector consumer.
+        include("app/src/main/java/com/android/purebilibili/feature/video/ui/components/PagesSelectorLayoutPolicy.kt")
         include(sources.filter { (it["mode"] ?: "direct") == "direct" && !migratedUpstreamSource(it["path"].toString()) }.map { canonicalOriginalIdentity(it["path"].toString()) })
         // Whole v043 typed navigation is emitted by its existing space producer.
         exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/core/util/BilibiliNavigationTargetParser.kt"))
@@ -2043,6 +2426,8 @@ tasks.named("compileKotlin") { dependsOn(extractOriginalDanmakuListMenu) }
 tasks.named("compileTestKotlin") { dependsOn(extractOriginalDanmakuListMenu) }
 kotlin.sourceSets.named("test") {
     kotlin.srcDir(layout.buildDirectory.dir("generated/original-danmaku-list-menu/policy-tests"))
+    // Current upstream cadence and its unchanged tests replace the fixed 60fps snapshot.
+    kotlin.exclude { it.file == layout.buildDirectory.file("generated/original-danmaku-list-menu/policy-tests/com/bytedance/danmaku/render/engine/RenderFrameCadenceTest.kt").get().asFile }
 }
 
 // Explicit fixed-v027 slice; the overall canonical baseline remains v025.
@@ -2554,6 +2939,62 @@ val prepareJsWorkerResources = if (hostIsWindows) tasks.register<Sync>("prepareJ
 
 // Generated legacy files that re-declare migrated upstream declarations under another file name.
 val upstreamOwnedGeneratedCopies = setOf(
+    "independent-bangumi-pages/com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiDetailScreen.kt",
+    "independent-bangumi-pages/com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiViewModel.kt",
+    "bgm-detail/com/android/purebilibili/feature/video/ui/components/DesktopOriginalCommentSortHeader.kt",
+    "original-video-content-full/com/android/purebilibili/feature/video/ui/components/DesktopOriginalCommentSortFilterBar.kt",
+    "original-video-detail-units/com/android/purebilibili/feature/video/ui/components/DesktopWindowsConfirmedCelebrationAnimations.kt",
+    "video-tablet-full/com/android/purebilibili/feature/video/ui/components/DesktopOriginalBottomInputBar.kt",
+    "dynamic-detail-container/com/android/purebilibili/feature/video/ui/components/DesktopOriginalDetailInputPadding.kt",
+    "original-video-detail-holder-full/com/android/purebilibili/feature/video/screen/VideoNavigationCidPolicy.kt",
+    "original-video-ambient-windows/com/android/purebilibili/feature/video/ui/components/VideoScreenshotSharePrompt.kt",
+    "dynamic-detail-container/com/android/purebilibili/feature/video/ui/components/DesktopOriginalDetailThreadPolicies.kt",
+    "original-video-player-full-controls/com/android/purebilibili/feature/video/ui/components/PlainLandscapeDanmakuComposer.kt",
+    "original-video-player-full-controls/com/android/purebilibili/feature/video/ui/components/LandscapeDanmakuComposer.kt",
+    "home-bangumi-page/com/android/purebilibili/feature/bangumi/ui/list/DesktopOriginalBangumiBadge.kt",
+    "original-danmaku-list-menu/com/bytedance/danmaku/render/engine/RenderFrameCadence.kt",
+    "upstream/app/src/main/java/com/android/purebilibili/feature/video/ui/components/ChapterListPanel.kt",
+    "original-video-state-core/com/android/purebilibili/feature/video/viewmodel/DesktopOriginalVideoSupplementViewModel.kt",
+    "original-video-player-full-controls/com/android/purebilibili/feature/video/ui/overlay/NextWatchOverlay.kt",
+    "original-video-player-full-controls/com/android/purebilibili/feature/video/ui/feedback/VideoActionFeedbackPolicy.kt",
+    "original-video-detail-units/com/android/purebilibili/feature/video/ui/feedback/DesktopOriginalFollowActionPolicy.kt",
+    "video-votes/com/android/purebilibili/feature/video/ui/feedback/DesktopOriginalTripleActionPolicy.kt",
+    "video-share-consent/com/android/purebilibili/feature/video/share/VideoShareMoreTargetsSheet.kt",
+    "original-video-fullscreen-pager/com/android/purebilibili/feature/video/ui/pager/PortraitAudioPlaybackController.kt",
+    "original-video-player-full-controls/com/android/purebilibili/feature/video/ui/overlay/CenterPlaybackControl.kt",
+    "collection-sheet/com/android/purebilibili/feature/video/ui/components/DesktopOriginalCollectionSubscriptionButton.kt",
+    "video-share-consent/com/android/purebilibili/feature/video/share/VideoShareSheetMotion.kt",
+    "original-video-player-full-controls/com/android/purebilibili/feature/video/ui/components/DanmakuColorOptions.kt",
+    "dynamic-reply/com/android/purebilibili/feature/video/ui/components/DesktopOriginalReplyReportReasonDialog.kt",
+    "original-video-detail-holder-full/com/android/purebilibili/feature/video/screen/VideoDetailFavoriteFolderOverlayAdapter.kt",
+    "video-comment-ui/com/android/purebilibili/feature/video/screen/VideoDetailCommentFraudOverlayAdapter.kt",
+
+    "original-bas-renderer/com/bilipai/desktop/danmaku/DesktopOriginalBasScenePainter.kt",
+    "original-video-fullscreen-pager/com/android/purebilibili/feature/video/ui/components/UpPreviewSheet.kt",
+    "original-video-ambient-windows/com/android/purebilibili/feature/video/ambient/PlayerAmbientGlow.kt",
+    "original-video-fullscreen-pager/com/android/purebilibili/feature/video/ui/overlay/PortraitProgressBar.kt",
+    "independent-bangumi-pages/com/android/purebilibili/feature/bangumi/ui/detail/DesktopOriginalBangumiDetailComponents.kt",
+    "independent-bangumi-pages/com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiTimelineScreen.kt",
+    "independent-bangumi-pages/com/android/purebilibili/feature/bangumi/policy/DesktopOriginalBangumiEpisodePagePolicy.kt",
+    "original-bangumi-player-ui/com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiPlayerUiPolicy.kt",
+    "original-bangumi-player-ui/com/android/purebilibili/feature/video/ui/components/DesktopOriginalVideoCommentFloatingHeader.kt",
+    "original-bangumi-player-ui/com/android/purebilibili/feature/bangumi/ui/player/DesktopOriginalBangumiCommentPanel.kt",
+    "home-bangumi-page/com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiBadgePolicy.kt",
+
+    "original-video-player-full-controls/com/android/purebilibili/feature/video/ui/overlay/PlaybackOrderSelectionSheet.kt",
+    "original-video-player-full-controls/com/android/purebilibili/feature/video/ui/components/PlayerMiuixListPopup.kt",
+    "original-video-player-full-controls/com/android/purebilibili/feature/video/ui/components/DanmakuSettingsPanelHost.kt",
+    "upstream/app/src/main/java/com/android/purebilibili/feature/video/ui/components/DanmakuSettingsPanelHost.kt",
+    "upstream/app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/TopControlBarLayoutPolicy.kt",
+    "upstream/app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PlaybackOrderSelectionSheetPolicy.kt",
+    "original-video-player-full-controls/com/android/purebilibili/feature/video/ui/overlay/TopControlBarLayoutPolicy.kt",
+    "original-video-player-full-controls/com/android/purebilibili/feature/video/ui/overlay/PlaybackOrderSelectionSheetPolicy.kt",
+
+    "dynamic-reply/com/android/purebilibili/feature/video/ui/components/DesktopOriginalCommentAvatarPush.kt",
+    "original-background-playback-policy/generated-main/com/android/purebilibili/feature/video/player/DesktopOriginalWindowsBackgroundPolicy.kt",
+    "original-video-detail-holder-full/com/android/purebilibili/feature/video/state/DesktopOriginalMiniEntryPolicy.kt",
+    "original-video-player-section-full/com/android/purebilibili/feature/video/state/DesktopOriginalApiDimensionPolicy.kt",
+    "original-danmaku-list-menu/com/android/purebilibili/feature/video/danmaku/DesktopOriginalWebMaskRefreshPolicy.kt",
     // core/plugin + plugin-sdk (TON-1028): legacy plugin contracts upstream moved to plugin-sdk (Plugin, the typed
     // plugin APIs) or to core/plugin/BuiltinPlugin (host presentation); the merged upstream files own them now.
     "upstream/app/src/main/java/com/android/purebilibili/core/plugin/Plugin.kt",
@@ -2567,6 +3008,48 @@ val upstreamOwnedGeneratedCopies = setOf(
     "plugins/com/android/purebilibili/core/plugin/feed/DesktopSavedSubscriptionFeed.kt",
     "plugins/com/android/purebilibili/core/plugin/feed/DesktopFeedConditionalValidators.kt",
     "packages/com/android/purebilibili/core/plugin/skin/DesktopUiSkinCompositionPolicy.kt",
+    "upstream-video-comment-url/com/android/purebilibili/feature/video/screen/DesktopOriginalCommentUrlNavigation.kt",
+    "original-video-player-full-controls/com/android/purebilibili/feature/video/ui/overlay/CenterPlaybackControl.kt",
+    "original-video-fullscreen-pager/com/android/purebilibili/feature/video/ui/overlay/PortraitInteractionBar.kt",
+    "original-bangumi-player-ui/com/android/purebilibili/feature/bangumi/ui/player/DesktopOriginalBangumiCollapsedPlayerBar.kt",
+    // M4a: the refresh-aware desktop request owner replaces this fixed-60Hz generated loop.
+    "original-danmaku-list-menu/com/bilipai/desktop/danmaku/DesktopOriginalDanmakuFrameRequests.kt",
+    "original-video-fullscreen-pager/com/android/purebilibili/feature/video/ui/pager/PortraitCommentSheet.kt",
+    "original-video-player-full-controls/com/android/purebilibili/feature/video/ui/components/SeekPreviewBubble.kt",
+    "original-video-player-full-controls/com/android/purebilibili/feature/video/ui/overlay/PlayerOverlayModels.kt",
+    "original-video-detail-units/com/android/purebilibili/feature/video/ui/components/CircularGesturePercentText.kt",
+    "original-video-player-full-controls/com/android/purebilibili/feature/video/ui/components/DanmakuSettingsPanelAppearance.kt",
+    "original-video-player-full-controls/com/android/purebilibili/feature/video/playback/session/PlaybackUserActionTracker.kt",
+    "original-video-player-full-controls/com/android/purebilibili/feature/video/ui/components/LandscapeSidePanel.kt",
+    "original-video-detail-units/com/android/purebilibili/feature/video/ui/feedback/VideoTriplePressState.kt",
+    "original-video-player-section-full/com/android/purebilibili/feature/video/screen/VideoInputDiagnostics.kt",
+    "home-bangumi-page/com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiCardTransition.kt",
+    "original-video-detail-units/com/android/purebilibili/feature/video/ui/feedback/VideoActionCountText.kt",
+    "original-video-detail-holder-full/com/android/purebilibili/feature/video/screen/VideoDetailCommonOverlayAdapter.kt",
+    "story-topic/com/android/purebilibili/feature/video/ui/pager/PortraitPagerSwitchPolicy.kt",
+    "original-video-fullscreen-pager/com/android/purebilibili/feature/video/ui/overlay/PortraitBottomInputBar.kt",
+    "original-hot-danmaku/com/android/purebilibili/feature/video/ui/overlay/HotDanmakuBar.kt",
+    "home-bangumi-page/com/android/purebilibili/feature/bangumi/BangumiHubPolicy.kt",
+    "original-background-playback-policy/generated-main/com/android/purebilibili/feature/video/state/DesktopOriginalWindowsLifecycleInputs.kt",
+    "original-bangumi-player/com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiPlayerOverlayPolicy.kt",
+    "danmaku/com/android/purebilibili/danmaku/parser/DesktopOriginalDanmakuFontScale.kt",
+    "danmaku/com/android/purebilibili/danmaku/parser/DesktopAdvancedDanmakuParser.kt",
+    "original-danmaku-list-menu/com/android/purebilibili/danmaku/engine/DanmakuItem.kt",
+    "original-danmaku-list-menu/com/android/purebilibili/danmaku/engine/DanmakuRenderConfig.kt",
+    "original-danmaku-list-menu/com/android/purebilibili/danmaku/engine/DanmakuMaskFrame.kt",
+    "media/com/android/purebilibili/danmaku/parser/DesktopDanmakuMetadataParser.kt",
+    "video-metadata/com/android/purebilibili/feature/video/ui/section/DesktopOriginalVideoMetadataPolicy.kt",
+    "original-bangumi-player/com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiDashManifestPolicy.kt",
+
+    "original-bangumi-player/com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiEpisodeSkipPolicy.kt",
+    "original-bangumi-player/com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiResumePolicy.kt",
+
+    // M4a: renamed legacy subsets now owned by upstream video/bangumi files.
+    "original-video-detail-units/com/android/purebilibili/feature/video/ui/section/DesktopOriginalVideoInfoDisplayPolicy.kt",
+    "independent-bangumi-pages/com/android/purebilibili/feature/bangumi/DesktopOriginalMyFollowStats.kt",
+    "home-bangumi-page/com/android/purebilibili/feature/bangumi/MyFollowPolicy.kt",
+    "bgm-detail/com/android/purebilibili/feature/video/viewmodel/DesktopOriginalVideoCommentLoadPolicy.kt",
+
     // app core (TON-1000): renamed subsets whose every declaration the upstream app core files now own.
     "appearance/com/android/purebilibili/core/store/DesktopOriginalWallpaperPaletteModels.kt",
     "appearance/com/android/purebilibili/core/store/ThemeSelectionStore.kt",
@@ -2636,11 +3119,12 @@ val transitionPatchDirectory = file("upstream-core/transition/patches")
 val transitionPatchedGeneratedFiles = fileTree(transitionPatchDirectory) { include("**/*.patch") }.files
     .map { it.relativeTo(transitionPatchDirectory).invariantSeparatorsPath.removeSuffix(".patch") }.toSortedSet()
 val transitionPatchProducers = mapOf(
+    "original-danmaku-list-menu" to "extractOriginalDanmakuListMenu",
+    "original-video-content-full" to "extractOriginalVideoContentFull",
     "shared-liquid-tabs" to "extractSharedLiquidTabs",
     "original-following" to "extractOriginalFollowing",
     "original-space-pages" to "extractOriginalSpacePages",
     "original-message-pages" to "extractOriginalMessagePages",
-    "independent-bangumi-pages" to "extractOriginalBangumiPages",
     "video-tablet-full" to "extractOriginalVideoTabletFull",
     "original-root-home-navigation" to "extractOriginalRootHomeNavigation",
     "home-page" to "extractOriginalHomePage",
@@ -2657,7 +3141,10 @@ val transitionPatchProducers = mapOf(
     "packages" to "extractUpstreamPackages",
     "home-subscription-page" to "extractOriginalSubscriptionPage",
     "frosted-audio-renderer" to "extractFrostedAudioRenderer",
+    // Retirable with the original-bangumi-player transition patch when its upstream VM migrates.
+    "original-bangumi-player" to "extractOriginalBangumiPlayer",
     "original-bangumi-player-ui" to "extractOriginalBangumiPlayerUi",
+    "video-comment-ui" to "extractVideoCommentUi",
     "original-video-fullscreen-pager" to "extractOriginalVideoFullscreenPager",
     "original-video-full-owner" to "extractOriginalVideoFullOwner",
     "original-aicu" to "extractOriginalAicu",
@@ -2680,6 +3167,7 @@ val transitionPatchProducers = mapOf(
     "original-storage-settings" to "extractOriginalStorageSettings",
     "original-search-pages" to "extractOriginalSearchPages",
     "original-video-player-full-controls" to "extractOriginalPlayerFullControls",
+    "original-danmaku-settings" to "extractOriginalDanmakuSettings",
     "original-video-state-core" to "extractOriginalVideoStateCore",
     "original-watchlater" to "extractOriginalWatchLater",
     "original-listen-video-pages" to "extractOriginalListenVideoPages",
@@ -2721,7 +3209,7 @@ fun applyUnifiedPatch(original: String, patch: String, label: String): String {
 // Desktop-only fixes against the merged upstream tree. The independent upstream-core
 // project deliberately compiles the unpatched originals so upstream regressions stay visible.
 val desktopUpstreamPatchDirectory = file("upstream-core/patches")
-val desktopUpstreamPatchedFiles = fileTree(desktopUpstreamPatchDirectory) { include("**/*.patch") }.files
+val desktopUpstreamPatchedFiles = fileTree(desktopUpstreamPatchDirectory) { include("**/*.patch"); exclude("app/src/test/**") }.files
     .map { it.relativeTo(desktopUpstreamPatchDirectory).invariantSeparatorsPath.removeSuffix(".patch") }.toSortedSet()
 val applyDesktopUpstreamPatches by tasks.registering {
     val output = layout.buildDirectory.dir("patched-upstream")
@@ -3118,6 +3606,183 @@ val appCoreUpstreamTestsNotRun: Map<String, String> = mapOf(
     "core/plugin/js/BiliPaiJsNativeExampleTest.kt" to "it reads examples/plugins/tv-live.bilipai.js, which the merge leaves out; the desktop copy runs the byte-identical script from desktop/src/test/fixtures",
     "core/ui/adaptive/DeviceUiProfilePolicyTest.kt" to "the same test class (same package and name) as design-system DeviceUiProfilePolicyTest, which runs",
 )
+// Additional upstream behavioral tests for migrated M4a subjects. Existing desktop tests remain.
+// AudioBarReturnPolicyTest also needs MiniPlayerManager; PiliPlayerMenuPolicyTest needs Media3
+// track selection. Those two new upstream suites join with the playback-port migration.
+val migratedVideoFeatureTestPaths = setOf(
+    "com/android/purebilibili/feature/home/HomeFeedSkeletonCardStructureTest.kt",
+    "com/android/purebilibili/feature/video/danmaku/DanmakuConfigPolicyTest.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/ViewPointSegmentBarPolicyTest.kt",
+    "com/android/purebilibili/feature/video/ui/components/UpPreviewSheetPolicyTest.kt",
+    "com/android/purebilibili/feature/video/screen/VideoNavigationCidPolicyTest.kt",
+    "com/android/purebilibili/feature/video/screen/VideoDetailInlineCollapseStateTest.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/PlaybackOrderSelectionSheetPolicyTest.kt",
+    "com/android/purebilibili/feature/video/ui/components/PlayerPopupGeometryTest.kt",
+    "com/android/purebilibili/feature/video/ui/components/CommentAvatarPushPolicyTest.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/ImmersiveStatusBarBackdropPolicyTest.kt",
+    "com/android/purebilibili/feature/video/state/VideoPlayerVerticalDetectionPolicyTest.kt",
+    "com/android/purebilibili/feature/video/state/VideoPlayerBufferPolicyTest.kt",
+    "com/android/purebilibili/feature/video/state/VideoPlayerStateReusePolicyTest.kt",
+    "com/android/purebilibili/feature/video/ambient/AmbientFramePolicyTest.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/PlayerControlSafeAreaTest.kt",
+    "com/android/purebilibili/feature/video/ui/components/PlayerPanelViewportTest.kt",
+    "com/android/purebilibili/feature/video/screen/VideoDetailCoverContentScaleTest.kt",
+    "com/android/purebilibili/feature/video/ui/components/EpisodeSheetLayoutPolicyTest.kt",
+    "com/android/purebilibili/feature/video/danmaku/DanmakuSegmentWindowPolicyTest.kt",
+    "com/android/purebilibili/feature/video/screen/VideoDetailProgressiveReturnTest.kt",
+    "com/android/purebilibili/feature/video/danmaku/DanmakuContentSegmentsTest.kt",
+    "com/android/purebilibili/feature/video/danmaku/DanmakuKeywordFilterPolicyTest.kt",
+    "com/android/purebilibili/feature/video/danmaku/DanmakuSyncStatusPolicyTest.kt",
+    "com/android/purebilibili/feature/video/danmaku/DanmakuTypeFilterPolicyTest.kt",
+    "com/android/purebilibili/feature/video/interaction/InteractiveVideoChoicePolicyTest.kt",
+    "com/android/purebilibili/feature/video/interaction/InteractiveVideoVariablePolicyTest.kt",
+    "com/android/purebilibili/feature/video/note/AiSummaryNoteDraftPolicyTest.kt",
+    "com/android/purebilibili/feature/video/note/VideoNoteContentCodecTest.kt",
+    "com/android/purebilibili/feature/video/note/VideoNoteEditorStatePolicyTest.kt",
+    "com/android/purebilibili/feature/video/note/VideoNoteEmotionPolicyTest.kt",
+    "com/android/purebilibili/feature/video/note/VideoNoteTagPolicyTest.kt",
+    "com/android/purebilibili/feature/video/note/VideoNoteVisibilityPolicyTest.kt",
+    "com/android/purebilibili/feature/video/playback/audio/AudioStreamSelectionPolicyTest.kt",
+    "com/android/purebilibili/feature/video/playback/loader/PlaybackLoaderTest.kt",
+    "com/android/purebilibili/feature/video/playback/policy/AdaptiveDashTrackPolicyTest.kt",
+    "com/android/purebilibili/feature/video/playback/policy/PlaybackAncillaryTaskPolicyTest.kt",
+    "com/android/purebilibili/feature/video/playback/policy/PlaybackTransitionPolicyTest.kt",
+    "com/android/purebilibili/feature/video/playback/policy/PluginPollingPolicyTest.kt",
+    "com/android/purebilibili/feature/video/playback/session/PlaybackSessionStoreTest.kt",
+    "com/android/purebilibili/feature/video/player/PlaybackPageOwnershipTest.kt",
+    "com/android/purebilibili/feature/video/policy/VideoDetailScrollCoordinatorTest.kt",
+    "com/android/purebilibili/feature/video/progress/PbpProgressPolicyTest.kt",
+    "com/android/purebilibili/feature/video/screen/AudioModeCoverLayoutPolicyTest.kt",
+    "com/android/purebilibili/feature/video/screen/AudioModeSourcePolicyTest.kt",
+    "com/android/purebilibili/feature/video/screen/ContinuousPlayerTransitionPolicyTest.kt",
+    "com/android/purebilibili/feature/video/screen/LargeScreenVideoReturnPolicyTest.kt",
+    "com/android/purebilibili/feature/video/screen/VideoCommentPerformancePolicyTest.kt",
+    "com/android/purebilibili/feature/video/screen/VideoDetailTopBarActionPolicyTest.kt",
+    "com/android/purebilibili/feature/video/screen/VideoInitialPagePolicyTest.kt",
+    "com/android/purebilibili/feature/video/subtitle/SubtitleFeaturePolicyTest.kt",
+    "com/android/purebilibili/feature/video/ui/VideoFollowVisualPolicyTest.kt",
+    "com/android/purebilibili/feature/video/ui/components/CircularGesturePercentMotionPolicyTest.kt",
+    "com/android/purebilibili/feature/video/ui/components/CollectionEpisodePolicyTest.kt",
+    "com/android/purebilibili/feature/video/ui/components/CommentTranslationPolicyTest.kt",
+    "com/android/purebilibili/feature/video/ui/components/PlayerEpisodeMenuPolicyTest.kt",
+    "com/android/purebilibili/feature/video/ui/components/PlayerSleepTimerPolicyTest.kt",
+    "com/android/purebilibili/feature/video/ui/components/QualitySelectionPolicyTest.kt",
+    "com/android/purebilibili/feature/video/ui/components/RelatedVideoActionPolicyTest.kt",
+    "com/android/purebilibili/feature/video/ui/components/RelatedVideoCardLayoutPolicyTest.kt",
+    "com/android/purebilibili/feature/video/ui/components/VideoCommentBackToTopPolicyTest.kt",
+    "com/android/purebilibili/feature/video/ui/gesture/Md3GestureLevelHapticPolicyTest.kt",
+    "com/android/purebilibili/feature/video/ui/gesture/TwoFingerSpeedGesturePolicyTest.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/FullscreenPlayerOverlayPollingPolicyTest.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/LandscapeEndDrawerLayoutPolicyTest.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/LiveDanmakuRenderPolicyTest.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/MiniPlayerOverlayChromePolicyTest.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/MiniPlayerOverlayLayoutPolicyTest.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/MiniPlayerOverlayPollingPolicyTest.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/MiniPlayerOverlayPositionPolicyTest.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/PlaybackOrderDisplayPolicyTest.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/PortraitProgressBarLayoutPolicyTest.kt",
+    "com/android/purebilibili/feature/video/ui/pager/PortraitCollectionPolicyTest.kt",
+    "com/android/purebilibili/feature/video/ui/pager/PortraitCommentPresentationPolicyTest.kt",
+    "com/android/purebilibili/feature/video/ui/pager/PortraitControlsVisibilityPolicyTest.kt",
+    "com/android/purebilibili/feature/video/ui/pager/PortraitDetailVideoListPolicyTest.kt",
+    "com/android/purebilibili/feature/video/ui/pager/PortraitMainPlayerSyncPolicyTest.kt",
+    "com/android/purebilibili/feature/video/ui/pager/PortraitPlaybackAdvancePolicyTest.kt",
+    "com/android/purebilibili/feature/video/ui/pager/PortraitProgressSyncPolicyTest.kt",
+    "com/android/purebilibili/feature/video/ui/pager/PortraitSharePolicyTest.kt",
+    "com/android/purebilibili/feature/video/ui/section/VideoDetailMotionBudgetPolicyTest.kt",
+    "com/android/purebilibili/feature/video/ui/section/VideoInfoDisplayPolicyTest.kt",
+    "com/android/purebilibili/feature/video/ui/section/VideoPlayerTopBarPolicyTest.kt",
+    "com/android/purebilibili/feature/video/ui/section/VideoPlayerUiLayoutPolicyTest.kt",
+    "com/android/purebilibili/feature/video/viewmodel/AiSummaryRetryPolicyTest.kt",
+    "com/android/purebilibili/feature/video/viewmodel/AiSummaryUiPolicyTest.kt",
+    "com/android/purebilibili/feature/video/viewmodel/CommentPaginationPolicyTest.kt",
+    "com/android/purebilibili/feature/video/viewmodel/CommentSearchLoaderTest.kt",
+    "com/android/purebilibili/feature/video/viewmodel/FavoriteSaveUiPolicyTest.kt",
+    "com/android/purebilibili/feature/video/viewmodel/PlaybackResumeNoticePolicyTest.kt",
+    "com/android/purebilibili/feature/video/viewmodel/PlayerToastPolicyTest.kt",
+    "com/android/purebilibili/feature/video/viewmodel/RelatedVideoLoadSchedulerTest.kt",
+    "com/android/purebilibili/feature/video/viewmodel/RelatedVideoPublicationGateTest.kt",
+    "com/android/purebilibili/feature/video/viewmodel/VideoCodecSessionPolicyTest.kt",
+    "com/android/purebilibili/feature/video/viewmodel/VideoDetailUiStateTest.kt",
+    "com/android/purebilibili/feature/video/viewmodel/VideoLoadTimelineTest.kt",
+    "com/android/purebilibili/feature/bangumi/BangumiDashManifestPolicyTest.kt",
+    "com/android/purebilibili/feature/bangumi/ui/player/BangumiSeekHapticPolicyTest.kt",
+)
+// M4a: additional module behavior tests whose production subjects are now migrated.
+// Existing generated suites keep their registrations and assertions.
+val migratedPlaybackModuleTests = mapOf(
+    "core-player/src/test/java/" to setOf("com/android/purebilibili/core/player/PlaybackResumePolicyTest.kt"),
+    "danmaku-engine/src/test/java/" to setOf(
+        "com/bytedance/danmaku/render/engine/RenderFrameCadenceTest.kt",
+        "com/bytedance/danmaku/render/engine/render/RenderClockTest.kt",
+        "com/bytedance/danmaku/render/engine/render/DrawOrderPolicyTest.kt",
+        "com/bytedance/danmaku/render/engine/render/cache/BufferAdmissionTest.kt",
+        "com/android/purebilibili/danmaku/parser/DanmakuProtoPolicyTest.kt",
+        "com/android/purebilibili/danmaku/parser/AdvancedDanmakuParserTest.kt",
+        "com/android/purebilibili/danmaku/parser/TimedDanmakuWindowTest.kt",
+        "com/android/purebilibili/danmaku/parser/DanmakuMode9ParserTest.kt",
+    ),
+)
+kotlin.sourceSets.named("test") {
+    migratedPlaybackModuleTests.forEach { (root, selected) ->
+        val directory = mergedRepositoryRoot.resolve(root)
+        kotlin.srcDir(directory)
+        kotlin.exclude { element -> !element.isDirectory && element.file.toPath().startsWith(directory.toPath()) &&
+            element.file.relativeTo(directory).invariantSeparatorsPath !in selected }
+    }
+}
+
+// Approved upstream test corrections are isolated from production patch outputs.
+// The complete LF-normalized source is pinned: even an edit outside a hunk needs review.
+val correctedVideoTestPaths = setOf(
+    "com/android/purebilibili/feature/video/danmaku/DanmakuConfigPolicyTest.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/ViewPointSegmentBarPolicyTest.kt",
+    "com/android/purebilibili/feature/video/progress/PbpProgressPolicyTest.kt",
+    "com/android/purebilibili/feature/video/ui/section/VideoInfoDisplayPolicyTest.kt",
+)
+val correctedVideoTestOutput = layout.buildDirectory.dir("patched-upstream-tests")
+val applyVideoTestCorrections by tasks.registering {
+    val patches = correctedVideoTestPaths.map { desktopUpstreamPatchDirectory.resolve("app/src/test/java/$it.patch") }
+    inputs.files(patches).withPathSensitivity(PathSensitivity.RELATIVE)
+    inputs.files(correctedVideoTestPaths.map { appTestRoot.resolve(it) }).withPathSensitivity(PathSensitivity.RELATIVE)
+    val productionRoot = mergedRepositoryRoot.resolve("app/src/main/java")
+    inputs.files(correctedVideoTestPaths.map { productionRoot.resolve(it.removeSuffix("Test.kt") + ".kt") }
+        .filter { it.isFile }).withPathSensitivity(PathSensitivity.RELATIVE)
+    outputs.dir(correctedVideoTestOutput)
+    doLast {
+        val output = correctedVideoTestOutput.get().asFile
+        output.deleteRecursively()
+        correctedVideoTestPaths.forEach { relative ->
+            val original = appTestRoot.resolve(relative).readText().replace("\r\n", "\n")
+            val patch = desktopUpstreamPatchDirectory.resolve("app/src/test/java/$relative.patch").readText()
+            val expected = Regex("(?m)^Upstream-source-sha256: ([0-9a-f]{64})$").find(patch)?.groupValues?.get(1)
+                ?: throw GradleException("$relative: missing upstream source digest")
+            val actual = MessageDigest.getInstance("SHA-256").digest(original.toByteArray(Charsets.UTF_8))
+                .joinToString("") { "%02x".format(it) }
+            check(actual == expected) {
+                "$relative: upstream test changed; review and remove or regenerate the correction, never silently reuse it"
+            }
+            // A correction resolving test/implementation disagreement also pins its production policy.
+            val productionExpected = Regex("(?m)^Upstream-production-source-sha256: ([0-9a-f]{64})$")
+                .find(patch)?.groupValues?.get(1)
+            if (productionExpected != null) {
+                val production = productionRoot.resolve(relative.removeSuffix("Test.kt") + ".kt")
+                    .readText().replace("\r\n", "\n")
+                val productionActual = MessageDigest.getInstance("SHA-256").digest(production.toByteArray(Charsets.UTF_8))
+                    .joinToString("") { "%02x".format(it) }
+                check(productionActual == productionExpected) {
+                    "$relative: upstream production policy changed; review the test/implementation disagreement"
+                }
+            }
+            val destination = output.resolve(relative)
+            destination.parentFile.mkdirs()
+            destination.writeText(applyUnifiedPatch(original, patch, relative))
+        }
+    }
+}
+tasks.named("compileTestKotlin") { dependsOn(applyVideoTestCorrections) }
+kotlin.sourceSets.named("test") { kotlin.srcDir(correctedVideoTestOutput) }
+
 // M4d (TON-1005): tests of the migrated feature areas join, except those listed in upstream-core/m4d/tests-not-run.tsv
 // (path <TAB> reason) and those whose subject (FooTest.kt tests Foo.kt) is a later step of the area.
 val appM4dTestsNotRun: Map<String, String> = m4dTable("tests-not-run.tsv").toMap()
@@ -3134,7 +3799,7 @@ val appCoreUpstreamTestPaths: Set<String> = (appTestRoot.resolve("com/android/pu
         (appCoreDesktopOwned.keys + appCoreLaterSteps.keys).none { core.startsWith(it) } &&
         // FooTest.kt tests Foo.kt: a test of a desktop-owned or later-step file is left out with its subject.
         (appCoreDesktopOwned.keys + appCoreLaterSteps.keys + appM4dLaterSteps.keys).none { key -> key.endsWith(".kt") && core == key.removeSuffix(".kt") + "Test.kt" } } }
-    .toSortedSet()
+    .toSortedSet() + migratedVideoFeatureTestPaths
 val appCoreSourceReadingTestClasses: List<String> = appCoreUpstreamTestPaths.map { appTestRoot.resolve(it) }
     .filter { Regex("""\bFile\(|Paths\.get\(|\.readText\(""").containsMatchIn(it.readText()) }
     .map { file -> Regex("""^package\s+([\w.]+)""", RegexOption.MULTILINE).find(file.readText())!!.groupValues[1] + "." + file.nameWithoutExtension }
@@ -3144,13 +3809,14 @@ kotlin.sourceSets.named("test") {
     kotlin.srcDir(appTestRoot)
     val appTestRootPath = appTestRoot.toPath()
     kotlin.exclude { element -> !element.isDirectory && element.file.toPath().startsWith(appTestRootPath) &&
-        element.file.relativeTo(appTestRoot).invariantSeparatorsPath !in appCoreUpstreamTestPaths }
+        element.file.relativeTo(appTestRoot).invariantSeparatorsPath.let { it !in appCoreUpstreamTestPaths || it in correctedVideoTestPaths } }
     val buildDirectoryPath = layout.buildDirectory.get().asFile.toPath()
     kotlin.exclude { element ->
         val file = element.file
         val path = file.invariantSeparatorsPath
         val index = path.lastIndexOf("/com/android/purebilibili/")
-        element.file.toPath().startsWith(buildDirectoryPath) && index >= 0 &&
+        element.file.toPath().startsWith(buildDirectoryPath) &&
+            !element.file.toPath().startsWith(correctedVideoTestOutput.get().asFile.toPath()) && index >= 0 &&
             path.substring(index + 1).let { it in migratedWholeModuleTestPaths || it in appCoreUpstreamTestPaths }
     }
 }
@@ -3196,6 +3862,15 @@ kotlin.sourceSets.named("main") {
     kotlin.srcDir(applyTransitionPatches)
     kotlin.srcDir(applyDesktopUpstreamPatches)
     migratedUpstreamModules.forEach { kotlin.srcDir(mergedRepositoryRoot.resolve(it + "src/main/java")) }
+    // Partial playback modules: compile only the registered upstream files. Their generated copies
+    // are excluded by migratedUpstreamRelativePaths above, just like the app feature files.
+    migratedPlaybackModulePaths.forEach { (relativeRoot, paths) ->
+        val root = mergedRepositoryRoot.resolve(relativeRoot)
+        val rootPath = root.toPath()
+        kotlin.srcDir(root)
+        kotlin.exclude { element -> !element.isDirectory && element.file.toPath().startsWith(rootPath) &&
+            element.file.relativeTo(root).invariantSeparatorsPath !in paths }
+    }
     // Only the migrated app core files of the app source root; the rest of the app is not migrated yet.
     val appJavaRootPath = appJavaRoot.toPath()
     kotlin.exclude { element -> !element.isDirectory && element.file.toPath().startsWith(appJavaRootPath) && upstreamIdentity(element.file) !in migratedAppPaths }

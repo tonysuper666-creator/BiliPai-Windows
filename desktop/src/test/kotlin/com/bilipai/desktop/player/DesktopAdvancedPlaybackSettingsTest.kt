@@ -193,13 +193,17 @@ class DesktopAdvancedPlaybackSettingsTest {
         equal("https://fixture.invalid/aac-high", unavailable.selected?.track?.baseUrl)
         val unsupported = resolveDesktopDashSelection(dash(), 80, PlayerPreferences(defaultAudioQuality = 30250),
             isDolbyAudioSupported = false).audio
-        equal(-1, unsupported.selectedPreferenceId); equal(AudioFallbackReason.REQUESTED_UNAVAILABLE, unsupported.fallbackReason)
+        equal(30280, unsupported.selectedPreferenceId)
+        equal(AudioStreamKind.STANDARD, unsupported.selected?.kind)
+        equal(30250, unsupported.requestedPreferenceId); equal(AudioFallbackReason.REQUESTED_UNAVAILABLE, unsupported.fallbackReason)
     }
     case("premium speed threshold falls back temporarily and restores the requested preference") {
         val p = PlayerPreferences(defaultAudioQuality = 30250, speed = 1.5)
         equal(30250, resolveDesktopDashSelection(dash(), 80, p).audio.selectedPreferenceId)
         val fast = resolveDesktopDashSelection(dash(), 80, p.copy(speed = 1.51)).audio
-        equal(-1, fast.selectedPreferenceId); equal(30250, fast.requestedPreferenceId)
+        equal(30280, fast.selectedPreferenceId)
+        equal(AudioStreamKind.STANDARD, fast.selected?.kind)
+        equal(AUDIO_QUALITY_AUTO, fast.effectivePreferenceId); equal(30250, fast.requestedPreferenceId)
         equal(AudioFallbackReason.SPEED_INCOMPATIBLE, fast.fallbackReason)
         check(shouldRefreshPremiumAudioForPlaybackSpeedChange(30250, 1.5f, 1.51f))
         equal(30250, resolveDesktopDashSelection(dash(), 80, p).audio.selectedPreferenceId)

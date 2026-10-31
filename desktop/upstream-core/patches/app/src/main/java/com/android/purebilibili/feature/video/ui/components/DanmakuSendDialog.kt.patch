@@ -1,0 +1,20 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/video/ui/components/DanmakuSendDialog.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/video/ui/components/DanmakuSendDialog.kt
+@@ -23,7 +23,7 @@
+ import androidx.compose.ui.focus.FocusRequester
+ import androidx.compose.ui.focus.focusRequester
+ import androidx.compose.ui.graphics.Color
+-import androidx.compose.ui.platform.LocalConfiguration
++import com.bilipai.desktop.ui.DesktopHomeCardWindowMetrics as LocalConfiguration
+ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+ import androidx.compose.ui.platform.testTag
+ import androidx.compose.ui.text.font.FontWeight
+@@ -121,7 +121,7 @@
+         nativeClosing = false
+     }
+     val inputActive = visible && !closeRequested
+-    com.android.purebilibili.core.ui.AppModalBottomSheet(
++    com.bilipai.desktop.ui.DesktopWindowsVideoInteractionModalSheet(
+         visible = inputActive,
+         onDismissStarted = { nativeClosing = true },
+         onDismissRequest = { if (latestVisible) latestDismiss() },

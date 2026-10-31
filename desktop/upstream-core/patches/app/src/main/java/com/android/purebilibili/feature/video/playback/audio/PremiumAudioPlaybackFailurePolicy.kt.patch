@@ -1,0 +1,10 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/video/playback/audio/PremiumAudioPlaybackFailurePolicy.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/video/playback/audio/PremiumAudioPlaybackFailurePolicy.kt
+@@ -1,6 +1,6 @@
+ package com.android.purebilibili.feature.video.playback.audio
+ 
+-import androidx.media3.common.PlaybackException
++import com.bilipai.desktop.player.platform.DesktopPremiumAudioMedia3ErrorCodes as PlaybackException
+ 
+ internal fun isPremiumAudioPlaybackFailure(
+     errorCode: Int,

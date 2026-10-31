@@ -1,0 +1,10 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/glass/PortraitInteractionBarLayoutPolicy.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/glass/PortraitInteractionBarLayoutPolicy.kt
+@@ -1,6 +1,4 @@
+-package com.android.purebilibili.feature.video.ui.overlay.glass
+-
+-import com.android.purebilibili.feature.video.ui.overlay.*
++package com.android.purebilibili.feature.video.ui.overlay
+ 
+ data class PortraitInteractionBarLayoutPolicy(
+     val endPaddingDp: Int,

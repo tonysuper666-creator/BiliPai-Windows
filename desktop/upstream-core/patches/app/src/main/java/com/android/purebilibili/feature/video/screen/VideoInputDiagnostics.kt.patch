@@ -1,0 +1,18 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/video/screen/VideoInputDiagnostics.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/video/screen/VideoInputDiagnostics.kt
+@@ -1,6 +1,5 @@
+ package com.android.purebilibili.feature.video.screen
+ 
+-import android.os.SystemClock
+ import androidx.compose.runtime.DisposableEffect
+ import androidx.compose.runtime.remember
+ import androidx.compose.runtime.rememberUpdatedState
+@@ -27,7 +26,7 @@
+     }
+     onSizeChanged { bounds ->
+         if (!Logger.areVerboseRuntimeLogsEnabled()) return@onSizeChanged
+-        val now = SystemClock.elapsedRealtime()
++        val now = (System.nanoTime() / 1_000_000L)
+         // Fullscreen morph changes bounds each frame; keep at most four size samples per second.
+         if (lastSizeLogAt[0] != 0L && now - lastSizeLogAt[0] < 250L) return@onSizeChanged
+         lastSizeLogAt[0] = now

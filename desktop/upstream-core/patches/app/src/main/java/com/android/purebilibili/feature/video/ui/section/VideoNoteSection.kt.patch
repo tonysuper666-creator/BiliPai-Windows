@@ -1,0 +1,28 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoNoteSection.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoNoteSection.kt
+@@ -894,17 +894,17 @@
+ }
+ 
+ /** 官方等级徽章素材（与 PiliPlus 同源）：硬核会员显示 lv6_s，等级超过 6 按 6 处理。 */
+-private fun noteLevelBadgeRes(note: VideoNotePublicPreview): Int? {
++private fun noteLevelBadgeRes(note: VideoNotePublicPreview): String? {
+     return when {
+-        note.authorSenior -> com.android.purebilibili.R.drawable.lv6_s
++        note.authorSenior -> "blocked-up-badges/lv6_s.png"
+         note.authorLevel <= 0 -> null
+-        note.authorLevel >= 6 -> com.android.purebilibili.R.drawable.lv6
++        note.authorLevel >= 6 -> "blocked-up-badges/lv6.png"
+         else -> when (note.authorLevel) {
+-            1 -> com.android.purebilibili.R.drawable.lv1
+-            2 -> com.android.purebilibili.R.drawable.lv2
+-            3 -> com.android.purebilibili.R.drawable.lv3
+-            4 -> com.android.purebilibili.R.drawable.lv4
+-            5 -> com.android.purebilibili.R.drawable.lv5
++            1 -> "blocked-up-badges/lv1.png"
++            2 -> "blocked-up-badges/lv2.png"
++            3 -> "blocked-up-badges/lv3.png"
++            4 -> "blocked-up-badges/lv4.png"
++            5 -> "blocked-up-badges/lv5.png"
+             else -> null
+         }
+     }

@@ -55,6 +55,7 @@ internal class DesktopOriginalVideoOwnerAssembly private constructor(
         private set
     lateinit var section: DesktopOriginalMpvSectionControl
         private set
+    private lateinit var sharedPlayback: com.android.purebilibili.core.player.SharedPlaybackSession
     lateinit var playback: VideoPlaybackViewModel
         private set
     lateinit var domains: DesktopOriginalVideoDomainOwners
@@ -105,10 +106,26 @@ internal class DesktopOriginalVideoOwnerAssembly private constructor(
         assertOwned()
         val accepted = native.current() ?: throw CancellationException("Native adoption is required")
         check(accepted.sourceVersion == handoff.nativeSource.sourceVersion && accepted.request == handoff.request)
-        playback.loadVideo(handoff.request.bvid, handoff.request.aid,
-            autoPlay = !(handoff.readback.nativePaused ?: handoff.readback.paused),
+        sharedPlayback.load(DesktopPlaybackSessionRequest(handoff.request.bvid, handoff.request.aid,
             cid = handoff.request.cid,
-            fallbackResumePositionMs = (handoff.readback.positionSeconds.coerceAtLeast(0.0) * 1000).toLong())
+            autoPlay = !(handoff.readback.nativePaused ?: handoff.readback.paused),
+            resumePositionMs = (handoff.readback.positionSeconds.coerceAtLeast(0.0) * 1000).toLong(),
+            force = false))
+    }
+
+    /** Capture the original VM's own request/token, not a second generation.
+     * Loading can start without a native source; the existing invocation factory
+     * supplies its Store/entry/request admission when the actual job executes.
+     */
+    private fun requestPlayback(request: DesktopPlaybackSessionRequest): DesktopPlaybackRequestLease {
+        assertOwned()
+        playback.loadVideo(request.bvid, request.aid, force = request.force,
+            cid = request.cid, autoPlay = request.autoPlay,
+            fallbackResumePositionMs = request.resumePositionMs ?: 0L,
+            desktopExplicitStartPositionMs = request.resumePositionMs.takeIf { request.force })
+        return DesktopOriginalPlaybackRequestLease(::owns, playback::captureDesktopLoadState,
+            retryAction = { playback.retry() }, qualityAction = playback::changeQuality,
+            audioAction = playback::setAudioQuality, closeOwner = ::close)
     }
 
     /** Root retires its route gate first, then calls this OUTSIDE all Store/entry/
@@ -123,6 +140,7 @@ internal class DesktopOriginalVideoOwnerAssembly private constructor(
                 if (first == null) first = failure else first!!.addSuppressed(failure)
             }
         }
+        if (::sharedPlayback.isInitialized) clean(sharedPlayback::close)
         if (::nextWatch.isInitialized) clean(nextWatch::close)
         if (::playback.isInitialized) clean(playback::close)
         if (::invocations.isInitialized) clean(invocations::close)
@@ -253,7 +271,15 @@ internal class DesktopOriginalVideoOwnerAssembly private constructor(
                                 DesktopOriginalNativePlaybackContinuation(origin, owner.native, accepted, registrationJob)
                             }
                         }
-                    })
+                    },
+                    sessionRequest = owner::requestPlayback,
+                    sessionCapabilities = {
+                        DesktopPlaybackCapabilities(capabilities.isHevcSupported(), capabilities.isAv1Supported(),
+                            capabilities.isHdrSupported(), capabilities.isDolbyVisionSupported(),
+                            capabilities.isDolbyAtmosAudioSupported(), capabilities.isDolbySoftwareAudioDecoderRequired())
+                    },
+                    closeSession = owner::close)
+                owner.sharedPlayback = com.android.purebilibili.core.player.SharedPlaybackSession(owner.section)
                 owner.domains = DesktopOriginalVideoDomainOwners.create(context, root, capturedEpoch,
                     owner::owns, owner::commit, { owner.playback.uiState.value }, interactionAnalytics)
                 // Original attach has no media loading side effect. Preferred volume
@@ -268,4 +294,32 @@ internal class DesktopOriginalVideoOwnerAssembly private constructor(
             }
         }
     }
+}
+
+/** Lease over the actual VM Store identity. No independent request counter. */
+internal class DesktopOriginalPlaybackRequestLease(
+    private val ownerCurrent: () -> Boolean,
+    private val readState: () -> PlaybackSessionState,
+    private val retryAction: () -> Unit,
+    private val qualityAction: (Int) -> Unit,
+    private val audioAction: (Int) -> Unit,
+    private val closeOwner: () -> Unit,
+) : DesktopPlaybackRequestLease {
+    private var captured = readState()
+    override val isCurrent: Boolean get() {
+        if (!ownerCurrent()) return false
+        val current = readState()
+        return current.currentRequest === captured.currentRequest &&
+            current.currentLoadRequestToken == captured.currentLoadRequestToken
+    }
+    private fun invoke(action: () -> Unit): Boolean {
+        if (!isCurrent) return false
+        action()
+        captured = readState()
+        return ownerCurrent()
+    }
+    override fun retry(): Boolean = invoke(retryAction)
+    override fun selectQuality(quality: Int): Boolean = invoke { qualityAction(quality) }
+    override fun selectAudioQuality(preferenceId: Int): Boolean = invoke { audioAction(preferenceId) }
+    override fun close() { if (isCurrent) closeOwner() }
 }

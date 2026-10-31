@@ -1,0 +1,41 @@
+--- a/com/android/purebilibili/feature/bangumi/ui/player/DesktopOriginalBangumiPlayerContent.kt
++++ b/com/android/purebilibili/feature/bangumi/ui/player/DesktopOriginalBangumiPlayerContent.kt
+@@ -85,7 +85,8 @@
+     onUserClick: ((Long) -> Unit)? = null,
+     onCommentUrlClick: ((String) -> Unit)? = null,
+     onDownloadClick: () -> Unit = {},
+-    onShareClick: () -> Unit = {}
++    onShareClick: () -> Unit = {},
++    onScrollBoundaryState: (androidx.compose.foundation.lazy.LazyListState?) -> Unit = {}
+ ) {
+     val commentPlatform = com.bilipai.desktop.ui.LocalDesktopCommentBindings.current
+     val showIdentityDecorations by remember(commentPlatform) {
+@@ -93,6 +94,7 @@
+             .getCommentMemberDecorationsEnabled(commentPlatform.context)
+     }.collectAsStateWithLifecycle(initialValue = false)
+     val commentListState = key(currentEpisode.id) { rememberLazyListState() }
++    val desktopIntroListState = rememberLazyListState()
+     val isCourse = detail.seasonType == 10
+     val isFollowing = isBangumiFollowed(detail.userStatus)
+     val followedIcon = rememberAppCheckCircleIcon()
+@@ -102,6 +104,12 @@
+     val useCapsuleTabs = LocalAppUiStyle.current == AppUiStyle.MIUIX
+     val liquidGlassEnabled = LocalAppThemeConfig.current.liquidGlassEnabled
+     val pagerState = rememberPagerState(pageCount = { tabs.size })
++    val desktopBoundaryList = if (pagerState.currentPage == 0) desktopIntroListState else commentListState
++    val desktopBoundaryCallback by rememberUpdatedState(onScrollBoundaryState)
++    DisposableEffect(desktopBoundaryList) {
++        desktopBoundaryCallback(desktopBoundaryList)
++        onDispose { desktopBoundaryCallback(null) }
++    }
+     val scope = rememberCoroutineScope()
+     val selectionBackdrop = rememberLayerBackdrop()
+     val indicatorPositionProvider = remember(pagerState) {
+@@ -184,6 +192,7 @@
+         ) { page ->
+             when (page) {
+                 0 -> LazyColumn(
++                    state = desktopIntroListState,
+                     modifier = Modifier.fillMaxSize(),
+                     contentPadding = PaddingValues(bottom = 32.dp)
+                 ) {

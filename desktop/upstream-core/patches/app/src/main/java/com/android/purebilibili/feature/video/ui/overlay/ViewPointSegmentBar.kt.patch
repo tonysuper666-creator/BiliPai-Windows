@@ -1,0 +1,42 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/ViewPointSegmentBar.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/ViewPointSegmentBar.kt
+@@ -54,6 +54,7 @@
+ ) {
+     val selectionHaptic = rememberHapticFeedback(com.android.purebilibili.core.ui.AppHapticScene.PLAYER_SEEK)
+     val latestPosition by rememberUpdatedState(currentPositionMs)
++    val latestSeek by rememberUpdatedState(onSeek)
+     val segments = remember(viewPoints, durationMs) {
+         normalizeViewPointSegments(viewPoints, durationMs)
+     }
+@@ -74,16 +75,7 @@
+             .height(18.dp)
+             .clip(RoundedCornerShape(4.dp))
+             .background(trackColor)
+-            .then(if (interactive) Modifier.pointerInput(segments, durationMs) {
+-                detectTapGestures { offset ->
+-                    val positionMs = (offset.x / size.width.toFloat() * durationMs)
+-                        .toLong().coerceIn(0L, durationMs)
+-                    findViewPointSegmentAt(segments, positionMs)?.let { segment ->
+-                        if (findViewPointSegmentAt(segments, latestPosition) != segment) selectionHaptic(HapticType.LIGHT)
+-                        onSeek(segment.fromMs)
+-                    }
+-                }
+-            } else Modifier),
++,
+     ) { constraints ->
+         // 短章节抬到最小可读宽度；章节过碎时整体回退纯时长比例。
+         val barWidthPx = constraints.maxWidth.toFloat()
+@@ -118,6 +110,13 @@
+                     Box(
+                         modifier = chipSizingModifier
+                             .fillMaxHeight()
++                            // Hit the displayed chip, including its minimum-width allocation.
++                            .then(if (interactive) Modifier.pointerInput(segment) {
++                                detectTapGestures {
++                                    if (findViewPointSegmentAt(segments, latestPosition) != segment) selectionHaptic(HapticType.LIGHT)
++                                    latestSeek(segment.fromMs)
++                                }
++                            } else Modifier)
+                             .background(if (isActive) activeColor else Color.Transparent)
+                             .then(
+                                 if (index != 0) {

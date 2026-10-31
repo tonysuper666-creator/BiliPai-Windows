@@ -8,6 +8,10 @@ import com.android.purebilibili.plugin.sdk.RecommendationPluginApi
 import com.android.purebilibili.plugin.sdk.RecommendationRequest
 import com.android.purebilibili.plugin.sdk.RecommendationResult
 import com.android.purebilibili.plugin.sdk.SkipAction
+import com.android.purebilibili.plugin.sdk.PlayerPluginApi
+import com.bilipai.desktop.player.DesktopPlayerPluginSessionHandle
+import com.bilipai.desktop.player.DesktopSponsorPlayerSession
+import com.bilipai.desktop.player.DesktopPlayerPluginSessions
 
 import com.android.purebilibili.core.plugin.*
 import com.android.purebilibili.core.plugin.json.JsonPluginManager
@@ -66,13 +70,17 @@ class DesktopPluginRuntime(val store: DesktopPluginStore,
     private val closing = AtomicBoolean()
     private var stopped = false
     private val playerGeneration = AtomicLong()
-    private data class CurrentVideo(val generation: Long, val bvid: String, val cid: Long)
+    private class CurrentVideo(val generation: Long, val bvid: String, val cid: Long, val accountEpoch: Long) {
+        lateinit var sessions: DesktopPlayerPluginSessions
+    }
+    private val accountEpoch = { repository?.sessionEpoch ?: 0L }
     private val currentVideo = AtomicReference<CurrentVideo?>()
     private val json = Json { ignoreUnknownKeys = true; encodeDefaults = true; prettyPrint = true }
     val eyeProtection = EyeProtectionPlugin()
     val enhancementConfiguration: DesktopVideoEnhancementConfiguration
     private val danmakuEnhance = DanmakuEnhancePlugin()
-    private val sponsorBlock = SponsorBlockPlugin()
+    private val sponsorDefinition = SponsorBlockPlugin()
+    private val sponsorBlock: DesktopSponsorPlayerSession get() = checkNotNull(currentVideo.get()?.sessions?.sponsor()) { "No active Sponsor playback session" }
     internal val originalSponsorBlock get() = sponsorBlock
     val todayWatch = TodayWatchPlugin { DesktopPluginRepositoryBinding.recommendationContext() }
     val dlnaCast = DlnaCastPlugin()
@@ -110,7 +118,7 @@ class DesktopPluginRuntime(val store: DesktopPluginStore,
             catch (cancelled: CancellationException) { throw cancelled }
             catch (failure: Exception) { DesktopPluginLog.e("json-plugins", "JSON rule load failed", failure) }
         }
-        PluginManager.register(sponsorBlock)
+        PluginManager.register(sponsorDefinition)
         PluginManager.register(danmakuEnhance)
         PluginManager.register(eyeProtection)
         enhancementConfiguration = DesktopVideoEnhancementConfiguration(store,
@@ -164,10 +172,11 @@ class DesktopPluginRuntime(val store: DesktopPluginStore,
             PluginManager.setEnabled(id, enabled, stillOwned)
             if (!stillOwned()) return@withLock
             check(plugins.value.firstOrNull { it.plugin.id == id }?.enabled == enabled) { "插件启用失败，请检查配置" }
-            if (enabled && info.plugin is DesktopSingleSessionPlayerPlugin) {
-                currentVideo.get()?.takeIf { it.generation == playerGeneration.get() }?.let { video ->
-                    info.plugin.onVideoLoad(video.bvid, video.cid)
-                }
+        }
+        if (stillOwned() && info.plugin is PlayerPluginApi) {
+            currentVideo.get()?.takeIf(::isCurrentVideo)?.let { video ->
+                video.sessions.update(enabledPlayerDefinitions())
+                video.sessions.awaitLoads()
             }
         }
     }
@@ -193,9 +202,9 @@ class DesktopPluginRuntime(val store: DesktopPluginStore,
     suspend fun saveSponsorConfiguration(config: SponsorBlockConfig) = configurationChange {
         playerMutex.withLock {
             PluginStore.setConfigJson(upstreamContext, SPONSOR_BLOCK_PLUGIN_ID, json.encodeToString(config.normalized()))
-            if (plugins.value.any { it.plugin.id == SPONSOR_BLOCK_PLUGIN_ID && it.enabled }) {
-                currentVideo.get()?.takeIf { it.generation == playerGeneration.get() }?.let { sponsorBlock.onVideoLoad(it.bvid, it.cid) }
-            }
+        }
+        if (plugins.value.any { it.plugin === sponsorDefinition && it.enabled }) {
+            currentVideo.get()?.takeIf(::isCurrentVideo)?.let { it.sessions.reload(SPONSOR_BLOCK_PLUGIN_ID) }
         }
     }
 
@@ -287,77 +296,92 @@ class DesktopPluginRuntime(val store: DesktopPluginStore,
         if (current.any { it.plugin.id == EYE_PROTECTION_PLUGIN_ID && it.enabled }) paint else DesktopEyePaint(0f, 0f)
     }
 
-    /** Serialized original callbacks prevent an old HTTP load from mutating a later video. */
+    private fun isCurrentVideo(video: CurrentVideo): Boolean = !closing.get() &&
+        currentVideo.get() === video && playerGeneration.get() == video.generation && video.accountEpoch == accountEpoch()
+
+    private fun enabledPlayerDefinitions(): List<BuiltinPlugin> =
+        PluginManager.getEnabledPlugins(BuiltinPlugin::class).filter { it is PlayerPluginApi }
+
+    internal fun enabledPlayerSessions(): List<DesktopPlayerPluginSessionHandle> =
+        currentVideo.get()?.takeIf(::isCurrentVideo)?.sessions?.current().orEmpty()
+
+    private fun installSessions(video: CurrentVideo, stillOwned: () -> Boolean,
+        admission: ((() -> Unit) -> Boolean), calls: okhttp3.Call.Factory?) {
+        video.sessions = DesktopPlayerPluginSessions(scope, video.bvid, video.cid,
+            load = { definition, session, bvid, cid ->
+                val dispatch = DesktopPlayerPluginDispatch(this, video, video.generation,
+                    { stillOwned() && video.sessions.ownsRaw(session) }, admission, listOf(definition))
+                playerMutex.withLock {
+                    currentCoroutineContext().ensureActive()
+                    requirePlaybackPluginDispatch(dispatch, definition, false)
+                    if (!admission { requirePlaybackPluginDispatch(dispatch, definition, false) })
+                        throw CancellationException("Player plugin load admission retired")
+                    val write = playbackPluginWriteOperation(dispatch, definition, false, calls)
+                    DesktopPlayerPluginWriteAdmission.withCaptured(write) { session.onVideoLoad(bvid, cid) }
+                    currentCoroutineContext().ensureActive()
+                    requirePlaybackPluginDispatch(dispatch, definition, false)
+                    if (!admission { requirePlaybackPluginDispatch(dispatch, definition, false) })
+                        throw CancellationException("Player plugin load result retired")
+                }
+            }, failed = { id, failure -> DesktopPluginLog.e(id, "Video plugin load failed", failure) })
+    }
+
+    /** Fresh host/session per video; the existing Runtime generation is invalidated before any await. */
     suspend fun onVideoLoad(bvid: String, cid: Long): Long {
         checkOpen()
         val generation = playerGeneration.incrementAndGet()
-        val video = CurrentVideo(generation, bvid, cid)
-        currentVideo.updateAndGet { previous -> if (previous == null || previous.generation < generation) video else previous }
-        try {
-            playerMutex.withLock {
-                if (closing.get() || generation != playerGeneration.get()) return generation
-                for (plugin in PluginManager.getEnabledDesktopPlayerPlugins()) {
-                    currentCoroutineContext().ensureActive()
-                    try { plugin.onVideoLoad(bvid, cid) }
-                    catch (error: CancellationException) { throw error }
-                    catch (error: Exception) { DesktopPluginLog.e(plugin.id, "Video plugin load failed", error) }
-                }
-                currentCoroutineContext().ensureActive()
-            }
-        } catch (cancelled: CancellationException) {
+        val video = CurrentVideo(generation, bvid, cid, accountEpoch())
+        installSessions(video, { isCurrentVideo(video) }, { action ->
+            if (!isCurrentVideo(video)) false else { action(); true }
+        }, null)
+        val previous = currentVideo.getAndSet(video)
+        previous?.sessions?.close()
+        video.sessions.update(enabledPlayerDefinitions())
+        try { video.sessions.awaitLoads() }
+        catch (cancelled: CancellationException) {
             if (playerGeneration.compareAndSet(generation, generation + 1)) currentVideo.compareAndSet(video, null)
+            video.sessions.close()
             throw cancelled
         }
         return generation
     }
 
-    /** Full original owner publishes exactly once for a newly accepted native
-     * source. Inherited handoff/recovery retains its REAL generation. Each provider
-     * identity and Job is captured before waiting for the existing playerMutex. */
     internal suspend fun onVideoLoadOwned(bvid: String, cid: Long,
-        stillOwned: () -> Boolean, admission: ((() -> Unit) -> Boolean),
-        calls: okhttp3.Call.Factory): Long {
+        stillOwned: () -> Boolean, admission: ((() -> Unit) -> Boolean), calls: okhttp3.Call.Factory): Long {
         val caller = currentCoroutineContext()
         fun checkOwner() {
             caller.ensureActive()
             if (closing.get() || !stillOwned()) throw CancellationException("Original Runtime load retired")
         }
         checkOwner()
-        val providers = PluginManager.getEnabledDesktopPlayerPlugins().toList()
         var video: CurrentVideo? = null
+        var previous: CurrentVideo? = null
         if (!admission {
             checkOwner()
-            val generation = playerGeneration.incrementAndGet()
-            video = CurrentVideo(generation, bvid, cid)
-            currentVideo.updateAndGet { previous -> if (previous == null || previous.generation < generation) video else previous }
+            video = CurrentVideo(playerGeneration.incrementAndGet(), bvid, cid, accountEpoch())
+            previous = currentVideo.getAndSet(video)
         }) throw CancellationException("Original Runtime publication rejected")
         val captured = checkNotNull(video)
-        val dispatch = DesktopPlayerPluginDispatch(this, captured, captured.generation,
-            stillOwned, admission, providers)
+        // Host end/factory callbacks run AFTER Store/entry/native admission has exited.
+        installSessions(captured, { caller[Job]?.isCancelled != true && stillOwned() }, admission, calls)
+        previous?.sessions?.close()
+        captured.sessions.update(enabledPlayerDefinitions())
         try {
-            playerMutex.withLock {
-                checkOwner()
-                for (plugin in providers) {
-                    checkOwner()
-                    requirePlaybackPluginDispatch(dispatch, plugin, false)
-                    if (!admission { checkOwner(); requirePlaybackPluginDispatch(dispatch, plugin, false) })
-                        throw CancellationException("Original provider load rejected")
-                    val write = playbackPluginWriteOperation(dispatch, plugin, false, calls)
-                    try { DesktopPlayerPluginWriteAdmission.withCaptured(write) { plugin.onVideoLoad(bvid, cid) } }
-                    catch (cancelled: CancellationException) { throw cancelled }
-                    catch (failure: Exception) { DesktopPluginLog.e(plugin.id, "Video plugin load failed", failure) }
-                    checkOwner(); requirePlaybackPluginDispatch(dispatch, plugin, false)
-                    if (!admission { checkOwner(); requirePlaybackPluginDispatch(dispatch, plugin, false) })
-                        throw CancellationException("Original provider result rejected")
-                }
-            }
+            captured.sessions.awaitLoads()
+            checkOwner()
+            if (!isCurrentVideo(captured)) throw CancellationException("Original Runtime session replaced")
         } catch (cancelled: CancellationException) {
-            if (playerGeneration.compareAndSet(captured.generation, captured.generation + 1))
-                currentVideo.compareAndSet(captured, null)
+            if (playerGeneration.compareAndSet(captured.generation, captured.generation + 1)) currentVideo.compareAndSet(captured, null)
+            captured.sessions.close()
             throw cancelled
         }
-        checkOwner()
         return captured.generation
+    }
+
+    internal suspend fun ensurePlayerSessionLoaded(dispatch: DesktopPlayerPluginDispatch, session: DesktopPlayerPluginSessionHandle) {
+        requirePlaybackPluginDispatch(dispatch, session, false)
+        (dispatch.videoIdentity as CurrentVideo).sessions.ensureLoaded(session)
+        requirePlaybackPluginDispatch(dispatch, session, false)
     }
 
     /** Root uses the actual inherited generation from handoff, or the generation
@@ -368,21 +392,24 @@ class DesktopPluginRuntime(val store: DesktopPluginStore,
         if (closing.get() || video.generation != expectedGeneration || playerGeneration.get() != expectedGeneration ||
             video.bvid != bvid || video.cid != cid || !stillOwned()) return null
         val dispatch = DesktopPlayerPluginDispatch(this, video, expectedGeneration, stillOwned, admission,
-            PluginManager.getEnabledPlugins(BuiltinPlugin::class).toList())
+            PluginManager.getEnabledPlugins(BuiltinPlugin::class).filterNot { it is PlayerPluginApi } + video.sessions.current())
         return dispatch.takeIf(::isPlaybackPluginDispatchCurrent)
     }
 
     internal fun isPlaybackPluginDispatchCurrent(dispatch: DesktopPlayerPluginDispatch): Boolean =
         dispatch.runtime === this && !closing.get() && currentVideo.get() === dispatch.videoIdentity &&
-            playerGeneration.get() == dispatch.generation && dispatch.stillOwned()
+            (dispatch.videoIdentity as? CurrentVideo)?.let(::isCurrentVideo) == true && dispatch.stillOwned()
 
     private fun requirePlaybackPluginDispatch(dispatch: DesktopPlayerPluginDispatch, plugin: BuiltinPlugin,
         allowDisabledSponsor: Boolean) {
         if (!isPlaybackPluginDispatchCurrent(dispatch)) throw CancellationException("Playback plugin dispatch retired")
-        val retainedDisabledSponsor = allowDisabledSponsor && plugin === sponsorBlock
+        val video = dispatch.videoIdentity as CurrentVideo
+        val definition = (plugin as? DesktopPlayerPluginSessionHandle)?.definition ?: plugin
+        val retainedDisabledSponsor = allowDisabledSponsor && plugin === video.sessions.sponsor()
         if (!retainedDisabledSponsor && (dispatch.providers.none { it === plugin } ||
-                plugins.value.none { it.plugin === plugin && it.enabled }))
-            throw CancellationException("Captured playback plugin is no longer enabled")
+                plugins.value.none { it.plugin === definition && it.enabled } ||
+                (plugin is DesktopPlayerPluginSessionHandle && !video.sessions.isCurrent(plugin))))
+            throw CancellationException("Captured playback plugin is no longer enabled or current")
     }
 
     /** Wait for the SAME playerMutex outside Store/entry/native gates. Synchronous
@@ -498,89 +525,84 @@ class DesktopPluginRuntime(val store: DesktopPluginStore,
     internal fun retirePlaybackPluginDispatch(dispatch: DesktopPlayerPluginDispatch): Boolean {
         if (dispatch.runtime !== this || closing.get() || currentVideo.get() !== dispatch.videoIdentity ||
             !playerGeneration.compareAndSet(dispatch.generation, dispatch.generation + 1)) return false
-        val oldVideo = currentVideo.get()?.takeIf { it === dispatch.videoIdentity }
-        if (oldVideo != null) currentVideo.compareAndSet(oldVideo, null)
-        val capturedPlayers = dispatch.providers.filterIsInstance<DesktopSingleSessionPlayerPlugin>()
-        scope.launch {
-            playerMutex.withLock {
-                for (plugin in capturedPlayers) {
-                    currentCoroutineContext().ensureActive()
-                    if (closing.get() || playerGeneration.get() != dispatch.generation + 1 || currentVideo.get() != null)
-                        return@withLock
-                    if (plugins.value.none { it.plugin === plugin && it.enabled }) continue
-                    try { plugin.onVideoEnd() }
-                    catch (cancelled: CancellationException) { throw cancelled }
-                    catch (failure: Exception) { DesktopPluginLog.e(plugin.id, "Captured video plugin end failed", failure) }
-                }
-            }
-        }
+        val old = currentVideo.get()?.takeIf { it === dispatch.videoIdentity } ?: return false
+        currentVideo.compareAndSet(old, null)
+        scope.launch { old.sessions.close() }
         return true
     }
 
     suspend fun onPositionUpdate(generation: Long, positionMs: Long): List<SkipAction> {
-        if (generation != playerGeneration.get()) return emptyList()
+        val video = currentVideo.get()?.takeIf { it.generation == generation && isCurrentVideo(it) } ?: return emptyList()
         if (!playerMutex.tryLock()) return emptyList()
         try {
-            if (generation != playerGeneration.get()) return emptyList()
-            return PluginManager.getEnabledDesktopPlayerPlugins().mapNotNull { plugin ->
-                try { plugin.onPositionUpdate(positionMs)?.takeUnless { it is SkipAction.None } }
-                catch (error: CancellationException) { throw error }
-                catch (error: Exception) { DesktopPluginLog.e(plugin.id, "Video plugin position failed", error); null }
+            if (!isCurrentVideo(video)) return emptyList()
+            val actions = mutableListOf<SkipAction>()
+            for (session in video.sessions.ready()) {
+                if (!isCurrentVideo(video) || !video.sessions.isCurrent(session)) return emptyList()
+                val action = try { session.onPositionUpdate(positionMs) }
+                catch (cancelled: CancellationException) { throw cancelled }
+                catch (error: Exception) { DesktopPluginLog.e(session.id, "Video plugin position failed", error); null }
+                if (!isCurrentVideo(video) || !video.sessions.isCurrent(session)) return emptyList()
+                action?.takeUnless { it is SkipAction.None }?.let(actions::add)
             }
+            return actions
         } finally { playerMutex.unlock() }
     }
 
     fun onUserSeek(positionMs: Long, generation: Long = playerGeneration.get()) {
-        scope.launch {
-            playerMutex.withLock {
-                if (generation != playerGeneration.get()) return@withLock
-                PluginManager.getEnabledDesktopPlayerPlugins().forEach { plugin ->
-                    try { plugin.onUserSeek(positionMs) }
-                    catch (error: Exception) { DesktopPluginLog.e(plugin.id, "Video plugin seek failed", error) }
-                }
+        val video = currentVideo.get()?.takeIf { it.generation == generation } ?: return
+        scope.launch { playerMutex.withLock {
+            if (!isCurrentVideo(video)) return@withLock
+            for (session in video.sessions.ready()) {
+                if (!isCurrentVideo(video) || !video.sessions.isCurrent(session)) return@withLock
+                try { session.onUserSeek(positionMs) }
+                catch (cancelled: CancellationException) { throw cancelled }
+                catch (error: Exception) { DesktopPluginLog.e(session.id, "Video plugin seek failed", error) }
             }
-        }
+        } }
     }
 
     fun onVideoEnd(generation: Long = playerGeneration.get()) {
         if (!playerGeneration.compareAndSet(generation, generation + 1)) return
-        currentVideo.get()?.takeIf { it.generation == generation }?.let { currentVideo.compareAndSet(it, null) }
-        scope.launch {
-            playerMutex.withLock {
-                if (playerGeneration.get() != generation + 1) return@withLock
-                PluginManager.getEnabledDesktopPlayerPlugins().forEach { plugin ->
-                    try { plugin.onVideoEnd() }
-                    catch (error: Exception) { DesktopPluginLog.e(plugin.id, "Video plugin end failed", error) }
-                }
-            }
-        }
+        val old = currentVideo.get()?.takeIf { it.generation == generation } ?: return
+        currentVideo.compareAndSet(old, null)
+        scope.launch { old.sessions.close() }
     }
 
-    fun markSponsorSkipped(segmentId: String) = sponsorBlock.markAsSkipped(segmentId)
-    fun sponsorProgressMarkers() = sponsorBlock.getProgressMarkers()
-    fun sponsorSegments() = sponsorBlock.getSegments()
-    fun sponsorActiveSegment() = sponsorBlock.getActiveSegment()
-    fun sponsorContributionEnabled() = sponsorBlock.isCommunityContributionEnabled()
+    fun markSponsorSkipped(segmentId: String) = currentVideo.get()?.takeIf(::isCurrentVideo)?.sessions?.sponsor()?.markAsSkipped(segmentId)
+    fun sponsorProgressMarkers() = currentVideo.get()?.takeIf(::isCurrentVideo)?.sessions?.sponsor()?.getProgressMarkers().orEmpty()
+    fun sponsorSegments() = currentVideo.get()?.takeIf(::isCurrentVideo)?.sessions?.sponsor()?.getSegments().orEmpty()
+    fun sponsorActiveSegment() = currentVideo.get()?.takeIf(::isCurrentVideo)?.sessions?.sponsor()?.getActiveSegment()
+    fun sponsorContributionEnabled() = currentVideo.get()?.takeIf(::isCurrentVideo)?.sessions?.sponsor()?.isCommunityContributionEnabled() == true
     internal suspend fun onSponsorSkipCompleted(generation: Long, snapshot: SponsorBlockVideoSnapshot,
         segmentId: String, startMs: Long, endMs: Long, categoryName: String, manual: Boolean): Unit = playerMutex.withLock {
-        if (closing.get() || generation != playerGeneration.get()) return@withLock
+        val video = currentVideo.get()?.takeIf { it.generation == generation && isCurrentVideo(it) } ?: return@withLock
+        val session = video.sessions.sponsor() ?: return@withLock
         val record = buildSponsorBlockSkipRecord(snapshot, segmentId, categoryName, startMs, endMs,
             if (manual) SponsorBlockSkipTrigger.MANUAL else SponsorBlockSkipTrigger.AUTO, System.currentTimeMillis())
         SponsorBlockInsightStore.appendRecord(context, record)
         scope.launch {
-            if (!closing.get() && generation == playerGeneration.get()) sponsorBlock.uploadViewedSegmentIfEnabled(segmentId)
+            if (isCurrentVideo(video) && video.sessions.isCurrent(session)) session.uploadViewedSegmentIfEnabled(segmentId)
         }
     }
     suspend fun submitSponsorSegment(generation: Long, bvid: String, cid: Long, durationSeconds: Float,
         startMs: Long, endMs: Long, category: String, actionType: String) = playerMutex.withLock {
         checkOpen()
-        require(generation == playerGeneration.get()) { "视频已切换，请重新选择片段" }
-        sponsorBlock.submitCommunitySegment(bvid, cid, durationSeconds, startMs, endMs, category, actionType)
+        val video = currentVideo.get()
+        require(video != null && generation == video.generation && isCurrentVideo(video) && video.bvid == bvid && video.cid == cid) { "视频已切换，请重新选择片段" }
+        val session = checkNotNull(video.sessions.sponsor())
+        val result = session.submitCommunitySegment(bvid, cid, durationSeconds, startMs, endMs, category, actionType)
+        if (!isCurrentVideo(video) || !video.sessions.isCurrent(session)) throw CancellationException("Sponsor submission retired")
+        result
     }
     suspend fun voteSponsorSegment(generation: Long, segmentId: String, vote: Int) = playerMutex.withLock {
         checkOpen()
-        require(generation == playerGeneration.get()) { "视频已切换，请重新选择片段" }
-        sponsorBlock.voteOnCommunitySegment(segmentId, vote)
+        val video = currentVideo.get()
+        require(video != null && generation == video.generation && isCurrentVideo(video)) { "视频已切换，请重新选择片段" }
+        val session = checkNotNull(video.sessions.sponsor())
+        val result = session.voteOnCommunitySegment(segmentId, vote)
+        if (!isCurrentVideo(video) || !video.sessions.isCurrent(session)) throw CancellationException("Sponsor vote retired")
+        result
     }
     suspend fun resetJsonStats(id: String? = null) { checkOpen(); JsonPluginManager.resetStats(id) }
     suspend fun previewJsonUrl(url: String): Result<JsonRulePlugin> = JsonPluginManager.previewFromUrl(url)
@@ -604,6 +626,7 @@ class DesktopPluginRuntime(val store: DesktopPluginStore,
         recommendations.shutdownForRestore()
         beforeStoreFreeze()
         playerGeneration.incrementAndGet()
+        currentVideo.getAndSet(null)?.sessions?.close()
         scope.coroutineContext[Job]?.cancelAndJoin()
         jsPlugins.shutdownForRestore()
         subscriptions.shutdownForRestore()

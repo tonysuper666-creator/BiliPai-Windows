@@ -100,7 +100,9 @@ class PlaybackSettingsDraftMemoryTest {
             defaultAudioQuality = AUDIO_QUALITY_AUTO, speed = 1.75, defaultSpeed = 1.25, rememberLastSpeed = true,
             speedOptions = listOf(1.0, 1.25, 1.75), volume = 500.0)
         val saved = resolvePlaybackSettingsDraftSave(draft, latest)
-        assertEquals(AUDIO_QUALITY_AUTO, saved.lastSelectedAudioQuality)
+        assertEquals(999, saved.lastSelectedAudioQuality)
+        assertEquals(AUDIO_QUALITY_AUTO, resolvePlaybackSettingsDraftSave(
+            draft, latest.copy(lastSelectedAudioQuality = -999)).lastSelectedAudioQuality)
         assertEquals(AUDIO_QUALITY_AUTO, saved.defaultAudioQuality)
         assertEquals(1.75, saved.speed)
         assertEquals(1.25, saved.defaultSpeed)

@@ -1,0 +1,11 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/video/ui/components/ReportReasonDialog.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/video/ui/components/ReportReasonDialog.kt
+@@ -6,7 +6,7 @@
+ import androidx.compose.runtime.Composable
+ import androidx.compose.ui.Modifier
+ import androidx.compose.ui.text.font.FontWeight
+-import com.android.purebilibili.core.ui.AppAlertDialog
++import com.bilipai.desktop.ui.DesktopWindowsCommentAlertDialog as AppAlertDialog
+ import com.android.purebilibili.core.ui.AppContentColors
+ import com.android.purebilibili.core.ui.components.AppText
+ import com.android.purebilibili.core.ui.components.AppTextButton

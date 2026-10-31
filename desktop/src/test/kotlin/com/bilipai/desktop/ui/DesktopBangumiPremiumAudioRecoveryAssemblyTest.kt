@@ -657,7 +657,7 @@ class DesktopBangumiPremiumAudioRecoveryAssemblyTest {
                 val plugins = Proxy.newProxyInstance(DesktopOriginalVideoOwnerPlugins::class.java.classLoader,
                     arrayOf(DesktopOriginalVideoOwnerPlugins::class.java)) { _, method, _ ->
                     when (method.name) { "capturePlaybackDispatch" -> null
-                        "enabledPlayerPlugins" -> emptyList<com.android.purebilibili.core.plugin.DesktopSingleSessionPlayerPlugin>()
+                        "enabledPlayerPlugins" -> emptyList<com.bilipai.desktop.player.DesktopPlayerPluginSessionHandle>()
                         else -> error("Unexpected plugin effect ${method.name}") }
                 } as DesktopOriginalVideoOwnerPlugins
                 val effects = DesktopOriginalVideoOwnerEffects(mini, unused(), unused(), network,
@@ -937,7 +937,9 @@ class DesktopBangumiPremiumAudioRecoveryAssemblyTest {
             val actual = state(); val source = accepted().nativeSource.source
             assertEquals(original.quality, actual.quality); assertEquals(120, actual.quality)
             assertEquals(AUDIO_QUALITY_HI_RES, actual.requestedAudioQuality)
-            assertEquals(AUDIO_QUALITY_AUTO, actual.selectedAudioQuality)
+            assertEquals(30280, actual.selectedAudioQuality)
+            assertEquals(AUDIO_QUALITY_AUTO, actual.effectiveAudioQuality)
+            assertEquals(AudioStreamKind.STANDARD, actual.availableAudioQualities.single { it.preferenceId == 30280 }.kind)
             assertEquals(AudioFallbackReason.DECODER_ERROR, actual.audioFallbackReason)
             assertEquals(original.currentEpisode, actual.currentEpisode)
             assertEquals(original.seasonDetail.seasonId, actual.seasonDetail.seasonId)

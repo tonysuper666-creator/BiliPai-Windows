@@ -1,0 +1,52 @@
+# 可退役：完整上游内容接替后移除；保真实页码与列表modifier透传。
+--- a/com/android/purebilibili/feature/video/ui/components/DesktopOriginalSubReplyDetailComponents.kt
++++ b/com/android/purebilibili/feature/video/ui/components/DesktopOriginalSubReplyDetailComponents.kt
+@@ -591,6 +591,8 @@
+     remoteReplyCount: Int = 0,
+     targetReplyId: Long = 0,
+     headerDragModifier: Modifier = Modifier,
++    paginationPage: Int = 1,
++    listModifier: Modifier = Modifier,
+     modifier: Modifier = Modifier,
+ ) {
+     val layoutPolicy = remember {
+@@ -721,10 +723,10 @@
+                 isEnd = isEnd
+             )
+     }
+-    LaunchedEffect(shouldLoadMore) {
++    LaunchedEffect(shouldLoadMore, paginationPage) {
+         if (shouldLoadMore) onLoadMore()
+     }
+-    LaunchedEffect(shouldPrefetchShortList, visibleReplies.size, detailReplyDisplayCount) {
++    LaunchedEffect(shouldPrefetchShortList, visibleReplies.size, detailReplyDisplayCount, paginationPage) {
+         if (shouldPrefetchShortList) onLoadMore()
+     }
+     LaunchedEffect(listScrollResetKey, sortMode) {
+@@ -762,7 +764,7 @@
+         }
+         previousConversationMode = currentMode
+     }
+-    LaunchedEffect(rootReply.rpid, targetReplyId, visibleReplies, isLoading, isEnd, effectiveConversationMode) {
++    LaunchedEffect(rootReply.rpid, targetReplyId, visibleReplies, isLoading, isEnd, effectiveConversationMode, error, paginationPage) {
+         if (targetReplyId <= 0L) {
+             highlightedTargetId = 0L
+             return@LaunchedEffect
+@@ -783,7 +785,7 @@
+                 highlightedTargetId = targetReplyId
+                 listState.animateScrollToItem(targetIndex)
+             }
+-            targetReplyId > 0L && !isLoading && !isEnd && !effectiveConversationMode -> onLoadMore()
++            targetReplyId > 0L && error == null && !isLoading && !isEnd && !effectiveConversationMode -> onLoadMore()
+         }
+     }
+ 
+@@ -871,7 +873,7 @@
+             ) {
+                 com.android.purebilibili.core.ui.components.AppLazyColumn(
+                     state = listState,
+-                    modifier = Modifier
++                    modifier = listModifier
+                         .fillMaxSize()
+                         .testTag(SUB_REPLY_DETAIL_LIST_TAG),
+                     contentPadding = PaddingValues(bottom = layoutPolicy.listBottomPaddingDp.dp)

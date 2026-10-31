@@ -1,0 +1,42 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/bangumi/ui/player/BangumiCommentPanel.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/bangumi/ui/player/BangumiCommentPanel.kt
+@@ -22,12 +22,12 @@
+ import androidx.compose.runtime.setValue
+ import androidx.compose.ui.Alignment
+ import androidx.compose.ui.Modifier
+-import androidx.compose.ui.platform.LocalContext
++import com.bilipai.desktop.ui.LocalDesktopCommentBindings
+ import androidx.compose.ui.platform.LocalDensity
+ import androidx.compose.ui.layout.onSizeChanged
+ import androidx.compose.ui.unit.dp
+ import androidx.lifecycle.compose.collectAsStateWithLifecycle
+-import com.android.purebilibili.core.store.SettingsManager
++import com.android.purebilibili.core.store.DesktopOriginalReplySettings
+ import com.android.purebilibili.core.ui.LocalAppThemeConfig
+ import com.android.purebilibili.core.ui.blur.hazeSourceCompat
+ import com.android.purebilibili.core.ui.blur.topSolidProgressiveFade
+@@ -71,7 +71,8 @@
+     val state by viewModel.commentState.collectAsStateWithLifecycle()
+     val fullSearchState by viewModel.fullSearchState.collectAsStateWithLifecycle()
+     val fullSearchReplies by viewModel.fullSearchReplies.collectAsStateWithLifecycle()
+-    val context = LocalContext.current
++    val platform = LocalDesktopCommentBindings.current
++    val context = platform.context
+     val scope = rememberCoroutineScope()
+     val backdrop = rememberLayerBackdrop()
+     val hazeState = remember { HazeState() }
+@@ -106,8 +107,12 @@
+     }
+     var showSearch by remember { mutableStateOf(false) }
+     val changeSort: (CommentSortMode) -> Unit = { mode ->
+-        viewModel.setSortMode(mode)
+-        scope.launch { SettingsManager.setCommentDefaultSortMode(context, mode.apiMode) }
++        if (platform.isOwned()) {
++            viewModel.setSortMode(mode)
++            scope.launch {
++                if (platform.isOwned()) DesktopOriginalReplySettings.setCommentDefaultSortMode(context, mode.apiMode)
++            }
++        }
+     }
+     val bottomPadding = resolveBottomInputBarContentBottomPadding(
+         showBar = true,

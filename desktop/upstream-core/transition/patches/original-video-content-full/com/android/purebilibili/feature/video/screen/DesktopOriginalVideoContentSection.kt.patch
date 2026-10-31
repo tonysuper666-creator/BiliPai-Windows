@@ -1,0 +1,26 @@
+# 可退役：完整 VideoContentSection 原文迁入时删除；仅接原文列表视口布局。
+--- a/original-video-content-full/com/android/purebilibili/feature/video/screen/DesktopOriginalVideoContentSection.kt
++++ b/original-video-content-full/com/android/purebilibili/feature/video/screen/DesktopOriginalVideoContentSection.kt
+@@ -1405,11 +1405,12 @@
+         chunkRelatedVideosForHomeStyleGrid(visibleRelatedVideos)
+     }
+     val relatedVideoCardLayout = rememberRelatedVideoCardLayout()
+-    LazyColumn(
++    com.android.purebilibili.feature.video.ui.components.RelatedVideoList(
++        cardLayout = relatedVideoCardLayout,
+         state = listState,
+         modifier = modifier.fillMaxSize(),
+         contentPadding = contentPadding
+-    ) {
++    ) { cardPresentation ->
+         // 1. 移入的 Header 区域
+         item(key = "video_intro_header", contentType = "video_intro_header") {
+             VideoHeaderContent(
+@@ -1506,6 +1507,7 @@
+                 RelatedVideoGridRow(
+                     videos = row,
+                     cardLayout = relatedVideoCardLayout,
++                    cardPresentation = cardPresentation,
+                     followingMids = followingMids,
+                     showUpBadge = showUpBadge,
+                     onVideoClick = { video ->

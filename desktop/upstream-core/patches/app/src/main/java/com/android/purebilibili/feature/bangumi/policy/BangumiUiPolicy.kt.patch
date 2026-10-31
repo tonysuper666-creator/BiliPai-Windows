@@ -1,0 +1,21 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/bangumi/policy/BangumiUiPolicy.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/bangumi/policy/BangumiUiPolicy.kt
+@@ -1,6 +1,5 @@
+ package com.android.purebilibili.feature.bangumi
+ 
+-import android.content.pm.ActivityInfo
+ import androidx.compose.runtime.Composable
+ import androidx.compose.material3.MaterialTheme
+ import androidx.compose.ui.graphics.luminance
+@@ -94,9 +93,9 @@
+ ): Int? {
+     if (isTablet || usesInWindowFullscreen) return null
+     return if (isFullscreen) {
+-        ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
++        1 /* Original portrait intent; the desktop keeps its existing presentation adapter. */
+     } else {
+-        ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
++        6 /* Original landscape intent; no physical rotation is fabricated. */
+     }
+ }
+ 

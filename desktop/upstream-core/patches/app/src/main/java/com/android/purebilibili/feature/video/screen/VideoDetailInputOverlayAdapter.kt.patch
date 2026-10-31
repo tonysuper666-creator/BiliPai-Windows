@@ -1,0 +1,147 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailInputOverlayAdapter.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailInputOverlayAdapter.kt
+@@ -1,13 +1,11 @@
+ package com.android.purebilibili.feature.video.screen
+ 
+-import android.content.Context
+-import android.content.res.Configuration
+-import android.net.Uri
++import com.bilipai.desktop.ui.DesktopOriginalPlayerSettingsContext as Context
++import com.bilipai.desktop.ui.DesktopHomeCardWindowBounds as Configuration
+ import androidx.compose.foundation.layout.WindowInsets
+ import androidx.compose.foundation.layout.asPaddingValues
+ import androidx.compose.foundation.layout.ExperimentalLayoutApi
+ import androidx.compose.foundation.layout.statusBars
+-import androidx.compose.foundation.layout.statusBarsIgnoringVisibility
+ import androidx.compose.runtime.Composable
+ import androidx.compose.runtime.Immutable
+ import androidx.compose.runtime.getValue
+@@ -17,7 +15,7 @@
+ import androidx.compose.ui.unit.Dp
+ import androidx.compose.ui.unit.dp
+ import androidx.lifecycle.compose.collectAsStateWithLifecycle
+-import com.android.purebilibili.core.store.SettingsManager
++import com.android.purebilibili.core.store.DesktopOriginalVideoHolderSendSettings as SettingsManager
+ import com.android.purebilibili.data.model.response.EmotePackage
+ import com.android.purebilibili.data.model.response.MentionSearchUser
+ import com.android.purebilibili.feature.video.ui.components.CommentInputDialog
+@@ -55,7 +53,7 @@
+ )
+ 
+ @Immutable
+-private data class CommentInputSnapshot(
++private data class DesktopOriginalHolderCommentInputSnapshot(
+     val visible: Boolean,
+     val draftKey: String,
+     val isSending: Boolean,
+@@ -70,11 +68,11 @@
+ )
+ 
+ @Immutable
+-private data class CommentInputActions(
++private data class DesktopOriginalHolderCommentInputActions(
+     val dismiss: () -> Unit,
+     val searchMentions: (String) -> Unit,
+-    val updateDraft: (String, List<Uri>, Boolean) -> Unit,
+-    val send: (String, List<Uri>, Boolean) -> Unit,
++    val updateDraft: (String, List<String>, Boolean, Int, Int) -> Unit,
++    val send: (String, List<String>, Boolean) -> Unit,
+ )
+ 
+ @OptIn(ExperimentalLayoutApi::class)
+@@ -93,6 +91,7 @@
+     immersiveStatusBarBackdropEnabled: Boolean,
+     currentVideoPositionMsProvider: () -> Long,
+ ): VideoDetailInputOverlayLayoutInfo {
++    val holderPlatform = com.bilipai.desktop.ui.LocalDesktopOriginalVideoHolderPlatform.current
+     val showDanmakuDialog by viewModel.showDanmakuDialog.collectAsStateWithLifecycle()
+     val isSendingDanmaku by viewModel.isSendingDanmaku.collectAsStateWithLifecycle()
+     val composerDrafts by viewModel.composerDrafts.collectAsStateWithLifecycle()
+@@ -107,8 +106,7 @@
+         val playerHeight = configuration.screenWidthDp.dp * 9f / 16f
+         val stableStatusBar = resolveVideoDetailStableStatusBarHeightDp(
+             visibleStatusBarHeightDp = WindowInsets.statusBars.asPaddingValues().calculateTopPadding().value,
+-            statusBarIgnoringVisibilityHeightDp = WindowInsets.statusBarsIgnoringVisibility
+-                .asPaddingValues().calculateTopPadding().value,
++            statusBarIgnoringVisibilityHeightDp = with(LocalDensity.current) { holderPlatform.section.statusBarInsetPixels.toDp().value },
+             hideStatusBars = hideStatusBars,
+         )
+         val playerTopInset = resolveVideoDetailPortraitPlayerTopInsetDp(
+@@ -171,10 +169,10 @@
+     val draftKey = remember(draftVideoId, draftSessionId, draftReplyRpid) {
+         "$draftVideoId:$draftReplyRpid:$draftSessionId"
+     }
+-    val commentDraft = composerDrafts.comments.drafts[commentComposerDraftKey(draftReplyRpid)]
++    val commentDraft = composerDrafts.comments[commentComposerDraftKey(draftReplyRpid)]
+         ?: CommentComposerDraft()
+     VideoDetailCommentInputOverlayContent(
+-        snapshot = CommentInputSnapshot(
++        snapshot = DesktopOriginalHolderCommentInputSnapshot(
+             visible = showCommentInput,
+             draftKey = draftKey,
+             isSending = isSendingComment,
+@@ -187,7 +185,7 @@
+             mentionSearchError = mentionSearchState.errorMessage,
+             draft = commentDraft,
+         ),
+-        actions = CommentInputActions(
++        actions = DesktopOriginalHolderCommentInputActions(
+             dismiss = {
+                 val current = viewModel.composerDrafts.value
+                 if (current.videoId == draftVideoId && current.comments.sessionId == draftSessionId) {
+@@ -195,8 +193,13 @@
+                 }
+             },
+             searchMentions = viewModel::searchCommentMentionUsers,
+-            updateDraft = { text, images, sync ->
+-                viewModel.updateCommentDraft(draftVideoId, draftSessionId, draftReplyRpid, text, images, sync)
++            updateDraft = { text, images, sync, start, end ->
++                val current = viewModel.composerDrafts.value
++                if (current.videoId == draftVideoId && current.comments.sessionId == draftSessionId &&
++                    viewModel.replyingToComment.value?.rpid == draftReplyRpid && viewModel.showCommentDialog.value
++                ) {
++                    viewModel.updateCommentDraft(text, images, sync, start, end, draftSessionId)
++                }
+             },
+             send = { message, imageUris, syncToDynamic ->
+                 val current = viewModel.composerDrafts.value
+@@ -204,7 +207,7 @@
+                     viewModel.replyingToComment.value?.rpid == draftReplyRpid &&
+                     viewModel.showCommentDialog.value
+                 ) {
+-                    viewModel.sendComment(message, imageUris, syncToDynamic)
++                    viewModel.sendComment(message, imageUris, syncToDynamic, draftSessionId = draftSessionId)
+                 }
+             },
+         ),
+@@ -238,13 +241,13 @@
+ 
+ @Composable
+ private fun VideoDetailCommentInputOverlayContent(
+-    snapshot: CommentInputSnapshot,
+-    actions: CommentInputActions,
++    snapshot: DesktopOriginalHolderCommentInputSnapshot,
++    actions: DesktopOriginalHolderCommentInputActions,
+     currentVideoPositionMsProvider: () -> Long,
+ ) {
++    androidx.compose.runtime.key(snapshot.draftKey) {
+     CommentInputDialog(
+         visible = snapshot.visible,
+-        draftKey = snapshot.draftKey,
+         onDismiss = actions.dismiss,
+         isSending = snapshot.isSending,
+         replyToName = snapshot.replyToName,
+@@ -256,6 +259,8 @@
+         mentionSearchError = snapshot.mentionSearchError,
+         onMentionSearchQueryChange = actions.searchMentions,
+         initialText = snapshot.draft.text,
++        initialSelectionStart = snapshot.draft.selectionStart,
++        initialSelectionEnd = snapshot.draft.selectionEnd,
+         initialImageUris = snapshot.draft.imageUris,
+         initialSyncToDynamic = snapshot.draft.syncToDynamic,
+         onDraftChange = actions.updateDraft,
+@@ -263,3 +268,4 @@
+         onSend = actions.send,
+     )
+ }
++}

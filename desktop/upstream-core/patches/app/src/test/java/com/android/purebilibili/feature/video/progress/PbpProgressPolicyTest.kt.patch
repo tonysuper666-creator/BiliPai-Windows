@@ -1,0 +1,22 @@
+Upstream commit: 918b6924e4ca4a578ea7f006b06dc38b139bdc84
+Reason: PbpProgressPolicy.kt:71-82 uses positionMs / 1000 / stepSeconds.
+0ms is the inclusive start of bucket 0, 60000ms is bucket 6 with step=10.
+The test incorrectly counts both in bucket 6. Preserve size and verify both
+buckets, total conservation and all other buckets zero.
+Upstream-source-sha256: 534b3ba24e6d9a3d4fa3330f59a42a1db16ae2b20c6b44763466dbfc35eb64c4
+Any upstream test change requires review; remove this patch when fixed upstream.
+
+--- a/app/src/test/java/com/android/purebilibili/feature/video/progress/PbpProgressPolicyTest.kt
++++ b/app/src/test/java/com/android/purebilibili/feature/video/progress/PbpProgressPolicyTest.kt
+@@ -122,7 +122,10 @@
+             durationSeconds = 10_800L // 3h -> step = 10s
+         )
+         assertEquals(1080, values.size)
+-        assertEquals(2f, values[6]) // 60s / 10s = bucket 6
++        assertEquals(1f, values[0]) // 0s / 10s = bucket 0
++        assertEquals(1f, values[6]) // 60s / 10s = bucket 6
++        assertEquals(2f, values.sum())
++        assertTrue(values.withIndex().all { (index, count) -> index == 0 || index == 6 || count == 0f })
+     }
+ 
+     @Test

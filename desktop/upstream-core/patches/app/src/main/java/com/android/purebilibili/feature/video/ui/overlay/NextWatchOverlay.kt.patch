@@ -1,0 +1,153 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/NextWatchOverlay.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/NextWatchOverlay.kt
+@@ -2,7 +2,6 @@
+ 
+ import com.android.purebilibili.core.ui.AppContentColors
+ 
+-import androidx.activity.compose.LocalActivity
+ import androidx.compose.animation.AnimatedVisibility
+ import androidx.compose.animation.fadeIn
+ import androidx.compose.animation.fadeOut
+@@ -14,9 +13,6 @@
+ import androidx.compose.material.icons.filled.Close
+ import androidx.compose.material3.MaterialTheme
+ import androidx.compose.runtime.*
+-import androidx.compose.ui.platform.LocalContext
+-import androidx.lifecycle.compose.collectAsStateWithLifecycle
+-import com.android.purebilibili.core.store.SettingsManager
+ import androidx.compose.ui.Alignment
+ import androidx.compose.ui.Modifier
+ import androidx.compose.ui.draw.clip
+@@ -24,9 +20,12 @@
+ import androidx.compose.ui.text.style.TextOverflow
+ import androidx.compose.ui.unit.dp
+ import androidx.compose.ui.zIndex
+-import androidx.lifecycle.Lifecycle
+-import androidx.lifecycle.compose.LocalLifecycleOwner
+-import androidx.media3.common.Player
++import com.bilipai.desktop.ui.DesktopOriginalPlayerSettingsContext
++import com.bilipai.desktop.ui.DesktopOriginalVideoNextWatchHint
++import com.bilipai.desktop.ui.desktopCommandHitRegion
++import com.bilipai.desktop.ui.desktopWindowsGlassSurfaceMaterial
++import com.android.purebilibili.core.store.DesktopOriginalNextWatchHintSettings
++import androidx.compose.ui.graphics.Color
+ import coil3.compose.AsyncImage
+ import com.android.purebilibili.core.theme.AppUiStyle
+ import com.android.purebilibili.core.theme.LocalAppUiStyle
+@@ -36,55 +35,49 @@
+ import com.android.purebilibili.core.ui.components.AppSurface
+ import com.android.purebilibili.core.ui.components.AppText
+ import com.android.purebilibili.feature.video.playback.next.NextWatchSuggestion
+-import com.android.purebilibili.feature.video.playback.next.isNextWatchWindow
+-import com.android.purebilibili.feature.video.playback.next.nextWatchRemainingSeconds
+-import kotlinx.coroutines.delay
+ 
+-/** Poll only while the player host is composed; no callback is tied to a countdown timer. */
++/** The original card over the existing owned native clock projection. No new
++ * poll timer, request owner, playlist or media source is constructed here. */
+ @Composable
+ internal fun BoxScope.NextWatchOverlay(
+-    player: Player,
++    settingsContext: DesktopOriginalPlayerSettingsContext,
+     mediaKey: String,
+     eligible: Boolean,
+-    resolve: () -> NextWatchSuggestion?,
+-    play: (NextWatchSuggestion) -> Boolean,
++    playing: Boolean,
++    hint: DesktopOriginalVideoNextWatchHint?,
++    resolve: () -> DesktopOriginalVideoNextWatchHint?,
++    play: (DesktopOriginalVideoNextWatchHint) -> Boolean,
+     modifier: Modifier = Modifier,
+ ) {
+-    val context = LocalContext.current
+-    val hintEnabled by remember(context) { SettingsManager.getNextWatchHintEnabled(context) }
+-        .collectAsStateWithLifecycle(initialValue = true)
++    val hintEnabled by remember(settingsContext) { DesktopOriginalNextWatchHintSettings.getNextWatchHintEnabled(settingsContext) }
++        .collectAsState(initial = true)
+     if (!hintEnabled) return
+-    val activity = LocalActivity.current
+-    val lifecycle = LocalLifecycleOwner.current.lifecycle
+     val reduceMotion = rememberSystemReduceMotion()
+     val latestResolve by rememberUpdatedState(resolve)
+     val latestPlay by rememberUpdatedState(play)
+-    var suggestion by remember(mediaKey) { mutableStateOf<NextWatchSuggestion?>(null) }
++    var suggestion by remember(mediaKey) { mutableStateOf<DesktopOriginalVideoNextWatchHint?>(null) }
+     var dismissed by remember(mediaKey) { mutableStateOf(false) }
+     var visible by remember(mediaKey) { mutableStateOf(false) }
+     var remainingSeconds by remember(mediaKey) { mutableIntStateOf(5) }
+-    LaunchedEffect(player, mediaKey, eligible, lifecycle, activity) {
+-        while (true) {
+-            val duration = player.duration
+-            val position = player.currentPosition
+-            val seconds = nextWatchRemainingSeconds(duration, position)
+-            val inWindow = eligible && !dismissed && activity?.isInPictureInPictureMode != true &&
+-                lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED) &&
+-                player.isPlaying && seconds != null
+-            if (inWindow && seconds != null) remainingSeconds = seconds
+-            if (suggestion != null && !isNextWatchWindow(duration, position)) {
+-                dismissed = true
+-            }
+-            if (inWindow && suggestion == null) suggestion = latestResolve()
+-            if (inWindow && suggestion != null && latestResolve() != suggestion) {
+-                // Queue, mode or exclusions changed: retire this offer instead of swapping its card.
+-                dismissed = true
+-            }
+-            visible = inWindow && !dismissed && suggestion != null
+-            delay(200)
++    LaunchedEffect(mediaKey, hint, eligible, playing) {
++        val captured = latestResolve()
++        val seconds = hint?.remainingSeconds
++        val inWindow = eligible && !dismissed && playing && seconds != null
++        if (inWindow && seconds != null) remainingSeconds = seconds
++        if (suggestion != null && seconds == null) dismissed = true
++        if (inWindow && suggestion == null) suggestion = captured
++        val shown = suggestion
++        if (inWindow && shown != null && (captured == null || captured.target != shown.target ||
++                captured.accepted !== shown.accepted || captured.originalRequest !== shown.originalRequest ||
++                captured.requestToken != shown.requestToken)) {
++            // Queue, source, mode or exclusions changed: retire this displayed
++            // immutable offer instead of replacing its target during a click.
++            dismissed = true
+         }
++        visible = inWindow && !dismissed && suggestion != null
+     }
+-    val target = suggestion
++    val displayed = suggestion
++    val target = displayed?.target
+     if (target != null) {
+         BoxWithConstraints(modifier = modifier.fillMaxSize().zIndex(119f)) {
+             val compact = maxHeight < 280.dp
+@@ -104,7 +97,7 @@
+                     suggestion = target,
+                     remainingSeconds = remainingSeconds,
+                     onClick = {
+-                        latestPlay(target)
++                        displayed?.let { latestPlay(it) }
+                         // A stale or already-used click must not retry against another video.
+                         dismissed = true
+                         visible = false
+@@ -131,10 +124,13 @@
+         else MaterialTheme.colorScheme.surfaceContainerHigh
+     val content = if (miuix) top.yukonga.miuix.kmp.theme.MiuixTheme.colorScheme.onSurface
+         else AppContentColors.primaryText()
+-    AppSurface(modifier = modifier, shape = shape, color = container, tonalElevation = 3.dp) {
++    val material = desktopWindowsGlassSurfaceMaterial(modifier, shape, container)
++    AppSurface(modifier = material.modifier, shape = shape,
++        color = if (material.enabled) Color.Transparent else container,
++        tonalElevation = if (material.enabled) 0.dp else 3.dp) {
+         Row(verticalAlignment = Alignment.CenterVertically) {
+             Row(
+-                modifier = Modifier.weight(1f).clickable(onClick = onClick).padding(10.dp),
++                modifier = Modifier.weight(1f).desktopCommandHitRegion("next-watch-open").clickable(onClick = onClick).padding(10.dp),
+                 verticalAlignment = Alignment.CenterVertically,
+                 horizontalArrangement = Arrangement.spacedBy(8.dp),
+             ) {
+@@ -151,7 +147,7 @@
+                         tapToCopyEnabled = false)
+                 }
+             }
+-            Box(modifier = Modifier.size(48.dp).clickable(onClick = onDismiss), contentAlignment = Alignment.Center) {
++            Box(modifier = Modifier.size(48.dp).desktopCommandHitRegion("next-watch-dismiss").clickable(onClick = onDismiss), contentAlignment = Alignment.Center) {
+                 AppIcon(imageVector = Icons.Filled.Close, contentDescription = "关闭接下来观看提示", tint = content, modifier = Modifier.size(18.dp))
+             }
+         }

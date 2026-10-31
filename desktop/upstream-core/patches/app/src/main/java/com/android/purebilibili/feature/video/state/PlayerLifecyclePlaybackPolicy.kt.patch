@@ -1,0 +1,19 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/video/state/PlayerLifecyclePlaybackPolicy.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/video/state/PlayerLifecyclePlaybackPolicy.kt
+@@ -1,6 +1,6 @@
+ package com.android.purebilibili.feature.video.state
+ 
+-import androidx.media3.common.Player
++import com.bilipai.desktop.ui.DesktopOriginalPlaybackStates as Player
+ 
+ internal fun isPlaybackActiveForLifecycle(
+     isPlaying: Boolean,
+@@ -42,7 +42,7 @@
+     playWhenReady: Boolean,
+     reason: Int
+ ): Boolean {
+-    return !playWhenReady && reason == Player.PLAY_WHEN_READY_CHANGE_REASON_USER_REQUEST
++    return !playWhenReady && reason == 1 /* user request policy ID */
+ }
+ 
+ internal fun shouldAutoResumeAfterBufferingRecovery(

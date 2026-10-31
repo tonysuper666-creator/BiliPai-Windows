@@ -2438,6 +2438,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                                 measuredRootConstraints.maxHeight.toDp().value.toInt().coerceAtLeast(1))
                                         },
                                         currentPositionMs = { ((player?.state?.value?.positionSeconds ?: 0.0) * 1_000).toLong() },
+                                        durationMs = { ((native.durationSeconds.takeIf { it.isFinite() && it > 0.0 } ?: 0.0) * 1_000).toLong() },
                                         seekFromUser = { position -> if (ownsDanmakuSource()) playback.seekTo(position / 1_000.0) },
                                         showSettings = originalDanmakuSettingsVisible, showPool = originalDanmakuPoolVisible,
                                         onShowPool = { if (ownsDanmakuSource()) { originalDanmakuSettingsVisible = false; originalDanmakuPoolVisible = true } },

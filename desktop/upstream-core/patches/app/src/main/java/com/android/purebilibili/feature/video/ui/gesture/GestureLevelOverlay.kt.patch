@@ -1,0 +1,30 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/video/ui/gesture/GestureLevelOverlay.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/video/ui/gesture/GestureLevelOverlay.kt
+@@ -1,8 +1,6 @@
+ package com.android.purebilibili.feature.video.ui.gesture
+ 
+-import androidx.compose.ui.res.colorResource
+-import com.android.purebilibili.R
+-import android.os.SystemClock
++import com.bilipai.desktop.ui.DesktopOriginalVideoGestureClock as SystemClock
+ import androidx.compose.animation.EnterExitState
+ import androidx.compose.animation.SizeTransform
+ import androidx.compose.animation.core.animateFloat
+@@ -126,7 +124,7 @@
+     val style = rememberGestureLevelOverlayStyle(playerChromeProfile.tabPresentation)
+     val motionSpec = remember { resolveVideoGestureMotionSpec() }
+     val reduceMotion = rememberSystemReduceMotion()
+-    val brightnessColor = colorResource(R.color.player_brightness_accent)
++    val brightnessColor = Color(0xFFFFD60A)
+     val colorScheme = MaterialTheme.colorScheme
+     val glassDarkTheme = resolveBottomBarDarkTheme(colorScheme.background)
+     val glassContentColor = glassContentColorOverride ?: colorScheme.onSurface
+@@ -617,7 +615,7 @@
+ ) {
+     val kind = resolveGestureLevelKind(mode) ?: return
+     val motionSpec = remember { resolveVideoGestureMotionSpec() }
+-    val brightnessColor = colorResource(R.color.player_brightness_accent)
++    val brightnessColor = Color(0xFFFFD60A)
+     val colorScheme = MaterialTheme.colorScheme
+     val miuixColorScheme = MiuixTheme.colorScheme
+     val spec = remember(style, kind, percent, colorScheme, miuixColorScheme, brightnessColor) {

@@ -1,0 +1,38 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiDetailScreen.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiDetailScreen.kt
+@@ -38,7 +38,7 @@
+ import androidx.compose.ui.text.style.TextOverflow
+ import androidx.compose.ui.unit.dp
+ import androidx.compose.ui.unit.sp
+-import androidx.lifecycle.viewmodel.compose.viewModel
++// Root supplies the actual retained full original ViewModel.
+ import coil3.compose.AsyncImage
+ import com.android.purebilibili.core.theme.resolveAdaptivePrimaryAccentColors
+ import com.android.purebilibili.core.ui.AppAlertDialog
+@@ -57,7 +57,7 @@
+ import com.android.purebilibili.data.model.response.BangumiEpisode
+ import com.android.purebilibili.core.util.LocalWindowSizeClass
+ import androidx.compose.ui.platform.LocalDensity
+-import androidx.compose.ui.platform.LocalConfiguration
++// Window layout is provided by the existing responsive/window policy.
+ import com.android.purebilibili.core.util.responsiveContentWidth
+ // [重构] 使用提取的可复用组件
+ import com.android.purebilibili.feature.bangumi.ui.detail.RatingRow
+@@ -74,7 +74,7 @@
+  */
+ @OptIn(ExperimentalMaterial3Api::class)
+ @Composable
+-fun BangumiDetailScreen(
++internal fun BangumiDetailScreen(
+     seasonId: Long,
+     epId: Long = 0,
+     mediaId: Long = 0,
+@@ -83,7 +83,7 @@
+     onSeasonClick: (Long) -> Unit = {},        //  点击切换季度
+     onReviewsClick: (Long, String) -> Unit = { _, _ -> },
+     onUserClick: (Long) -> Unit = {},
+-    viewModel: BangumiViewModel = viewModel(),
++    viewModel: BangumiViewModel,
+     modifier: Modifier = Modifier,
+     contentTransitionReady: Boolean = true,
+ ) {

@@ -1,0 +1,34 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailCommentFraudOverlayAdapter.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailCommentFraudOverlayAdapter.kt
+@@ -1,16 +1,18 @@
+ package com.android.purebilibili.feature.video.screen
+ 
+-import android.content.Context
+ import androidx.compose.runtime.Composable
++import androidx.compose.runtime.CompositionLocalProvider
+ import androidx.compose.runtime.LaunchedEffect
+ import com.android.purebilibili.feature.video.ui.components.CommentFraudFeedbackHost
+ import com.android.purebilibili.feature.video.viewmodel.VideoCommentViewModel
+-import com.android.purebilibili.feature.video.viewmodel.VideoPlaybackViewModel
++import com.android.purebilibili.feature.video.viewmodel.DesktopOriginalVideoCommentComposer
++import com.bilipai.desktop.ui.DesktopCommentPlatform
++import com.bilipai.desktop.ui.LocalDesktopCommentBindings
+ 
+ @Composable
+ internal fun VideoDetailCommentFraudOverlayAdapter(
+-    context: Context,
+-    playbackViewModel: VideoPlaybackViewModel,
++    platform: DesktopCommentPlatform,
++    playbackViewModel: DesktopOriginalVideoCommentComposer,
+     commentViewModel: VideoCommentViewModel,
+     aid: Long?,
+     fraudDetectionEnabled: Boolean,
+@@ -26,5 +28,7 @@
+         }
+     }
+ 
+-    CommentFraudFeedbackHost(commentViewModel = commentViewModel)
++    CompositionLocalProvider(LocalDesktopCommentBindings provides platform) {
++        CommentFraudFeedbackHost(commentViewModel = commentViewModel)
++    }
+ }

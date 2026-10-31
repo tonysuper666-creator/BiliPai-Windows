@@ -1,0 +1,181 @@
+--- a/com/android/purebilibili/feature/video/screen/VideoDetailScreenStateHolder.kt
++++ b/com/android/purebilibili/feature/video/screen/VideoDetailScreenStateHolder.kt
+@@ -1,5 +1,6 @@
+ // 文件路径: feature/video/screen/VideoDetailScreen.kt
+ package com.android.purebilibili.feature.video.screen
++import com.bilipai.desktop.player.desktopInlineCollapseScrollBoundary
+ import kotlinx.coroutines.ensureActive
+ import kotlinx.coroutines.flow.map
+ 
+@@ -1021,35 +1022,22 @@
+     }
+ 
+     //  监听评论状态
+-    val commentState by commentViewModel.commentState.collectAsStateWithLifecycle()
+-    val subReplyState by commentViewModel.subReplyState.collectAsStateWithLifecycle()
++    val commentStateHolder = commentViewModel.commentState.collectAsStateWithLifecycle()
++    val subReplyStateHolder = commentViewModel.subReplyState.collectAsStateWithLifecycle()
++    val commentState by commentStateHolder
++    val subReplyState by subReplyStateHolder
+     var subReplyCoveredBlurProgress by remember { mutableFloatStateOf(0f) }
+ 
+-    LaunchedEffect(
+-        openCommentRootRpidFromRoute,
+-        openCommentTargetRpidFromRoute,
+-        commentState.replies,
+-        commentState.isRepliesLoading,
+-        subReplyState.visible
+-    ) {
+-        if (openCommentRootRpidFromRoute <= 0L || hasHandledCommentRootFromRoute || subReplyState.visible) {
+-            return@LaunchedEffect
+-        }
+-
+-        val rootReply = commentState.replies.firstOrNull { it.rpid == openCommentRootRpidFromRoute }
+-        if (rootReply != null) {
+-            commentViewModel.openSubReply(rootReply, openCommentTargetRpidFromRoute)
+-            hasHandledCommentRootFromRoute = true
+-        } else if (!commentState.isRepliesLoading) {
+-            val openStarted = commentViewModel.openSubReplyFromRoute(
+-                rootReplyId = openCommentRootRpidFromRoute,
+-                targetReplyId = openCommentTargetRpidFromRoute
+-            )
+-            if (openStarted) {
+-                hasHandledCommentRootFromRoute = true
+-            }
+-        }
+-    }
++    VideoDetailRouteCommentEffect(
++        rootReplyId = openCommentRootRpidFromRoute,
++        targetReplyId = openCommentTargetRpidFromRoute,
++        handled = hasHandledCommentRootFromRoute,
++        commentState = commentStateHolder,
++        subReplyState = subReplyStateHolder,
++        onOpenReply = { reply, target -> commentViewModel.openSubReply(reply, target) },
++        onOpenReplyFromRoute = { root, target -> commentViewModel.openSubReplyFromRoute(root, target) },
++        onHandled = { hasHandledCommentRootFromRoute = true },
++    )
+     val commentDefaultSortMode by com.android.purebilibili.core.store.DesktopOriginalReplySettings.getCommentDefaultSortMode(context.pluginContext)
+         .collectAsStateWithLifecycle(
+             initialValue = com.android.purebilibili.core.store.DesktopOriginalReplySettings.getCommentDefaultSortModeSync(context.pluginContext),
+@@ -3931,22 +3919,11 @@
+                                 videoHeight.toPx()
+                             }
+                         }
+-                        LaunchedEffect(
+-                            selectedVideoContentTabIndex,
+-                            compactInlinePlayerForCommentTab,
+-                            compactInlinePlayerForIntroScroll,
+-                            inlinePortraitScrollEnabled,
+-                            portraitPlayerCollapseMode
+-                        ) {
+-                            val preserveManualCollapseOnCommentTab =
+-                                selectedVideoContentTabIndex == 1 && inlinePortraitScrollEnabled
+-                            if (
+-                                !compactInlinePlayerForCommentTab &&
+-                                !compactInlinePlayerForIntroScroll &&
+-                                !preserveManualCollapseOnCommentTab
+-                            ) {
+-                                inlinePlayerCollapseState.reset()
+-                            }
++                        LaunchedEffect(inlinePlayerCollapseState, inlinePortraitScrollEnabled, collapseRangePx) {
++                            inlinePlayerCollapseState.reconcileLayout(
++                                collapseEnabled = inlinePortraitScrollEnabled,
++                                collapseRangePx = collapseRangePx,
++                            )
+                         }
+                         var previousTrackedCollapseOffsetPx by remember(currentBvid) {
+                             mutableFloatStateOf(inlinePlayerCollapseState.offsetPx)
+@@ -3982,10 +3959,6 @@
+                             }
+                         }
+ 
+-                        // 当设置关闭时，重置高度
+-                        LaunchedEffect(inlinePortraitScrollEnabled) {
+-                            if (!inlinePortraitScrollEnabled) inlinePlayerCollapseState.reset()
+-                        }
+ 
+                         // 简介/相关列表过阈值或评论页已把播放器压扁时，手势 nestedScroll 不得再消费位移，
+                         // 否则相关推荐上滑会先空吃一整段折叠距离，表现为不跟手、突然回弹。
+@@ -4053,7 +4026,6 @@
+                         ) {
+                             object : NestedScrollConnection {
+                                 override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
+-                                    if (available.y != 0f) inlinePlayerCollapseState.beginScroll()
+                                     val scrollUpdate = reduceVideoDetailPreScroll(
+                                         currentOffsetPx = inlinePlayerCollapseState.offsetPx,
+                                         deltaPx = available.y,
+@@ -4061,13 +4033,12 @@
+                                         inlinePortraitScrollEnabled = inlinePortraitScrollEnabled,
+                                         isPortraitFullscreen = isPortraitFullscreen,
+                                         layoutAlreadyCollapsed = skipGesturePlayerCollapse,
+-                                    ) ?: return Offset.Zero
+-                                    inlinePlayerCollapseState.updateOffset(scrollUpdate.nextOffsetPx)
+-                                    return Offset(0f, scrollUpdate.consumedDeltaPx)
++                                        minUpdateDeltaPx = 0f,
++                                    )
++                                    return Offset(0f, inlinePlayerCollapseState.consumeScroll(scrollUpdate))
+                                 }
+ 
+                                 override fun onPostScroll(consumed: Offset, available: Offset, source: NestedScrollSource): Offset {
+-                                    if (available.y != 0f) inlinePlayerCollapseState.beginScroll()
+                                     val scrollUpdate = reduceVideoDetailPostScroll(
+                                         currentOffsetPx = inlinePlayerCollapseState.offsetPx,
+                                         deltaPx = available.y,
+@@ -4075,9 +4046,9 @@
+                                         inlinePortraitScrollEnabled = inlinePortraitScrollEnabled,
+                                         isPortraitFullscreen = isPortraitFullscreen,
+                                         layoutAlreadyCollapsed = skipGesturePlayerCollapse,
+-                                    ) ?: return Offset.Zero
+-                                    inlinePlayerCollapseState.updateOffset(scrollUpdate.nextOffsetPx)
+-                                    return Offset(0f, scrollUpdate.consumedDeltaPx)
++                                        minUpdateDeltaPx = 0f,
++                                    )
++                                    return Offset(0f, inlinePlayerCollapseState.consumeScroll(scrollUpdate))
+                                 }
+                             }
+                         }
+@@ -4085,6 +4056,9 @@
+                         Column(
+                             modifier = Modifier
+                                 .fillMaxSize()
++                                .desktopInlineCollapseScrollBoundary(nestedScrollConnection) {
++                                    !(if (videoContentPagerState.currentPage == 0) introListState else commentListState).canScrollBackward
++                                }
+                                 .nestedScroll(nestedScrollConnection)
+                         ) {
+ 
+@@ -4122,7 +4096,7 @@
+                         // the compact viewport back to its full size instead of jumping in one frame.
+                         val animatedCollapseProgress by animateFloatAsState(
+                             targetValue = effectiveCollapseProgress,
+-                            animationSpec = if (inlinePlayerCollapseState.restoreRequested) {
++                            animationSpec = if (inlinePlayerCollapseState.restoreRequested || inlinePlayerCollapseState.layoutReconciled) {
+                                 tween(
+                                     durationMillis = resolveInlinePortraitPlayerCommentCollapseDurationMillis(
+                                         videoContentTabSwitchAnimationSpec
+@@ -4852,6 +4826,17 @@
+ 
+                                 uiState is VideoPlaybackUiState.Error -> {
+                                     val errorState = uiState as VideoPlaybackUiState.Error
++                                    val keepAccountRecovery =
++                                        errorState.error is com.android.purebilibili.data.model.VideoLoadError.VipRequired ||
++                                            (errorState.error as? com.android.purebilibili.data.model.VideoLoadError.ApiError)?.code == -10403 ||
++                                            (errorState.error as? com.android.purebilibili.data.model.VideoLoadError.UnknownError)
++                                                ?.throwable?.message?.contains("大会员") == true
++                                    if (!keepAccountRecovery) {
++                                        VideoDetailPlaybackErrorNotice(
++                                            state = errorState,
++                                            onRetry = { viewModel.retry() },
++                                        )
++                                    } else {
+                                     Box(
+                                         modifier = Modifier.fillMaxSize(),
+                                         contentAlignment = Alignment.Center
+@@ -4982,6 +4967,7 @@
+                                             }
+                                     }
+                                 }
++                                    }
+                             }
+                     }  // Detail body
+                     }  // 📱 手机竖屏布局结束（Column）

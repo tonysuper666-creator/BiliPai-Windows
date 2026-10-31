@@ -1,0 +1,20 @@
+# 可退役：完整上游消费者迁入后删除。
+--- a/com/android/purebilibili/feature/video/viewmodel/DesktopOriginalDanmakuSession.kt
++++ b/com/android/purebilibili/feature/video/viewmodel/DesktopOriginalDanmakuSession.kt
+@@ -199,7 +199,7 @@
+         reportDanmaku(dmid = dmid, reason = reason, content = "")
+     }
+ 
+-    fun reportDanmaku(dmid: Long, reason: Int, content: String = "") {
++    fun reportDanmaku(dmid: Long, reason: Int, content: String = "", onCompleted: () -> Unit = {}) {
+         if (currentCid == 0L) {
+             viewModelScope.launch { toast("视频未加载") }
+             return
+@@ -216,6 +216,7 @@
+                 .onFailure { error ->
+                     toast(error.message ?: "举报失败")
+                 }
++            onCompleted()
+         }
+     }
+ }
