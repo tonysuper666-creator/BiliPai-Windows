@@ -1,12 +1,12 @@
 --- a/com/android/purebilibili/feature/profile/ProfileScreen.kt
 +++ b/com/android/purebilibili/feature/profile/ProfileScreen.kt
-@@ -1,41 +1,37 @@
+@@ -1,41 +1,38 @@
  package com.android.purebilibili.feature.profile
 +import com.bilipai.desktop.ui.LocalDesktopProfileEnvironment
 +import com.bilipai.desktop.ui.rememberDesktopProfileMediaPicker
 +import com.bilipai.desktop.ui.rememberDesktopProfileAvatarPicker
  
--import com.android.purebilibili.navigation.tabIndicatorPosition
+ import com.android.purebilibili.navigation.tabIndicatorPosition
  import com.android.purebilibili.data.model.AccountLedgerKind
  import com.android.purebilibili.core.ui.motion.AppMotionEasing
  import com.android.purebilibili.core.ui.AppContentColors
@@ -876,7 +876,7 @@
              ),
          horizontalAlignment = Alignment.CenterHorizontally
      ) {
-@@ -2547,30 +2433,32 @@
+@@ -2547,30 +2433,30 @@
  @Composable
  private fun ProfileSpaceTabs(
      selectedTab: ProfileSpaceMainTab,
@@ -895,10 +895,7 @@
          options = tabs.map { AppSegmentOption(it.tab, it.title) },
          selectedValue = tabs[selectedIndex].tab,
          onSelectionChange = onTabSelected,
--        indicatorPositionProvider = { pagerState.tabIndicatorPosition },
-+        // Desktop: navigation/PagerSelectionMotion moves with the navigation area; the tab row here is the home producer's
-+        // copy, which records no click motion, so upstream's tabIndicatorPosition is the pager's own position.
-+        indicatorPositionProvider = { pagerState.currentPage + pagerState.currentPageOffsetFraction },
+         indicatorPositionProvider = { pagerState.tabIndicatorPosition },
          isScrollInProgressProvider = { pagerState.isScrollInProgress },
          scrollable = false,
          dragSelectionEnabled = tabs.size > 1,
