@@ -68,7 +68,9 @@ internal class DesktopHomeActualMetrics(private val isCurrent: () -> Boolean,
     override fun removeState(name: String) { if (!closed.get() && isCurrent()) values.remove(name) }
     fun startFrameClock(scope: CoroutineScope): Job = scope.launch {
         var previous = 0L
-        while (!closed.get() && isCurrent()) {
+        // Awaiting the clock requests another frame, even when the window is idle.
+        // Only debug metrics need this loop; UI animations own their frame requests.
+        while (!closed.get() && isCurrent() && debugEnabled) {
             withFrameNanos { actual ->
                 if (previous > 0 && debugEnabled) putState("ComposeFrameIntervalNanos", (actual - previous).toString())
                 previous = actual
