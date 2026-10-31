@@ -320,6 +320,7 @@ val migratedVideoFeaturePaths = setOf(
     "com/android/purebilibili/feature/bangumi/BangumiDetailHeroBackdrop.kt",
     "com/android/purebilibili/feature/bangumi/BangumiDetailScreen.kt",
     "com/android/purebilibili/feature/bangumi/BangumiViewModel.kt",
+    "com/android/purebilibili/feature/bangumi/BangumiHubViewModel.kt",
     "com/android/purebilibili/feature/video/ui/components/DanmakuContextMenu.kt",
     "com/android/purebilibili/feature/video/ui/components/DanmakuActionToolbar.kt",
     "com/android/purebilibili/feature/video/ui/components/DanmakuPoolSheet.kt",
