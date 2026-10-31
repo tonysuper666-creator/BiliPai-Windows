@@ -83,4 +83,61 @@ class DesktopBangumiEpisodeSheetCompositionTest {
             frame(); assertEquals(4, events.size)
         } finally { scene.close(); scope.cancel(); scheduler.runCurrent(); images.close(); coil3.SingletonImageLoader.setUnsafe(previousLoader); folder.toFile().deleteRecursively() }
     }
+    @Test fun mobileContentOpensSelectsAndClosesItsOwnEpisodeSheet() {
+        val scheduler = TestCoroutineScheduler()
+        val errors = mutableListOf<Throwable>()
+        val scope = CoroutineScope(SupervisorJob() + UnconfinedTestDispatcher(scheduler) + CoroutineExceptionHandler { _, e -> errors += e })
+        val api = unused<BangumiApi>()
+        val repository = DesktopOriginalBangumiHubRepository(api, unused<BilibiliApi>(), unused<SearchApi>(), { null }, { null })
+        val commit: (() -> Unit) -> Boolean = { it(); true }
+        val hub = BangumiHubViewModel(DesktopBangumiHubEnvironment(repository, scope, { false }, { true }, commit))
+        val environment = DesktopOriginalBangumiPagesEnvironment(hub,
+            DesktopOriginalBangumiPagesRequests(api, repository, { null }, { null }, { true }, { true }),
+            DesktopOriginalBangumiReviewRequests(api, { null }, { true }, { true }),
+            unused<DesktopOriginalVideoProgressPort>(), scope, commit, { true }, { error("Unexpected feedback") }, false,
+            { BangumiFollowSession(null, null) })
+        val folder = java.nio.file.Files.createTempDirectory("bangumi-sheet")
+        val previousLoader = coil3.SingletonImageLoader.get(coil3.PlatformContext.INSTANCE)
+        coil3.SingletonImageLoader.reset()
+        val images = DesktopApplicationImageLoader(com.bilipai.desktop.data.DesktopRepository(com.bilipai.desktop.data.DesktopSessionStore.temporary()), folder.resolve("images"), { true })
+        val events = mutableListOf<String>()
+        val detail = BangumiDetail(seasonId = 10, episodes = (1..51).map { BangumiEpisode(id = it.toLong(), title = "$it") },
+            seasons = listOf(SeasonInfo(seasonId = 10, title = "当前季度"), SeasonInfo(seasonId = 20, title = "另一季度")))
+        val content = Class.forName("com.android.purebilibili.feature.bangumi.BangumiDetailScreenKt")
+            .declaredMethods.single { it.name == "MobileBangumiDetailContent" }.apply { isAccessible = true }
+        val scene = ImageComposeScene(1200, 1600, Density(1f), coroutineContext = scope.coroutineContext) {
+            MaterialTheme { CompositionLocalProvider(LocalAppThemeConfig provides AppThemeConfig(liquidGlassEnabled = false),
+                LocalDesktopOriginalBangumiPagesEnvironment provides environment, LocalDesktopApplicationImageLoader provides images) {
+                content.invoke(null, detail, androidx.compose.foundation.layout.PaddingValues(androidx.compose.ui.unit.Dp(0f)),
+                    ({ ep: BangumiEpisode -> events += "episode:${ep.id}" } as (BangumiEpisode) -> Unit),
+                    ({ id: Long -> events += "season:$id" } as (Long) -> Unit),
+                    ({ _: Int -> error("Unexpected follow") } as (Int) -> Unit),
+                    ({ _: Long, _: String -> error("Unexpected reviews") } as (Long, String) -> Unit),
+                    ({ _: Long -> error("Unexpected profile") } as (Long) -> Unit), currentComposer, 0, 0)
+            } }
+        }
+        fun nodes(n: SemanticsNode): List<SemanticsNode> = listOf(n) + n.children.flatMap(::nodes)
+        fun all() = scene.semanticsOwners.flatMap { nodes(it.unmergedRootSemanticsNode) }
+        fun label(text: String) = all().lastOrNull { it.config.getOrNull(SemanticsProperties.Text)?.any { t -> t.text == text } == true }
+        fun sheetClose() = all().firstOrNull { it.config.getOrNull(SemanticsProperties.ContentDescription)?.contains("关闭") == true }
+        fun frame() {
+            repeat(90) { Snapshot.sendApplyNotifications(); scheduler.runCurrent(); scene.render(scheduler.currentTime * 1_000_000).close(); scheduler.advanceTimeBy(20) }
+            scheduler.runCurrent(); assertTrue(errors.isEmpty(), errors.toString())
+        }
+        fun click(text: String) {
+            var n: SemanticsNode? = assertNotNull(label(text), text)
+            while (n != null && !n.config.contains(SemanticsActions.OnClick)) n = n.parent
+            assertTrue(assertNotNull(n).config[SemanticsActions.OnClick].action!!.invoke()); frame()
+        }
+        try {
+            frame(); assertTrue(events.isEmpty()); assertNull(sheetClose())
+            click("全部51集"); assertNotNull(sheetClose()); assertNotNull(label("1-50")); assertTrue(events.isEmpty())
+            click("51-51"); click("第51话")
+            assertEquals(listOf("episode:51"), events); assertNull(sheetClose()); assertNull(label("第51话"))
+            click("全部51集"); assertNotNull(sheetClose()); assertNotNull(label("1-50")); assertNotNull(label("第1话"))
+            assertEquals(listOf("episode:51"), events)
+            click("第1话"); assertEquals(listOf("episode:51", "episode:1"), events)
+            assertNull(sheetClose()); frame(); assertEquals(2, events.size)
+        } finally { scene.close(); scope.cancel(); scheduler.runCurrent(); images.close(); coil3.SingletonImageLoader.setUnsafe(previousLoader); folder.toFile().deleteRecursively() }
+    }
 }
