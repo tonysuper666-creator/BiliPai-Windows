@@ -1,40 +1,31 @@
-本分支只交付验证码浏览器桥接的可靠性与回调行为测试，**没有完成 TON-1066 的上游直编迁移**。
+本卡仍是部分交付。2026-10-31 已 rebase 到集成分支 `9e53964eb`（PR #26、#30 已合入），不再等待网络层授权；共享登录范围仍以 issue metadata `write_scope` 为准，无需再次申请。
 
-按基线 `4768375f0` 核对，`desktop/upstream-core/m4d/later-steps.tsv` 中的 11 个登录文件全部保留：
+本轮已有 6/11 个登录文件进入直接编译，适配只保存为构建时补丁：
 
-- BiliPaiQrDecoder.kt
-- BiliPaiTransferContent.kt
-- BiliPaiTransferKeyStore.kt
-- BiliPaiTransferScanner.kt
-- BiliPaiTransferSession.kt
-- CaptchaManager.kt
-- LoginComponents.kt
-- LoginScreen.kt
-- LoginViewModel.kt
-- OfficialQrAuthorizationContent.kt
-- OfficialQrAuthorizationViewModel.kt
+- `BiliPaiQrDecoder.kt`：AWT 图片输入，保留四向识别和支持的登录 URL 校验。
+- `OfficialQrAuthorizationViewModel.kt`、`OfficialQrAuthorizationContent.kt`：沿用现有 Profile 窗口、账号和请求归属，不回退进程单例。
+- `BiliPaiTransferScanner.kt`：调用同一 Profile 窗口的真实图片选择器，无相机空替身，不自动打开识别到的 URL。
+- `CaptchaManager.kt`：系统浏览器和本地回调由真实 `DesktopCaptchaBridge` 实现；对话框的密码、短信、风控验证均经过该平台入口。原 `RsaEncryption` 原文保留，生成副本已登记退役。
+- `LoginViewModel.kt`：`AdvancedLoginDialog` 的 TV / Web 二维码表单使用原状态流与 HTTP 轮询；默认调用 `loadQrCode()`（当前上游走 Android-HD 签名的 TV QR 接口）。位图走 AWT；请求使用本次尝试的候选 Cookie jar；保存继续经原 `DesktopLoginRepository` / M3 的校验、账号代际和安装回执。每次刷新建立新 VM 并取消旧尝试；所有任务保留原 update hold 登记，二维码保留八分钟期限。
 
-共享范围已由 Mika 在 2026-10-30 授权（以 issue metadata `write_scope` 为准），无需再次申请。PR #33 的 m4d 表有合并优先权，其余共享文件按先合入者落地，最终验证前 rebase。下面保留迁移约束：
+`later-steps.tsv` 仍保留以下 5 个文件：
 
-1. `desktop/build.gradle.kts` 只改登录 / WebCookieSync 源码登记及被替代的旧登录生成声明；m4d 表只改获准的登录行，不整理其他区域。
-2. `WebCookieSync.kt` 不在现有 `migratedAppM4dAreas` 中，不能只删登录清单行就宣称它已直编。
-3. `extract-login-platform.py` 仍从旧 `CaptchaManager.kt` 切出 `RsaEncryption`。完整直编该文件时，要同时处理生成副本，避免同名类重复。
-4. 上游 `LoginViewModel` 的网络和会话写入必须绑定桌面当前登录尝试及账号代际；不能仅为编译而放入全局网络单例。凭据继续走现有 M3 平台存储；验证码接真实桥接；Android KeyStore、相机、CookieManager 都不能补空替身。
+- `BiliPaiTransferContent.kt`
+- `BiliPaiTransferKeyStore.kt`
+- `BiliPaiTransferSession.kt`
+- `LoginComponents.kt`
+- `LoginScreen.kt`
 
-当前具体依赖（2026-10-30 复核）：
+具体依赖是 `BiliPaiTransferContent.kt` 的 `BiliPaiTransferSettingsBridge`：它调用尚未进入桌面编译的 `SettingsShareService.createExportArtifact`、`buildTransferImportSession`、`applyImport`。该服务属于设置收尾 TON-1116（其依赖包含 TON-1073 的通用平台接口），当前为 backlog。直接编译该服务、复用其统一导入导出接口两条路径均尚未具备；在登录卡另造设置序列化器或给 Context/存储接口空实现会引入第二套设置写入规则，因此等待既有设置实现，再继续传输链、KeyStore、组件和页面的整体接线。
 
-- `LoginViewModel.kt:89` 等请求直接调用 `NetworkModule.passportApi`；`completeLogin`（约 890 行）经 `SessionRepository.save` 写凭据，`syncCurrentAccountSession`（约 942 行）读取 `NetworkModule.api` 后写 `TokenManager` / `AccountSessionStore`。这些入口必须共享桌面当前登录尝试的寿命和账号代际，不能接进程级全局 Cookie。
-- PR #30 / TON-1082 提供 `DesktopUpstreamOwner` / `DesktopUpstreamScope` / `DesktopUpstreamCalls` 及 owner-bound NetworkModule，叠在 PR #26 上。当前两 PR 都 OPEN，TON-1082 为 `in_review`；集成分支仍为 `4768375f0`，上述 owner 接口尚不存在。按 Mika 的指令，不复制这些数据层文件，等待其合入再 rebase 接线。
-- `BiliPaiTransferContent.kt` 还调用 `feature/settings/share/SettingsShareService`，完整迁移时需重新核对该接口的直编状态。此处不据此扩大本轮等待范围。
+`WebCookieSync.kt` 尚未登记为直编。它不属于现有 M4d 区域，后续必须显式登记，并接实际受窗口/账号代际约束的 Cookie 消费者，补同步、切号及注销行为测试。验证码浏览器仍与账号 Cookie 隔离；不得把 Cookie 写入外部系统浏览器来冒充同步实现。旧 Argon 恢复附件中的全局内存 Cookie sink 未采用。
 
-失败任务 `01a18b89-1dc4-7c4b-bd59-62697d3bad91` 的六个未提交文件已另存为 issue 附件 `TON-1066-Argon-recovery.zip`，未应用到本分支。它在补丁生成失败后已移除六个 login 清单条目，Cookie bridge 无生产调用方绑定，不能算迁移成果。其唯一编译尝试因找不到 `python` 在提取任务阶段失败，且发生在草稿生成前；没有迁移代码通过编译的证据。恢复时应参考附件，重新实现和验证，不能直接应用整包。
+共享范围已经批准：构建只改登录 / WebCookieSync 的源码登记及被替代的旧声明；m4d 表只改获准的登录行，冲突保留其他卡改动。完整迁移后的正式验收需再 rebase 最新集成分支，两个新目录跑四个 JVM、Python 和唯一类名检查，再做唯一一轮 Windows VM 二维码及真实极验验收，随后 reviewer 和 cross_review。本轮没有启动客户端或消耗 Windows GUI 轮次。
 
-等待 TON-1082 合入后，在同一张卡继续完整迁移；保留 `AdvancedLoginDialog`，最后才安排一次 Windows VM 构建、二维码过期刷新截图及真实验证码验证/失败证据。当前没有启动客户端、连接 Windows 主机或产生真实验证码录屏。
+李政亲手验收清单（完整候选包就绪后执行；当前均未验证）：
 
-李政亲手验收清单（迁移完成、有已验证的 Windows 候选包后执行；当前均未验证）：
-
-1. 打开个人中心的登录对话框，确认默认是 TV 二维码；扫码后，桌面先显示等待手机确认，再显示正确账号。不要把密码、短信码或登录 Cookie 发到评论或日志。
-2. 关闭并重新打开客户端，确认已保存的账号仍可用；二维码过期后点击刷新，应生成可扫描的新二维码。
-3. 需要安全验证时，在系统浏览器完成极验，返回桌面继续登录。关闭/取消验证后应有明确提示；页面加载失败和超时后能重新发起，不能永久卡在“处理中”。未触发真实极验不算通过这一项。
-4. 退出当前账号后，消息等登录功能应重新要求登录；旧浏览器回调不能恢复已退出的登录尝试。删除保存账号后再重启，确认该账号不再出现。
-5. 只回报每项通过/失败与不含个人信息的报错。真实账号数据保留在本机，不上传服务器。
+1. 打开登录对话框，确认默认是 TV 二维码；扫码后先显示等待手机确认，再显示正确账号。不要回传密码、短信码或 Cookie。
+2. 重开客户端确认保存账号可用；二维码过期后刷新，应出现新的可扫描二维码。
+3. 触发真实极验，在系统浏览器完成并返回桌面；关闭/取消、加载失败及超时均应有清楚提示。未触发真实极验不算通过。
+4. 退出后登录功能重新要求登录；旧回调不能恢复退出的尝试。删除保存账号后再启动，确认不再出现。
+5. 只回报通过/失败与不含个人信息的报错；账号数据保留本机。

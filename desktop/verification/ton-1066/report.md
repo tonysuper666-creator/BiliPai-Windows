@@ -1,3 +1,43 @@
+结果：部分达到（2026-10-31）。本轮 6/11 个登录文件进入上游直编；登录、会话存储和更新保护的 58 项定向测试通过。剩余 5 个文件及 WebCookieSync 未完成。
+
+## 本轮源码与行为
+
+基线 `9e53964eb7e6699d933788b57584ef573f1d6575`，实现提交 `dcdaf09e2742fe62128b7e3a868cd3eb9215a30c`。PR #26、#30 的合并提交已核对为集成分支祖先；未复制其文件。
+
+6 个文件为 BiliPaiQrDecoder、BiliPaiTransferScanner、CaptchaManager、LoginViewModel、OfficialQrAuthorizationContent、OfficialQrAuthorizationViewModel。平台差异以构建时补丁保存，上游文件不改；验证码 RSA 旧生成副本已退役。
+
+AdvancedLoginDialog 保留。二维码表单调用原 VM 默认 TV 路径（当前原文使用 Android-HD 签名的 TV QR 接口），保留旧对话框的刷新/取消、八分钟期限和 update hold。每次尝试的 API 和身份来自原 DesktopLoginRepository 候选 jar，保存复用同一个 M3 installer，未回退 Android TokenManager。验证码经原 CaptchaManager 的桌面平台绑定调用真实浏览器回调桥；二维码图片选择复用现有 Profile 的窗口、文件选择和账号归属。
+
+## 本轮已执行验证
+
+- `JAVA_HOME=/opt/homebrew/opt/openjdk@21/libexec/openjdk.jdk/Contents/Home ./gradlew -p desktop :compileKotlin :compileTestKotlin :verifyUniqueClassNames --console=plain`：退出 0，日志 compile-final.log。实际执行的唯一类名检查输出 59,342 个类、无重复（final-login-validation.log）。
+- `./gradlew -p desktop --init-script <测试临时目录配置> :test`，分别用 `--tests` 选择下表 7 个类：目标任务 58/0/0/0；整条命令退出 1，因为 Gradle 自动附带的两个上游源码测试有失败。完整参数、退出码及 XML 随 issue 证据包交付；未排除任务、未增加跳过或放宽断言。init script 只把测试 JVM 临时目录放在源码树外，不改编译源码或生成桩。
+
+| 定向测试类 | 测试 / 失败 / 跳过 |
+|---|---:|
+| DesktopOriginalLoginViewModelTest | 4 / 0 / 0 |
+| DesktopLoginQrImageTest | 3 / 0 / 0 |
+| DesktopCaptchaBridgeTest | 12 / 0 / 0 |
+| DesktopLoginTest | 11 / 0 / 0 |
+| DesktopQrLoginCookiesTest | 4 / 0 / 0 |
+| DesktopSessionStoreTest | 14 / 0 / 0 |
+| DesktopLoginUpdateHoldTest | 10 / 0 / 0 |
+
+新增 VM 用例经真实本地 HTTP/JSON 和真实 Store 的安装 actor，覆盖 TV 二维码与图片、扫码待确认、凭据和令牌传递、过期后新尝试、关闭取消，以及切号后旧账号代际不能安装。生产 nav 验证仍由原 installer 完成；fixture 不是真实 Bilibili 登录证据。图片测试用真实二维码编码和矩形图片旋转，确认非登录 URL 默认拒绝。
+
+自动附带任务：upstreamAppCoreSourceTests = 440 / 95 / 0；upstreamDesignSourceTests = 59 / 11 / 0；errors 均 0。保留所有失败。本轮未完成当前集成基线的四任务逐用例配对，不能把前轮 4768375f0 的统计当作当前基线结论。
+
+## 当前缺口
+
+- 传输链仍依赖尚未迁入的 SettingsShareService 的真实导入/导出及全局设置写入（TON-1116，包含其平台依赖），因此保留 5 条 login 待迁记录；不另造设置序列化器或凭据空替身。
+- WebCookieSync 未登记为直编，没有交付新的 Web Cookie 同步/注销能力；58 项现有/新增测试不能冒充该能力已实现。
+- 当前为本任务工作树的局部验证，完整迁移后的两个新目录、四个 JVM 任务全量配对、Python 两套、Windows VM 二维码、真实极验和异源验收均未完成。GUI 轮次留到完整候选 head，未访问 winbox。
+- 具体接续点与手工清单见 remaining-work.md；旧 Argon 全局内存 Cookie sink 没有采用。
+
+## 2026-10-30 验证码阶段历史记录
+
+以下仅对应旧基线和旧候选，不能据此宣称当前完整迁移验收通过。
+
 结果：部分达到。新增 12 项验证码回调行为测试全部通过；11 个登录待迁文件全部保留，尚未完成上游直编迁移。
 
 基线：`4768375f0167599666ed19c710b80df4acf52101`。候选为本任务独立检出内冻结后的源码，尚未做最终完整迁移的干净 PR head 验收。
