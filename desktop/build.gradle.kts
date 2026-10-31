@@ -315,6 +315,8 @@ val appCoreLaterSteps: Map<String, String> = mapOf(
 // M4a: video/bangumi logic and unchanged Compose components compile from the merged upstream tree.
 // The remaining UI/player files move when their desktop platform adapters are wired.
 val migratedVideoFeaturePaths = setOf(
+    "com/android/purebilibili/feature/video/ui/overlay/BiliTvBufferingIndicator.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/glass/PortraitFullscreenOverlay.kt",
     "com/android/purebilibili/feature/bangumi/BangumiDetailHeroBackdrop.kt",
     "com/android/purebilibili/feature/bangumi/BangumiDetailScreen.kt",
     "com/android/purebilibili/feature/bangumi/BangumiViewModel.kt",
@@ -6433,3 +6435,9 @@ tasks.named("compileKotlin") { dependsOn(verifyUpstreamReplacements, verifyNoSil
 tasks.named("check") { dependsOn(verifyUniqueClassNames) }
 tasks.named("jar") { dependsOn(verifyUniqueClassNames) }
 tasks.test { dependsOn(verifyUniqueClassNames) }
+
+// Byte-preserving copies of the same upstream buffering resources; no generated asset.
+tasks.named<org.gradle.language.jvm.tasks.ProcessResources>("processResources") {
+    from(appJavaRoot.parentFile.resolve("res/raw/bili_tv_buffering.webp")) { into("video-buffering") }
+    from(appJavaRoot.parentFile.resolve("res/drawable-nodpi/bili_tv_buffering_static.png")) { into("video-buffering") }
+}
