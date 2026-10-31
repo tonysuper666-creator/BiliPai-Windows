@@ -915,6 +915,24 @@ internal class DesktopWindowsVideoActions(
         }
     }
     val progressDurationMs = state.durationSeconds.takeIf { it.isFinite() && it > 0.0 }?.let { (it * 1000.0).toLong() } ?: 0L
+    val danmakuDetail = success?.info
+    val danmakuPageDurationSeconds = danmakuDetail?.pages?.firstOrNull { it.cid == danmakuDetail.cid }?.duration ?: 0L
+    val danmakuLoad = desktopWindowsDanmakuLoadRequest(
+        enabled = preferences.danmaku.enabled,
+        pageActive = active && current(),
+        accepted = viewportSource?.let { DesktopWindowsDanmakuLoadIdentity(it.request.bvid, it.request.cid) },
+        detailBvid = danmakuDetail?.bvid.orEmpty(),
+        detailCid = danmakuDetail?.cid ?: 0L,
+        detailAid = danmakuDetail?.aid ?: 0L,
+        pageDurationSeconds = danmakuPageDurationSeconds,
+        playerDurationMs = progressDurationMs,
+    )
+    LaunchedEffect(platforms.holder.section, viewportSource?.sourceVersion, danmakuLoad, state.ready) {
+        runDesktopWindowsDanmakuLoad(danmakuLoad, stillCurrent = { current() }) { request ->
+            platforms.holder.section.danmaku.loadDanmaku(
+                request.cid, request.aid, request.durationHintMs, request.bvid)
+        }
+    }
     val progressSamples = remember(pbpProgressData, progressDurationMs) {
         pbpProgressData?.let { buildPbpRidgeSamples(it, progressDurationMs) }.orEmpty()
     }
