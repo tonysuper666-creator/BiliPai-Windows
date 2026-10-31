@@ -3459,6 +3459,8 @@ tasks.test {
 tasks.withType<Test>().configureEach {
     if (!System.getProperty("os.name").startsWith("Windows", ignoreCase = true))
         systemProperty("bilipai.credentialProtection", "test-only")
+    // Upstream HTTP caches of test JVMs stay in the task's temporary directory, not the user's data directory (TON-1082).
+    systemProperty("bilipai.upstreamHttpCache", temporaryDir.resolve("upstream-http").absolutePath)
 }
 tasks.register<Test>("jsWorkerSmoke") {
     group = "verification"

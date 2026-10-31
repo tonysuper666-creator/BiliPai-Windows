@@ -34,6 +34,8 @@ internal class DesktopSessionStore(private val path: Path = defaultPath(), priva
     private var saved = if (persistent) readSaved() else SavedSession()
     /** Why the saved login could not be restored at startup, or null. Shown to the user instead of a silent logout. */
     internal val credentialRestoreFailure: String? get() = synchronized(lock) { restoreFailure?.message }
+    /** Account HTTP cache partitions of upstream requests (TON-1082), next to the saved session; none for a temporary Store. */
+    internal val upstreamHttpCacheRoot: Path? get() = if (persistent) path.resolveSibling("upstream-http") else null
     // Replaced only after saveLoginAccount actually persists. Identical credentials may keep generation unchanged.
     private var primaryUiLoginInstallationStamp = Any()
     private val mutableGeneration = MutableStateFlow(0L)
@@ -562,6 +564,7 @@ internal class DesktopSessionStore(private val path: Path = defaultPath(), priva
     companion object {
         internal const val CREDENTIAL_LOG_TAG = "DesktopCredentials"
         internal fun temporary() = DesktopSessionStore(defaultPath(), persistent = false)
+        internal fun defaultDataDirectory(): Path = defaultPath().parent
         private val ACCOUNT_COOKIE_NAMES = setOf("SESSDATA", "bili_jct", "DedeUserID", "DedeUserID__ckMd5")
         private val VISITOR_COOKIE_NAMES = setOf("buvid3", "buvid4", "buvid_fp", "b_nut", "b_lsid", "sid")
         private val SPI_COOKIE_NAMES = setOf("buvid3", "buvid4")

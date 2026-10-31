@@ -1,0 +1,11 @@
+--- a/core-data/src/main/java/com/android/purebilibili/core/network/grpc/BiliGrpcClient.kt
++++ b/core-data/src/main/java/com/android/purebilibili/core/network/grpc/BiliGrpcClient.kt
+@@ -43,7 +43,7 @@ object BiliGrpcClient {
+             }
+             .build()
+ 
+-        NetworkModule.okHttpClient.newCall(request).execute().use { response ->
++        com.bilipai.desktop.data.DesktopUpstreamCalls.main.newCall(request).execute().use { response -> // Desktop: caller's owner (TON-1082)
+             val body = response.body.bytes()
+             val trailers = runCatching { response.trailers() }.getOrNull()
+             val grpcStatus = response.header("grpc-status")
