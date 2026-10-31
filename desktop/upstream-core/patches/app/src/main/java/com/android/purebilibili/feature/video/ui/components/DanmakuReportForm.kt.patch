@@ -1,0 +1,20 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/video/ui/components/DanmakuReportForm.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/video/ui/components/DanmakuReportForm.kt
+@@ -13,7 +13,7 @@
+ import com.android.purebilibili.core.ui.components.AppTextButton
+ 
+ internal fun canSubmitDanmakuReport(reason: Int?, explanation: String): Boolean =
+-    reason != null && DanmakuReportReasons.any { it.second == reason } &&
++    reason != null && UpstreamDanmakuReportReasons.any { it.second == reason } &&
+         (reason != 11 || explanation.isNotBlank())
+ 
+ @Composable
+@@ -25,7 +25,7 @@
+     var explanation by remember { mutableStateOf("") }
+     var blockUser by remember { mutableStateOf(false) }
+     Column(Modifier.fillMaxWidth().heightIn(max = 480.dp).verticalScroll(rememberScrollState())) {
+-        DanmakuReportReasons.forEach { (label, code) ->
++        UpstreamDanmakuReportReasons.forEach { (label, code) ->
+             AppTextButton(onClick = { reason = code }, modifier = Modifier.fillMaxWidth()) {
+                 AppText((if (reason == code) "✓ " else "") + label)
+             }

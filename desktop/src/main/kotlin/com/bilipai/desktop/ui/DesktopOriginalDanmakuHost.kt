@@ -78,6 +78,12 @@ internal fun DesktopOriginalDanmakuHost(
         if(menu.visible)DanmakuContextMenu(
             text=menu.text,onDismiss=session::hideDanmakuMenu,onLike={session.likeDanmaku(menu.dmid)},
             onRecall={session.recallDanmaku(menu.dmid)},canRecall=menu.isSelf,
+            onReportWithExplanation={reason,explanation,blockUser->
+                session.reportDanmaku(menu.dmid,reason,explanation) {
+                    if(blockUser && environment.isOwned() && platform.isOwned())
+                        block(DanmakuBlockActionTarget.USER,menu.userHash)
+                }
+            },
             onReport={session.reportDanmaku(menu.dmid,it)},voteCount=menu.voteCount,hasLiked=menu.hasLiked,
             voteLoading=menu.voteLoading,canVote=menu.canVote,timestampJumpMs=resolveDanmakuTimestampJumpMs(menu.text),
             onSeekToTimestamp=environment::seekTo,canBlockKeyword=menu.text.isNotBlank(),
