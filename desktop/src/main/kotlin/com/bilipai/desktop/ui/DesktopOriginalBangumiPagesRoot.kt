@@ -143,12 +143,19 @@ internal object DesktopOriginalBangumiPagesToast {
                 if (!retained) scope.cancel("Original independent Bangumi NavEntry removed")
             }
         }
-        if (owns()) CompositionLocalProvider(LocalDesktopOriginalBangumiPagesEnvironment provides environment) {
+        val backToTopActs = remember(scope, routes, entryKey, appResources, activeState) { { acts() } }
+        val backToTopCommit = remember(scope, routes, entryKey, appResources) { { action: () -> Unit -> commit(action) } }
+        val backToTop = rememberBangumiBackToTopBindings(home.pluginContext.store, backToTopActs, backToTopCommit)
+        if (owns()) CompositionLocalProvider(
+            LocalDesktopOriginalBangumiPagesEnvironment provides environment,
+            LocalDesktopBackToTopBindings provides backToTop,
+        ) {
             when (entryKey) {
                 is BiliPaiNavKey.Bangumi -> BangumiScreen(
                     onBack = { navigate { routes.back() } },
                     onBangumiClick = { season -> navigate { routes.push(BiliPaiNavKey.BangumiDetail(seasonId = season)) } },
                     onBangumiEpisodeClick = { season, episode -> navigate { routes.push(BiliPaiNavKey.BangumiDetail(seasonId = season, epId = episode)) } },
+                    onPlayFollow = { season -> navigate { routes.push(BiliPaiNavKey.BangumiPlayer(seasonId = season, epId = 0L)) } },
                     initialType = entryKey.initialType, viewModel = environment.hub)
                 is BiliPaiNavKey.BangumiDetail -> BangumiDetailScreen(
                     seasonId = entryKey.seasonId, epId = entryKey.epId, mediaId = entryKey.mediaId,
@@ -170,5 +177,49 @@ internal object DesktopOriginalBangumiPagesToast {
             }
         }
         }
+    }
+}
+
+/** PagesRoot's own-window projection. Space uses equivalent inline binding; shared
+ * consolidation belongs to the Home desktop work, not this migration. */
+@Composable internal fun rememberBangumiBackToTopBindings(
+    store: com.bilipai.desktop.plugins.DesktopPluginStore,
+    acts: () -> Boolean,
+    commit: (() -> Unit) -> Boolean,
+): DesktopBackToTopBindings {
+    val backToTopPreferences = remember(store) {
+        DesktopFavoritePreferences(store)
+    }
+    val window = androidx.compose.ui.platform.LocalWindowInfo.current.containerSize
+    val density = androidx.compose.ui.platform.LocalDensity.current
+    val viewport = with(density) {
+        DesktopFavoriteViewport(window.width.toDp().value.toInt(), window.height.toDp().value.toInt())
+    }
+    return remember(store, viewport, acts, commit) { DesktopBackToTopBindings(
+        backToTopPreferences.backToTopEnabled, backToTopPreferences.initialBackToTopEnabled(),
+        backToTopPreferences.backToTopOffset, backToTopPreferences.initialBackToTopOffset(),
+        { x, y ->
+            val caller = currentCoroutineContext()
+            fun checkWrite() {
+                caller.ensureActive()
+                if (!acts()) throw CancellationException("Original Bangumi back-to-top entry retired or covered")
+            }
+            store.updateOriginalFromSnapshot("settings", ::checkWrite, {
+                var permit: com.bilipai.desktop.plugins.DesktopPluginStore.OriginalPreferenceWritePermit? = null
+                if (!commit {
+                    checkWrite()
+                    permit = com.bilipai.desktop.plugins.DesktopPluginStore.OriginalPreferenceWritePermit(store)
+                }) throw CancellationException("Original Bangumi back-to-top entry retired")
+                requireNotNull(permit)
+            }) {
+                Unit to mapOf(
+                    "back_to_top_button_offset_x_dp" to kotlinx.serialization.json.JsonPrimitive(x),
+                    "back_to_top_button_offset_y_dp" to kotlinx.serialization.json.JsonPrimitive(y),
+                )
+            }
+        },
+        { x, y -> commit { if (acts()) backToTopPreferences.updateBackToTopOffset(x, y) } },
+        viewport,
+    )
     }
 }

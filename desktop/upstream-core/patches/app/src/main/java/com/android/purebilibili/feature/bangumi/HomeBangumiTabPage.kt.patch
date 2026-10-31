@@ -1,0 +1,75 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/bangumi/HomeBangumiTabPage.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/bangumi/HomeBangumiTabPage.kt
+@@ -1,6 +1,5 @@
+ package com.android.purebilibili.feature.bangumi
+ 
+-import com.android.purebilibili.navigation.tabIndicatorPosition
+ import androidx.compose.foundation.background
+ import androidx.compose.animation.AnimatedVisibility
+ import androidx.compose.animation.expandVertically
+@@ -30,30 +29,28 @@
+ import androidx.compose.runtime.rememberCoroutineScope
+ import androidx.compose.ui.draw.clipToBounds
+ import androidx.compose.ui.Modifier
+-import androidx.compose.ui.platform.LocalContext
++import com.bilipai.desktop.ui.LocalDesktopHomeEnvironment as LocalContext
++import kotlinx.coroutines.flow.map
+ import androidx.compose.ui.platform.LocalLayoutDirection
+ import androidx.compose.ui.unit.dp
+ import androidx.lifecycle.compose.collectAsStateWithLifecycle
+-import androidx.lifecycle.viewmodel.compose.viewModel
+-import com.android.purebilibili.core.store.SettingsManager
+ import com.android.purebilibili.core.ui.components.AppLiquidAwareTabRow
+ import com.android.purebilibili.core.ui.components.AppSegmentOption
+-import com.android.purebilibili.feature.download.DownloadManager
+-import kotlinx.coroutines.launch
++import com.bilipai.desktop.ui.desktopRefreshLaunch as launch
+ 
+ /**
+  * 首页顶栏「追番」独立页：留在首页 Pager 内，
+  * 不切走导航，也不再套一层带返回的番剧二级页。
+  */
+ @Composable
+-fun HomeBangumiTabPage(
++internal fun HomeBangumiTabPage(
+     contentPadding: PaddingValues,
+     onBangumiClick: (Long) -> Unit,
+     onBangumiEpisodeClick: (Long, Long) -> Unit,
+     onPlayFollow: (Long) -> Unit,
+     initialType: Int = 1,
+     scrollToTopRequestId: Int = 0,
+-    viewModel: BangumiHubViewModel = viewModel(),
++    viewModel: BangumiHubViewModel = com.bilipai.desktop.ui.LocalDesktopBangumiHubViewModel.current,
+ ) {
+     val state by viewModel.uiState.collectAsStateWithLifecycle()
+     val channelPager = rememberBangumiChannelPagerState(
+@@ -63,7 +60,7 @@
+     )
+     val context = LocalContext.current
+     val scope = rememberCoroutineScope()
+-    val showPgcTimeline by SettingsManager.getShowPgcTimeline(context)
++    val showPgcTimeline by context.settings.homeSettings.map { it.showPgcTimeline }
+         .collectAsStateWithLifecycle(initialValue = true)
+     val channelOptions = remember {
+         BangumiChannel.entries.map { AppSegmentOption(it, it.label) }
+@@ -136,7 +133,7 @@
+                     onLoadMoreSearch = viewModel::loadMoreSearch,
+                     onSaveCover = { url, title ->
+                         scope.launch {
+-                            DownloadManager.saveImageToGallery(context, url, title)
++                            context.saveCover(url, title)
+                         }
+                     },
+                     scrollToTopRequestId = scrollToTopRequestId,
+@@ -176,8 +173,9 @@
+                 role = com.android.purebilibili.core.ui.components.AppTabRowRole.SECONDARY,
+                 options = channelOptions,
+                 selectedValue = state.channel,
+-                indicatorPositionProvider = if (state.page == BangumiHubPage.HOME) {
+-                    { channelPager.tabIndicatorPosition }
++                // 临时映射，待 TON-1151 退役。
++                            indicatorPositionProvider = if (state.page == BangumiHubPage.HOME) {
++                    { (channelPager.currentPage + channelPager.currentPageOffsetFraction) }
+                 } else null,
+                 isScrollInProgressProvider = {
+                     state.page == BangumiHubPage.HOME && channelPager.isScrollInProgress

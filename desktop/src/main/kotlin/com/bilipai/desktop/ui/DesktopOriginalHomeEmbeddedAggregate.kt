@@ -90,12 +90,13 @@ internal class DesktopOriginalHomeEmbeddedAggregate private constructor(
         }
     }
     @Composable override fun HomeBangumiTabPage(contentPadding: PaddingValues, onBangumiClick: (Long) -> Unit,
-        onBangumiEpisodeClick: (Long, Long) -> Unit, scrollToTopRequestId: Int) {
+        onBangumiEpisodeClick: (Long, Long) -> Unit, onPlayFollow: (Long) -> Unit, scrollToTopRequestId: Int) {
         if (!lifetime.owns()) return
         val home = home()
         if (lifetime.owns()) DesktopOriginalHomeBangumiContent(bangumiEnvironment, home, bangumi, contentPadding,
             { id -> lifetime.commit { onBangumiClick(id) } },
-            { season, episode -> lifetime.commit { onBangumiEpisodeClick(season, episode) } }, scrollToTopRequestId)
+            { season, episode -> lifetime.commit { onBangumiEpisodeClick(season, episode) } },
+            { season -> lifetime.commit { onPlayFollow(season) } }, scrollToTopRequestId)
     }
     override fun close() {
         lifetime.close()

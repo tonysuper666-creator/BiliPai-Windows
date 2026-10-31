@@ -75,6 +75,7 @@ internal fun desktopOriginalRootHomeNavigation(
     onLiveAreaDetailClick = { parent, area, title -> commands.push(BiliPaiNavKey.LiveAreaDetail(parent, area, title)) },
     onBangumiSeasonClick = { season -> commands.push(BiliPaiNavKey.BangumiDetail(season)) },
     onBangumiEpisodeClick = { season, episode -> commands.push(BiliPaiNavKey.BangumiDetail(season, episode)) },
+    onBangumiPlayFollow = { season -> commands.push(BiliPaiNavKey.BangumiPlayer(seasonId = season, epId = 0L)) },
     onSpaceClick = { mid -> commands.push(BiliPaiNavKey.Space(mid)) },
 )
 

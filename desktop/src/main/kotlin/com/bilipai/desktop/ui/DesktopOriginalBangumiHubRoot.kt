@@ -46,6 +46,7 @@ internal fun DesktopOriginalHomeBangumiContent(
     contentPadding: PaddingValues,
     onBangumiClick: (Long) -> Unit,
     onBangumiEpisodeClick: (Long, Long) -> Unit,
+    onPlayFollow: (Long) -> Unit,
     scrollToTopRequestId: Int,
 ) {
     if (environment.isCurrent()) {
@@ -55,6 +56,7 @@ internal fun DesktopOriginalHomeBangumiContent(
                 contentPadding = contentPadding,
                 onBangumiClick = onBangumiClick,
                 onBangumiEpisodeClick = onBangumiEpisodeClick,
+                onPlayFollow = onPlayFollow,
                 scrollToTopRequestId = scrollToTopRequestId,
                 viewModel = viewModel,
             )

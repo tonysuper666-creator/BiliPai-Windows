@@ -1,0 +1,21 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiHubContent.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiHubContent.kt
+@@ -113,7 +113,7 @@
+ import com.android.purebilibili.data.model.response.TimelineDay
+ import com.android.purebilibili.data.model.response.TimelineEpisode
+ import com.android.purebilibili.feature.bangumi.ui.list.BangumiBadge
+-import kotlinx.coroutines.launch
++import com.bilipai.desktop.ui.desktopRefreshLaunch as launch
+ import top.yukonga.miuix.kmp.blur.Backdrop
+ 
+ internal const val BANGUMI_POSTER_ASPECT_RATIO = 0.75f
+@@ -142,7 +142,8 @@
+     val pager = rememberPagerState(initialPage = channel.ordinal) { channels.size }
+     val latestChannelSelected by rememberUpdatedState(onChannelSelected)
+     LaunchedEffect(channel, enabled) {
+-        if (enabled && pager.currentPage != channel.ordinal) com.android.purebilibili.navigation.animatePagerSelection(pager, channel.ordinal)
++        // 桌面临时offset残留修复，待 TON-1151 新helper复核退役。
++        if (enabled && (pager.currentPage != channel.ordinal || kotlin.math.abs(pager.currentPageOffsetFraction) > 0.001f)) com.android.purebilibili.navigation.animatePagerSelection(pager, channel.ordinal)
+     }
+     LaunchedEffect(pager, enabled) {
+         if (!enabled) return@LaunchedEffect

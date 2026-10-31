@@ -1,0 +1,111 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiScreen.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiScreen.kt
+@@ -1,7 +1,5 @@
+ package com.android.purebilibili.feature.bangumi
+ 
+-import com.android.purebilibili.navigation.tabIndicatorPosition
+-import android.os.Build
+ import com.android.purebilibili.core.ui.LocalNavigationBackHandler
+ import androidx.compose.foundation.background
+ import androidx.compose.foundation.layout.Arrangement
+@@ -35,13 +33,13 @@
+ import androidx.compose.ui.draw.clipToBounds
+ import androidx.compose.ui.Modifier
+ import androidx.compose.ui.focus.FocusRequester
+-import androidx.compose.ui.platform.LocalContext
++import com.bilipai.desktop.ui.LocalDesktopHomeEnvironment as LocalContext
++import com.bilipai.desktop.ui.LocalDesktopOriginalBangumiPagesEnvironment
++import kotlinx.coroutines.flow.map
+ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+ import androidx.compose.ui.unit.dp
+ import androidx.compose.ui.unit.sp
+ import androidx.lifecycle.compose.collectAsStateWithLifecycle
+-import androidx.lifecycle.viewmodel.compose.viewModel
+-import com.android.purebilibili.core.store.SettingsManager
+ import com.android.purebilibili.core.ui.AppScaffold
+ import com.android.purebilibili.core.ui.AppSurfaceTokens
+ import com.android.purebilibili.core.ui.LocalAppThemeConfig
+@@ -52,7 +50,6 @@
+ import com.android.purebilibili.core.ui.blur.recoverableBlurEnabled
+ import com.android.purebilibili.core.ui.blur.hazeSourceCompat
+ import com.android.purebilibili.core.ui.blur.unifiedBlur
+-import com.android.purebilibili.core.ui.blur.shouldAllowRenderEffectBackedHazeEffect
+ import com.android.purebilibili.core.ui.blur.BlurSurfaceType
+ import com.android.purebilibili.core.ui.performance.isLowBlurBudgetForced
+ import com.android.purebilibili.core.ui.resolveTopChromeRenderMode
+@@ -70,18 +67,17 @@
+ import com.android.purebilibili.core.ui.rememberAppBackIcon
+ import com.android.purebilibili.core.ui.rememberAppSearchIcon
+ import com.android.purebilibili.core.util.responsiveContentWidth
+-import com.android.purebilibili.feature.download.DownloadManager
+ import kotlinx.coroutines.launch
+ 
+ /** Navigation-compatible state holder for the Bangumi/Cinema hub. */
+ @Composable
+-fun BangumiScreen(
++internal fun BangumiScreen(
+     onBack: () -> Unit,
+     onBangumiClick: (Long) -> Unit,
+     onBangumiEpisodeClick: (Long, Long) -> Unit = { seasonId, _ -> onBangumiClick(seasonId) },
+     onPlayFollow: (Long) -> Unit = onBangumiClick,
+     initialType: Int = 1,
+-    viewModel: BangumiHubViewModel = viewModel(),
++    viewModel: BangumiHubViewModel,
+     onPlayEpisode: ((Long, com.android.purebilibili.data.model.response.BangumiEpisode) -> Unit)? = null,
+     onReviewsClick: (Long, String) -> Unit = { _, _ -> },
+     onUserClick: (Long) -> Unit = {},
+@@ -139,7 +135,7 @@
+         }
+     }
+ 
+-    val showPgcTimeline by SettingsManager.getShowPgcTimeline(context)
++    val showPgcTimeline by context.settings.homeSettings.map { it.showPgcTimeline }
+         .collectAsStateWithLifecycle(initialValue = true)
+ 
+     LaunchedEffect(initialType) { viewModel.initialize(initialType) }
+@@ -166,7 +162,7 @@
+     val hazeState = if (
+         headerBlurRequested &&
+         !lowBlurBudget &&
+-        shouldAllowRenderEffectBackedHazeEffect(Build.VERSION.SDK_INT)
++        LocalDesktopOriginalBangumiPagesEnvironment.current.hazeEffectSupported
+     ) rememberRecoverableHazeState() else null
+     val hazeReady = hazeState?.let { recoverableBlurEnabled(it) } == true
+     val progressiveRequested = themeConfig.progressiveTopBlurEnabled && !headerBlurRequested
+@@ -279,8 +275,9 @@
+                             role = com.android.purebilibili.core.ui.components.AppTabRowRole.PRIMARY,
+                             options = BangumiChannel.entries.map { AppSegmentOption(it, it.label) },
+                             selectedValue = state.channel,
++                            // 临时映射，待 TON-1151 退役。
+                             indicatorPositionProvider = if (state.page == BangumiHubPage.HOME) {
+-                                { channelPager.tabIndicatorPosition }
++                                { (channelPager.currentPage + channelPager.currentPageOffsetFraction) }
+                             } else null,
+                             isScrollInProgressProvider = {
+                                 state.page == BangumiHubPage.HOME && channelPager.isScrollInProgress
+@@ -381,7 +378,7 @@
+                         onLoadMoreSearch = viewModel::loadMoreSearch,
+                         onSaveCover = { url, title ->
+                             scope.launch {
+-                                val saved = DownloadManager.saveImageToGallery(context, url, title)
++                                val saved = context.saveCover(url, title)
+                                 snackbarHostState.showSnackbar(if (saved) "封面已保存" else "保存封面失败")
+                             }
+                         },
+@@ -418,7 +415,7 @@
+ /** Source-compatible bridge for callers that injected the former combined ViewModel. */
+ @Deprecated("BangumiScreen now owns a dedicated lightweight hub state holder")
+ @Composable
+-fun BangumiScreen(
++internal fun BangumiScreen(
+     onBack: () -> Unit,
+     onBangumiClick: (Long) -> Unit,
+     onBangumiEpisodeClick: (Long, Long) -> Unit = { seasonId, _ -> onBangumiClick(seasonId) },
+@@ -430,6 +427,7 @@
+         onBangumiClick = onBangumiClick,
+         onBangumiEpisodeClick = onBangumiEpisodeClick,
+         initialType = initialType,
++        viewModel = LocalDesktopOriginalBangumiPagesEnvironment.current.hub,
+     )
+ }
+ 
