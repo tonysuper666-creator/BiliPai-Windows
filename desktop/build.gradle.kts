@@ -634,6 +634,7 @@ val migratedVideoFeaturePaths = setOf(
     "com/android/purebilibili/feature/video/viewmodel/VideoCodecSessionPolicy.kt",
     "com/android/purebilibili/feature/video/viewmodel/VideoCommentLoadPolicy.kt",
     "com/android/purebilibili/feature/video/viewmodel/VideoCommentViewModel.kt",
+    "com/android/purebilibili/feature/video/ui/components/CommentSearchSheet.kt",
     "com/android/purebilibili/feature/video/viewmodel/SubReplyPageRequest.kt",
     "com/android/purebilibili/feature/video/viewmodel/SubReplySortPolicy.kt",
     "com/android/purebilibili/feature/comment/CommentPagingSession.kt",
