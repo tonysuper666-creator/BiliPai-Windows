@@ -101,27 +101,40 @@ internal object DesktopOriginalBangumiPagesToast {
             return gate.commit { if (owns()) { action(); applied = true } } && applied
         }
         fun navigate(action: () -> Unit) { if (acts()) routes.callbackFor(entryKey, action) }
+        DisposableEffect(scope) { onDispose { open.set(false); scope.cancel() } }
         val environment = remember(scope, appResources) {
-            val hubRepository = aggregate.bangumiEnvironment.repository
-            val hubEnvironment = DesktopBangumiHubEnvironment(hubRepository, scope,
-                { owns() && gate.mid != null }, ::owns, ::commit)
-            val hub = BangumiHubViewModel(hubEnvironment)
-            val api = repository.ownedHomeService(BangumiApi::class.java, "https://api.bilibili.com/",
-                gate.epoch, ::owns)
-            val csrf = { repository.ownedHomeCookie("bili_jct", gate.epoch, ::owns) }
-            val sessionCookie = { repository.ownedHomeCookie("SESSDATA", gate.epoch, ::owns) }
-            DesktopOriginalBangumiPagesEnvironment(hub,
-                DesktopOriginalBangumiPagesRequests(api, hubRepository, csrf, sessionCookie, ::owns, ::acts),
-                DesktopOriginalBangumiReviewRequests(api, csrf, ::owns, ::acts),
-                // This page only reads cached progress; the zero duration
-                // function is never invoked because it performs no saves.
-                appResources.progress.forEntry({ _, _ -> 0L }, ::owns),
-                scope, ::commit, ::owns,
-                { message -> if (acts()) home.feedback(message) },
-                // Desktop does not have Android's RenderEffect-backed haze.
-                hazeEffectSupported = false,
-                followSession = { desktopOriginalBangumiPagesFollowSession(gate.mid != null, gate.epoch) })
+            var captured: DesktopOriginalBangumiPagesEnvironment? = null
+            commit {
+                val hubRepository = aggregate.bangumiEnvironment.repository
+                val hubOwner = repository.upstreamOwner(com.bilipai.desktop.data.DesktopUpstreamPurpose.Main,
+                    ::owns, gate.epoch)
+                val hubIdentities = com.bilipai.desktop.data.DesktopUpstreamCalls.withOwner(hubOwner) {
+                    com.bilipai.desktop.data.DesktopUpstreamCalls.accountIdentity("BangumiHubViewModel")
+                }
+                val hubEnvironment = DesktopBangumiHubEnvironment(hubRepository, scope,
+                    { owns() && gate.mid != null }, ::owns, ::commit, hubIdentities)
+                val hub = DesktopBangumiHubInstance(hubEnvironment).viewModel
+                val api = repository.ownedHomeService(BangumiApi::class.java, "https://api.bilibili.com/",
+                    gate.epoch, ::owns)
+                val csrf = { repository.ownedHomeCookie("bili_jct", gate.epoch, ::owns) }
+                val sessionCookie = { repository.ownedHomeCookie("SESSDATA", gate.epoch, ::owns) }
+                captured = DesktopOriginalBangumiPagesEnvironment(hub,
+                    DesktopOriginalBangumiPagesRequests(api, hubRepository, csrf, sessionCookie, ::owns, ::acts),
+                    DesktopOriginalBangumiReviewRequests(api, csrf, ::owns, ::acts),
+                    // This page only reads cached progress; the zero duration
+                    // function is never invoked because it performs no saves.
+                    appResources.progress.forEntry({ _, _ -> 0L }, ::owns),
+                    scope, ::commit, ::owns,
+                    { message -> if (acts()) home.feedback(message) },
+                    // Desktop does not have Android's RenderEffect-backed haze.
+                    hazeEffectSupported = false,
+                    followSession = { desktopOriginalBangumiPagesFollowSession(gate.mid != null, gate.epoch) })
+            }
+            captured
         }
+        if (environment == null) {
+            scope.cancel("Original independent Bangumi entry retired before creation")
+        } else {
         val detail = remember(environment) {
             if (entryKey is BiliPaiNavKey.BangumiDetail) BangumiViewModel(environment) else null
         }
@@ -130,7 +143,6 @@ internal object DesktopOriginalBangumiPagesToast {
                 if (!retained) scope.cancel("Original independent Bangumi NavEntry removed")
             }
         }
-        DisposableEffect(scope) { onDispose { open.set(false); scope.cancel() } }
         if (owns()) CompositionLocalProvider(LocalDesktopOriginalBangumiPagesEnvironment provides environment) {
             when (entryKey) {
                 is BiliPaiNavKey.Bangumi -> BangumiScreen(
@@ -156,6 +168,7 @@ internal object DesktopOriginalBangumiPagesToast {
                     onOpenWeb = { url, title -> navigate { routes.push(BiliPaiNavKey.Web(url, title)) } })
                 else -> error("Unexpected original Bangumi page key")
             }
+        }
         }
     }
 }

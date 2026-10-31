@@ -36,7 +36,8 @@ class DesktopBangumiEpisodeSheetCompositionTest {
         val api = unused<BangumiApi>()
         val repository = DesktopOriginalBangumiHubRepository(api, unused<BilibiliApi>(), unused<SearchApi>(), { null }, { null })
         val commit: (() -> Unit) -> Boolean = { it(); true }
-        val hub = BangumiHubViewModel(DesktopBangumiHubEnvironment(repository, scope, { false }, { true }, commit))
+        val hub = BangumiHubViewModel(DesktopBangumiHubEnvironment(repository, scope, { false }, { true }, commit, kotlinx.coroutines.flow.MutableStateFlow(
+            com.android.purebilibili.core.store.AccountSessionIdentity(mid = null, generation = 1L))))
         val environment = DesktopOriginalBangumiPagesEnvironment(hub,
             DesktopOriginalBangumiPagesRequests(api, repository, { null }, { null }, { true }, { true }),
             DesktopOriginalBangumiReviewRequests(api, { null }, { true }, { true }),
@@ -90,7 +91,8 @@ class DesktopBangumiEpisodeSheetCompositionTest {
         val api = unused<BangumiApi>()
         val repository = DesktopOriginalBangumiHubRepository(api, unused<BilibiliApi>(), unused<SearchApi>(), { null }, { null })
         val commit: (() -> Unit) -> Boolean = { it(); true }
-        val hub = BangumiHubViewModel(DesktopBangumiHubEnvironment(repository, scope, { false }, { true }, commit))
+        val hub = BangumiHubViewModel(DesktopBangumiHubEnvironment(repository, scope, { false }, { true }, commit, kotlinx.coroutines.flow.MutableStateFlow(
+            com.android.purebilibili.core.store.AccountSessionIdentity(mid = null, generation = 1L))))
         val environment = DesktopOriginalBangumiPagesEnvironment(hub,
             DesktopOriginalBangumiPagesRequests(api, repository, { null }, { null }, { true }, { true }),
             DesktopOriginalBangumiReviewRequests(api, { null }, { true }, { true }),

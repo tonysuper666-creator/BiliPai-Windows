@@ -1,0 +1,195 @@
+--- a/com/android/purebilibili/feature/bangumi/BangumiHubViewModel.kt
++++ b/com/android/purebilibili/feature/bangumi/BangumiHubViewModel.kt
+@@ -1,16 +1,16 @@
+ package com.android.purebilibili.feature.bangumi
+ 
+ import androidx.compose.runtime.Immutable
+-import androidx.lifecycle.ViewModel
+-import androidx.lifecycle.viewModelScope
++// Desktop entry owns this full original ViewModel.
++// Coroutine scope is supplied by the retained desktop entry.
+ import com.android.purebilibili.core.coroutines.AccountScopedRequests
+ import com.android.purebilibili.data.model.response.BangumiIndexConditionData
+ import com.android.purebilibili.data.model.response.BangumiItem
+ import com.android.purebilibili.data.model.response.BangumiSearchItem
+ import com.android.purebilibili.data.model.response.FollowBangumiItem
+ import com.android.purebilibili.data.model.response.TimelineDay
+-import com.android.purebilibili.data.repository.BangumiRepository
+-import com.android.purebilibili.core.store.TokenManager
++// Existing owned repository is supplied by the desktop environment.
++// Account identity and login state come from the owned desktop environment.
+ import kotlinx.coroutines.Job
+ import kotlinx.coroutines.async
+ import kotlinx.coroutines.ensureActive
+@@ -19,7 +19,7 @@
+ import kotlinx.coroutines.flow.asSharedFlow
+ import kotlinx.coroutines.flow.asStateFlow
+ import kotlinx.coroutines.flow.update
+-import kotlinx.coroutines.launch
++import com.bilipai.desktop.ui.desktopRefreshLaunch as launch
+ 
+ @Immutable
+ data class BangumiPagedState<T>(
+@@ -76,7 +76,7 @@
+ @Immutable
+ data class BangumiHubUiState(
+     val isLoggedIn: Boolean = false,
+-    val accountGeneration: Long = TokenManager.accountIdentity.value.generation,
++    val accountGeneration: Long = 0L,
+     val channel: BangumiChannel = BangumiChannel.BANGUMI,
+     val page: BangumiHubPage = BangumiHubPage.HOME,
+     val pageBeforeSearch: BangumiHubPage = BangumiHubPage.HOME,
+@@ -93,15 +93,17 @@
+     val showPgcTimeline: Boolean = true,
+ )
+ 
+-class BangumiHubViewModel : ViewModel() {
+-    private val _uiState = MutableStateFlow(BangumiHubUiState())
++internal class BangumiHubViewModel(private val desktopEnvironment: com.bilipai.desktop.ui.DesktopBangumiHubEnvironment) {
++    private val _uiState = com.bilipai.desktop.ui.DesktopHomeOwnedMutableStateFlow(
++        BangumiHubUiState(accountGeneration = desktopEnvironment.accountIdentities.value.generation),
++        desktopEnvironment.commitIfCurrent)
+     val uiState = _uiState.asStateFlow()
+ 
+     private val _messages = MutableSharedFlow<String>(extraBufferCapacity = 4)
+     val messages = _messages.asSharedFlow()
+ 
+     private var initialized = false
+-    private val accountRequests = AccountScopedRequests(viewModelScope)
++    private val accountRequests = AccountScopedRequests(desktopEnvironment.scope, desktopEnvironment.accountIdentities)
+     private val homeJobs = mutableMapOf<String, Job>()
+     private val conditionJobs = mutableMapOf<BangumiIndexCategory, Job>()
+     private val indexJobs = mutableMapOf<BangumiIndexCategory, Job>()
+@@ -120,7 +122,7 @@
+             }
+             _uiState.update { state ->
+                 state.copy(
+-                    isLoggedIn = !TokenManager.sessDataCache.isNullOrBlank(),
++                    isLoggedIn = desktopEnvironment.isLoggedIn(),
+                     accountGeneration = accountRequests.identity.generation,
+                     homeStates = state.homeStates.mapValues { (_, home) ->
+                         home.copy(
+@@ -153,7 +155,7 @@
+         val channel = resolveBangumiChannel(initialType)
+         _uiState.update {
+             it.copy(
+-                isLoggedIn = !TokenManager.sessDataCache.isNullOrBlank(),
++                isLoggedIn = desktopEnvironment.isLoggedIn(),
+                 channel = channel,
+                 indexCategory = resolveDefaultBangumiIndexCategory(channel),
+             )
+@@ -313,7 +315,7 @@
+         updateFollowState(key) { it.copy(isMutating = true) }
+         accountRequests.launch {
+             val identity = accountRequests.identity
+-            val result = BangumiRepository.updateBangumiFollowStatuses(selected, target.value)
++            val result = desktopEnvironment.repository.updateBangumiFollowStatuses(selected, target.value)
+             coroutineContext.ensureActive()
+             if (!accountRequests.isCurrent(identity)) return@launch
+             result.fold(
+@@ -340,7 +342,7 @@
+         updateFollowState(key) { it.copy(isMutating = true) }
+         accountRequests.launch {
+             val identity = accountRequests.identity
+-            val result = BangumiRepository.updateBangumiFollowStatus(seasonId, target.value)
++            val result = desktopEnvironment.repository.updateBangumiFollowStatus(seasonId, target.value)
+             coroutineContext.ensureActive()
+             if (!accountRequests.isCurrent(identity)) return@launch
+             result.fold(
+@@ -364,7 +366,7 @@
+         updateFollowState(key) { it.copy(isMutating = true) }
+         accountRequests.launch {
+             val identity = accountRequests.identity
+-            val result = BangumiRepository.unfollowBangumi(seasonId)
++            val result = desktopEnvironment.repository.unfollowBangumi(seasonId)
+             coroutineContext.ensureActive()
+             if (!accountRequests.isCurrent(identity)) return@launch
+             result.fold(
+@@ -430,7 +432,7 @@
+         }
+         searchJob = accountRequests.launch {
+             val identity = accountRequests.identity
+-            val result = BangumiRepository.searchBangumi(
++            val result = desktopEnvironment.repository.searchBangumi(
+                 keyword = normalized,
+                 seasonType = resolveBangumiSearchSeasonType(category),
+                 page = 1,
+@@ -478,7 +480,7 @@
+         }
+         searchJob = accountRequests.launch {
+             val identity = accountRequests.identity
+-            val result = BangumiRepository.searchBangumi(
++            val result = desktopEnvironment.repository.searchBangumi(
+                 keyword = current.query,
+                 seasonType = resolveBangumiSearchSeasonType(category),
+                 page = nextPage,
+@@ -579,9 +581,9 @@
+                 ),
+             )
+         }
+-        homeJobs[jobKey] = viewModelScope.launch {
++        homeJobs[jobKey] = desktopEnvironment.scope.launch {
+             val params = DEFAULT_HOME_INDEX_PARAMS
+-            BangumiRepository.getBangumiIndexPage(
++            desktopEnvironment.repository.getBangumiIndexPage(
+                 seasonType = 1,
+                 indexType = if (channel == BangumiChannel.CINEMA) 102 else null,
+                 type = 1,
+@@ -638,7 +640,7 @@
+         }
+         homeJobs[jobKey] = accountRequests.launch {
+             val identity = accountRequests.identity
+-            val result = BangumiRepository.getMyFollowBangumi(
++            val result = desktopEnvironment.repository.getMyFollowBangumi(
+                 type = channel.followType,
+                 page = nextPage,
+             )
+@@ -702,7 +704,7 @@
+         homeJobs[jobKey] = accountRequests.launch {
+             val identity = accountRequests.identity
+             val primary = async {
+-                BangumiRepository.getTimeline(
++                desktopEnvironment.repository.getTimeline(
+                     type = if (channel == BangumiChannel.CINEMA) 3 else 1,
+                     before = range.before,
+                     after = range.after,
+@@ -710,7 +712,7 @@
+             }
+             val secondary = if (channel == BangumiChannel.BANGUMI) {
+                 async {
+-                    BangumiRepository.getTimeline(
++                    desktopEnvironment.repository.getTimeline(
+                         type = 4,
+                         before = range.before,
+                         after = range.after,
+@@ -758,8 +760,8 @@
+         updateIndexState(category) {
+             it.copy(isConditionLoading = true, conditionError = null)
+         }
+-        conditionJobs[category] = viewModelScope.launch {
+-            BangumiRepository.getBangumiIndexConditions(
++        conditionJobs[category] = desktopEnvironment.scope.launch {
++            desktopEnvironment.repository.getBangumiIndexConditions(
+                 seasonType = category.seasonType,
+                 indexType = category.indexType,
+                 type = 0,
+@@ -801,8 +803,8 @@
+                 ),
+             )
+         }
+-        indexJobs[category] = viewModelScope.launch {
+-            BangumiRepository.getBangumiIndexPage(
++        indexJobs[category] = desktopEnvironment.scope.launch {
++            desktopEnvironment.repository.getBangumiIndexPage(
+                 seasonType = category.seasonType,
+                 indexType = category.indexType,
+                 type = 0,
+@@ -869,7 +871,7 @@
+         }
+         followJobs[key] = accountRequests.launch {
+             val identity = accountRequests.identity
+-            val result = BangumiRepository.getMyFollowBangumi(
++            val result = desktopEnvironment.repository.getMyFollowBangumi(
+                 type = channel.followType,
+                 followStatus = status.value,
+                 page = nextPage,
