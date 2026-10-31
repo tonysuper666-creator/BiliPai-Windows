@@ -47,7 +47,7 @@ feature/settings/AppSegmentedControl.kt	编译不过（2 处）：No parameter w
 feature/settings/FullscreenActionCountPreference.kt	编译不过（1 处）：未解析 PLAYER_ACTION_COUNTS×1；等对应桌面替身或桌面实现
 feature/settings/HapticScenePreference.kt	编译不过（4 处）：未解析 SettingsItemAnchor×2；@Composable invocations can only happen from the c×2；等对应桌面替身或桌面实现
 feature/settings/HomeFeedSettingsSection.kt	编译不过（2 处）：未解析 widget×2；等对应桌面替身或桌面实现
-feature/settings/LiquidGlassLivePreview.kt	编译不过（24 处）：未解析 drawable×10；未解析 Intent×2；未解析 rememberLauncherForActivityResult×2；等对应桌面替身或桌面实现
+feature/settings/LiquidGlassLivePreview.kt	编译不过（29 处）：未解析 settingItemTitle×7；@Composable invocations can only happen from the c×3；未解析 Intent×2；等对应桌面替身或桌面实现
 feature/settings/LiquidGlassSavedPresets.kt	编译不过（17 处）：未解析 Intent×7；未解析 Toast×2；Cannot infer type for type parameter '_'. Specify ×2；等对应桌面替身或桌面实现
 feature/settings/LoginActivityViewModel.kt	编译不过（7 处）：Cannot infer type for type parameter '_'. Specify ×4；未解析 AccountLoginActivityRepository×3；等对应桌面替身或桌面实现
 feature/settings/PlaybackSettingDirectory.kt	编译不过（9 处）：未解析 SettingsUiState×2；未解析 additionalSettingsDirectory×1；未解析 GRID_CUSTOMIZATION_SETTING_ID×1；等对应桌面替身或桌面实现
@@ -57,8 +57,8 @@ feature/settings/SettingsCardMotionPreview.kt	编译不过（20 处）：未解�
 feature/settings/SettingsDescriptionIndex.kt	编译不过（12 处）：Cannot infer type for type parameter '_'. Specify ×8；Inapplicable candidate(s): fun <K, V> mapOf(vararg×1；未解析 GRID_CUSTOMIZATION_SETTING_ID×1；等对应桌面替身或桌面实现
 feature/settings/SettingsDestinationCopy.kt	编译不过（1 处）：未解析 nearby×1；等对应桌面替身或桌面实现
 feature/settings/SettingsDynamicDescriptionIndex.kt	编译不过（1 处）：未解析 settingsStaticDescriptionIndex×1；等对应桌面替身或桌面实现
-feature/settings/SettingsEntryVisualPolicy.kt	编译不过（1 处）：未解析 drawable×1；等对应桌面替身或桌面实现
-feature/settings/SettingsFeaturePreview.kt	编译不过（1 处）：未解析 drawable×1；等对应桌面替身或桌面实现
+feature/settings/SettingsEntryVisualPolicy.kt	编译不过（3 处）：未解析 SPACE_PRIVACY×1；未解析 LOGIN_ACTIVITY×1；未解析 NEARBY_HANDOFF×1；等对应桌面替身或桌面实现
+feature/settings/SettingsFeaturePreview.kt	编译不过（1 处）：未解析 SettingsCardMotionPreview×1；等对应桌面替身或桌面实现
 feature/settings/SettingsFunctionIcon.kt	编译不过（4 处）：未解析 title×2；未解析 settingsItemDirectory×1；Cannot infer type for value parameter '_'. Specify×1；等对应桌面替身或桌面实现
 feature/settings/SettingsItemAnchor.kt	编译不过（2 处）：未解析 LocalView×2；等对应桌面替身或桌面实现
 feature/settings/SettingsItemPath.kt	编译不过（10 处）：未解析 page×5；未解析 target×2；未解析 PlaybackSettingItem×1；等对应桌面替身或桌面实现
@@ -69,12 +69,12 @@ feature/settings/SettingsSearchFocusPolicy.kt	编译不过（3 处）：未解�
 feature/settings/SettingsSearchNavigationPolicy.kt	编译不过（2 处）：未解析 SpacePrivacySettings×1；未解析 LoginActivitySettings×1；等对应桌面替身或桌面实现
 feature/settings/SettingsSearchPolicy.kt	编译不过（46 处）：未解析 page×8；Cannot infer type for type parameter '_'. Specify ×7；未解析 target×5；等对应桌面替身或桌面实现
 feature/settings/SettingsSectionFocus.kt	编译不过（4 处）：未解析 settingId×2；未解析 resolveSettingsItemScrollKey×1；未解析 clearUnclaimedSettingsFocusRequest×1；等对应桌面替身或桌面实现
-feature/settings/SettingsSemanticIconPolicy.kt	编译不过（224 处）：未解析 drawable×220；未解析 vectorResource×4；等对应桌面替身或桌面实现
+feature/settings/SettingsSemanticIconPolicy.kt	编译不过（3 处）：未解析 SPACE_PRIVACY×1；未解析 LOGIN_ACTIVITY×1；未解析 NEARBY_HANDOFF×1；等对应桌面替身或桌面实现
 feature/settings/SettingsTextCopyPreference.kt	编译不过（4 处）：@Composable invocations can only happen from the c×3；未解析 SettingsItemAnchor×1；等对应桌面替身或桌面实现
 feature/settings/SettingsViewModel.kt	编译不过（101 处）：Unresolved reference. None of the following candid×78；未解析 getApplication×4；未解析 pm×4；等对应桌面替身或桌面实现
 feature/settings/SpacePrivacyViewModel.kt	编译不过（7 处）：Cannot infer type for type parameter '_'. Specify ×4；未解析 SpacePrivacyRepository×3；等对应桌面替身或桌面实现
 feature/settings/ThemeCustomColorPickerDialog.kt	编译不过（16 处）：未解析 horizontalPadding×3；Overload resolution ambiguity between candidates:×2；Unresolved reference. None of the following candid×2；等对应桌面替身或桌面实现
-feature/settings/ThemeHomePreview.kt	编译不过（2 处）：未解析 drawable×2；等对应桌面替身或桌面实现
+feature/settings/ThemeHomePreview.kt	图标资源已接通后可直编（TON-1072）；移出随设置迁移（TON-1116）
 feature/settings/WallpaperCompatibilitySettings.kt	编译不过（32 处）：未解析 Toast×10；未解析 WallpaperManager×4；未解析 rememberLauncherForActivityResult×2；等对应桌面替身或桌面实现
 feature/settings/WallpaperPaletteEditor.kt	编译不过（2 处）：No parameter with name '_' found.×2；等对应桌面替身或桌面实现
 feature/settings/diagnostics/StartupRecoveryActivity.kt	编译不过（93 处）：Cannot infer type for type parameter '_'. Specify ×13；未解析 widget×5；未解析 Intent×4；等对应桌面替身或桌面实现
@@ -83,18 +83,18 @@ feature/settings/screen/AnimationSettingsScreen.kt	编译不过（53 处）：�
 feature/settings/screen/AppearanceSettingsScreen.kt	编译不过（94 处）：Cannot infer type for type parameter '_'. Specify ×15；Overload resolution ambiguity between candidates:×9；未解析 Toast×6；等对应桌面替身或桌面实现
 feature/settings/screen/BlockedListFileService.kt	编译不过（6 处）：Cannot infer type for type parameter '_'. Specify ×4；未解析 openOutputStream×1；未解析 write×1；等对应桌面替身或桌面实现
 feature/settings/screen/BlockedListScreen.kt	编译不过（46 处）：Cannot infer type for type parameter '_'. Specify ×9；Cannot infer type for value parameter '_'. Specify×6；未解析 rememberLauncherForActivityResult×3；等对应桌面替身或桌面实现
-feature/settings/screen/BottomBarSettingsScreen.kt	编译不过（113 处）：Overload resolution ambiguity between candidates:×25；未解析 id×19；未解析 drawable×16；等对应桌面替身或桌面实现
+feature/settings/screen/BottomBarSettingsScreen.kt	编译不过（166 处）：@Composable invocations can only happen from the c×39；Overload resolution ambiguity between candidates:×25；未解析 id×19；等对应桌面替身或桌面实现
 feature/settings/screen/CommentFraudHistoryScreen.kt	编译不过（82 处）：未解析 Toast×22；Cannot infer type for type parameter '_'. Specify ×16；未解析 CommentFraudRepository×8；等对应桌面替身或桌面实现
-feature/settings/screen/IconSettingsScreen.kt	编译不过（26 处）：未解析 mipmap×14；Overload resolution ambiguity between candidates:×3；未解析 it×2；等对应桌面替身或桌面实现
-feature/settings/screen/JsonPluginEditorScreen.kt	编译不过（3 处）：未解析 drawable×3；等对应桌面替身或桌面实现
+feature/settings/screen/IconSettingsScreen.kt	编译不过（23 处）：Conflicting overloads:×3；Overload resolution ambiguity between candidates:×3；Cannot infer type for type parameter '_'. Specify ×3；等对应桌面替身或桌面实现
+feature/settings/screen/JsonPluginEditorScreen.kt	图标资源已接通后可直编（TON-1072）；移出随设置迁移（TON-1116）
 feature/settings/screen/LoginActivitySettingsScreen.kt	编译不过（63 处）：Cannot infer type for type parameter '_'. Specify ×24；未解析 loading×4；未解析 identity×3；等对应桌面替身或桌面实现
 feature/settings/screen/MessageNotificationSettingsScreen.kt	编译不过（78 处）：@Composable invocations can only happen from the c×20；未解析 Toast×16；Cannot infer type for type parameter '_'. Specify ×8；等对应桌面替身或桌面实现
 feature/settings/screen/OpenSourceLicensesScreen.kt	编译不过（6 处）：Overload resolution ambiguity between candidates:×1；未解析 name×1；None of the following candidates is applicable:×1；等对应桌面替身或桌面实现
-feature/settings/screen/PermissionSettingsScreen.kt	编译不过（37 处）：未解析 drawable×9；未解析 Manifest×5；未解析 Intent×3；等对应桌面替身或桌面实现
-feature/settings/screen/PlaybackSettingsScreen.kt	编译不过（52 处）：未解析 Settings×6；Cannot infer type for type parameter '_'. Specify ×6；未解析 drawable×5；等对应桌面替身或桌面实现
-feature/settings/screen/PluginsScreen.kt	编译不过（115 处）：未解析 drawable×42；未解析 widget×20；Cannot infer type for value parameter '_'. Specify×9；等对应桌面替身或桌面实现
+feature/settings/screen/PermissionSettingsScreen.kt	编译不过（29 处）：未解析 Manifest×5；未解析 Intent×3；未解析 localNetworkRuntimePermissions×3；等对应桌面替身或桌面实现
+feature/settings/screen/PlaybackSettingsScreen.kt	编译不过（593 处）：@Composable invocations can only happen from the c×266；未解析 SettingsItemAnchor×110；未解析 playbackSettingTitle×78；等对应桌面替身或桌面实现
+feature/settings/screen/PluginsScreen.kt	编译不过（95 处）：未解析 widget×20；未解析 SettingsFunctionIcon×19；Cannot infer type for value parameter '_'. Specify×9；等对应桌面替身或桌面实现
 feature/settings/screen/SettingsCategoryScreen.kt	编译不过（1 处）：Type argument for reified type parameter '_' was i×1；等对应桌面替身或桌面实现
-feature/settings/screen/SettingsNavigationIconPreviewPolicy.kt	编译不过（50 处）：未解析 drawable×38；未解析 vectorResource×3；未解析 FavoritesFill×2；等对应桌面替身或桌面实现
+feature/settings/screen/SettingsNavigationIconPreviewPolicy.kt	编译不过（11 处）：Conflicting overloads:×2；未解析 FavoritesFill×2；未解析 RecordingTape×2；等对应桌面替身或桌面实现
 feature/settings/screen/SettingsScreen.kt	编译不过（84 处）：未解析 Toast×26；未解析 Intent×7；Cannot infer type for type parameter '_'. Specify ×6；等对应桌面替身或桌面实现
 feature/settings/screen/SettingsSearchScreen.kt	编译不过（3 处）：Type argument for reified type parameter '_' was i×1；未解析 nearby×1；Cannot infer type for type parameter '_'. Specify ×1；等对应桌面替身或桌面实现
 feature/settings/screen/SettingsSearchUi.kt	编译不过（2 处）：No parameter with name '_' found.×1；No value passed for parameter '_'.×1；等对应桌面替身或桌面实现
@@ -102,8 +102,8 @@ feature/settings/screen/SettingsTabletRouteShell.kt	编译不过（10 处）：�
 feature/settings/screen/SettingsTabletShell.kt	编译不过（1 处）：Argument type mismatch: actual type is '_', but '_×1；等对应桌面替身或桌面实现
 feature/settings/screen/SkinCatalogScreen.kt	编译不过（4 处）：None of the following candidates is applicable:×1；未解析 data×1；未解析 build×1；等对应桌面替身或桌面实现
 feature/settings/screen/SpacePrivacySettingsScreen.kt	编译不过（3 处）：@Composable invocations can only happen from the c×2；Overload resolution ambiguity between candidates:×1；等对应桌面替身或桌面实现
-feature/settings/screen/TipsSettingsScreen.kt	编译不过（12 处）：未解析 drawable×12；等对应桌面替身或桌面实现
-feature/settings/share/SettingsShareScreen.kt	编译不过（46 处）：未解析 drawable×11；未解析 Intent×6；Cannot infer type for type parameter '_'. Specify ×4；等对应桌面替身或桌面实现
+feature/settings/screen/TipsSettingsScreen.kt	编译不过（2 处）：Conflicting overloads:×1；未解析 SettingsFunctionIcon×1；等对应桌面替身或桌面实现
+feature/settings/share/SettingsShareScreen.kt	编译不过（79 处）：Cannot infer type for type parameter '_'. Specify ×7；未解析 Intent×6；未解析 isBusy×6；等对应桌面替身或桌面实现
 feature/settings/share/SettingsShareService.kt	编译不过（60 处）：Overload resolution ambiguity between candidates:×14；Cannot infer type for type parameter '_'. Specify ×12；未解析 Configuration×4；等对应桌面替身或桌面实现
 feature/settings/share/SettingsShareViewModel.kt	编译不过（11 处）：未解析 Application×3；未解析 AndroidViewModel×2；未解析 applicationContext×2；等对应桌面替身或桌面实现
 feature/settings/ui/SettingsPageScaffold.kt	编译不过（1 处）：未解析 settingsIconColors×1；等对应桌面替身或桌面实现
@@ -114,6 +114,6 @@ feature/settings/update/AppUpdateDownloadWorker.kt	编译不过（83 处）：�
 feature/settings/update/AppUpdateDownloader.kt	编译不过（1 处）：未解析 sanitizeAppUpdateFileName×1；等对应桌面替身或桌面实现
 feature/settings/update/AppUpdateInstaller.kt	编译不过（24 处）：未解析 Intent×7；Cannot infer type for type parameter '_'. Specify ×4；未解析 addFlags×3；等对应桌面替身或桌面实现
 feature/settings/webdav/WebDavAutoBackupWorker.kt	编译不过（26 处）：未解析 work×7；Cannot infer type for type parameter '_'. Specify ×4；No value passed for parameter '_'.×3；等对应桌面替身或桌面实现
-feature/settings/webdav/WebDavBackupScreen.kt	编译不过（18 处）：未解析 drawable×13；未解析 Reset×2；未解析 UploadCloud×2；等对应桌面替身或桌面实现
+feature/settings/webdav/WebDavBackupScreen.kt	编译不过（55 处）：未解析 config×9；Cannot infer type for type parameter '_'. Specify ×7；未解析 statusMessage×5；等对应桌面替身或桌面实现
 feature/settings/webdav/WebDavBackupViewModel.kt	编译不过（11 处）：Unresolved reference. None of the following candid×4；未解析 AndroidViewModel×2；未解析 Application×2；等对应桌面替身或桌面实现
 feature/space/SeasonSeriesDetailViewModel.kt	上游改为继承 feature/list 的 BaseListViewModel（accountRequests、onAccountChanged、Application 与 Toast），feature/list 还没迁；合集/系列详情页继续用 original-favorites 生产者的副本，由 DesktopOriginalFavoritesHost 承接，随 feature/list 一起迁
