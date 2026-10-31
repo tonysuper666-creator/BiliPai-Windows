@@ -86,6 +86,61 @@ class DesktopOriginalNativeRecoveryAdmissionTest {
         override fun close() { actor.close(); owner.close(); caller.cancel(); player.close() }
     }
 
+    @OptIn(androidx.compose.ui.ExperimentalComposeUiApi::class)
+    @Test fun bufferingCompositionPairsRealListenerJobsAcrossPlayerReplacement() = runBlocking(Dispatchers.Swing) {
+        Fixture().use { first -> Fixture().use { second ->
+            val scope = CoroutineScope(SupervisorJob() + Dispatchers.Swing)
+            fun control(f: Fixture) = DesktopOriginalMpvSectionControl(f.player,
+                { f.owner.current()?.sourceVersion }, { f.entry },
+                { action -> f.owner.admitPlaybackDispatch(f.accepted, action) }, { false }, {}, {},
+                { _, _, _, _ -> }, scope, MutableStateFlow<Long?>(f.accepted.sourceVersion),
+                { action -> f.owner.admitPlaybackDispatch(f.accepted, action) })
+            val a = control(first); val b = control(second)
+            val chosen = androidx.compose.runtime.mutableStateOf(a)
+            val shown = androidx.compose.runtime.mutableStateOf(true)
+            @Suppress("UNCHECKED_CAST")
+            fun registrations(c: DesktopOriginalMpvSectionControl) = c.javaClass.getDeclaredField("registrations")
+                .apply { isAccessible = true }.get(c) as Map<Any, Job>
+            @Suppress("UNCHECKED_CAST")
+            fun update(f: Fixture, paused: Boolean) {
+                val state = MpvPlayer::class.java.getDeclaredField("mutableState").apply { isAccessible = true }
+                    .get(f.player) as MutableStateFlow<PlayerState>
+                state.value = state.value.copy(paused = paused, loading = true)
+            }
+            val errors = mutableListOf<Throwable>()
+            val scene = androidx.compose.ui.ImageComposeScene(80, 80, androidx.compose.ui.unit.Density(1f),
+                coroutineContext = scope.coroutineContext + CoroutineExceptionHandler { _, e -> errors += e }) {
+                androidx.compose.runtime.CompositionLocalProvider(com.android.purebilibili.core.ui.LocalSystemReduceMotion provides true) {
+                    if (shown.value) com.android.purebilibili.feature.video.ui.overlay.PlayerBufferingIndicator(
+                        chosen.value, tint = androidx.compose.ui.graphics.Color.White)
+                }
+            }
+            fun nodes(n: androidx.compose.ui.semantics.SemanticsNode): List<androidx.compose.ui.semantics.SemanticsNode> = listOf(n) + n.children.flatMap(::nodes)
+            fun loading() = scene.semanticsOwners.flatMap { nodes(it.unmergedRootSemanticsNode) }.any {
+                it.config.contains(androidx.compose.ui.semantics.SemanticsProperties.ContentDescription) &&
+                    it.config[androidx.compose.ui.semantics.SemanticsProperties.ContentDescription].contains("加载中") }
+            var time = 0L
+            suspend fun frame() { yield(); androidx.compose.runtime.snapshots.Snapshot.sendApplyNotifications(); scene.render(time).close(); time += 16_000_000; yield(); assertTrue(errors.isEmpty(), errors.toString()) }
+            suspend fun awaitCondition(check: () -> Boolean) { withTimeout(5000) { while (!check()) frame() }; frame() }
+            try {
+                awaitCondition { registrations(a).size == 1 }
+                val firstJob = registrations(a).values.single()
+                repeat(3) { frame() }; assertSame(firstJob, registrations(a).values.single())
+                update(first, false); awaitCondition { loading() }
+                update(first, true); awaitCondition { !loading() }
+                chosen.value = b; frame(); awaitCondition { registrations(b).size == 1 }
+                assertTrue(firstJob.isCancelled); assertTrue(registrations(a).isEmpty())
+                val secondJob = registrations(b).values.single()
+                update(second, false); awaitCondition { loading() }
+                second.entry = false; update(second, true); repeat(3) { frame() }
+                assertTrue(loading(), "retired owner cannot deliver a new UI state")
+                shown.value = false; frame(); awaitCondition { registrations(b).isEmpty() }
+                assertTrue(secondJob.isCancelled); assertFalse(loading())
+                repeat(3) { frame() }; assertTrue(registrations(a).isEmpty()); assertTrue(registrations(b).isEmpty())
+            } finally { scene.close(); scope.cancel(); scope.coroutineContext[Job]!!.join() }
+        } }
+    }
+
     @Test fun sharedSessionUsesInstalledNativeSeekAndRejectsRetiredEntry() = runBlocking<Unit> {
         Fixture().use { f ->
             val scope = CoroutineScope(SupervisorJob() + Dispatchers.Swing)

@@ -3121,7 +3121,8 @@ val upstreamOwnedGeneratedCopies = setOf(
     "audio/com/android/purebilibili/data/repository/DesktopFavoriteRequestException.kt",
     "bgm-detail/com/android/purebilibili/data/model/CommentFraudStatus.kt",
     "original-favorites/com/android/purebilibili/core/store/DesktopFavoriteAccountIdentity.kt",
-    "original-video-state-core/com/android/purebilibili/data/repository/DesktopOriginalVideoRequestAccountScope.kt"
+    "original-video-state-core/com/android/purebilibili/data/repository/DesktopOriginalVideoRequestAccountScope.kt",
+    "original-video-fullscreen-pager/com/android/purebilibili/feature/video/ui/overlay/PortraitFullscreenOverlay.kt"
 )
 
 // Generated legacy files that mix desktop code with declarations upstream now owns, or that call
