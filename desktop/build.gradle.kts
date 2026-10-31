@@ -315,6 +315,8 @@ val appCoreLaterSteps: Map<String, String> = mapOf(
 // M4a: video/bangumi logic and unchanged Compose components compile from the merged upstream tree.
 // The remaining UI/player files move when their desktop platform adapters are wired.
 val migratedVideoFeaturePaths = setOf(
+    "com/android/purebilibili/feature/bangumi/BangumiDetailHeroBackdrop.kt",
+    "com/android/purebilibili/feature/bangumi/BangumiDetailScreen.kt",
     "com/android/purebilibili/feature/bangumi/BangumiViewModel.kt",
     "com/android/purebilibili/feature/video/ui/components/DanmakuContextMenu.kt",
     "com/android/purebilibili/feature/video/ui/components/DanmakuActionToolbar.kt",
@@ -2950,6 +2952,7 @@ val upstreamOwnedGeneratedCopies = setOf(
     // core/ui/components/UserLevelBadge (TON-1072): the upstream file draws its R.drawable level badges through the generated
     // desktop drawable table, so the blocked-list producer's classpath-PNG copy is retired.
     "blocked-list-ui/com/android/purebilibili/core/ui/components/DesktopUpstreamUserLevelBadge.kt",
+    "independent-bangumi-pages/com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiDetailScreen.kt",
     "independent-bangumi-pages/com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiViewModel.kt",
     "bgm-detail/com/android/purebilibili/feature/video/ui/components/DesktopOriginalCommentSortHeader.kt",
     "original-video-content-full/com/android/purebilibili/feature/video/ui/components/DesktopOriginalCommentSortFilterBar.kt",
