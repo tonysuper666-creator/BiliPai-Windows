@@ -24,17 +24,18 @@
  internal val DanmakuReportReasons: List<Pair<String, Int>> = listOf(
      "违法违禁" to 1,
      "色情低俗" to 2,
-@@ -129,7 +145,8 @@
+@@ -129,7 +145,9 @@
      onBlockKeyword: () -> Unit = {},
      canBlockKeyword: Boolean = true,
      canBlockUser: Boolean = true,
 -    onBlockUser: () -> Unit = {}
 +    onBlockUser: () -> Unit = {},
 +    onReportWithExplanation: ((reason: Int, explanation: String, blockUser: Boolean) -> Unit)? = null,
++    durationMs: Long = 0L,
  ) {
      val context = LocalContext.current
      var currentPage by remember { mutableStateOf(DanmakuContextMenuPage.MAIN) }
-@@ -167,11 +184,8 @@
+@@ -167,11 +185,8 @@
                      label = "MenuTransition"
                  ) { page ->
                      when (page) {
@@ -48,7 +49,16 @@
                              onBack = { currentPage = DanmakuContextMenuPage.MAIN }
                          )
                          DanmakuContextMenuPage.RECALL_CONFIRM -> RecallConfirmMenu(
-@@ -554,3 +568,26 @@
+@@ -189,7 +204,7 @@
+                             voteLoading = voteLoading,
+                             canVote = canVote,
+                             canRecall = canRecall,
+-                            timestampJumpMs = timestampJumpMs,
++                            timestampJumpMs = timestampJumpMs?.takeIf { it > 0 && it < durationMs },
+                             onSeekToTimestamp = {
+                                 onSeekToTimestamp(it)
+                                 onDismiss()
+@@ -554,3 +569,26 @@
          thickness = 0.5.dp
      )
  }

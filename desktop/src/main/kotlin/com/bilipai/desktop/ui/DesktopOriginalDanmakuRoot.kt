@@ -28,6 +28,7 @@ import java.util.concurrent.atomic.AtomicBoolean
     presentation:DesktopDanmakuPresentation,
     viewport:DesktopDanmakuSettingsViewport,
     currentPositionMs:()->Long,
+    durationMs:()->Long,
     seekFromUser:(Long)->Unit,
     showSettings:Boolean,
     showPool:Boolean,
@@ -100,7 +101,7 @@ import java.util.concurrent.atomic.AtomicBoolean
             if(owned()) {
                 DesktopOriginalDanmakuHost(overlay,environment,session,platform,blocks,settingsScope,showPool,
                     currentPosition(),{if(owned())onDismissPool()},{preferences.currentSettings(settingsScope).blockRulesRaw},
-                    upOwnerUserHash,isSending,{text->if(owned())onSendSame(text)})
+                    upOwnerUserHash,isSending,{text->if(owned())onSendSame(text)},durationMs)
                 if(showSettings)DesktopOriginalDanmakuSettingsHost(preferences,presentation,viewport,platform,
                     syncEnabled,account!=null,cloudSync,previewTarget,{if(owned())onShowPool()},{if(owned())onDismissSettings()})
             }
