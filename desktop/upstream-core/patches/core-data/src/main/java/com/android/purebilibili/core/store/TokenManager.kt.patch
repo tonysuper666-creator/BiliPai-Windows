@@ -168,7 +168,7 @@
  
      fun getSessData(context: Context): Flow<String?> {
 -        return context.dataStore.data.map { prefs -> prefs[SESSDATA_KEY]?.let(SessionStorageCipher::decrypt) }
-+        return kotlinx.coroutines.flow.flowOf(com.bilipai.desktop.data.DesktopUpstreamCalls.tokens("TokenManager.getSessData").sessData) // Desktop (TON-1084)
++        return com.bilipai.desktop.data.DesktopUpstreamCalls.sessData("TokenManager.getSessData") // Desktop (TON-1084)
      }
  
      suspend fun clear(context: Context): Unit = sessionMutationMutex.withLock {

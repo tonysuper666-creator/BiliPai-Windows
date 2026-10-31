@@ -127,6 +127,31 @@ class DesktopUpstreamTokensTest {
         assertRefused { identity.first() }
     }
 
+    @Test fun flowsTakenEarlierAreCheckedAgainOnEveryLateCollection() = runBlocking {
+        // Logout and window close, each with a flow whose first collection only happens after its owner retired.
+        for (retire in listOf("logout", "window close")) {
+            val (repository, _) = repository(11L to "sess-a")
+            val (other, _) = repository(22L to "sess-b")
+            var open = true
+            val owner = repository.upstreamOwner(DesktopUpstreamPurpose.Main, { open })
+            val session = DesktopUpstreamCalls.withOwner(owner) { TokenManager.getSessData(context()) }
+            val identity = DesktopUpstreamCalls.withOwner(owner) { TokenManager.accountIdentity }
+            // Collected repeatedly while the owner is current, inside or outside its scope.
+            assertEquals("sess-a", session.first())
+            assertEquals("sess-a", withContext(Dispatchers.IO) { session.first() })
+            assertEquals(11L, identity.first().mid)
+            if (retire == "logout") repository.logout() else open = false
+            assertFalse(owner.isCurrent())
+            // Outside any owner, and inside another, current owner: neither may revive the retired one.
+            assertRefused { session.first() }
+            assertRefused { identity.first() }
+            val current = other.upstreamOwner(DesktopUpstreamPurpose.Main, { true })
+            assertRefused { DesktopUpstreamCalls.withOwnerScope(current) { session.first() } }
+            assertRefused { DesktopUpstreamCalls.withOwnerScope(current) { identity.value } }
+            DesktopUpstreamCalls.withOwner(current) { assertEquals("sess-b", runBlocking { TokenManager.getSessData(context()).first() }) }
+        }
+    }
+
     @Test fun playbackOwnerReadsTheMainAccountOfItsEpochAndRetiresWithItsRevision() = runBlocking {
         val (repository, sessions) = repository(22L to "sess-playback", 11L to "sess-main")
         assertTrue(sessions.setPlaybackAccountMid(22, sessions.generation) { true })

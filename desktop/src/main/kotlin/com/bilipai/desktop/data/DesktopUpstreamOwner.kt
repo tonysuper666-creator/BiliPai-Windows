@@ -202,6 +202,11 @@ internal object DesktopUpstreamCalls {
         requireOwner(entry).let { owner -> DesktopUpstreamOwnedState(owner, entry,
             com.android.purebilibili.core.store.AccountSessionIdentity(owner.tokens(entry).mid, owner.epoch)) }
 
+    /** TokenManager.getSessData: bound to the owner that asked for it. Every value read and every collection, however
+     * late and on whatever thread, checks that owner again, never the owner current at collection time. */
+    fun sessData(entry: String): kotlinx.coroutines.flow.StateFlow<String?> =
+        requireOwner(entry).let { owner -> DesktopUpstreamOwnedState(owner, entry, owner.tokens(entry).sessData) }
+
     /** Upstream session writes: login, logout, account switching and their storage belong to the desktop's own flow. */
     fun refuseSessionWrite(entry: String): Nothing = throw UnsupportedDesktopCapability(
         "$entry (an upstream session write)", "sign-in, sign-out and account switching use the desktop account flow; " +
