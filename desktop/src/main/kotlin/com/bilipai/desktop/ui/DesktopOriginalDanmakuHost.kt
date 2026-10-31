@@ -73,6 +73,12 @@ internal fun DesktopOriginalDanmakuHost(
                 onSendSame={text->if(environment.isOwned() && platform.isOwned() && !isSending)onSendSame(text)},
                 likedDanmakuIds=liked,onLikeDanmaku={dmid,like->session.likeDanmaku(dmid,like)},
                 onRecallDanmaku=session::recallDanmaku,onReportDanmaku={dmid,reason->session.reportDanmaku(dmid,reason)},
+                onReportDanmakuWithSender={dmid,userHash,reason,explanation,blockUser->
+                    session.reportDanmaku(dmid,reason,explanation) {
+                        if(blockUser && userHash.isNotBlank() && environment.isOwned() && platform.isOwned())
+                            block(DanmakuBlockActionTarget.USER,userHash)
+                    }
+                },
                 onBlockSender={block(DanmakuBlockActionTarget.USER,it)},onDismiss=onDismissPool)
         }
         if(menu.visible)DanmakuContextMenu(

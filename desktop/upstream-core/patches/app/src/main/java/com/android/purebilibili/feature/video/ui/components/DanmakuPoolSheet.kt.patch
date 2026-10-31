@@ -28,7 +28,15 @@
  import com.android.purebilibili.core.ui.AppAlertDialog
  import com.android.purebilibili.core.ui.AppShapes
  import com.android.purebilibili.core.ui.AppSurfaceTokens
-@@ -263,11 +260,7 @@
+@@ -80,6 +77,7 @@
+     modifier: Modifier = Modifier,
+     onRefreshSnapshot: (() -> List<DanmakuItem>)? = null,
+     onReportDanmakuWithDetails: ((dmid: Long, reason: Int, explanation: String, blockUser: Boolean) -> Unit)? = null,
++    onReportDanmakuWithSender: ((dmid: Long, userHash: String, reason: Int, explanation: String, blockUser: Boolean) -> Unit)? = null,
+ ) {
+     val context = LocalContext.current
+     var searchQuery by remember { mutableStateOf("") }
+@@ -263,11 +261,7 @@
                                  (upOwnerUserHash != null && item.userHash == upOwnerUserHash),
                              onItemClick = {
                                  onSeekTo(item.showAtTime)
@@ -41,12 +49,12 @@
                              },
                              onLongClick = {
                                  selectedItemForAction = item
-@@ -306,7 +299,36 @@
+@@ -306,11 +300,42 @@
                  )
              },
              text = {
 -                if (showReportReasons) {
-+                if (showReportReasons && onReportDanmakuWithDetails == null) {
++                if (showReportReasons && onReportDanmakuWithDetails == null && onReportDanmakuWithSender == null) {
 +                    Column(
 +                        modifier = Modifier.fillMaxWidth(),
 +                        verticalArrangement = Arrangement.spacedBy(10.dp),
@@ -79,7 +87,14 @@
                      DanmakuReportForm(
                          canBlockUser = item.userHash.isNotBlank() && !item.isSelf,
                          onSubmit = { reason, explanation, block ->
-@@ -373,10 +395,8 @@
+-                            if (onReportDanmakuWithDetails != null) {
++                            if (onReportDanmakuWithSender != null) {
++                                onReportDanmakuWithSender(item.danmakuId, item.userHash, reason, explanation, block)
++                            } else if (onReportDanmakuWithDetails != null) {
+                                 onReportDanmakuWithDetails(item.danmakuId, reason, explanation, block)
+                             } else {
+                                 onReportDanmaku(item.danmakuId, reason)
+@@ -373,10 +398,8 @@
                              modifier = Modifier
                                  .fillMaxWidth()
                                  .clickable {
@@ -92,7 +107,7 @@
                                      selectedItemForAction = null
                                  }
                                  .padding(vertical = 8.dp),
-@@ -494,7 +514,7 @@
+@@ -494,7 +517,7 @@
          modifier = modifier
              .fillMaxWidth()
              .clip(AppShapes.container(ContainerLevel.Card))
