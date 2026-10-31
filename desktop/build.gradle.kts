@@ -3116,7 +3116,7 @@ val generateUpstreamDrawableResources by tasks.registering {
                 else -> throw GradleException("$where: unsupported colour value `$reference`")
             }
         }
-        val reference = Regex("""="((?:@color|@android:color|\?attr|\?android:attr)/[\w.]+)"""")
+        val reference = Regex("=\"((?:@color|@android:color|\\?attr|\\?android:attr)/[\\w.]+)\"")
         fun resolveXml(text: String, dark: Boolean, where: String) = reference.replace(text) { "=\"" + resolveColour(it.groupValues[1], dark, where) + "\"" }
         val rows = mutableListOf<String>()
         val seen = mutableSetOf<String>() // type/name@night@density already taken by an earlier (app) module
