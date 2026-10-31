@@ -1,0 +1,42 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/home/components/cards/VideoCardOnlineCountStore.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/home/components/cards/VideoCardOnlineCountStore.kt
+@@ -202,15 +202,19 @@ private fun rememberActiveVideoCardOnlineCount(
+     cid: Long,
+     isVisibleInWindow: Boolean,
+ ): String {
+-    val onlineCountFlow = remember(bvid, cid) {
+-        defaultVideoCardOnlineCountStore.observe(
++    // Desktop (TON-1082): the Root's store (its desktop-owned fetch) when one is mounted; otherwise the upstream store,
++    // refreshed with a request owner captured from this window when the refresh starts.
++    val store = com.bilipai.desktop.ui.LocalDesktopVideoCardOnlineStore.current ?: defaultVideoCardOnlineCountStore
++    val upstreamSession = com.bilipai.desktop.data.LocalDesktopUpstreamSession.current
++    val onlineCountFlow = remember(store, bvid, cid) {
++        store.observe(
+             bvid = bvid,
+             cid = cid
+         )
+     }
+-    DisposableEffect(bvid, cid, onlineCountFlow) {
+-        defaultVideoCardOnlineCountStore.retain(bvid, cid)
+-        onDispose { defaultVideoCardOnlineCountStore.release(bvid, cid) }
++    DisposableEffect(store, bvid, cid, onlineCountFlow) {
++        store.retain(bvid, cid)
++        onDispose { store.release(bvid, cid) }
+     }
+     val workAllowed = isVisibleInWindow && LocalPageImageLoadingAllowed.current && LocalHomeCardAuxiliaryWorkAllowed.current
+     // Keep the last displayed text while home is covered or morphing. Dropping only the
+@@ -222,10 +226,10 @@ private fun rememberActiveVideoCardOnlineCount(
+ 
+     LaunchedEffect(bvid, cid, workAllowed) {
+         if (!workAllowed) return@LaunchedEffect
+-        defaultVideoCardOnlineCountStore.refreshIfNeeded(
+-            bvid = bvid,
+-            cid = cid
+-        )
++        if (store !== defaultVideoCardOnlineCountStore) store.refreshIfNeeded(bvid = bvid, cid = cid)
++        else com.bilipai.desktop.data.DesktopUpstreamSession.require(upstreamSession, "VideoCardOnlineCountStore").withOwner {
++            store.refreshIfNeeded(bvid = bvid, cid = cid)
++        }
+     }
+ 
+     return resolveVideoCardOnlineCountText(
