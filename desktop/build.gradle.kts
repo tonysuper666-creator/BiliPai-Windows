@@ -633,6 +633,11 @@ val migratedVideoFeaturePaths = setOf(
     "com/android/purebilibili/feature/video/viewmodel/RelatedVideoPublicationGate.kt",
     "com/android/purebilibili/feature/video/viewmodel/VideoCodecSessionPolicy.kt",
     "com/android/purebilibili/feature/video/viewmodel/VideoCommentLoadPolicy.kt",
+    "com/android/purebilibili/feature/video/viewmodel/VideoCommentViewModel.kt",
+    "com/android/purebilibili/feature/video/viewmodel/SubReplyPageRequest.kt",
+    "com/android/purebilibili/feature/video/viewmodel/SubReplySortPolicy.kt",
+    "com/android/purebilibili/feature/comment/CommentPagingSession.kt",
+    "com/android/purebilibili/feature/comment/SubReplyPagingSource.kt",
     "com/android/purebilibili/feature/video/viewmodel/VideoDetailUiState.kt",
     "com/android/purebilibili/feature/video/viewmodel/VideoDomainBinding.kt",
     "com/android/purebilibili/feature/video/viewmodel/VideoInteractionStatusRetry.kt",
@@ -2954,6 +2959,8 @@ val upstreamOwnedGeneratedCopies = setOf(
     // core/ui/components/UserLevelBadge (TON-1072): the upstream file draws its R.drawable level badges through the generated
     // desktop drawable table, so the blocked-list producer's classpath-PNG copy is retired.
     "blocked-list-ui/com/android/purebilibili/core/ui/components/DesktopUpstreamUserLevelBadge.kt",
+    "dynamic-editor/com/android/purebilibili/feature/video/viewmodel/DesktopOriginalDynamicCommentModels.kt",
+    "bgm-detail/com/android/purebilibili/feature/video/viewmodel/DesktopOriginalSubReplySortPolicy.kt",
     "independent-bangumi-pages/com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiDetailScreen.kt",
     "independent-bangumi-pages/com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiViewModel.kt",
     "bgm-detail/com/android/purebilibili/feature/video/ui/components/DesktopOriginalCommentSortHeader.kt",

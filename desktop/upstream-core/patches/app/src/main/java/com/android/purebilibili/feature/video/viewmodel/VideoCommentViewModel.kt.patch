@@ -1,0 +1,747 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoCommentViewModel.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoCommentViewModel.kt
+@@ -1,8 +1,5 @@
+ package com.android.purebilibili.feature.video.viewmodel
+ 
+-import android.content.Context
+-import android.net.Uri
+-import android.provider.OpenableColumns
+ import androidx.paging.LoadState
+ import androidx.paging.PagingConfig
+ import com.android.purebilibili.core.paging.ForwardPagingSession
+@@ -10,9 +7,6 @@
+ import com.android.purebilibili.feature.comment.CommentPageRequest
+ import com.android.purebilibili.feature.comment.SubReplyPageChunk
+ import com.android.purebilibili.feature.comment.subReplyPagingSource
+-import androidx.lifecycle.ViewModel
+-import androidx.lifecycle.viewModelScope
+-import com.android.purebilibili.core.network.NetworkModule
+ import com.android.purebilibili.data.model.CommentFraudStatus
+ import com.android.purebilibili.data.model.response.ReplyData
+ import com.android.purebilibili.data.model.response.CommentMainListContinuation
+@@ -20,10 +14,8 @@
+ import com.android.purebilibili.data.model.response.ReplyPage
+ import com.android.purebilibili.data.model.response.ReplyPicture
+ import com.android.purebilibili.data.model.response.ReplyVoteCard
+-import com.android.purebilibili.data.repository.CommentGrpcRepository
+-import com.android.purebilibili.data.repository.CommentRepository
++import com.android.purebilibili.data.repository.DesktopDynamicCommentGrpc as CommentGrpcRepository
+ import com.android.purebilibili.data.repository.CommentReadException
+-import com.android.purebilibili.data.repository.CommentFraudRepository
+ import com.android.purebilibili.data.repository.shouldStartCommentFraudDetection
+ import kotlinx.coroutines.flow.MutableSharedFlow
+ import kotlinx.coroutines.flow.MutableStateFlow
+@@ -31,6 +23,11 @@
+ import kotlinx.coroutines.flow.asStateFlow
+ import kotlinx.coroutines.flow.update
+ import kotlinx.coroutines.Job
++import kotlinx.coroutines.CoroutineScope
++import kotlinx.coroutines.CancellationException
++import kotlinx.coroutines.currentCoroutineContext
++import kotlinx.coroutines.ensureActive
++import kotlinx.coroutines.CoroutineStart
+ import kotlinx.coroutines.Dispatchers
+ import kotlinx.coroutines.withContext
+ import kotlinx.coroutines.launch
+@@ -165,19 +162,9 @@
+ )
+ 
+ // 楼中楼计数与末页判定规则已下沉 core-data；原包入口保留为同签名委托。
+-internal fun resolveSubReplyRemoteTotalCount(
+-    data: ReplyData,
+-    rootReply: ReplyItem? = null
+-): Int = com.android.purebilibili.data.repository.resolveSubReplyRemoteTotalCount(data, rootReply)
+-
+-internal fun resolveSubReplyLoadedTotalCount(
+-    rootReply: ReplyItem?,
+-    loadedReplyCount: Int,
+-    remoteReplyCount: Int,
+-    previousTotalCount: Int = 0
+-): Int = com.android.purebilibili.data.repository.resolveSubReplyLoadedTotalCount(
+-    rootReply, loadedReplyCount, remoteReplyCount, previousTotalCount
+-)
++
++
++
+ 
+ internal fun resolveSubReplyPageEnd(
+     cursorIsEnd: Boolean,
+@@ -191,15 +178,7 @@
+     cursorIsEnd, fetchedReplyCount, loadedReplyCount, remoteReplyCount, requestedPage, pageSize, restPage
+ )
+ 
+-internal fun resolveRoutedCommentRootReply(
+-    loadedReplies: List<ReplyItem>,
+-    remoteData: ReplyData?,
+-    rootReplyId: Long
+-): ReplyItem? {
+-    if (rootReplyId <= 0L) return null
+-    return loadedReplies.firstOrNull { it.rpid == rootReplyId }
+-        ?: remoteData?.root?.takeIf { it.rpid == rootReplyId }
+-}
++
+ 
+ internal fun shouldStartRoutedSubReplyOpen(
+     rootReplyId: Long,
+@@ -218,7 +197,19 @@
+     val isComplete: Boolean = false,
+ )
+ 
+-class VideoCommentViewModel : ViewModel() {
++internal class VideoCommentViewModel(
++    private val scope: CoroutineScope,
++    private val requests: DesktopVideoCommentRequests,
++) {
++    private suspend fun ensureRequestOwned() {
++        currentCoroutineContext().ensureActive()
++        if (!requests.isOwned()) throw CancellationException("Music comment owner retired")
++    }
++    private fun isPagingOwned(captured: Job, current: Job?): Boolean =
++        captured === current && captured.isActive && requests.isOwned()
++    private fun launchOwned(block: suspend CoroutineScope.() -> Unit): Job = scope.launch {
++        ensureRequestOwned(); block()
++    }
+     private val _commentState = MutableStateFlow(CommentUiState())
+     val commentState = _commentState.asStateFlow()
+ 
+@@ -256,6 +247,8 @@
+     private val _fullSearchReplies = MutableStateFlow<List<ReplyItem>>(emptyList())
+     val fullSearchReplies = _fullSearchReplies.asStateFlow()
+     private var fullSearchJob: Job? = null
++    private var fullSearchRequest: Any? = null
++    private var fullSearchSourceLease: Any? = null
+ 
+     /**
+      * 把当前评论首页写进进程内缓存，让「退出再进」「切走再回来」不必重新拉取。
+@@ -301,7 +294,7 @@
+         currentSubject = CommentSubjectKey(0L)
+         allReplies = emptyList()
+         _commentState.value = CommentUiState(
+-            currentMid = com.android.purebilibili.core.store.TokenManager.midCache ?: 0L,
++            currentMid = requests.currentMid(),
+             composerDrafts = _commentState.value.composerDrafts.reset()
+         )
+         dialogPagingSession = null
+@@ -323,7 +316,7 @@
+         expectedReplyCount: Int? = null,
+         commentType: Int = VIDEO_COMMENT_TYPE
+     ) {
+-        android.util.Log.d("CommentVM", " init called with aid=$aid, upMid=$upMid, currentAid=$currentAid, type=$commentType")
++
+         if (currentAid == aid && _commentState.value.upMid == upMid && currentSubject.type == commentType) {
+             // [修复] 即使视频相同，也刷新 currentMid（防止登录状态变化后不更新）
+             refreshCurrentMid()
+@@ -346,8 +339,8 @@
+         allReplies = emptyList()
+         resetFullCommentSearch()
+         // 获取当前登录用户 mid
+-        val myMid = com.android.purebilibili.core.store.TokenManager.midCache ?: 0L
+-        android.util.Log.d("CommentVM", " init: myMid=$myMid")
++        val myMid = requests.currentMid()
++
+         _commentState.value = CommentUiState(
+             sortMode = preferredSortMode,
+             upMid = upMid,
+@@ -376,10 +369,10 @@
+     
+     // [新增] 刷新当前登录用户 mid
+     fun refreshCurrentMid() {
+-        val myMid = com.android.purebilibili.core.store.TokenManager.midCache ?: 0L
++        val myMid = requests.currentMid()
+         val current = _commentState.value
+         if (current.currentMid != myMid) {
+-            android.util.Log.d("CommentVM", " refreshCurrentMid: ${current.currentMid} -> $myMid")
++
+             _commentState.value = current.copy(currentMid = myMid)
+         }
+     }
+@@ -389,7 +382,7 @@
+         val currentState = _commentState.value
+         if (currentState.sortMode == mode) return
+         
+-        android.util.Log.d("CommentVM", " setSortMode")
++
+         
+         commentLoadRequestId++
+         mainPagingSession = null
+@@ -465,18 +458,20 @@
+             )
+         }
+         var initialPageApplied = false
++        lateinit var pagingJob: Job
+         lateinit var session: CommentPagingSession
+         session = CommentPagingSession(
+             initial = CommentPageRequest(pageToLoad, if (pageToLoad == 1) null else currentState.mainListContinuation),
+             mainList = true,
+             load = { request ->
+-                CommentRepository.getMobileCommentsForSubject(
++                requests.getMobileCommentsForSubject(
+                     oid = requestSubject.oid, type = requestSubject.type, page = request.page,
+                     ps = VIDEO_COMMENT_PAGE_SIZE, mode = currentState.sortMode.apiMode,
+                     continuation = request.continuation, fallbackOnMissingLocation = requestSubject.type == 1
+                 ).getOrThrow()
+             },
+             onPage = success@ { request, data ->
++                if (!isPagingOwned(pagingJob, commentLoadJob)) return@success
+                 if (mainPagingSession !== session || requestId != commentLoadRequestId ||
+                     !shouldApplyCommentSubjectResult(requestSubject, currentSubject)) return@success
+                 val pageToLoad = request.page
+@@ -517,10 +512,7 @@
+                 // 手机入口已按所选接口解析末页；不因本页去重后没有新增而截断有效游标。
+                 val isEnd = data.cursor.isEnd
+                 
+-                android.util.Log.d(
+-                    "CommentVM",
+-                    " loadComments result: page=$pageToLoad, new=${newReplies.size}, hot=${hotReplies.size}, top=${topReplies.size}, total=${allReplies.size}, allCount=$totalCount, isEnd=$isEnd"
+-                )
++
+                 
+                 _commentState.value = current.copy(
+                     replies = combinedReplies.toImmutableList(),
+@@ -554,7 +546,8 @@
+                     cacheCurrentComments(combinedReplies)
+                 }
+             },
+-            onState = { loading, end, failure ->
++            onState = state@ { loading, end, failure ->
++                if (!isPagingOwned(pagingJob, commentLoadJob)) return@state
+                 if (mainPagingSession === session && requestId == commentLoadRequestId &&
+                     shouldApplyCommentSubjectResult(requestSubject, currentSubject)) {
+                     val blocked = (failure as? CommentReadException)?.commentInputBlocked == true
+@@ -570,36 +563,69 @@
+             }
+         )
+         mainPagingSession = session
+-        commentLoadJob = viewModelScope.launch { session.run() }
++        pagingJob = scope.launch(start = CoroutineStart.LAZY) { ensureRequestOwned(); session.run() }
++        commentLoadJob = pagingJob
++        pagingJob.start()
+     }
+ 
+     // --- [新增] 全量评论加载（供评论区搜索/充电评论过滤） ---
+ 
+-    fun loadAllCommentsForSearch() {
++    fun loadAllCommentsForSearch(
++        sourceLease: Any = requests,
++        stillSearchOwned: () -> Boolean = requests::isOwned,
++        admitSearch: ((() -> Unit) -> Boolean) = { action ->
++            if (requests.isOwned()) { action(); true } else false
++        },
++    ): Any? {
++        if (!requests.isOwned() || !stillSearchOwned()) return null
+         val state = _fullSearchState.value
+-        if (state.isLoading || state.isReady && state.error == null) return
++        if (fullSearchSourceLease === sourceLease && (state.isLoading || state.isReady && state.error == null)) return fullSearchRequest
+         val subject = currentSubject
+-        if (!subject.isValid) return
+-        fullSearchJob?.cancel()
+-        _fullSearchState.value = FullCommentSearchUiState(isLoading = true)
+-        fullSearchJob = viewModelScope.launch {
++        if (!subject.isValid) return null
++        val ticket = Any()
++        if (!admitSearch {
++                if (!requests.isOwned() || !stillSearchOwned()) throw CancellationException("Comment search source retired")
++                if (fullSearchSourceLease !== sourceLease) resetFullCommentSearch()
++                fullSearchJob?.cancel()
++                fullSearchSourceLease = sourceLease
++                fullSearchRequest = ticket
++                _fullSearchState.value = FullCommentSearchUiState(isLoading = true)
++            }) return null
++        val launched = scope.launch(start = kotlinx.coroutines.CoroutineStart.LAZY) {
++            val caller = currentCoroutineContext()[Job]!!
++            fun publish(action: () -> Unit) {
++                currentCoroutineContextCheck(caller)
++                if (!admitSearch {
++                        currentCoroutineContextCheck(caller)
++                        if (fullSearchRequest !== ticket || fullSearchSourceLease !== sourceLease ||
++                            !requests.isOwned() || !stillSearchOwned() ||
++                            !shouldApplyCommentSubjectResult(subject, currentSubject))
++                            throw CancellationException("Comment search request retired")
++                        action()
++                    }) throw CancellationException("Comment search publication retired")
++            }
++            try {
++            ensureRequestOwned()
++            publish { Unit }
+             val result = loadCommentSearchReplies(
+                 loadMain = { page, continuation ->
+-                    CommentRepository.getMobileCommentsForSubject(
++                    publish { Unit }
++                    requests.getMobileCommentsForSubject(
+                         oid = subject.oid, type = subject.type, page = page,
+                         ps = VIDEO_COMMENT_PAGE_SIZE, mode = CommentGrpcRepository.MODE_TIME,
+                         continuation = continuation,
+                     )
+                 },
+                 loadThread = { rootId, offset ->
+-                    CommentRepository.getMobileSortedSubCommentsForSubject(
++                    publish { Unit }
++                    requests.getMobileSortedSubCommentsForSubject(
+                         oid = subject.oid, type = subject.type, rootId = rootId,
+                         mode = CommentGrpcRepository.MODE_TIME, paginationOffset = offset,
+                         supplementLocations = false,
+                     )
+                 },
+                 onProgress = { progress ->
+-                    if (currentSubject == subject) {
++                    if (currentSubject == subject) publish {
+                         _fullSearchReplies.value = progress.replies
+                         _fullSearchState.value = FullCommentSearchUiState(
+                             isLoading = true, loadedCount = progress.loadedCount,
+@@ -608,7 +634,8 @@
+                     }
+                 },
+             )
+-            if (currentSubject != subject) return@launch
++            publish {
++            if (currentSubject != subject) throw CancellationException("Comment search subject retired")
+             _fullSearchReplies.value = result.replies
+             _fullSearchState.value = FullCommentSearchUiState(
+                 isReady = true,
+@@ -617,10 +644,40 @@
+                 totalCount = result.totalCount,
+                 error = result.error,
+             )
+-        }
++            }
++            } finally {
++                // Only this request may release its busy state; cleanup does not
++                // turn cancellation into an error or clear a successor's data.
++                if (fullSearchRequest === ticket && fullSearchSourceLease === sourceLease &&
++                    requests.isOwned() && stillSearchOwned()) admitSearch {
++                    if (fullSearchRequest === ticket && fullSearchSourceLease === sourceLease &&
++                        requests.isOwned() && stillSearchOwned())
++                        _fullSearchState.value = _fullSearchState.value.copy(isLoading = false)
++                }
++            }
++        }
++        fullSearchJob = launched
++        launched.start()
++        return ticket
++    }
++
++    private fun currentCoroutineContextCheck(caller: Job) {
++        caller.ensureActive()
++    }
++
++    fun cancelFullCommentSearch(expectedRequest: Any?, expectedSourceLease: Any): Boolean {
++        if (expectedRequest == null || fullSearchRequest !== expectedRequest ||
++            fullSearchSourceLease !== expectedSourceLease) return false
++        fullSearchRequest = null
++        fullSearchJob?.cancel()
++        fullSearchJob = null
++        _fullSearchState.value = _fullSearchState.value.copy(isLoading = false)
++        return true
+     }
+ 
+     fun resetFullCommentSearch() {
++        fullSearchRequest = null
++        fullSearchSourceLease = null
+         fullSearchJob?.cancel()
+         _fullSearchState.value = FullCommentSearchUiState()
+         _fullSearchReplies.value = emptyList()
+@@ -630,9 +687,7 @@
+ 
+     fun openSubReply(rootReply: ReplyItem, targetReplyId: Long = 0L) {
+         val requestSubject = currentSubject
+-        com.android.purebilibili.core.util.Logger.d("VideoInputTrace") {
+-            "subreply_click subjectValid=${requestSubject.isValid} visible=${_subReplyState.value.visible}"
+-        }
++
+         if (!requestSubject.isValid) return
+         subReplySession++
+         localSubReplies.clear()
+@@ -687,14 +742,15 @@
+             targetReplyId = targetReplyId.takeIf { it != rootReplyId } ?: 0L
+         )
+ 
+-        subReplyLoadJob = viewModelScope.launch {
+-            CommentRepository.getMobileSortedSubCommentsForSubject(
++        subReplyLoadJob = launchOwned {
++            requests.getMobileSortedSubCommentsForSubject(
+                 oid = routeSubject.oid,
+                 type = routeSubject.type,
+                 rootId = rootReplyId,
+                 mode = SubReplySortMode.TIME.apiMode,
+                 targetReplyId = targetReplyId
+             ).onSuccess { data ->
++                ensureRequestOwned()
+                 if (!shouldApplyCommentSubjectResult(routeSubject, currentSubject)) {
+                     return@onSuccess
+                 }
+@@ -739,6 +795,7 @@
+                     targetReplyId = targetReplyId.takeIf { it != rootReplyId } ?: 0L
+                 )
+             }.onFailure { error ->
++                ensureRequestOwned()
+                 if (!shouldApplyCommentSubjectResult(routeSubject, currentSubject)) {
+                     return@onFailure
+                 }
+@@ -971,19 +1028,21 @@
+         val targetReplyId = _subReplyState.value.targetReplyId.takeIf { page == 1 } ?: 0L
+         subReplyLoadJob?.cancel()
+         var appliedPages = 0
++        lateinit var pagingJob: Job
+         lateinit var session: ForwardPagingSession<SubReplyPageRequest, SubReplyPageChunk>
+         session = ForwardPagingSession(
+             config = PagingConfig(pageSize = 1, initialLoadSize = 1, prefetchDistance = 1, enablePlaceholders = false),
+             sourceFactory = {
+                 subReplyPagingSource(initialRequest = SubReplyPageRequest(page, paginationOffset)) { request ->
+-                    CommentRepository.getMobileSortedSubCommentsForSubject(
++                    requests.getMobileSortedSubCommentsForSubject(
+                         oid = subject.oid, type = subject.type, rootId = rootId, mode = sortMode.apiMode,
+                         targetReplyId = targetReplyId.takeIf { request.page == 1 } ?: 0L,
+                         paginationOffset = request.offset
+                     ).getOrThrow()
+                 }
+             },
+-            onChanged = { pages, states ->
++            onChanged = changed@ { pages, states ->
++                if (!isPagingOwned(pagingJob, subReplyLoadJob)) return@changed
+                 val current = _subReplyState.value
+                 if (subReplyPagingSession === session && states != null && shouldApplySubReplyResult(
+                         expectedSubject = subject, expectedRootId = rootId, currentSubject = currentSubject,
+@@ -1026,7 +1085,9 @@
+             }
+         )
+         subReplyPagingSession = session
+-        subReplyLoadJob = viewModelScope.launch { session.run() }
++        pagingJob = scope.launch(start = CoroutineStart.LAZY) { ensureRequestOwned(); session.run() }
++        subReplyLoadJob = pagingJob
++        pagingJob.start()
+     }
+ 
+     private fun loadConversationReplies(
+@@ -1049,14 +1110,16 @@
+         val rootId = root.rpid
+         subReplyPagingSession = null
+         subReplyLoadJob?.cancel()
++        lateinit var pagingJob: Job
+         lateinit var session: CommentPagingSession
+         session = CommentPagingSession(
+             initial = CommentPageRequest(page = page, offset = paginationOffset), mainList = false,
+-            load = { request -> CommentRepository.getDialogCommentsForSubject(
++            load = { request -> requests.getDialogCommentsForSubject(
+                 oid = subject.oid, type = subject.type, rootId = rootId, dialogId = dialogId,
+                 page = request.page, paginationOffset = request.offset
+             ).getOrThrow() },
+             onPage = success@ { request, data ->
++                if (!isPagingOwned(pagingJob, subReplyLoadJob)) return@success
+                 if (dialogPagingSession !== session) return@success
+                 val page = request.page
+                 val current = _subReplyState.value
+@@ -1090,7 +1153,8 @@
+                     grpcNextOffset = nextOffset
+                 )
+             },
+-            onState = { loading, end, failure ->
++            onState = state@ { loading, end, failure ->
++                if (!isPagingOwned(pagingJob, subReplyLoadJob)) return@state
+                 if (dialogPagingSession === session && shouldApplyConversationReplyResult(
+                         expectedSubject = subject, expectedRootId = rootId, expectedDialogId = dialogId,
+                         currentSubject = currentSubject, activeRootId = _subReplyState.value.rootReply?.rpid,
+@@ -1104,7 +1168,9 @@
+             }
+         )
+         dialogPagingSession = session
+-        subReplyLoadJob = viewModelScope.launch { session.run() }
++        pagingJob = scope.launch(start = CoroutineStart.LAZY) { ensureRequestOwned(); session.run() }
++        subReplyLoadJob = pagingJob
++        pagingJob.start()
+     }
+ 
+     private fun resolveConversationDialogId(anchorReply: ReplyItem): Long {
+@@ -1140,7 +1206,7 @@
+     
+     fun sendComment(
+         message: String,
+-        imageUris: List<Uri> = emptyList(),
++        imageUris: List<String> = emptyList(),
+         syncToDynamic: Boolean = false,
+         fraudDetectionEnabled: Boolean = true
+     ) {
+@@ -1165,7 +1231,7 @@
+         val sendDraftReplyRpid = sendReplyTarget?.rpid
+         val sentDraft = currentState.composerDrafts.drafts[commentComposerDraftKey(sendDraftReplyRpid)]
+         
+-        viewModelScope.launch {
++        launchOwned {
+             // [修复] 正确计算 root ID
+             // 如果是在二级评论页回复，root 为当前二级评论页的根评论 ID
+             // 如果是一级评论页回复某评论，root 为该评论 ID
+@@ -1180,6 +1246,7 @@
+             // parent 总是回复目标的 ID (如果没有回复目标，则是 0)
+             val parent = sendReplyTarget?.rpid ?: 0
+             
++            ensureRequestOwned()
+             val picturesResult = uploadCommentPictures(imageUris)
+             val pictures = picturesResult.getOrElse { error ->
+                 if (shouldApplyCommentSubjectResult(sendSubject, currentSubject)) {
+@@ -1188,9 +1255,9 @@
+                         sendError = error.message ?: "图片上传失败"
+                     )
+                 }
+-                return@launch
+-            }
+-            val result = CommentRepository.addCommentForSubject(
++                return@launchOwned
++            }
++            val result = requests.addCommentForSubject(
+                 oid = sendSubject.oid,
+                 type = sendSubject.type,
+                 message = message,
+@@ -1201,8 +1268,9 @@
+             )
+             
+             result.onSuccess { newReply ->
++                ensureRequestOwned()
+                 if (!shouldApplyCommentSubjectResult(sendSubject, currentSubject)) return@onSuccess
+-                android.util.Log.d("CommentVM", " sendComment success: newReply=${newReply?.rpid}, root=$root, parent=$parent")
++
+                 val latest = _commentState.value
+                 val current = latest.copy(
+                     composerDrafts = latest.composerDrafts.complete(
+@@ -1219,8 +1287,8 @@
+                 val rpidToCheck = newReply?.rpid ?: 0L
+                 if (rpidToCheck > 0L) {
+                     // 💾 发评成功瞬间立即在本地数据库记一笔
+-                    viewModelScope.launch {
+-                        com.android.purebilibili.data.repository.CommentFraudRepository.saveRecord(
++                    launchOwned {
++                        requests.saveFraudRecord(
+                             rpid = rpidToCheck,
+                             oid = sendSubject.oid,
+                             type = sendSubject.type,
+@@ -1256,7 +1324,7 @@
+                         )
+                     } else {
+                         // [修复] newReply 为 null 时，重新加载评论列表以显示新评论
+-                        android.util.Log.d("CommentVM", " sendComment: newReply is null, reloading comments...")
++
+                         _commentState.value = current.copy(
+                             isSending = false,
+                             sendError = null,
+@@ -1285,7 +1353,7 @@
+                         _subReplyState.value = currentSub.withSentSubReply(resolvedReply)
+                     } else if (newReply == null && canApplyToThread) {
+                         // [修复] newReply 为 null 时，重新加载二级评论列表
+-                        android.util.Log.d("CommentVM", " sendComment: sub-reply newReply is null, reloading...")
++
+                         dialogPagingSession = null
+                         subReplyPagingSession = null
+                         subReplyLoadJob?.cancel()
+@@ -1325,47 +1393,26 @@
+                     )
+                 }
+             }.onFailure { e ->
++                ensureRequestOwned()
+                 if (!shouldApplyCommentSubjectResult(sendSubject, currentSubject)) return@onFailure
+-                android.util.Log.e("CommentVM", " sendComment failed: ${e.message}")
++
+                 _commentState.value = _commentState.value.copy(isSending = false, sendError = e.message)
+             }
+         }
+     }
+ 
+-    private suspend fun uploadCommentPictures(imageUris: List<Uri>): Result<List<ReplyPicture>> {
+-        if (imageUris.isEmpty()) return Result.success(emptyList())
+-        val context = NetworkModule.appContext ?: return Result.failure(Exception("应用上下文不可用"))
+-        return withContext(Dispatchers.IO) {
+-            runCatching {
+-                imageUris.take(9).mapIndexed { index, uri ->
+-                    val fileName = queryDisplayName(context, uri)
+-                        ?: "comment_${System.currentTimeMillis()}_${index + 1}.jpg"
+-                    // 流式上传:空/15MB 校验在 CommentRepository 内完成,不再整文件读入内存。
+-                    CommentRepository.uploadCommentImage(
+-                        fileName = fileName,
+-                        mimeType = context.contentResolver.getType(uri) ?: "image/jpeg",
+-                        resolver = context.contentResolver,
+-                        uri = uri
+-                    ).getOrElse { throw it }
+-                }
+-            }
+-        }
+-    }
+-
+-    private fun queryDisplayName(context: Context, uri: Uri): String? {
+-        return runCatching {
+-            context.contentResolver.query(
+-                uri,
+-                arrayOf(OpenableColumns.DISPLAY_NAME),
+-                null,
+-                null,
+-                null
+-            )?.use { cursor ->
+-                val index = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+-                if (index >= 0 && cursor.moveToFirst()) cursor.getString(index) else null
+-            }
+-        }.getOrNull()
+-    }
++    private suspend fun uploadCommentPictures(imageUris: List<String>): Result<List<ReplyPicture>> =
++        withContext(Dispatchers.IO) {
++            try {
++                Result.success(imageUris.take(9).mapIndexed { index, uri ->
++                    ensureRequestOwned()
++                    requests.uploadCommentPicture(uri, index).getOrElse { throw it }
++                })
++            } catch (cancelled: CancellationException) { throw cancelled }
++            catch (failure: Exception) { ensureRequestOwned(); Result.failure(failure) }
++        }
++
++
+     
+     fun beginCommentDraft() {
+         _commentState.update { it.copy(composerDrafts = it.composerDrafts.open(), sendError = null) }
+@@ -1375,7 +1422,7 @@
+         sessionId: Long,
+         replyRpid: Long?,
+         text: String,
+-        imageUris: List<Uri>,
++        imageUris: List<String>,
+         syncToDynamic: Boolean
+     ) {
+         _commentState.update {
+@@ -1405,13 +1452,14 @@
+             hatedComments = newHatedComments.toImmutableSet()
+         )
+         
+-        viewModelScope.launch {
+-            CommentRepository.likeCommentForSubject(
++        launchOwned {
++            requests.likeCommentForSubject(
+                 oid = currentSubject.oid,
+                 type = currentSubject.type,
+                 rpid = rpid,
+                 like = !isCurrentlyLiked
+             ).onFailure {
++                ensureRequestOwned()
+                 _commentState.value = _commentState.value.copy(likedComments = currentState.likedComments, hatedComments = currentState.hatedComments)
+             }
+         }
+@@ -1427,13 +1475,14 @@
+             hatedComments = newHatedComments.toImmutableSet()
+         )
+         
+-        viewModelScope.launch {
+-            CommentRepository.hateCommentForSubject(
++        launchOwned {
++            requests.hateCommentForSubject(
+                 oid = currentSubject.oid,
+                 type = currentSubject.type,
+                 rpid = rpid,
+                 hate = !isCurrentlyHated
+             ).onFailure {
++                ensureRequestOwned()
+                 _commentState.value = _commentState.value.copy(likedComments = currentState.likedComments, hatedComments = currentState.hatedComments)
+             }
+         }
+@@ -1442,8 +1491,8 @@
+ 
+     
+     fun reportComment(rpid: Long, reason: Int, content: String = "") {
+-        viewModelScope.launch {
+-            CommentRepository.reportCommentForSubject(
++        launchOwned {
++            requests.reportCommentForSubject(
+                 oid = currentSubject.oid,
+                 type = currentSubject.type,
+                 rpid = rpid,
+@@ -1457,16 +1506,18 @@
+         if (currentSubject.oid <= 0L || reply.rpid <= 0L) return
+         val current = _commentState.value
+         val isCurrentlyTop = reply.rpid in current.pinnedReplyIds || reply.replyControl?.isUpTop == true
+-        viewModelScope.launch {
+-            CommentRepository.setCommentTopForSubject(
++        launchOwned {
++            requests.setCommentTopForSubject(
+                 oid = currentSubject.oid,
+                 type = currentSubject.type,
+                 rpid = reply.rpid,
+                 isCurrentlyTop = isCurrentlyTop
+             ).onSuccess {
++                ensureRequestOwned()
+                 requestComments(refresh = true, forceRefresh = true)
+             }.onFailure { error ->
+-                android.util.Log.e("CommentVM", "toggleTopComment failed: ${error.message}")
++                ensureRequestOwned()
++
+             }
+         }
+     }
+@@ -1491,8 +1542,8 @@
+             fraudDetectResult = null,
+             fraudDetectRpid = rpid
+         )
+-        viewModelScope.launch {
+-            val result = CommentRepository.checkCommentStatus(
++        launchOwned {
++            val result = requests.checkCommentStatus(
+                 aid = aid,
+                 rpid = rpid,
+                 rootId = rootId,
+@@ -1501,8 +1552,9 @@
+                 waitMs = waitMs
+             )
+             result.onSuccess { status ->
+-                android.util.Log.d("CommentVM", "评论反诈检测结果: $status (rpid=$rpid)")
+-                CommentFraudRepository.saveRecord(
++                ensureRequestOwned()
++
++                requests.saveFraudRecord(
+                     rpid = rpid,
+                     oid = aid,
+                     type = 1,
+@@ -1520,7 +1572,8 @@
+                 // 发射 one-shot event 给 UI 弹窗
+                 _fraudEvent.tryEmit(status)
+             }.onFailure { e ->
+-                android.util.Log.e("CommentVM", "评论反诈检测失败: ${e.message}")
++                ensureRequestOwned()
++
+                 _commentState.value = _commentState.value.copy(
+                     isDetectingFraud = false
+                 )
+@@ -1588,16 +1641,17 @@
+         )
+ 
+         // 发起网络请求
+-        viewModelScope.launch {
+-            CommentRepository.deleteCommentForSubject(
++        launchOwned {
++            requests.deleteCommentForSubject(
+                 oid = currentSubject.oid,
+                 type = currentSubject.type,
+                 rpid = rpid
+             ).onFailure { e ->
++                ensureRequestOwned()
+                 // 如果删除失败，可能需要恢复? 暂时只需提示
+                 // 实际场景中很少失败，除非网络极差
+                 // 若要严格一致性，可以在这里重新加载评论列表
+-                android.util.Log.e("CommentVM", "Delete failed for $rpid: ${e.message}")
++
+             }
+         }
+     }
+@@ -1634,17 +1688,18 @@
+             }
+         }
+ 
+-        android.util.Log.d("CommentVM", " deleteSubComment: rpid=$rpid, remaining=${updatedItems.size}")
++
+         
+         // 发起网络删除请求（使用 rootReply 的 oid）
+         val oid = currentSubject.oid.takeIf { it > 0L } ?: return
+-        viewModelScope.launch {
+-            CommentRepository.deleteCommentForSubject(
++        launchOwned {
++            requests.deleteCommentForSubject(
+                 oid = oid,
+                 type = currentSubject.type,
+                 rpid = rpid
+             ).onFailure { e ->
+-                android.util.Log.e("CommentVM", "Delete sub-comment failed for $rpid: ${e.message}")
++                ensureRequestOwned()
++
+             }
+         }
+     }

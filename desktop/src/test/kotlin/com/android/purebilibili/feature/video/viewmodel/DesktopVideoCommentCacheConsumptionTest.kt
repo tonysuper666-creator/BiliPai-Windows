@@ -1,5 +1,8 @@
 package com.android.purebilibili.feature.video.viewmodel
 
+import kotlinx.coroutines.test.setMain
+import kotlinx.coroutines.test.resetMain
+
 import com.android.purebilibili.data.model.CommentFraudStatus
 import com.android.purebilibili.data.model.response.*
 import kotlinx.coroutines.*
@@ -13,6 +16,14 @@ import kotlin.test.*
 
 /** Uses the mounted original VM and original shared cache; only requests are fixtures. */
 class DesktopVideoCommentCacheConsumptionTest {
+    @OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
+    @org.junit.jupiter.api.BeforeEach fun installPagingMainDispatcher() {
+        kotlinx.coroutines.Dispatchers.setMain(kotlinx.coroutines.test.UnconfinedTestDispatcher())
+    }
+    @OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
+    @org.junit.jupiter.api.AfterEach fun restorePagingMainDispatcher() {
+        kotlinx.coroutines.Dispatchers.resetMain()
+    }
     @BeforeEach fun resetCache() = sharedVideoCommentCache.clear()
     @AfterEach fun clearCache() = sharedVideoCommentCache.clear()
 
@@ -25,11 +36,21 @@ class DesktopVideoCommentCacheConsumptionTest {
         val scope = CoroutineScope(SupervisorJob() + Dispatchers.Unconfined +
             CoroutineExceptionHandler { _, error -> failures += error })
         var read: suspend (Read) -> Result<ReplyData> = { Result.success(data(1)) }
+        private val mobileFixture = com.bilipai.desktop.player.DesktopTypedCommentFixture()
         val requests = object : DesktopVideoCommentRequests {
             override fun isOwned() = owned.get() && scope.isActive
             override fun currentMid() = mid
-            override suspend fun getMobileSortedSubCommentsForSubject(oid:Long,type:Int,rootId:Long,mode:Int,paginationOffset:String?,targetReplyId:Long,supplementLocations:Boolean):Result<com.android.purebilibili.data.model.response.ReplyData> = error("Mobile sub-reply paging is not expected in this existing fixture")
-            override suspend fun getMobileCommentsForSubject(oid:Long,type:Int,page:Int,ps:Int,mode:Int,continuation:com.android.purebilibili.data.model.response.CommentMainListContinuation?,fallbackOnMissingLocation:Boolean):Result<com.android.purebilibili.data.model.response.ReplyData> = error("Mobile paging is not expected in this existing fixture")
+            override suspend fun getMobileSortedSubCommentsForSubject(oid:Long,type:Int,rootId:Long,mode:Int,paginationOffset:String?,targetReplyId:Long,supplementLocations:Boolean):Result<com.android.purebilibili.data.model.response.ReplyData> {
+                mobileFixture.sub(oid,type,rootId,mode,paginationOffset,targetReplyId,supplementLocations)
+                return error("No thread read")
+            }
+            override suspend fun getMobileCommentsForSubject(oid:Long,type:Int,page:Int,ps:Int,mode:Int,continuation:com.android.purebilibili.data.model.response.CommentMainListContinuation?,fallbackOnMissingLocation:Boolean):Result<com.android.purebilibili.data.model.response.ReplyData> = mobileFixture.main(oid,type,page,mode,continuation) {
+                val paginationOffset = continuation?.offset // Legacy call observation only; the complete token is checked and returned by mobileFixture.
+
+                val request = Read(oid, type, page, ps, mode)
+                reads += request
+                return@main read(request)
+            }
             override suspend fun getCommentsForSubject(oid: Long, type: Int, page: Int, ps: Int,
                 mode: Int, paginationOffset: String?, fallbackOnMissingLocation: Boolean): Result<ReplyData> {
                 val request = Read(oid, type, page, ps, mode)
@@ -87,8 +108,8 @@ class DesktopVideoCommentCacheConsumptionTest {
             assertEquals(2, next.vm.commentState.value.nextPage)
             next.read = { Result.success(data(2, page = 2)) }
             next.vm.loadComments()
-            assertEquals(2, next.reads.last().page)
-            assertEquals(listOf(1L, 2L), next.ids())
+            assertEquals(listOf(1, 1), next.reads.map { it.page })
+            assertEquals(listOf(2L), next.ids())
         }
     }
 

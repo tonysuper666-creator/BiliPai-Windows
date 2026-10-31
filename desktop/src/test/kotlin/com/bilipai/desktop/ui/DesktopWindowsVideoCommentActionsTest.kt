@@ -1,5 +1,8 @@
 package com.bilipai.desktop.ui
 
+import kotlinx.coroutines.test.setMain
+import kotlinx.coroutines.test.resetMain
+
 import com.android.purebilibili.data.model.CommentFraudStatus
 import com.android.purebilibili.data.model.response.*
 import com.android.purebilibili.feature.video.viewmodel.*
@@ -9,6 +12,14 @@ import kotlin.test.*
 /** Actual sole generated VM -> real UI dispatch -> required request port.
  * All transport is synthetic; no second production VM or account is introduced. */
 class DesktopWindowsVideoCommentActionsTest {
+    @OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
+    @org.junit.jupiter.api.BeforeEach fun installPagingMainDispatcher() {
+        kotlinx.coroutines.Dispatchers.setMain(kotlinx.coroutines.test.UnconfinedTestDispatcher())
+    }
+    @OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
+    @org.junit.jupiter.api.AfterEach fun restorePagingMainDispatcher() {
+        kotlinx.coroutines.Dispatchers.resetMain()
+    }
     private data class Call(val oid: Long, val type: Int, val page: Int, val ps: Int, val mode: Int, val offset: String?)
     private data class SubCall(val oid: Long, val type: Int, val root: Long, val target: Long)
     private class Harness(initialAid: Long = 170001L) : AutoCloseable {
@@ -25,11 +36,23 @@ class DesktopWindowsVideoCommentActionsTest {
         var search: suspend (Call) -> Result<ReplyData> = { Result.success(data(1, end = true)) }
         val failures = mutableListOf<Throwable>()
         val scope = CoroutineScope(SupervisorJob() + Dispatchers.Unconfined + CoroutineExceptionHandler { _, failure -> failures += failure })
+        private val mobileFixture = com.bilipai.desktop.player.DesktopTypedCommentFixture()
         val requests = object : DesktopVideoCommentRequests {
             override fun isOwned() = account
             override fun currentMid() = 111L
-            override suspend fun getMobileSortedSubCommentsForSubject(oid:Long,type:Int,rootId:Long,mode:Int,paginationOffset:String?,targetReplyId:Long,supplementLocations:Boolean):Result<com.android.purebilibili.data.model.response.ReplyData> = error("Mobile sub-reply paging is not expected in this existing fixture")
-            override suspend fun getMobileCommentsForSubject(oid:Long,type:Int,page:Int,ps:Int,mode:Int,continuation:com.android.purebilibili.data.model.response.CommentMainListContinuation?,fallbackOnMissingLocation:Boolean):Result<com.android.purebilibili.data.model.response.ReplyData> = error("Mobile paging is not expected in this existing fixture")
+            override suspend fun getMobileSortedSubCommentsForSubject(oid:Long,type:Int,rootId:Long,mode:Int,paginationOffset:String?,targetReplyId:Long,supplementLocations:Boolean):Result<com.android.purebilibili.data.model.response.ReplyData> {
+                mobileFixture.sub(oid,type,rootId,mode,paginationOffset,targetReplyId,supplementLocations)
+
+                val call=SubCall(oid,type,rootId,targetReplyId);subCalls+=call
+                return subResult(call)
+            }
+            override suspend fun getMobileCommentsForSubject(oid:Long,type:Int,page:Int,ps:Int,mode:Int,continuation:com.android.purebilibili.data.model.response.CommentMainListContinuation?,fallbackOnMissingLocation:Boolean):Result<com.android.purebilibili.data.model.response.ReplyData> = mobileFixture.main(oid,type,page,mode,continuation) {
+                val paginationOffset = continuation?.offset // Legacy call observation only; the complete token is checked and returned by mobileFixture.
+
+                val call = Call(oid, type, page, ps, mode, paginationOffset)
+                calls += call
+                return@main if (mode == 2) search(call) else Result.success(data(90, end = true))
+            }
             override suspend fun getCommentsForSubject(oid: Long, type: Int, page: Int, ps: Int, mode: Int,
                 paginationOffset: String?, fallbackOnMissingLocation: Boolean): Result<ReplyData> {
                 val call = Call(oid, type, page, ps, mode, paginationOffset)
