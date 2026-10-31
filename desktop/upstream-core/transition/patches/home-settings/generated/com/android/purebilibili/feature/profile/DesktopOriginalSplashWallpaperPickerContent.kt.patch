@@ -1,0 +1,64 @@
+--- a/x
++++ b/x
+@@ -107,28 +107,30 @@
+                 }
+             }
+         }
+     }
+     val openCustomWallpaperPicker = {
+         if (!isImportingWallpaper) {
+             customWallpaperPickerLauncher.launch()
+         }
+     }
+     val titleText = when (target) {
+         WallpaperPickerTarget.SPLASH -> "选择开屏壁纸"
+         WallpaperPickerTarget.HOME -> "选择首页壁纸"
++        WallpaperPickerTarget.SUBSCRIPTION_ARTICLE -> "选择正文壁纸"
+     }
+     val actionText = when (target) {
+         WallpaperPickerTarget.SPLASH -> "设为开屏壁纸"
+         WallpaperPickerTarget.HOME -> "设为首页壁纸"
++        WallpaperPickerTarget.SUBSCRIPTION_ARTICLE -> "设为正文壁纸"
+     }
+ 
+     // 初始化加载
+     LaunchedEffect(Unit) {
+         viewModel.loadOfficialWallpapers()
+     }
+     LaunchedEffect(officialWallpapers) {
+         val randomPool = resolveVisibleSplashWallpaperPool(officialWallpapers)
+         viewModel.setSplashRandomPoolUris(randomPool)
+     }
+ 
+     AppModalBottomSheet(
+@@ -334,24 +336,30 @@
+             AppSurface(
+                 shadowElevation = 8.dp,
+                 color = MaterialTheme.colorScheme.surface,
+                 modifier = Modifier.fillMaxWidth()
+             ) {
+                 Column(modifier = Modifier.padding(16.dp)) {
+                     val isSaving = saveState is WallpaperSaveState.Loading || isImportingWallpaper
+                     val saveSelectedWallpaper = {
+                         selectedUrl?.let { url ->
+                             when (target) {
+                                 WallpaperPickerTarget.SPLASH -> {
+                                     showSplashAdjustmentSheet = true
++                                }
++
++                                // Upstream's third target (SplashWallpaperRandomPoolPolicy, TON-1107). The desktop has no
++                                // article reader wallpaper entry that opens this picker, so it says so instead of saving.
++                                WallpaperPickerTarget.SUBSCRIPTION_ARTICLE -> {
++                                    bindings.notice("桌面版还不能设置正文壁纸")
+                                 }
+ 
+                                 WallpaperPickerTarget.HOME -> {
+                                     if (isUserSelectedSplashWallpaperUri(url)) {
+                                         viewModel.setCustomHomeWallpaper(uri = url) {
+                                             onDismiss()
+                                             bindings.notice("首页壁纸设置成功")
+                                         }
+                                     } else {
+                                         viewModel.setAsHomeWallpaper(
+                                             url = url,
+                                             saveToGallery = saveToGallery

@@ -53,7 +53,7 @@ def generate(repo,output,standalone=False):
     prelude=section[begin:end].rstrip()
     imports='''package com.android.purebilibili.feature.settings
 import androidx.compose.runtime.*
-import com.android.purebilibili.core.store.DesktopFeedSettings
+import com.android.purebilibili.core.store.SettingsManager
 import com.android.purebilibili.core.store.MIN_HOME_REFRESH_COUNT
 import com.android.purebilibili.core.store.MAX_HOME_REFRESH_COUNT
 import com.android.purebilibili.core.ui.components.AppSliderDialogPreference as SettingSliderItem
@@ -62,8 +62,8 @@ import kotlin.math.roundToInt
     body=imports+'''\n/** Partial original FeedApiSection: only controls backed by the actual shared recommendation store. */
 @Composable
 internal fun DesktopHomeRecommendationFields(
-    feedApiType: DesktopFeedSettings.FeedApiType,
-    onFeedApiTypeChange: (DesktopFeedSettings.FeedApiType) -> Unit,
+    feedApiType: SettingsManager.FeedApiType,
+    onFeedApiTypeChange: (SettingsManager.FeedApiType) -> Unit,
     homeRefreshCount: Int,
     onHomeRefreshCountChange: (Int) -> Unit,
 ) {
@@ -72,8 +72,7 @@ internal fun DesktopHomeRecommendationFields(
     files.append(host.write(output,path,original,body,'DesktopHomeRecommendationFields.kt'))
     path=BASE+'PlaybackSettingsSelectionPolicy.kt';original=read(repo,path)
     function=media.function(original,'resolveFeedApiSegmentOptions',parser)
-    function=function.replace('SettingsManager.FeedApiType','DesktopFeedSettings.FeedApiType')
-    body='package com.android.purebilibili.feature.settings\nimport com.android.purebilibili.core.store.DesktopFeedSettings\nimport com.android.purebilibili.core.ui.components.AppSegmentOption\n\n'+function
+    body='package com.android.purebilibili.feature.settings\nimport com.android.purebilibili.core.store.SettingsManager\nimport com.android.purebilibili.core.ui.components.AppSegmentOption\n\n'+function
     if standalone:
         files.append(host.write(output,path,original,body,'DesktopFeedApiSegmentOptions.kt'))
     else:

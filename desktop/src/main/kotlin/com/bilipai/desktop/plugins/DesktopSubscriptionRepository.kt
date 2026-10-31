@@ -25,6 +25,8 @@ class DesktopSubscriptionRepository(private val context: DesktopPluginContext,
     private val extraSources: suspend () -> DesktopSubscriptionExtraSources = { DesktopSubscriptionExtraSources() },
     private val extraSourceRevision: () -> Long = { 0 },
     private val enabled: () -> Boolean) {
+    /** Upstream feed stores take an Android Context over this plugin platform. */
+    private val upstreamContext = context.asAndroidContext()
     private val mutation = Mutex()
     private val generation = AtomicLong()
     @Volatile private var stopped = false
@@ -34,10 +36,10 @@ class DesktopSubscriptionRepository(private val context: DesktopPluginContext,
     suspend fun loadCached() = withContext(Dispatchers.IO) {
         check(!stopped) { "订阅服务已停止" }
         val token = generation.incrementAndGet()
-        val sources = SubscriptionFeedStore.list(context)
+        val sources = SubscriptionFeedStore.list(upstreamContext)
         val builtinEnabled = enabled()
         val extra = extraSources()
-        val reading = FeedReadingStore.load(context)
+        val reading = FeedReadingStore.load(upstreamContext)
         val builtinSources = if (builtinEnabled) sources.filter { it.enabled && isHttpFeedUrl(it.url) }
             .map { FeedSource("builtin:${it.id}", it.title, it.url, group = it.group) } else emptyList()
         val activeSources = (builtinSources + extra.sources.filter { isHttpFeedUrl(it.url) }).distinctBy { it.url }
@@ -49,14 +51,14 @@ class DesktopSubscriptionRepository(private val context: DesktopPluginContext,
     suspend fun refresh(): Unit = withContext(Dispatchers.IO) {
         check(!stopped) { "订阅服务已停止" }
         val token = generation.incrementAndGet()
-        val feeds = SubscriptionFeedStore.list(context)
+        val feeds = SubscriptionFeedStore.list(upstreamContext)
         val builtinEnabled = enabled()
         val extra = extraSources()
         val builtinSources = if (builtinEnabled) feeds.filter { it.enabled && isHttpFeedUrl(it.url) }
             .map { FeedSource("builtin:${it.id}", it.title, it.url, group = it.group) } else emptyList()
         val sources = (builtinSources + extra.sources.filter { isHttpFeedUrl(it.url) }).distinctBy { it.url }
         val ids = sources.map { it.id }.toSet()
-        val cache = FeedReadingStore.load(context)
+        val cache = FeedReadingStore.load(upstreamContext)
         fun current() = !stopped && token == generation.get() && enabled() == builtinEnabled &&
             extra.revision == extraSourceRevision()
         if (sources.isEmpty()) {
@@ -66,7 +68,7 @@ class DesktopSubscriptionRepository(private val context: DesktopPluginContext,
         }
         publishState(DesktopSubscriptionState(feeds, cache.copy(items = mergeCachedFeedItems(cache.items, emptyList(), ids)), loading = true, activeSources = sources)) { current() }
         try {
-            val result = loadFeedSources(sources, FeedConditionalStore.load(context)) { update ->
+            val result = loadFeedSources(sources, FeedConditionalStore.load(upstreamContext)) { update ->
                 if (current()) publishProgress(DesktopSubscriptionState(feeds,
                     cache.copy(items = mergeCachedFeedItems(cache.items, update.items, ids)), update.errors, loading = true, activeSources = sources)) { current() }
             }
@@ -75,9 +77,9 @@ class DesktopSubscriptionRepository(private val context: DesktopPluginContext,
             mutation.withLock {
                 if (!current()) return@withLock
                 DesktopSubscriptionWriteAdmission.whileCurrent(::current) {
-                FeedReadingStore.saveItems(context, merged)
-                if (result.validators.isNotEmpty()) FeedConditionalStore.update(context, result.validators)
-                publishState(DesktopSubscriptionState(SubscriptionFeedStore.list(context), FeedReadingStore.load(context), result.errors, activeSources = sources)) { current() }
+                FeedReadingStore.saveItems(upstreamContext, merged)
+                if (result.validators.isNotEmpty()) FeedConditionalStore.update(upstreamContext, result.validators)
+                publishState(DesktopSubscriptionState(SubscriptionFeedStore.list(upstreamContext), FeedReadingStore.load(upstreamContext), result.errors, activeSources = sources)) { current() }
                 }
             }
         } finally {
@@ -89,7 +91,7 @@ class DesktopSubscriptionRepository(private val context: DesktopPluginContext,
         check(!stopped) { "订阅服务已停止" }
         val resolvedTitle = resolveSubscriptionTitle(url, title).getOrThrow()
         kotlinx.coroutines.currentCoroutineContext().ensureActive()
-        mutate { SubscriptionFeedStore.add(context, resolvedTitle, url).getOrThrow() }
+        mutate { SubscriptionFeedStore.add(upstreamContext, resolvedTitle, url).getOrThrow() }
     }
     suspend fun importOpml(text: String): Int = withContext(Dispatchers.IO) {
         check(!stopped) { "订阅服务已停止" }
@@ -97,7 +99,7 @@ class DesktopSubscriptionRepository(private val context: DesktopPluginContext,
         require(parsed.isNotEmpty()) { "没有有效的 RSS、Atom 或 OPML 订阅地址" }
         kotlinx.coroutines.currentCoroutineContext().ensureActive()
         // Persist and publish immediately. The retained Root schedules title completion separately.
-        mutate { SubscriptionFeedStore.addAll(context, parsed) }
+        mutate { SubscriptionFeedStore.addAll(upstreamContext, parsed) }
     }
 
     /** The retained caller owns/drains this operation; this repository creates no detached Job. */
@@ -105,10 +107,10 @@ class DesktopSubscriptionRepository(private val context: DesktopPluginContext,
         check(!stopped) { "订阅服务已停止" }
         DesktopSubscriptionWriteAdmission.whileCurrent({ !stopped }) {
             // Only the original resolver mutex/Semaphore spans the network batch.
-            refreshMissingSubscriptionTitles(context)
+            refreshMissingSubscriptionTitles(upstreamContext)
             mutation.withLock {
                 check(!stopped) { "订阅服务已停止" }
-                val feeds = SubscriptionFeedStore.list(context)
+                val feeds = SubscriptionFeedStore.list(upstreamContext)
                 val byIdentity = feeds.associateBy { "builtin:${it.id}" to it.url }
                 DesktopSubscriptionWriteAdmission.commitOrOriginal {
                     if (!stopped) {
@@ -125,41 +127,41 @@ class DesktopSubscriptionRepository(private val context: DesktopPluginContext,
             }
         }
     }
-    suspend fun exportOpml(): String = withContext(Dispatchers.IO) { buildSubscriptionOpml(SubscriptionFeedStore.list(context)) }
-    suspend fun setEnabled(id: String, enabled: Boolean) = mutate { SubscriptionFeedStore.setEnabled(context, id, enabled) }
+    suspend fun exportOpml(): String = withContext(Dispatchers.IO) { buildSubscriptionOpml(SubscriptionFeedStore.list(upstreamContext)) }
+    suspend fun setEnabled(id: String, enabled: Boolean) = mutate { SubscriptionFeedStore.setEnabled(upstreamContext, id, enabled) }
     /** Saved feeds only. A builtin:* id is rejected before the store is touched. */
     suspend fun setGroup(id: String, group: String) = mutate {
         require(!id.startsWith("builtin:")) { "内置订阅源不能修改分组" }
-        SubscriptionFeedStore.setGroup(context, id, group)
+        SubscriptionFeedStore.setGroup(upstreamContext, id, group)
     }
     suspend fun remove(id: String): Unit = mutate {
-        val source = SubscriptionFeedStore.list(context).firstOrNull { it.id == id } ?: return@mutate
-        SubscriptionFeedStore.remove(context, id)
-        FeedConditionalStore.clear(context, setOf(source.url))
+        val source = SubscriptionFeedStore.list(upstreamContext).firstOrNull { it.id == id } ?: return@mutate
+        SubscriptionFeedStore.remove(upstreamContext, id)
+        FeedConditionalStore.clear(upstreamContext, setOf(source.url))
     }
     suspend fun setRead(item: ParsedFeedItem, read: Boolean): Unit = mutation.withLock {
         check(!stopped) { "订阅服务已停止" }
-        if (read) FeedReadingStore.recordRead(context, feedItemKey(item))
-        else FeedReadingStore.setRead(context, feedItemKey(item), false)
-        publishReading(FeedReadingStore.load(context))
+        if (read) FeedReadingStore.recordRead(upstreamContext, feedItemKey(item))
+        else FeedReadingStore.setRead(upstreamContext, feedItemKey(item), false)
+        publishReading(FeedReadingStore.load(upstreamContext))
     }
     suspend fun readProgress(item: ParsedFeedItem): Int {
         check(!stopped) { "订阅服务已停止" }
-        return FeedReadingStore.readProgress(context, feedItemKey(item))
+        return FeedReadingStore.readProgress(upstreamContext, feedItemKey(item))
     }
     suspend fun recordProgress(item: ParsedFeedItem, percent: Int): Unit = mutation.withLock {
         check(!stopped) { "订阅服务已停止" }
-        FeedReadingStore.recordProgress(context, feedItemKey(item), percent)
-        publishReading(FeedReadingStore.load(context))
+        FeedReadingStore.recordProgress(upstreamContext, feedItemKey(item), percent)
+        publishReading(FeedReadingStore.load(upstreamContext))
     }
     suspend fun loadFullArticle(item: ParsedFeedItem): String {
         val key = feedItemKey(item)
-        FeedReadingStore.load(context).fullBodies[key]?.let { return it }
+        FeedReadingStore.load(upstreamContext).fullBodies[key]?.let { return it }
         val body = fetchArticleHtml(item.link).getOrThrow()
         mutation.withLock {
             check(!stopped) { "订阅服务已停止" }
-            FeedReadingStore.saveFullBody(context, key, body)
-            publishReading(FeedReadingStore.load(context))
+            FeedReadingStore.saveFullBody(upstreamContext, key, body)
+            publishReading(FeedReadingStore.load(upstreamContext))
         }
         return body
     }
@@ -170,16 +172,16 @@ class DesktopSubscriptionRepository(private val context: DesktopPluginContext,
     }
     suspend fun saveFullBody(item: ParsedFeedItem, html: String): Unit = mutation.withLock {
         check(!stopped) { "订阅服务已停止" }
-        FeedReadingStore.saveFullBody(context, feedItemKey(item), html)
-        publishReading(FeedReadingStore.load(context))
+        FeedReadingStore.saveFullBody(upstreamContext, feedItemKey(item), html)
+        publishReading(FeedReadingStore.load(upstreamContext))
     }
     /** Local RSS notes reuse the original codec/merge policy and the same global Store backing. */
-    val articleNotes get() = ArticleNoteStore.observe(context)
+    val articleNotes get() = ArticleNoteStore.observe(upstreamContext)
     suspend fun saveArticleNote(note: SavedArticleNote): Unit = mutation.withLock {
         withContext(Dispatchers.IO) {
             check(!stopped) { "订阅服务已停止" }
             kotlinx.coroutines.currentCoroutineContext().ensureActive()
-            ArticleNoteStore.save(context, note)
+            ArticleNoteStore.save(upstreamContext, note)
             kotlinx.coroutines.currentCoroutineContext().ensureActive()
         }
     }
@@ -187,7 +189,7 @@ class DesktopSubscriptionRepository(private val context: DesktopPluginContext,
         withContext(Dispatchers.IO) {
             check(!stopped) { "订阅服务已停止" }
             kotlinx.coroutines.currentCoroutineContext().ensureActive()
-            ArticleNoteStore.remove(context, link).also { kotlinx.coroutines.currentCoroutineContext().ensureActive() }
+            ArticleNoteStore.remove(upstreamContext, link).also { kotlinx.coroutines.currentCoroutineContext().ensureActive() }
         }
     }
 

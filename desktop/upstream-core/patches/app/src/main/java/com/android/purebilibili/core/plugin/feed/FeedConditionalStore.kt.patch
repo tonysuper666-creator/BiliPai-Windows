@@ -1,0 +1,14 @@
+--- a/app/src/main/java/com/android/purebilibili/core/plugin/feed/FeedConditionalStore.kt
++++ b/app/src/main/java/com/android/purebilibili/core/plugin/feed/FeedConditionalStore.kt
+@@ -1,10 +1,10 @@
+ package com.android.purebilibili.core.plugin.feed
+ 
+ import android.content.Context
+-import android.util.AtomicFile
++import com.bilipai.desktop.plugins.DesktopPluginAtomicFile as AtomicFile
+ import kotlinx.coroutines.Dispatchers
+ import kotlinx.coroutines.sync.Mutex
+ import kotlinx.coroutines.withContext
+ import kotlinx.serialization.Serializable
+ import kotlinx.serialization.json.Json
+ import java.io.File

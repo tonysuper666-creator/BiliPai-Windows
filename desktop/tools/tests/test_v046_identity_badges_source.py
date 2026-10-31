@@ -196,18 +196,12 @@ class OriginalIdentityBadgeSources(unittest.TestCase):
         self.assertEqual(1, producer.count('v046-identity-badges-proof.json'))
 
     def test_pink_definers_are_unique_and_every_emitted_call_resolves_to_the_components_package(self):
-        # extract-upstream-space-pages.py reads two Gradle-generated owners that only exist after the desktop build has run
-        owners = [REPO/'desktop/build/generated/space-overview/com/android/purebilibili/feature/space/DesktopOriginalSpaceOverview.kt',
-                  REPO/'desktop/build/generated/space-contributions/com/android/purebilibili/feature/space/DesktopUpstreamSpaceContributionDeclarations.kt']
-        if not all(owner.is_file() for owner in owners):
-            self.skipTest('needs the Gradle-generated Space owners; run the desktop build first')
         generated = {'home': self.output/'home'}
         for label, filename in (
             ('reply', 'extract-upstream-dynamic-reply.py'),
             ('search', 'extract-upstream-video-comment-ui.py'),
             ('space', 'extract-upstream-space-pages.py'),
             ('editor', 'extract-upstream-dynamic-editor.py'),
-            ('overview', 'extract-space-overview.py'),
             ('components', 'extract-upstream-components.py'),
         ):
             module = load(filename)

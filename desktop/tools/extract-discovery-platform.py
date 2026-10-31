@@ -226,10 +226,7 @@ def generate_recommendation_platform(repo: Path, output: Path, parser) -> None:
         target.write_text("// GENERATED original declarations and Windows platform bindings.\npackage " + package + "\n\n" + body + "\n", encoding="utf-8")
 
     settings = (_desktop_canonical_source(repo, BASE + "core/store/SettingsManager.kt")).read_text(encoding="utf-8")
-    write("com.android.purebilibili.core.store", "DesktopDiscoverySettings.kt",
-        "\n\n".join(constant(settings, name) for name in ("DEFAULT_HOME_REFRESH_COUNT", "MIN_HOME_REFRESH_COUNT", "MAX_HOME_REFRESH_COUNT")) +
-        "\n\n" + selected(settings, "fun", "normalizeHomeRefreshCount", parser) +
-        "\n\nobject DesktopFeedSettings {\n" + textwrap.indent(selected_enum(settings, "FeedApiType", parser), "    ") + "\n}")
+    # The refresh-count constants and FeedApiType are upstream's own SettingsManager declarations (TON-1115); no copy is emitted.
 
     feedback_path = BASE + "core/store/TodayWatchFeedbackStore.kt"
     feedback = (_desktop_canonical_source(repo, feedback_path)).read_text(encoding="utf-8")

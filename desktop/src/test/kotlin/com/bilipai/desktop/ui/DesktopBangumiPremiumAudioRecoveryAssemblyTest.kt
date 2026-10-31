@@ -657,7 +657,7 @@ class DesktopBangumiPremiumAudioRecoveryAssemblyTest {
                 val plugins = Proxy.newProxyInstance(DesktopOriginalVideoOwnerPlugins::class.java.classLoader,
                     arrayOf(DesktopOriginalVideoOwnerPlugins::class.java)) { _, method, _ ->
                     when (method.name) { "capturePlaybackDispatch" -> null
-                        "enabledPlayerPlugins" -> emptyList<com.android.purebilibili.core.plugin.PlayerPlugin>()
+                        "enabledPlayerPlugins" -> emptyList<com.android.purebilibili.core.plugin.DesktopSingleSessionPlayerPlugin>()
                         else -> error("Unexpected plugin effect ${method.name}") }
                 } as DesktopOriginalVideoOwnerPlugins
                 val effects = DesktopOriginalVideoOwnerEffects(mini, unused(), unused(), network,

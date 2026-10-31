@@ -1,5 +1,6 @@
 package com.bilipai.desktop.plugins.js
 
+import com.bilipai.desktop.plugins.asAndroidContext
 import com.android.purebilibili.core.plugin.feed.FeedSource
 import com.android.purebilibili.core.plugin.feed.loadEnabledFeedSources
 
@@ -8,7 +9,7 @@ data class DesktopJsFeedSourceSnapshot(val revision: Long, val sources: List<Fee
 
 suspend fun DesktopJsPluginRepository.feedSourceSnapshot(): DesktopJsFeedSourceSnapshot {
     val (revision, allowed) = approvedFeedModuleIds()
-    val sources = if (allowed.isEmpty()) emptyList() else loadEnabledFeedSources(context).filter { it.id in allowed }
+    val sources = if (allowed.isEmpty()) emptyList() else loadEnabledFeedSources(context.asAndroidContext()).filter { it.id in allowed }
     check(host.executionRevision.value == revision) { "JS 插件授权在加载订阅时变化" }
     return DesktopJsFeedSourceSnapshot(revision, sources)
 }

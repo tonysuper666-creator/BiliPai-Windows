@@ -354,7 +354,7 @@ class DesktopBangumiAuthorizationRecaptureAssemblyTest {
                 { error("No fixture feedback effect") })
             val plugins = Proxy.newProxyInstance(DesktopOriginalVideoOwnerPlugins::class.java.classLoader,
                 arrayOf(DesktopOriginalVideoOwnerPlugins::class.java)) { _, method, _ ->
-                when (method.name) { "capturePlaybackDispatch" -> null; "enabledPlayerPlugins" -> emptyList<com.android.purebilibili.core.plugin.PlayerPlugin>()
+                when (method.name) { "capturePlaybackDispatch" -> null; "enabledPlayerPlugins" -> emptyList<com.android.purebilibili.core.plugin.DesktopSingleSessionPlayerPlugin>()
                     else -> error("No pre-media plugin effect ${method.name}") }
             } as DesktopOriginalVideoOwnerPlugins
             val cache = object : DesktopOriginalVideoOwnerCache {

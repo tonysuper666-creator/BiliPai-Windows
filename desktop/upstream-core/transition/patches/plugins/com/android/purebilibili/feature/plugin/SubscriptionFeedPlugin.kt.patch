@@ -1,0 +1,24 @@
+--- a/plugins/com/android/purebilibili/feature/plugin/SubscriptionFeedPlugin.kt
++++ b/plugins/com/android/purebilibili/feature/plugin/SubscriptionFeedPlugin.kt
+@@ -3,19 +3,19 @@
+ package com.android.purebilibili.feature.plugin
+ 
+ import kotlinx.coroutines.Dispatchers
+ import kotlinx.coroutines.launch
+ import kotlinx.coroutines.withContext
+-import com.android.purebilibili.core.plugin.Plugin
++import com.android.purebilibili.core.plugin.BuiltinPlugin
+ import com.android.purebilibili.core.plugin.feed.FeedConditionalStore
+ import com.android.purebilibili.core.plugin.feed.SubscriptionFeedStore
+ import com.android.purebilibili.core.plugin.feed.buildSubscriptionOpml
+ import com.android.purebilibili.core.plugin.feed.resolveSubscriptionTitle
+ import com.android.purebilibili.plugin.sdk.PluginCapability
+ import com.android.purebilibili.plugin.sdk.PluginCapabilityManifest
+ 
+-class SubscriptionFeedPlugin : Plugin {
++class SubscriptionFeedPlugin : BuiltinPlugin {
+     override val id: String = PLUGIN_ID
+     override val name: String = "订阅"
+     override val description: String = "关注喜欢的网站，在首页集中阅读更新；支持 RSS、Atom 和 OPML 导入。"
+     override val version: String = "1.0.0"
+     override val author: String = "BiliPai"

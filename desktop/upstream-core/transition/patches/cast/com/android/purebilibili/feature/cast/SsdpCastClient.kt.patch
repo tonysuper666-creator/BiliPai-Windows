@@ -1,0 +1,14 @@
+--- a/cast/com/android/purebilibili/feature/cast/SsdpCastClient.kt
++++ b/cast/com/android/purebilibili/feature/cast/SsdpCastClient.kt
+@@ -1,10 +1,10 @@
+ // GENERATED from app/src/main/java/com/android/purebilibili/feature/cast/SsdpCastClient.kt; Android platform bindings only.
+ package com.android.purebilibili.feature.cast
+ 
+ import com.bilipai.desktop.cast.DesktopCastLifecycle as BackgroundManager
+-import com.android.purebilibili.core.plugin.CastPluginPlaybackState
++import com.android.purebilibili.plugin.sdk.CastPluginPlaybackState
+ import com.bilipai.desktop.cast.DesktopCastLog as Logger
+ import com.bilipai.desktop.cast.castCatching as runCatching
+ import com.bilipai.desktop.cast.withDesktopCastResponse
+ import kotlinx.coroutines.CoroutineScope
+ import kotlinx.coroutines.Dispatchers

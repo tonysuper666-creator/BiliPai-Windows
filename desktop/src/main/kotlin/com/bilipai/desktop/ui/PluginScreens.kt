@@ -133,14 +133,14 @@ internal fun PluginCenterScreen(runtime: DesktopPluginRuntime, jsonUpdateHold: D
                             Text(loaded.plugin.name, style = MaterialTheme.typography.titleMedium)
                             Text("${loaded.plugin.type} · ${loaded.plugin.rules.size} 条规则 · 过滤 ${stats[loaded.plugin.id] ?: 0} 项", style = MaterialTheme.typography.bodySmall)
                         }
-                        Switch(loaded.enabled, { runtime.setJsonEnabled(loaded.plugin.id, it) }, enabled = busy == null)
+                        Switch(loaded.enabled, { value -> action("json-enabled") { runtime.setJsonEnabled(loaded.plugin.id, value) } }, enabled = busy == null)
                     }
                     Text(loaded.plugin.description, style = MaterialTheme.typography.bodySmall)
                     Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
                         TextButton(onClick = { openJsonEditor { runtime.exportJsonPlugin(loaded.plugin.id) } }, enabled = busy == null && jsonUpdateHold.canBegin()) { Text("编辑规则") }
                         TextButton(onClick = { Toolkit.getDefaultToolkit().systemClipboard.setContents(StringSelection(runtime.exportJsonPlugin(loaded.plugin.id)), null) }) { Text("复制 JSON") }
-                        TextButton(onClick = { runtime.resetJsonStats(loaded.plugin.id) }) { Text("重置统计") }
-                        TextButton(onClick = { runtime.removeJsonPlugin(loaded.plugin.id) }, enabled = busy == null) { Text("删除") }
+                        TextButton(onClick = { action("json-stats") { runtime.resetJsonStats(loaded.plugin.id) } }, enabled = busy == null) { Text("重置统计") }
+                        TextButton(onClick = { action("json-remove") { runtime.removeJsonPlugin(loaded.plugin.id) } }, enabled = busy == null) { Text("删除") }
                     }
                 }
             }

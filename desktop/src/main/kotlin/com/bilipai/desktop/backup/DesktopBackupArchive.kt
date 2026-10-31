@@ -15,13 +15,13 @@ import java.util.zip.ZipInputStream
 import java.util.zip.ZipOutputStream
 
 /** Windows file adapter for the original WebDAV service. Login secrets and media assets are outside this archive. */
-class DesktopBackupArchive(private val directory: Path, private val beforeReplace: () -> Unit = {}) {
+class DesktopBackupArchive(private val directory: Path, private val beforeReplace: () -> Unit = {}) : WebDavBackupArchivePort {
     private val root = directory.toAbsolutePath().normalize()
     private val json = Json { prettyPrint = true }
     private val globalNames = setOf("library.json", "player-settings.json", "appearance-settings.json", "plugin-settings.json",
         "feed-filter.json", "search-history.json", "listen-state.json", "subscriptions.json")
 
-    fun create(nowEpochMs: Long = System.currentTimeMillis()): ByteArray {
+    override fun create(nowEpochMs: Long): ByteArray {
         Files.createDirectories(root)
         val files = Files.walk(root).use { stream -> stream.filter { Files.isRegularFile(it) && !Files.isSymbolicLink(it) }
             .map { root.relativize(it).joinToString("/") }.filter(::allowed).sorted().toList() }
@@ -55,8 +55,7 @@ class DesktopBackupArchive(private val directory: Path, private val beforeReplac
 
     /** Validate the entire archive before replacing any file. A failed replacement restores every earlier target. */
     @Synchronized
-    @JvmOverloads
-    fun restore(bytes: ByteArray, onSuccessfulRestore: () -> Unit = {}): Int {
+    override fun restore(bytes: ByteArray, onSuccessfulRestore: () -> Unit): Int {
         require(bytes.size <= MAX_ZIP_BYTES) { "备份压缩包过大" }
         Files.createDirectories(root)
         val entries = linkedMapOf<String, ByteArray>()
@@ -136,13 +135,13 @@ class DesktopBackupArchive(private val directory: Path, private val beforeReplac
         return replaced.size
     }
 
-    fun requireSameOrigin(base: String, download: String) {
+    override fun requireSameOrigin(base: String, download: String) {
         val expected = base.toHttpUrl(); val actual = download.toHttpUrl()
         require(actual.scheme == expected.scheme && actual.host == expected.host && actual.port == expected.port &&
             actual.username.isEmpty() && actual.password.isEmpty()) { "WebDAV 返回了其它服务器的下载地址" }
     }
 
-    fun readDownload(body: ResponseBody): ByteArray {
+    override fun readDownload(body: ResponseBody): ByteArray {
         require(body.contentLength() <= MAX_ZIP_BYTES) { "远端备份文件过大" }
         return body.byteStream().use { readLimited(it, MAX_ZIP_BYTES) }
     }

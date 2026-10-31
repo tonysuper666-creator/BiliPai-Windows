@@ -1,6 +1,6 @@
 package com.bilipai.desktop.ui
 
-import com.android.purebilibili.core.plugin.SkipAction
+import com.android.purebilibili.plugin.sdk.SkipAction
 import com.android.purebilibili.feature.video.player.*
 import com.android.purebilibili.feature.video.viewmodel.*
 import com.android.purebilibili.feature.video.subtitle.SubtitleDisplayMode

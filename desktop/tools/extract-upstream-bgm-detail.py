@@ -1,6 +1,7 @@
 """Original stable BGM detail protocol/state/UI, with desktop lifetime seams only."""
 from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
+from desktop_paths import long_path, read_point_tool
 import argparse, hashlib, importlib.util, json, re, textwrap
 from v029_brand_consumers import empty_consumer
 import v029_comment_search as comment_search
@@ -176,6 +177,9 @@ def generate(repo,output):
             body=apply_tab_roles("app/src/main/java/com/android/purebilibili/feature/video/ui/components/CommentInputDialog.kt",body,output,Path(relative).name)
         elif Path(relative).name=="DesktopOriginalCommentSortHeader.kt":
             body=apply_tab_roles("app/src/main/java/com/android/purebilibili/feature/video/ui/components/CommentSortFilterBar.kt",body,output,Path(relative).name)
+        from desktop_refresh_adaptation import bind_refresh_lists, bind_refresh_launch
+        if not relative.startswith('bgm-original-retained/'):
+            body=bind_refresh_lists(bind_refresh_launch(body))
         body=comment_detail_root_entry_delta(relative,body)
         if relative=='com/android/purebilibili/feature/audio/bgm/BgmDetailScreen.kt':
             from v046_comment_list import advance_bgm_comment_content
@@ -183,7 +187,7 @@ def generate(repo,output):
         elif relative=='com/android/purebilibili/feature/comment/CommentDetailScreen.kt':
             from v046_comment_polish import advance_comment_detail_screen
             body=advance_comment_detail_screen(repo,body,output)
-        target=output/relative;v=str(target.absolute());safe=Path(v if v.startswith('\\\\?\\') else '\\\\?\\'+v)
+        target=output/relative;safe=long_path(target.absolute())
         safe.parent.mkdir(parents=True,exist_ok=True);safe.write_text(body,encoding='utf-8',newline='\n');return target
     package='com/android/purebilibili/feature/audio/bgm/'
     changes=[]
@@ -623,7 +627,7 @@ def bgm_emote_members(repo):
     import importlib.util, re, textwrap
     def load(name,path):
         spec=importlib.util.spec_from_file_location(name,path);module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module);return module
-    identity=load('bgm_emote_original_identity',repo/'desktop/tools/extract-upstream-dynamic-reply-protocol.py')
+    identity=load('bgm_emote_original_identity',read_point_tool(repo,'extract-upstream-dynamic-reply-protocol.py'))
     path='app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt'
     sources,identities=identity.load_pinned_sources(repo,[path]);source=sources[path]
     host=load('bgm_emote_original_host',repo/'desktop/tools/extract-upstream-plugins.py');media=host.media_extractor(repo);parser=media.parser_for(repo)

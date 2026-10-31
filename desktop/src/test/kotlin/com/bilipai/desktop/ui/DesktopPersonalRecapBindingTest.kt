@@ -1,5 +1,6 @@
 package com.bilipai.desktop.ui
 
+import com.bilipai.desktop.plugins.asAndroidContext
 import com.android.purebilibili.core.network.BilibiliApi
 import com.android.purebilibili.core.plugin.feed.*
 import com.android.purebilibili.data.model.response.*
@@ -72,7 +73,7 @@ class DesktopPersonalRecapBindingTest {
     }
     @Test fun actualRssReadAndHistoryResponsePublishAsOneCurrentSnapshot(): Unit = runBlocking {
         fixture { h ->
-            FeedReadingStore.recordRead(h.context,"builtin:source\u001fitem",atMs=1_000_001L)
+            FeedReadingStore.recordRead(h.context.asAndroidContext(),"builtin:source\u001fitem",atMs=1_000_001L)
             h.plan(listOf(item("real-api")),0,0)
             val request=h.binding.beginRequest()
             val rss=request.read { PersonalRecapRepository.rssRecap(h.context,1_000_000L) }

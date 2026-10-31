@@ -14,7 +14,12 @@ abstract class Context(val dataDir: File) {
     /** App-specific "external" storage: on the desktop a directory inside the app data directory, created on demand. */
     open fun getExternalFilesDir(type: String?): File? = File(dataDir, if (type == null) "external" else "external/$type").apply { mkdirs() }
     open val contentResolver: ContentResolver = ContentResolver()
+    /** The app's own storage root. There is no installed APK on the desktop, so [android.content.pm.ApplicationInfo.sourceDir] is null. */
+    open val applicationInfo: android.content.pm.ApplicationInfo get() = android.content.pm.ApplicationInfo(dataDir.path, null)
     abstract fun getSharedPreferences(name: String, mode: Int): SharedPreferences
+    /** Packaged app assets. The desktop packages no Android assets by default; an adapter that does overrides this. */
+    open val assets: android.content.res.AssetManager get() =
+        throw com.bilipai.desktop.compat.UnsupportedDesktopCapability("Context.assets", "this Context packages no Android assets")
     /** Upstream app strings, following the system language (see [android.content.res.Resources]). */
     open val resources: android.content.res.Resources get() = android.content.res.Resources.system
     fun getString(resId: Int): String = resources.getString(resId)

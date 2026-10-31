@@ -1,0 +1,84 @@
+# upstream v0.4.6+ session pin state and read events; the read events go over the message Root's one shared flow
+--- a/original-message-pages/com/android/purebilibili/data/repository/DesktopOriginalMessageRepository.kt
++++ b/original-message-pages/com/android/purebilibili/data/repository/DesktopOriginalMessageRepository.kt
+@@ -25,7 +25,8 @@
+     val pushMuted: Boolean? = null,
+     val showPushSetting: Boolean = false,
+     val followStatus: Int? = null,
+-    val isIntercept: Boolean? = null
++    val isIntercept: Boolean? = null,
++    val isPinned: Boolean? = null,
+ )
+ 
+ internal class DesktopOriginalMessageRepository(private val api: MessageApi, private val bilibiliApi: BilibiliApi, private val owner: DesktopMessagePageAdmission, private val deviceId: () -> String) {
+@@ -37,6 +38,12 @@
+      * 获取或生成设备ID (UUID v4格式)
+      */
+     private fun getDeviceId(): String = deviceId()
++
++    internal val readEvents get() = owner.readEvents
++
++    internal suspend fun notifyReadStateChanged(event: MessageReadEvent = MessageReadEvent.Changed) {
++        owner.publishReadEvent(event)
++    }
+ 
+     private fun requireCsrf(): Result<String> {
+         val csrf = owner.csrf()
+@@ -153,6 +160,7 @@
+                 val response = api.getReplyFeed(cursor = cursor, cursorTime = cursorTime)
+                 if (response.code == 0 && response.data != null) {
+                     val checkedResponseData = requireNotNull(response.data)
++                    if (cursor == null) notifyReadStateChanged()
+                     owner.success(checkedResponseData)
+                 } else {
+                     Result.failure(Exception(response.message.ifEmpty { "获取回复消息失败 (${response.code})" }))
+@@ -171,6 +179,7 @@
+                 val response = api.getAtFeed(cursor = cursor, cursorTime = cursorTime)
+                 if (response.code == 0 && response.data != null) {
+                     val checkedResponseData = requireNotNull(response.data)
++                    if (cursor == null) notifyReadStateChanged()
+                     owner.success(checkedResponseData)
+                 } else {
+                     Result.failure(Exception(response.message.ifEmpty { "获取@我消息失败 (${response.code})" }))
+@@ -189,6 +198,7 @@
+                 val response = api.getLikeFeed(cursor = cursor, cursorTime = cursorTime)
+                 if (response.code == 0 && response.data != null) {
+                     val checkedResponseData = requireNotNull(response.data)
++                    if (cursor == null) notifyReadStateChanged()
+                     owner.success(checkedResponseData)
+                 } else {
+                     Result.failure(Exception(response.message.ifEmpty { "获取点赞消息失败 (${response.code})" }))
+@@ -227,6 +237,7 @@
+ 
+             val response = api.updateSystemNoticeCursor(csrf = csrf, cursor = cursor)
+             if (response.code == 0) {
++                notifyReadStateChanged()
+                 owner.success(Unit)
+             } else {
+                 Result.failure(Exception(response.message.ifEmpty { "更新系统通知已读失败" }))
+@@ -427,7 +438,8 @@
+                     pushMuted = push?.let { it.push_setting == 1 },
+                     showPushSetting = push?.show_push_setting == 1,
+                     followStatus = push?.follow_status,
+-                    isIntercept = detail?.is_intercept?.let { it == 1 }
++                    isIntercept = detail?.is_intercept?.let { it == 1 },
++                    isPinned = detail?.top_ts?.let { it > 0 },
+                 )
+             )
+         } catch (e: Exception) {
+@@ -521,6 +533,7 @@
+             val csrf = requireCsrf().getOrElse { return@withContext Result.failure(it) }
+             val response = api.batchUpdateDustbinAck(csrf = csrf, csrfToken = csrf)
+             if (response.code == 0) {
++                notifyReadStateChanged()
+                 owner.success(Unit)
+             } else {
+                 Result.failure(Exception(response.message.ifEmpty { "拦截会话已读失败 (${response.code})" }))
+@@ -713,6 +726,7 @@
+             )
+             
+             if (response.code == 0) {
++                notifyReadStateChanged(MessageReadEvent.PrivateSession(talkerId, sessionType, ackSeqno))
+                 owner.success(Unit)
+             } else {
+                 Result.failure(Exception(response.message.ifEmpty { "标记已读失败" }))

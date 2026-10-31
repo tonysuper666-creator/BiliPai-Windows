@@ -10,6 +10,14 @@ interface SharedPreferences {
     fun contains(key: String): Boolean
     val all: Map<String, *>
     fun edit(): Editor
+    /** Listeners need change notifications from the backing store; an implementation without them fails loudly. */
+    fun registerOnSharedPreferenceChangeListener(listener: OnSharedPreferenceChangeListener): Unit =
+        throw com.bilipai.desktop.compat.UnsupportedDesktopCapability("SharedPreferences change listener", "this preferences store has no change notifications")
+    fun unregisterOnSharedPreferenceChangeListener(listener: OnSharedPreferenceChangeListener): Unit =
+        throw com.bilipai.desktop.compat.UnsupportedDesktopCapability("SharedPreferences change listener", "this preferences store has no change notifications")
+    fun interface OnSharedPreferenceChangeListener {
+        fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String?)
+    }
     interface Editor {
         fun putString(key: String, value: String?): Editor
         fun putStringSet(key: String, values: Set<String>?): Editor

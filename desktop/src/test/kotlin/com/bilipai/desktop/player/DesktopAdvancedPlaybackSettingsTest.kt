@@ -161,7 +161,10 @@ class DesktopAdvancedPlaybackSettingsTest {
             subtitleAutoPreference = SubtitleAutoPreference.AUTO).normalized()
         equal(original, json.decodeFromString<PlayerPreferences>(json.encodeToString(original)))
         equal("av01", original.videoCodecPreference); equal("avc1", original.videoSecondCodecPreference)
-        equal(-1, PlayerPreferences(defaultAudioQuality = 30280).normalized().defaultAudioQuality)
+        // Upstream's normalizeDefaultAudioQualityOption keeps any stored positive audio id (a saved 192K stays 192K) and
+        // shows it as an extra option; only values that are neither "follow last", AAC nor positive fall back to AAC (TON-1115).
+        equal(30280, PlayerPreferences(defaultAudioQuality = 30280).normalized().defaultAudioQuality)
+        equal(-1, PlayerPreferences(defaultAudioQuality = -7).normalized().defaultAudioQuality)
         equal("hev1", PlayerPreferences(videoCodecPreference = "garbage").normalized().videoCodecPreference)
     }
     case("user codec priorities use original selector and remain distinct from recovery override") {

@@ -1,10 +1,12 @@
 """Whole canonical DonateDialog function and untouched author QR; Windows modal leaves."""
 from __future__ import annotations
+from v025_source_paths import reviewed_sha256
 import argparse, hashlib, importlib.util, json, os, sys
 from pathlib import Path
 sys.dont_write_bytecode = True
 UPSTREAM="79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40"
-CATALOG_SHA="2fa53aa78cc27c76a3923cc44750128b3657c340dbcfe44ec13810cbc48becbc"
+CATALOG_SHA="2600739eef5521cfef71d6af16762ccc3b9df076dad7ccb79902944f1634130f"
+LEGACY_CATALOG_SHA="2fa53aa78cc27c76a3923cc44750128b3657c340dbcfe44ec13810cbc48becbc"
 FEATURE="desktop-whole-original-donate-dialog"
 SCREEN="app/src/main/java/com/android/purebilibili/feature/settings/screen/SettingsScreen.kt"
 SECTIONS="app/src/main/java/com/android/purebilibili/feature/settings/ui/SettingsSections.kt"
@@ -15,20 +17,24 @@ def wide(path):
     value=str(Path(path).absolute())
     return Path("\\\\?\\"+value) if os.name=='nt' and not value.startswith('\\\\?\\') else Path(value)
 def sha(raw):return hashlib.sha256(raw).hexdigest()
+def catalog_sha(repo):
+    # Gradle passes the pre-merge snapshot at <repo>/.legacy-root. That catalog
+    # file is the v0.2.5 pin set. A live checkout carries the direct-compile catalog.
+    return LEGACY_CATALOG_SHA if (Path(repo).resolve().name == ".legacy-root" and not (Path(repo) / ".merged-root").is_dir()) else CATALOG_SHA
 def emit(path,raw):
     wide(path.parent).mkdir(parents=True,exist_ok=True)
     wide(path).write_bytes(raw if isinstance(raw,bytes) else raw.encode('utf-8'))
 class Original:
     def __init__(self,repo):
         self.repo=repo;raw=wide(repo/'desktop/tools/v025-canonical-sources.json').read_bytes()
-        if sha(raw)!=CATALOG_SHA:raise ValueError('Canonical catalog changed')
+        if sha(raw)!=catalog_sha(repo):raise ValueError('Canonical catalog changed')
         self.catalog=json.loads(raw)
         if self.catalog['upstreamCommit']!=UPSTREAM:raise ValueError('Canonical commit changed')
     def raw(self,path):
         row=self.catalog['paths'][path];file=wide(self.repo/path)
         if file.is_symlink():raise ValueError('Original is linked')
         raw=file.read_bytes();normalized=raw.replace(b'\r\n',b'\n') if row['hashNormalization']=='lf' else raw
-        if sha(normalized)!=row['sha256']:raise ValueError('Original changed: '+path)
+        if sha(normalized)!=reviewed_sha256(self.repo, row):raise ValueError('Original changed: '+path)
         return raw
     def text(self,path):return self.raw(path).decode('utf-8').replace('\r\n','\n')
     def row(self,path,mode=None):

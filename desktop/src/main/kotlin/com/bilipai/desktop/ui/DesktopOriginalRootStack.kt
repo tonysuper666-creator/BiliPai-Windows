@@ -172,6 +172,8 @@ internal class DesktopOriginalRootPageBindings(
                     skinVideoPlayMode = skin?.profileVideoPlayMode,
                     deferImmersiveRenderBudget = false,
                     scrollToTopChannel = pages.profileScrollToTop)
+                is BiliPaiNavKey.AccountLedger -> if (active) DesktopOriginalAccountLedgerHost(
+                    pages.profile, routes, key)
                 is BiliPaiNavKey.Category -> DesktopCategoryRouteHost(routes.category(key),
                     { routes.callbackFor(key) { routes.back() } },
                     { bvid, cid, picture, vertical -> routes.callbackFor(key) { routes.video(BiliPaiNavKey.VideoDetail(

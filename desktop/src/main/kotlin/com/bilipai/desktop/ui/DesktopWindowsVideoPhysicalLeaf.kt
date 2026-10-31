@@ -915,6 +915,24 @@ internal class DesktopWindowsVideoActions(
         }
     }
     val progressDurationMs = state.durationSeconds.takeIf { it.isFinite() && it > 0.0 }?.let { (it * 1000.0).toLong() } ?: 0L
+    val danmakuDetail = success?.info
+    val danmakuPageDurationSeconds = danmakuDetail?.pages?.firstOrNull { it.cid == danmakuDetail.cid }?.duration ?: 0L
+    val danmakuLoad = desktopWindowsDanmakuLoadRequest(
+        enabled = preferences.danmaku.enabled,
+        pageActive = active && current(),
+        accepted = viewportSource?.let { DesktopWindowsDanmakuLoadIdentity(it.request.bvid, it.request.cid) },
+        detailBvid = danmakuDetail?.bvid.orEmpty(),
+        detailCid = danmakuDetail?.cid ?: 0L,
+        detailAid = danmakuDetail?.aid ?: 0L,
+        pageDurationSeconds = danmakuPageDurationSeconds,
+        playerDurationMs = progressDurationMs,
+    )
+    LaunchedEffect(platforms.holder.section, viewportSource?.sourceVersion, danmakuLoad, state.ready) {
+        runDesktopWindowsDanmakuLoad(danmakuLoad, stillCurrent = { current() }) { request ->
+            platforms.holder.section.danmaku.loadDanmaku(
+                request.cid, request.aid, request.durationHintMs, request.bvid)
+        }
+    }
     val progressSamples = remember(pbpProgressData, progressDurationMs) {
         pbpProgressData?.let { buildPbpRidgeSamples(it, progressDurationMs) }.orEmpty()
     }
@@ -1341,7 +1359,7 @@ internal class DesktopWindowsVideoActions(
                             val segmentId = state.segmentId ?: return@let null
                             if (!state.visible || segmentId.isBlank() || segmentId != segment.UUID ||
                                 state.skipToMs <= 0L || state.skipToMs != segment.endTimeMs) return@let null
-                            com.android.purebilibili.core.plugin.SkipAction.ShowButton(
+                            com.android.purebilibili.plugin.sdk.SkipAction.ShowButton(
                                 state.skipToMs, state.label.orEmpty(), segmentId)
                         }
                         DesktopWindowsSponsorSkipSection(shell.playback, assembly, collectionQueueSource,

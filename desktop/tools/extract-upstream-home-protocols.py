@@ -1,15 +1,15 @@
 """Selected complete stable Home protocols. No HTTP client/store/cache/DTO is generated.
 Production deliberately skips DIRECT WatchLaterRefreshBus; --standalone includes it only for tests.
 """
+from desktop_paths import long_path
 from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
 import hashlib,importlib.util,json,textwrap,re,argparse,os
 BASE='app/src/main/java/com/android/purebilibili/'
-PREFIX=chr(92)*2+'?'+chr(92)
 SOURCE_PINS={'app/src/main/java/com/android/purebilibili/data/repository/VideoRepository.kt': 'acf05cba9a89666533378eef35a21609484a02ccd874a460c259c3f3363d1e64', 'core-data/src/main/java/com/android/purebilibili/data/repository/HistoryRepository.kt': '1d6b92aab9f4bb63c6241375688619e58c62e358130af3ed761ef208d894c02c', 'app/src/main/java/com/android/purebilibili/data/repository/LiveRepository.kt': '2d0007e82c53f1a4af5f4f298699decbc14c0623e88e50a3e7415c2ab3f374ac', 'app/src/main/java/com/android/purebilibili/data/repository/MessageRepository.kt': 'bb055a1da8a8f7cf4f937c4a2f67a5d3fb2f7ff462274857780b55c4628a1eb9', 'app/src/main/java/com/android/purebilibili/data/repository/ActionRepository.kt': 'd6a59bbf30b9c2058f352e299399713f9af13fd44262eeae6473e1447769087f', 'app/src/main/java/com/android/purebilibili/core/refresh/WatchLaterRefreshBus.kt': '67deacd84bee9f8803b2190e079d5486d2593bf26bc29d1a114ae259273fe87d'}
 
 def safe(p):
- s=os.fspath(p);return Path(s if s.startswith(PREFIX) else PREFIX+os.path.abspath(s))
+ s=os.fspath(p);return long_path(os.path.abspath(s))
 def read(p):return safe(p).read_text(encoding='utf-8').replace('\r\n','\n')
 def write(p,s):
  p=safe(p);p.parent.mkdir(parents=True,exist_ok=True);p.write_text(s,encoding='utf-8',newline='\n')
@@ -34,8 +34,7 @@ def generate(repo,output,standalone=False):
 
     videoPath,video=source('VideoRepository')
     def video_adapt(name,body):
-     s=body.replace('com.android.purebilibili.core.store.SettingsManager.FeedApiType','DesktopFeedSettings.FeedApiType')
-     s=s.replace('SettingsManager.FeedApiType','DesktopFeedSettings.FeedApiType')
+     s=body
      s=s.replace('TokenManager.accessTokenCache','environment.accessToken()')
      s=s.replace('TokenManager.buvid3Cache','environment.buvid3()')
      s=s.replace('TokenManager.awaitRestore()','environment.awaitSessionRestored()')
@@ -64,7 +63,7 @@ def generate(repo,output,standalone=False):
     helperBody='\n\n'.join(method(videoPath,video,n,lambda s,n=n:video_adapt(n,s)) for n in helpers)
     imports='''package com.android.purebilibili.data.repository
 import com.android.purebilibili.core.network.*
-import com.android.purebilibili.core.store.DesktopFeedSettings
+import com.android.purebilibili.core.store.SettingsManager
 import com.android.purebilibili.data.model.response.*
 import com.bilipai.desktop.ui.DesktopHomeProtocolEnvironment
 import kotlinx.coroutines.*

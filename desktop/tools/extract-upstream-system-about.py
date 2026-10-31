@@ -1,10 +1,12 @@
 from __future__ import annotations
+from v025_source_paths import reviewed_sha256
 import hashlib, importlib.util, json, os, re, sys
 from pathlib import Path
 sys.dont_write_bytecode = True
 UPSTREAM = "79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40"
 FEATURE = "desktop-whole-system-about-actions"
-CATALOG_SHA = "2fa53aa78cc27c76a3923cc44750128b3657c340dbcfe44ec13810cbc48becbc"
+CATALOG_SHA = "2600739eef5521cfef71d6af16762ccc3b9df076dad7ccb79902944f1634130f"
+LEGACY_CATALOG_SHA = "2fa53aa78cc27c76a3923cc44750128b3657c340dbcfe44ec13810cbc48becbc"
 BASE = "app/src/main/java/com/android/purebilibili/feature/settings/"
 SECTIONS = BASE + "ui/SettingsSections.kt"
 GATE = "app/src/main/java/com/android/purebilibili/feature/agreement/UserAgreementGate.kt"
@@ -17,6 +19,10 @@ def wide(path):
     raw = os.path.abspath(os.fspath(path))
     return Path(raw if os.name != "nt" or raw.startswith("\\\\?\\") else "\\\\?\\" + raw)
 def sha(raw): return hashlib.sha256(raw).hexdigest()
+def catalog_sha(repo):
+    # Gradle passes the pre-merge snapshot at <repo>/.legacy-root. That catalog
+    # file is the v0.2.5 pin set. A live checkout carries the direct-compile catalog.
+    return LEGACY_CATALOG_SHA if (Path(repo).resolve().name == ".legacy-root" and not (Path(repo) / ".merged-root").is_dir()) else CATALOG_SHA
 def emit(path, value):
     wide(path.parent).mkdir(parents=True, exist_ok=True)
     wide(path).write_bytes(value.encode("utf-8") if isinstance(value,str) else value)
@@ -29,13 +35,13 @@ class Original:
     def __init__(self, repo):
         self.repo = repo
         raw = wide(repo/"desktop/tools/v025-canonical-sources.json").read_bytes()
-        assert sha(raw) == CATALOG_SHA
+        assert sha(raw) == catalog_sha(repo)
         self.catalog = json.loads(raw); assert self.catalog["upstreamCommit"] == UPSTREAM
     def raw(self, path):
         pin = self.catalog["paths"][path]
         raw = wide(self.repo/path).read_bytes()
         normalized = raw.replace(b"\r\n", b"\n") if pin["hashNormalization"] == "lf" else raw
-        assert sha(normalized) == pin["sha256"], path
+        assert sha(normalized) == reviewed_sha256(self.repo, pin), path
         return raw
     def text(self,path): return self.raw(path).decode("utf-8").replace("\r\n","\n")
 

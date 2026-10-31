@@ -104,6 +104,24 @@ internal class DesktopOriginalProfilePreferences(
         store.update("splash_prefs", mapOf("random_enabled" to JsonPrimitive(enabled)))
     }
     override suspend fun setHomeWallpaperUri(uri: String) = write("home_wallpaper_uri", JsonPrimitive(uri))
+    override suspend fun setHomeWallpaperSelection(selection: com.android.purebilibili.core.store.home.HomeWallpaperSelection) {
+        val mobile = com.android.purebilibili.core.ui.wallpaper.sanitizeWallpaperTransform(selection.mobileTransform)
+        val tablet = com.android.purebilibili.core.ui.wallpaper.sanitizeWallpaperTransform(selection.tabletTransform)
+        edit {
+            store.update("settings", mapOf(
+                "home_wallpaper_uri" to JsonPrimitive(selection.uri),
+                "home_wallpaper_scale_mobile" to JsonPrimitive(mobile.scale),
+                "home_wallpaper_offset_x_mobile" to JsonPrimitive(mobile.offsetX),
+                "home_wallpaper_offset_y_mobile" to JsonPrimitive(mobile.offsetY),
+                "home_wallpaper_scale_tablet" to JsonPrimitive(tablet.scale),
+                "home_wallpaper_offset_x_tablet" to JsonPrimitive(tablet.offsetX),
+                "home_wallpaper_offset_y_tablet" to JsonPrimitive(tablet.offsetY),
+            ))
+        }
+    }
+    override suspend fun setSubscriptionArticleWallpaperUri(uri: String) = write("subscription_article_wallpaper_uri", JsonPrimitive(uri))
+    override suspend fun setSubscriptionArticleWallpaperEnabled(enabled: Boolean) =
+        write("subscription_article_wallpaper_enabled", JsonPrimitive(enabled))
     override fun getTripleJumpEnabled() = read { it[booleanPreferencesKey("triple_jump_enabled")] ?: false }
     override suspend fun setTripleJumpEnabled(enabled: Boolean) = write("triple_jump_enabled", JsonPrimitive(enabled))
 }

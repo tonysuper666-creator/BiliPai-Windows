@@ -23,6 +23,7 @@ TOOLS = REPO / 'desktop/tools'
 sys.path.insert(0, str(TOOLS))
 import check_slice_symbol_closure as gate
 import v046_theme_tokens as tokens
+from v025_source_paths import reviewed_sha256
 
 spec = importlib.util.spec_from_file_location('sync_upstream_theme_tokens', TOOLS / 'sync-upstream.py')
 sync = importlib.util.module_from_spec(spec)
@@ -208,12 +209,14 @@ class V046ThemeTokensSourceTest(unittest.TestCase):
                 self.assertEqual(row['gitBlob'], hashlib.sha1(b'blob ' + str(len(blob)).encode() + b'\0' + blob).hexdigest())
                 self.assertNotIn(b'\r', archived)
         listed = {row['path']: row for row in self.sources['sources']}
+        canonical = json.loads((TOOLS / 'v025-canonical-sources.json').read_bytes())['paths']
         for name in tokens.MAIN_FILES:
             with self.subTest(vendored=name):
                 path = tokens.UPSTREAM_PATHS[name]
                 vendored = (REPO / path).read_bytes().replace(b'\r\n', b'\n')
                 self.assertEqual(tokens.VENDORED_LF_SHA256[name], sha(vendored))
-                self.assertEqual(listed[path]['sha256'], sha(vendored))
+                self.assertEqual(listed[path]['sha256'], canonical[path]['sha256'])
+                self.assertEqual(reviewed_sha256(REPO, canonical[path]), sha(vendored))
                 self.assertEqual('direct', listed[path].get('mode', 'direct'))
                 self.assertNotEqual(vendored, self.archive[name])
         self.assertEqual(set(tokens.MAIN_FILES), {row['replacedBy'] for row in manifest['replacedVendoredCopies']})

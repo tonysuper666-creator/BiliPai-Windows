@@ -117,7 +117,26 @@ class OriginalFavoriteSearchSourceTest(unittest.TestCase):
 
     def test_actual_gradle_owners_track_transitive_search_input_closure_and_exclude_duplicate_mapping(self):
         build = (REPO/'desktop/build.gradle.kts').read_text(encoding='utf8')
-        self.assertEqual(15, build.count('inputs.dir("upstream-slices/v044-favorite-search")'))
+        # Check each retained consumer, rather than the old total including Space overview.
+        for owner in (
+            'extractUpstreamApi',
+            'extractUpstreamAudio',
+            'extractUpstreamPackages',
+            'extractUpstreamJs',
+            'extractUpstreamNetworkProxy',
+            'extractUpstreamDiagnostics',
+            'extractUpstreamDynamicFullCard',
+            'extractImageSaveSettingsUi',
+            'extractOriginalFavorites',
+            'extractUpstreamDynamicFollow',
+            'extractUpstreamStoryTopic',
+            'extractOriginalWatchLater',
+            'extractOriginalFollowing',
+            'extractOriginalListenVideoPages',
+        ):
+            start = build.index("val "+owner+" by tasks.registering(")
+            body = build[start:build.index("\n}", start)]
+            self.assertIn('inputs.dir("upstream-slices/v044-favorite-search")', body, owner)
         self.assertEqual(1, build.count('exclude(canonicalOriginalIdentity("'+search.NAV+'BiliPaiNavKeyMappingPolicy.kt"))'))
         self.assertIn('inputs.file(canonicalOriginalSource("'+search.NAV+'BiliPaiNavKeyMappingPolicy.kt"))', build)
         self.assertIn('"--test-output", layout.buildDirectory.dir("generated/original-listen-video-policy-tests")', build)
