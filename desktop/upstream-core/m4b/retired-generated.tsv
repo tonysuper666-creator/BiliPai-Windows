@@ -22,3 +22,4 @@ story-topic/com/android/purebilibili/feature/dynamic/components/DynamicTopicLink
 dynamic-full-card/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicVoteDialog.kt
 dynamic-editor/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicCreateReserveDialog.kt
 dynamic-editor/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicPublishPickers.kt
+dynamic-editor/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicCreateVoteDialog.kt

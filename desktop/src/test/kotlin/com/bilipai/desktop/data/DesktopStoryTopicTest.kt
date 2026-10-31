@@ -1,6 +1,5 @@
 package com.bilipai.desktop.data
 
-import com.android.purebilibili.core.network.DynamicApi
 import com.android.purebilibili.data.model.response.*
 import com.android.purebilibili.data.repository.TopicFeedPage
 import com.android.purebilibili.data.repository.TopicRepository
@@ -10,8 +9,8 @@ import com.android.purebilibili.feature.dynamic.components.resolveDynamicRichTex
 import com.bilipai.desktop.ui.desktopTopicDraft
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
-import kotlinx.serialization.json.Json
-import java.lang.reflect.Proxy
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.ResponseBody.Companion.toResponseBody
 import kotlin.test.*
 
 internal class StoryTopicFixtureData : DesktopStoryTopicDataSource {
@@ -29,31 +28,55 @@ internal fun storyFixtureVideo(index: Int, cid: Long = index.toLong() + 100) = V
     pic = "", duration = 30 + index, owner = Owner(index.toLong(), "作者 $index"))
 internal suspend fun waitStoryFixture(condition: () -> Boolean) { withTimeout(3000) { while (!condition()) delay(2) } }
 
+/** A desktop repository whose transport answers upstream requests with [answer] (JSON), and a Main owner over it. */
+internal fun storyTopicUpstreamOwner(answer: (okhttp3.Request) -> String): Pair<DesktopRepository, DesktopUpstreamOwner> {
+    val repository = DesktopRepository(DesktopSessionStore.temporary())
+    val transport = repository.httpClient.newBuilder().addInterceptor { chain ->
+        val request = chain.request()
+        okhttp3.Response.Builder().request(request).protocol(okhttp3.Protocol.HTTP_1_1).code(200).message("OK")
+            .body(answer(request).toResponseBody("application/json".toMediaType()))
+            .build()
+    }.build()
+    DesktopRepository::class.java.getDeclaredField("client").apply { isAccessible = true }.set(repository, transport)
+    return repository to repository.upstreamOwner(DesktopUpstreamPurpose.Main, { true })
+}
+
 internal suspend fun runStoryTopicDataFixture(): Int = coroutineScope {
     var count = 0
     fun verify(ok: Boolean, message: String) { assertTrue(ok, message); count++ }
-    val json = Json { ignoreUnknownKeys = true }
-    val detail = json.decodeFromString<TopicDetailResponse>("""{"code":0,"data":{"top_details":{"topic_item":{"id":91,"name":"原协议","view":9000},"topic_creator":{"uid":51,"name":"作者"}}}}""")
-    var response = json.decodeFromString<TopicFeedResponse>("""{"code":0,"data":{"topic_card_list":{"has_more":true,"offset":"cursor-2","items":[{"dynamic_card_item":{"id_str":"100","visible":true}},{"dynamic_card_item":{"id_str":"hidden","visible":false}},{"topic_type":"empty"}],"topic_sort_by_conf":{"show_sort_by":2,"all_sort_by":[{"sort_by":2,"sort_name":"热门"},{"sort_by":3,"sort_name":"最新"}]}}}}""")
-    val calls = mutableListOf<Pair<String, List<Any?>>>()
-    val api = Proxy.newProxyInstance(DynamicApi::class.java.classLoader, arrayOf(DynamicApi::class.java)) { _, method, args ->
-        calls += method.name to args.orEmpty().dropLast(1)
-        when (method.name) { "getTopicDetail" -> detail; "getTopicFeed" -> response; else -> error(method.name) }
-    } as DynamicApi
-    val original = TopicRepository(api)
-    verify(original.getTopicDetail(91).getOrThrow().topicItem?.name == "原协议", "Original topic detail response mapping")
-    val page = original.getTopicFeed(91, "cursor-1", 3).getOrThrow()
-    verify(page.items.map { it.id_str } == listOf("100"), "Original topic mapper removes null/invisible cards")
-    verify(page.selectedSortBy == 2 && page.offset == "cursor-2" && page.hasMore, "Original server sort/cursor/hasMore remain intact")
-    verify(calls.last().second.take(4) == listOf(91L, 3, "cursor-1", 20), "Exact original Retrofit topic arguments")
-    response = TopicFeedResponse(data = null)
-    verify(!original.getTopicFeed(91, "old", 3).getOrThrow().hasMore, "Missing card list is original empty success")
-    response = TopicFeedResponse(code = -101, message = "未登录")
-    verify(original.getTopicFeed(91).isFailure && original.getTopicDetail(0).isFailure, "Original response error/invalid-id guards")
-    val cancellationApi = Proxy.newProxyInstance(DynamicApi::class.java.classLoader, arrayOf(DynamicApi::class.java)) { _, _, _ -> throw CancellationException("cancel") } as DynamicApi
-    var cancelled = false
-    try { TopicRepository(cancellationApi).getTopicFeed(91) } catch (_: CancellationException) { cancelled = true }
+    // Upstream TopicRepository (object over NetworkModule), driven through a real desktop owner and Retrofit; only the
+    // HTTP exchange is synthetic (the last application interceptor answers instead of the network).
+    val detail = """{"code":0,"data":{"top_details":{"topic_item":{"id":91,"name":"原协议","view":9000},"topic_creator":{"uid":51,"name":"作者"}}}}"""
+    var response = """{"code":0,"data":{"topic_card_list":{"has_more":true,"offset":"cursor-2","items":[{"dynamic_card_item":{"id_str":"100","visible":true}},{"dynamic_card_item":{"id_str":"hidden","visible":false}},{"topic_type":"empty"}],"topic_sort_by_conf":{"show_sort_by":2,"all_sort_by":[{"sort_by":2,"sort_name":"热门"},{"sort_by":3,"sort_name":"最新"}]}}}}"""
+    val calls = mutableListOf<okhttp3.HttpUrl>()
+    var feedEntered: CompletableDeferred<Unit>? = null
+    val release = java.util.concurrent.CountDownLatch(1)
+    val (desktop, owner) = storyTopicUpstreamOwner { request ->
+        calls += request.url
+        if (request.url.encodedPath.endsWith("/feed/topic")) feedEntered?.let { it.complete(Unit); release.await(10, java.util.concurrent.TimeUnit.SECONDS) }
+        if (request.url.encodedPath.endsWith("/feed/topic")) response else detail
+    }
+    try {
+        suspend fun <T> upstream(block: suspend () -> T): T = DesktopUpstreamCalls.withOwnerScope(owner, block)
+        verify(upstream { TopicRepository.getTopicDetail(91) }.getOrThrow().topicItem?.name == "原协议", "Original topic detail response mapping")
+        val page = upstream { TopicRepository.getTopicFeed(91, "cursor-1", 3) }.getOrThrow()
+        verify(page.items.map { it.id_str } == listOf("100"), "Original topic mapper removes null/invisible cards")
+        verify(page.selectedSortBy == 2 && page.offset == "cursor-2" && page.hasMore, "Original server sort/cursor/hasMore remain intact")
+        verify(calls.last().let { listOf(it.queryParameter("topic_id"), it.queryParameter("sort_by"), it.queryParameter("offset"), it.queryParameter("page_size")) } ==
+            listOf("91", "3", "cursor-1", "20"), "Exact original Retrofit topic arguments")
+        response = """{"code":0,"data":null}"""
+        verify(!upstream { TopicRepository.getTopicFeed(91, "old", 3) }.getOrThrow().hasMore, "Missing card list is original empty success")
+        response = """{"code":-101,"message":"未登录"}"""
+        verify(upstream { TopicRepository.getTopicFeed(91) }.isFailure && upstream { TopicRepository.getTopicDetail(0) }.isFailure, "Original response error/invalid-id guards")
+        // Cancelled while the request is in flight: the call must end with the cancellation, never as a returned failure.
+        val entered = CompletableDeferred<Unit>().also { feedEntered = it }
+        var returned: Result<TopicFeedPage>? = null
+        // Recorded inside the owner scope (an outer withContext would discard the result of a cancelled caller anyway).
+        val inFlight = launch(Dispatchers.IO) { upstream { returned = TopicRepository.getTopicFeed(91) } }
+        entered.await(); inFlight.cancelAndJoin(); feedEntered = null
+        val cancelled = returned == null
     verify(cancelled, "Windows binding must propagate coroutine cancellation")
+    } finally { release.countDown(); desktop.logout() }
 
     val data = StoryTopicFixtureData(); val fetched = mutableListOf<Int>()
     data.homes = { index -> fetched += index; if (index == 0) (1..6).map(::storyFixtureVideo) else listOf(storyFixtureVideo(6), storyFixtureVideo(7)) }

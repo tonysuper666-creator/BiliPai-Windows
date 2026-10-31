@@ -18,7 +18,6 @@ feature/dynamic/components/DynamicCommentEntryBar.kt	calls into other files of t
 feature/dynamic/components/DynamicCommentInputHost.kt	calls into other files of this list (unresolved: sessionId, drafts)
 feature/dynamic/components/DynamicCommentPreviewPolicy.kt	calls into other files of this list (unresolved: Cannot infer type for type parameter '_'. Specify )
 feature/dynamic/components/DynamicCommentSheet.kt	Android Intent/Toast/ActivityResult: needs a desktop interface (file chooser, share, toast)
-feature/dynamic/components/DynamicCreateVoteDialog.kt	upstream calls DynamicCreateRepository/CommentRepository over NetworkModule, which now needs a desktop request owner (TON-1082); waits for the editor to run them inside its window's owner (LocalDesktopUpstreamSession) instead of the legacy bindings; Android Intent/Toast/ActivityResult: needs a desktop interface (file chooser, share, toast)
 feature/dynamic/components/DynamicDraftStore.kt	MediaStore/ContentResolver/WebView: needs a desktop interface (file chooser, save dialog)
 feature/dynamic/components/DynamicImageCropDialog.kt	android.graphics.Bitmap/Palette: no desktop stand-in yet; Coil ImageRequest.Builder(Context): Android Context is not a coil3 PlatformContext on the desktop
 feature/dynamic/components/DynamicPublishComposer.kt	Android Intent/Toast/ActivityResult: needs a desktop interface (file chooser, share, toast)
@@ -68,4 +67,3 @@ feature/search/SearchTrendingScreen.kt	calls into other files of this list (unre
 feature/search/SearchTrendingViewModel.kt	AndroidViewModel/Application: needs injected services instead (Toast through the desktop notifier); Media3/AndroidView: the desktop plays through mpv
 feature/search/SearchViewModel.kt	androidx.paging: the desktop has no paging dependency yet; AndroidViewModel/Application: needs injected services instead (Toast through the desktop notifier)
 feature/search/TopicDetailScreen.kt	Android Intent/Toast/ActivityResult: needs a desktop interface (file chooser, share, toast); R.drawable resources are not generated for the desktop yet; Coil ImageRequest.Builder(Context): Android Context is not a coil3 PlatformContext on the desktop
-feature/search/TopicDetailViewModel.kt	upstream TopicRepository still waits (upstream-core/data/later-steps.tsv)
