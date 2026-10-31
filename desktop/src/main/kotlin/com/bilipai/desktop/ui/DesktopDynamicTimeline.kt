@@ -186,8 +186,8 @@ internal fun DesktopDynamicTimelineFeed(
             contentPadding=PaddingValues(start=20.dp,top=20.dp,end=20.dp,bottom=20.dp+DESKTOP_REFRESH_SCROLL_RESERVE_DP.dp),
             horizontalArrangement=Arrangement.spacedBy(resolveDynamicTimelineHorizontalSpacing()),
             verticalItemSpacing=resolveDynamicTimelineVerticalSpacing(),
-            prependItemKeys=if(shouldUseDynamicManualPrependAnchor(layout))keys else emptyList(),
-            prependDividerIndex=if(shouldUseDynamicManualPrependAnchor(layout))divider else -1) {
+            prependItemKeys=if(shouldUseDynamicManualPrependAnchor(com.android.purebilibili.core.store.SettingsManager.DynamicFeedLayoutMode.fromValue(layout.value)))keys else emptyList(),
+            prependDividerIndex=if(shouldUseDynamicManualPrependAnchor(com.android.purebilibili.core.store.SettingsManager.DynamicFeedLayoutMode.fromValue(layout.value)))divider else -1) {
             displayed.forEachIndexed {index,item->
                 if(index==divider)item(key="old_content_divider",span=StaggeredGridItemSpan.FullLine){
                     OldContentDivider(oldContentDividerLabel)}

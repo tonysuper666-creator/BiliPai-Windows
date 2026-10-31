@@ -1,0 +1,10 @@
+--- a/bgm-detail/com/android/purebilibili/feature/video/ui/components/SkeletonComponents.kt
++++ b/bgm-detail/com/android/purebilibili/feature/video/ui/components/SkeletonComponents.kt
+@@ -314,7 +314,6 @@
+                 shape = VideoDetailShapes.media(),
+             )
+         },
+-        infoVerticalArrangement = Arrangement.spacedBy(4.dp),
+         infoContent = {
+             SkeletonBox(modifier = Modifier.fillMaxWidth(), height = 16.dp, cornerRadius = 8.dp)
+             SkeletonBox(modifier = Modifier.fillMaxWidth(0.82f), height = 16.dp, cornerRadius = 8.dp)
