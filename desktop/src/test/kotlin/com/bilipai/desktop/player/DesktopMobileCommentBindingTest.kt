@@ -177,6 +177,10 @@ class DesktopMobileCommentBindingTest {
         lateinit var binding:DesktopVideoCommentOperationsBinding
         init {
             DesktopRepository::class.java.getDeclaredField("client").apply { isAccessible=true }.set(repository,transport)
+            val retrofit=DesktopRepository::class.java.getDeclaredMethod("retrofit",String::class.java).apply { isAccessible=true }
+                .invoke(repository,"https://api.bilibili.com/") as retrofit2.Retrofit
+            DesktopRepository::class.java.getDeclaredField("buvidApi").apply { isAccessible=true }
+                .set(repository,retrofit.create(com.android.purebilibili.core.network.BuvidApi::class.java))
             bind()
         }
         fun bind() {
@@ -191,6 +195,7 @@ class DesktopMobileCommentBindingTest {
         data class Seen(val method: String, val host: String?, val target: String, val cookie: String?,
             val forcedCookie: String?, val authorization: String?)
         val seen = CopyOnWriteArrayList<Seen>()
+        @Volatile var bootstrapRoute: ((HttpExchange) -> Unit)? = null
         @Volatile var route: (HttpExchange) -> Unit = { respond(it, 200, """{"code":0,"message":"0","data":{"isLogin":true,"mid":1}}""") }
         private val directory: Path = Files.createTempDirectory("ton1082-tls")
         private val keyStore: KeyStore
@@ -204,7 +209,7 @@ class DesktopMobileCommentBindingTest {
                 if (System.getProperty("os.name").startsWith("Windows")) "keytool.exe" else "keytool")
             val process = ProcessBuilder(keytool.toString(), "-genkeypair", "-alias", "fixture", "-keyalg", "EC", "-groupname", "secp256r1",
                 "-dname", "CN=api.bilibili.com", "-ext",
-                "SAN=dns:api.bilibili.com,dns:www.bilibili.com,dns:broadcast.chat.bilibili.com,dns:sponsor.fixture.test",
+                "SAN=dns:app.bilibili.com,dns:api.bilibili.com,dns:www.bilibili.com,dns:broadcast.chat.bilibili.com,dns:sponsor.fixture.test",
                 "-validity", "2", "-keystore", store.toString(), "-storetype", "PKCS12", "-storepass", PASSWORD, "-keypass", PASSWORD)
                 .redirectErrorStream(true).start()
             val output = process.inputStream.readAllBytes().decodeToString()
@@ -219,7 +224,14 @@ class DesktopMobileCommentBindingTest {
                 seen += Seen(exchange.requestMethod, headers.getFirst("Host"), exchange.requestURI.rawPath +
                     (exchange.requestURI.rawQuery?.let { "?$it" } ?: ""), headers.getFirst("Cookie"),
                     headers.getFirst(FORCE_COOKIE_HEADER), headers.getFirst("Authorization"))
-                try { route(exchange) } finally { exchange.close() }
+                try {
+                    if (exchange.requestURI.path in setOf("/", "/x/frontend/finger/spi")) {
+                        bootstrapRoute?.invoke(exchange) ?: when(exchange.requestURI.path) {
+                            "/" -> respond(exchange,200,"fixture visitor home")
+                            else -> respond(exchange,200,"""{"code":0,"data":{"b_3":"visitor-bootstrap","b_4":"synthetic-four"}}""")
+                        }
+                    } else route(exchange)
+                } finally { exchange.close() }
             }
             server.start()
             val trusted = KeyStore.getInstance("PKCS12").apply { load(null, null); setCertificateEntry("fixture", keyStore.getCertificate("fixture")) }
