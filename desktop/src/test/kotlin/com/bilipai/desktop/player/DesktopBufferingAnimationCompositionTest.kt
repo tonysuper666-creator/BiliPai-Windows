@@ -1,5 +1,6 @@
 package com.bilipai.desktop.player
 
+import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.runtime.*
 import androidx.compose.runtime.snapshots.Snapshot
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -53,7 +54,7 @@ class DesktopBufferingAnimationCompositionTest {
             val focused = remember(window) { object : WindowInfo by window { override val isWindowFocused = true } }
             CompositionLocalProvider(LocalWindowInfo provides focused, LocalLifecycleOwner provides owner,
                 LocalVisualWorkAllowed provides allowed.value, LocalSystemReduceMotion provides reduced.value) {
-                if (visible.value) DesktopBufferingAnimation(tint.value, Modifier, 72.dp, loader)
+                if (visible.value) DesktopBufferingAnimation(tint.value, Modifier.requiredSize(120.dp, 72.dp), 72.dp, loader)
             }
         }
         fun frame(): IntArray {
@@ -100,6 +101,7 @@ class DesktopBufferingAnimationCompositionTest {
             assertFalse(first.contentEquals(later))
             assertTrue(later.filter { it ushr 24 !=0 }.all { it and 0x00ffff == 0 }, "SRC_IN red tint")
             assertEquals(72f,result.destination!!.width); assertEquals(72f,result.destination!!.height)
+            assertEquals(24f,result.destination!!.left, "non-square canvas must center the fitted square resource")
             h.allowed.value=false; h.frame(); h.frame(); val frozen=h.frame(); val stopped=result.draws.last()
             repeat(12) { assertContentEquals(frozen,h.frame()) }
             assertEquals(stopped,result.draws.last())
