@@ -1,0 +1,165 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiViewModel.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiViewModel.kt
+@@ -2,9 +2,10 @@
+ package com.android.purebilibili.feature.bangumi
+ 
+ import androidx.lifecycle.ViewModel
+-import androidx.lifecycle.viewModelScope
++import com.bilipai.desktop.ui.DesktopOriginalBangumiPagesEnvironment
++import com.bilipai.desktop.ui.DesktopHomeOwnedMutableStateFlow
+ import com.android.purebilibili.data.model.response.*
+-import com.android.purebilibili.data.repository.BangumiRepository
++// Existing Root services are required, never a new network singleton.
+ import com.android.purebilibili.feature.bangumi.currentBangumiFollowSession
+ import com.android.purebilibili.feature.bangumi.BangumiFollowSession
+ import kotlinx.coroutines.flow.MutableStateFlow
+@@ -104,8 +105,9 @@
+ /**
+  * 番剧/影视 ViewModel
+  */
+-class BangumiViewModel : ViewModel() {
+-    private val _uiState = MutableStateFlow(BangumiUiState())
++internal class BangumiViewModel(private val desktopEnvironment: DesktopOriginalBangumiPagesEnvironment) : ViewModel() {
++    private val viewModelScope get() = desktopEnvironment.scope
++    private val _uiState = DesktopHomeOwnedMutableStateFlow(BangumiUiState(), desktopEnvironment.commitIfCurrent)
+     val uiState = _uiState.asStateFlow()
+     val displayMode: StateFlow<BangumiDisplayMode> = uiState.map { it.displayMode }
+         .distinctUntilChanged().stateIn(viewModelScope, SharingStarted.Eagerly, _uiState.value.displayMode)
+@@ -154,10 +156,10 @@
+     private var myFollowLoadJob: Job? = null
+     private var myFollowGeneration = 0L
+     private var myFollowLoadingType: Int? = null
+-    private var followCacheSession: BangumiFollowSession = currentBangumiFollowSession()
++    private var followCacheSession: BangumiFollowSession = desktopEnvironment.followSession()
+ 
+     private fun ensureFollowCacheSession(): BangumiFollowSession {
+-        val session = currentBangumiFollowSession()
++        val session = desktopEnvironment.followSession()
+         if (session != followCacheSession) {
+             followCacheSession = session
+             followStatusCache.clear()
+@@ -215,10 +217,14 @@
+             val result = preloadFollowedSeasonsForType(
+                 type = type,
+                 followedSeasonIds = foundIds,
+-                targetSeasonId = seasonId
++                targetSeasonId = seasonId,
++                sessionProvider = desktopEnvironment.followSession,
++                fetchPage = { requestedType, page, pageSize ->
++                    desktopEnvironment.requests.getMyFollowBangumi(type = requestedType, page = page, pageSize = pageSize)
++                }
+             )
+             kotlinx.coroutines.currentCoroutineContext().ensureActive()
+-            if (generation != detailRequestGeneration || session != currentBangumiFollowSession()) return@launch
++            if (generation != detailRequestGeneration || session != desktopEnvironment.followSession()) return@launch
+             if (result.requestSucceeded) updateMyFollowStatsForType(type, result.total)
+             followedSeasonIds.addAll(foundIds)
+             if (seasonId !in foundIds) return@launch
+@@ -335,7 +341,7 @@
+             } else BangumiListState.Loading)
+         }
+         viewModelScope.launch {
+-            BangumiRepository.getBangumiIndexWithFilter(
++            desktopEnvironment.requests.getBangumiIndexWithFilter(
+                 seasonType = requestState.selectedType,
+                 page = 1,
+                 filter = requestState.filter
+@@ -374,7 +380,7 @@
+         val requestedPage = currentPage + 1
+         val requestState = _uiState.value
+         viewModelScope.launch {
+-            BangumiRepository.getBangumiIndexWithFilter(
++            desktopEnvironment.requests.getBangumiIndexWithFilter(
+                 seasonType = requestState.selectedType,
+                 page = requestedPage,
+                 filter = requestState.filter
+@@ -404,7 +410,7 @@
+         viewModelScope.launch {
+             _uiState.update { it.copy(timelineState = TimelineState.Loading) }
+             
+-            BangumiRepository.getTimeline(type).fold(
++            desktopEnvironment.requests.getTimeline(type).fold(
+                 onSuccess = { days ->
+                     if (generation != timelineGeneration || session != ensureFollowCacheSession()) return@fold
+                     _uiState.update { it.copy(timelineState = TimelineState.Success(days)) }
+@@ -428,9 +434,9 @@
+             _uiState.update { it.copy(detailState = BangumiDetailState.Loading) }
+             
+             val detailResult = if (mediaId > 0L && seasonId <= 0L && epId <= 0L) {
+-                BangumiRepository.getSeasonDetailByMediaId(mediaId)
++                desktopEnvironment.requests.getSeasonDetailByMediaId(mediaId)
+             } else {
+-                BangumiRepository.getSeasonDetail(seasonId, epId)
++                desktopEnvironment.requests.getSeasonDetail(seasonId, epId)
+             }
+             if (generation != detailRequestGeneration || session != ensureFollowCacheSession()) return@launch
+             detailResult.fold(
+@@ -493,18 +499,18 @@
+ 
+             val result = when {
+                 status == BANGUMI_FOLLOW_STATUS_UNFOLLOW -> {
+-                    BangumiRepository.unfollowBangumi(seasonId)
++                    desktopEnvironment.requests.unfollowBangumi(seasonId)
+                 }
+                 wasFollowing -> {
+-                    BangumiRepository.updateBangumiFollowStatus(seasonId, status)
++                    desktopEnvironment.requests.updateBangumiFollowStatus(seasonId, status)
+                 }
+                 status == BANGUMI_FOLLOW_STATUS_WATCHING -> {
+-                    BangumiRepository.followBangumi(seasonId)
++                    desktopEnvironment.requests.followBangumi(seasonId)
+                 }
+                 else -> {
+-                    val followResult = BangumiRepository.followBangumi(seasonId)
++                    val followResult = desktopEnvironment.requests.followBangumi(seasonId)
+                     if (followResult.isSuccess && session == ensureFollowCacheSession()) {
+-                        BangumiRepository.updateBangumiFollowStatus(seasonId, status)
++                        desktopEnvironment.requests.updateBangumiFollowStatus(seasonId, status)
+                     } else {
+                         Result.failure(followResult.exceptionOrNull() ?: Exception("追番失败"))
+                     }
+@@ -568,7 +574,7 @@
+         val seasonType = _uiState.value.selectedType
+         viewModelScope.launch {
+             
+-            BangumiRepository.searchBangumi(
++            desktopEnvironment.requests.searchBangumi(
+                 keyword = keyword,
+                 seasonType = seasonType,
+                 page = 1
+@@ -601,7 +607,7 @@
+         val generation = searchGeneration
+         val seasonType = _uiState.value.selectedType
+         viewModelScope.launch {
+-            BangumiRepository.searchBangumi(
++            desktopEnvironment.requests.searchBangumi(
+                 keyword = currentState.keyword,
+                 seasonType = seasonType,
+                 page = requestedPage
+@@ -648,7 +654,7 @@
+         myFollowPage = 1
+         
+         myFollowLoadJob = viewModelScope.launch {
+-            BangumiRepository.getMyFollowBangumi(
++            desktopEnvironment.requests.getMyFollowBangumi(
+                 type = targetType,
+                 page = 1
+             ).fold(
+@@ -690,7 +696,7 @@
+         val requestedPage = myFollowPage + 1
+         
+         viewModelScope.launch {
+-            BangumiRepository.getMyFollowBangumi(
++            desktopEnvironment.requests.getMyFollowBangumi(
+                 type = targetType,
+                 page = requestedPage
+             ).fold(
+@@ -725,7 +731,7 @@
+         } else MY_FOLLOW_TYPE_BANGUMI
+         if (otherType in loadedFollowStatsTypes || followStatsJob?.isActive == true) return
+         followStatsJob = viewModelScope.launch {
+-            BangumiRepository.getMyFollowBangumi(type = otherType, page = 1).onSuccess { data ->
++            desktopEnvironment.requests.getMyFollowBangumi(type = otherType, page = 1).onSuccess { data ->
+                 kotlinx.coroutines.currentCoroutineContext().ensureActive()
+                 if (session != ensureFollowCacheSession()) return@onSuccess
+                 followedSeasonIds.addAll(data.list.orEmpty().map { it.seasonId })
