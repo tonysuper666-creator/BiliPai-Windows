@@ -24,6 +24,9 @@ internal class DesktopHomeNavRequestReceipt internal constructor(
     internal val uiLoginInstallationStamp: Any,
 )
 
+/** Identity-bearing notification: repeated same-epoch installs must not be conflated. No credentials. */
+internal class DesktopLoginInstallationEvent(val receipt: DesktopLoginInstallationReceipt)
+
 /** Server cookies retain their scope; explicitly authorized account credentials cover Bilibili hosts. */
 internal class DesktopSessionStore(private val path: Path = defaultPath(), private val persistent: Boolean = true) : CookieJar, DesktopDynamicCacheSessionGuard {
     private val json = Json { ignoreUnknownKeys = true }
@@ -38,6 +41,8 @@ internal class DesktopSessionStore(private val path: Path = defaultPath(), priva
     internal val upstreamHttpCacheRoot: Path? get() = if (persistent) path.resolveSibling("upstream-http") else null
     // Replaced only after saveLoginAccount actually persists. Identical credentials may keep generation unchanged.
     private var primaryUiLoginInstallationStamp = Any()
+    private val mutableLoginInstallation = MutableStateFlow<DesktopLoginInstallationEvent?>(null)
+    internal val loginInstallation = mutableLoginInstallation.asStateFlow()
     private val mutableGeneration = MutableStateFlow(0L)
     val generationState = mutableGeneration.asStateFlow()
     @Volatile var generation: Long = 0
@@ -366,7 +371,11 @@ internal class DesktopSessionStore(private val path: Path = defaultPath(), priva
             preserveAccessToken = false, snapshot = snapshot)
         // Same monitor, only after the original save/persist succeeded; failed installs leave the old stamp.
         primaryUiLoginInstallationStamp = Any()
-        DesktopLoginInstallationReceipt(expectedEpoch, sourceMid, generation, account.mid)
+        val receipt = DesktopLoginInstallationReceipt(expectedEpoch, sourceMid, generation, account.mid)
+        // This is committed Store state, independent of the dialog attempt or navigation ticket.
+        // A fresh event identity also notifies collectors when every receipt field is unchanged.
+        mutableLoginInstallation.value = DesktopLoginInstallationEvent(receipt)
+        receipt
     }
 
     fun saveSpiCookies(cookies: Map<String, String>, expectedGeneration: Long? = null) = synchronized(lock) {

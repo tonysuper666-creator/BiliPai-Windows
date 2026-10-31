@@ -62,6 +62,7 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
     val savedAccounts: StateFlow<List<DesktopStoredAccountInfo>> = sessions.accounts
     internal val sessionEpoch: Long get() = sessions.generation
     internal val sessionEpochFlow: StateFlow<Long> = sessions.generationState
+    internal val loginInstallation = sessions.loginInstallation
     internal val dynamicCacheSessionGuard: DesktopDynamicCacheSessionGuard get() = sessions
     internal val dynamicCommentCacheStore = DesktopDynamicCommentCacheStore(sessions)
     internal val followStateEvents = DesktopFollowStateEvents(sessions)
