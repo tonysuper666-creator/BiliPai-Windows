@@ -43,6 +43,7 @@ internal fun DesktopOriginalDanmakuHost(
     upOwnerUserHash:String?,
     isSending:Boolean,
     onSendSame:(String)->Unit,
+    durationMs:()->Long,
 ) {
     val revision by overlay.poolSourceRevision.collectAsState()
     val snapshot=remember(overlay,environment,revision){overlay.poolSourceFor(environment.cid,environment.sourceVersion)}
@@ -92,6 +93,7 @@ internal fun DesktopOriginalDanmakuHost(
             },
             onReport={session.reportDanmaku(menu.dmid,it)},voteCount=menu.voteCount,hasLiked=menu.hasLiked,
             voteLoading=menu.voteLoading,canVote=menu.canVote,timestampJumpMs=resolveDanmakuTimestampJumpMs(menu.text),
+            durationMs=durationMs(),
             onSeekToTimestamp=environment::seekTo,canBlockKeyword=menu.text.isNotBlank(),
             onBlockKeyword={block(DanmakuBlockActionTarget.KEYWORD,menu.text)},canBlockUser=menu.userHash.isNotBlank(),
             onBlockUser={if(menu.userHash.isBlank())environment.showFeedback("该弹幕缺少发送者标识") else block(DanmakuBlockActionTarget.USER,menu.userHash)})
