@@ -353,6 +353,10 @@ val migratedAppSingleFiles: Set<String> = setOf(
     "com/android/purebilibili/data/repository/MessageReadEvent.kt",
     // TON-1124: the upstream ledger repository takes the calling Profile page environment.
     "com/android/purebilibili/data/repository/AccountLedgerRepository.kt",
+    // TON-1151: the shared tab-switch motion every pager tab row reads (tabIndicatorPosition, tabSelectedPage,
+    // isTabSelectionInProgress, animatePagerSelection). Its one outside read, BOTTOM_PAGER_TARGET_PREWARM_FRAMES, comes from
+    // desktop/src (DesktopPagerSelectionMotionConstants) until the root navigation producers retire.
+    "com/android/purebilibili/navigation/PagerSelectionMotion.kt",
 )
 val migratedAppPaths: Set<String> = migratedAppCorePaths + migratedAppM4dPaths + migratedAppSingleFiles
 val migratedUpstreamRelativePaths = migratedWholeModulePaths + migratedAppPaths + setOf(
@@ -3376,7 +3380,9 @@ val appM4dTestsNotRun: Map<String, String> = m4dTable("tests-not-run.tsv").toMap
 val appCoreUpstreamTestPaths: Set<String> = (appTestRoot.resolve("com/android/purebilibili/core").walkTopDown() +
         migratedAppM4dAreas.asSequence().flatMap { appTestRoot.resolve("com/android/purebilibili/$it").walkTopDown() } +
         // TON-1120: upstream's IM wire tests run against the directly compiled MessageImRepository.
-        sequenceOf(appTestRoot.resolve("com/android/purebilibili/data/repository/MessageImRepositoryTest.kt")))
+        sequenceOf(appTestRoot.resolve("com/android/purebilibili/data/repository/MessageImRepositoryTest.kt")) +
+        // TON-1151: upstream's structure test of the directly compiled tab-switch motion and its pager consumers.
+        sequenceOf(appTestRoot.resolve("com/android/purebilibili/navigation/PagerSelectionMotionStructureTest.kt")))
     .filter { it.isFile && it.extension == "kt" }
     // JUnit 4, Robolectric, mockk and androidx.test are not on the desktop test classpath; JUnit 5 (org.junit.jupiter) is.
     .filter { file -> !Regex("""^import (org\.junit\.(?!jupiter)|org\.robolectric|io\.mockk|androidx\.test)""", RegexOption.MULTILINE).containsMatchIn(file.readText()) }
