@@ -1,0 +1,16 @@
+--- a/independent-bangumi-pages/com/android/purebilibili/data/repository/DesktopOriginalBangumiReviewRequests.kt
++++ b/independent-bangumi-pages/com/android/purebilibili/data/repository/DesktopOriginalBangumiReviewRequests.kt
+@@ -7,13 +7,6 @@
+ import com.android.purebilibili.data.model.response.BangumiReviewType
+ import kotlinx.coroutines.Dispatchers
+ import com.bilipai.desktop.ui.ownedBangumiRequest
+-
+-data class BangumiReviewPage(
+-    val items: List<BangumiReviewItem>,
+-    val next: String,
+-    val count: Int,
+-    val hasMore: Boolean
+-)
+ 
+ internal class DesktopOriginalBangumiReviewRequests(private val api: BangumiApi, private val csrf: () -> String?, private val owned: () -> Boolean, private val actionOwned: () -> Boolean) {
+     suspend fun getReviews(

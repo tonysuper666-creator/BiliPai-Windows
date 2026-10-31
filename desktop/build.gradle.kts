@@ -238,7 +238,6 @@ val appCoreDesktopOwned: Map<String, String> = mapOf(
     "core/util/PlaybackTelemetryPolicy.kt" to "Media3 播放错误码分类；桌面播放走 mpv，没有这些错误码",
     "core/theme/ScheduledDarkThemeObserver.kt" to "Android 系统壁纸取色、定时深色（AlarmManager）与字体文件 ContentResolver",
     "core/theme/SeedWallpaperColorScheme.kt" to "Android 系统壁纸取色、定时深色（AlarmManager）与字体文件 ContentResolver",
-    "core/cache/PlayUrlCache.kt" to "Media3 播放地址缓存；桌面播放地址由 DesktopRepository 管理",
     "core/database/AppDatabase.kt" to "Room 数据库；桌面用 JSON 存储（DesktopBlockedUpStore、DesktopCommentFraudJsonDao 等）",
     "core/database/Converters.kt" to "Room 数据库；桌面用 JSON 存储（DesktopBlockedUpStore、DesktopCommentFraudJsonDao 等）",
     "core/database/DatabaseModule.kt" to "Room 数据库；桌面用 JSON 存储（DesktopBlockedUpStore、DesktopCommentFraudJsonDao 等）",
@@ -317,10 +316,12 @@ val appCoreLaterSteps: Map<String, String> = mapOf(
 // Feature areas compiled from the merged root as well (TON-1003, M4b): home, search, dynamic and comment. A file of those
 // areas stays on its legacy copy while upstream-core/m4b/later-steps.tsv lists it (path <TAB> what it waits for);
 // upstream-core/m4b/retired-generated.tsv lists the producer copies that re-declare names of the migrated files.
-val migratedAppFeatureAreas = listOf("feature/home/", "feature/search/", "feature/dynamic/", "feature/comment/")
-val appFeatureLaterSteps: Map<String, String> = file("upstream-core/m4b/later-steps.tsv").takeIf { it.isFile }?.readLines().orEmpty()
+// The app data layer (TON-1071: data/repository and data/model) moves the same way, with its own lists in upstream-core/data/.
+val migratedAppFeatureAreas = listOf("feature/home/", "feature/search/", "feature/dynamic/", "feature/comment/", "data/")
+val appFeatureListDirectories = listOf("upstream-core/m4b", "upstream-core/data")
+val appFeatureLaterSteps: Map<String, String> = appFeatureListDirectories.flatMap { file("$it/later-steps.tsv").takeIf { it.isFile }?.readLines().orEmpty() }
     .filter { it.isNotBlank() && !it.startsWith("#") }.associate { line -> line.substringBefore('\t') to line.substringAfter('\t') }
-val appFeatureRetiredGeneratedCopies: Set<String> = file("upstream-core/m4b/retired-generated.tsv").takeIf { it.isFile }?.readLines().orEmpty()
+val appFeatureRetiredGeneratedCopies: Set<String> = appFeatureListDirectories.flatMap { file("$it/retired-generated.tsv").takeIf { it.isFile }?.readLines().orEmpty() }
     .map { it.trim() }.filter { it.isNotEmpty() && !it.startsWith("#") }.toSet()
 val migratedAppCorePaths: Set<String> = (appJavaRoot.resolve("com/android/purebilibili/core").walkTopDown() +
         migratedAppFeatureAreas.asSequence().flatMap { appJavaRoot.resolve("com/android/purebilibili/$it").walkTopDown() })
@@ -2700,6 +2701,11 @@ val transitionPatchProducers = mapOf(
     "linked-dock" to "extractLinkedDock",
     "story-topic" to "extractUpstreamStoryTopic",
     "whole-playback-settings" to "extractOriginalWholePlaybackSettings",
+    // TON-1071: producers whose copies re-declare names of the migrated data layer.
+    "dynamic-settings" to "extractUpstreamDynamicSettings",
+    "dynamic-detail-protocol" to "extractUpstreamDynamicDetailProtocol",
+    "dynamic-tabs" to "extractUpstreamDynamicTabs",
+    "original-bangumi-player" to "extractOriginalBangumiPlayer",
 )
 
 /** Applies a unified diff; every hunk must match the original exactly once. */

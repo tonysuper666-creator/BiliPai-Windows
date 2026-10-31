@@ -1,0 +1,13 @@
+# TON-1071: upstream app data-layer files (data/repository, data/model) that keep their legacy copy for now.
+# path<TAB>what it waits for
+data/repository/BlockedUpRepository.kt	Room AppDatabase/BlockedUpDao: the desktop blocked-up list is a JSON store (DesktopBlockedUpStore); needs a DAO over it
+data/repository/CommentFraudRepository.kt	Room AppDatabase/CommentFraudDao and PureApplication.instance: the desktop record store is DesktopCommentFraudJsonDao; needs a DAO over it and an injected Context
+data/repository/MessageRepository.kt	PureApplication.instance (message-center preferences): needs the desktop Context
+data/repository/BilibiliBlockedListSyncRepository.kt	calls into other files of this list (BlockedUpRepository)
+data/repository/MessageImRepository.kt	calls into other files of this list (MessageRepository)
+data/repository/VideoRepository.kt	core/cache/PlayUrlCache and core/util/NetworkUtils are desktop-owned; danmaku density calls danmaku-engine DanmakuParser.parseProtobuf, which moves with the video feature (M4a, PR #18)
+data/repository/DanmakuRepository.kt	danmaku-engine DanmakuParser/DanmakuProto move with the video feature (M4a, PR #18)
+data/repository/SpecialDanmakuSource.kt	desktop danmaku sources construct the legacy public Remote/LocalSpecialDanmakuSource; upstream made them private; moves with the video feature (M4a)
+data/repository/TopicRepository.kt	the desktop story/topic page builds TopicRepository(DynamicApi) over the authorized desktop client; upstream is an object over NetworkModule, which is not bound to the desktop session yet
+data/repository/AudioRepository.kt	calls into other files of this list (VideoRepository)
+data/repository/StoryRepository.kt	calls into other files of this list (VideoRepository)
