@@ -1,0 +1,18 @@
+--- a/com/android/purebilibili/feature/video/screen/DesktopOriginalVideoContentSection.kt
++++ b/com/android/purebilibili/feature/video/screen/DesktopOriginalVideoContentSection.kt
+@@ -1,5 +1,6 @@
+ // 文件路径: feature/video/screen/VideoContentSection.kt
+ package com.android.purebilibili.feature.video.screen
++import com.android.purebilibili.navigation.tabIndicatorPosition
+ 
+ import androidx.compose.material.icons.outlined.Edit
+ 
+@@ -1158,7 +1159,7 @@
+                 isPlayerCollapsed = isPlayerCollapsed,
+                 miuixBackdrop = videoContentMiuixBackdrop,
+                 indicatorPositionProvider = {
+-                    pagerState.currentPage + pagerState.currentPageOffsetFraction
++                    pagerState.tabIndicatorPosition
+                 },
+                 isScrollInProgressProvider = { pagerState.isScrollInProgress },
+             )

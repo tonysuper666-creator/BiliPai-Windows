@@ -1,0 +1,30 @@
+--- a/com/android/purebilibili/feature/audio/screen/MusicPlayerContent.kt
++++ b/com/android/purebilibili/feature/audio/screen/MusicPlayerContent.kt
+@@ -1,4 +1,6 @@
+ package com.android.purebilibili.feature.audio.screen
++import com.android.purebilibili.navigation.tabIndicatorPosition
++import com.android.purebilibili.navigation.tabSelectedPage
+ 
+ import com.android.purebilibili.core.ui.AppContentColors
+ 
+@@ -1036,7 +1038,7 @@
+                         BottomBarLiquidSegmentedControl(
+                             items = resolveMusicPlayerPageTabs(),
+                             centerGlassContent = true,
+-                            selectedIndex = pagerState.currentPage,
++                            selectedIndex = pagerState.tabSelectedPage,
+                             onSelected = { page ->
+                                 pagerScope.launch {
+                                     animatePagerSelection(pagerState, page)
+@@ -1055,10 +1057,7 @@
+                             tapPressRefractionEnabled = true,
+                             isScrollInProgressProvider = { pagerState.isScrollInProgress },
+                             indicatorPositionProvider = {
+-                                resolveMusicPagerIndicatorPosition(
+-                                    currentPage = pagerState.currentPage,
+-                                    currentPageOffsetFraction = pagerState.currentPageOffsetFraction
+-                                )
++                                pagerState.tabIndicatorPosition.coerceIn(0f, 1f)
+                             },
+                             externalPagerMotionEffectsEnabled = true,
+                         )

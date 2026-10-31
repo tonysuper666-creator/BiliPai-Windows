@@ -2713,6 +2713,10 @@ val transitionPatchProducers = mapOf(
     "dynamic-tabs" to "extractUpstreamDynamicTabs",
     "original-bangumi-player" to "extractOriginalBangumiPlayer",
     "dynamic-editor" to "extractUpstreamDynamicEditor",
+    // TON-1151: producers whose pager tab rows read the independent rail motion (tabIndicatorPosition, tabSelectedPage).
+    "original-video-content-full" to "extractOriginalVideoContentFull",
+    "music-player-full" to "extractOriginalMusicPlayerFull",
+    "live-navigation" to "extractOriginalLiveNavigation",
 )
 
 /** Applies a unified diff; every hunk must match the original exactly once. */

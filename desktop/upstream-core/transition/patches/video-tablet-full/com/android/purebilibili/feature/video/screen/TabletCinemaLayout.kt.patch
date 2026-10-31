@@ -1,0 +1,22 @@
+--- a/com/android/purebilibili/feature/video/screen/TabletCinemaLayout.kt
++++ b/com/android/purebilibili/feature/video/screen/TabletCinemaLayout.kt
+@@ -1,4 +1,6 @@
+ package com.android.purebilibili.feature.video.screen
++import com.android.purebilibili.navigation.tabIndicatorPosition
++import com.android.purebilibili.navigation.tabSelectedPage
+ 
+ import com.android.purebilibili.feature.video.ambient.PlayerAmbientLayout
+ import com.android.purebilibili.navigation.animatePagerSelection
+@@ -1192,10 +1194,10 @@
+                             ) {
+                                 TabletSecondaryLiquidTabRow(
+                                     labels = listOf("评论", "相关推荐"),
+-                                    selectedIndex = pagerState.currentPage,
++                                    selectedIndex = pagerState.tabSelectedPage,
+                                     onSelected = onTabSelected,
+                                     indicatorPositionProvider = {
+-                                        pagerState.currentPage + pagerState.currentPageOffsetFraction
++                                        pagerState.tabIndicatorPosition
+                                     },
+                                     isScrollInProgressProvider = { pagerState.isScrollInProgress },
+                                 )
