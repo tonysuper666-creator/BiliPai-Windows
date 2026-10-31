@@ -23,3 +23,4 @@ space-image-previews/com/android/purebilibili/feature/space/DesktopOriginalSpace
 original-message-pages/com/android/purebilibili/feature/message/feed/DesktopOriginalMessageFeedCommon.kt
 bgm-detail/com/android/purebilibili/feature/message/feed/DesktopCommentDetailError.kt
 home-viewmodel/com/android/purebilibili/feature/message/DesktopHomeTotalUnreadCount.kt
+login/com/android/purebilibili/feature/login/DesktopUpstreamLoginDeclarations.kt

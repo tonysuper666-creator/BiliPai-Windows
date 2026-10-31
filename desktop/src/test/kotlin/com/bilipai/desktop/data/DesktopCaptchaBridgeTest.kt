@@ -95,7 +95,7 @@ class DesktopCaptchaBridgeTest {
                 assertFalse(page.text.contains(captcha.token))
                 assertEquals(204, request(uri, payload).status)
             }, configurationUrl = configuration.url)
-            assertEquals(expected, bridge.verify(captcha))
+            assertEquals(expected, com.android.purebilibili.feature.login.CaptchaManager(bridge).verify(captcha))
             assertNull(configuration.cookie.get())
             assertClosed(assertNotNull(pageUri))
         }

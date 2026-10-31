@@ -17,10 +17,7 @@ import coil3.compose.AsyncImage
 import com.android.purebilibili.data.model.response.CaptchaData
 import com.android.purebilibili.feature.login.*
 import com.bilipai.desktop.data.*
-import com.google.zxing.BarcodeFormat
-import com.google.zxing.MultiFormatWriter
 import kotlinx.coroutines.*
-import java.awt.image.BufferedImage
 
 private enum class LoginMethod(val label: String) { TV("TV 扫码"), WEB("网页扫码"), PASSWORD("密码"), SMS("短信"), COOKIE("Cookie"), ACCOUNTS("账号") }
 
@@ -53,10 +50,9 @@ internal fun AdvancedLoginDialog(repository: DesktopRepository, updateHold: Desk
         }
     } }
     val login = remember(repository, instance, loginReturn, capturedAttempt) {
-        if (loginReturn == null) DesktopLoginRepository(repository)
-        else DesktopLoginRepository(repository, loginReturn.sourceEpoch, ownsAttempt, installed)
+        DesktopLoginRepository(repository, loginReturn?.sourceEpoch ?: repository.sessionEpoch, ownsAttempt, installed)
     }
-    val bridge = remember(login) { DesktopCaptchaBridge(login) }
+    val bridge = remember(login) { CaptchaManager(DesktopCaptchaBridge(login)) }
     CompositionLocalProvider(LocalDesktopLoginUpdateInstance provides instance,
         LocalDesktopLoginReturn provides loginReturn, LocalDesktopLoginAttemptOwned provides ownsAttempt,
         LocalDesktopLoginInstalled provides installed, LocalDesktopLoginAttemptReset provides { replaceAttempt() }) {
@@ -119,54 +115,57 @@ internal class LoginWork(private val scope: CoroutineScope, private val instance
 
 @Composable
 private fun LoginQrForm(login: DesktopLoginRepository, tv: Boolean, onComplete: (AccountSummary) -> Unit) {
-    var qr by remember { mutableStateOf<QrLogin?>(null) }
     var generation by remember { mutableIntStateOf(0) }
-    var status by remember { mutableStateOf("正在获取二维码…") }
-    var error by remember { mutableStateOf<String?>(null) }
+    var completionError by remember { mutableStateOf<String?>(null) }
     val complete by rememberUpdatedState(onComplete)
     val scope = rememberCoroutineScope()
     val instance = LocalDesktopLoginUpdateInstance.current
     val resetAttempt = LocalDesktopLoginAttemptReset.current
-    DisposableEffect(scope, instance, generation, login) {
-        val job = launchTrackedLogin(scope, instance) {
-        qr = null; error = null; status = "正在获取二维码…"
-        try {
-            val current = if (tv) login.beginTvQr() else login.beginWebQr()
-            qr = current; status = "请使用哔哩哔哩手机客户端扫码"
-            val deadline = System.currentTimeMillis() + 8 * 60_000
-            while (System.currentTimeMillis() < deadline) {
-                delay(2000)
-                when (val result = if (tv) login.pollTvQr(current.key) else login.pollWebQr(current.key)) {
-                    QrLoginState.Waiting -> status = "请使用哔哩哔哩手机客户端扫码"
-                    QrLoginState.Scanned -> status = "已扫码，请在手机上确认登录"
-                    QrLoginState.Expired -> { status = "二维码已过期，请刷新"; return@launchTrackedLogin }
-                    is QrLoginState.Complete -> { complete(result.account); return@launchTrackedLogin }
-                }
-            }
-            status = "二维码已过期，请刷新"
-        } catch (failure: Exception) { if (failure is CancellationException) throw failure; error = failure.message ?: "获取二维码失败" }
+    val environment = remember(login, generation, scope, instance) {
+        DesktopLoginEnvironment(login, DesktopLoginLaunchScope { block ->
+            launchTrackedLogin(scope, instance, block = block)
+        })
+    }
+    val viewModel = remember(environment) { LoginViewModel(environment) }
+    val state by viewModel.state.collectAsState()
+    DisposableEffect(viewModel, tv) {
+        completionError = null
+        if (tv) viewModel.loadQrCode() else viewModel.loadWebQrCode()
+        onDispose { viewModel.stopPolling(); environment.work.close() }
+    }
+    LaunchedEffect(viewModel, state) {
+        if (state is LoginState.Success) {
+            try { complete(environment.requireInstalledAccount()) }
+            catch (cancelled: CancellationException) { throw cancelled }
+            catch (failure: Exception) { completionError = failure.message ?: "完成登录失败，请重试" }
         }
-        onDispose { job.cancel() }
+    }
+    val bitmap = when (val current = state) {
+        is LoginState.QrCode -> current.bitmap
+        is LoginState.Scanned -> current.bitmap
+        else -> null
+    }
+    val status = when (val current = state) {
+        LoginState.Loading -> "正在获取二维码…"
+        is LoginState.Scanned -> "已扫码，请在手机上确认登录"
+        is LoginState.Error -> current.msg
+        LoginState.Success -> "登录成功"
+        else -> "请使用哔哩哔哩手机客户端扫码"
     }
     Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(12.dp)) {
-        qr?.let { value ->
-            val image = remember(value.url) {
-                val matrix = MultiFormatWriter().encode(value.url, BarcodeFormat.QR_CODE, 256, 256)
-                BufferedImage(256, 256, BufferedImage.TYPE_INT_RGB).apply {
-                    for (y in 0 until 256) for (x in 0 until 256) setRGB(x, y, if (matrix[x, y]) 0x000000 else 0xffffff)
-                }.toComposeImageBitmap()
-            }
+        if (bitmap != null) {
+            val image = remember(bitmap) { bitmap.toComposeImageBitmap() }
             Image(BitmapPainter(image), "登录二维码", Modifier.size(256.dp))
-        } ?: CircularProgressIndicator()
-        Text(status)
+        } else if (state is LoginState.Loading) CircularProgressIndicator()
+        Text(status, color = if (state is LoginState.Error) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurface)
         Text(if (tv) "TV 授权同时保存 App access token，可用于上游 App 接口。" else "网页扫码保存浏览器 Cookie。", style = MaterialTheme.typography.bodySmall)
-        error?.let { Text(it, color = MaterialTheme.colorScheme.error) }
+        completionError?.let { Text(it, color = MaterialTheme.colorScheme.error) }
         TextButton(onClick = { resetAttempt(); generation++ }) { Text("刷新二维码") }
     }
 }
 
 @Composable
-private fun LoginPasswordForm(login: DesktopLoginRepository, bridge: DesktopCaptchaBridge, onComplete: (AccountSummary) -> Unit) {
+private fun LoginPasswordForm(login: DesktopLoginRepository, bridge: CaptchaManager, onComplete: (AccountSummary) -> Unit) {
     val work = rememberLoginWork()
     var username by remember { mutableStateOf("") }; var password by remember { mutableStateOf("") }
     var captcha by remember { mutableStateOf<CaptchaData?>(null) }
@@ -193,7 +192,7 @@ private fun LoginPasswordForm(login: DesktopLoginRepository, bridge: DesktopCapt
 }
 
 @Composable
-private fun LoginSmsForm(login: DesktopLoginRepository, bridge: DesktopCaptchaBridge, onComplete: (AccountSummary) -> Unit) {
+private fun LoginSmsForm(login: DesktopLoginRepository, bridge: CaptchaManager, onComplete: (AccountSummary) -> Unit) {
     val work = rememberLoginWork()
     var regions by remember { mutableStateOf(resolveFallbackPhoneRegions()) }
     var region by remember { mutableStateOf(resolveDefaultPhoneRegion(regions)) }
@@ -246,7 +245,7 @@ private fun LoginSmsForm(login: DesktopLoginRepository, bridge: DesktopCaptchaBr
 }
 
 @Composable
-private fun LoginRiskForm(risk: DesktopLoginResult.RiskRequired, login: DesktopLoginRepository, bridge: DesktopCaptchaBridge,
+private fun LoginRiskForm(risk: DesktopLoginResult.RiskRequired, login: DesktopLoginRepository, bridge: CaptchaManager,
     onResult: (DesktopLoginResult) -> Unit, onBack: () -> Unit) {
     val work = rememberLoginWork(); var captchaKey by remember(risk) { mutableStateOf<String?>(null) }; var code by remember(risk) { mutableStateOf("") }
     Text(risk.message.ifBlank { "登录需要手机安全验证" })

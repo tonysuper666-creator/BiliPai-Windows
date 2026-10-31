@@ -1,0 +1,411 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/login/LoginViewModel.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/login/LoginViewModel.kt
+@@ -1,14 +1,10 @@
+ 
+ package com.android.purebilibili.feature.login
+ 
+-import android.app.Application
+-import android.graphics.Bitmap
+-import android.graphics.Color
++import java.awt.image.BufferedImage as Bitmap
+ import com.android.purebilibili.core.util.Logger
+-import androidx.lifecycle.AndroidViewModel
+-import androidx.lifecycle.viewModelScope
+-import com.android.purebilibili.core.network.NetworkModule
+-import com.android.purebilibili.core.store.AccountSessionStore
++import androidx.lifecycle.ViewModel
++import com.bilipai.desktop.data.DesktopLoginEnvironment
+ import com.android.purebilibili.core.store.TokenManager
+ import com.android.purebilibili.data.model.response.CaptchaData
+ import com.google.zxing.BarcodeFormat
+@@ -57,7 +53,8 @@
+     ) : LoginState()
+ }
+ 
+-class LoginViewModel(application: Application) : AndroidViewModel(application) {
++internal class LoginViewModel(private val environment: DesktopLoginEnvironment) : ViewModel() {
++    private val viewModelScope get() = environment.work
+     private val _state = MutableStateFlow<LoginState>(LoginState.Loading)
+     val state = _state.asStateFlow()
+ 
+@@ -86,7 +83,7 @@
+                 _state.value = LoginState.Loading
+                 Logger.d("LoginDebug", "1. 开始获取 Web 二维码...")
+ 
+-                val resp = NetworkModule.passportApi.generateQrCode()
++                val resp = environment.passportApi.generateQrCode()
+ 
+                 //  核心修复：处理可空类型
+                 val data = resp.data ?: throw Exception("服务器返回数据为空")
+@@ -102,6 +99,7 @@
+ 
+                 startPolling()
+             } catch (e: Exception) {
++                if (e is kotlinx.coroutines.CancellationException) throw e
+                 com.android.purebilibili.core.util.Logger.e("LoginDebug", "获取二维码失败", e)
+                 _state.value = LoginState.Error(e.message ?: "网络错误")
+             }
+@@ -113,10 +111,11 @@
+     private fun startPolling() {
+         viewModelScope.launch {
+             Logger.d("LoginDebug", "3. 开始轮询...")
+-            while (isPolling) {
++            val deadline = System.nanoTime() + 8L * 60 * 1_000_000_000
++            while (isPolling && System.nanoTime() < deadline) {
+                 delay(2000) //  缩短轮询间隔，更快响应
+                 try {
+-                    val response = NetworkModule.passportApi.pollQrCode(qrcodeKey)
++                    val response = environment.passportApi.pollQrCode(qrcodeKey)
+                     val body = response.body()
+ 
+                     //  核心修复：处理可空类型，默认为 -1 防止空指针
+@@ -197,9 +196,14 @@
+                 } catch (cancelled: kotlinx.coroutines.CancellationException) {
+                     throw cancelled
+                 } catch (e: Exception) {
++                if (e is kotlinx.coroutines.CancellationException) throw e
+                     if (!isPolling) _state.value = LoginState.Error(e.message ?: "登录态校验失败")
+                     com.android.purebilibili.core.util.Logger.e("LoginDebug", "轮询异常", e)
+                 }
++            }
++            if (isPolling) {
++                isPolling = false
++                _state.value = LoginState.Error("二维码已过期，请刷新")
+             }
+         }
+     }
+@@ -235,10 +239,10 @@
+         val bitMatrix = writer.encode(content, BarcodeFormat.QR_CODE, 512, 512)
+         val w = bitMatrix.width
+         val h = bitMatrix.height
+-        val bmp = Bitmap.createBitmap(w, h, Bitmap.Config.RGB_565)
++        val bmp = Bitmap(w, h, Bitmap.TYPE_INT_RGB)
+         for (x in 0 until w) {
+             for (y in 0 until h) {
+-                bmp.setPixel(x, y, if (bitMatrix[x, y]) Color.BLACK else Color.WHITE)
++                bmp.setRGB(x, y, if (bitMatrix[x, y]) 0x000000 else 0xffffff)
+             }
+         }
+         return bmp
+@@ -257,7 +261,7 @@
+     private var currentCountryCode: Int = 86
+     // Passport's Android-HD identity is intentionally separate from the web
+     // cookie jar's buvid3; see the equivalent PiliPlus LoginHttp identity.
+-    private val appLoginIdentity = PiliPlusLoginIdentityStore.get(application)
++    private val appLoginIdentity = environment.identity
+     private val appLoginDeviceId = appLoginIdentity.deviceId
+     private val appLoginBuvid = appLoginIdentity.buvid
+ 
+@@ -277,7 +281,7 @@
+     fun loadPhoneRegions() {
+         viewModelScope.launch {
+             try {
+-                val response = NetworkModule.passportApi.getCountryList()
++                val response = environment.passportApi.getCountryList()
+                 val data = response.data
+                 if (response.code == 0 && data != null) {
+                     val mapped = mapPassportCountryListToPhoneRegions(data)
+@@ -292,6 +296,7 @@
+                     )
+                 }
+             } catch (e: Exception) {
++                if (e is kotlinx.coroutines.CancellationException) throw e
+                 Logger.e("LoginDebug", "国家列表加载失败，使用离线兜底", e)
+             }
+         }
+@@ -306,7 +311,7 @@
+                 _state.value = LoginState.Loading
+                 Logger.d("LoginDebug", "获取极验验证参数...")
+                 
+-                val response = NetworkModule.passportApi.getCaptcha()
++                val response = environment.passportApi.getCaptcha()
+                 if (response.code == 0 && response.data != null) {
+                     val checkedResponseData = requireNotNull(response.data)
+                     currentCaptchaData = checkedResponseData
+@@ -316,6 +321,7 @@
+                     _state.value = LoginState.Error("获取验证参数失败: ${response.message}")
+                 }
+             } catch (e: Exception) {
++                if (e is kotlinx.coroutines.CancellationException) throw e
+                 com.android.purebilibili.core.util.Logger.e("LoginDebug", "获取验证参数异常", e)
+                 _state.value = LoginState.Error("网络错误: ${e.message}")
+             }
+@@ -364,7 +370,7 @@
+                     loginSessionId = loginSessionId,
+                     timestampSeconds = timestampMillis / 1000
+                 )
+-                val response = NetworkModule.passportApi.sendSmsCodeByApp(
++                val response = environment.passportApi.sendSmsCodeByApp(
+                     loginBuvid = appLoginBuvid,
+                     params = com.android.purebilibili.core.network.AppSignUtils
+                         .signForAndroidHdLogin(params),
+@@ -395,6 +401,7 @@
+                     )
+                 }
+             } catch (e: Exception) {
++                if (e is kotlinx.coroutines.CancellationException) throw e
+                 com.android.purebilibili.core.util.Logger.e("LoginDebug", "发送短信异常", e)
+                 _state.value = LoginState.Error("网络错误: ${e.message}")
+             }
+@@ -415,7 +422,7 @@
+                     return@launch
+                 }
+ 
+-                val keyResponse = NetworkModule.passportApi.getWebKey()
++                val keyResponse = environment.passportApi.getWebKey()
+                 val publicKey = keyResponse.data?.key
+                 if (keyResponse.code != 0 || publicKey.isNullOrBlank()) {
+                     _state.value = LoginState.Error("获取登录密钥失败: ${keyResponse.message}")
+@@ -439,7 +446,7 @@
+                     encryptedDeviceToken = encryptedDeviceToken,
+                     timestampSeconds = com.android.purebilibili.core.network.AppSignUtils.getTimestamp()
+                 )
+-                val response = NetworkModule.passportApi.loginBySmsApp(
++                val response = environment.passportApi.loginBySmsApp(
+                     loginBuvid = appLoginBuvid,
+                     params = com.android.purebilibili.core.network.AppSignUtils
+                         .signForAndroidHdLogin(params),
+@@ -459,6 +466,7 @@
+                     )
+                 }
+             } catch (e: Exception) {
++                if (e is kotlinx.coroutines.CancellationException) throw e
+                 com.android.purebilibili.core.util.Logger.e("LoginDebug", "短信登录异常", e)
+                 _state.value = LoginState.Error("网络错误: ${e.message}")
+             }
+@@ -480,7 +488,7 @@
+                 Logger.d("LoginDebug", "密码登录请求")
+                 
+                 // 1. 获取 RSA 公钥
+-                val keyResponse = NetworkModule.passportApi.getWebKey()
++                val keyResponse = environment.passportApi.getWebKey()
+                 val keyData = keyResponse.data
+                 if (keyResponse.code != 0 || keyData == null) {
+                     _state.value = LoginState.Error("获取密钥失败: ${keyResponse.message}")
+@@ -517,7 +525,7 @@
+                     encryptedDeviceToken = encryptedDeviceToken,
+                     timestampSeconds = com.android.purebilibili.core.network.AppSignUtils.getTimestamp()
+                 )
+-                val response = NetworkModule.passportApi.loginByPasswordApp(
++                val response = environment.passportApi.loginByPasswordApp(
+                     loginBuvid = appLoginBuvid,
+                     params = com.android.purebilibili.core.network.AppSignUtils
+                         .signForAndroidHdLogin(params),
+@@ -543,6 +551,7 @@
+                     )
+                 }
+             } catch (e: Exception) {
++                if (e is kotlinx.coroutines.CancellationException) throw e
+                 com.android.purebilibili.core.util.Logger.e("LoginDebug", "密码登录异常", e)
+                 _state.value = LoginState.Error("网络错误: ${e.message}")
+             }
+@@ -569,7 +578,7 @@
+         riskRecaptchaToken = ""
+ 
+         try {
+-            val info = NetworkModule.passportApi.safeCenterGetInfo(tmpCode = riskTmpCode)
++            val info = environment.passportApi.safeCenterGetInfo(tmpCode = riskTmpCode)
+             val account = info.data?.accountInfo
+             if (info.code != 0 || account == null) {
+                 _state.value = LoginState.Error(
+@@ -593,6 +602,7 @@
+                 message = message,
+             )
+         } catch (e: Exception) {
++                if (e is kotlinx.coroutines.CancellationException) throw e
+             Logger.e("LoginDebug", "安全中心信息获取失败", e)
+             _state.value = LoginState.Error("安全验证准备失败: ${e.message}")
+         }
+@@ -609,7 +619,7 @@
+                     return@launch
+                 }
+                 _state.value = LoginState.Loading
+-                val pre = NetworkModule.passportApi.safeCenterPreCapture()
++                val pre = environment.passportApi.safeCenterPreCapture()
+                 val data = pre.data
+                 if (pre.code != 0 || data == null ||
+                     data.geeGt.isBlank() || data.geeChallenge.isBlank() || data.recaptchaToken.isBlank()
+@@ -627,6 +637,7 @@
+                     recaptchaToken = data.recaptchaToken,
+                 )
+             } catch (e: Exception) {
++                if (e is kotlinx.coroutines.CancellationException) throw e
+                 Logger.e("LoginDebug", "风控极验准备失败", e)
+                 _state.value = LoginState.Error("网络错误: ${e.message}")
+             }
+@@ -653,7 +664,7 @@
+                 )
+                 val signed = com.android.purebilibili.core.network.AppSignUtils
+                     .signForAndroidHdLogin(params)
+-                val response = NetworkModule.passportApi.safeCenterSendSms(
++                val response = environment.passportApi.safeCenterSendSms(
+                     referer = riskRefererUrl,
+                     params = signed,
+                 )
+@@ -671,6 +682,7 @@
+                     )
+                 }
+             } catch (e: Exception) {
++                if (e is kotlinx.coroutines.CancellationException) throw e
+                 Logger.e("LoginDebug", "风控短信发送异常", e)
+                 restoreRiskVerificationUi(errorMessage = "网络错误: ${e.message}")
+             }
+@@ -703,7 +715,7 @@
+                 )
+                 val verifySigned = com.android.purebilibili.core.network.AppSignUtils
+                     .signForAndroidHdLogin(verifyParams)
+-                val verifyResponse = NetworkModule.passportApi.safeCenterVerifySms(
++                val verifyResponse = environment.passportApi.safeCenterVerifySms(
+                     referer = riskRefererUrl,
+                     params = verifySigned,
+                 )
+@@ -723,7 +735,7 @@
+                     buvid = appLoginBuvid,
+                     timestampSeconds = com.android.purebilibili.core.network.AppSignUtils.getTimestamp(),
+                 )
+-                val tokenResponse = NetworkModule.passportApi.oauth2AccessToken(
++                val tokenResponse = environment.passportApi.oauth2AccessToken(
+                     com.android.purebilibili.core.network.AppSignUtils.signForAndroidHdLogin(tokenParams)
+                 )
+                 val body = tokenResponse.body()
+@@ -740,6 +752,7 @@
+                     )
+                 }
+             } catch (e: Exception) {
++                if (e is kotlinx.coroutines.CancellationException) throw e
+                 Logger.e("LoginDebug", "风控短信验证异常", e)
+                 _state.value = LoginState.Error("网络错误: ${e.message}")
+             }
+@@ -780,7 +793,7 @@
+ 
+     /** PiliPlus fallback when the SMS response asks for captcha without a usable recaptcha_url. */
+     private suspend fun prepareFallbackSmsCaptcha(): Boolean {
+-        val response = runCatching { NetworkModule.passportApi.safeCenterPreCapture() }
++        val response = runCatching { environment.passportApi.safeCenterPreCapture() }
+             .getOrNull() ?: return false
+         val data = response.data ?: return false
+         if (response.code != 0 || data.recaptchaToken.isBlank() ||
+@@ -855,18 +868,11 @@
+         }
+     }
+ 
+-    private suspend fun finishLogin(source: String) {
+-        syncCurrentAccountSession()
+-        withContext(Dispatchers.Main.immediate) {
+-            _state.value = LoginState.Success
+-            com.android.purebilibili.core.util.AnalyticsHelper.logLogin(source)
+-            com.android.purebilibili.core.util.AnalyticsHelper.syncUserContext(
+-                mid = TokenManager.midCache,
+-                isVip = TokenManager.isVipCache,
+-                privacyModeEnabled = com.android.purebilibili.core.store.SettingsManager
+-                    .isPrivacyModeEnabledSync(getApplication())
+-            )
+-        }
++    private suspend fun finishLogin(@Suppress("UNUSED_PARAMETER") source: String) {
++        // M3 validates nav and installs this candidate in one captured login/epoch actor.
++        // Do not write Android TokenManager or read a process-wide current account afterwards.
++        environment.requireInstalledAccount()
++        withContext(Dispatchers.Main.immediate) { _state.value = LoginState.Success }
+     }
+ 
+     /** Finish the already imported session using the same post-login flow as other methods. */
+@@ -898,11 +904,9 @@
+         source: String,
+         cookies: Map<String, String> = emptyMap(),
+     ) {
+-        com.android.purebilibili.data.repository.SessionRepository.save(
+-            context = getApplication(), sessData = sessData, csrf = csrf, buvid3 = buvid3,
++        environment.install(sessData = sessData, csrf = csrf, buvid3 = buvid3,
+             mid = mid, accessToken = accessToken, refreshToken = refreshToken,
+-            accessTokenPlatform = accessTokenPlatform, cookies = cookies,
+-        )
++            accessTokenPlatform = accessTokenPlatform, cookies = cookies)
+         finishLogin(source)
+     }
+ 
+@@ -916,7 +920,7 @@
+         viewModelScope.launch {
+             try {
+                 _state.value = LoginState.Loading
+-                val response = NetworkModule.passportApi
++                val response = environment.passportApi
+                     .validateCookieSession(importedCookies.toCookieHeader())
+                 val navData = response.data
+                 if (response.code != 0 || navData == null || !navData.isLogin || navData.mid <= 0L) {
+@@ -933,28 +937,13 @@
+                     cookies = importedCookies.values,
+                 )
+             } catch (e: Exception) {
++                if (e is kotlinx.coroutines.CancellationException) throw e
+                 com.android.purebilibili.core.util.Logger.e("LoginDebug", "Cookie 验证失败", e)
+                 _state.value = LoginState.Error("Cookie 验证失败，请检查内容后重试")
+             }
+         }
+     }
+ 
+-    private suspend fun syncCurrentAccountSession() {
+-        NetworkModule.clearRuntimeCookies()
+-        val response = NetworkModule.api.getNavInfo()
+-        val navData = response.data
+-        check(response.code == 0 && navData != null && navData.isLogin && navData.mid > 0L) {
+-            "登录态校验失败，请重新登录"
+-        }
+-        TokenManager.saveMid(getApplication(), navData.mid)
+-        com.android.purebilibili.core.network.AccountCookieStore.update(
+-            getApplication(), com.android.purebilibili.core.network.AccountCookieSession.main(),
+-            mapOf("DedeUserID" to navData.mid.toString()),
+-        )
+-        TokenManager.saveVipStatus(navData.vip.status == 1)
+-        AccountSessionStore.upsertCurrentAccount(getApplication(), navData)
+-    }
+-    
+     /**
+      * 重置手机登录状态
+      */
+@@ -987,7 +976,7 @@
+                 _state.value = LoginState.Loading
+                 Logger.d("TvLogin", "1. 开始获取 TV 二维码...")
+                 
+-                val response = com.android.purebilibili.data.repository.QrLoginRepository.generate()
++                val response = environment.generateQr()
+ 
+                 if (response.code == 0 && response.data != null) {
+                     val checkedResponseData = requireNotNull(response.data)
+@@ -1007,6 +996,7 @@
+                     _state.value = LoginState.Error("获取二维码失败: ${response.message}")
+                 }
+             } catch (e: Exception) {
++                if (e is kotlinx.coroutines.CancellationException) throw e
+                 com.android.purebilibili.core.util.Logger.e("TvLogin", "获取 TV 二维码异常", e)
+                 _state.value = LoginState.Error(e.message ?: "网络错误")
+             }
+@@ -1019,10 +1009,11 @@
+     private fun startTvPolling() {
+         viewModelScope.launch {
+             Logger.d("TvLogin", "3. 开始 TV 轮询...")
+-            while (isTvPolling) {
++            val deadline = System.nanoTime() + 8L * 60 * 1_000_000_000
++            while (isTvPolling && System.nanoTime() < deadline) {
+                 delay(2000)
+                 try {
+-                    val response = com.android.purebilibili.data.repository.QrLoginRepository.poll(tvAuthCode)
++                    val response = environment.pollQr(tvAuthCode)
+ 
+                     Logger.d("TvLogin", "TV 轮询状态: code=${response.code}")
+                     
+@@ -1081,10 +1072,15 @@
+                 } catch (cancelled: kotlinx.coroutines.CancellationException) {
+                     throw cancelled
+                 } catch (e: Exception) {
++                if (e is kotlinx.coroutines.CancellationException) throw e
+                     if (!isTvPolling) _state.value = LoginState.Error(e.message ?: "登录态校验失败")
+                     com.android.purebilibili.core.util.Logger.e("TvLogin", "TV 轮询异常", e)
+                 }
+             }
++            if (isTvPolling) {
++                isTvPolling = false
++                _state.value = LoginState.Error("二维码已过期，请刷新")
++            }
+         }
+     }
+     
