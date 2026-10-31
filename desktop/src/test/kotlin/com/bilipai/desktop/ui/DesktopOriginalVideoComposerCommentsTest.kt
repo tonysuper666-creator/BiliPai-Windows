@@ -40,6 +40,7 @@ class DesktopOriginalVideoComposerCommentsTest {
         val requests=object:DesktopVideoCommentRequests {
             override fun isOwned()=owned()
             override fun currentMid()=111L
+            override suspend fun getMobileCommentsForSubject(oid:Long,type:Int,page:Int,ps:Int,mode:Int,continuation:com.android.purebilibili.data.model.response.CommentMainListContinuation?,fallbackOnMissingLocation:Boolean):Result<com.android.purebilibili.data.model.response.ReplyData> = error("Mobile paging is not expected in this existing fixture")
             override suspend fun getCommentsForSubject(oid:Long,type:Int,page:Int,ps:Int,mode:Int,paginationOffset:String?,fallbackOnMissingLocation:Boolean)=Result.success(ReplyData(replies=emptyList(),cursor=ReplyCursor(isEnd=true)))
             override suspend fun getSortedSubCommentsForSubject(oid:Long,type:Int,rootId:Long,mode:Int,paginationOffset:String?,targetReplyId:Long)=Result.success(ReplyData())
             override suspend fun getDialogCommentsForSubject(oid:Long,type:Int,rootId:Long,dialogId:Long,page:Int,paginationOffset:String?)=Result.success(ReplyData())

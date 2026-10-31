@@ -28,6 +28,7 @@ class DesktopWindowsVideoCommentActionsTest {
         val requests = object : DesktopVideoCommentRequests {
             override fun isOwned() = account
             override fun currentMid() = 111L
+            override suspend fun getMobileCommentsForSubject(oid:Long,type:Int,page:Int,ps:Int,mode:Int,continuation:com.android.purebilibili.data.model.response.CommentMainListContinuation?,fallbackOnMissingLocation:Boolean):Result<com.android.purebilibili.data.model.response.ReplyData> = error("Mobile paging is not expected in this existing fixture")
             override suspend fun getCommentsForSubject(oid: Long, type: Int, page: Int, ps: Int, mode: Int,
                 paginationOffset: String?, fallbackOnMissingLocation: Boolean): Result<ReplyData> {
                 val call = Call(oid, type, page, ps, mode, paginationOffset)
