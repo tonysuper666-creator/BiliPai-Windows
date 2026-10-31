@@ -2706,6 +2706,7 @@ val transitionPatchProducers = mapOf(
     "dynamic-detail-protocol" to "extractUpstreamDynamicDetailProtocol",
     "dynamic-tabs" to "extractUpstreamDynamicTabs",
     "original-bangumi-player" to "extractOriginalBangumiPlayer",
+    "dynamic-editor" to "extractUpstreamDynamicEditor",
 )
 
 /** Applies a unified diff; every hunk must match the original exactly once. */

@@ -347,6 +347,14 @@ internal class DesktopUpstreamSession(private val repository: DesktopRepository,
      * active account's TokenManager values as of now, read in one admission. Nothing is cached in between. */
     fun tokens(entry: String): DesktopUpstreamTokens = owner().tokens(entry)
 
+    /** A non-coroutine upstream read for UI (composition): [block] runs under an owner captured now. While the window
+     * is closing or its account is being switched no owner can be captured, and the caller's [retired] value is used,
+     * the same way [withOwner] does not start an operation then. */
+    fun <T> read(retired: T, block: () -> T): T {
+        val owner = try { owner() } catch (closing: BiliApiException) { if (closing.apiCode == -101) return retired else throw closing }
+        return DesktopUpstreamCalls.withOwner(owner, block)
+    }
+
     companion object {
         fun require(session: DesktopUpstreamSession?, entry: String): DesktopUpstreamSession = session
             ?: throw UnsupportedDesktopCapability("$entry outside a desktop window", "mount LocalDesktopUpstreamSession at the window root (TON-1082)")
