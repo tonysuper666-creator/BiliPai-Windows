@@ -315,6 +315,7 @@ val appCoreLaterSteps: Map<String, String> = mapOf(
 // M4a: video/bangumi logic and unchanged Compose components compile from the merged upstream tree.
 // The remaining UI/player files move when their desktop platform adapters are wired.
 val migratedVideoFeaturePaths = setOf(
+    "com/android/purebilibili/feature/video/ui/components/DanmakuReportForm.kt",
     "com/android/purebilibili/feature/video/ui/gesture/GestureLevelOverlay.kt",
     "com/android/purebilibili/feature/video/ui/components/QualityMenu.kt",
     "com/android/purebilibili/feature/video/ui/components/VideoCardSkeleton.kt",
@@ -3120,6 +3121,7 @@ val transitionPatchDirectory = file("upstream-core/transition/patches")
 val transitionPatchedGeneratedFiles = fileTree(transitionPatchDirectory) { include("**/*.patch") }.files
     .map { it.relativeTo(transitionPatchDirectory).invariantSeparatorsPath.removeSuffix(".patch") }.toSortedSet()
 val transitionPatchProducers = mapOf(
+    "original-danmaku-list-menu" to "extractOriginalDanmakuListMenu",
     "original-video-content-full" to "extractOriginalVideoContentFull",
     "shared-liquid-tabs" to "extractSharedLiquidTabs",
     "original-following" to "extractOriginalFollowing",
