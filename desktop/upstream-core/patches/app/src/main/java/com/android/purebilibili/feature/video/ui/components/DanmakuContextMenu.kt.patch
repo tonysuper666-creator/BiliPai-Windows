@@ -1,0 +1,172 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/video/ui/components/DanmakuContextMenu.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/video/ui/components/DanmakuContextMenu.kt
+@@ -23,7 +23,7 @@
+ import androidx.compose.ui.Modifier
+ import androidx.compose.ui.draw.clip
+ import androidx.compose.ui.graphics.Color
+-import androidx.compose.ui.platform.LocalContext
++import com.bilipai.desktop.ui.LocalDesktopDanmakuBindings as LocalContext
+ import androidx.compose.ui.text.font.FontWeight
+ import androidx.compose.ui.text.style.TextAlign
+ import androidx.compose.ui.text.style.TextOverflow
+@@ -39,10 +39,10 @@
+ import androidx.compose.material.icons.filled.ThumbUp
+ import androidx.compose.material.icons.automirrored.filled.ArrowBack
+ import androidx.compose.material.icons.automirrored.filled.Reply
+-import com.android.purebilibili.core.ui.common.AppSelectionContainer as SelectionContainer
++import androidx.compose.foundation.text.selection.SelectionContainer
+ import androidx.compose.material.icons.filled.SelectAll
+-import com.android.purebilibili.core.ui.common.copyPlainTextToClipboard
+-import com.android.purebilibili.core.ui.common.TextSelectionBottomSheet
++import com.bilipai.desktop.ui.copyDesktopDanmakuText as copyPlainTextToClipboard
++import com.bilipai.desktop.ui.DesktopDanmakuTextSelection as TextSelectionBottomSheet
+ import com.android.purebilibili.core.ui.AppShapes
+ import com.android.purebilibili.core.ui.ContainerLevel
+ 
+@@ -83,7 +83,7 @@
+ }
+ 
+ /** 举报原因（label, API reason code），弹幕点按菜单与弹幕列表共用 */
+-internal val DanmakuReportReasons: List<Pair<String, Int>> = listOf(
++internal val UpstreamDanmakuReportReasons: List<Pair<String, Int>> = listOf(
+     "违法违禁" to 1,
+     "色情低俗" to 2,
+     "赌博诈骗" to 3,
+@@ -140,7 +140,7 @@
+     canBlockUser: Boolean = true,
+     onBlockUser: () -> Unit = {},
+     durationMs: Long = 0L,
+-    onReportWithDetails: ((reason: Int, explanation: String, blockUser: Boolean) -> Unit)? = null,
++    onReportWithExplanation: ((reason: Int, explanation: String, blockUser: Boolean) -> Unit)? = null,
+ ) {
+     val context = LocalContext.current
+     var currentPage by remember { mutableStateOf(DanmakuContextMenuPage.MAIN) }
+@@ -158,7 +158,7 @@
+             hasTimestamp = jumpMs != null,
+             onDismiss = onDismiss,
+             onLike = { onLike(); onDismiss() },
+-            onCopy = { copyPlainTextToClipboard(context, text); onDismiss() },
++            onCopy = { copyPlainTextToClipboard(context, text, "BiliPai"); onDismiss() },
+             onReportOrRecall = {
+                 currentPage = if (canRecall) DanmakuContextMenuPage.RECALL_CONFIRM else DanmakuContextMenuPage.REPORT
+                 onExpandActions()
+@@ -203,21 +203,10 @@
+                     label = "MenuTransition"
+                 ) { page ->
+                     when (page) {
+-                        DanmakuContextMenuPage.REPORT -> Column(
+-                            Modifier.width(300.dp).background(MaterialTheme.colorScheme.surface).padding(12.dp)
+-                        ) {
+-                            AppTextButton(onClick = { currentPage = DanmakuContextMenuPage.MAIN }) {
+-                                AppText("返回")
+-                            }
+-                            DanmakuReportForm(canBlockUser = canBlockUser, onSubmit = { reason, explanation, block ->
+-                                if (onReportWithDetails != null) onReportWithDetails(reason, explanation, block)
+-                                else {
+-                                    onReport(reason)
+-                                    if (block) onBlockUser()
+-                                }
+-                                onDismiss()
+-                            })
+-                        }
++                        DanmakuContextMenuPage.REPORT -> DanmakuContextReportContent(
++                            canBlockUser, onReportWithExplanation, onReport, onDismiss,
++                            onBack = { currentPage = DanmakuContextMenuPage.MAIN }
++                        )
+                         DanmakuContextMenuPage.RECALL_CONFIRM -> RecallConfirmMenu(
+                             previewText = resolveDanmakuRecallConfirmationPreview(text),
+                             onBack = { currentPage = DanmakuContextMenuPage.MAIN },
+@@ -545,3 +534,93 @@
+         thickness = 0.5.dp
+     )
+ }
++
++// Desktop compatibility: legacy two-argument report callers cannot carry explanations.
++private val MenuBackground = Color(0xCC1C1C1E)
++private val PrimaryColor = Color(0xFF0A84FF)
++internal val DanmakuReportReasons: List<Pair<String, Int>> = listOf(
++    "违法违禁" to 1,
++    "色情低俗" to 2,
++    "赌博诈骗" to 3,
++    "引战" to 4,
++    "人身攻击" to 5,
++    "剧透" to 6,
++    "刷屏" to 7,
++    "其他" to 8
++)
++
++@Composable
++private fun ReportReasonMenu(
++    onSelectReason: (Int) -> Unit,
++    onBack: () -> Unit
++) {
++    Column(
++        modifier = Modifier
++            .width(280.dp)
++            .clip(AppShapes.container(ContainerLevel.Dialog))
++            .background(MenuBackground),
++        horizontalAlignment = Alignment.CenterHorizontally
++    ) {
++        // Header with Back
++        Box(
++            modifier = Modifier
++                .fillMaxWidth()
++                .padding(12.dp)
++        ) {
++            AppIconButton(
++                onClick = onBack,
++                modifier = Modifier.align(Alignment.CenterStart),
++            ) {
++                AppIcon(
++                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
++                    contentDescription = "返回",
++                    tint = PrimaryColor,
++                    modifier = Modifier.size(24.dp),
++                )
++            }
++            AppText(
++                text = "举报原因",
++                color = Color.White,
++                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold),
++                modifier = Modifier.align(Alignment.Center)
++            )
++        }
++
++        MenuSeparator()
++
++        val reasons = DanmakuReportReasons
++
++        reasons.forEachIndexed { index, (label, code) ->
++            MenuItem(
++                label = label,
++                centered = true, // Center text for options
++                onClick = { onSelectReason(code) }
++            )
++            if (index < reasons.lastIndex) {
++                MenuSeparator()
++            }
++        }
++    }
++}
++
++@Composable
++internal fun DanmakuContextReportContent(
++    canBlockUser: Boolean,
++    onReportWithExplanation: ((Int, String, Boolean) -> Unit)?,
++    onReport: (Int) -> Unit,
++    onDismiss: () -> Unit,
++    onBack: () -> Unit,
++) {
++    if (onReportWithExplanation != null) {
++        Column(Modifier.width(300.dp).background(MaterialTheme.colorScheme.surface).padding(12.dp)) {
++            com.android.purebilibili.core.ui.components.AppTextButton(onClick = onBack) { AppText("返回") }
++            DanmakuReportForm(canBlockUser = canBlockUser, onSubmit = { reason, explanation, block ->
++                onReportWithExplanation(reason, explanation, block)
++                onDismiss()
++            })
++        }
++    } else ReportReasonMenu(
++        onSelectReason = { reason -> onReport(reason); onDismiss() },
++        onBack = onBack,
++    )
++}
