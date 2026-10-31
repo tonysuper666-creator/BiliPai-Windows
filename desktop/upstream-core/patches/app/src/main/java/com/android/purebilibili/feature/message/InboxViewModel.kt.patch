@@ -90,3 +90,7 @@
      fun clearError() { _uiState.update { it.copy(error = null) } }
      fun clearOperationError() { _uiState.update { it.copy(operationError = null) } }
  }
+@@ -114,1 +114,2 @@
+-            MessageUserInfoLoader.remember(user)?.let { item.talker_id to it }
++            // Desktop (TON-1084): the profile cache belongs to this entry's Root account, not a process-wide one.
++            MessageUserInfoLoader.remember(user, owner.messageAccountIdentity)?.let { item.talker_id to it }

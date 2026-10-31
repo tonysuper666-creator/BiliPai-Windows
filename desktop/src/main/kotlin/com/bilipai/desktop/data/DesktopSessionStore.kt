@@ -73,6 +73,8 @@ internal class DesktopSessionStore(private val path: Path = defaultPath(), priva
     }
     internal fun storedAccountSessions(): List<StoredAccountSession> = synchronized(lock) { accountRecords(saved).map { it.session } }
     internal fun activeAccountMid(): Long? = synchronized(lock) { saved.account?.mid }
+    /** The active account as upstream TokenManager holds it (TON-1084); null signed out. Read inside an owner admission. */
+    internal fun upstreamTokenSession(): StoredAccountSession? = synchronized(lock) { saved.account?.let { recordCurrent(saved).session } }
     internal fun getPlaybackAccountMid(): Long? = synchronized(lock) { saved.playbackAccountMid }
     internal fun getPlaybackAccount(): StoredAccountSession? = synchronized(lock) { playbackAccountLocked() }
     internal fun setPlaybackAccountMid(mid: Long?, expectedGeneration: Long, stillOwned: () -> Boolean): Boolean = synchronized(lock) {

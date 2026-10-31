@@ -47,6 +47,32 @@ internal data class DesktopUpstreamIdentity(private val store: Any, val epoch: L
     }
 }
 
+/** TON-1084 (TON-1071 B2). What upstream TokenManager reads for one owner: the Store's active account (Android's
+ * TokenManager is always the main account; a playback account is resolved separately), captured in the same admission
+ * as the owner and never updated. A guest owner has its visitor buvid3 only. Not a data class: no credential in toString. */
+internal class DesktopUpstreamTokens private constructor(
+    val sessData: String?, val csrf: String?, val mid: Long?, val buvid3: String?,
+    val accessToken: String?, val refreshToken: String?, val accessTokenPlatform: String, val isVip: Boolean,
+) {
+    val signedIn: Boolean get() = sessData != null
+
+    override fun toString(): String = "DesktopUpstreamTokens(mid=$mid, signedIn=$signedIn)"
+
+    companion object {
+        private const val TV = com.android.purebilibili.core.store.TokenManager.ACCESS_TOKEN_PLATFORM_TV
+
+        fun account(session: com.android.purebilibili.core.store.StoredAccountSession?, visitorBuvid3: String?): DesktopUpstreamTokens =
+            if (session == null || session.sessData.isBlank()) signedOut(visitorBuvid3)
+            else DesktopUpstreamTokens(session.sessData, session.csrf.ifBlank { null }, session.mid.takeIf { it > 0L },
+                session.buvid3.ifBlank { null } ?: visitorBuvid3, session.accessToken.ifBlank { null },
+                session.refreshToken.ifBlank { null }, session.accessTokenPlatform.ifBlank { TV }, session.isVip)
+
+        /** Signed out, or an explicit guest: no account value at all, only the visitor identity. */
+        fun signedOut(visitorBuvid3: String?): DesktopUpstreamTokens =
+            DesktopUpstreamTokens(null, null, null, visitorBuvid3?.ifBlank { null }, null, null, TV, false)
+    }
+}
+
 /** Thrown when an owner is used after an account switch, a window close or a playback authorization change. */
 internal class DesktopUpstreamOwnerRetired(entry: String) : CancellationException("Upstream request owner retired: $entry")
 
@@ -56,6 +82,7 @@ internal class DesktopUpstreamOwner internal constructor(
     val identity: DesktopUpstreamIdentity,
     private val stillOwned: () -> Boolean,
     val purpose: DesktopUpstreamPurpose,
+    private val capturedTokens: DesktopUpstreamTokens,
 ) {
     val epoch: Long get() = identity.epoch
     internal fun owned(): Boolean = stillOwned()
@@ -63,6 +90,9 @@ internal class DesktopUpstreamOwner internal constructor(
     fun isCurrent(): Boolean = stillOwned() && repository.isUpstreamOwnerCurrent(this)
 
     fun admit(entry: String = "admission") { if (!isCurrent()) throw DesktopUpstreamOwnerRetired(entry) }
+
+    /** The session values upstream TokenManager reads for this owner (TON-1084). A retired owner has none. */
+    fun tokens(entry: String): DesktopUpstreamTokens { admit(entry); return capturedTokens }
 
     /** Runs [block] inside the owner's Store admission, so no account switch can happen while it publishes. */
     fun <T> admitted(block: () -> T): T = repository.withUpstreamOwnerAdmission(this, block)
@@ -76,7 +106,9 @@ internal class DesktopUpstreamOwner internal constructor(
             "An upstream playback request from a ${purpose::class.simpleName} owner", "capture a Playback owner with its authorization (TON-1082)")
         purpose === DesktopUpstreamPurpose.Guest && next === DesktopUpstreamPurpose.Main -> throw UnsupportedDesktopCapability(
             "An upstream account request from an explicit guest owner", "a guest owner never carries account credentials (TON-1082)")
-        else -> DesktopUpstreamOwner(repository, identity, ::isCurrent, next)
+        // A guest derived from an account owner reads only the visitor identity, never the account snapshot.
+        else -> DesktopUpstreamOwner(repository, identity, ::isCurrent, next,
+            if (next === DesktopUpstreamPurpose.Guest) DesktopUpstreamTokens.signedOut(repository.upstreamGuestBuvid3) else capturedTokens)
     }
 
     /** Requests through the repository's own client, dispatcher, pool and CookieJar, stamped with this owner. */
@@ -161,6 +193,20 @@ internal object DesktopUpstreamCalls {
     /** The account an upstream account-scoped cache belongs to; a guest owner has its own identity. */
     fun sessionIdentity(entry: String): Any = requireOwner(entry).let { it.identity to (it.purpose === DesktopUpstreamPurpose.Guest) }
 
+    /** TokenManager's session caches (TON-1084): the current owner's snapshot. No owner is a wiring error and fails
+     * loudly; a retired owner is refused; only an explicit guest or a signed-out owner reads null. */
+    fun tokens(entry: String): DesktopUpstreamTokens = requireOwner(entry).tokens(entry)
+
+    /** TokenManager.accountIdentity: one fixed identity per owner, refused once the owner is retired. */
+    fun accountIdentity(entry: String): kotlinx.coroutines.flow.StateFlow<com.android.purebilibili.core.store.AccountSessionIdentity> =
+        requireOwner(entry).let { owner -> DesktopUpstreamOwnedState(owner, entry,
+            com.android.purebilibili.core.store.AccountSessionIdentity(owner.tokens(entry).mid, owner.epoch)) }
+
+    /** Upstream session writes: login, logout, account switching and their storage belong to the desktop's own flow. */
+    fun refuseSessionWrite(entry: String): Nothing = throw UnsupportedDesktopCapability(
+        "$entry (an upstream session write)", "sign-in, sign-out and account switching use the desktop account flow; " +
+            "upstream code reads its owner's session snapshot and never keeps a process-wide copy (TON-1084)")
+
     /** NetworkModule's own clients on the desktop: same protocols and cache contract, but they never send. Every
      * upstream request is routed through an owner before it reaches a client; one that still arrives here was not
      * routed, and is refused before any desktop authorization could pick "the current account" for it. */
@@ -201,6 +247,18 @@ internal object DesktopUpstreamCalls {
                 chain.proceed(com.bilipai.desktop.network.enforceDesktopCredentialBoundary(request))
             }
             .build()
+    }
+}
+
+/** A StateFlow fixed to one owner: every read checks the owner first, so a retired owner yields no value. */
+@OptIn(kotlinx.coroutines.ExperimentalForInheritanceCoroutinesApi::class)
+private class DesktopUpstreamOwnedState<T>(private val owner: DesktopUpstreamOwner, private val entry: String, private val state: T) :
+    kotlinx.coroutines.flow.StateFlow<T> {
+    override val value: T get() { owner.admit(entry); return state }
+    override val replayCache: List<T> get() = listOf(value)
+    override suspend fun collect(collector: kotlinx.coroutines.flow.FlowCollector<T>): Nothing {
+        collector.emit(value)
+        kotlinx.coroutines.awaitCancellation()
     }
 }
 
@@ -279,6 +337,10 @@ internal class DesktopUpstreamSession(private val repository: DesktopRepository,
         val owner = try { owner(purpose) } catch (retired: BiliApiException) { if (retired.apiCode == -101) return else throw retired }
         DesktopUpstreamCalls.withOwnerScope(owner, block)
     }
+
+    /** The explicit read-only session of this window for non-coroutine upstream reads (UI, blocking core code): the
+     * active account's TokenManager values as of now, read in one admission. Nothing is cached in between. */
+    fun tokens(entry: String): DesktopUpstreamTokens = owner().tokens(entry)
 
     companion object {
         fun require(session: DesktopUpstreamSession?, entry: String): DesktopUpstreamSession = session

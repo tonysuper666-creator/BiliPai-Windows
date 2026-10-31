@@ -157,3 +157,13 @@
              .addConverterFactory(json.asConverterFactory("application/json".toMediaType())).build()
              .create(AudioApi::class.java)
      }
+@@ -3114,3 +3114,4 @@ object NetworkModule {
+     fun clearRuntimeCookies() {
++        com.bilipai.desktop.data.DesktopUpstreamCalls.refuseSessionWrite("NetworkModule.clearRuntimeCookies") // Desktop (TON-1084)
+         appSessionCookieJar.clear()
+     }
+@@ -3128,3 +3129,4 @@ object NetworkModule {
+     fun clearPlaybackAccountClient() {
++        com.bilipai.desktop.data.DesktopUpstreamCalls.refuseSessionWrite("NetworkModule.clearPlaybackAccountClient") // Desktop (TON-1084)
+         playbackAccountKey = null
+         playbackAccountApi = null
