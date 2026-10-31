@@ -283,7 +283,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
     val social = remember(repository) { DesktopSocialRepository(repository) }
     val community = remember(repository, discovery.blockedUps) { DesktopCommunityRepository(repository, discovery.blockedUps) }
     val space = remember(repository) { DesktopSpaceRepository(repository) }
-    val storyTopic = remember(repository, discovery) { DesktopStoryTopicRepository(repository, discovery) }
+    val storyTopic = remember(repository, discovery) { DesktopStoryTopicRepository(repository, discovery) { !isClosing() } }
     val browseMemory = remember(account?.mid, sessionEpoch) { DesktopBrowseMemory() }
     val originalBrowseCachedPosition: (String, Long, () -> Boolean) -> Long? =
         remember(repository, ordinaryVideoResourcesRef, ordinaryVideoResourcesRetired) {
@@ -1796,8 +1796,11 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
     }
     val modalContentBlur = com.bilipai.desktop.ui.rememberDesktopOriginalWindowModalBlur(hostWindow)
     val upstreamAndroidContext = remember(globalPluginContext) { globalPluginContext.asAndroidContext() }
+    // TON-1082: upstream NetworkModule requests of this window capture their owner from here.
+    val upstreamSession = remember(repository) { com.bilipai.desktop.data.DesktopUpstreamSession(repository) { !isClosing() } }
     CompositionLocalProvider(LocalDesktopBrowseMemory provides browseMemory, LocalUiSkinState provides packages.skin,
         com.bilipai.desktop.ui.LocalDesktopUpstreamAndroidContext provides upstreamAndroidContext,
+        com.bilipai.desktop.data.LocalDesktopUpstreamSession provides upstreamSession,
         com.bilipai.desktop.ui.LocalDesktopOriginalModalContentBlurTarget provides modalContentBlur,
         LocalDesktopWindowsPlayerWindow provides hostWindow,
         LocalDesktopWindowsVideoEnhancement provides DesktopWindowsVideoEnhancementUiBinding(

@@ -218,7 +218,7 @@ class OriginalSubscriptionSourceTest(unittest.TestCase):
     def test_production_owners_track_complete_new_input_closure_and_pure_original_tests(self):
         build = (REPO/'desktop/build.gradle.kts').read_text(encoding='utf8')
         for owner in ['extractUpstreamApi', 'extractOriginalFavorites', 'extractOriginalWatchLater',
-                      'extractOriginalFollowing', 'extractUpstreamSpaceOverview']:
+                      'extractOriginalFollowing']:
             first = build.index('val '+owner+' by tasks.registering(')
             body = build[first:build.index('\n}', first)]
             self.assertIn('inputs.file("tools/v044_favorite_subscription.py")', body)

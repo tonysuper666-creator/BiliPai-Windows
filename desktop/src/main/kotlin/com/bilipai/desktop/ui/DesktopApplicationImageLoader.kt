@@ -49,7 +49,7 @@ internal class DesktopApplicationImageLoader(
         }
         networkCalls = routedImageCalls(bilibiliCalls, desktopPublicImageCalls(), owned)
         SingletonImageLoader.setSafe { platform ->
-            newImageLoader(platform, networkCalls, directory.toFile()).also { created.set(it) }
+            newImageLoader(platform, networkCalls, directory.toFile()).withUpstreamResourceModels().also { created.set(it) }
         }
         imageLoader = SingletonImageLoader.get(PlatformContext.INSTANCE)
         check(imageLoader === created.get()) {

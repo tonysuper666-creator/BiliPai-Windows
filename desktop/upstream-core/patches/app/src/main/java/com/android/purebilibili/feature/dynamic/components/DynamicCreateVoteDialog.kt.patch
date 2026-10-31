@@ -1,0 +1,69 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicCreateVoteDialog.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicCreateVoteDialog.kt
+@@ -1,8 +1,5 @@
+ package com.android.purebilibili.feature.dynamic.components
+ 
+-import androidx.activity.compose.rememberLauncherForActivityResult
+-import androidx.activity.result.PickVisualMediaRequest
+-import androidx.activity.result.contract.ActivityResultContracts
+ import androidx.compose.runtime.LaunchedEffect
+ import coil3.compose.AsyncImage
+ import androidx.compose.foundation.layout.size
+@@ -51,6 +48,7 @@
+ ) {
+     val context = LocalContext.current
+     val scope = rememberCoroutineScope()
++    val upstreamSession = com.bilipai.desktop.data.LocalDesktopUpstreamSession.current // Desktop (TON-1071): requests run for the window's current account
+     var title by remember { mutableStateOf("") }
+     var description by remember { mutableStateOf("") }
+     var options by remember { mutableStateOf(listOf("", "")) }
+@@ -66,21 +64,21 @@
+     var submitting by remember { mutableStateOf(false) }
+     var showDateTimePicker by remember { mutableStateOf(false) }
+ 
+-    val imagePicker = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
++    val imagePicker = com.bilipai.desktop.ui.rememberDesktopImageFilePicker { uri -> // Desktop (TON-1071): Windows file picker
+         val index = uploadIndex
+         if (uri != null && index in imageUrls.indices) {
+             loading = true
+-            scope.launch {
++            scope.launch { com.bilipai.desktop.data.DesktopUpstreamSession.require(upstreamSession, "DynamicCreateVoteDialog").withOwner {
+                 DynamicCreateRepository.uploadVoteImage(context, uri).fold(
+                     onSuccess = { url -> imageUrls = imageUrls.toMutableList().also { it[index] = url } },
+                     onFailure = { errorMessage = it.message ?: "图片上传失败" },
+                 )
+                 loading = false
+-            }
++            } }
+         }
+     }
+     LaunchedEffect(voteId, loadAttempt) {
+-        if (voteId != null) {
++        if (voteId != null) com.bilipai.desktop.data.DesktopUpstreamSession.require(upstreamSession, "DynamicCreateVoteDialog").withOwner {
+             loading = true
+             loadFailed = false
+             errorMessage = null
+@@ -126,7 +124,7 @@
+                                 if (imageVote) {
+                                     AppTextButton(onClick = {
+                                         uploadIndex = index
+-                                        imagePicker.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
++                                        imagePicker.launch()
+                                     }, enabled = !loading && !submitting) {
+                                         if (imageUrls.getOrNull(index).isNullOrBlank()) AppText("添加图片")
+                                         else {
+@@ -171,12 +169,12 @@
+                     else -> {
+                         submitting = true
+                         errorMessage = null
+-                        scope.launch {
++                        scope.launch { com.bilipai.desktop.data.DesktopUpstreamSession.require(upstreamSession, "DynamicCreateVoteDialog").withOwner {
+                             DynamicCreateRepository.createVote(title, options, description, choiceCount, duration.toInt(), voteId, if (imageVote) imageUrls else emptyList()).fold(
+                                 onSuccess = { submitting = false; onCreated(it) },
+                                 onFailure = { submitting = false; errorMessage = it.message ?: "创建失败" },
+                             )
+-                        }
++                        } }
+                     }
+                 }
+             }) { AppText(when { loading -> "加载中…"; submitting -> "保存中…"; voteId != null -> "保存"; else -> "创建" }) }

@@ -220,6 +220,7 @@ internal class DesktopProfileNavigation(
     val onLogoutSuccess: () -> Unit,
     val onAccountSwitchSuccess: () -> Unit,
     val onSettingsClick: () -> Unit,
+    val onAccountLedgerClick: (com.android.purebilibili.data.model.AccountLedgerKind) -> Unit,
     val onSearchClick: () -> Unit,
     val onHistoryClick: () -> Unit,
     val onFavoriteClick: () -> Unit,
@@ -312,8 +313,7 @@ internal class DesktopOriginalProfileBinding(val environment: DesktopProfileEnvi
             onLogoutSuccess = navigation.onLogoutSuccess,
             onAccountSwitchSuccess = navigation.onAccountSwitchSuccess,
             onSettingsClick = navigation.onSettingsClick,
-            // The coin/experience ledger page has no desktop destination yet: null hides upstream's entry.
-            onAccountLedgerClick = null,
+            onAccountLedgerClick = navigation.onAccountLedgerClick,
             onSearchClick = navigation.onSearchClick,
             onHistoryClick = navigation.onHistoryClick,
             showHistoryService = showHistoryService,

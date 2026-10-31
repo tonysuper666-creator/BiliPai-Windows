@@ -1,0 +1,178 @@
+--- a/core-data/src/main/java/com/android/purebilibili/core/store/TokenManager.kt
++++ b/core-data/src/main/java/com/android/purebilibili/core/store/TokenManager.kt
+@@ -34,7 +34,11 @@
+ 
+ object TokenManager {
+     private val _accountIdentity = MutableStateFlow(AccountSessionIdentity())
+-    val accountIdentity = _accountIdentity.asStateFlow()
++    // Desktop (TON-1084): there is no process-wide session. Every reader below gets the current request owner's
++    // immutable snapshot (DesktopUpstreamCalls); without an owner it fails loudly, after the owner retired it is
++    // refused. Every write is refused: the desktop account flow owns sign-in, sign-out and account switching.
++    val accountIdentity: kotlinx.coroutines.flow.StateFlow<AccountSessionIdentity>
++        get() = com.bilipai.desktop.data.DesktopUpstreamCalls.accountIdentity("TokenManager.accountIdentity")
+ 
+     private fun publishAccountIdentity() {
+         val mid = midCache?.takeIf { it > 0L }
+@@ -79,11 +83,13 @@
+ 
+     /** Read-only service-process session; never restores or writes SharedPreferences. */
+     suspend fun refreshServiceSession(context: Context): Unit = notificationSessionRefreshMutex.withLock {
++        com.bilipai.desktop.data.DesktopUpstreamCalls.refuseSessionWrite("TokenManager.refreshServiceSession") // Desktop (TON-1084)
+         applyNotificationSession(context.dataStore.data.first())
+     }
+ 
+     /** The caller owns this collection and cancels it with its Service lifecycle. */
+     suspend fun observeServiceSession(context: Context, onAccountChanged: () -> Unit) {
++        com.bilipai.desktop.data.DesktopUpstreamCalls.refuseSessionWrite("TokenManager.observeServiceSession") // Desktop (TON-1084)
+         var observedMid: Long? = null
+         var initialized = false
+         context.dataStore.data.collect {
+@@ -129,42 +135,43 @@
+     const val ACCESS_TOKEN_PLATFORM_ANDROID = "android"
+     const val ACCESS_TOKEN_PLATFORM_ANDROID_HD = "android_hd"
+ 
+-    @Volatile
+-    var sessDataCache: String? = null
+-        private set
++    var sessDataCache: String?
++        get() = com.bilipai.desktop.data.DesktopUpstreamCalls.tokens("TokenManager.sessDataCache").sessData // Desktop (TON-1084)
++        private set(@Suppress("UNUSED_PARAMETER") value) { com.bilipai.desktop.data.DesktopUpstreamCalls.refuseSessionWrite("TokenManager.sessDataCache") }
+ 
+     //  [修复]：移除了 private set，允许 ApiClient 生成临时 ID 后写入
+-    @Volatile
+-    var buvid3Cache: String? = null
+-        get() = com.android.purebilibili.core.network.AccountCookieStore.cachedCookie(sessDataCache, "buvid3") ?: field
++    var buvid3Cache: String?
++        get() = com.bilipai.desktop.data.DesktopUpstreamCalls.tokens("TokenManager.buvid3Cache").buvid3 // Desktop (TON-1084)
++        set(@Suppress("UNUSED_PARAMETER") value) { com.bilipai.desktop.data.DesktopUpstreamCalls.refuseSessionWrite("TokenManager.buvid3Cache") }
+     
+     //  [新增] VIP 状态缓存 (1=有效大会员, 0=非VIP)
+-    @Volatile
+-    var isVipCache: Boolean = false
++    var isVipCache: Boolean
++        get() = com.bilipai.desktop.data.DesktopUpstreamCalls.tokens("TokenManager.isVipCache").isVip // Desktop (TON-1084)
++        set(@Suppress("UNUSED_PARAMETER") value) { com.bilipai.desktop.data.DesktopUpstreamCalls.refuseSessionWrite("TokenManager.isVipCache") }
+     
+     //  [新增] CSRF Token 缓存 (bili_jct)
+-    @Volatile
+-    var csrfCache: String? = null
+-        get() = com.android.purebilibili.core.network.AccountCookieStore.cachedCookie(sessDataCache, "bili_jct") ?: field
++    var csrfCache: String?
++        get() = com.bilipai.desktop.data.DesktopUpstreamCalls.tokens("TokenManager.csrfCache").csrf // Desktop (TON-1084)
++        set(@Suppress("UNUSED_PARAMETER") value) { com.bilipai.desktop.data.DesktopUpstreamCalls.refuseSessionWrite("TokenManager.csrfCache") }
+     
+     //  [新增] 用户 MID 缓存
+-    @Volatile
+-    var midCache: Long? = null
+-        private set
++    var midCache: Long?
++        get() = com.bilipai.desktop.data.DesktopUpstreamCalls.tokens("TokenManager.midCache").mid // Desktop (TON-1084)
++        private set(@Suppress("UNUSED_PARAMETER") value) { com.bilipai.desktop.data.DesktopUpstreamCalls.refuseSessionWrite("TokenManager.midCache") }
+     
+     //  [新增] APP access_token - 用于调用 APP API 获取高画质视频流
+-    @Volatile
+-    var accessTokenCache: String? = null
+-        private set
++    var accessTokenCache: String?
++        get() = com.bilipai.desktop.data.DesktopUpstreamCalls.tokens("TokenManager.accessTokenCache").accessToken // Desktop (TON-1084)
++        private set(@Suppress("UNUSED_PARAMETER") value) { com.bilipai.desktop.data.DesktopUpstreamCalls.refuseSessionWrite("TokenManager.accessTokenCache") }
+     
+     //  [新增] APP refresh_token - 用于刷新 access_token
+-    @Volatile
+-    var refreshTokenCache: String? = null
+-        private set
++    var refreshTokenCache: String?
++        get() = com.bilipai.desktop.data.DesktopUpstreamCalls.tokens("TokenManager.refreshTokenCache").refreshToken // Desktop (TON-1084)
++        private set(@Suppress("UNUSED_PARAMETER") value) { com.bilipai.desktop.data.DesktopUpstreamCalls.refuseSessionWrite("TokenManager.refreshTokenCache") }
+ 
+-    @Volatile
+-    var accessTokenPlatformCache: String = ACCESS_TOKEN_PLATFORM_TV
+-        private set
++    var accessTokenPlatformCache: String
++        get() = com.bilipai.desktop.data.DesktopUpstreamCalls.tokens("TokenManager.accessTokenPlatformCache").accessTokenPlatform // Desktop (TON-1084)
++        private set(@Suppress("UNUSED_PARAMETER") value) { com.bilipai.desktop.data.DesktopUpstreamCalls.refuseSessionWrite("TokenManager.accessTokenPlatformCache") }
+ 
+     // 恢复在 IO 线程异步执行：AndroidKeyStore 首次加载(低端机 10–50ms)+5 次 AES/GCM 解密
+     // 不再占住 Application.onCreate 的主线程。网络线程在读取会话缓存前通过 [awaitRestore]
+@@ -177,6 +184,7 @@
+     private val restoreLatch = CountDownLatch(1)
+ 
+     fun init(context: Context) {
++        com.bilipai.desktop.data.DesktopUpstreamCalls.refuseSessionWrite("TokenManager.init") // Desktop (TON-1084)
+         restoreStarted = true
+         CoroutineScope(Dispatchers.IO).launch {
+             try {
+@@ -266,6 +274,7 @@
+     
+     //  [新增] 保存 CSRF Token
+     suspend fun saveCsrf(context: Context, csrf: String) {
++        com.bilipai.desktop.data.DesktopUpstreamCalls.refuseSessionWrite("TokenManager.saveCsrf") // Desktop (TON-1084)
+         csrfCache = csrf
+         val encryptedCsrf = SessionStorageCipher.encrypt(csrf)
+         encryptedCsrf?.let { encrypted ->
+@@ -280,6 +289,7 @@
+     
+     //  [新增] 保存用户 MID
+     suspend fun saveMid(context: Context, mid: Long) {
++        com.bilipai.desktop.data.DesktopUpstreamCalls.refuseSessionWrite("TokenManager.saveMid") // Desktop (TON-1084)
+         midCache = mid.takeIf { it > 0L }
+         context.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE)
+             .edit().putLong(SP_KEY_MID, mid).apply()
+@@ -295,6 +305,7 @@
+         refreshToken: String,
+         platform: String = ACCESS_TOKEN_PLATFORM_TV
+     ) {
++        com.bilipai.desktop.data.DesktopUpstreamCalls.refuseSessionWrite("TokenManager.saveAccessToken") // Desktop (TON-1084)
+         accessTokenCache = accessToken
+         refreshTokenCache = refreshToken
+         accessTokenPlatformCache = platform
+@@ -313,6 +324,7 @@
+     }
+ 
+     suspend fun clearAccessToken(context: Context) {
++        com.bilipai.desktop.data.DesktopUpstreamCalls.refuseSessionWrite("TokenManager.clearAccessToken") // Desktop (TON-1084)
+         accessTokenCache = null
+         refreshTokenCache = null
+         accessTokenPlatformCache = ACCESS_TOKEN_PLATFORM_TV
+@@ -330,10 +342,12 @@
+     }
+ 
+     fun saveVipStatus(isVip: Boolean) {
++        com.bilipai.desktop.data.DesktopUpstreamCalls.refuseSessionWrite("TokenManager.saveVipStatus") // Desktop (TON-1084)
+         isVipCache = isVip
+     }
+ 
+     suspend fun saveCookies(context: Context, sessData: String) {
++        com.bilipai.desktop.data.DesktopUpstreamCalls.refuseSessionWrite("TokenManager.saveCookies") // Desktop (TON-1084)
+         sessDataCache = sessData
+         com.android.purebilibili.core.network.CoreDataLog.d("TokenManager", "saveCookies")
+         
+@@ -350,6 +364,7 @@
+     }
+ 
+     suspend fun saveBuvid3(context: Context, buvid3: String) {
++        com.bilipai.desktop.data.DesktopUpstreamCalls.refuseSessionWrite("TokenManager.saveBuvid3") // Desktop (TON-1084)
+         buvid3Cache = buvid3
+         
+         // 1. 存入 SP
+@@ -375,6 +390,7 @@
+         buvid3: String,
+         isVip: Boolean
+     ): Unit = sessionMutationMutex.withLock {
++        com.bilipai.desktop.data.DesktopUpstreamCalls.refuseSessionWrite("TokenManager.applyStoredSession") // Desktop (TON-1084)
+         val encryptedSession = SessionStorageCipher.encrypt(sessData)
+         val encryptedCsrf = SessionStorageCipher.encrypt(csrf)
+         val encryptedAccess = SessionStorageCipher.encrypt(accessToken)
+@@ -417,10 +433,11 @@
+     }
+ 
+     fun getSessData(context: Context): Flow<String?> {
+-        return context.dataStore.data.map { prefs -> prefs[SESSDATA_KEY]?.let(SessionStorageCipher::decrypt) }
++        return com.bilipai.desktop.data.DesktopUpstreamCalls.sessData("TokenManager.getSessData") // Desktop (TON-1084)
+     }
+ 
+     suspend fun clear(context: Context): Unit = sessionMutationMutex.withLock {
++        com.bilipai.desktop.data.DesktopUpstreamCalls.refuseSessionWrite("TokenManager.clear") // Desktop (TON-1084)
+         sessDataCache = null
+         buvid3Cache = null
+         csrfCache = null

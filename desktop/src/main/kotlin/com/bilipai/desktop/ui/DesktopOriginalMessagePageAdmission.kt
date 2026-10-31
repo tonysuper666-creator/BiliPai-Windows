@@ -1,13 +1,14 @@
 package com.bilipai.desktop.ui
 
 import com.android.purebilibili.data.model.response.ViewInfo
+import com.android.purebilibili.core.store.AccountSessionIdentity
 import com.android.purebilibili.data.repository.DesktopOriginalMessageRepository
+import com.android.purebilibili.data.repository.MessageReadEvent
+import com.bilipai.desktop.data.DesktopMessageImTransport
 import com.android.purebilibili.feature.message.UserBasicInfo
 import com.bilipai.desktop.data.DesktopRepository
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
-import java.nio.file.Files
-import java.nio.file.Path
 import java.util.concurrent.atomic.AtomicBoolean
 
 /** A child lifetime of the EXISTING Root entry; no credentials, client, store or media owner. */
@@ -23,7 +24,11 @@ internal class DesktopMessagePageAdmission(
     private val videoInfo: suspend (String) -> Result<ViewInfo>,
     private val canBeginEditorWork: () -> Boolean = { true },
     private val editorActivityChanged: () -> Unit = {},
+    /** The message Root's read events: a chat's read receipt reaches the inbox of the same account. */
+    private val readEventFlow: MutableSharedFlow<MessageReadEvent> = MutableSharedFlow(),
 ) {
+    /** The Root account this child was opened for; upstream's view models compare it where Android reads TokenManager. */
+    val messageAccountIdentity = AccountSessionIdentity(mid, epoch)
     private val lock = Any()
     private val live = AtomicBoolean(true)
     private val lifetime = SupervisorJob(parent.coroutineContext[Job])
@@ -42,6 +47,16 @@ internal class DesktopMessagePageAdmission(
     } catch (_: CancellationException) { false }
     lateinit var requests: DesktopOriginalMessageRepository
         internal set
+    lateinit var management: com.android.purebilibili.data.repository.MessageManagementRepository
+        internal set
+    /** This child's IM channel, installed in every launch of this child (upstream MessageImRepository reads it there).
+     * A child without one (the notification snapshot) has no IM: such a call fails loudly. */
+    var im: DesktopMessageImTransport? = null
+        internal set
+    val readEvents: SharedFlow<MessageReadEvent> get() = readEventFlow
+    suspend fun publishReadEvent(event: MessageReadEvent) { assertCurrent(); readEventFlow.emit(event) }
+    /** The launcher the original view models' account-scoped requests run on, over this child lifetime. */
+    fun requestLauncher() = DesktopMessageRequestLauncher(this)
 
     fun isOwned(): Boolean = live.get() && lifetime.isActive && retained() && repository.sessionEpoch == epoch && repository.account.value?.mid == mid
     private fun <T> admit(block: () -> T): T = repository.withProfileAccountAdmission(epoch, mid, ::isOwned, commitEntry) {
@@ -51,7 +66,10 @@ internal class DesktopMessagePageAdmission(
         }
     }
     suspend fun assertCurrent() { currentCoroutineContext().ensureActive(); admit { Unit } }
-    fun csrf(): String? = admit { repository.ownedHomeCookie("bili_jct", epoch, ::isOwned) }
+    fun csrf(): String? = cookie("bili_jct")
+    fun cookie(name: String): String? = admit { repository.ownedHomeCookie(name, epoch, ::isOwned) }
+    /** The App access token of this account (null for a web-only session), read under the same admission. */
+    fun accessToken(): String? = admit { repository.ownedHomeAccessToken(epoch, ::isOwned) }
     fun callFactory(transport: okhttp3.OkHttpClient): okhttp3.Call.Factory = okhttp3.Call.Factory { request ->
         val caller = permit.get() ?: throw java.io.IOException("Message request has no caller")
         val retainedCaller = { isOwned() && caller() }
@@ -127,7 +145,7 @@ internal class DesktopMessagePageAdmission(
                 lateinit var actual: Job
                 val allowed = { actual.isActive && caller?.isActive != false && isOwned() && (channel == null || revision[channel] == ticket) &&
                     (dependsOn == null || (revision[dependsOn] ?: 0L) == dependency) }
-                actual = scope.launch(DesktopRefreshFailureWatch.context() + permit.asContextElement(allowed), start = CoroutineStart.LAZY) {
+                actual = scope.launch(DesktopRefreshFailureWatch.context() + permit.asContextElement(allowed) + (im ?: kotlin.coroutines.EmptyCoroutineContext), start = CoroutineStart.LAZY) {
                     assertCurrent(); block(); assertCurrent()
                 }
                 job = actual
@@ -173,10 +191,16 @@ internal class DesktopMessagePageAdmission(
     }
 }
 
-/** Selected Windows file only. No folder scans or persisted gallery grants. Original 15MiB cap. */
-internal data class DesktopMessageLocalImage(val path: Path, val mimeType: String, val fileName: String = path.fileName.toString()) {
-    fun readBytes(): ByteArray {
-        require(Files.isRegularFile(path) && !Files.isSymbolicLink(path)) { "无法读取图片文件" }
-        return Files.newInputStream(path).use { it.readNBytes(15 * 1024 * 1024 + 1) }
+/** This child belongs to one account: an account change retires the Root entry and with it this child, so the
+ * original in-place account switch has nothing to observe here. Launches keep this child's caller permit.
+ * A retired child cancels its caller (as its state writes do) rather than letting it return quietly. */
+internal class DesktopMessageRequestLauncher(private val owner: DesktopMessagePageAdmission) {
+    val identity: AccountSessionIdentity get() = owner.messageAccountIdentity
+    fun isCurrent(requestedIdentity: AccountSessionIdentity = identity): Boolean {
+        if (requestedIdentity != identity) return false
+        if (!owner.isOwned()) throw CancellationException("Message caller retired")
+        return true
     }
+    fun observe(onAccountChanged: () -> Unit): Job = Job().also { it.complete() }
+    fun launch(block: suspend CoroutineScope.() -> Unit): Job = owner.launch(block)
 }

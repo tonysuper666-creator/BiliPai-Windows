@@ -1,0 +1,57 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/search/SearchArticleNavigationPolicy.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/search/SearchArticleNavigationPolicy.kt
+@@ -45,44 +45,44 @@ internal fun resolveArticleNavigationTargetFromRedirect(
+ 
+ internal suspend fun resolveArticleWebUrl(articleId: Long): String? {
+     val fallbackUrl = buildArticleWebUrl(articleId) ?: return null
+     return withContext(Dispatchers.IO) {
+         runCatching {
+-            val client = NetworkModule.okHttpClient.newBuilder()
+-                .followRedirects(false)
+-                .followSslRedirects(false)
+-                .build()
++            // Desktop (TON-1082): the caller's request owner, without following redirects.
++            val client = com.bilipai.desktop.data.DesktopUpstreamCalls.main { followRedirects(false); followSslRedirects(false) }
+             val request = Request.Builder()
+                 .url(fallbackUrl)
+                 .method("HEAD", null)
+                 .build()
+             client.newCall(request).execute().use { response ->
+                 resolveArticleWebUrlFromRedirect(
+                     articleId = articleId,
+                     redirectUrl = response.header("Location")
+                 )
+             }
+-        }.getOrDefault(fallbackUrl)
++        }.getOrElse { failure -> if (failure is Error || failure is kotlinx.coroutines.CancellationException) throw failure; fallbackUrl }
+     }
+ }
+ 
+ internal suspend fun resolveArticleNavigationTarget(articleId: Long): ArticleNavigationTarget? {
+     val fallbackUrl = buildArticleWebUrl(articleId) ?: return null
+     return withContext(Dispatchers.IO) {
+         runCatching {
+-            val client = NetworkModule.okHttpClient.newBuilder()
+-                .followRedirects(false)
+-                .followSslRedirects(false)
+-                .build()
++            // Desktop (TON-1082): the caller's request owner, without following redirects.
++            val client = com.bilipai.desktop.data.DesktopUpstreamCalls.main { followRedirects(false); followSslRedirects(false) }
+             val request = Request.Builder()
+                 .url(fallbackUrl)
+                 .method("HEAD", null)
+                 .build()
+             client.newCall(request).execute().use { response ->
+                 resolveArticleNavigationTargetFromRedirect(
+                     articleId = articleId,
+                     redirectUrl = response.header("Location")
+                 ) ?: ArticleNavigationTarget.NativeArticle(articleId = articleId)
+             }
+-        }.getOrDefault(ArticleNavigationTarget.NativeArticle(articleId = articleId))
++        }.getOrElse { failure ->
++            // Desktop (TON-1082): a missing request owner or a cancellation is not "no redirect".
++            if (failure is Error || failure is kotlinx.coroutines.CancellationException) throw failure
++            ArticleNavigationTarget.NativeArticle(articleId = articleId)
++        }
+     }
+ }

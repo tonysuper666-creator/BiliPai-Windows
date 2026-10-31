@@ -19,7 +19,7 @@ internal class DesktopWindowsMessageNotifications(
     private val window: Window,
     private val center: com.bilipai.desktop.integration.DesktopNotificationCenter =
         com.bilipai.desktop.integration.DesktopToastNotifications,
-) : AutoCloseable {
+) : DesktopMessageNotificationPresentation, AutoCloseable {
     /** The account this presentation belongs to; cleanup must target it even after a switch. */
     private val session = DesktopNotificationSession(context.mid, center)
     private val closed = AtomicBoolean()
@@ -33,7 +33,7 @@ internal class DesktopWindowsMessageNotifications(
         window.addHierarchyListener(hierarchy)
     }
 
-    fun canPost(): Boolean = !closed.get() && window.isDisplayable && context.isCurrent() &&
+    override fun canPost(): Boolean = !closed.get() && window.isDisplayable && context.isCurrent() &&
         !GraphicsEnvironment.isHeadless() && SystemTray.isSupported()
 
     private fun open(route: String) {
@@ -45,15 +45,16 @@ internal class DesktopWindowsMessageNotifications(
     }
 
     /** These are this Root's menu entries; Windows balloons expose no active per-item IDs. */
-    suspend fun activeMessageKeys(): Set<String> = withContext(Dispatchers.Main) {
+    override suspend fun activeMessageKeys(): Set<String> = withContext(Dispatchers.Main) {
         currentCoroutineContext().ensureActive()
         if (canPost()) entries.keys() else emptySet()
     }
 
     /** [cancelled] are items the server now reports as read. The tray entry is removed and the delivered
-     * notification-center toast is withdrawn by its own tag inside this account's group. */
-    suspend fun postAll(pending: List<PendingMessageNotification>, cancelled: Set<String> = emptySet(),
-        pendingCounts: Map<String, Int>? = null) = withContext(Dispatchers.Main) {
+     * notification-center toast is withdrawn by its own tag inside this account's group; a fallback balloon
+     * cannot be withdrawn. */
+    override suspend fun postAll(pending: List<PendingMessageNotification>, cancelled: Set<String>,
+        pendingCounts: Map<String, Int>?) = withContext(Dispatchers.Main) {
         currentCoroutineContext().ensureActive()
         check(EventQueue.isDispatchThread()) { "Message notifications require the actual Windows EDT" }
         if (!canPost()) return@withContext
@@ -100,7 +101,7 @@ internal class DesktopWindowsMessageNotifications(
     }
 
     /** Notifications were turned off: withdraw the group now and keep retrying while the app lives. */
-    suspend fun clear() {
+    override suspend fun clear() {
         withContext(Dispatchers.Main) { removeTrayOnEdt() }
         withContext(Dispatchers.IO) {
             session.pause()
