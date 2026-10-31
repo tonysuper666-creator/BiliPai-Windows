@@ -1401,3 +1401,10 @@
      object Success : WallpaperSaveState()
      data class Error(val message: String) : WallpaperSaveState()
  }
+@@ -103,3 +103,5 @@
+     private var currentProfileWbiImg: WbiImg? = null
+-    private val accountRequests = AccountScopedRequests(viewModelScope)
++    // Desktop (TON-1084): no process-wide TokenManager.accountIdentity. The environment belongs to one Root account
++    // epoch and retires with it (owns), so the requests keep one fixed identity, as AccountLedgerViewModel does.
++    private val accountRequests = AccountScopedRequests(viewModelScope, kotlinx.coroutines.flow.MutableStateFlow(com.android.purebilibili.core.store.AccountSessionIdentity()))
+     private var profileLoadJob: Job? = null

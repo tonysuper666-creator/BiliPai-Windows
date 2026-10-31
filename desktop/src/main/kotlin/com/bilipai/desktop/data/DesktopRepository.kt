@@ -429,11 +429,15 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
         expectedEpoch: Long = sessions.generation): DesktopUpstreamOwner {
         fun identity(epoch: Long) = DesktopUpstreamIdentity(sessions, epoch, sessions.activeAccountMid(),
             DesktopUpstreamIdentity.digest(sessions.currentCookies()["SESSDATA"]))
+        // TON-1084: TokenManager's values for this owner are read in the same admission as its epoch.
+        fun tokens() = if (purpose === DesktopUpstreamPurpose.Guest) DesktopUpstreamTokens.signedOut(homeGuestBuvid3)
+            else DesktopUpstreamTokens.account(sessions.upstreamTokenSession(), sessions.currentCookies()["buvid3"])
         return if (purpose is DesktopUpstreamPurpose.Playback) {
             val receipt = purpose.authorization.receipt
-            sessions.withPlaybackAuthorizationAdmission(receipt, stillOwned) { DesktopUpstreamOwner(this, identity(receipt.accountEpoch), stillOwned, purpose) }
-        } else sessions.withHomeRequestAdmission(expectedEpoch, stillOwned) { DesktopUpstreamOwner(this, identity(expectedEpoch), stillOwned, purpose) }
+            sessions.withPlaybackAuthorizationAdmission(receipt, stillOwned) { DesktopUpstreamOwner(this, identity(receipt.accountEpoch), stillOwned, purpose, tokens()) }
+        } else sessions.withHomeRequestAdmission(expectedEpoch, stillOwned) { DesktopUpstreamOwner(this, identity(expectedEpoch), stillOwned, purpose, tokens()) }
     }
+    internal val upstreamGuestBuvid3: String get() = homeGuestBuvid3
     internal fun isUpstreamOwnerCurrent(owner: DesktopUpstreamOwner): Boolean = when (val purpose = owner.purpose) {
         is DesktopUpstreamPurpose.Playback -> sessions.isPlaybackAuthorizationCurrent(purpose.authorization.receipt)
         else -> sessions.generation == owner.epoch
