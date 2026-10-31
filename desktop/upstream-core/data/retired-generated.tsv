@@ -11,3 +11,4 @@ dynamic-follow/com/android/purebilibili/data/repository/DesktopOriginalFollowSta
 original-video-detail-units/com/android/purebilibili/data/repository/DesktopOriginalVideoInteractionStatusCache.kt
 blocked-up/com/android/purebilibili/data/repository/DesktopBlockedUpRemoteImportPolicy.kt
 blocked-up/com/android/purebilibili/data/repository/DesktopBlockedUpImportSharePolicy.kt
+story-topic/com/android/purebilibili/data/repository/TopicRepository.kt

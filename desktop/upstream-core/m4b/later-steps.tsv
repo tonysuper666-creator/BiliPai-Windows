@@ -68,4 +68,3 @@ feature/search/SearchTrendingScreen.kt	calls into other files of this list (unre
 feature/search/SearchTrendingViewModel.kt	AndroidViewModel/Application: needs injected services instead (Toast through the desktop notifier); Media3/AndroidView: the desktop plays through mpv
 feature/search/SearchViewModel.kt	androidx.paging: the desktop has no paging dependency yet; AndroidViewModel/Application: needs injected services instead (Toast through the desktop notifier)
 feature/search/TopicDetailScreen.kt	Android Intent/Toast/ActivityResult: needs a desktop interface (file chooser, share, toast); R.drawable resources are not generated for the desktop yet; Coil ImageRequest.Builder(Context): Android Context is not a coil3 PlatformContext on the desktop
-feature/search/TopicDetailViewModel.kt	upstream TopicRepository still waits (upstream-core/data/later-steps.tsv)
