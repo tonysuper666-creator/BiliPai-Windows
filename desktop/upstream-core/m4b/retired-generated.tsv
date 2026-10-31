@@ -23,3 +23,6 @@ dynamic-full-card/com/android/purebilibili/feature/dynamic/components/DesktopOri
 dynamic-editor/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicCreateReserveDialog.kt
 dynamic-editor/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicPublishPickers.kt
 dynamic-editor/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicCreateVoteDialog.kt
+dynamic-full-card/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDrawGrid.kt
+dynamic-full-card/com/android/purebilibili/feature/dynamic/components/DesktopOriginalLiveCard.kt
+dynamic-full-card/com/android/purebilibili/feature/dynamic/components/DesktopOriginalVideoCards.kt

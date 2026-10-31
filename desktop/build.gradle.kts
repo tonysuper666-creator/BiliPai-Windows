@@ -305,7 +305,6 @@ val appCoreLaterSteps: Map<String, String> = mapOf(
     "core/ui/wallpaper/WallpaperMedia" to "video wallpaper on Media3/AndroidView and BitmapFactory probing; needs a desktop replacement over the mpv player",
     "core/util/PlayerOrientationPolicy.kt" to "Activity orientation of the player; moves with the video feature (M4a)",
     "core/util/PlayerPresentationPolicy.kt" to "Activity orientation of the player; moves with the video feature (M4a)",
-    "core/ui/components/UserLevelBadge.kt" to "draws app R.drawable level badges; moves once drawable resources are generated",
     "core/store/LocalPlaylistStore.kt" to "Room AudioLibraryDatabase; the desktop music library is JSON, moves with the audio feature (M4c)",
     "core/store/PlayHistoryStore.kt" to "Room AudioLibraryDatabase; the desktop music library is JSON, moves with the audio feature (M4c)",
     "core/events/BrandSuccessEvents.kt" to "the desktop success feedback carries its own origin model (DesktopBrandSuccessOrigin) that upstream's events do not have; moves with the feedback host",
@@ -2565,6 +2564,9 @@ val prepareJsWorkerResources = if (hostIsWindows) tasks.register<Sync>("prepareJ
 
 // Generated legacy files that re-declare migrated upstream declarations under another file name.
 val upstreamOwnedGeneratedCopies = setOf(
+    // core/ui/components/UserLevelBadge (TON-1072): the upstream file draws its R.drawable level badges through the generated
+    // desktop drawable table, so the blocked-list producer's classpath-PNG copy is retired.
+    "blocked-list-ui/com/android/purebilibili/core/ui/components/DesktopUpstreamUserLevelBadge.kt",
     // core/plugin + plugin-sdk (TON-1028): legacy plugin contracts upstream moved to plugin-sdk (Plugin, the typed
     // plugin APIs) or to core/plugin/BuiltinPlugin (host presentation); the merged upstream files own them now.
     "upstream/app/src/main/java/com/android/purebilibili/core/plugin/Plugin.kt",
@@ -2743,20 +2745,49 @@ fun applyUnifiedPatch(original: String, patch: String, label: String): String {
 val desktopUpstreamPatchDirectory = file("upstream-core/patches")
 val desktopUpstreamPatchedFiles = fileTree(desktopUpstreamPatchDirectory) { include("**/*.patch") }.files
     .map { it.relativeTo(desktopUpstreamPatchDirectory).invariantSeparatorsPath.removeSuffix(".patch") }.toSortedSet()
+// Build-time rewrite rules (TON-1072): one call-site adaptation that every migrated upstream file needs in the same way,
+// so no per-file patch is written for it. A rule turns one call into a desktop bridge call with the same arguments and
+// applies to every upstream file compiled from the merged root that contains it (after that file's patch, if it has one);
+// a new upstream file that uses the call is rewritten without anyone writing a patch.
+//  - coil3's ImageRequest.Builder(...) and SingletonImageLoader.get(...) take a coil PlatformContext; upstream passes an
+//    Android Context. On the JVM coil has exactly one PlatformContext, which com.bilipai.desktop.compat.coil hands over
+//    (the extension forms, Context.imageLoader and allowHardware, resolve through compat-ui/coil3 without a rewrite).
+val desktopUpstreamRewriteRules: List<Pair<Regex, String>> = listOf(
+    Regex("""(?<![\w.])(?:coil3\.request\.)?ImageRequest\.Builder\(""") to "com.bilipai.desktop.compat.coil.desktopImageRequestBuilder(",
+    Regex("""(?<![\w.])(?:coil3\.)?SingletonImageLoader\.get\(""") to "com.bilipai.desktop.compat.coil.desktopSingletonImageLoader(",
+)
+fun applyDesktopUpstreamRewrites(text: String): String =
+    desktopUpstreamRewriteRules.fold(text) { current, (pattern, replacement) -> pattern.replace(current, Regex.escapeReplacement(replacement)) }
+// Root paths of the upstream files a rule applies to. Replaced files are desktop code and are not rewritten.
+val desktopUpstreamRewrittenFiles: Set<String> = run {
+    val replaced = fileTree("upstream-core/replacements") { include("**/*.kt") }.files
+        .map { it.relativeTo(file("upstream-core/replacements")).invariantSeparatorsPath }.toSet()
+    val moduleFiles = migratedUpstreamModules.flatMap { module ->
+        val root = mergedRepositoryRoot.resolve(module + "src/main/java")
+        root.walkTopDown().filter { it.isFile && it.extension == "kt" }.map { it.relativeTo(root).invariantSeparatorsPath to module + "src/main/java/" }.toList()
+    }
+    val appFiles = migratedAppPaths.map { it to "app/src/main/java/" }
+    (moduleFiles + appFiles).filter { (relative, prefix) -> relative !in replaced &&
+        mergedRepositoryRoot.resolve(prefix + relative).let { it.isFile && desktopUpstreamRewriteRules.any { rule -> rule.first.containsMatchIn(it.readText()) } } }
+        .map { (relative, prefix) -> prefix + relative }.toSortedSet()
+}
+val desktopUpstreamAdaptedRootFiles: Set<String> = (desktopUpstreamPatchedFiles + desktopUpstreamRewrittenFiles).toSortedSet()
 val applyDesktopUpstreamPatches by tasks.registering {
     val output = layout.buildDirectory.dir("patched-upstream")
     inputs.dir(desktopUpstreamPatchDirectory).withPathSensitivity(PathSensitivity.RELATIVE)
-    inputs.files(desktopUpstreamPatchedFiles.map { mergedRepositoryRoot.resolve(it) }).withPathSensitivity(PathSensitivity.RELATIVE)
+    inputs.files(desktopUpstreamAdaptedRootFiles.map { mergedRepositoryRoot.resolve(it) }).withPathSensitivity(PathSensitivity.RELATIVE)
+    inputs.property("rewriteRules", desktopUpstreamRewriteRules.map { it.first.pattern + " -> " + it.second })
     outputs.dir(output)
     doLast {
         val target = output.get().asFile
         target.deleteRecursively()
-        desktopUpstreamPatchedFiles.forEach { relative ->
-            val patched = applyUnifiedPatch(mergedRepositoryRoot.resolve(relative).readText(),
-                desktopUpstreamPatchDirectory.resolve("$relative.patch").readText(), relative)
+        desktopUpstreamAdaptedRootFiles.forEach { relative ->
+            val original = mergedRepositoryRoot.resolve(relative).readText()
+            val patched = if (relative in desktopUpstreamPatchedFiles) applyUnifiedPatch(original,
+                desktopUpstreamPatchDirectory.resolve("$relative.patch").readText(), relative) else original
             val destination = target.resolve(relative)
             destination.parentFile.mkdirs()
-            destination.writeText(patched)
+            destination.writeText(applyDesktopUpstreamRewrites(patched))
         }
     }
 }
@@ -2890,11 +2921,76 @@ val sdkGatesKeptInDesignModules = mapOf(
 // strings.xml become com.android.purebilibili.R.string ids plus one table per locale, read by the Context.getString /
 // stringResource stand-ins with Android's locale fallback. Text is processed the way aapt2 does (escapes, quotes,
 // whitespace). Another qualifier or another resource kind in these files fails the build instead of being dropped.
+// Upstream app drawable and mipmap resources (TON-1072). Their names become com.android.purebilibili.R.drawable / R.mipmap
+// ids (written with R.string below); generateUpstreamDrawableResources packages the files with a table that the desktop
+// painterResource, ImageVector.vectorResource, ImageBitmap.imageResource and coil Int models read. A directory qualifier
+// the desktop does not implement fails the build instead of being skipped.
+val upstreamDrawableDensities = mapOf("ldpi" to 120, "mdpi" to 160, "hdpi" to 240, "xhdpi" to 320, "xxhdpi" to 480, "xxxhdpi" to 640)
+/** (type, night, density) of a res directory: density 0 = no qualifier (mdpi for bitmaps), -1 = nodpi, -2 = anydpi. */
+fun upstreamDrawableQualifier(directory: String): Triple<String, Boolean, Int>? {
+    val parts = directory.split('-')
+    if (parts[0] != "drawable" && parts[0] != "mipmap") return null
+    var night = false
+    var density = 0
+    parts.drop(1).forEach { token ->
+        when {
+            token == "night" -> night = true
+            token == "nodpi" -> density = -1
+            token == "anydpi" -> density = -2
+            token in upstreamDrawableDensities -> density = upstreamDrawableDensities.getValue(token)
+            // The Build stand-in reports SDK_INT 36, so a resource for API 36 or lower applies the way it does on Android.
+            Regex("v\\d+").matches(token) -> if (token.drop(1).toInt() > 36) throw GradleException("res/$directory: API level above the desktop SDK_INT 36")
+            else -> throw GradleException("res/$directory: the desktop does not implement the drawable qualifier `$token`")
+        }
+    }
+    return Triple(parts[0], night, density)
+}
+fun upstreamDrawableResourceName(file: File): String = file.name.substringBefore('.')
+/**
+ * `<item type="mipmap|drawable" name="n">@mipmap/target</item>` aliases of res/values-<qualifier> files (upstream shares one
+ * launcher PNG between several names per density): (type/name, night, density, type/target).
+ */
+fun upstreamDrawableAliases(resources: File): List<List<Any>> = resources.listFiles()!!.filter { it.isDirectory && it.name.startsWith("values") }
+    .sortedBy { it.name }.flatMap { directory ->
+        val qualifier by lazy { upstreamDrawableQualifier("drawable" + directory.name.removePrefix("values"))!! }
+        directory.listFiles()!!.filter { it.extension == "xml" }.sortedBy { it.name }.flatMap { file ->
+            val children = javax.xml.parsers.DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(file).documentElement.childNodes
+            (0 until children.length).mapNotNull { children.item(it) as? org.w3c.dom.Element }
+                .filter { it.tagName == "item" && it.getAttribute("type") in setOf("drawable", "mipmap") }.map { element ->
+                    val target = element.textContent.trim()
+                    if (!Regex("@(drawable|mipmap)/\\w+").matches(target))
+                        throw GradleException("${file.relativeTo(mergedRepositoryRoot)} ${element.getAttribute("name")}: the desktop implements only @drawable/@mipmap aliases")
+                    listOf(element.getAttribute("type") + "/" + element.getAttribute("name"), qualifier.second, qualifier.third, target.removePrefix("@"))
+                }
+        }
+    }
+/** type/name of the drawables, mipmaps and aliases one res directory declares. */
+fun upstreamDrawableNames(resources: File): Set<String> = (resources.listFiles().orEmpty().filter { it.isDirectory && upstreamDrawableQualifier(it.name) != null }
+    .flatMap { directory -> directory.listFiles()!!.filter { it.isFile }.map { upstreamDrawableQualifier(directory.name)!!.first + "/" + upstreamDrawableResourceName(it) } } +
+    upstreamDrawableAliases(resources).map { it[0] as String }).toSortedSet()
+/**
+ * The app and the library modules it depends on whose res declares drawables or mipmaps, app first: Android merges them
+ * into one resource table (an app file wins over a library file of the same name and qualifier), and with
+ * android.nonTransitiveRClass each module's own names are in its own namespace's R. res dir -> namespace.
+ */
+val upstreamDrawableModules: List<Pair<File, String>> = (listOf("app") +
+        Regex("""project\(":([\w-]+)"\)""").findAll(mergedRepositoryRoot.resolve("app/build.gradle.kts").readText()).map { it.groupValues[1] }.distinct())
+    .map { module -> mergedRepositoryRoot.resolve("$module/src/main/res") to module }
+    .filter { (res, _) -> res.isDirectory && upstreamDrawableNames(res).isNotEmpty() }
+    .map { (res, module) -> res to (Regex("namespace\\s*=\\s*\"([^\"]+)\"").find(mergedRepositoryRoot.resolve("$module/build.gradle.kts").readText())
+        ?.groupValues?.get(1) ?: throw GradleException("$module has drawable resources but no android namespace")) }
+/** "drawable/name" or "mipmap/name" -> id over the merged table, in name order per type. */
+fun upstreamDrawableIds(): Map<String, Int> {
+    val names = upstreamDrawableModules.flatMap { upstreamDrawableNames(it.first) }.toSortedSet()
+    val base = mapOf("drawable" to 0x7f080000, "mipmap" to 0x7f0f0000)
+    return names.groupBy { it.substringBefore('/') }.flatMap { (type, keys) -> keys.withIndex().map { (index, key) -> key to (base.getValue(type) + index + 1) } }.toMap()
+}
 val upstreamStringResourceDirectory = mergedRepositoryRoot.resolve("app/src/main/res")
 val upstreamStringQualifiers = mapOf("values" to "default", "values-en" to "en", "values-zh-rTW" to "zh-TW")
 val generateUpstreamStringResources by tasks.registering {
     val output = layout.buildDirectory.dir("generated/upstream-strings")
     inputs.files(fileTree(upstreamStringResourceDirectory) { include("values*/strings.xml") }).withPathSensitivity(PathSensitivity.RELATIVE)
+    inputs.property("drawableIds", upstreamDrawableIds().toSortedMap().toString())
     outputs.dir(output)
     doLast {
         val target = output.get().asFile
@@ -2949,14 +3045,150 @@ val generateUpstreamStringResources by tasks.registering {
         }
         val ids = base.keys.withIndex().associate { (index, name) -> name to (0x7f130000 + index + 1) }
         target.resolve("kotlin/com/android/purebilibili/R.kt").apply { parentFile.mkdirs() }.writeText(
-            "// Generated at build time from the upstream app res/values strings.xml.\npackage com.android.purebilibili\n\nobject R {\n    object string {\n" +
-                base.keys.joinToString("") { "        const val $it: Int = ${"0x%x".format(ids.getValue(it))}\n" } + "    }\n}\n")
+            "// Generated at build time from the upstream app res/values strings.xml and res/drawable*, res/mipmap* files.\npackage com.android.purebilibili\n\nobject R {\n    object string {\n" +
+                base.keys.joinToString("") { "        const val $it: Int = ${"0x%x".format(ids.getValue(it))}\n" } + "    }\n" +
+                upstreamDrawableIds().filterKeys { it in upstreamDrawableNames(upstreamStringResourceDirectory) }.entries.groupBy { it.key.substringBefore('/') }.toSortedMap().entries.joinToString("") { (type, entries) ->
+                    "    object $type {\n" + entries.joinToString("") { "        const val ${it.key.substringAfter('/')}: Int = ${"0x%x".format(it.value)}\n" } + "    }\n" } +
+                "}\n")
         tables.forEach { (directory, table) ->
             target.resolve("resources/upstream-strings/${upstreamStringQualifiers.getValue(directory)}.tsv").apply { parentFile.mkdirs() }
                 .writeText(table.entries.joinToString("") { "${"0x%x".format(ids.getValue(it.key))}\t${encode(it.value)}\n" })
         }
     }
 }
+
+// Packages the upstream drawables and mipmaps (TON-1072) of the app and its library modules (upstreamDrawableModules) as
+// classpath resources under upstream-drawables/<module>/ with one
+// index.tsv row per file: id, type/name, night (0/1), density (0 none, -1 nodpi, -2 anydpi, else dpi), kind, resource path.
+// Colour references are resolved here, the way aapt2 and the Android theme resolve them at runtime: @color/ against the
+// app and migrated module res/values (res/values-night under a dark theme; a -v31 colour is the Material You system
+// palette, which the desktop does not have, so it is not applied), @android:color/ against the framework colours, and
+// ?attr/colorControlNormal against the Material default (textColorSecondary). A vector or adaptive icon whose colours
+// differ in night mode gets a night row of its own. res/values-<qualifier> mipmap aliases become `alias` rows that name
+// their target, resolved at runtime with the same configuration. Any other reference, attribute, element or file kind fails the build.
+class MissingResourceException(message: String, className: String, key: String) : java.util.MissingResourceException(message, className, key)
+val generateUpstreamDrawableResources by tasks.registering {
+    val output = layout.buildDirectory.dir("generated/upstream-drawables")
+    val colourModules = listOf("app/") + migratedUpstreamModules
+    upstreamDrawableModules.forEach { (resources, _) ->
+        inputs.files(fileTree(resources) { include("drawable*/**", "mipmap*/**", "values*/*.xml") }).withPathSensitivity(PathSensitivity.RELATIVE)
+    }
+    inputs.property("drawableIds", upstreamDrawableIds().toSortedMap().toString())
+    inputs.property("drawableModules", upstreamDrawableModules.map { it.second })
+    inputs.files(migratedUpstreamModules.map { fileTree(mergedRepositoryRoot.resolve(it + "src/main/res")) { include("values*/*.xml") } }).withPathSensitivity(PathSensitivity.RELATIVE)
+    outputs.dir(output)
+    doLast {
+        val target = output.get().asFile.resolve("resources/upstream-drawables")
+        output.get().asFile.deleteRecursively()
+        target.mkdirs()
+        val ids = upstreamDrawableIds()
+        // Colour values: light table from values/, night table from values-night/ (falling back to light).
+        val light = mutableMapOf<String, String>()
+        val night = mutableMapOf<String, String>()
+        colourModules.forEach { module ->
+            val res = mergedRepositoryRoot.resolve(module + "src/main/res")
+            listOf("values" to light, "values-night" to night).forEach { (directory, table) ->
+                res.resolve(directory).listFiles()?.filter { it.extension == "xml" }?.sortedBy { it.name }?.forEach { file ->
+                    val children = javax.xml.parsers.DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(file).documentElement.childNodes
+                    for (index in 0 until children.length) {
+                        val element = children.item(index) as? org.w3c.dom.Element ?: continue
+                        if (element.tagName == "color") table[element.getAttribute("name")] = element.textContent.trim()
+                    }
+                }
+            }
+        }
+        val framework = mapOf("white" to "#FFFFFFFF", "black" to "#FF000000", "transparent" to "#00000000")
+        // Material's colorControlNormal is ?android:attr/textColorSecondary: secondary_text_material_light / _dark.
+        val themeAttributes = mapOf("colorControlNormal" to ("#8A000000" to "#B3FFFFFF"))
+        fun resolveColour(reference: String, dark: Boolean, where: String, depth: Int = 0): String {
+            if (depth > 8) throw GradleException("$where: colour reference loop at $reference")
+            return when {
+                Regex("#[0-9a-fA-F]{3,8}").matches(reference) -> reference
+                reference.startsWith("@android:color/") -> framework[reference.removePrefix("@android:color/")]
+                    ?: throw GradleException("$where: framework colour $reference is not implemented on the desktop")
+                reference.startsWith("@color/") -> reference.removePrefix("@color/").let { name ->
+                    val value = (if (dark) night[name] else null) ?: light[name]
+                        ?: throw MissingResourceException("$reference has no res/values value (only a qualifier the desktop does not apply defines it)", "", reference)
+                    resolveColour(value, dark, where, depth + 1)
+                }
+                reference.startsWith("?attr/") || reference.startsWith("?android:attr/") -> themeAttributes[reference.substringAfter('/')]?.let { if (dark) it.second else it.first }
+                    ?: throw GradleException("$where: theme attribute $reference is not implemented on the desktop")
+                else -> throw GradleException("$where: unsupported colour value `$reference`")
+            }
+        }
+        val reference = Regex("=\"((?:@color|@android:color|\\?attr|\\?android:attr)/[\\w.]+)\"")
+        fun resolveXml(text: String, dark: Boolean, where: String) = reference.replace(text) { "=\"" + resolveColour(it.groupValues[1], dark, where) + "\"" }
+        val rows = mutableListOf<String>()
+        val seen = mutableSetOf<String>() // type/name@night@density already taken by an earlier (app) module
+        upstreamDrawableModules.forEach { (resources, namespace) ->
+        val module = resources.parentFile.parentFile.parentFile.name
+        val directories = resources.listFiles()!!.filter { it.isDirectory && upstreamDrawableQualifier(it.name) != null }.sortedBy { it.name }
+        val explicitNight = directories.filter { upstreamDrawableQualifier(it.name)!!.second }.flatMap { directory ->
+            val (type, _, density) = upstreamDrawableQualifier(directory.name)!!
+            directory.listFiles()!!.map { "$type/${upstreamDrawableResourceName(it)}@$density" }
+        }.toSet()
+        directories.forEach { directory ->
+            val (type, isNight, density) = upstreamDrawableQualifier(directory.name)!!
+            directory.listFiles()!!.filter { it.isFile }.sortedBy { it.name }.forEach { file ->
+                val where = file.relativeTo(mergedRepositoryRoot).invariantSeparatorsPath
+                if (!seen.add("$type/${upstreamDrawableResourceName(file)}@$isNight@$density")) return@forEach
+                val id = ids.getValue("$type/${upstreamDrawableResourceName(file)}")
+                fun row(nightFlag: Boolean, kind: String, path: String) { rows += "${"0x%x".format(id)}\t$type/${upstreamDrawableResourceName(file)}\t${if (nightFlag) 1 else 0}\t$density\t$kind\t$path" }
+                when (file.name.substringAfter('.').lowercase()) {
+                    "png", "webp", "jpg", "jpeg" -> {
+                        file.copyTo(target.resolve("$module/${directory.name}/${file.name}"), overwrite = true)
+                        row(isNight, "raster", "$module/${directory.name}/${file.name}")
+                    }
+                    "xml" -> {
+                        val text = file.readText()
+                        val kind = when (val tag = javax.xml.parsers.DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(file).documentElement.tagName) {
+                            "vector" -> "vector"
+                            "adaptive-icon" -> "adaptive"
+                            // Splash-screen compositions; the desktop has no Android splash screen. Their ids load loudly.
+                            "layer-list", "bitmap" -> tag
+                            else -> throw GradleException("$where: <$tag> drawables are not implemented on the desktop")
+                        }
+                        // A colour without a base value would crash on Android below that qualifier too; the id stays and
+                        // loading it fails loudly with the reason.
+                        val resolved = try { resolveXml(text, isNight, where) } catch (missing: MissingResourceException) {
+                            row(isNight, "unavailable", missing.message!!.replace('\t', ' '))
+                            return@forEach
+                        }
+                        target.resolve("$module/${directory.name}/${file.name}").apply { parentFile.mkdirs() }.writeText(resolved)
+                        row(isNight, kind, "$module/${directory.name}/${file.name}")
+                        if (!isNight && "$type/${upstreamDrawableResourceName(file)}@$density" !in explicitNight) {
+                            val dark = resolveXml(text, true, where)
+                            if (dark != resolved) {
+                                val path = "$module/${directory.name}+night/${file.name}"
+                                target.resolve(path).apply { parentFile.mkdirs() }.writeText(dark)
+                                row(true, kind, path)
+                            }
+                        }
+                    }
+                    else -> throw GradleException("$where: the desktop does not implement this drawable file kind")
+                }
+            }
+        }
+        upstreamDrawableAliases(resources).forEach { (name, isNight, density, aliased) ->
+            if (aliased as String !in ids) throw GradleException("${resources.relativeTo(mergedRepositoryRoot)}/values alias $name points to the missing resource $aliased")
+            if (!seen.add("$name@$isNight@$density")) return@forEach
+            rows += "${"0x%x".format(ids.getValue(name as String))}\t$name\t${if (isNight as Boolean) 1 else 0}\t$density\talias\t$aliased"
+        }
+        // The app's names are in com.android.purebilibili.R (written with R.string); a library's in its own namespace.
+        if (namespace != "com.android.purebilibili") {
+            val own = upstreamDrawableNames(resources)
+            output.get().asFile.resolve("kotlin/" + namespace.replace('.', '/') + "/R.kt").apply { parentFile.mkdirs() }.writeText(
+                "// Generated at build time from ${resources.relativeTo(mergedRepositoryRoot).invariantSeparatorsPath}.\npackage $namespace\n\nobject R {\n" +
+                    ids.filterKeys { it in own }.entries.groupBy { it.key.substringBefore('/') }.toSortedMap().entries.joinToString("") { (type, entries) ->
+                        "    object $type {\n" + entries.joinToString("") { "        const val ${it.key.substringAfter('/')}: Int = ${"0x%x".format(it.value)}\n" } + "    }\n" } +
+                    "}\n")
+        }
+        }
+        target.resolve("index.tsv").writeText(rows.joinToString("\n", postfix = "\n"))
+    }
+}
+sourceSets.named("main") { resources.srcDir(files(layout.buildDirectory.dir("generated/upstream-drawables/resources")).builtBy(generateUpstreamDrawableResources)) }
+kotlin.sourceSets.named("main") { kotlin.srcDir(files(layout.buildDirectory.dir("generated/upstream-drawables/kotlin")).builtBy(generateUpstreamDrawableResources)) }
 
 // Numeric key types of the upstream DataStore preferences (TON-1000). Preferences.Key carries no runtime type and the
 // desktop settings document is JSON, where 1 cannot tell Int from Long or Float. Booleans, strings and string sets are
@@ -3180,7 +3412,8 @@ kotlin.sourceSets.named("main") {
     // smart casts and internal access as before); their generated legacy copies are skipped.
     val buildDirectoryPath = layout.buildDirectory.get().asFile.toPath()
     val generatedDirectoryPath = buildDirectoryPath.resolve("generated")
-    kotlin.exclude { element -> desktopUpstreamPatchedFiles.any { element.file == mergedRepositoryRoot.resolve(it) } }
+    val adaptedRootFiles = desktopUpstreamAdaptedRootFiles.map { mergedRepositoryRoot.resolve(it) }.toSet()
+    kotlin.exclude { element -> element.file in adaptedRootFiles }
     // A producer may root its source directory at com/ itself, so the identity is read from the path.
     fun upstreamIdentity(file: File): String {
         val path = file.invariantSeparatorsPath
