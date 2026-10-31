@@ -1,0 +1,51 @@
+--- a/com/android/purebilibili/feature/live/LiveAreaScreen.kt
++++ b/com/android/purebilibili/feature/live/LiveAreaScreen.kt
+@@ -1,4 +1,7 @@
+ package com.android.purebilibili.feature.live
++import com.android.purebilibili.navigation.tabIndicatorPosition
++import com.android.purebilibili.navigation.tabSelectedPage
++import com.android.purebilibili.navigation.isTabSelectionInProgress
+ 
+ import com.android.purebilibili.navigation.animatePagerSelection
+ 
+@@ -163,8 +166,10 @@
+                 )
+                 LiveAreaParentTabRow(
+                     areas = areas,
+-                    selectedTab = pagerState.currentPage,
++                    selectedTab = pagerState.tabSelectedPage,
+                     horizontalPadding = metrics.safeSpaceDp.dp,
++                    indicatorPositionProvider = { pagerState.tabIndicatorPosition },
++                    isScrollInProgressProvider = { pagerState.isScrollInProgress },
+                     onTabSelected = { selectedTab = it }
+                 )
+                 }
+@@ -220,8 +225,8 @@
+                         animatePagerSelection(pagerState, target)
+                     }
+                 }
+-                LaunchedEffect(pagerState.currentPage, areas.size) {
+-                    if (areas.isNotEmpty() && selectedTab != pagerState.currentPage) {
++                LaunchedEffect(pagerState.currentPage, pagerState.isTabSelectionInProgress, areas.size) {
++                    if (areas.isNotEmpty() && !pagerState.isTabSelectionInProgress && selectedTab != pagerState.currentPage) {
+                         selectedTab = pagerState.currentPage
+                     }
+                 }
+@@ -294,6 +299,8 @@
+     areas: List<LiveAreaParent>,
+     selectedTab: Int,
+     horizontalPadding: androidx.compose.ui.unit.Dp,
++    indicatorPositionProvider: () -> Float,
++    isScrollInProgressProvider: () -> Boolean,
+     onTabSelected: (Int) -> Unit
+ ) {
+     if (areas.isEmpty()) return
+@@ -309,6 +316,8 @@
+         selectedValue = safeSelectedTab,
+         onSelectionChange = onTabSelected,
+         scrollable = true,
++        indicatorPositionProvider = indicatorPositionProvider,
++        isScrollInProgressProvider = isScrollInProgressProvider,
+         minTabWidth = AppChromeSizeTokens.MinimumTouchTarget,
+         modifier = Modifier
+             .fillMaxWidth()

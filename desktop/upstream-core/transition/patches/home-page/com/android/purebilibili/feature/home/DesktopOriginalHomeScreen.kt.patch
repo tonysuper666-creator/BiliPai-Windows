@@ -35,3 +35,20 @@
      val bottomBarVisibleState = LocalSetBottomBarVisible.current
      
      // [Feature] Global Scroll Offset for Liquid Glass
+@@ -1,6 +1,7 @@
+ // Original source app/src/main/java/com/android/purebilibili/feature/home/HomeScreen.kt
+ // LF SHA256 2c959020dec595839527d8c51ebbfb0a8fbf991290ec102cd18ac7b82054d176
+ package com.android.purebilibili.feature.home
++import com.android.purebilibili.navigation.tabSelectedPage
+ 
+ import com.bilipai.desktop.plugins.asAndroidContext
+ import com.android.purebilibili.core.ui.components.AppText
+@@ -1574,7 +1575,7 @@
+     // 选中槽位以 Pager 当前页为准，分区页不写入 currentCategory 也能保持高亮正确。
+     val displayedTabIndex by remember(pagerState, topTabEntries) {
+         derivedStateOf {
+-            pagerState.currentPage.coerceIn(0, (topTabEntries.size - 1).coerceAtLeast(0))
++            pagerState.tabSelectedPage.coerceIn(0, (topTabEntries.size - 1).coerceAtLeast(0))
+         }
+     }
+ 

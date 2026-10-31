@@ -1,0 +1,11 @@
+--- a/app/src/main/java/com/android/purebilibili/navigation/MainBottomPagerState.kt
++++ b/app/src/main/java/com/android/purebilibili/navigation/MainBottomPagerState.kt
+@@ -33,7 +33,7 @@
+ 
+     /** Continuous position shared by the pager and the bottom-bar indicator. */
+     val indicatorPosition: Float
+-        get() = pagerState.currentPage + pagerState.currentPageOffsetFraction
++        get() = pagerState.tabIndicatorPosition
+ 
+     /** True for both user-driven and programmatic pager movement. */
+     val isScrollInProgress: Boolean

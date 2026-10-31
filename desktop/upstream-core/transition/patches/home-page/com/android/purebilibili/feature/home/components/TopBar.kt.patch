@@ -8,3 +8,29 @@
                      modifier = Modifier
                          .width(floatingDockWidth)
                          .height(floatingDockHeight),
+@@ -1,6 +1,7 @@
+ // Original source app/src/main/java/com/android/purebilibili/feature/home/components/TopBar.kt
+ // LF SHA256 cc4b95164b04487fd1c9c51b92e1476fabf979192cc34a7373cc006a6d7cfe03
+ package com.android.purebilibili.feature.home.components
++import com.android.purebilibili.navigation.tabIndicatorPosition
+ 
+ import com.android.purebilibili.core.ui.components.AppIcon
+ import com.android.purebilibili.core.ui.components.AppText
+@@ -874,7 +875,7 @@
+     val pagerIsDragging = rememberTopTabPagerDragHeld(pagerState)
+     val currentPositionProvider = remember(pagerState, selectedIndex) {
+         {
+-            resolveTopTabIndicatorRenderPosition(
++            if (pagerState != null) pagerState.tabIndicatorPosition else resolveTopTabIndicatorRenderPosition(
+                 selectedIndex = selectedIndex,
+                 pagerCurrentPage = pagerState?.currentPage,
+                 pagerTargetPage = pagerState?.targetPage,
+@@ -885,7 +886,7 @@
+     }
+     val selectedContentPositionProvider = remember(pagerState, selectedIndex) {
+         {
+-            resolveTopTabSelectedContentPosition(
++            if (pagerState != null) pagerState.tabIndicatorPosition else resolveTopTabSelectedContentPosition(
+                 selectedIndex = selectedIndex,
+                 pagerCurrentPage = pagerState?.currentPage,
+                 pagerTargetPage = pagerState?.targetPage,

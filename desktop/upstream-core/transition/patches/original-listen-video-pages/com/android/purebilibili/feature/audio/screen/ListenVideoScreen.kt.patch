@@ -1,0 +1,27 @@
+--- a/com/android/purebilibili/feature/audio/screen/ListenVideoScreen.kt
++++ b/com/android/purebilibili/feature/audio/screen/ListenVideoScreen.kt
+@@ -1,4 +1,6 @@
+ package com.android.purebilibili.feature.audio.screen
++import com.android.purebilibili.navigation.tabIndicatorPosition
++import com.android.purebilibili.navigation.tabSelectedPage
+ 
+ import com.android.purebilibili.core.ui.AppContentColors
+ 
+@@ -270,7 +272,7 @@
+             )
+             BottomBarLiquidSegmentedControl(
+                 items = sectionLabels,
+-                selectedIndex = pagerState.currentPage,
++                selectedIndex = pagerState.tabSelectedPage,
+                 onSelected = { index ->
+                     scope.launch { animatePagerSelection(pagerState, index) }
+                 },
+@@ -287,7 +289,7 @@
+                 dragSelectionEnabled = sectionLabels.size > 1,
+                 tapPressRefractionEnabled = true,
+                 indicatorPositionProvider = {
+-                    pagerState.currentPage + pagerState.currentPageOffsetFraction
++                    pagerState.tabIndicatorPosition
+                 },
+                 isScrollInProgressProvider = { pagerState.isScrollInProgress },
+                 externalPagerMotionEffectsEnabled = true,
