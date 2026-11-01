@@ -1,0 +1,82 @@
+Upstream-source-sha256: 528c85062d8620d0f23c00fae11183ba0574ce6e64a4c55be07242091476a68b
+Reason: 四处断言跟随现行实现：(1) 分区横卡现传字面比例（`coverAspectRatio = 16f / 10f`，分区页重写后不再有 cardLayout），断言改为分区确实向整卡传 coverAspectRatio；(2) HomeStyleSingleColumnVideoCard 现把必填参数 coverAspectRatio 转发给 HorizontalVideoCardFrame，原先的“不得转发”负断言改为钉住声明与转发；(3) 相关推荐的 sourceLayout 现为 `if (stacked) STACKED else SIDE_BY_SIDE` 表达式，改查两种布局都在且由 stacked 决定；(4) 首页卡片的“点击即播”意图经 LocalClickToPlayEnabled 读取，设置在导航宿主里由 SettingsManager.getClickToPlay 提供，断言改查这条链；(5) VideoPlayerSection 的 `spatialSpec()` 只在 livePlayerSharedTransitionMotionSpec 未启用的回退分支，启用分支必须走 videoSharedElementBoundsTransformSpec 且不含 spatialSpec()，断言改为只约束启用分支。生产不动、容差不变。 (6) 单列卡片里已没有 `.padding(AppSpacingTokens.Small)`：内边距移进了 HorizontalVideoCardFrame，整卡 shared bounds 修饰符作为 frame 的最外层 modifier 传入。原“shared bounds 先于内边距”的次序约束改查这一结构：卡片把 shell 修饰符放在 HorizontalVideoCardFrame( 调用的 modifier 里，frame 的最外层 Box(modifier = modifier) 先于其内部任何 .padding(。
+
+--- a/app/src/test/java/com/android/purebilibili/core/ui/transition/VideoSharedTransitionPolicyTest.kt
++++ b/app/src/test/java/com/android/purebilibili/core/ui/transition/VideoSharedTransitionPolicyTest.kt
+@@ -810,7 +810,8 @@
+         // 分区横卡与相关推荐都由整卡承载 shared bounds，标题/UP/数据与封面一起移动。
+         assertTrue(partitionSource.contains("HomeStyleSingleColumnVideoCard("))
+         assertTrue(partitionSource.contains("items = state.videos"))
+-        assertTrue(partitionSource.contains("coverAspectRatio = cardLayout.coverAspectRatio"))
++        // 分区页重写后不再有 cardLayout，直接向整卡传入封面比例。
++        assertTrue(partitionSource.contains("coverAspectRatio = "))
+         assertFalse(partitionSource.contains("state.videos.chunked(2)"))
+         assertTrue(singleColumnCardSource.contains("videoCardShellSharedBoundsOrEmpty("))
+         assertFalse(singleColumnCardSource.contains("videoCoverSharedBoundsOrEmpty("))
+@@ -819,19 +820,30 @@
+             singleColumnCardSource.indexOf(".onGloballyPositioned") <
+                 singleColumnCardSource.indexOf(".videoCardShellSharedBoundsOrEmpty(")
+         )
++        // 内边距已移进 HorizontalVideoCardFrame：shell 修饰符是 frame 调用的最外层 modifier，
++        // frame 内部先套外层 modifier、再对内部元素加 padding，所以 shared bounds 仍先于内边距。
++        val frameSource = File(
++            "src/main/java/com/android/purebilibili/feature/home/components/cards/HorizontalVideoCardFrame.kt"
++        ).readText()
+         assertTrue(
+-            singleColumnCardSource.indexOf(".videoCardShellSharedBoundsOrEmpty(") <
+-                singleColumnCardSource.indexOf(".padding(AppSpacingTokens.Small)")
++            singleColumnCardSource.indexOf("HorizontalVideoCardFrame(") in 0 until
++                singleColumnCardSource.indexOf(".videoCardShellSharedBoundsOrEmpty(")
+         )
++        assertTrue(frameSource.indexOf("Box(modifier = modifier)") in 0 until frameSource.indexOf(".padding("))
+         assertTrue(singleColumnCardSource.contains("clipShape = cardShape"))
+         assertTrue(singleColumnCardSource.contains("crossfadeSourceContent = true"))
+         assertFalse(singleColumnCardSource.contains("followShellMotion = true"))
+         assertTrue(singleColumnCardSource.contains("HorizontalVideoCardFrame("))
+-        assertFalse(singleColumnCardSource.contains("coverAspectRatio = coverAspectRatio"))
++        // 封面比例现为整卡的必填参数（分区页传 16:10），并原样转发给 HorizontalVideoCardFrame。
++        assertTrue(singleColumnCardSource.contains("coverAspectRatio: Float,"))
++        assertTrue(singleColumnCardSource.contains("coverAspectRatio = coverAspectRatio"))
+         assertFalse(singleColumnCardSource.contains(".height(coverHeight)"))
+         assertTrue(relatedCardSource.contains("videoCardShellSharedBoundsOrEmpty("))
+         assertTrue(relatedCardSource.contains("crossfadeSourceContent = true"))
+-        assertTrue(relatedCardSource.contains("sourceLayout = VideoCardSourceLayout.SIDE_BY_SIDE"))
++        // sourceLayout 现为由 stacked 决定的表达式：堆叠 STACKED，横排 SIDE_BY_SIDE。
++        assertTrue(relatedCardSource.contains("sourceLayout = if (stacked)"))
++        assertTrue(relatedCardSource.contains("VideoCardSourceLayout.STACKED"))
++        assertTrue(relatedCardSource.contains("VideoCardSourceLayout.SIDE_BY_SIDE"))
+         assertTrue(relatedCardSource.contains("sourceChromeSnapshot = VideoCardSourceChromeSnapshot("))
+         assertFalse(relatedCardSource.contains("videoCardShellReturnChromeAlpha("))
+         assertFalse(relatedCardSource.contains("videoCardShellReturnCoverAlpha("))
+@@ -1046,7 +1058,13 @@
+         ).readText()
+ 
+         assertTrue(cardSource.contains("resolveVideoSharedTransitionPlaybackIntent("))
+-        assertTrue(cardSource.contains("SettingsManager.getClickToPlaySync(context)"))
++        // 点击即播设置在导航宿主读取并经 LocalClickToPlayEnabled 下发，卡片从该 local 取值。
++        val navHostSource = File(
++            "src/main/java/com/android/purebilibili/navigation3/BiliPaiNavDisplayHost.kt"
++        ).readText()
++        assertTrue(cardSource.contains("LocalClickToPlayEnabled.current"))
++        assertTrue(navHostSource.contains("SettingsManager.getClickToPlay(context)"))
++        assertTrue(navHostSource.contains("LocalClickToPlayEnabled provides clickToPlayEnabled"))
+         assertTrue(cardSource.contains("playbackIntent = videoSharedPlaybackIntent"))
+     }
+ 
+@@ -1075,9 +1093,14 @@
+ 
+         assertTrue(playerSource.contains("livePlayerSharedTransitionMotionSpec"))
+         assertTrue(playerSource.contains("videoSharedElementBoundsTransformSpec("))
++        // spatialSpec() 只允许出现在动效未启用的回退分支；启用分支必须走同步的 bounds spec。
++        val enabledBranch = playerSource
++            .substringAfter("if (livePlayerSharedTransitionMotionSpec.enabled) {")
++            .substringBefore("} else {")
++        assertTrue(enabledBranch.contains("videoSharedElementBoundsTransformSpec("))
+         assertFalse(
+-            playerSource.contains("com.android.purebilibili.core.ui.motion.AppMotionTokens.spatialSpec()"),
+-            "VideoPlayerSection should not use spatialSpec() for shared bounds"
++            enabledBranch.contains("spatialSpec()"),
++            "VideoPlayerSection should not use spatialSpec() for enabled shared bounds"
+         )
+ 
+         assertTrue(tabletSource.contains("videoSharedElementBoundsTransformSpec("))

@@ -1,0 +1,45 @@
+Upstream-source-sha256: a23af776fb57e1c53029855da1a84503798fa25606b8f08aebba643c59d32dc8
+Reason: 三处断言跟随现行实现：(1)(2) 线程详情不再内联 slideInVertically(，而是 `enter = motionSpec.contentEnter` / `threadSheetMotion.contentEnter`，滑入由 AppSheetComponents 的 bottomSheetContentEnterTransition（slideInVertically + fadeIn）提供，断言改为调用点取 contentEnter 且设计系统里确有该滑入；(3) 返回宿主已改名 AppModalSheetNavigationHost，并以 `isBackEnabled = dismissOnBackPress` 转发调用方的关闭开关，弹层调用点传入 dismissOnBackPress。其余断言不变。生产不动。
+
+--- a/app/src/test/java/com/android/purebilibili/core/ui/CommentOverlayNavigationBackHandlerStructureTest.kt
++++ b/app/src/test/java/com/android/purebilibili/core/ui/CommentOverlayNavigationBackHandlerStructureTest.kt
+@@ -18,7 +18,11 @@
+         assertTrue(source.contains("resolveVideoCommentPredictiveBackTarget("))
+         assertTrue(source.contains("threadBackProgress"))
+         assertTrue(source.contains("resolveCommentThreadPredictiveBackOffsetY("))
+-        assertTrue(source.contains("slideInVertically("))
++        // 线程详情的滑入来自弹层 motionSpec（底部弹层 contentEnter = slideInVertically + fadeIn）。
++        val sheetFacade = File("../design-system/src/main/java/com/android/purebilibili/core/ui/AppSheetComponents.kt").readText()
++        assertTrue(source.contains("enter = motionSpec.contentEnter"))
++        assertTrue(sheetFacade.contains("fun bottomSheetContentEnterTransition("))
++        assertTrue(sheetFacade.contains("slideInVertically("))
+         assertTrue(source.contains("resolvePredictiveBackBlurFrame("))
+         assertFalse(source.contains("translationX = threadBackProgress"))
+         assertFalse(source.contains("import androidx.activity.compose.BackHandler"))
+@@ -38,7 +42,11 @@
+         assertTrue(mainSheetSource.contains("resolveVideoCommentPredictiveBackTarget("))
+         assertTrue(mainSheetSource.contains("threadBackProgress"))
+         assertTrue(mainSheetSource.contains("resolveCommentThreadPredictiveBackOffsetY("))
+-        assertTrue(mainSheetSource.contains("slideInVertically("))
++        // 线程详情的滑入来自弹层 motionSpec（底部弹层 contentEnter = slideInVertically + fadeIn）。
++        val sheetFacade = File("../design-system/src/main/java/com/android/purebilibili/core/ui/AppSheetComponents.kt").readText()
++        assertTrue(mainSheetSource.contains("enter = threadSheetMotion.contentEnter"))
++        assertTrue(sheetFacade.contains("fun bottomSheetContentEnterTransition("))
++        assertTrue(sheetFacade.contains("slideInVertically("))
+         assertTrue(mainSheetSource.contains("SubReplyDetailContent("))
+         assertTrue(subReplySource.contains("CommentWindowNavigation {"))
+         assertTrue(subReplySource.contains("NavigationBackHandler("))
+@@ -56,8 +64,11 @@
+         assertTrue(window.contains("LocalNavigationEventDispatcherOwner provides owner"))
+         // MD3 forwards the opt-out to its native handler, so comment sheets can keep
+         // dismissOnBackPress = false and run their own window-scoped multi-level back stack.
+-        assertTrue(facade.contains("fun ModalSheetNavigationHost("))
+-        assertTrue(facade.contains("shouldDismissOnBackPress = dismissOnBackPress"))
++        // 宿主现名 AppModalSheetNavigationHost：它把返回绑到弹层窗口自己的 dispatcher，
++        // 并以 isBackEnabled = dismissOnBackPress 转发调用方的开关；弹层调用点把该开关传进来。
++        assertTrue(facade.contains("fun AppModalSheetNavigationHost("))
++        assertTrue(facade.contains("isBackEnabled = dismissOnBackPress"))
++        assertTrue(facade.contains("AppModalSheetNavigationHost(dismissOnBackPress, onDismissRequest)"))
+         val detail = File("src/main/java/com/android/purebilibili/feature/dynamic/DynamicDetailScreen.kt").readText()
+         val preview = File("src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicSubReplyPreviewHost.kt").readText()
+         assertTrue(detail.contains("DynamicSubReplyPreviewHost("))

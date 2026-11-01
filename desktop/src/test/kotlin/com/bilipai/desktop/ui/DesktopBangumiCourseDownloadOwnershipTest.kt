@@ -393,10 +393,10 @@ class DesktopBangumiCourseDownloadOwnershipTest {
     private inner class Fixture(private val seasonType: Int = 10, private val downloadRight: Int? = null,
         private val expectedAudioOnly: Boolean = false, private val holdCapturedClicks: Boolean = false,
         private val missingSplitAudio: Boolean = false, private val firstEpisodeBvid: String = "BV1GJ411x7h7") {
-        val directory = Files.createTempDirectory("pgc-course-real-queue-")
+        val directory = Files.createTempDirectory("pgc-course-real-queue-").toRealPath()
         private val createdAbsolute = directory.toAbsolutePath().normalize()
         private val createdReal = directory.toRealPath()
-        private val tempAbsolute = Path.of(System.getProperty("java.io.tmpdir")).toAbsolutePath().normalize()
+        private val tempAbsolute = Path.of(System.getProperty("java.io.tmpdir")).toRealPath()
         private val tempReal = tempAbsolute.toRealPath()
         val destination = directory.resolve("downloads")
         val stateFile = directory.resolve("queue/state.json")

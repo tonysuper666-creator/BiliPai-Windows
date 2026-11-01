@@ -26,3 +26,14 @@
              editSettings = { this[KEY_APP_LANGUAGE] = appLanguage.value },
              editPrefs = { putInt("app_language", appLanguage.value) },
          )
+@@ -305,6 +305,10 @@
+     legacyStyleValue: Int?,
+ ): Float {
+     progress?.let { return normalizeLiquidGlassProgress(it) }
++    // 四个来源都没写过：直接给字段默认值；不要再拿 SUKISU / BALANCED / 0.52 反推出 0.5064。
++    if (legacyModeValue == null && legacyStrength == null && legacyStyleValue == null) {
++        return 0.5f
++    }
+     val legacyStyle = LiquidGlassStyle.fromValue(
+         legacyStyleValue ?: LiquidGlassStyle.SUKISU.value
+     )

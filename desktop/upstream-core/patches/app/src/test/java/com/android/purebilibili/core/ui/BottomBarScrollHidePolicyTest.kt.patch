@@ -1,0 +1,54 @@
+Upstream-commit: cbf8f49aa6dd3eb12e0b97ad2a38360b2a20185b
+Upstream-source-sha256: 2c475ed72cea75adc998e15beaef4c2ab13d14ec9236032477f0945157e0c187
+Reason: Four 20px deltas cross 48px at step three and begin a new accumulation at step four. Assert all four intents and accumulator states, retaining the exact threshold reset instead of losing it by inspecting only the last sample.
+
+--- a/app/src/test/java/com/android/purebilibili/core/ui/BottomBarScrollHidePolicyTest.kt
++++ b/app/src/test/java/com/android/purebilibili/core/ui/BottomBarScrollHidePolicyTest.kt
+@@ -37,7 +37,7 @@
+     @Test
+     fun `sustained downward deltas hide bottom bar`() {
+         var state = BottomBarScrollHideState()
+-        var intent: BottomBarScrollHideIntent? = null
++        val updates = mutableListOf<BottomBarScrollHideUpdate>()
+         repeat(4) {
+             val update = reduceBottomBarScrollHideDelta(
+                 previousState = state,
+@@ -46,17 +46,19 @@
+                 thresholdPx = 48f,
+             )
+             state = update.state
+-            intent = update.intent
++            updates += update
+         }
+ 
+-        assertEquals(BottomBarScrollHideIntent.HIDE, intent)
+-        assertEquals(BottomBarScrollHideState(accumulatedY = 0f), state)
++        assertEquals(listOf(null, null, BottomBarScrollHideIntent.HIDE, null), updates.map { it.intent })
++        assertEquals(BottomBarScrollHideState(accumulatedY = 0f), updates[2].state)
++        assertEquals(listOf(-20f, -40f, 0f, -20f), updates.map { it.state.accumulatedY })
++        assertEquals(BottomBarScrollHideState(accumulatedY = -20f), state)
+     }
+ 
+     @Test
+     fun `sustained upward deltas show bottom bar`() {
+         var state = BottomBarScrollHideState()
+-        var intent: BottomBarScrollHideIntent? = null
++        val updates = mutableListOf<BottomBarScrollHideUpdate>()
+         repeat(4) {
+             val update = reduceBottomBarScrollHideDelta(
+                 previousState = state,
+@@ -65,10 +67,12 @@
+                 thresholdPx = 48f,
+             )
+             state = update.state
+-            intent = update.intent
++            updates += update
+         }
+ 
+-        assertEquals(BottomBarScrollHideIntent.SHOW, intent)
++        assertEquals(listOf(null, null, BottomBarScrollHideIntent.SHOW, null), updates.map { it.intent })
++        assertEquals(listOf(20f, 40f, 0f, 20f), updates.map { it.state.accumulatedY })
++        assertEquals(BottomBarScrollHideState(accumulatedY = 20f), state)
+     }
+ 
+     @Test

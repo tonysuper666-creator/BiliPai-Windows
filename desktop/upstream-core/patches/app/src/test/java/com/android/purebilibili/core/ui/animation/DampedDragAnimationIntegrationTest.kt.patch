@@ -1,0 +1,31 @@
+Upstream-source-sha256: 37f0a096b3a1fa1299d5208ae9bfa7a12b06939544c060e238d64137e92613e2
+Reason: 浮动底栏在 2ecca2d24（glass docks）之后把拖拽命中区收窄到“选中槽”这个移动指示器（源码注释：命中区只是选中槽，其余可滚动 rail 保留给普通横向滚动）；整排 Row 只在液态玻璃下用 interactiveHighlight?.gestureModifier 观察触摸，不再挂拖拽 modifier。断言按现行契约改写：基础 Row 无 dampedDragAnimation.modifier 但有 gestureModifier，移动指示器有 dampedDragAnimation.modifier 而无 gestureModifier；canDrag 回调现为 `{ offset ->`。dragPort 与“不得用设计系统横向拖拽栈”的负断言不变。生产不动。
+
+--- a/app/src/test/java/com/android/purebilibili/core/ui/animation/DampedDragAnimationIntegrationTest.kt
++++ b/app/src/test/java/com/android/purebilibili/core/ui/animation/DampedDragAnimationIntegrationTest.kt
+@@ -18,17 +18,17 @@
+             File("src/main/java/com/android/purebilibili/feature/home/components/miuix/DampedDragAnimation.kt"),
+         ).first { it.exists() }.readText()
+         val body = floating.substringAfter("fun FloatingBottomBar(")
+-        val baseRow = body
+-            .substringAfter("CompositionLocalProvider(LocalFloatingBottomBarContentColor provides colors.contentColor)")
+-            .substringBefore("if (isLiquidGlassMode && backdrop != null)")
+-        val movingIndicator = body.substringAfter("if (tabWidthPx > 0f)")
++        // 现行契约：拖拽命中区只是“选中槽”这个移动指示器；整排 Row 只在液态玻璃下
++        // 观察触摸（gestureModifier），不挂拖拽 modifier，可滚动 rail 其余部分仍能横向滚动。
++        val movingIndicator = body.substringAfterLast("if (tabWidthPx > 0f)")
++        val baseRow = body.substringBeforeLast("if (tabWidthPx > 0f)")
+ 
+         assertTrue(body.contains("DampedDragAnimation("))
+-        assertTrue(baseRow.contains(".then(dampedDragAnimation.modifier)"))
+-        assertTrue(baseRow.contains("interactiveHighlight.gestureModifier"))
+-        assertFalse(movingIndicator.contains(".then(dampedDragAnimation.modifier)"))
++        assertFalse(baseRow.contains("dampedDragAnimation.modifier"))
++        assertTrue(baseRow.contains("interactiveHighlight?.gestureModifier"))
++        assertTrue(movingIndicator.contains("dampedDragAnimation.modifier"))
+         assertFalse(movingIndicator.contains("interactiveHighlight?.gestureModifier"))
+-        assertTrue(body.contains("canDrag = { position ->"))
++        assertTrue(body.contains("canDrag = { offset ->"))
+         assertTrue(body.contains("pressedScale = pressedScale"))
+         assertTrue(dragPort.contains("inspectDragGestures("))
+         assertTrue(dragPort.contains("val modifier: Modifier = Modifier.pointerInput(Unit)"))

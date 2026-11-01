@@ -1,0 +1,47 @@
+Upstream-commit: a0fabed3fbedafdbdb87354817905abe42866316
+Upstream-source-sha256: a3b7a3c21df37fb2bbdf7821dbdd64140544c49fd82d3f60fa4d808d8eb55126
+Reason: PagerState replacement must replace the Foundation layout and its remembered key-index provider together. Keep current tabs, selection, page keys and every existing assertion; prevent stale page-count access when async tabs shrink.
+
+--- a/design-system/src/main/java/com/android/purebilibili/core/ui/components/AppHorizontalPager.kt
++++ b/design-system/src/main/java/com/android/purebilibili/core/ui/components/AppHorizontalPager.kt
+@@ -12,6 +12,7 @@
+ import androidx.compose.foundation.pager.PagerState
+ import androidx.compose.foundation.rememberOverscrollEffect
+ import androidx.compose.runtime.Composable
++import androidx.compose.runtime.key as pagerCompositionKey
+ import androidx.compose.ui.Alignment
+ import androidx.compose.ui.Modifier
+ import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+@@ -51,16 +52,20 @@
+     val resolvedNestedScroll = pageNestedScrollConnection ?: if (miuix) {
+         PagerGestureNestedScrollConnection
+     } else PagerDefaults.pageNestedScrollConnection(state, Orientation.Horizontal)
+-    HorizontalPager(
+-        state = state,
+-        modifier = if (miuix) modifier.pagerGestureOverride(
+-            pagerState = state, flingBehavior = resolvedFling, enabled = enabled,
+-        ) else modifier,
+-        contentPadding = contentPadding, pageSize = pageSize,
+-        beyondViewportPageCount = beyondViewportPageCount, pageSpacing = pageSpacing,
+-        verticalAlignment = verticalAlignment, flingBehavior = resolvedFling,
+-        userScrollEnabled = !miuix && enabled, reverseLayout = reverseLayout, key = key,
+-        pageNestedScrollConnection = resolvedNestedScroll, snapPosition = snapPosition,
+-        overscrollEffect = overscrollEffect, pageContent = pageContent,
+-    )
++    // Foundation remembers its key-index provider. A replacement state must get a new
++    // layout too, so shrinking async tabs cannot pair its keys with the old page count.
++    pagerCompositionKey(state) {
++        HorizontalPager(
++            state = state,
++            modifier = if (miuix) modifier.pagerGestureOverride(
++                pagerState = state, flingBehavior = resolvedFling, enabled = enabled,
++            ) else modifier,
++            contentPadding = contentPadding, pageSize = pageSize,
++            beyondViewportPageCount = beyondViewportPageCount, pageSpacing = pageSpacing,
++            verticalAlignment = verticalAlignment, flingBehavior = resolvedFling,
++            userScrollEnabled = !miuix && enabled, reverseLayout = reverseLayout, key = key,
++            pageNestedScrollConnection = resolvedNestedScroll, snapPosition = snapPosition,
++            overscrollEffect = overscrollEffect, pageContent = pageContent,
++        )
++    }
+ }

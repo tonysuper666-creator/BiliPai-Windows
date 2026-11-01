@@ -1,0 +1,24 @@
+Upstream-source-sha256: a964cb1547556ee1996efad81c08027892c8b5886b6e5c168b78df952015ac6c
+Reason: 89068d48b 把历史/收藏/稍后再看/搜索列表的单双列切换按钮换成首页同款双指缩放换列（homeFeedPinchZoom），这三处不再有 VideoListLayoutToggle(；个人页与下载页仍保留切换按钮。断言按现行契约拆开：三处要求 homeFeedPinchZoom( 与 videoListItemModifier( 且不含切换按钮，个人页与下载页保持原断言。其余断言不变。生产不动。
+
+--- a/app/src/test/java/com/android/purebilibili/core/ui/components/VideoListLayoutPolicyTest.kt
++++ b/app/src/test/java/com/android/purebilibili/core/ui/components/VideoListLayoutPolicyTest.kt
+@@ -27,10 +27,18 @@
+ 
+     @Test
+     fun ordinaryVideoListsExposeThemeAdaptiveLayoutControl() {
++        // 列表/稍后再看/搜索改用双指缩放换列（89068d48b），不再有单双列切换按钮。
+         listOf(
+             "feature/list/CommonListScreen.kt",
+             "feature/watchlater/WatchLaterScreen.kt",
+             "feature/search/SearchScreen.kt",
++        ).forEach { path ->
++            val source = source(path)
++            assertTrue(source.contains("homeFeedPinchZoom("), path)
++            assertFalse(source.contains("VideoListLayoutToggle("), path)
++            assertTrue(source.contains("videoListItemModifier(") || source.contains("videoListBoundsAnimation("), path)
++        }
++        listOf(
+             "feature/profile/ProfileScreen.kt",
+             "feature/download/DownloadListScreen.kt",
+         ).forEach { path ->

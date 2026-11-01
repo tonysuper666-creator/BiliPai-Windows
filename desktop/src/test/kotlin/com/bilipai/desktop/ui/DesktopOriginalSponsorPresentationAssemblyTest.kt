@@ -91,7 +91,7 @@ class DesktopOriginalSponsorPresentationAssemblyTest {
             .apply { isAccessible = true }.get(null) as OkHttpClient
         assertNull(originalClient.proxy, "An explicit original-client proxy could bypass the loopback selector")
         assertSame(selector, originalClient.proxySelector, "A previously initialized public client cannot provide this fixture's fail-closed boundary")
-        runtimeDirectory = Files.createTempDirectory("sponsor-actual-runtime-")
+        runtimeDirectory = Files.createTempDirectory("sponsor-actual-runtime-").toRealPath()
         store = DesktopPluginStore(runtimeDirectory.resolve("settings"))
         val ids = listOf("sponsor_block", "danmaku_enhance", "eye_protection", "bilipai_feed_filter",
             "home_feed_anonymizer", "adfilter", "subscription_feed", "today_watch", "cdn_region", "dlna_cast", "google_cast")
@@ -334,7 +334,7 @@ class DesktopOriginalSponsorPresentationAssemblyTest {
         arrayOf(T::class.java)) { _, method, _ -> error("Unexpected ${T::class.java.simpleName}.${method.name}") } as T
 
     private inner class Fixture(private val holdTags: Boolean = false, private val refreshExpiredUrls: Boolean = false) {
-        val directory = Files.createTempDirectory("sponsor-original-owner-")
+        val directory = Files.createTempDirectory("sponsor-original-owner-").toRealPath()
         val sessions = DesktopSessionStore.temporary()
         val repository = DesktopRepository(sessions)
         private val parentJob = SupervisorJob()
@@ -859,7 +859,7 @@ class DesktopOriginalSponsorPresentationAssemblyTest {
         private fun retryPlayJson(revision: Int): String = """{"code":0,"data":{"quality":64,"timelength":60000,"cur_language":"en","accept_quality":[64],"accept_description":["720P"],"dash":{"duration":60,"video":[{"id":64,"baseUrl":"${retryVideo(revision)}","backupUrl":[],"bandwidth":100000,"mime_type":"video/mp4","codecs":"avc1.640028","width":1280,"height":720,"frameRate":"30","codecid":7,"segment_base":{"initialization":"0-31","index_range":"32-63"}}],"audio":[{"id":30280,"baseUrl":"${retryAudio(revision)}","backupUrl":[],"bandwidth":192000,"mime_type":"audio/mp4","codecs":"mp4a.40.2","segment_base":{"initialization":"0-31","index_range":"32-63"}}]}}}"""
         private fun deleteCreatedDirectory(directory: Path, prefix: String) {
             val absolute = directory.toAbsolutePath().normalize(); val real = directory.toRealPath()
-            val temp = Path.of(System.getProperty("java.io.tmpdir")).toAbsolutePath().normalize()
+            val temp = Path.of(System.getProperty("java.io.tmpdir")).toRealPath()
             check(absolute.parent == temp && real.parent == temp.toRealPath() && absolute != temp)
             check(absolute.fileName.toString().startsWith(prefix))
             fun validate(path: Path, attrs: BasicFileAttributes) {
