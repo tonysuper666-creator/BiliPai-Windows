@@ -317,7 +317,7 @@ val appCoreLaterSteps: Map<String, String> = mapOf(
 // upstream-core/m4b/retired-generated.tsv lists the producer copies that re-declare names of the migrated files.
 // The app data layer (TON-1071: data/repository and data/model) moves the same way, with its own lists in upstream-core/data/.
 val migratedAppFeatureAreas = listOf("feature/home/", "feature/search/", "feature/dynamic/", "feature/comment/", "data/")
-val appFeatureListDirectories = listOf("upstream-core/m4b", "upstream-core/data")
+val appFeatureListDirectories = listOf("upstream-core/m4b", "upstream-core/data", "upstream-core/m4c")
 val appFeatureLaterSteps: Map<String, String> = appFeatureListDirectories.flatMap { file("$it/later-steps.tsv").takeIf { it.isFile }?.readLines().orEmpty() }
     .filter { it.isNotBlank() && !it.startsWith("#") }.associate { line -> line.substringBefore('\t') to line.substringAfter('\t') }
 val appFeatureRetiredGeneratedCopies: Set<String> = appFeatureListDirectories.flatMap { file("$it/retired-generated.tsv").takeIf { it.isFile }?.readLines().orEmpty() }
@@ -380,7 +380,6 @@ val appM4cDesktopOwned: Map<String, String> = mapOf(
 val appM4cLaterSteps: Map<String, String> = mapOf(
     "com/android/purebilibili/feature/audio/bgm/BgmDetailScreen.kt" to "依赖 ViewGrpcRepository 与 Toast/MediaStore；等 BGM 数据层迁移",
     "com/android/purebilibili/feature/audio/bgm/BgmDetailViewModel.kt" to "依赖 ViewGrpcRepository（桌面未编译的视频详情 gRPC 仓库）",
-    "com/android/purebilibili/feature/audio/library/ListenVideoLibraryDataSource.kt" to "与切片产物 DesktopListenVideoLibraryLoader 同名声明冲突，需要先退役该切片生产者",
     "com/android/purebilibili/feature/audio/lyrics/halcyon/AppleCoverFlowBackground.kt" to "Android Canvas/Bitmap 封面流；桌面音乐页（ui/DesktopNativeMusicDetailScreen.kt，79 行）还没有封面流，先保留旧副本",
     "com/android/purebilibili/feature/audio/lyrics/halcyon/PlayerBlurBackground.kt" to "Bitmap 模糊取样；桌面音乐页还没有模糊底图，先保留旧副本",
     "com/android/purebilibili/feature/audio/lyrics/halcyon/PlayerLyricPerspective.kt" to "依赖 Android Configuration.smallestScreenWidthDp",
@@ -396,7 +395,6 @@ val appM4cLaterSteps: Map<String, String> = mapOf(
     "com/android/purebilibili/feature/audio/screen/MusicPlayerContent.kt" to "依赖 Android Settings/媒体键（Settings、media）",
     "com/android/purebilibili/feature/audio/screen/PlayHistorySheet.kt" to "依赖 PlayHistoryStore（Room 音乐库，桌面是 JSON 库）",
     "com/android/purebilibili/feature/audio/viewmodel/ListenVideoCollectionViewModel.kt" to "依赖 PlaylistManager（桌面播放列表是 JSON 库）",
-    "com/android/purebilibili/feature/audio/viewmodel/ListenVideoViewModel.kt" to "需要上游 ListenVideoLibraryDataSource 接口（本卡保留旧副本，桌面有 DesktopOriginalListenVideoLibraryEnvironment）",
     "com/android/purebilibili/feature/audio/viewmodel/MusicViewModel.kt" to "依赖 AudioRepository 与 Media3 Player",
     "com/android/purebilibili/feature/download/DirectorySelectionDialog.kt" to "依赖 Android Environment 外部存储路径",
     "com/android/purebilibili/feature/download/DownloadListScreen.kt" to "依赖 Toast 与上游新版视频卡排版（horizontalVideoCardTypography）",
