@@ -1,0 +1,11 @@
+--- a/desktop/build.gradle.kts
++++ b/desktop/build.gradle.kts
+@@ -315,6 +315,8 @@
+ // M4a: video/bangumi logic and unchanged Compose components compile from the merged upstream tree.
+ // The remaining UI/player files move when their desktop platform adapters are wired.
+ val migratedVideoFeaturePaths = setOf(
++    "com/android/purebilibili/feature/video/ui/components/GlassComponents.kt",
++    "com/android/purebilibili/feature/video/ui/overlay/LandscapeUpInfo.kt",
+     "com/android/purebilibili/feature/video/ui/section/PlaybackResumeFeedback.kt",
+     "com/android/purebilibili/feature/video/screen/VideoDetailPlaybackSessionEffects.kt",
+     "com/android/purebilibili/feature/bangumi/BangumiScreen.kt",
