@@ -679,7 +679,8 @@ class SourceShapeTest(unittest.TestCase):
         order = ("if (!data.keyDown) return held.release(data.key)", "val commands = root ?: return false",
                  "val page = commands.page() ?: return false", "val chord = desktopShellChord(data)",
                  "if (held.isRepeat(data.key, chord)) return true",
-                 "val action = resolveDesktopShellKey(data, DesktopShellKeyContext(page, textEditorFocused())) ?: return false",
+                 "val keyPage = if (page == DesktopShellPage.PLAYER && pageErrorKeys != null) DesktopShellPage.OTHER else page",
+                 "val action = resolveDesktopShellKey(data, DesktopShellKeyContext(keyPage, textEditorFocused())) ?: return false",
                  "if (!perform(action, page, commands, toggleFullscreen)) return false", "held.claim(data.key, chord)", "return true")
         positions = [body.index(needle) for needle in order[:-1]] + [body.rindex(order[-1])]
         self.assertEqual(sorted(positions), positions)
@@ -714,7 +715,7 @@ class SourceShapeTest(unittest.TestCase):
         self.assertEqual(1, len(re.findall(r"\brequestBack\(\)", HOST_CODE)))
 
     def test_the_bindings_clear_only_what_they_set(self):
-        for needle in ("if (root?.owner === owner) root = null",
+        for needle in ("if (root?.owner === owner) { root = null pageErrorKeys = null }",
                        "if (frame?.owner === owner) { frame = null focusedPane = null }",
                        "SideEffect { host.bindFrame(commands) } DisposableEffect(host, rail) { onDispose { host.unbindFrame(rail) } }",
                        "SideEffect { host.bindRoot(commands) } DisposableEffect(host, routes) { onDispose { host.unbindRoot(routes) } }",

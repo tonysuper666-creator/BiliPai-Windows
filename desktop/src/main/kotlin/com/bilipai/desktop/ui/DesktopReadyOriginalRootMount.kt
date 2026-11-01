@@ -155,6 +155,8 @@ internal class DesktopReadyOriginalRootHandle(
     val latest by rememberUpdatedState(services)
     val rootThemeColor = MaterialTheme.colorScheme.background
     val themeColor by rememberUpdatedState(rootThemeColor)
+    val rootThemeLight = !com.bilipai.desktop.appearance.LocalDesktopDarkTheme.current
+    val themeLight by rememberUpdatedState(rootThemeLight)
     val logger = remember { Logger.getLogger("BiliPai.HomeWindow") }
     val resources = rememberDesktopHomeActualWindowResources(services.actualWindow,
         { latest.rootAlive() }, { java.awt.Color(themeColor.toArgb(), true) }, logger)
@@ -223,9 +225,18 @@ internal class DesktopReadyOriginalRootHandle(
     val reduceMotion = rememberDesktopDynamicReduceMotion()
     val reduceMotionNow by rememberUpdatedState(reduceMotion)
     val systemWallpaperChrome = remember(navigation, resources) { DesktopWindowsProfileChrome(services.actualWindow,
-        resources.clientPolicy, { themeColor.luminance() > .5f }, { failure ->
-            services.diagnostics?.record("W", "RootChrome", failure.javaClass.simpleName) }) }
+        resources.clientPolicy, { themeLight }, { failure ->
+            services.diagnostics?.record("W", "RootChrome", "窗口标题主题更新失败", failure) }) }
     SideEffect { handle.installCurrentRootChrome(systemWallpaperChrome::refreshCurrentRootTheme) }
+    LaunchedEffect(systemWallpaperChrome, rootThemeLight) {
+        if (System.getProperty("os.name").startsWith("Windows")) {
+            withFrameNanos { }
+            if (handle.isActive()) try { systemWallpaperChrome.refreshCurrentRootTheme() }
+            catch (failure: Exception) {
+                services.diagnostics?.record("W", "RootChrome", "窗口标题主题更新失败", failure)
+            }
+        }
+    }
     val navPreferences = remember(services.runtime.store, handle) { DesktopOriginalRootNavigationPreferences(
         services.runtime.store, scope, handle::isActive, services.imageLifetime::withCommit) }
     var settings by remember(services.runtime.store, handle) { mutableStateOf<DesktopOriginalHomePreferences?>(null) }
@@ -501,6 +512,10 @@ internal class DesktopReadyOriginalRootHandle(
             originalAboutMetadata, { latest.rootAlive() }, { latest.feedback(it) })
         CompositionLocalProvider(com.bilipai.desktop.settings.LocalDesktopOriginalAboutReleaseMetadata provides originalAboutMetadata,
             LocalDesktopOriginalHomeSettingsRootServices provides originalHomeSettings,
+            LocalDesktopPageErrorReporter provides { type: String, failure: Throwable? ->
+                services.diagnostics?.record("E", "VideoPage", "视频页面加载失败: $type", failure)
+                Unit
+            },
             LocalDesktopMessageNotificationContext provides messageNotificationContext,
             LocalDesktopOriginalOnboardingPreferences provides onboardingPreferences,
             com.android.purebilibili.feature.aicu.LocalAicuNavigation provides { uid: Long? ->

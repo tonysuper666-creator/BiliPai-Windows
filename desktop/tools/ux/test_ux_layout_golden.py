@@ -134,13 +134,13 @@ class RailKotlinTableTest(unittest.TestCase):
         order = [name for name, _g, _b in ITEMS]
         self.assertEqual(fixed, [name for name in order if name in fixed], "the fixed numbers follow the display order")
 
-    def test_rail_labels_equal_the_vendored_labels(self):
+    def test_rail_labels_keep_upstream_names_except_the_desktop_home_entry(self):
         labels = shell.rail_labels(STRINGS_TEXT)
         self.assertEqual({name for name, _g, _b in ITEMS}, set(labels))
         vendored = dict(BOTTOM_NAV)
         for name, _group, bottom in ITEMS:
             if bottom is not None:
-                self.assertEqual(vendored[bottom], labels[name], name)
+                self.assertEqual("首页" if name == "HOME" else vendored[bottom], labels[name], name)
 
     def test_the_rows_the_rail_adds_and_the_chrome_texts_equal_the_existing_rail(self):
         chrome = shell.read(shell.ROOT_CHROME)
@@ -166,7 +166,8 @@ class RailKotlinTableTest(unittest.TestCase):
         for needle in (
             'fun zoomToast(percent: Int): String = "界面缩放 ${percent}%"',
             'fun unreadAnnouncement(label: String, unreadCount: Int): String = "${label}，${unreadCount} 条未读"',
-            'fun collapsedTooltip(label: String, number: Int?): String = if (number == null) label else "$label (Ctrl+$number)"',
+            # squash normalizes the full-width separator; the raw spelling is checked below.
+            'fun collapsedTooltip(label: String, number: Int?): String = if (number == null) label else "$label Ctrl+$number"',
             'fun expandedTooltip(number: Int?): String? = if (number == null) null else "Ctrl+$number"',
             "DesktopRailGroup.BROWSE -> GROUP_BROWSE DesktopRailGroup.LIBRARY -> GROUP_LIBRARY DesktopRailGroup.FOOTER -> null",
         ):
@@ -181,7 +182,7 @@ class RailKotlinTableTest(unittest.TestCase):
                        'const val GROUP_LIBRARY = "媒体库"', 'const val RAIL_COLLAPSE = "折叠导航栏"',
                        'const val RAIL_EXPAND = "展开导航栏"', 'const val RAIL_AUTO = "导航栏恢复为自动"',
                        'const val RAIL_SAVE_FAILED = "无法保存导航栏设置"', '"界面缩放 ${percent}%"', '"${label}，${unreadCount} 条未读"',
-                       '"$label (Ctrl+$number)"', '"Ctrl+$number"'):
+                       '"$label　Ctrl+$number"', '"Ctrl+$number"'):
             self.assertEqual(1, STRINGS_TEXT.count(needle), needle)
         self.assertEqual({"BROWSE", "LIBRARY", "FOOTER"}, set(re.findall(r"DesktopRailGroup\.([A-Z]+) ->", STRINGS_TEXT)))
 
