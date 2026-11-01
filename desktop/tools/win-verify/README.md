@@ -13,6 +13,7 @@ and writes only under `C:\Users\TONYS\bp-mac-verify\`.
 | 23 — idle private memory | `Measure-Idle.ps1` | 60 s idle sampling of private bytes |
 | 24 — minimized CPU, PAUSE | `Measure-Idle.ps1` | CPU after minimizing; effect of `tools\PAUSE` |
 | — | `Test-PauseGate.ps1` | proves the scripts stop when `tools\PAUSE` exists |
+| — | `Test-BpJobExitCode.ps1` | proves `Invoke-BpJob.ps1` reports the child exit code (exit 0 / exit 5 / throw); no client launched |
 | — | `Run-All.ps1` | runs the set, one summary per step |
 | — | `Build-BaselinePackage.ps1` | builds the portable Windows package and stages it under `apps\` |
 
