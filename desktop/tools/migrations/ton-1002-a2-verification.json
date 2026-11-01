@@ -1,0 +1,15 @@
+{
+  "batch": "ton-1002-a2-resume-feedback",
+  "desktopBase": "e103c1e865dae652106f6527382b6ffbe9bc2a64",
+  "patchSha256": "e04298323ac3b0814e5c9abf4ec3076fece5886c6c76e56906b4df95f7af9989",
+  "plannedFiles": 6,
+  "isolatedApply": "passed",
+  "repeatedChangedFiles": 0,
+  "realKotlinPatchConsumptions": 5,
+  "conflict": "rejected; all six targets unchanged",
+  "productionApplied": false,
+  "consumerCompilation": "unverified",
+  "verifyUniqueClassNames": "unverified",
+  "perIdentityJvmComparison": "unverified",
+  "animationLifecycleBehavior": "unverified"
+}

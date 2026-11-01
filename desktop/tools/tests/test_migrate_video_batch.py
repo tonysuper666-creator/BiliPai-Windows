@@ -92,6 +92,69 @@ class MigrationWorkflowTest(unittest.TestCase):
         self.assertEqual(self.source.read_text(), "new upstream API\n")
         self.assertFalse((self.repo / PATCH).exists())
 
+    def transition_recipe(self):
+        identity = "com/android/purebilibili/feature/video/ui/section/VideoPlayerSection.kt"
+        generated = b"package example\nval keepDesktopBehavior = false\nval host = oldHost\n"
+        old_adapted = generated.replace(b"false", b"true")
+        relative = "desktop/upstream-core/transition/patches/original-video-player-section-full/" + identity + ".patch"
+        patch = self.repo / relative
+        patch.parent.mkdir(parents=True)
+        patch.write_bytes(migration.unified(identity, generated, old_adapted))
+        tools = self.repo / "desktop/tools"
+        tools.mkdir(parents=True)
+        # Exercise the real subprocess/archive path with a small offline producer.
+        (tools / "extract-upstream-video-player-section-full.py").write_text(
+            "from pathlib import Path\nimport sys\n"
+            "p=Path(sys.argv[2])/" + repr(identity) + "\n"
+            "p.parent.mkdir(parents=True)\np.write_bytes(" + repr(generated) + ")\n")
+        (self.repo / "desktop/upstream-slices").mkdir()
+        (self.repo / "desktop/upstream-slices/pin").write_text("fixture\n")
+        (self.repo / "desktop/upstream-sources.json").write_text("{}\n")
+        self.run_git("add", ".")
+        self.run_git("-c", "user.name=Migration fixture", "-c", "user.email=fixture@example.invalid",
+                     "commit", "-qm", "reviewed desktop adaptation")
+        base = self.run_git("rev-parse", "HEAD").strip()
+        (self.repo / "desktop/upstream-core/legacy-root.commit").write_text(base + "\n")
+        self.build.write_text(self.build.read_text() + 'val transitionPatchProducers = mapOf(\n)\n')
+        recipe = copy.deepcopy(self.recipe)
+        recipe.update(desktopBaseCommit=base, transitions=[dict(
+            producer="original-video-player-section-full", identity=identity,
+            generatedSha256LF=migration.sha(generated), previousPatchSha256=migration.sha(patch.read_bytes()),
+            edits=[dict(before="oldHost", after="actualResumeHost")])],
+            transitionProducerRegistrations={"original-video-player-section-full": "extractOriginalVideoPlayerSectionFull"})
+        return recipe, relative, identity
+
+    def test_transition_export_consumption_and_reapply_preserve_reviewed_behavior(self):
+        recipe, relative, identity = self.transition_recipe()
+        original_build = self.build.read_bytes()
+        changes, _ = migration.plan(self.repo, recipe)
+        bundle = migration.export_patch(changes)
+        self.assertEqual(self.build.read_bytes(), original_build)
+        subprocess.run(["git", "apply", "--check", "-"], cwd=self.repo, input=bundle, check=True)
+        subprocess.run(["git", "apply", "-"], cwd=self.repo, input=bundle, check=True)
+        again, _ = migration.plan(self.repo, recipe)
+        self.assertEqual(migration.export_patch(again), b"")
+        self.assertTrue(all(old == new for old, new in again.values()))
+        generated = self.repo / identity
+        generated.parent.mkdir(parents=True)
+        generated.write_text("package example\nval keepDesktopBehavior = false\nval host = oldHost\n")
+        self.run_git("apply", relative)
+        self.assertEqual(generated.read_text(), "package example\nval keepDesktopBehavior = true\nval host = actualResumeHost\n")
+
+    def test_transition_conflicts_leave_entire_batch_untouched(self):
+        recipe, relative, _ = self.transition_recipe()
+        before = self.build.read_bytes()
+        stale = copy.deepcopy(recipe)
+        stale["transitions"][0]["generatedSha256LF"] = "0" * 64
+        with self.assertRaisesRegex(migration.Conflict, "Generated source changed"):
+            migration.plan(self.repo, stale)
+        patch = self.repo / relative
+        patch.write_bytes(patch.read_bytes() + b"concurrent adaptation\n")
+        with self.assertRaisesRegex(migration.Conflict, "Existing transition differs"):
+            migration.plan(self.repo, recipe)
+        self.assertEqual(self.build.read_bytes(), before)
+        self.assertFalse((self.repo / PATCH).exists())
+
 
 if __name__ == "__main__":
     unittest.main()
