@@ -171,8 +171,10 @@ internal object DesktopOriginalBangumiPagesToast {
                     viewModel = requireNotNull(detail))
                 is BiliPaiNavKey.BangumiReview -> BangumiReviewScreen(
                     mediaId = entryKey.mediaId, title = entryKey.title,
+                    currentAccountMid = gate.mid,
                     onBack = { navigate { routes.back() } },
-                    onOpenWeb = { url, title -> navigate { routes.push(BiliPaiNavKey.Web(url, title)) } })
+                    onOpenWeb = { url, title -> navigate { routes.push(BiliPaiNavKey.Web(url, title)) } },
+                    onOpenArticle = { id, title -> navigate { routes.push(BiliPaiNavKey.ArticleDetail(id, title)) } })
                 else -> error("Unexpected original Bangumi page key")
             }
         }
