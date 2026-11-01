@@ -28,6 +28,11 @@ internal class DesktopOriginalVideoShellOwner(
         val windows: AtomicReference<DesktopOriginalVideoRootWindowPlatforms?>,
         val afterDrain: suspend (DesktopOriginalVideoOwnerAssembly) -> Unit)
     private val bound = AtomicReference<Bound?>()
+    // A recomposition can still hold the previous Assembly after its admission
+    // retires. Keep its factory identity available until that UI reference dies;
+    // the factory's presentation/admission checks reject retired commands.
+    private val factories = java.util.Collections.synchronizedMap(
+        java.util.WeakHashMap<DesktopOriginalVideoOwnerAssembly, DesktopOriginalVideoRootFactory>())
     private data class WindowRegistration(val owner: DesktopOriginalVideoOwnerAssembly,
         val gate: DesktopOriginalVideoRootGate, val platforms: DesktopOriginalVideoRootWindowPlatforms)
     private val windowAvailability = MutableStateFlow<WindowRegistration?>(null)
@@ -96,7 +101,7 @@ internal class DesktopOriginalVideoShellOwner(
         afterDrain: suspend (DesktopOriginalVideoOwnerAssembly) -> Unit,
         afterUnconstructedDrain: suspend () -> Unit) {
         val next = Bound(factory, windowReference, afterDrain)
-        slot.install(epoch, factory::create, factory::beforeRetire, { value ->
+        slot.install(epoch, { gate -> factory.create(gate).also { factories[it] = factory } }, factory::beforeRetire, { value ->
             afterDrain(value)
             factory.afterDrain(value)
         }, afterUnconstructedDrain)
@@ -113,7 +118,7 @@ internal class DesktopOriginalVideoShellOwner(
         return checkNotNull(windows(value)) { "Actual original Holder Window binding is not mounted" }
     }
     fun factoryFor(owner: DesktopOriginalVideoOwnerAssembly): DesktopOriginalVideoRootFactory =
-        checkNotNull(bound.get()?.factory?.takeIf { slot.currentAssembly() === owner && owner.owns() })
+        checkNotNull(factories[owner]) { "Assembly was not constructed by this Shell" }
     fun publishWindows(owner: DesktopOriginalVideoOwnerAssembly, platforms: DesktopOriginalVideoRootWindowPlatforms) {
         check(EventQueue.isDispatchThread())
         val binding = checkNotNull(bound.get())
