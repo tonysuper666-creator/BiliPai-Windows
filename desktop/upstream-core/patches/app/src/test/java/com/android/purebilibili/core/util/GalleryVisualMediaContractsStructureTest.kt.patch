@@ -1,0 +1,22 @@
+Upstream-source-sha256: d6e6f5c365f919e49e98353bc94c228e081575d697f8f045e9bd6424756fbebd
+Reason: 动态发布器的图片上限已由 9 张改为常量 MAX_DYNAMIC_IMAGES（现为 18），选择器写作 PickMultipleGalleryVisualMedia(maxItems = MAX_DYNAMIC_IMAGES)。断言对该文件改查这一调用及常量声明；评论输入框仍是 maxItems = 9，保持原断言；两个文件都不得回到 ActivityResultContracts.PickMultipleVisualMedia(maxItems = …)。生产不动。
+
+--- a/app/src/test/java/com/android/purebilibili/core/util/GalleryVisualMediaContractsStructureTest.kt
++++ b/app/src/test/java/com/android/purebilibili/core/util/GalleryVisualMediaContractsStructureTest.kt
+@@ -41,8 +41,15 @@
+         }
+         multiplePickerFiles.forEach { path ->
+             val source = loadSource(path)
+-            assertTrue(source.contains("PickMultipleGalleryVisualMedia(maxItems = 9)"), path)
++            // 动态发布器的上限是常量 MAX_DYNAMIC_IMAGES（不再固定 9），评论输入框仍是 9。
++            if (path.endsWith("DynamicPublishComposer.kt")) {
++                assertTrue(source.contains("PickMultipleGalleryVisualMedia(maxItems = MAX_DYNAMIC_IMAGES)"), path)
++                assertTrue(source.contains("private const val MAX_DYNAMIC_IMAGES = "), path)
++            } else {
++                assertTrue(source.contains("PickMultipleGalleryVisualMedia(maxItems = 9)"), path)
++            }
+             assertFalse(source.contains("ActivityResultContracts.PickMultipleVisualMedia(maxItems = 9)"), path)
++            assertFalse(source.contains("ActivityResultContracts.PickMultipleVisualMedia(maxItems = MAX_DYNAMIC_IMAGES)"), path)
+         }
+     }
+ 
