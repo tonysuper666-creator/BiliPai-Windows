@@ -29,10 +29,12 @@ import com.android.purebilibili.feature.video.ui.section.VideoPlayerCoverFeedbac
 import com.android.purebilibili.feature.video.ui.section.resolveVideoPlayerCoverMotionSpec
 import com.android.purebilibili.feature.video.viewmodel.PlayerToastMessage
 import com.android.purebilibili.feature.video.viewmodel.PlayerToastPresentation
+import com.android.purebilibili.feature.video.viewmodel.VideoSubjectSnapshot
 import com.bilipai.desktop.ui.DesktopOriginalPortraitDanmakuPort
 import com.bilipai.desktop.ui.DesktopOriginalVideoHolderPlatform
 import com.bilipai.desktop.ui.LocalDesktopOriginalVideoHolderPlatform
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.*
 import org.junit.jupiter.api.Test
 import java.lang.reflect.Proxy
@@ -191,6 +193,52 @@ class DesktopVideoPlayerCoverFeedbackCompositionTest {
             assertFeedback(false)
         }
 
+    @Test fun sameVideoPartChangeClearsPendingFeedbackWithoutReplacingTheRetainedPort() = withHost {
+        notice()
+        visible.value = false
+        frames(26)
+        assertFeedback(true)
+        val previousEvents = events
+        val previousCover = cover
+        assertNotNull(events.resumeMessageDeadlineMs)
+
+        // A part change retains the BVID-scoped container. Before the subject
+        // observer catches up, the real feedback consumer rejects the old key.
+        identity.value = "BV-first:2"
+        visible.value = true
+        frames(2)
+        assertSame(previousEvents, events)
+        assertNotSame(previousCover, cover)
+        assertCover(current = true, target = true, idle = true)
+        assertNotNull(events.resumeMessage)
+        assertFeedback(false)
+
+        subject.value = snapshot("BV-first:2")
+        frames(2)
+        assertSame(previousEvents, events)
+        assertSame(previousEvents.danmakuManager, events.danmakuManager)
+        assertNull(events.resumeMessage)
+        assertNull(events.resumeMessageDeadlineMs)
+        notice()
+        assertFeedback(false)
+        visible.value = false
+        frames(2)
+        assertCover(current = true, target = false, idle = false)
+        assertFeedback(false)
+        assertNull(events.resumeMessageDeadlineMs)
+        frames(24)
+        assertCover(current = false, target = false, idle = true)
+        assertFeedback(true)
+
+        // Going back to part 1 cannot resurrect either previous part's notice.
+        identity.value = "BV-first:1"
+        subject.value = snapshot("BV-first:1")
+        frames(2)
+        assertNull(events.resumeMessage)
+        assertNull(events.resumeMessageDeadlineMs)
+        assertFeedback(false)
+    }
+
     @Test fun liveMorphUsesTheRealKeepBudgetRatherThanSyntheticSuppression() = withHost {
         notice()
         phase.value = VideoDetailReturnSessionPhase.Morph
@@ -210,6 +258,12 @@ class DesktopVideoPlayerCoverFeedbackCompositionTest {
 
     private class Host(surfaceCanCrossfade: Boolean) : AutoCloseable {
         val identity = mutableStateOf("BV-first:1")
+        fun snapshot(key: String) = VideoSubjectSnapshot(
+            bvid = key.substringBefore(':'), cid = key.substringAfter(':').toLong(),
+            aid = 1L, ownerMid = 1L, title = "fixture", coverUrl = "", durationMs = 60_000L,
+            generation = key.substringAfter(':').toLong(),
+        )
+        val subject = MutableStateFlow<VideoSubjectSnapshot?>(snapshot(identity.value))
         val visible = mutableStateOf(true)
         val phase = mutableStateOf(VideoDetailReturnSessionPhase.Idle)
         val hasRenderableLiveFrame = mutableStateOf(false)
@@ -255,6 +309,7 @@ class DesktopVideoPlayerCoverFeedbackCompositionTest {
                     // Match the retained Holder: event state is keyed by currentBvid;
                     // the Section transition and feedback message carry bvid:cid.
                     val state = rememberVideoDetailPlaybackEventState(identity.value.substringBefore(':'))
+                    VideoDetailResumeIdentityEffect(subject, state)
                     val returnBudget = resolveVideoDetailReturnVisualBudget(
                         phase = phase.value,
                         hasRenderableLiveFrame = hasRenderableLiveFrame.value,
