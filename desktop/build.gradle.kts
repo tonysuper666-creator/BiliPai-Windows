@@ -378,7 +378,6 @@ val appM4cDesktopOwned: Map<String, String> = mapOf(
 )
 // appM4cLaterSteps: still on their legacy copy in this step; the reason names what has to move first.
 val appM4cLaterSteps: Map<String, String> = mapOf(
-    "com/android/purebilibili/feature/audio/bgm/BgmDetailScreen.kt" to "依赖 ViewGrpcRepository 与 Toast/MediaStore；等 BGM 数据层迁移",
     "com/android/purebilibili/feature/audio/lyrics/halcyon/AppleCoverFlowBackground.kt" to "Android Canvas/Bitmap 封面流；桌面音乐页（ui/DesktopNativeMusicDetailScreen.kt，79 行）还没有封面流，先保留旧副本",
     "com/android/purebilibili/feature/audio/lyrics/halcyon/PlayerBlurBackground.kt" to "Bitmap 模糊取样；桌面音乐页还没有模糊底图，先保留旧副本",
     "com/android/purebilibili/feature/audio/lyrics/halcyon/PlayerLyricPerspective.kt" to "依赖 Android Configuration.smallestScreenWidthDp",

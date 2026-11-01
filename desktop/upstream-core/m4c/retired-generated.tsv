@@ -5,3 +5,4 @@ original-listen-video-pages/com/android/purebilibili/feature/audio/viewmodel/Lis
 bgm-detail/com/android/purebilibili/feature/audio/bgm/BgmDetailViewModel.kt
 original-listen-video-pages/com/android/purebilibili/feature/audio/viewmodel/ListenVideoCollectionViewModel.kt
 original-listen-video-pages/com/android/purebilibili/feature/audio/screen/ListenVideoCollectionPlayer.kt
+bgm-detail/com/android/purebilibili/feature/audio/bgm/BgmDetailScreen.kt
