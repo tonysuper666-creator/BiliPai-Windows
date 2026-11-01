@@ -2,10 +2,8 @@ package com.bilipai.desktop.ui.kit
 
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Test
-import org.junit.platform.engine.discovery.DiscoverySelectors.selectClass
-import org.junit.platform.launcher.core.LauncherDiscoveryRequestBuilder
-import org.junit.platform.launcher.core.LauncherFactory
-import org.junit.platform.launcher.listeners.SummaryGeneratingListener
+import java.util.concurrent.atomic.AtomicBoolean
+import java.lang.reflect.InvocationTargetException
 import kotlin.test.assertTrue
 
 /**
@@ -13,12 +11,14 @@ import kotlin.test.assertTrue
  * kotlinx-coroutines-test after every round whether a scene left an uncaught coroutine failure behind.
  */
 class DesktopKitTimerThreadProbeTest {
-    private fun roundOfKitClass(): Pair<Long, List<String>> {
-        val listener = SummaryGeneratingListener()
-        val request = LauncherDiscoveryRequestBuilder.request().selectors(selectClass(DesktopKitUiTest::class.java)).build()
-        LauncherFactory.create().execute(request, listener)
-        val summary = listener.summary
-        return summary.testsFailedCount to summary.failures.map { it.testIdentifier.displayName + ": " + it.exception.message?.take(160) }
+    private fun roundOfKitClass(): Pair<Int, List<String>> {
+        val failures = mutableListOf<String>()
+        for (method in DesktopKitUiTest::class.java.declaredMethods.filter { it.isAnnotationPresent(Test::class.java) }) {
+            try { method.invoke(DesktopKitUiTest()) } catch (e: InvocationTargetException) {
+                failures += method.name + ": " + (e.targetException.message ?: e.targetException.javaClass.name).take(160)
+            }
+        }
+        return failures.size to failures
     }
 
     private fun leakAfterRound(): String? = try { runTest { }; null } catch (e: IllegalStateException) {
@@ -29,10 +29,10 @@ class DesktopKitTimerThreadProbeTest {
     @Test fun probe() {
         val leaks = mutableListOf<String>()
         val spinners = mutableListOf<Thread>()
-        @Volatile var stop = false
+        val stop = AtomicBoolean(false)
         for (mode in listOf("idle", "loaded")) {
             if (mode == "loaded") repeat(Runtime.getRuntime().availableProcessors()) {
-                spinners += Thread { var x = 0L; while (!stop) x++ }.also { it.isDaemon = true; it.start() }
+                spinners += Thread { var x = 0L; while (!stop.get()) x++ }.also { it.isDaemon = true; it.start() }
             }
             for (round in 1..25) {
                 val (failed, failures) = roundOfKitClass()
@@ -40,7 +40,7 @@ class DesktopKitTimerThreadProbeTest {
                 leakAfterRound()?.let { leaks += "$mode round $round: leaked $it" }
             }
         }
-        stop = true
+        stop.set(true)
         println("PROBE_LEAKS=${leaks.size}")
         leaks.forEach { println("PROBE_LEAK $it") }
         assertTrue(leaks.isEmpty(), leaks.joinToString("\n"))
