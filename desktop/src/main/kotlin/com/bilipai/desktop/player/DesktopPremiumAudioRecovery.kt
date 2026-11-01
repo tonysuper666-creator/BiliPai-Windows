@@ -67,7 +67,7 @@ internal fun applyDesktopPremiumAudioRecovery(
     nativePublication: DesktopNativePlaybackPublication? = null,
     accountIsCurrent: () -> Boolean,
 ): Boolean {
-    if(desktopPremiumAudioFailureCode(failure) == null || plan.source.audioSelection?.selectedPreferenceId != AUDIO_QUALITY_AUTO ||
+    if(desktopPremiumAudioFailureCode(failure) == null || plan.source.audioSelection?.selected?.kind != AudioStreamKind.STANDARD ||
         plan.source.audioSelection?.fallbackReason != AudioFallbackReason.DECODER_ERROR) return false
     val owned = player.currentSourceSnapshot()?.takeIf { it.sourceVersion == failure.sourceVersion } ?: return false
     val state = player.state.value

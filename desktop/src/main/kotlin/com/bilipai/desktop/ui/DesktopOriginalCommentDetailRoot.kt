@@ -77,6 +77,10 @@ internal class DesktopOriginalCommentEntryRequests(
         return mid
     }
     override suspend fun getCommentsForSubject(oid:Long,type:Int,page:Int,ps:Int,mode:Int,paginationOffset:String?,fallbackOnMissingLocation:Boolean)=request { delegate.getCommentsForSubject(oid,type,page,ps,mode,paginationOffset,fallbackOnMissingLocation) }
+    override suspend fun getMobileCommentsForSubject(oid:Long,type:Int,page:Int,ps:Int,mode:Int,continuation:com.android.purebilibili.data.model.response.CommentMainListContinuation?,fallbackOnMissingLocation:Boolean)=
+        request { delegate.getMobileCommentsForSubject(oid,type,page,ps,mode,continuation,fallbackOnMissingLocation) }
+    override suspend fun getMobileSortedSubCommentsForSubject(oid:Long,type:Int,rootId:Long,mode:Int,paginationOffset:String?,targetReplyId:Long,supplementLocations:Boolean)=
+        request { delegate.getMobileSortedSubCommentsForSubject(oid,type,rootId,mode,paginationOffset,targetReplyId,supplementLocations) }
     override suspend fun getSortedSubCommentsForSubject(oid:Long,type:Int,rootId:Long,mode:Int,paginationOffset:String?,targetReplyId:Long)=request { delegate.getSortedSubCommentsForSubject(oid,type,rootId,mode,paginationOffset,targetReplyId) }
     override suspend fun getDialogCommentsForSubject(oid:Long,type:Int,rootId:Long,dialogId:Long,page:Int,paginationOffset:String?)=request { delegate.getDialogCommentsForSubject(oid,type,rootId,dialogId,page,paginationOffset) }
     override suspend fun uploadCommentPicture(source:String,index:Int)=request { delegate.uploadCommentPicture(source,index) }

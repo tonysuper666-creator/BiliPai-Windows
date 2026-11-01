@@ -47,9 +47,11 @@ class DesktopBangumiPgcAudioPreferencesTest {
         assertEquals(AUDIO_QUALITY_HI_RES, resolved(port))
         runBlocking { DesktopOriginalVideoPlayerSettings.setDefaultAudioQuality(context, AUDIO_QUALITY_AUTO) }
         assertEquals(AUDIO_QUALITY_AUTO, resolved(port))
-        // A stored id the original policy does not know is normalized to automatic by the VM's resolver.
+        // Positive values are concrete track IDs and survive preference resolution.
         runBlocking { DesktopOriginalVideoPlayerSettings.setDefaultAudioQuality(context, 30280) }
         assertEquals(30280, port.defaultQuality())
+        assertEquals(30280, resolved(port))
+        runBlocking { DesktopOriginalVideoPlayerSettings.setDefaultAudioQuality(context, -999) }
         assertEquals(AUDIO_QUALITY_AUTO, resolved(port))
     }
 

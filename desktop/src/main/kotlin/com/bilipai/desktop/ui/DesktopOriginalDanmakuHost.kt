@@ -43,6 +43,7 @@ internal fun DesktopOriginalDanmakuHost(
     upOwnerUserHash:String?,
     isSending:Boolean,
     onSendSame:(String)->Unit,
+    durationMs:()->Long,
 ) {
     val revision by overlay.poolSourceRevision.collectAsState()
     val snapshot=remember(overlay,environment,revision){overlay.poolSourceFor(environment.cid,environment.sourceVersion)}
@@ -73,13 +74,26 @@ internal fun DesktopOriginalDanmakuHost(
                 onSendSame={text->if(environment.isOwned() && platform.isOwned() && !isSending)onSendSame(text)},
                 likedDanmakuIds=liked,onLikeDanmaku={dmid,like->session.likeDanmaku(dmid,like)},
                 onRecallDanmaku=session::recallDanmaku,onReportDanmaku={dmid,reason->session.reportDanmaku(dmid,reason)},
+                onReportDanmakuWithSender={dmid,userHash,reason,explanation,blockUser->
+                    session.reportDanmaku(dmid,reason,explanation) {
+                        if(blockUser && userHash.isNotBlank() && environment.isOwned() && platform.isOwned())
+                            block(DanmakuBlockActionTarget.USER,userHash)
+                    }
+                },
                 onBlockSender={block(DanmakuBlockActionTarget.USER,it)},onDismiss=onDismissPool)
         }
         if(menu.visible)DanmakuContextMenu(
             text=menu.text,onDismiss=session::hideDanmakuMenu,onLike={session.likeDanmaku(menu.dmid)},
             onRecall={session.recallDanmaku(menu.dmid)},canRecall=menu.isSelf,
+            onReportWithExplanation={reason,explanation,blockUser->
+                session.reportDanmaku(menu.dmid,reason,explanation) {
+                    if(blockUser && environment.isOwned() && platform.isOwned())
+                        block(DanmakuBlockActionTarget.USER,menu.userHash)
+                }
+            },
             onReport={session.reportDanmaku(menu.dmid,it)},voteCount=menu.voteCount,hasLiked=menu.hasLiked,
             voteLoading=menu.voteLoading,canVote=menu.canVote,timestampJumpMs=resolveDanmakuTimestampJumpMs(menu.text),
+            durationMs=durationMs(),
             onSeekToTimestamp=environment::seekTo,canBlockKeyword=menu.text.isNotBlank(),
             onBlockKeyword={block(DanmakuBlockActionTarget.KEYWORD,menu.text)},canBlockUser=menu.userHash.isNotBlank(),
             onBlockUser={if(menu.userHash.isBlank())environment.showFeedback("该弹幕缺少发送者标识") else block(DanmakuBlockActionTarget.USER,menu.userHash)})

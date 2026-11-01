@@ -1,0 +1,128 @@
+{
+  "schema": "bilipai-video-migration-v1",
+  "id": "ton-1002-a2-resume-feedback",
+  "upstream": {
+    "tag": "v0.5.0",
+    "commit": "383be1d47ff1b46c8c793e4c78e28bcbf715b331"
+  },
+  "desktopBaseCommit": "e103c1e865dae652106f6527382b6ffbe9bc2a64",
+  "files": [
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/PlaybackResumeFeedback.kt",
+      "sha256LF": "82eb247fba09a6453b20d58cfafbff66a89af48716d216b06d1b439660953286",
+      "edits": [
+        {
+          "before": "import android.os.SystemClock\n",
+          "after": "import com.bilipai.desktop.ui.DesktopHomeClock as SystemClock\n"
+        }
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailPlaybackSessionEffects.kt",
+      "sha256LF": "1770adba7ab7ec94acf1a69d6cf5b3ce769f7481e57b63864b6019e0e0f32877",
+      "retire": [
+        "original-video-detail-holder-full/com/android/purebilibili/feature/video/screen/VideoDetailPlaybackSessionEffects.kt"
+      ],
+      "edits": [
+        {
+          "before": "import android.content.Context\n",
+          "after": "import com.bilipai.desktop.ui.DesktopOriginalPlayerSettingsContext as Context\n"
+        },
+        {
+          "before": "import com.android.purebilibili.feature.video.danmaku.DanmakuManager\nimport com.android.purebilibili.feature.video.danmaku.rememberDanmakuManager\n",
+          "after": "import com.bilipai.desktop.ui.DesktopOriginalPortraitDanmakuPort as DanmakuManager\nimport com.bilipai.desktop.ui.LocalDesktopOriginalVideoHolderPlatform\n"
+        },
+        {
+          "before": "    val danmakuManager = rememberDanmakuManager(playbackIdentity)\n",
+          "after": "    val danmakuManager = LocalDesktopOriginalVideoHolderPlatform.current.danmaku\n"
+        },
+        {
+          "before": ") {\n    LaunchedEffect(viewModel, state, \"resume-identity\")",
+          "after": ") {\n    val platform = LocalDesktopOriginalVideoHolderPlatform.current\n    LaunchedEffect(viewModel, state, \"resume-identity\")"
+        },
+        {
+          "before": "                isVipGradualColor = danmakuData.isVipGradualColor,\n",
+          "after": ""
+        },
+        {
+          "before": "LaunchedEffect(viewModel, context.applicationContext)",
+          "after": "LaunchedEffect(viewModel, context)"
+        },
+        {
+          "before": "com.android.purebilibili.core.util.AnalyticsHelper.logScreenView(\"VideoDetailScreen\")",
+          "after": "platform.logScreenView(\"VideoDetailScreen\")"
+        }
+      ],
+      "previousPatchSha256": "5df66f3fd943d11a1a6e8b2a5ca1d0298d489f8ac5cc8401d72f081c8d4d75b4"
+    }
+  ],
+  "transitions": [
+    {
+      "producer": "original-video-detail-holder-full",
+      "identity": "com/android/purebilibili/feature/video/screen/VideoDetailScreenStateHolder.kt",
+      "generatedSha256LF": "2f9842b7d25268e6ef13986350c97692a2acd8e655c93b2a8edf2c2f754fbcf5",
+      "previousPatchSha256": "80ec5ffc5ae0f62585598f9e3eaab73fa0fe1bf054540510c4c2e15646412775",
+      "edits": [
+        {
+          "before": "\n            danmakuHostActive = !hasCommittedRelatedVideoNavigation,\n",
+          "after": "\n            danmakuHostActive = !hasCommittedRelatedVideoNavigation,\n            suppressTransientOverlaysForTransition = suppressOverlayControlsForReturn,\n",
+          "count": 1
+        },
+        {
+          "before": "\n                        danmakuHostActive = !hasCommittedRelatedVideoNavigation,\n",
+          "after": "\n                        danmakuHostActive = !hasCommittedRelatedVideoNavigation,\n                        suppressTransientOverlaysForTransition = suppressOverlayControlsForReturn,\n",
+          "count": 1
+        },
+        {
+          "before": "    VideoDetailScreenContent(\n        transitionState = transitionState,\n        routeSheetMotion = routeSheetMotion,\n        isFullscreenMode = isFullscreenMode,\n        backgroundColor = AppSurfaceTokens.background(),\n        modifier = detailShellModifier,\n        mainContent = { VideoDetailRouteSheetMainContent() },\n        overlayContent = { VideoDetailRouteSheetOverlayContent() }\n    )\n}\n",
+          "after": "    androidx.compose.runtime.CompositionLocalProvider(\n        LocalPlaybackResumeFeedback provides playbackEventState,\n    ) {\n        VideoDetailScreenContent(\n            transitionState = transitionState,\n            routeSheetMotion = routeSheetMotion,\n            isFullscreenMode = isFullscreenMode,\n            backgroundColor = AppSurfaceTokens.background(),\n            modifier = detailShellModifier,\n            mainContent = { VideoDetailRouteSheetMainContent() },\n            overlayContent = { VideoDetailRouteSheetOverlayContent() }\n        )\n    }\n}\n",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "producer": "original-video-detail-holder-full",
+      "identity": "com/android/purebilibili/feature/video/screen/VideoDetailPlayerTransitionHost.kt",
+      "generatedSha256LF": "00919462f8a528c088f3380879c5bd47b5da539610a9ce7472bc1c8c4c5533c4",
+      "previousPatchSha256": null,
+      "edits": [
+        {
+          "before": "    danmakuHostActive: Boolean,\n",
+          "after": "    danmakuHostActive: Boolean,\n    suppressTransientOverlaysForTransition: Boolean,\n",
+          "count": 1
+        },
+        {
+          "before": "                danmakuHostActive = danmakuHostActive,\n",
+          "after": "                danmakuHostActive = danmakuHostActive,\n                suppressTransientOverlaysForTransition = suppressTransientOverlaysForTransition,\n",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "producer": "original-video-player-section-full",
+      "identity": "com/android/purebilibili/feature/video/ui/section/VideoPlayerSection.kt",
+      "generatedSha256LF": "e837b173ed2bc78d7ef93ee0e8c9235daebed88c60dd0f2f3d74cf4efaefb012",
+      "previousPatchSha256": null,
+      "edits": [
+        {
+          "before": "    AnimatedVisibility(\n        visible = showCover && (currentCoverUrl.isNotEmpty() || entryPresentationSpec.showManualStartPlayButton),\n",
+          "after": "    val coverVisibility = remember(currentPlaybackIdentity) {\n        androidx.compose.animation.core.MutableTransitionState(showCover && (currentCoverUrl.isNotEmpty() || entryPresentationSpec.showManualStartPlayButton))\n    }\n    coverVisibility.targetState = showCover && (currentCoverUrl.isNotEmpty() || entryPresentationSpec.showManualStartPlayButton)\n\n    AnimatedVisibility(\n        visibleState = coverVisibility,\n",
+          "count": 1
+        },
+        {
+          "before": "    // 2. DanmakuView (使用 ByteDance DanmakuRenderEngine - 覆盖在 PlayerView 上方)\n",
+          "after": "    PlaybackResumeFeedback(\n        mediaKey = (uiState as? VideoPlaybackUiState.Success)?.info?.let { \"${it.bvid}:${it.cid}\" },\n        ready = !keepCoverForManualStart && !showCover &&\n            coverVisibility.isIdle && !coverVisibility.currentState && !coverVisibility.targetState &&\n            !suppressTransientOverlaysForTransition && !forceCoverDuringReturnAnimation &&\n            !isInPipMode && !isPortraitFullscreen,\n        fullscreen = isFullscreen,\n        controlsVisible = showControls && !isScreenLocked,\n    )\n\n    // 2. DanmakuView (使用 ByteDance DanmakuRenderEngine - 覆盖在 PlayerView 上方)\n",
+          "count": 1
+        }
+      ]
+    }
+  ],
+  "transitionProducerRegistrations": {
+    "original-video-player-section-full": "extractOriginalVideoPlayerSectionFull"
+  },
+  "pending": [
+    "Root must apply this complete batch including both build registrations; do not apply component or popup removal alone.",
+    "A2 consumer compilation, verifyUniqueClassNames, per-identity JVM comparison, and real animation/lifecycle behavior remain unverified until atomic application.",
+    "A3 VIP gradual-color and D VM notice emission remain deferred; E is TON-1056 and BGM is TON-1004."
+  ]
+}

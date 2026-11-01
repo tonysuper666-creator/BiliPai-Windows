@@ -1,0 +1,58 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/glass/PortraitFullscreenOverlay.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/glass/PortraitFullscreenOverlay.kt
+@@ -1,4 +1,4 @@
+-package com.android.purebilibili.feature.video.ui.overlay.glass
++package com.android.purebilibili.feature.video.ui.overlay
+ 
+ import com.android.purebilibili.feature.video.ui.overlay.*
+ 
+@@ -32,7 +32,7 @@
+ import androidx.compose.ui.graphics.vector.ImageVector
+ import androidx.compose.ui.input.pointer.pointerInput
+ import androidx.compose.ui.layout.ContentScale
+-import androidx.compose.ui.platform.LocalConfiguration
++import com.bilipai.desktop.ui.DesktopHomeCardWindowMetrics as LocalConfiguration
+ import androidx.compose.ui.platform.LocalDensity
+ import androidx.compose.ui.text.font.FontWeight
+ import androidx.compose.ui.text.style.TextOverflow
+@@ -49,8 +49,8 @@
+ import androidx.compose.material.icons.rounded.Search
+ import androidx.compose.material.icons.rounded.MoreVert
+ import com.android.purebilibili.feature.video.ui.components.PlaybackSpeed
+-import com.android.purebilibili.feature.video.ui.components.glass.DolbyBadge
+-import com.android.purebilibili.feature.video.ui.components.glass.HiResBadge
++import com.android.purebilibili.feature.video.ui.components.DolbyBadge
++import com.android.purebilibili.feature.video.ui.components.HiResBadge
+ import com.android.purebilibili.feature.video.ui.feedback.followActionAnchor
+ import com.android.purebilibili.feature.video.ui.components.VideoAspectRatio
+ 
+@@ -922,17 +922,18 @@
+     onMemberClick: (Long) -> Unit,
+     onDismiss: () -> Unit
+ ) {
++    val creatorTeam = com.bilipai.desktop.ui.LocalDesktopOriginalPortraitPlatform.current.creatorTeam
+     // 成员关注状态：null=查询中；followStateChanges 与全局动作同步。
+     val followStates = remember(staff) { mutableStateMapOf<Long, Boolean>() }
+     LaunchedEffect(staff) {
+         staff.filter { it.mid > 0L && it.mid != ownerMid }.forEach { member ->
+             followStates[member.mid] =
+-                com.android.purebilibili.data.repository.ActionRepository
++                creatorTeam
+                     .checkFollowStatus(member.mid)
+         }
+     }
+     LaunchedEffect(Unit) {
+-        com.android.purebilibili.data.repository.ActionRepository.followStateChanges.collect { change ->
++        creatorTeam.followStateChanges.collect { change ->
+             if (followStates.containsKey(change.mid)) {
+                 followStates[change.mid] = change.isFollowing
+             }
+@@ -1003,7 +1004,7 @@
+                                 onFollowClick = {
+                                     scope.launch {
+                                         val target = !isFollowing
+-                                        val ok = com.android.purebilibili.data.repository.ActionRepository
++                                        val ok = creatorTeam
+                                             .followUser(member.mid, target)
+                                             .getOrDefault(false)
+                                         if (ok) followStates[member.mid] = target

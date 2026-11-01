@@ -40,7 +40,7 @@ interface DesktopHomeEmbeddedPages {
  @Composable fun PartitionContent(contentPadding:PaddingValues,onVideoClick:(VideoItem)->Unit,onBangumiClick:(Int)->Unit,scrollToTopRequestId:Int)
  @Composable fun SubscriptionFeedPage(contentPadding:PaddingValues,articleContentPadding:PaddingValues,scrollToTopRequestId:Int,listState:LazyStaggeredGridState,gridColumns:Int,pinchEnabled:Boolean,pinchBounds:IntRange,onColumnsChange:(Int)->Unit,onPinchEnd:(Int)->Unit,onArticleOpenChanged:(Boolean)->Unit,onOpenPluginSettings:()->Unit)
  @Composable fun LiveListScreen(onBack:()->Unit,onLiveClick:(Long,String,String)->Unit,onSearchClick:()->Unit,onAreaListClick:()->Unit,onFollowingClick:()->Unit,onAreaDetailClick:(Int,Int,String)->Unit,showNavigationBack:Boolean,embeddedInHome:Boolean,contentTopPadding:Dp,scrollToTopRequestId:Int)
- @Composable fun HomeBangumiTabPage(contentPadding:PaddingValues,onBangumiClick:(Long)->Unit,onBangumiEpisodeClick:(Long,Long)->Unit,scrollToTopRequestId:Int)
+ @Composable fun HomeBangumiTabPage(contentPadding:PaddingValues,onBangumiClick:(Long)->Unit,onBangumiEpisodeClick:(Long,Long)->Unit,onPlayFollow:(Long)->Unit,scrollToTopRequestId:Int)
 }
 /** All effects are required real Root ports. The Home page owns no client/settings/account store. */
 internal class DesktopHomeEnvironment(

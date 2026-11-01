@@ -44,7 +44,7 @@ class DesktopOriginalVideoFallbackCauseViewModelTest {
     private data class PlayCapture(val request: Request,
         val receipt: DesktopPlaybackAuthorizationReceipt, val cookies: List<Cookie>)
 
-    private inner class Harness(val ioFirstRequest: Boolean = false) : AutoCloseable {
+    private inner class Harness(val ioFirstRequest: Boolean = false, val holdRecoveredDetail: Boolean = false) : AutoCloseable {
         val uncaught = CopyOnWriteArrayList<Throwable>()
         val folder = Files.createTempDirectory("original-auth-recapture-")
         val sessions = DesktopSessionStore.temporary()
@@ -69,6 +69,8 @@ class DesktopOriginalVideoFallbackCauseViewModelTest {
         val preparationCalls = AtomicInteger()
         val nextPlayEntered = CompletableDeferred<Unit>()
         val nextPlayRelease = CountDownLatch(1)
+        val recoveredDetailEntered = CompletableDeferred<Unit>()
+        val recoveredDetailRelease = CountDownLatch(1)
         val actualIoFailure = java.io.IOException("controlled actual PlayURL IO failure")
         @Volatile var warmingGuestPlay = false
         val selectionApiCalls = AtomicInteger()
@@ -89,6 +91,10 @@ class DesktopOriginalVideoFallbackCauseViewModelTest {
                 .addInterceptor { chain ->
                     val request = chain.request(); requests += request
                     check(request.method == "GET" && request.url.isHttps && request.url.port == 443)
+                    if (holdRecoveredDetail && request.url.encodedPath == "/x/web-interface/view" && captures.size > 1) {
+                        recoveredDetailEntered.complete(Unit)
+                        check(recoveredDetailRelease.await(10, TimeUnit.SECONDS))
+                    }
                     val body = when (request.url.host to request.url.encodedPath) {
                         "www.bilibili.com" to "/" -> "memory bootstrap"
                         "api.bilibili.com" to "/x/frontend/finger/spi" -> """{"code":0,"data":{"b_3":"synthetic-visitor","b_4":"synthetic-visitor4"}}"""
@@ -303,6 +309,7 @@ class DesktopOriginalVideoFallbackCauseViewModelTest {
             return captured
         }
         override fun close() {
+            recoveredDetailRelease.countDown()
             entry = false; scope.cancel(); playRelease.countDown(); nextPlayRelease.countDown(); relatedGate.countDown(); subtitles.close()
             transport.dispatcher.executorService.shutdownNow(); transport.connectionPool.evictAll()
             PlaybackCooldownManager.clearAll()
@@ -385,7 +392,8 @@ class DesktopOriginalVideoFallbackCauseViewModelTest {
             assertFalse(oldPermission.isCurrent())
             assertFalse(oldPermission.admit { error("Replaced request permission cannot navigate") })
             h.until { h.vm.detailState.value.requestToken == freshCapture.state.currentLoadRequestToken &&
-                h.vm.detailState.value.relatedLoadState == VideoPlaybackUiState.RelatedLoadState.READY }
+                h.vm.detailState.value.relatedLoadState == VideoPlaybackUiState.RelatedLoadState.READY &&
+                h.vm.detailState.value.info != null }
             val freshPermission = assertNotNull(h.vm.desktopMetadataAdmission.value)
             assertNotSame(oldPermission, freshPermission); assertTrue(freshPermission.isCurrent())
             assertEquals(before.info?.title, h.vm.detailState.value.info?.title)
@@ -396,4 +404,42 @@ class DesktopOriginalVideoFallbackCauseViewModelTest {
             assertTrue(h.preparationCalls.get() >= 2); assertTrue(h.uncaught.isEmpty())
         } }
     }
+
+    /** Related and detail are independent readonly children; READY is not detail completion. */
+    @Test fun recoveredRelatedCanFinishBeforeDetailWithoutLosingTheEventualTitle() = runBlocking<Unit> {
+        withTimeout(15_000) { Harness(ioFirstRequest = true, holdRecoveredDetail = true).use { h ->
+            h.start()
+            withTimeout(5_000) { h.playEntered.await() }
+            val before = h.related(VideoPlaybackUiState.RelatedLoadState.READY)
+            val oldPermission = assertNotNull(h.vm.desktopMetadataAdmission.value)
+            h.relatedGate = CountDownLatch(1)
+            val networkError = async {
+                withTimeout(8_000) { h.vm.uiState.first {
+                    it is VideoPlaybackUiState.Error && it.error === VideoLoadError.NetworkError
+                } } as VideoPlaybackUiState.Error
+            }
+            h.playRelease.countDown()
+            assertTrue(networkError.await().canRetry)
+            withTimeout(8_000) { h.nextPlayEntered.await() }
+            withTimeout(5_000) { h.recoveredDetailEntered.await() }
+            h.until { h.captures.size == 2 && h.relatedCalls.get() == 2 }
+            val fresh = h.captures[1]
+            assertFalse(oldPermission.isCurrent())
+            // Both recovered responses are now controlled; release related alone.
+            h.relatedGate.countDown()
+            h.until { h.vm.detailState.value.requestToken == fresh.state.currentLoadRequestToken &&
+                h.vm.detailState.value.relatedLoadState == VideoPlaybackUiState.RelatedLoadState.READY }
+            assertNull(h.vm.detailState.value.info)
+            assertEquals("BV17x411w7KC", h.vm.detailState.value.related.single().bvid)
+            h.recoveredDetailRelease.countDown()
+            h.until { h.vm.detailState.value.requestToken == fresh.state.currentLoadRequestToken &&
+                h.vm.detailState.value.info != null }
+            assertEquals("Fixture", h.vm.detailState.value.info?.title)
+            assertEquals(before.info?.title, h.vm.detailState.value.info?.title)
+            assertEquals(VideoPlaybackUiState.RelatedLoadState.READY, h.vm.detailState.value.relatedLoadState)
+            assertTrue(assertNotNull(h.vm.desktopMetadataAdmission.value).isCurrent())
+            assertEquals(0, h.mediaCalls.get()); assertTrue(h.uncaught.isEmpty())
+        } }
+    }
+
 }

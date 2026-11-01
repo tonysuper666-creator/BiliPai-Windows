@@ -1,0 +1,14 @@
+# Keep existing desktop callers valid until they supply subtitle track languages.
+--- a/app/src/main/java/com/android/purebilibili/feature/video/subtitle/BiliSubtitlePolicy.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/video/subtitle/BiliSubtitlePolicy.kt
+@@ -71,8 +71,8 @@
+     primaryTrackLikelyAi: Boolean,
+     secondaryTrackLikelyAi: Boolean,
+     isMuted: Boolean,
+-    primaryTrackLanguage: String?,
+-    secondaryTrackLanguage: String?
++    primaryTrackLanguage: String? = null,
++    secondaryTrackLanguage: String? = null
+ ): SubtitleDisplayMode = com.android.purebilibili.core.subtitle.resolveSubtitleDisplayModeByAutoPreference(preference = preference, hasPrimaryTrack = hasPrimaryTrack, hasSecondaryTrack = hasSecondaryTrack, primaryTrackLikelyAi = primaryTrackLikelyAi, secondaryTrackLikelyAi = secondaryTrackLikelyAi, isMuted = isMuted, primaryTrackLanguage = primaryTrackLanguage, secondaryTrackLanguage = secondaryTrackLanguage)
+ 
+ fun resolveSubtitlePreferenceSession(

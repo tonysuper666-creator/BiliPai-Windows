@@ -1,0 +1,180 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiReviewScreen.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiReviewScreen.kt
+@@ -2,11 +2,9 @@
+ 
+ package com.android.purebilibili.feature.bangumi
+ 
+-import com.android.purebilibili.navigation.tabSelectedPage
+-import com.android.purebilibili.navigation.tabIndicatorPosition
+ import com.android.purebilibili.core.ui.AppContentColors
+ 
+-import android.widget.Toast
++import com.bilipai.desktop.ui.DesktopOriginalBangumiPagesToast as Toast
+ import androidx.compose.foundation.background
+ import androidx.compose.foundation.interaction.collectIsDraggedAsState
+ import androidx.compose.foundation.layout.Arrangement
+@@ -45,7 +43,7 @@
+ import androidx.compose.runtime.snapshotFlow
+ import androidx.compose.ui.Alignment
+ import androidx.compose.ui.Modifier
+-import androidx.compose.ui.platform.LocalContext
++import com.bilipai.desktop.ui.LocalDesktopOriginalBangumiPagesEnvironment as LocalContext
+ import androidx.compose.ui.text.font.FontWeight
+ import androidx.compose.ui.text.style.TextOverflow
+ import androidx.compose.ui.unit.dp
+@@ -65,11 +63,9 @@
+ import com.android.purebilibili.core.ui.components.AppTextButton
+ import com.android.purebilibili.core.ui.components.AppTextField
+ import com.android.purebilibili.core.ui.components.AppSwitch
+-import com.android.purebilibili.core.store.TokenManager
+ import com.android.purebilibili.core.ui.rememberAppBackIcon
+ import com.android.purebilibili.data.model.response.BangumiReviewItem
+ import com.android.purebilibili.data.model.response.BangumiReviewType
+-import com.android.purebilibili.data.repository.BangumiReviewRepository
+ import com.android.purebilibili.feature.home.components.BottomBarLiquidSegmentedControl
+ import com.android.purebilibili.core.ui.components.AppHorizontalPager
+ import com.android.purebilibili.navigation.animatePagerSelection
+@@ -87,10 +83,11 @@
+ )
+ 
+ @Composable
+-fun BangumiReviewScreen(
++internal fun BangumiReviewScreen(
+     mediaId: Long,
+     title: String,
+     onBack: () -> Unit,
++    currentAccountMid: Long?,
+     onOpenWeb: (String, String) -> Unit = { _, _ -> },
+     onOpenArticle: (Long, String) -> Unit = { _, _ -> },
+ ) {
+@@ -159,7 +156,7 @@
+ 
+     LaunchedEffect(mediaId, reviewType, sort, reloadGeneration) {
+         if (!loading) return@LaunchedEffect
+-        val result = BangumiReviewRepository.getReviews(mediaId = mediaId, type = reviewType, sort = sort)
++        val result = context.reviews.getReviews(mediaId = mediaId, type = reviewType, sort = sort)
+         currentCoroutineContext().ensureActive()
+         result.fold(
+             onSuccess = { page ->
+@@ -183,7 +180,7 @@
+         val other = reviewTypes.firstOrNull { it != reviewType } ?: return@LaunchedEffect
+         val query = other to sort
+         if (reviewCache.containsKey(query)) return@LaunchedEffect
+-        val result = BangumiReviewRepository.getReviews(mediaId = mediaId, type = other, sort = sort)
++        val result = context.reviews.getReviews(mediaId = mediaId, type = other, sort = sort)
+         currentCoroutineContext().ensureActive()
+         result.onSuccess { page ->
+             if (!reviewCache.containsKey(query)) reviewCache[query] = CachedBangumiReviews(page.items, page.next, page.hasMore)
+@@ -198,7 +195,7 @@
+             if (switchingPage || !hasMore || loading || loadingMore || nextCursor.isBlank()) return@collect
+             if (total > 0 && lastVisible >= total - 3) {
+                 loadingMore = true
+-                val result = BangumiReviewRepository.getReviews(
++                val result = context.reviews.getReviews(
+                     mediaId = mediaId,
+                     type = reviewType,
+                     cursor = nextCursor,
+@@ -276,16 +273,18 @@
+                 verticalAlignment = Alignment.CenterVertically,
+             ) {
+                 BottomBarLiquidSegmentedControl(
++                    modifier = if (com.android.purebilibili.core.ui.LocalAppThemeConfig.current.liquidGlassEnabled) Modifier.weight(1f) else Modifier,
+                     // Glass indicator fills the measured slot; native geometry keeps its defaults.
+                     liquidGlassAdaptIndicatorToLabel = !com.android.purebilibili.core.ui.LocalAppThemeConfig.current.liquidGlassEnabled,
+                     items = reviewTypes.map { it.label },
+-                    selectedIndex = pagerState.tabSelectedPage,
++                    // 临时连续页映射，待 TON-1151 退役；不等同于上游独立 rail。
++                    selectedIndex = pagerState.currentPage,
+                     onSelected = { index ->
+                         if (index in reviewTypes.indices) scope.launch {
+                             if (reduceMotion) pagerState.scrollToPage(index) else animatePagerSelection(pagerState, index)
+                         }
+                     },
+-                    indicatorPositionProvider = { pagerState.tabIndicatorPosition },
++                    indicatorPositionProvider = { pagerState.currentPage + pagerState.currentPageOffsetFraction },
+                     isScrollInProgressProvider = { pagerState.isScrollInProgress },
+                     // Miuix uses a custom pager gesture; its scroll state supplies the
+                     // fallback drag signal instead of Foundation's interaction source.
+@@ -301,8 +300,9 @@
+                     dragSelectionEnabled = reviewTypes.size > 1,
+                     tapPressRefractionEnabled = true,
+                 )
+-                Spacer(modifier = Modifier.weight(1f))
++                if (!com.android.purebilibili.core.ui.LocalAppThemeConfig.current.liquidGlassEnabled) Spacer(modifier = Modifier.weight(1f))
+                 BottomBarLiquidSegmentedControl(
++                    modifier = if (com.android.purebilibili.core.ui.LocalAppThemeConfig.current.liquidGlassEnabled) Modifier.weight(1f) else Modifier,
+                     // Glass indicator fills the measured slot; native geometry keeps its defaults.
+                     liquidGlassAdaptIndicatorToLabel = !com.android.purebilibili.core.ui.LocalAppThemeConfig.current.liquidGlassEnabled,
+                     items = sortLabels,
+@@ -330,6 +330,7 @@
+                 val cached = reviewCache[pageType to sort]
+                 BangumiReviewTransitionPage(
+                     reviewType = pageType,
++                    currentAccountMid = currentAccountMid,
+                     items = cached?.items,
+                     listState = if (pageType == BangumiReviewType.SHORT) shortListState else longListState,
+                 )
+@@ -418,7 +419,7 @@
+                                         val requestQuery = reviewType to sort
+                                         busyReviews = busyReviews + item.review_id
+                                         scope.launch {
+-                                            BangumiReviewRepository.dislikeReview(mediaId, item.review_id)
++                                            context.reviews.dislikeReview(mediaId, item.review_id)
+                                                 .onSuccess {
+                                                     if (requestQuery != (reviewType to sort)) {
+                                                         reviewCache.remove(requestQuery)
+@@ -447,7 +448,7 @@
+                                             val requestQuery = reviewType to sort
+                                             busyReviews = busyReviews + item.review_id
+                                             scope.launch {
+-                                                BangumiReviewRepository.likeReview(mediaId, item.review_id)
++                                                context.reviews.likeReview(mediaId, item.review_id)
+                                                     .onSuccess {
+                                                         if (requestQuery != (reviewType to sort)) {
+                                                             reviewCache.remove(requestQuery)
+@@ -487,7 +488,7 @@
+                                             item.stat?.let { AppText(it.likes.toString(), color = if (it.liked == 1) AppContentColors.accent() else AppContentColors.secondaryText()) }
+                                         }
+                                     }
+-                                    if (item.author?.mid?.let { it > 0L && it == TokenManager.midCache } == true) {
++                                    if (item.author?.mid?.let { it > 0L && it == currentAccountMid } == true) {
+                                         AppTextButton(onClick = { editingReview = item; showComposer = true }, enabled = item.review_id !in busyReviews) { AppText("编辑") }
+                                         AppTextButton(onClick = { deletingReview = item }, enabled = item.review_id !in busyReviews) { AppText("删除") }
+                                     }
+@@ -525,8 +526,8 @@
+                 val editing = editingReview
+                 submittingReview = true
+                 scope.launch {
+-                    val result = if (editing == null) BangumiReviewRepository.postShortReview(mediaId, score, content, shareFeed)
+-                        else BangumiReviewRepository.modifyShortReview(mediaId, editing.review_id, score, content)
++                    val result = if (editing == null) context.reviews.postShortReview(mediaId, score, content, shareFeed)
++                        else context.reviews.modifyShortReview(mediaId, editing.review_id, score, content)
+                     result.fold(
+                         onSuccess = {
+                             Toast.makeText(context, if (editing == null) "已发布短评" else "已更新短评", Toast.LENGTH_SHORT).show()
+@@ -553,7 +554,7 @@
+                     deletingReview = null
+                     busyReviews = busyReviews + review.review_id
+                     scope.launch {
+-                        BangumiReviewRepository.deleteShortReview(mediaId, review.review_id)
++                        context.reviews.deleteShortReview(mediaId, review.review_id)
+                             .onSuccess { items = items.filterNot { it.review_id == review.review_id } }
+                             .onFailure { Toast.makeText(context, it.message ?: "删除失败", Toast.LENGTH_SHORT).show() }
+                         busyReviews = busyReviews - review.review_id
+@@ -569,6 +570,7 @@
+ @Composable
+ private fun BangumiReviewTransitionPage(
+     reviewType: BangumiReviewType,
++    currentAccountMid: Long?,
+     items: List<BangumiReviewItem>?,
+     listState: LazyListState,
+ ) {
+@@ -615,7 +617,7 @@
+                                     item.stat?.let { AppText(it.likes.toString(), color = if (it.liked == 1) AppContentColors.accent() else AppContentColors.secondaryText()) }
+                                 }
+                             }
+-                            if (item.author?.mid?.let { it > 0L && it == TokenManager.midCache } == true) {
++                            if (item.author?.mid?.let { it > 0L && it == currentAccountMid } == true) {
+                                 AppTextButton(onClick = {}) { AppText("编辑") }
+                                 AppTextButton(onClick = {}) { AppText("删除") }
+                             }

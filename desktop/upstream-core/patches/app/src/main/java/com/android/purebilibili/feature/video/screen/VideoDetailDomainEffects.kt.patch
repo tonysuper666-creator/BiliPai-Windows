@@ -1,0 +1,48 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailDomainEffects.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailDomainEffects.kt
+@@ -1,6 +1,6 @@
+ package com.android.purebilibili.feature.video.screen
+ 
+-import android.content.Context
++import com.bilipai.desktop.ui.DesktopOriginalPlayerSettingsContext as Context
+ import androidx.compose.runtime.Composable
+ import androidx.compose.runtime.LaunchedEffect
+ import androidx.compose.runtime.State
+@@ -32,7 +32,7 @@
+     val subjectSnapshot by subjectSnapshotState
+     val favoriteFolderSaveEvent by favoriteFolderSaveEventState
+     LaunchedEffect(context) {
+-        engagementViewModel.initWithContext(context)
++        engagementViewModel.initWithContext(context.pluginContext)
+     }
+     LaunchedEffect(engagementViewModel) {
+         engagementViewModel.events.collect { event ->
+@@ -72,3 +72,28 @@
+         supplementViewModel.setVisible(isVisible)
+     }
+ }
++
++// The installed desktop holder still supplies values. Keep its real calls on the
++// upstream State-based effect wiring until that holder itself migrates.
++@Composable
++internal fun VideoDetailDomainEffects(
++    context: Context,
++    isVisible: Boolean,
++    uiState: VideoPlaybackUiState,
++    subjectSnapshot: VideoSubjectSnapshot?,
++    favoriteFolderSaveEvent: FavoriteFolderSaveEvent?,
++    playbackViewModel: VideoPlaybackViewModel,
++    engagementViewModel: VideoEngagementViewModel,
++    composerViewModel: VideoComposerViewModel,
++    supplementViewModel: VideoSupplementViewModel,
++) = VideoDetailDomainEffects(
++    context = context,
++    isVisible = isVisible,
++    uiState = uiState,
++    subjectSnapshotState = androidx.compose.runtime.rememberUpdatedState(subjectSnapshot),
++    favoriteFolderSaveEventState = androidx.compose.runtime.rememberUpdatedState(favoriteFolderSaveEvent),
++    playbackViewModel = playbackViewModel,
++    engagementViewModel = engagementViewModel,
++    composerViewModel = composerViewModel,
++    supplementViewModel = supplementViewModel,
++)

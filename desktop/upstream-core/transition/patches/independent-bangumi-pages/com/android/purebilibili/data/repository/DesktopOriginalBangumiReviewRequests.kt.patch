@@ -1,16 +1,64 @@
 --- a/independent-bangumi-pages/com/android/purebilibili/data/repository/DesktopOriginalBangumiReviewRequests.kt
 +++ b/independent-bangumi-pages/com/android/purebilibili/data/repository/DesktopOriginalBangumiReviewRequests.kt
-@@ -7,13 +7,6 @@
- import com.android.purebilibili.data.model.response.BangumiReviewType
+@@ -8,14 +8,54 @@
  import kotlinx.coroutines.Dispatchers
  import com.bilipai.desktop.ui.ownedBangumiRequest
--
+ 
 -data class BangumiReviewPage(
 -    val items: List<BangumiReviewItem>,
 -    val next: String,
 -    val count: Int,
 -    val hasMore: Boolean
 -)
++internal class DesktopOriginalBangumiReviewRequests(private val api: BangumiApi, private val csrf: () -> String?, private val owned: () -> Boolean, private val actionOwned: () -> Boolean) {
++    // Complete upstream actions through this entry's existing write admission.
++    suspend fun postShortReview(
++        mediaId: Long,
++        score: Int,
++        content: String,
++        shareFeed: Boolean,
++    ): Result<Unit> = ownedBangumiRequest(Dispatchers.IO, actionOwned) {
++        runCatching {
++            val csrf = csrf().orEmpty()
++            if (csrf.isBlank()) error("请先登录")
++            val response = api.postBangumiShortReview(
++                mediaId = mediaId,
++                score = score.coerceIn(2, 10),
++                content = content.trim(),
++                shareFeed = if (shareFeed) 1 else 0,
++                csrf = csrf
++            )
++            if (response.code != 0) {
++                error(response.message.ifBlank { "发布失败" })
++            }
++        }
++    }
  
- internal class DesktopOriginalBangumiReviewRequests(private val api: BangumiApi, private val csrf: () -> String?, private val owned: () -> Boolean, private val actionOwned: () -> Boolean) {
+-internal class DesktopOriginalBangumiReviewRequests(private val api: BangumiApi, private val csrf: () -> String?, private val owned: () -> Boolean, private val actionOwned: () -> Boolean) {
++    suspend fun dislikeReview(mediaId: Long, reviewId: Long): Result<Unit> = ownedBangumiRequest(Dispatchers.IO, actionOwned) {
++        runCatching {
++            val csrf = csrf().orEmpty().ifBlank { error("请先登录") }
++            val response = api.dislikeBangumiReview(mediaId, reviewId = reviewId, csrf = csrf)
++            if (response.code != 0) error(response.message.ifBlank { "操作失败" })
++        }
++    }
++
++    suspend fun modifyShortReview(mediaId: Long, reviewId: Long, score: Int, content: String): Result<Unit> = ownedBangumiRequest(Dispatchers.IO, actionOwned) {
++        runCatching {
++            val csrf = csrf().orEmpty().ifBlank { error("请先登录") }
++            val response = api.modifyBangumiShortReview(mediaId, reviewId, score.coerceIn(2, 10), content.trim(), csrf)
++            if (response.code != 0) error(response.message.ifBlank { "编辑失败" })
++        }
++    }
++
++    suspend fun deleteShortReview(mediaId: Long, reviewId: Long): Result<Unit> = ownedBangumiRequest(Dispatchers.IO, actionOwned) {
++        runCatching {
++            val csrf = csrf().orEmpty().ifBlank { error("请先登录") }
++            val response = api.deleteBangumiShortReview(mediaId, reviewId, csrf)
++            if (response.code != 0) error(response.message.ifBlank { "删除失败" })
++        }
++    }
++
      suspend fun getReviews(
+         mediaId: Long,
+         type: BangumiReviewType,

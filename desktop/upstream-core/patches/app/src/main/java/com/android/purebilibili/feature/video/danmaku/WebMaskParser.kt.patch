@@ -1,0 +1,12 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/video/danmaku/WebMaskParser.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/video/danmaku/WebMaskParser.kt
+@@ -1,7 +1,7 @@
+ package com.android.purebilibili.feature.video.danmaku
+ 
+-import android.graphics.Path
+-import androidx.core.graphics.PathParser
++import com.bilipai.desktop.danmaku.DesktopWebMaskPath as Path
++import com.bilipai.desktop.danmaku.DesktopWebMaskPath as PathParser
+ import com.android.purebilibili.danmaku.engine.DanmakuMaskFrame
+ import java.io.ByteArrayInputStream
+ import java.io.ByteArrayOutputStream

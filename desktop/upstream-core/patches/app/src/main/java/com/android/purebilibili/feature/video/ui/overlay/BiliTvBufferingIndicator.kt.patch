@@ -1,0 +1,105 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/BiliTvBufferingIndicator.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/BiliTvBufferingIndicator.kt
+@@ -1,6 +1,5 @@
+ package com.android.purebilibili.feature.video.ui.overlay
+ 
+-import android.os.Build
+ import androidx.compose.foundation.layout.Box
+ import androidx.compose.foundation.layout.Column
+ import androidx.compose.foundation.layout.padding
+@@ -11,18 +10,15 @@
+ import androidx.compose.runtime.getValue
+ import androidx.compose.runtime.mutableStateOf
+ import androidx.compose.runtime.setValue
+-import coil3.asDrawable
+ import androidx.compose.runtime.remember
+ import androidx.compose.ui.Alignment
+ import androidx.compose.ui.Modifier
+ import androidx.compose.ui.graphics.Color
+ import androidx.compose.ui.graphics.ColorFilter
+ import androidx.compose.ui.layout.ContentScale
+-import androidx.compose.ui.platform.LocalContext
+ import androidx.compose.ui.unit.Dp
+ import androidx.compose.ui.unit.dp
+ import coil3.compose.AsyncImage
+-import com.android.purebilibili.R
+ import com.android.purebilibili.core.ui.components.AppText
+ 
+ /** 视频播放共用的小电视动画；仅改变图案和文案，不叠加背景遮罩。 */
+@@ -32,48 +28,7 @@
+     modifier: Modifier = Modifier,
+     size: Dp = 32.dp,
+ ) {
+-    val context = LocalContext.current
+-    val reduceMotion = com.android.purebilibili.core.ui.LocalSystemReduceMotion.current
+-    val active = com.android.purebilibili.core.ui.rememberVisualWorkActive() && !reduceMotion
+-    var failed by remember { mutableStateOf(false) }
+-    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P || reduceMotion || failed) {
+-        // 静态回退使用独立首帧，避免 painterResource 将动画 WebP 强转为 BitmapDrawable。
+-        androidx.compose.foundation.Image(
+-            painter = androidx.compose.ui.res.painterResource(R.drawable.bili_tv_buffering_static),
+-            contentDescription = "加载中",
+-            contentScale = ContentScale.Fit,
+-            colorFilter = ColorFilter.tint(tint),
+-            modifier = modifier.size(size),
+-        )
+-        return
+-    }
+-    val model = remember(context) {
+-        coil3.request.ImageRequest.Builder(context)
+-            .data("android.resource://${context.packageName}/${R.raw.bili_tv_buffering}")
+-            .memoryCachePolicy(coil3.request.CachePolicy.DISABLED)
+-            .build()
+-    }
+-    var animation by remember(model) { mutableStateOf<android.graphics.drawable.Animatable?>(null) }
+-    DisposableEffect(animation, active) {
+-        val current = animation
+-        if (active) current?.start() else current?.stop()
+-        onDispose { current?.stop() }
+-    }
+-    AsyncImage(
+-        model = model,
+-        contentDescription = "加载中",
+-        contentScale = ContentScale.Fit,
+-        colorFilter = ColorFilter.tint(tint),
+-        modifier = modifier.size(size),
+-        onSuccess = {
+-            val drawable = it.result.image.asDrawable(context.resources)
+-            (drawable as? android.graphics.drawable.AnimatedImageDrawable)?.repeatCount = android.graphics.drawable.AnimatedImageDrawable.REPEAT_INFINITE
+-            val current = drawable as? android.graphics.drawable.Animatable
+-            current?.stop()
+-            animation = current
+-        },
+-        onError = { failed = true },
+-    )
++    com.bilipai.desktop.player.DesktopBufferingAnimation(tint, modifier, size)
+ }
+ 
+ /** 小电视与已缓冲位置共用透明容器，等待时保留当前视频画面。 */
+@@ -106,19 +61,21 @@
+ /** 原生播放视图不再自行显示进度环，由同一动画响应真实缓冲状态。 */
+ @Composable
+ internal fun PlayerBufferingIndicator(
+-    player: androidx.media3.common.Player,
++    player: com.bilipai.desktop.ui.DesktopOriginalMpvSectionControl,
+     modifier: Modifier = Modifier,
+     tint: Color = com.android.purebilibili.core.ui.AppContentColors.accent(),
+     size: Dp = 32.dp,
+ ) {
+     var buffering by remember(player) {
+-        mutableStateOf(player.playWhenReady && player.playbackState == androidx.media3.common.Player.STATE_BUFFERING)
++        mutableStateOf(player.playWhenReady && player.playbackState == com.bilipai.desktop.ui.DesktopOriginalMpvOverlayControl.STATE_BUFFERING)
+     }
+     DisposableEffect(player) {
+-        val listener = object : androidx.media3.common.Player.Listener {
+-            override fun onEvents(player: androidx.media3.common.Player, events: androidx.media3.common.Player.Events) {
+-                buffering = player.playWhenReady && player.playbackState == androidx.media3.common.Player.STATE_BUFFERING
++        val listener = object : com.bilipai.desktop.ui.DesktopOriginalMpvOverlayControl.Listener {
++            private fun update() {
++                buffering = player.playWhenReady && player.playbackState == com.bilipai.desktop.ui.DesktopOriginalMpvOverlayControl.STATE_BUFFERING
+             }
++            override fun onPlaybackStateChanged(playbackState: Int) = update()
++            override fun onPlayWhenReadyChanged(playWhenReady: Boolean, reason: Int) = update()
+         }
+         player.addListener(listener)
+         onDispose { player.removeListener(listener) }

@@ -1,0 +1,10 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/video/playback/session/PlaybackLifecycleCoordinator.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/video/playback/session/PlaybackLifecycleCoordinator.kt
+@@ -1,6 +1,6 @@
+ package com.android.purebilibili.feature.video.playback.session
+ 
+-import androidx.media3.common.Player
++import com.bilipai.desktop.player.platform.DesktopMedia3PlayerStates as Player
+ import com.android.purebilibili.feature.video.state.shouldRestorePlayerVolumeOnResume
+ import com.android.purebilibili.feature.video.state.shouldResumeAfterLifecyclePause
+ 

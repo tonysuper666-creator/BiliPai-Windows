@@ -73,7 +73,7 @@ class DesktopPlaybackController internal constructor(
     private val onRememberAudioQuality: (Int) -> Unit = {},
     private val currentDanmakuSettings: () -> com.bilipai.desktop.danmaku.DanmakuSettings,
     publication: DesktopPlaybackPublication? = null,
-) : AutoCloseable {
+) : AutoCloseable, DesktopPlaybackRequestPort {
     private val publication = publication ?: if (dataSource == null) DesktopRepositoryPlaybackPublication(repository)
         else error("Injected playback transport requires explicit local-source publication admission")
     private val communityReports by lazy { community ?: DesktopCommunityRepository(repository) }
@@ -192,7 +192,38 @@ class DesktopPlaybackController internal constructor(
         }
     }
 
-    fun open(card: VideoCard) { if (!closed.get()) openQueue(listOf(card), 0) }
+    /** The ordinary entry and shared playback callers use the SAME queue/load path.
+     * Keep the opaque owner through reloadSource/recovery via recordQueueRequest.
+     * Never expose stop() as a lease close: a late screen disposal must not stop
+     * a newer request, account, or foreign native source.
+     */
+    override fun requestPlayback(card: VideoCard, resumePositionMs: Long?): DesktopPlaybackRequestLease {
+        check(!closed.get()) { "Playback controller is closed" }
+        val owner = Any()
+        openQueueWithRouteResume(listOf(card), 0, owner, resumePositionMs?.coerceAtLeast(0L))
+        return object : DesktopPlaybackRequestLease {
+            private var released = false
+            override val isCurrent: Boolean get() = !released && ownsQueue(owner)
+            override fun retry(): Boolean = isCurrent && retryQueueForOwner(owner)
+            override fun selectQuality(quality: Int): Boolean {
+                if (!isCurrent || current == null || state.value.opening || state.value.recovering) return false
+                switchQuality(quality)
+                return true
+            }
+            override fun selectAudioQuality(preferenceId: Int): Boolean {
+                if (!isCurrent || current == null || state.value.opening || state.value.recovering) return false
+                this@DesktopPlaybackController.selectAudioQuality(preferenceId)
+                return true
+            }
+            override fun close() {
+                if (released) return
+                released = true
+                stopQueueForOwner(owner)
+            }
+        }
+    }
+
+    fun open(card: VideoCard) { if (!closed.get()) requestPlayback(card) }
     fun open(bvid: String) = open(VideoCard(bvid, "", "", "", 0, 0))
 
     /** Root decides whether route effects are compatible. True only means this existing
@@ -219,7 +250,7 @@ class DesktopPlaybackController internal constructor(
 
     /** Only the immutable route request supplies millisecond resume; existing queue APIs are unchanged. */
     fun open(card: VideoCard, resumePositionMs: Long) {
-        if (!closed.get()) openQueueWithRouteResume(listOf(card), 0, null, resumePositionMs.coerceAtLeast(0L))
+        if (!closed.get()) requestPlayback(card, resumePositionMs)
     }
 
     fun openQueue(cards: List<VideoCard>, selectedIndex: Int = 0, owner: Any? = null,

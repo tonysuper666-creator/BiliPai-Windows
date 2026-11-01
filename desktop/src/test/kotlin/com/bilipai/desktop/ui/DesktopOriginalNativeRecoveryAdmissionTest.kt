@@ -9,6 +9,7 @@ import com.bilipai.desktop.plugins.DesktopPluginStore
 import com.bilipai.desktop.data.DesktopPlaybackAuthorizationReceipt
 import com.bilipai.desktop.player.*
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.swing.Swing
 import okhttp3.Call
@@ -83,6 +84,227 @@ class DesktopOriginalNativeRecoveryAdmissionTest {
             }
         }
         override fun close() { actor.close(); owner.close(); caller.cancel(); player.close() }
+    }
+
+    @OptIn(androidx.compose.ui.ExperimentalComposeUiApi::class)
+    @Test fun bufferingCompositionPairsRealListenerJobsAcrossPlayerReplacement() = runBlocking(Dispatchers.Swing) {
+        Fixture().use { first -> Fixture().use { second ->
+            val scope = CoroutineScope(SupervisorJob() + Dispatchers.Swing)
+            fun control(f: Fixture) = DesktopOriginalMpvSectionControl(f.player,
+                { f.owner.current()?.sourceVersion }, { f.entry },
+                { action -> f.owner.admitPlaybackDispatch(f.accepted, action) }, { false }, {}, {},
+                { _, _, _, _ -> }, scope, MutableStateFlow<Long?>(f.accepted.sourceVersion),
+                { action -> f.owner.admitPlaybackDispatch(f.accepted, action) })
+            val a = control(first); val b = control(second)
+            val chosen = androidx.compose.runtime.mutableStateOf(a)
+            val shown = androidx.compose.runtime.mutableStateOf(true)
+            @Suppress("UNCHECKED_CAST")
+            fun registrations(c: DesktopOriginalMpvSectionControl) = c.javaClass.getDeclaredField("registrations")
+                .apply { isAccessible = true }.get(c) as Map<Any, Job>
+            @Suppress("UNCHECKED_CAST")
+            fun update(f: Fixture, paused: Boolean) {
+                val state = MpvPlayer::class.java.getDeclaredField("mutableState").apply { isAccessible = true }
+                    .get(f.player) as MutableStateFlow<PlayerState>
+                state.value = state.value.copy(paused = paused, loading = true)
+            }
+            val errors = mutableListOf<Throwable>()
+            val scene = androidx.compose.ui.ImageComposeScene(80, 80, androidx.compose.ui.unit.Density(1f),
+                coroutineContext = scope.coroutineContext + CoroutineExceptionHandler { _, e -> errors += e }) {
+                androidx.compose.runtime.CompositionLocalProvider(com.android.purebilibili.core.ui.LocalSystemReduceMotion provides true) {
+                    if (shown.value) com.android.purebilibili.feature.video.ui.overlay.PlayerBufferingIndicator(
+                        chosen.value, tint = androidx.compose.ui.graphics.Color.White)
+                }
+            }
+            fun nodes(n: androidx.compose.ui.semantics.SemanticsNode): List<androidx.compose.ui.semantics.SemanticsNode> = listOf(n) + n.children.flatMap(::nodes)
+            fun loading() = scene.semanticsOwners.flatMap { nodes(it.unmergedRootSemanticsNode) }.any {
+                it.config.contains(androidx.compose.ui.semantics.SemanticsProperties.ContentDescription) &&
+                    it.config[androidx.compose.ui.semantics.SemanticsProperties.ContentDescription].contains("加载中") }
+            var time = 0L
+            suspend fun frame() { yield(); androidx.compose.runtime.snapshots.Snapshot.sendApplyNotifications(); scene.render(time).close(); time += 16_000_000; yield(); assertTrue(errors.isEmpty(), errors.toString()) }
+            suspend fun awaitCondition(check: () -> Boolean) { withTimeout(5000) { while (!check()) frame() }; frame() }
+            try {
+                awaitCondition { registrations(a).size == 1 }
+                val firstJob = registrations(a).values.single()
+                repeat(3) { frame() }; assertSame(firstJob, registrations(a).values.single())
+                update(first, false); awaitCondition { loading() }
+                update(first, true); awaitCondition { !loading() }
+                chosen.value = b; frame(); awaitCondition { registrations(b).size == 1 }
+                assertTrue(firstJob.isCancelled); assertTrue(registrations(a).isEmpty())
+                val secondJob = registrations(b).values.single()
+                update(second, false); awaitCondition { loading() }
+                second.entry = false; update(second, true); repeat(3) { frame() }
+                assertTrue(loading(), "retired owner cannot deliver a new UI state")
+                shown.value = false; frame(); awaitCondition { registrations(b).isEmpty() }
+                assertTrue(secondJob.isCancelled); assertFalse(loading())
+                repeat(3) { frame() }; assertTrue(registrations(a).isEmpty()); assertTrue(registrations(b).isEmpty())
+            } finally { scene.close(); scope.cancel(); scope.coroutineContext[Job]!!.join() }
+        } }
+    }
+
+    @Test fun sharedSessionUsesInstalledNativeSeekAndRejectsRetiredEntry() = runBlocking<Unit> {
+        Fixture().use { f ->
+            val scope = CoroutineScope(SupervisorJob() + Dispatchers.Swing)
+            val versions = MutableStateFlow<Long?>(f.accepted.sourceVersion)
+            val control = DesktopOriginalMpvSectionControl(f.player, { f.owner.current()?.sourceVersion }, { f.entry },
+                { action -> f.owner.admitPlaybackDispatch(f.accepted, action) }, { false }, {}, {},
+                { _, _, _, _ -> }, scope, versions, { action -> f.owner.admitPlaybackDispatch(f.accepted, action) })
+            try {
+                val session: DesktopPlaybackSession = control
+                val receipt = assertNotNull(session.seekToTracked(41_250))
+                assertEquals(f.accepted.sourceVersion, receipt.sourceVersion)
+                assertEquals(41_250, receipt.targetPositionMs)
+                assertTrue(receipt.operationId > 0)
+                assertEquals(f.player.state.value, session.playbackSnapshot())
+                f.entry = false
+                assertNull(session.seekToTracked(99_000))
+                assertFailsWith<CancellationException> { session.playbackSnapshot() }
+                assertFailsWith<CancellationException> { session.requestPlayback(DesktopPlaybackSessionRequest("BVnew")) }
+            } finally { scope.cancel() }
+        }
+    }
+
+    @Test fun sharedSessionRequestAndCloseRunOutsideNativeAdmissionAndKeepDecoderRootOwned() {
+        Fixture().use { f ->
+            val scope = CoroutineScope(SupervisorJob() + Dispatchers.Swing)
+            val caps = DesktopPlaybackCapabilities(true, false, true, false, true, false)
+            var requested: DesktopPlaybackSessionRequest? = null
+            var closed = false
+            val lease = object : DesktopPlaybackRequestLease {
+                override val isCurrent get() = !closed
+                override fun retry() = isCurrent
+                override fun selectQuality(quality: Int) = isCurrent
+                override fun selectAudioQuality(preferenceId: Int) = isCurrent
+                override fun close() { closed = true }
+            }
+            val control = DesktopOriginalMpvSectionControl(f.player, { f.owner.current()?.sourceVersion }, { f.entry },
+                { action -> f.owner.admitPlaybackDispatch(f.accepted, action) }, { false }, {}, {},
+                { _, _, _, _ -> }, scope, MutableStateFlow<Long?>(f.accepted.sourceVersion), { it(); true },
+                sessionRequest = { assertFalse(f.publication.held); requested = it; lease },
+                sessionCapabilities = { caps },
+                closeSession = { assertFalse(f.publication.held); closed = true })
+            try {
+                val session: DesktopPlaybackSession = control
+                val request = DesktopPlaybackSessionRequest("BVfixture", 9, 22, 27_750, false, false)
+                assertSame(lease, session.requestPlayback(request))
+                assertSame(request, requested)
+                assertEquals(caps, session.playbackCapabilities())
+                session.close()
+                assertFalse(lease.isCurrent)
+                // The session view does not dispose the root-owned decoder.
+                assertTrue(f.player.ownsSourceVersion(f.accepted.sourceVersion))
+            } finally { scope.cancel() }
+        }
+    }
+
+    @Test fun sharedRequestLeaseRejectsNewOriginalStoreTokenEvenForSameVideo() {
+        val store = com.android.purebilibili.feature.video.playback.session.PlaybackSessionStore()
+        val request = PlaybackRequest.create("BVfixture", 9, 22)
+        store.beginLoadRequest(request)
+        var owner = true
+        val calls = mutableListOf<String>()
+        val lease = DesktopOriginalPlaybackRequestLease({ owner }, { store.state.value },
+            { calls += "retry" }, { calls += "quality:$it" }, { calls += "audio:$it" }, { calls += "close" })
+        store.beginLoadRequest(request)
+        assertFalse(lease.isCurrent)
+        assertFalse(lease.retry()); assertFalse(lease.selectQuality(80)); assertFalse(lease.selectAudioQuality(30280))
+        lease.close()
+        assertTrue(calls.isEmpty())
+        owner = false
+        assertFalse(lease.isCurrent)
+    }
+
+    @Test fun sharedRequestLeaseRetainsOwnRetryAndQualityButRejectsAccountOwnerRetirement() {
+        val store = com.android.purebilibili.feature.video.playback.session.PlaybackSessionStore()
+        store.beginLoadRequest(PlaybackRequest.create("BVfixture", 9, 22))
+        var owner = true
+        val calls = mutableListOf<String>()
+        val lease = DesktopOriginalPlaybackRequestLease({ owner }, { store.state.value },
+            { calls += "retry"; store.beginLoadRequest(PlaybackRequest.create("BVfixture", 9, 22, force = true)) },
+            { calls += "quality:$it" }, { calls += "audio:$it" }, { calls += "close"; owner = false })
+        assertTrue(lease.retry()); assertTrue(lease.isCurrent)
+        assertTrue(lease.selectQuality(80)); assertTrue(lease.selectAudioQuality(30280))
+        assertEquals(listOf("retry", "quality:80", "audio:30280"), calls)
+        owner = false
+        assertFalse(lease.retry()); lease.close()
+        assertEquals(3, calls.size)
+    }
+
+    @Test fun upstreamPlayerStateObservesSameSessionAndRejectsRetiredMetadata() = runBlocking<Unit> {
+        Fixture().use { f ->
+            val scope = CoroutineScope(SupervisorJob() + Dispatchers.Swing)
+            val versions = MutableStateFlow<Long?>(f.accepted.sourceVersion)
+            val section = DesktopOriginalMpvSectionControl(f.player, { f.owner.current()?.sourceVersion }, { f.entry },
+                { action -> f.owner.admitPlaybackDispatch(f.accepted, action) }, { false }, {}, {},
+                { _, _, _, _ -> }, scope, versions, { it(); true })
+            val metadata = mutableListOf<String>()
+            val holder = DesktopOriginalMpvVideoPlayerState(section, scope, versions, { f.entry },
+                { action -> if (f.entry) { action(); true } else false },
+                { title, _, _ -> metadata += title })
+            val upstream: com.android.purebilibili.feature.video.state.VideoPlayerState = holder
+            try {
+                assertSame(section, upstream.playbackSession)
+                assertSame(section.state, upstream.playbackSession.playbackStates)
+                upstream.setApiDimension(1920, 1080, 90)
+                withTimeout(5_000) { upstream.isVerticalVideo.first { it } }
+                assertEquals(1080 to 1920, upstream.apiDimension.value)
+                upstream.updateMediaMetadata("owned", "artist", "cover")
+                f.actor.fail(-14)
+                withTimeout(5_000) { upstream.diagnosticEvents.first { it.isNotEmpty() } }
+                versions.value = null
+                withTimeout(5_000) { upstream.diagnosticEvents.first { it.isEmpty() } }
+                assertNull(upstream.videoInputFormat.value)
+                f.entry = false
+                assertFailsWith<CancellationException> { upstream.updateMediaMetadata("retired", "", "") }
+                assertFailsWith<CancellationException> { upstream.setPortraitFullscreen(true) }
+                assertEquals(listOf("owned"), metadata)
+                assertTrue(f.player.ownsSourceVersion(f.accepted.sourceVersion))
+            } finally { scope.cancel() }
+        }
+    }
+
+    @Test fun rawSharedSessionReusesSectionAndOriginalStoreWithoutClosingReplacementOrDecoder() {
+        Fixture().use { f ->
+            val scope = CoroutineScope(SupervisorJob() + Dispatchers.Swing)
+            val store = com.android.purebilibili.feature.video.playback.session.PlaybackSessionStore()
+            var lifetime = true
+            var closes = 0
+            var retries = 0
+            val requests = mutableListOf<DesktopPlaybackSessionRequest>()
+            val section = DesktopOriginalMpvSectionControl(f.player, { f.owner.current()?.sourceVersion }, { f.entry },
+                { action -> f.owner.admitPlaybackDispatch(f.accepted, action) }, { false }, {}, {},
+                { _, _, _, _ -> }, scope, MutableStateFlow<Long?>(f.accepted.sourceVersion), { it(); true },
+                sessionRequest = { request ->
+                    assertFalse(f.publication.held)
+                    requests += request
+                    store.beginLoadRequest(PlaybackRequest.create(request.bvid, request.aid, request.cid))
+                    DesktopOriginalPlaybackRequestLease({ lifetime }, { store.state.value },
+                        { retries++; store.beginLoadRequest(PlaybackRequest.create(request.bvid, request.aid, request.cid, force = true)) },
+                        { error("No quality operation requested") }, { error("No audio operation requested") },
+                        { closes++; lifetime = false })
+                }, closeSession = { error("Shared request must not close the entire session interface") })
+            val first = com.android.purebilibili.core.player.SharedPlaybackSession(section)
+            val second = com.android.purebilibili.core.player.SharedPlaybackSession(section)
+            try {
+                assertSame(section, first.player)
+                assertSame(first.player, second.player)
+                first.load(DesktopPlaybackSessionRequest("BVfixture", 9, 22, 27_750, false, false))
+                assertEquals(f.player.state.value, first.snapshot())
+                assertTrue(first.recover())
+                assertEquals(1, retries)
+                assertEquals(1, requests.size) // recovery uses the captured lease, not another load requester
+                assertTrue(f.player.ownsSourceVersion(f.accepted.sourceVersion))
+                second.load(DesktopPlaybackSessionRequest("BVnext", 10, 23))
+                assertFailsWith<CancellationException> { first.pause() }
+                assertFailsWith<CancellationException> { first.recover() }
+                first.close()
+                assertEquals(0, closes)
+                assertEquals(f.player.state.value, second.snapshot())
+                second.close(); second.close()
+                assertEquals(1, closes)
+                assertTrue(f.player.ownsSourceVersion(f.accepted.sourceVersion))
+                assertFailsWith<IllegalStateException> { second.load(DesktopPlaybackSessionRequest("BVclosed")) }
+            } finally { first.close(); second.close(); scope.cancel() }
+        }
     }
 
     @Test fun sameActualAttemptPublishesOneAacReplacementPreservingSourceControlsAndReceipt() {

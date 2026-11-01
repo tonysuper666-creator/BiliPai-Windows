@@ -1,0 +1,10 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/FullscreenDoubleTapPolicy.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/FullscreenDoubleTapPolicy.kt
+@@ -1,6 +1,6 @@
+ package com.android.purebilibili.feature.video.ui.overlay
+ 
+-import androidx.media3.common.Player
++import com.bilipai.desktop.ui.DesktopOriginalMpvOverlayControl as Player
+ import kotlin.math.abs
+ 
+ internal enum class FullscreenDoubleTapAction {

@@ -105,20 +105,34 @@ private val LocalDesktopWindowsVideoInteractionWindow = staticCompositionLocalOf
 @Composable internal fun DesktopWindowsVideoInteractionModalSheet(
     onDismissRequest: () -> Unit,
     modifier: Modifier = Modifier,
-    sheetState: SheetState,
+    sheetState: SheetState = androidx.compose.material3.rememberModalBottomSheetState(skipPartiallyExpanded = true),
     presentationOverride: AppModalPresentation? = null,
     sheetSurfaceModifier: Modifier = Modifier,
     dragHandle: @Composable (() -> Unit)? = { Spacer(Modifier.height(24.dp)) },
+    visible: Boolean = true,
+    onDismissStarted: () -> Unit = {},
     content: @Composable ColumnScope.() -> Unit,
 ) {
-    if (LocalDesktopWindowsVideoInteractionWindow.current)
-        Column(modifier.fillMaxSize().then(sheetSurfaceModifier)) {
+    if (LocalDesktopWindowsVideoInteractionWindow.current) {
+        var retained by remember { mutableStateOf(visible) }
+        val latestDismiss by rememberUpdatedState(onDismissRequest)
+        val latestStarted by rememberUpdatedState(onDismissStarted)
+        LaunchedEffect(visible) {
+            if (visible) retained = true
+            else if (retained) {
+                latestStarted()
+                retained = false
+                latestDismiss()
+            }
+        }
+        if (retained) Column(modifier.fillMaxSize().then(sheetSurfaceModifier)) {
             dragHandle?.invoke()
             content()
         }
-    else AppModalBottomSheet(onDismissRequest = onDismissRequest, modifier = modifier,
+    } else AppModalBottomSheet(onDismissRequest = onDismissRequest, modifier = modifier,
         sheetState = sheetState, presentationOverride = presentationOverride,
-        sheetSurfaceModifier = sheetSurfaceModifier, dragHandle = dragHandle, content = content)
+        sheetSurfaceModifier = sheetSurfaceModifier, dragHandle = dragHandle,
+        visible = visible, onDismissStarted = onDismissStarted, content = content)
 }
 
 /** Complete original components use the same whole VM, settings and retained

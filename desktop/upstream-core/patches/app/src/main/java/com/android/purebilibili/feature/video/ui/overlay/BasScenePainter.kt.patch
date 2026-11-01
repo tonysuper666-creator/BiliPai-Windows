@@ -1,0 +1,128 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/BasScenePainter.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/BasScenePainter.kt
+@@ -1,25 +1,32 @@
+-package com.android.purebilibili.feature.video.ui.overlay
+-
+-import android.graphics.Canvas
+-import android.graphics.Color
+-import android.graphics.Matrix
+-import android.graphics.Paint
+-import android.graphics.Path
+-import android.graphics.RectF
+-import android.graphics.Typeface
+-import android.text.Layout
+-import android.text.StaticLayout
+-import android.text.TextPaint
+-import androidx.core.graphics.PathParser
++package com.bilipai.desktop.danmaku
++
++import com.bilipai.desktop.danmaku.DesktopBasCanvas as Canvas
++import com.bilipai.desktop.danmaku.DesktopBasColor as Color
++import com.bilipai.desktop.danmaku.DesktopBasMatrix as Matrix
++import com.bilipai.desktop.danmaku.DesktopBasPaint as Paint
++import com.bilipai.desktop.danmaku.DesktopBasPath as Path
++import com.bilipai.desktop.danmaku.DesktopBasRect as RectF
++import com.bilipai.desktop.danmaku.DesktopBasTypeface as Typeface
++import com.bilipai.desktop.danmaku.DesktopBasLayout as Layout
++import com.bilipai.desktop.danmaku.DesktopBasStaticLayout as StaticLayout
++import com.bilipai.desktop.danmaku.DesktopBasTextPaint as TextPaint
++import com.bilipai.desktop.danmaku.DesktopBasPathParser as PathParser
+ import com.android.purebilibili.danmaku.parser.bas.*
+ import kotlin.math.max
+ import kotlin.math.min
+ import kotlin.math.tan
+ 
+ /** Native retained scene: geometry and text layouts survive frame updates and seeks. */
+-internal class BasScenePainter(val item: BasDanmaku) : BasMeasurer {
+-    private val timeline = BasTimeline(item.program)
+-    private val nodes = timeline.states.map { Node(it) }
++internal class DesktopBasScenePainter(val item: BasDanmaku, private val budget: DesktopBasRenderBudget) : BasMeasurer, AutoCloseable {
++    private var closed = false
++    private val timeline = BasTimeline(budget.validateScene(item))
++    private val reservation = budget.reserveScene(item)
++    private val nodes = buildNodes()
++    private fun buildNodes(): List<Node> {
++        val result = ArrayList<Node>()
++        try { for (state in timeline.states) result.add(Node(state)); return result }
++        catch (error: Exception) { for (node in result) node.close(); budget.releaseScene(item); throw error }
++    }
+     private val nodeByState = java.util.IdentityHashMap<BasElementState, Node>().apply {
+         for (node in nodes) put(node.state, node)
+     }
+@@ -76,6 +83,7 @@
+         var inheritedAlpha = 0f
+         var hittable = false
+         init { path?.computeBounds(bounds, true) }
++        fun close() { layout?.close(); layout = null; textPaint.close(); path?.close() }
+     }
+ 
+     override fun measure(state: BasElementState, containerWidthPx: Float, containerHeightPx: Float) {
+@@ -103,15 +111,14 @@
+             return
+         }
+         val size = max(0.01f, state.fontSize * userScale * item.fontScale)
++        budget.text(state, size)
+         if (node.lastContent != state.content || node.lastSize != size || node.lastWeight != userWeight) {
+             val paint = node.textPaint
+             paint.textSize = size
+             val bold = attrs.number("bold", if (state.element.type == BasElementType.TEXT) 1.0 else 0.0) != 0.0
+             val family = attrs.text("fontFamily", "sans-serif")
+             val base = Typeface.create(family, if (bold) Typeface.BOLD else Typeface.NORMAL)
+-            paint.typeface = if (android.os.Build.VERSION.SDK_INT >= 28)
+-                Typeface.create(base, (userWeight * 100).coerceIn(if (bold) 700 else 100, 900), false)
+-            else Typeface.create(base, if (bold || userWeight >= 6) Typeface.BOLD else Typeface.NORMAL)
++            paint.typeface = Typeface.create(base, (userWeight * 100).coerceIn(if (bold) 700 else 100, 900), false)
+             var width = 0f
+             var start = 0
+             for (i in 0..state.content.length) {
+@@ -120,6 +127,7 @@
+                     start = i + 1
+                 }
+             }
++            node.layout?.close(); node.layout = null
+             node.layout = StaticLayout.Builder.obtain(state.content, 0, state.content.length, paint,
+                 max(1, kotlin.math.ceil(width.toDouble()).toInt()))
+                 .setAlignment(Layout.Alignment.ALIGN_NORMAL).setIncludePad(false).build()
+@@ -165,17 +173,17 @@
+         }
+         val parent = nodes.getOrNull(state.parentIndex)
+         if (parent != null) transform(state.parentIndex, centerX, centerY)
+-        android.opengl.Matrix.setIdentityM(node.local, 0)
+-        android.opengl.Matrix.translateM(node.local, 0, state.x, state.y, 0f)
+-        if (state.rotateX != 0f) android.opengl.Matrix.rotateM(node.local, 0, state.rotateX, 1f, 0f, 0f)
+-        if (state.rotateY != 0f) android.opengl.Matrix.rotateM(node.local, 0, state.rotateY, 0f, 1f, 0f)
+-        if (state.rotateZ != 0f) android.opengl.Matrix.rotateM(node.local, 0, state.rotateZ, 0f, 0f, 1f)
+-        if (state.scale != 1f) android.opengl.Matrix.scaleM(node.local, 0, state.scale, state.scale, state.scale)
++        DesktopBasMatrix4.setIdentityM(node.local, 0)
++        DesktopBasMatrix4.translateM(node.local, 0, state.x, state.y, 0f)
++        if (state.rotateX != 0f) DesktopBasMatrix4.rotateM(node.local, 0, state.rotateX, 1f, 0f, 0f)
++        if (state.rotateY != 0f) DesktopBasMatrix4.rotateM(node.local, 0, state.rotateY, 0f, 1f, 0f)
++        if (state.rotateZ != 0f) DesktopBasMatrix4.rotateM(node.local, 0, state.rotateZ, 0f, 0f, 1f)
++        if (state.scale != 1f) DesktopBasMatrix4.scaleM(node.local, 0, state.scale, state.scale, state.scale)
+         val attrs = state.element.attributes
+-        android.opengl.Matrix.translateM(node.local, 0,
++        DesktopBasMatrix4.translateM(node.local, 0,
+             -state.width * attrs.number("anchorX").toFloat(),
+             -state.height * attrs.number("anchorY").toFloat(), 0f)
+-        if (parent != null) android.opengl.Matrix.multiplyMM(node.world, 0, parent.world, 0, node.local, 0)
++        if (parent != null) DesktopBasMatrix4.multiplyMM(node.world, 0, parent.world, 0, node.local, 0)
+         else System.arraycopy(node.local, 0, node.world, 0, 16)
+         val m = node.world
+         val d = perspective
+@@ -189,6 +197,7 @@
+         projection[7] = -m[6] / d
+         projection[8] = 1f - m[14] / d
+         node.screen.setValues(projection)
++        budget.projection(state, node.screen)
+         node.inheritedAlpha = if (!state.visible || (parent != null && !parent.state.visible)) 0f
+             else state.alpha * (parent?.inheritedAlpha ?: opacity)
+         node.hittable = state.element.type == BasElementType.BUTTON && state.element.target != null &&
+@@ -274,4 +283,8 @@
+ 
+     private fun color(rgb: Int, alpha: Float): Int =
+         (rgb and 0xFFFFFF) or ((alpha.coerceIn(0f, 1f) * 255f + 0.5f).toInt() shl 24)
++
++    override fun close() {
++        if (!closed) { closed = true; for (node in nodes) node.close(); budget.releaseScene(item) }
++    }
+ }

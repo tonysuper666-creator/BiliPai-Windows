@@ -37,9 +37,19 @@ class DesktopOriginalVideoComposerCommentsTest {
         val scope=CoroutineScope(SupervisorJob()+Dispatchers.Unconfined+CoroutineExceptionHandler { _,e -> failures+=e })
         private fun owned()=account && scope.isActive
         private fun commit(action:()->Unit):Boolean=synchronized(gate) { if (owned()) {action();true} else false }
-        val requests=object:DesktopVideoCommentRequests {
+        private val mobileFixture = com.bilipai.desktop.player.DesktopTypedCommentFixture()
+        val requests = object : DesktopVideoCommentRequests {
             override fun isOwned()=owned()
             override fun currentMid()=111L
+            override suspend fun getMobileSortedSubCommentsForSubject(oid:Long,type:Int,rootId:Long,mode:Int,paginationOffset:String?,targetReplyId:Long,supplementLocations:Boolean):Result<com.android.purebilibili.data.model.response.ReplyData> {
+                mobileFixture.sub(oid,type,rootId,mode,paginationOffset,targetReplyId,supplementLocations)
+                return Result.success(ReplyData())
+            }
+            override suspend fun getMobileCommentsForSubject(oid:Long,type:Int,page:Int,ps:Int,mode:Int,continuation:com.android.purebilibili.data.model.response.CommentMainListContinuation?,fallbackOnMissingLocation:Boolean):Result<com.android.purebilibili.data.model.response.ReplyData> = mobileFixture.main(oid,type,page,mode,continuation) {
+                val paginationOffset = continuation?.offset // Legacy call observation only; the complete token is checked and returned by mobileFixture.
+
+                Result.success(ReplyData(replies=emptyList(),cursor=ReplyCursor(isEnd=true)))
+            }
             override suspend fun getCommentsForSubject(oid:Long,type:Int,page:Int,ps:Int,mode:Int,paginationOffset:String?,fallbackOnMissingLocation:Boolean)=Result.success(ReplyData(replies=emptyList(),cursor=ReplyCursor(isEnd=true)))
             override suspend fun getSortedSubCommentsForSubject(oid:Long,type:Int,rootId:Long,mode:Int,paginationOffset:String?,targetReplyId:Long)=Result.success(ReplyData())
             override suspend fun getDialogCommentsForSubject(oid:Long,type:Int,rootId:Long,dialogId:Long,page:Int,paginationOffset:String?)=Result.success(ReplyData())

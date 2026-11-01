@@ -1,0 +1,28 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/video/ui/components/CommentAvatarPush.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/video/ui/components/CommentAvatarPush.kt
+@@ -11,12 +11,12 @@
+ import androidx.compose.ui.draw.drawBehind
+ import androidx.compose.ui.geometry.Offset
+ import androidx.compose.ui.geometry.Size
+-import androidx.compose.ui.platform.LocalContext
++import com.bilipai.desktop.ui.LocalDesktopCommentBindings
+ import androidx.compose.ui.unit.Dp
+ import androidx.compose.ui.unit.IntOffset
+ import androidx.compose.ui.unit.dp
+ import androidx.lifecycle.compose.collectAsStateWithLifecycle
+-import com.android.purebilibili.core.store.SettingsManager
++import com.android.purebilibili.core.store.DesktopOriginalReplySettings
+ import com.android.purebilibili.data.model.response.ReplyMember
+ 
+ /**
+@@ -137,8 +137,8 @@
+ 
+ @Composable
+ internal fun rememberCommentAvatarPushEnabled(): Boolean {
+-    val context = LocalContext.current
+-    val enabled by remember(context) { SettingsManager.getCommentAvatarPushEnabled(context) }
++    val context = LocalDesktopCommentBindings.current.context
++    val enabled by remember(context) { DesktopOriginalReplySettings.getCommentAvatarPushEnabled(context) }
+         .collectAsStateWithLifecycle(initialValue = false)
+     return enabled
+ }

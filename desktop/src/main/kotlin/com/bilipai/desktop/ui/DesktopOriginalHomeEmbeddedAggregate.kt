@@ -90,12 +90,13 @@ internal class DesktopOriginalHomeEmbeddedAggregate private constructor(
         }
     }
     @Composable override fun HomeBangumiTabPage(contentPadding: PaddingValues, onBangumiClick: (Long) -> Unit,
-        onBangumiEpisodeClick: (Long, Long) -> Unit, scrollToTopRequestId: Int) {
+        onBangumiEpisodeClick: (Long, Long) -> Unit, onPlayFollow: (Long) -> Unit, scrollToTopRequestId: Int) {
         if (!lifetime.owns()) return
         val home = home()
         if (lifetime.owns()) DesktopOriginalHomeBangumiContent(bangumiEnvironment, home, bangumi, contentPadding,
             { id -> lifetime.commit { onBangumiClick(id) } },
-            { season, episode -> lifetime.commit { onBangumiEpisodeClick(season, episode) } }, scrollToTopRequestId)
+            { season, episode -> lifetime.commit { onBangumiEpisodeClick(season, episode) } },
+            { season -> lifetime.commit { onPlayFollow(season) } }, scrollToTopRequestId)
     }
     override fun close() {
         lifetime.close()
@@ -154,13 +155,27 @@ internal class DesktopOriginalHomeEmbeddedAggregate private constructor(
                             throw CancellationException("Bangumi account owner retired")
                         mid
                     })
-                val bangumiEnvironment = DesktopBangumiHubEnvironment(bangumiRepository, lifetime.scope, {
-                    var loggedIn = false
-                    if (!lifetime.commit { loggedIn = repository.account.value?.mid?.let { it > 0L } == true })
-                        throw CancellationException("Bangumi account owner retired")
-                    loggedIn
-                }, lifetime::owns, lifetime::commit)
-                val bangumi = BangumiHubViewModel(bangumiEnvironment)
+                var capturedBangumi: DesktopBangumiHubEnvironment? = null
+                requests.withMountedPublication {
+                    lifetime.commit {
+                        val bangumiOwner = repository.upstreamOwner(com.bilipai.desktop.data.DesktopUpstreamPurpose.Main,
+                            { lifetime.owns() && requests.isMountedSourceCurrent() }, gate.epoch)
+                        val bangumiIdentities = com.bilipai.desktop.data.DesktopUpstreamCalls.withOwner(bangumiOwner) {
+                            com.bilipai.desktop.data.DesktopUpstreamCalls.accountIdentity("BangumiHubViewModel")
+                        }
+                        capturedBangumi = DesktopBangumiHubEnvironment(bangumiRepository, lifetime.scope, {
+                            var loggedIn = false
+                            if (!lifetime.commit { loggedIn = repository.account.value?.mid?.let { it > 0L } == true })
+                                throw CancellationException("Bangumi account owner retired")
+                            loggedIn
+                        }, lifetime::owns, lifetime::commit, bangumiIdentities)
+                    }
+                }
+                val parentBangumiEnvironment = capturedBangumi
+                    ?: throw CancellationException("Bangumi entry retired before identity capture")
+                val bangumiInstance = DesktopBangumiHubInstance(parentBangumiEnvironment)
+                val bangumiEnvironment = bangumiInstance.environment
+                val bangumi = bangumiInstance.viewModel
                 val live = DesktopOriginalLiveListBinding(local, object : DesktopLiveListPlatform {
                     override fun isCurrent() = lifetime.owns()
                     override suspend fun saveCover(url: String, title: String) = images.saveImage(url)

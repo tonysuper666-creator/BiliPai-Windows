@@ -160,12 +160,9 @@ class DanmakuScheduler(comments: List<DanmakuComment>, settings: DanmakuSettings
                 if (fixed) occupants.isEmpty() else occupants.all { previous ->
                     if (previous.layer==DANMAKU_LAYER_TOP || previous.layer==DANMAKU_LAYER_BOTTOM ||
                         (previous.layer==DANMAKU_LAYER_REVERSE) != (layer==DANMAKU_LAYER_REVERSE)) false else {
-                        val age = comment.timeSeconds - previous.comment.timeSeconds
-                        val oldSpeed = (width + previous.width) / previous.duration
-                        val newSpeed = (width + textWidth) / duration
-                        val gap = oldSpeed * age - previous.width
-                        val catchUpDistance = (newSpeed - oldSpeed).coerceAtLeast(0.0) * (previous.duration - age)
-                        gap >= desktopOriginalDanmakuItemMargin(config) + catchUpDistance
+                        desktopDanmakuLineAdmits(width, previous.width, textWidth,
+                            comment.timeSeconds - previous.comment.timeSeconds,
+                            previous.duration, duration, desktopOriginalDanmakuItemMargin(config))
                     }
                 }
             }

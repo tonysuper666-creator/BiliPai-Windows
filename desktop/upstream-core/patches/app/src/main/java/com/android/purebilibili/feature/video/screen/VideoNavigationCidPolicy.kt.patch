@@ -1,0 +1,64 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/video/screen/VideoNavigationCidPolicy.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/video/screen/VideoNavigationCidPolicy.kt
+@@ -1,6 +1,5 @@
+ package com.android.purebilibili.feature.video.screen
+ 
+-import android.os.Bundle
+ import com.android.purebilibili.data.model.response.RelatedVideo
+ import com.android.purebilibili.data.model.response.UgcSeason
+ 
+@@ -20,43 +19,43 @@
+  */
+ internal const val VIDEO_NAV_IS_VERTICAL_KEY = "video_nav_is_vertical"
+ 
+-internal fun resolveVideoNavigationStartInFullscreen(options: Bundle?): Boolean =
+-    options?.getBoolean(VIDEO_NAV_START_FULLSCREEN_KEY, false) == true
++internal fun resolveVideoNavigationStartInFullscreen(options: Map<String, Any>?): Boolean =
++    (options?.get(VIDEO_NAV_START_FULLSCREEN_KEY) as? Boolean) == true
+ 
+ /** 读取跳转时携带的横竖屏结论；未携带返回 null，由新详情页自行判断。 */
+-internal fun resolveVideoNavigationIsVertical(options: Bundle?): Boolean? =
++internal fun resolveVideoNavigationIsVertical(options: Map<String, Any>?): Boolean? =
+     options?.let {
+         if (it.containsKey(VIDEO_NAV_IS_VERTICAL_KEY)) {
+-            it.getBoolean(VIDEO_NAV_IS_VERTICAL_KEY)
++            (it[VIDEO_NAV_IS_VERTICAL_KEY] as? Boolean) ?: false
+         } else {
+             null
+         }
+     }
+ 
+ internal fun buildVideoNavigationOptions(
+-    base: Bundle? = null,
++    base: Map<String, Any>? = null,
+     targetCid: Long = 0L,
+     coverUrl: String? = null,
+     startInFullscreen: Boolean = false,
+     isVertical: Boolean? = null,
+-): Bundle? {
++): Map<String, Any>? {
+     val normalizedCover = coverUrl?.trim().orEmpty()
+     if (targetCid <= 0L && normalizedCover.isEmpty() && !startInFullscreen && isVertical == null) return base
+-    return Bundle().apply {
++    return mutableMapOf<String, Any>().apply {
+         if (base != null) {
+             putAll(base)
+         }
+         if (targetCid > 0L) {
+-            putLong(VIDEO_NAV_TARGET_CID_KEY, targetCid)
++            put(VIDEO_NAV_TARGET_CID_KEY, targetCid)
+         }
+         if (normalizedCover.isNotEmpty()) {
+-            putString(VIDEO_NAV_COVER_URL_KEY, normalizedCover)
++            put(VIDEO_NAV_COVER_URL_KEY, normalizedCover)
+         }
+         if (startInFullscreen) {
+-            putBoolean(VIDEO_NAV_START_FULLSCREEN_KEY, true)
++            put(VIDEO_NAV_START_FULLSCREEN_KEY, true)
+         }
+         if (isVertical != null) {
+-            putBoolean(VIDEO_NAV_IS_VERTICAL_KEY, isVertical)
++            put(VIDEO_NAV_IS_VERTICAL_KEY, isVertical)
+         }
+     }
+ }

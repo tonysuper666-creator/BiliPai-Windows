@@ -1,0 +1,111 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoComposerDraftState.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoComposerDraftState.kt
+@@ -1,6 +1,6 @@
+ package com.android.purebilibili.feature.video.viewmodel
+ 
+-import android.net.Uri
++
+ 
+ data class DanmakuComposerDraft(
+     val text: String = "",
+@@ -9,16 +9,21 @@
+ 
+ data class CommentComposerDraft(
+     val text: String = "",
+-    val imageUris: List<Uri> = emptyList(),
+-    val syncToDynamic: Boolean = false
++    val imageUris: List<String> = emptyList(),
++    val syncToDynamic: Boolean = false,
++    val selectionStart: Int = -1,
++    val selectionEnd: Int = -1
+ )
+ 
+ data class CommentComposerDraftState(
+     val sessionId: Long = 0L,
+     val completedSessionId: Long = -1L,
+     val drafts: Map<Long, CommentComposerDraft> = emptyMap(),
+-    val revision: Long = 0L
+-) {
++    val revision: Long = 0L,
++    val desktopSelections: Map<Long, DesktopCommentDraftSelection> = emptyMap()
++) : Map<Long, CommentComposerDraft> by (drafts.mapValues { (key, payload) ->
++    desktopSelections[key]?.let { payload.copy(selectionStart = it.start, selectionEnd = it.end) } ?: payload
++}) {
+     internal fun open(): CommentComposerDraftState = copy(sessionId = sessionId + 1L)
+ 
+     internal fun reset(): CommentComposerDraftState = copy(
+@@ -70,3 +75,74 @@
+ }
+ 
+ internal fun commentComposerDraftKey(replyRpid: Long?): Long = replyRpid ?: 0L
++
++// Desktop selection metadata is separate from the upstream submission payload identity.
++data class DesktopCommentDraftSelection(val start: Int, val end: Int)
++
++internal fun CommentComposerDraftState.updateDesktopDraft(
++    sessionId: Long,
++    replyRpid: Long?,
++    draft: CommentComposerDraft,
++): CommentComposerDraftState {
++    if (sessionId != this.sessionId || sessionId <= completedSessionId) return this
++    val key = commentComposerDraftKey(replyRpid)
++    val previous = drafts[key]
++    val previousSelection = desktopSelections[key] ?: previous?.let {
++        DesktopCommentDraftSelection(it.selectionStart, it.selectionEnd)
++    }
++    val selection = DesktopCommentDraftSelection(draft.selectionStart, draft.selectionEnd)
++    val selectionOnly = previous != null && previous.text == draft.text &&
++        previous.imageUris == draft.imageUris && previous.syncToDynamic == draft.syncToDynamic &&
++        previousSelection != selection
++    val updated = if (selectionOnly) this else update(
++        sessionId, replyRpid,
++        CommentComposerDraft(draft.text, draft.imageUris.toList(), draft.syncToDynamic),
++    )
++    return updated.copy(desktopSelections = if (key in updated.drafts) {
++        updated.desktopSelections + (key to selection)
++    } else updated.desktopSelections - key)
++}
++
++internal fun CommentComposerDraftState.completeDesktopDraft(
++    sessionId: Long,
++    replyRpid: Long?,
++    sentPayload: CommentComposerDraft?,
++): CommentComposerDraftState {
++    if (drafts[commentComposerDraftKey(replyRpid)] !== sentPayload) return this
++    val updated = complete(sessionId, replyRpid, sentPayload)
++    return updated.copy(desktopSelections = updated.desktopSelections.filterKeys { it in updated.drafts })
++}
++
++/** Recorded UTF-16 bounds are clamped independently. Preserve start/end direction
++ * so Shift selection and keyboard extension keep the same anchor after reopening. -1 means the draft never
++ * recorded a selection, and seeding then falls back to end-of-text. */
++internal fun resolveCommentDraftSelection(
++    requestedStart: Int,
++    requestedEnd: Int,
++    previous: CommentComposerDraft?,
++    textLength: Int
++): Pair<Int, Int> {
++    fun bound(requested: Int, previousValue: Int): Int = when {
++        requested >= 0 -> requested.coerceIn(0, textLength)
++        previousValue >= 0 -> previousValue.coerceIn(0, textLength)
++        else -> -1
++    }
++    val start = bound(requestedStart, previous?.selectionStart ?: -1)
++    val end = bound(requestedEnd, previous?.selectionEnd ?: -1)
++    return if (start < 0 || end < 0) -1 to -1 else start to end
++}
++
++/** Selection movement is presentation state, not a new comment payload. Retain the
++ * original content/image/sync comparison when deciding whether a sent draft clears. */
++internal fun sameCommentDraftSubmissionContent(
++    current: CommentComposerDraft?, submitted: CommentComposerDraft?
++): Boolean = current?.copy(selectionStart = -1, selectionEnd = -1) ==
++    submitted?.copy(selectionStart = -1, selectionEnd = -1)
++
++
++// Retained comment-only consumers still use Map-style updates until their full migration.
++internal operator fun CommentComposerDraftState.plus(entry: Pair<Long, CommentComposerDraft>): CommentComposerDraftState =
++    updateDesktopDraft(sessionId, entry.first, entry.second)
++
++internal operator fun CommentComposerDraftState.minus(key: Long): CommentComposerDraftState =
++    copy(drafts = drafts - key, desktopSelections = desktopSelections - key, revision = revision + 1L)

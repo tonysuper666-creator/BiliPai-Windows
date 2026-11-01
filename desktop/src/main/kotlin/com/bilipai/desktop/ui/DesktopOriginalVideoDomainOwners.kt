@@ -59,6 +59,10 @@ internal class DesktopOriginalVideoDomainOwners private constructor(
         }
         override suspend fun getCommentsForSubject(oid: Long, type: Int, page: Int, ps: Int, mode: Int, paginationOffset: String?, fallbackOnMissingLocation: Boolean) =
             request { root.requests.getCommentsForSubject(oid, type, page, ps, mode, paginationOffset, fallbackOnMissingLocation) }
+        override suspend fun getMobileCommentsForSubject(oid:Long,type:Int,page:Int,ps:Int,mode:Int,continuation:com.android.purebilibili.data.model.response.CommentMainListContinuation?,fallbackOnMissingLocation:Boolean)=
+            request { root.requests.getMobileCommentsForSubject(oid,type,page,ps,mode,continuation,fallbackOnMissingLocation) }
+        override suspend fun getMobileSortedSubCommentsForSubject(oid:Long,type:Int,rootId:Long,mode:Int,paginationOffset:String?,targetReplyId:Long,supplementLocations:Boolean)=
+            request { root.requests.getMobileSortedSubCommentsForSubject(oid,type,rootId,mode,paginationOffset,targetReplyId,supplementLocations) }
         override suspend fun getSortedSubCommentsForSubject(oid: Long, type: Int, rootId: Long, mode: Int, paginationOffset: String?, targetReplyId: Long) =
             request { root.requests.getSortedSubCommentsForSubject(oid, type, rootId, mode, paginationOffset, targetReplyId) }
         override suspend fun getDialogCommentsForSubject(oid: Long, type: Int, rootId: Long, dialogId: Long, page: Int, paginationOffset: String?) =

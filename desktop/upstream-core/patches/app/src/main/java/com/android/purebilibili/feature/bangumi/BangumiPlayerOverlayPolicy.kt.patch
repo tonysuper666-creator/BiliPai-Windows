@@ -1,0 +1,10 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiPlayerOverlayPolicy.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiPlayerOverlayPolicy.kt
+@@ -1,6 +1,6 @@
+ package com.android.purebilibili.feature.bangumi
+ 
+-import androidx.media3.common.Player
++import com.bilipai.desktop.ui.DesktopOriginalMpvOverlayControl as Player
+ import com.android.purebilibili.data.model.response.BangumiEpisode
+ import com.android.purebilibili.data.model.response.BangumiVideoInfo
+ import com.android.purebilibili.data.model.response.Page

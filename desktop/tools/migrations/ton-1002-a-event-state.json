@@ -1,0 +1,57 @@
+{
+  "schema": "bilipai-video-migration-v1",
+  "id": "ton-1002-a-event-state",
+  "upstream": {
+    "tag": "v0.5.0",
+    "commit": "390044f3ebd72197d816416458597eb9834c7ab2"
+  },
+  "files": [
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailPlaybackSessionEffects.kt",
+      "sha256LF": "1770adba7ab7ec94acf1a69d6cf5b3ce769f7481e57b63864b6019e0e0f32877",
+      "retire": [
+        "original-video-detail-holder-full/com/android/purebilibili/feature/video/screen/VideoDetailPlaybackSessionEffects.kt"
+      ],
+      "edits": [
+        {
+          "before": "import android.content.Context\n",
+          "after": "import com.bilipai.desktop.ui.DesktopOriginalPlayerSettingsContext as Context\n"
+        },
+        {
+          "before": "import com.android.purebilibili.feature.video.danmaku.DanmakuManager\nimport com.android.purebilibili.feature.video.danmaku.rememberDanmakuManager\n",
+          "after": "import com.bilipai.desktop.ui.DesktopOriginalPortraitDanmakuPort as DanmakuManager\nimport com.bilipai.desktop.ui.LocalDesktopOriginalVideoHolderPlatform\n"
+        },
+        {
+          "before": "    val danmakuManager = rememberDanmakuManager(playbackIdentity)\n",
+          "after": "    val danmakuManager = LocalDesktopOriginalVideoHolderPlatform.current.danmaku\n"
+        },
+        {
+          "before": ") {\n    LaunchedEffect(viewModel, state, \"resume-identity\")",
+          "after": ") {\n    val platform = LocalDesktopOriginalVideoHolderPlatform.current\n    LaunchedEffect(viewModel, state, \"resume-identity\")"
+        },
+        {
+          "before": "                state.resumeMessage = message\n                return@collect\n",
+          "after": "                state.resumeMessage = message\n                // Transitional desktop host: preserve the existing popup until the\n                // dedicated PlaybackResumeFeedback provider/section migrates together.\n                state.popupMessage = message\n                delay(2_000)\n                state.popupMessage = null\n                return@collect\n"
+        },
+        {
+          "before": "                isVipGradualColor = danmakuData.isVipGradualColor,\n",
+          "after": ""
+        },
+        {
+          "before": "LaunchedEffect(viewModel, context.applicationContext)",
+          "after": "LaunchedEffect(viewModel, context)"
+        },
+        {
+          "before": "com.android.purebilibili.core.util.AnalyticsHelper.logScreenView(\"VideoDetailScreen\")",
+          "after": "platform.logScreenView(\"VideoDetailScreen\")"
+        }
+      ]
+    }
+  ],
+  "pending": [
+    "A2: migrate PlaybackResumeFeedback.kt with the actual holder CompositionLocal provider and VideoPlayerSection host; remove transitional popup only in that same batch.",
+    "A3: pass VIP gradual-color through the existing real danmaku event/rendering port; current four-parameter port retains its previous behavior.",
+    "D: VideoPlaybackViewModel still uses its legacy producer. New upstream resume-notice emission is not delivered by A1.",
+    "E: aspect ratio belongs to TON-1056; BgmDetailScreen belongs to TON-1004. Neither is in this recipe."
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "schema": "bilipai-video-migration-v1",
+  "id": "ton-1002-video-ui6-independent-ui",
+  "upstream": {
+    "tag": "v0.5.0",
+    "commit": "383be1d47ff1b46c8c793e4c78e28bcbf715b331"
+  },
+  "desktopBaseCommit": "a20e1794a0441b457f91bbd48c39f5f4e3c2d22c",
+  "files": [
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/GlassComponents.kt",
+      "sha256LF": "f80d9d45e5c6c38f0d77a20f3ddab63d7f8c4bc0f1781cabe9805eac3052681c"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/LandscapeUpInfo.kt",
+      "sha256LF": "11fe20280734d3f271c6aae1649fba1559d669983c4778837d48ebb3a046df31"
+    }
+  ],
+  "pending": [
+    "Export-only: neither source has an existing desktop consumer or generated copy at the pinned head; no generated copy is retired.",
+    "Root must separately authorize registration and verify desktop compilation, unique class names, and actual consumer use.",
+    "A2 real animation remains unverified; no claim of increased production migration."
+  ]
+}

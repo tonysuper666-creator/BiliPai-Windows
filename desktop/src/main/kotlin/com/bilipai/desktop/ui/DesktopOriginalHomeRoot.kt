@@ -43,6 +43,7 @@ internal class DesktopOriginalHomeNavigation(
  val onLiveAreaDetailClick:(Int,Int,String)->Unit,
  val onBangumiSeasonClick:(Long)->Unit,
  val onBangumiEpisodeClick:(Long,Long)->Unit,
+ val onBangumiPlayFollow:(Long)->Unit,
  val onSpaceClick:(Long)->Unit,
 )
 
@@ -120,6 +121,7 @@ internal class DesktopOriginalHomeNavigation(
    onLiveAreaDetailClick=navigation.onLiveAreaDetailClick,
    onBangumiSeasonClick=navigation.onBangumiSeasonClick,
    onBangumiEpisodeClick=navigation.onBangumiEpisodeClick,
+   onBangumiPlayFollow=navigation.onBangumiPlayFollow,
    onSpaceClick=navigation.onSpaceClick,
    globalHazeState=globalHazeState,
    isTopLevelActive=isTopLevelActive,

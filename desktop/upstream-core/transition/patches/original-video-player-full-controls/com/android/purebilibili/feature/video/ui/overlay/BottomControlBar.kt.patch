@@ -1,0 +1,34 @@
+--- a/com/android/purebilibili/feature/video/ui/overlay/BottomControlBar.kt
++++ b/com/android/purebilibili/feature/video/ui/overlay/BottomControlBar.kt
+@@ -1447,27 +1447,10 @@
+                             Spacer(modifier = Modifier.width(layoutPolicy.afterInputSpacingDp.dp))
+                         } else if (showCompactDanmakuSend) {
+                             Spacer(modifier = Modifier.width(layoutPolicy.danmakuSwitchToInputSpacingDp.dp))
+-                            Box(
+-                                modifier = Modifier
+-                                    .heightIn(min = if (isFullscreen) 48.dp else 0.dp)
+-                                    .clip(RoundedCornerShape(50))
+-                                    .background(
+-                                        if (isFullscreen) Color.Black.copy(alpha = 0.20f)
+-                                        else Color.White.copy(alpha = 0.16f),
+-                                    )
+-                                    .clickable(onClick = onDanmakuInputClick)
+-                                    .padding(horizontal = 12.dp, vertical = 8.dp),
+-                                contentAlignment = Alignment.Center,
+-                            ) {
+-                                AppText(
+-                                    text = if (isLoggedIn) "发弹幕" else "登录发弹幕",
+-                                    color = Color.White.copy(alpha = if (isLoggedIn) 0.62f else 0.44f),
+-                                    fontSize = layoutPolicy.actionTextFontSp.sp,
+-                                    fontWeight = FontWeight.Medium,
+-                                    maxLines = 1,
+-                                    overflow = TextOverflow.Ellipsis,
+-                                )
+-                            }
++                            LandscapeDanmakuInput(
++                                onClick = onDanmakuInputClick,
++                                placeholder = if (isLoggedIn) "发弹幕" else "登录发弹幕",
++                            )
+                             Spacer(modifier = Modifier.width(layoutPolicy.afterInputSpacingDp.dp))
+                             Spacer(modifier = Modifier.weight(1f))
+                         } else if (!fullscreenDanmakuActionsInDedicatedDocks && !expandInlineActionDock) {

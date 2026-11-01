@@ -631,7 +631,7 @@ class DesktopBangumiBasSourceAdmissionAssemblyTest {
                 val plugins = Proxy.newProxyInstance(DesktopOriginalVideoOwnerPlugins::class.java.classLoader,
                     arrayOf(DesktopOriginalVideoOwnerPlugins::class.java)) { _, method, _ ->
                     when (method.name) { "capturePlaybackDispatch" -> null
-                        "enabledPlayerPlugins" -> emptyList<com.android.purebilibili.core.plugin.DesktopSingleSessionPlayerPlugin>()
+                        "enabledPlayerPlugins" -> emptyList<com.bilipai.desktop.player.DesktopPlayerPluginSessionHandle>()
                         else -> error("Unexpected plugin effect ${method.name}") }
                 } as DesktopOriginalVideoOwnerPlugins
                 val effects = DesktopOriginalVideoOwnerEffects(mini, unused(), unused(), network,
@@ -844,8 +844,11 @@ class DesktopBangumiBasSourceAdmissionAssemblyTest {
                 actor.drain(); actor.loaded()
                 player.setPaused(true); actor.drain()
                 assertEquals(120, state().quality)
-                assertEquals(audioPreference, state().selectedAudioQuality)
+                assertEquals(if (hiRes) AUDIO_QUALITY_HI_RES else 30280, state().selectedAudioQuality)
+                assertEquals(if (hiRes) AudioStreamKind.HI_RES else AudioStreamKind.STANDARD,
+                    state().availableAudioQualities.single { it.preferenceId == state().selectedAudioQuality }.kind)
                 assertEquals(audioPreference, state().requestedAudioQuality)
+                assertEquals(audioPreference, state().effectiveAudioQuality)
                 assertEquals(if (hiRes) HI_RES else AAC, state().audioUrl)
                 assertEquals(AV1, state().playUrl)
                 assertTrue(native.ownsPlaybackSource()); assertFalse(player.state.value.ready)
@@ -906,6 +909,7 @@ class DesktopBangumiBasSourceAdmissionAssemblyTest {
             assertEquals(original.seasonDetail.seasonId, actual.seasonDetail.seasonId)
             assertEquals(original.requestedAudioQuality, actual.requestedAudioQuality)
             assertEquals(original.selectedAudioQuality, actual.selectedAudioQuality)
+            assertEquals(original.effectiveAudioQuality, actual.effectiveAudioQuality)
             assertEquals(original.audioFallbackReason, actual.audioFallbackReason)
             assertEquals(expectedAudio, actual.audioUrl); assertEquals(url, source.videoUrl)
             assertEquals(actual.audioUrl, source.audioUrl)

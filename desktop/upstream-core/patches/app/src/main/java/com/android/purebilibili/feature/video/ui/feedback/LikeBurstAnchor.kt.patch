@@ -1,0 +1,31 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/video/ui/feedback/LikeBurstAnchor.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/video/ui/feedback/LikeBurstAnchor.kt
+@@ -1,7 +1,6 @@
+ package com.android.purebilibili.feature.video.ui.feedback
+ 
+-import android.os.Handler
+-import android.os.Looper
++import javax.swing.Timer
+ import androidx.compose.runtime.Composable
+ import androidx.compose.runtime.DisposableEffect
+ import androidx.compose.runtime.getValue
+@@ -24,7 +23,6 @@
+     var bounds: Rect? by mutableStateOf(null)
+         private set
+     private var generation = 0L
+-    private val handler = Handler(Looper.getMainLooper())
+ 
+     fun report(newBounds: Rect) {
+         generation += 1
+@@ -33,9 +31,9 @@
+ 
+     fun scheduleClearIfStale() {
+         val genAtDetach = generation
+-        handler.postDelayed({
++        Timer(CLEAR_DELAY_MS.toInt()) {
+             if (generation == genAtDetach) bounds = null
+-        }, CLEAR_DELAY_MS)
++        }.apply { isRepeats = false; start() }
+     }
+ 
+     private companion object {

@@ -1,0 +1,83 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailPortraitOverlayAdapter.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailPortraitOverlayAdapter.kt
+@@ -1,4 +1,3 @@
+-@file:androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
+ 
+ package com.android.purebilibili.feature.video.screen
+ 
+@@ -19,16 +18,16 @@
+ import androidx.compose.runtime.mutableStateOf
+ import androidx.compose.runtime.remember
+ import androidx.compose.runtime.setValue
+-import androidx.compose.ui.platform.LocalContext
++import com.bilipai.desktop.ui.LocalDesktopOriginalPlayerSettingsContext as LocalContext
+ import androidx.lifecycle.compose.collectAsStateWithLifecycle
+ import androidx.compose.ui.Modifier
+ import androidx.compose.ui.graphics.Color
+ import androidx.compose.ui.graphics.TransformOrigin
+ import androidx.compose.ui.layout.ContentScale
+-import androidx.media3.exoplayer.ExoPlayer
++import com.bilipai.desktop.ui.DesktopOriginalMpvSectionControl as ExoPlayer
+ import coil3.compose.AsyncImage
+ import com.android.purebilibili.core.ui.motion.AppMotionEasing
+-import com.android.purebilibili.data.repository.StoryRepository
++import com.bilipai.desktop.ui.LocalDesktopOriginalVideoHolderPlatform
+ import com.android.purebilibili.feature.story.storyItemToRelatedVideo
+ import com.android.purebilibili.feature.video.ui.pager.PortraitVideoPager
+ import com.android.purebilibili.feature.video.viewmodel.VideoEngagementViewModel
+@@ -66,6 +65,8 @@
+     onRotateToLandscape: () -> Unit,
+ ) {
+     val context = LocalContext.current
++    // Desktop: Story feed and the portrait playback owner come from the real holder platform.
++    val platform = LocalDesktopOriginalVideoHolderPlatform.current
+     val showPortraitFullscreen = shouldShowStandalonePortraitPager(
+         portraitExperienceEnabled = portraitExperienceEnabled,
+         isPortraitFullscreen = isPortraitFullscreen,
+@@ -87,7 +88,7 @@
+         entryCoverUrl = entryCoverUrl,
+     )
+     LaunchedEffect(isPortraitFullscreen, showPortraitFullscreen, success, isLandscape) {
+-        com.android.purebilibili.core.util.Logger.d(
++        android.util.Log.d(
+             "VideoDetailScreen",
+             "Portrait Mode Check: requested=$isPortraitFullscreen, shown=$showPortraitFullscreen, " +
+                 "success=${success != null}, isLandscape=$isLandscape",
+@@ -125,7 +126,7 @@
+             targetOffsetY = { -(it * motionSpec.exitTranslateUpFraction).roundToInt() },
+         )
+     }
+-    val portraitOnlyVerticalRecommendations by com.android.purebilibili.core.store.SettingsManager
++    val portraitOnlyVerticalRecommendations by com.android.purebilibili.core.store.DesktopOriginalVideoHolderSettings
+         .getPortraitOnlyVerticalRecommendations(context)
+         .collectAsStateWithLifecycle(initialValue = false)
+     AnimatedVisibility(
+@@ -148,7 +149,7 @@
+             }
+             LaunchedEffect(showPortraitFullscreen, info.bvid) {
+                 if (!showPortraitFullscreen) return@LaunchedEffect
+-                val storyItems = StoryRepository.getStoryFeed(
++                val storyItems = platform.getStoryFeed(
+                     aid = info.aid,
+                     bvid = info.bvid,
+                 ).getOrNull().orEmpty()
+@@ -164,16 +165,16 @@
+                 initialInfo = info,
+                 recommendations = portraitRecommendations,
+                 onlyVerticalRecommendations = portraitOnlyVerticalRecommendations,
+-                isInPipMode = isInPipMode,
++                // Desktop: isInPipMode / isPlayerSurfaceReady are forwarded once the upstream PortraitVideoPager
++                // replaces its transition copy, which does not declare them yet; desktop has no system PiP.
+                 onBack = onBack,
+                 onHomeClick = onHomeClick,
+                 onVideoChange = onVideoChange,
+                 onPlaybackIdentityChange = onPlaybackIdentityChange,
+-                viewModel = playbackViewModel,
++                viewModel = platform.portraitPlaybackOwner,
+                 engagementViewModel = engagementViewModel,
+                 sharedPlayer = sharedPlayer,
+                 useTextureSurfaceForNavigation = useTextureSurfaceForNavigation,
+-                isPlayerSurfaceReady = isPlayerSurfaceReady,
+                 initialStartPositionMs = initialStartPositionMs,
+                 onProgressUpdate = onProgressUpdate,
+                 onExitSnapshot = onExitSnapshot,

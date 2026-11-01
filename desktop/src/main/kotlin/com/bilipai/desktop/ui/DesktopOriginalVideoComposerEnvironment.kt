@@ -36,6 +36,7 @@ internal class DesktopOriginalVideoComposerEnvironment(
 internal class DesktopOriginalVideoCommentComposerStamp(
     val presentation: DesktopWindowsCommentPresentation,
     val subject: VideoSubjectSnapshot,
+    val draftSessionId: Long,
 )
 
 /** An already authorized send keeps its immutable original typed subject,

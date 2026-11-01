@@ -1,0 +1,12 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailTransitionPolicy.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailTransitionPolicy.kt
+@@ -31,7 +31,8 @@
+ internal fun isVideoDetailEntryActiveMiuixTransitionSource(
+     entrySourceRoute: String?,
+     activeSourceRoute: String?,
+-    miuixTransitionEnabled: Boolean,
++    // Legacy desktop callers already gate this helper with their transition-enabled state.
++    miuixTransitionEnabled: Boolean = true,
+ ): Boolean {
+     // Source metadata survives even when the navigation host disables the card morph.
+     if (!miuixTransitionEnabled) return false

@@ -1,0 +1,40 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoSupplementViewModel.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoSupplementViewModel.kt
+@@ -1,7 +1,5 @@
+ package com.android.purebilibili.feature.video.viewmodel
+ 
+-import androidx.lifecycle.ViewModel
+-import androidx.lifecycle.viewModelScope
+ import com.android.purebilibili.data.model.response.AiSummaryData
+ import com.android.purebilibili.data.model.response.VideoTag
+ import com.android.purebilibili.feature.video.note.VideoNoteUiState
+@@ -37,10 +35,15 @@
+ 
+ private val EmptyVideoSupplementLoader = VideoSupplementLoader { null }
+ 
+-class VideoSupplementViewModel(
+-    private val loader: VideoSupplementLoader = EmptyVideoSupplementLoader,
++internal class VideoSupplementViewModel(
++    private val environment: com.bilipai.desktop.ui.DesktopOriginalVideoSupplementEnvironment,
++    private val loader: VideoSupplementLoader,
+     private val startDelayMs: Long = 300L
+-) : ViewModel() {
++) : AutoCloseable {
++    private val viewModelScope get() = environment.scope
++    private fun <T> MutableStateFlow(initial: T): MutableStateFlow<T> =
++        com.bilipai.desktop.ui.DesktopHomeOwnedMutableStateFlow(initial, environment::commit)
++
+     private val _uiState = MutableStateFlow(VideoSupplementUiState())
+     val uiState = _uiState.asStateFlow()
+     private var subjectJob: Job? = null
+@@ -96,9 +99,8 @@
+         }
+     }
+ 
+-    override fun onCleared() {
++    override fun close() {
+         subjectJob?.cancel()
+-        super.onCleared()
+     }
+ }
+ 

@@ -1,0 +1,19 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/video/ui/components/glass/DanmakuSettingsPanelHost.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/video/ui/components/glass/DanmakuSettingsPanelHost.kt
+@@ -1,6 +1,4 @@
+-package com.android.purebilibili.feature.video.ui.components.glass
+-
+-import com.android.purebilibili.feature.video.ui.components.*
++package com.android.purebilibili.feature.video.ui.components
+ 
+ import androidx.compose.foundation.background
+ import androidx.compose.foundation.gestures.awaitEachGesture
+@@ -19,7 +17,7 @@
+ import androidx.compose.ui.input.pointer.pointerInput
+ import androidx.compose.ui.platform.LocalViewConfiguration
+ import androidx.compose.ui.unit.dp
+-import androidx.compose.ui.window.Dialog
++import com.bilipai.desktop.ui.DesktopWindowsDanmakuDialog as Dialog
+ import androidx.compose.ui.window.DialogProperties
+ import com.android.purebilibili.core.ui.LocalAppThemeConfig
+ import com.android.purebilibili.core.ui.LocalComponentMotionEnabled

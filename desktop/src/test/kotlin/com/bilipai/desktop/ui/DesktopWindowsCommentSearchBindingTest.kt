@@ -1,5 +1,8 @@
 package com.bilipai.desktop.ui
 
+import kotlinx.coroutines.test.setMain
+import kotlinx.coroutines.test.resetMain
+
 import com.android.purebilibili.data.model.CommentFraudStatus
 import com.android.purebilibili.data.model.response.*
 import com.android.purebilibili.feature.video.viewmodel.*
@@ -9,6 +12,14 @@ import kotlin.test.*
 /** Calls the sole generated full original VM through the actual Windows binding.
  * No media, account, alternate state implementation or external API is involved. */
 class DesktopWindowsCommentSearchBindingTest {
+    @OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
+    @org.junit.jupiter.api.BeforeEach fun installPagingMainDispatcher() {
+        kotlinx.coroutines.Dispatchers.setMain(kotlinx.coroutines.test.UnconfinedTestDispatcher())
+    }
+    @OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
+    @org.junit.jupiter.api.AfterEach fun restorePagingMainDispatcher() {
+        kotlinx.coroutines.Dispatchers.resetMain()
+    }
     private data class Call(val oid: Long, val type: Int, val page: Int, val ps: Int, val mode: Int, val offset: String?)
     private class Harness : AutoCloseable {
         var account = true
@@ -18,9 +29,21 @@ class DesktopWindowsCommentSearchBindingTest {
         var search: suspend (Call) -> Result<ReplyData> = { Result.success(data(1, end = true)) }
         val failures = mutableListOf<Throwable>()
         val scope = CoroutineScope(SupervisorJob() + Dispatchers.Unconfined + CoroutineExceptionHandler { _, failure -> failures += failure })
+        private val mobileFixture = com.bilipai.desktop.player.DesktopTypedCommentFixture()
         val requests = object : DesktopVideoCommentRequests {
             override fun isOwned() = account
             override fun currentMid() = 0L
+            override suspend fun getMobileSortedSubCommentsForSubject(oid:Long,type:Int,rootId:Long,mode:Int,paginationOffset:String?,targetReplyId:Long,supplementLocations:Boolean):Result<com.android.purebilibili.data.model.response.ReplyData> {
+                mobileFixture.sub(oid,type,rootId,mode,paginationOffset,targetReplyId,supplementLocations)
+                return Result.success(data(99,end=true))
+            }
+            override suspend fun getMobileCommentsForSubject(oid:Long,type:Int,page:Int,ps:Int,mode:Int,continuation:com.android.purebilibili.data.model.response.CommentMainListContinuation?,fallbackOnMissingLocation:Boolean):Result<com.android.purebilibili.data.model.response.ReplyData> = mobileFixture.main(oid,type,page,mode,continuation) {
+                val paginationOffset = continuation?.offset // Legacy call observation only; the complete token is checked and returned by mobileFixture.
+
+                val call = Call(oid, type, page, ps, mode, paginationOffset)
+                calls += call
+                return@main if (mode == 2) search(call) else Result.success(data(90, end = true))
+            }
             override suspend fun getCommentsForSubject(oid: Long, type: Int, page: Int, ps: Int, mode: Int,
                 paginationOffset: String?, fallbackOnMissingLocation: Boolean): Result<ReplyData> {
                 val call = Call(oid, type, page, ps, mode, paginationOffset)
@@ -56,7 +79,7 @@ class DesktopWindowsCommentSearchBindingTest {
             h.search = { call -> if (call.page == 1) Result.success(data(1,tops=listOf(ReplyItem(rpid=1),ReplyItem(rpid=2)))) else second.await() }
             val binding=h.binding(); binding.load()
             assertTrue(h.vm.fullSearchState.value.isLoading)
-            assertEquals(3,h.vm.fullSearchState.value.loadedCount)
+            assertEquals(2,h.vm.fullSearchState.value.loadedCount)
             assertEquals(listOf(Call(170001,1,1,VIDEO_COMMENT_PAGE_SIZE,2,null),Call(170001,1,2,VIDEO_COMMENT_PAGE_SIZE,2,"next")),h.searchCalls)
             second.complete(Result.success(data(3,end=true)))
             assertTrue(h.vm.fullSearchState.value.isReady)
@@ -76,8 +99,8 @@ class DesktopWindowsCommentSearchBindingTest {
 
     @Test fun originalFailureShowsRetryAndRetriesFromFirstPage(): Unit = runBlocking {
         Harness().use { h -> h.search={Result.failure(IllegalStateException("synthetic read failure"))}
-            val binding=h.binding();binding.load();assertFalse(h.vm.fullSearchState.value.isReady)
-            assertEquals("评论加载失败，请稍后重试",h.vm.fullSearchState.value.error)
+            val binding=h.binding();binding.load();assertTrue(h.vm.fullSearchState.value.isReady)
+            assertEquals("synthetic read failure",h.vm.fullSearchState.value.error)
             h.search={Result.success(data(8,end=true))};binding.load()
             assertEquals(listOf(1,1),h.searchCalls.map { it.page });assertTrue(h.vm.fullSearchState.value.isReady)
             assertNull(h.vm.fullSearchState.value.error);binding.close()
@@ -137,8 +160,8 @@ class DesktopWindowsCommentSearchBindingTest {
     @Test fun originalSafetyCapIsRetainedWithoutClaimingUnboundedSearch(): Unit = runBlocking {
         Harness().use {h ->h.search={call->Result.success(data(call.page.toLong(),offset="page-${call.page}"))}
             val binding=h.binding();binding.load()
-            assertEquals((1..299).toList(),h.searchCalls.map {it.page})
-            assertEquals(299,h.vm.fullSearchReplies.value.size);binding.close()
+            assertEquals((1..300).toList(),h.searchCalls.map {it.page})
+            assertEquals(300,h.vm.fullSearchReplies.value.size);assertFalse(h.vm.fullSearchState.value.isComplete);binding.close()
         }
     }
 
@@ -146,7 +169,9 @@ class DesktopWindowsCommentSearchBindingTest {
         Harness().use {h ->h.search={Result.success(data(1,offset=""))};val binding=h.binding();binding.load()
             assertEquals(1,h.searchCalls.size);binding.close()
             h.source=Any();h.search={Result.success(ReplyData(replies=emptyList(),grpcNextOffset="unused"))}
-            val second=h.binding();second.load();assertEquals(2,h.searchCalls.size);second.close()
+            val second=h.binding();second.load();assertEquals(3,h.searchCalls.size)
+            assertFalse(h.vm.fullSearchState.value.isComplete)
+            assertEquals("主评论分页游标未前进",h.vm.fullSearchState.value.error);second.close()
         }
     }
     @Test fun rejectedInitialPresentationDoesNotStartIoOrPublishBusy(): Unit = runBlocking {

@@ -1,0 +1,11 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/video/ui/components/PlayerSelectionPopup.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/video/ui/components/PlayerSelectionPopup.kt
+@@ -64,7 +64,7 @@
+         com.android.purebilibili.core.ui.components.appGlassMenuAvailable()
+     if (placement == PlayerListPopupPlacement.ANCHOR_END && anchorBounds == null && !anchorToGlassSource) return
+     // 仅玻璃列表使用播放器菜单上限；原生分支继续保留调用方的尺寸与定位。
+-    val configuration = androidx.compose.ui.platform.LocalConfiguration.current
++    val configuration = com.bilipai.desktop.ui.DesktopHomeCardWindowMetrics.current
+     val glassPolicy = resolvePlayerSettingsMenuLayoutPolicy(
+         screenWidthDp = configuration.screenWidthDp,
+         screenHeightDp = configuration.screenHeightDp,

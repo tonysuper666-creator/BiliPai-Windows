@@ -1,0 +1,11 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/glass/PlaybackOrderSelectionSheetPolicy.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/glass/PlaybackOrderSelectionSheetPolicy.kt
+@@ -1,6 +1,5 @@
+-package com.android.purebilibili.feature.video.ui.overlay.glass
+-
+-import com.android.purebilibili.feature.video.ui.overlay.*
++@file:JvmName("DesktopGlassPlaybackOrderSelectionSheetPolicy")
++package com.android.purebilibili.feature.video.ui.overlay
+ 
+ /**
+  * 播放顺序弹窗布局：横屏/全屏避免 ModalBottomSheet 强制 Expanded 占大半屏，

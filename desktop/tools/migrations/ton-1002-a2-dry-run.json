@@ -1,0 +1,54 @@
+{
+  "batch": "ton-1002-a2-resume-feedback",
+  "mode": "dry-run",
+  "upstream": {
+    "tag": "v0.5.0",
+    "commit": "383be1d47ff1b46c8c793e4c78e28bcbf715b331"
+  },
+  "sources": [
+    "com/android/purebilibili/feature/video/ui/section/PlaybackResumeFeedback.kt",
+    "com/android/purebilibili/feature/video/screen/VideoDetailPlaybackSessionEffects.kt"
+  ],
+  "changes": [
+    {
+      "path": "desktop/upstream-core/patches/app/src/main/java/com/android/purebilibili/feature/video/ui/section/PlaybackResumeFeedback.kt.patch",
+      "action": "create",
+      "sha256": "f6cc01ef87c4a27c9ac3f235dad7ac820a35689dac9a1da386a6db0a8add6948"
+    },
+    {
+      "path": "desktop/upstream-core/patches/app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailPlaybackSessionEffects.kt.patch",
+      "action": "update",
+      "sha256": "6407bc4f088cad22b1a83188b4feed2546f08d4a376d0f2d19c75c0f9f91e2a7"
+    },
+    {
+      "path": "desktop/upstream-core/transition/patches/original-video-detail-holder-full/com/android/purebilibili/feature/video/screen/VideoDetailScreenStateHolder.kt.patch",
+      "action": "update",
+      "sha256": "4e439cc5a658269759d6ce647d818f58744f42286c602d48a4f403b3155267da"
+    },
+    {
+      "path": "desktop/upstream-core/transition/patches/original-video-detail-holder-full/com/android/purebilibili/feature/video/screen/VideoDetailPlayerTransitionHost.kt.patch",
+      "action": "create",
+      "sha256": "17670803be90ec8278e47b641961b1a65036622295572f9fd4060dec567fb35d"
+    },
+    {
+      "path": "desktop/upstream-core/transition/patches/original-video-player-section-full/com/android/purebilibili/feature/video/ui/section/VideoPlayerSection.kt.patch",
+      "action": "create",
+      "sha256": "59be369175f8d5dd63476ef1199369aff7f3d2786462bb409b5216cbe92554a8"
+    },
+    {
+      "path": "desktop/build.gradle.kts",
+      "action": "update",
+      "sha256": "3b21c662689c38e7afe97b327bdab1b06363390857b8f0aac124a659f08ecb9e"
+    }
+  ],
+  "pending": [
+    "Root must apply this complete batch including both build registrations; do not apply component or popup removal alone.",
+    "A2 consumer compilation, verifyUniqueClassNames, per-identity JVM comparison, and real animation/lifecycle behavior remain unverified until atomic application.",
+    "A3 VIP gradual-color and D VM notice emission remain deferred; E is TON-1056 and BGM is TON-1004."
+  ],
+  "changedFiles": 6,
+  "exportedPatch": {
+    "path": "a2-complete.patch",
+    "sha256": "e04298323ac3b0814e5c9abf4ec3076fece5886c6c76e56906b4df95f7af9989"
+  }
+}

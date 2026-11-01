@@ -1,0 +1,53 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailPlaybackSessionEffects.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailPlaybackSessionEffects.kt
+@@ -1,6 +1,6 @@
+ package com.android.purebilibili.feature.video.screen
+ 
+-import android.content.Context
++import com.bilipai.desktop.ui.DesktopOriginalPlayerSettingsContext as Context
+ import androidx.compose.runtime.Composable
+ import androidx.compose.runtime.LaunchedEffect
+ import androidx.compose.runtime.Stable
+@@ -9,8 +9,8 @@
+ import androidx.compose.runtime.remember
+ import androidx.compose.runtime.setValue
+ import androidx.compose.runtime.compositionLocalOf
+-import com.android.purebilibili.feature.video.danmaku.DanmakuManager
+-import com.android.purebilibili.feature.video.danmaku.rememberDanmakuManager
++import com.bilipai.desktop.ui.DesktopOriginalPortraitDanmakuPort as DanmakuManager
++import com.bilipai.desktop.ui.LocalDesktopOriginalVideoHolderPlatform
+ import com.android.purebilibili.feature.video.viewmodel.PlayerToastMessage
+ import com.android.purebilibili.feature.video.viewmodel.PlayerToastPresentation
+ import com.android.purebilibili.feature.video.viewmodel.VideoPlaybackViewModel
+@@ -33,7 +33,7 @@
+ 
+ @Composable
+ internal fun rememberVideoDetailPlaybackEventState(playbackIdentity: String): VideoDetailPlaybackEventState {
+-    val danmakuManager = rememberDanmakuManager(playbackIdentity)
++    val danmakuManager = LocalDesktopOriginalVideoHolderPlatform.current.danmaku
+     return remember(danmakuManager) { VideoDetailPlaybackEventState(danmakuManager) }
+ }
+ 
+@@ -43,6 +43,7 @@
+     viewModel: VideoPlaybackViewModel,
+     state: VideoDetailPlaybackEventState,
+ ) {
++    val platform = LocalDesktopOriginalVideoHolderPlatform.current
+     LaunchedEffect(viewModel, state, "resume-identity") {
+         viewModel.subjectSnapshot.collect { subject ->
+             val pending = state.resumeMessage
+@@ -79,12 +80,11 @@
+                 color = danmakuData.color,
+                 mode = danmakuData.mode,
+                 fontSize = danmakuData.fontSize,
+-                isVipGradualColor = danmakuData.isVipGradualColor,
+             )
+         }
+     }
+-    LaunchedEffect(viewModel, context.applicationContext) {
++    LaunchedEffect(viewModel, context) {
+         viewModel.initWithContext(context)
+-        com.android.purebilibili.core.util.AnalyticsHelper.logScreenView("VideoDetailScreen")
++        platform.logScreenView("VideoDetailScreen")
+     }
+ }

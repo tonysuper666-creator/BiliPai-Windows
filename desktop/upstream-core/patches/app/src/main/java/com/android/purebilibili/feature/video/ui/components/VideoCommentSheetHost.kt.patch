@@ -1,0 +1,126 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/video/ui/components/VideoCommentSheetHost.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/video/ui/components/VideoCommentSheetHost.kt
+@@ -2,14 +2,12 @@
+ 
+ import com.android.purebilibili.core.ui.AppContentColors
+ 
+-import android.os.Build
+ import androidx.compose.animation.AnimatedVisibility
+ import androidx.compose.animation.ExperimentalAnimationApi
+ import androidx.compose.animation.core.MutableTransitionState
+ import androidx.compose.animation.core.animateFloatAsState
+ import androidx.compose.animation.core.tween
+ import com.android.purebilibili.core.ui.transition.resolvePredictiveBackBlurFrame
+-import com.android.purebilibili.core.ui.transition.BlurRenderEffectCache
+ import androidx.compose.foundation.background
+ import androidx.compose.foundation.clickable
+ import androidx.compose.foundation.gestures.detectVerticalDragGestures
+@@ -44,7 +42,6 @@
+ import androidx.compose.runtime.LaunchedEffect
+ import androidx.compose.runtime.SideEffect
+ import androidx.lifecycle.compose.collectAsStateWithLifecycle
+-import com.android.purebilibili.core.store.SettingsManager
+ import top.yukonga.miuix.kmp.blur.layerBackdrop
+ import top.yukonga.miuix.kmp.blur.rememberLayerBackdrop
+ import androidx.compose.runtime.getValue
+@@ -61,8 +58,6 @@
+ import androidx.compose.ui.graphics.Color
+ import androidx.compose.ui.input.pointer.pointerInput
+ import androidx.compose.ui.unit.IntOffset
+-import androidx.compose.ui.platform.LocalContext
+-import androidx.compose.ui.platform.LocalConfiguration
+ import androidx.compose.ui.platform.LocalDensity
+ import androidx.compose.ui.platform.LocalUriHandler
+ import androidx.compose.ui.text.font.FontWeight
+@@ -325,7 +320,7 @@
+ 
+ @OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
+ @Composable
+-fun VideoCommentSheetHost(
++internal fun VideoCommentSheetHost(
+     mainSheetVisible: Boolean,
+     onDismiss: () -> Unit,
+     /**
+@@ -358,16 +353,17 @@
+     onCoveredBlurProgressChange: ((Float) -> Unit)? = null,
+     threadListModifier: Modifier = Modifier,
+ ) {
+-    val context = LocalContext.current
++    val platform = com.bilipai.desktop.ui.LocalDesktopCommentBindings.current
++    val context = platform.context
+     val uriHandler = LocalUriHandler.current
+     val commentState by commentViewModel.commentState.collectAsStateWithLifecycle()
+     val subReplyState by commentViewModel.subReplyState.collectAsStateWithLifecycle()
+-    val defaultSortMode by com.android.purebilibili.core.store.SettingsManager
++    val defaultSortMode by com.android.purebilibili.core.store.DesktopOriginalReplySettings
+         .getCommentDefaultSortMode(context)
+-        .collectAsStateWithLifecycle(initialValue = com.android.purebilibili.core.store.SettingsManager.getCommentDefaultSortModeSync(context),
++        .collectAsStateWithLifecycle(initialValue = com.android.purebilibili.core.store.DesktopOriginalReplySettings.getCommentDefaultSortModeSync(context),
+             context = kotlin.coroutines.EmptyCoroutineContext
+         )
+-    val commentMemberDecorationsEnabled by com.android.purebilibili.core.store.SettingsManager
++    val commentMemberDecorationsEnabled by com.android.purebilibili.core.store.DesktopOriginalReplySettings
+         .getCommentMemberDecorationsEnabled(context)
+         .collectAsStateWithLifecycle(initialValue = false
+         )
+@@ -686,20 +682,22 @@
+                     Box(modifier = Modifier.fillMaxSize()) {
+                         if (mainSheetVisible && hostContent != VideoCommentSheetHostContent.HIDDEN) {
+                             val coveredBlurProgress = threadCoveredBlurProgress
+-                            val coveredBlurEffectCache = remember { BlurRenderEffectCache() }
+                             Box(
+                                 modifier = Modifier
+                                     .fillMaxSize()
+                                     .graphicsLayer {
+                                         renderEffect = null
+                                         if (coveredBlurProgress > 0f &&
+-                                            Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
++                                            com.bilipai.desktop.ui.desktopDetailRenderEffectsSupported()
+                                         ) {
+                                             val blurFrame = resolvePredictiveBackBlurFrame(
+                                                 progress = coveredBlurProgress,
+                                             )
+                                             renderEffect = if (blurFrame.blurRadiusPx > 0.5f) {
+-                                                coveredBlurEffectCache.resolve(blurFrame.blurRadiusPx)
++                                                androidx.compose.ui.graphics.BlurEffect(
++                                                    radiusX = blurFrame.blurRadiusPx,
++                                                    radiusY = blurFrame.blurRadiusPx,
++                                                )
+                                             } else {
+                                                 null
+                                             }
+@@ -876,13 +874,14 @@
+     val fullSearchState by viewModel.fullSearchState.collectAsStateWithLifecycle()
+     val fullSearchReplies by viewModel.fullSearchReplies.collectAsStateWithLifecycle()
+     val repliesError = state.repliesError
+-    val context = LocalContext.current
++    val platform = com.bilipai.desktop.ui.LocalDesktopCommentBindings.current
++    val context = platform.context
+     val scope = rememberCoroutineScope()
+     val appearance = rememberVideoCommentAppearance()
+     val commentChromeBackdrop = rememberLayerBackdrop()
+     // 首屏骨架按视口高度铺够槽位：少铺会让列表在数据到达时被撑长、整体跳一下。
+     val commentSkeletonSlotCount = resolveVideoCommentSkeletonSlotCount(
+-        LocalConfiguration.current.screenHeightDp
++        com.bilipai.desktop.appearance.DesktopWindowConfiguration.current.screenHeightDp
+     )
+     var showCommentSearchSheet by remember { mutableStateOf(false) }
+     val latestOnBackToTop by rememberUpdatedState(onBackToTop)
+@@ -909,7 +908,7 @@
+             sortMode = state.sortMode,
+             onSortModeChange = { mode ->
+                 viewModel.setSortMode(mode)
+-                scope.launch { SettingsManager.setCommentDefaultSortMode(context, mode.apiMode) }
++                scope.launch { com.android.purebilibili.core.store.DesktopOriginalVideoCommentSheetSettings.setCommentDefaultSortMode(context, mode.apiMode) }
+             },
+             onSearchClick = { showCommentSearchSheet = true },
+             compactTypography = true,
+@@ -928,7 +927,7 @@
+                     onRefresh = onRefresh,
+                     modifier = Modifier.fillMaxSize(),
+                 ) {
+-                    LazyColumn(
++                    com.android.purebilibili.core.ui.components.AppLazyColumn(
+                         state = listState,
+                         modifier = Modifier
+                             .fillMaxSize()

@@ -1,0 +1,19 @@
+# 可退役：上游 BottomBarLiquidSegmentedControl 完整迁入时删除此透传；默认 true 保持旧调用。
+--- a/shared-liquid-tabs/generated/com/android/purebilibili/feature/home/components/BottomBarLiquidSegmentedControl.kt
++++ b/shared-liquid-tabs/generated/com/android/purebilibili/feature/home/components/BottomBarLiquidSegmentedControl.kt
+@@ -409,6 +409,7 @@
+     containerHorizontalPadding: Dp = AppSpacingTokens.ExtraSmall,
+     containerVerticalPadding: Dp = AppSpacingTokens.ExtraSmall,
+     liquidGlassEffectsEnabled: Boolean = true,
++    liquidGlassAdaptIndicatorToLabel: Boolean = true,
+     // False reserves horizontal gestures for the scrollable rail; taps still select a tab.
+     dragSelectionEnabled: Boolean = true,
+     // Compatibility alias for drag enablement; indicators now always start dragging directly.
+@@ -603,6 +604,7 @@
+             ).value
+         } else measuredLiquidItemWidth
+         BottomBarFloatingSegmentedControl(
++            adaptIndicatorToLabel = liquidGlassAdaptIndicatorToLabel,
+             items = items,
+             liquidGlassMeasurementLabels = glassMeasurementLabels,
+             liquidGlassAnimateLabelWidthChanges = liquidGlassAnimateLabelWidthChanges,

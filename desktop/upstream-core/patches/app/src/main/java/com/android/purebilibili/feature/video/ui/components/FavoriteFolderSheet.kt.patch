@@ -1,0 +1,50 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/video/ui/components/FavoriteFolderSheet.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/video/ui/components/FavoriteFolderSheet.kt
+@@ -14,14 +14,14 @@
+ import androidx.compose.runtime.*
+ import androidx.compose.ui.Alignment
+ import androidx.compose.ui.Modifier
+-import androidx.compose.ui.platform.LocalConfiguration
++import androidx.compose.ui.platform.LocalWindowInfo
++import androidx.compose.ui.platform.LocalDensity
+ import androidx.compose.ui.text.font.FontWeight
+ import androidx.compose.ui.text.style.TextAlign
+ import androidx.compose.ui.unit.dp
+ import androidx.compose.ui.unit.sp
+ import com.android.purebilibili.core.ui.AppAlertDialog
+ import com.android.purebilibili.core.ui.AppModalPresentation
+-import android.content.res.Configuration
+ import com.android.purebilibili.core.ui.AppModalBottomSheet
+ import com.android.purebilibili.data.model.response.FavFolder
+ import com.android.purebilibili.feature.video.policy.resolveFavoriteFolderMediaId
+@@ -47,13 +47,16 @@
+     onCreateFolder: (String, String, Boolean) -> Unit = { _, _, _ -> }
+ ) {
+     var showCreateDialog by remember { mutableStateOf(false) }
+-    val configuration = LocalConfiguration.current
++    val windowSize = LocalWindowInfo.current.containerSize
++    val density = LocalDensity.current.density
++    val screenWidthDp = (windowSize.width / density).toInt()
++    val screenHeightDp = (windowSize.height / density).toInt()
+     val glass = com.android.purebilibili.core.ui.components.appGlassMenuAvailable()
+-    val sidePanel = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE &&
+-        configuration.screenWidthDp >= 600
+-    val maxSheetHeight = (configuration.screenHeightDp.dp * 0.72f)
++    val sidePanel = screenWidthDp > screenHeightDp &&
++        screenWidthDp >= 600
++    val maxSheetHeight = (screenHeightDp.dp * 0.72f)
+         .coerceAtLeast(360.dp)
+-        .coerceAtMost(configuration.screenHeightDp.dp)
++        .coerceAtMost(screenHeightDp.dp)
+ 
+     if (showCreateDialog) {
+         CreateFolderDialog(
+@@ -205,7 +208,7 @@
+             source = source,
+             minWidth = 0.dp,
+             maxWidth = if (sidePanel) 360.dp else 420.dp,
+-            maxHeight = if (sidePanel) (configuration.screenHeightDp - 32).coerceAtLeast(1).dp
++            maxHeight = if (sidePanel) (screenHeightDp - 32).coerceAtLeast(1).dp
+                 else maxSheetHeight,
+             interactiveContent = true,
+             showScrollbar = false,

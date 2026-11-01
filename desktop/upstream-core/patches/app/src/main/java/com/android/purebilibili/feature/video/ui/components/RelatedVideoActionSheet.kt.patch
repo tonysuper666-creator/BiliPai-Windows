@@ -1,0 +1,11 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/video/ui/components/RelatedVideoActionSheet.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/video/ui/components/RelatedVideoActionSheet.kt
+@@ -38,7 +38,7 @@
+ import com.android.purebilibili.core.ui.components.AppGlassMenuSource
+ import com.android.purebilibili.core.ui.components.AppGlassMenuPlacement
+ import com.android.purebilibili.core.ui.components.appGlassMenuAvailable
+-import androidx.compose.ui.platform.LocalConfiguration
++import com.bilipai.desktop.ui.DesktopHomeCardWindowMetrics as LocalConfiguration
+ import com.android.purebilibili.data.model.response.RecommendationFeedbackReason
+ import com.android.purebilibili.data.model.response.RelatedVideo
+ 

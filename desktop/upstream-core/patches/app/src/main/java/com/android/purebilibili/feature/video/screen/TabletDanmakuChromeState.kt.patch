@@ -1,0 +1,54 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/video/screen/TabletDanmakuChromeState.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/video/screen/TabletDanmakuChromeState.kt
+@@ -5,12 +5,11 @@
+ import androidx.compose.runtime.remember
+ import androidx.compose.runtime.rememberCoroutineScope
+ import androidx.compose.runtime.rememberUpdatedState
+-import androidx.compose.ui.platform.LocalContext
++import com.bilipai.desktop.ui.LocalDesktopOriginalVideoSectionPlatform
+ import androidx.lifecycle.compose.collectAsStateWithLifecycle
+ import com.android.purebilibili.core.store.DanmakuSettings
+ import com.android.purebilibili.core.store.DanmakuSettingsScope
+-import com.android.purebilibili.core.store.SettingsManager
+-import com.android.purebilibili.feature.video.danmaku.DanmakuManager
++import com.bilipai.desktop.ui.DesktopOriginalSectionDanmakuPort as DanmakuManager
+ import kotlinx.coroutines.launch
+ 
+ internal data class TabletDanmakuChromeState(
+@@ -29,11 +28,12 @@
+ internal fun rememberTabletDanmakuChromeState(
+     danmakuManager: DanmakuManager,
+ ): TabletDanmakuChromeState {
+-    val context = LocalContext.current
++    val platform = LocalDesktopOriginalVideoSectionPlatform.current
++    val context = platform.settingsContext
+     val scope = rememberCoroutineScope()
+-    val danmakuSettings by SettingsManager
+-        .getDanmakuSettings(context, DanmakuSettingsScope.PORTRAIT)
+-        .collectAsStateWithLifecycle(initialValue = DanmakuSettings())
++    val danmakuSettings by platform.danmakuPreferences
++        .getDanmakuSettings(DanmakuSettingsScope.PORTRAIT)
++        .collectAsStateWithLifecycle(initialValue = platform.danmakuPreferences.currentSettings(DanmakuSettingsScope.PORTRAIT))
+     val latestEnabled = rememberUpdatedState(danmakuSettings.enabled)
+     val onToggle = remember(danmakuManager, context, scope) {
+         {
+@@ -43,8 +43,7 @@
+                 danmakuManager.clear()
+             }
+             scope.launch {
+-                SettingsManager.setDanmakuEnabled(
+-                    context,
++                platform.danmakuPreferences.setDanmakuEnabled(
+                     newValue,
+                     DanmakuSettingsScope.PORTRAIT,
+                 )
+@@ -57,3 +56,9 @@
+         onToggle = onToggle,
+     )
+ }
++
++// Installed layouts still pass their route ID. The current owner supplies the
++// shared manager; a route change must never acquire a second danmaku session.
++@Composable
++internal fun rememberTabletDanmakuChromeState(@Suppress("UNUSED_PARAMETER") bvid: String): TabletDanmakuChromeState =
++    rememberTabletDanmakuChromeState(LocalDesktopOriginalVideoSectionPlatform.current.danmaku)

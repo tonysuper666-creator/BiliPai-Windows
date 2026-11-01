@@ -6,7 +6,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveableStateHolder
 import androidx.compose.ui.ImageComposeScene
 import androidx.compose.ui.unit.Density
-import com.android.purebilibili.core.plugin.DesktopSingleSessionPlayerPlugin
+import com.bilipai.desktop.player.DesktopPlayerPluginSessionHandle
 import com.android.purebilibili.data.model.response.PlayUrlData
 import com.android.purebilibili.feature.video.subtitle.*
 import com.android.purebilibili.feature.video.viewmodel.DesktopVideoCommentRequests
@@ -39,6 +39,44 @@ import kotlin.test.*
  */
 @Execution(ExecutionMode.SAME_THREAD)
 class DesktopWindowsSubtitlePreferenceStateTest {
+    @Test fun upstreamMiniUsesTheInstalledPreMediaSessionAndRejectsRetiredOwner(): Unit = runBlocking {
+        withOwner { actual ->
+            val mini = DesktopOriginalVideoMiniBinding({ actual.owner },
+                { _, _ -> error("Pre-media Mini must not publish metadata") }, { true })
+            val upstream: com.android.purebilibili.feature.video.player.MiniPlayerManager = mini
+            assertSame(actual.owner.section, upstream.ensurePlayer())
+            assertSame(upstream.ensurePlayer(), upstream.ensurePlayer())
+            assertFalse(upstream.isActive)
+            assertNull(upstream.player)
+            assertNull(actual.player.currentSourceSnapshot())
+            actual.retire()
+            assertFailsWith<CancellationException> { upstream.ensurePlayer() }
+            assertNull(upstream.player)
+            assertFalse(upstream.isActive)
+        }
+    }
+
+    @Test fun retiredUpstreamMiniCannotPublishMetadataOrTagsToReplacementOwner(): Unit = runBlocking {
+        withOwner { previous ->
+            val publications = mutableListOf<String>()
+            val oldMini = DesktopOriginalVideoMiniBinding({ previous.owner },
+                { _, state -> publications += state.info.title }, { true })
+            val oldState = com.android.purebilibili.feature.video.viewmodel.VideoPlaybackUiState.Success(
+                com.android.purebilibili.data.model.response.ViewInfo(bvid = "BVretired", aid = 7, cid = 8), "")
+            previous.retire()
+            withOwner { replacement ->
+                val currentMini = DesktopOriginalVideoMiniBinding({ replacement.owner },
+                    { _, state -> publications += state.info.title }, { true })
+                assertSame(replacement.owner.section, currentMini.ensurePlayer())
+                assertFailsWith<CancellationException> { oldMini.syncCurrentVideoInfo(oldState) }
+                assertFailsWith<CancellationException> { oldMini.updateCachedVideoTags("BVretired", emptyList()) }
+                assertTrue(publications.isEmpty())
+                assertTrue(replacement.owner.owns())
+                assertNull(replacement.player.currentSourceSnapshot())
+            }
+        }
+    }
+
     @Test fun sameOriginalSessionKeyRefreshKeepsTheRegisteredManualSelection(): Unit = runBlocking {
         withOwner { owner ->
             val initial = originalSession()
@@ -370,7 +408,7 @@ class DesktopWindowsSubtitlePreferenceStateTest {
                 { error("No subtitle fixture feedback") })
             val plugins = Proxy.newProxyInstance(DesktopOriginalVideoOwnerPlugins::class.java.classLoader,
                 arrayOf(DesktopOriginalVideoOwnerPlugins::class.java)) { _, method, _ ->
-                when (method.name) { "capturePlaybackDispatch" -> null; "enabledPlayerPlugins" -> emptyList<DesktopSingleSessionPlayerPlugin>()
+                when (method.name) { "capturePlaybackDispatch" -> null; "enabledPlayerPlugins" -> emptyList<DesktopPlayerPluginSessionHandle>()
                     else -> error("No pre-media plugin operation ${method.name}") }
             } as DesktopOriginalVideoOwnerPlugins
             val network = object : DesktopOriginalVideoOwnerNetwork {

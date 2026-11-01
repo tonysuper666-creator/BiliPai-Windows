@@ -1,0 +1,13 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailSessionPolicy.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailSessionPolicy.kt
+@@ -5,8 +5,8 @@
+ import kotlin.math.roundToInt
+ 
+ internal fun hasMeaningfulVideoPlayerBoundsChange(
+-    oldBounds: android.graphics.Rect?,
+-    newBounds: android.graphics.Rect?,
++    oldBounds: androidx.compose.ui.unit.IntRect?,
++    newBounds: androidx.compose.ui.unit.IntRect?,
+     tolerancePx: Int = 3,
+ ): Boolean = when {
+     oldBounds == null && newBounds == null -> false

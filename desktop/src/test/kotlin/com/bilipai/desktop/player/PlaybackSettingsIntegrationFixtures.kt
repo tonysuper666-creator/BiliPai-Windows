@@ -134,7 +134,9 @@ internal suspend fun runPlaybackSettingsIntegrationTests(case: suspend (String, 
         val changed = repo.playback(info, playbackPreferences = high.copy(defaultAudioQuality = -1))
         equal("https://fixture.invalid/aac-high", changed.audioUrl); equal(2, api.playCalls)
         val fast = repo.playback(info, playbackPreferences = high.copy(speed = 2.0))
-        equal(-1, fast.audioSelection?.selectedPreferenceId)
+        equal(30280, fast.audioSelection?.selectedPreferenceId)
+        equal(AudioStreamKind.STANDARD, fast.audioSelection?.selected?.kind)
+        equal(AUDIO_QUALITY_AUTO, fast.audioSelection?.effectivePreferenceId)
         equal(AudioFallbackReason.SPEED_INCOMPATIBLE, fast.audioSelection?.fallbackReason)
         val refreshed = repo.playback(info, codecOverride = "avc1", forceRefresh = true, playbackPreferences = high)
         equal("avc1", refreshed.videoCodecFamily); equal(1, api.navCalls)
@@ -189,7 +191,9 @@ internal suspend fun runPlaybackSettingsIntegrationTests(case: suspend (String, 
             onSwing { f.player.setSpeed(2.0); f.controller.onPlaybackPreferencesChanged(previous, f.preferences) }
             f.await { !it.opening && f.source.requests.size >= 2 }
             val fast = f.controller.currentCastSource(owner)?.audioSelection
-            equal(-1, fast?.selectedPreferenceId); equal(30251, fast?.requestedPreferenceId)
+            equal(30280, fast?.selectedPreferenceId)
+            equal(AudioStreamKind.STANDARD, fast?.selected?.kind)
+            equal(AUDIO_QUALITY_AUTO, fast?.effectivePreferenceId); equal(30251, fast?.requestedPreferenceId)
             equal(AudioFallbackReason.SPEED_INCOMPATIBLE, fast?.fallbackReason)
             equal(emptyList<Int>(), f.remembered)
             val old = f.preferences; f.preferences = old.copy(speed = 1.0)

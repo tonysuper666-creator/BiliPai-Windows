@@ -71,9 +71,12 @@ class DanmakuConfigV029PolicyTest {
 
     @Test
     fun `pinned duration should clamp to safe bounds`() {
-        assertEquals(2000L, resolveDanmakuPinnedDurationMillis(0.5f))
+        assertEquals(1000L, resolveDanmakuPinnedDurationMillis(0.5f))
+        assertEquals(1000L, resolveDanmakuPinnedDurationMillis(1f))
         assertEquals(4000L, resolveDanmakuPinnedDurationMillis(4.0f))
-        assertEquals(15000L, resolveDanmakuPinnedDurationMillis(18.0f))
+        assertEquals(18000L, resolveDanmakuPinnedDurationMillis(18.0f))
+        assertEquals(50000L, resolveDanmakuPinnedDurationMillis(50f))
+        assertEquals(50000L, resolveDanmakuPinnedDurationMillis(60f))
     }
 
     @Test
