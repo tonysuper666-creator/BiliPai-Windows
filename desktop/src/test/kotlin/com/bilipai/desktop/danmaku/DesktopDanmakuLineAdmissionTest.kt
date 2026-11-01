@@ -39,7 +39,12 @@ class DesktopDanmakuLineAdmissionTest {
         // At margin 50 the design example is allowed by desktop but rejected by full moveTime.
         assertTrue(desktopDanmakuLineAdmits(500, 100, 200, 4.0, 10.0, 10.0, 50f))
         val scheduler = DanmakuScheduler(listOf(item(0, 0.0), item(1, 4.0)), settings, false)
-        assertEquals(listOf(0, 1), ids(frame(scheduler, 4.0, widths = mapOf(1 to 200))))
+        // Scale the example to the real 24 px margin: gap 67.2, desktop threshold 52.8,
+        // full-lifetime threshold 72.0. Both measured widths are exact integers.
+        val visible = frame(scheduler, 4.0, width = 240, widths = mapOf(0 to 48, 1 to 96))
+        assertEquals(listOf(0, 1), ids(visible))
+        assertEquals(124.8, visible[0].x, 0.000001)
+        assertEquals(240.0, visible[1].x, 0.000001)
     }
 
     @Test fun `fixed items wait until the physical lanes are empty`() {
