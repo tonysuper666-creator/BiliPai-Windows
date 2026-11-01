@@ -51,6 +51,23 @@ class DesktopLoginRepository(private val repository: DesktopRepository,
     private val api = Retrofit.Builder().baseUrl("https://passport.bilibili.com/").client(client)
         .addConverterFactory(json.asConverterFactory("application/json".toMediaType())).build().create(PassportApi::class.java)
 
+    // Original LoginViewModel uses this same attempt's candidate jar, never the primary NetworkModule jar.
+    internal val upstreamPassportApi get() = api
+    internal val upstreamIdentity get() = identity
+    internal suspend fun installUpstreamLogin(submission: DesktopLoginSubmission): AccountSummary = action {
+        val cookies = submission.cookies + buildMap {
+            put("SESSDATA", submission.sessData)
+            if (submission.csrf.isNotBlank()) put("bili_jct", submission.csrf)
+            if (submission.buvid3.isNotBlank()) put("buvid3", submission.buvid3)
+            if (submission.mid > 0) put("DedeUserID", submission.mid.toString())
+        }
+        requireLoginCookies(cookies)
+        val credentials = submission.accessToken.takeIf(String::isNotBlank)?.let {
+            DesktopAppCredentials(it, submission.refreshToken, submission.accessTokenPlatform)
+        }
+        installFormLogin(cookies, credentials, submission.mid.takeIf { it > 0 })
+    }
+
     suspend fun phoneRegions(): List<PhoneRegion> = action {
         val response = api.getCountryList(); check(response.code, response.message)
         response.data?.let(::mapPassportCountryListToPhoneRegions)?.takeIf { it.isNotEmpty() }

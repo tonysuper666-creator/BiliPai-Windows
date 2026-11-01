@@ -1,0 +1,138 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/login/OfficialQrAuthorizationViewModel.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/login/OfficialQrAuthorizationViewModel.kt
+@@ -2,9 +2,7 @@
+ 
+ import androidx.annotation.MainThread
+ import androidx.lifecycle.ViewModel
+-import androidx.lifecycle.viewModelScope
+-import com.android.purebilibili.core.network.NetworkModule
+-import com.android.purebilibili.core.store.TokenManager
++import com.bilipai.desktop.ui.DesktopProfileEnvironment
+ import kotlinx.coroutines.CancellationException
+ import kotlinx.coroutines.Job
+ import kotlinx.coroutines.ensureActive
+@@ -26,15 +24,17 @@
+ }
+ 
+ /** Independent from LoginState: authorizing another device never logs in this device. */
+-internal class OfficialQrAuthorizationViewModel : ViewModel() {
++internal class OfficialQrAuthorizationViewModel(private val environment: DesktopProfileEnvironment) : ViewModel() {
++    private val viewModelScope get() = environment.scope
+     private val _state = MutableStateFlow<QrAuthorizationState>(initialState())
+     val state = _state.asStateFlow()
+     private var requestJob: Job? = null
+     private var prepared: PreparedQrAuthorization? = null
+-    private val service by lazy { OfficialQrAuthorizationService(NetworkModule.qrAuthorizationApi, ::readSession) }
++    private val service by lazy { OfficialQrAuthorizationService(environment.authorizationApi, ::readSession) }
+ 
+     @MainThread
+     fun scan(raw: String) {
++        environment.ensureOwned()
+         if (_state.value != QrAuthorizationState.Idle) return
+         val qr = parseBilibiliLoginQr(raw)
+         if (qr == null) {
+@@ -43,72 +43,88 @@
+         }
+         // Change state before launching, so repeated camera frames cannot enqueue requests.
+         _state.value = QrAuthorizationState.Checking
+-        requestJob = viewModelScope.launch {
++        requestJob = environment.launchOwned {
++            val caller = kotlinx.coroutines.currentCoroutineContext()[Job] ?: error("Actual authorization caller Job required")
+             try {
+                 val result = service.prepare(qr)
+                 ensureActive()
+-                prepared = result
+-                _state.value = QrAuthorizationState.Ready(qr.type, result.accountName, result.mid, result.location, result.locationDiffers)
++                environment.publishCallback {
++                    caller.ensureActive()
++                    prepared = result
++                    _state.value = QrAuthorizationState.Ready(qr.type, result.accountName, result.mid, result.location, result.locationDiffers)
++                }
+             } catch (cancelled: CancellationException) {
+                 throw cancelled
+             } catch (error: IllegalArgumentException) {
+                 ensureActive()
+-                _state.value = QrAuthorizationState.Failed(error.message ?: "请先登录本应用")
++                environment.publishCallback { caller.ensureActive(); _state.value = QrAuthorizationState.Failed(error.message ?: "请先登录本应用") }
+             } catch (error: QrAuthorizationException) {
+                 ensureActive()
+-                _state.value = QrAuthorizationState.Failed(error.message.orEmpty())
++                environment.publishCallback { caller.ensureActive(); _state.value = QrAuthorizationState.Failed(error.message.orEmpty()) }
+             } catch (_: Exception) {
+                 ensureActive()
+-                _state.value = QrAuthorizationState.Failed("登录请求校验失败，请检查网络后重新扫描")
++                environment.publishCallback { caller.ensureActive(); _state.value = QrAuthorizationState.Failed("登录请求校验失败，请检查网络后重新扫描") }
+             }
+         }
+     }
+ 
+     @MainThread
+     fun confirm() {
++        environment.ensureOwned()
+         if (_state.value !is QrAuthorizationState.Ready) return
+         val request = prepared ?: return
+         prepared = null
+         _state.value = QrAuthorizationState.Authorizing
+-        requestJob = viewModelScope.launch {
++        requestJob = environment.launchOwned {
++            val caller = kotlinx.coroutines.currentCoroutineContext()[Job] ?: error("Actual authorization caller Job required")
+             try {
+                 service.confirm(request)
+                 ensureActive()
+-                _state.value = QrAuthorizationState.Authorized(request.qr.type)
++                environment.publishCallback { caller.ensureActive(); _state.value = QrAuthorizationState.Authorized(request.qr.type) }
+             } catch (cancelled: CancellationException) {
+                 throw cancelled
+             } catch (error: QrAuthorizationException) {
+                 ensureActive()
+-                _state.value = QrAuthorizationState.Failed(error.message.orEmpty())
++                environment.publishCallback { caller.ensureActive(); _state.value = QrAuthorizationState.Failed(error.message.orEmpty()) }
+             } catch (_: Exception) {
+                 ensureActive()
++                environment.publishCallback { caller.ensureActive();
+                 _state.value = QrAuthorizationState.Failed(
+                     "未能确认授权结果，请先查看对方设备是否已登录；未登录时刷新二维码后重新扫描"
+                 )
++                }
+             }
+         }
+     }
+ 
+     @MainThread
+     fun scannerFailed(message: String) {
++        environment.ensureOwned()
+         if (_state.value == QrAuthorizationState.Idle) _state.value = QrAuthorizationState.Failed(message)
+     }
+ 
+     @MainThread
+     fun reset() {
++        environment.ensureOwned()
+         requestJob?.cancel()
+         requestJob = null
+         prepared = null
+         _state.value = initialState()
+     }
+ 
+-    private fun initialState(): QrAuthorizationState =
+-        if (TokenManager.sessDataCache.isNullOrBlank() || TokenManager.csrfCache.isNullOrBlank())
++    /** Disposal only cancels this original request and forgets its captured credentials.
++     * It does not read account state after the entry is retired. */
++    fun retire() {
++        requestJob?.cancel()
++        requestJob = null
++        prepared = null
++    }
++
++    private fun initialState(): QrAuthorizationState {
++        val session = readSession()
++        return if (session.sessData.isBlank() || session.csrf.isBlank())
+             QrAuthorizationState.LoginRequired else QrAuthorizationState.Idle
++    }
+ 
+-    private fun readSession() = QrAuthorizationSession(
+-        TokenManager.sessDataCache.orEmpty(), TokenManager.csrfCache.orEmpty(),
+-        TokenManager.midCache, TokenManager.buvid3Cache.orEmpty(),
+-        TokenManager.accessTokenCache.orEmpty(), TokenManager.accessTokenPlatformCache,
+-    )
++    private fun readSession() = environment.accounts.qrAuthorizationSession()
+ }

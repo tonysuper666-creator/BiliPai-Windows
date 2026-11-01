@@ -1,15 +1,9 @@
 # path (relative to com/android/purebilibili/)	what it waits for
-feature/login/BiliPaiQrDecoder.kt	编译不过（17 处）：未解析 width×5；未解析 height×4；未解析 Bitmap×2；等对应桌面替身或桌面实现
-feature/login/BiliPaiTransferContent.kt	编译不过（30 处）：Cannot infer type for type parameter '_'. Specify ×4；未解析 XmlPullParser×4；未解析 Xml×3；等对应桌面替身或桌面实现
+feature/login/BiliPaiTransferContent.kt	等待 TON-1116 迁入 SettingsShareService 的真实导出/导入接口；本文件的 BiliPaiTransferSettingsBridge 调用 createExportArtifact / buildTransferImportSession / applyImport；另需 XML 规则适配（TON-1066）
 feature/login/BiliPaiTransferKeyStore.kt	编译不过（7 处）：未解析 PURPOSE_SIGN×1；未解析 PURPOSE_VERIFY×1；未解析 setDigests×1；等对应桌面替身或桌面实现
-feature/login/BiliPaiTransferScanner.kt	编译不过（134 处）：Cannot infer type for type parameter '_'. Specify ×21；未解析 camera×7；未解析 width×6；等对应桌面替身或桌面实现
 feature/login/BiliPaiTransferSession.kt	编译不过（15 处）：Cannot infer type for type parameter '_'. Specify ×5；未解析 BiliPaiTransferKeyStore×3；未解析 BiliPaiTransferImportReport×2；等对应桌面替身或桌面实现
-feature/login/CaptchaManager.kt	编译不过（92 处）：Cannot infer type for type parameter '_'. Specify ×8；未解析 settings×6；未解析 view×5；等对应桌面替身或桌面实现
 feature/login/LoginComponents.kt	编译不过（11 处）：未解析 LoadingAnimation×3；未解析 LocalActivity×2；未解析 SuccessAnimation×2；等对应桌面替身或桌面实现
 feature/login/LoginScreen.kt	编译不过（21 处）：Cannot infer type for type parameter '_'. Specify ×6；未解析 Bitmap×5；未解析 LocalActivity×2；等对应桌面替身或桌面实现
-feature/login/LoginViewModel.kt	编译不过（43 处）：Unresolved reference. None of the following candid×16；未解析 Bitmap×7；Cannot infer type for type parameter '_'. Specify ×7；等对应桌面替身或桌面实现
-feature/login/OfficialQrAuthorizationContent.kt	编译不过（1 处）：未解析 BiliPaiTransferScanner×1；等对应桌面替身或桌面实现
-feature/login/OfficialQrAuthorizationViewModel.kt	桌面构造函数带 DesktopProfileEnvironment（请求经 Root 门控）；上游无参。登录流程整体迁移时一起处理（需求 2）
 feature/plugin/AdFilterInsightPolicy.kt	旧 AdFilterPlugin 副本和桌面插件页按 DesktopPluginContext 调用这个存储；随 AdFilterPlugin 一起迁
 feature/plugin/AdFilterPlugin.kt	编译不过（9 处）：None of the following candidates is applicable:×3；未解析 data×3；未解析 build×3；等对应桌面替身或桌面实现
 feature/plugin/Anime4KPlugin.kt	编译不过（7 处）：Argument type mismatch: actual type is '_', but '_×6；Assignment type mismatch: actual type is '_', but ×1；等对应桌面替身或桌面实现
