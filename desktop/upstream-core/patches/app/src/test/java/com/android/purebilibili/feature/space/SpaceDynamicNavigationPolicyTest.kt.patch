@@ -1,0 +1,26 @@
+Upstream-source-sha256: ddd51399d1262e0d766c2b8e5268c68e72ba9472dfbaa58037726092f7a35150
+Reason: ARTICLE majors use the shared OpenArticle renderer even when their jump URL is opus. Assert both shared and space actions plus full article ID/title; the separate direct opus article-click tests remain OpenDynamicDetail and unchanged. Preserve the test method identity for baseline comparison.
+
+--- a/app/src/test/java/com/android/purebilibili/feature/space/SpaceDynamicNavigationPolicyTest.kt
++++ b/app/src/test/java/com/android/purebilibili/feature/space/SpaceDynamicNavigationPolicyTest.kt
+@@ -130,15 +130,16 @@
+             )
+         )
+ 
+-        val sharedAction = assertIs<DynamicCardPrimaryAction.OpenDynamicDetail>(
++        val sharedAction = assertIs<DynamicCardPrimaryAction.OpenArticle>(
+             resolveDynamicCardPrimaryAction(resolveSpaceDynamicCardItem(dynamic))
+         )
+-        val spaceAction = assertIs<SpaceDynamicClickAction.OpenDynamicDetail>(
++        val spaceAction = assertIs<SpaceDynamicClickAction.OpenArticle>(
+             resolveSpaceDynamicClickAction(dynamic)
+         )
+ 
+-        assertEquals(sharedAction.dynamicId, spaceAction.dynamicId)
+-        assertEquals("1200069469486972932", spaceAction.dynamicId)
++        assertEquals(sharedAction.articleId, spaceAction.articleId)
++        assertEquals(1200069469486972932L, spaceAction.articleId)
++        assertEquals("长图文标题", spaceAction.title)
+     }
+ 
+     @Test
