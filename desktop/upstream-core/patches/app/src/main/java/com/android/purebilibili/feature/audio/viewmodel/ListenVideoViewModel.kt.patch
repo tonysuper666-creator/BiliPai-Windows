@@ -1,0 +1,49 @@
+--- a/com/android/purebilibili/feature/audio/viewmodel/ListenVideoViewModel.kt
++++ b/com/android/purebilibili/feature/audio/viewmodel/ListenVideoViewModel.kt
+@@ -1,12 +1,10 @@
+ package com.android.purebilibili.feature.audio.viewmodel
+ 
+-import androidx.lifecycle.ViewModel
+-import androidx.lifecycle.viewModelScope
+ import com.android.purebilibili.core.coroutines.AccountScopedRequests
+-import com.android.purebilibili.core.store.TokenManager
++import com.android.purebilibili.core.store.AccountSessionIdentity
++import com.bilipai.desktop.ui.DesktopOriginalListenVideoOwner
+ import com.android.purebilibili.data.model.response.FavFolder
+ import com.android.purebilibili.data.model.response.FavoriteData
+-import com.android.purebilibili.feature.audio.library.BilibiliListenVideoLibraryDataSource
+ import com.android.purebilibili.feature.audio.library.ListenVideoAlbum
+ import com.android.purebilibili.feature.audio.library.ListenVideoArtist
+ import com.android.purebilibili.feature.audio.library.ListenVideoLibraryDataSource
+@@ -45,12 +43,17 @@
+     val error: String? = null
+ )
+ 
+-internal class ListenVideoViewModel(
+-    private val dataSource: ListenVideoLibraryDataSource = BilibiliListenVideoLibraryDataSource(),
+-    private val currentMid: () -> Long = { TokenManager.midCache ?: 0L }
+-) : ViewModel() {
++// Desktop: one ListenVideo visit owned by its personal-lists entry. Every state write goes through the entry's
++// publication gate (a retired entry throws CancellationException), requests run in the entry's scope, and an
++// account change retires the whole entry, so the account identity stays fixed for this model's life.
++internal class ListenVideoViewModel(
++    private val environment: DesktopOriginalListenVideoOwner
++) {
++    private val dataSource: ListenVideoLibraryDataSource = environment.dataSource
++    private val currentMid: () -> Long = environment::currentMid
++    private val viewModelScope get() = environment.scope
+     private var loader = ListenVideoLibraryLoader(dataSource)
+-    private val _uiState = MutableStateFlow(ListenVideoUiState())
++    private val _uiState = environment.ownedState(ListenVideoUiState())
+     val uiState = _uiState.asStateFlow()
+ 
+     private var refreshJob: Job? = null
+@@ -66,7 +69,7 @@
+     private var indexCompleted = false
+     private var lastDetailTitle = ""
+     private var lastDetailRequest: (suspend () -> Result<List<FavoriteData>>)? = null
+-    private val accountRequests = AccountScopedRequests(viewModelScope)
++    private val accountRequests = AccountScopedRequests(environment.scope, MutableStateFlow(AccountSessionIdentity()))
+     private var isPageActive = false
+     private var needsAccountReload = false
+ 
