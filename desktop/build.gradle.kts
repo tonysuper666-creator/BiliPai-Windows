@@ -387,7 +387,6 @@ val appM4cLaterSteps: Map<String, String> = mapOf(
     "com/android/purebilibili/feature/audio/screen/AudioNowPlayingBarPresenceMotionPolicy.kt" to "上游删除了 LINKED_DOCK_* 合并动效常量，桌面硬底栏切片（linked-dock）还在用；等 M4b 底部栏改造",
     "com/android/purebilibili/feature/audio/screen/AudioNowPlayingWindowSnapshot.kt" to "Android Canvas/Bitmap 窗口快照；桌面音乐页没有这个快照，先保留旧副本",
     "com/android/purebilibili/feature/audio/screen/ExternalPlaylistImportDialog.kt" to "依赖 ExternalPlaylistRepository 与 SAF 文件选择",
-    "com/android/purebilibili/feature/audio/screen/ListenVideoCollectionPlayer.kt" to "需要上面那份 ListenVideoViewModel；显式类型参数告警在桌面按错误处理",
     "com/android/purebilibili/feature/audio/screen/ListenVideoScreen.kt" to "依赖上游新版 TabRow 选中 API",
     "com/android/purebilibili/feature/audio/screen/MusicAtmosphereBackground.kt" to "依赖 Media3 音频波形（AudioWaveformSource）",
     "com/android/purebilibili/feature/audio/screen/MusicDetailScreen.kt" to "依赖 VideoPlaybackViewModel（视频播放，M4a 范围）",

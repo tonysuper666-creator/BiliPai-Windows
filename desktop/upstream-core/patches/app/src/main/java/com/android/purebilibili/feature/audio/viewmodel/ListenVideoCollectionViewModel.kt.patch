@@ -21,7 +21,7 @@
  import kotlinx.coroutines.flow.update
  import kotlinx.coroutines.launch
 +import kotlinx.coroutines.currentCoroutineContext
-+import com.bilipai.desktop.ui.DesktopOriginalListenVideoCollectionEnvironment
++import com.bilipai.desktop.ui.DesktopOriginalListenCollectionOwner
 +import com.bilipai.desktop.ui.DesktopOriginalListenCollectionPlaybackTarget
  import kotlinx.coroutines.withContext
  
@@ -33,7 +33,7 @@
 -    source: ListenVideoLibraryDataSource = BilibiliListenVideoLibraryDataSource(),
 -) : ViewModel() {
 -    private val loader = ListenVideoLibraryLoader(source)
-+    private val environment: DesktopOriginalListenVideoCollectionEnvironment,
++    private val environment: DesktopOriginalListenCollectionOwner,
 +) {
 +    private val viewModelScope get() = environment.scope
 +    private val loader = ListenVideoLibraryLoader(environment.dataSource)
@@ -122,8 +122,8 @@
 +        environment.commit {
 +            val first = _state.value.firstTrack ?: return@commit
 +            val capturedSession = session ?: return@commit
-+            if (!environment.playlist.isSessionCurrent(capturedSession)) return@commit
-+            val selected = environment.playlist.getCurrentItem() ?: return@commit
++            if (!environment.isSessionCurrent(capturedSession)) return@commit
++            val selected = environment.currentItem() ?: return@commit
 +            target = environment.capturePlaybackTarget(capturedSession, selected) {
 +                session == capturedSession && _state.value.firstTrack === first
 +            }
