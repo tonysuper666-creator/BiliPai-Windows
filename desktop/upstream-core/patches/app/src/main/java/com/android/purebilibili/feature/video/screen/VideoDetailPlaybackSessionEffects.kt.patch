@@ -36,19 +36,7 @@
      LaunchedEffect(viewModel, state, "resume-identity") {
          viewModel.subjectSnapshot.collect { subject ->
              val pending = state.resumeMessage
-@@ -65,6 +66,11 @@
-             if (message.presentation == PlayerToastPresentation.PlaybackResume) {
-                 state.resumeMessageDeadlineMs = null
-                 state.resumeMessage = message
-+                // Transitional desktop host: preserve the existing popup until the
-+                // dedicated PlaybackResumeFeedback provider/section migrates together.
-+                state.popupMessage = message
-+                delay(2_000)
-+                state.popupMessage = null
-                 return@collect
-             }
-             state.popupMessage = message
-@@ -79,12 +85,11 @@
+@@ -79,12 +80,11 @@
                  color = danmakuData.color,
                  mode = danmakuData.mode,
                  fontSize = danmakuData.fontSize,

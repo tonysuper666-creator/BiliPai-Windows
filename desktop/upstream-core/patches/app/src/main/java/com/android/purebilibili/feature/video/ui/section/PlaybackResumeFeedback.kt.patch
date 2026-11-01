@@ -1,0 +1,10 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/video/ui/section/PlaybackResumeFeedback.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/video/ui/section/PlaybackResumeFeedback.kt
+@@ -1,6 +1,6 @@
+ package com.android.purebilibili.feature.video.ui.section
+ 
+-import android.os.SystemClock
++import com.bilipai.desktop.ui.DesktopHomeClock as SystemClock
+ import androidx.compose.foundation.layout.BoxScope
+ import androidx.compose.foundation.layout.padding
+ import androidx.compose.foundation.layout.widthIn

@@ -1,0 +1,18 @@
+--- a/com/android/purebilibili/feature/video/screen/VideoDetailPlayerTransitionHost.kt
++++ b/com/android/purebilibili/feature/video/screen/VideoDetailPlayerTransitionHost.kt
+@@ -169,6 +169,7 @@
+     transitionEnabled: Boolean,
+     transitionChromeAlphaProvider: () -> Float,
+     danmakuHostActive: Boolean,
++    suppressTransientOverlaysForTransition: Boolean,
+     onToggleFullscreen: () -> Unit,
+     playbackActions: VideoDetailPlaybackActions,
+     onDoubleTapLike: () -> Unit,
+@@ -232,6 +233,7 @@
+                 transitionEnabled = transitionEnabled,
+                 transitionChromeAlphaProvider = transitionChromeAlphaProvider,
+                 danmakuHostActive = danmakuHostActive,
++                suppressTransientOverlaysForTransition = suppressTransientOverlaysForTransition,
+                 endDrawerRequestKey = endDrawerRequestKey,
+                 landscapeCommentPanelVisible = isFullscreen &&
+                     fullscreenExtras?.landscapeCommentPanelVisible == true,
