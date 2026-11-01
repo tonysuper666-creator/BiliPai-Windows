@@ -1,0 +1,20 @@
+Upstream-source-sha256: d9fd984ab3348543fa1a7b71f6eb49baa95f1c32498e8bf590eda6b4e119c791
+Reason: 外观页描述卡片已不再包 AdaptivePlainTooltipBox（d98ddf5ab 起外观页统一走 SettingsPageScaffold），tooltip 的调用点是该脚手架的返回按钮。断言改为外观页经 SettingsPageScaffold 挂载、脚手架里确有 AdaptivePlainTooltipBox( 调用；tooltip 实现本身的两条断言不变。生产不动。
+
+--- a/app/src/test/java/com/android/purebilibili/core/ui/AdaptiveTooltipIntegrationTest.kt
++++ b/app/src/test/java/com/android/purebilibili/core/ui/AdaptiveTooltipIntegrationTest.kt
+@@ -17,7 +17,13 @@
+ 
+         assertTrue(tooltipSource.contains("MiuixTooltipBox("))
+         assertTrue(tooltipSource.contains("rememberPresetPrimitiveRenderer()"))
+-        assertTrue(appearanceSource.contains("AdaptivePlainTooltipBox("))
++        // 外观页描述卡片不再直接包 tooltip；外观页统一走 SettingsPageScaffold，
++        // tooltip 的调用点是该脚手架的返回按钮。
++        val scaffoldSource = load(
++            "app/src/main/java/com/android/purebilibili/feature/settings/ui/SettingsPageScaffold.kt"
++        )
++        assertTrue(appearanceSource.contains("SettingsPageScaffold("))
++        assertTrue(scaffoldSource.contains("AdaptivePlainTooltipBox("))
+     }
+ 
+     private fun load(path: String): String = listOf(
