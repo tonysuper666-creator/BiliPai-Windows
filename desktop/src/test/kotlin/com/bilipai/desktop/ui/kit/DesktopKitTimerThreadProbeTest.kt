@@ -8,7 +8,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Density
 import com.bilipai.desktop.ui.DesktopToastController
 import com.bilipai.desktop.ui.DesktopToastHost
-import kotlinx.coroutines.test.UncaughtExceptionsBeforeTest
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Test
 import kotlin.test.assertTrue
@@ -39,7 +38,8 @@ class DesktopKitTimerThreadProbeTest {
         val leaks = mutableListOf<String>()
         for (round in 1..40) {
             cycle(idle = round % 2 == 0)
-            try { runTest { } } catch (e: UncaughtExceptionsBeforeTest) {
+            try { runTest { } } catch (e: IllegalStateException) {
+                if (e.javaClass.simpleName != "UncaughtExceptionsBeforeTest") throw e
                 leaks += "round $round: ${e.suppressedExceptions.map { it.message?.take(120) }}"
             }
         }
