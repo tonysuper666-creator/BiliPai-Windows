@@ -132,7 +132,7 @@ class DesktopDownloadQueueSemanticsTest {
 
     @Test fun `cancel stops a running transfer, frees its slot for the next queued one and stays cancelled`(): Unit = runBlocking {
         val root = Files.createTempDirectory("bilipai-queue-cancel-")
-        val cdn = FakeCdn(bytes); val gateA = cdn.hold("/video-1"); val gateB = cdn.hold("/video-2")
+        val cdn = FakeCdn(bytes); val gateA = cdn.hold("/video-1"); val gateB = cdn.hold("/video-2"); val gateD = cdn.hold("/video-4")
         val manager = manager(root, cdn, publication = publication(kotlin.coroutines.coroutineContext[kotlinx.coroutines.Job]!!))
         try {
             val a = manager.add(root, 1); val b = manager.add(root, 2); val c = manager.add(root, 3)
@@ -149,11 +149,13 @@ class DesktopDownloadQueueSemanticsTest {
             assertFalse(Files.exists(Path.of(manager.task(a).directory).resolve("video.m4s")))
             assertEquals(DownloadStatus.DOWNLOADING, manager.task(b).status, "other transfers are untouched")
 
-            // Cancelling something that never started means it never starts.
+            // Cancelling something that never started means it never starts. d is held so that its
+            // DOWNLOADING state lasts until the test lets go and e is still queued when it is cancelled.
             val d = manager.add(root, 4); val e = manager.add(root, 5)
             manager.status(d, DownloadStatus.DOWNLOADING)
+            assertEquals(DownloadStatus.QUEUED, manager.task(e).status, "two slots are taken")
             manager.cancel(e)
-            gateB.complete(Unit)
+            gateB.complete(Unit); gateD.complete(Unit)
             manager.status(b, DownloadStatus.COMPLETED); manager.status(d, DownloadStatus.COMPLETED)
             delay(200)
             assertEquals(DownloadStatus.PAUSED, manager.task(e).status)
@@ -163,7 +165,7 @@ class DesktopDownloadQueueSemanticsTest {
             manager.resume(a)
             manager.status(a, DownloadStatus.COMPLETED)
             assertContentEquals(bytes, Files.readAllBytes(Path.of(manager.offlinePlayback(a).videoUrl)))
-        } finally { gateA.complete(Unit); gateB.complete(Unit); manager.shutdownForApplicationExit() }
+        } finally { gateA.complete(Unit); gateB.complete(Unit); gateD.complete(Unit); manager.shutdownForApplicationExit() }
     }
 
     // ---- 进程重启后恢复 ----------------------------------------------------------------------------------------------
