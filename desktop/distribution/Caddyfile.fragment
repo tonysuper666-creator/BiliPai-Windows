@@ -1,0 +1,10 @@
+# Add inside learn.tonysuper666.com, before its final catch-all handle.
+redir /bilipai /bilipai/ 308
+handle_path /bilipai/* {
+    request_body {
+        max_size 1KB
+    }
+    header Cache-Control "no-store"
+    header Referrer-Policy "no-referrer"
+    reverse_proxy 127.0.0.1:8140
+}

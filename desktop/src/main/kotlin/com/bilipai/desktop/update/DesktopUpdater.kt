@@ -29,7 +29,7 @@ import java.security.MessageDigest
 import java.util.UUID
 import java.util.concurrent.TimeUnit
 
-/** A build-configured GitHub Windows ZIP updater. It never downloads or installs Android APKs. */
+/** A build-configured Windows ZIP updater. It never downloads or installs Android APKs. */
 class DesktopUpdater private constructor(
     private val config: UpdateConfig?,
     private val updateRoot: Path,
@@ -39,6 +39,7 @@ class DesktopUpdater private constructor(
     private val catalogLookupForTest: (suspend (WindowsUpdate) -> VerifiedVeyraCompatibleOffer?)? = null,
     private val processFactoryForTest: ((ProcessBuilder) -> Process)? = null,
     private val knownRunningStagesForTest: (() -> Set<Path>)? = null,
+    private val signedPublicKeyForTest: String? = null,
 ) : AutoCloseable {
     constructor() : this(loadBuildConfig(), defaultUpdateRoot(), defaultClient(), null, {})
 
@@ -48,14 +49,92 @@ class DesktopUpdater private constructor(
     private val disabledReason = when {
         config == null -> "此构建缺少 Windows 更新配置"
         repository == null -> "尚未配置 Windows 发布仓库；启用发布流水线后可检查桌面更新"
+        config.source !in setOf("signed", "github-legacy") -> "此构建的更新源无效"
+        config.source == "signed" && (!DistributionTrust.validBase(config.distributionBase) || config.channel !in setOf("dev", "stable")) -> "签名更新源或频道无效"
         installedVersion == null -> "此构建的 Windows 版本标识无效"
-        config.channel !in setOf("stable", "prerelease") -> "此构建的更新渠道无效"
+        config.channel !in setOf("stable", "prerelease", "dev") -> "此构建的更新渠道无效"
         System.getProperty("os.name").startsWith("Windows", ignoreCase = true) && System.getenv("LOCALAPPDATA").isNullOrBlank() -> "Windows 本地应用数据目录不可用"
         else -> null
     }
     private val mutableState = MutableStateFlow<UpdateState>(disabledReason?.let(UpdateState::Disabled) ?: UpdateState.Idle)
     val state: StateFlow<UpdateState> = mutableState.asStateFlow()
     private val mutex = Mutex()
+    private val signedSource get() = config?.source == "signed"
+    private val distributionState by lazy { DistributionState(updateRoot, requireNotNull(config).channel) }
+    private val mutableRemotePolicy = MutableStateFlow(DistributionRemotePolicy())
+    internal val remotePolicy: StateFlow<DistributionRemotePolicy> = mutableRemotePolicy.asStateFlow()
+
+    private fun signedRelease(update: WindowsUpdate): DistributionRelease {
+        val settings = requireNotNull(config)
+        val raw = requireNotNull(update.signedManifest) { "此更新缺少签名 manifest" }
+        val manifest = SignedDistributionFeed.manifest(raw, settings.channel, settings.distributionBase, publicKey = signedPublicKeyForTest ?: DistributionTrust.PUBLIC_KEY)
+        val release = requireNotNull(manifest.release)
+        require(release.update(raw) == update && release.version !in manifest.withdrawn) { "签名与更新目标不符，或版本已撤回" }
+        return release
+    }
+
+    private suspend fun fetchDistributionManifest(): Pair<String, DistributionManifest> {
+        val settings = requireNotNull(config)
+        val id = distributionState.installationId()
+        val base = settings.distributionBase
+        val url = settings.manifestUrl ?: "$base/updates/${settings.channel}.json"
+        require(url == "$base/updates/${settings.channel}.json" || trustedAssetUrl(url, requireNotNull(repository))) {
+            "签名 manifest 必须来自配置服务器或自己的 GitHub 发布仓库"
+        }
+        // No Bilibili client, cookie jar or account identifiers are shared with this client.
+        val query = DistributionTrust.manifestRequestUrl(url, base, settings.version, settings.channel, id)
+        val raw = fetchSignedText(query, 32 * 1024)
+        val manifest = SignedDistributionFeed.manifest(raw, settings.channel, base, publicKey = signedPublicKeyForTest ?: DistributionTrust.PUBLIC_KEY)
+        distributionState.accept("manifest", manifest.sequence, raw)
+        return raw to manifest
+    }
+
+    private suspend fun refreshRemotePolicy() {
+        val settings = requireNotNull(config)
+        val ownUrl = "${settings.distributionBase}/config/${settings.channel}.json"
+        val url = settings.configUrl ?: ownUrl
+        require(url == ownUrl || trustedAssetUrl(url, requireNotNull(repository))) { "远程配置必须来自配置服务器或自己的 GitHub 发布仓库" }
+        val rawConfig = fetchSignedText(url, 16 * 1024)
+        val remote = SignedDistributionFeed.config(rawConfig, settings.channel, publicKey = signedPublicKeyForTest ?: DistributionTrust.PUBLIC_KEY)
+        distributionState.accept("config", remote.sequence, rawConfig)
+        mutableRemotePolicy.value = remote.policy
+    }
+
+    private suspend fun checkDistribution(): UpdateState {
+        refreshRemotePolicy()
+        val settings = requireNotNull(config)
+        val (raw, manifest) = fetchDistributionManifest()
+        val release = manifest.release ?: return UpdateState.UpToDate(settings.version)
+        if (release.version in manifest.withdrawn ||
+            !SignedDistributionFeed.inRollout(distributionState.installationId(), release.version, manifest.rolloutPercent))
+            return UpdateState.UpToDate(settings.version)
+        return if (requireNotNull(DesktopVersion.parse(release.version)) > requireNotNull(installedVersion))
+            UpdateState.Available(release.update(raw)) else UpdateState.UpToDate(settings.version)
+    }
+
+    private suspend fun requireStillPublished(update: WindowsUpdate) {
+        if (!signedSource) return
+        val expected = signedRelease(update)
+        val (_, current) = fetchDistributionManifest()
+        require(current.release == expected && expected.version !in current.withdrawn &&
+            SignedDistributionFeed.inRollout(distributionState.installationId(), expected.version, current.rolloutPercent)) {
+            "更新已撤回或不再向此安装放量，当前版本继续运行"
+        }
+    }
+
+    private suspend fun fetchSignedText(url: String, limit: Int): String {
+        val scope = VeyraCatalogHttpScope(url, asset = false)
+        val request = Request.Builder().url(url).tag(VeyraCatalogHttpScope::class.java, scope)
+            .header("User-Agent", "BiliPai-Windows-Updater").build()
+        scope.requireAllowed(request)
+        return executeRequest(request) { response ->
+            scope.requireAllowed(response.request)
+            require(response.isSuccessful) { "签名更新服务器返回 HTTP ${response.code}" }
+            val bytes = response.body.byteStream().use { it.readNBytes(limit + 1) }
+            require(bytes.size <= limit) { "签名更新元数据过大" }
+            Charsets.UTF_8.newDecoder().decode(java.nio.ByteBuffer.wrap(bytes)).toString()
+        }
+    }
     private var retainedPrepared: PreparedUpdate? = null
     private var retainedArchiveSha256: String? = null
     private var retainedReceipt: DesktopPreparedUpdateStorage.Receipt? = null
@@ -111,6 +190,7 @@ class DesktopUpdater private constructor(
     internal suspend fun resolveVeyraCatalog(update: WindowsUpdate): VerifiedVeyraCompatibleOffer? = withContext(Dispatchers.IO) {
         ensureOpenAndActive()
         validateUpdate(update)
+        if (signedSource) return@withContext null
         val testLookup = catalogLookupForTest
         if (testLookup != null) testLookup(update)
         else {
@@ -167,6 +247,7 @@ class DesktopUpdater private constructor(
             receipt.repository == repository && receipt.channel == settings.channel &&
             receipt.executableName == settings.executable)
         validateUpdate(receipt.update)
+        if (signedSource) verifyChecksum(receipt.archiveSha256, signedRelease(receipt.update).sha256)
         require(desired == null || receipt.update == desired)
         signedArchiveSha256?.let { verifyChecksum(receipt.archiveSha256, it) }
         true
@@ -268,10 +349,10 @@ class DesktopUpdater private constructor(
             retainedPrepared?.takeIf { retainedReceipt?.phase == DesktopPreparedUpdateStorage.Phase.READY }
                 ?.let { return@withContext UpdateState.Prepared(it).also { result -> mutableState.value = result } }
             resumeReadyPrepared()?.let { return@withContext UpdateState.Prepared(it) }
-            if (!force && !shouldCheck(lastCheckTime(), System.currentTimeMillis())) return@withContext state.value
+            if (!force && !shouldCheck(lastCheckTime(), System.currentTimeMillis(), mutableRemotePolicy.value.checkIntervalHours * 3600_000L)) return@withContext state.value
             mutableState.value = UpdateState.Checking
-            val releases = fetchReleases(requireNotNull(repository))
-            val result = evaluateReleases(releases, requireNotNull(config), requireNotNull(installedVersion))
+            val result = if (signedSource) checkDistribution() else
+                evaluateReleases(fetchReleases(requireNotNull(repository)), requireNotNull(config), requireNotNull(installedVersion))
             ensureOpenAndActive()
             if (result !is UpdateState.Failed) {
                 UpdateStorage.verifiedRoot(updateRoot)
@@ -306,10 +387,11 @@ class DesktopUpdater private constructor(
         if (state.value is UpdateState.Disabled || state.value is UpdateState.Failed ||
             state.value is UpdateState.Prepared || state.value is UpdateState.Launched)
             return AUTO_CHECK_INTERVAL_MS
+        val interval = mutableRemotePolicy.value.checkIntervalHours * 60 * 60 * 1000L
         val previous = lastCheckTime()
         if (previous <= 0L || nowMs < previous) return 60_000L
         val elapsed = nowMs - previous
-        return if (elapsed >= AUTO_CHECK_INTERVAL_MS) 60_000L else AUTO_CHECK_INTERVAL_MS - elapsed
+        return if (elapsed >= interval) 60_000L else interval - elapsed
     }
 
     /** Downloads, verifies and extracts a side-by-side installation while the current app keeps running. */
@@ -336,6 +418,7 @@ class DesktopUpdater private constructor(
                 return@withContext it.takeIf { prepared -> prepared.update == update }
             }
             validateUpdate(update)
+            requireStillPublished(update)
             require(registryAllowsPreparedUpgrade(update)) { "已有相同或更高的已注册 Windows 版本，此更新无法提交" }
             require((state.value as? UpdateState.Available)?.update == update) { "Windows 更新目标已改变，请重新检查" }
             // Generic callers also resolve before any stage or Downloading state. Only absent means ordinary.
@@ -350,7 +433,8 @@ class DesktopUpdater private constructor(
             val staging = acquired.stage
             val archive = staging.resolve("download.zip")
             mutableState.value = UpdateState.Downloading(0, update.size)
-            val expectedHash = parseChecksum(fetchText(update.checksumUrl, 128 * 1024), update.assetName)
+            val expectedHash = if (signedSource) signedRelease(update).sha256 else
+                parseChecksum(fetchText(update.checksumUrl, 128 * 1024), update.assetName)
             compatibleSha256?.let { verifyChecksum(expectedHash, it) }
             val digest = download(update, archive)
             ensureOpenAndActive()
@@ -403,6 +487,7 @@ class DesktopUpdater private constructor(
         beforeLaunch: suspend (String) -> Unit = {},
         onCommitted: () -> Unit = {},
         afterFailedLaunch: suspend () -> Unit = {},
+        automatic: Boolean = false,
     ): Boolean = withContext(Dispatchers.IO) {
         if (closed || disabledReason != null || !mutex.tryLock()) return@withContext false
         var attempt: LaunchAttempt? = null
@@ -425,6 +510,11 @@ class DesktopUpdater private constructor(
                 "更新准备记录与当前目标不一致"
             }
             validateUpdate(prepared.update)
+            requireStillPublished(prepared.update)
+            if (signedSource) {
+                refreshRemotePolicy()
+                require(!automatic || mutableRemotePolicy.value.automaticUpdatesEnabled) { "自动更新已暂停，当前版本继续运行" }
+            }
             require(UpdateStorage.ownedStage(updateRoot, prepared.stagingDirectory, requireNotNull(repository)) != null &&
                 validStoredExecutable(prepared.executable.toString()) == prepared.executable) { "更新安装目录校验失败" }
             val observed = readActiveInstallationSnapshot()
@@ -530,7 +620,8 @@ class DesktopUpdater private constructor(
     private fun validateUpdate(update: WindowsUpdate) {
         require(DesktopVersion.parse(update.version)?.let { it > requireNotNull(installedVersion) } == true) { "更新版本必须高于当前桌面版本" }
         require(update.releaseId > 0 && update.assetId > 0 && isWindowsZip(update.assetName) && update.size in 1..MAX_DOWNLOAD_BYTES) { "Windows 更新包名称、标识或大小异常" }
-        require(trustedAssetUrl(update.downloadUrl, requireNotNull(repository)) && trustedAssetUrl(update.checksumUrl, repository)) { "更新地址与构建配置的发布仓库不一致" }
+        if (signedSource) signedRelease(update)
+        else require(trustedAssetUrl(update.downloadUrl, requireNotNull(repository)) && trustedAssetUrl(update.checksumUrl, repository)) { "更新地址与构建配置的发布仓库不一致" }
     }
 
     private suspend fun fetchReleases(repository: String): List<GitHubRelease> {
@@ -603,7 +694,11 @@ class DesktopUpdater private constructor(
 
     private suspend fun download(update: WindowsUpdate, destination: Path): String {
         val context = currentCoroutineContext()
-        return executeRequest(Request.Builder().url(update.downloadUrl).header("User-Agent", "BiliPai-Windows-Updater").build()) { response ->
+        val builder = Request.Builder().url(update.downloadUrl).header("User-Agent", "BiliPai-Windows-Updater")
+        val scope = if (signedSource) VeyraCatalogHttpScope(update.downloadUrl, asset = true) else null
+        if (scope != null) { builder.tag(VeyraCatalogHttpScope::class.java, scope); scope.requireAllowed(builder.build()) }
+        return executeRequest(builder.build()) { response ->
+            scope?.requireAllowed(response.request)
             require(response.isSuccessful) { "更新下载返回 HTTP ${response.code}" }
             val body = response.body
             require(body.contentLength() < 0 || body.contentLength() == update.size) { "更新包声明的文件大小不一致" }
@@ -945,7 +1040,7 @@ class DesktopUpdater private constructor(
         internal const val MAX_RELEASE_PAGES = 100
         private fun loadBuildConfig(): UpdateConfig? = runCatching {
             DesktopUpdater::class.java.getResourceAsStream("/windows-update.json")?.use {
-                Json { ignoreUnknownKeys = true }.decodeFromString<UpdateConfig>(it.readBytes().toString(Charsets.UTF_8))
+                Json { ignoreUnknownKeys = true }.decodeFromString<UpdateConfig>(it.readBytes().toString(Charsets.UTF_8)).also { settings -> require(settings.source == "signed") }
             }
         }.getOrNull()
         internal fun packagedVersion(): String = requireNotNull(loadBuildConfig()?.version?.takeIf { DesktopVersion.parse(it) != null }) {
@@ -954,7 +1049,7 @@ class DesktopUpdater private constructor(
         private fun defaultUpdateRoot(): Path = Path.of(System.getenv("LOCALAPPDATA")?.takeIf { it.isNotBlank() }
             ?: Path.of(System.getProperty("user.home"), ".local", "share").toString(), "BiliPai", "updates").toAbsolutePath().normalize()
         private fun defaultClient(): OkHttpClient = OkHttpClient.Builder().connectTimeout(15, TimeUnit.SECONDS)
-            .readTimeout(40, TimeUnit.SECONDS).followSslRedirects(false)
+            .readTimeout(40, TimeUnit.SECONDS).callTimeout(120, TimeUnit.SECONDS).followSslRedirects(false)
             .addNetworkInterceptor { chain ->
                 chain.request().tag(VeyraCatalogHttpScope::class.java)?.requireAllowed(chain.request())
                 chain.proceed(chain.request())
@@ -973,21 +1068,27 @@ class DesktopUpdater private constructor(
             processFactory: ((ProcessBuilder) -> Process)? = null,
             channel: String = "prerelease",
             knownRunningStages: () -> Set<Path> = { emptySet() },
+            distributionBase: String? = null,
+            signedPublicKey: String? = null,
+            manifestUrl: String? = null,
+            configUrl: String? = null,
         ): DesktopUpdater {
             require(DesktopVersion.parse(currentVersion) != null && validRepository(repository))
             val childData = childLocalAppData.toAbsolutePath().normalize()
             require(updateRoot.toAbsolutePath().normalize() == childData.resolve("BiliPai/updates")) {
                 "Integration update root must belong to the isolated child LOCALAPPDATA"
             }
-            require(channel in setOf("stable", "prerelease"))
-            return DesktopUpdater(UpdateConfig(currentVersion, windowsReleaseRepository = repository, channel = channel, executable = executable),
-                updateRoot, client, childData, onProcessStarted, compatibleCatalog, processFactory, knownRunningStages)
+            require(channel in setOf("stable", "prerelease", "dev"))
+            return DesktopUpdater(UpdateConfig(currentVersion, windowsReleaseRepository = repository, channel = channel, executable = executable,
+                source = if (distributionBase == null) "github-legacy" else "signed",
+                distributionBase = distributionBase ?: DistributionTrust.DEFAULT_BASE, manifestUrl = manifestUrl, configUrl = configUrl),
+                updateRoot, client, childData, onProcessStarted, compatibleCatalog, processFactory, knownRunningStages, signedPublicKey)
         }
         /** Call before creating the UI; true means a previously verified newer window is running. */
         fun launchInstalledUpdateIfNewer(args: Array<String>): Boolean = runBlocking {
             withContext(Dispatchers.IO) { DesktopUpdater().use { it.launchRegisteredInstall(args) } }
         }
-        internal fun shouldCheck(previous: Long, now: Long): Boolean = previous <= 0 || now < previous || now - previous >= AUTO_CHECK_INTERVAL_MS
+        internal fun shouldCheck(previous: Long, now: Long, intervalMs: Long = AUTO_CHECK_INTERVAL_MS): Boolean = previous <= 0 || now < previous || now - previous >= intervalMs
         internal fun validRepository(value: String): Boolean = Regex("^[A-Za-z0-9][A-Za-z0-9_.-]*/[A-Za-z0-9][A-Za-z0-9_.-]*$").matches(value)
         internal fun isWindowsZip(name: String): Boolean = name.startsWith("BiliPai-Windows", ignoreCase = true) && name.endsWith(".zip", ignoreCase = true) && '/' !in name && '\\' !in name
         internal fun trustedAssetUrl(url: String, repository: String): Boolean = runCatching {
@@ -1039,6 +1140,10 @@ class DesktopUpdater private constructor(
         val windowsReleaseRepository: String? = null,
         val channel: String = "prerelease",
         val executable: String = "BiliPai Windows.exe",
+        val source: String = "github-legacy",
+        val distributionBase: String = DistributionTrust.DEFAULT_BASE,
+        val manifestUrl: String? = null,
+        val configUrl: String? = null,
     )
     @Serializable private data class ActiveInstallation(
         val repository: String,

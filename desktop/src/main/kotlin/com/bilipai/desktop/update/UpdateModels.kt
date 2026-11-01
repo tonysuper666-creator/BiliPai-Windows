@@ -11,6 +11,7 @@ data class WindowsUpdate(
     val downloadUrl: String,
     val checksumUrl: String,
     val releaseUrl: String,
+    val signedManifest: String? = null,
 )
 
 /** A verified installation owned by the updater that prepared it. No process is started yet. */

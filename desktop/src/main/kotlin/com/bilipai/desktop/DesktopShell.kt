@@ -859,6 +859,10 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
             } })
     }
     val updateState by updater.state.collectAsState()
+    val distributionPolicy by updater.remotePolicy.collectAsState()
+    LaunchedEffect(distributionPolicy.announcement) {
+        if (distributionPolicy.announcement.isNotBlank() && !isClosing()) error = distributionPolicy.announcement
+    }
     val veyraInstalledIdentity = player?.veyraInstalledIdentity?.collectAsState()?.value
     val veyraTracking by veyraMonitor.state.collectAsState()
     LaunchedEffect(veyraMonitor, veyraInstalledIdentity) { veyraMonitor.refreshInstalled() }
@@ -1652,21 +1656,27 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
             nextDelayMs = { updater.automaticCheckDelayMs() })
     }
     LaunchedEffect(downloadAuthorityReason) { downloadAuthorityReason?.let { error = it } }
-    LaunchedEffect(updateState, downloadAuthorityReason, automaticUpdates, manuallyRequested, playing.details, playing.opening, mediaActive, listening.active, anyCasting, anyCastBusy, pipActive, dynamicEditor, dynamicEditor.request, dynamicEditorSubmissions, backupUpdateActivity, loginUpdateHold, loginUpdateActivity, pluginJsonUpdateHold, pluginJsonUpdateActivity, messageUpdateRoot, messageUpdateActivity, downloadUpdateHandoffPending, activatingUpdate, updateJob) {
+    val updateUserIdle = playing.details == null && !playing.opening && !mediaActive && !listening.active && !anyCasting && !anyCastBusy && !pipActive && !dynamicEditor.blocksUpdateInstallation() && !backupUpdateHold.blocksUpdateInstallation() && !loginUpdateHold.blocksUpdateInstallation() && !pluginJsonUpdateHold.blocksUpdateInstallation() && messageUpdateRoot?.blocksUpdateInstallation() != true
+    val updateIdle = updateUserIdle && !downloadUpdateHandoffPending && downloads.acceptsMutations()
+    val latestUpdateIdle = rememberUpdatedState(updateUserIdle)
+    LaunchedEffect(updateState, downloadAuthorityReason, automaticUpdates, distributionPolicy, manuallyRequested, playing.details, playing.opening, mediaActive, listening.active, anyCasting, anyCastBusy, pipActive, dynamicEditor, dynamicEditor.request, dynamicEditorSubmissions, backupUpdateActivity, loginUpdateHold, loginUpdateActivity, pluginJsonUpdateHold, pluginJsonUpdateActivity, messageUpdateRoot, messageUpdateActivity, downloadUpdateHandoffPending, activatingUpdate, updateJob) {
         if (updateJob?.isActive == true || activatingUpdate) return@LaunchedEffect
         when (val status = updateState) {
-            is UpdateState.Available -> if (automaticUpdates) prepareUpdate(status.update, false)
-            is UpdateState.Prepared -> if ((automaticUpdates || manuallyRequested) && playing.details == null && !playing.opening && !mediaActive && !listening.active && !anyCasting && !anyCastBusy && !pipActive && !dynamicEditor.blocksUpdateInstallation() && !backupUpdateHold.blocksUpdateInstallation() && !loginUpdateHold.blocksUpdateInstallation() && !pluginJsonUpdateHold.blocksUpdateInstallation() && messageUpdateRoot?.blocksUpdateInstallation() != true && !downloadUpdateHandoffPending && downloads.acceptsMutations()) {
+            is UpdateState.Available -> if (automaticUpdates && distributionPolicy.automaticUpdatesEnabled) prepareUpdate(status.update, false)
+            is UpdateState.Prepared -> if ((automaticUpdates && distributionPolicy.automaticUpdatesEnabled || manuallyRequested) && updateIdle) {
                 activatingUpdate = true
                 updateJob = scope.launch(start = CoroutineStart.LAZY) {
                     var downloadTicket: DesktopDownloadManager.UpdateHandoff? = null
                     try {
                         if (updater.activatePreparedUpdate(status.prepared,
+                            automatic = !manuallyRequested,
                             beforeLaunch = { token ->
+                                if (!latestUpdateIdle.value) throw CancellationException("等待客户端空闲后再切换更新")
                                 // Capture before waiting so failure/cancel always retains
                                 // the exact ticket needed by afterFailedLaunch.
                                 downloadTicket = downloads.beginUpdateHandoff(token, updater.downloadHandoffTarget(status.prepared))
                                 downloads.awaitUpdateHandoff(checkNotNull(downloadTicket))
+                                if (!latestUpdateIdle.value) throw CancellationException("客户端恢复使用，保留更新等待空闲")
                             },
                             onCommitted = { downloadTicket?.let(downloads::commitUpdateHandoff) },
                             afterFailedLaunch = {

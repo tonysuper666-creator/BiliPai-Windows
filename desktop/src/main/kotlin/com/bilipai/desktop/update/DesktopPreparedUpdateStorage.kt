@@ -233,12 +233,17 @@ internal object DesktopPreparedUpdateStorage {
 
     private fun decode(stored: StoredReceipt, bytes: ByteArray, repository: String): Receipt {
         require(stored.schema == 1 && stored.repository == repository && DesktopUpdater.validRepository(repository))
-        require(stored.channel in setOf("stable", "prerelease") && canonicalUuid(stored.preparedId))
+        require(stored.channel in setOf("stable", "prerelease", "dev") && canonicalUuid(stored.preparedId))
         val update = stored.update.toUpdate()
         require(DesktopVersion.parse(update.version) != null && update.releaseId > 0 && update.assetId > 0 &&
             DesktopUpdater.isWindowsZip(update.assetName) && update.size in 1..DesktopUpdater.MAX_DOWNLOAD_BYTES &&
-            DesktopUpdater.trustedAssetUrl(update.downloadUrl, repository) &&
-            DesktopUpdater.trustedAssetUrl(update.checksumUrl, repository)) { "更新准备目标字段无效" }
+            (if (update.signedManifest != null) update.signedManifest.toByteArray(Charsets.UTF_8).size in 1..32 * 1024 &&
+                listOf(update.downloadUrl, update.checksumUrl).all { raw -> runCatching {
+                    val uri = java.net.URI(raw)
+                    uri.scheme == "https" && uri.userInfo == null && uri.host != null && uri.fragment == null
+                }.getOrDefault(false) }
+            else DesktopUpdater.trustedAssetUrl(update.downloadUrl, repository) &&
+                DesktopUpdater.trustedAssetUrl(update.checksumUrl, repository))) { "更新准备目标字段无效" }
         require(Regex("^[0-9a-f]{64}$").matches(stored.archiveSha256))
         require(SafeUpdateZip.safeRelativeName(stored.executableName) == stored.executableName &&
             '/' !in stored.executableName) { "更新准备启动文件名无效" }
@@ -263,11 +268,12 @@ internal object DesktopPreparedUpdateStorage {
     private data class StoredUpdate(
         val version: String, val releaseId: Long, val assetId: Long, val assetName: String,
         val size: Long, val downloadUrl: String, val checksumUrl: String, val releaseUrl: String,
+        val signedManifest: String? = null,
     ) {
-        fun toUpdate() = WindowsUpdate(version, releaseId, assetId, assetName, size, downloadUrl, checksumUrl, releaseUrl)
+        fun toUpdate() = WindowsUpdate(version, releaseId, assetId, assetName, size, downloadUrl, checksumUrl, releaseUrl, signedManifest)
         companion object {
             fun from(update: WindowsUpdate) = StoredUpdate(update.version, update.releaseId, update.assetId,
-                update.assetName, update.size, update.downloadUrl, update.checksumUrl, update.releaseUrl)
+                update.assetName, update.size, update.downloadUrl, update.checksumUrl, update.releaseUrl, update.signedManifest)
         }
     }
 }

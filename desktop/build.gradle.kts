@@ -3841,6 +3841,10 @@ tasks.processResources {
     inputs.file(sourceManifest)
     inputs.file(upstreamBuildFile)
     inputs.property("windowsVersion", windowsVersion)
+    inputs.property("distributionBase", providers.gradleProperty("distributionBase").getOrElse("https://learn.tonysuper666.com/bilipai"))
+    inputs.property("distributionChannel", providers.gradleProperty("distributionChannel").getOrElse("dev"))
+    inputs.property("distributionManifestUrl", providers.gradleProperty("distributionManifestUrl").getOrElse(""))
+    inputs.property("distributionConfigUrl", providers.gradleProperty("distributionConfigUrl").getOrElse(""))
     inputs.property("windowsReleaseRepository", System.getenv("BILIPAI_WINDOWS_RELEASE_REPOSITORY") ?: "tonysuper666-creator/BiliPai-Windows")
     doLast {
         destinationDir.resolve("upstream-version.txt").writeText(
@@ -3850,7 +3854,11 @@ tasks.processResources {
             "upstreamTag" to manifest["upstreamTag"],
             "upstreamCommit" to manifest["upstreamCommit"],
             "windowsReleaseRepository" to (System.getenv("BILIPAI_WINDOWS_RELEASE_REPOSITORY") ?: "tonysuper666-creator/BiliPai-Windows"),
-            "channel" to "prerelease",
+            "source" to "signed",
+            "distributionBase" to providers.gradleProperty("distributionBase").getOrElse("https://learn.tonysuper666.com/bilipai"),
+            "manifestUrl" to providers.gradleProperty("distributionManifestUrl").orNull,
+            "configUrl" to providers.gradleProperty("distributionConfigUrl").orNull,
+            "channel" to providers.gradleProperty("distributionChannel").getOrElse("dev"),
             "executable" to "BiliPai Windows.exe"
         )))
     }
@@ -3916,8 +3924,13 @@ compose.desktop {
         nativeDistributions {
             targetFormats(TargetFormat.Exe, TargetFormat.Msi)
             packageName = "BiliPai Windows"
-            packageVersion = "0.2.$upstreamVersionCode"
-            description = "BiliPai Windows desktop client"
+            // MSI has three bounded numeric fields. Preserve both upstream code and
+            // desktop revision so a desktop-only release upgrades the installer too.
+            val code = upstreamVersionCode.toInt()
+            val revision = windowsRevision.toInt()
+            require(code in 0..65535 && revision in 1..65535) { "Windows MSI version fields exceed their supported range" }
+            packageVersion = "${code / 256}.${code % 256}.$revision"
+            description = "BiliPai 非官方 Windows 版"
             vendor = "BiliPai community"
             licenseFile.set(File(repositoryRoot, "LICENSE"))
             appResourcesRootDir.set(project.layout.projectDirectory.dir("resources"))

@@ -1,0 +1,25 @@
+[Unit]
+Description=BiliPai private Windows distribution
+After=network.target
+
+[Service]
+Type=simple
+User=bilipai-distribution
+Group=bilipai-distribution
+WorkingDirectory=/opt/bilipai-distribution
+Environment=BILIPAI_DISTRIBUTION_ROOT=/opt/bilipai-distribution/data
+Environment=BILIPAI_URL_PREFIX=/bilipai
+Environment=PORT=8140
+ExecStart=/usr/bin/node /opt/bilipai-distribution/server.mjs
+Restart=on-failure
+UMask=0077
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+ReadWritePaths=/opt/bilipai-distribution/data/private
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+CapabilityBoundingSet=
+
+[Install]
+WantedBy=multi-user.target
