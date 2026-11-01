@@ -1,9 +1,9 @@
 --- a/com/android/purebilibili/feature/space/SpaceScreen.kt
 +++ b/com/android/purebilibili/feature/space/SpaceScreen.kt
-@@ -1,30 +1,22 @@
+@@ -1,30 +1,23 @@
  package com.android.purebilibili.feature.space
  
--import com.android.purebilibili.navigation.tabIndicatorPosition
+ import com.android.purebilibili.navigation.tabIndicatorPosition
  import com.android.purebilibili.feature.home.effectiveGridColumnCount
  import com.android.purebilibili.feature.home.effectiveGridColumnCountCompact
  import com.android.purebilibili.feature.home.gridColumnPinchEnabled
@@ -816,8 +816,7 @@
                  } else onMainTabSelected(tab)
              },
              modifier = Modifier.stationaryPagerHeader(pagerState, page),
--            indicatorPositionProvider = { pagerState.tabIndicatorPosition },
-+            indicatorPositionProvider = { pagerState.currentPage + pagerState.currentPageOffsetFraction },
+             indicatorPositionProvider = { pagerState.tabIndicatorPosition },
              isScrollInProgressProvider = { pagerState.isScrollInProgress },
          )
          if (shouldShowSpaceSecondarySwitch(selectedMainTab) && secondarySwitchItems.isNotEmpty()) {

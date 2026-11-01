@@ -1,0 +1,23 @@
+--- a/com/android/purebilibili/feature/video/screen/TabletVideoLayout.kt
++++ b/com/android/purebilibili/feature/video/screen/TabletVideoLayout.kt
+@@ -1,5 +1,7 @@
+ // 文件路径: feature/video/screen/TabletVideoLayout.kt
+ package com.android.purebilibili.feature.video.screen
++import com.android.purebilibili.navigation.tabIndicatorPosition
++import com.android.purebilibili.navigation.tabSelectedPage
+ 
+ import com.android.purebilibili.feature.video.ambient.PlayerAmbientLayout
+ import com.android.purebilibili.navigation.animatePagerSelection
+@@ -950,10 +952,10 @@
+             ) {
+                 TabletSecondaryLiquidTabRow(
+                     labels = tabs.map { it.label },
+-                    selectedIndex = pagerState.currentPage,
++                    selectedIndex = pagerState.tabSelectedPage,
+                     onSelected = ::selectSecondaryTab,
+                     indicatorPositionProvider = {
+-                        pagerState.currentPage + pagerState.currentPageOffsetFraction
++                        pagerState.tabIndicatorPosition
+                     },
+                     isScrollInProgressProvider = { pagerState.isScrollInProgress },
+                     modifier = Modifier.weight(1f),

@@ -9,3 +9,38 @@
                                                              currentDurations = state.searchDurations,
                                                              currentVideoTid = state.videoTid,
                                                              currentPubTimeType = state.pubTimeType,
+@@ -1,5 +1,7 @@
+ // 文件路径: feature/search/SearchScreen.kt
+ package com.android.purebilibili.feature.search
++import com.android.purebilibili.navigation.tabIndicatorPosition
++import com.android.purebilibili.navigation.tabSelectedPage
+ 
+ import com.android.purebilibili.core.ui.AppContentColors
+ 
+@@ -3446,7 +3448,7 @@
+     if (tabs.isEmpty()) return
+     val scrollState = rememberScrollState()
+     val density = LocalDensity.current
+-    val selectedIndex = pagerState.currentPage.coerceIn(0, tabs.lastIndex)
++    val selectedIndex = pagerState.tabSelectedPage.coerceIn(0, tabs.lastIndex)
+     val tabLabels = tabs.map { type ->
+         resolveSearchTypeTabLabel(type.displayName, counts[type])
+     }
+@@ -3487,7 +3489,7 @@
+             // Glide with the indicator (page + fraction) while the pager is moving; settle when idle.
+             focusPosition = {
+                 if (useScrollableRail) {
+-                    pagerState.currentPage + pagerState.currentPageOffsetFraction
++                    pagerState.tabIndicatorPosition
+                 } else {
+                     0f
+                 }
+@@ -3514,7 +3516,7 @@
+             tapPressRefractionEnabled = !useScrollableRail,
+             dragSelectionEnabled = tabs.size > 1,
+             indicatorPositionProvider = {
+-                pagerState.currentPage + pagerState.currentPageOffsetFraction
++                pagerState.tabIndicatorPosition
+             },
+             isScrollInProgressProvider = { pagerState.isScrollInProgress },
+             externalPagerMotionEffectsEnabled = true,
