@@ -293,9 +293,8 @@ public final class DesktopWindowsDxgiAdapters {
                         if (described != 0)
                             return new DetailedSnapshot(false, adapters, "dxgi-describe-failed");
                         AdapterDetail detail = parseDesc1(description);
-                        // Only NVIDIA hardware candidates are asked for outputs: other vendors'
-                        // adapters never need them and a sleeping hybrid GPU stays untouched.
-                        adapters.add(isNvidiaHardware(detail)
+                        // Read-only output counts are used by the all-vendor topology probe.
+                        adapters.add(!detail.isSoftware()
                             ? detail.withOutputCount(countOutputs(adapter)) : detail);
                     }
                 } finally {
@@ -375,5 +374,99 @@ public final class DesktopWindowsDxgiAdapters {
             int supported = method(adapter, 9).invokeInt(new Object[] {adapter, iid, version});
             return supported == 0 ? Math.max(0L, version.getLong(0)) : 0L;
         }
+    }
+
+    public record DecoderSupport(String codec, int width, int height, int bitDepth,
+            String profile, boolean supported) {}
+    public record VideoSnapshot(boolean complete, List<DecoderSupport> decoders, String error) {}
+
+    private interface D3d11 extends StdCallLibrary {
+        int D3D11CreateDevice(Pointer adapter, int driverType, Pointer software, int flags,
+            Pointer featureLevels, int count, int sdkVersion, PointerByReference device,
+            Pointer featureLevel, PointerByReference context);
+    }
+
+    /** Exact-LUID video capability query. No WARP fallback and no system setting changes.
+     * ABI: Microsoft d3d11.h ID3D11VideoDevice slots 11..14. Configuration support is
+     * only a candidate; the bundled sample must still decode using hardware. */
+    public static VideoSnapshot videoCapabilitiesFor(int luidLow, int luidHigh) {
+        if (!Platform.isWindows() || Native.POINTER_SIZE != 8 || Native.WCHAR_SIZE != 2)
+            return new VideoSnapshot(false, List.of(), "unsupported-platform");
+        Pointer factory = null;
+        try {
+            factory = createFactory(Native.load("dxgi", Dxgi.class));
+            if (factory == null) return new VideoSnapshot(false, List.of(), "dxgi-create-failed");
+            for (int index = 0; index < MAX_ADAPTERS; index++) {
+                PointerByReference found = new PointerByReference();
+                if (enumAdapters(factory, index, found) != 0 || found.getValue() == null) break;
+                Pointer adapter = found.getValue();
+                try (Memory desc = new Memory(DESC1_SIZE)) {
+                    if (method(adapter, 10).invokeInt(new Object[] {adapter, desc}) != 0) continue;
+                    if (desc.getInt(DESC1_LUID_LOW_OFFSET) == luidLow && desc.getInt(DESC1_LUID_HIGH_OFFSET) == luidHigh)
+                        return queryVideo(adapter);
+                } finally { release(adapter); }
+            }
+            return new VideoSnapshot(false, List.of(), "adapter-not-found");
+        } catch (RuntimeException | LinkageError failure) {
+            return new VideoSnapshot(false, List.of(), "video-query-failed");
+        } finally { release(factory); }
+    }
+
+    private static Memory guid(String text) {
+        java.util.UUID uuid = java.util.UUID.fromString(text);
+        long high = uuid.getMostSignificantBits(), low = uuid.getLeastSignificantBits();
+        Memory result = new Memory(16);
+        result.setInt(0, (int)(high >>> 32)); result.setShort(4, (short)(high >>> 16)); result.setShort(6, (short)high);
+        for (int i = 0; i < 8; i++) result.setByte(8 + i, (byte)(low >>> (56 - 8 * i)));
+        return result;
+    }
+
+    private static VideoSnapshot queryVideo(Pointer adapter) {
+        PointerByReference created = new PointerByReference(), context = new PointerByReference();
+        Pointer video = null;
+        try {
+            int hr = Native.load("d3d11", D3d11.class).D3D11CreateDevice(adapter, 0, null, 0x820,
+                null, 0, 7, created, null, context);
+            if (hr < 0 || created.getValue() == null) return new VideoSnapshot(false, List.of(), "d3d11-create-failed");
+            try (Memory iid = guid("10ec4d5b-975a-4689-b9e4-d0aac30fe333")) {
+                PointerByReference out = new PointerByReference();
+                if (method(created.getValue(), 0).invokeInt(new Object[] {created.getValue(), iid, out}) < 0 || out.getValue() == null)
+                    return new VideoSnapshot(false, List.of(), "video-device-unavailable");
+                video = out.getValue();
+            }
+            String[][] profiles = {
+                {"AVC", "1b81be68-a0c7-11d3-b984-00c04f2e73c5", "8"},
+                {"HEVC", "5b11d51b-2f4c-4452-bcc3-09f2a1160cc0", "8"},
+                {"HEVC", "107af0e0-ef1a-4d19-aba8-67a163073d13", "10"},
+                {"AV1", "b8be4ccb-cf53-46ba-8d59-d6b8a6da5d2a", "8"},
+                {"AV1", "b8be4ccb-cf53-46ba-8d59-d6b8a6da5d2a", "10"},
+            };
+            List<DecoderSupport> result = new ArrayList<>();
+            int profileCount = method(video, 11).invokeInt(new Object[] {video});
+            if (profileCount < 0 || profileCount > 256) return new VideoSnapshot(false, List.of(), "video-profile-limit");
+            for (String[] p : profiles) {
+                int bits = Integer.parseInt(p[2]);
+                try (Memory expected = guid(p[1]); Memory actual = new Memory(16); Memory flag = new Memory(4)) {
+                    boolean listed = false;
+                    for (int i = 0; i < profileCount; i++) {
+                        if (method(video, 12).invokeInt(new Object[] {video, i, actual}) < 0)
+                            return new VideoSnapshot(false, result, "video-profile-failed");
+                        if (java.util.Arrays.equals(expected.getByteArray(0, 16), actual.getByteArray(0, 16))) listed = true;
+                    }
+                    int format = bits == 10 ? 104 : 103; // DXGI_FORMAT_P010 / NV12
+                    flag.clear();
+                    boolean formatted = listed && method(video, 13).invokeInt(new Object[] {video, expected, format, flag}) >= 0 && flag.getInt(0) != 0;
+                    for (int[] size : new int[][] {{1920, 1080}, {3840, 2160}}) {
+                        try (Memory desc = new Memory(28); Memory count = new Memory(4)) {
+                            desc.clear(); count.clear(); desc.write(0, expected.getByteArray(0, 16), 0, 16);
+                            desc.setInt(16, size[0]); desc.setInt(20, size[1]); desc.setInt(24, format);
+                            boolean supported = formatted && method(video, 14).invokeInt(new Object[] {video, desc, count}) >= 0 && count.getInt(0) > 0;
+                            result.add(new DecoderSupport(p[0], size[0], size[1], bits, p[1], supported));
+                        }
+                    }
+                }
+            }
+            return new VideoSnapshot(true, List.copyOf(result), null);
+        } finally { release(video); release(context.getValue()); release(created.getValue()); }
     }
 }

@@ -117,8 +117,8 @@ internal interface DesktopNvidiaGpuProbe {
 
 /**
  * The real probe: the DXGI detailed inventory plus the DisplayConfig adapter path of each NVIDIA
- * hardware candidate. The user-mode driver version is read for the one validated primary only,
- * after the selection, never in the enumeration loop. No D3D device is created.
+ * hardware candidate. Full user-mode driver versions are then read for all hardware adapters,
+ * outside the DXGI enumeration loop. No D3D device is created by this inventory.
  */
 internal class DesktopNvidiaSystemGpuProbe : DesktopNvidiaGpuProbe {
     override fun probe(): NvidiaProbeInput {
@@ -130,18 +130,12 @@ internal class DesktopNvidiaSystemGpuProbe : DesktopNvidiaGpuProbe {
             adapters = evidence,
         )
         if (!input.dxgiComplete) return input
-        val selection = selectNvidiaPrimary(input)
-        if (selection !is NvidiaPrimarySelection.Selected) return input
-        val primary = selection.primary
-        val umd = DesktopWindowsDxgiAdapters.umdVersionFor(primary.luidLow, primary.luidHigh)
-        if (umd <= 0L) return input
+        // Retain the sole DXGI inventory and physical NVIDIA gates. All vendors now need
+        // their own full driver version for the machine-local optimization fingerprint.
         return input.copy(
             adapters = input.adapters.map { adapter ->
-                if (adapter.luidLow == primary.luidLow && adapter.luidHigh == primary.luidHigh) {
-                    adapter.copy(umdVersion = umd)
-                } else {
-                    adapter
-                }
+                if (adapter.isSoftware) adapter else adapter.copy(umdVersion =
+                    DesktopWindowsDxgiAdapters.umdVersionFor(adapter.luidLow, adapter.luidHigh).takeIf { it > 0L })
             },
         )
     }
