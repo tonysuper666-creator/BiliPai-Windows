@@ -1,0 +1,64 @@
+Upstream-source-sha256: 14a44fae6ba7e034978a1d62fa4a17a48ff3c76857273b0f450fad460e6d3c12
+Reason: Use the shared chrome size tokens and liquid-indicator geometry, preserving compactness/selection/viewport assertions. Current upstream enables glass/drag on main and secondary rails, but disables both on contribution tabs. Keep method identities for failure-set comparison; no old numeric ceiling is raised.
+
+--- a/app/src/test/java/com/android/purebilibili/feature/space/SpaceTabChromePolicyTest.kt
++++ b/app/src/test/java/com/android/purebilibili/feature/space/SpaceTabChromePolicyTest.kt
+@@ -1,6 +1,8 @@
+ package com.android.purebilibili.feature.space
+ 
+ import com.android.purebilibili.core.theme.AppUiStyle
++import com.android.purebilibili.core.ui.AppChromeSizeTokens
++import com.android.purebilibili.core.ui.roundMatchedLiquidIndicatorHeightDp
+ import com.android.purebilibili.data.model.response.VideoSortOrder
+ import kotlin.test.Test
+ import kotlin.test.assertEquals
+@@ -24,9 +26,9 @@
+ 
+         assertEquals(1, spec.selectedIndex)
+         assertFalse(spec.scrollable)
+-        assertEquals(40, spec.heightDp)
++        assertEquals(AppChromeSizeTokens.BottomBarMatchedSegmentedControlHeightDp, spec.heightDp)
+         assertTrue(spec.indicatorHeightDp < spec.heightDp)
+-        assertFalse(spec.liquidGlassEffectsEnabled)
++        assertTrue(spec.liquidGlassEffectsEnabled)
+         assertTrue(spec.dragSelectionEnabled)
+     }
+ 
+@@ -86,7 +88,7 @@
+         assertTrue((spec.itemWidthDp ?: 0) > 104)
+         assertTrue(spec.indicatorHeightDp < spec.heightDp)
+         assertEquals(mainSpec.horizontalPaddingDp, spec.horizontalPaddingDp)
+-        assertTrue(spec.liquidGlassEffectsEnabled)
++        assertFalse(spec.liquidGlassEffectsEnabled)
+         assertFalse(spec.dragSelectionEnabled)
+     }
+ 
+@@ -155,7 +157,7 @@
+ 
+         assertFalse(spec.scrollable)
+         assertTrue((spec.itemWidthDp ?: 0) > 104)
+-        assertTrue(spec.dragSelectionEnabled)
++        assertFalse(spec.dragSelectionEnabled)
+     }
+ 
+     @Test
+@@ -172,8 +174,8 @@
+         val spec = resolveSpaceSecondarySwitchChromeSpec(items, selectedId = "season")
+ 
+         assertEquals(1, spec.selectedIndex)
+-        assertEquals(48, spec.heightDp)
+-        assertEquals(30, spec.indicatorHeightDp)
++        assertEquals(AppChromeSizeTokens.BottomBarMatchedSegmentedControlHeightDp, spec.heightDp)
++        assertEquals(AppChromeSizeTokens.BottomBarMatchedSegmentedIndicatorHeightDp, spec.indicatorHeightDp)
+         assertEquals(315, spec.itemWidthDp)
+         // A single outlier title must not propagate its estimated width to every
+         // item in the rail. The viewport cap keeps three compact slots visible.
+@@ -234,7 +236,7 @@
+         )
+ 
+         assertEquals(40, spec.tabHeightDp)
+-        assertEquals(34, spec.tabIndicatorHeightDp)
++        assertEquals(roundMatchedLiquidIndicatorHeightDp(spec.tabHeightDp.toFloat()), spec.tabIndicatorHeightDp)
+         assertEquals(40, spec.expandedTabRailHeightDp)
+         assertEquals(88, spec.collapsedTabWidthDp)
+         assertTrue(spec.showVideoActions)
