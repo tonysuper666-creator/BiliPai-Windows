@@ -217,15 +217,22 @@ class AwtDesktopFileDialogsTest {
             if (calls.incrementAndGet() == 1) throw expected
             Peer(NativeFileSelection(null, null))
         }).use {
-            assertSame(expected, failure<IOException> { it.chooseFile(owner, open) })
+            assertNativeFailure(expected, failure<IOException> { it.chooseFile(owner, open) })
             assertNull(it.chooseFile(owner, open))
         }
         // Also exercise the real factory's owner-resolution failure, without a GUI.
         AwtDesktopFileDialogs().use {
-            assertSame(expected, failure<IOException> { it.chooseFile({ throw expected }, open) })
+            assertNativeFailure(expected, failure<IOException> { it.chooseFile({ throw expected }, open) })
             val nativeError = UnsatisfiedLinkError("native toolkit unavailable")
-            assertSame(nativeError, failure<UnsatisfiedLinkError> { it.chooseFile({ throw nativeError }, open) })
+            assertNativeFailure(nativeError, failure<UnsatisfiedLinkError> { it.chooseFile({ throw nativeError }, open) })
         }
+    }
+
+    private fun assertNativeFailure(expected: Throwable, actual: Throwable) {
+        assertEquals(expected.javaClass, actual.javaClass)
+        assertEquals(expected.message, actual.message)
+        // Coroutine stacktrace recovery may copy the exception, retaining the original as its cause.
+        assertSame(expected, if (actual === expected) actual else actual.cause)
     }
 
     @Test fun invalidNativePathsAndSuggestedTraversalFailRatherThanBecomingCancellation(): Unit = runBlocking {
@@ -251,7 +258,8 @@ class AwtDesktopFileDialogsTest {
             val files = DesktopCommentFraudHistoryFiles({}, { action -> action() })
             val selected = files.select(it.chooseFile(owner, save)!!, true)
             Files.writeString(target, "external change")
-            failure<IllegalStateException> { files.writeUtf8(selected, "do not publish") }
+            assertEquals("Selected export destination changed",
+                failure<IllegalArgumentException> { files.writeUtf8(selected, "do not publish") }.message)
             assertEquals("external change", Files.readString(target))
             assertEquals(listOf(target), Files.list(directory).use { paths -> paths.toList() })
         }
