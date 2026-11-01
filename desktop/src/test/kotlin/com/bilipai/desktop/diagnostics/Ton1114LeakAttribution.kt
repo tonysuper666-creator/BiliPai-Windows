@@ -39,6 +39,9 @@ class Ton1114LeakAttribution : BeforeEachCallback, AfterEachCallback {
 
     private companion object {
         val recent = ConcurrentLinkedDeque<Ran>()
+        val spinners = (System.getenv("TON1114_SPIN")?.toIntOrNull() ?: 0).also { n ->
+            repeat(n) { Thread { var x = 0L; while (true) x++ }.also { t -> t.isDaemon = true; t.name = "ton1114-spin-$it"; t.start() } }
+        }
         val file = File(System.getProperty("user.dir"), "build/ton1114-leaks.txt").also { it.parentFile.mkdirs() }
     }
 }
