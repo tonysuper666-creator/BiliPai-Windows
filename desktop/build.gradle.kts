@@ -384,6 +384,7 @@ val migratedVideoFeaturePaths = setOf(
     "com/android/purebilibili/feature/video/ui/section/VideoSupplementSection.kt",
     "com/android/purebilibili/feature/video/ui/section/AiSummarySection.kt",
     "com/android/purebilibili/feature/video/screen/VideoDetailPortraitOverlayAdapter.kt",
+    "com/android/purebilibili/feature/video/screen/VideoDetailRenderContracts.kt",
     "com/android/purebilibili/feature/video/ui/components/TwoFingerSpeedFeedbackOverlay.kt",
     "com/android/purebilibili/feature/video/ui/components/InteractiveChoiceOverlay.kt",
     "com/android/purebilibili/feature/video/screen/TabletDanmakuChromeState.kt",
