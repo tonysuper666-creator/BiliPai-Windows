@@ -33,6 +33,8 @@ class DesktopDownloadManager internal constructor(
     private val defaultDestination: () -> Path = Companion::defaultDownloadRoot,
     private val brandEvents: com.android.purebilibili.core.events.BrandSuccessEvents? = null,
     private val startupHandoffToken: String? = null,
+    private val retryPolicy: DesktopDownloadRetryPolicy = DesktopDownloadRetryPolicy(),
+    private val clockMillis: () -> Long = System::currentTimeMillis,
 ) : AutoCloseable {
     constructor(repository: DesktopRepository) : this(repository.playbackHttpClient, defaultStateFile(), WindowsFfmpegMuxer(),
         defaultSourceResolver(repository), defaultDanmakuDownloader(repository), com.bilipai.desktop.player.DesktopRepositoryPlaybackPublication(repository))
@@ -61,6 +63,8 @@ class DesktopDownloadManager internal constructor(
     private val lock = Any()
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
     private val jobs = mutableMapOf<String, Job>()
+    /** Wakes the scheduler when the earliest automatic-retry wait ends; replaced on every scheduling pass, ended with [scope]. */
+    private var retryTimer: Job? = null
     private var lastPersistNanos = 0L
     /** Most recent ordinary queue save the filesystem refused. The original saveTasks logs and ignores it; the next save retries. */
     @Volatile internal var lastPersistFailure: IOException? = null
@@ -378,7 +382,7 @@ class DesktopDownloadManager internal constructor(
                 refreshedSource.progressiveSegments.map { part -> mediaIdentity(part.url) } == it.progressiveSegments.map { part -> mediaIdentity(part.url) }) {
                 "新的媒体轨道或分段与此任务不同，请移除此任务后重新加入下载"
             }
-            it.copy(item = item.copy(status = DownloadStatus.QUEUED, errorMessage = null),
+            it.copy(item = item.copy(status = DownloadStatus.QUEUED, errorMessage = null), retryAttempt = 0, retryNotBeforeMillis = 0L,
                 referer = refreshedSource?.referer ?: it.referer, userAgent = refreshedSource?.userAgent ?: it.userAgent,
                 authorizationReceipt = refreshedSource?.authorizationReceipt, cookieHeader = refreshedSource?.cookieHeader.orEmpty(),
                 streamHeaders = refreshedSource?.streamHeaders?.let { headers -> com.bilipai.desktop.player.copyPlaybackStreamHeaders(headers) } ?: emptyMap(),
@@ -471,9 +475,14 @@ class DesktopDownloadManager internal constructor(
         if (closed || updateHandoff != null || !queueAuthorityHeldLocked()) return
         // A cancelled Windows job retains its file owner until its finally block
         // completes. Reserve that slot while the original policy selects work.
+        val now = clockMillis()
         val candidates = mutableTasks.value.map { task ->
             if (task.id in jobs && !isDownloadTaskActive(task.item))
-                task.item.copy(status = DownloadStatus.PENDING) else task.item
+                task.item.copy(status = DownloadStatus.PENDING)
+            // Still waiting out an automatic-retry backoff: not eligible, and it holds no slot meanwhile.
+            else if (task.status == DownloadStatus.QUEUED && task.retryNotBeforeMillis > now)
+                task.item.copy(status = DownloadStatus.PAUSED)
+            else task.item
         }
         val retiringRemovedJobs = jobs.keys.count { id -> mutableTasks.value.none { it.id == id } }
         val ready = mutableListOf<Job>()
@@ -481,7 +490,7 @@ class DesktopDownloadManager internal constructor(
             maxConcurrent = (DEFAULT_MAX_CONCURRENT_DOWNLOADS - retiringRemovedJobs).coerceAtLeast(0)).forEach { id ->
             // Match original enqueueDownload: reserve PENDING under the queue
             // lock before launching, so a rapid second enqueue cannot overbook.
-            updateLocked(id) { it.copy(item = it.item.copy(status = DownloadStatus.PENDING, errorMessage = null)) }
+            updateLocked(id) { it.copy(item = it.item.copy(status = DownloadStatus.PENDING, errorMessage = null), retryNotBeforeMillis = 0L) }
             val job = scope.launch(start = CoroutineStart.LAZY) { runTask(id) }
             installJobLocked(id, job)
             ready += job
@@ -489,6 +498,24 @@ class DesktopDownloadManager internal constructor(
         // Every job installed above must start whatever the save does: an unstarted lazy job would hold its slot,
         // and its PENDING task, until the application restarts.
         try { persistLocked(force = true) } finally { ready.forEach { it.start() } }
+        armRetryTimerLocked(now)
+    }
+
+    private fun armRetryTimerLocked(now: Long) {
+        val wakeAt = mutableTasks.value.filter { it.status == DownloadStatus.QUEUED && it.retryNotBeforeMillis > now }
+            .minOfOrNull { it.retryNotBeforeMillis }
+        retryTimer?.cancel()
+        retryTimer = null
+        if (wakeAt == null || closed) return
+        val timer = scope.launch(start = CoroutineStart.LAZY) {
+            delay((wakeAt - now).coerceAtLeast(1L))
+            synchronized(lock) {
+                retryTimer = null
+                if (!closed) scheduleLocked()
+            }
+        }
+        retryTimer = timer
+        timer.start()
     }
 
     private suspend fun runTask(id: String) {
@@ -682,8 +709,14 @@ class DesktopDownloadManager internal constructor(
             pauseRetiredWorker()
         } catch (error: Exception) {
             if (!pendingJob.isActive) pauseRetiredWorker() else try {
-                publish(activeStatuses) { it.copy(item = it.item.copy(status = DownloadStatus.FAILED,
-                    errorMessage = error.message?.take(2000) ?: "下载失败")) }
+                publish(activeStatuses) { wrapper ->
+                    val wait = retryPolicy.nextDelayMs(wrapper.retryAttempt, error)
+                    val reason = error.message?.take(2000) ?: "下载失败"
+                    if (wait == null) wrapper.copy(item = wrapper.item.copy(status = DownloadStatus.FAILED, errorMessage = reason))
+                    else wrapper.copy(item = wrapper.item.copy(status = DownloadStatus.QUEUED,
+                        errorMessage = "传输中断，${(wait + 999L) / 1000L} 秒后自动重试（第 ${wrapper.retryAttempt + 1}/${retryPolicy.maxAttempts} 次）：$reason".take(2000)),
+                        retryAttempt = wrapper.retryAttempt + 1, retryNotBeforeMillis = clockMillis() + wait)
+                }
             } catch (_: CancellationException) {
                 pauseRetiredWorker()
             }
