@@ -1,0 +1,5 @@
+allprojects {
+    tasks.withType(Test).configureEach {
+        systemProperty 'java.io.tmpdir', System.getenv('TON1073_TEST_TMP')
+    }
+}
