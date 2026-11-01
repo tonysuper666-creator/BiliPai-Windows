@@ -1,37 +1,71 @@
 # TON-1073 single-file dialog slice
 
-PR #58 is a **draft**, blocked on local validation. This is a partial delivery of
-TON-1073, not completion of the platform interface card.
+PR #58 remains a **draft**. Test-contract corrections in
+`e1afd7bc23f9c30d1f9d1aade3f2eeb8dc6bdc60` are **not validated**.
+This slice does not complete the platform interface card.
 
-The four implementation/test files are in commit
-`d213560274ca0281cb278e89d9d7cc410383e11e`, based on integration commit
-`fb32f0b18ba03f8a99f34f7441545d8bf91aa03d`.
+## Two failure contracts
 
-## Actual checks
+Original head `99891bdb69705a1328479d2a1ee5ae4eb2703797` ran 12 new
+file-dialog cases: 10 passed, two failed. Their raw XML is in the issue evidence;
+these two failures are not baseline failures.
 
-- `git diff --check fb32f0b18 HEAD`: passed.
-- Two baseline Gradle attempts were stopped with exit 143 when another local
-  project began a concurrent build. Only this card's exact child PIDs were
-  stopped. Intermediate waiting windows also expired without starting Gradle.
-- The last baseline attempt reached `compileKotlin UP-TO-DATE`,
-  `compileTestKotlin FROM-CACHE`, and `verifyUniqueClassNames UP-TO-DATE`.
-  Its test task was interrupted; it has **no complete test result**.
-- Candidate compilation, the 12 new behavioral tests, candidate unique-class
-  verification, total JVM counts and the baseline/candidate failure comparison
-  are **unverified**. An interrupted run's empty XML summary is not a test pass.
-- The issue's historical `mac-verify.sh` was not run. The current checkout has
-  no such script; use the repository's Gradle tasks below without adding source
-  exclusions or stubs.
+- `nativeFailureIsPropagatedAndTheNextRequestStillWorks`: the interface
+  promises failures throw, not exception-object identity across suspension.
+  The pinned kotlinx.coroutines 1.10.2
+  [stacktrace recovery contract](https://github.com/Kotlin/kotlinx.coroutines/blob/1.10.2/docs/topics/debugging.md#stacktrace-recovery)
+  permits copying eligible exceptions with the original as their cause.
+  Debugging, including JVM assertions in tests, enables recovery. Assertions
+  now check exact class, message and original identity (directly or as cause).
+  The next-request check and factory, owner and native-link failure coverage
+  remain. No production behavior or coroutine debugging option changed.
+- `saveErrorsFromTheRealFileAdapterRemainVisibleAndPreserveExistingData`:
+  `DesktopCommentFraudHistoryFiles.writeUtf8` checks the selected fingerprint
+  with `require` before creating a temporary file (line 127 at fixed base).
+  An external change therefore throws `IllegalArgumentException`.
+  The test requires that type and exact message
+  `Selected export destination changed`; it still checks external contents
+  and that no temporary file leaked. The file adapter was not modified.
 
-## Resume validation
+## Current attempt: blocked, 2026-11-01
 
-First obtain an exclusive Mac build window across BiliPai **and Coach**. A
-process-list check alone did not reserve the slot: other builds started after
-this card's Gradle had started. Do not keep restarting when that happens.
-Keep `nice -n 15` and `--max-workers=2` until 2026-11-02 15:00 GMT.
+The issue archive contains the executed `run-suite.sh`, copied Coach `heavy`
+entry with bounded wait, full log/exit code, clean snapshot SHAs/status,
+original failure XML and conflict process evidence.
 
-Run the following from the repository root on both the clean base and this PR
-head, retaining each complete log and test XML before switching revisions:
+- The attempted command below exited **1** after 2m 8s. Unqualified `test`
+  also selected `:upstream-core:test`, which had no matching tests. The root
+  project's 12 cases did **not** run; there is no new passing XML.
+- `compileKotlin FROM-CACHE`, `compileTestKotlin` and
+  `verifyUniqueClassNames` completed (60,918 classes, no duplicates).
+  This is not a successful targeted test result.
+- The initial process guard checked macOS's truncated `comm` field and
+  incorrectly reported no build. Checking the full executable in `args`
+  subsequently found TON-1004's unguarded Gradle PID 23094 and worker 48414;
+  `lsof` confirmed the daemon's working directory was its `wt/pr18` checkout.
+  This attempt did not establish an exclusive build window.
+- No base/head comparison started. No process was terminated, no other lock
+  removed and no retry or wakeup scheduled. The owned build exited and its
+  lock was released.
+
+Attempted command (inside the copied entry's `nice -n 15` child):
+
+```sh
+./gradlew -p desktop --no-daemon --max-workers=2 --console=plain \
+  -I "$TON1073_INIT" test \
+  --tests com.bilipai.desktop.platform.files.AwtDesktopFileDialogsTest
+```
+
+## Resume only after coordination
+
+Coordinate all heavy builds onto Coach's mkdir lock first. Use a private copy
+of its entry, wait at most 900 seconds once, and check the full executable in
+`args` after acquiring it (macOS truncates `comm`). Conflict or timeout returns
+the card blocked. Keep `nice -n 15`, `--max-workers=2`, and base/head serial
+under one lock. Archive `resume-suite.sh` corrects the task selector and process
+guard but is **unexecuted**.
+
+Prepare canonical external temporary paths without changing production guards:
 
 ```sh
 export JAVA_HOME="$(/usr/libexec/java_home -v 21)"
@@ -40,31 +74,33 @@ export TON1073_INIT="$(cd .. && pwd -P)/ton1073-test.init.gradle"
 mkdir -p ../ton1073-test-tmp
 export TON1073_TEST_TMP="$(cd ../ton1073-test-tmp && pwd -P)"
 nice -n 15 ./gradlew -p desktop --no-daemon --max-workers=2 --console=plain \
+  -I "$TON1073_INIT" :test \
+  --tests com.bilipai.desktop.platform.files.AwtDesktopFileDialogsTest
+```
+
+Only after all 12 pass without skips, run the following on clean fixed base
+`fb32f0b18ba03f8a99f34f7441545d8bf91aa03d` and new head, archiving complete
+logs/XML separately:
+
+```sh
+nice -n 15 ./gradlew -p desktop --no-daemon --max-workers=2 --console=plain \
   -I "$TON1073_INIT" \
   compileKotlin compileTestKotlin test upstreamDesignSourceTests \
   upstreamAppCoreSourceTests :upstream-core:test verifyUniqueClassNames --continue
 ```
 
-The preparation lines run on the PR head before switching to the
-base; reuse those environment variables for both runs. The init file gives
-tests a canonical temporary directory on macOS; it does not alter test
-selection, assertions or production path guards. Both temporary paths stay
-outside the worktree.
-
-Compare complete XML totals and every failing task/class/test/exception between
-base and head. Expect 12 additional cases in `AwtDesktopFileDialogsTest`; do not
-claim no regression from a partial run. The new cases exercise the production
-EDT coordinator and nested AWT event loop, real file IO and the real settings
-export/import codec. Only the native dialog peer is replaced.
+Compare totals, skips and every task/class/test/exception identity; preserve
+all base cases. The previous complete observation was 7,551 cases/164 failures
+on base, 7,563/166 on old head. It does not validate this fix. Archive
+`compare.py` is prepared for a complete run and **unexecuted**.
+Historical `mac-verify.sh` is absent from this checkout.
 
 ## Remaining acceptance
 
-Do not launch/close the client or touch the winvm account/QR session while
-TON-1068 owns it. Native Windows dialog appearance, filename filtering,
-overwrite confirmation, mounted-window interaction and GUI cancellation remain
-unverified. No GUI measurement was performed for this card.
-
-After validation, request the first available reviewer of a different vendor,
-review only this slice, and keep the rest of TON-1073 open. TON-1116 still owns
-the original settings screen/service/ViewModel migration. Multi-image picking,
-sharing, image operations and background scheduling are later slices.
+No client launch, GUI measurement, winbox or account/QR session was used.
+Native Windows appearance, filtering, overwrite prompts and mounted-window
+interaction remain unverified. After the gate passes, request the current
+different-vendor reviewer for this finite slice; keep the rest of TON-1073
+open. TON-1116 owns settings screen/service/ViewModel migration.
+Multi-image picking, sharing, image operations and scheduling are later slices.
+Desktop notifications reuse TON-999.
