@@ -155,6 +155,12 @@ internal class DesktopReadyHomeFactoryBinding(
             override suspend fun setHomeWallpaperUri(uri: String) {
                 environment.ensureOwned(); writeHomeWallpaper(uri); environment.ensureOwned()
             }
+            // Upstream's picker now stores the URI with its crop transforms: the URI goes through the same
+            // publisher, the transforms through the Root settings store.
+            override suspend fun setHomeWallpaperSelection(selection: com.android.purebilibili.core.store.home.HomeWallpaperSelection) {
+                environment.ensureOwned(); environment.preferences.setHomeWallpaperSelection(selection)
+                writeHomeWallpaper(selection.uri); environment.ensureOwned()
+            }
         }
         return DesktopProfileEnvironment(pageScope, ::owned, ::commit, environment.api, environment.spaceApi,
             environment.dynamicApi, environment.searchApi, environment.splash, environment.authorizationApi,

@@ -1,5 +1,6 @@
 from v025_source_paths import canonical_source as _desktop_canonical_source, canonical_relative as _desktop_canonical_relative
 from pathlib import Path
+from desktop_paths import long_path
 import hashlib,importlib.util,json,re,subprocess,sys,difflib
 sys.dont_write_bytecode=True
 import argparse
@@ -35,8 +36,8 @@ def validate_fresh_v025_comment_consumer(output,text):
  return text
 
 def safe(p):
- s=str(Path(p).absolute());prefix=chr(92)*2+'?'+chr(92)
- return Path(s if s.startswith(prefix) else prefix+s)
+ s=str(Path(p).absolute())
+ return long_path(s)
 def sha(t):return hashlib.sha256(t.encode() if isinstance(t,str) else t).hexdigest()
 def write(p,t):safe(p).parent.mkdir(parents=True,exist_ok=True);safe(p).write_bytes(t.encode() if isinstance(t,str) else t)
 def module(name,p):

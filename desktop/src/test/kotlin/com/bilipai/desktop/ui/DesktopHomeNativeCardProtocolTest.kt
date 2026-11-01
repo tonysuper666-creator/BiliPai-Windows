@@ -2,7 +2,7 @@ package com.bilipai.desktop.ui
 
 import com.android.purebilibili.core.network.BilibiliApi
 import com.android.purebilibili.core.network.MessageApi
-import com.android.purebilibili.core.store.DesktopFeedSettings
+import com.android.purebilibili.core.store.SettingsManager
 import com.android.purebilibili.data.model.response.*
 import com.android.purebilibili.data.repository.DesktopOriginalHomeVideoProtocol
 import kotlinx.coroutines.*
@@ -16,7 +16,7 @@ import kotlin.test.*
  * Only API responses are controlled; no second implementation of feed mapping/filtering. */
 class DesktopHomeNativeCardProtocolTest {
     @Test fun `web recommendation keeps both native kinds while filtering ads`() = runBlocking {
-        Harness(DesktopFeedSettings.FeedApiType.WEB).use { h ->
+        Harness(SettingsManager.FeedApiType.WEB).use { h ->
             val cards = h.protocol.getHomeVideos(1).getOrThrow()
             assertEquals(listOf("BV1234567890", "bangumi:123", "dynamic:123"), cards.map { it.bvid })
             assertNativeIdentities(cards)
@@ -25,7 +25,7 @@ class DesktopHomeNativeCardProtocolTest {
     }
 
     @Test fun `app recommendation honors card_goto and excludes unsupported and advertising cards`() = runBlocking {
-        Harness(DesktopFeedSettings.FeedApiType.MOBILE).use { h ->
+        Harness(SettingsManager.FeedApiType.MOBILE).use { h ->
             val cards = h.protocol.getHomeVideos(1).getOrThrow()
             assertEquals(listOf("BV1234567891", "bangumi:123", "dynamic:123"), cards.map { it.bvid })
             assertNativeIdentities(cards)
@@ -34,7 +34,7 @@ class DesktopHomeNativeCardProtocolTest {
     }
 
     @Test fun `merged recommendation keeps same-number episode and dynamic as separate identities`() = runBlocking {
-        Harness(DesktopFeedSettings.FeedApiType.MERGED).use { h ->
+        Harness(SettingsManager.FeedApiType.MERGED).use { h ->
             val cards = h.protocol.getHomeVideos(1).getOrThrow()
             assertEquals(setOf("BV1234567890", "BV1234567891", "bangumi:123", "dynamic:123"), cards.map { it.bvid }.toSet())
             assertEquals(4, cards.size)
@@ -45,7 +45,7 @@ class DesktopHomeNativeCardProtocolTest {
     }
 
     @Test fun `failed app recommendation falls back through real web protocol with native cards intact`() = runBlocking {
-        Harness(DesktopFeedSettings.FeedApiType.MOBILE, appFails = true).use { h ->
+        Harness(SettingsManager.FeedApiType.MOBILE, appFails = true).use { h ->
             val cards = h.protocol.getHomeVideos(1).getOrThrow()
             assertEquals(listOf("BV1234567890", "bangumi:123", "dynamic:123"), cards.map { it.bvid })
             assertNativeIdentities(cards)
@@ -65,7 +65,7 @@ class DesktopHomeNativeCardProtocolTest {
         assertEquals(0, dynamic.duration)
     }
 
-    private class Harness(type: DesktopFeedSettings.FeedApiType, appFails: Boolean = false) : AutoCloseable {
+    private class Harness(type: SettingsManager.FeedApiType, appFails: Boolean = false) : AutoCloseable {
         val requests: MutableList<String> = Collections.synchronizedList(mutableListOf())
         private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Unconfined)
         private val json = Json { ignoreUnknownKeys = true }

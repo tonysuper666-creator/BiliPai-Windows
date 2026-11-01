@@ -124,7 +124,26 @@ class OriginalNativeFansSourceTest(unittest.TestCase):
 
     def test_transitive_inputs_and_current_following_sources_are_explicit(self):
         build = (REPO/'desktop/build.gradle.kts').read_text(encoding='utf8')
-        self.assertEqual(15, build.count('inputs.dir("upstream-slices/v044-following-fans")'))
+        # Check each retained consumer, rather than the old total including Space overview.
+        for owner in (
+            'extractUpstreamApi',
+            'extractUpstreamAudio',
+            'extractUpstreamPackages',
+            'extractUpstreamJs',
+            'extractUpstreamNetworkProxy',
+            'extractUpstreamDiagnostics',
+            'extractUpstreamDynamicFullCard',
+            'extractImageSaveSettingsUi',
+            'extractOriginalFavorites',
+            'extractUpstreamDynamicFollow',
+            'extractUpstreamStoryTopic',
+            'extractOriginalWatchLater',
+            'extractOriginalFollowing',
+            'extractOriginalListenVideoPages',
+        ):
+            start = build.index("val "+owner+" by tasks.registering(")
+            body = build[start:build.index("\n}", start)]
+            self.assertIn('inputs.dir("upstream-slices/v044-following-fans")', body, owner)
         self.assertIn('"tools/v044_fans.py"', build)
         catalog = json.loads((REPO/'desktop/tools/compatibility-source-inputs.json').read_bytes())
         rows = [row for row in catalog['inputs'] if row['localPath'].startswith(fans.ARCHIVE+'/')]

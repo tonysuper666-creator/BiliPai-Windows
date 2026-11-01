@@ -311,18 +311,27 @@ class V046MessageNotificationSource(unittest.TestCase):
     def test_windows_clear_on_read_degrades_to_the_tray_menu_and_says_so(self):
         entries = text(UI/'DesktopMessageNotificationEntries.kt')
         windows = text(UI/'DesktopWindowsMessageNotifications.kt')
-        consumer = text(UI/'DesktopMessageNotificationRootConsumer.kt')
+        # TON-1121: upstream's Notifier (replaced for Windows) posts to the presentation interface the window implements.
+        presentation = text(UI/'DesktopMessageNotificationContext.kt')
+        notifier = text(REPO/'desktop/upstream-core/replacements/com/android/purebilibili/feature/message/notification/MessageNotificationNotifier.kt')
         self.assertIn('pendingCounts: Map<String, Int>? = null', entries)
         self.assertIn('if (children == 0 && (pendingCounts[group] ?: 0) == 0) items.remove(summary)', entries)
-        self.assertIn('pendingCounts: Map<String, Int>? = null) = withContext(Dispatchers.Main) {', windows)
-        self.assertEqual(1, windows.count('entries.apply(pending, cancelled, pendingCounts)'))
+        self.assertIn('pendingCounts: Map<String, Int>? = null)', presentation)
+        self.assertIn('pendingCounts: Map<String, Int>?) = withContext(Dispatchers.Main) {', windows)
+        # TON-999: a read item's notification-centre toast is withdrawn by its tag before the tray menu drops it,
+        # and whatever the session settles also leaves the menu; that is the only place the menu is updated.
+        self.assertIn('session.withdrawNow(cancelled)', windows)
+        self.assertEqual(1, windows.count('entries.apply('))
         self.assertIn('cannot be withdrawn', windows)
-        self.assertEqual(1, consumer.count('pendingCounts = desktopPendingSummaryCounts(value.state)'))
-        self.assertEqual(1, consumer.count('notifications.postAll(batch, cancelledKeys, pendingCounts)'))
-        # Balloons are never claimed to be withdrawn: the only balloon call submits one, nothing pretends to retract it.
+        self.assertIn('cannot be withdrawn', notifier)
+        self.assertEqual(1, notifier.count('presentation.postAll(items, result.cancelNotificationKeys, desktopPendingSummaryCounts(result.state))'))
+        # Balloons are never claimed to be withdrawn: the only balloon call is the fallback when the centre refuses,
+        # and nothing pretends to retract it.
         self.assertEqual(1, windows.count('displayMessage('))
+        self.assertIn('if (!delivered)', windows)
         self.assertNotIn('removeBalloon', windows)
         settings = text(REPO/'desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopMessageNotificationSettingsContent.kt')
+        self.assertIn('会从通知中心和通知菜单中撤下', settings)
         self.assertIn('已弹出的托盘气泡无法撤回', settings)
         self.assertIn('需要 TV 授权登录', settings)
 

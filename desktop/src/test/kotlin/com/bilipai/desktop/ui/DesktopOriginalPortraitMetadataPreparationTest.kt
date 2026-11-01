@@ -7,7 +7,7 @@ import com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings
 import com.android.purebilibili.core.store.PlaybackCompletionBehavior
 import com.android.purebilibili.data.model.response.*
 import com.android.purebilibili.feature.story.StoryViewModel
-import com.android.purebilibili.core.store.DesktopFeedSettings
+import com.android.purebilibili.core.store.SettingsManager
 import com.android.purebilibili.data.repository.DesktopOriginalHomeVideoProtocol
 import com.android.purebilibili.navigation3.BiliPaiNavKey
 import com.android.purebilibili.feature.video.playback.session.PlaybackSessionState
@@ -901,7 +901,7 @@ class DesktopOriginalPortraitMetadataPreparationTest {
                 storyCaptures.add(StoryCapture(binding, currentCoroutineContext().job))
                 val environment = DesktopHomeProtocolEnvironment(binding.primaryApi, binding.environment.guestApi, unused(),
                     gate.scope, { runCatching { binding.assertCurrent() }.isSuccess }, binding::admitCurrentMutation,
-                    { DesktopFeedSettings.FeedApiType.WEB }, { 20 },
+                    { SettingsManager.FeedApiType.WEB }, { 20 },
                     { Result.failure(IllegalStateException("Use actual sealed nav API for WBI keys")) },
                     binding::primaryAccessToken, binding::primaryCsrf, {
                         repository.ownedHomeCookie("buvid3", binding.receipt.accountEpoch) { runCatching { binding.assertCurrent() }.isSuccess }

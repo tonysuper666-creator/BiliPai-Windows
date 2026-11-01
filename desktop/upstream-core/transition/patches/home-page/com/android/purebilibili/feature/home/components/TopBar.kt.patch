@@ -1,0 +1,10 @@
+--- a/home-page/com/android/purebilibili/feature/home/components/TopBar.kt
++++ b/home-page/com/android/purebilibili/feature/home/components/TopBar.kt
+@@ -1020,6 +1020,7 @@
+                     liquidGlassTuning = resolvedLiquidGlassTuning,
+                     indicatorPositionProvider = currentPositionProvider,
+                     isScrollInProgressProvider = pagerScrollingProvider,
++                    dockHeight = floatingDockHeight,
+                     modifier = Modifier
+                         .width(floatingDockWidth)
+                         .height(floatingDockHeight),

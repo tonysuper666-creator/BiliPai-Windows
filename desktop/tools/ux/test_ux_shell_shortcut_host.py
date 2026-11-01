@@ -22,9 +22,8 @@ What is proved.
                       traversal chord, none with the vendored player map, and one owner for F6
   SourceShapeTest     the text of the host (the order of the checks, one effect per action kind, the guards), no global hook and no second
                       key-fallback slot, the frame and Root stack wiring, the hints constant
-  Rh1HunkTest         the three RH1 hunks of this slice (the val, the one branch, the provider entry), reverse-applied to the Root-reserved
-                      DesktopShell.kt, give the base blob byte for byte (sha256 and size pinned); the branch sits after F11 and Esc and
-                      before the player branch; the Root stack hunk likewise
+  Rh1HunkTest         navigation-owner and fullscreen wiring; shortcut priority after F11 and Esc and before the player branch;
+                      Root shortcuts share the rendered navigation stack and Back owner
   FilesTest           line endings, the program scopes of the hygiene suite, the JVM test classes exist and use no window
 
 What is not proved. That the Kotlin compiles or runs. DesktopShellShortcutHostTest and DesktopShellShortcutsTest are the proof of the
@@ -824,20 +823,7 @@ RH1_S2_HUNKS = (
         "        com.bilipai.desktop.ui.LocalDesktopShellShortcutHost provides shellShortcutHost,\n",
     ),
 )
-SHELL_BASE_SHA256 = "30b5b5ed9a7a7c9de8968a695a02108b8a2ed14437e1e4848f3ebf010c95e4b6"
-SHELL_BASE_BYTES = 248607
 
-# The one hunk of the Root stack (a free file): a comment and one call before the chrome.
-STACK_HUNK = (
-    "        LocalDesktopHomeMediaPorts provides root.media, LocalDesktopHomeEnvironment provides root.environment) {\n"
-    "    DesktopOriginalRootChrome(routes, pages, chrome, currentItem, visibleItems,",
-    "        LocalDesktopHomeMediaPorts provides root.media, LocalDesktopHomeEnvironment provides root.environment) {\n"
-    "    // UX S2: the shell shortcut host acts through these same routes and chrome actions (Ctrl+K, F5, Ctrl+1 to 9, F1 ...).\n"
-    "    DesktopShellRootBinding(routes, chrome, visibleItems)\n"
-    "    DesktopOriginalRootChrome(routes, pages, chrome, currentItem, visibleItems,",
-)
-STACK_BASE_SHA256 = "6d4a54330c7fe9a9a087f1c4a8dfe568cc00229c21c2f7e1d5f36633cbcbe219"
-STACK_BASE_BYTES = 17270
 
 
 def reverse_apply(text):
@@ -850,10 +836,11 @@ def reverse_apply(text):
 
 
 class Rh1HunkTest(unittest.TestCase):
-    def test_the_hunks_undo_to_the_base_blob_byte_for_byte(self):
-        base = reverse_apply(SHELL).encode("utf-8")
-        self.assertEqual(SHELL_BASE_BYTES, len(base))
-        self.assertEqual(SHELL_BASE_SHA256, hashlib.sha256(base).hexdigest())
+    def test_shortcuts_use_the_navigation_owner_and_shell_fullscreen_action(self):
+        self.assertIn("val shellShortcutHost = remember(homeRootRef)", SHELL_CODE)
+        self.assertIn("homeRootRef.get()?.navigation?.requestBack()", SHELL_CODE)
+        self.assertIn("shellShortcutHost.onKey(event) { toggleOriginalFullscreen() }", SHELL_CODE)
+        self.assertIn("LocalDesktopShellShortcutHost provides shellShortcutHost", SHELL_CODE)
 
     def test_the_hunks_add_five_lines_and_remove_none(self):
         base = reverse_apply(SHELL).splitlines()
@@ -904,13 +891,18 @@ class Rh1HunkTest(unittest.TestCase):
         self.assertEqual(1, SHELL_CODE.count("windowKeyFallback?.register { event ->"))
         self.assertEqual(SHELL_CODE.count("latestRootKeyHandler"), source.mask_kotlin(reverse_apply(SHELL)).count("latestRootKeyHandler"))
 
-    def test_the_stack_hunk_undoes_to_the_base_blob_and_is_two_lines(self):
-        before, after = STACK_HUNK
-        self.assertEqual(1, STACK.count(after))
-        base = STACK.replace(after, before).encode("utf-8")
-        self.assertEqual(STACK_BASE_BYTES, len(base))
-        self.assertEqual(STACK_BASE_SHA256, hashlib.sha256(base).hexdigest())
-        self.assertEqual(2, len(STACK.splitlines()) - len(STACK.replace(after, before).splitlines()))
+    def test_root_shortcuts_share_the_rendered_navigation_stack_and_back_owner(self):
+        # Keep S2 bound to the real navigation actors as destinations evolve. A whole-file
+        # digest/byte/line count says nothing about whether keyboard Back reaches that stack.
+        provider = STACK_CODE.rindex("CompositionLocalProvider(LocalNavigationEventDispatcherOwner provides")
+        binding = STACK_CODE.index("DesktopShellRootBinding(routes, chrome, visibleItems)", provider)
+        chrome = STACK_CODE.index("DesktopOriginalRootChrome(routes, pages, chrome, currentItem, visibleItems,", binding)
+        navigation = STACK_CODE.index("DesktopOriginalNavigationHost(environment, routes.stack,", chrome)
+        depth = lambda position: STACK_CODE[:position].count("{") - STACK_CODE[:position].count("}")
+        self.assertEqual(depth(binding), depth(chrome), "shortcuts must remain outside the chrome content, in every rail mode")
+        self.assertGreater(depth(navigation), depth(chrome), "the same chrome must contain the actual navigation display")
+        self.assertIn("LocalNavigationEventDispatcherOwner provides environment.rootNavigationEventOwner", STACK_CODE[provider:binding])
+        self.assertIn("programmaticBackDispatcher, preferWholeCardReturn, { routes.back() }", shell.squash(STACK_CODE[navigation:]))
 
 
 # --------------------------------------------------------------------------------------

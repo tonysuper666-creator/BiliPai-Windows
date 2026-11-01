@@ -1,6 +1,7 @@
 """Complete original video CommentTab/search/composer; Root owns all authority."""
 from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
+from desktop_paths import long_path
 import argparse, hashlib, importlib.util, json, re, textwrap
 import v029_comment_search as comment_search
 from v036_video_comment_viewport import fixed_sources, generate_slots
@@ -26,7 +27,7 @@ def generate(repo,output):
     def emit(path,body,origin,strategy):
         from desktop_refresh_adaptation import bind_refresh_lists
         body=bind_refresh_lists(body)
-        p=output/'com/android/purebilibili'/path;v=str(p.absolute());p=Path('\\\\?\\'+v) if not v.startswith('\\\\?\\') else p
+        p=output/'com/android/purebilibili'/path;p=long_path(p.absolute())
         p.parent.mkdir(parents=True,exist_ok=True);p.write_text(body,encoding='utf-8',newline='\n')
         selections.append(dict(source=origin,path=str(path),strategy=strategy,generatedLfSha256=hashlib.sha256(body.encode()).hexdigest()))
     def function(text,name):
@@ -133,7 +134,7 @@ internal fun sameCommentDraftSubmissionContent(
     generate_input_and_fraud(repo,output,original,shared,emit,function)
     p=output/'video-comment-source-identities.json';p.parent.mkdir(parents=True,exist_ok=True);p.write_text(json.dumps(dict(upstreamCommit=PIN,sources=identities,selections=selections),indent=2,ensure_ascii=False)+'\n',encoding='utf-8',newline='\n')
     for path,raw in original.items():
-        p=output/'original-retained'/(path+'.txt');v=str(p.absolute());p=Path('\\\\?\\'+v);p.parent.mkdir(parents=True,exist_ok=True);p.write_text(raw,encoding='utf-8',newline='\n')
+        p=long_path((output/'original-retained'/(path+'.txt')).absolute());p.parent.mkdir(parents=True,exist_ok=True);p.write_text(raw,encoding='utf-8',newline='\n')
 
 def generate_composer(original,shared,emit,function):
     raw=original[PLAYBACK]

@@ -1,0 +1,19 @@
+--- a/original-bangumi-player/com/android/purebilibili/data/repository/DesktopOriginalBangumiPlayRequests.kt
++++ b/original-bangumi-player/com/android/purebilibili/data/repository/DesktopOriginalBangumiPlayRequests.kt
+@@ -5,16 +5,6 @@
+ import com.android.purebilibili.data.model.response.*
+ import com.bilipai.desktop.ui.ownedBangumiRequest
+ import kotlinx.coroutines.Dispatchers
+-
+-internal fun signBangumiPlayUrlParams(
+-    params: Map<String, String>,
+-    wbiKeys: Pair<String, String>?,
+-    includeRiskFingerprint: Boolean = false
+-): Map<String, String> {
+-    val (imgKey, subKey) = wbiKeys ?: return params
+-    if (imgKey.isBlank() || subKey.isBlank()) return params
+-    return WbiUtils.sign(params, imgKey, subKey, includeRiskFingerprint = includeRiskFingerprint)
+-}
+ 
+ /** Complete original PGC/PUGV playurl protocol inside one captured actual
+  * playback request. This object has no client/cache/Store/player authority. */

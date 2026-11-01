@@ -93,7 +93,7 @@ fun DesktopAppearanceTheme(
     windowSmallestWidthDp: Int = 0,
     content: @Composable () -> Unit,
 ) {
-    val systemDark = isSystemInDarkTheme()
+    val systemDark = rememberDesktopSystemDarkTheme()
     val scheduledDark = rememberDesktopScheduledDarkTheme(settings.darkThemeSchedule)
     val palette = remember(settings, systemDark, scheduledDark) {
         buildDesktopAppearancePalette(settings, systemDark, scheduledDark)
@@ -126,6 +126,8 @@ fun DesktopAppearanceTheme(
         ThemeController(resolveMiuixColorSchemeMode(miuixThemeMode, false),
             lightColors = palette.miuixLight, darkColors = palette.miuixDark, isDark = palette.dark)
     }
+    // coil Int models (upstream R.mipmap launcher icons) resolve -night outside composition.
+    SideEffect { androidx.compose.ui.res.DesktopDrawableTable.nightForImageRequests = palette.dark }
     CompositionLocalProvider(
         LocalDesktopDarkTheme provides palette.dark,
         LocalMaidLottieAnimationEnabled provides settings.maidLottieAnimationEnabled,

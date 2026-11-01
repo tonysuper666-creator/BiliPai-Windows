@@ -4,6 +4,7 @@ from v044_favorite_detail import selected_source as detail_source, bind_viewmode
 from v044_favorite_subscription import advance_vm as subscription_vm, advance_repository as subscription_repository, advance_policy as subscription_policy, advance_ui as subscription_ui, additional_sources as subscription_sources, validate_outputs as validate_subscription_outputs
 from v044_list_foreground import advance_ui as foreground_ui, validate_outputs as validate_foreground_outputs, emit_tests as emit_foreground_tests
 from pathlib import Path
+from desktop_paths import long_path
 import hashlib, importlib.util, json, re, subprocess
 HERE=Path(__file__).resolve().parent
 REPO=None
@@ -11,7 +12,7 @@ BASE='app/src/main/java/com/android/purebilibili/'
 OUT=None
 PREFIX=chr(92)*2+'?'+chr(92)
 def safe(p):
- s=str(Path(p).absolute());return Path(s if s.startswith(PREFIX) else PREFIX+s)
+ return long_path(Path(p).absolute())
 def read(p):return safe(p).read_text(encoding='utf-8').replace('\r\n','\n').replace('\r','\n')
 def emit(p,s):
  relative=str(p).replace(chr(92),'/')

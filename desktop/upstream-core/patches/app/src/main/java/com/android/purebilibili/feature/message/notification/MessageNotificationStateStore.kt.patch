@@ -1,0 +1,13 @@
+--- a/com/android/purebilibili/feature/message/notification/MessageNotificationStateStore.kt
++++ b/com/android/purebilibili/feature/message/notification/MessageNotificationStateStore.kt
+@@ -45,4 +45,4 @@
+     suspend fun checkedRecently(context: Context, mid: Long): Boolean {
+         val prefs = context.applicationContext.messageNotificationStateStore.data.first()
+-        val boot = android.provider.Settings.Global.getInt(context.contentResolver, "boot_count", -1).toLong()
++        val boot = com.bilipai.desktop.ui.desktopMessageNotificationClockEpoch()
+         return shouldSkipRecentNotificationCheck(
+@@ -54,3 +54,3 @@
+     suspend fun markChecked(context: Context, mid: Long) {
+-        val boot = android.provider.Settings.Global.getInt(context.contentResolver, "boot_count", -1).toLong()
++        val boot = com.bilipai.desktop.ui.desktopMessageNotificationClockEpoch()
+         context.applicationContext.messageNotificationStateStore.edit {

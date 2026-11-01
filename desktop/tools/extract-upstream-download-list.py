@@ -1,6 +1,7 @@
 """Complete fixed v025 download list, with exact b209 per-task speed updates and Windows owner seams."""
 from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
+from desktop_paths import long_path
 import argparse,hashlib,importlib.util,json,subprocess,textwrap
 
 COMMIT='79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40'
@@ -17,7 +18,7 @@ SOURCE_PINS={
  BASE+'feature/download/DownloadTaskPresentationPolicy.kt':'b7a3849710941b82fbba529d6f5f8f6e9d824a73ed75b2203f05f213ac89d54d',
 }
 def safe(p):
- s=str(Path(p).absolute());prefix=chr(92)*2+'?'+chr(92);return Path(s if s.startswith(prefix) else prefix+s)
+ return long_path(Path(p).absolute())
 def read(p):return safe(p).read_text(encoding='utf-8').replace('\r\n','\n')
 def write(p,s):
  p=safe(p);p.parent.mkdir(parents=True,exist_ok=True);p.write_text(s,encoding='utf-8',newline='\n')

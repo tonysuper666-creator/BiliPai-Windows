@@ -1,3 +1,4 @@
+from desktop_paths import long_path
 from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
 import argparse, hashlib, importlib.util, json, os, re, textwrap
@@ -5,11 +6,10 @@ import argparse, hashlib, importlib.util, json, os, re, textwrap
 TARGET = '3d5d19a2f994daccd0e2f8b5f522b6d82f43d589'
 ROOT = 'app/src/main/java/com/android/purebilibili/'
 NAV = ROOT + 'navigation3/'
-PREFIX = chr(92) * 2 + '?' + chr(92)
 
 def safe(p):
     s = os.path.abspath(p)
-    return Path(s if s.startswith(PREFIX) else PREFIX + s)
+    return long_path(s)
 
 def digest(s): return hashlib.sha256(s.encode('utf-8')).hexdigest()
 

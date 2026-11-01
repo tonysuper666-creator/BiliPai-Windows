@@ -4,6 +4,7 @@ No DTO, HTTP graph, item authority or second recommendation planner is generated
 """
 from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
+from desktop_paths import long_path
 import argparse,hashlib,json,importlib.util
 from v029_home_load import home_vm_delta, sources as home_load_sources
 
@@ -13,7 +14,7 @@ DIRECT=[BASE+'core/util/EasterEggs.kt',BASE+'feature/home/TodayWatchRefreshPolic
 def sha(text):return hashlib.sha256(text.encode()).hexdigest()
 def safe(path):
  p=Path(path);s=str(p.absolute())
- return Path(s if s.startswith(chr(92)*2+'?'+chr(92)) else chr(92)*2+'?'+chr(92)+s)
+ return long_path(s)
 def read(path):return safe(path).read_text(encoding='utf-8').replace('\r\n','\n')
 def write(path,text):
  p=safe(path);p.parent.mkdir(parents=True,exist_ok=True);p.write_text(text,encoding='utf-8',newline='\n')

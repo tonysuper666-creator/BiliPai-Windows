@@ -130,7 +130,7 @@ def main(repo, output):
          adapted(path, p, q))
     # Promote the entire original pure selection policy. Root must withdraw the old
     # two-declaration producer output, retaining its test assertions against this owner.
-    p=read(SELECTION);q=p.replace('import com.android.purebilibili.core.store.SettingsManager','import com.android.purebilibili.core.store.DesktopFeedSettings as SettingsManager')
+    p=read(SELECTION);q=p
     emit('com/android/purebilibili/feature/settings/PlaybackSettingsSelectionPolicy.kt',adapted(SELECTION,p,q))
     m=read(MANAGER);obj=m[m.index('{',m.index('object SettingsManager'))+1:m.rfind('}')]
     seeds=sorted(set(re.findall(r'\bSettingsManager\s*\.\s*(\w+)',original))-{'getHomeSettings'}|{'getHwDecode','setHwDecode','getGestureSensitivity','setGestureSensitivity','getDoubleTapLike','setDoubleTapLike','getAutoSkipOpEd','setAutoSkipOpEd','getHeaderBlurEnabled','getAndroidNativeLiquidGlassEnabled'})

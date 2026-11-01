@@ -18,6 +18,19 @@ group = "com.bilipai.desktop"
 version = "0.1.0"
 kotlin { jvmToolchain(21) }
 
+// Producers are invoked as external processes. Windows checkouts keep the historical `python`
+// (the Windows toolchain ships it); every other platform only has `python3`, so the interpreter is
+// chosen by platform here instead of requiring a local `python` shim. PYTHON_EXECUTABLE still wins.
+val pythonExecutable = System.getenv("PYTHON_EXECUTABLE")
+    ?: if (System.getProperty("os.name").startsWith("Windows", ignoreCase = true)) "python" else "python3"
+
+// Two build products are Windows x64 only: the JS worker image (compiled and linked with the fixed
+// Windows JDK, bin/javac.exe + bin/jlink.exe) and the native diagnostic share bridge (MSVC). Off
+// Windows there is no equivalent output, and emitting a digest-shaped value would look like a verified
+// asset, so a non-Windows build emits a clearly non-publishable placeholder and the packaging tasks
+// refuse to run here. Every other platform difference is handled by the tools themselves.
+val hostIsWindows = System.getProperty("os.name").startsWith("Windows", ignoreCase = true)
+
 // Producers that are not migrated yet read the legacy read point (see settings.gradle.kts);
 // migrated upstream modules read the merged repository root (mergedRepositoryRoot).
 val repositoryRoot = file(gradle.extra["bilipai.legacyRoot"] as String)
@@ -33,23 +46,24 @@ val originalResources = (manifest["resources"] as? List<*>)?.map { it as Map<*, 
 // Keep every other manifest field. A changed recipe/helper restores the full
 // manifest input until the dependency closure is reviewed again.
 val revisionNeutralSourceRecipePins = mapOf(
+    "tools/desktop_paths.py" to "a2de178814872a493a7257955ed8f7b92b35ad193fa79d5495108832c81b0c69",
     "tools/extract-appearance-platform.py" to "964b59fd07d92c434b887f7ed2684866efbfdfb7268a2ff8a0341d31ff0ea3cb",
     "tools/extract-upstream-api.py" to "c7571703fdaaa33f4fe6ae6fcd370d182efa4623e0dbd6e89d56544b447f313e",
-    "tools/extract-upstream-bgm-detail.py" to "965546d1db99f5d1b667d0f0fff0dbabcecaa51e835d0bab058af6820faa6be3",
+    "tools/extract-upstream-bgm-detail.py" to "2a9f8ad706b290abc1e8328ed1ee26a39124d7fe3f841805b045e7acac4ad246",
     "tools/v036_video_comment_cache.py" to "81cb90c8236ea4ac0b04d1eec7a96aea46e6f2becb2ad24a4cdce8b6563683e2",
-    "tools/extract-upstream-dynamic-reply-protocol.py" to "95ba70a1ea5366cf295620a8fe6f34492f2ba4d9152cb8549e3102de0c786377",
+    "tools/extract-upstream-dynamic-reply-protocol.py" to "01070c8206336d1efa88ac4bee93cb6f64326511945ee2ec3db100a8df0673fc",
     "tools/v036_comment_route.py" to "3edce0c4518b1b6aa25c1be68a4db186af7fb33c563db5d6194a257277e48b60",
-    "tools/extract-upstream-frosted-audio-renderer.py" to "3f8a55cc5ae3643be4774f78bc948668fe9ba3cc348903544d916bc35024497f",
-    "tools/extract-upstream-linked-dock.py" to "c27347c4f3a16569a4d588a06ce6dea2a8fcb2d885ac2a1dfd4d321f2dc3b5fb",
+    "tools/extract-upstream-frosted-audio-renderer.py" to "01a66bee41799ee9ab300116c8bae067e2be30bd84298ed188d6343238599db3",
+    "tools/extract-upstream-linked-dock.py" to "964f92380e96ccd4f19b7b7a2516a4f35058884dc0f5136cd7b63f4125ecb5fd",
     "tools/extract-upstream-media.py" to "2f159e26fb5bb61bb305e6dfbcf82f7b6647ee048029560a6b4d6fb1f842464f",
     "tools/extract-upstream-plugins.py" to "b31780efa1cf86b3910c6e4fa978da5662d104bf6edb12fa24f05e885f80a3e2",
     "tools/extract-upstream-special-danmaku.py" to "979060ce22a625c76651b24fee264268385ccb96de8956fb1447defca1dedc56",
-    "tools/extract-upstream-video-comment-ui.py" to "6537f13ea46e584244a6384c4b43b8df68fb7c3028b210f49bee34e6aafabb31",
+    "tools/extract-upstream-video-comment-ui.py" to "5cfb2e35b5e558c3a1911d04fd04ffed88ddc0d17571687901ed591b4e9dbf03",
     "tools/extract-video-enhancement.py" to "0046195e1914059a841aacf69ed704c86a85e5a9e3a432fbcce3d3628f2d9195",
-    "tools/run-tool-tests.py" to "0ccdc350020d68fd5d7bf515cf16fcb45147dc9f2549d436ebda7f8936008403",
-    "tools/sync-upstream.py" to "4f2777086628182caf945f5c225a0e9f629eaf698823e2d4fef3b427086e303f",
-    "tools/v025-canonical-sources.json" to "2fa53aa78cc27c76a3923cc44750128b3657c340dbcfe44ec13810cbc48becbc",
-    "tools/v025_source_paths.py" to "43ae1635c64aa3eb695dd3f3babdfaeacdf8899680e6823a44179163facb848f",
+    "tools/run-tool-tests.py" to "0114c7c7ecea5c45e26843ed025eae4a7fd991b6d50edf09bf9185ed7f20cd44",
+    "tools/sync-upstream.py" to "62e1bab0f3101a76f80d1ec2aa16c0b2f2aacba194df67c291324638adce1fa0",
+    "tools/v025-canonical-sources.json" to "2600739eef5521cfef71d6af16762ccc3b9df076dad7ccb79902944f1634130f",
+    "tools/v025_source_paths.py" to "3b84ba1b1b0907cfb3cb610bd6f713c37521a79f6a0d78ce185f764547ebc460",
     "tools/v029_brand_consumers.py" to "89648e569d074aaeaa456a12220efb4de3e8ecfcefbbe05f74ea55ef47c3742e",
     "tools/v029_comment_composer.py" to "49321836c7e0b49dbdbd226872f85df8cb391feb8ac7dadd27b56e345bbbca52",
     "tools/v029_comment_search.py" to "b80189f64014e373c136bc38e0fbb4171933203ba0cf2a2e76bf0053e17c1a9d",
@@ -64,7 +78,7 @@ val revisionNeutralSourceRecipePins = mapOf(
 )
 // These import names come from the same reviewed closure. New local module,
 // package or extension forms must restore the full manifest input.
-val revisionNeutralSourceLocalImportRoots = setOf("v025_source_paths", "v029_brand_consumers", "v029_comment_composer", "v029_comment_search", "v029_history_recap", "v030_live_danmaku", "v030_live_recovery", "v030_live_stream", "v030_video_dynamic_share", "v033_comment_refresh", "v034_live_moderation", "v034_live_moderation_ui")
+val revisionNeutralSourceLocalImportRoots = setOf("desktop_paths", "v025_source_paths", "v029_brand_consumers", "v029_comment_composer", "v029_comment_search", "v029_history_recap", "v030_live_danmaku", "v030_live_recovery", "v030_live_stream", "v030_video_dynamic_share", "v033_comment_refresh", "v034_live_moderation", "v034_live_moderation_ui")
 val revisionNeutralSourceExternalImportRoots = setOf("__future__", "argparse", "datetime", "decimal", "difflib", "functools", "hashlib", "importlib", "json", "os", "pathlib", "re", "shutil", "subprocess", "sys", "textwrap", "unittest", "urllib", "xml")
 val revisionNeutralSourceImportRoots = revisionNeutralSourceLocalImportRoots + revisionNeutralSourceExternalImportRoots
 val revisionNeutralSourceImportShadowFiles = fileTree("tools") {
@@ -82,7 +96,7 @@ val revisionNeutralSourceImportContextMatches =
     revisionNeutralSourceImportRoots.none { file("tools/$it").exists() } && revisionNeutralSourceImportShadowFiles.isEmpty
 // Pin the whole Gradle recipe, including canonical helpers and later wiring.
 // Mask exactly this self-digest assignment; raw build bytes remain task inputs.
-val revisionNeutralSourceGradleRecipeSha256 = "44bc808bb4891e2afd901ce5970dafa61690bc883d00bb4bc1345afceb4d799e"
+val revisionNeutralSourceGradleRecipeSha256 = "b943e53a7474a41bcdcf313c616378abae4b4402999f322e4ba3ee02b75346f3"
 val revisionNeutralSourceGradleRecipeMatches = runCatching {
     val recipe = file("build.gradle.kts").readText(Charsets.UTF_8).replace("\r\n", "\n")
     val ownPin = "val revisionNeutralSourceGradleRecipeSha256 = \"$revisionNeutralSourceGradleRecipeSha256\""
@@ -107,7 +121,7 @@ val canonicalOriginalCatalogFile = file("tools/v025-canonical-sources.json")
 val canonicalOriginalHelperFile = file("tools/v025_source_paths.py")
 val canonicalOriginalCatalogBytes = canonicalOriginalCatalogFile.readBytes().also { bytes ->
     require(MessageDigest.getInstance("SHA-256").digest(bytes)
-        .joinToString("") { "%02x".format(it) } == "2fa53aa78cc27c76a3923cc44750128b3657c340dbcfe44ec13810cbc48becbc") {
+        .joinToString("") { "%02x".format(it) } == "2600739eef5521cfef71d6af16762ccc3b9df076dad7ccb79902944f1634130f") {
         "The v025 canonical original source catalog changed without review."
     }
 }
@@ -117,7 +131,7 @@ val canonicalOriginalCatalog = (JsonSlurper().parse(canonicalOriginalCatalogByte
 val canonicalOriginalRoots = (canonicalOriginalCatalog["sourceRoots"] as List<*>).map { it.toString() }
 val canonicalOriginalPrevious = canonicalOriginalCatalog["previousPaths"] as Map<*, *>
 val canonicalOriginalPins = canonicalOriginalCatalog["paths"] as Map<*, *>
-fun canonicalOriginalIdentity(relative: String): String {
+fun liveOriginalIdentity(relative: String): String {
     val path = JvmPaths.get(relative)
     require(!path.isAbsolute && path.none { it.toString() == ".." }) { "Invalid original source identity: $relative" }
     val name = path.normalize().toString().replace('\\', '/')
@@ -128,11 +142,25 @@ fun canonicalOriginalIdentity(relative: String): String {
     require(canonicalOriginalPins.containsKey(identity)) { "Unknown canonical original source: $identity" }
     return identity
 }
+fun canonicalOriginalIdentity(relative: String): String {
+    val identity = liveOriginalIdentity(relative)
+    // prepareUpstreamSources copies the pre-merge snapshot. A retargeted pin names
+    // the direct-compile file, which that snapshot does not contain. Copy the one
+    // predecessor still in the snapshot. The live pin check stays on the new path.
+    if (File(repositoryRoot, identity).isFile) return identity
+    val predecessors = canonicalOriginalPrevious.entries.mapNotNull { (key, value) ->
+        val name = key?.toString() ?: return@mapNotNull null
+        if (value?.toString() == identity && File(repositoryRoot, name).isFile) name else null
+    }.distinct()
+    return if (predecessors.size == 1) predecessors.single() else identity
+}
 fun canonicalOriginalSource(relative: String): File {
-    val identity = canonicalOriginalIdentity(relative)
-    val destination = File(repositoryRoot, identity)
+    val identity = liveOriginalIdentity(relative)
+    // Inventory pins now name the merged direct-compile tree. Unmigrated producers
+    // still copy repositoryRoot, and this check stays an exact byte compare.
+    val destination = File(mergedRepositoryRoot, identity)
     require(!JvmFiles.isSymbolicLink(destination.toPath())) { "Original source is a symbolic link: $relative" }
-    require(destination.canonicalFile.toPath().startsWith(repositoryRoot.canonicalFile.toPath())) { "Original source escapes repository: $relative" }
+    require(destination.canonicalFile.toPath().startsWith(mergedRepositoryRoot.canonicalFile.toPath())) { "Original source escapes repository: $relative" }
     if (canonicalOriginalRoots.any { identity.startsWith(it) }) {
         val pin = canonicalOriginalPins[identity] as Map<*, *>
         val raw = destination.readBytes()
@@ -153,9 +181,9 @@ val windowsVersion = "0.2.$upstreamVersionCode.$windowsRevision"
 val generatedUpstream = layout.buildDirectory.dir("generated/upstream")
 val nativeDiagnosticShareOutput = layout.buildDirectory.dir("generated/native-diagnostic-share")
 
-val prepareNativeDiagnosticShare by tasks.registering(Exec::class) {
+val prepareNativeDiagnosticShare = if (hostIsWindows) tasks.register<Exec>("prepareNativeDiagnosticShare") {
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/prepare-native-diagnostic-share.py",
+    commandLine(pythonExecutable, "tools/prepare-native-diagnostic-share.py",
         // The bridge source, its approval and the compiler driver are checked-in project files, not
         // produced upstream slices: the legacy read point would build the pre-merge C++ and then
         // approve it against that same stale copy.
@@ -170,6 +198,25 @@ val prepareNativeDiagnosticShare by tasks.registering(Exec::class) {
     // Resolve the SDK/STL/library graph afresh, including newly shadowing files.
     // Mutable cached DLL metadata is never a runtime trust root.
     outputs.upToDateWhen { false }
+} else tasks.register("prepareNativeDiagnosticShare") {
+    group = "build"
+    description = "Non-Windows placeholder: the MSVC diagnostic share bridge is not built on this host."
+    val generated = nativeDiagnosticShareOutput.map { it.file("kotlin/com/bilipai/desktop/diagnostics/DesktopNativeDiagnosticShareAssetHash.kt") }
+    outputs.file(generated)
+    outputs.upToDateWhen { false }
+    doLast {
+        val file = generated.get().asFile
+        file.parentFile.mkdirs()
+        file.writeText("""// GENERATED placeholder: this host cannot build the Windows x64 MSVC bridge.
+package com.bilipai.desktop.diagnostics
+
+/** Not a digest. No bridge was compiled here, so the desktop diagnostics share stays unavailable. */
+internal object DesktopNativeDiagnosticShareAssetHash {
+    const val sha256: String = "unavailable: the diagnostic share bridge is a Windows x64 MSVC build product"
+}
+""", Charsets.UTF_8)
+        logger.lifecycle("No native diagnostic share bridge on this host; compile-only placeholder written.")
+    }
 }
 
 
@@ -191,7 +238,6 @@ val appCoreDesktopOwned: Map<String, String> = mapOf(
     "core/util/PlaybackTelemetryPolicy.kt" to "Media3 播放错误码分类；桌面播放走 mpv，没有这些错误码",
     "core/theme/ScheduledDarkThemeObserver.kt" to "Android 系统壁纸取色、定时深色（AlarmManager）与字体文件 ContentResolver",
     "core/theme/SeedWallpaperColorScheme.kt" to "Android 系统壁纸取色、定时深色（AlarmManager）与字体文件 ContentResolver",
-    "core/cache/PlayUrlCache.kt" to "Media3 播放地址缓存；桌面播放地址由 DesktopRepository 管理",
     "core/database/AppDatabase.kt" to "Room 数据库；桌面用 JSON 存储（DesktopBlockedUpStore、DesktopCommentFraudJsonDao 等）",
     "core/database/Converters.kt" to "Room 数据库；桌面用 JSON 存储（DesktopBlockedUpStore、DesktopCommentFraudJsonDao 等）",
     "core/database/DatabaseModule.kt" to "Room 数据库；桌面用 JSON 存储（DesktopBlockedUpStore、DesktopCommentFraudJsonDao 等）",
@@ -199,8 +245,6 @@ val appCoreDesktopOwned: Map<String, String> = mapOf(
     "core/database/dao/CommentFraudDao.kt" to "Room 数据库；桌面用 JSON 存储（DesktopBlockedUpStore、DesktopCommentFraudJsonDao 等）",
     "core/lifecycle/BackgroundManager.kt" to "Android 进程前后台与内存回收回调",
     "core/lifecycle/BackgroundMemoryTrimPolicy.kt" to "Android 进程前后台与内存回收回调",
-    "core/paging/ForwardPagingSession.kt" to "androidx.paging（桌面无此依赖）",
-    "core/paging/ForwardPagingSource.kt" to "androidx.paging（桌面无此依赖）",
     "core/performance/Android17Diagnostics.kt" to "Android 进程退出与 Android 17 诊断；桌面诊断走 DesktopDiagnostics",
     "core/performance/NativeExitTrace.kt" to "Android 进程退出与 Android 17 诊断；桌面诊断走 DesktopDiagnostics",
     "core/performance/ProcessExitContext.kt" to "Android 进程退出与 Android 17 诊断；桌面诊断走 DesktopDiagnostics",
@@ -261,23 +305,59 @@ val appCoreLaterSteps: Map<String, String> = mapOf(
     "core/ui/wallpaper/WallpaperMedia" to "video wallpaper on Media3/AndroidView and BitmapFactory probing; needs a desktop replacement over the mpv player",
     "core/util/PlayerOrientationPolicy.kt" to "Activity orientation of the player; moves with the video feature (M4a)",
     "core/util/PlayerPresentationPolicy.kt" to "Activity orientation of the player; moves with the video feature (M4a)",
-    "core/ui/components/UserLevelBadge.kt" to "draws app R.drawable level badges; moves once drawable resources are generated",
     "core/store/LocalPlaylistStore.kt" to "Room AudioLibraryDatabase; the desktop music library is JSON, moves with the audio feature (M4c)",
     "core/store/PlayHistoryStore.kt" to "Room AudioLibraryDatabase; the desktop music library is JSON, moves with the audio feature (M4c)",
-    "core/store/UpdateHighlightsStore.kt" to "reads feature/settings/highlights; moves with the settings feature (M4d)",
     "core/events/BrandSuccessEvents.kt" to "the desktop success feedback carries its own origin model (DesktopBrandSuccessOrigin) that upstream's events do not have; moves with the feedback host",
     "core/ui/BrandSuccessFeedbackHost.kt" to "the desktop success feedback carries its own origin model (DesktopBrandSuccessOrigin); moves with BrandSuccessEvents",
     "core/store/FavoriteFolderCoverCache.kt" to "the desktop keeps one cover cache per favorites origin; moves with the favorites feature (M4d)",
     "core/ui/components/AppLiquidAwareTabRow.kt" to "calls feature/home's liquid tab components with their new parameters; moves with the home feature (M4b)",
 )
-val migratedAppCorePaths: Set<String> = appJavaRoot.resolve("com/android/purebilibili/core").walkTopDown()
+// Feature areas compiled from the merged root as well (TON-1003, M4b): home, search, dynamic and comment. A file of those
+// areas stays on its legacy copy while upstream-core/m4b/later-steps.tsv lists it (path <TAB> what it waits for);
+// upstream-core/m4b/retired-generated.tsv lists the producer copies that re-declare names of the migrated files.
+// The app data layer (TON-1071: data/repository and data/model) moves the same way, with its own lists in upstream-core/data/.
+val migratedAppFeatureAreas = listOf("feature/home/", "feature/search/", "feature/dynamic/", "feature/comment/", "data/")
+val appFeatureListDirectories = listOf("upstream-core/m4b", "upstream-core/data")
+val appFeatureLaterSteps: Map<String, String> = appFeatureListDirectories.flatMap { file("$it/later-steps.tsv").takeIf { it.isFile }?.readLines().orEmpty() }
+    .filter { it.isNotBlank() && !it.startsWith("#") }.associate { line -> line.substringBefore('\t') to line.substringAfter('\t') }
+val appFeatureRetiredGeneratedCopies: Set<String> = appFeatureListDirectories.flatMap { file("$it/retired-generated.tsv").takeIf { it.isFile }?.readLines().orEmpty() }
+    .map { it.trim() }.filter { it.isNotEmpty() && !it.startsWith("#") }.toSet()
+val migratedAppCorePaths: Set<String> = (appJavaRoot.resolve("com/android/purebilibili/core").walkTopDown() +
+        migratedAppFeatureAreas.asSequence().flatMap { appJavaRoot.resolve("com/android/purebilibili/$it").walkTopDown() })
     .filter { it.isFile && it.extension == "kt" }.map { it.relativeTo(appJavaRoot).invariantSeparatorsPath }
-    .filter { path -> path.removePrefix("com/android/purebilibili/").let { core -> (appCoreDesktopOwned.keys + appCoreLaterSteps.keys).none { core.startsWith(it) } } }
+    .filter { path -> path.removePrefix("com/android/purebilibili/").let { core ->
+        (appCoreDesktopOwned.keys + appCoreLaterSteps.keys).none { core.startsWith(it) } && core !in appFeatureLaterSteps } }
     .toSortedSet()
+// M4d (TON-1005): the feature areas plugin, profile, space, message, settings and login compile from the merged root as
+// well. A file stays on its legacy copy while upstream-core/m4d/later-steps.tsv lists it (path <TAB> what it waits for);
+// upstream-core/m4d/retired-generated.tsv lists the producer copies that re-declare names of the migrated files.
+val migratedAppM4dAreas = listOf("feature/plugin/", "feature/profile/", "feature/space/", "feature/message/", "feature/settings/", "feature/login/")
+fun m4dTable(name: String): List<Pair<String, String>> = file("upstream-core/m4d/$name").takeIf { it.isFile }?.readLines().orEmpty()
+    .filter { it.isNotBlank() && !it.startsWith("#") }.map { it.substringBefore('\t').trim() to it.substringAfter('\t', "").trim() }
+val appM4dLaterSteps: Map<String, String> = m4dTable("later-steps.tsv").toMap()
+val appM4dRetiredGeneratedCopies: Set<String> = m4dTable("retired-generated.tsv").map { it.first }.toSet()
+val migratedAppM4dPaths: Set<String> = migratedAppM4dAreas.asSequence().flatMap { appJavaRoot.resolve("com/android/purebilibili/$it").walkTopDown() }
+    .filter { it.isFile && it.extension == "kt" }.map { it.relativeTo(appJavaRoot).invariantSeparatorsPath }
+    .filter { path -> path.removePrefix("com/android/purebilibili/") !in appM4dLaterSteps }
+    .toSortedSet()
+// Single files of not yet migrated areas that a migrated file reads in their current form (TON-1107: ProfileScreen;
+// TON-1108: SpaceScreen's grid column preference, its settings writes go to LocalDesktopFeedGridColumnSettings;
+// TON-1109: the message feed pages' MessageManagementRepository, built per message page child over its gated services;
+// TON-1120: the private messages' MessageImRepository, whose gRPC calls go over the calling message page child's gated call,
+// and the read events the message Root shares between its pages).
+val migratedAppSingleFiles: Set<String> = setOf(
+    "com/android/purebilibili/feature/home/components/cards/HorizontalVideoCardLayoutPolicy.kt",
+    "com/android/purebilibili/feature/home/FeedGridColumnPreference.kt",
+    "com/android/purebilibili/data/repository/MessageManagementRepository.kt",
+    "com/android/purebilibili/data/repository/MessageImRepository.kt",
+    "com/android/purebilibili/data/repository/MessageReadEvent.kt",
+    // TON-1124: the upstream ledger repository takes the calling Profile page environment.
+    "com/android/purebilibili/data/repository/AccountLedgerRepository.kt",
+)
 // M4c (TON-1004): every upstream file of live, audio and download compiles from the merged root,
 // except the two maps below.
-// appFeatureDesktopOwned: Android-only files whose capability the desktop implements itself; the reason names it.
-val appFeatureDesktopOwned: Map<String, String> = mapOf(
+// appM4cDesktopOwned: Android-only files whose capability the desktop implements itself; the reason names it.
+val appM4cDesktopOwned: Map<String, String> = mapOf(
     "com/android/purebilibili/feature/audio/player/BackgroundAudioConnection.kt" to "Android 绑定 Service 的连接；桌面同一进程直接持有 audio/ListenAudioSession.kt",
     "com/android/purebilibili/feature/audio/player/BackgroundAudioProtocol.kt" to "服务与界面之间的 Bundle IPC；桌面进程内共享状态，没有 IPC 协议",
     "com/android/purebilibili/feature/audio/player/BackgroundAudioService.kt" to "Android 前台 MediaSessionService + 通知；桌面是进程内会话 audio/ListenAudioSession.kt（DesktopShell.kt 持有，无 Service/通知栏）",
@@ -296,8 +376,8 @@ val appFeatureDesktopOwned: Map<String, String> = mapOf(
     "com/android/purebilibili/feature/live/components/LivePlayerStatus.kt" to "Android 电量/时间广播；桌面走 Windows GetSystemPowerStatus：ui/DesktopOriginalPlayerControlsWindows.kt:18-19、35-36",
     "com/android/purebilibili/feature/live/components/LiveRichDanmakuEditor.kt" to "Android IME/Spanned 富文本；桌面直播输入是 Compose 文本框 ui/MediaScreens.kt:700（DesktopLiveChatDraft 管理草稿）",
 )
-// appFeatureLaterSteps: still on their legacy copy in this step; the reason names what has to move first.
-val appFeatureLaterSteps: Map<String, String> = mapOf(
+// appM4cLaterSteps: still on their legacy copy in this step; the reason names what has to move first.
+val appM4cLaterSteps: Map<String, String> = mapOf(
     "com/android/purebilibili/feature/audio/bgm/BgmDetailScreen.kt" to "依赖 ViewGrpcRepository 与 Toast/MediaStore；等 BGM 数据层迁移",
     "com/android/purebilibili/feature/audio/bgm/BgmDetailViewModel.kt" to "依赖 ViewGrpcRepository（桌面未编译的视频详情 gRPC 仓库）",
     "com/android/purebilibili/feature/audio/library/ListenVideoLibraryDataSource.kt" to "与切片产物 DesktopListenVideoLibraryLoader 同名声明冲突，需要先退役该切片生产者",
@@ -347,18 +427,18 @@ val appFeatureLaterSteps: Map<String, String> = mapOf(
     "com/android/purebilibili/feature/live/components/LiveSuperChatFlashOverlay.kt" to "依赖 LiveSuperChatCard（在 Android 专属的 LiveSuperChatSection 里）",
     "com/android/purebilibili/feature/live/components/LiveSuperChatSection.kt" to "依赖 Android Toast 与 Bitmap（asAndroidBitmap）分享；桌面 SC 只在弹幕浮层里画",
 )
-val migratedAppFeatureRoots = listOf(
+val migratedAppM4cRoots = listOf(
     "com/android/purebilibili/feature/live/",
     "com/android/purebilibili/feature/audio/",
     "com/android/purebilibili/feature/download/",
 )
-val migratedAppFeaturePaths: Set<String> = migratedAppFeatureRoots.flatMap { root ->
+val migratedAppM4cPaths: Set<String> = migratedAppM4cRoots.flatMap { root ->
     appJavaRoot.resolve(root).walkTopDown().filter { it.isFile && it.extension == "kt" }
         .map { it.relativeTo(appJavaRoot).invariantSeparatorsPath }
-        .filter { path -> path !in appFeatureDesktopOwned && path !in appFeatureLaterSteps }
+        .filter { path -> path !in appM4cDesktopOwned && path !in appM4cLaterSteps }
         .toList()
 }.toSortedSet()
-val migratedAppPaths: Set<String> = migratedAppCorePaths + migratedAppFeaturePaths
+val migratedAppPaths: Set<String> = migratedAppCorePaths + migratedAppM4dPaths + migratedAppSingleFiles + migratedAppM4cPaths
 val migratedUpstreamRelativePaths = migratedWholeModulePaths + migratedAppPaths + setOf(
     "com/android/purebilibili/core/network/AppSignUtils.kt",
     "com/android/purebilibili/core/network/WbiUtils.kt",
@@ -617,7 +697,7 @@ val extractUpstreamApi by tasks.registering(Exec::class) {
     workingDir(projectDir)
     inputs.file("tools/v040_reply_medal.py")
     inputs.dir("upstream-slices/v040-reply-medal")
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-api.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-api.py",
         "--repo", repositoryRoot.absolutePath, "--output", layout.buildDirectory.dir("generated/api").get().asFile.absolutePath)
     inputs.file(canonicalOriginalSource("app/src/main/java/com/android/purebilibili/core/network/ApiClient.kt"))
     inputs.file(canonicalOriginalSource("core-data/src/main/java/com/android/purebilibili/core/network/CoreNetworkRuntime.kt"))
@@ -637,7 +717,7 @@ val extractUpstreamApi by tasks.registering(Exec::class) {
 val extractUpstreamDanmaku by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-danmaku.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-danmaku.py",
         "--repo", repositoryRoot.absolutePath, "--output", layout.buildDirectory.dir("generated/danmaku").get().asFile.absolutePath)
     inputs.file("tools/extract-upstream-danmaku.py")
     inputs.files(sources.filter { it["mode"] == "extracted" }.map { canonicalOriginalSource(it["path"].toString()) })
@@ -646,7 +726,7 @@ val extractUpstreamDanmaku by tasks.registering(Exec::class) {
 val extractUpstreamMedia by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-media.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-media.py",
         "--repo", repositoryRoot.absolutePath, "--output", layout.buildDirectory.dir("generated/media").get().asFile.absolutePath,
         "--test-output", layout.buildDirectory.dir("generated/live-stream-original-tests").get().asFile.absolutePath)
     inputs.file("tools/extract-upstream-media.py")
@@ -687,7 +767,7 @@ val extractUpstreamAudio by tasks.registering(Exec::class) {
     inputs.dir("upstream-slices/v044-favorite-detail")
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-audio.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-audio.py",
         "--repo", repositoryRoot.absolutePath, "--output", layout.buildDirectory.dir("generated/audio").get().asFile.absolutePath)
     inputs.file("tools/extract-upstream-audio.py")
     inputs.file("tools/v038_audio_library.py")
@@ -703,7 +783,7 @@ tasks.named("compileTestKotlin") { dependsOn(extractUpstreamAudio) }
 val extractUpstreamLogin by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-login-platform.py",
+    commandLine(pythonExecutable, "tools/extract-login-platform.py",
         "--repo", repositoryRoot.absolutePath, "--output", layout.buildDirectory.dir("generated/login").get().asFile.absolutePath)
     inputs.file("tools/extract-login-platform.py")
     inputs.file("tools/sync-upstream.py")
@@ -715,7 +795,7 @@ val extractUpstreamPlugins by tasks.registering(Exec::class) {
     inputs.file("tools/patch-public-content-credentials.py")
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-plugins.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-plugins.py",
         "--repo", repositoryRoot.absolutePath, "--output", layout.buildDirectory.dir("generated/plugins").get().asFile.absolutePath,
         "--test-output", layout.buildDirectory.dir("generated/v041-feed-original-tests").get().asFile.absolutePath)
     inputs.file("tools/extract-upstream-plugins.py")
@@ -740,7 +820,7 @@ val extractUpstreamPlugins by tasks.registering(Exec::class) {
     doLast {
         providers.exec {
             workingDir(projectDir)
-            commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/patch-public-content-credentials.py",
+            commandLine(pythonExecutable, "tools/patch-public-content-credentials.py",
                 layout.buildDirectory.dir("generated/plugins").get().asFile.absolutePath)
         }.result.get().assertNormalExitValue()
     }
@@ -750,7 +830,7 @@ tasks.named("compileTestKotlin") { dependsOn(extractUpstreamPlugins) }
 val extractUpstreamDiscovery by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-discovery-platform.py",
+    commandLine(pythonExecutable, "tools/extract-discovery-platform.py",
         "--repo", repositoryRoot.absolutePath, "--output", layout.buildDirectory.dir("generated/discovery").get().asFile.absolutePath)
     inputs.file("tools/extract-discovery-platform.py")
     inputs.file("tools/extract-upstream-media.py")
@@ -762,7 +842,7 @@ val extractUpstreamDiscovery by tasks.registering(Exec::class) {
 val extractUpstreamSettings by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-settings.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-settings.py",
         "--repo", repositoryRoot.absolutePath, "--output", layout.buildDirectory.dir("generated/settings").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-settings.py", "tools/extract-upstream-media.py", "tools/sync-upstream.py")
     inputs.files(sources.filter { "backup" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
@@ -772,7 +852,7 @@ val extractUpstreamSettings by tasks.registering(Exec::class) {
 val extractUpstreamPlayback by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-playback-platform.py",
+    commandLine(pythonExecutable, "tools/extract-playback-platform.py",
         "--repo", repositoryRoot.absolutePath, "--output", layout.buildDirectory.dir("generated/playback").get().asFile.absolutePath)
     inputs.files("tools/extract-playback-platform.py", "third-party/media3-error-codes.json")
     inputs.files(sources.filter { "recovery" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
@@ -782,7 +862,7 @@ val extractUpstreamPlayback by tasks.registering(Exec::class) {
 val extractUpstreamSearch by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-search-platform.py",
+    commandLine(pythonExecutable, "tools/extract-search-platform.py",
         "--repo", repositoryRoot.absolutePath, "--output", layout.buildDirectory.dir("generated/search").get().asFile.absolutePath)
     inputs.files("tools/extract-search-platform.py", "tools/extract-upstream-media.py", "tools/sync-upstream.py")
     inputs.file("tools/v041_search_all.py")
@@ -794,7 +874,7 @@ val extractUpstreamSearch by tasks.registering(Exec::class) {
 val extractUpstreamCast by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-cast-platform.py",
+    commandLine(pythonExecutable, "tools/extract-cast-platform.py",
         "--repo", repositoryRoot.absolutePath, "--output", layout.buildDirectory.dir("generated/cast").get().asFile.absolutePath)
     inputs.files("tools/extract-cast-platform.py", "tools/extract-upstream-media.py", "tools/sync-upstream.py")
     inputs.files(sources.filter { "dlna-cast" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
@@ -812,7 +892,7 @@ val extractUpstreamPackages by tasks.registering(Exec::class) {
     inputs.dir("upstream-slices/v044-favorite-subscription")
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-packages.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-packages.py",
         "--repo", repositoryRoot.absolutePath, "--output", layout.buildDirectory.dir("generated/packages").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-packages.py", "tools/extract-upstream-plugins.py", "tools/extract-upstream-media.py", "tools/extract-upstream-api.py")
     inputs.files(sources.filter { "packages" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
@@ -824,7 +904,7 @@ val extractUpstreamPackages by tasks.registering(Exec::class) {
 val extractPlaybackWatchdogs by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-playback-watchdogs.py",
+    commandLine(pythonExecutable, "tools/extract-playback-watchdogs.py",
         "--repo", repositoryRoot.absolutePath, "--output", layout.buildDirectory.dir("generated/watchdogs").get().asFile.absolutePath)
     inputs.files("tools/extract-playback-watchdogs.py", "third-party/media3-player-state-codes.json")
     inputs.files(sources.filter { "watchdogs" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
@@ -833,7 +913,7 @@ val extractPlaybackWatchdogs by tasks.registering(Exec::class) {
 }
 val verifyGoogleCastSources by tasks.registering(Exec::class) {
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/verify-google-cast-sources.py", "--desktop", projectDir.absolutePath)
+    commandLine(pythonExecutable, "tools/verify-google-cast-sources.py", "--desktop", projectDir.absolutePath)
     inputs.file("tools/verify-google-cast-sources.py")
     inputs.dir("third-party/google-cast-v2")
     inputs.dir("src/main/java")
@@ -858,7 +938,7 @@ val verifyGoogleCastSources by tasks.registering(Exec::class) {
 val extractGoogleCastPlatform by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources, verifyGoogleCastSources)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-google-cast-platform.py",
+    commandLine(pythonExecutable, "tools/extract-google-cast-platform.py",
         "--repo", repositoryRoot.absolutePath, "--output", layout.buildDirectory.dir("generated/google-cast").get().asFile.absolutePath)
     inputs.files("tools/extract-google-cast-platform.py", "tools/sync-upstream.py")
     inputs.files(sources.filter { "google-cast-v2" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
@@ -876,7 +956,7 @@ val extractUpstreamJs by tasks.registering(Exec::class) {
     inputs.dir("upstream-slices/v044-favorite-subscription")
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-js.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-js.py",
         "--repo", repositoryRoot.absolutePath, "--output", layout.buildDirectory.dir("generated/js").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-js.py", "tools/extract-upstream-plugins.py", "tools/extract-upstream-media.py",
         "tools/extract-upstream-api.py", "tools/sync-upstream.py")
@@ -896,7 +976,7 @@ val extractUpstreamAppearance by tasks.registering(Exec::class) {
     inputs.dir("upstream-slices/v043-theme-chrome")
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-appearance-platform.py",
+    commandLine(pythonExecutable, "tools/extract-appearance-platform.py",
         "--repo", repositoryRoot.absolutePath, "--policy-only",
         "--output", generatedAppearance.get().asFile.absolutePath,
         "--resource-output", generatedAppearanceResources.get().asFile.absolutePath,
@@ -929,7 +1009,7 @@ val extractUpstreamComponents by tasks.registering(Exec::class) {
     inputs.dir("upstream-slices/v042-optical-dependencies")
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-components.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-components.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/components").get().asFile.absolutePath,
         "--test-output", generatedChromeActionTests.get().asFile.absolutePath)
@@ -951,7 +1031,7 @@ tasks.named("compileTestKotlin") { dependsOn(extractUpstreamComponents) }
 val extractUpstreamPreferences by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-preferences.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-preferences.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/preferences").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-preferences.py", "tools/extract-upstream-plugins.py", "tools/extract-upstream-media.py", "tools/sync-upstream.py")
@@ -963,7 +1043,7 @@ val extractUpstreamPreferences by tasks.registering(Exec::class) {
 val extractUpstreamSettingsSearch by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-settings-search.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-settings-search.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/settings-search").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-settings-search.py", "tools/v032_pinyin.py", "tools/extract-upstream-plugins.py", "tools/extract-upstream-media.py", "tools/sync-upstream.py")
@@ -978,7 +1058,7 @@ val extractUpstreamSettingsSearch by tasks.registering(Exec::class) {
 val extractUpstreamSettingsCategories by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources, extractUpstreamSettingsSearch)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-settings-categories.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-settings-categories.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/settings-categories").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-settings-categories.py", "tools/extract-upstream-settings-search.py",
@@ -993,7 +1073,7 @@ val extractUpstreamSettingsCategories by tasks.registering(Exec::class) {
 val extractOriginalStaticSettingsPages by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources, extractUpstreamSettingsSearch, extractUpstreamSettingsCategories)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-static-settings-pages.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-static-settings-pages.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/static-settings-pages").get().asFile.absolutePath)
     inputs.file(sourceManifest)
@@ -1015,7 +1095,7 @@ tasks.named("compileKotlin") { dependsOn(extractOriginalStaticSettingsPages) }
 val extractUpstreamSettingsHome by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources, extractUpstreamSettingsCategories)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-settings-home.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-settings-home.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/settings-home").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-settings-home.py", "tools/extract-upstream-plugins.py", "tools/extract-upstream-media.py", "tools/sync-upstream.py")
@@ -1027,7 +1107,7 @@ val extractUpstreamSettingsHome by tasks.registering(Exec::class) {
 val extractUpstreamSettingsPrivacy by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources, extractUpstreamSettingsCategories)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-settings-privacy.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-settings-privacy.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/settings-privacy").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-settings-privacy.py", "tools/extract-upstream-plugins.py", "tools/extract-upstream-media.py", "tools/sync-upstream.py", "tools/extract-upstream-settings-search.py")
@@ -1041,7 +1121,7 @@ val extractUpstreamSettingsPrivacy by tasks.registering(Exec::class) {
 val extractUpstreamSettingsEntries by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources, extractUpstreamSettingsCategories)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-settings-entries.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-settings-entries.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/settings-entries").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-settings-entries.py", "tools/extract-upstream-settings-search.py",
@@ -1054,7 +1134,7 @@ val extractUpstreamSettingsEntries by tasks.registering(Exec::class) {
 val extractUpstreamNavigationInteraction by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources, extractUpstreamSettingsCategories)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-navigation-interaction.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-navigation-interaction.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/navigation-interaction").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-navigation-interaction.py", "tools/extract-upstream-media.py", "tools/sync-upstream.py")
@@ -1066,7 +1146,7 @@ val extractUpstreamNavigationInteraction by tasks.registering(Exec::class) {
 val extractUpstreamFullNavigation by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources, extractUpstreamNavigationInteraction)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-full-navigation.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-full-navigation.py",
         "--repo", repositoryRoot.absolutePath, "--policy-only",
         "--output", layout.buildDirectory.dir("generated/full-navigation-settings").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-full-navigation.py", "tools/extract-upstream-navigation-interaction.py",
@@ -1083,7 +1163,7 @@ tasks.named("compileKotlin") { dependsOn(extractUpstreamFullNavigation) }
 val extractUpstreamSettingsStorageEntries by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources, extractUpstreamSettingsEntries)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-settings-storage-entries.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-settings-storage-entries.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/settings-storage-entries").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-settings-storage-entries.py", "tools/extract-upstream-plugins.py",
@@ -1096,7 +1176,7 @@ val extractUpstreamSettingsStorageEntries by tasks.registering(Exec::class) {
 val extractUpstreamBlockedUp by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources, extractUpstreamDiscovery)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-blocked-up-platform.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-blocked-up-platform.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/blocked-up").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-blocked-up-platform.py", "tools/extract-discovery-platform.py", "tools/sync-upstream.py")
@@ -1108,7 +1188,7 @@ val extractUpstreamBlockedUp by tasks.registering(Exec::class) {
 val extractUpstreamBlockedListUi by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources, extractUpstreamBlockedUp, extractUpstreamSettingsCategories)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-blocked-list-ui.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-blocked-list-ui.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/blocked-list-ui").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-blocked-list-ui.py", "tools/extract-upstream-blocked-up-platform.py", "tools/sync-upstream.py")
@@ -1131,7 +1211,7 @@ val extractUpstreamNetworkProxy by tasks.registering(Exec::class) {
     inputs.dir("upstream-slices/v042-network-proxy")
     dependsOn(prepareUpstreamSources, extractUpstreamSettingsCategories)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-network-proxy.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-network-proxy.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/network-proxy").get().asFile.absolutePath,
         "--tests-output", layout.buildDirectory.dir("generated/network-proxy-tests").get().asFile.absolutePath)
@@ -1158,7 +1238,7 @@ val extractUpstreamDiagnostics by tasks.registering(Exec::class) {
     inputs.dir("upstream-slices/v044-favorite-subscription")
     dependsOn(prepareUpstreamSources, extractUpstreamSettingsCategories)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-diagnostics.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-diagnostics.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/diagnostics/sources").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-diagnostics.py", "tools/extract-upstream-dynamic-reply-protocol.py", "tools/extract-appearance-platform.py", "upstream-sources.json", "tools/extract-upstream-plugins.py",
@@ -1175,7 +1255,7 @@ val extractUpstreamDiagnostics by tasks.registering(Exec::class) {
 val extractUpstreamDynamicSettings by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources, extractUpstreamSettingsCategories, extractUpstreamSettingsHome)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-dynamic-settings.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-dynamic-settings.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/dynamic-settings").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-dynamic-settings.py", "tools/extract-upstream-plugins.py",
@@ -1191,7 +1271,7 @@ val extractUpstreamDynamicSettings by tasks.registering(Exec::class) {
 val extractUpstreamHomeCards by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources, extractUpstreamSettingsCategories, extractUpstreamSettingsHome)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-home-cards.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-home-cards.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/home-cards").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-home-cards.py", "tools/extract-upstream-plugins.py",
@@ -1205,7 +1285,7 @@ val extractUpstreamHomeCards by tasks.registering(Exec::class) {
 val extractOriginalHomePage by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-home-core-refresh.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-home-core-refresh.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/home-page").get().asFile.absolutePath,
         "--test-output", layout.buildDirectory.dir("generated/original-refresh-policy-tests").get().asFile.absolutePath)
@@ -1250,7 +1330,7 @@ tasks.named("compileTestKotlin") { dependsOn(extractOriginalHomePage) }
 val extractOriginalHomeViewModel by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-home-viewmodel.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-home-viewmodel.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/home-viewmodel").get().asFile.absolutePath,
         "--test-output", layout.buildDirectory.dir("generated/home-load-tests").get().asFile.absolutePath)
@@ -1268,7 +1348,7 @@ val extractOriginalHomeViewModel by tasks.registering(Exec::class) {
 val extractOriginalHomeProtocols by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-home-protocols.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-home-protocols.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/home-protocols").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-home-protocols.py", "tools/extract-upstream-media.py", "tools/sync-upstream.py")
@@ -1293,7 +1373,7 @@ tasks.named("compileTestKotlin") { dependsOn(extractOriginalHomeViewModel) }
 val extractOriginalLiveList by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources, extractOriginalHomeProtocols)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-live-list.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-live-list.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/live-home-list").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-live-list.py", "tools/extract-upstream-media.py", "tools/sync-upstream.py")
@@ -1311,7 +1391,7 @@ tasks.named("compileKotlin") { dependsOn(extractOriginalLiveList) }
 val extractOriginalHomePartition by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-home-partition.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-home-partition.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/home-partition").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-home-partition.py", "tools/sync-upstream.py")
@@ -1326,7 +1406,7 @@ tasks.named("compileKotlin") { dependsOn(extractOriginalHomePartition) }
 val extractOriginalHomeBangumiPage by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-home-bangumi-page.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-home-bangumi-page.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/home-bangumi-page").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-home-bangumi-page.py", "tools/sync-upstream.py")
@@ -1341,7 +1421,7 @@ tasks.named("compileKotlin") { dependsOn(extractOriginalHomeBangumiPage) }
 val extractOriginalBangumiPages by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources, extractOriginalHomeBangumiPage, extractUpstreamMedia)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-bangumi-pages.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-bangumi-pages.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/independent-bangumi-pages").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-bangumi-pages.py", "tools/sync-upstream.py", "tools/extract-upstream-media.py")
@@ -1358,7 +1438,7 @@ tasks.named("compileKotlin") { dependsOn(extractOriginalBangumiPages) }
 val extractOriginalBangumiPlayer by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources, extractOriginalBangumiPages, extractUpstreamMedia)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-bangumi-player.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-bangumi-player.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/original-bangumi-player").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-bangumi-player.py", "tools/sync-upstream.py", "tools/extract-upstream-media.py")
@@ -1385,7 +1465,7 @@ val extractOriginalBangumiPlayerUi by tasks.registering(Exec::class) {
     inputs.dir("upstream-slices/v037-gesture-feedback")
     dependsOn(prepareUpstreamSources, extractOriginalBangumiPlayer, extractUpstreamMedia)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-bangumi-player-ui.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-bangumi-player-ui.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/original-bangumi-player-ui").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-bangumi-player-ui.py", "tools/sync-upstream.py", "tools/extract-upstream-media.py")
@@ -1402,7 +1482,7 @@ tasks.named("compileKotlin") { dependsOn(extractOriginalBangumiPlayerUi) }
 val extractOriginalSubscriptionPage by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-subscription-page.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-subscription-page.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/home-subscription-page").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-subscription-page.py", "tools/sync-upstream.py")
@@ -1420,7 +1500,7 @@ tasks.named("compileKotlin") { dependsOn(extractOriginalSubscriptionPage) }
 val prepareOriginalCategoryPage by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-category-page.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-category-page.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/category-page").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-category-page.py", "tools/sync-upstream.py")
@@ -1435,7 +1515,7 @@ tasks.named("compileKotlin") { dependsOn(prepareOriginalCategoryPage) }
 val prepareOriginalHomeReturnNavigation by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-home-return-navigation.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-home-return-navigation.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/home-return-navigation").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-home-return-navigation.py", "tools/sync-upstream.py")
@@ -1451,7 +1531,7 @@ tasks.named("compileKotlin") { dependsOn(prepareOriginalHomeReturnNavigation) }
 val extractOriginalProfileMain by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources, extractOriginalHomeProtocols)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-profile-main.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-profile-main.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/profile-main").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-profile-main.py", "tools/extract-upstream-media.py", "tools/sync-upstream.py")
@@ -1467,7 +1547,7 @@ tasks.named("compileKotlin") { dependsOn(extractOriginalProfileMain) }
 val extractOriginalLiveNavigation by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources, extractOriginalHomeProtocols)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-live-navigation.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-live-navigation.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/live-navigation").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-live-navigation.py", "tools/extract-upstream-media.py", "tools/sync-upstream.py")
@@ -1483,7 +1563,7 @@ tasks.named("compileKotlin") { dependsOn(extractOriginalLiveNavigation) }
 val extractOriginalVideoShareConsent by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources, extractOriginalHomeProtocols)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-video-share-consent.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-video-share-consent.py",
         "--source-repo", repositoryRoot.absolutePath,
         "--output-dir", layout.buildDirectory.dir("generated/video-share-consent").get().asFile.absolutePath)
     inputs.file("tools/extract-upstream-video-share-consent.py")
@@ -1503,7 +1583,7 @@ tasks.named("compileKotlin") { dependsOn(extractOriginalVideoShareConsent) }
 val extractOriginalDownloadList by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-download-list.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-download-list.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/original-download-list").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-download-list.py", "tools/sync-upstream.py",
@@ -1522,7 +1602,7 @@ tasks.named("compileKotlin") { dependsOn(extractOriginalDownloadList) }
 val extractOriginalRootHomeNavigation by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-root-home-navigation.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-root-home-navigation.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/original-root-home-navigation").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-root-home-navigation.py", "tools/sync-upstream.py",
@@ -1539,7 +1619,7 @@ tasks.named("compileKotlin") { dependsOn(extractOriginalRootHomeNavigation) }
 val extractNavigation3Host by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-navigation3-host.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-navigation3-host.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/original-navigation3-host").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-navigation3-host.py", "tools/sync-upstream.py", "tools/extract-upstream-media.py")
@@ -1555,7 +1635,7 @@ tasks.named("compileKotlin") { dependsOn(extractNavigation3Host) }
 val extractOriginalWallpaperPalette by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-wallpaper-palette.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-wallpaper-palette.py",
         "--source-repo", repositoryRoot.absolutePath,
         "--output-dir", layout.buildDirectory.dir("generated/wallpaper-palette").get().asFile.absolutePath)
     inputs.file("tools/extract-upstream-wallpaper-palette.py")
@@ -1572,7 +1652,7 @@ tasks.named("compileKotlin") { dependsOn(extractOriginalWallpaperPalette) }
 val extractOriginalApplicationImageLoader by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-application-image-loader.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-application-image-loader.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/original-application-image-loader").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-application-image-loader.py", "tools/sync-upstream.py")
@@ -1610,7 +1690,7 @@ tasks.named("processResources") { dependsOn(verifyCoilCacheControlSources) }
 val extractUpstreamProfileWallpaperImport by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-profile-wallpaper-import.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-profile-wallpaper-import.py",
         "--source-repo", repositoryRoot.absolutePath,
         "--output-dir", layout.buildDirectory.dir("generated/profile-wallpaper-import").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-profile-wallpaper-import.py", "tools/sync-upstream.py")
@@ -1625,7 +1705,7 @@ tasks.named("compileKotlin") { dependsOn(extractUpstreamProfileWallpaperImport) 
 val extractUpstreamHomeFullCard by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources, extractUpstreamSettingsCategories, extractUpstreamHomeCards, extractOriginalHomePage)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-home-full-card.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-home-full-card.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/home-full-card").get().asFile.absolutePath)
     inputs.file("tools/v041_video_status_labels.py")
@@ -1657,7 +1737,7 @@ val extractUpstreamDynamicFullCard by tasks.registering(Exec::class) {
     inputs.dir("upstream-slices/v044-favorite-subscription")
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-dynamic-card.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-dynamic-card.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/dynamic-full-card").get().asFile.absolutePath,
         "--test-output", layout.buildDirectory.dir("generated/dynamic-full-card-tests").get().asFile.absolutePath)
@@ -1679,7 +1759,7 @@ kotlin.sourceSets.named("test") { kotlin.srcDir(layout.buildDirectory.dir("gener
 val extractUpstreamDynamicStaticImageCodec by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-dynamic-static-image-codec.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-dynamic-static-image-codec.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/dynamic-static-image-codec").get().asFile.absolutePath)
     inputs.file("tools/extract-upstream-dynamic-static-image-codec.py")
@@ -1699,7 +1779,7 @@ val extractImageSaveSettingsUi by tasks.registering(Exec::class) {
     inputs.dir("upstream-slices/v044-favorite-subscription")
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-image-save-settings-ui.py",
+    commandLine(pythonExecutable, "tools/extract-image-save-settings-ui.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/settings-image-save-path").get().asFile.absolutePath)
     inputs.files("tools/extract-image-save-settings-ui.py", "tools/extract-upstream-settings-storage-entries.py",
@@ -1712,7 +1792,7 @@ val extractImageSaveSettingsUi by tasks.registering(Exec::class) {
 val extractUpstreamDynamicGalleryMotionPhoto by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-dynamic-gallery-motion-photo.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-dynamic-gallery-motion-photo.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/dynamic-gallery-motion-photo").get().asFile.absolutePath)
     inputs.file("tools/extract-upstream-dynamic-gallery-motion-photo.py")
@@ -1724,7 +1804,7 @@ val extractUpstreamDynamicGalleryMotionPhoto by tasks.registering(Exec::class) {
 val verifyUpstreamDynamicMedia by tasks.registering(Exec::class) {
     dependsOn(extractUpstreamDynamicGalleryMotionPhoto)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/verify-upstream-dynamic-media.py",
+    commandLine(pythonExecutable, "tools/verify-upstream-dynamic-media.py",
         "--repo", repositoryRoot.absolutePath,
         "--generated", layout.buildDirectory.dir("generated/dynamic-gallery-motion-photo").get().asFile.absolutePath,
         "--output", layout.buildDirectory.file("generated/dynamic-media-verification.json").get().asFile.absolutePath)
@@ -1736,7 +1816,7 @@ val verifyUpstreamDynamicMedia by tasks.registering(Exec::class) {
 val extractUpstreamDynamicEditor by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-dynamic-editor.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-dynamic-editor.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/dynamic-editor").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-dynamic-editor.py", "tools/extract-upstream-dynamic-reply-protocol.py", "upstream-sources.json", "tools/extract-upstream-plugins.py",
@@ -1759,7 +1839,7 @@ val extractUpstreamDynamicEditor by tasks.registering(Exec::class) {
 val verifyUpstreamDynamicEditorProtocol by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/verify-upstream-dynamic-editor-protocol.py",
+    commandLine(pythonExecutable, "tools/verify-upstream-dynamic-editor-protocol.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.file("generated/dynamic-editor-protocol/verification.json").get().asFile.absolutePath)
     inputs.files("tools/verify-upstream-dynamic-editor-protocol.py", "tools/extract-upstream-dynamic-editor-protocol.py",
@@ -1778,7 +1858,7 @@ val extractUpstreamDynamicReply by tasks.registering(Exec::class) {
     workingDir(projectDir)
     inputs.file("tools/v040_reply_medal.py")
     inputs.dir("upstream-slices/v040-reply-medal")
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-dynamic-reply.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-dynamic-reply.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/dynamic-reply").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-dynamic-reply.py", "tools/extract-upstream-plugins.py",
@@ -1805,7 +1885,7 @@ val extractUpstreamDynamicDetail by tasks.registering(Exec::class) {
     inputs.dir("upstream-slices/v041-dynamic-comment-identity")
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-dynamic-detail.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-dynamic-detail.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/dynamic-detail").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-dynamic-detail.py", "tools/extract-upstream-plugins.py",
@@ -1822,7 +1902,7 @@ val extractUpstreamDynamicDetail by tasks.registering(Exec::class) {
 val extractUpstreamDynamicDetailContainer by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-dynamic-detail-container.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-dynamic-detail-container.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/dynamic-detail-container").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-dynamic-detail-container.py", "tools/extract-appearance-platform.py",
@@ -1845,7 +1925,7 @@ val extractUpstreamDynamicReplyProtocol by tasks.registering(Exec::class) {
     workingDir(projectDir)
     inputs.file("tools/v040_reply_medal.py")
     inputs.dir("upstream-slices/v040-reply-medal")
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-dynamic-reply-protocol.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-dynamic-reply-protocol.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/dynamic-reply-protocol").get().asFile.absolutePath)
     inputs.file("tools/extract-upstream-dynamic-reply-protocol.py")
@@ -1857,7 +1937,7 @@ val extractUpstreamDynamicReplyProtocol by tasks.registering(Exec::class) {
 val extractUpstreamDynamicDetailProtocol by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-dynamic-detail-protocol.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-dynamic-detail-protocol.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/dynamic-detail-protocol").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-dynamic-detail-protocol.py", "tools/extract-upstream-dynamic-reply-protocol.py")
@@ -1875,7 +1955,7 @@ val extractBgmDetail by tasks.registering(Exec::class) {
     inputs.dir("upstream-slices/v029-comment-composer")
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-bgm-detail.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-bgm-detail.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/bgm-detail").get().asFile.absolutePath)
     inputs.file("tools/v033_comment_refresh.py")
@@ -1901,7 +1981,7 @@ val extractVideoCommentUi by tasks.registering(Exec::class) {
     inputs.dir("upstream-slices/v029-comment-composer")
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-video-comment-ui.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-video-comment-ui.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/video-comment-ui").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-video-comment-ui.py", "tools/extract-upstream-dynamic-reply-protocol.py",
@@ -1938,7 +2018,7 @@ val extractOriginalFavorites by tasks.registering(Exec::class) {
     inputs.dir("upstream-slices/v029-brand-success")
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-favorites.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-favorites.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/original-favorites").get().asFile.absolutePath,
         "--test-output", layout.buildDirectory.dir("generated/original-favorite-policy-tests").get().asFile.absolutePath)
@@ -1958,7 +2038,7 @@ val extractOriginalFavorites by tasks.registering(Exec::class) {
 val extractOriginalFavoriteFolder by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-favorite-folder-sheet.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-favorite-folder-sheet.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/original-favorite-folder").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-favorite-folder-sheet.py", "tools/extract-upstream-dynamic-reply-protocol.py")
@@ -1978,7 +2058,7 @@ tasks.named("extractOriginalFavorites") {
 val extractLinkedDock by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-linked-dock.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-linked-dock.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/linked-dock").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-linked-dock.py", "tools/sync-upstream.py",
@@ -1999,7 +2079,7 @@ tasks.named("compileKotlin") { dependsOn(extractLinkedDock) }
 val extractFrostedAudioRenderer by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-frosted-audio-renderer.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-frosted-audio-renderer.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/frosted-audio-renderer").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-frosted-audio-renderer.py", "tools/sync-upstream.py")
@@ -2021,7 +2101,7 @@ val extractOriginalDanmakuSettings by tasks.registering(Exec::class) {
     inputs.dir("upstream-slices/v037-player-closure")
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-danmaku-settings.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-danmaku-settings.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/original-danmaku-settings").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-danmaku-settings.py", "tools/sync-upstream.py", "tools/extract-appearance-platform.py")
@@ -2044,7 +2124,7 @@ val extractOriginalDanmakuListMenu by tasks.registering(Exec::class) {
     inputs.dir("upstream-slices/v030-up-danmaku")
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-danmaku-list-menu.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-danmaku-list-menu.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/original-danmaku-list-menu").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-danmaku-list-menu.py", "tools/extract-upstream-dynamic-reply-protocol.py")
@@ -2064,7 +2144,7 @@ kotlin.sourceSets.named("test") {
 // Explicit fixed-v027 slice; the overall canonical baseline remains v025.
 val extractOriginalHotDanmaku by tasks.registering(Exec::class) {
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-hot-danmaku.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-hot-danmaku.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/original-hot-danmaku").get().asFile.absolutePath,
         "--tests-output", layout.buildDirectory.dir("generated/original-hot-danmaku-tests").get().asFile.absolutePath)
@@ -2081,7 +2161,7 @@ kotlin.sourceSets.named("test") { kotlin.srcDir(layout.buildDirectory.dir("gener
 // Explicit v029 BAS grammar/timeline slice. No Android renderer or canonical-baseline update.
 val extractOriginalBasCore by tasks.registering(Exec::class) {
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-bas-core.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-bas-core.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/original-bas-core").get().asFile.absolutePath,
         "--tests-output", layout.buildDirectory.dir("generated/original-bas-core-tests").get().asFile.absolutePath)
@@ -2098,7 +2178,7 @@ kotlin.sourceSets.named("test") { kotlin.srcDir(layout.buildDirectory.dir("gener
 // Whole fixed-v029 painter and retained frame/input algorithms, with Windows graphics seams.
 val extractOriginalBasRenderer by tasks.registering(Exec::class) {
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-bas-renderer.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-bas-renderer.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/original-bas-renderer").get().asFile.absolutePath)
     inputs.file("tools/extract-upstream-bas-renderer.py")
@@ -2111,7 +2191,7 @@ kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("gener
 // Incremental special-segment indexes and the original short playback window.
 val extractOriginalSpecialDanmaku by tasks.registering(Exec::class) {
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-special-danmaku.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-special-danmaku.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/original-special-danmaku").get().asFile.absolutePath,
         "--tests-output", layout.buildDirectory.dir("generated/original-special-danmaku-tests").get().asFile.absolutePath)
@@ -2128,7 +2208,7 @@ kotlin.sourceSets.named("test") { kotlin.srcDir(layout.buildDirectory.dir("gener
 val extractCommentFraudProtocol by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-comment-fraud-protocol.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-comment-fraud-protocol.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/comment-fraud-protocol").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-comment-fraud-protocol.py", "tools/extract-upstream-dynamic-reply-protocol.py",
@@ -2156,7 +2236,7 @@ val extractSharedLiquidTabs by tasks.registering(Exec::class) {
     inputs.dir("upstream-slices/v046-chrome-glass-tuning")
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-shared-liquid-tabs.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-shared-liquid-tabs.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/shared-liquid-tabs").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-shared-liquid-tabs.py", "tools/sync-upstream.py")
@@ -2175,7 +2255,7 @@ kotlin.sourceSets.named("test") { kotlin.srcDir(layout.buildDirectory.dir("gener
 val extractStableVideoMetadata by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-stable-video-metadata.py",
+    commandLine(pythonExecutable, "tools/extract-stable-video-metadata.py",
         repositoryRoot.absolutePath, layout.buildDirectory.dir("generated/video-metadata").get().asFile.absolutePath)
     inputs.files("tools/extract-stable-video-metadata.py", "tools/sync-upstream.py", "tools/extract-appearance-platform.py", "tools/extract-upstream-media.py")
     inputs.file(sourceManifest)
@@ -2189,7 +2269,7 @@ tasks.named("compileKotlin") { dependsOn(extractStableVideoMetadata) }
 val extractStableCollectionSheet by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-stable-collection-sheet.py",
+    commandLine(pythonExecutable, "tools/extract-stable-collection-sheet.py",
         repositoryRoot.absolutePath, layout.buildDirectory.dir("generated/collection-sheet").get().asFile.absolutePath)
     inputs.files("tools/extract-stable-collection-sheet.py", "tools/sync-upstream.py", "tools/extract-appearance-platform.py", "tools/extract-upstream-media.py")
     inputs.file(sourceManifest)
@@ -2203,7 +2283,7 @@ tasks.named("compileKotlin") { dependsOn(extractStableCollectionSheet) }
 val extractStableWeeklySeries by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-stable-weekly-series.py",
+    commandLine(pythonExecutable, "tools/extract-stable-weekly-series.py",
         repositoryRoot.absolutePath, layout.buildDirectory.dir("generated/weekly-series").get().asFile.absolutePath)
     inputs.files("tools/extract-stable-weekly-series.py", "tools/sync-upstream.py", "tools/extract-appearance-platform.py")
     inputs.files(listOf("feature/home/WeeklySeriesScreen.kt", "feature/home/WeeklySeriesViewModel.kt", "data/repository/VideoRepository.kt")
@@ -2215,7 +2295,7 @@ tasks.named("compileKotlin") { dependsOn(extractStableWeeklySeries) }
 val extractStableVideoVotes by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-stable-video-votes.py",
+    commandLine(pythonExecutable, "tools/extract-stable-video-votes.py",
         repositoryRoot.absolutePath, layout.buildDirectory.dir("generated/video-votes").get().asFile.absolutePath)
     inputs.files("tools/extract-stable-video-votes.py", "tools/sync-upstream.py", sourceManifest)
     inputs.file("tools/v029_command_vote.py")
@@ -2235,7 +2315,7 @@ val verifyUpstreamDynamicDetailReplyProtocol by tasks.registering(Exec::class) {
     dependsOn(extractUpstreamDynamicReplyProtocol, extractUpstreamDynamicDetailProtocol, extractStableVideoVotes,
         extractBgmDetail, extractCommentFraudProtocol)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/verify-upstream-dynamic-detail-reply-protocol.py",
+    commandLine(pythonExecutable, "tools/verify-upstream-dynamic-detail-reply-protocol.py",
         "--repo", repositoryRoot.absolutePath,
         "--comment-output", layout.buildDirectory.dir("generated/dynamic-reply-protocol").get().asFile.absolutePath,
         "--detail-output", layout.buildDirectory.dir("generated/dynamic-detail-protocol").get().asFile.absolutePath,
@@ -2271,7 +2351,7 @@ val extractUpstreamDynamicTabs by tasks.registering(Exec::class) {
     workingDir(projectDir)
     inputs.file("tools/v040_dynamic_pagination.py")
     inputs.dir("upstream-slices/v040-dynamic-pagination")
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-dynamic-tabs.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-dynamic-tabs.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/dynamic-tabs").get().asFile.absolutePath,
         "--tests-output", layout.buildDirectory.dir("generated/dynamic-author-search-tests").get().asFile.absolutePath)
@@ -2294,7 +2374,7 @@ tasks.named("compileTestKotlin") { dependsOn(extractUpstreamDynamicTabs) }
 
 val extractOriginalDynamicAccountPolicy by tasks.registering(Exec::class) {
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-dynamic-account.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-dynamic-account.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/original-dynamic-account").get().asFile.absolutePath,
         "--tests-output", layout.buildDirectory.dir("generated/original-dynamic-account-tests").get().asFile.absolutePath)
@@ -2319,7 +2399,7 @@ val extractUpstreamDynamicFollow by tasks.registering(Exec::class) {
     inputs.dir("upstream-slices/v044-favorite-subscription")
     dependsOn(prepareUpstreamSources, extractUpstreamDynamicSettings, extractUpstreamDynamicTabs)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-dynamic-follow.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-dynamic-follow.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/dynamic-follow").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-dynamic-follow.py", "tools/extract-upstream-plugins.py",
@@ -2332,7 +2412,7 @@ val extractUpstreamDynamicFollow by tasks.registering(Exec::class) {
 val extractUpstreamCrashPrompt by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-crash-prompt.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-crash-prompt.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/crash-prompt/sources").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-crash-prompt.py", "tools/extract-upstream-plugins.py",
@@ -2345,7 +2425,7 @@ val extractUpstreamCrashPrompt by tasks.registering(Exec::class) {
 val extractNativeMusicRoot by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-native-music-root-platform.py",
+    commandLine(pythonExecutable, "tools/extract-native-music-root-platform.py",
         "--source-root", repositoryRoot.absolutePath,
         "--output-dir", layout.buildDirectory.dir("generated/native-music-root").get().asFile.absolutePath)
     inputs.files("tools/extract-native-music-root-platform.py", "tools/sync-upstream.py")
@@ -2357,11 +2437,11 @@ val extractNativeMusicRoot by tasks.registering(Exec::class) {
 val extractUpstreamSpace by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-space-platform.py",
+    commandLine(pythonExecutable, "tools/extract-space-platform.py",
         "--repo", repositoryRoot.absolutePath, "--policy-only",
         "--output", layout.buildDirectory.dir("generated/space").get().asFile.absolutePath,
         "--test-output", layout.buildDirectory.dir("generated/space-original-tests").get().asFile.absolutePath)
-    inputs.files("tools/extract-space-platform.py", "tools/sync-upstream.py", "tools/v043_navigation.py", "tools/v043_message_link_host.py", "tools/v043_link_open.py")
+    inputs.files("tools/extract-space-platform.py", "tools/v043_navigation.py", "tools/v043_message_link_host.py", "tools/v043_link_open.py")
     inputs.dir("upstream-slices/v043-link-open")
     inputs.dir("upstream-slices/v043-message-link-host")
     inputs.file(canonicalOriginalSource("app/src/main/java/com/android/purebilibili/navigation/MessageLinkNavigationPolicy.kt"))
@@ -2375,48 +2455,16 @@ val extractUpstreamSpace by tasks.registering(Exec::class) {
 kotlin.sourceSets.named("test") { kotlin.srcDir(layout.buildDirectory.dir("generated/space-original-tests")) }
 tasks.named("compileTestKotlin") { dependsOn(extractUpstreamSpace) }
 
-val extractUpstreamSpaceImagePreviews by tasks.registering(Exec::class) {
-    dependsOn(prepareUpstreamSources)
-    workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-space-image-preview-callers.py",
-        repositoryRoot.absolutePath, layout.buildDirectory.dir("generated/space-image-previews").get().asFile.absolutePath)
-    inputs.files("tools/extract-space-image-preview-callers.py", "tools/sync-upstream.py")
-    inputs.files(sources.filter { "space-image-preview" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { canonicalOriginalSource(it["path"].toString()) })
-    outputs.dir(layout.buildDirectory.dir("generated/space-image-previews"))
-}
-
-val extractUpstreamSpaceContributions by tasks.registering(Exec::class) {
-    dependsOn(prepareUpstreamSources)
-    workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-space-contributions.py",
-        "--repo", repositoryRoot.absolutePath,
-        "--output", layout.buildDirectory.dir("generated/space-contributions").get().asFile.absolutePath)
-    inputs.files("tools/extract-space-contributions.py", "tools/sync-upstream.py")
-    inputs.files(sources.filter { "space-contributions" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { canonicalOriginalSource(it["path"].toString()) })
-    outputs.dir(layout.buildDirectory.dir("generated/space-contributions"))
-}
-
 val extractUpstreamSpaceOverview by tasks.registering(Exec::class) {
-    inputs.file("tools/v044_favorite_subscription.py")
-    inputs.file("tools/v044_fans.py")
-    inputs.dir("upstream-slices/v044-following-fans")
-    inputs.file("tools/v044_favorite_search.py")
-    inputs.dir("upstream-slices/v044-favorite-search")
-    inputs.dir("upstream-slices/v044-favorite-subscription")
     inputs.file("tools/v044_favorite_detail.py")
     inputs.dir("upstream-slices/v044-favorite-detail")
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-space-overview.py",
+    commandLine(pythonExecutable, "tools/extract-space-overview.py",
         "--repo", repositoryRoot.absolutePath, "--policy-only",
         "--output", layout.buildDirectory.dir("generated/space-overview").get().asFile.absolutePath,
         "--test-output", layout.buildDirectory.dir("generated/original-space-playback-tests").get().asFile.absolutePath)
-    inputs.files("tools/extract-space-overview.py", "tools/sync-upstream.py")
-    inputs.file("tools/v041_video_status_labels.py")
-    inputs.file("tools/v043_search_up_author.py")
-    inputs.dir("upstream-slices/v041-video-status-labels")
+    inputs.files("tools/extract-space-overview.py")
     inputs.files(sources.filter { "space-overview" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/space-overview"))
@@ -2436,7 +2484,7 @@ val extractUpstreamStoryTopic by tasks.registering(Exec::class) {
     inputs.dir("upstream-slices/v044-favorite-subscription")
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-story-topic.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-story-topic.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/story-topic").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-story-topic.py", "tools/extract-upstream-plugins.py", "tools/extract-upstream-api.py")
@@ -2448,7 +2496,7 @@ val extractUpstreamStoryTopic by tasks.registering(Exec::class) {
 val extractPlaybackSettings by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-playback-settings.py",
+    commandLine(pythonExecutable, "tools/extract-playback-settings.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/playback-settings").get().asFile.absolutePath)
     inputs.files("tools/extract-playback-settings.py", "third-party/premium-audio-platform.json")
@@ -2550,18 +2598,20 @@ val jsWorkerInputDigest = MessageDigest.getInstance("SHA-256").also { digest ->
 val jsWorkerOutputParent = layout.buildDirectory.dir("jw/${jsWorkerInputDigest.take(16)}")
 val jsWorkerOutput = jsWorkerOutputParent.map { it.dir("r") }
 val jsWorkerGenerated = layout.buildDirectory.dir("generated/js-worker")
-val fetchJsWorkerJdk by tasks.registering(Exec::class) {
+val fetchJsWorkerJdk = if (hostIsWindows) tasks.register<Exec>("fetchJsWorkerJdk") {
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/fetch-js-worker-jdk.py",
+    commandLine(pythonExecutable, "tools/fetch-js-worker-jdk.py",
         "--archive", jsWorkerJdkArchive, "--output", jsWorkerJavaHome)
     inputs.files("tools/fetch-js-worker-jdk.py", "tools/prepare-js-worker.py")
     inputs.property("fixedJdkArchiveSha256", "f9d6e191ab098c0d416e7d588a24420a8621cd2f4720dab2459b8b7b2d2d8b4e")
     outputs.file(jsWorkerJdkArchive); outputs.dir(jsWorkerJavaHome)
+} else tasks.register("fetchJsWorkerJdk") {
+    description = "Non-Windows placeholder: the fixed worker JDK is a Windows x64 archive and is not fetched here."
 }
-val prepareJsWorker by tasks.registering(Exec::class) {
+val prepareJsWorker = if (hostIsWindows) tasks.register<Exec>("prepareJsWorker") {
     dependsOn(fetchJsWorkerJdk)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/prepare-js-worker.py",
+    commandLine(pythonExecutable, "tools/prepare-js-worker.py",
         "--repo", repositoryRoot.absolutePath, "--output", jsWorkerOutput.get().asFile.absolutePath,
         "--java-home", jsWorkerJavaHome, "--jdk-archive", jsWorkerJdkArchive, "--cache", jsWorkerCache,
         "--lock", file("third-party/graaljs/artifacts.lock.json").absolutePath,
@@ -2572,17 +2622,39 @@ val prepareJsWorker by tasks.registering(Exec::class) {
     inputs.files(jsWorkerInputs); inputs.file(jsWorkerJdkArchive); inputs.dir(jsWorkerJavaHome)
     // Gradle creates declared output directories before Exec; the tool owns the previously absent child.
     outputs.dir(jsWorkerOutputParent); outputs.dir(jsWorkerGenerated)
+} else tasks.register("prepareJsWorker") {
+    group = "build"
+    description = "Non-Windows placeholder: the JS worker image links Windows binaries and is not built on this host."
+    val generated = jsWorkerGenerated.map { it.file("com/bilipai/desktop/plugins/js/DesktopJsWorkerAssetHash.kt") }
+    outputs.dir(jsWorkerGenerated)
+    outputs.upToDateWhen { false }
+    doLast {
+        val file = generated.get().asFile
+        file.parentFile.mkdirs()
+        file.writeText("""// GENERATED placeholder: this host cannot link the Windows x64 JS worker image.
+package com.bilipai.desktop.plugins.js
+
+/** Not a digest. No worker runtime was built here, so the JS plugin lane stays unavailable. */
+internal const val DESKTOP_JS_WORKER_CATALOG_SHA256 = "unavailable: the JS worker image is a Windows x64 build product"
+""", Charsets.UTF_8)
+        logger.lifecycle("No JS worker image on this host; compile-only placeholder written.")
+    }
 }
-val prepareJsWorkerResources by tasks.registering(Sync::class) {
+val prepareJsWorkerResources = if (hostIsWindows) tasks.register<Sync>("prepareJsWorkerResources") {
     dependsOn(prepareJsWorker)
     from(jsWorkerOutput)
     into("resources/common/js-engine")
+} else tasks.register("prepareJsWorkerResources") {
+    description = "Non-Windows placeholder: there is no JS worker image to stage."
 }
 
 // Generated legacy files that re-declare migrated upstream declarations under another file name.
 val upstreamOwnedGeneratedCopies = setOf(
     // M4c (TON-1004): the live danmaku model now lives in desktop/src/main/kotlin/.../feature/live.
     "media/com/android/purebilibili/feature/live/DesktopLiveDanmakuItem.kt",
+    // core/ui/components/UserLevelBadge (TON-1072): the upstream file draws its R.drawable level badges through the generated
+    // desktop drawable table, so the blocked-list producer's classpath-PNG copy is retired.
+    "blocked-list-ui/com/android/purebilibili/core/ui/components/DesktopUpstreamUserLevelBadge.kt",
     // core/plugin + plugin-sdk (TON-1028): legacy plugin contracts upstream moved to plugin-sdk (Plugin, the typed
     // plugin APIs) or to core/plugin/BuiltinPlugin (host presentation); the merged upstream files own them now.
     "upstream/app/src/main/java/com/android/purebilibili/core/plugin/Plugin.kt",
@@ -2652,7 +2724,6 @@ val upstreamOwnedGeneratedCopies = setOf(
     "api/com/android/purebilibili/core/network/DesktopCoreDataLog.kt",
     "api/com/android/purebilibili/data/model/response/FavoriteInfoResponse.kt",
     "audio/com/android/purebilibili/data/repository/DesktopFavoriteRequestException.kt",
-    "space-contributions/com/android/purebilibili/core/network/DesktopOriginalSpaceAggregateParams.kt",
     "bgm-detail/com/android/purebilibili/data/model/CommentFraudStatus.kt",
     "original-favorites/com/android/purebilibili/core/store/DesktopFavoriteAccountIdentity.kt",
     "original-video-state-core/com/android/purebilibili/data/repository/DesktopOriginalVideoRequestAccountScope.kt"
@@ -2712,10 +2783,20 @@ val transitionPatchProducers = mapOf(
     "original-video-player-full-controls" to "extractOriginalPlayerFullControls",
     "original-video-state-core" to "extractOriginalVideoStateCore",
     "original-watchlater" to "extractOriginalWatchLater",
+    "original-listen-video-pages" to "extractOriginalListenVideoPages",
     "profile-main" to "extractOriginalProfileMain",
     "search" to "extractUpstreamSearch",
     "upstream" to "prepareUpstreamSources",
+    "frosted-audio-renderer" to "extractFrostedAudioRenderer",
+    "linked-dock" to "extractLinkedDock",
+    "story-topic" to "extractUpstreamStoryTopic",
     "whole-playback-settings" to "extractOriginalWholePlaybackSettings",
+    // TON-1071: producers whose copies re-declare names of the migrated data layer.
+    "dynamic-settings" to "extractUpstreamDynamicSettings",
+    "dynamic-detail-protocol" to "extractUpstreamDynamicDetailProtocol",
+    "dynamic-tabs" to "extractUpstreamDynamicTabs",
+    "original-bangumi-player" to "extractOriginalBangumiPlayer",
+    "dynamic-editor" to "extractUpstreamDynamicEditor",
 )
 
 /** Applies a unified diff; every hunk must match the original exactly once. */
@@ -2752,20 +2833,49 @@ fun applyUnifiedPatch(original: String, patch: String, label: String): String {
 val desktopUpstreamPatchDirectory = file("upstream-core/patches")
 val desktopUpstreamPatchedFiles = fileTree(desktopUpstreamPatchDirectory) { include("**/*.patch") }.files
     .map { it.relativeTo(desktopUpstreamPatchDirectory).invariantSeparatorsPath.removeSuffix(".patch") }.toSortedSet()
+// Build-time rewrite rules (TON-1072): one call-site adaptation that every migrated upstream file needs in the same way,
+// so no per-file patch is written for it. A rule turns one call into a desktop bridge call with the same arguments and
+// applies to every upstream file compiled from the merged root that contains it (after that file's patch, if it has one);
+// a new upstream file that uses the call is rewritten without anyone writing a patch.
+//  - coil3's ImageRequest.Builder(...) and SingletonImageLoader.get(...) take a coil PlatformContext; upstream passes an
+//    Android Context. On the JVM coil has exactly one PlatformContext, which com.bilipai.desktop.compat.coil hands over
+//    (the extension forms, Context.imageLoader and allowHardware, resolve through compat-ui/coil3 without a rewrite).
+val desktopUpstreamRewriteRules: List<Pair<Regex, String>> = listOf(
+    Regex("""(?<![\w.])(?:coil3\.request\.)?ImageRequest\.Builder\(""") to "com.bilipai.desktop.compat.coil.desktopImageRequestBuilder(",
+    Regex("""(?<![\w.])(?:coil3\.)?SingletonImageLoader\.get\(""") to "com.bilipai.desktop.compat.coil.desktopSingletonImageLoader(",
+)
+fun applyDesktopUpstreamRewrites(text: String): String =
+    desktopUpstreamRewriteRules.fold(text) { current, (pattern, replacement) -> pattern.replace(current, Regex.escapeReplacement(replacement)) }
+// Root paths of the upstream files a rule applies to. Replaced files are desktop code and are not rewritten.
+val desktopUpstreamRewrittenFiles: Set<String> = run {
+    val replaced = fileTree("upstream-core/replacements") { include("**/*.kt") }.files
+        .map { it.relativeTo(file("upstream-core/replacements")).invariantSeparatorsPath }.toSet()
+    val moduleFiles = migratedUpstreamModules.flatMap { module ->
+        val root = mergedRepositoryRoot.resolve(module + "src/main/java")
+        root.walkTopDown().filter { it.isFile && it.extension == "kt" }.map { it.relativeTo(root).invariantSeparatorsPath to module + "src/main/java/" }.toList()
+    }
+    val appFiles = migratedAppPaths.map { it to "app/src/main/java/" }
+    (moduleFiles + appFiles).filter { (relative, prefix) -> relative !in replaced &&
+        mergedRepositoryRoot.resolve(prefix + relative).let { it.isFile && desktopUpstreamRewriteRules.any { rule -> rule.first.containsMatchIn(it.readText()) } } }
+        .map { (relative, prefix) -> prefix + relative }.toSortedSet()
+}
+val desktopUpstreamAdaptedRootFiles: Set<String> = (desktopUpstreamPatchedFiles + desktopUpstreamRewrittenFiles).toSortedSet()
 val applyDesktopUpstreamPatches by tasks.registering {
     val output = layout.buildDirectory.dir("patched-upstream")
     inputs.dir(desktopUpstreamPatchDirectory).withPathSensitivity(PathSensitivity.RELATIVE)
-    inputs.files(desktopUpstreamPatchedFiles.map { mergedRepositoryRoot.resolve(it) }).withPathSensitivity(PathSensitivity.RELATIVE)
+    inputs.files(desktopUpstreamAdaptedRootFiles.map { mergedRepositoryRoot.resolve(it) }).withPathSensitivity(PathSensitivity.RELATIVE)
+    inputs.property("rewriteRules", desktopUpstreamRewriteRules.map { it.first.pattern + " -> " + it.second })
     outputs.dir(output)
     doLast {
         val target = output.get().asFile
         target.deleteRecursively()
-        desktopUpstreamPatchedFiles.forEach { relative ->
-            val patched = applyUnifiedPatch(mergedRepositoryRoot.resolve(relative).readText(),
-                desktopUpstreamPatchDirectory.resolve("$relative.patch").readText(), relative)
+        desktopUpstreamAdaptedRootFiles.forEach { relative ->
+            val original = mergedRepositoryRoot.resolve(relative).readText()
+            val patched = if (relative in desktopUpstreamPatchedFiles) applyUnifiedPatch(original,
+                desktopUpstreamPatchDirectory.resolve("$relative.patch").readText(), relative) else original
             val destination = target.resolve(relative)
             destination.parentFile.mkdirs()
-            destination.writeText(patched)
+            destination.writeText(applyDesktopUpstreamRewrites(patched))
         }
     }
 }
@@ -2899,11 +3009,76 @@ val sdkGatesKeptInDesignModules = mapOf(
 // strings.xml become com.android.purebilibili.R.string ids plus one table per locale, read by the Context.getString /
 // stringResource stand-ins with Android's locale fallback. Text is processed the way aapt2 does (escapes, quotes,
 // whitespace). Another qualifier or another resource kind in these files fails the build instead of being dropped.
+// Upstream app drawable and mipmap resources (TON-1072). Their names become com.android.purebilibili.R.drawable / R.mipmap
+// ids (written with R.string below); generateUpstreamDrawableResources packages the files with a table that the desktop
+// painterResource, ImageVector.vectorResource, ImageBitmap.imageResource and coil Int models read. A directory qualifier
+// the desktop does not implement fails the build instead of being skipped.
+val upstreamDrawableDensities = mapOf("ldpi" to 120, "mdpi" to 160, "hdpi" to 240, "xhdpi" to 320, "xxhdpi" to 480, "xxxhdpi" to 640)
+/** (type, night, density) of a res directory: density 0 = no qualifier (mdpi for bitmaps), -1 = nodpi, -2 = anydpi. */
+fun upstreamDrawableQualifier(directory: String): Triple<String, Boolean, Int>? {
+    val parts = directory.split('-')
+    if (parts[0] != "drawable" && parts[0] != "mipmap") return null
+    var night = false
+    var density = 0
+    parts.drop(1).forEach { token ->
+        when {
+            token == "night" -> night = true
+            token == "nodpi" -> density = -1
+            token == "anydpi" -> density = -2
+            token in upstreamDrawableDensities -> density = upstreamDrawableDensities.getValue(token)
+            // The Build stand-in reports SDK_INT 36, so a resource for API 36 or lower applies the way it does on Android.
+            Regex("v\\d+").matches(token) -> if (token.drop(1).toInt() > 36) throw GradleException("res/$directory: API level above the desktop SDK_INT 36")
+            else -> throw GradleException("res/$directory: the desktop does not implement the drawable qualifier `$token`")
+        }
+    }
+    return Triple(parts[0], night, density)
+}
+fun upstreamDrawableResourceName(file: File): String = file.name.substringBefore('.')
+/**
+ * `<item type="mipmap|drawable" name="n">@mipmap/target</item>` aliases of res/values-<qualifier> files (upstream shares one
+ * launcher PNG between several names per density): (type/name, night, density, type/target).
+ */
+fun upstreamDrawableAliases(resources: File): List<List<Any>> = resources.listFiles()!!.filter { it.isDirectory && it.name.startsWith("values") }
+    .sortedBy { it.name }.flatMap { directory ->
+        val qualifier by lazy { upstreamDrawableQualifier("drawable" + directory.name.removePrefix("values"))!! }
+        directory.listFiles()!!.filter { it.extension == "xml" }.sortedBy { it.name }.flatMap { file ->
+            val children = javax.xml.parsers.DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(file).documentElement.childNodes
+            (0 until children.length).mapNotNull { children.item(it) as? org.w3c.dom.Element }
+                .filter { it.tagName == "item" && it.getAttribute("type") in setOf("drawable", "mipmap") }.map { element ->
+                    val target = element.textContent.trim()
+                    if (!Regex("@(drawable|mipmap)/\\w+").matches(target))
+                        throw GradleException("${file.relativeTo(mergedRepositoryRoot)} ${element.getAttribute("name")}: the desktop implements only @drawable/@mipmap aliases")
+                    listOf(element.getAttribute("type") + "/" + element.getAttribute("name"), qualifier.second, qualifier.third, target.removePrefix("@"))
+                }
+        }
+    }
+/** type/name of the drawables, mipmaps and aliases one res directory declares. */
+fun upstreamDrawableNames(resources: File): Set<String> = (resources.listFiles().orEmpty().filter { it.isDirectory && upstreamDrawableQualifier(it.name) != null }
+    .flatMap { directory -> directory.listFiles()!!.filter { it.isFile }.map { upstreamDrawableQualifier(directory.name)!!.first + "/" + upstreamDrawableResourceName(it) } } +
+    upstreamDrawableAliases(resources).map { it[0] as String }).toSortedSet()
+/**
+ * The app and the library modules it depends on whose res declares drawables or mipmaps, app first: Android merges them
+ * into one resource table (an app file wins over a library file of the same name and qualifier), and with
+ * android.nonTransitiveRClass each module's own names are in its own namespace's R. res dir -> namespace.
+ */
+val upstreamDrawableModules: List<Pair<File, String>> = (listOf("app") +
+        Regex("""project\(":([\w-]+)"\)""").findAll(mergedRepositoryRoot.resolve("app/build.gradle.kts").readText()).map { it.groupValues[1] }.distinct())
+    .map { module -> mergedRepositoryRoot.resolve("$module/src/main/res") to module }
+    .filter { (res, _) -> res.isDirectory && upstreamDrawableNames(res).isNotEmpty() }
+    .map { (res, module) -> res to (Regex("namespace\\s*=\\s*\"([^\"]+)\"").find(mergedRepositoryRoot.resolve("$module/build.gradle.kts").readText())
+        ?.groupValues?.get(1) ?: throw GradleException("$module has drawable resources but no android namespace")) }
+/** "drawable/name" or "mipmap/name" -> id over the merged table, in name order per type. */
+fun upstreamDrawableIds(): Map<String, Int> {
+    val names = upstreamDrawableModules.flatMap { upstreamDrawableNames(it.first) }.toSortedSet()
+    val base = mapOf("drawable" to 0x7f080000, "mipmap" to 0x7f0f0000)
+    return names.groupBy { it.substringBefore('/') }.flatMap { (type, keys) -> keys.withIndex().map { (index, key) -> key to (base.getValue(type) + index + 1) } }.toMap()
+}
 val upstreamStringResourceDirectory = mergedRepositoryRoot.resolve("app/src/main/res")
 val upstreamStringQualifiers = mapOf("values" to "default", "values-en" to "en", "values-zh-rTW" to "zh-TW")
 val generateUpstreamStringResources by tasks.registering {
     val output = layout.buildDirectory.dir("generated/upstream-strings")
     inputs.files(fileTree(upstreamStringResourceDirectory) { include("values*/strings.xml") }).withPathSensitivity(PathSensitivity.RELATIVE)
+    inputs.property("drawableIds", upstreamDrawableIds().toSortedMap().toString())
     outputs.dir(output)
     doLast {
         val target = output.get().asFile
@@ -2958,14 +3133,150 @@ val generateUpstreamStringResources by tasks.registering {
         }
         val ids = base.keys.withIndex().associate { (index, name) -> name to (0x7f130000 + index + 1) }
         target.resolve("kotlin/com/android/purebilibili/R.kt").apply { parentFile.mkdirs() }.writeText(
-            "// Generated at build time from the upstream app res/values strings.xml.\npackage com.android.purebilibili\n\nobject R {\n    object string {\n" +
-                base.keys.joinToString("") { "        const val $it: Int = ${"0x%x".format(ids.getValue(it))}\n" } + "    }\n}\n")
+            "// Generated at build time from the upstream app res/values strings.xml and res/drawable*, res/mipmap* files.\npackage com.android.purebilibili\n\nobject R {\n    object string {\n" +
+                base.keys.joinToString("") { "        const val $it: Int = ${"0x%x".format(ids.getValue(it))}\n" } + "    }\n" +
+                upstreamDrawableIds().filterKeys { it in upstreamDrawableNames(upstreamStringResourceDirectory) }.entries.groupBy { it.key.substringBefore('/') }.toSortedMap().entries.joinToString("") { (type, entries) ->
+                    "    object $type {\n" + entries.joinToString("") { "        const val ${it.key.substringAfter('/')}: Int = ${"0x%x".format(it.value)}\n" } + "    }\n" } +
+                "}\n")
         tables.forEach { (directory, table) ->
             target.resolve("resources/upstream-strings/${upstreamStringQualifiers.getValue(directory)}.tsv").apply { parentFile.mkdirs() }
                 .writeText(table.entries.joinToString("") { "${"0x%x".format(ids.getValue(it.key))}\t${encode(it.value)}\n" })
         }
     }
 }
+
+// Packages the upstream drawables and mipmaps (TON-1072) of the app and its library modules (upstreamDrawableModules) as
+// classpath resources under upstream-drawables/<module>/ with one
+// index.tsv row per file: id, type/name, night (0/1), density (0 none, -1 nodpi, -2 anydpi, else dpi), kind, resource path.
+// Colour references are resolved here, the way aapt2 and the Android theme resolve them at runtime: @color/ against the
+// app and migrated module res/values (res/values-night under a dark theme; a -v31 colour is the Material You system
+// palette, which the desktop does not have, so it is not applied), @android:color/ against the framework colours, and
+// ?attr/colorControlNormal against the Material default (textColorSecondary). A vector or adaptive icon whose colours
+// differ in night mode gets a night row of its own. res/values-<qualifier> mipmap aliases become `alias` rows that name
+// their target, resolved at runtime with the same configuration. Any other reference, attribute, element or file kind fails the build.
+class MissingResourceException(message: String, className: String, key: String) : java.util.MissingResourceException(message, className, key)
+val generateUpstreamDrawableResources by tasks.registering {
+    val output = layout.buildDirectory.dir("generated/upstream-drawables")
+    val colourModules = listOf("app/") + migratedUpstreamModules
+    upstreamDrawableModules.forEach { (resources, _) ->
+        inputs.files(fileTree(resources) { include("drawable*/**", "mipmap*/**", "values*/*.xml") }).withPathSensitivity(PathSensitivity.RELATIVE)
+    }
+    inputs.property("drawableIds", upstreamDrawableIds().toSortedMap().toString())
+    inputs.property("drawableModules", upstreamDrawableModules.map { it.second })
+    inputs.files(migratedUpstreamModules.map { fileTree(mergedRepositoryRoot.resolve(it + "src/main/res")) { include("values*/*.xml") } }).withPathSensitivity(PathSensitivity.RELATIVE)
+    outputs.dir(output)
+    doLast {
+        val target = output.get().asFile.resolve("resources/upstream-drawables")
+        output.get().asFile.deleteRecursively()
+        target.mkdirs()
+        val ids = upstreamDrawableIds()
+        // Colour values: light table from values/, night table from values-night/ (falling back to light).
+        val light = mutableMapOf<String, String>()
+        val night = mutableMapOf<String, String>()
+        colourModules.forEach { module ->
+            val res = mergedRepositoryRoot.resolve(module + "src/main/res")
+            listOf("values" to light, "values-night" to night).forEach { (directory, table) ->
+                res.resolve(directory).listFiles()?.filter { it.extension == "xml" }?.sortedBy { it.name }?.forEach { file ->
+                    val children = javax.xml.parsers.DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(file).documentElement.childNodes
+                    for (index in 0 until children.length) {
+                        val element = children.item(index) as? org.w3c.dom.Element ?: continue
+                        if (element.tagName == "color") table[element.getAttribute("name")] = element.textContent.trim()
+                    }
+                }
+            }
+        }
+        val framework = mapOf("white" to "#FFFFFFFF", "black" to "#FF000000", "transparent" to "#00000000")
+        // Material's colorControlNormal is ?android:attr/textColorSecondary: secondary_text_material_light / _dark.
+        val themeAttributes = mapOf("colorControlNormal" to ("#8A000000" to "#B3FFFFFF"))
+        fun resolveColour(reference: String, dark: Boolean, where: String, depth: Int = 0): String {
+            if (depth > 8) throw GradleException("$where: colour reference loop at $reference")
+            return when {
+                Regex("#[0-9a-fA-F]{3,8}").matches(reference) -> reference
+                reference.startsWith("@android:color/") -> framework[reference.removePrefix("@android:color/")]
+                    ?: throw GradleException("$where: framework colour $reference is not implemented on the desktop")
+                reference.startsWith("@color/") -> reference.removePrefix("@color/").let { name ->
+                    val value = (if (dark) night[name] else null) ?: light[name]
+                        ?: throw MissingResourceException("$reference has no res/values value (only a qualifier the desktop does not apply defines it)", "", reference)
+                    resolveColour(value, dark, where, depth + 1)
+                }
+                reference.startsWith("?attr/") || reference.startsWith("?android:attr/") -> themeAttributes[reference.substringAfter('/')]?.let { if (dark) it.second else it.first }
+                    ?: throw GradleException("$where: theme attribute $reference is not implemented on the desktop")
+                else -> throw GradleException("$where: unsupported colour value `$reference`")
+            }
+        }
+        val reference = Regex("=\"((?:@color|@android:color|\\?attr|\\?android:attr)/[\\w.]+)\"")
+        fun resolveXml(text: String, dark: Boolean, where: String) = reference.replace(text) { "=\"" + resolveColour(it.groupValues[1], dark, where) + "\"" }
+        val rows = mutableListOf<String>()
+        val seen = mutableSetOf<String>() // type/name@night@density already taken by an earlier (app) module
+        upstreamDrawableModules.forEach { (resources, namespace) ->
+        val module = resources.parentFile.parentFile.parentFile.name
+        val directories = resources.listFiles()!!.filter { it.isDirectory && upstreamDrawableQualifier(it.name) != null }.sortedBy { it.name }
+        val explicitNight = directories.filter { upstreamDrawableQualifier(it.name)!!.second }.flatMap { directory ->
+            val (type, _, density) = upstreamDrawableQualifier(directory.name)!!
+            directory.listFiles()!!.map { "$type/${upstreamDrawableResourceName(it)}@$density" }
+        }.toSet()
+        directories.forEach { directory ->
+            val (type, isNight, density) = upstreamDrawableQualifier(directory.name)!!
+            directory.listFiles()!!.filter { it.isFile }.sortedBy { it.name }.forEach { file ->
+                val where = file.relativeTo(mergedRepositoryRoot).invariantSeparatorsPath
+                if (!seen.add("$type/${upstreamDrawableResourceName(file)}@$isNight@$density")) return@forEach
+                val id = ids.getValue("$type/${upstreamDrawableResourceName(file)}")
+                fun row(nightFlag: Boolean, kind: String, path: String) { rows += "${"0x%x".format(id)}\t$type/${upstreamDrawableResourceName(file)}\t${if (nightFlag) 1 else 0}\t$density\t$kind\t$path" }
+                when (file.name.substringAfter('.').lowercase()) {
+                    "png", "webp", "jpg", "jpeg" -> {
+                        file.copyTo(target.resolve("$module/${directory.name}/${file.name}"), overwrite = true)
+                        row(isNight, "raster", "$module/${directory.name}/${file.name}")
+                    }
+                    "xml" -> {
+                        val text = file.readText()
+                        val kind = when (val tag = javax.xml.parsers.DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(file).documentElement.tagName) {
+                            "vector" -> "vector"
+                            "adaptive-icon" -> "adaptive"
+                            // Splash-screen compositions; the desktop has no Android splash screen. Their ids load loudly.
+                            "layer-list", "bitmap" -> tag
+                            else -> throw GradleException("$where: <$tag> drawables are not implemented on the desktop")
+                        }
+                        // A colour without a base value would crash on Android below that qualifier too; the id stays and
+                        // loading it fails loudly with the reason.
+                        val resolved = try { resolveXml(text, isNight, where) } catch (missing: MissingResourceException) {
+                            row(isNight, "unavailable", missing.message!!.replace('\t', ' '))
+                            return@forEach
+                        }
+                        target.resolve("$module/${directory.name}/${file.name}").apply { parentFile.mkdirs() }.writeText(resolved)
+                        row(isNight, kind, "$module/${directory.name}/${file.name}")
+                        if (!isNight && "$type/${upstreamDrawableResourceName(file)}@$density" !in explicitNight) {
+                            val dark = resolveXml(text, true, where)
+                            if (dark != resolved) {
+                                val path = "$module/${directory.name}+night/${file.name}"
+                                target.resolve(path).apply { parentFile.mkdirs() }.writeText(dark)
+                                row(true, kind, path)
+                            }
+                        }
+                    }
+                    else -> throw GradleException("$where: the desktop does not implement this drawable file kind")
+                }
+            }
+        }
+        upstreamDrawableAliases(resources).forEach { (name, isNight, density, aliased) ->
+            if (aliased as String !in ids) throw GradleException("${resources.relativeTo(mergedRepositoryRoot)}/values alias $name points to the missing resource $aliased")
+            if (!seen.add("$name@$isNight@$density")) return@forEach
+            rows += "${"0x%x".format(ids.getValue(name as String))}\t$name\t${if (isNight as Boolean) 1 else 0}\t$density\talias\t$aliased"
+        }
+        // The app's names are in com.android.purebilibili.R (written with R.string); a library's in its own namespace.
+        if (namespace != "com.android.purebilibili") {
+            val own = upstreamDrawableNames(resources)
+            output.get().asFile.resolve("kotlin/" + namespace.replace('.', '/') + "/R.kt").apply { parentFile.mkdirs() }.writeText(
+                "// Generated at build time from ${resources.relativeTo(mergedRepositoryRoot).invariantSeparatorsPath}.\npackage $namespace\n\nobject R {\n" +
+                    ids.filterKeys { it in own }.entries.groupBy { it.key.substringBefore('/') }.toSortedMap().entries.joinToString("") { (type, entries) ->
+                        "    object $type {\n" + entries.joinToString("") { "        const val ${it.key.substringAfter('/')}: Int = ${"0x%x".format(it.value)}\n" } + "    }\n" } +
+                    "}\n")
+        }
+        }
+        target.resolve("index.tsv").writeText(rows.joinToString("\n", postfix = "\n"))
+    }
+}
+sourceSets.named("main") { resources.srcDir(files(layout.buildDirectory.dir("generated/upstream-drawables/resources")).builtBy(generateUpstreamDrawableResources)) }
+kotlin.sourceSets.named("main") { kotlin.srcDir(files(layout.buildDirectory.dir("generated/upstream-drawables/kotlin")).builtBy(generateUpstreamDrawableResources)) }
 
 // Numeric key types of the upstream DataStore preferences (TON-1000). Preferences.Key carries no runtime type and the
 // desktop settings document is JSON, where 1 cannot tell Int from Long or Float. Booleans, strings and string sets are
@@ -3022,8 +3333,13 @@ val generateUpstreamBuildConfig by tasks.registering {
     val script = mergedRepositoryRoot.resolve("app/build.gradle.kts")
     val output = layout.buildDirectory.dir("generated/upstream-buildconfig")
     val commitSha = providers.gradleProperty("bili.build.commitSha").orElse("local")
+    // Same properties and empty defaults as upstream's app/build.gradle.kts, so a CI build can stamp its provenance.
+    val provenance = listOf("gitRef" to "BUILD_GIT_REF", "workflowRunId" to "BUILD_WORKFLOW_RUN_ID",
+        "workflowRunUrl" to "BUILD_WORKFLOW_RUN_URL", "releaseTag" to "BUILD_RELEASE_TAG")
+        .map { (property, field) -> field to providers.gradleProperty("bili.build.$property").orElse("") }
     inputs.file(script).withPathSensitivity(PathSensitivity.RELATIVE)
     inputs.property("commitSha", commitSha)
+    provenance.forEach { (field, value) -> inputs.property(field, value) }
     outputs.dir(output)
     doLast {
         val text = script.readText()
@@ -3031,6 +3347,14 @@ val generateUpstreamBuildConfig by tasks.registering {
             ?: throw GradleException("app/build.gradle.kts: versionCode not found")
         val versionName = Regex("versionName\\s*=\\s*\"([^\"]+)\"").find(text)?.groupValues?.get(1)
             ?: throw GradleException("app/build.gradle.kts: versionName not found")
+        fun kotlinLiteral(raw: String): String {
+            val escaped = raw.replace("\\", "\\\\").replace("\"", "\\\"").replace("$", "\\$")
+            return "\"" + escaped + "\""
+        }
+        val provenanceFields = provenance.joinToString("") { (field, value) ->
+            val literal = kotlinLiteral(value.get())
+            "    const val $field: String = $literal\n"
+        }
         val target = output.get().asFile
         target.deleteRecursively()
         target.resolve("com/android/purebilibili/BuildConfig.kt").apply { parentFile.mkdirs() }.writeText(
@@ -3038,6 +3362,7 @@ val generateUpstreamBuildConfig by tasks.registering {
                 "object BuildConfig {\n    const val DEBUG: Boolean = false\n    const val BUILD_TYPE: String = \"release\"\n" +
                 "    const val VERSION_CODE: Int = $versionCode\n    const val VERSION_NAME: String = \"$versionName\"\n" +
                 "    const val BUILD_COMMIT_SHA: String = \"${commitSha.get()}\"\n" +
+                provenanceFields +
                 "    const val ENABLE_VERBOSE_DEBUG_LOGS: Boolean = false\n    const val ENABLE_VERBOSE_RUNTIME_LOG_PERSISTENCE: Boolean = false\n" +
                 "    const val ALLOW_HARDCODED_DNS_FALLBACK: Boolean = false\n}\n")
     }
@@ -3133,15 +3458,22 @@ val appCoreUpstreamTestsNotRun: Map<String, String> = mapOf(
     "core/plugin/js/BiliPaiJsNativeExampleTest.kt" to "it reads examples/plugins/tv-live.bilipai.js, which the merge leaves out; the desktop copy runs the byte-identical script from desktop/src/test/fixtures",
     "core/ui/adaptive/DeviceUiProfilePolicyTest.kt" to "the same test class (same package and name) as design-system DeviceUiProfilePolicyTest, which runs",
 )
-val appCoreUpstreamTestPaths: Set<String> = appTestRoot.resolve("com/android/purebilibili/core").walkTopDown()
+// M4d (TON-1005): tests of the migrated feature areas join, except those listed in upstream-core/m4d/tests-not-run.tsv
+// (path <TAB> reason) and those whose subject (FooTest.kt tests Foo.kt) is a later step of the area.
+val appM4dTestsNotRun: Map<String, String> = m4dTable("tests-not-run.tsv").toMap()
+val appCoreUpstreamTestPaths: Set<String> = (appTestRoot.resolve("com/android/purebilibili/core").walkTopDown() +
+        migratedAppM4dAreas.asSequence().flatMap { appTestRoot.resolve("com/android/purebilibili/$it").walkTopDown() } +
+        // TON-1120: upstream's IM wire tests run against the directly compiled MessageImRepository.
+        sequenceOf(appTestRoot.resolve("com/android/purebilibili/data/repository/MessageImRepositoryTest.kt")))
     .filter { it.isFile && it.extension == "kt" }
     // JUnit 4, Robolectric, mockk and androidx.test are not on the desktop test classpath; JUnit 5 (org.junit.jupiter) is.
     .filter { file -> !Regex("""^import (org\.junit\.(?!jupiter)|org\.robolectric|io\.mockk|androidx\.test)""", RegexOption.MULTILINE).containsMatchIn(file.readText()) }
     .map { it.relativeTo(appTestRoot).invariantSeparatorsPath }
     .filter { path -> path.removePrefix("com/android/purebilibili/").let { core -> core !in appCoreUpstreamTestsNotRun &&
+        core !in appM4dTestsNotRun &&
         (appCoreDesktopOwned.keys + appCoreLaterSteps.keys).none { core.startsWith(it) } &&
         // FooTest.kt tests Foo.kt: a test of a desktop-owned or later-step file is left out with its subject.
-        (appCoreDesktopOwned.keys + appCoreLaterSteps.keys).none { key -> key.endsWith(".kt") && core == key.removeSuffix(".kt") + "Test.kt" } } }
+        (appCoreDesktopOwned.keys + appCoreLaterSteps.keys + appM4dLaterSteps.keys).none { key -> key.endsWith(".kt") && core == key.removeSuffix(".kt") + "Test.kt" } } }
     .toSortedSet()
 val appCoreSourceReadingTestClasses: List<String> = appCoreUpstreamTestPaths.map { appTestRoot.resolve(it) }
     .filter { Regex("""\bFile\(|Paths\.get\(|\.readText\(""").containsMatchIn(it.readText()) }
@@ -3168,7 +3500,8 @@ kotlin.sourceSets.named("main") {
     // smart casts and internal access as before); their generated legacy copies are skipped.
     val buildDirectoryPath = layout.buildDirectory.get().asFile.toPath()
     val generatedDirectoryPath = buildDirectoryPath.resolve("generated")
-    kotlin.exclude { element -> desktopUpstreamPatchedFiles.any { element.file == mergedRepositoryRoot.resolve(it) } }
+    val adaptedRootFiles = desktopUpstreamAdaptedRootFiles.map { mergedRepositoryRoot.resolve(it) }.toSet()
+    kotlin.exclude { element -> element.file in adaptedRootFiles }
     // A producer may root its source directory at com/ itself, so the identity is read from the path.
     fun upstreamIdentity(file: File): String {
         val path = file.invariantSeparatorsPath
@@ -3183,8 +3516,16 @@ kotlin.sourceSets.named("main") {
     kotlin.exclude { element ->
         val path = element.file.toPath()
         path.startsWith(generatedDirectoryPath) && generatedDirectoryPath.relativize(path).joinToString("/").let {
-            it in upstreamOwnedGeneratedCopies || it in transitionPatchedGeneratedFiles
+            it in upstreamOwnedGeneratedCopies || it in appM4dRetiredGeneratedCopies || it in appFeatureRetiredGeneratedCopies || it in transitionPatchedGeneratedFiles
         }
+    }
+    // A retired producer copy that also has a transition patch is dropped in its patched form too.
+    val transitionPatchedDirectoryPath = buildDirectoryPath.resolve("transition-patched")
+    val retiredPatchedOutputs = appFeatureRetiredGeneratedCopies.filter { it in transitionPatchedGeneratedFiles }
+        .map { it.substringAfter('/').removePrefix("generated/") }.toSet()
+    kotlin.exclude { element ->
+        val path = element.file.toPath()
+        path.startsWith(transitionPatchedDirectoryPath) && transitionPatchedDirectoryPath.relativize(path).joinToString("/") in retiredPatchedOutputs
     }
     // Migrated upstream files the desktop patches or replaces are compiled from their adapted form only.
     val migratedRootPaths = migratedUpstreamModules.map { mergedRepositoryRoot.resolve(it + "src/main/java").toPath() } + listOf(appJavaRoot.toPath())
@@ -3230,9 +3571,7 @@ kotlin.sourceSets.named("main") {
     kotlin.srcDir(layout.buildDirectory.dir("generated/playback-settings"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/subtitle-load"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/space"))
-    kotlin.srcDir(layout.buildDirectory.dir("generated/space-contributions"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/space-overview"))
-    kotlin.srcDir(layout.buildDirectory.dir("generated/space-image-previews"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/components"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/preferences"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/settings-search"))
@@ -3286,7 +3625,7 @@ tasks.named("compileKotlin") { dependsOn(extractUpstreamAppearance, verifyAppear
 tasks.named("compileKotlin") { dependsOn(extractUpstreamSettingsSearch, extractUpstreamSettingsCategories, extractUpstreamSettingsHome, extractUpstreamSettingsPrivacy, extractUpstreamSettingsEntries, extractUpstreamNavigationInteraction, extractUpstreamSettingsStorageEntries, extractNativeMusicRoot, verifySettingsSearchDependencies) }
 tasks.named("compileKotlin") { dependsOn(extractUpstreamComponents, extractUpstreamPreferences) }
 tasks.named("compileKotlin") { dependsOn(extractUpstreamBlockedUp, extractUpstreamBlockedListUi, extractUpstreamNetworkProxy) }
-tasks.named("compileKotlin") { dependsOn(extractUpstreamSpace, extractUpstreamSpaceContributions, extractUpstreamSpaceOverview, extractUpstreamSpaceImagePreviews) }
+tasks.named("compileKotlin") { dependsOn(extractUpstreamSpace, extractUpstreamSpaceOverview) }
 tasks.named("compileKotlin") { dependsOn(extractUpstreamDiagnostics) }
 tasks.named("compileKotlin") { dependsOn(extractUpstreamDynamicSettings) }
 tasks.named("compileKotlin") { dependsOn(extractUpstreamCrashPrompt) }
@@ -3370,6 +3709,8 @@ dependencies {
     // Libraries the migrated upstream modules need (versions as in the desktop graph).
     implementation("androidx.datastore:datastore-preferences-core:1.2.1")
     implementation("androidx.collection:collection:1.5.0")
+    // Upstream's ForwardPagingSource/Session and the paging sources of migrated features (TON-1108); paging-common has a JVM target.
+    implementation("androidx.paging:paging-common:3.4.2")
     implementation(compose.desktop.currentOs)
     // Expose existing exact runtime97 Lifecycle modules through Miuix's implementation boundary.
     implementation("org.jetbrains.androidx.lifecycle:lifecycle-viewmodel:2.11.0")
@@ -3418,6 +3759,7 @@ dependencies {
     implementation("commons-io:commons-io:2.19.0")
     implementation("org.apache.commons:commons-lang3:3.17.0")
     implementation("net.java.dev.jna:jna:5.17.0")
+    implementation("net.java.dev.jna:jna-platform:5.17.0")
     implementation("org.json:json:20240303")
     implementation("io.github.biezhi:TinyPinyin:2.0.3.RELEASE") { version { strictly("2.0.3.RELEASE") } }
     implementation("org.ahocorasick:ahocorasick:0.4.0") { version { strictly("0.4.0") } }
@@ -3440,6 +3782,8 @@ tasks.test {
 tasks.withType<Test>().configureEach {
     if (!System.getProperty("os.name").startsWith("Windows", ignoreCase = true))
         systemProperty("bilipai.credentialProtection", "test-only")
+    // Upstream HTTP caches of test JVMs stay in the task's temporary directory, not the user's data directory (TON-1082).
+    systemProperty("bilipai.upstreamHttpCache", temporaryDir.resolve("upstream-http").absolutePath)
 }
 tasks.register<Test>("jsWorkerSmoke") {
     group = "verification"
@@ -3556,6 +3900,20 @@ tasks.register<JavaExec>("originalAicuRootUiSmoke") {
     }
 }
 
+// Both Windows-only products above are placeholders on another host, so nothing may be packaged here:
+// every Compose distribution, installer, uber-jar and release-shrink task refuses to run off Windows.
+val windowsOnlyPackagingTask = Regex(
+    "(create|run)(Release)?Distributable|package(Release)?(DistributionForCurrentOS|UberJarForCurrentOS|Exe|Msi|Dmg|Pkg|Deb|Rpm)|proguardReleaseJars")
+tasks.matching { windowsOnlyPackagingTask.matches(it.name) }
+    .configureEach {
+        doFirst {
+            require(hostIsWindows) {
+                "Windows packaging needs the native diagnostic share bridge and the JS worker image, " +
+                    "which are Windows x64 build products; run this on Windows."
+            }
+        }
+    }
+
 compose.desktop {
     application {
         mainClass = "com.bilipai.desktop.MainKt"
@@ -3583,7 +3941,7 @@ compose.desktop {
 val extractSubtitleLoadPolicy by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-subtitle-load-policy.py",
+    commandLine(pythonExecutable, "tools/extract-subtitle-load-policy.py",
         "--repo", repositoryRoot.absolutePath, "--output", layout.buildDirectory.dir("generated/subtitle-load").get().asFile.absolutePath)
     inputs.files("tools/extract-subtitle-load-policy.py", "tools/extract-upstream-media.py", "tools/sync-upstream.py")
     inputs.file(canonicalOriginalSource("app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt"))
@@ -3594,7 +3952,7 @@ tasks.named("compileKotlin") { dependsOn(extractUpstreamStoryTopic, extractPlayb
 val extractUpstreamDownloadTransport by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-download-transport.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-download-transport.py",
         "--repo", repositoryRoot.absolutePath, "--output", layout.buildDirectory.dir("generated/download-transport").get().asFile.absolutePath)
     inputs.file("tools/extract-upstream-download-transport.py")
     inputs.file(canonicalOriginalSource("app/src/main/java/com/android/purebilibili/feature/download/ResumableAssetDownloader.kt"))
@@ -3621,7 +3979,7 @@ val extractOriginalVideoDetailUnits by tasks.registering(Exec::class) {
     inputs.dir("upstream-slices/v031-repost-coin")
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-video-detail-full-units.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-video-detail-full-units.py",
         repositoryRoot.absolutePath, layout.buildDirectory.dir("generated/original-video-detail-units").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-video-detail-full-units.py", "tools/sync-upstream.py",
         "tools/extract-upstream-media.py", "tools/extract-appearance-platform.py", sourceManifest)
@@ -3637,7 +3995,7 @@ val extractOriginalVideoDetailUnits by tasks.registering(Exec::class) {
 val verifyOriginalVideoDetailMembers by tasks.registering(Exec::class) {
     dependsOn(extractOriginalVideoDetailUnits)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/verify-upstream-video-detail-full-units.py",
+    commandLine(pythonExecutable, "tools/verify-upstream-video-detail-full-units.py",
         repositoryRoot.absolutePath, layout.buildDirectory.dir("generated/original-video-detail-units").get().asFile.absolutePath,
         layout.buildDirectory.file("generated/original-video-detail-members-verification.json").get().asFile.absolutePath)
     inputs.files("tools/verify-upstream-video-detail-full-units.py", "src/main/kotlin/com/bilipai/desktop/data/DesktopDynamicCardOperations.kt")
@@ -3650,7 +4008,7 @@ tasks.named("compileKotlin") { dependsOn(extractOriginalVideoDetailUnits, verify
 val extractOriginalOfflinePlayer by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-offline-player.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-offline-player.py",
         "--repo", repositoryRoot.absolutePath, "--output", layout.buildDirectory.dir("generated/original-offline-player").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-offline-player.py", "tools/extract-upstream-media.py", "tools/sync-upstream.py", sourceManifest)
     inputs.files(fileTree("upstream-slices/v029-offline-error"))
@@ -3665,7 +4023,7 @@ tasks.named("compileKotlin") { dependsOn(extractOriginalOfflinePlayer) }
 val extractOriginalPersonalLists by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources, extractOriginalFavorites)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-personal-lists.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-personal-lists.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/original-personal-lists").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-personal-lists.py", "tools/extract-upstream-dynamic-reply-protocol.py")
@@ -3690,7 +4048,7 @@ val extractOriginalWatchLater by tasks.registering(Exec::class) {
     inputs.dir("upstream-slices/v044-favorite-detail")
     dependsOn(prepareUpstreamSources, extractOriginalFavorites)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-watchlater.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-watchlater.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/original-watchlater").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-watchlater.py", "tools/extract-upstream-favorites.py",
@@ -3736,7 +4094,7 @@ val extractOriginalPlayerFullControls by tasks.registering(Exec::class) {
 
     dependsOn(prepareUpstreamSources, extractOriginalVideoDetailUnits, extractOriginalOfflinePlayer)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-video-player-full-controls.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-video-player-full-controls.py",
         repositoryRoot.absolutePath, layout.buildDirectory.dir("generated/original-video-player-full-controls").get().asFile.absolutePath,
         "--test-output", layout.buildDirectory.dir("generated/original-player-chrome-tests").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-video-player-full-controls.py", "tools/sync-upstream.py", "tools/extract-appearance-platform.py", sourceManifest)
@@ -3750,7 +4108,7 @@ tasks.named("compileTestKotlin") { dependsOn(extractOriginalPlayerFullControls) 
 val verifyOriginalPlayerFullControls by tasks.registering(Exec::class) {
     dependsOn(extractOriginalPlayerFullControls)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/verify-upstream-video-player-full-controls.py",
+    commandLine(pythonExecutable, "tools/verify-upstream-video-player-full-controls.py",
         repositoryRoot.absolutePath, layout.buildDirectory.dir("generated/original-video-player-full-controls").get().asFile.absolutePath,
         layout.buildDirectory.file("generated/original-video-player-controls-verification.json").get().asFile.absolutePath)
     inputs.files("tools/verify-upstream-video-player-full-controls.py", "tools/extract-upstream-video-player-full-controls.py", "tools/sync-upstream.py", "tools/extract-appearance-platform.py", sourceManifest)
@@ -3775,7 +4133,7 @@ val extractOriginalFollowing by tasks.registering(Exec::class) {
     inputs.dir("upstream-slices/v029-brand-success")
     dependsOn(prepareUpstreamSources, extractOriginalFavorites, extractOriginalWatchLater)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-following.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-following.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/original-following").get().asFile.absolutePath,
         "--test-output", layout.buildDirectory.dir("generated/original-following-tests").get().asFile.absolutePath)
@@ -3796,7 +4154,7 @@ tasks.named("compileTestKotlin") { dependsOn(extractOriginalFollowing) }
 val extractOriginalArticleDetail by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources, extractUpstreamDynamicDetailProtocol)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-article-detail.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-article-detail.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/original-article-detail").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-article-detail.py", "tools/extract-upstream-dynamic-reply-protocol.py")
@@ -3824,7 +4182,7 @@ val extractOriginalVideoContentFull by tasks.registering(Exec::class) {
     inputs.dir("upstream-slices/v036-video-comment-viewport")
     dependsOn(prepareUpstreamSources, extractOriginalVideoDetailUnits, extractOriginalPlayerFullControls)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-video-content-full.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-video-content-full.py",
         repositoryRoot.absolutePath, layout.buildDirectory.dir("generated/original-video-content-full").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-video-content-full.py", "tools/sync-upstream.py", "tools/extract-appearance-platform.py", sourceManifest)
     inputs.files(sources.filter { "stable-video-content-full" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
@@ -3834,7 +4192,7 @@ val extractOriginalVideoContentFull by tasks.registering(Exec::class) {
 val verifyOriginalVideoContentFull by tasks.registering(Exec::class) {
     dependsOn(extractOriginalVideoContentFull)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/verify-upstream-video-content-full.py",
+    commandLine(pythonExecutable, "tools/verify-upstream-video-content-full.py",
         repositoryRoot.absolutePath, layout.buildDirectory.dir("generated/original-video-content-full").get().asFile.absolutePath,
         layout.buildDirectory.file("generated/original-video-content-full-verification.json").get().asFile.absolutePath)
     inputs.files("tools/verify-upstream-video-content-full.py", "tools/extract-upstream-video-content-full.py", "tools/sync-upstream.py", "tools/extract-appearance-platform.py", sourceManifest)
@@ -3852,7 +4210,7 @@ val extractOriginalVideoStateCore by tasks.registering(Exec::class) {
     inputs.dir("upstream-slices/v031-repost-coin")
     dependsOn(prepareUpstreamSources, extractOriginalVideoDetailUnits, extractOriginalVideoContentFull)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-video-state-core.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-video-state-core.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/original-video-state-core").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-video-state-core.py", "tools/extract-upstream-dynamic-reply-protocol.py",
@@ -3883,7 +4241,7 @@ val extractOriginalVideoPlayerSectionFull by tasks.registering(Exec::class) {
     inputs.dir("upstream-slices/v037-player-page-backdrop")
     dependsOn(prepareUpstreamSources, extractOriginalVideoStateCore, extractOriginalPlayerFullControls, extractOriginalVideoContentFull)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-video-player-section-full.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-video-player-section-full.py",
         repositoryRoot.absolutePath, layout.buildDirectory.dir("generated/original-video-player-section-full").get().asFile.absolutePath,
         "--test-output", layout.buildDirectory.dir("generated/original-player-page-backdrop-tests").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-video-player-section-full.py", "tools/extract-upstream-dynamic-reply-protocol.py",
@@ -3904,7 +4262,7 @@ tasks.named("compileKotlin") { dependsOn(extractOriginalVideoPlayerSectionFull) 
 val prepareUpstreamVideoCommentUrl by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-video-comment-url.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-video-comment-url.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/upstream-video-comment-url").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-video-comment-url.py",
@@ -3921,7 +4279,7 @@ val extractOriginalVideoTabletFull by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources, prepareUpstreamVideoCommentUrl, extractOriginalVideoStateCore,
         extractOriginalVideoPlayerSectionFull, extractOriginalVideoContentFull)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-video-tablet-full.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-video-tablet-full.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/video-tablet-full").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-video-tablet-full.py", "tools/sync-upstream.py",
@@ -3944,7 +4302,7 @@ val extractOriginalVideoFullscreenPager by tasks.registering(Exec::class) {
     inputs.dir("upstream-slices/v031-repost-coin")
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-video-fullscreen-pager.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-video-fullscreen-pager.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/original-video-fullscreen-pager").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-video-fullscreen-pager.py", "tools/sync-upstream.py",
@@ -3963,7 +4321,7 @@ tasks.named("extractOriginalVideoFullscreenPager") { inputs.file("tools/v046_ful
 val extractOriginalMusicPlayerFull by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources, extractOriginalVideoTabletFull)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-music-player-full.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-music-player-full.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/music-player-full").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-music-player-full.py", "tools/sync-upstream.py",
@@ -3979,7 +4337,7 @@ val extractOriginalVideoAudioFull by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources, extractOriginalMusicPlayerFull, extractOriginalVideoFullscreenPager,
         extractOriginalVideoTabletFull)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-video-audio-full.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-video-audio-full.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/video-audio-full").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-video-audio-full.py", "tools/sync-upstream.py",
@@ -3994,7 +4352,7 @@ tasks.named("compileKotlin") { dependsOn(extractOriginalVideoAudioFull) }
 val extractOriginalMediaByteCachePolicy by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-media-byte-cache-policy.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-media-byte-cache-policy.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/original-media-byte-cache-policy").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-media-byte-cache-policy.py", sourceManifest,
@@ -4012,7 +4370,7 @@ val extractOriginalVideoFullOwner by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources, extractOriginalVideoStateCore, extractOriginalPlayerFullControls,
         extractOriginalVideoFullscreenPager)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-video-full-owner.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-video-full-owner.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/original-video-full-owner").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-video-full-owner.py", sourceManifest)
@@ -4055,7 +4413,7 @@ val extractOriginalVideoDetailHolderFull by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources, extractOriginalVideoFullOwner, extractOriginalVideoFullscreenPager,
         extractOriginalVideoTabletFull)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-video-detail-holder.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-video-detail-holder.py",
         repositoryRoot.absolutePath,
         layout.buildDirectory.dir("generated/original-video-detail-holder-full").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-video-detail-holder.py", sourceManifest)
@@ -4073,7 +4431,7 @@ tasks.named("compileKotlin") { dependsOn(extractOriginalVideoDetailHolderFull) }
 val extractOriginalTabletOwnerSpace by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources, extractUpstreamSpaceOverview, extractOriginalVideoTabletFull)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-tablet-owner-space.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-tablet-owner-space.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/original-tablet-owner-space").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-tablet-owner-space.py", "tools/sync-upstream.py", sourceManifest)
@@ -4088,7 +4446,7 @@ tasks.named("compileKotlin") { dependsOn(extractOriginalTabletOwnerSpace) }
 val extractOriginalVideoPlaylistFull by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-video-playlist.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-video-playlist.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/original-video-playlist-full").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-video-playlist.py", sourceManifest)
@@ -4102,7 +4460,7 @@ tasks.named("compileKotlin") { dependsOn(extractOriginalVideoPlaylistFull) }
 val extractOriginalVideoOwnerDanmakuSend by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources, extractOriginalDanmakuListMenu)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-video-owner-danmaku-send.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-video-owner-danmaku-send.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/original-video-owner-danmaku-send").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-video-owner-danmaku-send.py", "tools/extract-upstream-danmaku-list-menu.py", sourceManifest)
@@ -4116,7 +4474,7 @@ tasks.named("compileKotlin") { dependsOn(extractOriginalVideoOwnerDanmakuSend) }
 val extractOriginalVideoRootStoryFeed by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources, extractOriginalDanmakuListMenu)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-video-root-story-feed.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-video-root-story-feed.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/original-video-root-story-feed").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-video-root-story-feed.py", "tools/extract-upstream-danmaku-list-menu.py", sourceManifest)
@@ -4133,7 +4491,7 @@ tasks.named("compileKotlin") { dependsOn(extractOriginalVideoRootStoryFeed) }
 val extractOriginalStorageSettings by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-storage-settings.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-storage-settings.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/original-storage-settings").get().asFile.absolutePath,
         "--tests-output", layout.buildDirectory.dir("generated/original-storage-settings-tests").get().asFile.absolutePath)
@@ -4159,7 +4517,7 @@ tasks.named("compileTestKotlin") { dependsOn(extractOriginalStorageSettings) }
 val extractOriginalSearchPages by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-search-pages.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-search-pages.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/original-search-pages").get().asFile.absolutePath,
         "--test-output", layout.buildDirectory.dir("generated/original-search-tests").get().asFile.absolutePath)
@@ -4192,7 +4550,7 @@ tasks.named("compileKotlin") { dependsOn(extractOriginalSearchPages) }
 val extractOriginalMessagePages by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources, extractUpstreamDynamicFullCard, extractOriginalHomeProtocols)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-message-pages.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-message-pages.py",
         "--repo", repositoryRoot.absolutePath,
         "--out", layout.buildDirectory.dir("generated/original-message-pages").get().asFile.absolutePath)
     inputs.dir("upstream-slices/v029-chat-timeline")
@@ -4211,20 +4569,16 @@ tasks.named("compileKotlin") { dependsOn(extractOriginalMessagePages) }
 // Existing SpaceUiState/SubTab/selected policies, dynamic cards and gallery stay sole-owned.
 val extractOriginalSpacePages by tasks.registering(Exec::class) {
     inputs.file("tools/v046_identity_badge_palette.py")
-    dependsOn(prepareUpstreamSources, extractUpstreamSpace, extractUpstreamSpaceOverview, extractUpstreamSpaceContributions,
-        extractOriginalVideoTabletFull, extractOriginalFavorites)
+    dependsOn(prepareUpstreamSources, extractOriginalVideoTabletFull, extractOriginalFavorites)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-space-pages.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-space-pages.py",
         "--repo", repositoryRoot.absolutePath,
         "--out", layout.buildDirectory.dir("generated/original-space-pages").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-space-pages.py", "tools/extract-upstream-tablet-owner-space.py", "tools/sync-upstream.py", sourceManifest)
     inputs.file("tools/v041_video_status_labels.py")
     inputs.file("tools/v043_search_up_author.py")
     inputs.dir("upstream-slices/v041-video-status-labels")
-    inputs.files(layout.buildDirectory.file("generated/space-overview/com/android/purebilibili/feature/space/DesktopOriginalSpaceOverview.kt"),
-        layout.buildDirectory.file("generated/space-contributions/com/android/purebilibili/feature/space/DesktopUpstreamSpaceContributionDeclarations.kt"),
-        layout.buildDirectory.file("generated/space/com/android/purebilibili/feature/space/DesktopUpstreamSpaceDeclarations.kt"),
-        layout.buildDirectory.file("generated/original-favorites/com/android/purebilibili/feature/space/DesktopFavoriteArchiveMappings.kt"))
+    inputs.file(layout.buildDirectory.file("generated/original-favorites/com/android/purebilibili/feature/space/DesktopFavoriteArchiveMappings.kt"))
     inputs.files(sources.filter { "stable-original-space-pages-root-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/original-space-pages"))
@@ -4237,7 +4591,7 @@ tasks.named("compileKotlin") { dependsOn(extractOriginalSpacePages) }
 val extractOriginalVideoStatusLabels by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-v041-video-status-labels.py",
+    commandLine(pythonExecutable, "tools/extract-v041-video-status-labels.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/v041-video-status-labels").get().asFile.absolutePath,
         "--tests-output", layout.buildDirectory.dir("generated/v041-video-status-label-tests").get().asFile.absolutePath)
@@ -4296,7 +4650,7 @@ listOf("extractOriginalFavorites", "extractOriginalProfileMain").forEach { taskN
 
 val extractOriginalWindowLayout by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources, extractUpstreamDynamicDetailContainer)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-window-layout.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-window-layout.py",
         "--repo", rootProject.projectDir.parentFile.absolutePath,
         "--output", layout.buildDirectory.dir("generated/original-window-layout").get().asFile.absolutePath,
         "--existing-hinge-model", layout.buildDirectory.file("generated/dynamic-detail-container/com/android/purebilibili/core/util/DesktopOriginalDetailHingeModel.kt").get().asFile.absolutePath)
@@ -4314,7 +4668,7 @@ tasks.named("compileKotlin") { dependsOn(extractOriginalWindowLayout) }
 val extractOriginalCdnTransfer by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-cdn-transfer.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-cdn-transfer.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/original-cdn-transfer").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-cdn-transfer.py", "tools/upstream-cdn-transfer-adaptations.json")
@@ -4331,7 +4685,7 @@ tasks.named("compileKotlin") { dependsOn(extractOriginalCdnTransfer) }
 val extractOriginalAicu by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-aicu.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-aicu.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/original-aicu").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-aicu.py", "tools/upstream-aicu-adaptations.json", "tools/sync-upstream.py", "tools/extract-upstream-media.py", sourceManifest)
@@ -4347,7 +4701,7 @@ tasks.named("compileKotlin") { dependsOn(extractOriginalAicu) }
 val extractOriginalCommentFraudHistory by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-comment-fraud-history.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-comment-fraud-history.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/comment-fraud-history").get().asFile.absolutePath,
         "--proof", layout.buildDirectory.file("reports/comment-fraud-history-source-inverse.json").get().asFile.absolutePath)
@@ -4368,7 +4722,7 @@ tasks.named("compileKotlin") { dependsOn(extractOriginalCommentFraudHistory) }
 val extractOriginalDonateDialog by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-donate-dialog.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-donate-dialog.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/original-donate-dialog").get().asFile.absolutePath,
         "--resource-output", layout.buildDirectory.dir("generated/original-donate-resources").get().asFile.absolutePath,
@@ -4395,7 +4749,7 @@ tasks.matching { it.name == "prepareAppResources" }.configureEach { dependsOn(ex
 val extractOriginalIconSettings by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-icon-settings.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-icon-settings.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/icon-settings").get().asFile.absolutePath,
         "--resource-output", layout.buildDirectory.dir("generated/icon-settings-resources").get().asFile.absolutePath,
@@ -4421,7 +4775,7 @@ tasks.matching { it.name == "prepareAppResources" }.configureEach { dependsOn(ex
 val extractOriginalHomeSettings by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources, extractOriginalProfileMain)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-home-settings-full-page.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-home-settings-full-page.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/home-settings").get().asFile.absolutePath)
     inputs.file(sourceManifest)
@@ -4445,7 +4799,7 @@ tasks.named("compileKotlin") { dependsOn(extractOriginalHomeSettings) }
 val extractOriginalSystemAbout by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources, extractOriginalIconSettings, extractUpstreamSettingsEntries, extractOriginalProfileMain)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-system-about.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-system-about.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/system-about").get().asFile.absolutePath,
         "--resource-output", file("resources/common").absolutePath,
@@ -4553,8 +4907,6 @@ val canonicalOriginalInputTasks = setOf(
     "extractUpstreamCrashPrompt",
     "extractNativeMusicRoot",
     "extractUpstreamSpace",
-    "extractUpstreamSpaceImagePreviews",
-    "extractUpstreamSpaceContributions",
     "extractUpstreamSpaceOverview",
     "extractUpstreamStoryTopic",
     "extractPlaybackSettings",
@@ -4623,7 +4975,7 @@ tasks.named("extractBgmDetail") { inputs.file(canonicalOriginalSource("app/src/m
 val extractOriginalVideoAmbientWindows by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-video-ambient-windows.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-video-ambient-windows.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/original-video-ambient-windows").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-video-ambient-windows.py", "tools/sync-upstream.py",
@@ -4749,7 +5101,7 @@ tasks.register<JavaExec>("originalFraudDonateUiSmoke") {
 val extractOriginalWholePlaybackSettings by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources, extractOriginalPlayerFullControls, extractOriginalStaticSettingsPages)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-whole-playback-settings.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-whole-playback-settings.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/whole-playback-settings").get().asFile.absolutePath)
     inputs.file(sourceManifest)
@@ -4853,7 +5205,7 @@ tasks.register<JavaExec>("originalHomeWallpaperUiSmoke") {
 val extractOriginalBackgroundPlaybackPolicy by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources, extractOriginalWholePlaybackSettings)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-background-playback-policy.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-background-playback-policy.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/original-background-playback-policy").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-background-playback-policy.py", "tools/sync-upstream.py",
@@ -4941,7 +5293,7 @@ val extractOriginalBrandMotion by tasks.registering(Exec::class) {
     inputs.file("tools/v029_brand_success.py")
     inputs.dir("upstream-slices/v029-brand-success")
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-brand-motion.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-brand-motion.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/original-brand-motion").get().asFile.absolutePath)
     inputs.file("tools/extract-upstream-brand-motion.py")
@@ -4974,7 +5326,7 @@ listOf("extractUpstreamApi", "extractBgmDetail", "extractVideoCommentUi",
 val extractV032CatalogSlice by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/v032_catalog.py",
+    commandLine(pythonExecutable, "tools/v032_catalog.py",
         repositoryRoot.absolutePath, layout.buildDirectory.dir("generated/v032-catalog").get().asFile.absolutePath)
     inputs.file("tools/v032_catalog.py")
     inputs.dir("upstream-slices/v032-catalog")
@@ -5000,7 +5352,7 @@ listOf("extractOriginalHomeProtocols", "extractOriginalVideoStateCore", "extract
 val extractOriginalListenVideoPages by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-listen-video-root.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-listen-video-root.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/original-listen-video-pages").get().asFile.absolutePath,
         "--test-output", layout.buildDirectory.dir("generated/original-listen-video-policy-tests").get().asFile.absolutePath)
@@ -5028,7 +5380,7 @@ tasks.named("extractOriginalListenVideoPages") { inputs.file("tools/v044_navigat
 val extractOriginalAuMusicPage by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources, extractOriginalMusicPlayerFull)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-au-music-root.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-au-music-root.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/original-au-music-page").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-au-music-root.py", "tools/v025_source_paths.py", sourceManifest)
@@ -5049,7 +5401,7 @@ val extractOriginalMessageNotifications by tasks.registering(Exec::class) {
     inputs.dir("upstream-slices/v046-favorite-editor")
     dependsOn(prepareUpstreamSources, extractOriginalMessagePages, extractUpstreamDynamicFullCard)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-message-notifications.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-message-notifications.py",
         "--repo", repositoryRoot.absolutePath,
         "--out", layout.buildDirectory.dir("generated/original-message-notifications").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-message-notifications.py", "tools/v025_source_paths.py",
@@ -5094,7 +5446,7 @@ tasks.named("extractOriginalVideoStateCore") {
 val extractOriginalTextLyrics by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-text-lyrics.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-text-lyrics.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/original-text-lyrics").get().asFile.absolutePath)
     inputs.file("tools/extract-upstream-text-lyrics.py")
@@ -5197,7 +5549,7 @@ tasks.named("extractOriginalVideoAmbientWindows") {
 // Whole original list wrappers close the actual upstream Favorites renderer import.
 val extractOriginalScrollableLists by tasks.registering(Exec::class) {
     workingDir = projectDir
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-scrollable-lists.py",
+    commandLine(pythonExecutable, "tools/extract-upstream-scrollable-lists.py",
         "--output", layout.buildDirectory.dir("generated/original-scrollable-lists").get().asFile.absolutePath)
     inputs.file("tools/extract-upstream-scrollable-lists.py")
     inputs.dir("upstream-slices/v035-scrollable-lists")
