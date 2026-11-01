@@ -137,9 +137,15 @@ class DesktopBgmDetailMigrationTest {
                 else -> error("Unexpected platform ${method.name}")
             }
         } as DesktopCommentPlatform
+        // The empty/error state plays Root's mascot animation, which reads the window renderer capabilities.
+        private val renderer = DesktopHomePlatform(false, true, false, false, false, false, object : DesktopHomeWindowBackgroundPort {
+            override val isInBackground = false
+            override fun addListener(listener: DesktopHomeWindowBackgroundPort.Listener) {}
+            override fun removeListener(listener: DesktopHomeWindowBackgroundPort.Listener) {}
+        }, 0f, false)
         private val scene = ImageComposeScene(800, 900, Density(1f), coroutineContext = scope.coroutineContext) {
             MaterialTheme {
-                CompositionLocalProvider(LocalDesktopCommentBindings provides platform) {
+                CompositionLocalProvider(LocalDesktopCommentBindings provides platform, LocalDesktopHomePlatform provides renderer) {
                     if (mounted.value) BgmDetailScreen("M1", 1, 2, false,
                         onBack = { actions += "back" }, onVideosClick = { actions += "videos" },
                         onVideoClick = { _, _, _ -> actions += "video" }, onUserClick = { actions += "user" },
