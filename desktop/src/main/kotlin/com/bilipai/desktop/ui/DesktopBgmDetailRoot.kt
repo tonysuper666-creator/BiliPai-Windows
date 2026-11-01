@@ -40,10 +40,11 @@ private data class DesktopBgmCommentRoute(val oid: Long, val root: Long, val tar
         val requests = owner.requests
         val scope = owner.scope
         fun owned() = owner.isOwned()
-        val detailRequests = remember(operations) { operations.bgmDetailRequests() }
-        val vm = remember(operations) { BgmDetailViewModel(scope, detailRequests) }
-        val comments = remember(operations) { VideoCommentViewModel(scope, requests) }
-        var route by remember { mutableStateOf<DesktopBgmCommentRoute?>(null) }
+        val detailRequests = remember(owner) { operations.bgmDetailRequests() }
+        // Both page variants and nested comment routes share this content/account owner.
+        val vm = remember(owner) { BgmDetailViewModel(scope, detailRequests) }
+        val comments = remember(owner) { VideoCommentViewModel(scope, requests) }
+        var route by remember(owner) { mutableStateOf<DesktopBgmCommentRoute?>(null) }
         val active = route
         if (active == null) BgmDetailScreen(request.musicId, request.aid, request.cid, request.showVideos,
             onBack = onBack, onVideosClick = onVideosClick, onVideoClick = onVideoClick,
@@ -57,7 +58,7 @@ private data class DesktopBgmCommentRoute(val oid: Long, val root: Long, val tar
             val detail = remember { CommentDetailViewModel(detailScope, requests) }
             DisposableEffect(detailScope) { onDispose { detailScope.cancel() } }
             CommentDetailScreen(active.oid, active.root, active.target, active.type,
-                onBack = { route = null }, onOpenLink = onLinkClick, onUserClick = onUserClick,
+                onBack = { if (owned()) route = null }, onOpenLink = onLinkClick, onUserClick = onUserClick,
                 viewModel = detail, requests = requests)
         }
     }

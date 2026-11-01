@@ -1,0 +1,291 @@
+--- a/com/android/purebilibili/feature/audio/bgm/BgmDetailScreen.kt
++++ b/com/android/purebilibili/feature/audio/bgm/BgmDetailScreen.kt
+@@ -4,12 +4,6 @@
+ 
+ import com.android.purebilibili.core.ui.AppContentColors
+ 
+-import android.content.ClipData
+-import android.content.ClipboardManager
+-import android.content.Context
+-import android.content.Intent
+-import android.provider.MediaStore
+-import android.widget.Toast
+ import androidx.compose.foundation.layout.*
+ import com.android.purebilibili.core.ui.components.AppLazyColumn as LazyColumn
+ import androidx.compose.foundation.lazy.items
+@@ -18,7 +12,7 @@
+ import com.android.purebilibili.core.ui.components.AppLazyVerticalGrid as LazyVerticalGrid
+ import androidx.compose.foundation.lazy.grid.itemsIndexed
+ import androidx.compose.foundation.shape.RoundedCornerShape
+-import com.android.purebilibili.core.ui.common.AppSelectionContainer as SelectionContainer
++import androidx.compose.foundation.text.selection.SelectionContainer
+ import androidx.compose.material3.ExperimentalMaterial3Api
+ import androidx.compose.material3.MaterialTheme
+ import androidx.compose.runtime.*
+@@ -26,12 +20,8 @@
+ import androidx.compose.ui.Alignment
+ import androidx.compose.ui.Modifier
+ import androidx.compose.ui.layout.ContentScale
+-import androidx.compose.ui.platform.LocalContext
+ import androidx.compose.ui.unit.dp
+-import androidx.lifecycle.compose.collectAsStateWithLifecycle
+-import androidx.lifecycle.viewmodel.compose.viewModel as composeViewModel
+ import coil3.compose.AsyncImage
+-import com.android.purebilibili.core.store.TokenManager
+ import com.android.purebilibili.core.ui.*
+ import com.android.purebilibili.core.ui.components.*
+ import com.android.purebilibili.core.util.FormatUtils
+@@ -41,6 +31,7 @@
+ import com.android.purebilibili.feature.video.ui.components.*
+ import com.android.purebilibili.feature.video.viewmodel.*
+ import kotlinx.coroutines.flow.distinctUntilChanged
++import com.bilipai.desktop.ui.LocalDesktopCommentBindings
+ 
+ @Composable
+ internal fun BgmDetailScreen(
+@@ -56,30 +47,38 @@
+     onLinkClick: (String) -> Unit,
+     onLogin: () -> Unit,
+     modifier: Modifier = Modifier,
+-    viewModel: BgmDetailViewModel = composeViewModel(),
+-    commentViewModel: VideoCommentViewModel = composeViewModel(key = "bgm-comments-$musicId"),
++    viewModel: BgmDetailViewModel,
++    commentViewModel: VideoCommentViewModel,
++    requests: DesktopBgmDetailRequests,
++    nowPlayingBarOverlayVisible: Boolean,
++    onMediaSearch: (String, String, String) -> Boolean,
+ ) {
+-    val state by viewModel.state.collectAsStateWithLifecycle()
+-    val comments by commentViewModel.commentState.collectAsStateWithLifecycle()
+-    val context = LocalContext.current
++    val state by viewModel.state.collectAsState()
++    val comments by commentViewModel.commentState.collectAsState()
++    val platform = LocalDesktopCommentBindings.current
+     var composer by rememberSaveable(musicId) { mutableStateOf(false) }
+     var submittedSessionId by remember(musicId) { mutableStateOf<Long?>(null) }
+     var emotePackages by remember { mutableStateOf<List<EmotePackage>>(emptyList()) }
+     LaunchedEffect(composer) {
+-        if (composer && emotePackages.isEmpty()) emotePackages = com.android.purebilibili.data.repository.CommentRepository.getEmotePackages().getOrDefault(emptyList())
++        if (requests.isOwned() && composer && emotePackages.isEmpty()) {
++            val packages = requests.getEmotePackages().getOrDefault(emptyList())
++            if (requests.isOwned()) emotePackages = packages
++        }
+     }
+-    LaunchedEffect(musicId, aid, cid, showVideos) { viewModel.initialize(musicId, aid, cid, showVideos) }
++    LaunchedEffect(viewModel, musicId, aid, cid, showVideos) {
++        if (requests.isOwned()) viewModel.initialize(musicId, aid, cid, showVideos)
++    }
+     val info = state.detail?.musicComment
+     LaunchedEffect(info?.oid, info?.pageType, showVideos, state.loading, state.revision) {
+-        if (!state.loading && !showVideos && info != null && info.oid > 0 && state.detail?.flowAttr?.noComment != true) {
++        if (requests.isOwned() && !state.loading && !showVideos && info != null && info.oid > 0 && state.detail?.flowAttr?.noComment != true) {
+             commentViewModel.init(aid = info.oid, commentType = resolveBgmCommentType(info), expectedReplyCount = info.nums)
+         }
+     }
+-    LaunchedEffect(viewModel) { viewModel.messages.collect { Toast.makeText(context, it, Toast.LENGTH_SHORT).show() } }
++    LaunchedEffect(viewModel) { viewModel.messages.collect { if (requests.isOwned()) platform.showFeedback(it) } }
+     LaunchedEffect(comments.isSending, comments.sendError, comments.composerDrafts.completedSessionId) {
+         if (submittedSessionId != null && !comments.isSending) {
+             submittedSessionId = null
+-            comments.sendError?.let { Toast.makeText(context, it, Toast.LENGTH_LONG).show() }
++            comments.sendError?.let { if (requests.isOwned()) platform.showFeedback(it) }
+         }
+     }
+     LaunchedEffect(comments.composerDrafts.sessionId, comments.composerDrafts.completedSessionId) {
+@@ -87,31 +86,41 @@
+             composer = false
+         }
+     }
++    fun uiAction(action: () -> Unit) {
++        if (requests.isOwned()) action()
++    }
+     fun compose(reply: ReplyItem? = null) {
+-        if (TokenManager.sessDataCache.isNullOrBlank()) { onLogin(); return }
+-        if (!comments.canInputComment) { Toast.makeText(context, "当前评论区暂不可发言", Toast.LENGTH_SHORT).show(); return }
++        if (!requests.isOwned()) return
++        if (!requests.hasLogin()) { onLogin(); return }
++        if (!comments.canInputComment) { platform.showFeedback("当前评论区暂不可发言"); return }
+         if (reply == null) commentViewModel.cancelReply() else commentViewModel.replyTo(reply)
+         commentViewModel.beginCommentDraft()
+         composer = true
+     }
+     BgmDetailContent(
+         state = state, comments = comments, showVideos = showVideos,
+-        onBack = onBack, onRetry = {
+-            if (!state.updatingWish) { commentViewModel.clearForVideoChange(); viewModel.refresh() }
+-        }, onVideosClick = onVideosClick,
+-        onVideoClick = onVideoClick, onUserClick = onUserClick, onWish = viewModel::toggleWish,
++        onBack = { uiAction(onBack) }, onRetry = { uiAction {
++            // Retrying this subject must keep the injected owner's composer sessions and drafts.
++            if (!viewModel.state.value.updatingWish) { commentViewModel.refreshComments(); viewModel.refresh() }
++        } }, onVideosClick = { uiAction(onVideosClick) },
++        onVideoClick = { bvid, videoCid, cover -> uiAction { onVideoClick(bvid, videoCid, cover) } },
++        onUserClick = { mid -> uiAction { onUserClick(mid) } }, onWish = { uiAction(viewModel::toggleWish) },
+         onShare = {
+-            context.startActivity(Intent.createChooser(Intent(Intent.ACTION_SEND).apply {
+-                type = "text/plain"
+-                putExtra(Intent.EXTRA_TEXT, "${state.detail?.musicTitle.orEmpty()} https://music.bilibili.com/h5/music-detail?music_id=${android.net.Uri.encode(musicId)}")
+-            }, "分享音乐"))
++            uiAction {
++                platform.shareText("${state.detail?.musicTitle.orEmpty()} https://music.bilibili.com/h5/music-detail?music_id=${java.net.URLEncoder.encode(musicId, java.nio.charset.StandardCharsets.UTF_8).replace("+", "%20")}", "分享音乐")
++            }
+         },
+         onCompose = { compose() }, onReply = { compose(it) },
+-        onSort = commentViewModel::setSortMode, onLoadMore = commentViewModel::loadComments,
+-        onCommentClick = { root, target -> info?.let { onCommentClick(it.oid, root, target, resolveBgmCommentType(it)) } },
+-        onCommentLike = commentViewModel::likeComment, onCommentHate = commentViewModel::hateComment,
+-        onCommentDelete = commentViewModel::deleteComment, onCommentReport = commentViewModel::reportComment,
+-        onLinkClick = onLinkClick, modifier = modifier,
++        onSort = { mode -> uiAction { commentViewModel.setSortMode(mode) } },
++        onLoadMore = { uiAction(commentViewModel::loadComments) },
++        onCommentClick = { root, target -> uiAction { info?.let { onCommentClick(it.oid, root, target, resolveBgmCommentType(it)) } } },
++        onCommentLike = { rpid -> uiAction { commentViewModel.likeComment(rpid) } },
++        onCommentHate = { rpid -> uiAction { commentViewModel.hateComment(rpid) } },
++        onCommentDelete = { rpid -> uiAction { commentViewModel.deleteComment(rpid) } },
++        onCommentReport = { rpid, reason, content -> uiAction { commentViewModel.reportComment(rpid, reason, content) } },
++        onLinkClick = { url -> uiAction { onLinkClick(url) } }, modifier = modifier,
++        nowPlayingBarOverlayVisible = nowPlayingBarOverlayVisible,
++        onMediaSearch = { title, artist, album -> requests.isOwned() && onMediaSearch(title, artist, album) },
+     )
+     val composerSessionId = comments.composerDrafts.sessionId
+     val composerReplyRpid = comments.replyTarget?.rpid
+@@ -119,36 +128,37 @@
+     val composerKey = remember(info?.oid, info?.pageType, composerReplyRpid, composerSessionId) {
+         "bgm:${info?.oid}:${info?.let(::resolveBgmCommentType)}:$composerReplyRpid:$composerSessionId"
+     }
+-    CommentInputDialog(
+-        visible = composer,
+-        draftKey = composerKey,
+-        onDismiss = {
+-            if (commentViewModel.commentState.value.composerDrafts.sessionId == composerSessionId) {
+-                composer = false
+-                commentViewModel.cancelReply()
+-            }
+-        },
+-        onSend = { text, images, sync ->
+-            val latest = commentViewModel.commentState.value
+-            if (composer && latest.composerDrafts.sessionId == composerSessionId &&
+-                latest.composerDrafts.completedSessionId != composerSessionId &&
+-                latest.replyTarget?.rpid == composerReplyRpid && !latest.isSending
+-            ) {
+-                submittedSessionId = composerSessionId
+-                commentViewModel.updateCommentDraft(composerSessionId, composerReplyRpid, text, images, sync)
+-                commentViewModel.sendComment(text, images, sync)
+-            }
+-        },
+-        isSending = comments.isSending, replyToName = comments.replyTarget?.member?.uname,
+-        inputHint = if (comments.replyTarget == null) comments.rootInputHint else comments.childInputHint,
+-        canInputComment = comments.canInputComment, emotePackages = emotePackages,
+-        initialText = composerDraft?.text.orEmpty(),
+-        initialImageUris = composerDraft?.imageUris.orEmpty(),
+-        initialSyncToDynamic = composerDraft?.syncToDynamic ?: false,
+-        onDraftChange = { text, images, sync ->
+-            commentViewModel.updateCommentDraft(composerSessionId, composerReplyRpid, text, images, sync)
+-        },
+-    )
++    key(composerKey) {
++        CommentInputDialog(
++            visible = composer,
++            onDismiss = {
++                if (requests.isOwned() && commentViewModel.commentState.value.composerDrafts.sessionId == composerSessionId) {
++                    composer = false
++                    commentViewModel.cancelReply()
++                }
++            },
++            onSend = { text, images, sync ->
++                val latest = commentViewModel.commentState.value
++                if (requests.isOwned() && composer && latest.composerDrafts.sessionId == composerSessionId &&
++                    latest.composerDrafts.completedSessionId != composerSessionId &&
++                    latest.replyTarget?.rpid == composerReplyRpid && !latest.isSending
++                ) {
++                    submittedSessionId = composerSessionId
++                    commentViewModel.updateCommentDraft(composerSessionId, composerReplyRpid, text, images, sync)
++                    commentViewModel.sendComment(text, images, sync)
++                }
++            },
++            isSending = comments.isSending, replyToName = comments.replyTarget?.member?.uname,
++            inputHint = if (comments.replyTarget == null) comments.rootInputHint else comments.childInputHint,
++            canInputComment = comments.canInputComment, emotePackages = emotePackages,
++            initialText = composerDraft?.text.orEmpty(),
++            initialImageUris = composerDraft?.imageUris.orEmpty(),
++            initialSyncToDynamic = composerDraft?.syncToDynamic ?: false,
++            onDraftChange = { text, images, sync, _, _ ->
++                uiAction { commentViewModel.updateCommentDraft(composerSessionId, composerReplyRpid, text, images, sync) }
++            },
++        )
++    }
+ }
+ 
+ @OptIn(ExperimentalMaterial3Api::class)
+@@ -175,6 +185,8 @@
+     onCommentReport: (Long, Int, String) -> Unit,
+     onLinkClick: (String) -> Unit,
+     modifier: Modifier = Modifier,
++    nowPlayingBarOverlayVisible: Boolean,
++    onMediaSearch: (String, String, String) -> Boolean,
+ ) {
+     var previewImages by remember { mutableStateOf<List<String>>(emptyList()) }
+     var previewIndex by remember { mutableIntStateOf(0) }
+@@ -202,9 +214,6 @@
+         floatingActionButton = {
+             if (canComment && !showVideos && !state.loading) {
+                 // 听视频小横条悬浮时上浮避让（与首页/动态页 76dp 预留一致），避免挡住入口
+-                val nowPlayingBarOverlayVisible by com.android.purebilibili.feature.audio.player
+-                    .AudioNowPlayingSession.barOverlayVisible
+-                    .collectAsStateWithLifecycle()
+                 AppButton(
+                     onClick = onCompose,
+                     modifier = Modifier
+@@ -233,7 +242,7 @@
+                 val commentList: @Composable (Modifier, Boolean) -> Unit = { listModifier, includeDetails ->
+                     LazyColumn(modifier = listModifier, state = listState, contentPadding = PaddingValues(bottom = 100.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                         if (includeDetails) {
+-                            item("music-info") { BgmInfoCard(detail, onVideosClick, onVideoClick, onUserClick, Modifier.fillMaxWidth().padding(12.dp)) }
++                            item("music-info") { BgmInfoCard(detail, onVideosClick, onVideoClick, onUserClick, onMediaSearch, Modifier.fillMaxWidth().padding(12.dp)) }
+                             item("heat-chart") { BgmHeatChart(detail.hotSongHeat?.songHeat.orEmpty(), Modifier.fillMaxWidth().padding(16.dp)) }
+                         }
+                         if (commentsEnabled) {
+@@ -271,7 +280,7 @@
+                 }
+                 if (wide) Row(Modifier.fillMaxSize()) {
+                     LazyColumn(Modifier.weight(1f), contentPadding = PaddingValues(bottom = 100.dp)) {
+-                        item { BgmInfoCard(detail, onVideosClick, onVideoClick, onUserClick, Modifier.fillMaxWidth().padding(12.dp)) }
++                        item { BgmInfoCard(detail, onVideosClick, onVideoClick, onUserClick, onMediaSearch, Modifier.fillMaxWidth().padding(12.dp)) }
+                         item { BgmHeatChart(detail.hotSongHeat?.songHeat.orEmpty(), Modifier.fillMaxWidth().padding(16.dp)) }
+                     }
+                     commentList(Modifier.weight(1f), false)
+@@ -288,13 +297,16 @@
+     onVideosClick: () -> Unit,
+     onVideoClick: (String, Long, String) -> Unit,
+     onUserClick: (Long) -> Unit,
++    onMediaSearch: (String, String, String) -> Boolean,
+     modifier: Modifier = Modifier,
+ ) {
+-    val context = LocalContext.current
++    val platform = LocalDesktopCommentBindings.current
+     var cover by rememberSaveable { mutableStateOf(false) }
+     fun copy(text: String) {
+-        (context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).setPrimaryClip(ClipData.newPlainText("音乐", text))
+-        Toast.makeText(context, "已复制", Toast.LENGTH_SHORT).show()
++        if (platform.isOwned()) {
++            platform.copyText(text, "音乐")
++            platform.showFeedback("已复制")
++        }
+     }
+     AppSurface(modifier = modifier, shape = RoundedCornerShape(20.dp), color = MaterialTheme.colorScheme.surfaceContainer) {
+         Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+@@ -304,13 +316,7 @@
+                 }
+                 Column(Modifier.weight(1f)) {
+                     AppTextButton(onClick = {
+-                        val intent = Intent(MediaStore.INTENT_ACTION_MEDIA_PLAY_FROM_SEARCH).apply {
+-                            putExtra(android.app.SearchManager.QUERY, detail.musicTitle)
+-                            putExtra(MediaStore.EXTRA_MEDIA_TITLE, detail.musicTitle)
+-                            putExtra(MediaStore.EXTRA_MEDIA_ARTIST, detail.originArtist.ifBlank { detail.originArtistList })
+-                            putExtra(MediaStore.EXTRA_MEDIA_ALBUM, detail.album)
+-                        }
+-                        try { context.startActivity(intent) } catch (_: android.content.ActivityNotFoundException) { copy(detail.musicTitle) }
++                        if (platform.isOwned() && !onMediaSearch(detail.musicTitle, detail.originArtist.ifBlank { detail.originArtistList }, detail.album)) copy(detail.musicTitle)
+                     }, contentPadding = PaddingValues(0.dp), modifier = Modifier.heightIn(min = 48.dp)) {
+                         AppText(detail.musicTitle.ifBlank { "未知音乐" }, style = MaterialTheme.typography.titleMedium)
+                     }
