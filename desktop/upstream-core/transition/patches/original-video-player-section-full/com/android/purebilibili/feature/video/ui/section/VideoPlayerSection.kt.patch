@@ -1,34 +1,70 @@
 --- a/com/android/purebilibili/feature/video/ui/section/VideoPlayerSection.kt
 +++ b/com/android/purebilibili/feature/video/ui/section/VideoPlayerSection.kt
-@@ -3473,8 +3473,13 @@
+@@ -3473,8 +3473,18 @@
          shouldKeepCoverForManualStart = keepCoverForManualStart,
      )
  
-+    val coverVisibility = remember(currentPlaybackIdentity) {
-+        androidx.compose.animation.core.MutableTransitionState(showCover && (currentCoverUrl.isNotEmpty() || entryPresentationSpec.showManualStartPlayButton))
-+    }
-+    coverVisibility.targetState = showCover && (currentCoverUrl.isNotEmpty() || entryPresentationSpec.showManualStartPlayButton)
-+
-     AnimatedVisibility(
--        visible = showCover && (currentCoverUrl.isNotEmpty() || entryPresentationSpec.showManualStartPlayButton),
-+        visibleState = coverVisibility,
+-    AnimatedVisibility(
++    VideoPlayerCoverFeedback(
++        playbackIdentity = currentPlaybackIdentity,
+         visible = showCover && (currentCoverUrl.isNotEmpty() || entryPresentationSpec.showManualStartPlayButton),
++        showCover = showCover,
++        keepCoverForManualStart = keepCoverForManualStart,
++        suppressTransientOverlaysForTransition = suppressTransientOverlaysForTransition,
++        forceCoverDuringReturnAnimation = forceCoverDuringReturnAnimation,
++        isInPipMode = isInPipMode,
++        isPortraitFullscreen = isPortraitFullscreen,
++        mediaKey = (uiState as? VideoPlaybackUiState.Success)?.info?.let { "${it.bvid}:${it.cid}" },
++        fullscreen = isFullscreen,
++        controlsVisible = showControls && !isScreenLocked,
          enter = if (disableCoverFadeAnimation) {
              EnterTransition.None
          } else {
-@@ -3639,6 +3644,16 @@
-             }
-         }
-     }
+@@ -5192,2 +5202,47 @@
+ /** Lazy original diagnostic call shape on the existing local diagnostics bridge. */
+ private fun Logger.d(tag: String, message: () -> String) { Logger.d(tag, message()) }
 +
++/** The Section's actual cover animation and feedback host. Keeping the content slot
++ * here lets a windowless scene exercise the production transition without loading
++ * a native player or constructing another playback owner. */
++@Composable
++internal fun BoxScope.VideoPlayerCoverFeedback(
++    playbackIdentity: String,
++    visible: Boolean,
++    showCover: Boolean,
++    keepCoverForManualStart: Boolean,
++    suppressTransientOverlaysForTransition: Boolean,
++    forceCoverDuringReturnAnimation: Boolean,
++    isInPipMode: Boolean,
++    isPortraitFullscreen: Boolean,
++    mediaKey: String?,
++    fullscreen: Boolean,
++    controlsVisible: Boolean,
++    enter: EnterTransition,
++    exit: ExitTransition,
++    modifier: Modifier = Modifier,
++    content: @Composable androidx.compose.animation.AnimatedVisibilityScope.() -> Unit,
++): androidx.compose.animation.core.MutableTransitionState<Boolean> {
++    val coverVisibility = remember(playbackIdentity) {
++        androidx.compose.animation.core.MutableTransitionState(visible)
++    }
++    coverVisibility.targetState = visible
++    // Match the original AnimatedVisibility overload (no BoxScope receiver).
++    androidx.compose.animation.AnimatedVisibility(
++        visibleState = coverVisibility,
++        enter = enter,
++        exit = exit,
++        modifier = modifier,
++        content = content,
++    )
 +    PlaybackResumeFeedback(
-+        mediaKey = (uiState as? VideoPlaybackUiState.Success)?.info?.let { "${it.bvid}:${it.cid}" },
++        mediaKey = mediaKey,
 +        ready = !keepCoverForManualStart && !showCover &&
 +            coverVisibility.isIdle && !coverVisibility.currentState && !coverVisibility.targetState &&
 +            !suppressTransientOverlaysForTransition && !forceCoverDuringReturnAnimation &&
 +            !isInPipMode && !isPortraitFullscreen,
-+        fullscreen = isFullscreen,
-+        controlsVisible = showControls && !isScreenLocked,
++        fullscreen = fullscreen,
++        controlsVisible = controlsVisible,
 +    )
- 
-     // 2. DanmakuView (使用 ByteDance DanmakuRenderEngine - 覆盖在 PlayerView 上方)
-     val shouldShowDanmakuLayer = danmakuHostActive && !suppressTransientOverlaysForTransition &&
++    return coverVisibility
++}

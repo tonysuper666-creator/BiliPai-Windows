@@ -203,7 +203,7 @@
                              }
                      }  // Detail body
                      }  // 📱 手机竖屏布局结束（Column）
-@@ -5300,13 +5289,17 @@
+@@ -5300,13 +5289,27 @@
      // 分屏 / 系统自由小窗的边界由 Android 窗口管理器控制。仅旋转 Compose
      // 根图层不会把任务窗口变成横向矩形，并会让播放器 Surface 与 UI 变换不一致，
      // 导致视频被拉伸；因此窗口内全屏仍使用正常布局，由播放器按视频比例适配窗口。
@@ -215,10 +215,7 @@
 -        modifier = detailShellModifier,
 -        mainContent = { VideoDetailRouteSheetMainContent() },
 -        overlayContent = { VideoDetailRouteSheetOverlayContent() }
--    )
-+    androidx.compose.runtime.CompositionLocalProvider(
-+        LocalPlaybackResumeFeedback provides playbackEventState,
-+    ) {
++    VideoDetailPlaybackFeedbackProvider(playbackEventState) {
 +        VideoDetailScreenContent(
 +            transitionState = transitionState,
 +            routeSheetMotion = routeSheetMotion,
@@ -229,4 +226,16 @@
 +            overlayContent = { VideoDetailRouteSheetOverlayContent() }
 +        )
 +    }
++}
++
++/** Same provider used by the retained Holder; the slot needs no native resources. */
++@Composable
++internal fun VideoDetailPlaybackFeedbackProvider(
++    state: VideoDetailPlaybackEventState,
++    content: @Composable () -> Unit,
++) {
++    androidx.compose.runtime.CompositionLocalProvider(
++        LocalPlaybackResumeFeedback provides state,
++        content = content,
+     )
  }

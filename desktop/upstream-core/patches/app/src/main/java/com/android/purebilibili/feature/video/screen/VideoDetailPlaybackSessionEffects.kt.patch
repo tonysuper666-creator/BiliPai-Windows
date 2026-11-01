@@ -25,7 +25,8 @@
  internal fun rememberVideoDetailPlaybackEventState(playbackIdentity: String): VideoDetailPlaybackEventState {
 -    val danmakuManager = rememberDanmakuManager(playbackIdentity)
 +    val danmakuManager = LocalDesktopOriginalVideoHolderPlatform.current.danmaku
-     return remember(danmakuManager) { VideoDetailPlaybackEventState(danmakuManager) }
+-    return remember(danmakuManager) { VideoDetailPlaybackEventState(danmakuManager) }
++    return remember(playbackIdentity, danmakuManager) { VideoDetailPlaybackEventState(danmakuManager) }
  }
  
 @@ -43,6 +43,7 @@
