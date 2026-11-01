@@ -1,0 +1,13 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailRenderContracts.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailRenderContracts.kt
+@@ -66,8 +66,8 @@
+         kotlinx.coroutines.flow.MutableStateFlow(emptySet()),
+     val reportDanmaku: (dmid: Long, reason: Int) -> Unit = { _, _ -> },
+     val recallDanmaku: (Long) -> Unit = {},
+-    val menuActions: com.android.purebilibili.feature.video.ui.overlay.PiliPlayerMenuActions =
+-        com.android.purebilibili.feature.video.ui.overlay.PiliPlayerMenuActions(),
++    // Desktop: menuActions (PiliPlayerMenuActions) returns with PiliPlayerMenuSession, which still needs
++    // Android and Media3; no compiled desktop consumer reads it yet.
+     val retryPlayback: () -> Unit = reloadVideo
+ )
+ 
