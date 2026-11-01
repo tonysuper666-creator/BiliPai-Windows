@@ -34,6 +34,7 @@ import java.net.InetSocketAddress
 import java.net.URLDecoder
 import java.net.ProxySelector
 import java.net.URI
+import java.net.ServerSocket
 import java.net.SocketAddress
 import java.util.UUID
 import com.android.purebilibili.data.repository.SponsorBlockRepository
@@ -67,15 +68,20 @@ class DesktopOriginalSponsorPresentationAssemblyTest {
     private var originalProxySelector: ProxySelector? = null
     private var loopbackSelector: ProxySelector? = null
     private val rejectedPublicRequests = CopyOnWriteArrayList<String>()
+    private val boundaryProbe = "sponsor-boundary-${UUID.randomUUID()}.invalid"
+    private lateinit var denyProxy: LoopbackDenyProxy
 
     @BeforeAll fun createRuntime(): Unit = runBlocking {
         originalProxySelector = ProxySelector.getDefault()
+        denyProxy = LoopbackDenyProxy()
         val selector = object : ProxySelector() {
             override fun select(uri: URI): List<NetworkProxy> {
                 if ((uri.scheme != "http" && uri.scheme != "socket") || uri.host != "127.0.0.1" || uri.port !in 1..65535 || uri.userInfo != null) {
-                    rejectedPublicRequests.add("${uri.scheme}://${uri.host}:${uri.port}${uri.path}")
-                    // A fixture policy denial must escape OkHttp route retries; it is not a transport IOException.
-                    throw SecurityException("The original public client is restricted to loopback HTTP")
+                    if (uri.host != boundaryProbe) rejectedPublicRequests.add(uri.toString())
+                    // The production selector catches delegate exceptions and can
+                    // fall back to DIRECT. Return a real rejecting loopback proxy
+                    // instead, so even HTTPS CONNECT never reaches a public host.
+                    return listOf(denyProxy.proxy)
                 }
                 return listOf(NetworkProxy.NO_PROXY)
             }
@@ -83,14 +89,13 @@ class DesktopOriginalSponsorPresentationAssemblyTest {
         }
         loopbackSelector = selector
         ProxySelector.setDefault(selector)
-        try {
         // Read only: never replace the original Repository's fixed client. If an
         // older class initialized it first, fail before enabling any provider.
         // Root must run this class in its own fresh test worker in that situation.
         val originalClient = SponsorBlockRepository::class.java.getDeclaredField("client")
             .apply { isAccessible = true }.get(null) as OkHttpClient
         assertNull(originalClient.proxy, "An explicit original-client proxy could bypass the loopback selector")
-        assertSame(selector, originalClient.proxySelector, "A previously initialized public client cannot provide this fixture's fail-closed boundary")
+        assertOriginalClientBoundary(originalClient)
         runtimeDirectory = Files.createTempDirectory("sponsor-actual-runtime-").toRealPath()
         store = DesktopPluginStore(runtimeDirectory.resolve("settings"))
         val ids = listOf("sponsor_block", "danmaku_enhance", "eye_protection", "bilipai_feed_filter",
@@ -101,8 +106,56 @@ class DesktopOriginalSponsorPresentationAssemblyTest {
             "PluginManager belongs to a prior Runtime; run SponsorPresentation in a fresh test worker")
         withTimeout(8_000) { for (id in ids) PluginManager.awaitPluginReady(id) }
         assertTrue(runtime.plugins.value.none { it.enabled })
-        } finally {
-            if (ProxySelector.getDefault() === selector) ProxySelector.setDefault(originalProxySelector)
+        // The desktop selector delegates dynamically; retain the system boundary
+        // throughout provider initialization and all four business tests.
+        assertOriginalClientBoundary(originalClient)
+    }
+
+    private fun assertOriginalClientBoundary(client: OkHttpClient) {
+        for (scheme in listOf("http", "https")) {
+            val uri = URI("$scheme://$boundaryProbe/")
+            assertEquals(listOf(denyProxy.proxy), client.proxySelector.select(uri),
+                "The actual original client must have no public DIRECT fallback")
+            val request = Request.Builder().url(uri.toString()).build()
+            if (scheme == "http") {
+                client.newCall(request).execute().use { assertEquals(403, it.code) }
+            } else {
+                val failure = assertFailsWith<IOException> { client.newCall(request).execute().close() }
+                assertTrue(failure.message.orEmpty().contains("403"), failure.toString())
+            }
+        }
+        val local = URI("http://127.0.0.1:${denyProxy.port}/loopback-probe")
+        assertEquals(listOf(NetworkProxy.NO_PROXY), client.proxySelector.select(local))
+        client.newCall(Request.Builder().url(local.toString()).build()).execute().use { assertEquals(204, it.code) }
+    }
+
+    /** Never resolves or forwards a target; handles HTTP and HTTPS CONNECT alike. */
+    private class LoopbackDenyProxy : AutoCloseable {
+        private val server = ServerSocket(0, 0, InetAddress.getByName("127.0.0.1"))
+        val port: Int get() = server.localPort
+        val proxy = NetworkProxy(NetworkProxy.Type.HTTP, InetSocketAddress("127.0.0.1", port))
+        private val executor = Executors.newSingleThreadExecutor { task ->
+            Thread(task, "sponsor-fixture-deny-proxy").apply { isDaemon = true }
+        }
+        init {
+            executor.submit {
+                while (!server.isClosed) {
+                    val socket = try { server.accept() } catch (_: IOException) { break }
+                    socket.use {
+                        it.soTimeout = 2_000
+                        val reader = it.getInputStream().bufferedReader(Charsets.US_ASCII)
+                        val request = reader.readLine()
+                        while (!reader.readLine().isNullOrEmpty()) { /* consume headers only */ }
+                        val status = if (request == "GET /loopback-probe HTTP/1.1") "204 No Content" else "403 Forbidden"
+                        it.getOutputStream().write("HTTP/1.1 $status\r\nContent-Length: 0\r\nConnection: close\r\n\r\n".toByteArray(Charsets.US_ASCII))
+                    }
+                }
+            }
+        }
+        override fun close() {
+            server.close()
+            executor.shutdownNow()
+            check(executor.awaitTermination(8, TimeUnit.SECONDS))
         }
     }
 
@@ -113,6 +166,7 @@ class DesktopOriginalSponsorPresentationAssemblyTest {
             assertTrue(rejectedPublicRequests.isEmpty(), rejectedPublicRequests.toString())
         } finally {
             if (loopbackSelector != null && ProxySelector.getDefault() === loopbackSelector) ProxySelector.setDefault(originalProxySelector)
+            if (::denyProxy.isInitialized) denyProxy.close()
         }
     }
 
