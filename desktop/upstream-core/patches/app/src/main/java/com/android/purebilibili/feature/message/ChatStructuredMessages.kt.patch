@@ -1,0 +1,13 @@
+Reason: Reject unquoted JSON literals instead of exposing raw session-tip payload; preserve structured and encoded text extraction.
+
+--- a/app/src/main/java/com/android/purebilibili/feature/message/ChatStructuredMessages.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/message/ChatStructuredMessages.kt
+@@ -46,6 +46,8 @@
+             is JsonObject -> (element["content"] ?: element["text"])
+                 ?.let { extract(it, depth + 1) }.orEmpty()
+             is JsonPrimitive -> {
++                // Serialization also accepts bare literals; only JSON strings are display text.
++                if (!element.isString) return ""
+                 val value = element.contentOrNull.orEmpty()
+                 val trimmed = value.trimStart()
+                 if (trimmed.startsWith("[") || trimmed.startsWith("{")) {
