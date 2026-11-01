@@ -1,48 +1,46 @@
 package com.bilipai.desktop.ui.kit
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.runtime.snapshots.Snapshot
-import androidx.compose.ui.ImageComposeScene
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.Density
-import com.bilipai.desktop.ui.DesktopToastController
-import com.bilipai.desktop.ui.DesktopToastHost
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Test
+import org.junit.platform.engine.discovery.DiscoverySelectors.selectClass
+import org.junit.platform.launcher.core.LauncherDiscoveryRequestBuilder
+import org.junit.platform.launcher.core.LauncherFactory
+import org.junit.platform.launcher.listeners.SummaryGeneratingListener
 import kotlin.test.assertTrue
 
-/** TON-1114 diagnostic probe: does a toast timer fired on the timer thread leak an uncaught failure into the next runTest? */
+/**
+ * TON-1114 diagnostic probe: runs the kit scene class repeatedly, with and without CPU contention, and asks
+ * kotlinx-coroutines-test after every round whether a scene left an uncaught coroutine failure behind.
+ */
 class DesktopKitTimerThreadProbeTest {
-    private fun cycle(idle: Boolean) {
-        val controller = DesktopToastController()
-        val scene = ImageComposeScene(480, 320, Density(1f)) {
-            Box(Modifier.fillMaxSize()) { DesktopToastHost(controller, lifetimeMillis = { 40L }) }
-        }
-        var nanos = 0L
-        fun render() { nanos += 30_000_000L; scene.render(nanos).close() }
-        try {
-            repeat(3) { render() }
-            controller.show("Later")
-            repeat(3) { render() }
-            if (idle) Thread.sleep(150) // the timer fires while the render thread does nothing
-            val end = System.nanoTime() + 3_000_000_000L
-            while (System.nanoTime() < end && controller.state.current != null) {
-                Snapshot.sendApplyNotifications(); render(); Thread.sleep(16)
-            }
-            assertTrue(controller.state.current == null, "toast expired")
-        } finally { scene.close() }
+    private fun roundOfKitClass(): Pair<Long, List<String>> {
+        val listener = SummaryGeneratingListener()
+        val request = LauncherDiscoveryRequestBuilder.request().selectors(selectClass(DesktopKitUiTest::class.java)).build()
+        LauncherFactory.create().execute(request, listener)
+        val summary = listener.summary
+        return summary.testsFailedCount to summary.failures.map { it.testIdentifier.displayName + ": " + it.exception.message?.take(160) }
+    }
+
+    private fun leakAfterRound(): String? = try { runTest { }; null } catch (e: IllegalStateException) {
+        if (e.javaClass.simpleName != "UncaughtExceptionsBeforeTest") throw e
+        e.suppressedExceptions.joinToString(" | ") { (it.message ?: it.javaClass.name).take(200) }
     }
 
     @Test fun probe() {
         val leaks = mutableListOf<String>()
-        for (round in 1..40) {
-            cycle(idle = round % 2 == 0)
-            try { runTest { } } catch (e: IllegalStateException) {
-                if (e.javaClass.simpleName != "UncaughtExceptionsBeforeTest") throw e
-                leaks += "round $round: ${e.suppressedExceptions.map { it.message?.take(120) }}"
+        val spinners = mutableListOf<Thread>()
+        @Volatile var stop = false
+        for (mode in listOf("idle", "loaded")) {
+            if (mode == "loaded") repeat(Runtime.getRuntime().availableProcessors()) {
+                spinners += Thread { var x = 0L; while (!stop) x++ }.also { it.isDaemon = true; it.start() }
+            }
+            for (round in 1..25) {
+                val (failed, failures) = roundOfKitClass()
+                if (failed > 0) leaks += "$mode round $round: kit class failures $failures"
+                leakAfterRound()?.let { leaks += "$mode round $round: leaked $it" }
             }
         }
+        stop = true
         println("PROBE_LEAKS=${leaks.size}")
         leaks.forEach { println("PROBE_LEAK $it") }
         assertTrue(leaks.isEmpty(), leaks.joinToString("\n"))
