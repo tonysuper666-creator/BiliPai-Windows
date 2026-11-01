@@ -379,7 +379,6 @@ val appM4cDesktopOwned: Map<String, String> = mapOf(
 // appM4cLaterSteps: still on their legacy copy in this step; the reason names what has to move first.
 val appM4cLaterSteps: Map<String, String> = mapOf(
     "com/android/purebilibili/feature/audio/bgm/BgmDetailScreen.kt" to "依赖 ViewGrpcRepository 与 Toast/MediaStore；等 BGM 数据层迁移",
-    "com/android/purebilibili/feature/audio/bgm/BgmDetailViewModel.kt" to "依赖 ViewGrpcRepository（桌面未编译的视频详情 gRPC 仓库）",
     "com/android/purebilibili/feature/audio/lyrics/halcyon/AppleCoverFlowBackground.kt" to "Android Canvas/Bitmap 封面流；桌面音乐页（ui/DesktopNativeMusicDetailScreen.kt，79 行）还没有封面流，先保留旧副本",
     "com/android/purebilibili/feature/audio/lyrics/halcyon/PlayerBlurBackground.kt" to "Bitmap 模糊取样；桌面音乐页还没有模糊底图，先保留旧副本",
     "com/android/purebilibili/feature/audio/lyrics/halcyon/PlayerLyricPerspective.kt" to "依赖 Android Configuration.smallestScreenWidthDp",
@@ -394,7 +393,6 @@ val appM4cLaterSteps: Map<String, String> = mapOf(
     "com/android/purebilibili/feature/audio/screen/MusicDetailScreen.kt" to "依赖 VideoPlaybackViewModel（视频播放，M4a 范围）",
     "com/android/purebilibili/feature/audio/screen/MusicPlayerContent.kt" to "依赖 Android Settings/媒体键（Settings、media）",
     "com/android/purebilibili/feature/audio/screen/PlayHistorySheet.kt" to "依赖 PlayHistoryStore（Room 音乐库，桌面是 JSON 库）",
-    "com/android/purebilibili/feature/audio/viewmodel/ListenVideoCollectionViewModel.kt" to "依赖 PlaylistManager（桌面播放列表是 JSON 库）",
     "com/android/purebilibili/feature/audio/viewmodel/MusicViewModel.kt" to "依赖 AudioRepository 与 Media3 Player",
     "com/android/purebilibili/feature/download/DirectorySelectionDialog.kt" to "依赖 Android Environment 外部存储路径",
     "com/android/purebilibili/feature/download/DownloadListScreen.kt" to "依赖 Toast 与上游新版视频卡排版（horizontalVideoCardTypography）",

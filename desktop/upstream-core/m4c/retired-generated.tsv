@@ -2,3 +2,5 @@
 # The producers, their slices, tools/v038_*.py, the Python audits and the slice tests stay as they are; retiring them is M5 (TON-1008).
 audio/com/android/purebilibili/feature/audio/library/DesktopListenVideoLibraryLoader.kt
 original-listen-video-pages/com/android/purebilibili/feature/audio/viewmodel/ListenVideoViewModel.kt
+bgm-detail/com/android/purebilibili/feature/audio/bgm/BgmDetailViewModel.kt
+original-listen-video-pages/com/android/purebilibili/feature/audio/viewmodel/ListenVideoCollectionViewModel.kt
