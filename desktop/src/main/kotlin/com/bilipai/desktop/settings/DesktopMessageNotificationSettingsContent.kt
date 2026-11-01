@@ -62,7 +62,7 @@ internal fun DesktopMessageNotificationSettingsContent(onFailure: (Throwable) ->
         AppSwitchPreference(title = "开播提醒", checked = settings.notifyLiveAlerts, enabled = settings.enabled,
             onCheckedChange = { write { MessageNotificationSettingsStore.setLiveAlertsEnabled(context, it) } })
         AppText("提醒显示在 Windows 通知中心，系统可能合并或隐藏通知。通知菜单保留对应页面入口。" +
-            "已弹出的托盘气泡无法撤回；内容在服务器端标为已读后，只会从通知菜单中移除对应条目。")
+            "内容在服务器端标为已读后，会从通知中心和通知菜单中撤下。通知中心不可用时改用托盘气泡，已弹出的托盘气泡无法撤回。")
         AppPreferenceSectionTitle(DESKTOP_MESSAGE_NOTIFICATION_AFTER_EXIT_TITLE)
         AppText(DESKTOP_MESSAGE_NOTIFICATION_AFTER_EXIT_TEXT)
     }

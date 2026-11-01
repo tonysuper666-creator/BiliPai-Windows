@@ -1,10 +1,11 @@
 // Replaces upstream app/src/main/java/com/android/purebilibili/feature/message/notification/MessageNotificationNotifier.kt sha256=2413e72d8a709785075d0926415f171b8e8d0a03aa2dc811e77bfa262c362912
 // Upstream posts through Android NotificationManager: channels, tagged notifications per account, group summaries and
 // PendingIntents into MainActivity. On Windows the same Checker result goes to this window's Windows notification centre
-// presentation (DesktopWindowsMessageNotifications): a balloon per item, and a tray menu that keeps the current items
-// with their exact destinations. That presentation belongs to one Root, so it only ever holds this account's items and
-// ends with the window (Android's per-account tags and cancelOtherAccounts have nothing left to do).
-// A submitted Windows balloon cannot be withdrawn: a cancellation removes the item from the tray menu only.
+// presentation (DesktopWindowsMessageNotifications): a notification-centre toast per item, tagged and grouped by
+// account (a tray balloon only when the centre refuses), and a tray menu that keeps the current items with their exact
+// destinations. That presentation belongs to one Root, so it only ever holds this account's items; a cancellation
+// withdraws the item's toast by its tag, and an account switch withdraws the previous account's group. Only the
+// fallback tray balloon cannot be withdrawn once shown.
 package com.android.purebilibili.feature.message.notification
 
 import android.content.Context
@@ -17,7 +18,8 @@ internal object MessageNotificationNotifier {
 
     suspend fun postAll(context: Context, mid: Long, result: MessageNotificationCheckResult, isCurrentSession: () -> Boolean) {
         val items = result.notifications
-        if ((items.isEmpty() && result.cancelNotificationKeys.isEmpty()) || !canPost(context)) return
+        // A round with nothing new still reaches the presentation: it settles withdrawals confirmed since the last one.
+        if (!canPost(context)) return
         val actual = desktopMessageNotificationContext(context)
         if (actual.mid != mid || !isCurrentSession()) return
         val presentation = actual.presentation ?: return

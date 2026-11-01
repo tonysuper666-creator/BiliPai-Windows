@@ -17,7 +17,11 @@ import javax.imageio.ImageIO
 internal class DesktopWindowsMessageNotifications(
     private val context: DesktopMessageNotificationContext,
     private val window: Window,
+    private val center: com.bilipai.desktop.integration.DesktopNotificationCenter =
+        com.bilipai.desktop.integration.DesktopToastNotifications,
 ) : DesktopMessageNotificationPresentation, AutoCloseable {
+    /** The account this presentation belongs to; cleanup must target it even after a switch. */
+    private val session = DesktopNotificationSession(context.mid, center)
     private val closed = AtomicBoolean()
     private var tray: TrayIcon? = null // EDT only; created solely after master is enabled.
     private val entries = DesktopMessageNotificationEntries()
@@ -46,16 +50,22 @@ internal class DesktopWindowsMessageNotifications(
         if (canPost()) entries.keys() else emptySet()
     }
 
-    /** [cancelled] are items the server now reports as read. A Windows balloon that was already submitted
-     * cannot be withdrawn, so a cancellation removes the item (and, via [pendingCounts], an emptied group
-     * summary) from the tray menu only; the OS may still show or keep the balloon. */
+    /** [cancelled] are items the server now reports as read. The tray entry is removed and the delivered
+     * notification-center toast is withdrawn by its own tag inside this account's group; a fallback balloon
+     * cannot be withdrawn. */
     override suspend fun postAll(pending: List<PendingMessageNotification>, cancelled: Set<String>,
         pendingCounts: Map<String, Int>?) = withContext(Dispatchers.Main) {
         currentCoroutineContext().ensureActive()
         check(EventQueue.isDispatchThread()) { "Message notifications require the actual Windows EDT" }
         if (!canPost()) return@withContext
-        if (pending.isEmpty() && cancelled.isEmpty()) return@withContext
-        entries.apply(pending, cancelled, pendingCounts)
+        // A round with nothing new still has to consume the confirmations the driver produced,
+        // otherwise an entry whose delivery is gone stays in the tray and upstream keeps it active.
+        if (pending.isEmpty() && cancelled.isEmpty() && !session.hasResolved()) return@withContext
+        // Cancel this round's keys by the delivery they currently own; older deliveries keep their own
+        // tags and are retried by the driver, so they can never be re-derived onto a newer toast.
+        val withdrawn = withContext(Dispatchers.IO) { session.withdrawNow(cancelled) }
+        withContext(Dispatchers.IO) { DesktopNotificationCleanup.retryOutstanding() }
+        entries.apply(pending, withdrawn + session.takeResolved(), pendingCounts)
         val visible = entries.snapshot()
         if (visible.isEmpty()) { removeTrayOnEdt(); return@withContext }
         val icon = tray ?: TrayIcon(requireNotNull(ImageIO.read(
@@ -79,13 +89,34 @@ internal class DesktopWindowsMessageNotifications(
         for (item in pending) {
             currentCoroutineContext().ensureActive()
             if (!canPost()) return@withContext
-            icon.displayMessage(item.title, item.text, TrayIcon.MessageType.INFO)
+            val delivered = withContext(Dispatchers.IO) { session.publish(item) }
+            if (!delivered) {
+                // The notification center is the requested surface; the balloon keeps the message visible when it is not.
+                System.err.println("Windows 通知中心提交失败，改用托盘气泡 tag=${item.key}")
+                icon.displayMessage(item.title, item.text, TrayIcon.MessageType.INFO)
+            }
         }
         // The OS may suppress/coalesce balloons. Submission is not evidence of visible delivery,
         // and a previously submitted balloon cannot be atomically withdrawn on account switch.
     }
 
-    override suspend fun clear() = withContext(Dispatchers.Main) { removeTrayOnEdt() }
+    /** Notifications were turned off: withdraw the group now and keep retrying while the app lives. */
+    override suspend fun clear() {
+        withContext(Dispatchers.Main) { removeTrayOnEdt() }
+        withContext(Dispatchers.IO) {
+            session.pause()
+            DesktopNotificationCleanup.track(session)
+        }
+    }
+
+    /** Notifications were turned back on for the same account: publish again without a new port. */
+    fun resumePublishing() { session.resume() }
+
+    /** The account handoff works on the session, which never references the window. */
+    internal fun notificationSession(): DesktopNotificationSession = session
+
+    /** Deliveries the surface refused to withdraw; they stay active upstream until a retry succeeds. */
+    internal fun pendingWithdrawals(): Set<String> = session.pendingTags()
     private fun removeTrayOnEdt() {
         check(EventQueue.isDispatchThread())
         tray?.let { SystemTray.getSystemTray().remove(it) }
@@ -96,5 +127,8 @@ internal class DesktopWindowsMessageNotifications(
         if (!closed.compareAndSet(false, true)) return
         val cleanup = { window.removeHierarchyListener(hierarchy); removeTrayOnEdt() }
         if (EventQueue.isDispatchThread()) cleanup() else EventQueue.invokeLater { cleanup() }
+        // A normal exit keeps delivered notifications: the protocol handler still routes their clicks.
+        // Only an account switch or an explicit "notifications off" withdraws the group.
+        session.detach()
     }
 }

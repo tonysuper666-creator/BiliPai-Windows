@@ -318,14 +318,20 @@ class V046MessageNotificationSource(unittest.TestCase):
         self.assertIn('if (children == 0 && (pendingCounts[group] ?: 0) == 0) items.remove(summary)', entries)
         self.assertIn('pendingCounts: Map<String, Int>? = null)', presentation)
         self.assertIn('pendingCounts: Map<String, Int>?) = withContext(Dispatchers.Main) {', windows)
-        self.assertEqual(1, windows.count('entries.apply(pending, cancelled, pendingCounts)'))
+        # TON-999: a read item's notification-centre toast is withdrawn by its tag before the tray menu drops it,
+        # and whatever the session settles also leaves the menu; that is the only place the menu is updated.
+        self.assertIn('session.withdrawNow(cancelled)', windows)
+        self.assertEqual(1, windows.count('entries.apply('))
         self.assertIn('cannot be withdrawn', windows)
         self.assertIn('cannot be withdrawn', notifier)
         self.assertEqual(1, notifier.count('presentation.postAll(items, result.cancelNotificationKeys, desktopPendingSummaryCounts(result.state))'))
-        # Balloons are never claimed to be withdrawn: the only balloon call submits one, nothing pretends to retract it.
+        # Balloons are never claimed to be withdrawn: the only balloon call is the fallback when the centre refuses,
+        # and nothing pretends to retract it.
         self.assertEqual(1, windows.count('displayMessage('))
+        self.assertIn('if (!delivered)', windows)
         self.assertNotIn('removeBalloon', windows)
         settings = text(REPO/'desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopMessageNotificationSettingsContent.kt')
+        self.assertIn('会从通知中心和通知菜单中撤下', settings)
         self.assertIn('已弹出的托盘气泡无法撤回', settings)
         self.assertIn('需要 TV 授权登录', settings)
 
