@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<testsuite failures="2" name="com.android.purebilibili.feature.settings.SettingsMiuixSimplificationStructureTest" skipped="0" tests="5">
+    <testcase classname="com.android.purebilibili.feature.settings.SettingsMiuixSimplificationStructureTest" name="animation settings keeps tuning but no independent glass toggles()"/>
+    <testcase classname="com.android.purebilibili.feature.settings.SettingsMiuixSimplificationStructureTest" name="settings groups avoid duplicate setting icons()"/>
+    <testcase classname="com.android.purebilibili.feature.settings.SettingsMiuixSimplificationStructureTest" name="appearance settings expose one ui style selection while keeping miuix scaffold()">
+        <failure message="org.opentest4j.AssertionFailedError: Expected value to be true.">org.opentest4j.AssertionFailedError: Expected value to be true.
+	at org.junit.jupiter.api.AssertionUtils.fail(AssertionUtils.java:38)
+	at org.junit.jupiter.api.Assertions.fail(Assertions.java:138)
+	at kotlin.test.junit5.JUnit5Asserter.fail(JUnitSupport.kt:56)
+	at kotlin.test.Asserter.assertTrue(Assertions.kt:767)
+	at kotlin.test.junit5.JUnit5Asserter.assertTrue(JUnitSupport.kt:30)
+	at kotlin.test.Asserter.assertTrue(Assertions.kt:777)
+	at kotlin.test.junit5.JUnit5Asserter.assertTrue(JUnitSupport.kt:30)
+	at kotlin.test.AssertionsKt__AssertionsKt.assertTrue(Assertions.kt:44)
+	at kotlin.test.AssertionsKt.assertTrue(Unknown Source)
+	at kotlin.test.AssertionsKt__AssertionsKt.assertTrue$default(Assertions.kt:42)
+	at kotlin.test.AssertionsKt.assertTrue$default(Unknown Source)
+	at com.android.purebilibili.feature.settings.SettingsMiuixSimplificationStructureTest.appearance settings expose one ui style selection while keeping miuix scaffold(SettingsMiuixSimplificationStructureTest.kt:15)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+</failure>
+    </testcase>
+    <testcase classname="com.android.purebilibili.feature.settings.SettingsMiuixSimplificationStructureTest" name="animation liquid glass section keeps tuning without independent switches()"/>
+    <testcase classname="com.android.purebilibili.feature.settings.SettingsMiuixSimplificationStructureTest" name="liquid glass adjustment uses live miuix backdrop and commits on release()">
+        <failure message="org.opentest4j.AssertionFailedError: Expected value to be true.">org.opentest4j.AssertionFailedError: Expected value to be true.
+	at org.junit.jupiter.api.AssertionUtils.fail(AssertionUtils.java:38)
+	at org.junit.jupiter.api.Assertions.fail(Assertions.java:138)
+	at kotlin.test.junit5.JUnit5Asserter.fail(JUnitSupport.kt:56)
+	at kotlin.test.Asserter.assertTrue(Assertions.kt:767)
+	at kotlin.test.junit5.JUnit5Asserter.assertTrue(JUnitSupport.kt:30)
+	at kotlin.test.Asserter.assertTrue(Assertions.kt:777)
+	at kotlin.test.junit5.JUnit5Asserter.assertTrue(JUnitSupport.kt:30)
+	at kotlin.test.AssertionsKt__AssertionsKt.assertTrue(Assertions.kt:44)
+	at kotlin.test.AssertionsKt.assertTrue(Unknown Source)
+	at kotlin.test.AssertionsKt__AssertionsKt.assertTrue$default(Assertions.kt:42)
+	at kotlin.test.AssertionsKt.assertTrue$default(Unknown Source)
+	at com.android.purebilibili.feature.settings.SettingsMiuixSimplificationStructureTest.liquid glass adjustment uses live miuix backdrop and commits on release(SettingsMiuixSimplificationStructureTest.kt:136)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+</failure>
+    </testcase>
+</testsuite>
