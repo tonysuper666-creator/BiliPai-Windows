@@ -1,0 +1,12 @@
+patching file 'app/src/test/java/com/android/purebilibili/feature/settings/SettingsMiuixSimplificationStructureTest.kt'
+baseline unique-context matcher agrees with patch(1)
+patching file 'app/src/test/java/com/android/purebilibili/feature/settings/SettingsMiuixSimplificationStructureTest.kt'
+corrected unique-context matcher agrees with patch(1)
+baseline exit 1 tests=5 failures=3 skipped=0 identities=[settings groups avoid duplicate setting icons(), appearance settings expose one ui style selection while keeping miuix scaffold(), liquid glass adjustment uses live miuix backdrop and commits on release()]
+corrected exit 1 tests=5 failures=2 skipped=0 identities=[appearance settings expose one ui style selection while keeping miuix scaffold(), liquid glass adjustment uses live miuix backdrop and commits on release()]
+negative-material exit 1 tests=5 failures=3 skipped=0 identities=[settings groups avoid duplicate setting icons(), appearance settings expose one ui style selection while keeping miuix scaffold(), liquid glass adjustment uses live miuix backdrop and commits on release()]
+negative-miuix exit 1 tests=5 failures=3 skipped=0 identities=[settings groups avoid duplicate setting icons(), appearance settings expose one ui style selection while keeping miuix scaffold(), liquid glass adjustment uses live miuix backdrop and commits on release()]
+negative-simple exit 1 tests=5 failures=3 skipped=0 identities=[settings groups avoid duplicate setting icons(), appearance settings expose one ui style selection while keeping miuix scaffold(), liquid glass adjustment uses live miuix backdrop and commits on release()]
+Verified baseline 3 -> corrected 2 failures, and three counterexamples; raw XML/logs: /Users/zheng_li/multica_workspaces_desktop-api.multica.ai/tonysuper66-aaec464139a7/ton-1085-d1adffeb3b22/workdir/settings-icon-evidence-record
+
+verify.py exit: 0

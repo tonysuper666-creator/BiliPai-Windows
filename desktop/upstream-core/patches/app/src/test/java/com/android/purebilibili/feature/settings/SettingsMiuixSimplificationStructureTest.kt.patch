@@ -1,5 +1,5 @@
 Upstream-source-sha256: fc812da6faf8ec507ffd49642216b0bf57a108a8a9dcbcf11e5f29a05b9d8996
-Reason: Preserve settings copy assertions through upstream string-resource localization.
+Reason: Preserve localized copy and detect distinct theme-aware icon resources.
 
 --- a/app/src/test/java/com/android/purebilibili/feature/settings/SettingsMiuixSimplificationStructureTest.kt
 +++ b/app/src/test/java/com/android/purebilibili/feature/settings/SettingsMiuixSimplificationStructureTest.kt
@@ -32,3 +32,78 @@ Reason: Preserve settings copy assertions through upstream string-resource local
          assertTrue(source.contains("resolveVisibleBottomBarItems("))
          assertTrue(source.contains("resolveBottomBarVisibleItemsForSearchMode("))
          assertTrue(source.contains("bottomBarSearchEnabled = state.bottomBarSearchEnabled"))
+@@ -169,11 +180,15 @@
+         var groupStartLine = 0
+         var braceDepth = 0
+         var pendingIcon: PendingIcon? = null
++        var iconExpression: StringBuilder? = null
++        var iconParentheses = 0
++        var iconStartLine = 0
+         val entries = mutableListOf<SettingIconEntry>()
+-
++
+         fun flushGroup() {
+             entries
+-                .groupBy { it.icon }
++                .flatMap { entry -> iconKeys(entry.icon).map { key -> key to entry } }
++                .groupBy({ it.first }, { it.second })
+                 .filterValues { it.size > 1 }
+                 .forEach { (icon, repeatedEntries) ->
+                     duplicates += "$path:$groupStartLine repeats $icon for ${
+@@ -182,6 +197,7 @@
+                 }
+             entries.clear()
+             pendingIcon = null
++            iconExpression = null
+         }
+-
++
+         lines.forEachIndexed { index, line ->
+@@ -197,14 +213,21 @@
+                 braceDepth += line.count { it == '{' }
+                 braceDepth -= line.count { it == '}' }
+-
++
+-                Regex("""icon\s*=\s*([^,]+),?""")
+-                    .find(line)
+-                    ?.let { match ->
+-                        pendingIcon = PendingIcon(
+-                            icon = match.groupValues[1].trim(),
+-                            lineNumber = index + 1
+-                        )
++                val iconMatch = if (iconExpression == null) Regex("""\bicon\s*=\s*(.*)""").find(line) else null
++                val iconPart = iconMatch?.groupValues?.get(1) ?: if (iconExpression != null) line else null
++                if (iconPart != null) {
++                    if (iconExpression == null) {
++                        iconExpression = StringBuilder()
++                        iconParentheses = 0
++                        iconStartLine = index + 1
+                     }
++                    iconExpression!!.append(iconPart.trim())
++                    iconParentheses += iconPart.count { it == '(' } - iconPart.count { it == ')' }
++                    if (iconParentheses == 0) {
++                        pendingIcon = PendingIcon(iconExpression.toString().trimEnd(','), iconStartLine)
++                        iconExpression = null
++                    }
++                }
+-
++
+                 Regex("""title\s*=\s*"([^"]+)"""")
+                     .find(line)
+@@ -228,6 +251,15 @@
+         return duplicates
+     }
+-
++
++    private fun iconKeys(expression: String): List<String> {
++        val normalized = expression.replace(Regex("""\s+"""), "")
++        if (!normalized.startsWith("rememberThemeAwareSettingsIcon(")) return listOf(normalized)
++        val material = Regex("""materialSymbolResource=([\w.]+)""").find(normalized)?.groupValues?.get(1)
++        val miuix = Regex("""miuixIcon=([\w.]+)""").find(normalized)?.groupValues?.get(1)
++        require(material != null && miuix != null) { "Unrecognized theme-aware icon: $expression" }
++        return listOf("material:$material", "miuix:$miuix")
++    }
++
+     private data class PendingIcon(
+         val icon: String,
+         val lineNumber: Int
