@@ -1,0 +1,34 @@
+Upstream-source-sha256: fc812da6faf8ec507ffd49642216b0bf57a108a8a9dcbcf11e5f29a05b9d8996
+Reason: Preserve settings copy assertions through upstream string-resource localization.
+
+--- a/app/src/test/java/com/android/purebilibili/feature/settings/SettingsMiuixSimplificationStructureTest.kt
++++ b/app/src/test/java/com/android/purebilibili/feature/settings/SettingsMiuixSimplificationStructureTest.kt
+@@ -38,7 +38,13 @@
+         assertFalse(source.contains("title = \"液态玻璃\""))
+         assertFalse(source.contains("toggleAndroidNativeLiquidGlass("))
+         assertTrue(source.contains("LiquidGlassAdjustmentPanel("))
+-        assertTrue(source.contains("转场时模糊背景"))
++        val blur = source.substringAfter("SettingsItemAnchor(\"animation.video_transition_realtime_blur_enabled\")")
++            .substringBefore("AppPreferenceDivider()")
++        assertTrue(blur.contains("title = localizedAnimationSettingTitle(\"animation.video_transition_realtime_blur_enabled\")"))
++        assertTrue(source.contains("\"animation.video_transition_realtime_blur_enabled\" -> R.string.animation_title_transition_blur"))
++        assertTrue(loadSource("app/src/main/res/values/strings.xml").contains(
++            "<string name=\"animation_title_transition_blur\">转场时模糊背景</string>"
++        ))
+         assertTrue(source.contains("toggleVideoTransitionRealtimeBlur("))
+         assertTrue(source.contains("SettingsPageScaffold("))
+     }
+@@ -123,7 +129,12 @@
+         assertTrue(source.contains("ActivityResultContracts.OpenDocument()"))
+         assertTrue(source.contains("readLiquidGlassImportSession(uri)"))
+         assertTrue(source.contains("applyLiquidGlassImport(importSession)"))
+-        assertTrue(source.contains("预览图片和其他应用设置不会改变"))
++        val dialog = source.substringAfter("val importSession = pendingLiquidGlassImport")
++            .substringBefore("confirmButton = {")
++        assertTrue(dialog.contains("text = stringResource(R.string.animation_import_unchanged)"))
++        assertTrue(loadSource("app/src/main/res/values/strings.xml").contains(
++            "<string name=\"animation_import_unchanged\">预览图片和其他应用设置不会改变。</string>"
++        ))
+         assertTrue(source.contains("resolveVisibleBottomBarItems("))
+         assertTrue(source.contains("resolveBottomBarVisibleItemsForSearchMode("))
+         assertTrue(source.contains("bottomBarSearchEnabled = state.bottomBarSearchEnabled"))
