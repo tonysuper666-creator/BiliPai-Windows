@@ -108,7 +108,10 @@ class DesktopVideoPlayerCoverFeedbackCompositionTest {
         frames(2)
         assertTrue(cover.targetState)
         assertFeedback(false)
-        frames(20)
+        // Compose uses its interruption spring when reversing a tween. Drive
+        // actual completion, checking feedback on every frame, rather than
+        // assuming the original non-interrupted tween duration still applies.
+        finishCoverWithFeedbackHidden()
         assertCover(current = true, target = true, idle = true)
 
         visible.value = false
@@ -365,6 +368,18 @@ class DesktopVideoPlayerCoverFeedbackCompositionTest {
                 PlayerToastPresentation.PlaybackResume, identity.value)
             events.resumeMessageDeadlineMs = null
             frames(2)
+        }
+
+        fun finishCoverWithFeedbackHidden() {
+            repeat(120) { frame ->
+                assertFeedback(false)
+                if (cover.isIdle) {
+                    println("interrupted cover settled after $frame frames at ${scheduler.currentTime}ms")
+                    return
+                }
+                frames(1)
+            }
+            fail("Interrupted cover did not settle within the bounded test clock")
         }
 
         fun assertCover(current: Boolean, target: Boolean, idle: Boolean) {
