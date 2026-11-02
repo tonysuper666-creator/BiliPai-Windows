@@ -22,6 +22,15 @@
  import androidx.compose.animation.core.LinearEasing
  import androidx.compose.animation.core.animateFloatAsState
  import androidx.compose.foundation.Canvas
+@@ -732,6 +733,6 @@
+     val currentPageIndex = state.currentPageIndex
+     val onPageSelect = actions.onPageSelect
+-    val hasFavoritePlaylist = state.hasFavoritePlaylist
+-    val onFavoritePlaylistClick = actions.onFavoritePlaylistClick
++    val hasFavoritePlaylist = state.hasExternalPlaylist
++    val onFavoritePlaylistClick = actions.onExternalPlaylistClick
+     val drawerHazeState = state.drawerHazeState
+     val statusBarAmbientFrame = state.statusBarAmbientFrame
 @@ -1637,30 +1638,16 @@
                      .align(Alignment.CenterEnd)
                      .padding(end = overlayVisualPolicy.lockButtonEndPaddingDp.dp)

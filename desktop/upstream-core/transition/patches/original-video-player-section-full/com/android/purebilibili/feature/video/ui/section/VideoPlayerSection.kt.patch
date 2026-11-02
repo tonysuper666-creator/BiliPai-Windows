@@ -39,6 +39,20 @@
 +        controlsVisible = showControls && !isScreenLocked,
          enter = if (disableCoverFadeAnimation) {
              EnterTransition.None
+@@ -4659,5 +4673,5 @@
+                     pages = uiState.info.pages,
+                     currentPageIndex = currentPageIndex,
+-                    hasFavoritePlaylist = hasFavoritePlaylist,
++                    hasExternalPlaylist = hasFavoritePlaylist,
+                     drawerHazeState = overlayDrawerHazeState,
+                     statusBarAmbientFrame = statusBarAmbientFrame,
+@@ -5068,5 +5082,5 @@
+                     },
+                     onPageSelect = onPageSelect,
+-                    onFavoritePlaylistClick = onFavoritePlaylistClick,
++                    onExternalPlaylistClick = onFavoritePlaylistClick,
+                     onLandscapeCommentClick = onLandscapeCommentClick,
+                     onShowDanmakuPool = { showDanmakuPoolSheet = true },
 @@ -5192,2 +5206,95 @@
  /** Lazy original diagnostic call shape on the existing local diagnostics bridge. */
  private fun Logger.d(tag: String, message: () -> String) { Logger.d(tag, message()) }
