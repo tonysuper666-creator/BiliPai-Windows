@@ -9,4 +9,5 @@ negative-glass-binding exit 1 tests=25 failures=3 skipped=0 identities=[aboutPro
 negative-haptic-mapping exit 1 tests=25 failures=3 skipped=0 identities=[aboutProjectOverview_usesRasterLauncherAssetForComposePainter(), settingsSubpages_useNagramStyleSectionNames(), broadSettingsEntriesOpenAtPageStartWhileSubtopicEntriesUsePreciseFocus()]
 negative-playback-order exit 1 tests=25 failures=3 skipped=0 identities=[aboutProjectOverview_usesRasterLauncherAssetForComposePainter(), settingsSubpages_useNagramStyleSectionNames(), broadSettingsEntriesOpenAtPageStartWhileSubtopicEntriesUsePreciseFocus()]
 positive-spacing exit 1 tests=25 failures=2 skipped=0 identities=[aboutProjectOverview_usesRasterLauncherAssetForComposePainter(), broadSettingsEntriesOpenAtPageStartWhileSubtopicEntriesUsePreciseFocus()]
-Verified exact 3 -> 2 failure identities, no missing or skipped tests, six negative and one positive mutations.
+corrected exit 1 tests=25 failures=2 skipped=0 identities=[aboutProjectOverview_usesRasterLauncherAssetForComposePainter(), broadSettingsEntriesOpenAtPageStartWhileSubtopicEntriesUsePreciseFocus()]
+Verified exact 3 -> 2 failure identities, no missing or skipped tests, six negative and one positive mutations; corrected fixture restored.

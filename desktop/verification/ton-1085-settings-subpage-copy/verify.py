@@ -73,4 +73,5 @@ for variant,path,before,after,negative in cases:
     shutil.copytree(out/'corrected',out/variant,ignore=shutil.ignore_patterns('classes'))
     f=out/variant/path; text=f.read_text(); assert text.count(before)==1,(variant,text.count(before)); f.write_text(text.replace(before,after))
     run(variant,remaining | ({identity} if negative else set()))
-print('Verified exact 3 -> 2 failure identities, no missing or skipped tests, six negative and one positive mutations.')
+run('corrected',remaining)  # Unchanged corrected fixture remains green for the target after all mutants.
+print('Verified exact 3 -> 2 failure identities, no missing or skipped tests, six negative and one positive mutations; corrected fixture restored.')
