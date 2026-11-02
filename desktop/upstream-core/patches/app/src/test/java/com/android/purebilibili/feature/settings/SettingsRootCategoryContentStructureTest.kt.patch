@@ -40,6 +40,18 @@ Reason: Preserve settings copy assertions through upstream string-resource local
 +        assertTrue(detailIndex > submitIndex)
 +        assertTrue(click.contains("if (result.target == com.android.purebilibili.feature.settings.SettingsSearchTarget.NEARBY_HANDOFF)"))
 +        assertTrue(click.contains("} else onSearchResultClick(result)"))
+@@ -371 +394,10 @@
+-        assertTrue(itemBlock.contains("uriHandler.openUri(contributor.profileUrl)"))
++        val developerParameter = Regex("""^\s*(\w+)\s*:\s*AboutDeveloper\s*\)""")
++            .find(itemBlock)?.groupValues?.get(1)
++        val uriHandlerName = Regex("""val\s+(\w+)\s*=\s*LocalUriHandler\s*\.\s*current""")
++            .find(itemBlock)?.groupValues?.get(1)
++        assertTrue(developerParameter != null)
++        assertTrue(uriHandlerName != null)
++        val opensOwnProfile = Regex(
++            """\.clickable\s*\{\s*${Regex.escape(uriHandlerName)}\s*\.\s*openUri\s*\(\s*${Regex.escape(developerParameter)}\s*\.\s*profileUrl\s*\)\s*}"""
++        )
++        assertTrue(opensOwnProfile.containsMatchIn(itemBlock))
 @@ -449,7 +449,30 @@
              File("src/main/java/com/android/purebilibili/feature/settings/screen/SettingsTabletShell.kt")
          ).first { it.exists() }.readText().replace("\r\n", "\n")
