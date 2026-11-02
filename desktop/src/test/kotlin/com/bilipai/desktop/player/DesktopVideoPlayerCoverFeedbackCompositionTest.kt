@@ -26,7 +26,7 @@ import androidx.lifecycle.LifecycleRegistry
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.android.purebilibili.feature.video.screen.*
 import com.android.purebilibili.core.network.BilibiliApi
-import com.android.purebilibili.data.model.response.ViewInfo
+import com.android.purebilibili.data.model.response.*
 import com.android.purebilibili.data.repository.DesktopOriginalFavoriteFolderProtocol
 import com.android.purebilibili.feature.video.usecase.VideoInteractionUseCase
 import com.android.purebilibili.feature.video.viewmodel.VideoPlaybackUiState
@@ -342,32 +342,86 @@ class DesktopVideoPlayerCoverFeedbackCompositionTest {
         }
     }
 
+    @Test fun ordinaryVmPartSwitchEmitsAndClearsRetainedFeedback() {
+        VmPublisher().use { publisher ->
+            publisher.restore(1)
+            val first = assertNotNull(publisher.vm.subjectSnapshot.value)
+            Host(surfaceCanCrossfade = true, productionSubject = publisher.vm.subjectSnapshot).use { host ->
+                host.notice()
+                host.visible.value = false
+                host.frames(26)
+                host.assertFeedback(true)
+                val retained = host.events
+                val danmaku = retained.danmakuManager
+                assertNotNull(retained.resumeMessage)
+                assertNotNull(retained.resumeMessageDeadlineMs)
+
+                // Invoke the real non-cache VM transition, supplying only its existing
+                // repository/capability seams; the VM alone publishes its subject.
+                publisher.switchPart(1)
+                assertEquals(listOf("BV-first" to 2L), publisher.playUrlRequests)
+                val second = assertNotNull(publisher.vm.subjectSnapshot.value)
+                assertEquals("BV-first", second.bvid)
+                assertEquals(2L, second.cid)
+                assertTrue(second.generation > first.generation)
+                host.identity.value = "BV-first:2"
+                host.frames(2)
+                assertSame(retained, host.events)
+                assertSame(danmaku, host.events.danmakuManager)
+                assertNull(host.events.resumeMessage)
+                assertNull(host.events.resumeMessageDeadlineMs)
+                host.assertFeedback(false)
+            }
+        }
+    }
+
     /** Actual desktop VM and cache-restore producer. All external ports fail closed;
      * queued unrelated plugin polling is never executed and no native surface exists. */
     private class VmPublisher : AutoCloseable {
         private inline fun <reified T> unused(): T = Proxy.newProxyInstance(
             T::class.java.classLoader, arrayOf(T::class.java)
-        ) { _, method, _ -> error("Unexpected ${T::class.java.simpleName}.${method.name}") } as T
+        ) { _, method, _ -> throw AssertionError("Unexpected ${T::class.java.simpleName}.${method.name}") } as T
+        private val scheduler = TestCoroutineScheduler()
+        private val testDispatcher = StandardTestDispatcher(scheduler)
+        private var allowSwitch = false
         private val dispatcher = object : CoroutineDispatcher() {
-            override fun dispatch(context: CoroutineContext, block: Runnable) = Unit
+            override fun dispatch(context: CoroutineContext, block: Runnable) {
+                if (allowSwitch) testDispatcher.dispatch(context, block)
+            }
         }
         private val scope = CoroutineScope(SupervisorJob() + dispatcher)
         private val folder = Files.createTempDirectory("bp-resume-subject-")
         private val context = DesktopPluginContext(DesktopPluginStore(folder))
         private fun owns() = true
         private fun commit(block: () -> Unit): Boolean { block(); return true }
-        private val repository = unused<DesktopOriginalVideoOwnerRepository>()
+        val playUrlRequests = mutableListOf<Pair<String, Long>>()
+        private val repository = Proxy.newProxyInstance(
+            DesktopOriginalVideoOwnerRepository::class.java.classLoader,
+            arrayOf(DesktopOriginalVideoOwnerRepository::class.java)
+        ) { _, method, args ->
+            when (method.name) {
+                "getPlayUrlDataForPlaybackTransition" -> {
+                    playUrlRequests += (args!![0] as String) to (args[1] as Long)
+                    PlayUrlData(quality = 80, dash = Dash(
+                        video = listOf(DashVideo(id = 80, baseUrl = "https://fixture.invalid/video", codecs = "avc1.640028")),
+                        audio = listOf(DashAudio(id = 30280, baseUrl = "https://fixture.invalid/audio", codecs = "mp4a"))))
+                }
+                "isAppApiCoolingDown" -> false
+                else -> throw AssertionError("Unexpected repository call: ${method.name}")
+            }
+        } as DesktopOriginalVideoOwnerRepository
         private val media = unused<DesktopOriginalVideoMediaPort>()
         private val actions = unused<DesktopOriginalVideoOwnerActions>()
         private val invocations = DesktopOriginalVideoPlaybackInvocationPorts(scope, ::owns, {
-            error("No network or media invocation in cache-restore fixture")
+            DesktopOriginalVideoPlaybackInvocation(repository, media, {}, {})
         }, unused(), { media }, captureMetadataBinding = { error("No metadata request") })
         private val plugins = Proxy.newProxyInstance(DesktopOriginalVideoOwnerPlugins::class.java.classLoader,
             arrayOf(DesktopOriginalVideoOwnerPlugins::class.java)) { _, method, _ ->
             when (method.name) {
                 "enabledPlayerPlugins" -> emptyList<DesktopPlayerPluginSessionHandle>()
+                "enabledPlugins" -> emptyList<Any>()
                 "capturePlaybackDispatch" -> null
-                else -> error("Unexpected plugin work: ${method.name}")
+                else -> throw AssertionError("Unexpected plugin work: ${method.name}")
             }
         } as DesktopOriginalVideoOwnerPlugins
         private val api = unused<BilibiliApi>()
@@ -378,7 +432,19 @@ class DesktopVideoPlayerCoverFeedbackCompositionTest {
         private val settings = DesktopOriginalPlayerSettingsContext(context, ::owns, ::commit,
             largeScreenOrFoldableConfiguration = { false }, isDebugBuild = { false })
         private val useCase = DesktopOriginalVideoPlaybackUseCaseEnvironment(context, repository, actions,
-            unused(), unused(), media, {}, { emptyMap() }, {}, { false }, { _, _, _, _ -> }, ::owns)
+            object : DesktopOriginalVideoProgressPort {
+                override fun getCachedPosition(bvid: String, cid: Long): Long = 0L
+                override fun savePosition(bvid: String, cid: Long, positionMs: Long) = Unit
+            }, Proxy.newProxyInstance(DesktopOriginalVideoPlaybackCapabilities::class.java.classLoader,
+                arrayOf(DesktopOriginalVideoPlaybackCapabilities::class.java)) { _, method, _ ->
+                when (method.name) {
+                    "isHevcSupported", "isAv1Supported", "isDolbyAtmosAudioSupported",
+                    "isDolbySoftwareAudioDecoderRequired" -> false
+                    else -> throw AssertionError("Unexpected capability: ${method.name}")
+                }
+            }
+                as DesktopOriginalVideoPlaybackCapabilities,
+            media, {}, { emptyMap() }, {}, { false }, { _, _, _, _ -> }, ::owns)
         val vm = VideoPlaybackViewModel(DesktopOriginalVideoPlaybackOwnerEnvironment(scope, settings, invocations,
             repository, unused(), actions, useCase, interaction, unused(), unused(), unused(), plugins,
             unused(), unused(), unused(), { null }, unused(), unused(), unused(), unused(), MutableStateFlow(false),
@@ -386,7 +452,15 @@ class DesktopVideoPlayerCoverFeedbackCompositionTest {
             captureNativePublication = { null }, admitNativePublication = { _, _ -> false },
             readRelatedPlaybackState = { null }))
         fun restore(cid: Long) = vm.restoreFromCache(VideoPlaybackUiState.Success(
-            ViewInfo(bvid = "BV-first", aid = 17L, cid = cid, title = "fixture"), ""))
+            ViewInfo(bvid = "BV-first", aid = 17L, cid = cid, title = "fixture", pages = listOf(
+                Page(cid = 1L, page = 1, part = "P1", duration = 60),
+                Page(cid = 2L, page = 2, part = "P2", duration = 60))), ""))
+        fun switchPart(index: Int) {
+            allowSwitch = true
+            vm.switchPage(index)
+            scheduler.runCurrent()
+            allowSwitch = false
+        }
         override fun close() { scope.cancel(); folder.toFile().deleteRecursively() }
     }
 
