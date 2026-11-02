@@ -76,7 +76,51 @@ Reason: Preserve settings copy assertions through upstream string-resource local
 +            """\.clickable\s*\{\s*${Regex.escape(uriHandlerName)}\s*\.\s*openUri\s*\(\s*${Regex.escape(developerParameter)}\s*\.\s*profileUrl\s*\)\s*}"""
 +        )
 +        assertTrue(opensOwnProfile.containsMatchIn(itemBlock))
-@@ -452 +497,24 @@
+@@ -401,3 +446,15 @@
+-        assertTrue(appearance.contains("AppPreferenceSectionTitle(\"显示模式\")"))
+-        assertTrue(appearance.contains("AppPreferenceSectionTitle(\"文字与大小\")"))
+-        assertTrue(appearance.contains("AppPreferenceSectionTitle(\"开屏与图标\")"))
++        val strings = listOf(
++            File("app/src/main/res/values/strings.xml"),
++            File("src/main/res/values/strings.xml")
++        ).first { it.exists() }.readText().replace("\r\n", "\n")
++        fun assertAppearanceHeading(key: String, resource: String, label: String) {
++            val marker = "item(key = \"$key\")"
++            assertTrue(appearance.contains(marker))
++            val block = appearance.substringAfter(marker).substringBefore("item(key = ")
++            val title = Regex("""AppPreferenceSectionTitle\s*\(\s*context\.getString\s*\(\s*R\.string\.${Regex.escape(resource)}\s*\)\s*\)""")
++            assertTrue(title.containsMatchIn(block))
++            assertTrue(strings.contains("<string name=\"$resource\">$label</string>"))
++        }
++        assertAppearanceHeading("appearance_display_mode_title", "appearance_section_interface_effects", "界面与效果")
++        assertAppearanceHeading("appearance_text_size_title", "appearance_section_text_size", "文字与大小")
++        assertAppearanceHeading("appearance_splash_icon_title", "appearance_section_splash_icon", "开屏与图标")
+@@ -406,6 +463,18 @@
+-        assertTrue(
+-            playback.indexOf("AppPreferenceSectionTitle(\"网络与画质\")") <
+-                playback.indexOf("AppPreferenceSectionTitle(\"互动与评论\")")
+-        )
+-        assertTrue(animation.contains("AppPreferenceSectionTitle(\"液态玻璃与磨砂\")"))
+-        assertTrue(animation.contains("title = \"触感反馈\""))
++        val networkHeading = playback.indexOf("AppPreferenceSectionTitle(\"网络与画质\")")
++        val interactionHeading = playback.indexOf("AppPreferenceSectionTitle(\"互动与评论\")")
++        assertTrue(networkHeading >= 0 && interactionHeading >= 0 && networkHeading < interactionHeading)
++        val glassMarker = "item(key = \"animation_glass_title\")"
++        assertTrue(animation.contains(glassMarker))
++        val glassBlock = animation.substringAfter(glassMarker).substringBefore("item(key = ")
++        val glassTitle = Regex("""AppPreferenceSectionTitle\s*\(\s*if\s*\(\s*advancedOnly\s*\)\s*stringResource\s*\(\s*R\.string\.animation_glass_advanced_title\s*\)\s*else\s*stringResource\s*\(\s*R\.string\.animation_glass_section_title\s*\)\s*\)""")
++        assertTrue(glassTitle.containsMatchIn(glassBlock))
++        assertTrue(strings.contains("<string name=\"animation_glass_section_title\">液态玻璃与磨砂</string>"))
++        assertTrue(strings.contains("<string name=\"animation_glass_advanced_title\">玻璃高级调节</string>"))
++        val hapticMarker = "SettingsItemAnchor(\"animation.haptic_feedback_enabled\")"
++        assertTrue(animation.contains(hapticMarker))
++        val hapticBlock = animation.substringAfter(hapticMarker).substringBefore("SettingsItemAnchor(")
++        assertTrue(hapticBlock.contains("title = localizedAnimationSettingTitle(\"animation.haptic_feedback_enabled\")"))
++        val titleFunction = animation.substringAfter("private fun localizedAnimationSettingTitle(").substringBefore("\n}")
++        assertTrue(titleFunction.contains("\"animation.haptic_feedback_enabled\" -> R.string.animation_title_haptic"))
++        assertTrue(titleFunction.contains("return stringResource(titleResId)"))
++        assertTrue(strings.contains("<string name=\"animation_title_haptic\">触感反馈</string>"))
+@@ -452 +521,24 @@
 -        assertTrue(source.contains("text = category.subtitle"))
 +        val drawer = source.substringAfter("itemsIndexed(categories) {").substringBefore("selected = selected,")
 +        assertTrue(drawer.contains("AppNavigationDrawerItem("))

@@ -1,0 +1,12 @@
+patching file 'app/src/test/java/com/android/purebilibili/feature/settings/SettingsRootCategoryContentStructureTest.kt'
+patching file 'app/src/test/java/com/android/purebilibili/feature/settings/SettingsRootCategoryContentStructureTest.kt'
+baseline exit 1 tests=25 failures=3 skipped=0 identities=[aboutProjectOverview_usesRasterLauncherAssetForComposePainter(), settingsSubpages_useNagramStyleSectionNames(), broadSettingsEntriesOpenAtPageStartWhileSubtopicEntriesUsePreciseFocus()]
+corrected exit 1 tests=25 failures=2 skipped=0 identities=[aboutProjectOverview_usesRasterLauncherAssetForComposePainter(), broadSettingsEntriesOpenAtPageStartWhileSubtopicEntriesUsePreciseFocus()]
+negative-display-binding exit 1 tests=25 failures=3 skipped=0 identities=[aboutProjectOverview_usesRasterLauncherAssetForComposePainter(), settingsSubpages_useNagramStyleSectionNames(), broadSettingsEntriesOpenAtPageStartWhileSubtopicEntriesUsePreciseFocus()]
+negative-text-binding exit 1 tests=25 failures=3 skipped=0 identities=[aboutProjectOverview_usesRasterLauncherAssetForComposePainter(), settingsSubpages_useNagramStyleSectionNames(), broadSettingsEntriesOpenAtPageStartWhileSubtopicEntriesUsePreciseFocus()]
+negative-splash-label exit 1 tests=25 failures=3 skipped=0 identities=[aboutProjectOverview_usesRasterLauncherAssetForComposePainter(), settingsSubpages_useNagramStyleSectionNames(), broadSettingsEntriesOpenAtPageStartWhileSubtopicEntriesUsePreciseFocus()]
+negative-glass-binding exit 1 tests=25 failures=3 skipped=0 identities=[aboutProjectOverview_usesRasterLauncherAssetForComposePainter(), settingsSubpages_useNagramStyleSectionNames(), broadSettingsEntriesOpenAtPageStartWhileSubtopicEntriesUsePreciseFocus()]
+negative-haptic-mapping exit 1 tests=25 failures=3 skipped=0 identities=[aboutProjectOverview_usesRasterLauncherAssetForComposePainter(), settingsSubpages_useNagramStyleSectionNames(), broadSettingsEntriesOpenAtPageStartWhileSubtopicEntriesUsePreciseFocus()]
+negative-playback-order exit 1 tests=25 failures=3 skipped=0 identities=[aboutProjectOverview_usesRasterLauncherAssetForComposePainter(), settingsSubpages_useNagramStyleSectionNames(), broadSettingsEntriesOpenAtPageStartWhileSubtopicEntriesUsePreciseFocus()]
+positive-spacing exit 1 tests=25 failures=2 skipped=0 identities=[aboutProjectOverview_usesRasterLauncherAssetForComposePainter(), broadSettingsEntriesOpenAtPageStartWhileSubtopicEntriesUsePreciseFocus()]
+Verified exact 3 -> 2 failure identities, no missing or skipped tests, six negative and one positive mutations.
