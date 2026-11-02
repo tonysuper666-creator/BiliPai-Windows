@@ -43,6 +43,37 @@ internal const val BITMAP_COLOR_MAX_COLORS = 16
 internal const val BITMAP_COLOR_MAX_PIXELS = 16_000_000L
 
 /**
+ * Wallpaper Palette 1.0 semantics: resize the entire image by area before mapping the
+ * requested original-image region. The returned swatches are unfiltered and capped at 8.
+ * The source is borrowed; this function never closes it.
+ */
+internal fun wallpaperRegionSwatches(
+    source: DesktopBitmapPixelSource,
+    top: Int,
+    bottom: Int,
+): List<DesktopPalette.Swatch>? {
+    val width = source.width()
+    val height = source.height()
+    if (source.isClosed() || width <= 0 || height <= 0) return null
+    require(width.toLong() * height <= BITMAP_COLOR_MAX_PIXELS) { "壁纸采样尺寸过大" }
+    require(top in 0 until height && bottom in top + 1..height)
+    val area = 112 * 112
+    val ratio = if (width.toLong() * height > area) sqrt(area / (width.toDouble() * height)) else 1.0
+    val scaledWidth = ceil(width * ratio).toInt()
+    val scaledHeight = ceil(height * ratio).toInt()
+    val scale = scaledWidth / width.toDouble()
+    val regionTop = if (ratio < 1) kotlin.math.floor(top * scale).toInt() else top
+    val regionBottom = if (ratio < 1) minOf(ceil(bottom * scale).toInt(), scaledHeight) else bottom
+    val pixels = IntArray(scaledWidth * (regionBottom - regionTop))
+    for (y in regionTop until regionBottom) for (x in 0 until scaledWidth) {
+        val sourceX = minOf(((x + .5) * width / scaledWidth).toInt(), width - 1)
+        val sourceY = minOf(((y + .5) * height / scaledHeight).toInt(), height - 1)
+        pixels[(y - regionTop) * scaledWidth + x] = source.getColor(sourceX, sourceY)
+    }
+    return DesktopPalette.quantize(pixels, 8)
+}
+
+/**
  * 用真实的 median-cut 量化器（[DesktopPalette.quantize]）取位图代表色，返回 ARGB。
  *
  * 采样与选择照搬 `DesktopVideoCardPalette`：先按 48×48 面积做最近邻重采样，

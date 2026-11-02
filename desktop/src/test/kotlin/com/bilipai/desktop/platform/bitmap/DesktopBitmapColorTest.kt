@@ -124,6 +124,35 @@ class DesktopBitmapColorTest {
         assertNull(extractRepresentativeColor(bitmap))
     }
 
+    @Test fun wallpaperRegionRejectsClosedEmptyAndOversizedSourcesBeforeReading() {
+        val closed = solid(20, 20, BLUE, closed = true)
+        assertNull(wallpaperRegionSwatches(closed, 0, 1))
+        assertEquals(0, closed.reads)
+        assertNull(wallpaperRegionSwatches(solid(0, 0, BLUE), 0, 1))
+        val oversized = solid(5000, 4000, BLUE)
+        val failure = assertFailsWith<IllegalArgumentException> { wallpaperRegionSwatches(oversized, 0, 1) }
+        assertEquals("壁纸采样尺寸过大", failure.message)
+        assertEquals(0, oversized.reads)
+    }
+
+    @Test fun wallpaperRegionPropagatesCancellationWithoutTakingOwnership() {
+        val cancelled = object : DesktopBitmapPixelSource {
+            override fun width() = 1
+            override fun height() = 1
+            override fun isClosed() = false
+            override fun getColor(x: Int, y: Int): Int = throw kotlinx.coroutines.CancellationException("retired")
+        }
+        assertFailsWith<kotlinx.coroutines.CancellationException> { wallpaperRegionSwatches(cancelled, 0, 1) }
+        val bitmap = Bitmap()
+        bitmap.allocN32Pixels(3, 3)
+        bitmap.erase(BLUE)
+        try {
+            assertNotNull(wallpaperRegionSwatches(SkiaBitmapPixelSource(bitmap), 0, 3))
+            assertTrue(!bitmap.isClosed)
+            assertEquals(BLUE, bitmap.getColor(0, 0))
+        } finally { bitmap.close() }
+    }
+
     /** 量化器每通道 5 bit，差值不应超过一个量化台阶。 */
     private fun assertApproximates(expected: Int, actual: Int) {
         for (shift in intArrayOf(16, 8, 0)) {
