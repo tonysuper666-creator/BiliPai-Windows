@@ -3,6 +3,23 @@ Reason: Preserve settings copy assertions through upstream string-resource local
 
 --- a/app/src/test/java/com/android/purebilibili/feature/settings/SettingsRootCategoryContentStructureTest.kt
 +++ b/app/src/test/java/com/android/purebilibili/feature/settings/SettingsRootCategoryContentStructureTest.kt
+@@ -219,5 +219,11 @@
+-        assertTrue(source.contains("SettingsSearchFocusController.submit(result.target, result.focusId)"))
+-        assertTrue(
+-            source.indexOf("SettingsSearchFocusController.submit(result.target, result.focusId)") <
+-                source.indexOf("onSearchResultClick(result)")
+-        )
++        val row = source.substringAfter("SettingsSearchResultRow(").substringBefore("\n                    )")
++        val click = row.substringAfter("onClick = {").substringBefore("\n                        },")
++        val submit = "SettingsSearchFocusController.submit(result.target, result.focusId, result.settingId.takeUnless { it.startsWith(\"legacy.\") }, query = searchQuery)"
++        val submitIndex = click.indexOf(submit)
++        val nearbyIndex = click.indexOf("nearbyHandoff?.openDevices?.invoke()")
++        val detailIndex = click.indexOf("onSearchResultClick(result)")
++        assertTrue(submitIndex >= 0)
++        assertTrue(nearbyIndex > submitIndex)
++        assertTrue(detailIndex > submitIndex)
++        assertTrue(click.contains("if (result.target == com.android.purebilibili.feature.settings.SettingsSearchTarget.NEARBY_HANDOFF)"))
++        assertTrue(click.contains("} else onSearchResultClick(result)"))
 @@ -449,7 +449,30 @@
              File("src/main/java/com/android/purebilibili/feature/settings/screen/SettingsTabletShell.kt")
          ).first { it.exists() }.readText().replace("\r\n", "\n")
