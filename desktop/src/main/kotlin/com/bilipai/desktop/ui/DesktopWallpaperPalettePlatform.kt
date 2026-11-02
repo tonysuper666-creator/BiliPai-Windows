@@ -11,7 +11,8 @@ import java.nio.file.Path
 import com.sun.jna.Native
 import com.sun.jna.win32.StdCallLibrary
 import com.sun.jna.win32.W32APIOptions
-import com.bilipai.desktop.palette.DesktopPalette
+import com.bilipai.desktop.platform.bitmap.DesktopBitmapPixelSource
+import com.bilipai.desktop.platform.bitmap.wallpaperRegionSwatches
 import com.bilipai.desktop.palette.DesktopWallpaperPaletteScoring
 
 internal interface DesktopWallpaperPaletteContext {
@@ -102,24 +103,14 @@ internal class DesktopWallpaperPaletteLru<T>(private val maximum:Int) {
 /** Exact Palette1.0.0 FULL-image area rescale, then mapped region, clearFilters/max8.
  * Nearest-neighbor center mapping replaces Bitmap.createScaledBitmap(filter=false).
  * Existing DesktopPalette is the ONLY color quantizer. */
-internal class DesktopWallpaperPaletteRaster(val width:Int,val height:Int,private val argb:IntArray) {
+internal class DesktopWallpaperPaletteRaster(val width:Int,val height:Int,private val argb:IntArray) : DesktopBitmapPixelSource {
     init {require(width>0 && height>0 && argb.size.toLong()==width.toLong()*height)}
     fun getPixel(x:Int,y:Int)=argb[y*width+x]
+    override fun width()=width
+    override fun height()=height
+    override fun isClosed()=false
+    override fun getColor(x:Int,y:Int)=getPixel(x,y)
     fun paletteForOriginalRegion(top:Int,bottom:Int):DesktopWallpaperPaletteScoring {
-        require(top in 0 until height && bottom in top+1..height)
-        val area=112*112
-        val ratio=if(width.toLong()*height>area)kotlin.math.sqrt(area/(width.toDouble()*height)) else 1.0
-        val scaledWidth=kotlin.math.ceil(width*ratio).toInt()
-        val scaledHeight=kotlin.math.ceil(height*ratio).toInt()
-        val scale=scaledWidth/width.toDouble()
-        val regionTop=if(ratio<1)kotlin.math.floor(top*scale).toInt() else top
-        val regionBottom=if(ratio<1)minOf(kotlin.math.ceil(bottom*scale).toInt(),scaledHeight) else bottom
-        val pixels=IntArray(scaledWidth*(regionBottom-regionTop))
-        for(y in regionTop until regionBottom)for(x in 0 until scaledWidth) {
-            val sourceX=minOf(((x+.5)*width/scaledWidth).toInt(),width-1)
-            val sourceY=minOf(((y+.5)*height/scaledHeight).toInt(),height-1)
-            pixels[(y-regionTop)*scaledWidth+x]=getPixel(sourceX,sourceY)
-        }
-        return DesktopWallpaperPaletteScoring(DesktopPalette.quantize(pixels,8))
+        return DesktopWallpaperPaletteScoring(checkNotNull(wallpaperRegionSwatches(this,top,bottom)))
     }
 }
