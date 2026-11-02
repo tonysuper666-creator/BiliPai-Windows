@@ -18,11 +18,19 @@ import javax.swing.SwingUtilities
  * alongside the owner's other download-notification diagnostics, because a toast the user never saw
  * must not look delivered. A notice is dropped rather than shown once the owner has closed or
  * retired, so a late IO task cannot outlive the window it speaks for.
+ *
+ * A queued failure report is re-checked against the owner on the EDT, not only against the flags
+ * sampled on the IO thread: the queue delay is real, and the owner may have lost its scope or its
+ * window by the time the callback runs. [failureOwner] is therefore the owner's full liveness
+ * predicate — the same gate the direct call used — and defaults to [stillOwned] for callers that
+ * only have that much.
  */
 internal class DesktopDownloadCompletionToast(
     // The default is the production surface: the real Windows notification center, same fixed title.
     private val toast: DesktopToast = DesktopToast(title = "下载完成"),
     private val stillOwned: () -> Boolean = { true },
+    /** Whether this instance may still report a failure; evaluated on the EDT when the report runs. */
+    private val failureOwner: () -> Boolean = stillOwned,
     private val onFailure: (String, Exception) -> Unit = { _, _ -> },
 ) {
     /** Blocking IO boundary: callers invoke this off the EDT, as [DesktopToast] shells out to Windows. */
@@ -31,7 +39,9 @@ internal class DesktopDownloadCompletionToast(
         try {
             toast.show(taskTitle, ROUTE, taskId, ROUTE)
         } catch (failure: Exception) {
-            SwingUtilities.invokeLater { if (!isClosed() && stillOwned()) onFailure(FAILURE_MESSAGE, failure) }
+            SwingUtilities.invokeLater {
+                if (!isClosed() && failureOwner()) onFailure(FAILURE_MESSAGE, failure)
+            }
         }
     }
 

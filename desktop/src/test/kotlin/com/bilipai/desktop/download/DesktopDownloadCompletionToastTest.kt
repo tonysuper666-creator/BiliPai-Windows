@@ -32,14 +32,28 @@ class DesktopDownloadCompletionToastTest {
     private fun completion(
         center: RecordingNotificationCenter,
         stillOwned: () -> Boolean = { true },
+        failureOwner: () -> Boolean = stillOwned,
         onFailure: (String, Exception) -> Unit = { _, _ -> },
     ) = DesktopDownloadCompletionToast(
         toast = DesktopToast(center = center, title = "下载完成"),
         stillOwned = stillOwned,
+        failureOwner = failureOwner,
         onFailure = onFailure,
     )
 
     private fun flushEdt() = SwingUtilities.invokeAndWait {}
+
+    /**
+     * Runs [action] while the EDT is provably blocked, so a report queued by [action] cannot run
+     * until this test has changed the owner's state and released the gate.
+     */
+    private fun withHeldEdt(action: () -> Unit) {
+        val held = CountDownLatch(1)
+        val release = CountDownLatch(1)
+        SwingUtilities.invokeLater { held.countDown(); release.await(10, TimeUnit.SECONDS) }
+        assertTrue(held.await(10, TimeUnit.SECONDS), "the EDT must be free to accept the gate")
+        try { action() } finally { release.countDown(); flushEdt() }
+    }
 
     @Test fun aFinishedTaskReachesTheNotificationCenterUnchanged() {
         val center = RecordingNotificationCenter()
@@ -99,10 +113,41 @@ class DesktopDownloadCompletionToastTest {
         center.failure = IllegalStateException("Windows 通知中心响应超时")
         val closed = AtomicBoolean(false)
         val reported = AtomicBoolean(false)
-        completion(center, onFailure = { _, _ -> reported.set(true) }).notify("7", "任务") { closed.get() }
-        // The IO call has already returned and queued its report; the owner retires before it runs.
-        closed.set(true)
-        flushEdt()
+        val notice = completion(center, onFailure = { _, _ -> reported.set(true) })
+        // The gate makes the ordering a fact of the test, not of scheduler luck: the report is queued
+        // while the EDT is blocked, the owner closes, and only then is the queue allowed to drain.
+        withHeldEdt {
+            notice.notify("7", "任务") { closed.get() }
+            closed.set(true)
+        }
         assertFalse(reported.get(), "a failure cannot outlive the window it was reporting against")
+    }
+
+    @Test fun aFailureQueuedBeforeTheOwnerLosesItsScopeIsNotReported() {
+        val center = RecordingNotificationCenter()
+        center.failure = IllegalStateException("Windows 通知已被系统或用户禁用")
+        // Stands in for the owner's liveness predicate: still true when the call failed, false by the
+        // time the queued callback runs, which is exactly what a cancelled scope looks like.
+        val ownerAlive = AtomicBoolean(true)
+        val reported = AtomicBoolean(false)
+        val notice = completion(
+            center,
+            failureOwner = { ownerAlive.get() },
+            onFailure = { _, _ -> reported.set(true) },
+        )
+        withHeldEdt {
+            notice.notify("7", "任务", { false })
+            ownerAlive.set(false)
+        }
+        assertFalse(reported.get(), "a queued report must re-check the owner instead of trusting the IO probe")
+    }
+
+    @Test fun aFailureQueuedWhileTheOwnerIsStillAliveIsReported() {
+        val center = RecordingNotificationCenter()
+        center.failure = IllegalStateException("Windows 通知已被系统或用户禁用")
+        val reported = AtomicBoolean(false)
+        val notice = completion(center, failureOwner = { true }, onFailure = { _, _ -> reported.set(true) })
+        withHeldEdt { notice.notify("7", "任务", { false }) }
+        assertTrue(reported.get(), "the same gate must not silence a live owner")
     }
 }

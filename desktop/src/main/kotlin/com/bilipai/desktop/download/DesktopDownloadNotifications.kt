@@ -106,7 +106,13 @@ internal class DesktopDownloadNotifications(
     completionToast: DesktopDownloadCompletionToast? = null,
 ) : AutoCloseable {
     private val completionToast: DesktopDownloadCompletionToast = completionToast
-        ?: DesktopDownloadCompletionToast(stillOwned = stillOwned, onFailure = ::reportFailure)
+        ?: DesktopDownloadCompletionToast(
+            stillOwned = stillOwned,
+            // The direct call's whole owner gate: scope liveness, window displayability and registry
+            // identity, re-evaluated on the EDT when the queued failure report actually runs.
+            failureOwner = ::ownedOnEdt,
+            onFailure = ::reportFailure,
+        )
     private val closed = AtomicBoolean()
     private val renderGeneration = AtomicLong()
     private val scope = CoroutineScope(parentScope.coroutineContext + SupervisorJob(parentScope.coroutineContext[Job]))
