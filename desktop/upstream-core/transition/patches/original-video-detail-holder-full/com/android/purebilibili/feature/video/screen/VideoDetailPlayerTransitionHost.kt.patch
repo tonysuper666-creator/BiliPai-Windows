@@ -1,18 +1,161 @@
 --- a/com/android/purebilibili/feature/video/screen/VideoDetailPlayerTransitionHost.kt
 +++ b/com/android/purebilibili/feature/video/screen/VideoDetailPlayerTransitionHost.kt
-@@ -169,6 +169,7 @@
-     transitionEnabled: Boolean,
+@@ -164,5 +164,5 @@
+     inlinePlayerScale: State<Float>,
+     isFullscreen: Boolean = false,
+-    playerState: VideoPlayerState,
++    playerState: () -> VideoPlayerState,
+     uiState: VideoPlaybackUiState,
+     isPipMode: Boolean,
+@@ -170,6 +170,7 @@
      transitionChromeAlphaProvider: () -> Float,
      danmakuHostActive: Boolean,
 +    suppressTransientOverlaysForTransition: Boolean,
      onToggleFullscreen: () -> Unit,
-     playbackActions: VideoDetailPlaybackActions,
+-    playbackActions: VideoDetailPlaybackActions,
++    playbackActions: () -> VideoDetailPlaybackActions,
      onDoubleTapLike: () -> Unit,
-@@ -232,6 +233,7 @@
+     onBack: () -> Unit,
+@@ -205,6 +206,6 @@
+     fullscreenExtras: ContinuousPlayerFullscreenExtras? = null,
+     residentCoverSource: VideoDetailResidentCoverSource? = null,
++    renderSection: com.android.purebilibili.feature.video.ui.section.VideoPlayerSectionRenderer? = null,
+ ) {
+-    val holderPlatform = com.bilipai.desktop.ui.LocalDesktopOriginalVideoHolderPlatform.current
+     val successState = uiState as? VideoPlaybackUiState.Success
+     // 竖屏全屏由 PortraitVideoPager 接管播放面；内联 section 不得再合成。
+@@ -223,14 +224,21 @@
+             }
+     ) {
+-        VideoPlayerSection(
+-            state = VideoPlayerSectionState(
+-                playerState = playerState,
+-                uiState = uiState,
+-                isFullscreen = isFullscreen,
+-                isInPipMode = isPipMode,
++        val presentation = com.android.purebilibili.feature.video.ui.section.VideoPlayerSectionPresentationState(
++            uiState = uiState,
++            isFullscreen = isFullscreen,
++            isInPipMode = isPipMode,
++            isPortraitFullscreen = isPortraitFullscreen,
++            suppressTransientOverlaysForTransition = suppressTransientOverlaysForTransition,
++        )
++        val sectionState = { VideoPlayerSectionState(
++                playerState = playerState(),
++                uiState = presentation.uiState,
++                isFullscreen = presentation.isFullscreen,
++                isInPipMode = presentation.isInPipMode,
+                 contentTopInset = contentTopInset,
                  transitionEnabled = transitionEnabled,
                  transitionChromeAlphaProvider = transitionChromeAlphaProvider,
                  danmakuHostActive = danmakuHostActive,
-+                suppressTransientOverlaysForTransition = suppressTransientOverlaysForTransition,
++                suppressTransientOverlaysForTransition = presentation.suppressTransientOverlaysForTransition,
                  endDrawerRequestKey = endDrawerRequestKey,
                  landscapeCommentPanelVisible = isFullscreen &&
-                     fullscreenExtras?.landscapeCommentPanelVisible == true,
+@@ -268,5 +276,5 @@
+                 sponsorMarkers = sponsorProgressMarkers,
+                 isVerticalVideo = isVerticalVideo,
+-                isPortraitFullscreen = isPortraitFullscreen,
++                isPortraitFullscreen = presentation.isPortraitFullscreen,
+                 viewportWidthDpOverride = if (animatedViewportWidth.isSpecified) {
+                     // 消费方（播放器 UI/控制栏布局策略）全部是断点式档位；
+@@ -305,8 +313,10 @@
+                 suppressSubtitleOverlay = suppressSubtitleOverlay,
+                 subtitleDisplayModePreferenceOverride = subtitleDisplayModePreferenceOverride,
+-            ),
+-            actions = VideoPlayerSectionActions(
++            ) }
++        val sectionActions = {
++            val playback = playbackActions()
++            VideoPlayerSectionActions(
+                 onToggleFullscreen = onToggleFullscreen,
+-                onQualityChange = { qid -> playbackActions.changeQuality(qid) },
++                onQualityChange = { qid -> playback.changeQuality(qid) },
+                 onBack = onBack,
+                 onHomeClick = onHomeClick,
+@@ -316,5 +326,5 @@
+                     {}
+                 },
+-                onDanmakuInputClick = { playbackActions.showDanmakuSendDialog() },
++                onDanmakuInputClick = { playback.showDanmakuSendDialog() },
+                 onDismissDanmakuComposer = fullscreenExtras?.onDismissDanmakuComposer ?: {},
+                 onSendDanmakuComposer = fullscreenExtras?.onSendDanmakuComposer
+@@ -325,31 +335,31 @@
+                     ?: { _, _, _ -> },
+                 onDoubleTapLike = onDoubleTapLike,
+-                onSponsorSkip = { playbackActions.skipSponsorSegment() },
+-                onSponsorDismiss = { playbackActions.dismissSponsorSkipButton() },
+-                onSponsorVote = { playbackActions.voteSponsorSegment(it) },
+-                onSponsorContributionMarkBoundary = { playbackActions.markSponsorContributionBoundary() },
+-                onSponsorContributionMarkWholeVideo = { playbackActions.markWholeVideoAsSponsor() },
+-                onSponsorContributionCategoryChange = { playbackActions.setSponsorContributionCategory(it) },
+-                onSponsorContributionActionTypeChange = { playbackActions.setSponsorContributionActionType(it) },
+-                onSponsorContributionSubmit = { playbackActions.submitSponsorContribution() },
+-                onSponsorContributionCancel = { playbackActions.cancelSponsorContribution() },
+-                onReloadVideo = { playbackActions.reloadVideo() },
+-                onSwitchCdn = { playbackActions.switchCdn() },
+-                onSwitchCdnTo = { playbackActions.switchCdnTo(it) },
+-                onProbeCdnCandidates = { playbackActions.probeCdnCandidates() },
++                onSponsorSkip = { playback.skipSponsorSegment() },
++                onSponsorDismiss = { playback.dismissSponsorSkipButton() },
++                onSponsorVote = { playback.voteSponsorSegment(it) },
++                onSponsorContributionMarkBoundary = { playback.markSponsorContributionBoundary() },
++                onSponsorContributionMarkWholeVideo = { playback.markWholeVideoAsSponsor() },
++                onSponsorContributionCategoryChange = { playback.setSponsorContributionCategory(it) },
++                onSponsorContributionActionTypeChange = { playback.setSponsorContributionActionType(it) },
++                onSponsorContributionSubmit = { playback.submitSponsorContribution() },
++                onSponsorContributionCancel = { playback.cancelSponsorContribution() },
++                onReloadVideo = { playback.reloadVideo() },
++                onSwitchCdn = { playback.switchCdn() },
++                onSwitchCdnTo = { playback.switchCdnTo(it) },
++                onProbeCdnCandidates = { playback.probeCdnCandidates() },
+                 onAudioOnlyToggle = onNavigateToAudioMode,
+-                onSleepTimerChange = { playbackActions.setSleepTimer(it) },
+-                onUserSeek = { position -> playbackActions.notifyExplicitSeek(position) },
++                onSleepTimerChange = { playback.setSleepTimer(it) },
++                onUserSeek = { position -> playback.notifyExplicitSeek(position) },
+                 onPortraitFullscreen = onPortraitFullscreen,
+                 onPipClick = onPipClick,
+-                onCodecChange = { playbackActions.setVideoCodec(it) },
+-                onSecondCodecChange = { playbackActions.setVideoSecondCodec(it) },
+-                onAudioQualityChange = { playbackActions.setAudioQuality(it) },
+-                onPlaybackSpeedChange = { playbackActions.applyPlaybackSpeed(it) },
+-                onAudioLangChange = { playbackActions.changeAudioLanguage(it) },
++                onCodecChange = { playback.setVideoCodec(it) },
++                onSecondCodecChange = { playback.setVideoSecondCodec(it) },
++                onAudioQualityChange = { playback.setAudioQuality(it) },
++                onPlaybackSpeedChange = { playback.applyPlaybackSpeed(it) },
++                onAudioLangChange = { playback.changeAudioLanguage(it) },
+                 onPlayModeClick = fullscreenExtras?.onPlayModeClick ?: {},
+-                onSaveCover = fullscreenExtras?.onSaveCover ?: { playbackActions.saveCover() },
++                onSaveCover = fullscreenExtras?.onSaveCover ?: { playback.saveCover() },
+                 onDownloadAudio = fullscreenExtras?.onDownloadAudio
+-                    ?: { playbackActions.downloadAudio() },
++                    ?: { playback.downloadAudio() },
+                 onRelatedVideoClick = fullscreenExtras?.onRelatedVideoClick ?: { _, _, _ -> },
+                 onToggleFollow = fullscreenExtras?.onToggleFollow ?: {},
+@@ -363,12 +373,16 @@
+                 onSubtitleDisplayModePreferenceOverrideChange =
+                     onSubtitleDisplayModePreferenceOverrideChange,
+-                onSubtitleTrackSelected = playbackActions.selectSubtitleTrack,
+-                onLikeDanmaku = playbackActions.likeDanmaku,
+-                onLikeDanmakuToggle = playbackActions.likeDanmakuToggle,
+-                likedDanmakuIds = playbackActions.likedDanmakuIds,
+-                onReportDanmaku = playbackActions.reportDanmaku,
+-                onRecallDanmaku = playbackActions.recallDanmaku,
+-            ),
+-        )
++                onSubtitleTrackSelected = playback.selectSubtitleTrack,
++                onLikeDanmaku = playback.likeDanmaku,
++                onLikeDanmakuToggle = playback.likeDanmakuToggle,
++                likedDanmakuIds = playback.likedDanmakuIds,
++                onReportDanmaku = playback.reportDanmaku,
++                onRecallDanmaku = playback.recallDanmaku,
++            ) }
++        if (renderSection == null) {
++            VideoPlayerSection(state = sectionState(), actions = sectionActions(), presentation = presentation)
++        } else {
++            renderSection(presentation, sectionState, sectionActions)
++        }
+     }
+ }

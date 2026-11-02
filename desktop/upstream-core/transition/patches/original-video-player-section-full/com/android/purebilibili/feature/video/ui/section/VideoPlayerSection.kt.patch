@@ -1,26 +1,45 @@
 --- a/com/android/purebilibili/feature/video/ui/section/VideoPlayerSection.kt
 +++ b/com/android/purebilibili/feature/video/ui/section/VideoPlayerSection.kt
-@@ -3473,8 +3473,18 @@
-         shouldKeepCoverForManualStart = keepCoverForManualStart,
+@@ -670,4 +670,11 @@
+     actions: VideoPlayerSectionActions,
+     modifier: Modifier = Modifier,
++    presentation: VideoPlayerSectionPresentationState = VideoPlayerSectionPresentationState(
++        uiState = state.uiState,
++        isFullscreen = state.isFullscreen,
++        isInPipMode = state.isInPipMode,
++        isPortraitFullscreen = state.isPortraitFullscreen,
++        suppressTransientOverlaysForTransition = state.suppressTransientOverlaysForTransition,
++    ),
+ ) {
+     val hostedAmbient = LocalAmbientPresentation.current
+@@ -680,5 +687,5 @@
+             }
+             LocalDesktopOriginalVideoSectionPlatform.current.RenderPlayerForeground {
+-        VideoPlayerSectionContent(state = state, actions = actions)
++        VideoPlayerSectionContent(state = state, actions = actions, presentation = presentation)
+     }
+         }
+@@ -690,4 +697,5 @@
+     state: VideoPlayerSectionState,
+     actions: VideoPlayerSectionActions,
++    presentation: VideoPlayerSectionPresentationState,
+ ) {
+     val playerState = state.playerState
+@@ -3474,6 +3482,12 @@
      )
  
 -    AnimatedVisibility(
-+    VideoPlayerCoverFeedback(
++    VideoPlayerSectionCoverFeedback(
++        state = presentation,
 +        playbackIdentity = currentPlaybackIdentity,
          visible = showCover && (currentCoverUrl.isNotEmpty() || entryPresentationSpec.showManualStartPlayButton),
 +        showCover = showCover,
 +        keepCoverForManualStart = keepCoverForManualStart,
-+        suppressTransientOverlaysForTransition = suppressTransientOverlaysForTransition,
 +        forceCoverDuringReturnAnimation = forceCoverDuringReturnAnimation,
-+        isInPipMode = isInPipMode,
-+        isPortraitFullscreen = isPortraitFullscreen,
-+        mediaKey = (uiState as? VideoPlaybackUiState.Success)?.info?.let { "${it.bvid}:${it.cid}" },
-+        fullscreen = isFullscreen,
 +        controlsVisible = showControls && !isScreenLocked,
          enter = if (disableCoverFadeAnimation) {
              EnterTransition.None
-         } else {
-@@ -5192,2 +5202,47 @@
+@@ -5192,2 +5206,95 @@
  /** Lazy original diagnostic call shape on the existing local diagnostics bridge. */
  private fun Logger.d(tag: String, message: () -> String) { Logger.d(tag, message()) }
 +
@@ -68,3 +87,51 @@
 +    )
 +    return coverVisibility
 +}
++
++/** Presentational part of the real Section input. Native player/action ports are
++ * deliberately absent: consuming cover feedback never acquires playback resources. */
++internal data class VideoPlayerSectionPresentationState(
++    val uiState: VideoPlaybackUiState,
++    val isFullscreen: Boolean,
++    val isInPipMode: Boolean,
++    val isPortraitFullscreen: Boolean,
++    val suppressTransientOverlaysForTransition: Boolean,
++)
++
++internal typealias VideoPlayerSectionRenderer = @Composable (
++    VideoPlayerSectionPresentationState,
++    () -> VideoPlayerSectionState,
++    () -> VideoPlayerSectionActions,
++) -> Unit
++
++/** The actual Section state-to-feedback call, shared with a windowless renderer. */
++@Composable
++internal fun BoxScope.VideoPlayerSectionCoverFeedback(
++    state: VideoPlayerSectionPresentationState,
++    playbackIdentity: String,
++    visible: Boolean,
++    showCover: Boolean,
++    keepCoverForManualStart: Boolean,
++    forceCoverDuringReturnAnimation: Boolean,
++    controlsVisible: Boolean,
++    enter: EnterTransition,
++    exit: ExitTransition,
++    modifier: Modifier = Modifier,
++    content: @Composable androidx.compose.animation.AnimatedVisibilityScope.() -> Unit,
++): androidx.compose.animation.core.MutableTransitionState<Boolean> = VideoPlayerCoverFeedback(
++    playbackIdentity = playbackIdentity,
++    visible = visible,
++    showCover = showCover,
++    keepCoverForManualStart = keepCoverForManualStart,
++    suppressTransientOverlaysForTransition = state.suppressTransientOverlaysForTransition,
++    forceCoverDuringReturnAnimation = forceCoverDuringReturnAnimation,
++    isInPipMode = state.isInPipMode,
++    isPortraitFullscreen = state.isPortraitFullscreen,
++    mediaKey = (state.uiState as? VideoPlaybackUiState.Success)?.info?.let { "${it.bvid}:${it.cid}" },
++    fullscreen = state.isFullscreen,
++    controlsVisible = controlsVisible,
++    enter = enter,
++    exit = exit,
++    modifier = modifier,
++    content = content,
++)

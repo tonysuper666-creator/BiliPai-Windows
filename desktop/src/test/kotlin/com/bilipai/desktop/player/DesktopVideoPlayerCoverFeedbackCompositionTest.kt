@@ -37,6 +37,8 @@ import com.bilipai.desktop.plugins.DesktopPluginStore
 import java.nio.file.Files
 import kotlin.coroutines.CoroutineContext
 import com.android.purebilibili.feature.video.ui.section.VideoPlayerCoverFeedback
+import com.android.purebilibili.feature.video.ui.section.VideoPlayerSectionCoverFeedback
+import com.android.purebilibili.feature.video.ui.section.VideoPlayerSectionPresentationState
 import com.android.purebilibili.feature.video.ui.section.resolveVideoPlayerCoverMotionSpec
 import com.android.purebilibili.feature.video.viewmodel.PlayerToastMessage
 import com.android.purebilibili.feature.video.viewmodel.PlayerToastPresentation
@@ -57,6 +59,41 @@ import kotlin.test.*
  * native playback are outside these fixtures; unrelated ports fail immediately. */
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalCoroutinesApi::class)
 class DesktopVideoPlayerCoverFeedbackCompositionTest {
+    @Test fun productionHolderHostSectionSuppressReleaseAndSuppressAgain() {
+        Host(surfaceCanCrossfade = true, productionBindings = true).use {
+            with(it) {
+                notice()
+                phase.value = VideoDetailReturnSessionPhase.Preview
+                visible.value = false
+                frames(2)
+                assertCover(current = true, target = false, idle = false)
+                assertFeedback(false)
+                assertNull(events.resumeMessageDeadlineMs)
+
+                frames(26)
+                assertCover(current = false, target = false, idle = true)
+                assertFeedback(false)
+                assertTrue(suppressed)
+                assertNull(events.resumeMessageDeadlineMs)
+
+                phase.value = VideoDetailReturnSessionPhase.Idle
+                frames(2)
+                assertFalse(suppressed)
+                assertFeedback(true)
+                assertNotNull(events.resumeMessageDeadlineMs)
+
+                phase.value = VideoDetailReturnSessionPhase.Restoring
+                frames(2)
+                assertCover(current = false, target = false, idle = true)
+                assertFeedback(false)
+                assertTrue(suppressed)
+                phase.value = VideoDetailReturnSessionPhase.Idle
+                frames(2)
+                assertFeedback(true)
+            }
+        }
+    }
+
     @Test fun feedbackWaitsForTheActualCoverExitCompletion() = withHost {
         notice()
         assertCover(current = true, target = true, idle = true)
@@ -357,7 +394,11 @@ class DesktopVideoPlayerCoverFeedbackCompositionTest {
         Host(surfaceCanCrossfade).use { it.test() }
     }
 
-    private class Host(surfaceCanCrossfade: Boolean, productionSubject: StateFlow<VideoSubjectSnapshot?>? = null) : AutoCloseable {
+    private class Host(
+        surfaceCanCrossfade: Boolean,
+        productionSubject: StateFlow<VideoSubjectSnapshot?>? = null,
+        private val productionBindings: Boolean = false,
+    ) : AutoCloseable {
         val identity = mutableStateOf("BV-first:1")
         fun snapshot(key: String) = VideoSubjectSnapshot(
             bvid = key.substringBefore(':'), cid = key.substringAfter(':').toLong(),
@@ -411,13 +452,15 @@ class DesktopVideoPlayerCoverFeedbackCompositionTest {
                     // the Section transition and feedback message carry bvid:cid.
                     val state = rememberVideoDetailPlaybackEventState(identity.value.substringBefore(':'))
                     VideoDetailResumeIdentityEffect(productionSubject ?: subject, state)
-                    val returnBudget = resolveVideoDetailReturnVisualBudget(
-                        phase = phase.value,
-                        hasRenderableLiveFrame = hasRenderableLiveFrame.value,
-                    )
-                    val suppress = shouldSuppressOverlayControlsForReturnBudget(returnBudget)
                     VideoDetailPlaybackFeedbackProvider(state) {
-                        Box {
+                        if (productionBindings) {
+                            ProductionInlineHost(state)
+                        } else Box {
+                            val returnBudget = resolveVideoDetailReturnVisualBudget(
+                                phase = phase.value,
+                                hasRenderableLiveFrame = hasRenderableLiveFrame.value,
+                            )
+                            val suppress = shouldSuppressOverlayControlsForReturnBudget(returnBudget)
                             val transition = VideoPlayerCoverFeedback(
                                 playbackIdentity = identity.value,
                                 visible = visible.value,
@@ -449,6 +492,89 @@ class DesktopVideoPlayerCoverFeedbackCompositionTest {
         }
 
         init { frames(3) }
+
+        /** Calls the holder's production budget+host binding. The renderer consumes
+         * the Section's actual state-to-feedback call point; neither lazy native
+         * state nor unrelated actions may be acquired by this fixture. */
+        @Composable
+        private fun ProductionInlineHost(eventsState: VideoDetailPlaybackEventState) {
+            VideoDetailInlinePlayerWithReturnBudget(
+                returnSessionPhase = phase.value,
+                hasRenderableLiveFrame = hasRenderableLiveFrame.value,
+                reduceMotion = false,
+                secondaryContentAlpha = 1f,
+                modifier = Modifier,
+                animatedViewportWidth = 480.dp,
+                inlinePlayerAlpha = remember { mutableStateOf(1f) },
+                inlinePlayerScale = remember { mutableStateOf(1f) },
+                playerState = { error("Feedback fixture must not acquire native player state") },
+                uiState = VideoPlaybackUiState.Success(ViewInfo(
+                    bvid = identity.value.substringBefore(':'),
+                    cid = identity.value.substringAfter(':').toLong(), title = "fixture"), ""),
+                isPipMode = false,
+                transitionEnabled = true,
+                transitionChromeAlphaProvider = { 1f },
+                danmakuHostActive = true,
+                onToggleFullscreen = { error("Unused fullscreen action") },
+                playbackActions = { error("Feedback fixture must not acquire playback actions") },
+                onDoubleTapLike = { error("Unused like action") },
+                onBack = { error("Unused back action") },
+                onHomeClick = { error("Unused home action") },
+                videoPlayerSectionTarget = VideoPlayerSectionTarget(
+                    identity.value.substringBefore(':'), "", identity.value.substringBefore(':')),
+                sponsorSegment = null,
+                showSponsorSkipButton = false,
+                sponsorContributionState = com.android.purebilibili.feature.video.viewmodel.SponsorContributionUiState(),
+                sleepTimerMinutes = null,
+                viewPoints = emptyList(),
+                pbpProgressData = null,
+                sponsorProgressMarkers = emptyList(),
+                isVerticalVideo = false,
+                onPortraitFullscreen = { error("Unused portrait action") },
+                isPortraitFullscreen = false,
+                onPipClick = { error("Unused PiP action") },
+                codecPreference = "hev1",
+                secondCodecPreference = "avc1",
+                audioQualityPreference = -1,
+                onNavigateToAudioMode = { error("Unused audio action") },
+                forceCoverOnly = false,
+                preserveCurrentFrameOnFullscreenChange = false,
+                liveBackPreview = false,
+                useTextureSurfaceForNavigation = false,
+                predictiveBackCancelRecoveryGeneration = 0,
+                allowLivePlayerSharedElement = false,
+                sourceRouteForSharedElement = null,
+                suppressSubtitleOverlay = false,
+                subtitleDisplayModePreferenceOverride = null,
+                onSubtitleDisplayModePreferenceOverrideChange = { error("Unused subtitle action") },
+                renderSection = { presentation, _, _ -> ProductionSectionFeedback(presentation, eventsState) },
+            )
+        }
+
+        @Composable
+        private fun ProductionSectionFeedback(
+            presentation: VideoPlayerSectionPresentationState,
+            eventsState: VideoDetailPlaybackEventState,
+        ) {
+            Box {
+                val transition = VideoPlayerSectionCoverFeedback(
+                    state = presentation,
+                    playbackIdentity = identity.value,
+                    visible = visible.value,
+                    showCover = visible.value,
+                    keepCoverForManualStart = false,
+                    forceCoverDuringReturnAnimation = false,
+                    controlsVisible = false,
+                    enter = fadeIn(tween(motion.enterFadeDurationMillis)),
+                    exit = fadeOut(tween(motion.exitFadeDurationMillis)),
+                ) { Box(Modifier.size(80.dp)) { Text("cover") } }
+                SideEffect {
+                    cover = transition
+                    events = eventsState
+                    suppressed = presentation.suppressTransientOverlaysForTransition
+                }
+            }
+        }
 
         fun frames(count: Int) {
             repeat(count) {
