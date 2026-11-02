@@ -3,6 +3,26 @@ Reason: Preserve settings copy assertions through upstream string-resource local
 
 --- a/app/src/test/java/com/android/purebilibili/feature/settings/SettingsRootCategoryContentStructureTest.kt
 +++ b/app/src/test/java/com/android/purebilibili/feature/settings/SettingsRootCategoryContentStructureTest.kt
+@@ -79 +79,18 @@
+-        assertTrue(feedApiBlock.contains("浏览动态时收起顶部栏"))
++        val topBarAnchor = "SettingsItemAnchor(\"home.dynamic_top_bar_collapse_on_scroll\")"
++        assertTrue(feedApiBlock.contains(topBarAnchor))
++        val topBarSwitch = feedApiBlock.substringAfter(topBarAnchor).substringBefore("SettingsAdaptiveDivider()")
++        assertTrue(topBarSwitch.contains("SettingSwitchItem("))
++        assertTrue(topBarSwitch.contains("title = settingItemTitle(\"home.dynamic_top_bar_collapse_on_scroll\")"))
++        assertTrue(topBarSwitch.contains("checked = dynamicTopBarCollapseOnScroll"))
++        assertTrue(topBarSwitch.contains("onCheckedChange = onDynamicTopBarCollapseOnScrollChange"))
++        val additionalDirectory = listOf(
++            File("app/src/main/java/com/android/purebilibili/feature/settings/SettingsAdditionalDirectory.kt"),
++            File("src/main/java/com/android/purebilibili/feature/settings/SettingsAdditionalDirectory.kt")
++        ).first { it.exists() }.readText()
++        val titleDirectory = listOf(
++            File("app/src/main/java/com/android/purebilibili/feature/settings/PlaybackSettingDirectory.kt"),
++            File("src/main/java/com/android/purebilibili/feature/settings/PlaybackSettingDirectory.kt")
++        ).first { it.exists() }.readText()
++        assertTrue(additionalDirectory.contains("PlaybackSettingItem(\"home.dynamic_top_bar_collapse_on_scroll\", \"浏览动态时收起顶部栏\","))
++        assertTrue(titleDirectory.contains("get() = playbackSettingDirectory + additionalSettingsDirectory"))
++        assertTrue(titleDirectory.contains("settingsItemDirectory.first { it.settingId == settingId }.title"))
 @@ -219,5 +219,11 @@
 -        assertTrue(source.contains("SettingsSearchFocusController.submit(result.target, result.focusId)"))
 -        assertTrue(
