@@ -25,6 +25,17 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.android.purebilibili.feature.video.screen.*
+import com.android.purebilibili.core.network.BilibiliApi
+import com.android.purebilibili.data.model.response.ViewInfo
+import com.android.purebilibili.data.repository.DesktopOriginalFavoriteFolderProtocol
+import com.android.purebilibili.feature.video.usecase.VideoInteractionUseCase
+import com.android.purebilibili.feature.video.viewmodel.VideoPlaybackUiState
+import com.android.purebilibili.feature.video.viewmodel.VideoPlaybackViewModel
+import com.bilipai.desktop.ui.*
+import com.bilipai.desktop.plugins.DesktopPluginContext
+import com.bilipai.desktop.plugins.DesktopPluginStore
+import java.nio.file.Files
+import kotlin.coroutines.CoroutineContext
 import com.android.purebilibili.feature.video.ui.section.VideoPlayerCoverFeedback
 import com.android.purebilibili.feature.video.ui.section.resolveVideoPlayerCoverMotionSpec
 import com.android.purebilibili.feature.video.viewmodel.PlayerToastMessage
@@ -35,14 +46,15 @@ import com.bilipai.desktop.ui.DesktopOriginalVideoHolderPlatform
 import com.bilipai.desktop.ui.LocalDesktopOriginalVideoHolderPlatform
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.test.*
 import org.junit.jupiter.api.Test
 import java.lang.reflect.Proxy
 import kotlin.test.*
 
-/** Exercises the production Holder provider/event-state and the production Section
- * animation/feedback slot. Native playback and the VM/Root lifecycle are deliberately
- * outside this fixture; any attempt to use those ports fails immediately. */
+/** Exercises the production Holder provider/event-state and Section animation/feedback.
+ * One test also invokes the real VM cache-restore publisher. Full Root/VM lifecycle and
+ * native playback are outside these fixtures; unrelated ports fail immediately. */
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalCoroutinesApi::class)
 class DesktopVideoPlayerCoverFeedbackCompositionTest {
     @Test fun feedbackWaitsForTheActualCoverExitCompletion() = withHost {
@@ -255,11 +267,97 @@ class DesktopVideoPlayerCoverFeedbackCompositionTest {
         assertFeedback(true)
     }
 
+    @Test fun vmCacheRestoreEmitsNewPartAndClearsOldFeedback() {
+        VmPublisher().use { publisher ->
+            publisher.restore(1)
+            val first = assertNotNull(publisher.vm.subjectSnapshot.value)
+            assertEquals("BV-first", first.bvid)
+            assertEquals(1L, first.cid)
+            Host(surfaceCanCrossfade = true, productionSubject = publisher.vm.subjectSnapshot).use { host ->
+                host.notice()
+                host.visible.value = false
+                host.frames(26)
+                host.assertFeedback(true)
+                val previousEvents = host.events
+                assertNotNull(previousEvents.resumeMessageDeadlineMs)
+
+                // Real VM restore publishes the subject; no test writes to its flow.
+                publisher.restore(2)
+                val second = assertNotNull(publisher.vm.subjectSnapshot.value)
+                assertEquals("BV-first", second.bvid)
+                assertEquals(2L, second.cid)
+                assertTrue(second.generation > first.generation)
+                host.identity.value = "BV-first:2"
+                host.frames(2)
+                assertSame(previousEvents, host.events)
+                assertNull(host.events.resumeMessage)
+                assertNull(host.events.resumeMessageDeadlineMs)
+                host.assertFeedback(false)
+
+                // Switching back cannot resurrect the first part's deadline or notice.
+                publisher.restore(1)
+                host.identity.value = "BV-first:1"
+                host.frames(2)
+                assertNull(host.events.resumeMessage)
+                assertNull(host.events.resumeMessageDeadlineMs)
+                host.assertFeedback(false)
+            }
+        }
+    }
+
+    /** Actual desktop VM and cache-restore producer. All external ports fail closed;
+     * queued unrelated plugin polling is never executed and no native surface exists. */
+    private class VmPublisher : AutoCloseable {
+        private inline fun <reified T> unused(): T = Proxy.newProxyInstance(
+            T::class.java.classLoader, arrayOf(T::class.java)
+        ) { _, method, _ -> error("Unexpected ${T::class.java.simpleName}.${method.name}") } as T
+        private val dispatcher = object : CoroutineDispatcher() {
+            override fun dispatch(context: CoroutineContext, block: Runnable) = Unit
+        }
+        private val scope = CoroutineScope(SupervisorJob() + dispatcher)
+        private val folder = Files.createTempDirectory("bp-resume-subject-")
+        private val context = DesktopPluginContext(DesktopPluginStore(folder))
+        private fun owns() = true
+        private fun commit(block: () -> Unit): Boolean { block(); return true }
+        private val repository = unused<DesktopOriginalVideoOwnerRepository>()
+        private val media = unused<DesktopOriginalVideoMediaPort>()
+        private val actions = unused<DesktopOriginalVideoOwnerActions>()
+        private val invocations = DesktopOriginalVideoPlaybackInvocationPorts(scope, ::owns, {
+            error("No network or media invocation in cache-restore fixture")
+        }, unused(), { media }, captureMetadataBinding = { error("No metadata request") })
+        private val plugins = Proxy.newProxyInstance(DesktopOriginalVideoOwnerPlugins::class.java.classLoader,
+            arrayOf(DesktopOriginalVideoOwnerPlugins::class.java)) { _, method, _ ->
+            when (method.name) {
+                "enabledPlayerPlugins" -> emptyList<DesktopPlayerPluginSessionHandle>()
+                "capturePlaybackDispatch" -> null
+                else -> error("Unexpected plugin work: ${method.name}")
+            }
+        } as DesktopOriginalVideoOwnerPlugins
+        private val api = unused<BilibiliApi>()
+        private val interaction = VideoInteractionUseCase(
+            com.android.purebilibili.data.repository.createTestVideoEngagementProtocol(api,
+                { "fixture" }, { 1L }, { "fixture" }, { null }, {}, {},
+                DesktopOriginalFavoriteFolderProtocol(api, { 1L }, { "fixture" }, {})), unused())
+        private val settings = DesktopOriginalPlayerSettingsContext(context, ::owns, ::commit,
+            largeScreenOrFoldableConfiguration = { false }, isDebugBuild = { false })
+        private val useCase = DesktopOriginalVideoPlaybackUseCaseEnvironment(context, repository, actions,
+            unused(), unused(), media, {}, { emptyMap() }, {}, { false }, { _, _, _, _ -> }, ::owns)
+        val vm = VideoPlaybackViewModel(DesktopOriginalVideoPlaybackOwnerEnvironment(scope, settings, invocations,
+            repository, unused(), actions, useCase, interaction, unused(), unused(), unused(), plugins,
+            unused(), unused(), unused(), { null }, unused(), unused(), unused(), unused(), MutableStateFlow(false),
+            ::owns, ::commit, DesktopTodayWatchFeedbackWriteBinding(context, ::owns, ::commit),
+            captureNativePublication = { null }, admitNativePublication = { _, _ -> false },
+            readRelatedPlaybackState = { null }))
+        fun restore(cid: Long) = vm.restoreFromCache(VideoPlaybackUiState.Success(
+            ViewInfo(bvid = "BV-first", aid = 17L, cid = cid, title = "fixture"), ""))
+        override fun close() { scope.cancel(); folder.toFile().deleteRecursively() }
+    }
+
     private fun withHost(surfaceCanCrossfade: Boolean = true, test: Host.() -> Unit) {
         Host(surfaceCanCrossfade).use { it.test() }
     }
 
-    private class Host(surfaceCanCrossfade: Boolean) : AutoCloseable {
+    private class Host(surfaceCanCrossfade: Boolean, productionSubject: StateFlow<VideoSubjectSnapshot?>? = null) : AutoCloseable {
         val identity = mutableStateOf("BV-first:1")
         fun snapshot(key: String) = VideoSubjectSnapshot(
             bvid = key.substringBefore(':'), cid = key.substringAfter(':').toLong(),
@@ -312,7 +410,7 @@ class DesktopVideoPlayerCoverFeedbackCompositionTest {
                     // Match the retained Holder: event state is keyed by currentBvid;
                     // the Section transition and feedback message carry bvid:cid.
                     val state = rememberVideoDetailPlaybackEventState(identity.value.substringBefore(':'))
-                    VideoDetailResumeIdentityEffect(subject, state)
+                    VideoDetailResumeIdentityEffect(productionSubject ?: subject, state)
                     val returnBudget = resolveVideoDetailReturnVisualBudget(
                         phase = phase.value,
                         hasRenderableLiveFrame = hasRenderableLiveFrame.value,
