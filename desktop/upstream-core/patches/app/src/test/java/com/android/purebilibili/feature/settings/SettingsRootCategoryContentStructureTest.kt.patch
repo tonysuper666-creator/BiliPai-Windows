@@ -163,7 +163,21 @@ Reason: Preserve settings copy and navigation-focus contracts across upstream ch
 +        assertTrue(titleFunction.contains("\"animation.haptic_feedback_enabled\" -> R.string.animation_title_haptic"))
 +        assertTrue(titleFunction.contains("return stringResource(titleResId)"))
 +        assertTrue(strings.contains("<string name=\"animation_title_haptic\">触感反馈</string>"))
-@@ -452 +551,24 @@
+@@ -425,0 +525,11 @@
++        val aboutSection = source.substringAfter("fun AboutSection(")
++            .substringBefore("private fun AboutProjectOverviewCard(")
++        val entry = source.substringBefore("fun AboutSection(")
++        assertTrue(entry.contains("appIconKey = state.appIcon"))
++        assertTrue(aboutSection.contains("SettingsManager.getAppIconAppearance(context)"))
++        assertTrue(aboutSection.contains("SettingsManager.getAppIconAppearanceSync(context)"))
++        assertTrue(aboutSection.contains("remember(appIconKey, appIconAppearance)"))
++        assertTrue(aboutSection.contains("resolveIconOptionPreviewRes(appIconKey, appIconAppearance)"))
++        assertTrue(aboutSection.contains("appIconRes = appIconRes"))
++        assertTrue(overviewBlock.contains("AsyncImage("))
++        assertTrue(overviewBlock.contains("model = appIconRes"))
+@@ -427 +536,0 @@
+-        assertTrue(overviewBlock.contains("R.mipmap.ic_launcher_bilipai_foreground"))
+@@ -452 +561,24 @@
 -        assertTrue(source.contains("text = category.subtitle"))
 +        val drawer = source.substringAfter("itemsIndexed(categories) {").substringBefore("selected = selected,")
 +        assertTrue(drawer.contains("AppNavigationDrawerItem("))

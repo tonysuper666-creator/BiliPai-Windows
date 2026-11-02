@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<testsuite failures="1" name="com.android.purebilibili.feature.settings.SettingsRootCategoryContentStructureTest" skipped="0" tests="25">
+    <testcase classname="com.android.purebilibili.feature.settings.SettingsRootCategoryContentStructureTest" name="aboutDevelopers_useGithubProfilesAndClickableAvatars()"/>
+    <testcase classname="com.android.purebilibili.feature.settings.SettingsRootCategoryContentStructureTest" name="tabletSettingsShell_usesNavDrivenCategoryRail()"/>
+    <testcase classname="com.android.purebilibili.feature.settings.SettingsRootCategoryContentStructureTest" name="mobileSettingsRoot_usesOnlySearchAndDirectCategoryList()"/>
+    <testcase classname="com.android.purebilibili.feature.settings.SettingsRootCategoryContentStructureTest" name="feedApiSection_usesNativeSwitchAndSliderItems()"/>
+    <testcase classname="com.android.purebilibili.feature.settings.SettingsRootCategoryContentStructureTest" name="mobileSettingsRootUsesNav3ScreensInsteadOfInlineDrillDown()"/>
+    <testcase classname="com.android.purebilibili.feature.settings.SettingsRootCategoryContentStructureTest" name="categoryEntries_useShortPlaybackNavigationCopy()"/>
+    <testcase classname="com.android.purebilibili.feature.settings.SettingsRootCategoryContentStructureTest" name="aboutProjectOverview_usesRasterLauncherAssetForComposePainter()">
+        <failure message="org.opentest4j.AssertionFailedError: Expected value to be true.">org.opentest4j.AssertionFailedError: Expected value to be true.
+	at org.junit.jupiter.api.AssertionUtils.fail(AssertionUtils.java:38)
+	at org.junit.jupiter.api.Assertions.fail(Assertions.java:138)
+	at kotlin.test.junit5.JUnit5Asserter.fail(JUnitSupport.kt:56)
+	at kotlin.test.Asserter.assertTrue(Assertions.kt:767)
+	at kotlin.test.junit5.JUnit5Asserter.assertTrue(JUnitSupport.kt:30)
+	at kotlin.test.Asserter.assertTrue(Assertions.kt:777)
+	at kotlin.test.junit5.JUnit5Asserter.assertTrue(JUnitSupport.kt:30)
+	at kotlin.test.AssertionsKt__AssertionsKt.assertTrue(Assertions.kt:44)
+	at kotlin.test.AssertionsKt.assertTrue(Unknown Source)
+	at kotlin.test.AssertionsKt__AssertionsKt.assertTrue$default(Assertions.kt:42)
+	at kotlin.test.AssertionsKt.assertTrue$default(Unknown Source)
+	at com.android.purebilibili.feature.settings.SettingsRootCategoryContentStructureTest.aboutProjectOverview_usesRasterLauncherAssetForComposePainter(SettingsRootCategoryContentStructureTest.kt:528)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+</failure>
+    </testcase>
+    <testcase classname="com.android.purebilibili.feature.settings.SettingsRootCategoryContentStructureTest" name="tipsSettingsScreen_usesSharedPageScaffold()"/>
+    <testcase classname="com.android.purebilibili.feature.settings.SettingsRootCategoryContentStructureTest" name="aboutSectionShowsProjectOverviewAndStaticDevelopersBeforeRows()"/>
+    <testcase classname="com.android.purebilibili.feature.settings.SettingsRootCategoryContentStructureTest" name="settingsSubpages_useNagramStyleSectionNames()"/>
+    <testcase classname="com.android.purebilibili.feature.settings.SettingsRootCategoryContentStructureTest" name="mobileSettingsRootCategorySummariesAreNotTruncated()"/>
+    <testcase classname="com.android.purebilibili.feature.settings.SettingsRootCategoryContentStructureTest" name="rootCategoryContent_staggersDetailGroupsWithEntranceSections()"/>
+    <testcase classname="com.android.purebilibili.feature.settings.SettingsRootCategoryContentStructureTest" name="aboutSection_doesNotRenderDuplicateReleaseChannelDisclaimerEntry()"/>
+    <testcase classname="com.android.purebilibili.feature.settings.SettingsRootCategoryContentStructureTest" name="mobileSettingsRootUsesNav3DestinationInsteadOfLocalDrillDown()"/>
+    <testcase classname="com.android.purebilibili.feature.settings.SettingsRootCategoryContentStructureTest" name="rootCategoryContent_usesStableDetailGroupsWithoutSceneShortcutRows()"/>
+    <testcase classname="com.android.purebilibili.feature.settings.SettingsRootCategoryContentStructureTest" name="releaseChannelPinnedCard_keepsActionsInOneLine()"/>
+    <testcase classname="com.android.purebilibili.feature.settings.SettingsRootCategoryContentStructureTest" name="settingsSearchSubmitsResultFocusBeforeOpeningDetailPage()"/>
+    <testcase classname="com.android.purebilibili.feature.settings.SettingsRootCategoryContentStructureTest" name="aboutSupport_keepsReleaseChannelBelowAboutDetailsWithoutDuplicateAuthorCard()"/>
+    <testcase classname="com.android.purebilibili.feature.settings.SettingsRootCategoryContentStructureTest" name="rootCategoryContent_usesStateAndActionHolders()"/>
+    <testcase classname="com.android.purebilibili.feature.settings.SettingsRootCategoryContentStructureTest" name="appNavigation_wrapsSettingsSubtreeRoutesWithTabletShell()"/>
+    <testcase classname="com.android.purebilibili.feature.settings.SettingsRootCategoryContentStructureTest" name="mobileSettingsRootUsesCategoryRowsWithoutAccordionExpansion()"/>
+    <testcase classname="com.android.purebilibili.feature.settings.SettingsRootCategoryContentStructureTest" name="tabletSettingsCategoryDrawer_showsSubtitle()"/>
+    <testcase classname="com.android.purebilibili.feature.settings.SettingsRootCategoryContentStructureTest" name="tabletCategoryRail_skipsSingleEntryHubPages()"/>
+    <testcase classname="com.android.purebilibili.feature.settings.SettingsRootCategoryContentStructureTest" name="broadSettingsEntriesOpenAtPageStartWhileSubtopicEntriesUsePreciseFocus()"/>
+    <testcase classname="com.android.purebilibili.feature.settings.SettingsRootCategoryContentStructureTest" name="detailEntrySection_usesExplicitFocusAndClearsStaleRequests()"/>
+</testsuite>
