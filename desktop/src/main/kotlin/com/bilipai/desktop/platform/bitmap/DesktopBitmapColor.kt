@@ -48,32 +48,38 @@ internal const val BITMAP_COLOR_MAX_PIXELS = 16_000_000L
  * 采样与选择照搬 `DesktopVideoCardPalette`：先按 48×48 面积做最近邻重采样，
  * 再过滤掉「无彩色 / 近黑 / 近白」的 swatch，取人口最多的一个。
  *
- * 与既有消费者的唯一差异：全部 swatch 都被过滤时返回 `null`，而既有消费者会回退到
- * 全部 swatch（于是把灰/黑/白当成强调色）。本接口是给强调色用的，无彩色不算代表色。
+ * 与既有消费者的唯一差异：全部 swatch 都被过滤时默认返回 `null`，而既有消费者会回退到
+ * 全部 swatch（于是把灰/黑/白当成强调色）。需要那份既有行为的调用方显式传
+ * [allowUnfilteredFallback] = true，例如视频封面：灰封面仍要给出它自己的颜色。
  *
  * 返回值是**量化后的** ARGB（每通道 5 bit，`ColorCutQuantizer` 的既有精度），
  * 与既有封面消费者拿到的值完全一致，不是原始像素值。
  *
- * @return 代表色 ARGB；位图已关闭、尺寸为空、或没有可用颜色时返回 `null`。
+ * @param allowUnfilteredFallback 过滤后没有强调色时，是否回退到人口最多的未过滤 swatch。
+ * @return 代表色 ARGB；位图已关闭、尺寸为空、或（默认语义下）没有可用颜色时返回 `null`。
  * @throws IllegalArgumentException 位图面积超过 [BITMAP_COLOR_MAX_PIXELS]，此时不做任何采样。
  */
 internal fun extractRepresentativeColor(
     source: DesktopBitmapPixelSource,
     maxColors: Int = BITMAP_COLOR_MAX_COLORS,
+    allowUnfilteredFallback: Boolean = false,
 ): Int? {
     val width = source.width()
     val height = source.height()
     if (source.isClosed() || width <= 0 || height <= 0) return null
     require(width.toLong() * height <= BITMAP_COLOR_MAX_PIXELS) { "位图采样尺寸过大" }
     val swatches = DesktopPalette.quantize(samplePixels(source, width, height), maxColors)
-    return swatches.filter { it.isAccentCandidate() }.maxByOrNull { it.population }?.rgb
+    val accent = swatches.filter { it.isAccentCandidate() }.maxByOrNull { it.population }
+    if (accent != null) return accent.rgb
+    return if (allowUnfilteredFallback) swatches.maxByOrNull { it.population }?.rgb else null
 }
 
 /** `org.jetbrains.skia.Bitmap` 的便捷入口，内部包一层 [SkiaBitmapPixelSource]。 */
 internal fun extractRepresentativeColor(
     bitmap: Bitmap,
     maxColors: Int = BITMAP_COLOR_MAX_COLORS,
-): Int? = extractRepresentativeColor(SkiaBitmapPixelSource(bitmap), maxColors)
+    allowUnfilteredFallback: Boolean = false,
+): Int? = extractRepresentativeColor(SkiaBitmapPixelSource(bitmap), maxColors, allowUnfilteredFallback)
 
 /** Palette.Builder.resizeBitmapArea 的等价实现：面积缩到 48×48，最近邻、不滤波。 */
 private fun samplePixels(source: DesktopBitmapPixelSource, width: Int, height: Int): IntArray {

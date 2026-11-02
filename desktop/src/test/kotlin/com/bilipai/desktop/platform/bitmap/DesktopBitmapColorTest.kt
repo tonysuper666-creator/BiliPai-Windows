@@ -4,6 +4,7 @@ import org.jetbrains.skia.Bitmap
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
+import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
@@ -91,6 +92,15 @@ class DesktopBitmapColorTest {
         assertNull(extractRepresentativeColor(solid(48, 48, 0xFF808080.toInt())))
         assertNull(extractRepresentativeColor(solid(48, 48, 0xFF000000.toInt())))
         assertNull(extractRepresentativeColor(solid(48, 48, 0xFFFFFFFF.toInt())))
+    }
+
+    @Test fun optInFallbackKeepsTheAchromaticCoverColor() {
+        for (grey in intArrayOf(0xFF808080.toInt(), 0xFF000000.toInt(), 0xFFFFFFFF.toInt())) {
+            val fallback = extractRepresentativeColor(solid(48, 48, grey), allowUnfilteredFallback = true)
+            assertNotNull(fallback)
+            assertApproximates(grey, fallback)
+            assertNull(extractRepresentativeColor(solid(48, 48, grey)))
+        }
     }
 
     @Test fun largeBitmapIsSampledWithinThe48By48Area() {
