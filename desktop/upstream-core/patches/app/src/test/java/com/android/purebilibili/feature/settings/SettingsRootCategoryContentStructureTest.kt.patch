@@ -23,7 +23,7 @@ Reason: Preserve settings copy assertions through upstream string-resource local
 +        assertTrue(additionalDirectory.contains("PlaybackSettingItem(\"home.dynamic_top_bar_collapse_on_scroll\", \"浏览动态时收起顶部栏\","))
 +        assertTrue(titleDirectory.contains("get() = playbackSettingDirectory + additionalSettingsDirectory"))
 +        assertTrue(titleDirectory.contains("settingsItemDirectory.first { it.settingId == settingId }.title"))
-@@ -219,5 +219,11 @@
+@@ -219,5 +236,11 @@
 -        assertTrue(source.contains("SettingsSearchFocusController.submit(result.target, result.focusId)"))
 -        assertTrue(
 -            source.indexOf("SettingsSearchFocusController.submit(result.target, result.focusId)") <
@@ -40,7 +40,22 @@ Reason: Preserve settings copy assertions through upstream string-resource local
 +        assertTrue(detailIndex > submitIndex)
 +        assertTrue(click.contains("if (result.target == com.android.purebilibili.feature.settings.SettingsSearchTarget.NEARBY_HANDOFF)"))
 +        assertTrue(click.contains("} else onSearchResultClick(result)"))
-@@ -322,2 +322,6 @@
+@@ -235 +258,2 @@
+-        assertTrue(source.contains("text = category.subtitle"))
++        val drawer = source.substringAfter("itemsIndexed(categories) {").substringBefore("selected = selected,")
++        assertTrue(Regex("""text\s*=\s*stringResource\s*\(\s*category\.subtitleResource\s*\(\s*\)\s*\)""").containsMatchIn(drawer))
+@@ -237 +261,9 @@
+-        assertTrue(source.contains("if (selectedCategory == null) emptyDetailPane() else detailPane()"))
++        val detailActive = Regex("""shouldRenderSettingsTabletDetailPane\s*\(\s*selectedCategory\s*=\s*selectedCategory\s*,\s*isSearchActive\s*=\s*isSearchActive\s*,?\s*\)""")
++        assertTrue(detailActive.containsMatchIn(source))
++        val policy = listOf(
++            File("app/src/main/java/com/android/purebilibili/feature/settings/SettingsAppNavigationPolicy.kt"),
++            File("src/main/java/com/android/purebilibili/feature/settings/SettingsAppNavigationPolicy.kt")
++        ).first { it.exists() }.readText().replace("\r\n", "\n")
++        val detailPolicy = policy.substringAfter("internal fun shouldRenderSettingsTabletDetailPane(").substringBefore("\n}")
++        assertTrue(Regex("""return\s+selectedCategory\s*!=\s*null\s*\|\|\s*isSearchActive""").containsMatchIn(detailPolicy))
++        assertTrue(Regex("""if\s*\(\s*!isDetailActive\s*\)\s*emptyDetailPane\s*\(\s*\)\s*else\s*detailPane\s*\(\s*\)""").containsMatchIn(source))
+@@ -322,2 +354,6 @@
 -        assertTrue(aboutSectionBlock.contains("AboutProjectOverviewCard(versionName = versionName)"))
 -        assertTrue(aboutSectionBlock.indexOf("AboutProjectOverviewCard(") < aboutSectionBlock.indexOf("SettingsCardGroup {"))
 +        val overviewCall = Regex(
@@ -49,7 +64,7 @@ Reason: Preserve settings copy assertions through upstream string-resource local
 +        val overviewIndex = overviewCall.find(aboutSectionBlock)?.range?.first ?: -1
 +        val settingsGroupIndex = aboutSectionBlock.indexOf("SettingsCardGroup {")
 +        assertTrue(overviewIndex >= 0 && settingsGroupIndex > overviewIndex)
-@@ -371 +394,10 @@
+@@ -371 +407,10 @@
 -        assertTrue(itemBlock.contains("uriHandler.openUri(contributor.profileUrl)"))
 +        val developerParameter = Regex("""^\s*(\w+)\s*:\s*AboutDeveloper\s*\)""")
 +            .find(itemBlock)?.groupValues?.get(1)
@@ -61,11 +76,7 @@ Reason: Preserve settings copy assertions through upstream string-resource local
 +            """\.clickable\s*\{\s*${Regex.escape(uriHandlerName)}\s*\.\s*openUri\s*\(\s*${Regex.escape(developerParameter)}\s*\.\s*profileUrl\s*\)\s*}"""
 +        )
 +        assertTrue(opensOwnProfile.containsMatchIn(itemBlock))
-@@ -449,7 +449,30 @@
-             File("src/main/java/com/android/purebilibili/feature/settings/screen/SettingsTabletShell.kt")
-         ).first { it.exists() }.readText().replace("\r\n", "\n")
--
-+
+@@ -452 +497,24 @@
 -        assertTrue(source.contains("text = category.subtitle"))
 +        val drawer = source.substringAfter("itemsIndexed(categories) {").substringBefore("selected = selected,")
 +        assertTrue(drawer.contains("AppNavigationDrawerItem("))
@@ -91,7 +102,3 @@ Reason: Preserve settings copy assertions through upstream string-resource local
 +            assertTrue(categoryCopy.contains("SettingsRootCategory.$category -> R.string.$resource"))
 +            assertTrue(strings.contains("<string name=\"$resource\">$expected</string>"))
 +        }
-     }
--
-+
-     @Test
