@@ -40,6 +40,15 @@ Reason: Preserve settings copy assertions through upstream string-resource local
 +        assertTrue(detailIndex > submitIndex)
 +        assertTrue(click.contains("if (result.target == com.android.purebilibili.feature.settings.SettingsSearchTarget.NEARBY_HANDOFF)"))
 +        assertTrue(click.contains("} else onSearchResultClick(result)"))
+@@ -322,2 +322,6 @@
+-        assertTrue(aboutSectionBlock.contains("AboutProjectOverviewCard(versionName = versionName)"))
+-        assertTrue(aboutSectionBlock.indexOf("AboutProjectOverviewCard(") < aboutSectionBlock.indexOf("SettingsCardGroup {"))
++        val overviewCall = Regex(
++            """AboutProjectOverviewCard\s*\(\s*versionName\s*=\s*versionName\s*[,)]"""
++        )
++        val overviewIndex = overviewCall.find(aboutSectionBlock)?.range?.first ?: -1
++        val settingsGroupIndex = aboutSectionBlock.indexOf("SettingsCardGroup {")
++        assertTrue(overviewIndex >= 0 && settingsGroupIndex > overviewIndex)
 @@ -371 +394,10 @@
 -        assertTrue(itemBlock.contains("uriHandler.openUri(contributor.profileUrl)"))
 +        val developerParameter = Regex("""^\s*(\w+)\s*:\s*AboutDeveloper\s*\)""")
