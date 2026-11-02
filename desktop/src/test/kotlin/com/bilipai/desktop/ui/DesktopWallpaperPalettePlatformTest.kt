@@ -61,6 +61,34 @@ class DesktopWallpaperPalettePlatformTest {
         }
     }
 
+    /**
+     * Twelve colours that stay distinct after the quantizer's 5-bit rounding, twelve equal stripes.
+     * 120x96 is under the 112x112 area ceiling, so the whole image is sampled without rescaling and
+     * the fixture differs from the platform entry only in how many colours it offers.
+     */
+    private fun twelveDistinctStripes(width: Int = 120, height: Int = 96): IntArray {
+        val colors = intArrayOf(
+            0xff1f3f7f.toInt(), 0xff2fa05f.toInt(), 0xffb02f2f.toInt(), 0xffd0a020.toInt(),
+            0xff7f3fbf.toInt(), 0xff1fa0af.toInt(), 0xffb05f7f.toInt(), 0xff5f7f3f.toInt(),
+            0xffdf7f3f.toInt(), 0xff4f5f9f.toInt(), 0xff9fcfdf.toInt(), 0xff3f2f1f.toInt(),
+        )
+        val stripe = width / colors.size
+        return IntArray(width * height) { index -> colors[minOf((index % width) / stripe, colors.lastIndex)] }
+    }
+
+    @Test fun moreThanEightDistinctColorsStayCappedAtEightAndMatchTheFrozenReference() {
+        val pixels = twelveDistinctStripes()
+        assertEquals(12, pixels.toSet().size, "fixture must offer more than eight independent colours")
+        val raster = DesktopWallpaperPaletteRaster(120, 96, pixels.copyOf())
+        val expected = original(120, 96, pixels, 0, 96)
+        val actual = wallpaperRegionSwatches(raster, 0, 96)!!
+        assertEquals(signature(expected), signature(actual), "twelve colours must quantize like the frozen max-8 reference")
+        assertEquals(8, actual.size, "max-8 contract: twelve distinct colours must stop at eight swatches")
+        assertEquals(8, actual.map { it.rgb }.toSet().size, "the eight swatches must stay distinct")
+        assertEquals(120 * 96, actual.sumOf { it.population }, "the cap must not drop pixels")
+        assertEquals(selected(DesktopWallpaperPaletteScoring(expected)), selected(raster.paletteForOriginalRegion(0, 96)))
+    }
+
     @Test fun invalidRegionsStillFail() {
         val raster = DesktopWallpaperPaletteRaster(1, 2, intArrayOf(-1, -1))
         assertFailsWith<IllegalArgumentException> { raster.paletteForOriginalRegion(-1, 1) }
