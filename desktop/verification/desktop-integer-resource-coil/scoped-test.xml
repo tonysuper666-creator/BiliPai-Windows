@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bilipai.desktop.ui.DesktopIntegerResourceCoilTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-11-02T16:00:00.732Z" hostname="Mac.lan" time="0.41">
+  <properties/>
+  <testcase name="applicationOwnerLoadsResourceModelsAndAboutUris()" classname="com.bilipai.desktop.ui.DesktopIntegerResourceCoilTest" time="0.405"/>
+  <system-out><![CDATA[raster Int -> java.lang.Integer: decoded 64x32
+vector Int -> java.lang.Integer: decoded 96x96
+adaptive Int -> java.lang.Integer: decoded 96x96
+invalid Int: java.lang.IllegalArgumentException: No drawable resource 0x7f7f7f7f in the generated desktop drawable table
+about URI matrix: 48 decoded
+missing URI: ErrorResult
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

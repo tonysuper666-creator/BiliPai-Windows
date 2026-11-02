@@ -56,4 +56,21 @@ internal class DesktopUpstreamResourceFetcher(private val id: Int, private val o
 
 /** The upstream application loader with the desktop fetcher for upstream resource ids added to its own components. */
 internal fun coil3.ImageLoader.withUpstreamResourceModels(): coil3.ImageLoader =
-    newBuilder().components(components.newBuilder().add(DesktopUpstreamResourceFetcher.Factory()).build()).build()
+    newBuilder().components(components.withoutBoundEngine().add(DesktopUpstreamResourceFetcher.Factory()).build()).build()
+
+/** A built loader's last interceptor is Coil's engine, bound to that loader's registry.
+ * Copying it into a new loader makes it handle requests before the new engine can run.
+ */
+@Suppress("UNCHECKED_CAST")
+private fun coil3.ComponentRegistry.withoutBoundEngine(): coil3.ComponentRegistry.Builder {
+    check(interceptors.lastOrNull()?.javaClass?.name == "coil3.intercept.EngineInterceptor") {
+        "Unexpected Coil interceptor chain; cannot safely extend the application loader"
+    }
+    return coil3.ComponentRegistry.Builder().apply {
+        interceptors.dropLast(1).forEach { add(it) }
+        mappers.forEach { (mapper, type) -> add(mapper as coil3.map.Mapper<Any, *>, type as kotlin.reflect.KClass<Any>) }
+        keyers.forEach { (keyer, type) -> add(keyer as coil3.key.Keyer<Any>, type as kotlin.reflect.KClass<Any>) }
+        fetcherFactories.forEach { (factory, type) -> add(factory as Fetcher.Factory<Any>, type as kotlin.reflect.KClass<Any>) }
+        decoderFactories.forEach { add(it) }
+    }
+}
