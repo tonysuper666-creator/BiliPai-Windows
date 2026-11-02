@@ -3,6 +3,7 @@ package com.bilipai.desktop.ui
 import com.android.purebilibili.core.cooldown.PlaybackCooldownManager
 import com.android.purebilibili.core.player.dash.AdaptiveDashPlaybackSource
 import com.android.purebilibili.data.model.VideoLoadError
+import com.android.purebilibili.data.repository.ContentRequestException
 import com.android.purebilibili.data.model.response.*
 import com.android.purebilibili.feature.video.usecase.VideoLoadResult
 import com.android.purebilibili.feature.video.usecase.VideoPlaybackUseCase
@@ -126,10 +127,118 @@ class DesktopWindowsVideoLoadErrorTest {
         }
     }
 
+    @Test
+    fun `repeated transport failures never become video or global cooldown and can recover`() = runBlocking {
+        for (stage in listOf("detail-result", "detail-throw", "play-url")) {
+            for (failure in listOf(UnknownHostException("private dns detail"),
+                java.net.ConnectException("private connection detail"), SocketTimeoutException("private timeout detail"),
+                IOException("untrusted text says HTTP 429"))) {
+                Fixture(failure, stage == "detail-throw", stage == "play-url").use { fixture ->
+                    // Cross both old thresholds without clearing cooldown between calls.
+                    val videos = List(5) { "BVsame" } + List(9) { "BVdifferent$it" }
+                    for (bvid in videos) {
+                        val result = assertIs<VideoLoadResult.Error>(fixture.useCase.loadVideo(bvid))
+                        assertSame(if (failure is SocketTimeoutException) VideoLoadError.Timeout else VideoLoadError.NetworkError, result.error)
+                        assertTrue(result.canRetry)
+                        assertTrue(desktopOriginalApiFailure(result.error).automaticRecovery)
+                        assertFalse(result.error.toUserMessage().contains("private"))
+                        assertFalse(result.error.toUserMessage().contains("429"))
+                        assertIs<com.android.purebilibili.core.cooldown.CooldownStatus.Ready>(PlaybackCooldownManager.getCooldownStatus(bvid))
+                    }
+                    assertEquals(videos.size, fixture.detailCalls.get())
+                    assertEquals(0, PlaybackCooldownManager.getConsecutiveFailures())
+                    fixture.failure = null // The same owner resumes when connectivity returns.
+                    assertIs<VideoLoadResult.Success>(fixture.useCase.loadVideo("BVsame"))
+                    assertEquals(videos.size + 1, fixture.detailCalls.get())
+                    assertEquals(0, fixture.mediaCalls.get()) // The UseCase selects, it does not start a player.
+                }
+            }
+        }
+    }
+
+    @Test
+    fun `trusted restrictions retain video and global cooldown without automatic retry`() = runBlocking {
+        for (stage in listOf("detail-result", "detail-throw", "play-url")) {
+            for (failure in listOf(BiliApiException(412, "private http detail"),
+                BiliApiException(429, "private http detail"), BiliApiException(-412, "private body detail"),
+                ContentRequestException(-412, "private body detail"), ContentRequestException(412, "private body detail"),
+                ContentRequestException(429, "private body detail"))) {
+                Fixture(failure, stage == "detail-throw", stage == "play-url").use { fixture ->
+                    repeat(3) {
+                        val result = assertIs<VideoLoadResult.Error>(fixture.useCase.loadVideo("BVlimited"))
+                        val error = assertIs<VideoLoadError.ApiError>(result.error)
+                        assertTrue(error.toUserMessage().contains("稍后重试"))
+                        assertFalse(error.toUserMessage().contains("private"))
+                        assertFalse(desktopOriginalApiFailure(error).automaticRecovery)
+                    }
+                    val cooled = assertIs<VideoLoadResult.Error>(fixture.useCase.loadVideo("BVlimited"))
+                    assertIs<VideoLoadError.RateLimited>(cooled.error)
+                    assertFalse(cooled.canRetry)
+                    assertEquals(3, fixture.detailCalls.get())
+                    // Other videos still reach the protocol until the original global threshold.
+                    repeat(5) { fixture.useCase.loadVideo("BVother$it") }
+                    val global = assertIs<VideoLoadResult.Error>(fixture.useCase.loadVideo("BVnext"))
+                    assertIs<VideoLoadError.GlobalCooldown>(global.error)
+                    assertFalse(global.canRetry)
+                    assertEquals(8, fixture.detailCalls.get())
+                    PlaybackCooldownManager.clearAll() // Existing explicit cooldown reset/retry action.
+                    fixture.failure = null
+                    assertIs<VideoLoadResult.Success>(fixture.useCase.loadVideo("BVlimited"))
+                }
+            }
+        }
+    }
+
+    @Test
+    fun `an empty play selection is not evidence of server rate limiting`() = runBlocking {
+        Fixture(null, false).use { fixture ->
+            fixture.emptySelection = true
+            repeat(9) {
+                val result = assertIs<VideoLoadResult.Error>(fixture.useCase.loadVideo("BVempty"))
+                assertSame(VideoLoadError.PlayUrlEmpty, result.error)
+                assertTrue(result.canRetry)
+            }
+            assertEquals(9, fixture.detailCalls.get())
+            assertEquals(0, PlaybackCooldownManager.getConsecutiveFailures())
+            fixture.emptySelection = false
+            assertIs<VideoLoadResult.Success>(fixture.useCase.loadVideo("BVempty"))
+            assertEquals(10, fixture.detailCalls.get())
+        }
+    }
+
+    @Test
+    fun `unrelated business failures do not claim rate limiting and raw diagnostics survive`() = runBlocking {
+        val events = mutableListOf<Throwable>()
+        val previous = android.util.Log.sink
+        android.util.Log.sink = android.util.Log.Sink { _, _, _, cause ->
+            if (cause != null) events += cause
+            0
+        }
+        try {
+            for (failure in listOf(BiliApiException(-101, "private authentication detail"),
+                ContentRequestException(-403, "private permission detail"),
+                UnknownHostException("private dns detail"), SocketTimeoutException("private timeout detail"))) {
+                Fixture(failure, false).use { fixture ->
+                    repeat(9) {
+                        val result = assertIs<VideoLoadResult.Error>(fixture.useCase.loadVideo("BVsame"))
+                        assertFalse(result.error is VideoLoadError.RateLimited)
+                        assertFalse(result.error is VideoLoadError.GlobalCooldown)
+                        assertFalse(result.error.toUserMessage().contains("private"))
+                    }
+                    assertEquals(9, fixture.detailCalls.get())
+                    assertTrue(events.any { it === failure }, "Diagnostics retain the original type, message and stack")
+                    assertEquals(0, PlaybackCooldownManager.getConsecutiveFailures())
+                }
+            }
+        } finally { android.util.Log.sink = previous }
+    }
+
     /** Test only: actual generated UseCase, private empty Store, no player/native/API.
      * Required platform ports fail if the error path attempts to publish any source.
      */
-    private class Fixture(private val failure: Throwable, private val throwFailure: Boolean) : AutoCloseable {
+    private class Fixture(var failure: Throwable?, private val throwFailure: Boolean,
+        private val failInPlayUrl: Boolean = false) : AutoCloseable {
+        var emptySelection = false
         private val root = Files.createTempDirectory("bilipai-http-classification-")
         val owned = AtomicBoolean(true)
         val detailCalls = AtomicInteger()
@@ -140,11 +249,17 @@ class DesktopWindowsVideoLoadErrorTest {
             override fun invalidateVideoLoadCaches(bvid: String, aid: Long, cid: Long): Unit = error("No forced refresh in classification fixture")
             override suspend fun getVideoInfoOnly(bvid: String, aid: Long, requestedCid: Long): Result<ViewInfo> {
                 detailCalls.incrementAndGet()
-                if (throwFailure) throw failure
-                return Result.failure(failure)
+                val failed = failure.takeUnless { failInPlayUrl }
+                    ?: return Result.success(ViewInfo(bvid = bvid, aid = 17L, cid = 22L))
+                if (throwFailure) throw failed
+                return Result.failure(failed)
             }
-            override suspend fun getInitialPlayUrlData(bvid: String, cid: Long, targetQuality: Int, audioLang: String?): PlayUrlData? =
-                error("Failed detail must not request a play source")
+            override suspend fun getInitialPlayUrlData(bvid: String, cid: Long, targetQuality: Int, audioLang: String?): PlayUrlData? {
+                if (failInPlayUrl) failure?.let { throw it }
+                if (emptySelection) return PlayUrlData(quality = 80)
+                return PlayUrlData(quality = 80, timelength = 1_000L,
+                    durl = listOf(Durl(url = "https://never-contacted.invalid/video")))
+            }
             override suspend fun getVideoDetails(bvid: String, aid: Long, requestedCid: Long, targetQuality: Int?, audioLang: String?): Result<Pair<ViewInfo, PlayUrlData>> {
                 error("The main load uses separate detail and playURL sources")
             }
