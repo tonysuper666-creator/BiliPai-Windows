@@ -1,0 +1,11 @@
+--- a/desktop/build.gradle.kts
++++ b/desktop/build.gradle.kts
+@@ -3502,6 +3502,8 @@
+     "app/src/test/java/com/android/purebilibili/feature/space/SpaceLoadPolicyTest.kt",
+     "app/src/test/java/com/android/purebilibili/feature/space/SpaceAggregatedModelMappingTest.kt",
+     "app/src/test/java/com/android/purebilibili/feature/space/SpaceDynamicNavigationPolicyTest.kt",
++    "app/src/test/java/com/android/purebilibili/feature/settings/SettingsCoreCombineOrderTest.kt",
++    "app/src/test/java/com/android/purebilibili/feature/settings/AnimationSettingsScreenStructureTest.kt",
+ )
+ val correctedUpstreamTestOutput = layout.buildDirectory.dir("patched-upstream-tests")
+ val applyUpstreamTestCorrections by tasks.registering {

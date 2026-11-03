@@ -1,0 +1,24 @@
+Upstream-source-sha256: 65140ea3e48f7ba8db38465dc4a9481b951a6b762123a1f81d229eee4c862c83
+Reason: Upstream appended seed palette to coreSettingsFlow and consumes it at index 13; preserve the frozen prefix and check both final value indexes.
+
+--- a/app/src/test/java/com/android/purebilibili/feature/settings/SettingsCoreCombineOrderTest.kt
++++ b/app/src/test/java/com/android/purebilibili/feature/settings/SettingsCoreCombineOrderTest.kt
+@@ -46,14 +46,17 @@
+                 "getMiniPlayerMode",
+                 "getDarkThemeSchedule",
+                 "getThemeColorContrast",
++                "getSeedPaletteStyle",
+             ),
+             flows,
+             "coreSettingsFlow 按下标取值：新增偏好只能追加到末尾，插在中间会让后面所有项错位",
+         )
+         assertEquals(
+-            "getThemeColorContrast",
++            "getSeedPaletteStyle",
+             flows.last(),
+             "新增偏好必须排在最后一项",
+         )
++        assertTrue(source.contains("colorContrast = values[12] as Contrast"))
++        assertTrue(source.contains("seedPaletteStyle = values[13] as SeedPaletteStyle"))
+     }
+ }

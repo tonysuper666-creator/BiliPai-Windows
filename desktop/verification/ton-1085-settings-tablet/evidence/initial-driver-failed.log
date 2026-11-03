@@ -1,0 +1,13 @@
+patching file 'app/src/test/java/com/android/purebilibili/feature/settings/SettingsRootCategoryContentStructureTest.kt'
+patching file 'app/src/test/java/com/android/purebilibili/feature/settings/SettingsRootCategoryContentStructureTest.kt'
+baseline exit 1 tests=25 failures=4 skipped=0 identities=[tabletSettingsShell_usesNavDrivenCategoryRail(), aboutProjectOverview_usesRasterLauncherAssetForComposePainter(), settingsSubpages_useNagramStyleSectionNames(), broadSettingsEntriesOpenAtPageStartWhileSubtopicEntriesUsePreciseFocus()]
+corrected exit 1 tests=25 failures=3 skipped=0 identities=[aboutProjectOverview_usesRasterLauncherAssetForComposePainter(), settingsSubpages_useNagramStyleSectionNames(), broadSettingsEntriesOpenAtPageStartWhileSubtopicEntriesUsePreciseFocus()]
+negative-subtitle exit 1 tests=25 failures=5 skipped=0 identities=[tabletSettingsShell_usesNavDrivenCategoryRail(), aboutProjectOverview_usesRasterLauncherAssetForComposePainter(), settingsSubpages_useNagramStyleSectionNames(), tabletSettingsCategoryDrawer_showsSubtitle(), broadSettingsEntriesOpenAtPageStartWhileSubtopicEntriesUsePreciseFocus()]
+Traceback (most recent call last):
+  File "/Users/zheng_li/multica_workspaces_desktop-api.multica.ai/tonysuper66-aaec464139a7/ton-1085-d1adffeb3b22/workdir/appcore-slice/desktop/verification/ton-1085-settings-tablet/verify.py", line 72, in <module>
+    run(variant,remaining|{identity} if negative else remaining)
+    ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/zheng_li/multica_workspaces_desktop-api.multica.ai/tonysuper66-aaec464139a7/ton-1085-d1adffeb3b22/workdir/appcore-slice/desktop/verification/ton-1085-settings-tablet/verify.py", line 54, in run
+    if xml.attrib.get('tests')!='25' or xml.attrib.get('skipped')!='0' or failures!=expected: raise RuntimeError((variant,xml.attrib,failures,expected))
+                                                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: ('negative-subtitle', {'failures': '5', 'name': 'com.android.purebilibili.feature.settings.SettingsRootCategoryContentStructureTest', 'skipped': '0', 'tests': '25'}, {'aboutProjectOverview_usesRasterLauncherAssetForComposePainter()', 'broadSettingsEntriesOpenAtPageStartWhileSubtopicEntriesUsePreciseFocus()', 'tabletSettingsCategoryDrawer_showsSubtitle()', 'tabletSettingsShell_usesNavDrivenCategoryRail()', 'settingsSubpages_useNagramStyleSectionNames()'}, {'aboutProjectOverview_usesRasterLauncherAssetForComposePainter()', 'broadSettingsEntriesOpenAtPageStartWhileSubtopicEntriesUsePreciseFocus()', 'tabletSettingsShell_usesNavDrivenCategoryRail()', 'settingsSubpages_useNagramStyleSectionNames()'})

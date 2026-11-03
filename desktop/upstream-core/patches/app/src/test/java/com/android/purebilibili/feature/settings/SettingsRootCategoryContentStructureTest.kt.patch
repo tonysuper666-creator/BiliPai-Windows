@@ -1,0 +1,191 @@
+Upstream-source-sha256: cd933af7c3ae8edfa99bb0c17d674e03965c44f88514a494c74a714e98d998e2
+Reason: Preserve settings copy and navigation-focus contracts across upstream changes.
+
+--- a/app/src/test/java/com/android/purebilibili/feature/settings/SettingsRootCategoryContentStructureTest.kt
++++ b/app/src/test/java/com/android/purebilibili/feature/settings/SettingsRootCategoryContentStructureTest.kt
+@@ -57,6 +57,36 @@
+-        assertTrue(source.contains("SettingsSearchFocusIds.PLAYBACK_DECODER"))
+-        assertTrue(source.contains("SettingsSearchFocusIds.BOTTOM_BAR_START"))
+-        assertTrue(source.contains("SettingsSearchFocusIds.ANIMATION_START"))
+-        assertTrue(source.contains("SettingsSearchFocusIds.PLAYBACK_COMMENTS"))
+-        assertTrue(source.contains("SettingsSearchFocusIds.PLAYBACK_FULLSCREEN"))
+-        assertTrue(source.contains("SettingsSearchFocusIds.PLAYBACK_DEBUG"))
++        fun readSettingsFile(path: String): String = listOf(
++            File("app/src/main/java/com/android/purebilibili/feature/settings/$path"),
++            File("src/main/java/com/android/purebilibili/feature/settings/$path")
++        ).first { it.exists() }.readText().replace("\r\n", "\n")
++
++        // The broad playback category now navigates directly; the page starts at
++        // the first section when no focused search request is pending.
++        val navigation = readSettingsFile("SettingsNavHierarchyPolicy.kt")
++        assertTrue(navigation.contains("SettingsRootCategory.PLAYBACK_QUALITY -> BiliPaiNavKey.PlaybackSettings"))
++        val playback = readSettingsFile("screen/PlaybackSettingsScreen.kt")
++        assertTrue(playback.contains("val listState = rememberLazyListState()"))
++        assertTrue(playback.contains("val request = focusRequest ?: return@LaunchedEffect"))
++        val focusPolicy = readSettingsFile("SettingsSearchFocusPolicy.kt")
++        val sectionOrder = focusPolicy.substringAfter("internal val playbackSettingsSectionKeys = listOf(")
++            .substringBefore(")")
++        assertTrue(sectionOrder.trimStart().startsWith("SettingsSearchFocusIds.PLAYBACK_DECODER"))
++
++        // Each remaining entry must submit its own focus and navigate to the
++        // appropriate settings page; merely finding IDs elsewhere is not enough.
++        fun assertEntry(target: String, destination: String, focus: String, action: String) {
++            val marker = "target = SettingsSearchTarget.$target,"
++            assertTrue(source.contains(marker), "Missing entry $target")
++            val entry = source.substringAfter(marker).substringBefore("onClick = actions.")
++            assertTrue(entry.contains("openFocus = SettingsSceneDetailFocus("), "$target must submit a focus")
++            assertTrue(entry.substringAfter("openFocus = SettingsSceneDetailFocus(")
++                .contains("SettingsSearchTarget.$destination,"), "$target must focus $destination")
++            assertTrue(entry.contains("SettingsSearchFocusIds.$focus"), "$target must focus $focus")
++            assertTrue(source.substringAfter(marker).substringBefore("SettingsDetailEntry(")
++                .contains("onClick = actions.$action"), "$target must use $action")
++        }
++        assertEntry("NAVIGATION", "BOTTOM_BAR", "BOTTOM_BAR_START", "onBottomBarClick")
++        assertEntry("ANIMATION", "ANIMATION", "ANIMATION_START", "onAnimationClick")
++        assertEntry("PLAYBACK_QUALITY", "PLAYBACK", "PLAYBACK_NETWORK", "onPlaybackClick")
++        assertEntry("INTERACTION_COMMENT", "PLAYBACK", "PLAYBACK_COMMENTS", "onPlaybackClick")
++        assertEntry("FULLSCREEN_GESTURE", "PLAYBACK", "PLAYBACK_FULLSCREEN", "onPlaybackClick")
++        assertEntry("DIAGNOSTICS", "PLAYBACK", "PLAYBACK_DEBUG", "onPlaybackClick")
+@@ -79 +109,18 @@
+-        assertTrue(feedApiBlock.contains("浏览动态时收起顶部栏"))
++        val topBarAnchor = "SettingsItemAnchor(\"home.dynamic_top_bar_collapse_on_scroll\")"
++        assertTrue(feedApiBlock.contains(topBarAnchor))
++        val topBarSwitch = feedApiBlock.substringAfter(topBarAnchor).substringBefore("SettingsAdaptiveDivider()")
++        assertTrue(topBarSwitch.contains("SettingSwitchItem("))
++        assertTrue(topBarSwitch.contains("title = settingItemTitle(\"home.dynamic_top_bar_collapse_on_scroll\")"))
++        assertTrue(topBarSwitch.contains("checked = dynamicTopBarCollapseOnScroll"))
++        assertTrue(topBarSwitch.contains("onCheckedChange = onDynamicTopBarCollapseOnScrollChange"))
++        val additionalDirectory = listOf(
++            File("app/src/main/java/com/android/purebilibili/feature/settings/SettingsAdditionalDirectory.kt"),
++            File("src/main/java/com/android/purebilibili/feature/settings/SettingsAdditionalDirectory.kt")
++        ).first { it.exists() }.readText()
++        val titleDirectory = listOf(
++            File("app/src/main/java/com/android/purebilibili/feature/settings/PlaybackSettingDirectory.kt"),
++            File("src/main/java/com/android/purebilibili/feature/settings/PlaybackSettingDirectory.kt")
++        ).first { it.exists() }.readText()
++        assertTrue(additionalDirectory.contains("PlaybackSettingItem(\"home.dynamic_top_bar_collapse_on_scroll\", \"浏览动态时收起顶部栏\","))
++        assertTrue(titleDirectory.contains("get() = playbackSettingDirectory + additionalSettingsDirectory"))
++        assertTrue(titleDirectory.contains("settingsItemDirectory.first { it.settingId == settingId }.title"))
+@@ -219,5 +266,11 @@
+-        assertTrue(source.contains("SettingsSearchFocusController.submit(result.target, result.focusId)"))
+-        assertTrue(
+-            source.indexOf("SettingsSearchFocusController.submit(result.target, result.focusId)") <
+-                source.indexOf("onSearchResultClick(result)")
+-        )
++        val row = source.substringAfter("SettingsSearchResultRow(").substringBefore("\n                    )")
++        val click = row.substringAfter("onClick = {").substringBefore("\n                        },")
++        val submit = "SettingsSearchFocusController.submit(result.target, result.focusId, result.settingId.takeUnless { it.startsWith(\"legacy.\") }, query = searchQuery)"
++        val submitIndex = click.indexOf(submit)
++        val nearbyIndex = click.indexOf("nearbyHandoff?.openDevices?.invoke()")
++        val detailIndex = click.indexOf("onSearchResultClick(result)")
++        assertTrue(submitIndex >= 0)
++        assertTrue(nearbyIndex > submitIndex)
++        assertTrue(detailIndex > submitIndex)
++        assertTrue(click.contains("if (result.target == com.android.purebilibili.feature.settings.SettingsSearchTarget.NEARBY_HANDOFF)"))
++        assertTrue(click.contains("} else onSearchResultClick(result)"))
+@@ -235 +288,2 @@
+-        assertTrue(source.contains("text = category.subtitle"))
++        val drawer = source.substringAfter("itemsIndexed(categories) {").substringBefore("selected = selected,")
++        assertTrue(Regex("""text\s*=\s*stringResource\s*\(\s*category\.subtitleResource\s*\(\s*\)\s*\)""").containsMatchIn(drawer))
+@@ -237 +291,9 @@
+-        assertTrue(source.contains("if (selectedCategory == null) emptyDetailPane() else detailPane()"))
++        val detailActive = Regex("""shouldRenderSettingsTabletDetailPane\s*\(\s*selectedCategory\s*=\s*selectedCategory\s*,\s*isSearchActive\s*=\s*isSearchActive\s*,?\s*\)""")
++        assertTrue(detailActive.containsMatchIn(source))
++        val policy = listOf(
++            File("app/src/main/java/com/android/purebilibili/feature/settings/SettingsAppNavigationPolicy.kt"),
++            File("src/main/java/com/android/purebilibili/feature/settings/SettingsAppNavigationPolicy.kt")
++        ).first { it.exists() }.readText().replace("\r\n", "\n")
++        val detailPolicy = policy.substringAfter("internal fun shouldRenderSettingsTabletDetailPane(").substringBefore("\n}")
++        assertTrue(Regex("""return\s+selectedCategory\s*!=\s*null\s*\|\|\s*isSearchActive""").containsMatchIn(detailPolicy))
++        assertTrue(Regex("""if\s*\(\s*!isDetailActive\s*\)\s*emptyDetailPane\s*\(\s*\)\s*else\s*detailPane\s*\(\s*\)""").containsMatchIn(source))
+@@ -322,2 +384,6 @@
+-        assertTrue(aboutSectionBlock.contains("AboutProjectOverviewCard(versionName = versionName)"))
+-        assertTrue(aboutSectionBlock.indexOf("AboutProjectOverviewCard(") < aboutSectionBlock.indexOf("SettingsCardGroup {"))
++        val overviewCall = Regex(
++            """AboutProjectOverviewCard\s*\(\s*versionName\s*=\s*versionName\s*[,)]"""
++        )
++        val overviewIndex = overviewCall.find(aboutSectionBlock)?.range?.first ?: -1
++        val settingsGroupIndex = aboutSectionBlock.indexOf("SettingsCardGroup {")
++        assertTrue(overviewIndex >= 0 && settingsGroupIndex > overviewIndex)
+@@ -371 +437,10 @@
+-        assertTrue(itemBlock.contains("uriHandler.openUri(contributor.profileUrl)"))
++        val developerParameter = Regex("""^\s*(\w+)\s*:\s*AboutDeveloper\s*\)""")
++            .find(itemBlock)?.groupValues?.get(1)
++        val uriHandlerName = Regex("""val\s+(\w+)\s*=\s*LocalUriHandler\s*\.\s*current""")
++            .find(itemBlock)?.groupValues?.get(1)
++        assertTrue(developerParameter != null)
++        assertTrue(uriHandlerName != null)
++        val opensOwnProfile = Regex(
++            """\.clickable\s*\{\s*${Regex.escape(uriHandlerName)}\s*\.\s*openUri\s*\(\s*${Regex.escape(developerParameter)}\s*\.\s*profileUrl\s*\)\s*}"""
++        )
++        assertTrue(opensOwnProfile.containsMatchIn(itemBlock))
+@@ -401,3 +476,15 @@
+-        assertTrue(appearance.contains("AppPreferenceSectionTitle(\"显示模式\")"))
+-        assertTrue(appearance.contains("AppPreferenceSectionTitle(\"文字与大小\")"))
+-        assertTrue(appearance.contains("AppPreferenceSectionTitle(\"开屏与图标\")"))
++        val strings = listOf(
++            File("app/src/main/res/values/strings.xml"),
++            File("src/main/res/values/strings.xml")
++        ).first { it.exists() }.readText().replace("\r\n", "\n")
++        fun assertAppearanceHeading(key: String, resource: String, label: String) {
++            val marker = "item(key = \"$key\")"
++            assertTrue(appearance.contains(marker))
++            val block = appearance.substringAfter(marker).substringBefore("item(key = ")
++            val title = Regex("""AppPreferenceSectionTitle\s*\(\s*context\.getString\s*\(\s*R\.string\.${Regex.escape(resource)}\s*\)\s*\)""")
++            assertTrue(title.containsMatchIn(block))
++            assertTrue(strings.contains("<string name=\"$resource\">$label</string>"))
++        }
++        assertAppearanceHeading("appearance_display_mode_title", "appearance_section_interface_effects", "界面与效果")
++        assertAppearanceHeading("appearance_text_size_title", "appearance_section_text_size", "文字与大小")
++        assertAppearanceHeading("appearance_splash_icon_title", "appearance_section_splash_icon", "开屏与图标")
+@@ -406,6 +493,18 @@
+-        assertTrue(
+-            playback.indexOf("AppPreferenceSectionTitle(\"网络与画质\")") <
+-                playback.indexOf("AppPreferenceSectionTitle(\"互动与评论\")")
+-        )
+-        assertTrue(animation.contains("AppPreferenceSectionTitle(\"液态玻璃与磨砂\")"))
+-        assertTrue(animation.contains("title = \"触感反馈\""))
++        val networkHeading = playback.indexOf("AppPreferenceSectionTitle(\"网络与画质\")")
++        val interactionHeading = playback.indexOf("AppPreferenceSectionTitle(\"互动与评论\")")
++        assertTrue(networkHeading >= 0 && interactionHeading >= 0 && networkHeading < interactionHeading)
++        val glassMarker = "item(key = \"animation_glass_title\")"
++        assertTrue(animation.contains(glassMarker))
++        val glassBlock = animation.substringAfter(glassMarker).substringBefore("item(key = ")
++        val glassTitle = Regex("""AppPreferenceSectionTitle\s*\(\s*if\s*\(\s*advancedOnly\s*\)\s*stringResource\s*\(\s*R\.string\.animation_glass_advanced_title\s*\)\s*else\s*stringResource\s*\(\s*R\.string\.animation_glass_section_title\s*\)\s*\)""")
++        assertTrue(glassTitle.containsMatchIn(glassBlock))
++        assertTrue(strings.contains("<string name=\"animation_glass_section_title\">液态玻璃与磨砂</string>"))
++        assertTrue(strings.contains("<string name=\"animation_glass_advanced_title\">玻璃高级调节</string>"))
++        val hapticMarker = "SettingsItemAnchor(\"animation.haptic_feedback_enabled\")"
++        assertTrue(animation.contains(hapticMarker))
++        val hapticBlock = animation.substringAfter(hapticMarker).substringBefore("SettingsItemAnchor(")
++        assertTrue(hapticBlock.contains("title = localizedAnimationSettingTitle(\"animation.haptic_feedback_enabled\")"))
++        val titleFunction = animation.substringAfter("private fun localizedAnimationSettingTitle(").substringBefore("\n}")
++        assertTrue(titleFunction.contains("\"animation.haptic_feedback_enabled\" -> R.string.animation_title_haptic"))
++        assertTrue(titleFunction.contains("return stringResource(titleResId)"))
++        assertTrue(strings.contains("<string name=\"animation_title_haptic\">触感反馈</string>"))
+@@ -452 +551,24 @@
+-        assertTrue(source.contains("text = category.subtitle"))
++        val drawer = source.substringAfter("itemsIndexed(categories) {").substringBefore("selected = selected,")
++        assertTrue(drawer.contains("AppNavigationDrawerItem("))
++        assertTrue(drawer.contains("text = stringResource(category.subtitleResource())"))
++        val categoryCopy = listOf(
++            File("app/src/main/java/com/android/purebilibili/feature/settings/SettingsRootCategoryCopy.kt"),
++            File("src/main/java/com/android/purebilibili/feature/settings/SettingsRootCategoryCopy.kt")
++        ).first { it.exists() }.readText()
++        val strings = listOf(
++            File("app/src/main/res/values/strings.xml"), File("src/main/res/values/strings.xml")
++        ).first { it.exists() }.readText()
++        listOf(
++            Triple("APPEARANCE_THEME", "appearance", "主题、文字大小、图标、动画与振动"),
++            Triple("PLAYBACK_QUALITY", "playback", "画质、倍速、字幕、连播、小窗和后台播放"),
++            Triple("HOME_RECOMMENDATION", "home", "视频卡片、推荐内容和动态页面"),
++            Triple("NAVIGATION_INTERACTION", "navigation", "底栏、首页分类栏、搜索分类和平板侧边栏"),
++            Triple("PRIVACY_PERMISSION", "privacy", "历史记录、身份验证、系统权限和屏蔽名单"),
++            Triple("STORAGE_BACKUP", "storage", "保存位置、缓存、设置分享和 WebDAV 备份"),
++            Triple("PLUGINS_EXTENSIONS", "plugins", "插件、装扮和扩展功能"),
++            Triple("SYSTEM_ABOUT", "support", "使用帮助、问题排查、更新和应用信息")
++        ).forEach { (category, key, expected) ->
++            val resource = "settings_category_${key}_summary"
++            assertTrue(categoryCopy.contains("SettingsRootCategory.$category -> R.string.$resource"))
++            assertTrue(strings.contains("<string name=\"$resource\">$expected</string>"))
++        }
