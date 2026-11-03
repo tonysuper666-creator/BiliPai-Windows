@@ -19,8 +19,16 @@
              columns = GridCells.Fixed(columns),
              contentPadding = PaddingValues(
                  start = gridOuterPaddingDp.dp,
-@@ -1,4 +1,6 @@
+@@ -1,4 +1,14 @@
  package com.android.purebilibili.feature.list
++import androidx.compose.foundation.gestures.awaitEachGesture
++import androidx.compose.foundation.gestures.awaitFirstDown
++import androidx.compose.foundation.gestures.waitForUpOrCancellation
++import androidx.compose.ui.input.pointer.PointerEventPass
++import androidx.compose.ui.input.pointer.PointerType
++import androidx.compose.ui.input.pointer.pointerInput
++import com.android.purebilibili.navigation.isTabSelectionInProgress
++import kotlin.math.roundToInt
 +import com.android.purebilibili.navigation.tabIndicatorPosition
 +import com.android.purebilibili.navigation.tabSelectedPage
  
@@ -43,3 +51,29 @@
          if (historyContentFilter != targetFilter) {
              historyContentFilter = targetFilter
              selectedHistoryKeys = emptySet()
+@@ -1327,7 +1337,24 @@
+                         HorizontalPager(
+                             state = historyPagerState,
+                             userScrollEnabled = !isHistoryBatchMode,
+-                            modifier = Modifier.fillMaxSize(),
++                            modifier = Modifier.fillMaxSize().pointerInput(historyPagerState, isHistoryBatchMode) {
++                                awaitEachGesture {
++                                    val down = awaitFirstDown(requireUnconsumed = false, pass = PointerEventPass.Initial)
++                                    if (!isHistoryBatchMode && down.type == PointerType.Touch &&
++                                        historyPagerState.isTabSelectionInProgress
++                                    ) {
++                                        // A distant animated scroll can pre-jump the pager while the shared
++                                        // indicator still travels. Align synchronously before the pager
++                                        // takes UserInput ownership; a launched scrollToPage can lose
++                                        // its scroll mutex to that same touch gesture.
++                                        val position = historyPagerState.tabIndicatorPosition
++                                            .coerceIn(0f, (historyPagerState.pageCount - 1).toFloat())
++                                        val page = position.roundToInt()
++                                        historyPagerState.requestScrollToPage(page, position - page)
++                                    }
++                                    waitForUpOrCancellation(pass = PointerEventPass.Initial)
++                                }
++                            },
+                             beyondViewportPageCount = 0,
+                         ) { pageIndex ->
+                             val pageFilter = historyFilters.getOrElse(pageIndex) { HistoryContentFilter.ALL }
