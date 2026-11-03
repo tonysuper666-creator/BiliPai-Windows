@@ -24,3 +24,12 @@
                  },
                  isScrollInProgressProvider = { pagerState.isScrollInProgress },
              )
+@@ -1946,7 +1948,7 @@
+         )
+     }
+     Column(
+-        modifier = modifier
++        modifier = modifier.then(tabSwipeModifier)
+     ) {
+         Row(
+             modifier = Modifier
