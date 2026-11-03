@@ -41,6 +41,23 @@ BASE_SHA256 = "cb44523d1c71e0931e6601c4408627ed6975aabb9a8d6ae3e5360e1505b8b978"
 BASE_BYTES = 123287
 ADDED_LINES, REMOVED_LINES = 35, 16
 
+# The page error card's wiring, each expression complete and occurring once. A retry of a failed bootstrap has to re-run the load, a retry of
+# a loaded page has to fall back to the original page, the card has to cover the original load error too, and the feedback host has to yield
+# to the card. The labels are what a failure reports.
+RETRY_WIRING = (
+    ("the retry counter re-runs the bootstrap effect",
+     "LaunchedEffect(assembly, route.openId, route.bvid, route.cid, route.resumePositionMs, active, bootstrapRetry) {"),
+    ("the retry clears the bootstrap error and bumps the counter",
+     "if (bootstrapError != null) { bootstrapError = null; bootstrapRetry++ }"),
+    ("the retry of a loaded page falls back to the original page's retry", "else shell.playback.retry()"),
+    ("the page error also covers the original load error",
+     "val showPageError = bootstrapError != null || playback.error != null || originalLoadError != null"),
+    ("the error card replaces the viewport content", "if (showPageError) DesktopWindowsPageErrorOverlay("),
+    ("the card hands its mount to the focus tracker", "onMounted = pageErrorFocus::mount,"),
+    ("the feedback host yields while the error card shows",
+     "if (!showPageError) DesktopWindowsConfirmedVideoFeedback(binding, viewportSize, native.surface, feedbackBounds)"),
+)
+
 # The ten hunks of slice V2 in leaf order: (label, lines before, lines after). The first and the last line of each hunk are unchanged
 # context, so each "after" block is anchored and occurs exactly once in the leaf.
 HUNKS = (
@@ -412,6 +429,21 @@ def lambda_block(leaf, opener):
         end += 1
 
 
+def check_error_wiring(leaf):
+    """The page error card's wiring in the leaf, as exact expressions rather than half sentences.
+
+    This is STATIC source protection: it says the retry reaches the original page, the counter that re-runs the bootstrap is bumped, and the
+    feedback host yields while the card shows. It says nothing about runtime rendering. DesktopWindowsPageErrorCardTest mounts the card with
+    its own onRetry lambda, so no JVM test runs this leaf's retry path; the runtime behaviour is verified on the desktop."""
+    code = re.sub(r"(?m)^[ \t]+", "", source.mask_kotlin(leaf))
+    problems = []
+    for label, expression in RETRY_WIRING:
+        occurrences = code.count(expression)
+        if occurrences != 1:
+            problems.append("%s, expected once, found %d: %s" % (label, occurrences, expression))
+    return problems
+
+
 def check_v2_structure(leaf):
     """Problems in the V2 shape of the leaf: the imports, the flag read, the three lambdas and where they are called."""
     problems = []
@@ -504,19 +536,19 @@ class LeafIdentityTest(unittest.TestCase):
 
     def test_recoverable_errors_keep_the_original_page_retry_and_login(self):
         # K1 changes the error presentation in this same leaf. A whole-file
-        # hash cannot distinguish that intended change from lost player wiring.
-        # The real rendered card/retry is also exercised by the JVM UI test.
+        # hash cannot distinguish that intended change from lost player wiring,
+        # so the wiring is pinned as complete expressions instead. This is
+        # static source protection: the real card/retry runs in the desktop app,
+        # not in a JVM test (DesktopWindowsPageErrorCardTest passes its own
+        # onRetry lambda and never reaches this leaf).
+        self.assertEqual([], check_error_wiring(LEAF_TEXT))
         self.assertIn("DesktopWindowsPageErrorCard(", LEAF_TEXT)
-        self.assertIn("desktopWindowsVideoErrorMessage(originalLoadError)", LEAF_TEXT)
         self.assertIn("message = bootstrapError ?: desktopWindowsVideoErrorMessage(originalLoadError)", LEAF_TEXT)
         self.assertIn("if (current() && originalLoadError != null)", LEAF_TEXT)
         self.assertIn("reportPageError?.invoke(originalLoadError.javaClass.simpleName,", LEAF_TEXT)
-        self.assertIn("if (showPageError) DesktopWindowsPageErrorOverlay(", LEAF_TEXT)
         self.assertNotIn("if (bootstrapError != null || playback.error != null) failureContent()", LEAF_TEXT)
         self.assertIn("if (current() && rootEnvironment.currentKey() === route)", LEAF_TEXT)
-        self.assertIn("else shell.playback.retry()", LEAF_TEXT)
         self.assertIn("?.loginFromReadFailure(intent)", LEAF_TEXT)
-        self.assertIn("bootstrapError = null; bootstrapRetry++", LEAF_TEXT)
         self.assertEqual([], check_must_keep(LEAF_TEXT))
 
     def test_the_diff_against_the_base_is_small_and_exactly_the_recorded_size(self):
@@ -805,8 +837,32 @@ class MutationTest(unittest.TestCase):
         return text
 
     def test_every_check_passes_on_the_real_leaf(self):
-        for check in (check_v2_structure, check_routes, check_construction):
+        for check in (check_v2_structure, check_routes, check_construction, check_error_wiring):
             self.assertEqual([], check(LEAF_TEXT), check.__name__)
+
+    def test_a_retry_that_does_not_rerun_the_bootstrap_is_found(self):
+        # N9: dropping bootstrapRetry from the key makes a bootstrap retry do nothing.
+        self.assertTrue(check_error_wiring(self.mutated("route.resumePositionMs, active, bootstrapRetry) {",
+                                                       "route.resumePositionMs, active) {")))
+
+    def test_a_page_error_that_ignores_the_original_load_error_is_found(self):
+        # N10: the original load error no longer shows the card.
+        self.assertTrue(check_error_wiring(self.mutated("playback.error != null || originalLoadError != null",
+                                                        "playback.error != null")))
+
+    def test_a_reversed_retry_condition_is_found(self):
+        # N11: with == null the retry clears an error that is not there and never re-runs the load.
+        self.assertTrue(check_error_wiring(self.mutated("if (bootstrapError != null) { bootstrapError = null; bootstrapRetry++ }",
+                                                        "if (bootstrapError == null) { bootstrapError = null; bootstrapRetry++ }")))
+
+    def test_a_feedback_host_that_does_not_yield_to_the_card_is_found(self):
+        # N12: the confirmed feedback host keeps painting over the page error card.
+        self.assertTrue(check_error_wiring(self.mutated("if (!showPageError) DesktopWindowsConfirmedVideoFeedback(",
+                                                        "DesktopWindowsConfirmedVideoFeedback(")))
+
+    def test_a_card_that_never_mounts_the_focus_tracker_is_found(self):
+        # N13: an empty onMounted leaves the return of focus unarmed.
+        self.assertTrue(check_error_wiring(self.mutated("onMounted = pageErrorFocus::mount,", "onMounted = {},")))
 
     def test_a_bar_that_is_shown_in_any_layout_is_found(self):
         self.assertTrue(check_v2_structure(self.mutated(BAR_CALL, "if (chromeVisible) legacyControlBar()")))
