@@ -20,7 +20,7 @@ def legacy_gate_workspace(repo):
     if not pin.exists():  # also permits baseline verification before M0
         yield repo
         return
-    commit, = [line.strip() for line in pin.read_text().splitlines()
+    commit, = [line.strip() for line in pin.read_text(encoding="utf-8").splitlines()
                if line.strip() and not line.startswith("#")]
     subprocess.run(["git", "-C", str(repo), "cat-file", "-e", commit + "^{commit}"], check=True)
     protected = {"desktop", ".github", ".git"}
@@ -59,7 +59,7 @@ def legacy_gate_workspace(repo):
             # The symbol gate also models modules compiled from the merged root.
             # Keep those real inputs separate from the old generator originals.
             recipe = repo / "desktop/build.gradle.kts"
-            modules = re.search(r'val migratedUpstreamModules = listOf\((.*?)\)', recipe.read_text()) if recipe.exists() else None
+            modules = re.search(r'val migratedUpstreamModules = listOf\((.*?)\)', recipe.read_text(encoding="utf-8")) if recipe.exists() else None
             for module in re.findall(r'"([^"]+)"', modules.group(1)) if modules else []:
                 relative = Path(module) / 'src/main/java'
                 shutil.copytree(repo / relative, view / '.merged-root' / relative)

@@ -1,11 +1,12 @@
 from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
+from desktop_paths import long_path
 import argparse,hashlib,importlib.util,json,re,subprocess,sys
 sys.dont_write_bytecode=True
 COMMIT='79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40'
 def sha(v):return hashlib.sha256(v).hexdigest()
 def wide(p):
- s=str(Path(p).absolute());return Path(s if s.startswith('\\\\?\\') else '\\\\?\\'+s)
+ return long_path(Path(p).absolute())
 def raw(p):return wide(p).read_bytes().replace(b'\r\n',b'\n')
 def save(p,v):p=wide(p);p.parent.mkdir(parents=True,exist_ok=True);p.write_bytes(v if isinstance(v,bytes) else v.encode())
 def js(p,v):save(p,json.dumps(v,ensure_ascii=False,indent=2)+'\n')

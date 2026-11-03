@@ -381,11 +381,15 @@ class DesktopWindowsVideoDownloadSelectionTest {
                     UgcEpisode(bvid = "BVother", cid = 81, title = "Other"),
                 ))))))
             val chooser = h.batchChooser(value)
-            assertEquals(listOf("BVfixture", "BVother"), chooser.candidates.map { it.bvid })
+            // 上游 resolveBatchDownloadCandidates 现在把合集里当前稿件的分 P 一并展开
+            // （上游 BatchDownloadCandidatePolicyTest 断言 A#11/A#12 同列）；桌面跟随该语义。
+            assertEquals(listOf("BVfixture", "BVfixture", "BVfixture", "BVother"), chooser.candidates.map { it.bvid })
+            assertEquals(listOf(70L, 71L, 72L, 81L), chooser.candidates.map { it.cid })
             assertTrue(chooser.select(80, DownloadOptions(), chooser.candidates.map { it.copy(selected = true) }))
-            assertEquals(listOf("BVother" to 81L), h.requested)
-            assertEquals(listOf("BVfixture" to 70L, "BVother" to 81L), h.queued.map { it.bvid to it.cid })
-            assertTrue(h.queued.all { it.groupKey == "ugc:9" && it.episodeCount == 2 })
+            assertEquals(listOf("BVfixture" to 71L, "BVfixture" to 72L, "BVother" to 81L), h.requested)
+            assertEquals(listOf("BVfixture" to 70L, "BVfixture" to 71L, "BVfixture" to 72L, "BVother" to 81L),
+                h.queued.map { it.bvid to it.cid })
+            assertTrue(h.queued.all { it.groupKey == "ugc:9" && it.episodeCount == 4 })
         }
     }
 

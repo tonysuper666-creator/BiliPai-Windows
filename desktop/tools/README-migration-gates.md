@@ -25,6 +25,11 @@ worktree and all objects in the original clone; the seven archive-only Git
 failures are addressed by this setup rather than by changing assertions.
 Missing history fails before discovery; fetch full history and retry.
 
+The updater inventory now pins the merged source tree. Its complete
+`test_sync_upstream` suite runs against that live tree before the retained
+generator suites run at the legacy read point. Every test still runs once,
+and either suite failing makes the command fail.
+
 The current Gradle model records source ownership for migrated modules and the
 transition-patch task. The read point keeps the current module inputs separately
 under `.merged-root`, while generators still read pinned originals. The model
@@ -45,7 +50,7 @@ only original upstream fixtures, while every policy implementation remains live:
 
 | Tests | Input / reason |
 | --- | --- |
-| `test_sync_upstream`: canonical, adapted inventory, version metadata and API risk fixtures | Pinned originals: these tests compare retained slice manifests and mutate known v0.2.5 bodies, not current Android behavior. |
+| `test_sync_upstream`: canonical, adapted inventory, version metadata and API risk fixtures | Merged originals and current manifests, with exact current hashes, successor paths and source commits. Retained slice inputs remain separately pinned. |
 | Other `test_sync_upstream` fixtures | Current sync script and current manifests/workflows; their isolated fixture repositories are unchanged. |
 | `test_publish_release` | Current publication script, workflow and isolated release fixtures. |
 | `test_provision_native_diagnostic_msvc`, `test_provision_native_diagnostic_sdk` | Current provisioning scripts and isolated SDK fixtures. |

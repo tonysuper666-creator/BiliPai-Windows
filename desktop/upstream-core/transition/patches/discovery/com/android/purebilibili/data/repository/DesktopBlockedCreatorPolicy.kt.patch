@@ -1,0 +1,59 @@
+--- a/discovery/com/android/purebilibili/data/repository/DesktopBlockedCreatorPolicy.kt
++++ b/discovery/com/android/purebilibili/data/repository/DesktopBlockedCreatorPolicy.kt
+@@ -1,56 +1,7 @@
+-// GENERATED original declarations and Windows platform bindings.
+ package com.android.purebilibili.data.repository
+ 
+ private const val BILIBILI_RELATION_ACT_BLOCK = 5
+-
+ private const val BILIBILI_RELATION_ACT_UNBLOCK = 6
+-
+-private const val BILIBILI_RELATION_PROFILE_BLOCK_RE_SRC = 11
+-
+-private const val BILIBILI_RELATION_COMMENT_BLOCK_RE_SRC = 15
+-
+-enum class BilibiliBlockedListRemoteStatus {
+-    SUCCESS,
+-    SKIPPED_NOT_LOGGED_IN,
+-    FAILED
+-}
+-
+-enum class BlockedUpRelationSource {
+-    PROFILE,
+-    COMMENT
+-}
+-
+-data class BlockedUpWriteResult(
+-    val localChanged: Boolean,
+-    val remoteStatus: BilibiliBlockedListRemoteStatus,
+-    val message: String
+-)
+-
+-internal fun resolveBlockedUpRelationReSrc(source: BlockedUpRelationSource): Int {
+-    return when (source) {
+-        BlockedUpRelationSource.PROFILE -> BILIBILI_RELATION_PROFILE_BLOCK_RE_SRC
+-        BlockedUpRelationSource.COMMENT -> BILIBILI_RELATION_COMMENT_BLOCK_RE_SRC
+-    }
+-}
+-
+-internal fun buildBlockedUpWriteMessage(
+-    blocked: Boolean,
+-    remoteStatus: BilibiliBlockedListRemoteStatus,
+-    remoteMessage: String? = null
+-): String {
+-    val localMessage = if (blocked) "已屏蔽该 UP 主" else "已解除屏蔽"
+-    return when (remoteStatus) {
+-        BilibiliBlockedListRemoteStatus.SUCCESS -> {
+-            if (blocked) "$localMessage，并已写入 B站黑名单" else "$localMessage，并已同步 B站黑名单"
+-        }
+-        BilibiliBlockedListRemoteStatus.SKIPPED_NOT_LOGGED_IN -> {
+-            "$localMessage；未登录，未同步 B站黑名单"
+-        }
+-        BilibiliBlockedListRemoteStatus.FAILED -> {
+-            "$localMessage；B站黑名单同步失败：${remoteMessage.orEmpty().ifBlank { "未知错误" }}"
+-        }
+-    }
+-}
+ 
+ internal fun desktopBlockedRelationArguments(blocked: Boolean, source: BlockedUpRelationSource): Pair<Int, Int> =
+     (if (blocked) BILIBILI_RELATION_ACT_BLOCK else BILIBILI_RELATION_ACT_UNBLOCK) to resolveBlockedUpRelationReSrc(source)

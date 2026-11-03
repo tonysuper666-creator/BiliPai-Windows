@@ -1,5 +1,6 @@
 from v025_source_paths import canonical_source as _desktop_canonical_source, canonical_relative as _desktop_canonical_relative
 from pathlib import Path
+from desktop_paths import long_path
 import hashlib,importlib.util,json,re,subprocess,sys
 from types import SimpleNamespace
 from v025_source_paths import canonical_source as _desktop_canonical_source
@@ -7,7 +8,7 @@ sys.dont_write_bytecode=True
 REPO=OUTPUT=None;STANDALONE=False
 COMMIT='79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40';BASE='app/src/main/java/com/android/purebilibili/'
 def wide(p):
- s=str(Path(p).absolute());return Path(s if s.startswith('\\\\?\\')else'\\\\?\\'+s)
+ return long_path(Path(p).absolute())
 def write(p,t):wide(p).parent.mkdir(parents=True,exist_ok=True);wide(p).write_bytes(t.encode()if isinstance(t,str)else t)
 def sha(t):return hashlib.sha256(t.encode()if isinstance(t,str)else t).hexdigest()
 def module(name,p):

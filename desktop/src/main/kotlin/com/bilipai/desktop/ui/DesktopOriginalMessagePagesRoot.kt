@@ -11,6 +11,7 @@ import com.android.purebilibili.navigation3.*
 import com.bilipai.desktop.data.DesktopRepository
 import com.bilipai.desktop.data.DesktopCommunityRepository
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -18,10 +19,11 @@ import java.util.concurrent.atomic.AtomicBoolean
 import javax.swing.JFileChooser
 import javax.swing.filechooser.FileNameExtensionFilter
 import java.awt.EventQueue
-import java.nio.file.Files
 
 internal class DesktopMessagePageServices(val requests: DesktopOriginalMessageRepository,
-    val userInfo: suspend (Long) -> UserBasicInfo?, val videoInfo: suspend (String) -> Result<ViewInfo>)
+    val userInfo: suspend (Long) -> UserBasicInfo?, val videoInfo: suspend (String) -> Result<ViewInfo>,
+    val management: com.android.purebilibili.data.repository.MessageManagementRepository,
+    val im: com.bilipai.desktop.data.DesktopMessageImTransport)
 
 internal val LocalDesktopMessagePageOwner = staticCompositionLocalOf<DesktopOriginalMessagePageOwner> {
     error("Full message pages require the actual retained Root entry")
@@ -43,6 +45,8 @@ internal class DesktopOriginalMessagePagesRoot(internal val repository: DesktopR
     private val retiring = mutableListOf<DesktopOriginalMessagePageOwner>()
     private val activity = MutableStateFlow(0L)
     val updateActivity = activity.asStateFlow()
+    // The Root belongs to one account, so every message page of it shares upstream's read events.
+    private val readEvents = MutableSharedFlow<com.android.purebilibili.data.repository.MessageReadEvent>()
     private fun editorActivityChanged() { activity.update { it + 1L } }
     fun blocksUpdateInstallation(): Boolean {
         val children = synchronized(entriesLock) { entries.values.toList() + retiring }
@@ -59,7 +63,7 @@ internal class DesktopOriginalMessagePagesRoot(internal val repository: DesktopR
             owner = DesktopOriginalMessagePageOwner(repository, community, routes.root.capturedEpoch, mid,
                 routes.root.entry.gate.scope, { isOwned() && routes.containsEntry(key) },
                 { isOwned() && routes.currentKey == key }, routes.root.entry.gate::commit, home, {url->openLink(key,url)}, supportsRenderEffects,
-                canBeginEditorWork, ::editorActivityChanged)
+                canBeginEditorWork, ::editorActivityChanged, readEvents)
             owner
         } }
     }
@@ -93,8 +97,11 @@ internal class DesktopOriginalMessagePageOwner(private val repository: DesktopRe
     private val visible: () -> Boolean, private val commitEntry: ((() -> Unit) -> Boolean), val home: DesktopHomeEnvironment,
     private val link: (String) -> Unit, val supportsRenderEffects: Boolean,
     private val canBeginEditorWork: () -> Boolean = { true },
-    private val editorActivityChanged: () -> Unit = {}) : AutoCloseable {
+    private val editorActivityChanged: () -> Unit = {},
+    private val readEvents: MutableSharedFlow<com.android.purebilibili.data.repository.MessageReadEvent> = MutableSharedFlow()) : AutoCloseable {
     private val live=AtomicBoolean(true)
+    /** The Root account this entry was opened for (upstream screens compare it where Android reads TokenManager). */
+    val messageAccountIdentity = com.android.purebilibili.core.store.AccountSessionIdentity(mid, epoch)
     private val admission=createAdmission { live.get() && retained() }
     private val chatsLock=Any()
     private class ChatSlot(val admission: DesktopMessagePageAdmission, talkerId: Long, sessionType: Int) {
@@ -103,16 +110,25 @@ internal class DesktopOriginalMessagePageOwner(private val repository: DesktopRe
     private val chats=mutableMapOf<Pair<Long,Int>,ChatSlot>()
     private val retiringChats=mutableListOf<DesktopMessagePageAdmission>()
     val inbox by lazy { InboxViewModel(admission) }
+    /** The inbox's settings, contacts, blacklist and blocked-word pages (upstream MessageAuxiliaryPage). */
+    val aux by lazy { MessageAuxViewModel(admission) }
     val replyMe by lazy { ReplyMeViewModel(admission) }
     val atMe by lazy { AtMeViewModel(admission) }
     val likeMe by lazy { LikeMeViewModel(admission) }
     val systemNotice by lazy { SystemNoticeViewModel(admission) }
+    private var likeDetailSlot: Pair<Long, LikeDetailViewModel>? = null
+    /** The like detail page inside 收到的赞; one card at a time, like the original per-card ViewModel key. */
+    fun likeDetail(cardId: Long): LikeDetailViewModel = synchronized(chatsLock) {
+        likeDetailSlot?.takeIf { it.first == cardId }?.second
+            ?: LikeDetailViewModel(admission).also { likeDetailSlot = cardId to it }
+    }
     fun isOwned() = admission.isOwned()
     private fun createAdmission(owns:()->Boolean): DesktopMessagePageAdmission {
         lateinit var services:DesktopMessagePageServices
         val child=DesktopMessagePageAdmission(repository,epoch,mid,parent,owns,visible,commitEntry,
-            { services.userInfo(it) }, { services.videoInfo(it) }, canBeginEditorWork, editorActivityChanged)
-        services=community.originalMessagePages(child);child.requests=services.requests
+            { services.userInfo(it) }, { services.videoInfo(it) }, canBeginEditorWork, editorActivityChanged, readEvents)
+        services=community.originalMessagePages(child);child.requests=services.requests;child.management=services.management
+        child.im=services.im
         return child
     }
     /** Existing retained slot is reusable while covered; new slots require Main/start admission. */
@@ -226,8 +242,9 @@ internal class DesktopOriginalMessagePageOwner(private val repository: DesktopRe
             BiliPaiNavKey.AtMe -> AtMeScreen(::back,links,{ push(BiliPaiNavKey.Space(it)) })
             BiliPaiNavKey.LikeMe -> LikeMeScreen(::back,links,{ push(BiliPaiNavKey.Space(it)) })
             BiliPaiNavKey.SystemNotice -> SystemNoticeScreen(::back,links)
-            is BiliPaiNavKey.Chat -> if (page.retainPaneChat(key.talkerId,key.sessionType)) ChatScreen(key.talkerId,key.sessionType,key.userName,::back,
-                { bvid -> if(active) routes.callbackFor(key) { links("https://www.bilibili.com/video/$bvid") } },links)
+            is BiliPaiNavKey.Chat -> if (page.retainPaneChat(key.talkerId,key.sessionType)) ChatScreen(key.talkerId,key.sessionType,key.userName,
+                onBack=::back, onNavigateToVideo={ bvid -> if(active) routes.callbackFor(key) { links("https://www.bilibili.com/video/$bvid") } },
+                onOpenBilibiliLink=links)
             else -> error("Unsupported original message NavKey")
         }
     }
@@ -239,7 +256,8 @@ internal data class DesktopMessageWindowConfiguration(val screenWidthDp:Int,val 
     return DesktopMessageWindowConfiguration((size.width/density).toInt(),(size.height/density).toInt())
 }
 internal class DesktopMessageImagePicker(private val launchPicker:()->Unit) { fun launch()=launchPicker() }
-@Composable internal fun rememberDesktopMessageImagePicker(onImage:(DesktopMessageLocalImage?)->Unit):DesktopMessageImagePicker {
+/** Windows file picker for one image; upstream's chat view model reads the selected file through its file URI. */
+@Composable internal fun rememberDesktopMessageImagePicker(onImage:(android.net.Uri?)->Unit):DesktopMessageImagePicker {
     val current by rememberUpdatedState(onImage)
     val owner=LocalDesktopMessagePageOwner.current
     return remember(owner) { DesktopMessageImagePicker {
@@ -247,8 +265,7 @@ internal class DesktopMessageImagePicker(private val launchPicker:()->Unit) { fu
             if(owner.isVisible()) {
                 val chooser=JFileChooser().apply { fileFilter=FileNameExtensionFilter("图片","jpg","jpeg","png","gif","webp");isMultiSelectionEnabled=false }
                 if(chooser.showOpenDialog(null)==JFileChooser.APPROVE_OPTION && owner.isVisible()) {
-                    val path=chooser.selectedFile.toPath()
-                    current(DesktopMessageLocalImage(path,Files.probeContentType(path) ?: "image/jpeg"))
+                    current(android.net.Uri.fromFile(chooser.selectedFile))
                 }
             }
         }

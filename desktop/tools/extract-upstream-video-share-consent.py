@@ -4,6 +4,7 @@ source-retained only; Windows exposes its real system chooser/copy/save capabili
 """
 from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
+from desktop_paths import long_path
 from v030_video_dynamic_share import advance_share, emit_additions
 import argparse,hashlib,json,os,subprocess
 COMMIT = '79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40'
@@ -12,7 +13,7 @@ SPECS = [{'source': 'app/src/main/java/com/android/purebilibili/feature/video/sh
 
 
 def safe(p):
- s=os.path.abspath(str(p));return Path(s if s.startswith('\\\\?\\') else '\\\\?\\'+s)
+ return long_path(os.path.abspath(str(p)))
 def read(p):return safe(p).read_text(encoding='utf-8-sig').replace('\r\n','\n')
 def sha(s):return hashlib.sha256(s.encode()).hexdigest()
 def inventory(repo):

@@ -5,6 +5,7 @@ import hashlib
 import json
 import re
 from pathlib import Path
+from desktop_paths import long_path
 
 COMMIT = "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480"
 MANIFEST_SHA256 = "058db2e36e4efe6c92ffe434da119127576b8d825fc24279debdb171c4ac359a"
@@ -17,7 +18,7 @@ OUTPUT_ANIMATIONS = "com/android/purebilibili/feature/video/ui/components/Deskto
 
 def wide(path):
     value = str(Path(path).absolute())
-    return Path(value if value.startswith("\\\\?\\") else "\\\\?\\" + value)
+    return long_path(value)
 
 
 def sha(raw):

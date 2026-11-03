@@ -2,7 +2,7 @@
 
 Covers the carried v0.4.6 ContentTabPager (with its PagerState rebuild guard), its one comment adaptation, the 25 counted
 hunks that mount it on the generated Space screen, the banner rotation and the pinned card icon, the producer hooks, the
-Gradle wiring and the inventory registration. The chain class runs the six real producers that feed the Space screen in a
+Gradle wiring and the inventory registration. The chain class runs the three retained producers that feed the Space screen in a
 throw-away mirror (the same way the symbol gate does) and compares the real output with the output of the same producer
 with this layer patched out.
 """
@@ -26,8 +26,7 @@ import check_slice_symbol_closure as gate
 import v046_space_content_pager as pager
 from v025_source_paths import canonical_source
 
-TASKS = ('extractUpstreamSpace', 'extractUpstreamSpaceOverview', 'extractUpstreamSpaceContributions',
-         'extractOriginalVideoTabletFull', 'extractOriginalFavorites', 'extractOriginalSpacePages')
+TASKS = ('extractOriginalVideoTabletFull', 'extractOriginalFavorites', 'extractOriginalSpacePages')
 SPACE_OUTPUT = pager.SPACE
 PAGER_PACKAGE = 'package com.android.purebilibili.core.ui.common\n'
 JVM_TEST = REPO / 'desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopContentTabPagerTest.kt'

@@ -1,4 +1,5 @@
 from pathlib import Path
+from desktop_paths import long_path
 import argparse,hashlib,json,os
 from v025_source_paths import canonical_source
 from v035_ambient import upgraded_recipes, read_ambient_original
@@ -19,7 +20,7 @@ def generate_settings_ui(repo,output):
  return dict(path=r['target'],origin=r['source'],mode='policy-extract',sha256LF=sha(body),generated=True)
 
 def wide(p):
- s=os.path.abspath(p);return Path(s if s.startswith(chr(92)*2+'?'+chr(92))else chr(92)*2+'?'+chr(92)+s)
+ return long_path(os.path.abspath(p))
 def sha(t):return hashlib.sha256(t.encode()).hexdigest()
 def read(repo,r):
  raw=read_ambient_original(repo,r['source'])

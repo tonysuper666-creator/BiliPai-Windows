@@ -1,0 +1,16 @@
+--- a/com/android/purebilibili/core/store/MultiProcessPreferences.kt
++++ b/com/android/purebilibili/core/store/MultiProcessPreferences.kt
+@@ -36,6 +36,13 @@
+         name: String,
+         migrations: List<DataMigration<Preferences>> = emptyList()
+     ): DataStore<Preferences> {
++        // Desktop: one process, no cross-process file. A Context that owns its preference DataStores (the message
++        // notification account of one window) answers the name itself; any other Context keeps the failing factory.
++        (context.applicationContext as? androidx.datastore.preferences.DesktopPreferencesDataStoreOwner)?.let { owner ->
++            if (migrations.isNotEmpty()) throw com.bilipai.desktop.compat.UnsupportedDesktopCapability(
++                "DataStore \"$name\" migrations", "a desktop preference owner holds already migrated values")
++            return owner.desktopPreferencesDataStore(name)
++        }
+         val file = context.applicationContext.preferencesDataStoreFile(name)
+         return stores.getOrPut(file.absolutePath) {
+             val delegate = MultiProcessDataStoreFactory.create(

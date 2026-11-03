@@ -1,0 +1,68 @@
+Upstream-source-sha256: 87e61eca10d476ce07565d5b975865a9fdfe6aa6cb2954d5b0f926f03e6dde25
+Reason: 桌面把整页景深缩放交给 Miuix 导航 entry，本策略 scaleReduction 默认已是 0；四个用例仍按旧默认断言 4% 缩放与 24dp 圆角。给五处调用显式传 scaleReduction = 0.04f，断言逐字不变，另加一条断言生产默认值（contentScale 1、无圆角、仍有模糊）。
+
+--- a/app/src/test/java/com/android/purebilibili/core/ui/transition/VideoCardTransitionBackgroundPolicyTest.kt
++++ b/app/src/test/java/com/android/purebilibili/core/ui/transition/VideoCardTransitionBackgroundPolicyTest.kt
+@@ -137,6 +137,7 @@
+                         phase = phase,
+                         isGestureRestoreInProgress = restoring,
+                         sdkInt = 35,
++                        scaleReduction = 0.04f,
+                     )
+                     if (phase == VideoCardTransitionBackgroundPhase.IDLE || progress == 0f) {
+                         assertEquals(1f, frame.contentScale, 0.0001f)
+@@ -765,6 +766,7 @@
+             motionTier = MotionTier.Normal,
+             sdkInt = 35,
+             density = 2.75f,
++            scaleReduction = 0.04f,
+         )
+         val tablet = resolveVideoCardTransitionBackgroundFrame(
+             progress = 1f,
+@@ -772,6 +774,7 @@
+             motionTier = MotionTier.Normal,
+             sdkInt = 35,
+             density = 1.5f,
++            scaleReduction = 0.04f,
+         )
+ 
+         // 12dp × 2.75 ≈ 33px；12dp × 1.5 = 18px
+@@ -1014,6 +1017,7 @@
+             phase = VideoCardTransitionBackgroundPhase.OPENING,
+             motionTier = MotionTier.Normal,
+             sdkInt = 35,
++            scaleReduction = 0.04f,
+         )
+         // 清晰附近采用 0.5px 步长，2.4px → 2.5px。
+         assertEquals(2.5f, early.blurRadiusPx, 0.01f)
+@@ -1262,7 +1266,8 @@
+         val frame = resolveVideoCardTransitionBackgroundFrame(
+             progress = 0.25f,
+             phase = VideoCardTransitionBackgroundPhase.RETURNING,
+-            sdkInt = 35
++            sdkInt = 35,
++            scaleReduction = 0.04f,
+         )
+ 
+         assertTrue(frame.blurRadiusPx > 0f)
+@@ -1706,4 +1711,20 @@
+         state.markDisplayListFresh()
+         assertFalse(state.needsSourceRefresh)
+     }
++
++    @Test
++    fun desktopHostKeepsWholePageScaleOutsideThisPolicy() {
++        val frame = resolveVideoCardTransitionBackgroundFrame(
++            progress = 1f,
++            phase = VideoCardTransitionBackgroundPhase.OPENING,
++            sdkInt = 35,
++        )
++
++        // 整页景深缩放归 Miuix 导航 entry；本策略默认不缩放、也不出圆角。
++        assertEquals(1f, frame.contentScale, 0.0001f)
++        assertEquals(0f, frame.cornerRadiusPx, 0.0001f)
++        assertFalse(shouldDrawVideoCardTransitionScaleGapFill(frame.contentScale))
++        assertTrue(frame.blurRadiusPx > 0f)
++    }
++
+ }

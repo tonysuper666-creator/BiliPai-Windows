@@ -26,8 +26,7 @@ import com.android.purebilibili.data.repository.mergeSearchDurationResultPages
 import com.android.purebilibili.feature.home.components.cards.resolveVideoPremiumBadgeLabel
 import com.android.purebilibili.feature.list.DesktopFavoriteEnvironment
 import com.android.purebilibili.feature.space.mergeSpaceVideoPages
-import com.android.purebilibili.feature.space.resolveSpaceContributionTabs
-import com.android.purebilibili.feature.space.resolveSpaceMainTabs
+import com.android.purebilibili.feature.space.resolveSpaceInitialSeedFromAggregate
 import com.android.purebilibili.feature.space.resolveSpaceVideoChargeBadgeLabel
 import com.android.purebilibili.feature.watchlater.DesktopWatchLaterEnvironment
 import kotlinx.coroutines.CoroutineScope
@@ -367,8 +366,7 @@ class DesktopVideoStatusLabelEntriesTest {
         val data = json.decodeFromString<SpaceAggregateData>(
             """{"card":{"mid":"22","name":"UP","face":"avatar"},"archive":{"count":4,"item":[${items.joinToString(",")}]}}""")
         val cards = assertNotNull(data.archive).item
-        val metadata = DesktopSpaceMetadata(data, resolveSpaceMainTabs(data.tab2), resolveSpaceContributionTabs(data.tab2))
-        val seeds = assertNotNull(metadata.toOverview()).seed.videos
+        val seeds = assertNotNull(resolveSpaceInitialSeedFromAggregate(data)).videos
         assertEquals(listOf("BV1seed400", "BV1seed401", "BV1seed402", "BV1seed403"), seeds.map { it.bvid })
         assertEquals(listOf(listOf("合作", "互动", "独家"), listOf("限免", "独家"), listOf("课堂"), none), cards.map { it.statusLabels })
         // Upstream parity: the seed mapping appends the label after the badges, so a seed card can differ in order.

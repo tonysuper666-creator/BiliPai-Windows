@@ -1,0 +1,32 @@
+Upstream-source-sha256: 9677bffc107167aeca1373e9b7cc2cd0d688abdde98e9e5ba0d7c0b4015fba4c
+Reason: LiveAreaScreen 现在直接调用 AppHorizontalPager(，不再写 `AppHorizontalPager as HorizontalPager` 的别名导入；“走主题门面的 pager”这一约束不变。断言改为：别名导入或直接 AppHorizontalPager( 调用二者居一，并新增“不得再导入 androidx 原生 HorizontalPager”的负断言（七个文件现状均成立）。调用次数下限不变。生产不动。
+
+--- a/app/src/test/java/com/android/purebilibili/core/ui/common/VerticalPriorityPagerGestureTest.kt
++++ b/app/src/test/java/com/android/purebilibili/core/ui/common/VerticalPriorityPagerGestureTest.kt
+@@ -3,6 +3,7 @@
+ import java.io.File
+ import kotlin.test.Test
+ import kotlin.test.assertEquals
++import kotlin.test.assertFalse
+ import kotlin.test.assertTrue
+ 
+ class VerticalPriorityPagerGestureTest {
+@@ -254,10 +255,17 @@
+                 source.countOccurrences("HorizontalPager(") >= expectedCount,
+                 "$relativePath should use the shared theme pager",
+             )
++            // 通过主题门面选择原生 pager：别名导入或直接调用 AppHorizontalPager( 均可，
++            // 但不得回到 androidx 原生 HorizontalPager。
+             assertTrue(
+-                source.contains("AppHorizontalPager as HorizontalPager"),
++                source.contains("AppHorizontalPager as HorizontalPager") ||
++                    source.contains("AppHorizontalPager("),
+                 "$relativePath should select the native pager through the theme facade",
+             )
++            assertFalse(
++                source.contains("import androidx.compose.foundation.pager.HorizontalPager"),
++                "$relativePath must not import the raw foundation pager",
++            )
+         }
+     }
+ 

@@ -1,0 +1,14 @@
+--- a/original-listen-video-pages/com/android/purebilibili/navigation3/BiliPaiNavKey.kt
++++ b/original-listen-video-pages/com/android/purebilibili/navigation3/BiliPaiNavKey.kt
+@@ -160,6 +160,11 @@
+     @Serializable
+     data object Profile : BiliPaiNavKey {
+         override val routeBase: String = "profile"
++    }
++
++    @Serializable
++    data class AccountLedger(val kind: com.android.purebilibili.data.model.AccountLedgerKind) : BiliPaiNavKey {
++        override val routeBase: String = "account_ledger"
+     }
+ 
+     @Serializable

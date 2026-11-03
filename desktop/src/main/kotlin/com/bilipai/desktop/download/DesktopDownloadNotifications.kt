@@ -99,12 +99,26 @@ internal class DesktopDownloadNotifications(
     private val stillOwned: () -> Boolean,
     private val onOpenDownloads: () -> Unit,
     private val onFailure: (String) -> Unit,
+    /**
+     * The completion notice surface. `null` means this owner supplies one wired to its own status,
+     * which is why the production construction in the Shell needs no argument at all.
+     */
+    completionToast: DesktopDownloadCompletionToast? = null,
 ) : AutoCloseable {
+    private val completionToast: DesktopDownloadCompletionToast = completionToast
+        ?: DesktopDownloadCompletionToast(
+            stillOwned = stillOwned,
+            // The direct call's whole owner gate: scope liveness, window displayability and registry
+            // identity, re-evaluated on the EDT when the queued failure report actually runs.
+            failureOwner = ::ownedOnEdt,
+            onFailure = ::reportFailure,
+        )
     private val closed = AtomicBoolean()
     private val renderGeneration = AtomicLong()
     private val scope = CoroutineScope(parentScope.coroutineContext + SupervisorJob(parentScope.coroutineContext[Job]))
     private val mutableStatus = MutableStateFlow(DesktopDownloadNotificationStatus())
     val status: StateFlow<DesktopDownloadNotificationStatus> = mutableStatus.asStateFlow()
+    private var completed = manager.tasks.value.filter { it.status == DownloadStatus.COMPLETED }.map { it.id }.toSet()
     private var tray: TrayIcon? = null
     private var taskbar: Taskbar? = null
     private val hierarchyListener = HierarchyListener { event ->
@@ -139,7 +153,14 @@ internal class DesktopDownloadNotifications(
 
     private fun publish() {
         if (closed.get()) return
-        val projection = projectDesktopDownloadNotification(manager.tasks.value)
+        val tasks = manager.tasks.value
+        val finished = tasks.filter { it.status == DownloadStatus.COMPLETED }
+        val arrivals = finished.filter { it.id !in completed }
+        completed = finished.map { it.id }.toSet()
+        for (task in arrivals) scope.launch(kotlinx.coroutines.Dispatchers.IO) {
+            completionToast.notify(task.id, task.title, closed::get)
+        }
+        val projection = projectDesktopDownloadNotification(tasks)
         val generation = renderGeneration.incrementAndGet()
         SwingUtilities.invokeLater {
             if (!ownedOnEdt() || renderGeneration.get() != generation) return@invokeLater

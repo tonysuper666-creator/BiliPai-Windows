@@ -4,6 +4,7 @@ Use --standalone for the isolated source proof. No theme/store/network authority
 """
 from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
+from desktop_paths import read_point_tool
 import hashlib,importlib.util,json,re,sys,textwrap
 sys.dont_write_bytecode=True
 HERE=Path(__file__).resolve().parent;REPO=HERE.parents[1]
@@ -129,7 +130,7 @@ def generate(repo, output, standalone=False):
   if path in {APP+'core/ui/transition/VideoCardTransitionBackgroundPolicy.kt',APP+'core/ui/blur/RecoverableVisualEffects.kt'}:
    # This producer remains the single owner of the map/state/renderer output.
    # The full page producer only supplies the source-preserving expansion body.
-   full_home=load('hc_home_page',repo/'desktop/tools/extract-upstream-home-page.py')
+   full_home=load('hc_home_page',read_point_tool(repo,'extract-upstream-home-page.py'))
    expanded=full_home.existing_home_card_body(repo,path)
    out=HERE/'generated'/pkg.replace('.','/')/Path(path).name
    write(out,expanded)

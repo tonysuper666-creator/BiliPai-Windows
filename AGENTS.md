@@ -3,7 +3,8 @@
 The user has appointed the main task as integration controller (Root). Work in
 an independent linked worktree. Do not modify another agent's checkout or shared
 Git index. Root owns the integration branch, version metadata, build files,
-upstream tracking, final merges, packaging and the single desktop installation.
+upstream tracking, packaging and the single desktop installation.
+Pull requests into the integration branch that have passed their card's acceptance review, are MERGEABLE, and pass the targeted local gate may be merged by the reconciling or reviewing agent (decision by the user, 2026-10-31). Root still owns upstream merges, version metadata, build files and packaging.
 
 ## Accepted baseline
 
@@ -28,7 +29,7 @@ agent's checkout and do not touch the shared Git index.
 
 Commit only your own changes and open the pull request against
 `desktop/integration-263-claude-main`, unless the card names another base. Build
-files, version metadata, upstream tracking, final merges and packaging stay with the
+files, version metadata, upstream tracking and packaging stay with the
 integration controller.
 
 `write_scope` is a cooperating-agent contract, not a filesystem sandbox or an agent
@@ -45,7 +46,7 @@ Root serializes shared Gradle verification and final integration.
 Keep changes targeted and avoid unsolicited dependencies. Do not start the app,
 activate windows, simulate input, play media, change GPU/audio configuration,
 touch account data, or disturb the user's game without current authorization.
-Do not replace or duplicate desktop builds. Only Root pushes accepted changes to
-tonysuper666-creator/BiliPai-Windows. Do not contact upstream authors or trigger
+Do not replace or duplicate desktop builds. Only Root pushes directly to the integration branch; accepted pull requests are merged as described above.
+Do not contact upstream authors or trigger
 paid cloud builds. Public standard GitHub runners are the allowed cloud builds.
 Do not add AI co-author or generated-by attribution to commits.

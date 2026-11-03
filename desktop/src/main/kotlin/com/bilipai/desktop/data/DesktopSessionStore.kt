@@ -24,6 +24,9 @@ internal class DesktopHomeNavRequestReceipt internal constructor(
     internal val uiLoginInstallationStamp: Any,
 )
 
+/** Identity-bearing notification: repeated same-epoch installs must not be conflated. No credentials. */
+internal class DesktopLoginInstallationEvent(val receipt: DesktopLoginInstallationReceipt)
+
 /** Server cookies retain their scope; explicitly authorized account credentials cover Bilibili hosts. */
 internal class DesktopSessionStore(private val path: Path = defaultPath(), private val persistent: Boolean = true) : CookieJar, DesktopDynamicCacheSessionGuard {
     private val json = Json { ignoreUnknownKeys = true }
@@ -34,8 +37,12 @@ internal class DesktopSessionStore(private val path: Path = defaultPath(), priva
     private var saved = if (persistent) readSaved() else SavedSession()
     /** Why the saved login could not be restored at startup, or null. Shown to the user instead of a silent logout. */
     internal val credentialRestoreFailure: String? get() = synchronized(lock) { restoreFailure?.message }
+    /** Account HTTP cache partitions of upstream requests (TON-1082), next to the saved session; none for a temporary Store. */
+    internal val upstreamHttpCacheRoot: Path? get() = if (persistent) path.resolveSibling("upstream-http") else null
     // Replaced only after saveLoginAccount actually persists. Identical credentials may keep generation unchanged.
     private var primaryUiLoginInstallationStamp = Any()
+    private val mutableLoginInstallation = MutableStateFlow<DesktopLoginInstallationEvent?>(null)
+    internal val loginInstallation = mutableLoginInstallation.asStateFlow()
     private val mutableGeneration = MutableStateFlow(0L)
     val generationState = mutableGeneration.asStateFlow()
     @Volatile var generation: Long = 0
@@ -71,6 +78,8 @@ internal class DesktopSessionStore(private val path: Path = defaultPath(), priva
     }
     internal fun storedAccountSessions(): List<StoredAccountSession> = synchronized(lock) { accountRecords(saved).map { it.session } }
     internal fun activeAccountMid(): Long? = synchronized(lock) { saved.account?.mid }
+    /** The active account as upstream TokenManager holds it (TON-1084); null signed out. Read inside an owner admission. */
+    internal fun upstreamTokenSession(): StoredAccountSession? = synchronized(lock) { saved.account?.let { recordCurrent(saved).session } }
     internal fun getPlaybackAccountMid(): Long? = synchronized(lock) { saved.playbackAccountMid }
     internal fun getPlaybackAccount(): StoredAccountSession? = synchronized(lock) { playbackAccountLocked() }
     internal fun setPlaybackAccountMid(mid: Long?, expectedGeneration: Long, stillOwned: () -> Boolean): Boolean = synchronized(lock) {
@@ -362,7 +371,11 @@ internal class DesktopSessionStore(private val path: Path = defaultPath(), priva
             preserveAccessToken = false, snapshot = snapshot)
         // Same monitor, only after the original save/persist succeeded; failed installs leave the old stamp.
         primaryUiLoginInstallationStamp = Any()
-        DesktopLoginInstallationReceipt(expectedEpoch, sourceMid, generation, account.mid)
+        val receipt = DesktopLoginInstallationReceipt(expectedEpoch, sourceMid, generation, account.mid)
+        // This is committed Store state, independent of the dialog attempt or navigation ticket.
+        // A fresh event identity also notifies collectors when every receipt field is unchanged.
+        mutableLoginInstallation.value = DesktopLoginInstallationEvent(receipt)
+        receipt
     }
 
     fun saveSpiCookies(cookies: Map<String, String>, expectedGeneration: Long? = null) = synchronized(lock) {
@@ -562,6 +575,7 @@ internal class DesktopSessionStore(private val path: Path = defaultPath(), priva
     companion object {
         internal const val CREDENTIAL_LOG_TAG = "DesktopCredentials"
         internal fun temporary() = DesktopSessionStore(defaultPath(), persistent = false)
+        internal fun defaultDataDirectory(): Path = defaultPath().parent
         private val ACCOUNT_COOKIE_NAMES = setOf("SESSDATA", "bili_jct", "DedeUserID", "DedeUserID__ckMd5")
         private val VISITOR_COOKIE_NAMES = setOf("buvid3", "buvid4", "buvid_fp", "b_nut", "b_lsid", "sid")
         private val SPI_COOKIE_NAMES = setOf("buvid3", "buvid4")

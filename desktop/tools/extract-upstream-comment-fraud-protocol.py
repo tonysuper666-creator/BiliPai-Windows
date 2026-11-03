@@ -3,12 +3,13 @@ The sole existing Ops guestWeb callFactory and original auth api are injected.
 No parallel client, schema, store, WBI cache, record or account is emitted.
 """
 from pathlib import Path
+from desktop_paths import long_path, read_point_tool
 import hashlib,importlib.util,json,subprocess,textwrap,sys
 sys.dont_write_bytecode=True
 COMMIT='79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40'
 PATH='app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt'
 def safe(p):
- s=str(Path(p).absolute());return Path(s if s.startswith('\\\\?\\') else '\\\\?\\'+s)
+ return long_path(Path(p).absolute())
 def read(p):return safe(p).read_text(encoding='utf-8').replace('\r\n','\n')
 def write(p,s):safe(p.parent).mkdir(parents=True,exist_ok=True);safe(p).write_text(s,encoding='utf-8',newline='\n')
 def sha(s):return hashlib.sha256(s.encode()).hexdigest()
@@ -17,7 +18,7 @@ def load(name,p):
 def one(s,a,b):assert s.count(a)==1,(s.count(a),a[:100]);return s.replace(a,b,1)
 def generate(repo: Path, output: Path, standalone: bool = False):
  BASE=Path(repo);HERE=Path(output)
- protocol=load('pinned_fraud_source_loader',BASE/'desktop/tools/extract-upstream-dynamic-reply-protocol.py')
+ protocol=load('pinned_fraud_source_loader',read_point_tool(BASE,'extract-upstream-dynamic-reply-protocol.py'))
  sources,identities=protocol.load_pinned_sources(BASE,[PATH]);source=sources[PATH]
  assert identities[0]['pinnedCommit']==COMMIT
  assert sha(source)=='1da1505d0ec3be32726ff5aacf462a1ee864be945283c7846b635cd6939cc9f4'

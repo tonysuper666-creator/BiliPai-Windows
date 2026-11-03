@@ -1,0 +1,11 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicRichTextPolicy.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicRichTextPolicy.kt
+@@ -652,7 +652,7 @@
+ private val DYNAMIC_TOPIC_PATH_ID_PATTERN =
+     """(?:topic|topic-detail)/(\d+)""".toRegex(RegexOption.IGNORE_CASE)
+ 
+-private fun AnnotatedString.Builder.appendDynamicRichTextTopic(
++internal fun AnnotatedString.Builder.appendDynamicRichTextTopic(
+     node: RichTextNode,
+     primaryColor: Color,
+     linkListener: LinkInteractionListener?,

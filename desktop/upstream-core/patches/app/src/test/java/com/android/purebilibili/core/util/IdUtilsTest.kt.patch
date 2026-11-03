@@ -1,0 +1,25 @@
+Upstream-source-sha256: c7dfc918bef701e5892f81dd468b8c49563751a0acb29f71c073d1cc65068a03
+Reason: av/bv 双向映射由同一套 XOR 常量与字母表决定，av=2 对应 BV1xx411c7mD、av=7 对应 BV1xx411c7m9；两条 fixture 把 m9 与 2 绑在一起，与实现和两个公开值（170001、286347735）冲突。
+把 av=2 的期望改成 mD，并补 av=7 ↔ m9 的反向断言，两个字符串在双向都仍有覆盖。常量与字母表不动。
+
+--- a/app/src/test/java/com/android/purebilibili/core/util/IdUtilsTest.kt
++++ b/app/src/test/java/com/android/purebilibili/core/util/IdUtilsTest.kt
+@@ -8,14 +8,16 @@
+     @Test
+     fun av2bv_convertsKnownAidsCorrectly() {
+         assertEquals("BV17x411w7KC", IdUtils.av2bv(170001L))
+-        assertEquals("BV1xx411c7m9", IdUtils.av2bv(2L))
++        assertEquals("BV1xx411c7mD", IdUtils.av2bv(2L))
++        assertEquals("BV1xx411c7m9", IdUtils.av2bv(7L))
+         assertEquals("BV17f4y1R7YS", IdUtils.av2bv(286347735L))
+     }
+ 
+     @Test
+     fun bv2av_convertsKnownBvidsCorrectly() {
+         assertEquals(170001L, IdUtils.bv2av("BV17x411w7KC"))
+-        assertEquals(2L, IdUtils.bv2av("BV1xx411c7m9"))
++        assertEquals(2L, IdUtils.bv2av("BV1xx411c7mD"))
++        assertEquals(7L, IdUtils.bv2av("BV1xx411c7m9"))
+         assertEquals(286347735L, IdUtils.bv2av("BV17f4y1R7YS"))
+     }
+ 

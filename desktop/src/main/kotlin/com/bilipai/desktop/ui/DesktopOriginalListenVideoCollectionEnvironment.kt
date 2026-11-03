@@ -33,6 +33,30 @@ internal class DesktopOriginalListenVideoCollectionEntry(
     override fun close() { job.cancel() }
 }
 
+/** What the patched upstream ListenVideoCollectionViewModel needs from its owner; tests stand in for it. */
+internal interface DesktopOriginalListenCollectionOwner {
+    val scope: CoroutineScope
+    val dataSource: com.android.purebilibili.feature.audio.library.ListenVideoLibraryDataSource
+    fun assertOwned()
+    fun commit(block: () -> Unit)
+    fun <T> updateState(state: MutableStateFlow<T>, transform: (T) -> T)
+    fun request(context: CoroutineContext): DesktopOriginalListenCollectionRequestPort
+    fun isSessionCurrent(session: PlaylistSession): Boolean
+    fun currentItem(): PlaylistItem?
+    fun capturePlaybackTarget(session: PlaylistSession, item: PlaylistItem,
+        originalPublicationCurrent: () -> Boolean): DesktopOriginalListenCollectionPlaybackTarget?
+}
+
+/** The admission of one actual load Job: every publication and every queue mutation is checked against it. */
+internal interface DesktopOriginalListenCollectionRequestPort {
+    fun check()
+    fun commit(block: () -> Unit)
+    fun <T> read(block: () -> T): T
+    fun <T> updateState(state: MutableStateFlow<T>, transform: (T) -> T)
+    fun setExternalPlaylist(items: List<PlaylistItem>, index: Int, source: ExternalPlaylistSource): PlaylistSession
+    fun appendPlaylist(items: List<PlaylistItem>, session: PlaylistSession): Boolean
+}
+
 /** Original collection pagination borrows the existing Listen/Favorites source
  * and the sole Root playlist. Its scope and retention predicate must come from
  * the actual AudioMode destination; this class creates no scope, cache or player. */
@@ -40,30 +64,32 @@ internal class DesktopOriginalListenVideoCollectionEnvironment(
     private val entry: DesktopOriginalListenVideoEntry,
     val root: DesktopPersonalListsRoot,
     val destination: BiliPaiNavKey.AudioMode,
-    val scope: CoroutineScope,
+    override val scope: CoroutineScope,
     private val destinationRetained: () -> Boolean,
-) {
+) : DesktopOriginalListenCollectionOwner {
     private val destinationJob = checkNotNull(scope.coroutineContext[Job])
-    val dataSource get() = entry.environment.dataSource
+    override val dataSource get() = entry.environment.dataSource
     internal val playlist get() = entry.playlist
+    override fun isSessionCurrent(session: PlaylistSession) = playlist.isSessionCurrent(session)
+    override fun currentItem(): PlaylistItem? = playlist.getCurrentItem()
     fun owns(): Boolean = destinationJob.isActive && destinationRetained() && entry.owns()
-    fun assertOwned() {
+    override fun assertOwned() {
         destinationJob.ensureActive()
         if (!owns()) throw CancellationException("Original collection destination retired")
         entry.environment.assertOwned()
     }
-    fun commit(block: () -> Unit) {
+    override fun commit(block: () -> Unit) {
         assertOwned()
         if (!entry.commit { assertOwned(); block() })
             throw CancellationException("Original collection publication retired")
     }
     fun <T> setState(state: MutableStateFlow<T>, value: T) = commit { state.value = value }
-    fun <T> updateState(state: MutableStateFlow<T>, transform: (T) -> T) = commit { state.update(transform) }
-    fun request(context: CoroutineContext): DesktopOriginalListenVideoCollectionRequest {
+    override fun <T> updateState(state: MutableStateFlow<T>, transform: (T) -> T) = commit { state.update(transform) }
+    override fun request(context: CoroutineContext): DesktopOriginalListenVideoCollectionRequest {
         assertOwned()
         return DesktopOriginalListenVideoCollectionRequest(this, checkNotNull(context[Job]))
     }
-    fun capturePlaybackTarget(session: PlaylistSession, item: PlaylistItem,
+    override fun capturePlaybackTarget(session: PlaylistSession, item: PlaylistItem,
         originalPublicationCurrent: () -> Boolean): DesktopOriginalListenCollectionPlaybackTarget? {
         assertOwned()
         return DesktopOriginalListenCollectionPlaybackTarget.capture(this, session, item, originalPublicationCurrent)
@@ -132,24 +158,24 @@ internal class DesktopOriginalListenCollectionQueueSelection private constructor
 internal class DesktopOriginalListenVideoCollectionRequest(
     private val environment: DesktopOriginalListenVideoCollectionEnvironment,
     private val caller: Job,
-) {
+) : DesktopOriginalListenCollectionRequestPort {
     fun owns(): Boolean = caller.isActive && environment.owns()
-    fun check() { caller.ensureActive(); environment.assertOwned() }
-    fun commit(block: () -> Unit) {
+    override fun check() { caller.ensureActive(); environment.assertOwned() }
+    override fun commit(block: () -> Unit) {
         check()
         environment.commit { check(); block() }
     }
-    fun <T> read(block: () -> T): T {
+    override fun <T> read(block: () -> T): T {
         var value: Any? = null
         commit { value = block() }
         @Suppress("UNCHECKED_CAST") return value as T
     }
-    fun <T> updateState(state: MutableStateFlow<T>, transform: (T) -> T) = commit { state.update(transform) }
-    fun setExternalPlaylist(items: List<PlaylistItem>, index: Int, source: ExternalPlaylistSource): PlaylistSession {
+    override fun <T> updateState(state: MutableStateFlow<T>, transform: (T) -> T) = commit { state.update(transform) }
+    override fun setExternalPlaylist(items: List<PlaylistItem>, index: Int, source: ExternalPlaylistSource): PlaylistSession {
         check()
         return environment.playlist.setExternalPlaylistIfCallerCurrent(items, index, source, ::owns)
     }
-    fun appendPlaylist(items: List<PlaylistItem>, session: PlaylistSession): Boolean {
+    override fun appendPlaylist(items: List<PlaylistItem>, session: PlaylistSession): Boolean {
         check()
         return environment.playlist.addAllToPlaylistIfCallerCurrent(items, session, ::owns)
     }

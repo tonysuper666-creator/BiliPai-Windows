@@ -30,6 +30,19 @@ internal data class DesktopOriginalPlaybackFailureEvidence(
 internal suspend fun desktopOriginalBootstrapVideoLoadError(failure: Throwable, error: VideoLoadError): VideoLoadError =
     error.also { desktopVideoBootstrapObserveMappedFailure(failure, it) }
 
+/**
+ * A local request cooldown protects against an explicit server restriction.
+ * A lost connection, timeout, or unrelated business failure is not evidence of
+ * rate limiting. Keep the original failure in diagnostics, outside user text.
+ */
+internal fun desktopOriginalRecordPlaybackFailure(bvid: String, failure: Throwable) {
+    android.util.Log.e("VideoPlaybackUseCase", "Playback request failed (${failure.javaClass.name})", failure)
+    val code = desktopOriginalApiCode(failure) ?: (failure as? BiliApiException)?.apiCode
+    if (code == 412 || code == 429 || code == -412) {
+        com.android.purebilibili.core.cooldown.PlaybackCooldownManager.recordFailure(bvid, "restriction code=$code")
+    }
+}
+
 /** Body codes have explicit protocol provenance. Bare positive BiliApiException
  * values may be transport statuses and retain the Windows HTTP/IO mapping. */
 internal fun desktopOriginalVideoLoadError(failure: Throwable): VideoLoadError =
@@ -38,9 +51,13 @@ internal fun desktopOriginalVideoLoadError(failure: Throwable): VideoLoadError =
             -101 -> "请登录后重试"
             -404 -> "视频不存在或已被删除"
             -403, -10403, -62002 -> "此视频暂时无法播放"
+            412, 429, -412 -> "请求暂时受限，请稍后重试"
             else -> "视频请求失败"
         })
-    } ?: desktopWindowsVideoLoadError(failure)
+    } ?: when (failure) {
+        is java.net.SocketTimeoutException -> VideoLoadError.Timeout
+        else -> desktopWindowsVideoLoadError(failure)
+    }
 
 internal fun desktopOriginalVideoLoadCanRetry(failure: Throwable): Boolean =
     if (desktopOriginalApiCode(failure) != null)

@@ -1,0 +1,20 @@
+--- a/dynamic-detail-protocol/generated/com/android/purebilibili/data/repository/DesktopDynamicDetailArticleProtocol.kt
++++ b/dynamic-detail-protocol/generated/com/android/purebilibili/data/repository/DesktopDynamicDetailArticleProtocol.kt
+@@ -7,17 +7,6 @@
+ import com.android.purebilibili.feature.article.*
+ import kotlinx.coroutines.*
+ import com.android.purebilibili.core.util.FormatUtils
+-data class ArticleDetailUiModel(
+-    val articleId: Long,
+-    val title: String,
+-    val summary: String,
+-    val authorName: String,
+-    val authorMid: Long,
+-    val authorFace: String,
+-    val publishTime: String,
+-    val bannerUrl: String?,
+-    val blocks: List<ArticleContentBlock>
+-)
+ internal class DesktopDynamicDetailArticleProtocol(
+     private val articleApi: ArticleApi,
+     private val dynamicApi: DynamicApi,

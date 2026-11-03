@@ -364,7 +364,7 @@ class V041VideoStatusLabelsSourceTest(unittest.TestCase):
 
     def test_non_held_consumer_generators_import_the_hook_module_once(self):
         # The home full-card generator is held by another task; its hooks HC1-HC4 are a separate patch.
-        for consumer in (source.SPACE_OVERVIEW_GENERATOR, source.SPACE_PAGES_GENERATOR, source.WATCH_LATER_GENERATOR):
+        for consumer in (source.SPACE_PAGES_GENERATOR, source.WATCH_LATER_GENERATOR):
             with self.subTest(consumer=consumer):
                 text = (REPO / consumer).read_text(encoding='utf-8')
                 imports = re.findall(r'^\s*(?:from v041_video_status_labels import|import v041_video_status_labels)\b', text, re.M)
@@ -558,7 +558,7 @@ class V041VideoStatusLabelsSourceTest(unittest.TestCase):
             'tasks.named("compileTestKotlin") { dependsOn(extractOriginalVideoStatusLabels) }',
         ):
             self.assertEqual(1, build.count(line), line)
-        for name in ('extractUpstreamSpaceOverview', 'extractOriginalSpacePages', 'extractOriginalWatchLater'):
+        for name in ('extractOriginalSpacePages', 'extractOriginalWatchLater'):
             with self.subTest(consumer=name):
                 consumer = task_block(build, name)
                 self.assertEqual(1, consumer.count('inputs.file("tools/v041_video_status_labels.py")'))
@@ -704,9 +704,9 @@ def line_delta(before, after):
 
 class V041GeneratorWiringTest(unittest.TestCase):
     """The anchored hooks only exist if a generator calls them. These tests run the real non-held generators that
-    need no generated prerequisites (watch later, space overview) once hooked and once with the hook module's apply()
-    replaced by the identity, and check that the output differs by exactly the hooks' own lines. Space pages needs
-    generated inputs and is checked on its text; the held home full-card generator is deliberately not asserted.
+    need no generated prerequisites (watch later) once hooked and once with the hook module's apply()
+    replaced by the identity, and check that the output differs by exactly the hooks' own lines. The retired aggregate
+    mapping is absent from space overview; its original playback policy is unchanged. Space pages is checked on its text; the held home full-card generator is deliberately not asserted.
     They need the upstream git objects the generators read (CI checks out the full history)."""
 
     def generate(self, consumer, hooked):
@@ -756,9 +756,13 @@ class V041GeneratorWiringTest(unittest.TestCase):
         self.assert_generator_applies_exactly_its_hooks(source.WATCH_LATER_GENERATOR, [
             (source.WATCH_LATER_REPOSITORY, ['WL1', 'WL2', 'WL3']), (source.WATCH_LATER_SCREEN, ['WL4', 'WL5'])])
 
-    def test_space_overview_generator_applies_so1_to_the_aggregate_mapping_only(self):
-        self.assert_generator_applies_exactly_its_hooks(source.SPACE_OVERVIEW_GENERATOR, [
-            (source.SPACE_LOAD_POLICY, ['SO1'])])
+    def test_space_overview_only_emits_the_retained_playback_policy(self):
+        calls, emitted = self.generate(source.SPACE_OVERVIEW_GENERATOR, True)
+        self.assertEqual([], calls)
+        relative = 'com/android/purebilibili/feature/space/SpacePlaybackPolicy.kt'
+        self.assertEqual({relative}, set(emitted))
+        original = (REPO/'desktop/upstream-slices/v044-favorite-detail/SpacePlaybackPolicy.kt').read_text(encoding='utf8')
+        self.assertEqual(original, emitted[relative])
 
     def test_space_pages_generator_applies_ss0_to_ss7_once_and_first_inside_screen(self):
         text = (REPO / source.SPACE_PAGES_GENERATOR).read_text(encoding='utf-8')

@@ -34,6 +34,7 @@ data class WindowsMediaSnapshot(
     val hasNext: Boolean = false,
     val enabled: Boolean = true,
     val sourceLease: WindowsMediaSourceLease? = null,
+    val coverUrl: String = "",
 )
 
 /** Captured transport authority, never a lookup of whichever source is current later.
@@ -76,6 +77,15 @@ class WindowsMediaSession(
     private val sourceOwner: (MpvPlayer) -> WindowsMediaSourceLease? = { null },
 ) : AutoCloseable {
     private val closed = AtomicBoolean()
+    // Taskbar thumbnail buttons are an addition to the transport surface; a failure there must not
+    // remove media keys or crash the window that hosts them.
+    private val taskbar = if (System.getProperty("os.name").startsWith("Windows")) try {
+        WindowsTaskbarMediaControls(window) { command -> dispatch { it.command(command) } }
+    } catch (failure: Throwable) {
+        java.util.logging.Logger.getLogger("BiliPai.WindowsMediaSession")
+            .log(java.util.logging.Level.WARNING, "Taskbar thumbnail buttons unavailable", failure)
+        null
+    } else null
     private val snapshot = AtomicReference<WindowsMediaSnapshot?>()
     private val publishedLease = AtomicReference<WindowsMediaSourceLease?>()
     private val wake = LinkedBlockingQueue<Unit>(1)
@@ -92,6 +102,10 @@ class WindowsMediaSession(
     fun update(value: WindowsMediaSnapshot) {
         if (closed.get()) return
         if (!value.enabled || value.sourceLease == null) publishedLease.set(null)
+        javax.swing.SwingUtilities.invokeLater {
+            if (!closed.get()) try { taskbar?.update(value) }
+            catch (failure: Exception) { mutableStatus.value = mutableStatus.value.copy(error = failure.toString()) }
+        }
         snapshot.set(value.copy(title = value.title.replace("\u0000", "").take(2_000),
             artist = value.artist.replace("\u0000", "").take(2_000), mediaId = value.mediaId.replace("\u0000", "").take(2_000)))
         wake.offer(Unit)
@@ -132,6 +146,8 @@ class WindowsMediaSession(
     }
 
     override fun close() {
+        if (javax.swing.SwingUtilities.isEventDispatchThread()) taskbar?.close()
+        else javax.swing.SwingUtilities.invokeAndWait { taskbar?.close() }
         if (closed.compareAndSet(false, true)) {
             publishedLease.set(null)
             snapshot.set(null)
@@ -228,7 +244,7 @@ class WindowsMediaSession(
             checkHr(call(control, 27, if (active && value.hasNext) 1.toByte() else 0.toByte()), "SMTC.IsNextEnabled")
             val playbackStatus = when { !active -> 0; value.state.loading -> 1; value.state.ended -> 2; value.state.paused -> 4; else -> 3 }
             checkHr(call(control, 7, playbackStatus), "SMTC.PlaybackStatus")
-            val metadata = listOf(value.title, value.artist, value.mediaId, value.isAudio)
+            val metadata = listOf(value.title, value.artist, value.mediaId, value.isAudio, value.coverUrl)
             if (metadata != lastMetadata) {
                 lastMetadata = null // A retired preparation must not leave the next owner with a false cache hit.
                 val display = requireNotNull(updater)
@@ -244,6 +260,7 @@ class WindowsMediaSession(
                 putString(properties, 7, value.title, "SMTC.${if (value.isAudio) "Music" else "Video"}.Title")
                 putString(properties, if (value.isAudio) 11 else 9, value.artist,
                     "SMTC.${if (value.isAudio) "Music.Artist" else "Video.Subtitle"}")
+                setThumbnail(display, value.coverUrl)
                 if (!publicationCurrent(value)) return
                 checkHr(call(display, 17), "SMTC.Display.Update")
                 lastMetadata = metadata
@@ -271,6 +288,31 @@ class WindowsMediaSession(
             mutableStatus.value = WindowsMediaSessionStatus(true, publishedTitle = readTitle,
                 publishedPlaybackStatus = readStatus.value, publishedPositionSeconds = readPosition.value / 10_000_000.0)
         }
+
+        /** A cover is decoration: an unusable URL clears the thumbnail and never retires the session. */
+        private fun setThumbnail(display: Pointer, url: String) {
+            val normalized = normalizedSmTcCoverUri(url)
+            try {
+                if (normalized == null) { runCatching { call(display, 11, null) }; return }
+                val factory = activationFactory("Windows.Foundation.Uri", "44a9796f-723e-4fdf-a218-033e75b0c084")
+                val uri = PointerByReference()
+                try { withString(normalized) { checkHr(call(factory, 6, it, uri), "Cover.CreateUri") } }
+                finally { release(factory) }
+                try {
+                    val streams = activationFactory("Windows.Storage.Streams.RandomAccessStreamReference", "857309dc-3fbf-4e7d-986f-ef3b1a07a964")
+                    val reference = PointerByReference()
+                    try { checkHr(call(streams, 7, uri.value, reference), "Cover.CreateFromUri") }
+                    finally { release(streams) }
+                    try { checkHr(call(display, 11, reference.value), "SMTC.Thumbnail") }
+                    finally { reference.value?.let(::release) }
+                } finally { uri.value?.let(::release) }
+            } catch (failure: Throwable) {
+                java.util.logging.Logger.getLogger("BiliPai.WindowsMediaSession")
+                    .log(java.util.logging.Level.WARNING, "SMTC cover rejected: $url", failure)
+                runCatching { call(display, 11, null) }
+            }
+        }
+
 
         override fun close() {
             seekToken?.let { token -> extended?.let { call(it, 14, token) } }; seekToken = null
@@ -378,5 +420,25 @@ class WindowsMediaSession(
             val result = PointerByReference(); checkHr(WinRt.api.RoActivateInstance(string, result), "RoActivateInstance")
             requireNotNull(result.value)
         }
+    }
+}
+
+/**
+ * Upstream covers arrive as protocol-relative or plain http URLs; only https/file may reach WinRT.
+ * Returns null when the value cannot be represented as an absolute https/file URI.
+ */
+internal fun normalizedSmTcCoverUri(url: String): String? {
+    val trimmed = url.trim()
+    if (trimmed.isEmpty()) return null
+    val absolute = when {
+        trimmed.startsWith("//") -> "https:$trimmed"
+        trimmed.startsWith("http://") -> "https://" + trimmed.removePrefix("http://")
+        else -> trimmed
+    }
+    val uri = runCatching { java.net.URI(absolute) }.getOrNull() ?: return null
+    return when (uri.scheme?.lowercase()) {
+        "file" -> absolute.takeIf { uri.path?.isNotBlank() == true }
+        "https" -> absolute.takeIf { !uri.host.isNullOrBlank() }
+        else -> null
     }
 }

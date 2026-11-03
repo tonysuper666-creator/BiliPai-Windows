@@ -1,0 +1,24 @@
+--- a/original-favorites/com/android/purebilibili/data/repository/DesktopOriginalPersonalFavoriteRepository.kt
++++ b/original-favorites/com/android/purebilibili/data/repository/DesktopOriginalPersonalFavoriteRepository.kt
+@@ -4,21 +4,6 @@
+ import kotlinx.coroutines.CancellationException
+ import kotlinx.coroutines.Dispatchers
+ import kotlinx.coroutines.withContext
+-
+-data class FavoriteCategoryItem(
+-    val id: Long,
+-    val title: String,
+-    val subtitle: String = "",
+-    val cover: String = "",
+-    val url: String = "",
+-    val badge: String = "",
+-    val section: FavoriteSection,
+-)
+-
+-data class FavoriteCategoryPage(
+-    val items: List<FavoriteCategoryItem>,
+-    val hasMore: Boolean,
+-)
+ 
+ class DesktopOriginalPersonalFavoriteRepository(private val environment: com.android.purebilibili.feature.list.DesktopFavoriteEnvironment) {
+     private val api = environment.api

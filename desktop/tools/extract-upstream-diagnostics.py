@@ -1,6 +1,7 @@
 """Original logging policies, collector, and effective enhanced-consent UI only."""
 from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
+from desktop_paths import read_point_tool
 import argparse,hashlib,importlib.util,json,textwrap
 BASE='app/src/main/java/com/android/purebilibili/'
 LOGGER=BASE+'core/util/Logger.kt'
@@ -67,7 +68,7 @@ def generate(repo,out):
  from v046_mfx_small_protocol_fixes import validate_outputs as validate_mfx_outputs
  validate_mfx_outputs(repo,out)
  host=load(repo/'desktop/tools/extract-upstream-plugins.py','diaghost');media=host.media_extractor(repo);parser=media.parser_for(repo)
- identity=load(repo/'desktop/tools/extract-upstream-dynamic-reply-protocol.py','diag_fixed_identity')
+ identity=load(read_point_tool(repo,'extract-upstream-dynamic-reply-protocol.py'),'diag_fixed_identity')
  fixed_sources,source_ids=identity.load_pinned_sources(repo,[LOGGER,SETTINGS,SECTIONS,CRASH,EXIT,NATIVE])
  out.mkdir(parents=True,exist_ok=True);files=[];original=fixed_sources[LOGGER]
  declaration=load(repo/'desktop/tools/extract-appearance-platform.py','diag_original_exception')

@@ -1,5 +1,6 @@
 from v025_source_paths import canonical_source as _desktop_canonical_source, canonical_relative as _desktop_canonical_relative
 from pathlib import Path
+from desktop_paths import long_path
 from v034_next_watch_ui import emit_original_ui as _emit_original_next_watch_ui
 from v046_next_watch_toggle import advance_outputs as _advance_next_watch_v046
 from v025_playback_settings_platform import player_settings_body as _playback_player_settings_body, control_settings_body as _playback_control_settings_body
@@ -21,7 +22,7 @@ def render_v037_comment_thread_blur():
  emit(rel,t,rel,'whole-original-v037-comment-thread-blur-real-Windows-cache')
 
 def wide(p):
- s=str(Path(p).absolute());return Path(s if s.startswith('\\\\?\\')else'\\\\?\\'+s)
+ return long_path(Path(p).absolute())
 def write(p,t):wide(p).parent.mkdir(parents=True,exist_ok=True);wide(p).write_bytes(t.encode()if isinstance(t,str)else t)
 def sha(t):return hashlib.sha256(t.encode()if isinstance(t,str)else t).hexdigest()
 def save(p,v):write(p,json.dumps(v,ensure_ascii=False,indent=2)+'\n')

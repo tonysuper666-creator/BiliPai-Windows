@@ -1,0 +1,25 @@
+Upstream-commit: 9044ad38372ceda03f008a5f5467bfd7b0735f35
+Upstream-source-sha256: cf0eb4f92e5d048c69cad799aef8e13438f4f0049ca144f519a7a9c3837ef2bc
+Reason: The no-marker case compared a newly built marker-free Request with the original marker-bearing Request. Assert identity of the actual no-marker input and preserve every cookie/marker assertion.
+
+--- a/app/src/test/java/com/android/purebilibili/core/network/NetworkClientPolicyTest.kt
++++ b/app/src/test/java/com/android/purebilibili/core/network/NetworkClientPolicyTest.kt
+@@ -3,6 +3,7 @@
+ import okhttp3.OkHttpClient
+ import okhttp3.Protocol
+ import java.net.Proxy
++import kotlin.test.assertSame
+ import kotlin.test.Test
+ import kotlin.test.assertEquals
+ import kotlin.test.assertNull
+@@ -91,6 +92,9 @@
+         val applied = applyForcedCookieHeader(request)
+         assertEquals("SESSDATA=imported; bili_jct=csrf", applied.header("Cookie"))
+         assertNull(applied.header(FORCE_COOKIE_HEADER))
+-        assertEquals(request, applyForcedCookieHeader(request.newBuilder().removeHeader(FORCE_COOKIE_HEADER).build()))
++        val withoutMarker = request.newBuilder().removeHeader(FORCE_COOKIE_HEADER).build()
++        assertSame(withoutMarker, applyForcedCookieHeader(withoutMarker))
++        assertEquals("buvid3=from-jar", withoutMarker.header("Cookie"))
++        assertNull(withoutMarker.header(FORCE_COOKIE_HEADER))
+     }
+ }

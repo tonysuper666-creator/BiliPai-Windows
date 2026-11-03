@@ -1,5 +1,6 @@
 """Original selected protocol producer; no snapshot or .local dependency."""
 from pathlib import Path
+from desktop_paths import long_path
 import hashlib, re, subprocess, json
 
 def generate(repo: Path, output: Path):
@@ -8,7 +9,7 @@ def generate(repo: Path, output: Path):
 
     def safe(path):
         value = str(path.absolute())
-        return Path(value if value.startswith('\\\\?\\') else '\\\\?\\' + value)
+        return long_path(value)
 
     def read(path):
         return safe(path).read_text(encoding='utf-8').replace('\r\n', '\n').replace('\r', '\n')

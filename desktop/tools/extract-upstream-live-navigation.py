@@ -3,12 +3,13 @@ No API/client/account/cache/preferences authority is constructed by this produce
 """
 from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
+from desktop_paths import long_path
 import argparse, hashlib, importlib.util, json, re, textwrap
 COMMIT = '79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40'
 SOURCE_PINS = {'app/src/main/java/com/android/purebilibili/feature/live/LiveSearchScreen.kt': 'c391e12ba7e24a29cecf7c13d3593365029b2dbad19b8bb2a7ec48b8e28c0ba0', 'app/src/main/java/com/android/purebilibili/feature/live/LiveAreaScreen.kt': '09f5cb59863395387ca7b40805e30e633f1aa2f74bb593bc12104e35dd9b53f8', 'app/src/main/java/com/android/purebilibili/feature/live/LiveAreaDetailScreen.kt': 'e71df3f0eb772d756399a4f035e3a8477411f0ebf6bb6525142f45ba65b53cc7', 'app/src/main/java/com/android/purebilibili/feature/live/LiveFollowingScreen.kt': '75bc6e38c891944425834a188973a314abf4c4d24a7fbbf50c6d44560ad32b59', 'app/src/main/java/com/android/purebilibili/feature/live/LiveAreaScreenPolicy.kt': 'f76b8591ed458ab3d4a139a7a440611454eb9586f117cad6e2d348491d0e2fbf', 'core-data/src/main/java/com/android/purebilibili/data/repository/SearchRepository.kt': '4cec15c48b162a5987ae84ab962ed5e0958e89c33126f7c1f1fdbec322880ed0', 'app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt': '5799bb8802992594ae9494b48d6357ee00ecc7be03d97ed0dcb5fede7774328c', 'app/src/main/java/com/android/purebilibili/navigation/AppNavigation.kt': '729021fb73c3ec4aa2aedb0d4de5706c3d72c43928f6b5f0a8da4e80c693ccca'}
 BASE='app/src/main/java/com/android/purebilibili/'
 def safe(p):
- s=str(Path(p).absolute());return Path(s if s.startswith('\\\\?\\') else '\\\\?\\'+s)
+ return long_path(Path(p).absolute())
 def read(p):return safe(p).read_text(encoding='utf-8').replace('\r\n','\n')
 def write(p,s):
  p=safe(p);p.parent.mkdir(parents=True,exist_ok=True);p.write_text(s,encoding='utf-8',newline='\n')

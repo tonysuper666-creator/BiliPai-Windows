@@ -1,6 +1,7 @@
 """Select original Motion Photo packing and gallery-result policy; no new account/UI."""
 from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
+from desktop_paths import long_path
 import argparse, difflib, hashlib, json, subprocess, sys
 sys.dont_write_bytecode = True
 
@@ -13,7 +14,7 @@ def digest(value): return hashlib.sha256(value.encode()).hexdigest()
 def generate(repo: Path, output: Path):
     repo, output = repo.resolve(), output.resolve()
     value = str(output)
-    output = Path(value if value.startswith("\\\\?\\") else "\\\\?\\" + value)
+    output = long_path(value)
     output.mkdir(parents=True, exist_ok=True)
     sources = {}
     for path in [PREVIEW, GALLERY]:

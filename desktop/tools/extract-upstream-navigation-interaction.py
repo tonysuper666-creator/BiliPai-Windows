@@ -1,5 +1,6 @@
 from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
+from desktop_paths import long_path
 import argparse, hashlib, importlib.util, json, re, textwrap, difflib, sys
 sys.dont_write_bytecode = True
 
@@ -14,7 +15,7 @@ def load(name, path):
 def sha(data): return hashlib.sha256(data).hexdigest()
 def wide(path):
     value = str(path.absolute())
-    return Path(value if value.startswith('\\\\?\\') else '\\\\?\\' + value)
+    return long_path(value)
 def write(path, value):
     wide(path.parent).mkdir(parents=True, exist_ok=True)
     wide(path).write_text(value, encoding='utf-8', newline='\n')

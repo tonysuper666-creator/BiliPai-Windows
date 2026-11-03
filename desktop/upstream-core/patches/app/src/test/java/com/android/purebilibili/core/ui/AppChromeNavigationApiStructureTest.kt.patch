@@ -1,0 +1,18 @@
+Upstream-source-sha256: 570f60aadab88c24420f58b572ff8934f11d0aeec683161affa7004034298234
+Reason: AppSplitLayout 现在是带铰链避让与分栏状态保存的完整实现，不再是 `) = AppAdaptiveSplitLayout(` 的单表达式别名；分栏渲染仍委托给 AppAdaptiveSplitLayout。断言改为：声明存在，且声明之后的函数体里调用 AppAdaptiveSplitLayout( 并显式 useSplitLayout = true。AppScaffold/AppTopBar 两条别名断言不变。生产不动。
+
+--- a/app/src/test/java/com/android/purebilibili/core/ui/AppChromeNavigationApiStructureTest.kt
++++ b/app/src/test/java/com/android/purebilibili/core/ui/AppChromeNavigationApiStructureTest.kt
+@@ -17,7 +17,11 @@
+         assertTrue(chrome.contains("fun AppTopBar("))
+         assertTrue(chrome.contains(") = AdaptiveTopAppBar("))
+         assertTrue(navigation.contains("fun AppSplitLayout("))
+-        assertTrue(navigation.contains(") = AppAdaptiveSplitLayout("))
++        // AppSplitLayout 已是带铰链避让与分栏状态保存的完整实现，不再是单表达式别名；
++        // 分栏渲染仍委托给既有的 AppAdaptiveSplitLayout。
++        val splitBody = navigation.substringAfter("fun AppSplitLayout(")
++        assertTrue(splitBody.contains("AppAdaptiveSplitLayout("))
++        assertTrue(splitBody.contains("useSplitLayout = true"))
+     }
+ 
+     @Test

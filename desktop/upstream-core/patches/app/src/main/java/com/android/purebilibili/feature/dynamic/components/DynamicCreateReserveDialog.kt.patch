@@ -1,0 +1,37 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicCreateReserveDialog.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicCreateReserveDialog.kt
+@@ -41,6 +41,7 @@
+     onCreated: (DynamicCreatedReserve) -> Unit
+ ) {
+     val scope = rememberCoroutineScope()
++    val upstreamSession = com.bilipai.desktop.data.LocalDesktopUpstreamSession.current // Desktop (TON-1071): requests run for the window's current account
+     val initial = remember {
+         Calendar.getInstance().apply { add(Calendar.DAY_OF_YEAR, 1); set(Calendar.HOUR_OF_DAY, 20); set(Calendar.MINUTE, 0) }
+     }
+@@ -54,7 +55,7 @@
+     var loadFailed by remember { mutableStateOf(false) }
+     var loadAttempt by remember { mutableIntStateOf(0) }
+     LaunchedEffect(reserveId, loadAttempt) {
+-        if (reserveId != null) {
++        if (reserveId != null) com.bilipai.desktop.data.DesktopUpstreamSession.require(upstreamSession, "DynamicCreateReserveDialog").withOwner {
+             loading = true
+             loadFailed = false
+             errorMessage = null
+@@ -133,7 +134,7 @@
+                     }
+                     submitting = true
+                     errorMessage = null
+-                    scope.launch {
++                    scope.launch { com.bilipai.desktop.data.DesktopUpstreamSession.require(upstreamSession, "DynamicCreateReserveDialog").withOwner {
+                         DynamicCreateRepository.createReserve(
+                             title = title,
+                             livePlanStartTimeSeconds = startAtMillis / 1000L,
+@@ -149,7 +150,7 @@
+                                 errorMessage = error.message ?: "创建失败"
+                             }
+                         )
+-                    }
++                    } }
+                 }
+             ) {
+                 AppText(when { loading -> "加载中…"; submitting -> "保存中…"; reserveId != null -> "保存"; else -> "创建" })

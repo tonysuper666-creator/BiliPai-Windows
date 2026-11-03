@@ -1,0 +1,16 @@
+Upstream-source-sha256: 6aa032644be3e2fd9797d3b53d47375212aaeb0dfed6e503dacd80525aab989d
+Reason: 稍后再看的首屏加载现在画 PersonalMediaCardSkeleton 网格（列数跟随双指缩放的 pinchListColumns），不再用 ContentMediaListSkeleton(。断言对稍后再看改查 PersonalMediaCardSkeleton( 并确认它位于 state.isLoading 分支；其余三个页面的断言不变。生产不动。
+
+--- a/app/src/test/java/com/android/purebilibili/core/ui/skeleton/ContentLoadingSkeletonStructureTest.kt
++++ b/app/src/test/java/com/android/purebilibili/core/ui/skeleton/ContentLoadingSkeletonStructureTest.kt
+@@ -106,7 +106,9 @@
+ 
+         assertTrue(category.contains("ContentVideoGridSkeletonFixedColumns("))
+         assertTrue(partition.contains("ContentMediaListSkeleton("))
+-        assertTrue(watchLater.contains("ContentMediaListSkeleton("))
++        // 稍后再看按个人卡片列数画骨架网格（见 89068d48b 的双指缩放换列）。
++        assertTrue(watchLater.contains("PersonalMediaCardSkeleton("))
++        assertTrue(watchLater.substringBefore("PersonalMediaCardSkeleton(").contains("state.isLoading ->"))
+         assertTrue(liveSearch.contains("ContentVideoGridSkeletonFixedColumns("))
+         assertTrue(liveSearch.contains("ContentMediaListSkeleton("))
+     }
