@@ -1,0 +1,70 @@
+{
+  "patches": [
+    {
+      "patch": "desktop/upstream-core/patches/app/src/main/java/com/android/purebilibili/feature/message/ChatStructuredMessages.kt.patch",
+      "source": "app/src/main/java/com/android/purebilibili/feature/message/ChatStructuredMessages.kt",
+      "digest": null,
+      "gitApplyCheck": 0,
+      "preparedSha256": "32802eea553192ea5aff1d05ba7624e97208d24132fff5d5af80d80aefbae22b",
+      "testMethodsUnchanged": null,
+      "gradleHunkUniqueMatchCheck": "PASS"
+    },
+    {
+      "patch": "desktop/upstream-core/patches/app/src/main/java/com/android/purebilibili/feature/plugin/js/ExternalMediaDanmaku.kt.patch",
+      "source": "app/src/main/java/com/android/purebilibili/feature/plugin/js/ExternalMediaDanmaku.kt",
+      "digest": null,
+      "gitApplyCheck": 0,
+      "preparedSha256": "8be3222030d5b3dabdbf040237fc72e29e2255412d310492491f9f93fbcfdbea",
+      "testMethodsUnchanged": null,
+      "gradleHunkUniqueMatchCheck": "PASS"
+    },
+    {
+      "patch": "desktop/upstream-core/patches/app/src/test/java/com/android/purebilibili/feature/settings/AppBuildVerificationPolicyTest.kt.patch",
+      "source": "app/src/test/java/com/android/purebilibili/feature/settings/AppBuildVerificationPolicyTest.kt",
+      "digest": "64b7f7d5559e7b234997c98a4652c01472f0470bc9b2e3385de66aa17941d1fe",
+      "gitApplyCheck": 0,
+      "preparedSha256": "6323162293fa8c321c292509851074a0122b6aa2c4e96eccd73c63ae6fd41015",
+      "testMethodsUnchanged": true,
+      "gradleHunkUniqueMatchCheck": "PASS"
+    },
+    {
+      "patch": "desktop/upstream-core/patches/app/src/test/java/com/android/purebilibili/feature/space/SpaceAggregatedModelMappingTest.kt.patch",
+      "source": "app/src/test/java/com/android/purebilibili/feature/space/SpaceAggregatedModelMappingTest.kt",
+      "digest": "3b0537f7d2a28c7f8d130fae650826786af07d39a58c2920668562a5f84d01cd",
+      "gitApplyCheck": 0,
+      "preparedSha256": "2f240b6598a4dc0a6894d0e97521d7439482b88c69abdc3fb8899f88bb8af9b8",
+      "testMethodsUnchanged": true,
+      "gradleHunkUniqueMatchCheck": "PASS"
+    },
+    {
+      "patch": "desktop/upstream-core/patches/app/src/test/java/com/android/purebilibili/feature/space/SpaceDynamicNavigationPolicyTest.kt.patch",
+      "source": "app/src/test/java/com/android/purebilibili/feature/space/SpaceDynamicNavigationPolicyTest.kt",
+      "digest": "ddd51399d1262e0d766c2b8e5268c68e72ba9472dfbaa58037726092f7a35150",
+      "gitApplyCheck": 0,
+      "preparedSha256": "e3ea7ed44f658c290ea7e678615818383c524a0d498d4baf8ab97bfcf7dbe1c0",
+      "testMethodsUnchanged": true,
+      "gradleHunkUniqueMatchCheck": "PASS"
+    },
+    {
+      "patch": "desktop/upstream-core/patches/app/src/test/java/com/android/purebilibili/feature/space/SpaceTabChromePolicyTest.kt.patch",
+      "source": "app/src/test/java/com/android/purebilibili/feature/space/SpaceTabChromePolicyTest.kt",
+      "digest": "14a44fae6ba7e034978a1d62fa4a17a48ff3c76857273b0f450fad460e6d3c12",
+      "gitApplyCheck": 0,
+      "preparedSha256": "0c545190d9ff640cc5b64dca4002710666ef67a4422dfc403422aca70370d29a",
+      "testMethodsUnchanged": true,
+      "gradleHunkUniqueMatchCheck": "PASS"
+    },
+    {
+      "patch": "desktop/upstream-core/patches/app/src/test/java/com/android/purebilibili/feature/space/SpaceLoadPolicyTest.kt.patch",
+      "source": "app/src/test/java/com/android/purebilibili/feature/space/SpaceLoadPolicyTest.kt",
+      "digest": "3027b1ffe897397419b2f502b75d52799d78a3962d48fef174341eb4546521c7",
+      "gitApplyCheck": 0,
+      "preparedSha256": "547de482f47587405eddb444024bafdadeee904dc144bce539367f108f8359e5",
+      "testMethodsUnchanged": true,
+      "gradleHunkUniqueMatchCheck": "PASS"
+    }
+  ],
+  "patchesChecked": 7,
+  "runtimeTests": "NOT RUN: five test paths absent from Root-owned correctedUpstreamTestPaths",
+  "patchContextWhitespace": "Unified-diff blank context markers intentionally contain one space; source content is unchanged."
+}
