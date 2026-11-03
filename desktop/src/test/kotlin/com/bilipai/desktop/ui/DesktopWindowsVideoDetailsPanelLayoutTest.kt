@@ -46,6 +46,7 @@ import java.io.ByteArrayInputStream
 import java.nio.file.Files
 import java.nio.file.Path
 import javax.imageio.ImageIO
+import kotlin.coroutines.CoroutineContext
 import kotlin.math.abs
 import kotlin.test.*
 
@@ -60,7 +61,7 @@ class DesktopWindowsVideoDetailsPanelLayoutTest {
     @Test fun originalSkeletonsYieldToFailureRetryAndSelectedContentInRealFinitePanel(): Unit = runBlocking {
         val appearances = listOf(AppUiStyle.MATERIAL3 to AppThemeMode.LIGHT, AppUiStyle.MIUIX to AppThemeMode.DARK)
         for ((style, mode) in appearances) {
-            Fixture(root.resolve("transition-${style.name}"), style, mode).use { f ->
+            Fixture(root.resolve("transition-${style.name}"), style, mode, coroutineContext).use { f ->
                 for (tab in DesktopWindowsVideoDetailsTab.entries) {
                     f.selected.value = tab
                     f.phase.value = Phase.LOADING
@@ -106,7 +107,7 @@ class DesktopWindowsVideoDetailsPanelLayoutTest {
     }
 
     @Test fun originalPanesResizeAndZoomWithinSameCompositionAndFailureTakesPrecedence(): Unit = runBlocking {
-        Fixture(root.resolve("resize"), AppUiStyle.MIUIX, AppThemeMode.DARK).use { f ->
+        Fixture(root.resolve("resize"), AppUiStyle.MIUIX, AppThemeMode.DARK, coroutineContext).use { f ->
             f.settle()
             val composition = f.compositionIdentity
             val sizes = listOf(
@@ -152,7 +153,7 @@ class DesktopWindowsVideoDetailsPanelLayoutTest {
 
     private enum class Phase { LOADING, ERROR, ERROR_WHILE_LOADING, CONTENT }
 
-    private class Fixture(directory: Path, style: AppUiStyle, mode: AppThemeMode) : AutoCloseable {
+    private class Fixture(directory: Path, style: AppUiStyle, mode: AppThemeMode, sceneContext: CoroutineContext) : AutoCloseable {
         val selected = mutableStateOf(DesktopWindowsVideoDetailsTab.INTRODUCTION)
         val phase = mutableStateOf(Phase.LOADING)
         val owned = mutableStateOf(true)
@@ -182,7 +183,8 @@ class DesktopWindowsVideoDetailsPanelLayoutTest {
             val dynamic = DesktopDynamicTimelinePreferences(context)
             backing = directory.resolve("plugin-settings.json")
             initialBacking = Files.readAllBytes(backing)
-            scene = ImageComposeScene(1600, 1100, Density(1f)) {
+            // Keep recomposition (including animation wakeups), render and disposal on this test thread.
+            scene = ImageComposeScene(1600, 1100, Density(1f), coroutineContext = sceneContext) {
                 val actualWindow = LocalWindowInfo.current
                 val currentWindow = remember(actualWindow) { object : WindowInfo by actualWindow {
                     override val containerSize: IntSize get() = viewport.value
