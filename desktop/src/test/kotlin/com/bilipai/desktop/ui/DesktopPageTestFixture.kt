@@ -28,7 +28,7 @@ internal class DesktopPageTestFixture : AutoCloseable {
     val pluginContext = DesktopPluginContext(DesktopPluginStore(root.resolve("global")))
     val lifecycleOwner = PageTestLifecycleOwner()
     val home = DesktopHomeEnvironment(
-        DesktopOriginalHomePreferences.create(pluginContext.store, scope, false, { false }),
+        runBlocking { DesktopOriginalHomePreferences.create(pluginContext.store, scope, false, { false }) },
         pluginContext, lifecycleOwner, MutableStateFlow(false), UnusedAnalytics,
         { DesktopOriginalHomeGlobalNamespace(pluginContext.store, it) }, MutableStateFlow(null),
         { _, _ -> unsupported("loadWallpaperPalette") }, { unsupported("ensureEdgeToEdge") },
