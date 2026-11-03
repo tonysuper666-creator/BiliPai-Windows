@@ -32,17 +32,18 @@ private fun decode(raw:String)=raw.split('&').filter { it.isNotBlank() }.associa
     val parts=item.split('=',limit=2);URLDecoder.decode(parts[0],Charsets.UTF_8) to URLDecoder.decode(parts.getOrElse(1){""},Charsets.UTF_8)
 }
 private class MessagePageTestFixture : AutoCloseable {
-    val root=Files.createTempDirectory("bp-msg-owned-")
+    private val pageFixture=DesktopPageTestFixture()
+    val root=pageFixture.root
     val sessions=DesktopSessionStore(root.resolve("synthetic-session.json"),persistent=false)
     val repository=DesktopRepository(sessions)
-    val scope=CoroutineScope(SupervisorJob()+Dispatchers.Default)
+    val scope=pageFixture.scope
     val retained=AtomicBoolean(true)
     val visible=AtomicBoolean(true)
     val rootLock=Any()
     val canBeginEditor=AtomicBoolean(true)
     val editorActivity=AtomicInteger()
     @Volatile var onEditorActivity:()->Unit={}
-    val pluginContext=DesktopPluginContext(DesktopPluginStore(root.resolve("global")))
+    val pluginContext=pageFixture.pluginContext
     lateinit var community:DesktopCommunityRepository
     private val pageOwners=mutableListOf<DesktopOriginalMessagePageOwner>()
     val hits=ConcurrentLinkedQueue<MessagePageTestHit>()
@@ -90,22 +91,11 @@ private class MessagePageTestFixture : AutoCloseable {
         admission.im=services.im
     }
     suspend fun pageOwner():DesktopOriginalMessagePageOwner {
-        val lifecycleOwner=object:androidx.lifecycle.LifecycleOwner {
-            override val lifecycle:androidx.lifecycle.Lifecycle=androidx.lifecycle.LifecycleRegistry.createUnsafe(this).apply {
-                currentState=androidx.lifecycle.Lifecycle.State.RESUMED
-            }
-        }
         // Only unused rendering ports reject calls. The actual message owner, repository,
         // account admission, settings projection and loopback request view remain real.
-        val home=DesktopHomeEnvironment(
-            DesktopOriginalHomePreferences.create(pluginContext.store,scope,false,{false}),pluginContext,lifecycleOwner,
-            kotlinx.coroutines.flow.MutableStateFlow(false),unusedMessageUiPort(DesktopHomeAnalyticsPort::class.java),
-            { DesktopOriginalHomeGlobalNamespace(pluginContext.store,it) },kotlinx.coroutines.flow.MutableStateFlow(null),
-            {_,_->}, {}, {_,_->}, unusedMessageUiPort(DesktopHomeEmbeddedPages::class.java),{_,_->false},{},
-            unusedMessageUiPort(DesktopHomeOverlayPorts::class.java))
         return DesktopOriginalMessagePageOwner(repository,community,repository.sessionEpoch,42,scope,
             retained::get,visible::get,{action->synchronized(rootLock){if(retained.get()){action();true}else false}},
-            home,{},false,canBeginEditor::get,{editorActivity.incrementAndGet();onEditorActivity()}).also(pageOwners::add)
+            pageFixture.home,{},false,canBeginEditor::get,{editorActivity.incrementAndGet();onEditorActivity()}).also(pageOwners::add)
     }
     suspend fun <T> call(block:suspend()->T):T {
         val result=CompletableDeferred<T>();val job=admission.launch {
@@ -132,7 +122,7 @@ private class MessagePageTestFixture : AutoCloseable {
         in imPaths -> grpcReply(byteArrayOf())
         else -> MessagePageTestReply("""{"code":0}""")
     }
-    suspend fun shutdown() { retained.set(false);pageOwners.forEach { it.closeAndJoin() };admission.retireAndJoin();scope.cancel();server.stop(0);executor.shutdownNow();repository.httpClient.dispatcher.executorService.shutdownNow();repository.httpClient.connectionPool.evictAll() }
+    suspend fun shutdown() { retained.set(false);pageOwners.forEach { it.closeAndJoin() };admission.retireAndJoin();server.stop(0);executor.shutdownNow();repository.httpClient.dispatcher.executorService.shutdownNow();repository.httpClient.connectionPool.evictAll();pageFixture.shutdown() }
     override fun close() { runBlocking { shutdown() } }
     companion object {
         // The IM gRPC host keeps its production origin too (upstream MessageImRepository, bilibili.app.im.v1.im).
@@ -573,10 +563,6 @@ class DesktopOriginalMessagePagesTest {
     }
 }
 
-
-@Suppress("UNCHECKED_CAST")
-private fun <T> unusedMessageUiPort(type:Class<T>):T = java.lang.reflect.Proxy.newProxyInstance(
-    type.classLoader,arrayOf(type)) { _,method,_-> error("Unexpected rendering port ${method.name}") } as T
 
 /** Actual PageOwner/ChatViewModel/owned Job regression; no OS window or real account. */
 class DesktopMessageUpdateInstallationHoldTest {
