@@ -3,7 +3,10 @@ Reason: Preserve settings copy and navigation-focus contracts across upstream ch
 
 --- a/app/src/test/java/com/android/purebilibili/feature/settings/SettingsRootCategoryContentStructureTest.kt
 +++ b/app/src/test/java/com/android/purebilibili/feature/settings/SettingsRootCategoryContentStructureTest.kt
-@@ -57,6 +57,36 @@
+@@ -54,12 +54,42 @@
+             File("src/main/java/com/android/purebilibili/feature/settings/ui/SettingsSections.kt")
+         ).first { it.exists() }.readText().replace("\r\n", "\n")
+ 
 -        assertTrue(source.contains("SettingsSearchFocusIds.PLAYBACK_DECODER"))
 -        assertTrue(source.contains("SettingsSearchFocusIds.BOTTOM_BAR_START"))
 -        assertTrue(source.contains("SettingsSearchFocusIds.ANIMATION_START"))
@@ -46,7 +49,13 @@ Reason: Preserve settings copy and navigation-focus contracts across upstream ch
 +        assertEntry("INTERACTION_COMMENT", "PLAYBACK", "PLAYBACK_COMMENTS", "onPlaybackClick")
 +        assertEntry("FULLSCREEN_GESTURE", "PLAYBACK", "PLAYBACK_FULLSCREEN", "onPlaybackClick")
 +        assertEntry("DIAGNOSTICS", "PLAYBACK", "PLAYBACK_DEBUG", "onPlaybackClick")
-@@ -79 +109,18 @@
+     }
+ 
+     @Test
+@@ -76,7 +106,24 @@
+         assertTrue(feedApiBlock.contains("SettingSwitchItem("))
+         assertTrue(feedApiBlock.contains("SettingSliderItem("))
+         assertTrue(feedApiBlock.contains("SettingsAdaptiveDivider()"))
 -        assertTrue(feedApiBlock.contains("浏览动态时收起顶部栏"))
 +        val topBarAnchor = "SettingsItemAnchor(\"home.dynamic_top_bar_collapse_on_scroll\")"
 +        assertTrue(feedApiBlock.contains(topBarAnchor))
@@ -66,7 +75,13 @@ Reason: Preserve settings copy and navigation-focus contracts across upstream ch
 +        assertTrue(additionalDirectory.contains("PlaybackSettingItem(\"home.dynamic_top_bar_collapse_on_scroll\", \"浏览动态时收起顶部栏\","))
 +        assertTrue(titleDirectory.contains("get() = playbackSettingDirectory + additionalSettingsDirectory"))
 +        assertTrue(titleDirectory.contains("settingsItemDirectory.first { it.settingId == settingId }.title"))
-@@ -219,5 +266,11 @@
+         assertTrue(feedApiBlock.contains("dynamicTopBarCollapseOnScroll"))
+         assertTrue(feedApiBlock.contains("动态详情图片展示"))
+         assertTrue(feedApiBlock.contains("dynamicDetailImageLayout"))
+@@ -216,11 +263,17 @@
+             File("src/main/java/com/android/purebilibili/feature/settings/screen/SettingsSearchScreen.kt")
+         ).first { it.exists() }.readText().replace("\r\n", "\n")
+ 
 -        assertTrue(source.contains("SettingsSearchFocusController.submit(result.target, result.focusId)"))
 -        assertTrue(
 -            source.indexOf("SettingsSearchFocusController.submit(result.target, result.focusId)") <
@@ -83,11 +98,17 @@ Reason: Preserve settings copy and navigation-focus contracts across upstream ch
 +        assertTrue(detailIndex > submitIndex)
 +        assertTrue(click.contains("if (result.target == com.android.purebilibili.feature.settings.SettingsSearchTarget.NEARBY_HANDOFF)"))
 +        assertTrue(click.contains("} else onSearchResultClick(result)"))
-@@ -235 +288,2 @@
+     }
+ 
+     @Test
+@@ -232,9 +285,18 @@
+ 
+         assertTrue(source.contains("SettingsHomeSearchEntry(onClick = onSearchOpen)"))
+         assertTrue(source.contains("NavigationDrawerItem("))
 -        assertTrue(source.contains("text = category.subtitle"))
 +        val drawer = source.substringAfter("itemsIndexed(categories) {").substringBefore("selected = selected,")
 +        assertTrue(Regex("""text\s*=\s*stringResource\s*\(\s*category\.subtitleResource\s*\(\s*\)\s*\)""").containsMatchIn(drawer))
-@@ -237 +291,9 @@
+         assertTrue(source.contains("rightPane()"))
 -        assertTrue(source.contains("if (selectedCategory == null) emptyDetailPane() else detailPane()"))
 +        val detailActive = Regex("""shouldRenderSettingsTabletDetailPane\s*\(\s*selectedCategory\s*=\s*selectedCategory\s*,\s*isSearchActive\s*=\s*isSearchActive\s*,?\s*\)""")
 +        assertTrue(detailActive.containsMatchIn(source))
@@ -98,7 +119,13 @@ Reason: Preserve settings copy and navigation-focus contracts across upstream ch
 +        val detailPolicy = policy.substringAfter("internal fun shouldRenderSettingsTabletDetailPane(").substringBefore("\n}")
 +        assertTrue(Regex("""return\s+selectedCategory\s*!=\s*null\s*\|\|\s*isSearchActive""").containsMatchIn(detailPolicy))
 +        assertTrue(Regex("""if\s*\(\s*!isDetailActive\s*\)\s*emptyDetailPane\s*\(\s*\)\s*else\s*detailPane\s*\(\s*\)""").containsMatchIn(source))
-@@ -322,2 +384,6 @@
+         assertTrue(source.contains("text = \"选择设置分类\""))
+         assertTrue(source.contains("AppTopBar("))
+         assertTrue(source.contains(".padding(horizontal = layoutPolicy.detailPanePaddingDp.dp)"))
+@@ -319,8 +381,12 @@
+             .substringAfter("fun AboutSection(")
+             .substringBefore("@Composable\nprivate fun AboutProjectOverviewCard(")
+ 
 -        assertTrue(aboutSectionBlock.contains("AboutProjectOverviewCard(versionName = versionName)"))
 -        assertTrue(aboutSectionBlock.indexOf("AboutProjectOverviewCard(") < aboutSectionBlock.indexOf("SettingsCardGroup {"))
 +        val overviewCall = Regex(
@@ -107,7 +134,13 @@ Reason: Preserve settings copy and navigation-focus contracts across upstream ch
 +        val overviewIndex = overviewCall.find(aboutSectionBlock)?.range?.first ?: -1
 +        val settingsGroupIndex = aboutSectionBlock.indexOf("SettingsCardGroup {")
 +        assertTrue(overviewIndex >= 0 && settingsGroupIndex > overviewIndex)
-@@ -371 +437,10 @@
+         assertTrue(source.contains("internal val AboutDevelopers = listOf("))
+         assertTrue(source.contains("AboutDeveloper(\"jay3-yy\", \"jay3-yy\", R.drawable.avatar_jay3_yy)"))
+         assertTrue(source.contains("name = \"Piracola\""))
+@@ -368,7 +434,16 @@
+         assertTrue(overviewBlock.contains("FlowRow("))
+         assertFalse(overviewBlock.contains("horizontalScroll("))
+         assertTrue(itemBlock.contains("LocalUriHandler.current"))
 -        assertTrue(itemBlock.contains("uriHandler.openUri(contributor.profileUrl)"))
 +        val developerParameter = Regex("""^\s*(\w+)\s*:\s*AboutDeveloper\s*\)""")
 +            .find(itemBlock)?.groupValues?.get(1)
@@ -119,7 +152,13 @@ Reason: Preserve settings copy and navigation-focus contracts across upstream ch
 +            """\.clickable\s*\{\s*${Regex.escape(uriHandlerName)}\s*\.\s*openUri\s*\(\s*${Regex.escape(developerParameter)}\s*\.\s*profileUrl\s*\)\s*}"""
 +        )
 +        assertTrue(opensOwnProfile.containsMatchIn(itemBlock))
-@@ -401,3 +476,15 @@
+         assertTrue(itemBlock.contains("Box("))
+         assertTrue(itemBlock.contains("AsyncImage("))
+         assertTrue(itemBlock.contains("model = avatarUrl"))
+@@ -398,17 +473,41 @@
+         assertTrue(settingsSections.contains("SettingsDetailGroup(title = \"显示与交互\")"))
+         assertTrue(settingsSections.contains("SettingsDetailGroup(title = \"画质与播放\")"))
+         assertTrue(settingsSections.contains("SettingsDetailGroup(title = \"隐私与安全\")"))
 -        assertTrue(appearance.contains("AppPreferenceSectionTitle(\"显示模式\")"))
 -        assertTrue(appearance.contains("AppPreferenceSectionTitle(\"文字与大小\")"))
 -        assertTrue(appearance.contains("AppPreferenceSectionTitle(\"开屏与图标\")"))
@@ -138,7 +177,8 @@ Reason: Preserve settings copy and navigation-focus contracts across upstream ch
 +        assertAppearanceHeading("appearance_display_mode_title", "appearance_section_interface_effects", "界面与效果")
 +        assertAppearanceHeading("appearance_text_size_title", "appearance_section_text_size", "文字与大小")
 +        assertAppearanceHeading("appearance_splash_icon_title", "appearance_section_splash_icon", "开屏与图标")
-@@ -406,6 +493,18 @@
+         assertTrue(playback.contains("AppPreferenceSectionTitle(\"小窗与后台\")"))
+         assertTrue(playback.contains("AppPreferenceSectionTitle(\"诊断\")"))
 -        assertTrue(
 -            playback.indexOf("AppPreferenceSectionTitle(\"网络与画质\")") <
 -                playback.indexOf("AppPreferenceSectionTitle(\"互动与评论\")")
@@ -163,7 +203,13 @@ Reason: Preserve settings copy and navigation-focus contracts across upstream ch
 +        assertTrue(titleFunction.contains("\"animation.haptic_feedback_enabled\" -> R.string.animation_title_haptic"))
 +        assertTrue(titleFunction.contains("return stringResource(titleResId)"))
 +        assertTrue(strings.contains("<string name=\"animation_title_haptic\">触感反馈</string>"))
-@@ -425,0 +525,11 @@
+         assertFalse(animation.contains("AppPreferenceSectionTitle(\"底栏入口\")"))
+     }
+ 
+@@ -423,8 +522,18 @@
+             .substringAfter("private fun AboutProjectOverviewCard(")
+             .substringBefore("@Composable\nprivate fun ContributorAvatarRow(")
+ 
 +        val aboutSection = source.substringAfter("fun AboutSection(")
 +            .substringBefore("private fun AboutProjectOverviewCard(")
 +        val entry = source.substringBefore("fun AboutSection(")
@@ -175,9 +221,15 @@ Reason: Preserve settings copy and navigation-focus contracts across upstream ch
 +        assertTrue(aboutSection.contains("appIconRes = appIconRes"))
 +        assertTrue(overviewBlock.contains("AsyncImage("))
 +        assertTrue(overviewBlock.contains("model = appIconRes"))
-@@ -427 +536,0 @@
+         assertFalse(overviewBlock.contains("R.mipmap.ic_launcher_bilipai)"))
 -        assertTrue(overviewBlock.contains("R.mipmap.ic_launcher_bilipai_foreground"))
-@@ -452 +561,24 @@
+     }
+ 
+     @Test
+@@ -449,7 +558,30 @@
+             File("src/main/java/com/android/purebilibili/feature/settings/screen/SettingsTabletShell.kt")
+         ).first { it.exists() }.readText().replace("\r\n", "\n")
+ 
 -        assertTrue(source.contains("text = category.subtitle"))
 +        val drawer = source.substringAfter("itemsIndexed(categories) {").substringBefore("selected = selected,")
 +        assertTrue(drawer.contains("AppNavigationDrawerItem("))
@@ -203,3 +255,6 @@ Reason: Preserve settings copy and navigation-focus contracts across upstream ch
 +            assertTrue(categoryCopy.contains("SettingsRootCategory.$category -> R.string.$resource"))
 +            assertTrue(strings.contains("<string name=\"$resource\">$expected</string>"))
 +        }
+     }
+ 
+     @Test
