@@ -19,9 +19,10 @@
              columns = GridCells.Fixed(columns),
              contentPadding = PaddingValues(
                  start = gridOuterPaddingDp.dp,
-@@ -1,4 +1,5 @@
+@@ -1,4 +1,6 @@
  package com.android.purebilibili.feature.list
 +import com.android.purebilibili.navigation.tabIndicatorPosition
++import com.android.purebilibili.navigation.tabSelectedPage
  
  import com.android.purebilibili.core.ui.components.PageAwareAsyncImage
  
@@ -34,3 +35,11 @@
                                  },
                                  isScrollInProgressProvider = { historyPagerState.isScrollInProgress },
                              )
+@@ -609,5 +611,5 @@
+-    LaunchedEffect(historyPagerState.currentPage) {
+-        val targetFilter = historyFilters.getOrNull(historyPagerState.currentPage) ?: HistoryContentFilter.ALL
++    LaunchedEffect(historyPagerState.tabSelectedPage) {
++        val targetFilter = historyFilters.getOrNull(historyPagerState.tabSelectedPage) ?: HistoryContentFilter.ALL
+         if (historyContentFilter != targetFilter) {
+             historyContentFilter = targetFilter
+             selectedHistoryKeys = emptySet()
