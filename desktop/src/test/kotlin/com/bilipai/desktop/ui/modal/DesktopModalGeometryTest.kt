@@ -3,9 +3,22 @@ package com.bilipai.desktop.ui.modal
 import androidx.compose.ui.unit.IntRect
 import androidx.compose.ui.unit.IntSize
 import org.junit.jupiter.api.Test
+import kotlin.math.roundToInt
 import kotlin.test.*
 
 class DesktopModalGeometryTest {
+    @Test fun readingPanelUsesTheContractDefaultShareAndClampAtEveryScale() {
+        for (density in listOf(1f, 1.5f, 2.25f)) {
+            for ((windowWidthDp, expectedWidthDp) in listOf(960 to 340, 1280 to 340, 2000 to 440, 2400 to 480)) {
+                val viewport = IntSize((windowWidthDp * density).roundToInt(), (800 * density).roundToInt())
+                val reading = desktopModalBounds(DesktopModalPurpose.READING_PANEL, viewport, density)
+                assertEquals((expectedWidthDp * density).roundToInt(), reading.width,
+                    "window=${windowWidthDp}dp density=$density")
+                assertEquals(viewport.width, reading.right)
+            }
+        }
+    }
+
     @Test fun confirmationAndReadingStayInsideSmallAndUltrawideWindowsAtEveryScale() {
         for (density in listOf(1f, 1.5f, 2.25f)) for (size in listOf(IntSize(280, 180), IntSize(960, 640), IntSize(5120, 2160))) {
             val confirm = desktopModalBounds(DesktopModalPurpose.CONFIRM, size, density)

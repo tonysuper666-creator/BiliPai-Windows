@@ -2,6 +2,9 @@ package com.bilipai.desktop.ui.modal
 
 import androidx.compose.ui.unit.IntRect
 import androidx.compose.ui.unit.IntSize
+import com.bilipai.desktop.ui.DESKTOP_PLAYER_PANEL_DEFAULT_HIGH_DP
+import com.bilipai.desktop.ui.DESKTOP_PLAYER_PANEL_DEFAULT_LOW_DP
+import com.bilipai.desktop.ui.DESKTOP_PLAYER_PANEL_DEFAULT_PERCENT
 import kotlin.math.roundToInt
 
 internal enum class DesktopModalPurpose { CONFIRM, OPTIONS, READING_PANEL }
@@ -23,7 +26,9 @@ internal fun desktopModalBounds(
     val width = when (purpose) {
         DesktopModalPurpose.CONFIRM -> minOf(px(designWidthDp.coerceAtLeast(0f)), (w - px(32f)).coerceAtLeast(0))
         DesktopModalPurpose.OPTIONS -> minOf(px(designWidthDp.coerceIn(168f, 260f)), (w - 2 * margin).coerceAtLeast(0))
-        DesktopModalPurpose.READING_PANEL -> (w * .42f).roundToInt().coerceIn(px(340f), px(480f)).coerceAtMost(w)
+        DesktopModalPurpose.READING_PANEL -> (w * DESKTOP_PLAYER_PANEL_DEFAULT_PERCENT / 100f).roundToInt()
+            .coerceIn(px(DESKTOP_PLAYER_PANEL_DEFAULT_LOW_DP.toFloat()), px(DESKTOP_PLAYER_PANEL_DEFAULT_HIGH_DP.toFloat()))
+            .coerceAtMost(w)
     }
     val height = when (purpose) {
         DesktopModalPurpose.CONFIRM -> contentHeight.coerceIn(0, (h - px(48f)).coerceAtLeast(0))
