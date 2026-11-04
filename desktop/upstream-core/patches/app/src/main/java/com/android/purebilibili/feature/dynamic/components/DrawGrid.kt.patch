@@ -1,0 +1,45 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/dynamic/components/DrawGrid.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/dynamic/components/DrawGrid.kt
+@@ -20,7 +20,10 @@
+ import androidx.compose.foundation.shape.RoundedCornerShape
+ //  Material Icons
+ import androidx.compose.material3.*
+-import androidx.compose.runtime.Composable
++import androidx.compose.runtime.*
++import androidx.compose.ui.focus.FocusRequester
++import androidx.compose.ui.focus.focusRequester
++import androidx.compose.ui.platform.testTag
+ import androidx.compose.runtime.remember
+ import androidx.compose.ui.Alignment
+ import androidx.compose.ui.Modifier
+@@ -170,9 +173,22 @@
+     // 优先按图片 URL 身份匹配，几何判定仅作无身份键入口的回退，
+     // 避免 Dialog 窗口/滚动容器坐标差异导致的"原图残留"。
+     val sourceHidden = isImagePreviewSourceHidden(imageRectRef.value, imageUrl)
++    val previewOpen = isImagePreviewOpen()
++    val sourceFocus = remember(imageUrl) { FocusRequester() }
++    var returnFocus by remember(imageUrl) { mutableStateOf(false) }
++    LaunchedEffect(previewOpen, imageUrl) {
++        if (!previewOpen && returnFocus) {
++            // The source's clickable was disabled while hidden. Wait for reattachment.
++            withFrameNanos { }
++            sourceFocus.requestFocus()
++            returnFocus = false
++        }
++    }
+ 
+     Box(
+         modifier = modifier
++            .testTag("dynamic-image-$index")
++            .focusRequester(sourceFocus)
+             .alpha(if (sourceHidden) 0f else 1f)
+             .clip(RoundedCornerShape(cornerRadius))
+             .background(MaterialTheme.colorScheme.surfaceVariant)
+@@ -185,6 +201,7 @@
+                 indication = null,
+                 enabled = !sourceHidden,
+             ) {
++                returnFocus = true
+                 val rect = imageRectRef.value
+                 val anchor = rect?.let {
+                     ImagePreviewSourceAnchor(
