@@ -19,6 +19,10 @@ import com.android.purebilibili.data.model.response.*
 import com.android.purebilibili.feature.dynamic.components.DynamicSubReplyPreviewHost
 import com.android.purebilibili.feature.video.viewmodel.SubReplyUiState
 import com.android.purebilibili.feature.video.viewmodel.SubReplySortMode
+import com.bilipai.desktop.data.*
+import okhttp3.Protocol
+import okhttp3.Response
+import okhttp3.ResponseBody.Companion.toResponseBody
 import com.bilipai.desktop.plugins.DesktopPluginContext
 import com.bilipai.desktop.plugins.DesktopPluginStore
 import com.bilipai.desktop.ui.kit.LocalDesktopKitReducedMotion
@@ -27,6 +31,7 @@ import java.awt.GraphicsEnvironment
 import java.lang.reflect.Proxy
 import java.nio.file.Path
 import kotlinx.collections.immutable.toPersistentList
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestCoroutineScheduler
@@ -45,8 +50,11 @@ class DesktopDynamicReplyReadingPanelTest {
     private fun platform(): DesktopCommentPlatform {
         val context = DesktopPluginContext(DesktopPluginStore(directory))
         return Proxy.newProxyInstance(DesktopCommentPlatform::class.java.classLoader,
-            arrayOf(DesktopCommentPlatform::class.java)) { _, method, _ ->
+            arrayOf(DesktopCommentPlatform::class.java)) { proxy, method, args ->
             when (method.name) {
+                "equals" -> proxy === args?.get(0)
+                "hashCode" -> System.identityHashCode(proxy)
+                "toString" -> "IsolatedReplyPlatform"
                 "isOwned" -> true
                 "getContext" -> context
                 "getEmotes" -> emotes
@@ -69,10 +77,20 @@ class DesktopDynamicReplyReadingPanelTest {
                 sheetContainer = if (reading) ({ content -> DesktopDynamicReplyReadingPanel(onDismiss, content) }) else null)
         }
     }
-    private class Scene(reduced: Boolean = true, content: @Composable () -> Unit) : AutoCloseable {
+    private inner class Scene(reduced: Boolean = true, content: @Composable () -> Unit) : AutoCloseable {
         private var time = 0L
         private val scheduler = TestCoroutineScheduler()
-        private val scene = ImageComposeScene(800, 600, Density(1f), coroutineContext = StandardTestDispatcher(scheduler)) {
+        private val errors = mutableListOf<Throwable>()
+        private val repository = DesktopRepository(DesktopSessionStore.temporary())
+        private val transport = repository.httpClient.newBuilder().addInterceptor { chain ->
+            check(chain.request().url.encodedPath == "/x/emote/user/panel/web") { "Unexpected request: ${chain.request().url}" }
+            Response.Builder().request(chain.request()).protocol(Protocol.HTTP_1_1).code(200).message("fixture")
+                .body("""{"code":0,"data":{"packages":[]}}""".toResponseBody()).build()
+        }.build()
+        private val owner = repository.upstreamOwner(DesktopUpstreamPurpose.Main, { true })
+        init { DesktopRepository::class.java.getDeclaredField("client").apply { isAccessible = true }.set(repository, transport) }
+        private val scene = DesktopUpstreamCalls.withOwner(owner) { ImageComposeScene(800, 600, Density(1f), coroutineContext = StandardTestDispatcher(scheduler) + DesktopUpstreamScope(owner) +
+            CoroutineExceptionHandler { _, error -> errors += error }) {
             MaterialTheme {
                 val original = LocalWindowInfo.current
                 val window = remember(original) { object : WindowInfo by original { override val isWindowFocused = true } }
@@ -81,15 +99,19 @@ class DesktopDynamicReplyReadingPanelTest {
                 }
             }
         }
+        }
         init { check(GraphicsEnvironment.isHeadless()) }
         fun advance(frames: Int) { repeat(frames) {
             scheduler.runCurrent()
             time += 30_000_000
-            scene.render(time).close()
+            DesktopUpstreamCalls.withOwner(owner) { scene.render(time).close() }
             scheduler.runCurrent()
+            errors.firstOrNull()?.let { throw AssertionError("Reply composition failed", it) }
         } }
         fun settle() = advance(8)
         private fun flatten(n: SemanticsNode): List<SemanticsNode> = listOf(n) + n.children.flatMap(::flatten)
+        fun scrollRange(node: SemanticsNode) = flatten(node).first { it.config.contains(SemanticsProperties.VerticalScrollAxisRange) }
+            .config[SemanticsProperties.VerticalScrollAxisRange]
         fun ownerCount() = scene.semanticsOwners.size
         fun nodes() = scene.semanticsOwners.flatMap { flatten(it.unmergedRootSemanticsNode) }
         fun tagged(tag: String) = nodes().first { it.config.getOrNull(SemanticsProperties.TestTag) == tag }
@@ -109,7 +131,12 @@ class DesktopDynamicReplyReadingPanelTest {
         fun scroll(point: Offset) {
             scene.sendPointerEvent(PointerEventType.Scroll, point, scrollDelta = Offset(0f, 8f)); settle()
         }
-        override fun close() = scene.close()
+        override fun close() {
+            scene.close()
+            repository.logout()
+            transport.dispatcher.executorService.shutdownNow()
+            transport.connectionPool.evictAll()
+        }
     }
 
     @Test fun originalReplyEntersFocusTrapsTabAndRestoresOpenerWithoutNestingSheets() {
@@ -167,7 +194,7 @@ class DesktopDynamicReplyReadingPanelTest {
         }.use { s ->
             s.settle()
             val list = s.tagged("subreply_detail_reply_list")
-            val range = list.config[SemanticsProperties.VerticalScrollAxisRange]
+            val range = s.scrollRange(list)
             assertEquals(0f, range.value()); assertTrue(range.maxValue() > 0f)
             s.click("subreply_detail_sort"); assertNotNull(sort)
             s.scroll(list.boundsInWindow.center); assertTrue(range.value() > 0f)
