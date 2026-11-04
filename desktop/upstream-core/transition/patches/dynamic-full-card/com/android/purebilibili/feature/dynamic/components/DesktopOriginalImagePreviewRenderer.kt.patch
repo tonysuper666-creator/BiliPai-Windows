@@ -1,0 +1,94 @@
+--- a/dynamic-full-card/com/android/purebilibili/feature/dynamic/components/DesktopOriginalImagePreviewRenderer.kt
++++ b/dynamic-full-card/com/android/purebilibili/feature/dynamic/components/DesktopOriginalImagePreviewRenderer.kt
+@@ -28,6 +28,13 @@
+ import androidx.compose.animation.slideOutVertically
+ import androidx.compose.animation.togetherWith
+ import androidx.compose.foundation.background
++import androidx.compose.foundation.focusable
++import androidx.compose.ui.focus.FocusRequester
++import androidx.compose.ui.focus.focusRequester
++import androidx.compose.ui.focus.onFocusChanged
++import androidx.compose.ui.input.key.*
++import androidx.compose.ui.semantics.semantics
++import androidx.compose.ui.semantics.stateDescription
+ import androidx.compose.foundation.clickable
+ import androidx.compose.foundation.gestures.detectTapGestures
+ import androidx.compose.foundation.layout.*
+@@ -757,8 +764,15 @@
+             }
+             val latestTriggerDismiss by rememberUpdatedState<() -> Unit>({ triggerDismiss() })
+ 
++            fun dismissTopLayer() {
++                when {
++                    showOrdinaryImageActions -> showOrdinaryImageActions = false
++                    showLivePhotoMenu -> showLivePhotoMenu = false
++                    else -> triggerDismiss()
++                }
++            }
+             LaunchedEffect(dismissRequestCount) {
+-                if (dismissRequestCount > 0) triggerDismiss()
++                if (dismissRequestCount > 0) dismissTopLayer()
+             }
+ 
+ 
+@@ -773,6 +787,34 @@
+                 }
+             }
+             
++            val keyboardFocus = remember { FocusRequester() }
++            var viewerFocused by remember { mutableStateOf(false) }
++            LaunchedEffect(requestToken, showOrdinaryImageActions) {
++                if (!showOrdinaryImageActions) keyboardFocus.requestFocus()
++            }
++            Box(Modifier.fillMaxSize()
++                .testTag("desktop-image-viewer")
++                .semantics { stateDescription = "${pagerState.currentPage + 1}/${images.size}" }
++                .focusRequester(keyboardFocus)
++                .onFocusChanged { viewerFocused = it.isFocused }
++                // Bubble after children: text editors and nested menus own their keys first.
++                .onKeyEvent { event ->
++                    if (event.type != KeyEventType.KeyDown) false
++                    else when {
++                        event.key == Key.Escape -> { dismissTopLayer(); true }
++                        viewerFocused && (event.key == Key.DirectionLeft || event.key == Key.DirectionRight) -> {
++                            if (!isDismissing && !showOrdinaryImageActions && !showLivePhotoMenu) {
++                                val step = if (event.key == Key.DirectionRight) 1 else -1
++                                scope.launch {
++                                    pagerState.scrollToPage((pagerState.currentPage + step).coerceIn(0, images.lastIndex))
++                                }
++                            }
++                            true
++                        }
++                        else -> false
++                    }
++                }
++                .focusable()) {
+             // 1. 背景层 (淡入淡出)
+             Box(
+                 modifier = Modifier
+@@ -1813,13 +1855,24 @@
+                     }
+                 }
+             }
++            } // keyboard scope; original pager/chrome remain in the same host
+     }
+ 
+     if (showOrdinaryImageActions) {
+         AppAlertDialog(
+             onDismissRequest = { showOrdinaryImageActions = false },
+             text = {
+-                Column(modifier = Modifier.fillMaxWidth()) {
++                // Miuix creates its window content later; request focus only once attached.
++                val actionsFocus = remember { FocusRequester() }
++                LaunchedEffect(Unit) { actionsFocus.requestFocus() }
++                Column(modifier = Modifier.fillMaxWidth()
++                    .testTag("desktop-image-actions")
++                    .focusRequester(actionsFocus).onKeyEvent { event ->
++                        if (event.type == KeyEventType.KeyDown && event.key == Key.Escape) {
++                            showOrdinaryImageActions = false
++                            true
++                        } else false
++                    }.focusable()) {
+                     ImagePreviewActionButton(
+                         label = "分享",
+                         onClick = {
