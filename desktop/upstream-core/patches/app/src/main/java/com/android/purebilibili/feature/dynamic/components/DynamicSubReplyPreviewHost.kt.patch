@@ -1,0 +1,14 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicSubReplyPreviewHost.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicSubReplyPreviewHost.kt
+@@ -30,4 +30,5 @@
+     onDeleteComment: ((Long) -> Unit)? = null,
+     onCoveredBlurProgressChange: ((Float) -> Unit)? = null,
++    sheetContainer: (@Composable (content: @Composable () -> Unit) -> Unit)? = null,
+ ) {
+     val emoteCatalogSessionKey = DynamicEmoteCatalog.currentSessionKey()
+@@ -81,4 +82,5 @@
+         },
+         onCoveredBlurProgressChange = onCoveredBlurProgressChange,
++        sheetContainer = sheetContainer,
+     )
+ }

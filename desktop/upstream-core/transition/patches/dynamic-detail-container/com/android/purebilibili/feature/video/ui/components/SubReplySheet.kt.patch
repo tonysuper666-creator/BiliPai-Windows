@@ -1,0 +1,63 @@
+--- a/dynamic-detail-container/com/android/purebilibili/feature/video/ui/components/SubReplySheet.kt
++++ b/dynamic-detail-container/com/android/purebilibili/feature/video/ui/components/SubReplySheet.kt
+@@ -52,6 +52,8 @@
+     showIdentityDecorations: Boolean = true,
+     onAvatarClick: ((String) -> Unit)? = null,
+     onCoveredBlurProgressChange: ((Float) -> Unit)? = null,
++    // Replaces the container only for explicitly opted-in consumers.
++    sheetContainer: (@Composable (content: @Composable () -> Unit) -> Unit)? = null,
+ ) {
+     if (state.visible && state.rootReply != null) {
+         key(state.rootReply.rpid) {
+@@ -79,17 +81,7 @@
+                 onCoveredBlurProgressChange?.invoke(0f)
+             }
+         }
+-        com.android.purebilibili.core.ui.AppModalBottomSheet(
+-            onDismissRequest = onDismiss,
+-            dismissOnBackPress = false,
+-            modifier = Modifier.fillMaxHeight(maxHeightFraction)
+-                .then(threadDrag.containerModifier)
+-                .graphicsLayer {
+-                    translationY = threadDrag.offsetPx.value +
+-                        resolveCommentThreadPredictiveBackOffsetY(backProgress, size.height)
+-                },
+-            scrimColor = Color.Black.copy(alpha = scrimAlpha * (1f - maxOf(backProgress, threadDrag.revealProgress)))
+-        ) {
++        val threadContent: @Composable () -> Unit = {
+             CommentWindowNavigation {
+                 NavigationBackHandler(
+                     state = backState,
+@@ -97,7 +89,7 @@
+                     onBackCompleted = onDismiss,
+                 )
+                 SubReplyDetailContent(
+-                    headerDragModifier = threadDrag.headerModifier,
++                    headerDragModifier = if (sheetContainer == null) threadDrag.headerModifier else Modifier,
+                     rootReply = rootReply,
+                     subReplies = state.items,
+                     sortMode = state.sortMode,
+@@ -133,6 +125,23 @@
+                 )
+             }
+         }
++        if (sheetContainer != null) {
++            sheetContainer(threadContent)
++        } else {
++            com.android.purebilibili.core.ui.AppModalBottomSheet(
++                onDismissRequest = onDismiss,
++                dismissOnBackPress = false,
++                modifier = Modifier.fillMaxHeight(maxHeightFraction)
++                    .then(threadDrag.containerModifier)
++                    .graphicsLayer {
++                        translationY = threadDrag.offsetPx.value +
++                            resolveCommentThreadPredictiveBackOffsetY(backProgress, size.height)
++                    },
++                scrimColor = Color.Black.copy(alpha = scrimAlpha * (1f - maxOf(backProgress, threadDrag.revealProgress)))
++            ) {
++                threadContent()
++            }
++        }
+         }
+     }
+ }
