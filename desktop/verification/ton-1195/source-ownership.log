@@ -1,0 +1,17 @@
+COMMAND: ./gradlew -p desktop --no-daemon --console=plain --init-script verification/ton-1195/source-ownership.init.gradle ton1195SourceOwnership
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/9.5.0/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build
+
+> Task :ton1195SourceOwnership
+TON1195_OWNER DynamicSubReplyPreviewHost.kt count=1
+../app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicSubReplyPreviewHost.kt
+TON1195_OWNER SubReplySheet.kt count=1
+build/transition-patched/com/android/purebilibili/feature/video/ui/components/SubReplySheet.kt
+TON1195_OWNER DesktopOriginalDynamicDetailLayout.kt count=1
+build/transition-patched/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicDetailLayout.kt
+
+BUILD SUCCESSFUL in 3s
+1 actionable task: 1 executed
+Consider enabling configuration cache to speed up this build: https://docs.gradle.org/9.5.0/userguide/configuration_cache_enabling.html
+
+EXIT_CODE: 0
