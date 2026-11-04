@@ -42,3 +42,66 @@ The patch helper derives diffs from normal producer output and asserts unique
 anchors. It does not copy a renderer or modify generated/compiled files.
 
 Windows GUI, parent K6 layout and whole-application acceptance remain separate.
+
+## Verification
+
+Tested implementation commit: `6aa758ef1`; subsequent evidence-only commit adds
+this section and `comparison.json`. Baseline: `eb8c7b1fc` in a clean detached
+worktree. Both use the same non-desktop trees, default modal test fixture and
+render hashes, checked mechanically by the existing TON-1194 comparator.
+
+From each repository checkout, use the existing whole-machine lock runner
+(`BASELINE` / `CANDIDATE` below are log destinations outside the checkout):
+
+```sh
+# Clean baseline, actual same-version source tests and existing consumer regressions:
+python3 desktop/verification/ton-1195/run_locked.py . BASELINE.log test \
+  --tests 'com.bilipai.desktop.ui.modal.*' \
+  --tests 'com.bilipai.desktop.ui.DesktopInlineEmote*Test' \
+  --tests com.bilipai.desktop.ui.DesktopDynamicCommentShortcutTest \
+  --tests com.bilipai.desktop.ui.DesktopDynamicReplyReadingPanelTest \
+  --tests com.bilipai.desktop.ui.DesktopWindowsCommentPreviewRequestTest \
+  --tests com.bilipai.desktop.ui.DesktopWindowsDialogEscapeBindingTest
+
+# Candidate, actual main/test compile, normal source ownership and consumer behavior:
+python3 desktop/verification/ton-1195/run_locked.py . CANDIDATE.log \
+  --init-script verification/ton-1197/source-ownership.init.gradle \
+  compileKotlin compileTestKotlin ton1197SourceOwnership test \
+  --tests 'com.bilipai.desktop.ui.modal.*' \
+  --tests 'com.bilipai.desktop.ui.DesktopInlineEmote*Test' \
+  --tests com.bilipai.desktop.ui.DesktopDynamicCommentShortcutTest \
+  --tests com.bilipai.desktop.ui.DesktopDynamicReplyReadingPanelTest \
+  --tests com.bilipai.desktop.ui.DesktopWindowsCommentPreviewRequestTest \
+  --tests com.bilipai.desktop.ui.DesktopWindowsDialogEscapeBindingTest \
+  --tests com.bilipai.desktop.ui.DesktopDynamicImagePreviewKeyboardTest
+
+# From candidate, pass the clean baseline checkout path:
+python3 desktop/verification/ton-1194/compare.py BASELINE_CHECKOUT . > comparison.json
+```
+
+Both Gradle commands exit **1**, solely for the same 47 upstream failures.
+Candidate `compileKotlin`, `compileTestKotlin`, `ton1197SourceOwnership` and the
+selected `test` task all pass. There is exactly one compiled renderer and grid,
+and no retired generated grid. The 8 new dynamic-card tests cover both MATERIAL3
+and MIUIX, including the original long-press action dialog, menu-first Esc and
+restored viewer focus. Miuix delays dialog content creation, so its menu requests
+focus inside that content rather than before the window is mounted.
+
+| JUnit task | Baseline tests/failed/skipped | Candidate tests/failed/skipped |
+| --- | --- | --- |
+| test | 46/0/0 | 54/0/0 |
+| upstreamDesignSourceTests | 59/0/0 | 59/0/0 |
+| upstreamAppCoreSourceTests | 441/46/0 | 441/46/0 |
+| applicationImageLoaderOwnerTests | 3/0/0 | 3/0/0 |
+| sponsorPresentationTests | 1/1/0 | 1/1/0 |
+
+Gate A comparator exits **0**: new failures 0, removed cases 0, new skips 0;
+all default render hashes and upstream inputs match. `comparison.json` retains
+both complete failure sets; no allowlist or test exclusions were introduced.
+The full JVM suite is not green. Windows GUI/OS focus remains **unverified**.
+Raw baseline/candidate command logs and JUnit XML are attached on TON-1197.
+
+Patch context preserves upstream whitespace (including blank context lines).
+Whitespace checks pass for code/docs normally and for `.patch` files with
+`core.whitespace=-blank-at-eol`; removing their context whitespace would damage
+strict patch anchors. No whitespace policy or test is changed in the repository.
