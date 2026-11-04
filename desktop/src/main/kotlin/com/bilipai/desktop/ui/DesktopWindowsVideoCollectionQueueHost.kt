@@ -19,6 +19,7 @@ import com.android.purebilibili.feature.video.screen.resolveExternalPlaylistQueu
 import com.android.purebilibili.feature.video.ui.components.CollectionSheet
 import com.android.purebilibili.feature.video.viewmodel.VideoPlaybackUiState
 import com.bilipai.desktop.data.*
+import com.bilipai.desktop.ui.modal.DesktopReadingPanelWindow
 import java.util.concurrent.atomic.AtomicBoolean
 
 /** Reference identity is required even if a replacement source has the same BV/CID. */
@@ -97,10 +98,10 @@ internal fun desktopWindowsUgcEpisodeSelection(
         val platform = remember { bindings.forWindow(::owned) }
         fun dismiss() { alive.set(false); latestDismiss() }
         DisposableEffect(alive) { onDispose { alive.set(false) } }
-        if (owned()) DesktopWindowsPlayerDialog("视频合集", ::dismiss, preferredHeightDp = 640) {
+        if (owned()) DesktopReadingPanelWindow("视频合集", ::dismiss) { requestClose ->
             CompositionLocalProvider(LocalDesktopCollectionBindings provides platform,
                 LocalDesktopCollectionNativeWindow provides true) {
-                CollectionSheet(season, details.bvid, currentCid, onDismiss = ::dismiss,
+                CollectionSheet(season, details.bvid, currentCid, onDismiss = requestClose,
                     onEpisodeClick = { episode ->
                         if (owned()) {
                             desktopWindowsUgcEpisodeSelection(details, currentCid, episode)?.let { selection ->
@@ -157,13 +158,13 @@ internal fun desktopWindowsVideoQueueSelectionIsCurrent(
         fun owned() = alive.get() && latestOwned()
         fun dismiss() { alive.set(false); latestDismiss() }
         DisposableEffect(alive) { onDispose { alive.set(false) } }
-        if (owned()) DesktopWindowsPlayerDialog("播放队列", ::dismiss, preferredHeightDp = 560) {
+        if (owned()) DesktopReadingPanelWindow("播放队列", ::dismiss) { requestClose ->
             BoxWithConstraints(Modifier.fillMaxSize()) {
                 val listMaxHeight = (maxHeight - 94.dp).coerceAtLeast(0.dp)
                 Column(Modifier.fillMaxSize()) {
                     Row(Modifier.fillMaxWidth().height(44.dp), horizontalArrangement = Arrangement.End) {
                         Box(Modifier.weight(1f)) { playbackOrder(::owned) }
-                        TextButton(onClick = ::dismiss) { Text("关闭播放队列") }
+                        TextButton(onClick = requestClose) { Text("关闭播放队列") }
                     }
                     ExternalPlaylistQueueSheetContent(
                         title = resolveExternalPlaylistQueueTitle(snapshot.state.externalPlaylistSource),
