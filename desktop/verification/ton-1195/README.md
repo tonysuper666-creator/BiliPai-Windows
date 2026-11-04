@@ -1,75 +1,92 @@
-TON-1195 candidate: awaiting a source-patch scope correction
+TON-1195: dynamic reply reading panel
 
 Base: `04f0e642ec81070340cb3d545c22a7fb6bfe0b6e` on
-`desktop/integration-263-claude-main`.
+`desktop/integration-263-claude-main`. Implementation tested at `8d1c52f1c`.
+PR77 targets that integration branch. Independent QA and layout review remain pending.
 
-This is an incomplete candidate. Compilation fails; no behavior tests have run.
-The original reply host, state and callbacks are reused. The optional container
-slot replaces SubReplySheet's container instead of wrapping its existing sheet.
-Only dynamic detail opts in; the null default retains the original container.
-The adapter supplies K2 READING_PANEL, the reply's navigation owner, and a finite
-viewport for the original lazy list. Repost and common K2 code are untouched.
+Dynamic detail passes an optional container through the actual
+DynamicSubReplyPreviewHost into SubReplySheet. The slot replaces the original
+sheet, reusing its SubReplyDetailContent, navigation callbacks and session.
+The adapter supplies K2 READING_PANEL and the reply navigation owner; it does
+not remount the page or create another route/VM. Its finite viewport leaves
+scrolling and pagination in the original LazyColumn. The null default retains
+the original sheet. Repost and common K2 code are unchanged.
 
-Actual compile ownership
-
-The successful read-only source-set diagnostic reports exactly one source for
-each declaration (see `source-ownership.log`):
+Actual compilation chain (read-only diagnostic, each count is exactly one):
 
 | Declaration | Compiled source relative to desktop |
 | --- | --- |
-| DynamicSubReplyPreviewHost | ../app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicSubReplyPreviewHost.kt |
+| DynamicSubReplyPreviewHost | build/patched-upstream/app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicSubReplyPreviewHost.kt |
 | SubReplySheet | build/transition-patched/com/android/purebilibili/feature/video/ui/components/SubReplySheet.kt |
 | DesktopOriginalDynamicDetailLayout | build/transition-patched/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicDetailLayout.kt |
 
-`desktop/build.gradle.kts:3593` excludes migrated identities under build except
-patched-upstream. M4 includes the dynamic host in migratedAppPaths (lines
-316–330, 436–437). Therefore its transition patch is applied but its output is
-excluded from compilation. The actual original host has no sheetContainer
-argument, producing the three compiler errors in `candidate-compile.log`.
+The migrated host patch is under upstream-core/patches/app; the excluded
+transition host patch was deleted. Existing automatic discovery is used.
+No build, generator or upstream original was edited. applyUnifiedPatch in
+build.gradle.kts:2798–2820 requires exactly one match per hunk and throws on
+zero/multiple matches. The SubReplySheet patch targets the actual pinned
+producer (LF SHA256 78714b908e0e64a90325e7ebbcea38daaba57e8aa6e6bc3dec11d740ed7de783).
 
-Required scope correction
-
-Replace the inactive transition host patch with
-`desktop/upstream-core/patches/app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicSubReplyPreviewHost.kt.patch`.
-Proposed change: add the optional `sheetContainer` composable parameter and
-forward `sheetContainer = sheetContainer` to SubReplySheet, as in the current
-inactive transition host patch. This has NOT been installed into the new directory.
-Existing applyDesktopUpstreamPatches discovery and source exclusions
-(build.gradle.kts:2829–2877, 3580–3596) already support this patch location.
-No build registration, generator change, original-file edit, or K2 change is
-proposed. Keep the layout and SubReplySheet patches in their current directory.
-Architect should reconcile this one path with the issue's permitted directory
-and current write scopes before implementation resumes.
-
-Verification performed
-
-From repository root, under the shared Mac build lease:
+Run from repository root on the configured Mac, using JDK21 and the atomic
+shared ~/dev/.coach-heavy.lock lease provided by run_locked.py. A held lease
+fails immediately rather than stealing it.
 
 ```
-python3 desktop/verification/ton-1195/run_locked.py . candidate.log compileKotlin test --tests '*DesktopDynamicReplyReadingPanelTest' --tests 'com.bilipai.desktop.ui.modal.*'
+python3 desktop/verification/ton-1195/run_locked.py . ../ton1195-candidate-final.log compileKotlin test --tests 'com.bilipai.desktop.ui.modal.*' --tests 'com.bilipai.desktop.ui.DesktopDynamicReplyReadingPanelTest'
 ```
 
-Exit 1: applyTransitionPatches succeeds, compileKotlin fails with three diagnostics
-at the real layout call. compileTestKotlin and all tests are unreached. The four
-new behavior tests are candidates only: initial focus/Tab/Esc/return focus and
-single popup; topmost-only dismissal; original lazy-list/background scrolling
-and retained scroll state; unmodified default container. They still require
-compilation and execution after the scope correction. Same-version upstream
-failure comparison and Windows GUI are unverified. No exemptions were added.
+Main/test compilation succeeds. Target test task: 16 passed, 0 failed/skipped
+(12 existing K2 tests + 4 actual-host tests). New tests send real pointer,
+wheel and keyboard events through ImageComposeScene and assert:
+
+- One page plus one reply popup, right-aligned reading bounds, initial close
+  focus, Tab cycling, Esc/close return focus, and page mount count remains one.
+- Reply Esc closes only the topmost popup over an actual K2 parent modal.
+- Original lazy list scrolls, sort callback fires, updates retain scroll,
+  K2 outer scroll remains zero, and background wheel input cannot scroll it.
+- Omitting the slot renders the original sheet and original reply list.
+
+The fixture uses temporary Stores and a real request owner; its transport
+intercepts emote requests locally and rejects every other request. It has no
+real account or network dependency. Asynchronous composition errors fail the
+test. Initial fixture failures (missing request owner, proxy Object methods,
+and querying the wrapper instead of the LazyColumn) were corrected without
+weakening interaction assertions. Final composition stderr is empty.
+
+The full Gradle command exits 1 because finalized upstream suites have 47
+failures also present on the same-version baseline. This is not an all-green
+Gradle run; gate A below proves there are no added failures.
 
 ```
-python3 desktop/verification/ton-1195/run_locked.py . ownership.log --init-script verification/ton-1195/source-ownership.init.gradle ton1195SourceOwnership
+git worktree add --detach ../ton1195-baseline 04f0e642ec81070340cb3d545c22a7fb6bfe0b6e
+python3 desktop/verification/ton-1195/run_locked.py ../ton1195-baseline ../ton1195-baseline.log compileKotlin test --tests 'com.bilipai.desktop.ui.modal.*'
+python3 desktop/verification/ton-1194/compare.py ../ton1195-baseline . > desktop/verification/ton-1195/comparison.json
 ```
 
-Exit 0: all three actual compile owners identified. This diagnostic reads the
-existing source set without altering it. Run normal producers first if using a
-clean checkout. An earlier diagnostic attempt used a doubled desktop path and
-was corrected. Initial patch development also hit an explicit zero-match anchor
-failure: Gradle's pinned SubReplySheet producer differs from direct extraction
-against the merged source tree. The current sheet patch targets the Gradle
-producer output (source LF SHA256 78714b908e0e64a90325e7ebbcea38daaba57e8aa6e6bc3dec11d740ed7de783).
+Baseline Gradle exit 1; comparator exit 0. Mechanical JUnit comparison, with
+no failure allowlist: added failures 0, removed test cases 0, new skips 0.
+Non-desktop committed inputs and the default-render fixture are identical;
+all untagged-sheet render hashes match.
 
-Resume with the approved migrated-host patch, recheck live write scopes, compile
-main/tests, run the actual-host behavior tests plus K2 tests, and mechanically
-compare same-version upstream failures against the base. QA-C and Architect
-acceptance remain pending; this candidate must not be merged in its current state.
+| Task | Baseline tests / failures | Candidate tests / failures |
+| --- | --- | --- |
+| test | 12 / 0 | 16 / 0 |
+| upstreamDesignSourceTests | 59 / 0 | 59 / 0 |
+| upstreamAppCoreSourceTests | 441 / 46 | 441 / 46 |
+| applicationImageLoaderOwnerTests | 3 / 0 | 3 / 0 |
+| sponsorPresentationTests | 1 / 1 | 1 / 1 |
+
+```
+python3 desktop/verification/ton-1195/run_locked.py . ../ton1195-source-ownership.log --init-script verification/ton-1195/source-ownership.init.gradle compileKotlin compileTestKotlin ton1195SourceOwnership
+```
+
+Exit 0. Both compilations succeed and all three actual compile owners above
+are confirmed. Evidence: candidate-compile.log (final run), baseline.log,
+source-ownership.log, behavior-results.txt, comparison.json. Logs replace
+machine-local repository paths with <repo>/<baseline>.
+
+Windows GUI, dark/light screenshots and native-window interaction remain
+unverified here and belong to parent TON-1057. Headless scene tests cover the
+real reply host and content; the actual layout slot is compiled, but the
+entire dynamic-detail page is not instantiated by these tests. QA-C should
+independently verify PR77, then hand layout-contract review to Architect.

@@ -1,4 +1,4 @@
-COMMAND: ./gradlew -p desktop --no-daemon --console=plain compileKotlin test --tests *DesktopDynamicReplyReadingPanelTest --tests com.bilipai.desktop.ui.modal.*
+COMMAND: ./gradlew -p desktop --no-daemon --console=plain compileKotlin test --tests com.bilipai.desktop.ui.modal.* --tests com.bilipai.desktop.ui.DesktopDynamicReplyReadingPanelTest
 To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/9.5.0/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
 Daemon will be stopped at the end of the build
 > Task :applyDesktopUpstreamPatches UP-TO-DATE
@@ -67,230 +67,95 @@ Verified six fixed Google Cast runtime dependency digests.
 > Task :extractUpstreamSearch UP-TO-DATE
 > Task :extractUpstreamSettingsPrivacy UP-TO-DATE
 > Task :extractUpstreamStoryTopic UP-TO-DATE
-> Task :applyTransitionPatches
+> Task :applyTransitionPatches UP-TO-DATE
 > Task :checkKotlinGradlePluginConfigurationErrors SKIPPED
-> Task :extractCommentFraudProtocol
-> Task :extractFrostedAudioRenderer
-
-> Task :extractImageSaveSettingsUi
-Generated 2
-
-> Task :extractLinkedDock
-> Task :extractNativeMusicRoot
-> Task :extractNavigation3Host
-
-> Task :extractOriginalApplicationImageLoader
-Complete original application ImageLoader body and original cache/trim policies generated
-
-> Task :extractOriginalArticleDetail
-
-> Task :extractOriginalMusicPlayerFull
-{"outputs": 25, "sources": 22, "exactWholeBodyInverse": true}
-
-> Task :extractOriginalAuMusicPage
-
-> Task :extractOriginalBackgroundPlaybackPolicy
-{"sourcePins": 5, "mainOutputs": 3, "testOutputs": 2, "originalTestCount": 21, "sourceProofSha256": "4ca1855fa26ce56dfeb508f28149fb5ac4788ff252aee98f70924ef3d046efc8", "compiled": false}
-
-> Task :extractOriginalBangumiPlayerUi
-Produced 5 complete original Player UI bodies and 3 exact policy/settings closures
-
-> Task :extractOriginalBasCore
-<repo>/desktop/build/generated/original-bas-core/com/android/purebilibili/danmaku/parser/bas/BasEasing.kt
-<repo>/desktop/build/generated/original-bas-core/com/android/purebilibili/danmaku/parser/bas/BasLexer.kt
-<repo>/desktop/build/generated/original-bas-core/com/android/purebilibili/danmaku/parser/bas/BasModels.kt
-<repo>/desktop/build/generated/original-bas-core/com/android/purebilibili/danmaku/parser/bas/BasScriptParser.kt
-<repo>/desktop/build/generated/original-bas-core/com/android/purebilibili/danmaku/parser/bas/BasTimeline.kt
-<repo>/desktop/build/generated/original-bas-core-tests/com/android/purebilibili/danmaku/parser/bas/BasDurationTest.kt
-<repo>/desktop/build/generated/original-bas-core-tests/com/android/purebilibili/danmaku/parser/bas/BasLexerTest.kt
-<repo>/desktop/build/generated/original-bas-core-tests/com/android/purebilibili/danmaku/parser/bas/BasPathFrameTest.kt
-<repo>/desktop/build/generated/original-bas-core-tests/com/android/purebilibili/danmaku/parser/bas/BasScriptParserTest.kt
-<repo>/desktop/build/generated/original-bas-core-tests/com/android/purebilibili/danmaku/parser/bas/BasTimelineTest.kt
-
-> Task :extractOriginalBasRenderer
-<repo>/desktop/build/generated/original-bas-renderer/com/bilipai/desktop/danmaku/DesktopOriginalBasScenePainter.kt
-<repo>/desktop/build/generated/original-bas-renderer/com/bilipai/desktop/danmaku/DesktopOriginalBasRetainedScenes.kt
-
-> Task :extractOriginalBrandMotion
-{"blueSnowCountedAdaptations": 21, "catalogSha256Bytes": "15291a833f8e9d90731bdb5c1f8707a63c9958f395fb6938f6b5b49b1910a6c9", "countedAdaptations": 17, "fullSourceInverse": true, "generatedFiles": 33, "originalFiles": 30, "runtimeEnumIdentities": 14, "runtimeUniquePairs": 13, "welcomeRuntimeAllowed": false}
-
-> Task :extractOriginalCdnTransfer
-Generated original CDN transfer 5 families; inverse PASS
-
-> Task :extractOriginalCommentFraudHistory
-{"fullSourceInverseVerified": true, "adaptedLfSha256": "6d23342cfb312f8d12458236aa502edc6c6362a37cd0c4a0c478235e9e9bfe62"}
-
-> Task :extractOriginalDanmakuListMenu
-> Task :extractOriginalDanmakuSettings
-
-> Task :extractOriginalDonateDialog
-{"fullSelectedFunctionInverseVerified": true, "originalAuthorQrSha256": "ebd531d83556e51a92fdd5d4d64946f037730416cff44957a8018d063b5bb610"}
-
-> Task :extractOriginalDownloadList
-Generated 3 original download list sources
-
-> Task :extractOriginalDynamicAccountPolicy
-{"commit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480", "fullInverse": "identity-byte-exact", "mainSources": 1, "originalTests": 2, "platformEdits": [], "rawPins": {"DynamicAccountCachePolicy.kt": "2bb62ce8e2061d17d3ee6d8925e22d1a9053f8198b8832131b7facb0f3a3eea9", "DynamicAccountCachePolicyTest.kt": "8d5e6e8357c81ac289aeb1e361de3d0ce79ca79b3411918730e3f106bdab14bc", "DynamicViewModel.kt": "f53e125cfd9bbfe23e315ae4524b03170a3bfcd0f28454f7220a08d60e360746"}, "testSources": 1}
-
-> Task :extractOriginalFavoriteFolder
-generated original favorite drawer, policy, protocol and session closure
-
-> Task :extractOriginalHomePartition
-Complete original Partition Screen/Content/VM and shared media skeleton produced
-
-> Task :extractOriginalHotDanmaku
-Generated 5
-
-> Task :extractOriginalIconSettings
-{"fullSourceInverseVerified": true, "pngResources": 18, "originalScreenLfSha256": "ea80aa3578bc3af72d1aff852f6bda2ee897404ba7ca68e6936097f928a6388b", "adaptedScreenLfSha256": "ee00f986d5c49bc772e74f1dd1818a673f058ca044c6c6feea5a45f272819671"}
-
-> Task :extractOriginalLiveList
-> Task :extractOriginalLiveNavigation
-> Task :extractOriginalMediaByteCachePolicy
-
-> Task :extractOriginalPersonalLists
-DesktopOriginalHistoryNavigation.kt
-DesktopOriginalHistoryArticlePolicy.kt
-
-> Task :extractOriginalScrollableLists
-{"path": "com/android/purebilibili/core/ui/components/AppScrollableLists.kt", "rawSha256": "af0981b641026f514024d13ecaf572b8c483a4470254277ca1eea4f9ac46d25b", "fullOriginal": true, "compiled": false}
-
-> Task :extractOriginalSpacePages
-[{"source": "app/src/main/java/com/android/purebilibili/feature/space/SpaceViewModel.kt", "sha256LF": "c54a7d24b03ecd5ff177b98c9007756c7f1e87d3629218019dd34b76907212af", "generated": "com/android/purebilibili/feature/space/SpaceViewModel.kt", "generatedSha256LF": "52bcf787cfa836a55d2e80d617533a72b79eb8d71dec8a5bab846608b9df8ee2", "completeOriginalFileReconstructed": true, "transforms": [{"beforeSha256": "c54a7d24b03ecd5ff177b98c9007756c7f1e87d3629218019dd34b76907212af", "afterSha256": "6ef889a3819a9f17f3a672aa0236cc3d5cd58230f74c24f810084c70c4c5ecba", "original": "package com.android.purebilibili.feature.space\n\nimport androidx.lifecycle.ViewModel\nimport androidx.lifecycle.SavedStateHandle\nimport androidx.lifecycle.viewModelScope\nimport com.android.purebilibili.core.network.NetworkModule\nimport com.android.purebilibili.core.network.WbiUtils\nimport com.android.purebilibili.core.network.getSpaceAggregate\nimport com.android.purebilibili.data.model.response.*\nimport com.android.purebilibili.data.repository.BangumiRepository\nimport com.android.purebilibili.data.repository.ActionRepository\nimport com.android.purebilibili.data.repository.FavoriteRepository\nimport com.android.pu
-
-> Task :extractOriginalSpecialDanmaku
-<repo>/desktop/build/generated/original-special-danmaku/com/android/purebilibili/danmaku/parser/SpecialDanmakuIndexReader.kt
-<repo>/desktop/build/generated/original-special-danmaku/com/android/purebilibili/danmaku/parser/SpecialDanmakuWindow.kt
-<repo>/desktop/build/generated/original-special-danmaku/com/android/purebilibili/data/repository/SpecialDanmakuSource.kt
-<repo>/desktop/build/generated/original-special-danmaku/com/android/purebilibili/feature/download/DownloadDanmakuAssetService.kt
-<repo>/desktop/build/generated/original-special-danmaku-tests/com/android/purebilibili/danmaku/parser/SpecialDanmakuIndexReaderTest.kt
-<repo>/desktop/build/generated/original-special-danmaku-tests/com/android/purebilibili/danmaku/parser/SpecialDanmakuWindowTest.kt
-
-> Task :extractOriginalStorageSettings
-Generated exact original storage families 10
-
-> Task :extractOriginalSubscriptionPage
-Full original Subscription UI/notes outputs 2
-
-> Task :extractUpstreamSettingsEntries
-Generated 2
-
-> Task :extractOriginalSystemAbout
-{"inverseCount": 15, "resources": 7, "compiled": false}
-
-> Task :extractUpstreamSpaceOverview
-> Task :extractOriginalTabletOwnerSpace
-
-> Task :extractOriginalTextLyrics
-<repo>/desktop/build/generated/original-text-lyrics/com/android/purebilibili/data/model/response/DynamicModels.kt
-<repo>/desktop/build/generated/original-text-lyrics/com/android/purebilibili/feature/audio/lyrics/LyricsParser.kt
-<repo>/desktop/build/generated/original-text-lyrics/com/android/purebilibili/feature/audio/lyrics/LyricsDisplayPolicy.kt
-
-> Task :extractOriginalVideoAmbientWindows
-Ambient original source outputs 9
-
-> Task :extractOriginalVideoAudioFull
-{"outputs": 2, "exactWholeBodyInverse": true}
-
-> Task :extractOriginalVideoOwnerDanmakuSend
-[{"path": "com/android/purebilibili/data/repository/DesktopOriginalVideoDanmakuSendProtocol.kt", "origin": "app/src/main/java/com/android/purebilibili/data/repository/DanmakuRepository.kt", "originalSha256LF": "b9393e987cfabe627baaf7ac2ed3e54fa8e84d9db0079e7f8b37760422a21d5b", "sha256LF": "ba9a91afb37f07841451eb8eb2c5fee95740b17b3369066255a49b4646047ef4", "mode": "selected", "generated": true}]
-
-> Task :extractOriginalVideoPlaylistFull
-Original playlist source outputs: 1
-
-> Task :extractOriginalVideoRootStoryFeed
-{"output": "com/android/purebilibili/data/repository/DesktopOriginalVideoStoryFeedProtocol.kt", "outputSHA256LF": "d1427882e3d12fa648da1065632ba455742b6b749089631ec092318c32f09295", "bodyInverseByteEqual": true, "outputCount": 1}
-
-> Task :extractOriginalVideoShareConsent
-
-> Task :extractOriginalVideoStatusLabels
-{"commit": "d18fb20e31adb11bbec9fae6dfce7d705d556217", "hooks": 21, "mainSources": 7, "proofSha256": "68d8b892265e0bd7058bca3f5ea498d53f2897f126ed83ed542ca1454caee2b3", "testSources": 7}
-
-> Task :extractOriginalWallpaperPalette
-Generated full original WallpaperPaletteStore with owned Windows services
-
-> Task :extractOriginalWindowLayout
-Three complete original window/hinge source inverses verified; existing hinge model reused
-
-> Task :extractPlaybackSettings
-> Task :extractPlaybackWatchdogs
-> Task :extractStableVideoMetadata
-> Task :extractStableWeeklySeries
-> Task :extractSubtitleLoadPolicy
-
-> Task :extractUpstreamAudio
-<repo>/desktop/build/generated/audio/com/android/purebilibili/feature/audio/viewmodel/MusicUiState.kt
-<repo>/desktop/build/generated/audio/com/android/purebilibili/feature/audio/viewmodel/DesktopOriginalMusicLyricsController.kt
-<repo>/desktop/build/generated/audio/com/android/purebilibili/feature/video/player/DesktopPlaylistPolicies.kt
-<repo>/desktop/build/generated/audio/com/android/purebilibili/feature/audio/library/DesktopListenVideoLibraryLoader.kt
-<repo>/desktop/build/generated/audio/com/android/purebilibili/data/repository/DesktopFavoriteRequestException.kt
-<repo>/desktop/build/generated/audio/com/android/purebilibili/feature/list/DesktopFavoriteRiskPolicy.kt
-
-> Task :extractUpstreamBlockedUp
-Generated 3
-
-> Task :extractUpstreamBlockedListUi
-Generated 4
-
-> Task :extractUpstreamCrashPrompt
-
-> Task :extractUpstreamDanmaku
-<repo>/desktop/build/generated/danmaku/com/android/purebilibili/danmaku/parser/AdvancedDanmakuData.kt
-<repo>/desktop/build/generated/danmaku/com/android/purebilibili/danmaku/parser/DanmakuProto.kt
-<repo>/desktop/build/generated/danmaku/com/android/purebilibili/danmaku/parser/DesktopAdvancedDanmakuParser.kt
-<repo>/desktop/build/generated/danmaku/com/android/purebilibili/data/repository/DesktopDanmakuSegmentPolicy.kt
-<repo>/desktop/build/generated/danmaku/com/android/purebilibili/danmaku/parser/DesktopOriginalDanmakuFontScale.kt
-
-> Task :extractUpstreamDiagnostics
-8
-
-> Task :extractUpstreamDownloadTransport
-> Task :extractUpstreamDynamicDetail
-
-> Task :extractUpstreamDynamicFollow
-{"generated": 2, "files": ["<repo>/desktop/build/generated/dynamic-follow/com/android/purebilibili/data/repository/DesktopOriginalFollowStateChange.kt", "<repo>/desktop/build/generated/dynamic-follow/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicFollowStatePolicy.kt"]}
-
-> Task :extractUpstreamDynamicReplyProtocol
-
-> Task :extractUpstreamDynamicStaticImageCodec
-{"generated": ["desktopOriginalStaticGalleryKeepBytes", "desktopOriginalStaticGalleryExtension", "desktopOriginalStaticGalleryMimeType", "desktopOriginalStaticGalleryFileName"]}
-
-> Task :extractUpstreamLogin
-
-> Task :extractUpstreamNetworkProxy
-Generated 5
-Generated 1 original proxy policy tests
-
-> Task :extractUpstreamPackages
-Generated 8 original package source files
-
-> Task :extractUpstreamPlayback
-
-> Task :extractUpstreamPreferences
-Generated 6 original preference/navigation files
-
-> Task :extractUpstreamProfileWallpaperImport
-Generated whole original WallpaperImageImport with required owned Windows IO
-
-> Task :extractUpstreamSettings
-
-> Task :extractUpstreamSettingsStorageEntries
-Generated 1
-
-> Task :extractUpstreamSpace
-> Task :extractV032CatalogSlice
-> Task :extractVideoCommentUi
+> Task :extractCommentFraudProtocol UP-TO-DATE
+> Task :extractFrostedAudioRenderer UP-TO-DATE
+> Task :extractImageSaveSettingsUi UP-TO-DATE
+> Task :extractLinkedDock UP-TO-DATE
+> Task :extractNativeMusicRoot UP-TO-DATE
+> Task :extractNavigation3Host UP-TO-DATE
+> Task :extractOriginalApplicationImageLoader UP-TO-DATE
+> Task :extractOriginalArticleDetail UP-TO-DATE
+> Task :extractOriginalMusicPlayerFull UP-TO-DATE
+> Task :extractOriginalAuMusicPage UP-TO-DATE
+> Task :extractOriginalBackgroundPlaybackPolicy UP-TO-DATE
+> Task :extractOriginalBangumiPlayerUi UP-TO-DATE
+> Task :extractOriginalBasCore UP-TO-DATE
+> Task :extractOriginalBasRenderer UP-TO-DATE
+> Task :extractOriginalBrandMotion UP-TO-DATE
+> Task :extractOriginalCdnTransfer UP-TO-DATE
+> Task :extractOriginalCommentFraudHistory UP-TO-DATE
+> Task :extractOriginalDanmakuListMenu UP-TO-DATE
+> Task :extractOriginalDanmakuSettings UP-TO-DATE
+> Task :extractOriginalDonateDialog UP-TO-DATE
+> Task :extractOriginalDownloadList UP-TO-DATE
+> Task :extractOriginalDynamicAccountPolicy UP-TO-DATE
+> Task :extractOriginalFavoriteFolder UP-TO-DATE
+> Task :extractOriginalHomePartition UP-TO-DATE
+> Task :extractOriginalHotDanmaku UP-TO-DATE
+> Task :extractOriginalIconSettings UP-TO-DATE
+> Task :extractOriginalLiveList UP-TO-DATE
+> Task :extractOriginalLiveNavigation UP-TO-DATE
+> Task :extractOriginalMediaByteCachePolicy UP-TO-DATE
+> Task :extractOriginalPersonalLists UP-TO-DATE
+> Task :extractOriginalScrollableLists UP-TO-DATE
+> Task :extractOriginalSpacePages UP-TO-DATE
+> Task :extractOriginalSpecialDanmaku UP-TO-DATE
+> Task :extractOriginalStorageSettings UP-TO-DATE
+> Task :extractOriginalSubscriptionPage UP-TO-DATE
+> Task :extractUpstreamSettingsEntries UP-TO-DATE
+> Task :extractOriginalSystemAbout UP-TO-DATE
+> Task :extractUpstreamSpaceOverview UP-TO-DATE
+> Task :extractOriginalTabletOwnerSpace UP-TO-DATE
+> Task :extractOriginalTextLyrics UP-TO-DATE
+> Task :extractOriginalVideoAmbientWindows UP-TO-DATE
+> Task :extractOriginalVideoAudioFull UP-TO-DATE
+> Task :extractOriginalVideoOwnerDanmakuSend UP-TO-DATE
+> Task :extractOriginalVideoPlaylistFull UP-TO-DATE
+> Task :extractOriginalVideoRootStoryFeed UP-TO-DATE
+> Task :extractOriginalVideoShareConsent UP-TO-DATE
+> Task :extractOriginalVideoStatusLabels UP-TO-DATE
+> Task :extractOriginalWallpaperPalette UP-TO-DATE
+> Task :extractOriginalWindowLayout UP-TO-DATE
+> Task :extractPlaybackSettings UP-TO-DATE
+> Task :extractPlaybackWatchdogs UP-TO-DATE
+> Task :extractStableVideoMetadata UP-TO-DATE
+> Task :extractStableWeeklySeries UP-TO-DATE
+> Task :extractSubtitleLoadPolicy UP-TO-DATE
+> Task :extractUpstreamAudio UP-TO-DATE
+> Task :extractUpstreamBlockedUp UP-TO-DATE
+> Task :extractUpstreamBlockedListUi UP-TO-DATE
+> Task :extractUpstreamCrashPrompt UP-TO-DATE
+> Task :extractUpstreamDanmaku UP-TO-DATE
+> Task :extractUpstreamDiagnostics UP-TO-DATE
+> Task :extractUpstreamDownloadTransport UP-TO-DATE
+> Task :extractUpstreamDynamicDetail UP-TO-DATE
+> Task :extractUpstreamDynamicFollow UP-TO-DATE
+> Task :extractUpstreamDynamicReplyProtocol UP-TO-DATE
+> Task :extractUpstreamDynamicStaticImageCodec UP-TO-DATE
+> Task :extractUpstreamLogin UP-TO-DATE
+> Task :extractUpstreamNetworkProxy UP-TO-DATE
+> Task :extractUpstreamPackages UP-TO-DATE
+> Task :extractUpstreamPlayback UP-TO-DATE
+> Task :extractUpstreamPreferences UP-TO-DATE
+> Task :extractUpstreamProfileWallpaperImport UP-TO-DATE
+> Task :extractUpstreamSettings UP-TO-DATE
+> Task :extractUpstreamSettingsStorageEntries UP-TO-DATE
+> Task :extractUpstreamSpace UP-TO-DATE
+> Task :extractV032CatalogSlice UP-TO-DATE
+> Task :extractVideoCommentUi UP-TO-DATE
 > Task :convertXmlValueResourcesForMain NO-SOURCE
 > Task :copyNonXmlValueResourcesForMain NO-SOURCE
 > Task :prepareComposeResourcesTaskForMain NO-SOURCE
 > Task :generateResourceAccessorsForMain SKIPPED
 > Task :generateActualResourceCollectorsForMain SKIPPED
 > Task :generateComposeResClass SKIPPED
-> Task :generateUpstreamBuildConfig
-> Task :generateUpstreamColorResources
-> Task :generateUpstreamDrawableResources
-> Task :generateUpstreamPreferenceKeyTypes
-> Task :generateUpstreamStringResources
+> Task :generateUpstreamBuildConfig UP-TO-DATE
+> Task :generateUpstreamColorResources UP-TO-DATE
+> Task :generateUpstreamDrawableResources UP-TO-DATE
+> Task :generateUpstreamPreferenceKeyTypes UP-TO-DATE
+> Task :generateUpstreamStringResources UP-TO-DATE
 
 > Task :prepareJsWorker
 No JS worker image on this host; compile-only placeholder written.
@@ -298,10 +163,8 @@ No JS worker image on this host; compile-only placeholder written.
 > Task :prepareNativeDiagnosticShare
 No native diagnostic share bridge on this host; compile-only placeholder written.
 
-> Task :prepareOriginalCategoryPage
-Original Category outputs 1
-
-> Task :prepareOriginalHomeReturnNavigation
+> Task :prepareOriginalCategoryPage UP-TO-DATE
+> Task :prepareOriginalHomeReturnNavigation UP-TO-DATE
 
 > Task :verifyAppearanceDependencies
 Verified nine fixed appearance runtime dependencies and four source notices.
@@ -314,62 +177,233 @@ Verified three approved image metadata runtime dependencies and six Apache notic
 
 > Task :verifyJsDomParserDependency
 > Task :verifyNoSilentSdkGates
-> Task :verifyOriginalPlayerFullControls
-> Task :verifyOriginalVideoContentFull
-> Task :verifyOriginalVideoDetailMembers
+> Task :verifyOriginalPlayerFullControls UP-TO-DATE
+> Task :verifyOriginalVideoContentFull UP-TO-DATE
+> Task :verifyOriginalVideoDetailMembers UP-TO-DATE
 
 > Task :verifySettingsSearchDependencies
 Verified fixed TinyPinyin and AhoCorasick JVM runtime, source and Apache license inventory.
 
-> Task :extractStableVideoVotes
-
-> Task :verifyUpstreamDynamicDetailReplyProtocol
-PASS five exact original-source request families in the existing Operations class
-
-> Task :verifyUpstreamDynamicEditorProtocol
-PASS original-source editor request members in the existing Operations class
-
-> Task :extractUpstreamDynamicGalleryMotionPhoto
-PASS original packing with approved three-line XMP attribute fix and unchanged gallery policy; generated 2 Kotlin sources
-
-> Task :verifyUpstreamDynamicMedia
+> Task :extractStableVideoVotes UP-TO-DATE
+> Task :verifyUpstreamDynamicDetailReplyProtocol UP-TO-DATE
+> Task :verifyUpstreamDynamicEditorProtocol UP-TO-DATE
+> Task :extractUpstreamDynamicGalleryMotionPhoto UP-TO-DATE
+> Task :verifyUpstreamDynamicMedia UP-TO-DATE
 > Task :verifyUpstreamReplacements
 
 > Task :miuix5157:verifyPinnedSource
 Miuix5c91 pinned + Windows numeric patch (exact inverse verified) + whole BiliPai79 navigation patch PASS: 225 pinned files; 196 compiled source files; 4 whole original patch files
 
-> Task :miuix5157:bakeSquircleSdf
+> Task :miuix5157:bakeSquircleSdf UP-TO-DATE
 > Task :miuix5157:kmpPartiallyResolvedDependenciesChecker
 > Task :miuix5157:checkKotlinGradlePluginConfigurationErrors SKIPPED
-> Task :miuix5157:compileKotlinJvm FROM-CACHE
+> Task :miuix5157:compileKotlinJvm UP-TO-DATE
 > Task :miuix5157:compileJvmMainJava NO-SOURCE
 > Task :miuix5157:jvmProcessResources NO-SOURCE
 > Task :miuix5157:processJvmMainResources SKIPPED
 > Task :miuix5157:jvmMainClasses UP-TO-DATE
-> Task :miuix5157:jvmJar
-> Task :compileKotlin
-e: file://<repo>/desktop/build/transition-patched/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicDetailLayout.kt:492:21 No parameter with name 'sheetContainer' found.
-e: file://<repo>/desktop/build/transition-patched/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicDetailLayout.kt:492:40 Cannot infer type for value parameter 'content'. Specify it explicitly.
-e: file://<repo>/desktop/build/transition-patched/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicDetailLayout.kt:493:25 @Composable invocations can only happen from the context of a @Composable function
+> Task :miuix5157:jvmJar UP-TO-DATE
+> Task :compileKotlin UP-TO-DATE
+> Task :upstream-core:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :upstream-core:compileKotlin UP-TO-DATE
+> Task :compileJava UP-TO-DATE
+> Task :assembleMainResources UP-TO-DATE
+> Task :prepareOriginalPluginResources UP-TO-DATE
+> Task :prepareVeyraRuntimeVerifier UP-TO-DATE
+> Task :processResources UP-TO-DATE
+> Task :classes UP-TO-DATE
+> Task :verifyUniqueClassNames UP-TO-DATE
+> Task :jar UP-TO-DATE
+> Task :applyUpstreamTestCorrections UP-TO-DATE
+> Task :convertXmlValueResourcesForTest NO-SOURCE
+> Task :copyNonXmlValueResourcesForTest NO-SOURCE
+> Task :prepareComposeResourcesTaskForTest NO-SOURCE
+> Task :generateResourceAccessorsForTest SKIPPED
+> Task :compileTestKotlin
+> Task :compileTestJava UP-TO-DATE
+> Task :assembleTestResources UP-TO-DATE
+> Task :processTestResources UP-TO-DATE
+> Task :testClasses UP-TO-DATE
+> Task :test
+> Task :upstreamDesignSourceTests
 
-> Task :compileKotlin FAILED
+> Task :upstreamAppCoreSourceTests
 
-[Incubating] Problems report is available at: file://<repo>/desktop/build/reports/problems/problems-report.html
+LocalNavigationBackHandlerStructureTest > localNavigationBackHandlerRespectsGlobalPredictivePreference() FAILED
+    org.opentest4j.AssertionFailedError at LocalNavigationBackHandlerStructureTest.kt:31
 
-FAILURE: Build failed with an exception.
+AppPreferenceApiStructureTest > settingsSelectionApi_usesDialogPreferencesWithoutInlineSegments() FAILED
+    org.opentest4j.AssertionFailedError at AppPreferenceApiStructureTest.kt:109
 
+LegacyTabChipMigrationStructureTest > known page selectors cannot regress to filter chips() FAILED
+    org.opentest4j.AssertionFailedError at LegacyTabChipMigrationStructureTest.kt:22
+
+NativeThemeMigrationBoundaryTest > appDirectSliderCallsUseFacade() FAILED
+    org.opentest4j.AssertionFailedError at NativeThemeMigrationBoundaryTest.kt:112
+
+NativeThemeMigrationBoundaryTest > sharedMiuixNavigationExceptionSetCannotExpandOrChangeIdentity() FAILED
+    org.opentest4j.AssertionFailedError at NativeThemeMigrationBoundaryTest.kt:304
+
+NativeThemeMigrationBoundaryTest > featureThemeBranchingOnlyDecreases() FAILED
+    org.opentest4j.AssertionFailedError at NativeThemeMigrationBoundaryTest.kt:368
+
+NativeThemeMigrationBoundaryTest > appIconButtonVisualGeometryDoesNotReuseTouchTargetDimensions() FAILED
+    org.opentest4j.AssertionFailedError at NativeThemeMigrationBoundaryTest.kt:152
+
+NativeThemeMigrationBoundaryTest > appDirectIconButtonCallsAndDefaultsUseFacade() FAILED
+    org.opentest4j.AssertionFailedError at NativeThemeMigrationBoundaryTest.kt:176
+
+NativeThemeMigrationBoundaryTest > featureDirectProgressCallsOnlyDecrease() FAILED
+    org.opentest4j.AssertionFailedError at NativeThemeMigrationBoundaryTest.kt:368
+
+NativeThemeMigrationBoundaryTest > featureVendorImportsOnlyDecrease() FAILED
+    org.opentest4j.AssertionFailedError at NativeThemeMigrationBoundaryTest.kt:368
+
+NativeThemeMigrationBoundaryTest > appDirectButtonCallsUseFacade() FAILED
+    org.opentest4j.AssertionFailedError at NativeThemeMigrationBoundaryTest.kt:132
+
+NativeThemeMigrationBoundaryTest > liquidGlassExceptionSetCannotExpandOrChangeIdentity() FAILED
+    org.opentest4j.AssertionFailedError at NativeThemeMigrationBoundaryTest.kt:292
+
+NativeThemeMigrationBoundaryTest > appNativeCardCallsUseOnlyAppFacades() FAILED
+    org.opentest4j.AssertionFailedError at NativeThemeMigrationBoundaryTest.kt:244
+
+HomeCoverReturnPrefetchStructureTest > appNavigationTriggersPrefetchOnGestureAndCommit() FAILED
+    org.opentest4j.AssertionFailedError at HomeCoverReturnPrefetchStructureTest.kt:24
+
+ProfileShapeStructureTest > profile surfaces use semantic theme shapes() FAILED
+    org.opentest4j.AssertionFailedError at ProfileShapeStructureTest.kt:14
+
+AnimationSettingsScreenStructureTest > animationSettingsScreen_controlsGlobalPredictivePreviewIndependently() FAILED
+    org.opentest4j.AssertionFailedError at AnimationSettingsScreenStructureTest.kt:14
+
+AppSegmentedControlPolicyTest > defaultSettingsIndicatorRenderPolicyMatchesCommentSortIndicator() FAILED
+    org.opentest4j.AssertionFailedError at AppSegmentedControlPolicyTest.kt:32
+
+AppearanceSettingsNavigationPolicyTest > bottomBarSearchBelongsToNavigationSettings() FAILED
+    org.opentest4j.AssertionFailedError at AppearanceSettingsNavigationPolicyTest.kt:27
+
+MiuixV2MigrationStructureTest > featureLayer_avoidsDirectMiuixThemeColorSchemeReads() FAILED
+    org.opentest4j.AssertionFailedError at MiuixV2MigrationStructureTest.kt:84
+
+MiuixV2MigrationStructureTest > homeScreen_usesAdaptivePullToRefreshBox() FAILED
+    org.opentest4j.AssertionFailedError at MiuixV2MigrationStructureTest.kt:133
+
+MiuixV2MigrationStructureTest > buildGradle_includesMiuixShaderArtifact() FAILED
+    org.opentest4j.AssertionFailedError at MiuixV2MigrationStructureTest.kt:60
+
+MiuixV2MigrationStructureTest > buildGradle_includesMiuixIconsArtifact() FAILED
+    org.opentest4j.AssertionFailedError at MiuixV2MigrationStructureTest.kt:100
+
+MiuixV2MigrationStructureTest > buildGradle_includesMiuixSquircleArtifact() FAILED
+    org.opentest4j.AssertionFailedError at MiuixV2MigrationStructureTest.kt:94
+
+MiuixV2MigrationStructureTest > versionCatalog_pinsMiuixToPublishedUpstreamSnapshot() FAILED
+    org.opentest4j.AssertionFailedError at MiuixV2MigrationStructureTest.kt:54
+
+MiuixV2MigrationStructureTest > md3SegmentedControl_routesMiuixVariantToTabRow() FAILED
+    org.opentest4j.AssertionFailedError at MiuixV2MigrationStructureTest.kt:116
+
+OpenSourceLicensesPolicyTest > openSourceLibraries_coverRuntimeDependenciesAndLiquidGlassReferences() FAILED
+    org.opentest4j.AssertionFailedError at OpenSourceLicensesPolicyTest.kt:36
+
+OpenSourceLicensesPolicyTest > openSourceScreen_notesAcknowledgementListMayNotBeExhaustive() FAILED
+    org.opentest4j.AssertionFailedError at OpenSourceLicensesPolicyTest.kt:61
+
+SettingsEntranceMotionStructureTest > settingsSearchUsesSameNavigationGate() FAILED
+    org.opentest4j.AssertionFailedError at SettingsEntranceMotionStructureTest.kt:35
+
+SettingsEntranceMotionStructureTest > settingsRootWaitsForNavigationAndBypassesGroupWhenDisabled() FAILED
+    org.opentest4j.AssertionFailedError at SettingsEntranceMotionStructureTest.kt:23
+
+SettingsInformationArchitecturePolicyTest > appearanceHomeAndInteractionSettingsHaveIndependentOwners() FAILED
+    org.opentest4j.AssertionFailedError at SettingsInformationArchitecturePolicyTest.kt:22
+
+SettingsLocalBackHandlerStructureTest > settingsLocalBackHandler_usesNavigationBackHandler() FAILED
+    org.opentest4j.AssertionFailedError at SettingsLocalBackHandlerStructureTest.kt:18
+
+SettingsMiuixSimplificationStructureTest > appearance settings expose one ui style selection while keeping miuix scaffold() FAILED
+    org.opentest4j.AssertionFailedError at SettingsMiuixSimplificationStructureTest.kt:15
+
+SettingsPageBlurPreferenceStructureTest > settingsPageChromeKeepsFrostedAndProgressivePreferencesSeparate() FAILED
+    org.opentest4j.AssertionFailedError at SettingsPageBlurPreferenceStructureTest.kt:26
+
+SettingsPageBlurPreferenceStructureTest > miuixSettingsPageUsesUpstreamSurfaceIndependentlyFromGlassChrome() FAILED
+    org.opentest4j.AssertionFailedError at SettingsPageBlurPreferenceStructureTest.kt:61
+
+SettingsPrivacyAuthenticationStructureTest > privacyOptionsUseSeparateSwitchesForHistoryAndContentAuthentication() FAILED
+    org.opentest4j.AssertionFailedError at SettingsPrivacyAuthenticationStructureTest.kt:23
+
+SettingsTabletLayoutPolicyTest > tabletLandscape_keepsMasterAndDetailContentScrollable() FAILED
+    org.opentest4j.AssertionFailedError at SettingsTabletLayoutPolicyTest.kt:61
+
+VisualEffectTogglePolicyTest > animation settings no longer exposes per-surface liquid glass entries() FAILED
+    org.opentest4j.AssertionFailedError at VisualEffectTogglePolicyTest.kt:114
+
+SpaceLocatePagingStructureTest > locate paging observes completion and stops after a failed request() FAILED
+    org.opentest4j.AssertionFailedError at SpaceLocatePagingStructureTest.kt:21
+
+SpaceScreenStructureTest > space media library uses card semantic corners() FAILED
+    org.opentest4j.AssertionFailedError at SpaceScreenStructureTest.kt:185
+
+SpaceScreenStructureTest > contribution videos render as grid cards instead of full width rows() FAILED
+    org.opentest4j.AssertionFailedError at SpaceScreenStructureTest.kt:74
+
+SpaceScreenStructureTest > space chrome uses liquid tab rows and piliplus actions() FAILED
+    org.opentest4j.AssertionFailedError at SpaceScreenStructureTest.kt:62
+
+SpaceScreenStructureTest > contribution video actions live in the top overflow menu() FAILED
+    org.opentest4j.AssertionFailedError at SpaceScreenStructureTest.kt:167
+
+SpaceScreenStructureTest > space search action scrolls to focused search bar and dynamic body opens comments() FAILED
+    org.opentest4j.AssertionFailedError at SpaceScreenStructureTest.kt:199
+
+SpaceScreenStructureTest > space official verify follows piliplus multiline badge presentation() FAILED
+    org.opentest4j.AssertionFailedError at SpaceScreenStructureTest.kt:233
+
+SpaceScreenStructureTest > contribution videos switch layout without dual placing lazy grid content() FAILED
+    org.opentest4j.AssertionFailedError at SpaceScreenStructureTest.kt:108
+
+SpaceScreenStructureTest > space video cards freeze native pixels for return morph() FAILED
+    org.opentest4j.AssertionFailedError at SpaceScreenStructureTest.kt:155
+
+441 tests completed, 46 failed
+
+> Task :upstreamAppCoreSourceTests FAILED
+
+> Task :sponsorPresentationTests FAILED
+
+DesktopOriginalSponsorPresentationAssemblyTest > initializationError FAILED
+    java.lang.IllegalArgumentException at DesktopJsWorkerResources.kt:22
+        Caused by: java.lang.IllegalArgumentException at DesktopJsWorkerResources.kt:22
+
+1 test completed, 1 failed
+
+> Task :applicationImageLoaderOwnerTests
+
+FAILURE: Build completed with 2 failures.
+
+1: Task failed with an exception.
+-----------
 * What went wrong:
-Execution failed for task ':compileKotlin' (registered by plugin 'org.jetbrains.kotlin.jvm').
-> A failure occurred while executing org.jetbrains.kotlin.compilerRunner.btapi.BuildToolsApiCompilationWork
-   > Compilation error. See log for more details
+Execution failed for task ':upstreamAppCoreSourceTests'.
+> There were failing tests. See the report at: file://<repo>/desktop/build/reports/tests/upstreamAppCoreSourceTests/index.html
 
 * Try:
-> Run with --stacktrace option to get the stack trace.
-> Run with --info or --debug option to get more log output.
 > Run with --scan to get full insights from a Build Scan (powered by Develocity).
-> Get more help at https://help.gradle.org.
+==============================================================================
 
-BUILD FAILED in 1m 1s
-169 actionable tasks: 107 executed, 1 from cache, 61 up-to-date
+2: Task failed with an exception.
+-----------
+* What went wrong:
+Execution failed for task ':sponsorPresentationTests'.
+> There were failing tests. See the report at: file://<repo>/desktop/build/reports/tests/sponsorPresentationTests/index.html
+
+* Try:
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+==============================================================================
+
+BUILD FAILED in 27s
+187 actionable tasks: 18 executed, 169 up-to-date
 
 EXIT_CODE: 1
