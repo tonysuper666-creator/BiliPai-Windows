@@ -35,7 +35,7 @@ import com.bilipai.desktop.ui.*
 import com.bilipai.desktop.plugins.DesktopPluginContext
 import com.bilipai.desktop.plugins.DesktopPluginStore
 import java.nio.file.Files
-import kotlin.coroutines.CoroutineContext
+import java.util.concurrent.ConcurrentLinkedQueue
 import com.android.purebilibili.feature.video.ui.section.VideoPlayerCoverFeedback
 import com.android.purebilibili.feature.video.ui.section.VideoPlayerSectionCoverFeedback
 import com.android.purebilibili.feature.video.ui.section.VideoPlayerSectionPresentationState
@@ -375,27 +375,23 @@ class DesktopVideoPlayerCoverFeedbackCompositionTest {
         }
     }
 
-    /** Actual desktop VM and cache-restore producer. All external ports fail closed;
-     * queued unrelated plugin polling is never executed and no native surface exists. */
+    /** Actual desktop VM and cache-restore producer. Optional part metadata is unavailable;
+     * all other external ports fail closed and no native surface exists. */
     private class VmPublisher : AutoCloseable {
         private inline fun <reified T> unused(): T = Proxy.newProxyInstance(
             T::class.java.classLoader, arrayOf(T::class.java)
         ) { _, method, _ -> throw AssertionError("Unexpected ${T::class.java.simpleName}.${method.name}") } as T
         private val scheduler = TestCoroutineScheduler()
-        private val testDispatcher = StandardTestDispatcher(scheduler)
-        private var allowSwitch = false
-        private val dispatcher = object : CoroutineDispatcher() {
-            override fun dispatch(context: CoroutineContext, block: Runnable) {
-                if (allowSwitch) testDispatcher.dispatch(context, block)
-            }
-        }
-        private val scope = CoroutineScope(SupervisorJob() + dispatcher)
+        private val job = SupervisorJob()
+        private val failures = ConcurrentLinkedQueue<Throwable>()
+        private val scope = CoroutineScope(job + StandardTestDispatcher(scheduler) +
+            CoroutineExceptionHandler { _, error -> failures.add(error) })
         private val folder = Files.createTempDirectory("bp-resume-subject-")
         private val context = DesktopPluginContext(DesktopPluginStore(folder))
-        private fun owns() = true
-        private fun commit(block: () -> Unit): Boolean { block(); return true }
+        private fun owns() = job.isActive
+        private fun commit(block: () -> Unit): Boolean { if (!owns()) return false; block(); return true }
         val playUrlRequests = mutableListOf<Pair<String, Long>>()
-        private val repository = Proxy.newProxyInstance(
+        private val repository = object : DesktopOriginalVideoOwnerRepository by (Proxy.newProxyInstance(
             DesktopOriginalVideoOwnerRepository::class.java.classLoader,
             arrayOf(DesktopOriginalVideoOwnerRepository::class.java)
         ) { _, method, args ->
@@ -409,7 +405,11 @@ class DesktopVideoPlayerCoverFeedbackCompositionTest {
                 "isAppApiCoolingDown" -> false
                 else -> throw AssertionError("Unexpected repository call: ${method.name}")
             }
-        } as DesktopOriginalVideoOwnerRepository
+        } as DesktopOriginalVideoOwnerRepository) {
+            override suspend fun getPlayerInfo(bvid: String, cid: Long): Result<PlayerInfoData> =
+                Result.failure(IllegalStateException("Part metadata is unavailable in this fixture"))
+            override suspend fun getVideoshot(bvid: String, cid: Long): VideoshotData? = null
+        }
         private val media = unused<DesktopOriginalVideoMediaPort>()
         private val actions = unused<DesktopOriginalVideoOwnerActions>()
         private val invocations = DesktopOriginalVideoPlaybackInvocationPorts(scope, ::owns, {
@@ -456,12 +456,15 @@ class DesktopVideoPlayerCoverFeedbackCompositionTest {
                 Page(cid = 1L, page = 1, part = "P1", duration = 60),
                 Page(cid = 2L, page = 2, part = "P2", duration = 60))), ""))
         fun switchPart(index: Int) {
-            allowSwitch = true
             vm.switchPage(index)
             scheduler.runCurrent()
-            allowSwitch = false
         }
-        override fun close() { scope.cancel(); folder.toFile().deleteRecursively() }
+        override fun close() {
+            try {
+                runTest(scheduler) { job.cancelAndJoin() }
+                assertTrue(failures.isEmpty(), "VM fixture failed: $failures")
+            } finally { folder.toFile().deleteRecursively() }
+        }
     }
 
     private fun withHost(surfaceCanCrossfade: Boolean = true, test: Host.() -> Unit) {

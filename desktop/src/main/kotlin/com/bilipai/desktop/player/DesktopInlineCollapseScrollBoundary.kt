@@ -24,6 +24,11 @@ fun Modifier.desktopInlineCollapseScrollBoundary(connection: NestedScrollConnect
     val density = LocalDensity.current
     val latestTop by rememberUpdatedState(atTop)
     val latestConnection by rememberUpdatedState(connection)
+    // A fallback scrollable must not start a wheel sequence while the list is away
+    // from its top. Compose gives an active wheel sequence Initial-pass priority;
+    // otherwise reaching the list's bottom lets this parent capture the entire
+    // reversal and expand the player while the list remains at the bottom.
+    val fallbackEnabled = atTop()
     return pointerInput(config, density) {
         awaitPointerEventScope {
             while (true) {
@@ -36,9 +41,10 @@ fun Modifier.desktopInlineCollapseScrollBoundary(connection: NestedScrollConnect
             }
         }
     }.scrollable(rememberScrollableState { delta ->
+        if (delta > 0f && !latestTop()) return@rememberScrollableState 0f
         val available = Offset(0f, delta)
-        val pre = connection.onPreScroll(available, NestedScrollSource.UserInput)
-        val post = connection.onPostScroll(pre, available - pre, NestedScrollSource.UserInput)
+        val pre = latestConnection.onPreScroll(available, NestedScrollSource.UserInput)
+        val post = latestConnection.onPostScroll(pre, available - pre, NestedScrollSource.UserInput)
         pre.y + post.y
-    }, Orientation.Vertical)
+    }, Orientation.Vertical, enabled = fallbackEnabled)
 }

@@ -70,7 +70,8 @@ class DesktopPluginRuntime(val store: DesktopPluginStore,
     private val closing = AtomicBoolean()
     private var stopped = false
     private val playerGeneration = AtomicLong()
-    private class CurrentVideo(val generation: Long, val bvid: String, val cid: Long, val accountEpoch: Long) {
+    private class CurrentVideo(val generation: Long, val bvid: String, val cid: Long, val accountEpoch: Long,
+        val stillOwned: () -> Boolean = { true }) {
         lateinit var sessions: DesktopPlayerPluginSessions
     }
     private val accountEpoch = { repository?.sessionEpoch ?: 0L }
@@ -297,7 +298,8 @@ class DesktopPluginRuntime(val store: DesktopPluginStore,
     }
 
     private fun isCurrentVideo(video: CurrentVideo): Boolean = !closing.get() &&
-        currentVideo.get() === video && playerGeneration.get() == video.generation && video.accountEpoch == accountEpoch()
+        currentVideo.get() === video && playerGeneration.get() == video.generation &&
+            video.accountEpoch == accountEpoch() && video.stillOwned()
 
     private fun enabledPlayerDefinitions(): List<BuiltinPlugin> =
         PluginManager.getEnabledPlugins(BuiltinPlugin::class).filter { it is PlayerPluginApi }
@@ -358,12 +360,13 @@ class DesktopPluginRuntime(val store: DesktopPluginStore,
         var previous: CurrentVideo? = null
         if (!admission {
             checkOwner()
-            video = CurrentVideo(playerGeneration.incrementAndGet(), bvid, cid, accountEpoch())
+            video = CurrentVideo(playerGeneration.incrementAndGet(), bvid, cid, accountEpoch(),
+                { caller[Job]?.isCancelled != true && stillOwned() })
             previous = currentVideo.getAndSet(video)
         }) throw CancellationException("Original Runtime publication rejected")
         val captured = checkNotNull(video)
         // Host end/factory callbacks run AFTER Store/entry/native admission has exited.
-        installSessions(captured, { caller[Job]?.isCancelled != true && stillOwned() }, admission, calls)
+        installSessions(captured, captured.stillOwned, admission, calls)
         previous?.sessions?.close()
         captured.sessions.update(enabledPlayerDefinitions())
         try {
