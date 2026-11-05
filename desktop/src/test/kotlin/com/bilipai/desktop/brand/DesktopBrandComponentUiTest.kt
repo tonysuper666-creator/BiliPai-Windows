@@ -36,6 +36,7 @@ import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.StandardOpenOption
 import javax.imageio.ImageIO
+import kotlin.coroutines.CoroutineContext
 import kotlin.math.ceil
 import kotlin.math.floor
 import kotlin.math.min
@@ -55,7 +56,7 @@ class DesktopBrandComponentUiTest {
         val replay = mutableIntStateOf(0)
         val completions = mutableListOf<Int>()
         val background = Background()
-        val fixture = Scene(background) {
+        val fixture = Scene(background, coroutineContext = coroutineContext) {
             val identity = replay.intValue
             BlueSnowMaidAnimation(DesktopMaidAnimation.RETRY, Modifier.size(220.dp),
                 isVisible = visible.value, replayKey = identity, onFinished = { completions += identity })
@@ -107,7 +108,7 @@ class DesktopBrandComponentUiTest {
         val background = Background()
         // ImageComposeScene models the dialog's inner STARTED local. The same
         // production provider must override it with the caller, without an OS window.
-        val fixture = Scene(background) {
+        val fixture = Scene(background, coroutineContext = coroutineContext) {
             DesktopDecorativeFeedbackContent(caller, Density(1f)) {
                 observedOwner = LocalLifecycleOwner.current
                 val identity = replay.intValue
@@ -157,7 +158,7 @@ class DesktopBrandComponentUiTest {
         var finishes = 0
         val replay = mutableIntStateOf(0)
         val background = Background()
-        val fixture = Scene(background) {
+        val fixture = Scene(background, coroutineContext = coroutineContext) {
             BlueSnowMaidAnimation(DesktopMaidAnimation.CLEANING, Modifier.size(220.dp),
                 replayKey = replay.intValue, onFinished = { finishes++ })
         }
@@ -188,7 +189,7 @@ class DesktopBrandComponentUiTest {
             var retries = 0
             var actions = 0
             val background = Background()
-            val fixture = Scene(background, style) {
+            val fixture = Scene(background, style, coroutineContext) {
                 if (error.value) ErrorState(message = "原加载失败验收", enableEasterEgg = false, onRetry = { retries++ })
                 else EmptyState(message = "原空内容验收", subtitle = "私有 CPU 离屏组件",
                     enableEasterEgg = false, actionText = "重新加载内容", onAction = { actions++ })
@@ -252,7 +253,7 @@ class DesktopBrandComponentUiTest {
         override val lifecycle: Lifecycle get() = registry
     }
 
-    private inner class Scene(background: Background, style: AppUiStyle = AppUiStyle.MATERIAL3, content: @Composable () -> Unit) : AutoCloseable {
+    private inner class Scene(background: Background, style: AppUiStyle = AppUiStyle.MATERIAL3, coroutineContext: CoroutineContext, content: @Composable () -> Unit) : AutoCloseable {
         val lifecycle = ResumedLifecycle()
         var observedReducedMotion: Boolean? = null
             private set
@@ -261,7 +262,7 @@ class DesktopBrandComponentUiTest {
         private val scene: ImageComposeScene
         init {
             check(GraphicsEnvironment.isHeadless()) { "CPU component QA requires the existing headless test JVM" }
-            scene = ImageComposeScene(640, 620, Density(1f)) {
+            scene = ImageComposeScene(640, 620, Density(1f), coroutineContext = coroutineContext) {
                 DesktopAppearanceTheme(DesktopThemeSettings(uiStyle = style, hapticFeedbackEnabled = false), systemLanguageTags = listOf("en")) {
                     CompositionLocalProvider(LocalDesktopHomePlatform provides platform, LocalLifecycleOwner provides lifecycle) {
                         DesktopDetailWindow {
