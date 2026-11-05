@@ -448,7 +448,7 @@ class RailSourceTest(unittest.TestCase):
         # The three kinds of stop: the toggle, the search row and the rows.
         for needle in ("modifier = Modifier.desktopRailStop(requesters, DESKTOP_RAIL_STOP_HEADER, tabStop),",
                        "modifier = Modifier.padding(horizontal = sidePadding).desktopRailStop(requesters, DESKTOP_RAIL_STOP_SEARCH, tabStop),",
-                       "modifier = Modifier.desktopRailStop(requesters, DESKTOP_RAIL_FIRST_ROW_STOP + rows.indexOf(row), tabStop),"):
+                       "modifier = Modifier.onFocusChanged { rowFocused = it.isFocused } .desktopRailStop(requesters, DESKTOP_RAIL_FIRST_ROW_STOP + rows.indexOf(row), tabStop),"):
             self.assertEqual(1, flat.count(needle), needle)
         self.assertIn("private const val DESKTOP_RAIL_STOP_HEADER = 0", RAIL_CODE)
         self.assertIn("private const val DESKTOP_RAIL_STOP_SEARCH = 1", RAIL_CODE)
