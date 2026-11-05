@@ -60,7 +60,7 @@ private object UnusedPages : DesktopHomeEmbeddedPages {
     @Composable override fun PartitionContent(contentPadding: PaddingValues, onVideoClick: (VideoItem) -> Unit, onBangumiClick: (Int) -> Unit, scrollToTopRequestId: Int): Unit = unsupported("PartitionContent")
     @Composable override fun SubscriptionFeedPage(contentPadding: PaddingValues, articleContentPadding: PaddingValues, scrollToTopRequestId: Int, listState: LazyStaggeredGridState, gridColumns: Int, pinchEnabled: Boolean, pinchBounds: IntRange, onColumnsChange: (Int) -> Unit, onPinchEnd: (Int) -> Unit, onArticleOpenChanged: (Boolean) -> Unit, onOpenPluginSettings: () -> Unit): Unit = unsupported("SubscriptionFeedPage")
     @Composable override fun LiveListScreen(onBack: () -> Unit, onLiveClick: (Long, String, String) -> Unit, onSearchClick: () -> Unit, onAreaListClick: () -> Unit, onFollowingClick: () -> Unit, onAreaDetailClick: (Int, Int, String) -> Unit, showNavigationBack: Boolean, embeddedInHome: Boolean, contentTopPadding: Dp, scrollToTopRequestId: Int): Unit = unsupported("LiveListScreen")
-    @Composable override fun HomeBangumiTabPage(contentPadding: PaddingValues, onBangumiClick: (Long) -> Unit, onBangumiEpisodeClick: (Long, Long) -> Unit, scrollToTopRequestId: Int): Unit = unsupported("HomeBangumiTabPage")
+    @Composable override fun HomeBangumiTabPage(contentPadding: PaddingValues, onBangumiClick: (Long) -> Unit, onBangumiEpisodeClick: (Long, Long) -> Unit, onPlayFollow: (Long) -> Unit, scrollToTopRequestId: Int): Unit = unsupported("HomeBangumiTabPage")
 }
 
 private object UnusedOverlays : DesktopHomeOverlayPorts {
