@@ -54,13 +54,14 @@ class BrandHistoryProducerTest(unittest.TestCase):
     def test_existing_transport_owner_and_other_sources_keep_authenticated_baselines(self):
         output,rows=self.generated();history=[r for r in rows if 'historySourceAdaptation' in r]
         self.assertEqual(len(history),3)
-        catalog=load('history_canonical_contract','v025_source_paths.py')._catalog()
+        canonical=load('history_canonical_contract','v025_source_paths.py');catalog=canonical._catalog()
         compatibility=load('history_all_retained_inputs','sync-upstream.py').adapted_compatibility_inputs(REPO)
         # The raw new three-file slice does not change the existing canonical catalog.
         for row in rows:
             if row in history or "recapGeneratedAdaptation" in row:continue
             if row['upstreamCommit']==catalog['upstreamCommit']:
-                self.assertEqual(row['sha256LfUtf8'],catalog['paths'][row['path']]['sha256'])
+                # The exact reviewed pin for the tree read (legacy read point or live, 7b992dc09).
+                self.assertEqual(row['sha256LfUtf8'],canonical.reviewed_sha256(REPO,catalog['paths'][row['path']]))
             else:
                 fixed=[item for item in compatibility if item['upstreamCommit']==row['upstreamCommit'] and
                     (item['path']==row['path'] or item['localPath']==row['path'])]
