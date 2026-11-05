@@ -29,13 +29,6 @@ import com.bilipai.desktop.ui.kit.DESKTOP_KIT_ROW_NAV_DP
 import com.bilipai.desktop.ui.kit.DESKTOP_KIT_SELECTED_FILL_PERCENT
 import com.bilipai.desktop.ui.kit.DESKTOP_KIT_NAV_ICON_GAP_DP
 
-internal const val DYNAMIC_READING_COLUMN_MIN = 640
-internal const val DYNAMIC_READING_COLUMN_MAX = 760
-internal const val DYNAMIC_READING_SIDE_PADDING = 24
-internal const val DYNAMIC_READING_ASIDE_GAP = 24
-internal const val DYNAMIC_READING_ASIDE_WIDTH = 280
-internal const val DYNAMIC_READING_ASIDE_FROM_WIDTH = 992
-
 internal data class DesktopDynamicReadingGeometry(val column: Float, val columnX: Float, val asideX: Float?)
 
 internal fun desktopDynamicReadingGeometry(width: Float, supportsAside: Boolean): DesktopDynamicReadingGeometry {
