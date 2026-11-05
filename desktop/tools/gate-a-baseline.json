@@ -2,7 +2,7 @@
  "schema": 1,
  "gate": "A",
  "rule": "No new failing identity, no missing or newly skipped baseline identity, new tests pass, same upstream trees.",
- "baselineSha": "a3af95b29b85de895aeb7ec37cc40247468c6b55",
+ "baselineSha": "c8d310c3d12d5a3a412a74d13e08e69c5efd0d77",
  "upstream": {
   "tag": "v0.6.7",
   "commit": "25ce80f0f19758dd955d07be7967af8a734922fe",
@@ -41,12 +41,12 @@
    "settings.gradle.kts": "c4f97a9ad0709b2d47ea975029e0ec0acf443e61"
   }
  },
- "source": "Windows VM BiliPai-Win11 (ssh winvm), clean detached worktree, JDK 21.0.12.1 fixed toolchain, 2026-11-03 04:14-04:45 UTC, 7651 test cases",
+ "source": "Windows VM BiliPai-Win11 (ssh winvm), clean detached worktree, JDK 21.0.12.1 fixed toolchain, 2026-11-05 10:09-10:40 UTC, 8671 test cases",
  "command": "gradlew.bat <fixed-toolchain> -p desktop --console=plain --continue test sponsorPresentationTests verifyUniqueClassNames",
  "generator": "python desktop/tools/gate_a.py baseline (Root only)",
  "counts": {
-  "tests": 7651,
-  "failed": 82,
+  "tests": 8671,
+  "failed": 49,
   "skipped": 0
  },
  "failingSources": {
@@ -58,31 +58,22 @@
   "com.android.purebilibili.core.ui.transition.VideoCardLandingFeedbackPolicyTest": "app/src/test/java/com/android/purebilibili/core/ui/transition/VideoCardLandingFeedbackPolicyTest.kt",
   "com.android.purebilibili.core.util.HomeCoverReturnPrefetchStructureTest": "app/src/test/java/com/android/purebilibili/core/util/HomeCoverReturnPrefetchStructureTest.kt",
   "com.android.purebilibili.data.model.response.VideoStatusLabelsTest": "core-data/src/test/java/com/android/purebilibili/data/model/response/VideoStatusLabelsTest.kt",
-  "com.android.purebilibili.feature.message.ChatStructuredMessagesTest": "app/src/test/java/com/android/purebilibili/feature/message/ChatStructuredMessagesTest.kt",
-  "com.android.purebilibili.feature.plugin.js.ExternalMediaDanmakuMappingTest": "app/src/test/java/com/android/purebilibili/feature/plugin/js/ExternalMediaDanmakuMappingTest.kt",
   "com.android.purebilibili.feature.profile.ProfileShapeStructureTest": "app/src/test/java/com/android/purebilibili/feature/profile/ProfileShapeStructureTest.kt",
   "com.android.purebilibili.feature.settings.AnimationSettingsScreenStructureTest": "app/src/test/java/com/android/purebilibili/feature/settings/AnimationSettingsScreenStructureTest.kt",
-  "com.android.purebilibili.feature.settings.AppBuildVerificationPolicyTest": "app/src/test/java/com/android/purebilibili/feature/settings/AppBuildVerificationPolicyTest.kt",
   "com.android.purebilibili.feature.settings.AppSegmentedControlPolicyTest": "app/src/test/java/com/android/purebilibili/feature/settings/AppSegmentedControlPolicyTest.kt",
   "com.android.purebilibili.feature.settings.AppearanceSettingsNavigationPolicyTest": "app/src/test/java/com/android/purebilibili/feature/settings/AppearanceSettingsNavigationPolicyTest.kt",
   "com.android.purebilibili.feature.settings.MiuixV2MigrationStructureTest": "app/src/test/java/com/android/purebilibili/feature/settings/MiuixV2MigrationStructureTest.kt",
   "com.android.purebilibili.feature.settings.OpenSourceLicensesPolicyTest": "app/src/test/java/com/android/purebilibili/feature/settings/OpenSourceLicensesPolicyTest.kt",
-  "com.android.purebilibili.feature.settings.SettingsCoreCombineOrderTest": "app/src/test/java/com/android/purebilibili/feature/settings/SettingsCoreCombineOrderTest.kt",
   "com.android.purebilibili.feature.settings.SettingsEntranceMotionStructureTest": "app/src/test/java/com/android/purebilibili/feature/settings/SettingsEntranceMotionStructureTest.kt",
   "com.android.purebilibili.feature.settings.SettingsInformationArchitecturePolicyTest": "app/src/test/java/com/android/purebilibili/feature/settings/SettingsInformationArchitecturePolicyTest.kt",
   "com.android.purebilibili.feature.settings.SettingsLocalBackHandlerStructureTest": "app/src/test/java/com/android/purebilibili/feature/settings/SettingsLocalBackHandlerStructureTest.kt",
   "com.android.purebilibili.feature.settings.SettingsMiuixSimplificationStructureTest": "app/src/test/java/com/android/purebilibili/feature/settings/SettingsMiuixSimplificationStructureTest.kt",
   "com.android.purebilibili.feature.settings.SettingsPageBlurPreferenceStructureTest": "app/src/test/java/com/android/purebilibili/feature/settings/SettingsPageBlurPreferenceStructureTest.kt",
   "com.android.purebilibili.feature.settings.SettingsPrivacyAuthenticationStructureTest": "app/src/test/java/com/android/purebilibili/feature/settings/SettingsPrivacyAuthenticationStructureTest.kt",
-  "com.android.purebilibili.feature.settings.SettingsRootCategoryContentStructureTest": "app/src/test/java/com/android/purebilibili/feature/settings/SettingsRootCategoryContentStructureTest.kt",
   "com.android.purebilibili.feature.settings.SettingsTabletLayoutPolicyTest": "app/src/test/java/com/android/purebilibili/feature/settings/SettingsTabletLayoutPolicyTest.kt",
   "com.android.purebilibili.feature.settings.VisualEffectTogglePolicyTest": "app/src/test/java/com/android/purebilibili/feature/settings/VisualEffectTogglePolicyTest.kt",
-  "com.android.purebilibili.feature.space.SpaceAggregatedModelMappingTest": "app/src/test/java/com/android/purebilibili/feature/space/SpaceAggregatedModelMappingTest.kt",
-  "com.android.purebilibili.feature.space.SpaceDynamicNavigationPolicyTest": "app/src/test/java/com/android/purebilibili/feature/space/SpaceDynamicNavigationPolicyTest.kt",
-  "com.android.purebilibili.feature.space.SpaceLoadPolicyTest": "app/src/test/java/com/android/purebilibili/feature/space/SpaceLoadPolicyTest.kt",
   "com.android.purebilibili.feature.space.SpaceLocatePagingStructureTest": "app/src/test/java/com/android/purebilibili/feature/space/SpaceLocatePagingStructureTest.kt",
-  "com.android.purebilibili.feature.space.SpaceScreenStructureTest": "app/src/test/java/com/android/purebilibili/feature/space/SpaceScreenStructureTest.kt",
-  "com.android.purebilibili.feature.space.SpaceTabChromePolicyTest": "app/src/test/java/com/android/purebilibili/feature/space/SpaceTabChromePolicyTest.kt"
+  "com.android.purebilibili.feature.space.SpaceScreenStructureTest": "app/src/test/java/com/android/purebilibili/feature/space/SpaceScreenStructureTest.kt"
  },
  "failing": {
   "desktop:com.android.purebilibili.core.ui.LocalNavigationBackHandlerStructureTest": [
@@ -112,27 +103,11 @@
   "desktop:com.android.purebilibili.core.util.HomeCoverReturnPrefetchStructureTest": [
    "appNavigationTriggersPrefetchOnGestureAndCommit()"
   ],
-  "desktop:com.android.purebilibili.feature.message.ChatStructuredMessagesTest": [
-   "sessionTipJoinsTextWithoutExposingPayload()"
-  ],
-  "desktop:com.android.purebilibili.feature.plugin.js.ExternalMediaDanmakuMappingTest": [
-   "mapsModeTextTimeAndColorIntoEngineItems()"
-  ],
   "desktop:com.android.purebilibili.feature.profile.ProfileShapeStructureTest": [
    "profile surfaces use semantic theme shapes()"
   ],
   "desktop:com.android.purebilibili.feature.settings.AnimationSettingsScreenStructureTest": [
-   "animationSettingsScreen_controlsGlobalPredictivePreviewIndependently()",
-   "animationSettingsScreen_exposesLiveSurfaceCardTransitionToggle()",
-   "animationSettingsScreen_exposesRealtimeTransitionBlurToggle()",
-   "animationSettingsScreen_exposesVideoSharedReturnGestureFollowToggle()",
-   "animationSettingsScreen_importsLiquidGlassSettingsAfterConfirmation()"
-  ],
-  "desktop:com.android.purebilibili.feature.settings.AppBuildVerificationPolicyTest": [
-   "resolveAppBuildVerificationState returns likely verified when mutable release digest matches without embedded provenance()",
-   "resolveAppBuildVerificationState returns unverified when release is mutable()",
-   "resolveAppBuildVerificationState returns verified when immutable release digest matches local apk()",
-   "resolveBuildFingerprintSubtitle describes matched immutable release with attestation()"
+   "animationSettingsScreen_controlsGlobalPredictivePreviewIndependently()"
   ],
   "desktop:com.android.purebilibili.feature.settings.AppSegmentedControlPolicyTest": [
    "defaultSettingsIndicatorRenderPolicyMatchesCommentSortIndicator()"
@@ -153,9 +128,6 @@
    "openSourceLibraries_coverRuntimeDependenciesAndLiquidGlassReferences()",
    "openSourceScreen_notesAcknowledgementListMayNotBeExhaustive()"
   ],
-  "desktop:com.android.purebilibili.feature.settings.SettingsCoreCombineOrderTest": [
-   "core settings flows keep the frozen index order()"
-  ],
   "desktop:com.android.purebilibili.feature.settings.SettingsEntranceMotionStructureTest": [
    "settingsRootWaitsForNavigationAndBypassesGroupWhenDisabled()",
    "settingsSearchUsesSameNavigationGate()"
@@ -167,11 +139,7 @@
    "settingsLocalBackHandler_usesNavigationBackHandler()"
   ],
   "desktop:com.android.purebilibili.feature.settings.SettingsMiuixSimplificationStructureTest": [
-   "animation liquid glass section keeps tuning without independent switches()",
-   "animation settings keeps tuning but no independent glass toggles()",
-   "appearance settings expose one ui style selection while keeping miuix scaffold()",
-   "liquid glass adjustment uses live miuix backdrop and commits on release()",
-   "settings groups avoid duplicate setting icons()"
+   "appearance settings expose one ui style selection while keeping miuix scaffold()"
   ],
   "desktop:com.android.purebilibili.feature.settings.SettingsPageBlurPreferenceStructureTest": [
    "miuixSettingsPageUsesUpstreamSurfaceIndependentlyFromGlassChrome()",
@@ -180,32 +148,11 @@
   "desktop:com.android.purebilibili.feature.settings.SettingsPrivacyAuthenticationStructureTest": [
    "privacyOptionsUseSeparateSwitchesForHistoryAndContentAuthentication()"
   ],
-  "desktop:com.android.purebilibili.feature.settings.SettingsRootCategoryContentStructureTest": [
-   "aboutDevelopers_useGithubProfilesAndClickableAvatars()",
-   "aboutProjectOverview_usesRasterLauncherAssetForComposePainter()",
-   "aboutSectionShowsProjectOverviewAndStaticDevelopersBeforeRows()",
-   "broadSettingsEntriesOpenAtPageStartWhileSubtopicEntriesUsePreciseFocus()",
-   "feedApiSection_usesNativeSwitchAndSliderItems()",
-   "settingsSearchSubmitsResultFocusBeforeOpeningDetailPage()",
-   "settingsSubpages_useNagramStyleSectionNames()",
-   "tabletSettingsCategoryDrawer_showsSubtitle()",
-   "tabletSettingsShell_usesNavDrivenCategoryRail()"
-  ],
   "desktop:com.android.purebilibili.feature.settings.SettingsTabletLayoutPolicyTest": [
    "tabletLandscape_keepsMasterAndDetailContentScrollable()"
   ],
   "desktop:com.android.purebilibili.feature.settings.VisualEffectTogglePolicyTest": [
    "animation settings no longer exposes per-surface liquid glass entries()"
-  ],
-  "desktop:com.android.purebilibili.feature.space.SpaceAggregatedModelMappingTest": [
-   "resolveSpaceInitialSeedFromAggregate maps core header and seeded content()"
-  ],
-  "desktop:com.android.purebilibili.feature.space.SpaceDynamicNavigationPolicyTest": [
-   "resolveSpaceDynamicClickAction_opensDynamicDetailWhenArticleJumpUrlIsOpus()"
-  ],
-  "desktop:com.android.purebilibili.feature.space.SpaceLoadPolicyTest": [
-   "resolveSpaceInitialSeedFromAggregate detects cheese tab in tab2()",
-   "resolveSpaceInitialSeedFromAggregate keeps PiliPlus space tag contract()"
   ],
   "desktop:com.android.purebilibili.feature.space.SpaceLocatePagingStructureTest": [
    "locate paging observes completion and stops after a failed request()"
@@ -219,13 +166,6 @@
    "space official verify follows piliplus multiline badge presentation()",
    "space search action scrolls to focused search bar and dynamic body opens comments()",
    "space video cards freeze native pixels for return morph()"
-  ],
-  "desktop:com.android.purebilibili.feature.space.SpaceTabChromePolicyTest": [
-   "contribution tab chrome keeps drag selection for three contribution entries()",
-   "contribution tab chrome prefers selected id and uses compact secondary chrome()",
-   "contribution toolbar uses compact chrome and icon first actions on narrow phones()",
-   "main tab chrome resolves selected index and keeps touch target height()",
-   "secondary switch caps longest title to three visible slots()"
   ],
   "upstream-core:com.android.purebilibili.core.network.policy.NetworkProxyPolicyTest": [
    "domain rules tolerate protocol path port and wildcard noise()"
@@ -406,6 +346,12 @@
    "all independent players enable platform first ffmpeg fallback()",
    "app packages the arm64 eac3 decoder module()",
    "software decoder capability changes dolby presentation only when platform decoder is absent()"
+  ],
+  "desktop:com.android.purebilibili.core.player.PlaybackResumePolicyTest": [
+   "a new part starts at zero even with server progress()",
+   "a watched through video does not repeatedly resume at its ending()",
+   "invalid negative progress starts at zero()",
+   "local progress wins and server progress fills a missing local entry()"
   ],
   "desktop:com.android.purebilibili.core.plugin.BuiltinPluginDefaultPolicyTest": [
    "castPluginsAreEnabledByDefault()",
@@ -2383,6 +2329,28 @@
    "findClosestTarget returns null for empty list()",
    "findClosestTarget uses nearest higher when no lower candidate exists()"
   ],
+  "desktop:com.android.purebilibili.danmaku.parser.AdvancedDanmakuParserTest": [
+   "alpha animation interpolates between range()",
+   "invalid json returns null()",
+   "invalid path token stops parsing without hanging()",
+   "normalize integer pixel coordinates to relative()",
+   "parse legacy simplified format remains compatible()",
+   "parse mode 7 alpha translation and path()",
+   "parse relative path command()",
+   "path point interpolation follows segment lengths()",
+   "translation progress respects delay and duration window()"
+  ],
+  "desktop:com.android.purebilibili.danmaku.parser.DanmakuMode9ParserTest": [
+   "bad mode 9 scripts are isolated and never displayed as scrolling source()",
+   "mode 9 compiles a scene and can seek into its animation without affecting mode 7()"
+  ],
+  "desktop:com.android.purebilibili.danmaku.parser.DanmakuProtoPolicyTest": [
+   "parseDmSegMobileReply_readsBiliPaiExtendedElemFields()",
+   "parseReply_distinguishesTruncatedPayloadsFromValidEmptySegments()",
+   "parseWebViewReply_keepsOldSchemaDmSgeOnField3()",
+   "parseWebViewReply_readsDocumentedNewSchemaWithoutFieldCollisions()",
+   "parseWebViewReply_supportsNewSchemaDmSgeOnField4()"
+  ],
   "desktop:com.android.purebilibili.danmaku.parser.SpecialDanmakuIndexReaderTest": [
    "duplicateMetadataUsesLastValueAndEmptyElementUsesDefaults()",
    "emptyFileDoesNotRead()",
@@ -2401,6 +2369,11 @@
    "legacySpecialTextAndOrdinaryRowsUseTheirOwnLifetimeAndMode8IsNeverExecuted()",
    "readySourcesCanBeUsedBeforeLaterIndexesAndLateEarlierSourcesPreserveOrder()",
    "unseenEarlierLifetimesAreInspectedWithoutKeepingExpiredPrograms()"
+  ],
+  "desktop:com.android.purebilibili.danmaku.parser.TimedDanmakuWindowTest": [
+   "incremental playback and random seeks match full interval filtering()",
+   "membership stays stable while a scene moves and handles inclusive boundaries()",
+   "seeks preserve earlier long scenes and find next activation()"
   ],
   "desktop:com.android.purebilibili.danmaku.parser.V046OriginalDanmakuProtoPolicyTest": [
    "parseDmSegMobileReply_readsBiliPaiExtendedElemFields()",
@@ -2616,6 +2589,10 @@
    "repeated pagination stops instead of loading indefinitely()",
    "retry retains successful pages and only repeats failed page network request()"
   ],
+  "desktop:com.android.purebilibili.feature.bangumi.BangumiDashManifestPolicyTest": [
+   "builds a manifest from a video url even when segment base is absent()",
+   "keeps pugv audio when audio segment base is omitted()"
+  ],
   "desktop:com.android.purebilibili.feature.bangumi.BangumiFollowStatusPolicyTest": [
    "cached status should override followed list and api status()",
    "follow preload page count should cap by max pages()",
@@ -2647,6 +2624,28 @@
    "timeline episode metadata prefers the matching cover and update state()",
    "timeline labels include visible dates and today marker()",
    "timeline ranges stay within the server supported seven day window()"
+  ],
+  "desktop:com.android.purebilibili.feature.bangumi.DesktopMigratedBangumiUiPolicyTest": [
+   "bangumi navigation title font should be reduced on phone()",
+   "bangumi type tab font should avoid oversized labels()",
+   "cover badge on dark primary keeps light label()",
+   "cover badge on light gold uses dark label()",
+   "episode ordering should reverse without mutating source()",
+   "episode pages should expose ascending and descending ranges()",
+   "episode preview window should clamp to final partial range()",
+   "episode preview window should use selected range instead of first episodes()",
+   "fullscreen player should not crop danmaku top area()",
+   "landscape natural cover only enters fullscreen after user request()",
+   "portrait natural phone keeps landscape driven fullscreen()",
+   "portrait player container inset should sanitize invalid status bar values()",
+   "portrait player controls should clear status bar and danmaku should start below controls()",
+   "toggle orientation on ordinary phone exits to portrait when fullscreen()",
+   "toggle orientation on tablet or in-window returns null()"
+  ],
+  "desktop:com.android.purebilibili.feature.bangumi.ui.player.BangumiSeekHapticPolicyTest": [
+   "feedbackRequiresUserSessionAndAChangedSecond()",
+   "finishAndInvalidDurationStaySilentAndNewSessionResetsCooldown()",
+   "rapidCrossingsAreLimitedAndNotReplayedWhenHeld()"
   ],
   "desktop:com.android.purebilibili.feature.download.OfflinePlaybackErrorPolicyTest": [
    "decoderFailureOffersPlaybackRetry()",
@@ -2756,6 +2755,10 @@
    "isFollowingListIncomplete should compare loaded users with server total()",
    "mergeFollowingUsersDistinct should append new users and ignore removed duplicates()",
    "shouldPublishFollowingLoadBatch should batch intermediate page updates()"
+  ],
+  "desktop:com.android.purebilibili.feature.home.HomeFeedSkeletonCardStructureTest": [
+   "featureSkeletonUsesSharedHomeGeometryAndDrawSweep()",
+   "homeLoadingGridUsesFeatureSkeletonInsteadOfCoreShimmerSkeleton()"
   ],
   "desktop:com.android.purebilibili.feature.home.HomeLoadSequencePolicyTest": [
    "failedRefreshRetainsContentAndShowsRefreshFailure()",
@@ -3806,6 +3809,10 @@
    "samplePreservesLandscapePortraitAndSquareAspect()",
    "staticDetectionRecoversImmediatelyOnMotion()"
   ],
+  "desktop:com.android.purebilibili.feature.video.ambient.DesktopAmbientGlowCompositionTest": [
+   "disabledComponentMotionStillDrawsAndLifecycleStopsTheHalo()",
+   "reducedMotionDrawsTheFrameAndHiddenPageRemovesTheHalo()"
+  ],
   "desktop:com.android.purebilibili.feature.video.danmaku.BasDanmakuFilterPolicyTest": [
    "BAS follows the special switch rather than ordinary scroll and pinned switches()",
    "color blocking includes scripted and animated colors rather than only the protobuf tag()",
@@ -3844,9 +3851,11 @@
    "vote indices and restored selection do not depend on payload array order()"
   ],
   "desktop:com.android.purebilibili.feature.video.danmaku.DanmakuConfigPolicyTest": [
+   "Pili selected range endpoints reach renderer unchanged()",
    "bilibili font grades should remain relative to user font scale()",
    "count bar never reserves tracks in massive mode()",
    "fixed velocity should scale scroll duration with viewport width()",
+   "fullscreen changes the logical baseline but preserves the user's scale()",
    "known viewport line count should honor engine line budget()",
    "line height multiplier should be converted to engine px spacing()",
    "normal mode restores bounded count bar reservation()",
@@ -3854,6 +3863,7 @@
    "scroll duration should respect explicit duration seconds and speed factor()",
    "short viewport should not force a minimum line beyond the pixel budget()",
    "static to scroll should remap pinned danmaku to scrolling layer()",
+   "stroke thickness uses system density and zero still disables the outline()",
    "unknown viewport should retain area based fallback line count()",
    "viewport geometry alone does not imply fullscreen presentation()"
   ],
@@ -3871,6 +3881,86 @@
    "static to scroll should remap pinned danmaku to scrolling layer()",
    "stroke thickness uses system density and zero still disables the outline()",
    "unknown viewport should retain area based fallback line count()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.danmaku.DanmakuContentSegmentsTest": [
+   "disabledImagesAndBlankResourcesKeepText()",
+   "inlineMessageKeysRetainTheirOriginalSpelling()",
+   "roomCacheOnlyReplacesBracketedTokensAndUnknownTextSurvives()",
+   "wholeImageMessageDoesNotRequireBrackets()",
+   "wholeImageWinsOverBracketMarkersInsideItsLabel()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.danmaku.DanmakuKeywordFilterPolicyTest": [
+   "appendDanmakuKeywordBlockRule_appendsUniqueKeywordToRawRules()",
+   "appendDanmakuUserHashBlockRule_normalizesPrefixAndDeduplicates()",
+   "compileDanmakuBlockRules_reusesCompiledMatchersForSameRule()",
+   "matchesDanmakuBlockRule_invalidRegexFallsBackToFalse()",
+   "matchesDanmakuBlockRule_supportsPlainKeywordIgnoreCase()",
+   "matchesDanmakuBlockRule_supportsRegexPrefix()",
+   "matchesDanmakuBlockRule_supportsSlashRegex()",
+   "matchesDanmakuBlockRule_supportsUserHashRules()",
+   "mergeDanmakuBlockRuleSections_normalizesAndDeduplicatesRules()",
+   "parseDanmakuBlockRuleImport_reportsInvalidRegexAndMalformedFiles()",
+   "parseDanmakuBlockRuleImport_supportsTextJsonAndXml()",
+   "parseDanmakuBlockRules_preservesCommaInRegexSyntax()",
+   "parseDanmakuBlockRules_preservesCommaWhileTypingRegex()",
+   "parseDanmakuBlockRules_splitsByLineAndComma()",
+   "parseDanmakuBlockRules_supportsJsonImportPayload()",
+   "partitionDanmakuBlockRules_groupsRulesForManagerTabs()",
+   "shouldBlockDanmakuByRules_repeatedCallsKeepSemantics()",
+   "shouldBlockDanmakuByRules_returnsFalseWhenNoRulesMatch()",
+   "shouldBlockDanmakuByRules_returnsTrueWhenAnyRuleMatches()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.danmaku.DanmakuPlaybackSyncPolicyTest": [
+   "attach reapply is required when controller changed or pending after related navigation()",
+   "cancelled back never enables disabled danmaku or restarts an ended video()",
+   "cancelled back preserves a synced timeline but rebuilds a replacement renderer()",
+   "danmaku load result applies only to current cid and generation()",
+   "danmaku should start on data ready when player is playing or will play()",
+   "drift correction should be less frequent at high playback speed()",
+   "drift correction should trigger periodically for both normal and non-normal speed()",
+   "drift sync interval should be aggressive for high speed()",
+   "drift sync interval should keep moderate frequency around normal speed()",
+   "engine play speed should follow video playback speed percent()",
+   "episode data ready uses current player position instead of stale request position()",
+   "explicit resync should pause and clear before setData and start()",
+   "explicit seek scrub start should pause before clearing stale danmaku()",
+   "explicit seek suppression should be invalidated after timeline pauses()",
+   "follow-up hard resync should be suppressed right after explicit user seek to same position()",
+   "follow-up hard resync should not be suppressed for different seek target()",
+   "follow-up hard resync should not be suppressed when explicit seek resync left danmaku paused()",
+   "follow-up hard resync should not be suppressed when explicit seek window already expired()",
+   "periodic guard action should always preserve visible danmaku()",
+   "playback adjusted duration should scale visual durations inversely to speed()",
+   "playback speed update changes timing without refreshing timeline data()",
+   "player attach resyncs cached data only for an enabled bound session()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.danmaku.DanmakuSegmentWindowPolicyTest": [
+   "missing segment retries the displayed window without restarting an in-flight retry()",
+   "playback progress requests the next segment window()",
+   "position maps to one-based six-minute segments()",
+   "repeated guard ticks do not restart the same in-flight window request()",
+   "return to original window cancels a different pending load()",
+   "same pending window and absent requests are preserved()",
+   "whole video XML fallback is partitioned without duplicates at segment boundaries()",
+   "window keeps previous current and next segments within bounds()",
+   "window replacement only happens after crossing a segment boundary()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.danmaku.DanmakuSyncStatusPolicyTest": [
+   "cloudSyncGate_requiresLoginAndEnabledToggle()",
+   "cloudSyncToggleSubtitle_explainsCrossDeviceImpact()",
+   "failedSync_preservesLastSuccessAndExposesErrorMessage()",
+   "newerManualRequest_bypassesDebounceGate()",
+   "queuedSync_transitionsToPendingAndClearsTransientMessage()",
+   "startedSync_transitionsToSyncingWithoutDroppingLastSuccessTimestamp()",
+   "successfulSync_updatesStatusAndTimestamp()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.danmaku.DanmakuTypeFilterPolicyTest": [
+   "advancedDanmaku_hiddenWhenSpecialFilterDisabled()",
+   "bottomDanmaku_hiddenWhenBottomFilterDisabled()",
+   "colorfulDanmaku_hiddenWhenColorFilterDisabled()",
+   "scrollDanmaku_hiddenWhenScrollFilterDisabled()",
+   "topDanmaku_hiddenWhenTopFilterDisabled()",
+   "whiteDanmaku_visibleWhenColorFilterDisabled()"
   ],
   "desktop:com.android.purebilibili.feature.video.danmaku.DesktopV038DanmakuMergerPolicyTest": [
    "merge_anchorsTheInclusiveWindowToTheFirstItem()",
@@ -3890,6 +3980,137 @@
    "top two use stable ties and deduplicate ids and text()",
    "window includes endpoints but excludes old and future comments()"
   ],
+  "desktop:com.android.purebilibili.feature.video.interaction.InteractiveVideoChoicePolicyTest": [
+   "auto choice should be null when list empty()",
+   "auto choice should fallback to first option when no default()",
+   "auto choice should prefer default option()",
+   "choice cid should be null when both response and current cid are invalid()",
+   "choice cid should fallback to current cid when response cid is missing()",
+   "choice cid should fallback to platform action when cid missing()",
+   "choice cid should prefer response cid when it is valid()",
+   "choice edge id should fallback to platform action when missing()",
+   "countdown should be null for non-positive duration()",
+   "interactive countdown should become tighter near the final second()",
+   "interactive countdown should slow updates when there is plenty of time left()",
+   "interactive question polling should back off aggressively when playback is paused()",
+   "interactive question polling should speed up near trigger point()",
+   "interactive question polling should stay moderate when trigger is still several seconds away()",
+   "trigger should become true once playback reaches question time()",
+   "trigger time should include edge start offset()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.interaction.InteractiveVideoVariablePolicyTest": [
+   "condition should evaluate numeric comparisons with and or()",
+   "condition should support arithmetic precedence and parentheses()",
+   "empty condition should always pass()",
+   "invalid condition syntax should degrade to true()",
+   "missing variable should fallback to zero()",
+   "native action should apply assignment arithmetic and copy()",
+   "native action should ignore invalid statements()",
+   "native action should support multiply divide and parentheses()",
+   "native action should support unary minus()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.note.AiSummaryNoteDraftPolicyTest": [
+   "aiSummaryBuildsEditableTimestampDraft()",
+   "aiSummaryDraftAppendsToExistingPrivateNote()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.note.VideoNoteContentCodecTest": [
+   "decodeRestoresKnownBlocksAndIgnoresInvalidPayload()",
+   "encodeKeepsRichTextAttributesAndTimestampTag()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.note.VideoNoteEditorStatePolicyTest": [
+   "aiDraftWithoutSavedNoteCanContinueEditing()",
+   "savedNotePrefersEditWhenNoUnsavedDraftExists()",
+   "unsavedAiAppendOnSavedNoteCanContinueEditing()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.note.VideoNoteEmotionPolicyTest": [
+   "conflictMessageDistinguishesAppendFromCreate()",
+   "emptyMessageExplainsActionableState()",
+   "saveFeedbackKeepsAiDraftContext()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.note.VideoNoteTagPolicyTest": [
+   "encodeTagsReturnsEmptyArrayWhenNoTimestampExists()",
+   "encodeTagsUsesTimestampBlockPosition()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.note.VideoNoteVisibilityPolicyTest": [
+   "default collapsed note should hide body until user expands it()",
+   "disabled note setting should block note loading and card rendering()",
+   "enabled note setting should allow note loading only for valid aid()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.playback.audio.AudioStreamSelectionPolicyTest": [
+   "Hi Res control shows explicit text next to badge()",
+   "alternate dolby IDs are selected by actual codec rather than one hardcoded ID()",
+   "audio quality control keeps a visible fallback when options are empty()",
+   "auto selects best standard audio without enabling premium audio()",
+   "available options only expose tracks returned by current response()",
+   "collect candidates includes standard dolby and hi res streams()",
+   "concrete AAC default remains an exact bitrate preference()",
+   "disabled dolby container does not expose dolby track()",
+   "dolby container does not promote AAC track to dolby()",
+   "each returned ordinary bitrate selects its own source and reports its actual ID()",
+   "explicit hi res selection returns flac candidate()",
+   "flac container preserves noncanonical raw identity through speed fallback and restoration()",
+   "follow last default uses remembered manual selection()",
+   "follow last preserves raw preference and rejects only nontrack sentinels()",
+   "high speed temporarily falls back from hi res to standard()",
+   "invalid empty and duplicate rows expose only actual playable identities()",
+   "missing hi res falls back to best standard without changing request()",
+   "no playable source retains request without reporting a fabricated track()",
+   "platform decoded dolby keeps atmos label()",
+   "premium options expose matching audio badges()",
+   "raw IDs unknown to built in labels retain identity and raw codec metadata()",
+   "raw special IDs from base list honor software decoding and speed boundaries()",
+   "single AAC option remains visible in audio quality control()",
+   "software decoded dolby uses dolby audio label()",
+   "unavailable raw request falls back to best ordinary source without rewriting preference()",
+   "unsupported dolby decoder hides dolby and falls back to AAC()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.playback.loader.PlaybackLoaderTest": [
+   "load should wrap error with request context()",
+   "load should wrap success with request config and cached position()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.playback.policy.AdaptiveDashTrackPolicyTest": [
+   "auto mode keeps all playable tracks up to quality cap()",
+   "explicit dolby keeps only dolby representation()",
+   "explicit hi res keeps only flac representation()",
+   "explicit unavailable premium audio falls back to one best standard representation()",
+   "high speed keeps standard audio preference()",
+   "high speed resolves hi res preference to standard dash audio()",
+   "locked mode keeps only the requested quality()",
+   "normal speed keeps hi res preference()",
+   "premium audio does not refresh source inside same speed compatibility bucket()",
+   "premium audio refreshes source when speed compatibility bucket changes()",
+   "session codec fallback removes blocked av1 tracks from auto mode()",
+   "speed transitions preserve raw special preferences using actual returned kind()",
+   "unsupported dolby decoder falls back to standard representation()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.playback.policy.PlaybackAncillaryTaskPolicyTest": [
+   "final heartbeat flush should only send meaningful progress deltas()",
+   "heartbeat session start timestamp should stay stable once assigned()",
+   "heartbeat should only send for active foreground playback()",
+   "heartbeat snapshot should use watched duration instead of playback position for real played time()",
+   "initial heartbeat should require actual foreground playback and valid video ids()",
+   "online count polling should back off harder in background()",
+   "online count refresh should require foreground and enabled setting()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.playback.policy.PlaybackTransitionPolicyTest": [
+   "displayedPlaybackPosition_prefersTransitionTarget_untilCatchUp()",
+   "displayedPlaybackPosition_returnsPlayerPosition_afterCatchUp()",
+   "displayedQuality_prefersRequestedQuality_whileSwitching()",
+   "displayedQuality_usesCurrentQuality_whenSwitchIsIdle()",
+   "holdPlaybackPosition_releases_whenPlayerCatchesUp()",
+   "holdPlaybackPosition_staysActive_whilePlayerStillReportsOldPosition()",
+   "mediaSourceResume_holdPositionWhilePlayerIsStillBeforeTarget()",
+   "mediaSourceResume_releasesAfterPlayerPassesTargetWindow()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.playback.policy.PluginPollingPolicyTest": [
+   "active playback should use tighter plugin poll interval()",
+   "no plugin state should back off polling aggressively()",
+   "paused playback should slow plugin poll interval()",
+   "position updates should dispatch after meaningful progress()",
+   "position updates should dispatch after user seeks backwards()",
+   "position updates should dispatch immediately the first time()",
+   "position updates should skip tiny movement()"
+  ],
   "desktop:com.android.purebilibili.feature.video.playback.session.PlaybackLifecycleCoordinatorTest": [
    "pauseDecision_doesNotMarkTransientResumeIntent_whenLeavingByNavigation()",
    "pauseDecision_doesNotMarkTransientResumeIntent_whenPlaybackContinuesInPip()",
@@ -3905,6 +4126,17 @@
    "resumeDecision_resumesWhenForegroundIntentSurvivesAndroid16PlayWhenReadyReset()",
    "resumeDecision_resumesWhenTransientIntentExistsEvenIfPlayerLooksPaused()"
   ],
+  "desktop:com.android.purebilibili.feature.video.playback.session.PlaybackSessionStoreTest": [
+   "beginLoadRequest should store request and advance request tokens()",
+   "blockVideoCodec should normalize codec key and persist in session state()",
+   "clearCurrentMedia should reset current playback identity()",
+   "clearCurrentRequest should remove active request context()",
+   "consumeResumeSuggestion should clear stored suggestion after returning it()",
+   "next request tokens should increment independently()",
+   "recordCompletionAction should persist the last action()",
+   "setResumeSuggestion should update session state()",
+   "updateCurrentMedia should keep current playback identity in session state()"
+  ],
   "desktop:com.android.purebilibili.feature.video.player.DesktopOriginalBackgroundPlaybackPolicyTest": [
    "audioBarKeepsDetailPlaybackAcrossNavigationExit()",
    "backgroundPlaybackToggleDisablesBackgroundAudioEvenInDefaultMode()",
@@ -3915,9 +4147,131 @@
    "systemPipCanFallbackToBackgroundAudioWhenNoPipTransitionWillHappen()",
    "systemPipDoesNotEnableBackgroundAudioDuringPipTransition()"
   ],
+  "desktop:com.android.purebilibili.feature.video.player.PlaybackPageOwnershipTest": [
+   "anotherPageOfTheSameVideoMustRefreshSessionIdentity()",
+   "clearedSessionMustBeReclaimedByVisiblePage()",
+   "coveredParentCannotStealChildSession()",
+   "currentPageDoesNotRebindItsHealthySession()",
+   "returningFromBottomBarReclaimsTheSamePlayerAndClearsNavigationExit()",
+   "returningFromChildKeepsParentPlayerRetained()",
+   "returningParentReclaimsSessionFromRecommendedVideo()",
+   "reusedPlayerCannotBeReleasedUntilItsLastPageIsDisposed()",
+   "sameVideoWithDifferentPlayerStillNeedsRebinding()",
+   "separateInstancesWithEqualValuesHaveIndependentOwners()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.policy.VideoDetailScrollCoordinatorTest": [
+   "collapseJankSignalOnlyTracksRealOffsetMovement()",
+   "collapseProgress_clampsIntoZeroToOneRange()",
+   "pausedCommentHide_continuesPastCompactFoldableLayoutAndRestoresAtTop()",
+   "postScroll_consumesDownwardSwipeToRestorePlayer()",
+   "postScroll_doesNothingInPortraitFullscreen()",
+   "postScroll_doesNothingWhenLayoutAlreadyCollapsed()",
+   "postScroll_restoresPortraitPlayerAfterIntroThreshold()",
+   "preScroll_consumesUpwardSwipeToCollapsePlayer()",
+   "preScroll_doesNothingWhenInlineCollapseDisabled()",
+   "preScroll_doesNothingWhenLayoutAlreadyCollapsedByIntroThreshold()",
+   "restoredCompactCommentsAllowTheNextCollapseGesture()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.progress.PbpProgressPolicyTest": [
+   "buildDanmakuDensityValues_bucketsPositionsByAdaptiveStep()",
+   "buildDanmakuDensityValues_rejectsInvalidInput()",
+   "buildDanmakuDensityValues_stepClampsToTenSecondsForLongVideos()",
+   "buildPbpRidgeSamples_ignoresInvalidDataAndClampsFractions()",
+   "buildPbpRidgeSamples_mapsDensityBucketsFromNormalizedIntensity()",
+   "buildPbpRidgeSamples_mapsNormalizedEventsAcrossDuration()",
+   "normalizePbpProgressValues_keepsEmptyAndScalesPeakToOne()",
+   "parsePbpProgressData_readsStepAndDefaultEventsFromApiPayload()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.screen.AudioModeCoverLayoutPolicyTest": [
+   "artworkSizeUsesWideRoundedRectangle()",
+   "artworkStyleUsesAppleMusicLikeRoundedShadowedCover()",
+   "neverReturnsNegativeCoverSizeOnVeryShortLayouts()",
+   "shrinksCoverWhenContentAreaNeedsTopAndBottomClearance()",
+   "usesWidthFractionWhenContentAreaIsTallEnough()",
+   "verticalPageTransformClampsFarPages()",
+   "verticalPageTransformTiltsAroundHorizontalAxis()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.screen.AudioModeSourcePolicyTest": [
+   "oldTrackAndDifferentPartDoNotResolveNewEntry()",
+   "unspecifiedPartAndNowPlayingEntryAcceptTheirExistingContent()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.screen.ContinuousPlayerTransitionPolicyTest": [
+   "backBeforeFullscreenOrientationObservationStillRequestsPortrait()",
+   "backDuringPendingEnterCancelsAndConsumesRepeatedBackUntilInline()",
+   "backFromButtonOrAutoRotatedFullscreenRequestsPortraitAndFinishesCollapse()",
+   "enteringFullscreenRequestsLandscapeImmediately()",
+   "exitingFullscreenWaitsForPortraitBeforeCollapsing()",
+   "portraitObservationDoesNotCancelButtonEnterBeforeLandscapeRequestCompletes()",
+   "reenteringDuringCollapseRequestsLandscapeWithoutWaitingForAnimation()",
+   "systemLandscapeCompletesFullscreenWithoutRestartingAnimation()",
+   "systemLandscapeFromInlineSettlesFullscreen()",
+   "systemPortraitFromFullscreenOrStuckPhasesStartsCollapse()",
+   "togglingBeforeLandscapeArrivesCancelsTheOrientationRequest()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.screen.DesktopVideoNavigationOptionsTest": [
+   "absentIntentStaysAbsentAndEmptyOverridesKeepTheBase()",
+   "optionsCopyTheBaseAndPreserveExplicitFalseVerticalIntent()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.screen.LargeScreenVideoReturnPolicyTest": [
+   "cancelledReturnRestoresTheDetailViewport()",
+   "committedReturnKeepsLandingGeometryAndYieldsDrawingToList()",
+   "compactBarReachesItsGeometryBeforeTextAndControlsAppear()",
+   "horizontalMediaUsesTheSameHandoffAsSourceInformation()",
+   "missingSourceGeometryLeavesPlayerUntouched()",
+   "openingStartsAtSourceAndReleasesIntoDetailViewport()",
+   "sidePaneDragExpandsOnlyThePlayerViewportAtTheFingerProgress()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.screen.VideoCommentPerformancePolicyTest": [
+   "comment list should load more only when user scrolls near the end()",
+   "comment list should not load more while already loading or ended()",
+   "lightweight comment rendering also applies while comment list is scrolling()",
+   "lightweight comment rendering is enabled only for visible comment tab during playback()",
+   "video detail preloads comments while intro is visible()",
+   "video detail should avoid preloading intro tab while comment tab is visible()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.screen.VideoDetailCoverContentScaleTest": [
+   "matchingSourceRatioFillsWithoutAdditionalCropping()",
+   "wideLoadingCoverFillsSharedSixteenByNineSlotWithoutBlackBands()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.screen.VideoDetailInlineCollapseStateTest": [
+   "consumedPlayerDrag_interruptsRestoreAndFollowsFinger()",
+   "disabledCollapse_commentScrollDoesNotInterruptRestore()",
+   "disablingCollapseRequestsAnimatedRestore()",
+   "expandedPlayer_downwardCommentDragDoesNotInterruptRestore()",
+   "fullscreenCommentScroll_doesNotMutateInlinePlayerState()",
+   "growingCommentRangeKeepsTheSharedCollapse()",
+   "scrollBeforeReconcileStartsFromTheVisibleOffsetInsteadOfSnapping()",
+   "shrinkingPausedCommentRangeClampsSharedCollapseWithoutExpanding()",
+   "switchingBetweenIntroAndCommentsKeepsPartialCollapseAndNextDragContinues()",
+   "switchingTabsKeepsExpandedAndFullyCollapsedEndpoints()"
+  ],
   "desktop:com.android.purebilibili.feature.video.screen.VideoDetailInlineScrollRecoveryTest": [
    "fullscreenReturnReleasesRetainedMutationsWithoutResettingPositions()",
    "unopenedListsDoNotDelayRecoveryOfTheActivePager()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.screen.VideoDetailProgressiveReturnTest": [
+   "aMissingFirstFrameOrDisabledFollowStillUsesTheCoverFallback()",
+   "commitAndCancelUseTheSameDepthWithoutRestartingTheReveal()",
+   "compatibilityGateRequiresReadyMediaAndAnInlineHost()",
+   "coverTakesOverWithoutAnEmptyOrTranslucentPlayerSlot()",
+   "playerTransformCropsUniformlyAndKeepsTheTargetCentered()",
+   "playerTransformReturnsExactlyToTheDetailViewport()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.screen.VideoDetailTopBarActionPolicyTest": [
+   "backButton_resolvesBackAction()",
+   "homeButton_resolvesHomeAction()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.screen.VideoInitialPagePolicyTest": [
+   "resolveInitialPageIndex returns matching page index()",
+   "resolveInitialPageIndex returns null when requested cid already active()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.screen.VideoNavigationCidPolicyTest": [
+   "explicit cid has highest priority()",
+   "falls back to related video cid when explicit cid missing()",
+   "falls back to season episode cid when explicit cid missing()",
+   "navigation target cover prefers season episode over related video()",
+   "related video cid has priority over season cid when both exist()",
+   "returns 0 when no cid can be resolved()"
   ],
   "desktop:com.android.purebilibili.feature.video.state.DesktopOriginalV029RecoveryPolicyTest": [
    "decoderLikeFailureAllowsSecondaryThenAvcFallback()",
@@ -3928,6 +4282,48 @@
    "networkErrorRetriesWhenNoCdnAlternatives()",
    "nonNetworkNonDecoderRetriesOnce()",
    "premiumAudioFailureBypassesGenericRetryLoop()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.state.PlayerLifecyclePlaybackPolicyTest": [
+   "bufferingRecoveryAutoResumesOnlyWhenIntentWasLost()",
+   "bufferingRecoveryStillAutoResumesWhenReadyStateIsSilent()",
+   "bufferingWithPlayWhenReadyIsTreatedAsActivePlayback()",
+   "bufferingWithPlaybackIntentRemembersResumeIntent()",
+   "endedWithPlayWhenReadyIsNotActivePlayback()",
+   "pausedBufferingDoesNotCreateResumeIntent()",
+   "pausedReadyStateIsNotActivePlayback()",
+   "readyWithPlayWhenReadyIsTreatedAsActivePlayback()",
+   "resumeNeededWhenWasActiveButNowInactive()",
+   "resumeNotNeededWhenReadyPlaybackIntentStillExists()",
+   "resumeNotNeededWhenStillBuffering()",
+   "sourceReplacementIdleKeepsExistingResumeIntentEvenAfterPlayIntentDrops()",
+   "sourceReplacementIdleKeepsResumeIntentWhenPlaybackWasActive()",
+   "userPauseClearsPendingResumeIntent()",
+   "volumeShouldNotRestoreWhenLifecycleResumeIsNotNeeded()",
+   "volumeShouldRestoreWhenLifecycleResumesAndPlayerWasMutedByPauseFlow()",
+   "volumeShouldRestoreWhenPlayerIsMutedButForegroundNeedsAudiblePlayback()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.state.VideoPlayerBufferPolicyTest": [
+   "earlyLimitAlwaysAllowsStartupAndRebufferAtSupportedSpeeds()",
+   "firstQuarterLimitsForwardBufferButLaterPlaybackDoesNot()",
+   "missingMediaPeriodStillLimitsEarlyBufferToAvoidEntryBurst()",
+   "mobilePolicyShouldUseFasterStartupWhileKeepingRebufferSafetyMargin()",
+   "resilientPolicyDeepensBufferWithoutIncreasingStartupThreshold()",
+   "wifiPolicyShouldUseLowerStartupBufferForFasterAutoplay()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.state.VideoPlayerStateReusePolicyTest": [
+   "audioBarHandoffKeepsTheTransferredPlayerAfterDetailBecomesInactive()",
+   "audioSessionDoesNotKeepCoveredOrReplacedDetailPlaying()",
+   "does not restore cached state when requested cid differs()",
+   "does not reuse mini player when route cid mismatches current cid()",
+   "foreignPlayback_haltsOnlyWhenIncomingDiffersAndActive()",
+   "restores cached state when request cid is unknown but bvid matches()",
+   "reuses mini player when route cid is missing but bvid matches active player()",
+   "sessionInactive_suspendsLocalPlayback()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.state.VideoPlayerVerticalDetectionPolicyTest": [
+   "apiDimensionRotate0_landscapeIsNotVertical()",
+   "apiDimensionRotate270_isVertical()",
+   "apiDimensionRotate90_isVertical()"
   ],
   "desktop:com.android.purebilibili.feature.video.subtitle.BiliSubtitlePolicyTest": [
    "buildSubtitleTrackOptions_marksSelectedTrackAndUsesLanguageDocs()",
@@ -3959,10 +4355,82 @@
    "subtitleTextSize_keepsExistingPhoneSizes()",
    "subtitleVerticalOffsetFraction_clampsToReadableFullscreenRange()"
   ],
+  "desktop:com.android.purebilibili.feature.video.subtitle.SubtitleFeaturePolicyTest": [
+   "subtitle feature is enabled globally()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.ui.VideoFollowVisualPolicyTest": [
+   "followed state uses themed secondary accent instead of neutral styling()",
+   "unfollowed state uses container tone on light theme to avoid heavy primary()",
+   "unfollowed state uses primary on dark theme()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.ui.components.CircularGesturePercentMotionPolicyTest": [
+   "fasterInputUsesShorterMotionAndSlightlyMoreBlur()",
+   "firstSampleDoesNotAnimateAndPauseRestoresFineAdjustmentMotion()",
+   "sameValueAndSameTimestampAreSafe()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.ui.components.CollectionEpisodePolicyTest": [
+   "ascending sort keeps original order()",
+   "current episode aid prefers exact bvid cid match()",
+   "descending sort reverses original order()",
+   "landscape collection lazy index falls back to bvid when cid is absent()",
+   "landscape collection lazy index includes section headers()",
+   "publish time text falls back to arc ctime()",
+   "publish time text is blank without timestamp()",
+   "publish time text uses arc pubdate()",
+   "recent sort falls back to original order when current episode is missing()",
+   "recent sort moves current episode to front and keeps others stable()",
+   "resolve collection sort label returns compact copy()",
+   "subscription id falls back to section season id when season id is missing()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.ui.components.CommentAvatarPushPolicyTest": [
+   "avatarsDoNotPushWhileThereIsStillAVisibleGap()",
+   "expandingVisibleContentDoesNotMoveTheAuthorAvatar()",
+   "footersAndSectionTitlesCannotBecomeCollisionPartners()",
+   "offscreenAuthorPinsAtTheTopUntilItsCommentLeaves()",
+   "originalClampOrderHandlesShortCells()",
+   "originalGeometryScalesAtHigherDensity()",
+   "outgoingAvatarTouchesItsNeighbourThroughoutThePush()",
+   "reversingScrollRestoresTheExactOriginalPosition()",
+   "rootAvatarDoesNotFollowTheReplySectionInTheSameLazyItem()",
+   "searchCardPaddingDefinesTheContentBoundary()",
+   "staleContentHeightCannotEscapeTheCurrentItem()",
+   "unmeasuredContentDoesNotDisplaceTheAvatar()",
+   "visibleAuthorsKeepTheirAvatarsBesideTheirNames()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.ui.components.CommentTranslationPolicyTest": [
+   "explicitServerSwitchTakesPrecedence()",
+   "missingSwitchIgnoresChineseUrlsMentionsAndEmotes()",
+   "missingSwitchOffersTranslationForForeignText()"
+  ],
   "desktop:com.android.purebilibili.feature.video.ui.components.DanmakuControlCenterMotionPolicyTest": [
    "fullscreenGlassEndPanelUsesGroupMotion()",
    "glassAndMotionPreferencesAreIndependentGates()",
    "portraitAndCenteredPresentationsKeepNativeInteraction()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.ui.components.DesktopCompleteDanmakuDialogCompositionTest": [
+   "completeDialogCloseAndControlledSendHideDoNotRepeatDismissOnReopen()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.ui.components.DesktopDanmakuDialogContentCompositionTest": [
+   "actualContentClearsDraftAndRejectsBusyOrHiddenSend()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.ui.components.DesktopMigratedDanmakuActionToolbarPolicyTest": [
+   "bottomRight_usesSpaceAboveSelectedItem()",
+   "leftEdge_keepsToolbarInsidePlayerRatherThanWindow()",
+   "narrowSplitWindow_neverPlacesToolbarOutsideVisibleWindow()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.ui.components.DesktopMigratedDanmakuSendDialogLayoutPolicyTest": [
+   "custom RGB survives while invalid mode and size use safe defaults()",
+   "danmaku dialog should use bottom sheet style to avoid blocking video center()",
+   "ime visible should remove extra bottom lift to avoid gap()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.ui.components.DesktopMigratedSpeedSelectionMenuOptionsTest": [
+   "intentionalSingleSpeedConfigurationIsPreserved()",
+   "loadedCustomSpeedsRemainSelectable()",
+   "temporaryCurrentSpeedIsIncludedWithoutRemovingConfiguredChoices()",
+   "unloadedConfigurationDoesNotBecomeCurrentSpeedOnlyMenu()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.ui.components.DesktopPlayerOptionStyleCompositionTest": [
+   "actualPreviewKeepsCardGeometryAndSelectionAcrossThemeBranches()"
   ],
   "desktop:com.android.purebilibili.feature.video.ui.components.DesktopV029CommentTimeTest": [
    "actualDetailedTimeSettingSurvivesColdStoreAndCanBeDisabledWithoutTouchingOtherPreferences()",
@@ -3975,10 +4443,85 @@
    "unsupportedCommercialSchemeKeepsUsableWebTarget()",
    "webTokenRemainsAvailableWhenMetadataContainsOnlyUnsupportedScheme()"
   ],
+  "desktop:com.android.purebilibili.feature.video.ui.components.EpisodeSheetLayoutPolicyTest": [
+   "collection height limit does not shrink landscape side panels()",
+   "compact inline panel leaves the video uncovered and never exceeds available detail room()",
+   "landscape retains usable list space within the current short window()",
+   "portrait phones reserve the upper forty percent and tablets cap sheet height()"
+  ],
   "desktop:com.android.purebilibili.feature.video.ui.components.PagePreviewNestedScrollTest": [
    "childRetainsItsOwnScrollAndFlingBeforeBoundaryConsumption()",
    "edgeDragStopsAtPartListAndLeavesVerticalScrollForParent()",
    "remainingFlingDoesNotReachPagerInEitherDirection()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.ui.components.PlayerEpisodeMenuPolicyTest": [
+   "available detail room is never replaced by overlapping fallback sheet()",
+   "collection parts remain individually selectable with all episode identity preserved()",
+   "exact bvid and cid across sections wins over earlier bvid and equal cid on another video()",
+   "fullscreen landscape uses half width capped at 500 and entire safe height()",
+   "fullscreen portrait uses bottom seventy percent and inline without detail room falls back identically()",
+   "invalid current page never highlights a different part()",
+   "long collection retains every entry and absent playlist data produces no invented options()",
+   "multipart videos retain a single cover row and individually addressable nested targets()",
+   "panel covers only remaining portrait detail region inline()",
+   "panel covers only right hand detail region landscape inline()",
+   "part thumbnail and episode fallback cover are retained()",
+   "parts take priority and callbacks retain zero based source index rather than page number()",
+   "single page falls through to collection and empty sections do not hide later options()",
+   "single part target uses its cid and missing part cid preserves episode target()",
+   "unknown cid falls back to exactly one first matching video row()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.ui.components.PlayerPanelViewportTest": [
+   "closing a panel restores the full video viewport()",
+   "overlapping panel lifetimes do not add widths or clear another reservation()",
+   "player with a different window origin uses its own right edge()",
+   "resizing a panel updates its reservation and empty panels reserve nothing()",
+   "video ends at panel left including the window safe inset()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.ui.components.PlayerPopupGeometryTest": [
+   "anchorNearBottom_limitsViewportToSpaceAboveControlRow()",
+   "anchorWithInsufficientRoomAbove_flipsBelowAndAlignsToMeasuredButtonEnd()",
+   "bothSidesFit_prefersAboveEvenWhenBelowHasMoreSpace()",
+   "endBottom_preservesWindowCornerPlacementWithinInsets()",
+   "equallyConstrainedSides_preferAboveAndUseEntireAvailableSide()",
+   "longListInMiddle_usesLargerSideRatherThanCenteringAcrossAnchor()",
+   "narrowSplitWindow_clampsHorizontalOffsetInsideSafeBounds()",
+   "requested440_isClampedToShortSafeWindowBeforeNativeMeasurement()",
+   "rtlAnchorEnd_alignsToPhysicalLeftEndOfControlRow()",
+   "shortAnchorSide_keepsRealAvailableHeightBelowNativeMinimum()",
+   "tallListWithLargerSpaceBelow_isBoundedBelowWithoutCoveringButton()",
+   "tinySafeWindow_neverInflatesToNativeFiftyPixelFloor()",
+   "unrelatedEndPlacement_retainsBelowFirstDefault()",
+   "unspecifiedHeight_stillUsesOnlySafeWindow()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.ui.components.PlayerSleepTimerPolicyTest": [
+   "customDurationIsInsertedInSortedOrderWithoutLosingPresets()",
+   "disabledTimerIncludesReferencePresets()",
+   "existingPresetAndDisabledDurationAreNotDuplicated()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.ui.components.QualitySelectionPolicyTest": [
+   "actual server streams override stale membership and guest login flags()",
+   "advertised tiers without streams stay disabled even for vip or empty catalogue()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.ui.components.RelatedVideoActionPolicyTest": [
+   "action sheet model matches bilibili related menu sections()",
+   "dislike reasons hide related card while feedback reasons keep it()",
+   "hidden bvids are filtered from related list()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.ui.components.RelatedVideoCardLayoutPolicyTest": [
+   "boundary width keeps horizontal card()",
+   "fractional density keeps independently rounded padding at the boundary()",
+   "narrow half opened pane stacks cover above metadata()",
+   "pane narrower than its padding stays stacked()",
+   "pane width excludes list and card padding before choosing layout()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.ui.components.UpPreviewSheetPolicyTest": [
+   "dismissGesture_acceptsDistanceOrDownwardVelocity()",
+   "overlaySheetExpansion_prefersDominantSheetFraction()",
+   "statLine_formatsCountsAndSkipsNulls()",
+   "surfaceColors_lightAndDarkRemainReadable()",
+   "videoClickTarget_rejectsBlankBvid()",
+   "visibilityProgress_tracksHostAndDragLikeComments()"
   ],
   "desktop:com.android.purebilibili.feature.video.ui.components.V046CommentAvatarPushOriginalPolicyTest": [
    "avatarsDoNotPushWhileThereIsStillAVisibleGap()",
@@ -4041,6 +4584,10 @@
    "dark comment appearance should keep dark surfaces while reusing theme accent()",
    "light comment appearance should derive every slot from active theme()"
   ],
+  "desktop:com.android.purebilibili.feature.video.ui.components.VideoCommentBackToTopPolicyTest": [
+   "back to top button appears after meaningful comment scroll()",
+   "back to top button stays hidden near comment list top()"
+  ],
   "desktop:com.android.purebilibili.feature.video.ui.components.VideoControlCenterMotionTest": [
    "extremeReleaseVelocityIsBoundedBeforeStartingTheSpring()",
    "horizontalCloseProgressMapsToTheSameReleaseDecision()",
@@ -4048,6 +4595,44 @@
    "releaseDirectionCanReverseTheDistanceDecision()",
    "shortPullReturnsOpenButDeliberatePullCloses()",
    "upwardPullAddsResistanceOnlyAfterFullyOpen()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.ui.feedback.DesktopMigratedTripleActionMotionSpecTest": [
+   "normal motion includes convergence and fits premium timing window()",
+   "reduced motion skips convergence and collapses to direct completion()",
+   "triple celebration avoids the content center in portrait()",
+   "triple celebration avoids the picture center in fullscreen()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.ui.feedback.DesktopMigratedVideoActionFeedbackPolicyTest": [
+   "active actions always use shared theme tint for icon()",
+   "active count tint follows the shared theme family()",
+   "detail action active colors derive from active theme roles()",
+   "fullscreen landscape placement uses bottom trailing safe area()",
+   "inactive actions use inactive tint for icon()",
+   "inactive count tint stays muted()",
+   "like feedback clears controls and the navigation inset()",
+   "miuix active actions do not inherit neutral secondary color()",
+   "portrait placement anchors feedback at bottom center()",
+   "quality reminder placement uses centered emphasized overlay()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.ui.feedback.DesktopVideoActionColorCompatibilityTest": [
+   "retainedActionSectionArgumentsUseCurrentThemePolicyInBothStyles()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.ui.gesture.Md3GestureLevelHapticPolicyTest": [
+   "limitsHavePriorityButRequireMovingAwayBeforeAnotherConfirmation()",
+   "reopeningDoesNotCompareAgainstThePreviousGesture()",
+   "smallReversalsDoNotBuzzRepeatedlyAtTheSameStep()",
+   "ticksAreThrottledWithoutReplayingSkippedSteps()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.ui.gesture.TwoFingerSpeedGesturePolicyTest": [
+   "disabling one mode does not force enable the other()",
+   "enabling horizontal mode disables vertical mode()",
+   "enabling vertical mode disables horizontal mode()",
+   "gesture stays off when both toggles are disabled()",
+   "horizontal mode only locks when x movement is dominant beyond threshold()",
+   "speed change ignores gesture when feature mode is off()",
+   "speed snaps downward and clamps to supported minimum()",
+   "speed snaps upward from nearest supported bucket()",
+   "vertical mode only locks when y movement is dominant beyond threshold()"
   ],
   "desktop:com.android.purebilibili.feature.video.ui.overlay.BottomControlBarLayoutPolicyTest": [
    "bottomEdgeProgress_removesBottomGapFromWholeControlBar()",
@@ -4104,8 +4689,107 @@
    "server voted option blocks another submission without a local selection()",
    "state normalizes invalid initial and refreshed grade fields()"
   ],
+  "desktop:com.android.purebilibili.feature.video.ui.overlay.DesktopBottomControlInputCompositionTest": [
+   "actualInlineControlBarGatesInputAt720AndKeepsIndependentActions()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.ui.overlay.DesktopLandscapeDanmakuInputCompositionTest": [
+   "inputKeepsLoginLabelTouchBoundsAndLatestCallback()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.ui.overlay.DesktopNativePortraitContainerTest": [
+   "actualContainerKeepsEdgePaddingOutsideTheSeekTarget()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.ui.overlay.DesktopPlayerGlassDockCompositionTest": [
+   "realShellKeepsContentBoundsAndClickWithAndWithoutBackdrop()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.ui.overlay.DesktopPlayerSideButtonCompositionTest": [
+   "nativeAndGlassBranchesKeepExactButtonSizeAndIndependentCurrentCallbacks()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.ui.overlay.DesktopPortraitProgressCompositionTest": [
+   "glassAndPlainTracksKeepTheSameRealPointerSeekTimeline()",
+   "highlightUsesTheRealGlassCompositionSetting()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.ui.overlay.FullscreenPlayerOverlayPollingPolicyTest": [
+   "activePlayback_stillAutoHidesFullscreenControlsWithoutGesture()",
+   "foregroundResumeRebindsFullscreenSurface_onlyWhenViewAndPlayerExist()",
+   "pausedPlayback_hiddenControls_usesLongerInterval()",
+   "pausedPlayback_keepsFullscreenControlsVisible()",
+   "pollingDisabled_whenHostLifecycleStopped()",
+   "pollingDisabled_withoutPlayer()",
+   "pollingEnabled_withPlayerAndStartedHost()",
+   "visibleControlsOrSeeking_keepsFastInterval()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.ui.overlay.ImmersiveStatusBarBackdropPolicyTest": [
+   "ambient capture balances visual freshness with low cpu and battery overhead()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.ui.overlay.LandscapeEndDrawerLayoutPolicyTest": [
+   "compactPhone_usesDefaultDrawerDensity()",
+   "hiddenOrInlineDrawer_doesNotReservePlayerContentWidth()",
+   "largeTablet_expandsDrawerAndHitTargets()",
+   "mediumTablet_balancesDrawerReadabilityAndDensity()",
+   "ultraWide_usesTenFootLayoutScale()",
+   "visibleFullscreenDrawer_reservesDrawerWidthForPlayerContent()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.ui.overlay.LiveDanmakuRenderPolicyTest": [
+   "emptyBatchDoesNotAppendAndTextBatchRetainsMessageOrder()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.ui.overlay.MiniPlayerOverlayChromePolicyTest": [
+   "hiddenControls_useCleanVideoMode()",
+   "seekingKeepsSeekFeedbackVisibleWithoutHeaderTitle()",
+   "visibleControls_showInteractiveChrome()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.ui.overlay.MiniPlayerOverlayLayoutPolicyTest": [
+   "adaptiveDimensions_constrainsPortraitVideoToShortViewport()",
+   "adaptiveDimensions_fallbackWhenZeroOrNegativeAspect()",
+   "adaptiveDimensions_horizontalVideo_anchorsWidthAndComputesHeight()",
+   "adaptiveDimensions_verticalVideo_zeroBlackBars_anchorsHeightAndComputesWidth()",
+   "compactPhone_usesCurrentMiniPlayerSize()",
+   "expandedTablet_scalesMiniPlayerAndControls()",
+   "mediumTablet_keepsReadableMiniPlayerWithoutOverflow()",
+   "ultraWide_usesLargestTenFootMiniPlayerTier()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.ui.overlay.MiniPlayerOverlayPollingPolicyTest": [
+   "pausedPlayback_usesLongerPollingInterval()",
+   "pollingDisabled_whenAnyRequiredConditionMissing()",
+   "pollingDisabled_whenHostLifecycleStopped()",
+   "pollingDisabled_whenLiveMode()",
+   "pollingEnabled_onlyWhenMiniModeActiveWithPlayer()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.ui.overlay.MiniPlayerOverlayPositionPolicyTest": [
+   "dockedBottomOffset_keepsMiniPlayerAboveHomeBottomBarArea()",
+   "dragIntent_defaultsToMoveWhenSeekUnavailable()",
+   "dragIntent_prefersSeekOnlyForClearlyHorizontalDrags()",
+   "dragIntent_waitsUntilMotionPassesTouchSlop()",
+   "edgeStash_requiresOutwardPullAndCancelsOnReturn()",
+   "initialOffset_isClampedInsideVisibleBounds()",
+   "initialOffset_usesCurrentMiniPlayerSizeWhenUserPreviouslyResized()",
+   "offsetClamp_preservesInBoundsPosition()",
+   "resizeBounds_fitActualVideoAspectInSmallWindows()",
+   "resizeBounds_keepMiniPlayerVisibleAndAllowUsefulScaling()",
+   "resizeDrag_projectsBothAxesAndClampsWidth()",
+   "resizeFromRightEdge_keepsOffsetInsideBoundsForNewWidth()",
+   "seekTarget_clampsToDuration()",
+   "seekTarget_ignoresInvalidWidthOrDuration()",
+   "seekTarget_usesStableDragStartPosition()"
+  ],
   "desktop:com.android.purebilibili.feature.video.ui.overlay.PersistentProgressBarPolicyTest": [
    "resolve persistent progress fraction should clamp to valid range()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.ui.overlay.PlaybackOrderDisplayPolicyTest": [
+   "compact label should be short for portrait()",
+   "full label should use behavior text for landscape()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.ui.overlay.PlaybackOrderSelectionSheetPolicyTest": [
+   "native order retains all real behaviors rather than persisted enum order()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.ui.overlay.PlayerControlSafeAreaTest": [
+   "horizontalCutoutIsMirroredWithoutCarryingVerticalInsets()",
+   "sameInsetsInstanceTracksCutoutChangesAfterRotation()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.ui.overlay.PortraitProgressBarLayoutPolicyTest": [
+   "compactPhone_usesDensePortraitSeekLayout()",
+   "mediumTablet_expandsSeekAreaForRemoteAndTouch()",
+   "tablet_expandsSeekHitAreaAndBubbleReadability()",
+   "ultraWide_forcesLargestPortraitSeekScale()"
   ],
   "desktop:com.android.purebilibili.feature.video.ui.overlay.TopControlBarLayoutPolicyTest": [
    "compactWidth_usesDefaultCompactControlSizing()",
@@ -4134,6 +4818,102 @@
   "desktop:com.android.purebilibili.feature.video.ui.overlay.VideoProgressBarLayoutPolicyTest": [
    "draggingPreview_reservesFullImageHeightAndGapWithOrWithoutChapter()",
    "idleLayout_keepsThumbAndChapterInsideProgressAreaAtWidthBoundaries()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.ui.overlay.ViewPointSegmentBarPolicyTest": [
+   "find_emptySegmentsReturnsNull()",
+   "find_lastSegmentExtendsToVideoEnd()",
+   "find_locatesContainingSegment()",
+   "floorShortChips_disabledOnInvalidGeometry()",
+   "floorShortChips_disabledWhenSegmentsTooFragmented()",
+   "floorShortChips_enabledWhenFewShortSegments()",
+   "normalize_clampsBeyondDuration()",
+   "normalize_returnsEmptyWithoutDuration()",
+   "normalize_sorts_clampsAndDropsInvalidSegments()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.ui.pager.PortraitCollectionPolicyTest": [
+   "autoContinue_allowsSameBvidMultiPAndSeasonNext()",
+   "collectionPageIndex_prefersExactCidThenBvid()",
+   "injectionPlan_skipsAlreadyPresentIdentities()",
+   "mediaId_encodesCidForMultiP()",
+   "multiPageFollowUps_returnRemainingPartsAfterCurrent()",
+   "seasonEpisodes_areNotInjectedIntoPortraitRecommendations()",
+   "skipReload_requiresMatchingCidAwareMediaId()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.ui.pager.PortraitCommentPresentationPolicyTest": [
+   "active portrait page keeps local comment visibility()",
+   "comment drag dismiss triggers after threshold()",
+   "comment drag progress follows sheet offset()",
+   "detached thread detail should stay below the player when top area is reserved()",
+   "embedded thread detail should keep main comment drawer height when no top reserve exists()",
+   "inactive portrait page should not inherit shared comment visibility()",
+   "portrait comment transform aligns landscape video viewport bottom to sheet top()",
+   "portrait comment transform aligns player bottom to sheet top()",
+   "portrait comment transform clamps unsafe inputs()",
+   "portrait comment transform keeps landscape video centered when sheet is collapsed()",
+   "portrait player shrinks while comment sheet is expanded()",
+   "portrait thread detail keeps main sheet presentation even if parent sheet flag is false()",
+   "up preview fit scale uses available top band instead of fixed 0_58()",
+   "up preview transform scale is smaller than comment fixed scale for tall sheet()",
+   "video comment reply composer should remain enabled()",
+   "video detail should not mount detached sub reply sheet when embedded path is enabled()",
+   "video detail should route thread detail inside existing comment sheet when embedded path is enabled()",
+   "video sub reply expansion should stay inside embedded comment sheet()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.ui.pager.PortraitControlsVisibilityPolicyTest": [
+   "pausedInactiveAndAlreadyHiddenPagesNeverStartAnIdleCountdown()",
+   "playingVisiblePageCanHideItsControlsWhenIdle()",
+   "scrubbingHoldingAndOpenMenusSuspendAutoHideUntilInteractionEnds()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.ui.pager.PortraitDetailVideoListPolicyTest": [
+   "buildPortraitDetailVideoList falls back to recommendations when watch later empty()",
+   "buildPortraitDetailVideoList prefers watch later items()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.ui.pager.PortraitMainPlayerSyncPolicyTest": [
+   "deferredPortraitRestore_shouldApplyOnlyAfterReturningToInlineHost()",
+   "externalNavigationFromPortrait_shouldDeferInlineRestoreUntilResume()",
+   "externalNavigation_shouldExitPortraitBeforeJumping()",
+   "noReloadWhenSnapshotBvidBlank()",
+   "noReloadWhenSnapshotMatchesCurrent_bvidAndCid()",
+   "portraitExitRestoreTarget_fallsBackToSelectionWithoutReusingOldDetailCid()",
+   "portraitExitRestoreTarget_prefersPendingReloadAndKeepsSnapshotCidForSameVideo()",
+   "portraitExitRestoreTarget_returnsNullWhenNoPortraitSnapshotExists()",
+   "portraitExitRestoreTarget_systemBackKeepsSettledPortraitVideoIdentity()",
+   "portraitExit_shouldReplaceDetailRoute_whenPagerMovedToAnotherVideo()",
+   "portraitProgressCommit_alwaysCommitsFirstObservation()",
+   "portraitProgressCommit_commitsOnIdentityChange()",
+   "portraitProgressCommit_throttlesSameIdentitySmallPositionDeltas()",
+   "reloadWhenBvidSameButCidDiffers()",
+   "reloadWhenCurrentBvidMissingButSnapshotExists()",
+   "reloadWhenSnapshotDiffersFromCurrent()",
+   "resolvePortraitInitialPlayingBvid_usesInitialBvidOnlyWhenShared()",
+   "sharedPlayerMode_shouldNotMirrorPortraitProgressBackToMainPlayer()",
+   "sharedPlayerMode_shouldNotPauseMainPlayerOnPortraitEnter()",
+   "userSpaceNavigation_shouldExitPortraitBeforeJumping()",
+   "userSpaceReturn_shouldNotResync_whenAlreadyAligned()",
+   "userSpaceReturn_shouldNotResync_whenNoPendingNavigation()",
+   "userSpaceReturn_shouldResync_whenCurrentPlayingBvidDiffers()",
+   "userSpaceReturn_shouldResync_whenPlayerMediaIdMissing()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.ui.pager.PortraitPlaybackAdvancePolicyTest": [
+   "autoContinueAndPlayNext_advanceToNextPageWhenAvailable()",
+   "autoContinueAndPlayNext_stopAtEndOfList()",
+   "loopPlaylist_wrapsToFirstPageAtEnd()",
+   "stopAndRepeatCurrent_doNotRequestPageAdvance()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.ui.pager.PortraitProgressSyncPolicyTest": [
+   "applySyncWhenCurrentCidUnknownButBvidMatches()",
+   "applySyncWhenSnapshotBvidMatchesCurrentBvid()",
+   "doNotApplySyncWhenSnapshotBvidBlank()",
+   "doNotApplySyncWhenSnapshotBvidMismatchesCurrentBvid()",
+   "doNotApplySyncWhenSnapshotCidMismatchesCurrentCid()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.ui.pager.PortraitSharePolicyTest": [
+   "buildPortraitShareTextFallsBackWhenTitleBlank()",
+   "buildPortraitShareTextIncludesTitleAndBilibiliLink()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.ui.section.AiSummaryTimestampLayoutPolicyTest": [
+   "format pads mm ss()",
+   "outline timestamp chip fills fixed column for vertical alignment()"
   ],
   "desktop:com.android.purebilibili.feature.video.ui.section.DesktopV040OriginalPlayerCoverPolicyTest": [
    "returnCoverPresentation_doesNotUseSharedBoundsForNormalPlayback()",
@@ -4184,12 +4964,155 @@
    "onlySupportedPlayerSurfacesUsePageGlass()",
    "sdrRetainsTextureAfterGlassExitAndHonorsOtherTextureUsers()"
   ],
+  "desktop:com.android.purebilibili.feature.video.ui.section.VideoDetailMotionBudgetPolicyTest": [
+   "onlyFullBudget_allowsLayoutAnimation()",
+   "switchingOrScrolling_reducesVideoDetailBudget()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.ui.section.VideoInfoDisplayPolicyTest": [
+   "aiSummaryEntryHiddenWhenPayloadMissingOrEmpty()",
+   "aiSummaryEntryShownOnlyWhenEnabledAndContentExists()",
+   "compactPublishTimeRow_neverAppendsPreciseTimeForCards()",
+   "creatorTeamShownOnlyWhenStaffListExists()",
+   "dynamicPublishTimeRow_usesDynamicLabelForOrdinaryVideos()",
+   "dynamicPublishTimeRow_usesRelativeAndPreciseTextForCurrentAffairsVideos()",
+   "inlineOwnerIdentityShownOnlyWhenLeadingAvatarHidden()",
+   "ownerStats_placesCountsBeforeLabels()",
+   "ownerStats_preservesZeroAndHidesUnknownCounts()",
+   "publishTimeRow_allowsHomepageCardsToEmphasizeFromTitleOnly()",
+   "publishTimeRow_emphasizesCurrentAffairsVideosFromPartitionKeywords()",
+   "publishTimeRow_emphasizesCurrentAffairsVideosFromTitleKeywords()",
+   "publishTimeRow_keepsOrdinaryVideosLightweight()",
+   "publishTimeRow_usesRelativeAndPreciseTextForCurrentAffairsVideos()",
+   "publishTimeRow_usesRelativeOnlyTextForOrdinaryVideos()",
+   "shouldUseCompactUpInfoLayout_whenWidthBelowThreshold()",
+   "sponsorLabel_stacksAboveTitleOnlyWhenLong()",
+   "videoBadgesPrioritizeUpowerExclusiveAndIncludePreviewState()",
+   "videoDescriptionAnnotatedString_marksInlineBvidClickable()",
+   "videoDescriptionAnnotatedString_marksPlainUrlsClickable()",
+   "videoDetailOnlineCountTextRequiresSettingAndLoadedValue()",
+   "videoInfoInitialExpanded_defaultsToCollapsedWhenPreferenceIsUnset()",
+   "videoInfoInitialExpanded_respectsDefaultExpandedSwitch()",
+   "videoInfoInitialExpanded_whenDescriptionOrTagsExist()",
+   "videoNoteEntryShownOnlyForLoadedVideoWithAid()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.ui.section.VideoPlayerTopBarPolicyTest": [
+   "homeClick_fallsBackToBackWhenHomeCallbackMissing()",
+   "homeClick_prefersExplicitHomeCallback()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.ui.section.VideoPlayerUiLayoutPolicyTest": [
+   "collapsedInlineViewport_scalesGestureAndRestoreTargetsDown()",
+   "expandedTablet_enlargesControlTargetsAndSpacing()",
+   "phoneProfile_usesCompactControlTargets()",
+   "ultraWideTablet_furtherImprovesReadability()",
+   "ultraWide_prefersStableLargeTouchTargets()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.viewmodel.AiSummaryRetryPolicyTest": [
+   "queuedSummaryRetryDelayShouldBackOffFurtherInBackground()",
+   "queuedSummaryStopsAutoRetryAfterConfiguredBudget()",
+   "queuedSummaryUsesProgressiveRetryBackoff()",
+   "retryableRequestFailureUsesSmallAutoRetryBudget()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.viewmodel.AiSummaryUiPolicyTest": [
+   "availableSummaryDoesNotShowPrompt()",
+   "initialLoadingStateShowsEntryPrompt()",
+   "queuedSummaryAfterRetryShowsSettledPrompt()",
+   "queuedSummaryShowsGeneratingPrompt()",
+   "retryableFailureShowsRetryMessage()",
+   "unauthorizedSummarySuggestsLogin()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.viewmodel.CommentPaginationPolicyTest": [
+   "cursor is_end should terminate pagination()",
+   "guest hot comments should not show zero count when visible comments exist()",
+   "legacy page count should remain preferred when available()",
+   "pagination should end when fetched page adds no unique replies()",
+   "pagination should keep detail reply count when guest api returns zero total()",
+   "reply data prefers legacy acount over root count when available()",
+   "routed comment root falls back to remote root reply()",
+   "routed comment root ignores unrelated remote reply()",
+   "routed comment root prefers loaded root reply()",
+   "routed sub reply open only starts after aid is ready()",
+   "sub reply loaded total count should not shrink across sparse pages()",
+   "sub reply page does not treat a smaller page count as the total()",
+   "sub reply page should continue when rest page metadata has more pages()",
+   "sub reply page should end when loaded count reaches declared total()",
+   "sub reply page should keep pagination open when detail count exceeds loaded items()",
+   "sub reply remote total count falls back to root reply declared count()",
+   "sub reply remote total count ignores a smaller page window()",
+   "sub reply remote total count prefers reply detail page count()",
+   "sub reply sparse pages continue until declared final page()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.viewmodel.CommentSearchLoaderTest": [
+   "empty intermediate main page does not hide later results()",
+   "request cap keeps partial results without declaring completion()",
+   "search loads every thread page and deduplicates preview replies()",
+   "thread failure preserves earlier results and cancellation propagates()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.viewmodel.DesktopMigratedVideoSubjectSnapshotTest": [
+   "copyright passthrough marks repost and defaults to original()",
+   "page or video change advances generation()",
+   "same video subject keeps generation()"
+  ],
   "desktop:com.android.purebilibili.feature.video.viewmodel.DesktopVideoCommentCacheConsumptionTest": [
    "anotherViewingAccountCannotRestoreThePreviousAccountsReplies()",
    "failedWarmRevalidationPreservesContentAndNextPage()",
    "reentryShowsCachedFirstPageBeforeNetworkThenReplacesIt()",
    "retiredOwnerCannotPublishLateNetworkDataIntoTheSharedCache()",
    "sortBucketsRestoreTheirOwnCachedReplies()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.viewmodel.FavoriteSaveUiPolicyTest": [
+   "favorite count should never go below zero when clearing last folder()",
+   "saving empty selection should clear favorite state and decrement count when previously favorited()",
+   "saving non-empty selection should mark video favorited and increment count when previously empty()",
+   "switching between non-empty selections should keep favorite state and count()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.viewmodel.PlaybackResumeNoticePolicyTest": [
+   "history restoration is announced but restarts and handoffs are silent()",
+   "notice waits for ready player at the restored position()",
+   "position message supports minutes and hour long videos()",
+   "serverPartHistoryMapsToTheCurrentVideoAndTargetPart()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.viewmodel.PlayerToastPolicyTest": [
+   "default toast uses standard presentation()",
+   "quality toast uses centered highlight presentation()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.viewmodel.RelatedVideoLoadSchedulerTest": [
+   "aCacheFilledByAnotherConsumerReleasesTheWait()",
+   "aTokenChangeAtTheTimeoutBoundaryCannotStartTheOldRequest()",
+   "anotherNetworksMeasurementCannotMarkTheCurrentNetworkAsWeak()",
+   "bufferingEvenAfterFirstFrameDoesNotReleaseRelatedRequest()",
+   "bufferingReleaseIsObservedWithoutWaitingForTheTimeout()",
+   "cachedRelatedResultsBypassWeakNetworkDelay()",
+   "changingVideosWhileWaitingNeverStartsTheOldRequest()",
+   "disabledAutoplayStillWaitsForPreparationAndReadiness()",
+   "exitingThePageCancelsTheWaitWithoutStartingAnyRequest()",
+   "firstFrameWithBufferHeadroomReleasesRelatedRequest()",
+   "firstFrameWithTooLittleBufferStillDefers()",
+   "invalidOrFutureSamplesAreIgnored()",
+   "linkBandwidthThresholdDoesNotClassifyEveryCellularNetworkAsWeak()",
+   "networkRecoveryReleasesStartupWithoutWaitingForTheFirstFrame()",
+   "normalNetworkHasNoSchedulingDelay()",
+   "oldPlayerReadinessCannotReleaseNewStartup()",
+   "pausedReadyPlaybackDoesNotWaitForAFirstFrameOrBuffer()",
+   "permanentlySlowPlaybackGetsABoundedSixSecondWait()",
+   "playbackFailureAndEndReleaseRelatedRequest()",
+   "readyPlaybackWithoutAFirstFrameStillDefers()",
+   "rebufferingDefersNewRelatedAttemptsEvenWithoutALowBandwidthHint()",
+   "recentMeasuredBandwidthOverridesTheLinkEstimate()",
+   "staleMeasurementsFallBackToTheCurrentLinkEstimate()",
+   "staleRequestsCannotUseTheCacheOrFailureEscapeHatch()",
+   "unknownBandwidthAndUnavailableCapabilitiesDoNotPenalizeNormalStartup()",
+   "weakNetworkDefersStartup()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.viewmodel.RelatedVideoPublicationGateTest": [
+   "currentResultResumesAndCancellationDoesNotPublish()",
+   "waitsForEntryAndRejectsAnObsoleteResult()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.viewmodel.VideoCodecSessionPolicyTest": [
+   "AV1 decoder failure falls back to AVC()",
+   "HEVC decoder failure falls back to configured AV1 before AVC()",
+   "codec fallback request uses AVC as final secondary()",
+   "rewritten CDN url resolves codec from matching media resource()",
+   "unsupported secondary AV1 falls back to AVC()"
   ],
   "desktop:com.android.purebilibili.feature.video.viewmodel.VideoCommentLoadPolicyTest": [
    "comment cache ignores empty payloads and blank keys()",
@@ -4198,12 +5121,29 @@
    "comment page size is at least the legacy thirty so first screen needs fewer pages()",
    "comment skeleton slot count fills the viewport within sane bounds()"
   ],
+  "desktop:com.android.purebilibili.feature.video.viewmodel.VideoDetailUiStateTest": [
+   "avRoutesKeepTheCanonicalPlaybackStateAfterDetailsResolve()",
+   "correctedCidCanRenderMetadataForTheOriginalRequest()",
+   "detailsCanRenderWhilePlaybackIsLoading()",
+   "metadataDurationUsesTheSelectedPage()",
+   "metadataFromAnotherVideoOrPageIsNeverDisplayed()",
+   "missingPageDurationDoesNotInventAnEstimate()",
+   "playbackFailureDoesNotHideAnAlreadyLoadedDescription()",
+   "readyPlaybackKeepsItsExistingContentAndActionState()",
+   "relatedFailureDoesNotHideMetadata()"
+  ],
   "desktop:com.android.purebilibili.feature.video.viewmodel.VideoInteractionStatusRetryTest": [
    "cancellationIsNotRetried()",
    "failedReadRetriesAndAcceptsKnownFalse()",
    "persistentFailureStaysUnknownAndStopsAfterThreeAttempts()",
    "timedOutReadCanRecoverOnNextAttempt()",
    "videoOrAccountChangeStopsRetry()"
+  ],
+  "desktop:com.android.purebilibili.feature.video.viewmodel.VideoLoadTimelineTest": [
+   "eachStageIsRecordedOncePerRequest()",
+   "newRequestsResetStagesAndIgnoreStaleResults()",
+   "oldPlayerFramesCannotBeRecordedBeforeNewPreparation()",
+   "recommendationSchedulingStagesAreOptionalAndOnlyRecordedOnce()"
   ],
   "desktop:com.android.purebilibili.feature.web.LinkOpenGateTest": [
    "completedOpenStillDebouncesButAllowsLaterRetry()",
@@ -4304,15 +5244,21 @@
    "successful saves preserve an unrelated legacy temp file()"
   ],
   "desktop:com.bilipai.desktop.DesktopPlaybackControllerTest": [
+   "a new request supersedes an old lease retry even when its transport ignores cancellation()",
    "a newer source also prevents a delayed initial stream request from taking ownership()",
    "casting cannot read a previous account or a foreign native source before flow delivery()",
+   "closing a loading request cancels it without closing the shared decoder()",
    "closing the old account controller cannot release a newer native source()",
    "cloud favorite projection rejects changed session and foreign source before flow delivery()",
    "cloud favorite projection survives part and quality changes in the same video owner()",
    "details alone do not finish opening or enable queue navigation before the stream is installed()",
+   "late old request completion and close cannot replace the new lease()",
    "ordinary queue walks each video parts before advancing to the next video()",
    "pause cancels outstanding stream preparation and cannot start sound when it finally completes()",
    "quality switch and explicit retry preserve native source ownership CID position and pause()",
+   "replaced lease cannot retry change quality or close a newer ordinary entry()",
+   "request lease rejects account change and foreign native takeover()",
+   "request lease survives owned quality reload and closes only its native source()",
    "same BV collection preserves distinct CIDs and goes directly to the selected queue item()",
    "shuffle retains original history so previous then next returns to the same item()"
   ],
@@ -4921,6 +5867,14 @@
   "desktop:com.bilipai.desktop.danmaku.DesktopDanmakuDisplayAreaParityTest": [
    "everyOriginalPanelChoiceSurvivesPreferenceAndRendererNormalization()"
   ],
+  "desktop:com.bilipai.desktop.danmaku.DesktopDanmakuLineAdmissionTest": [
+   "design counterexample keeps previous remaining lifetime()",
+   "equal speed and faster follower use actual admission boundaries()",
+   "fixed and scrolling layers cannot share a physical lane()",
+   "fixed items wait until the physical lanes are empty()",
+   "opposite scroll directions cannot share a physical lane()",
+   "pause resize and seek retain their timeline semantics()"
+  ],
   "desktop:com.bilipai.desktop.danmaku.DesktopDanmakuPresentationTest": [
    "actual full source presentation rejects old load and same version recovery()",
    "actual system density wins over legacy Section Ctrl zoom()",
@@ -4934,6 +5888,17 @@
    "successorSourceCannotPaintAPredecessorFrameDuringPause()",
    "transitionPauseRetainsTheSameSourceFrameAndResumeUsesActualMediaTime()",
    "unboundSourceAndUnpaintedSourceHaveNoRetainedFrame()"
+  ],
+  "desktop:com.bilipai.desktop.danmaku.DesktopDisplayFrameSchedulingTest": [
+   "60 120 and 165 Hz retain absolute deadlines despite millisecond callback rounding()",
+   "cancellation during rendering prevents a new periodic callback()",
+   "early callback cannot paint before the requested deadline()",
+   "late frame skips missed slots instead of queuing catch-up paints()",
+   "moving the overlay to 165 Hz replaces a pending 60 Hz deadline()",
+   "moving to a slower display does not retain the faster cadence()",
+   "real Swing platform reads the current display input and closes both one-shot timers()",
+   "retired callback cannot consume new source invalidation()",
+   "unknown monitor rate uses 60 Hz and pause parks the same request owner()"
   ],
   "desktop:com.bilipai.desktop.danmaku.DesktopHotDanmakuProjectionTest": [
    "accepted plugin rewrite preserves real protobuf identity likes and metadata without mutating payload()",
@@ -6017,10 +6982,239 @@
    "unavailable premium and unsupported Dolby use real AAC fallback and original reason",
    "user codec priorities use original selector and remain distinct from recovery override"
   ],
+  "desktop:com.bilipai.desktop.player.DesktopAudioMenuCompositionTest": [
+   "explicitActualTrackIsHighlightedWhileRequestedAutoRemainsDisabled()",
+   "legacyCallerDisablesItsRequestedTrackAndCanSelectAuto()"
+  ],
+  "desktop:com.bilipai.desktop.player.DesktopBangumiBackdropCompositionTest": [
+   "recordingBackgroundUpdatesReuseRealLayersAndExitReleasesThem()"
+  ],
+  "desktop:com.bilipai.desktop.player.DesktopBangumiBrandBadgeCompositionTest": [
+   "freeBadgesFollowSurfaceBrightnessAndUnknownBadgesKeepTheirFallback()",
+   "membershipBadgesUseTheSharedVipColorInsteadOfTheAppAccent()"
+  ],
+  "desktop:com.bilipai.desktop.player.DesktopBangumiCommentPanelCompositionTest": [
+   "completePanelWritesOwnedSortAndRejectsRetiredOwner()"
+  ],
+  "desktop:com.bilipai.desktop.player.DesktopBangumiEpisodeSheetCompositionTest": [
+   "actualSheetPagesReordersAndDispatchesSelectedEpisodeAndSeason()",
+   "mobileContentOpensSelectsAndClosesItsOwnEpisodeSheet()"
+  ],
+  "desktop:com.bilipai.desktop.player.DesktopBangumiHeroCompositionTest": [
+   "disabledComponentMotionKeepsRealBannerContentAndScrollAcrossGlassModes()"
+  ],
+  "desktop:com.bilipai.desktop.player.DesktopBangumiHubOwnedLifetimeTest": [
+   "mountedReceiptRetirementAndRepeatedRefreshKeepOneHostedVmAndObserver()",
+   "realGateCloseCancelsCompleteHubObserverAndItsSibling()"
+  ],
+  "desktop:com.bilipai.desktop.player.DesktopBangumiHubRequestCompositionTest": [
+   "channelSwitchRetainsPendingPreparationAndPublishesToItsOwnChannel()",
+   "closingVmScopeCancelsAllPendingChannelsWithoutLateCachePublication()",
+   "composedPagerPreparesRealVmChannelsWithoutDuplicateRequests()",
+   "controlledIdentityChangeJoinsOldAccountRequestBeforeResetAndKeepsPublicResult()",
+   "fullVmConsumesInitializationPagingIndexTimelineFollowSearchAndRefreshFailure()",
+   "publicHomeTabDispatchesFollowPlaySeparatelyFromPosterDetail()",
+   "publicScreenDispatchesFollowPlaySeparatelyFromPosterDetail()"
+  ],
+  "desktop:com.bilipai.desktop.player.DesktopBangumiListBadgeRasterTest": [
+   "actualListFreeBadgePaintsThemeBrandAndUnknownBadgeRetainsCallerColor()",
+   "actualListMembershipBadgePaintsVipBrandInLightAndDarkThemes()"
+  ],
+  "desktop:com.bilipai.desktop.player.DesktopBangumiReviewCompositionTest": [
+   "leavingCompositionCancelsPendingWriteAndLateResultCannotToastIntoNewAccountPage()",
+   "pagingSortRetryAndRealListScrollingKeepTheQueryParameters()",
+   "publicPagerControlsRemainUsableAcrossGlassWidthsAndDensities()",
+   "selectedPageActionsAndArticleRoutingUseTheRealReviewPage()",
+   "typeAndSortControlsKeepSeparateSlotsAndSortSelectionReachesTheRequest()"
+  ],
+  "desktop:com.bilipai.desktop.player.DesktopBangumiReviewRequestsTest": [
+   "allNewActionsKeepExactParametersAndOrdinaryFailures()",
+   "lateResultsAfterCancellationCoverageOrRetirementAreRejected()",
+   "missingCsrfAndRetiredOrCoveredActionsNeverCallApi()"
+  ],
+  "desktop:com.bilipai.desktop.player.DesktopBottomInputCompositionTest": [
+   "narrowCommentEntryDispatchesOnlyTheCommentAction()",
+   "wideCommentEntryDispatchesOnlyTheCommentAction()"
+  ],
+  "desktop:com.bilipai.desktop.player.DesktopBufferingAnimationAssetTest": [
+   "upstreamTelevisionHasChangingFramesAndAReusableStaticFallback()"
+  ],
+  "desktop:com.bilipai.desktop.player.DesktopBufferingAnimationCompositionTest": [
+   "cancellationDuringLoadClosesLateResultWithoutPublishingAndRecompositionDoesNotReload()",
+   "packagedResourcesMatchMergedUpstreamBytes()",
+   "realPixelsAnimateFreezeResumeTintAndDisposeWithoutReloading()",
+   "reducedMotionSkipsDecoderAndDecodeFailureUsesRasterStaticFallback()"
+  ],
+  "desktop:com.bilipai.desktop.player.DesktopBufferingAnimationDecodeTimingTest": [
+   "recordsFirstAssetDecodeAndFirstFrameWithoutASharedCache()"
+  ],
+  "desktop:com.bilipai.desktop.player.DesktopBufferingAnimationUiTimingTest": [
+   "preparesAllPixelsOffUiAndFirstDisplayAddsLessThanOneFrameToStaticCanvas()"
+  ],
+  "desktop:com.bilipai.desktop.player.DesktopCenterPlaybackCompositionTest": [
+   "materialCenterControlTracksViewportAndVisibility()",
+   "miuixCenterControlTracksViewportAndVisibility()"
+  ],
+  "desktop:com.bilipai.desktop.player.DesktopChapterMenuCompositionTest": [
+   "currentChapterUpdatesAndSelectionSeeksBeforeDismiss()",
+   "dismissDoesNotSeekAndCurrentChapterCanBeSelectedAgain()"
+  ],
+  "desktop:com.bilipai.desktop.player.DesktopChapterSegmentPointerTest": [
+   "denseChaptersKeepTheirDisplayedTargetsAndEmptyInputDoesNotSeek()",
+   "minimumWidthShortChapterSeeksItsOwnStartAndUsesLatestCallback()"
+  ],
+  "desktop:com.bilipai.desktop.player.DesktopCollectionRowCompositionTest": [
+   "realCollectionBarsAnimateOnlyWhilePlayingAndVisuallyActive()",
+   "rowClickAndCurrentPartContinueUsingTheOriginalCollectionContract()"
+  ],
+  "desktop:com.bilipai.desktop.player.DesktopCommentPagingConsumptionTest": [
+   "fullMainSessionPreservesTypedTokensAcrossEmptyPageFailureRetryAndLocalSend()",
+   "fullSubSessionRetriesSameOffsetResetsSortAndRetainsLocalReply()"
+  ],
+  "desktop:com.bilipai.desktop.player.DesktopCommentPagingLifecycleTest": [
+   "exceptionInsideActualPageCallbackDoesNotKillVmScope()",
+   "refreshSubjectAndSortRejectRetainedCallbacksAndCancelOldJobs()",
+   "retiredOwnerRejectsActualMainSubAndDialogCallbacks()"
+  ],
+  "desktop:com.bilipai.desktop.player.DesktopCommentSearchErrorCompositionTest": [
+   "readyWithErrorShowsActualErrorAndRetryRequestsFirstPageAgain()"
+  ],
+  "desktop:com.bilipai.desktop.player.DesktopCommentSortCompositionTest": [
+   "narrowHeaderWrapsAndKeepsSortAndSearchIndependent()",
+   "wideHeaderKeepsSortAndSearchIndependent()"
+  ],
+  "desktop:com.bilipai.desktop.player.DesktopCompleteBangumiPagerCompositionTest": [
+   "realPagerSettlesAfterRepeatedSelectionAndTracksHalfOffset()",
+   "settledAndSubthresholdOffsetsDoNotStartAnotherScroll()"
+  ],
+  "desktop:com.bilipai.desktop.player.DesktopCompleteDanmakuContextMenuTest": [
+   "completeMenuKeepsDetailedAndLegacyReportsAndRealClipboardCallback()",
+   "completeRecallRequiresConfirmationAndBackPreservesTheMenu()"
+  ],
+  "desktop:com.bilipai.desktop.player.DesktopConfirmedCelebrationCompositionTest": [
+   "confirmedLikeDrawsCompletesAndRemounts()",
+   "confirmedTripleDrawsCompletesAndRemounts()"
+  ],
+  "desktop:com.bilipai.desktop.player.DesktopDanmakuColorCompositionTest": [
+   "customColorKeepsPresetsUnselectedAndOpensOnlyTheCustomAction()",
+   "everyPresetHasAccessibleIdentityAndDispatchesItsExactColor()"
+  ],
+  "desktop:com.bilipai.desktop.player.DesktopDanmakuDurationMenuCompositionTest": [
+   "actualMenuHidesUnknownZeroEndAndBeyondButSeeksExactInteriorTarget()",
+   "reopeningUsesKnownDurationAndNewVideoDoesNotRetainPreviousLength()"
+  ],
+  "desktop:com.bilipai.desktop.player.DesktopDanmakuPoolReportCompositionTest": [
+   "completionUsesSubmittedSenderAfterRefreshAndRejectsRetiredVideo()",
+   "emptySenderSelfAndLegacyCannotOfferUnusableBlockOrExplanation()"
+  ],
+  "desktop:com.bilipai.desktop.player.DesktopDanmakuPoolSnapshotCompositionTest": [
+   "fullPoolKeepsSnapshotUntilRefreshAndResetsForNewVideo()"
+  ],
+  "desktop:com.bilipai.desktop.player.DesktopDanmakuRangeSliderTest": [
+   "pointerDraggingCommitsExactCurrentUpstreamEndpoints()"
+  ],
+  "desktop:com.bilipai.desktop.player.DesktopDanmakuReportCompositionTest": [
+   "completionBlocksOnceForBothResultsButNeverForCancellationOrRetiredOwner()",
+   "legacyEntryKeepsOriginalReasonsAndCannotCollectDiscardedExplanation()",
+   "realFormTrimsOnlyEdgesAndForwardsEveryCodeUnitOnce()"
+  ],
+  "desktop:com.bilipai.desktop.player.DesktopDanmakuSenderRuleIdentityTest": [
+   "aHashAlreadyCoveredByAnActualUidDoesNotAddADuplicate()",
+   "legacyHexAndExplicitHashKeepTheExistingRuleAndOrder()",
+   "numericUidAndNumericHashRemainDifferentSenders()",
+   "textAndRegexWithTheSameBodyAreNotSenderRules()"
+  ],
+  "desktop:com.bilipai.desktop.player.DesktopDanmakuSettingsActionCompositionTest": [
+   "fullWidthActionUsesLatestCallbackExactlyOnce()"
+  ],
+  "desktop:com.bilipai.desktop.player.DesktopDanmakuSettingsBodyCompositionTest": [
+   "scrollMovesOnlyContentAndDoneRemainsClickableAtNarrowAndWideWidths()"
+  ],
+  "desktop:com.bilipai.desktop.player.DesktopDanmakuSettingsSliderCompositionTest": [
+   "dragPreviewsWithoutSavingUntilReleaseAndResetUsesExactDefault()",
+   "removingHeldSliderCommitsLatestPreviewToLatestCallbackOnlyOnce()"
+  ],
+  "desktop:com.bilipai.desktop.player.DesktopDanmakuSettingsToggleCompositionTest": [
+   "rowAndSwitchEachDispatchOnceWithCurrentStateAtNarrowAndWideWidths()"
+  ],
+  "desktop:com.bilipai.desktop.player.DesktopDeferredVideoLayoutCompositionTest": [
+   "existingTopPaddingMovesTheMeasuredChildWithoutRecomposingThePage()",
+   "newPaddingProviderIsReadDuringLazyListMeasurementWithRealDensity()"
+  ],
+  "desktop:com.bilipai.desktop.player.DesktopEntryTransitionCompositionTest": [
+   "completedEntryDoesNotRecloseWhenDeferChanges()",
+   "coveredAndRunningEntriesWaitAndCompletedEntryKeepsItsLatch()"
+  ],
+  "desktop:com.bilipai.desktop.player.DesktopFavoriteSheetCompositionTest": [
+   "realWindowGeometryAndFolderCallbacksSurvivePortraitAndLandscape()"
+  ],
+  "desktop:com.bilipai.desktop.player.DesktopFavoriteSheetScrollCompositionTest": [
+   "shortWindowKeepsFooterStationaryWhileFoldersScrollAndSavingDisablesActions()"
+  ],
+  "desktop:com.bilipai.desktop.player.DesktopFloatingCommentHeaderCompositionTest": [
+   "measuredHeaderPaddingTracksDensityAndResize()",
+   "wrappedHeaderReservesMeasuredHeightAndRetainsActions()"
+  ],
+  "desktop:com.bilipai.desktop.player.DesktopGestureOverlayCompositionTest": [
+   "glassFallbackKeepsCompactGeometryAndConsumesFeedbackTaps()"
+  ],
+  "desktop:com.bilipai.desktop.player.DesktopGesturePercentCompositionTest": [
+   "rapidChangesSettleToTheSameSharpPixelsAsAFreshFinalValue()"
+  ],
+  "desktop:com.bilipai.desktop.player.DesktopInlineCollapseBoundaryImpactTest": [
+   "atTopOneReverseEventIsConsumedExactlyOnce()",
+   "horizontalNestedListKeepsItsOwnWheelInput()",
+   "innerVerticalListReturnsBeforeParentExpands()"
+  ],
+  "desktop:com.bilipai.desktop.player.DesktopInlineCollapseScrollTest": [
+   "continuousSmallDeltasReverseAtTheListTopWithoutLeavingTheCollapseRange()",
+   "preciseSubPixelDeltasAreNotDiscarded()",
+   "tabRangeCorrectionEndsAtTheExactDirectlySetValue()",
+   "wheelNotchesAndContinuousTrackpadDeltasRemainBoundedAcrossReversalsAndListTop()"
+  ],
+  "desktop:com.bilipai.desktop.player.DesktopLandscapeDanmakuEditorTest": [
+   "actualEditorSendsExactDraftAndRejectsBusyAndHiddenInput()"
+  ],
+  "desktop:com.bilipai.desktop.player.DesktopLegacyCommentSearchCompositionTest": [
+   "legacyDefaultsSearchLoadedRepliesWithoutLoadingOrRetry()"
+  ],
   "desktop:com.bilipai.desktop.player.DesktopLegacyPlaybackPreferenceChangesTest": [
    "explicitShortcutDispatchesEvenWhenWindowCachedSpeedAlreadyMatches()",
    "listenActorIgnoresVideoOnlyModeAndPreservesItsUnchangedRepeatFlag()",
    "volumeOnlyActionDoesNotOverwriteNewerNativeSpeedAudioOrLoop()"
+  ],
+  "desktop:com.bilipai.desktop.player.DesktopMigratedBangumiViewModelTest": [
+   "detailResultsRespectLatestRequestAccountAndRetiredOwner()"
+  ],
+  "desktop:com.bilipai.desktop.player.DesktopMigratedCommentSearchFailureTest": [
+   "upstreamSearchPreservesFailureThenRetriesFromFirstTypedRequest()"
+  ],
+  "desktop:com.bilipai.desktop.player.DesktopMigratedDanmakuRangeTest": [
+   "portraitUsesCurrentLocalBoundsWhileCloudKeepsItsDistinctServerContract()",
+   "readingAndProjectingLegacyDiskValuesDoesNotRewriteThem()",
+   "selectedRangeEndpointsReachActualSchedulerAndSeekLookback()"
+  ],
+  "desktop:com.bilipai.desktop.player.DesktopMigratedEntryAdmissionTest": [
+   "coveredOrUnsettledEntryCannotFinishAdmission()",
+   "installedDesktopObserverRetainsItsBoundedPreloadTiming()",
+   "residentCoverCanGateFreshHostWithoutUnmountingLivePlayback()",
+   "returningFlagCannotBypassTheCurrentNavigationEntry()"
+  ],
+  "desktop:com.bilipai.desktop.player.DesktopMobileCommentBindingTest": [
+   "realBindingKeepsLegacyRouteAndGuestCookiesAndRejectsMissingCursor()",
+   "realRestMainRequestKeepsOpaqueOffsetAndNumericCursor()",
+   "suspendedResultIsRejectedAfterAccountSwitchOrOwnerRetirement()",
+   "typedContinuationSurvivesEntryAdmissionForEveryRoute()"
+  ],
+  "desktop:com.bilipai.desktop.player.DesktopMobileSubReplyBindingTest": [
+   "actualMobileCursorValidationAndFailurePreserveOneRequest()",
+   "bootstrapCancellationAccountSwitchAndRetirementNeverSendBusinessRequests()",
+   "bothMobileMethodsBootstrapEmptyStoreBeforeCapturingTokens()",
+   "concurrentEmptyStoreRequestsShareTheExistingBootstrap()",
+   "locationSupplementIsOptInAfterValidCursorAndUsesTheRealEndpoint()",
+   "ordinaryBootstrapFailuresStayInResultForBothMobileMethods()",
+   "sevenArgumentsAndResponseSurviveEntryAdmission()",
+   "suspendedSubReplyRejectsCancellationAccountChangeAndRetiredOwner()"
   ],
   "desktop:com.bilipai.desktop.player.DesktopNativeMuteIntentTest": [
    "acceptedSourceOwnedMuteWaitsForNativeExecutionAndThenAllowsFreshReadback()",
@@ -6124,6 +7318,13 @@
    "userHdrOffOnlyDisablesConversionAndKeepsTheBoundedUpscale()",
    "withoutABudgetTheRequestScaleIsTheStableBucketAndTheFloorIsIgnored()"
   ],
+  "desktop:com.bilipai.desktop.player.DesktopPartialCommentSearchCompositionTest": [
+   "fullVmPublishesPartialRootAndChildDuringLoadingAndFailureThenRetries()"
+  ],
+  "desktop:com.bilipai.desktop.player.DesktopPlaybackErrorNoticeCompositionTest": [
+   "nonRetryableErrorHasNoActionUntilStateEnablesRetry()",
+   "retryExceptionsUseExactLabelsAndLatestCallback()"
+  ],
   "desktop:com.bilipai.desktop.player.DesktopPlaybackHeartbeatTest": [
    "a stuck report cannot block the bounded final flush or send discarded backlog()",
    "account changes drop queued and returned reports before they update the new account()",
@@ -6147,9 +7348,25 @@
    "paused disabled ended and typed failures suppress timer recovery()",
    "stall requires known exhausted buffer and an actual frame and tries each CDN once()"
   ],
+  "desktop:com.bilipai.desktop.player.DesktopPlayerMenuCompositionTest": [
+   "actualOrderMenuSelectsAnEnabledAlternativeAndCloses()",
+   "legacyControlUsesOneUpstreamRequestAndItsDismissCallback()",
+   "retiredMenuCallbackCannotDismissTheReplacementMenu()"
+  ],
+  "desktop:com.bilipai.desktop.player.DesktopPlayerPluginSessionsTest": [
+   "canceledAdmissionUnblocksWaitAndCanRetrySameSession()",
+   "independentPlayersDoNotShareMutableState()",
+   "realSponsorDefinitionCreatesIndependentRawSessions()",
+   "reloadReplacesOnlySelectedPluginAndRejectsOldHandle()",
+   "retiredNonCancellableLoadCannotPublishIntoNewHost()",
+   "sameDefinitionUpdateRetainsSessionAndPositionAcrossHandoff()"
+  ],
   "desktop:com.bilipai.desktop.player.DesktopPlayerPreferencesWriterTest": [
    "a failed disk write is surfaced and next accepted snapshot still persists()",
    "blocked older write cannot overwrite newest remembered quality after shutdown flush()"
+  ],
+  "desktop:com.bilipai.desktop.player.DesktopPortraitBufferingCompositionTest": [
+   "completePortraitOverlayShowsAndRemovesTheRealRecoveryAnimation()"
   ],
   "desktop:com.bilipai.desktop.player.DesktopPremiumAudioControllerTest": [
    "actual AO init failure chooses original cached AAC and retains owner CID pause position and user intent()",
@@ -6173,6 +7390,46 @@
    "native mapper accepts only actual AO init failure and never generic or video decoder evidence",
    "replaced media owner account or failure attempt cannot apply stale premium fallback",
    "unchanged original HiRes policy requires an audio renderer and supported error code"
+  ],
+  "desktop:com.bilipai.desktop.player.DesktopQualityMenuCompositionTest": [
+   "authoritativePlayableIdsEnableOnlyUnselectedReturnedTracks()"
+  ],
+  "desktop:com.bilipai.desktop.player.DesktopRelatedVideoListCompositionTest": [
+   "actualPaneAndContentPaddingDetermineEveryRowsPresentationAcrossResize()"
+  ],
+  "desktop:com.bilipai.desktop.player.DesktopRelatedVideoMenuCompositionTest": [
+   "feedbackKeepsExactReasonAndCancelDoesNotSubmitAnAction()",
+   "watchLaterWaitsForHostDismissalAndUsesRealWindowHeight()"
+  ],
+  "desktop:com.bilipai.desktop.player.DesktopRouteCommentEffectTest": [
+   "arrivingRootUsesLatestCallbackAndHandledStopsFurtherOpening()",
+   "visibleThreadBlocksFallbackAndFailedFallbackRetriesWhenListChanges()"
+  ],
+  "desktop:com.bilipai.desktop.player.DesktopSearchBackdropDemandCompositionTest": [
+   "demandTokenIsStableAcrossRecompositionAndReleasedAcrossBackdropAndDisposal()"
+  ],
+  "desktop:com.bilipai.desktop.player.DesktopSearchSheetLayoutCompositionTest": [
+   "filtersAndResultsFitAndScrollAcrossGlassWidthsAndDensities()"
+  ],
+  "desktop:com.bilipai.desktop.player.DesktopSharedTabGeometryTest": [
+   "commentGlassUsesFullSlotIndicator()",
+   "existingTodayWatchDefaultIndicatorGeometry()"
+  ],
+  "desktop:com.bilipai.desktop.player.DesktopSkeletonGeometryCompositionTest": [
+   "defaultAndCompactGeometryAcrossDensities()",
+   "videoWrapperPreservesSharedDefaultAndCompactGeometry()"
+  ],
+  "desktop:com.bilipai.desktop.player.DesktopSpeedMenuSettingsCompositionTest": [
+   "actualMenuTracksSettingsAndTemporaryCurrentSpeed()"
+  ],
+  "desktop:com.bilipai.desktop.player.DesktopSubReplyListModifierCompositionTest": [
+   "callerModifierReachesActualThreadListAndUpdatesItsMeasuredWidth()"
+  ],
+  "desktop:com.bilipai.desktop.player.DesktopSubReplyPaginationCompositionTest": [
+   "unchangedRowsReevaluatePaginationAndErrorStopsAllAutomaticRequests()"
+  ],
+  "desktop:com.bilipai.desktop.player.DesktopSubReplyRootLifetimeTest": [
+   "changingRootDisposesTheOldSheetEffectAndHidingDisposesTheNewOne()"
   ],
   "desktop:com.bilipai.desktop.player.DesktopSubtitleCacheLifetimeTest": [
    "activeNativeDocumentsCanExceedTheInactiveByteBudgetUntilRetirement()",
@@ -6224,6 +7481,35 @@
    "secondaryFailureKeepsOriginalPrimaryWithoutDiscardingItsNativeAsset()",
    "sourceOrManualControlChangedDuringRefreshCannotInstallOldPair()"
   ],
+  "desktop:com.bilipai.desktop.player.DesktopSupplementOwnerTest": [
+   "supersededDeferredResultCannotReplaceCurrentSubject()",
+   "visibilityCloseAndRetiredOwnerKeepRealCommitAdmission()"
+  ],
+  "desktop:com.bilipai.desktop.player.DesktopTabletDanmakuCompositionTest": [
+   "routeChangesUseTheCurrentSharedManagerAndPersistTheSamePortraitSetting()"
+  ],
+  "desktop:com.bilipai.desktop.player.DesktopTripleCelebrationLayoutTest": [
+   "normalCelebrationUsesTheTrailingBottomAndCompletesOnce()",
+   "reducedCelebrationUsesTheTrailingBottomAndCompletesOnce()"
+  ],
+  "desktop:com.bilipai.desktop.player.DesktopUpPreviewCompositionTest": [
+   "narrowWindowKeepsCreatorActionsInsideTheSheet()",
+   "wideWindowKeepsCreatorActionsInsideTheSheet()"
+  ],
+  "desktop:com.bilipai.desktop.player.DesktopUpstreamDanmakuXmlTest": [
+   "externalEntitiesCannotReadLocalFiles()",
+   "ordinaryXmlRetainsUnicodeTimingAndEscapedText()"
+  ],
+  "desktop:com.bilipai.desktop.player.DesktopVideoCommentHostCompositionTest": [
+   "completeHostKeepsSortAndComposerActionsSeparateFromBackdropDismiss()"
+  ],
+  "desktop:com.bilipai.desktop.player.DesktopVideoCommentPageCompositionTest": [
+   "realListReevaluatesNewPageWithoutRowsChangingAndHonorsErrorRefreshAndEnd()"
+  ],
+  "desktop:com.bilipai.desktop.player.DesktopVideoCommentVoteCompositionTest": [
+   "materialVoteCardBoundsAndSelectionFollowCurrentCard()",
+   "miuixVoteCardBoundsAndSelectionFollowCurrentCard()"
+  ],
   "desktop:com.bilipai.desktop.player.DesktopVideoEnhancementSessionTest": [
    "aDisplayOnAnotherAdapterLowersTheGateTierAndNamesItInTheLine()",
    "aFreshPlayerReportsAnEmptyPlaybackHealthUntilAFileIsLoadedAndPolled()",
@@ -6250,6 +7536,27 @@
    "theMemoryInputsSelectTheFailedStatesBeforeAnySourceCheckAndNameTheGpu()",
    "theOverloadStopHasItsOwnWordingAndNeverNamesAFailure()",
    "thisMachineIsStandbyBeforeALoadAllowedAfterAndOffWhenSwitchedOff()"
+  ],
+  "desktop:com.bilipai.desktop.player.DesktopVideoPlayerCoverFeedbackCompositionTest": [
+   "feedbackWaitsForTheActualCoverExitCompletion()",
+   "identityChangeDuringExitDoesNotInheritThePreviousTransition()",
+   "identityChangeWithTheSameRootDanmakuPortResetsAnimationAndPendingNotice()",
+   "liveMorphUsesTheRealKeepBudgetRatherThanSyntheticSuppression()",
+   "ordinaryVmPartSwitchEmitsAndClearsRetainedFeedback()",
+   "productionHolderHostSectionSuppressReleaseAndSuppressAgain()",
+   "rapidReshowCancelsExitAndRevokesPreviouslyReadyFeedback()",
+   "realReturnBudgetSuppressesFeedbackBeforeAndAfterExit()",
+   "retainedNativeSurfaceWithoutFadeStillHonorsTheRealReturnBudget()",
+   "sameVideoPartChangeClearsPendingFeedbackWithoutReplacingTheRetainedPort()",
+   "vmCacheRestoreEmitsNewPartAndClearsOldFeedback()"
+  ],
+  "desktop:com.bilipai.desktop.player.DesktopVideoSecondaryButtonCompositionTest": [
+   "materialButtonRetainsEnabledAdmissionAcrossRecomposition()",
+   "miuixButtonRetainsEnabledAdmissionAcrossRecomposition()"
+  ],
+  "desktop:com.bilipai.desktop.player.DesktopVideoSupplementInteractionCompositionTest": [
+   "interactiveChoicePreservesExactBranchIdentityAndIndependentDismiss()",
+   "supplementEntriesDispatchSeparateActionsAndDisappearWithTheirFlags()"
   ],
   "desktop:com.bilipai.desktop.player.DesktopWindowsAudioOutputFocusTest": [
    "a closed core can acknowledge resource release without media ownership()",
@@ -6938,6 +8245,10 @@
   "desktop:com.bilipai.desktop.ui.DesignSystemGalleryRenderTest": [
    "primitivesRenderNonBlankInBothStylesAndModes()"
   ],
+  "desktop:com.bilipai.desktop.ui.DesktopAboutIconCoilTest": [
+   "generatedAboutCardPassesSelectionAndCurrentThemeToCoil()",
+   "selectedAboutIconUsesAppearanceAndRealLoader()"
+  ],
   "desktop:com.bilipai.desktop.ui.DesktopAccountLedgerTest": [
    "aRetiredPageCannotStartAQueuedRequestOrRefresh()",
    "aSameMidReloginRetiresTheOldPageBeforeNewCredentialsCanBeRead()",
@@ -6984,6 +8295,10 @@
    "realVipRefreshRecapturesSameEntryOnceAndPreservesOriginalResume()",
    "selectedPlaybackAccountRevisionAbaRejectsQueuedTicketAndFreshLazyChildWindow()"
   ],
+  "desktop:com.bilipai.desktop.ui.DesktopBangumiBackToTopBindingTest": [
+   "realButtonDragPersistsOnceAndPreferenceSwitchHidesIt()",
+   "realStoreProjectionIsStableAndRetiredCoveredOrCancelledWritesAreRejected()"
+  ],
   "desktop:com.bilipai.desktop.ui.DesktopBangumiBasSourceAdmissionAssemblyTest": [
    "actualBasMapperAdmitsOriginalSeekAndPausesBeforeExternalCallbackOutsideGates()",
    "actualLoadingRejectsFormalSceneUntilOriginalNextEpisodeSuccess()",
@@ -7006,7 +8321,8 @@
    "frozenClickRejectsActualRequestTokenAcceptedObjectSelectedAccountAndRootRetirement()",
    "originalDuplicateAndServerRightsPolicySurviveTheAsynchronousEntry()",
    "originalVmCapturesOnEdtAndQueuesCompleteTaskThroughRealIoAndLaunchCaller()",
-   "staleDisplayedAudioMenuAndServerDownloadRightsCannotCaptureANewTask()"
+   "staleDisplayedAudioMenuAndServerDownloadRightsCannotCaptureANewTask()",
+   "upstreamMiniAndSharedPlaybackUseTheAcceptedOwnerSessionWithoutReloading()"
   ],
   "desktop:com.bilipai.desktop.ui.DesktopBangumiDefaultQualityTest": [
    "autoHighestKeepsHdrHevcCapabilityAndDoesNotInferDolbyVision()",
@@ -7016,6 +8332,9 @@
    "manualQualityAfterAutoHighestUsesTheExplicitOriginalRequest()",
    "rootAutoHighestSelectsValidSdr4kInsteadOfResponse112()",
    "serverPermissionDowngradeAndInvalidHigherUrlsRemainAuthoritative()"
+  ],
+  "desktop:com.bilipai.desktop.ui.DesktopBangumiFollowRoutePlayerTest": [
+   "realFollowRouteZeroEpisodeResolvesHistoryOrFirstEpisode()"
   ],
   "desktop:com.bilipai.desktop.ui.DesktopBangumiHubPagesV046Test": [
    "aGroupWhoseLabelNamesAYearIsTreatedAsTheYearGroup()",
@@ -7166,6 +8485,13 @@
   "desktop:com.bilipai.desktop.ui.DesktopCommandPopupBytecodeTest": [
    "compiledPopupFacadeCanBeLoadedAndLinkedWithoutInitializingWindows()"
   ],
+  "desktop:com.bilipai.desktop.ui.DesktopCommentDraftSessionTest": [
+   "actualOverlayRejectsDisposedEditorCallbackAfterDraftSessionReopens()",
+   "identicalReeditSurvivesSuccessAndRemainsEditableWithOriginalReceipt()",
+   "migratedAdapterContentUsesDraftKeyToReplaceTheLiveEditor()",
+   "replySwitchAndReopenRejectCapturedOldSessionWithoutLosingReceipt()",
+   "videoAndAccountReplacementCannotExposePreviousDraftOrUtf16Selection()"
+  ],
   "desktop:com.bilipai.desktop.ui.DesktopCommentFontRolesTest": [
    "author metadata and action roles keep their own steps()",
    "comment body and nested reply follow the page body step()",
@@ -7262,6 +8588,10 @@
    "selectedUpAndAllMirrorAreChangedExactlyOnce()",
    "unfoldUsesOriginalPolicyAndKeepsPaginationEnvelope()"
   ],
+  "desktop:com.bilipai.desktop.ui.DesktopDynamicCommentShortcutTest": [
+   "MATERIAL3",
+   "MIUIX"
+  ],
   "desktop:com.bilipai.desktop.ui.DesktopDynamicEditorUpdateHoldTest": [
    "actualSubmissionStillHoldsAfterDismissUntilItsJobCompletes()",
    "cancellationBeforeActualBodyStartsCannotLeaveInstallationHeld()",
@@ -7292,11 +8622,27 @@
    "initialFailureWithNoMessageAlsoStopsAutomaticPagingUntilExplicitRefresh()",
    "selectedUserFailureStopsAutomaticPagingAndExplicitRetryPreservesRowsAndOffset()"
   ],
+  "desktop:com.bilipai.desktop.ui.DesktopDynamicImagePreviewKeyboardTest": [
+   "background editor owns arrows / MATERIAL3",
+   "background editor owns arrows / MIUIX",
+   "image actions before image / MATERIAL3",
+   "image actions before image / MIUIX",
+   "original list, bounds and return target / MATERIAL3",
+   "original list, bounds and return target / MIUIX",
+   "topmost image before parent / MATERIAL3",
+   "topmost image before parent / MIUIX"
+  ],
   "desktop:com.bilipai.desktop.ui.DesktopDynamicRefreshUiTest": [
    "aFailedRefreshToastsTheReasonKeepsTheRowsAndTheButtonWorksAgain()",
    "f5ThroughTheRegistryAndTheRootScrollChannelRunTheSameRefreshAsTheClick()",
    "theCornerButtonRefreshesTheFeedOnceIsBusyWhileItRunsAndFreesAgain()",
    "theEndOfTheFeedScrollsClearOfTheButton()"
+  ],
+  "desktop:com.bilipai.desktop.ui.DesktopDynamicReplyReadingPanelTest": [
+   "escapeClosesOnlyTheReplyOverItsActualParentModal()",
+   "omittedContainerStillUsesTheOriginalSheetWithOriginalContent()",
+   "originalLazyListScrollsKeepsItsPositionOnUpdatesAndNeverMovesTheBackground()",
+   "originalReplyEntersFocusTrapsTabAndRestoresOpenerWithoutNestingSheets()"
   ],
   "desktop:com.bilipai.desktop.ui.DesktopDynamicResourceNavigationTest": [
    "blankLinksDoNotOpenAnotherDestination()",
@@ -7587,6 +8933,13 @@
    "lateOldRevisionIsReleasedEvenAfterReturningToTheSameDimensions()",
    "sameUrlGetsNewSizeWithoutReplacingEditorDocumentCaretOrDraft()"
   ],
+  "desktop:com.bilipai.desktop.ui.DesktopIntegerResourceCoilTest": [
+   "applicationOwnerLoadsResourceModelsAndAboutUris()"
+  ],
+  "desktop:com.bilipai.desktop.ui.DesktopInteractionModalLifecycleTest": [
+   "embeddedContentProgrammaticCloseReopenAndRetiredLeaseAreIsolated()",
+   "nonEmbeddedControlledSheetMatchesDirectUpstreamLifecycle()"
+  ],
   "desktop:com.bilipai.desktop.ui.DesktopLazyScrollbarsTest": [
    "aSingleRowThatFitsIsNoTallerThanTheViewport()",
    "aThumbOffsetMapsBackToTheFirstItemOfItsRow()",
@@ -7603,6 +8956,9 @@
    "hiddenTranslationsClearOnlyTranslationsAndRomanization()",
    "shownTranslationsReturnTheSameDocumentInstance()",
    "theSourceDocumentIsNotChangedSoShowingAgainNeedsNoReload()"
+  ],
+  "desktop:com.bilipai.desktop.ui.DesktopListenVideoPagerComposeTest": [
+   "entersSwitchesToAlbumsAndDisposes()"
   ],
   "desktop:com.bilipai.desktop.ui.DesktopListenVideoViewModelTest": [
    "a retired owner admits no state write and its late result is dropped()",
@@ -7679,6 +9035,10 @@
    "oldJobCompletionCannotReleaseReopenedLoginInstanceOrItsActualWork()",
    "onlyCommittedFormHoldsAndExplicitDisposalDoesNotLeaveHistoricalRouteHold()",
    "originalLoginWorkFailurePreservesErrorAndFormUntilDismiss()"
+  ],
+  "desktop:com.bilipai.desktop.ui.DesktopM4dPayloadRegressionTest": [
+   "decimalColorParsingDoesNotDependOnDigitCount()",
+   "sessionTipsRejectBareLiteralsAndKeepQuotedText()"
   ],
   "desktop:com.bilipai.desktop.ui.DesktopMessageLoginGateTest": [
    "signedOutMessageEntryShowsTheLoginGateAndOpensLogin()"
@@ -7919,6 +9279,7 @@
    "upstreamSystemNoticeDeleteUsesThisChildsCsrfAndRemovesTheNotice()"
   ],
   "desktop:com.bilipai.desktop.ui.DesktopOriginalNativeRecoveryAdmissionTest": [
+   "bufferingCompositionPairsRealListenerJobsAcrossPlayerReplacement()",
    "callerCancellationWhileWaitingForActualNativeGateCannotRecover()",
    "cancelledCallerAndAccountRetirementCannotPublishPreparedNativeReplacement()",
    "generatedObserverCurrentPredicateConsumesRealNativeFailureDespiteFreshSnapshotWrappers()",
@@ -7929,7 +9290,13 @@
    "pgcManualAudioEntryRejectsAnOldTicketBeforeLazyCreationAndNativeLink()",
    "pgcParentPauseIntentIsCheckedInsideTheActualNativeLock()",
    "pgcPendingRetryCannotStartAfterTheActualVmManualQualityEntry()",
-   "sameActualAttemptPublishesOneAacReplacementPreservingSourceControlsAndReceipt()"
+   "rawSharedSessionReusesSectionAndOriginalStoreWithoutClosingReplacementOrDecoder()",
+   "sameActualAttemptPublishesOneAacReplacementPreservingSourceControlsAndReceipt()",
+   "sharedRequestLeaseRejectsNewOriginalStoreTokenEvenForSameVideo()",
+   "sharedRequestLeaseRetainsOwnRetryAndQualityButRejectsAccountOwnerRetirement()",
+   "sharedSessionRequestAndCloseRunOutsideNativeAdmissionAndKeepDecoderRootOwned()",
+   "sharedSessionUsesInstalledNativeSeekAndRejectsRetiredEntry()",
+   "upstreamPlayerStateObservesSameSessionAndRejectsRetiredMetadata()"
   ],
   "desktop:com.bilipai.desktop.ui.DesktopOriginalOfflineBindingsLifetimeTest": [
    "actualRootEscAndF11StateRecomposeTheOriginalFullscreenViewWithoutReload()",
@@ -8225,7 +9592,8 @@
   "desktop:com.bilipai.desktop.ui.DesktopOriginalVideoFallbackCauseViewModelTest": [
    "actualIoRecoveryRecapturesNewRequestAndRetiresPreviousReadonlyPermission()",
    "actualVmRelatedRetryCapturesFreshBindingAfterDirectPlayUrlHttp412()",
-   "originalVmKeepsReadonlyMetadataAfterDirectPlayUrlHttp412()"
+   "originalVmKeepsReadonlyMetadataAfterDirectPlayUrlHttp412()",
+   "recoveredRelatedCanFinishBeforeDetailWithoutLosingTheEventualTitle()"
   ],
   "desktop:com.bilipai.desktop.ui.DesktopOriginalVideoMetadataRelatedViewModelTest": [
    "actualVmCancelledNativePreparationCannotResumeFromALateReadyGrant()",
@@ -8492,6 +9860,10 @@
    "opusRedirectRetainsOriginalCvArticlePolicy()",
    "retiredOwnerCannotPublishNativeArticle()"
   ],
+  "desktop:com.bilipai.desktop.ui.DesktopShareTargetsCompositionTest": [
+   "landscapeWindowKeepsControlsVisibleAndDispatchesOnce()",
+   "portraitWindowRejectsRetiredOwnerAfterTargetSelection()"
+  ],
   "desktop:com.bilipai.desktop.ui.DesktopSheetMotionPolicyTest": [
    "host contract resolves miuix to the window host and material3 to the material host()",
    "reduced sheet motion uses brief consistent fades for both styles()",
@@ -8658,6 +10030,7 @@
    "actualRefreshFillsGapAndPreservesPreviouslyLoadedHistory()",
    "coveredPageCannotSetPendingOrSendAndRapidVisibleCallsSubmitOnce()",
    "externalRefreshCallerRetiresNonCancellableFinalPublication()",
+   "lateSessionControlRetainsCompletedSendAcknowledgement()",
    "rejectedSendRetainsDraftAcknowledgementAndSuccessCanBeConsumed()",
    "visibleRefreshCancellationRejectsLateReply()"
   ],
@@ -9105,8 +10478,10 @@
    "largeTextRejectsAnotherActualAssemblyInTheSameRetainedProvider()",
    "largeTextResetsOnMountedPartChangeAndRejectsAnotherSessionsSavedPayload()",
    "partAndPreferenceChangesUseTheOriginalSessionResetPolicy()",
+   "retiredUpstreamMiniCannotPublishMetadataOrTagsToReplacementOwner()",
    "sameOriginalSessionKeyRefreshKeepsTheRegisteredManualSelection()",
-   "sameRetainedAssemblyRestoresItsManualChoiceAfterRealEntryDisposal()"
+   "sameRetainedAssemblyRestoresItsManualChoiceAfterRealEntryDisposal()",
+   "upstreamMiniUsesTheInstalledPreMediaSessionAndRejectsRetiredOwner()"
   ],
   "desktop:com.bilipai.desktop.ui.DesktopWindowsVideoAudioSelectionTest": [
    "invalidReadbackAndMalformedMetadataAreNotSelectable()",
@@ -9534,6 +10909,24 @@
    "toastHostShowsOneToastAtATimeRunsItsActionOnceAndExpires()",
    "toggleRowIsInertWhileLoadingThenTogglesOnceThroughItsSingleAction()"
   ],
+  "desktop:com.bilipai.desktop.ui.modal.DesktopModalDefaultBaselineTest": [
+   "untaggedSheetRendersThroughTheExistingUpstreamOverload()"
+  ],
+  "desktop:com.bilipai.desktop.ui.modal.DesktopModalGeometryTest": [
+   "confirmationAndReadingStayInsideSmallAndUltrawideWindowsAtEveryScale()",
+   "optionsFlipAboveTheAnchorAndClampAtEveryEdge()",
+   "optionsRequireARealAnchorAndDegenerateWindowsNeverProduceNegativeSizes()",
+   "readingPanelUsesTheContractDefaultShareAndClampAtEveryScale()"
+  ],
+  "desktop:com.bilipai.desktop.ui.modal.DesktopModalUiTest": [
+   "actualOptInSheetEntersFocusCyclesBothDirectionsAndRestoresTheOpener()",
+   "actualWallpaperPilotKeepsSavingActionsDisabledAndRejectsEscapeUntilSavingEnds()",
+   "confirmationScrollsItsBodyWithFixedFooterAndNeverScrollsTheBackground()",
+   "escapeClosesOnlyTheTopmostLayerAndReturnsToTheParentControl()",
+   "optionsUseRealAnchorFlipCompactRowsAndViewportClamping()",
+   "readingPanelCompletesItsExitBeforeDismissingAndReducedMotionSkipsTheWait()",
+   "readingPanelUsesTheSameRightAlignedLayerAsTheNativeHost()"
+  ],
   "desktop:com.bilipai.desktop.update.DesktopUpdateMonitoringTest": [
    "Windows own-release clock stays six hours and disabled interval does not check()",
    "a full own release page requires its empty terminal page before reporting current()",
@@ -9637,8 +11030,25 @@
    "theProbeCompilesAndThatIsAllItProves()"
   ],
   "desktop:com.bytedance.danmaku.render.engine.RenderFrameCadenceTest": [
-   "60 90 and 120Hz displays produce 60 renderer frames per second()",
-   "resume has no delayed or accumulated frame debt()"
+   "duplicate callbacks are suppressed and resume has no frame debt()",
+   "native refresh cadence has no skipped vsyncs on 60 90 120 and 144Hz()"
+  ],
+  "desktop:com.bytedance.danmaku.render.engine.render.DrawOrderPolicyTest": [
+   "changedKey_isRecheckedOnNextFrame()",
+   "emptyAndSingleItemFrames_areAccepted()",
+   "orderedFrame_preservesEqualKeyOrder()",
+   "reversedFrame_matchesExistingStableSortAcrossAllKeys()"
+  ],
+  "desktop:com.bytedance.danmaku.render.engine.render.RenderClockTest": [
+   "elapsedTimeIsIndependentOfFrameRate()",
+   "pauseWithoutAnIntermediateDrawDoesNotCountPausedTime()",
+   "repeatedResumeAndDrawDoNotLoseOrDuplicateTime()",
+   "stalledFrameAccountsForTheWholeInterval()",
+   "stopAndRestartUseAFreshBaseline()"
+  ],
+  "desktop:com.bytedance.danmaku.render.engine.render.cache.BufferAdmissionTest": [
+   "bounded selection matches repeated minimum eviction including ties and expiry()",
+   "six thousand arrivals only retain eight and evaluate each score once()"
   ],
   "desktop:su.litvak.chromecast.api.v2.DesktopGoogleCastProtocolTest": [
    "allProviderOwnedThreadsAreQuiesced",
