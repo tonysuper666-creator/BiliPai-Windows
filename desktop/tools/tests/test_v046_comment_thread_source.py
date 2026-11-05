@@ -13,6 +13,7 @@ sys.path.insert(0, str(REPO/'desktop/tools'))
 import v046_comment_list as comments
 import v046_comment_thread as thread
 from v046_favorite_editor import restore
+from desktop_refresh_adaptation import unbind_refresh_lists
 
 
 def body(path):
@@ -34,8 +35,9 @@ class OriginalNestedPageSources(unittest.TestCase):
         relative = comments.PACKAGE+'DesktopOriginalSubReplyDetailComponents.kt'
         # The v046 comment polish inline entrance stage follows the nested page stage; recover this stage's own output.
         entrance = json.loads((cls.output/'actual/v046-inline-subreply-entrance-proof.json').read_bytes())
-        cls.actual = restore(body(cls.output/'actual'/relative), entrance['retainedToCurrent'])
-        cls.previous = body(cls.output/'previous'/relative)
+        # 591685d9e binds the shared refresh lists after every stage receipt; peel that exact binding first.
+        cls.actual = restore(unbind_refresh_lists(body(cls.output/'actual'/relative)), entrance['retainedToCurrent'])
+        cls.previous = unbind_refresh_lists(body(cls.output/'previous'/relative))
         cls.original = comments.fixed(REPO)[0]['SubReplyDetailComponents.kt']
         cls.proof = json.loads((cls.output/'actual/v046-comment-thread-host-proof.json').read_bytes())
         cls.host = comments.declaration(cls.parser, cls.actual, 'SubReplyDetailContent')

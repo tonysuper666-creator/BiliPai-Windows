@@ -24,3 +24,29 @@ def bind_refresh_lists(text):
         text = text.replace('import androidx.compose.foundation.lazy.*',
                             'import androidx.compose.foundation.lazy.*\nimport com.android.purebilibili.core.ui.components.AppLazyColumn as LazyColumn', 1)
     return text
+
+_LIST_IMPORTS = (
+    ('import androidx.compose.foundation.lazy.LazyColumn\n',
+     'import com.android.purebilibili.core.ui.components.AppLazyColumn as LazyColumn\n'),
+    ('import androidx.compose.foundation.lazy.grid.LazyVerticalGrid\n',
+     'import com.android.purebilibili.core.ui.components.AppLazyVerticalGrid as LazyVerticalGrid\n'),
+)
+_STAR_IMPORT = 'import androidx.compose.foundation.lazy.*'
+_STAR_ALIAS = '\nimport com.android.purebilibili.core.ui.components.AppLazyColumn as LazyColumn'
+
+
+def unbind_refresh_lists(text):
+    """Exact inverse of bind_refresh_lists for one emitted body.
+
+    Producers apply the binding after their stage receipts are recorded, so a
+    receipt describes the body before these import lines. The result is
+    accepted only when binding it again reproduces the emitted body exactly.
+    """
+    result = text
+    if (_STAR_IMPORT + _STAR_ALIAS) in result:
+        result = result.replace(_STAR_IMPORT + _STAR_ALIAS, _STAR_IMPORT, 1)
+    for original, shared in _LIST_IMPORTS:
+        result = result.replace(shared, original)
+    if bind_refresh_lists(result) != text:
+        raise ValueError('Refresh list binding is not exactly invertible')
+    return result
