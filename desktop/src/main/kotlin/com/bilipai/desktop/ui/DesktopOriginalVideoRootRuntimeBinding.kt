@@ -37,7 +37,9 @@ internal class DesktopOriginalVideoRootRuntimeBinding(
                 return@collectLatest // recovery/adoption keeps provider state
             }
             val caller = checkNotNull(currentCoroutineContext()[Job])
-            val stillCurrent = { caller.isActive && gate.owns() && native().isCurrent(expected) }
+            // collectLatest's load job completes normally after publication; the
+            // accepted source remains owned until cancellation or native retirement.
+            val stillCurrent = { !caller.isCancelled && gate.owns() && native().isCurrent(expected) }
             val publication = DesktopRepositoryPlaybackPublication(repository)
             val calls = publication.calls(repository.httpClient, expected.nativeSource.source, stillCurrent, caller)
             val generation = runtime.onVideoLoadOwned(expected.request.bvid, expected.request.cid,
