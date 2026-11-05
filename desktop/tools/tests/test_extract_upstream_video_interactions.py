@@ -72,6 +72,14 @@ class OriginalVideoInteractionExtractionTest(unittest.TestCase):
             def restore_later_stages(body, rows):
                 row = next(item for item in rows if item["path"] == VM)
                 self.assertEqual(row["sha256LF"], hashlib.sha256(body.encode()).hexdigest())
+                # The v029 comment selection stage (38512320c) is the producer's last VM layer; its own proof unwinds it.
+                comment = json.loads((output/"actual/v029-comment-selection-VideoPlaybackViewModel.json").read_bytes())
+                self.assertEqual(comment["afterSha256LF"], hashlib.sha256(body.encode()).hexdigest())
+                for edit in reversed(comment["inverseEdits"]):
+                    index = edit["offset"]
+                    self.assertEqual(edit["after"], body[index:index+len(edit["after"])])
+                    body = body[:index]+edit["before"]+body[index+len(edit["after"]):]
+                self.assertEqual(comment["beforeSha256LF"], hashlib.sha256(body.encode()).hexdigest())
                 known = json.loads((output/"actual/v037-complete-known-state-owner-proof.json").read_bytes())
                 self.assertEqual(known["afterSha256LF"], hashlib.sha256(body.encode()).hexdigest())
                 for edit in reversed(known["indexedEdits"]):
