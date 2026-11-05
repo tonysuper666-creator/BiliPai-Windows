@@ -29,7 +29,8 @@ class PlaybackSettingsExtractorTest(unittest.TestCase):
 
     def test_unverified_media3_constant_is_rejected_before_a_build_can_use_it(self):
         with tempfile.TemporaryDirectory() as directory:
-            repo = Path(directory)
+            # Same directory name as the read point, so the canonical pin for its tree applies.
+            repo = Path(directory) / ROOT.name
             for name in [PLAYBACK.SOURCE, 'desktop/third-party/media3-error-codes.json']:
                 file = repo / name
                 file.parent.mkdir(parents=True, exist_ok=True)
