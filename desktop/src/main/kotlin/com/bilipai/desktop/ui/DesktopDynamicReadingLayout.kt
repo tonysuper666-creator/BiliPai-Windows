@@ -27,16 +27,26 @@ import com.bilipai.desktop.ui.kit.DESKTOP_KIT_HOVER_PERCENT
 import com.bilipai.desktop.ui.kit.DESKTOP_KIT_RADIUS_ROW_DP
 import com.bilipai.desktop.ui.kit.DESKTOP_KIT_ROW_NAV_DP
 import com.bilipai.desktop.ui.kit.DESKTOP_KIT_SELECTED_FILL_PERCENT
+import com.bilipai.desktop.ui.kit.DESKTOP_KIT_NAV_ICON_GAP_DP
+
+internal const val DYNAMIC_READING_COLUMN_MIN = 640
+internal const val DYNAMIC_READING_COLUMN_MAX = 760
+internal const val DYNAMIC_READING_SIDE_PADDING = 24
+internal const val DYNAMIC_READING_ASIDE_GAP = 24
+internal const val DYNAMIC_READING_ASIDE_WIDTH = 280
+internal const val DYNAMIC_READING_ASIDE_FROM_WIDTH = 992
 
 internal data class DesktopDynamicReadingGeometry(val column: Float, val columnX: Float, val asideX: Float?)
 
 internal fun desktopDynamicReadingGeometry(width: Float, supportsAside: Boolean): DesktopDynamicReadingGeometry {
     val w = width.coerceAtLeast(0f)
-    val aside = supportsAside && w >= 992f
-    val column = if (aside) (w - 352f).coerceIn(640f, 760f)
-        else if (w < 688f) w else (w - 48f).coerceAtMost(760f)
-    val start = (w - column - if (aside) 304f else 0f) / 2f
-    return DesktopDynamicReadingGeometry(column, start, if (aside) start + column + 24f else null)
+    val aside = supportsAside && w >= DYNAMIC_READING_ASIDE_FROM_WIDTH
+    val sideSpace = 2 * DYNAMIC_READING_SIDE_PADDING
+    val asideSpace = DYNAMIC_READING_ASIDE_GAP + DYNAMIC_READING_ASIDE_WIDTH
+    val column = if (aside) (w - sideSpace - asideSpace).coerceIn(DYNAMIC_READING_COLUMN_MIN.toFloat(), DYNAMIC_READING_COLUMN_MAX.toFloat())
+        else if (w < DYNAMIC_READING_COLUMN_MIN + sideSpace) w else (w - sideSpace).coerceAtMost(DYNAMIC_READING_COLUMN_MAX.toFloat())
+    val start = (w - column - if (aside) asideSpace else 0) / 2f
+    return DesktopDynamicReadingGeometry(column, start, if (aside) start + column + DYNAMIC_READING_ASIDE_GAP else null)
 }
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -45,7 +55,7 @@ internal fun desktopDynamicReadingGeometry(width: Float, supportsAside: Boolean)
     hiddenCount: Int, showHidden: Boolean, onSelect: (Long?) -> Unit,
     onShowHidden: () -> Unit, onPin: (Long) -> Unit, onHide: (Long) -> Unit,
 ) {
-    LazyColumn(Modifier.fillMaxSize(), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+    LazyColumn(Modifier.fillMaxSize(), verticalArrangement = Arrangement.spacedBy(DESKTOP_KIT_NAV_ICON_GAP_DP.dp)) {
         item(key = "heading") { AppText("关注的 UP 主", style = MaterialTheme.typography.titleSmall) }
         items(users, key = { it.uid }) { user ->
             val selected = isDynamicUpPanelItemSelected(selectedUid, user.uid)

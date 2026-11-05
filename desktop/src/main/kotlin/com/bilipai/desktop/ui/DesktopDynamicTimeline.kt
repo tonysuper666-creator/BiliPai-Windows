@@ -130,6 +130,8 @@ internal fun DesktopDynamicTimelineFeed(
     transform:(List<DynamicItem>)->List<DynamicItem> = {it},
     oldContentDividerLabel:String="以下是之前的动态",
     active:Boolean=true,
+    displayedItems:List<DynamicItem>?=null,
+    showCount:Boolean=true,
     row:@Composable (DynamicItem)->Unit,
 ) {
     val scope=rememberCoroutineScope()
@@ -137,7 +139,7 @@ internal fun DesktopDynamicTimelineFeed(
     val rootScroll = LocalDesktopRootDynamicScroll.current
     val layout by preferences.layoutMode.collectAsState(DynamicFeedLayoutMode.WATERFALL)
     val incremental by preferences.incrementalRefresh.collectAsState(false)
-    val displayed=remember(state.page.items,transform){transform(state.page.items)}
+    val displayed=displayedItems ?: remember(state.page.items,transform){transform(state.page.items)}
     val keys=remember(displayed){displayed.map {"dynamic_${dynamicFeedItemKey(it)}"}}
     val divider=resolveOldContentDividerIndex(displayed.map(::dynamicFeedItemKey),state.page.incrementalRefreshBoundaryKey,true)
     LaunchedEffect(state){snapshotFlow { latestActive.value }.first { it };state.initialize(incrementalRefresh=incremental)}
@@ -176,9 +178,7 @@ internal fun DesktopDynamicTimelineFeed(
         }
     }
     Column(Modifier.fillMaxSize()) {
-        Row(Modifier.fillMaxWidth().padding(horizontal=20.dp),verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.SpaceBetween) {
-            Text("${displayed.size} 项",style=MaterialTheme.typography.labelLarge)
-        }
+        if(showCount) DesktopDynamicTimelineCount(displayed.size, Modifier.fillMaxWidth().padding(horizontal=20.dp))
     Box(Modifier.weight(1f).fillMaxWidth(),contentAlignment=Alignment.TopCenter) {
         FeedVerticalStaggeredGrid(columns=StaggeredGridCells.Fixed(1),state=state.scroll,
             modifier=Modifier.fillMaxSize(),
@@ -200,5 +200,11 @@ internal fun DesktopDynamicTimelineFeed(
         }
         DesktopRefreshButton(refreshing=refreshing||state.busy,reportFailures=false,onRefresh={scope.launch{state.scroll.scrollToItem(0);refreshNow()}})
     }
+    }
+}
+
+@Composable internal fun DesktopDynamicTimelineCount(count:Int, modifier:Modifier=Modifier) {
+    Row(modifier,verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.SpaceBetween) {
+        Text("$count 项",style=MaterialTheme.typography.labelLarge)
     }
 }

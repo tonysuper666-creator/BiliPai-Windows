@@ -73,8 +73,8 @@ import kotlinx.coroutines.sync.withLock
     BoxWithConstraints(Modifier.fillMaxSize()) {
         val geometry=desktopDynamicReadingGeometry(maxWidth.value,shouldShowDynamicUpPanel(users.selectedLogicalTab))
         val hasAside=geometry.asideX!=null
-        Column(Modifier.offset(x=geometry.columnX.dp).width((geometry.column + if(hasAside) 304f else 0f).dp).fillMaxHeight()) {
-            Row(Modifier.fillMaxWidth()) {
+        Column(Modifier.offset(x=geometry.columnX.dp).width((geometry.column + if(hasAside) DYNAMIC_READING_ASIDE_GAP + DYNAMIC_READING_ASIDE_WIDTH else 0).dp).fillMaxHeight()) {
+            Row(Modifier.fillMaxWidth().testTag("dynamic-reading-tabs")) {
                 AppNativeTabRow(options=users.visibleTabs.map{AppSegmentOption(it.logicalIndex,it.title)},
                     selectedValue=users.selectedLogicalTab,modifier=Modifier.weight(1f),onSelectionChange={write{users.selectTab(it)}})
                 AppIconButton(onClick={
@@ -85,14 +85,18 @@ import kotlinx.coroutines.sync.withLock
                 trailing()
             }
             if(!hasAside&&shouldShowDynamicHorizontalUserList(true,users.selectedLogicalTab)) {
+                Box(Modifier.fillMaxWidth().testTag("dynamic-reading-strip")) {
                 HorizontalUserList(users.panelUsers(),users.selectedUid,selfUid=users.selfUid,listState=listState,
                     showHiddenUsers=users.showHidden,hiddenCount=users.hiddenCount,uplistUpdateMids=users.unread,
                     onUserClick=users::selectUser,onToggleShowHidden=users::toggleShowHidden,
                     onTogglePin={write{preferences.toggleUserPreference(DesktopOriginalDynamicUserPreferenceKeys.KEY_PINNED_USERS,it)}},
                     onToggleHidden={write{preferences.toggleUserPreference(DesktopOriginalDynamicUserPreferenceKeys.KEY_HIDDEN_USERS,it)}})
+                }
             }
             settingError?.let{CommunityFailure(it,onLogin){settingError=null}}
             users.followingsError?.let{CommunityFailure(it,onLogin){scope.launch{users.hydrateUsers()}}}
+            val displayed=remember(activeTimeline.page.items,transform){transform(activeTimeline.page.items)}
+            if(!selectedAuthorFeed) DesktopDynamicTimelineCount(displayed.size, Modifier.fillMaxWidth().testTag("dynamic-reading-count"))
             Row(Modifier.weight(1f).fillMaxWidth()) {
                 Box(Modifier.width(geometry.column.dp).fillMaxHeight().testTag("dynamic-reading-feed")) {
                     if(selectedAuthorFeed) {
@@ -100,12 +104,12 @@ import kotlinx.coroutines.sync.withLock
                     } else {
                         val title=allDynamicTabSpecs.first{it.logicalIndex==users.selectedLogicalTab}.title
                         DesktopDynamicTimelineFeed(activeTimeline,timelinePreferences,onLogin,transform,
-                            oldContentDividerLabel=if(selectedType=="all")"以下是之前的动态"else"以下是之前的${title}",active=active,row=row)
+                            oldContentDividerLabel=if(selectedType=="all")"以下是之前的动态"else"以下是之前的${title}",active=active,displayedItems=displayed,showCount=false,row=row)
                     }
                 }
                 if(hasAside) {
-                    Spacer(Modifier.width(24.dp))
-                    Box(Modifier.width(280.dp).fillMaxHeight().testTag("dynamic-following-aside")) {
+                    Spacer(Modifier.width(DYNAMIC_READING_ASIDE_GAP.dp))
+                    Box(Modifier.width(DYNAMIC_READING_ASIDE_WIDTH.dp).fillMaxHeight().testTag("dynamic-following-aside")) {
                         DesktopDynamicFollowingAside(users.panelUsers(),users.selectedUid,users.selfUid,users.unread,
                             users.hiddenCount,users.showHidden,users::selectUser,users::toggleShowHidden,
                             onPin={write{preferences.toggleUserPreference(DesktopOriginalDynamicUserPreferenceKeys.KEY_PINNED_USERS,it)}},
