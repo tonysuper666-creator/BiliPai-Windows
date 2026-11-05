@@ -3902,6 +3902,13 @@ tasks.test {
 // Saved credentials are protected by Windows DPAPI only. A non-Windows test host has no system protection, so its
 // test JVMs explicitly select the test-only implementation (DesktopCredentialProtection); Windows tests use DPAPI.
 tasks.withType<Test>().configureEach {
+    // macOS exposes its default temp root through /var -> /private/var. Only test
+    // workers use a real, task-owned root; production link/junction checks stay strict.
+    if (System.getProperty("os.name").startsWith("Mac", ignoreCase = true)) {
+        val testJvmTemp = temporaryDir.resolve("jvm-temp").canonicalFile
+        systemProperty("java.io.tmpdir", testJvmTemp.absolutePath)
+        doFirst { java.nio.file.Files.createDirectories(testJvmTemp.toPath()) }
+    }
     if (!System.getProperty("os.name").startsWith("Windows", ignoreCase = true))
         systemProperty("bilipai.credentialProtection", "test-only")
     // Upstream HTTP caches of test JVMs stay in the task's temporary directory, not the user's data directory (TON-1082).
