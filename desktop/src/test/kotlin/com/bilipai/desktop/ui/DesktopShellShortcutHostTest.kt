@@ -519,6 +519,39 @@ class DesktopShellShortcutHostTest {
         assertTrue(rig.calls.isEmpty())
     }
 
+    @Test fun singleEntrySidebarPagesReturnHomeWithoutDispatchingWindowExit() {
+        for (sidebar in listOf(BiliPaiNavKey.LiveList, BiliPaiNavKey.History)) {
+            for (mouse in listOf(false, true)) {
+                // The actual MainHost pager keeps the tab outside the physical Nav3 stack.
+                val stack = androidx.compose.runtime.mutableStateListOf<BiliPaiNavKey>(BiliPaiNavKey.MainHost)
+                var destination: BiliPaiNavKey = sidebar
+                val selections = mutableListOf<DesktopRailItem>()
+                val host = DesktopShellShortcutHost({ error("Back reached the window exit fallback from $sidebar") }, { false })
+                host.bindRoot(DesktopShellRootCommands(
+                    owner = stack,
+                    page = { desktopShellPageOf(destination) },
+                    canGoBack = { !(stack.size <= 1 && destination == BiliPaiNavKey.Home) },
+                    openSearch = { false }, refresh = { false }, openHelp = { false },
+                    goTo = { item -> selections += item; destination = BiliPaiNavKey.Home; true },
+                    atNavigationRoot = { stack.size <= 1 },
+                ))
+                fun back(): Boolean = if (mouse) host.onBackButtonPress(true)
+                    else host.handleKey(shellKeyData("Alt+Left", true)) {}
+                fun release() {
+                    if (mouse) host.onBackButtonRelease(false)
+                    else assertTrue(host.handleKey(shellKeyData("Alt+Left", false)) {})
+                }
+                assertTrue(back(), "$sidebar mouse=$mouse")
+                release()
+                assertEquals(BiliPaiNavKey.Home, destination)
+                assertEquals(listOf(BiliPaiNavKey.MainHost), stack.toList())
+                assertTrue(back()) // Home root consumes Back without selecting or closing again.
+                release()
+                assertEquals(listOf(DesktopRailItem.HOME), selections)
+            }
+        }
+    }
+
     @Test fun aBackThatTheOwnerRefusesIsNotClaimed() {
         val rig = rig()
         rig.backAnswer = false

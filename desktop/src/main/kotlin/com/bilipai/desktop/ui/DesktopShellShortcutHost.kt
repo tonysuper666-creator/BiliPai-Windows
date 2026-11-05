@@ -156,6 +156,7 @@ internal class DesktopShellRootCommands(
     val refresh: (DesktopShellPage) -> Boolean,
     val goTo: (DesktopRailItem) -> Boolean,
     val openHelp: () -> Boolean,
+    val atNavigationRoot: () -> Boolean = { false },
 )
 
 /** What the shell frame lends the host: the rail toggle (false when there is none) and the panes with their focus. */
@@ -259,7 +260,13 @@ internal class DesktopShellShortcutHost(
     }
 
     /** Back through the window navigation owner. At the first page it does nothing (and says it acted): Back must never close the app. */
-    private fun back(commands: DesktopShellRootCommands): Boolean = if (commands.canGoBack()) requestBack() else true
+    private fun back(commands: DesktopShellRootCommands): Boolean {
+        if (!commands.canGoBack()) return true
+        // MainHost's sidebar tabs share one physical stack entry. Dispatching system Back
+        // there can reach the window's exit fallback instead of the selected tab's handler.
+        // Use the same admitted Home selection as the rail; nested pages keep native Back.
+        return if (commands.atNavigationRoot()) commands.goTo(DesktopRailItem.HOME) else requestBack()
+    }
 
     /**
      * TON-1026: the shell table gives F5 and Ctrl+R to the Home and Dynamic pages only (the contract stays as it is). On every other
@@ -381,6 +388,7 @@ internal fun DesktopShellRootBinding(
         refresh = { page -> desktopShellRefresh(routes, chrome, page) },
         goTo = { item -> desktopShellGoTo(routes, visibleItems, item) },
         openHelp = { desktopShellOpenHelp(routes) },
+        atNavigationRoot = { routes.stack.size <= 1 },
     )
     SideEffect { host.bindRoot(commands) }
     DisposableEffect(host, routes) { onDispose { host.unbindRoot(routes) } }

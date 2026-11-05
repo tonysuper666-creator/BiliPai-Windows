@@ -41,7 +41,8 @@ Slice notes, kept here with the pins they explain.
     RH1. The frame (a free file) lends the rail toggle and the panes.
   * Back at the first page. requestBack at the root of the Home tab runs the back-at-root callback of the Root services, which closes the
     application (Esc already does that today). Alt+Left and the mouse Back button must not, so the host asks canGoBack first and does
-    nothing at the first page. Esc is unchanged.
+    nothing at the first page. Other single-entry sidebar tabs select Home through the rail's admitted entry instead of
+    dispatching to the window exit fallback. Esc is unchanged.
   * The text editor test. The Root has a flag for it (searchFocused) that nothing ever sets, and the leaf uses a Swing text component test
     that a Compose text field is not. The host asks the focus owner and its parents for getInputMethodRequests: the layer component of the
     Compose scene returns the request of the active text input session and null otherwise (checked in the pinned ui-desktop jar), and a
@@ -429,6 +430,15 @@ class HostModelTest(unittest.TestCase):
         self.assertFalse(press(host, "Alt+Left"))
         self.assertEqual([("requestBack",)], host.calls)
 
+    def test_single_entry_sidebar_back_selects_home_and_propagates_rejected_admission(self):
+        for mouse in (False, True):
+            for accepted in (False, True):
+                host = rig("OTHER")
+                host.bind_root("OTHER", accept=accepted, at_navigation_root=True)
+                acted = host.back_press(True) if mouse else press(host, "Alt+Left")
+                self.assertEqual(accepted, acted)
+                self.assertEqual([("goTo", "HOME")], host.calls)
+
     def test_a_held_chord_acts_once_and_the_next_press_acts_again(self):
         host = rig()
         self.assertTrue(press(host, "Alt+Enter"))
@@ -707,7 +717,9 @@ class SourceShapeTest(unittest.TestCase):
             self.assertEqual(1, block.count(needle), needle)
 
     def test_back_never_leaves_the_app_and_the_cycle_asks_the_pure_rule(self):
-        for needle in ("private fun back(commands: DesktopShellRootCommands): Boolean = if (commands.canGoBack()) requestBack() else true",
+        for needle in ("if (!commands.canGoBack()) return true",
+                       "return if (commands.atNavigationRoot()) commands.goTo(DesktopRailItem.HOME) else requestBack()",
+                       "atNavigationRoot = { routes.stack.size <= 1 },",
                        "val target = desktopShellNextPane(commands.availablePanes(), focusedPane, direction) ?: return false return commands.focusPane(target)",
                        "val fire = backPressed && !backHeld backHeld = backPressed if (!fire) return false",
                        "if (commands.page() == null) return false return back(commands)"):
