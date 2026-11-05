@@ -50,3 +50,20 @@ def unbind_refresh_lists(text):
     if bind_refresh_lists(result) != text:
         raise ValueError('Refresh list binding is not exactly invertible')
     return result
+
+_LAUNCH_ORIGINAL = 'import kotlinx.coroutines.launch'
+_LAUNCH_SHARED = 'import com.bilipai.desktop.ui.desktopRefreshLaunch as launch'
+_LAUNCH_STAR = 'import kotlinx.coroutines.*'
+
+def unbind_refresh_launch(text):
+    """Exact inverse of bind_refresh_launch for one emitted body.
+
+    Accepted only when binding it again reproduces the emitted body exactly.
+    """
+    if (_LAUNCH_STAR + '\n' + _LAUNCH_SHARED) in text:
+        result = text.replace(_LAUNCH_STAR + '\n' + _LAUNCH_SHARED, _LAUNCH_STAR, 1)
+    else:
+        result = text.replace(_LAUNCH_SHARED, _LAUNCH_ORIGINAL)
+    if bind_refresh_launch(result) != text:
+        raise ValueError('Refresh launch binding is not exactly invertible')
+    return result

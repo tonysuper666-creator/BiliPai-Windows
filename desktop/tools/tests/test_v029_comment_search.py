@@ -74,7 +74,10 @@ class V029CommentSearchSourceTest(unittest.TestCase):
         selection=next(x['v036VideoCommentCache'] for x in data['sourceSelection'] if 'v036VideoCommentCache' in x)
         from v036_video_comment_cache import read_sources
         self.assertEqual('v0.3.6',selection['fixedUpstreamTag'])
-        self.assert_original_inverse(fixed.VM,read(out/'com/android/purebilibili/feature/video/viewmodel/VideoCommentViewModel.kt'),selection,
+        # 591685d9e binds the desktop refresh launch/list imports after this receipt (bgm-detail emit): peel them exactly.
+        from desktop_refresh_adaptation import unbind_refresh_launch,unbind_refresh_lists
+        vm=unbind_refresh_launch(unbind_refresh_lists(read(out/'com/android/purebilibili/feature/video/viewmodel/VideoCommentViewModel.kt')))
+        self.assert_original_inverse(fixed.VM,vm,selection,
             original=read_sources()['VideoCommentViewModel.kt'])
         out=self.outputs['video-comment-ui']
         from v046_favorite_editor import restore
@@ -125,7 +128,11 @@ class V029CommentSearchSourceTest(unittest.TestCase):
         self.assertEqual(1,len(model))
         manifest=json.loads(read(REPO/'desktop/upstream-sources.json'))
         row=next(r for r in manifest['sources'] if r['path']==fixed.MODEL)
-        self.assertEqual('policy-extract',row['mode']);self.assertEqual(fixed.CANONICAL_MODEL_SHA,row['sha256'])
+        self.assertEqual('policy-extract',row['mode'])
+        # ad2967bbf re-pinned the live manifest to the direct-compile bytes; the catalog records
+        # the one reviewed pair (live sha256, legacySha256 = the canonical v0.2.9 model bytes).
+        pin=json.loads(read(REPO/'desktop/tools/v025-canonical-sources.json'))['paths'][fixed.MODEL]
+        self.assertEqual(fixed.CANONICAL_MODEL_SHA,pin.get('legacySha256',pin['sha256']));self.assertEqual(pin['sha256'],row['sha256'])
         self.assertNotIn(fixed.MODEL,[r['path'] for r in manifest['sources'] if r['mode']=='direct'])
 
 if __name__=='__main__': unittest.main()
