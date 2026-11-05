@@ -48,6 +48,28 @@ CHANGED = {'BottomControlBar.kt', 'TopControlBar.kt', 'PlayerControlGlass.kt', '
 NEW = {'PersistentProgressBar.kt', 'VideoProgressBarLayoutPolicy.kt'}
 
 
+V025 = json.loads((TOOLS / 'v025-canonical-sources.json').read_bytes())
+
+
+def registered_row(rows, path):
+    """The manifest row registering path; ad2967bbf retargeted moved paths to their successor (retargetedFrom)."""
+    found = [row for row in rows if row['path'] == path] or [row for row in rows if row.get('retargetedFrom') == path]
+    if len(found) != 1:
+        raise KeyError(path)
+    return found[0]
+
+
+def registered_reviewed_sha256(rows, path):
+    """The reviewed predecessor identity the manifest vouches for. The legacy read point's manifest pins the legacy
+    bytes directly; the live manifest (re-pinned in ad2967bbf) pins the direct-compile bytes, which the canonical
+    catalog pairs with the reviewed legacy identity of path."""
+    row = registered_row(rows, path)
+    if row['sha256'] != V025['paths'][row['path']]['sha256']:
+        return row['sha256']
+    pin = V025['paths'][path]
+    return pin.get('legacySha256', pin['sha256'])
+
+
 def sha(value):
     return hashlib.sha256(value.encode('utf8') if isinstance(value, str) else value).hexdigest()
 
@@ -150,9 +172,9 @@ class PlayerOverlaySourceTests(unittest.TestCase):
                      'LandscapeDanmakuComposer.kt', 'PlayerControlGlass.kt'):
             self.assertEqual(overlay.PREDECESSOR_SHA256[name], sha(by_name[name]), name)
         self.assertEqual(overlay.OVERLAY_PREDECESSOR_SHA256, sha(closure_sources[overlay.OVERLAY_PATH]))
-        registry = {row['path']: row['sha256'] for row in json.loads((REPO / 'desktop/upstream-sources.json').read_bytes())['sources']}
+        rows = json.loads((REPO / 'desktop/upstream-sources.json').read_bytes())['sources']
         for name in overlay.EXCLUDED_NOW:
-            self.assertEqual(overlay.VENDORED_LF_SHA256[name], registry[overlay.UPSTREAM_PATHS[name]], name)
+            self.assertEqual(overlay.VENDORED_LF_SHA256[name], registered_reviewed_sha256(rows, overlay.UPSTREAM_PATHS[name]), name)
         self.assertEqual(overlay.DESKTOP_TEST_PREVIOUS_SHA256, self.manifest['replacedDesktopTest']['previousSha256'])
 
     @unittest.skipUnless(commit_present(overlay.COMMIT), 'the v0.4.6 upstream commit is not in the local object store')
