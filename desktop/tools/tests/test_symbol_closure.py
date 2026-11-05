@@ -1576,7 +1576,9 @@ class ProducerMirrorTests(unittest.TestCase):
         self.addCleanup(rmtree_force, base)
         legacy = base / '.legacy-root'
         shutil.copytree(str(make_repo(self)), str(legacy))
-        scratch = base / 'scratch'
+        # A scratch of its own, shaped like run_gate's default, so the mirror root stays within MAX_SCRATCH_ROOT on Windows.
+        scratch = Path(tempfile.mkdtemp(prefix='bp-t-'))
+        self.addCleanup(rmtree_force, scratch)
         mirror, _ = gate.make_scratch_repo(legacy, scratch)
         self.assertEqual(scratch / '.legacy-root', mirror)
         self.assertTrue(v025_source_paths._legacy_snapshot(mirror))
