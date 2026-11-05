@@ -591,8 +591,12 @@ class V046WallpaperFoundationSourceTest(unittest.TestCase):
             'AppSlider': REPO / 'design-system/src/main/java/com/android/purebilibili/core/ui/components/AppSlider.kt',
             'AppTextButton': primitives,
             'AppFilterChip': primitives,
-            'AppModalBottomSheet': REPO / 'design-system/src/main/java/com/android/purebilibili/core/ui/AppSheetComponents.kt',
+            # 593dc3a37: the sheet passes the required `purpose`, which selects the desktop purpose overload
+            'AppModalBottomSheet': REPO / 'desktop/src/main/kotlin/com/android/purebilibili/core/ui/DesktopPurposeModalBottomSheet.kt',
         }
+        self.assertEqual(1, sheet.count('        purpose = DesktopModalPurpose.CONFIRM,\n'))
+        self.assertEqual(['purpose', 'onDismissRequest', 'containerColor', 'footer'],
+                         [call['named'] for call in calls(sheet, {'AppModalBottomSheet'})][0])
         for name, path in kit.items():
             params = parameters(path.read_text(encoding='utf-8'), name)
             for call in calls(sheet, {name}):
