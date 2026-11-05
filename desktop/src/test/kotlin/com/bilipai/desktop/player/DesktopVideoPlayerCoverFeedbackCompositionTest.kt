@@ -421,6 +421,8 @@ class DesktopVideoPlayerCoverFeedbackCompositionTest {
                 "enabledPlayerPlugins" -> emptyList<DesktopPlayerPluginSessionHandle>()
                 "enabledPlugins" -> emptyList<Any>()
                 "capturePlaybackDispatch" -> null
+                // No native playback publication exists in this fixture.
+                "observeInheritedPluginMute", "observeCdnTransferPlayback" -> Unit
                 else -> throw AssertionError("Unexpected plugin work: ${method.name}")
             }
         } as DesktopOriginalVideoOwnerPlugins
