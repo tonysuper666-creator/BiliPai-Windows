@@ -27,6 +27,44 @@ def signatures(source):
         result.append(source[tokens[i][1]:tokens[end][2]])
     return result
 
+# Direct paths a retained slice layer advances to its whole pinned file before the producer writes them: v040 liquid
+# (de22734e7), v040 chrome actions (59599b6a7), v042 optical (e3a868515), v043 theme chrome (326467691) and v0.4.6
+# design-system leaves A (ad89fd764) and B (97ee63f5c). Each maps to the archive of the last layer that advances it.
+ADVANCED = {
+    "AppThemeConfig.kt": "v040-liquid-value-controls",
+    "AppSurfaceTokens.kt": "v042-optical-dependencies",
+    "AppChromeSizeTokens.kt": "v046-design-system-leaves-a",
+    "AppPopupSurface.kt": "v046-design-system-leaves-a",
+    "ButtonVisualPolicy.kt": "v043-theme-chrome",
+    "components/AppPrimitiveComponents.kt": "v043-theme-chrome",
+    "components/AppPrimitiveRendererPolicy.kt": "v040-chrome-actions",
+    "components/AppDesktopInteraction.kt": "v046-design-system-leaves-b",
+    "components/AppPrimaryButton.kt": "v040-chrome-actions",
+    "components/AppCard.kt": "v046-design-system-leaves-b",
+    "components/AppSwitch.kt": "v040-liquid-value-controls",
+    "components/AppIconButton.kt": "v040-chrome-actions",
+    "renderer/material3/AppMaterial3Switch.kt": "v040-liquid-value-controls",
+    "renderer/material3/AppMaterial3IconButton.kt": "v040-chrome-actions",
+    "renderer/miuix/AppMiuixActionPrimitives.kt": "v040-chrome-actions",
+    "renderer/miuix/AppMiuixSwitch.kt": "v043-theme-chrome",
+    "renderer/miuix/AppMiuixSlider.kt": "v040-liquid-value-controls",
+    "renderer/miuix/AppMiuixIconButton.kt": "v040-chrome-actions",
+}
+PACKAGE_ROOT = "com/android/purebilibili/"
+# Direct paths a layer selects for product output: every advanced path except AppThemeConfig.kt (the liquid layer
+# replaces its bytes but does not list it for output) plus AppIcon.kt, which the chrome-action layer (59599b6a7)
+# selects unchanged because its v0.4.0 bytes equal the original.
+PRODUCT_DIRECT = (set(ADVANCED) - {"AppThemeConfig.kt"}) | {"components/AppIcon.kt"}
+# Non-direct outputs the chained emitters add in every mode: chrome actions (59599b6a7), native chrome (894b8c2ff),
+# leaves A (ad89fd764), the liquid value controls and their desktop color resources (de22734e7).
+LAYER_OUTPUTS = {PACKAGE_ROOT + "core/ui/" + relative for relative in (
+    "AppEntryIconPalette.kt", "AppSemanticVisualPolicy.kt", "ButtonSlotColor.kt", "MatchedLiquidIndicatorGeometry.kt",
+    "MediaContrastPalette.kt", "animation/LiquidIndicatorMotion.kt", "animation/LiquidIndicatorVelocity.kt",
+    "components/AppActionColors.kt", "components/AppChromeOverflow.kt", "components/AppElasticIndication.kt",
+    "components/AppLiquidValueControls.kt", "components/AppTextSearchHighlight.kt",
+    "components/BiliPaiTopBarIconDecorator.kt", "components/DesktopLiquidValueColorResources.kt",
+    "effect/LiquidLens.kt", "motion/AppTabIndicatorMotion.kt", "wallpaper/GlobalWallpaperBackdrop.kt")}
+
 class ComponentsExtractionTest(unittest.TestCase):
     def test_direct_sources_are_exact_and_already_reused_renderers_are_not_duplicated(self):
         with tempfile.TemporaryDirectory() as name:
@@ -34,16 +72,28 @@ class ComponentsExtractionTest(unittest.TestCase):
             emitted = module.generate(REPO, output, standalone=True)
             for path in module.DIRECT:
                 original = host.read(REPO, path)
+                relative = path[len(module.BASE):]
+                if relative in ADVANCED:
+                    selected = (REPO / "desktop/upstream-slices" / ADVANCED[relative] / Path(path).name).read_text(encoding="utf-8")
+                    self.assertNotEqual(selected, original, path)
+                    original = selected
                 target = host.output_target(output, path, original)
                 if path in module.REUSED: self.assertFalse(target.exists()); continue
                 self.assertEqual(body(target), original.strip() + "\n", path)
                 self.assertIn(hashlib.sha256(original.encode()).hexdigest(), target.read_text(encoding="utf-8").split("\n")[1])
-            self.assertEqual(len(emitted), len(module.DIRECT) - len(module.REUSED) + len(module.ADAPTED) + len(module.POLICIES))
+            self.assertEqual(len(emitted), len(module.DIRECT) - len(module.REUSED) + len(module.ADAPTED) + len(module.POLICIES) + len(LAYER_OUTPUTS))
+            self.assertTrue({output / relative for relative in LAYER_OUTPUTS} <= set(emitted))
 
-    def test_product_generation_emits_only_platform_bindings_and_selected_policy(self):
+    def test_product_generation_emits_only_platform_bindings_selected_policy_and_retained_slice_outputs(self):
         with tempfile.TemporaryDirectory() as name:
-            emitted = module.generate(REPO, Path(name))
-            self.assertEqual({p.name for p in emitted}, {"AppText.kt", "AppSlider.kt", "AppContentDialogLayoutPolicy.kt", "AppScrollableUnderlinePolicy.kt", "AdaptiveDialogComponents.kt"})
+            output = Path(name)
+            emitted = module.generate(REPO, output)
+            self.assertEqual(len(emitted), len(set(emitted)))
+            bindings = {"core/ui/components/AppText.kt", "core/ui/components/AppSlider.kt", "core/ui/AppContentDialogLayoutPolicy.kt",
+                        "core/ui/components/AppScrollableUnderlinePolicy.kt", "core/ui/AdaptiveDialogComponents.kt"}
+            selected = {"core/ui/" + relative for relative in PRODUCT_DIRECT}
+            self.assertEqual({p.relative_to(output).as_posix() for p in emitted},
+                             {PACKAGE_ROOT + relative for relative in bindings | selected} | LAYER_OUTPUTS)
             for path in emitted: self.assertNotRegex(body(path), r"(?m)^import android\.")
 
     def test_all_adapter_public_component_parameters_defaults_and_overloads_are_original(self):
@@ -100,8 +150,13 @@ class ComponentsExtractionTest(unittest.TestCase):
         platform = REPO / "desktop/src/main/kotlin/com/bilipai/desktop/appearance/DesktopTextClipboard.kt"
         if not platform.is_file(): platform = REPO / "desktop/.local/component-parity/src/DesktopTextClipboard.kt"
         binding = platform.read_text(encoding="utf-8")
-        self.assertIn("systemClipboard.setContents", binding)
-        self.assertNotRegex(binding, r"getContents\(|getData\(")
+        # 418d1831b: the binding writes through the desktop share link copier, which owns the AWT clipboard write.
+        self.assertIn("    private val delegate = ReportingDesktopTextClipboard(AwtDesktopShare()) { failure.value = it }\n", binding)
+        self.assertIn("        share.copyLink(value)\n        report(null)\n        true\n", binding)
+        share = (REPO / "desktop/src/main/kotlin/com/bilipai/desktop/platform/share/AwtDesktopShare.kt").read_text(encoding="utf-8")
+        self.assertIn("    private val clipboard: () -> Clipboard = { Toolkit.getDefaultToolkit().systemClipboard },\n", share)
+        self.assertIn("        fun copy() = clipboard().setContents(StringSelection(link), null)\n", share)
+        for source in (binding, share): self.assertNotRegex(source, r"getContents\(|getData\(")
 
     def test_scrollable_default_is_extracted_from_original_not_reimplemented(self):
         with tempfile.TemporaryDirectory() as name:
