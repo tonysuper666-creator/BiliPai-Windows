@@ -1,0 +1,15 @@
+// Read-only diagnostic. Run after the normal source producers; does not change the source set.
+gradle.projectsEvaluated {
+    def desktopProject = gradle.rootProject
+    desktopProject.tasks.register('ton1195SourceOwnership') {
+        doLast {
+            def names = ['DynamicSubReplyPreviewHost.kt', 'SubReplySheet.kt', 'DesktopOriginalDynamicDetailLayout.kt']
+            def sources = desktopProject.extensions.getByName('kotlin').sourceSets.getByName('main').kotlin.files
+            names.each { name ->
+                def owners = sources.findAll { it.name == name }.sort { it.path }
+                println("TON1195_OWNER ${name} count=${owners.size()}")
+                owners.each { println(desktopProject.rootDir.toPath().relativize(it.toPath())) }
+            }
+        }
+    }
+}

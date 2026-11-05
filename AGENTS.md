@@ -5,6 +5,7 @@ an independent linked worktree. Do not modify another agent's checkout or shared
 Git index. Root owns the integration branch, version metadata, build files,
 upstream tracking, packaging and the single desktop installation.
 Pull requests into the integration branch that have passed their card's acceptance review, are MERGEABLE, and pass the targeted local gate may be merged by the reconciling or reviewing agent (decision by the user, 2026-10-31). Root still owns upstream merges, version metadata, build files and packaging.
+When the main session is not active, Architect acts as Root for the items on the Root list of the coordination card (decision by the user, 2026-11-05: the project should run autonomously). This covers gate A runs on a fixed integration SHA, integrating conflicting pull requests, version metadata, build files and packaging. Before Architect pushes to the integration branch, an agent from a different vendor (Expert by default) must review the diff and the gate A evidence. Changing `desktop/tools/gate-a-baseline.json` additionally needs a written reason on the card.
 
 ## Accepted baseline
 
@@ -46,6 +47,7 @@ Root serializes shared Gradle verification and final integration.
 Keep changes targeted and avoid unsolicited dependencies. Do not start the app,
 activate windows, simulate input, play media, change GPU/audio configuration,
 touch account data, or disturb the user's game without current authorization.
+Inside the Parallels VM `BiliPai-Win11` the user has given that authorization (2026-11-05): agents start the app, activate windows, simulate input, take screenshots and reuse the logged-in test profile there themselves instead of asking the user. This never applies to `winbox` or the user's own machines.
 Do not replace or duplicate desktop builds. Only Root pushes directly to the integration branch; accepted pull requests are merged as described above.
 Do not contact upstream authors or trigger
 paid cloud builds. Public standard GitHub runners are the allowed cloud builds.

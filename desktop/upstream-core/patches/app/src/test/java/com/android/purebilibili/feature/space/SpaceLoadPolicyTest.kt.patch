@@ -1,0 +1,23 @@
+Upstream-source-sha256: 3027b1ffe897397419b2f502b75d52799d78a3962d48fef174341eb4546521c7
+Reason: resolveSpaceInitialSeedFromAggregate rejects missing name/face at SpaceLoadPolicy.kt:579. Supply valid profile fixtures so the original tag-filter and cheese assertions exercise their intended branches; no business assertion removed.
+
+--- a/app/src/test/java/com/android/purebilibili/feature/space/SpaceLoadPolicyTest.kt
++++ b/app/src/test/java/com/android/purebilibili/feature/space/SpaceLoadPolicyTest.kt
+@@ -793,6 +793,8 @@
+             data = SpaceAggregateData(
+                 card = SpaceAggregateCard(
+                     mid = "42",
++                    name = "Profile",
++                    face = "https://example.com/avatar.jpg",
+                     spaceTag = listOf(
+                         SpaceTagItem(type = "location", title = "IP属地：广东"),
+                         SpaceTagItem(type = "real_name", title = "已实名认证"),
+@@ -1015,7 +1017,7 @@
+     fun `resolveSpaceInitialSeedFromAggregate detects cheese tab in tab2`() {
+         val seed = resolveSpaceInitialSeedFromAggregate(
+             data = SpaceAggregateData(
+-                card = SpaceAggregateCard(mid = "123", name = "Teacher"),
++                card = SpaceAggregateCard(mid = "123", name = "Teacher", face = "https://example.com/avatar.jpg"),
+                 tab2 = listOf(
+                     SpaceAggregateTab(title = "主页", param = "home"),
+                     SpaceAggregateTab(title = "课堂", param = "cheese")

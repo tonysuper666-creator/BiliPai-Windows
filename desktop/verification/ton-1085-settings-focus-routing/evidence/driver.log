@@ -1,0 +1,16 @@
+patching file 'app/src/test/java/com/android/purebilibili/feature/settings/SettingsRootCategoryContentStructureTest.kt'
+patching file 'app/src/test/java/com/android/purebilibili/feature/settings/SettingsRootCategoryContentStructureTest.kt'
+baseline exit 1 tests=25 failures=2 skipped=0 identities=[aboutProjectOverview_usesRasterLauncherAssetForComposePainter(), broadSettingsEntriesOpenAtPageStartWhileSubtopicEntriesUsePreciseFocus()]
+corrected exit 1 tests=25 failures=1 skipped=0 identities=[aboutProjectOverview_usesRasterLauncherAssetForComposePainter()]
+negative-category-route exit 1 tests=25 failures=2 skipped=0 identities=[aboutProjectOverview_usesRasterLauncherAssetForComposePainter(), broadSettingsEntriesOpenAtPageStartWhileSubtopicEntriesUsePreciseFocus()]
+negative-page-default exit 1 tests=25 failures=2 skipped=0 identities=[aboutProjectOverview_usesRasterLauncherAssetForComposePainter(), broadSettingsEntriesOpenAtPageStartWhileSubtopicEntriesUsePreciseFocus()]
+negative-first-section exit 1 tests=25 failures=2 skipped=0 identities=[aboutProjectOverview_usesRasterLauncherAssetForComposePainter(), broadSettingsEntriesOpenAtPageStartWhileSubtopicEntriesUsePreciseFocus()]
+negative-quality-target exit 1 tests=25 failures=2 skipped=0 identities=[aboutProjectOverview_usesRasterLauncherAssetForComposePainter(), broadSettingsEntriesOpenAtPageStartWhileSubtopicEntriesUsePreciseFocus()]
+negative-quality-focus exit 1 tests=25 failures=2 skipped=0 identities=[aboutProjectOverview_usesRasterLauncherAssetForComposePainter(), broadSettingsEntriesOpenAtPageStartWhileSubtopicEntriesUsePreciseFocus()]
+negative-comments-focus exit 1 tests=25 failures=2 skipped=0 identities=[aboutProjectOverview_usesRasterLauncherAssetForComposePainter(), broadSettingsEntriesOpenAtPageStartWhileSubtopicEntriesUsePreciseFocus()]
+negative-fullscreen-focus exit 1 tests=25 failures=2 skipped=0 identities=[aboutProjectOverview_usesRasterLauncherAssetForComposePainter(), broadSettingsEntriesOpenAtPageStartWhileSubtopicEntriesUsePreciseFocus()]
+negative-diagnostics-focus exit 1 tests=25 failures=2 skipped=0 identities=[aboutProjectOverview_usesRasterLauncherAssetForComposePainter(), broadSettingsEntriesOpenAtPageStartWhileSubtopicEntriesUsePreciseFocus()]
+negative-bottom-focus exit 1 tests=25 failures=2 skipped=0 identities=[aboutProjectOverview_usesRasterLauncherAssetForComposePainter(), broadSettingsEntriesOpenAtPageStartWhileSubtopicEntriesUsePreciseFocus()]
+negative-animation-action exit 1 tests=25 failures=2 skipped=0 identities=[aboutProjectOverview_usesRasterLauncherAssetForComposePainter(), broadSettingsEntriesOpenAtPageStartWhileSubtopicEntriesUsePreciseFocus()]
+corrected exit 1 tests=25 failures=1 skipped=0 identities=[aboutProjectOverview_usesRasterLauncherAssetForComposePainter()]
+Verified 2 -> 1 exact failures, no missing or skipped tests; ten wrong route, start or focus mutants re-fail; unchanged corrected fixture restored.

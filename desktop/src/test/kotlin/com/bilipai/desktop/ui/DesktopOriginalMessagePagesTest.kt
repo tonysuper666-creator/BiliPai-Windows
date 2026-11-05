@@ -10,6 +10,7 @@ import com.bilipai.desktop.data.*
 import com.bilipai.desktop.plugins.*
 import com.sun.net.httpserver.HttpServer
 import kotlinx.coroutines.*
+import kotlinx.coroutines.swing.Swing
 import kotlin.test.Test
 import kotlinx.serialization.json.*
 import okhttp3.*
@@ -31,18 +32,19 @@ private data class MessagePageTestReply(val body:String="""{"code":0,"data":{}}"
 private fun decode(raw:String)=raw.split('&').filter { it.isNotBlank() }.associate { item ->
     val parts=item.split('=',limit=2);URLDecoder.decode(parts[0],Charsets.UTF_8) to URLDecoder.decode(parts.getOrElse(1){""},Charsets.UTF_8)
 }
-private class MessagePageTestFixture : AutoCloseable {
-    val root=Files.createTempDirectory("bp-msg-owned-")
+private class MessagePageTestFixture(dispatcher: CoroutineDispatcher? = null) : AutoCloseable {
+    private val pageFixture=DesktopPageTestFixture()
+    val root=pageFixture.root
     val sessions=DesktopSessionStore(root.resolve("synthetic-session.json"),persistent=false)
     val repository=DesktopRepository(sessions)
-    val scope=CoroutineScope(SupervisorJob()+Dispatchers.Default)
+    val scope=if (dispatcher == null) pageFixture.scope else CoroutineScope(pageFixture.scope.coroutineContext + dispatcher)
     val retained=AtomicBoolean(true)
     val visible=AtomicBoolean(true)
     val rootLock=Any()
     val canBeginEditor=AtomicBoolean(true)
     val editorActivity=AtomicInteger()
     @Volatile var onEditorActivity:()->Unit={}
-    val pluginContext=DesktopPluginContext(DesktopPluginStore(root.resolve("global")))
+    val pluginContext=pageFixture.pluginContext
     lateinit var community:DesktopCommunityRepository
     private val pageOwners=mutableListOf<DesktopOriginalMessagePageOwner>()
     val hits=ConcurrentLinkedQueue<MessagePageTestHit>()
@@ -90,22 +92,11 @@ private class MessagePageTestFixture : AutoCloseable {
         admission.im=services.im
     }
     suspend fun pageOwner():DesktopOriginalMessagePageOwner {
-        val lifecycleOwner=object:androidx.lifecycle.LifecycleOwner {
-            override val lifecycle:androidx.lifecycle.Lifecycle=androidx.lifecycle.LifecycleRegistry.createUnsafe(this).apply {
-                currentState=androidx.lifecycle.Lifecycle.State.RESUMED
-            }
-        }
         // Only unused rendering ports reject calls. The actual message owner, repository,
         // account admission, settings projection and loopback request view remain real.
-        val home=DesktopHomeEnvironment(
-            DesktopOriginalHomePreferences.create(pluginContext.store,scope,false,{false}),pluginContext,lifecycleOwner,
-            kotlinx.coroutines.flow.MutableStateFlow(false),unusedMessageUiPort(DesktopHomeAnalyticsPort::class.java),
-            { DesktopOriginalHomeGlobalNamespace(pluginContext.store,it) },kotlinx.coroutines.flow.MutableStateFlow(null),
-            {_,_->}, {}, {_,_->}, unusedMessageUiPort(DesktopHomeEmbeddedPages::class.java),{_,_->false},{},
-            unusedMessageUiPort(DesktopHomeOverlayPorts::class.java))
         return DesktopOriginalMessagePageOwner(repository,community,repository.sessionEpoch,42,scope,
             retained::get,visible::get,{action->synchronized(rootLock){if(retained.get()){action();true}else false}},
-            home,{},false,canBeginEditor::get,{editorActivity.incrementAndGet();onEditorActivity()}).also(pageOwners::add)
+            pageFixture.home,{},false,canBeginEditor::get,{editorActivity.incrementAndGet();onEditorActivity()}).also(pageOwners::add)
     }
     suspend fun <T> call(block:suspend()->T):T {
         val result=CompletableDeferred<T>();val job=admission.launch {
@@ -132,7 +123,7 @@ private class MessagePageTestFixture : AutoCloseable {
         in imPaths -> grpcReply(byteArrayOf())
         else -> MessagePageTestReply("""{"code":0}""")
     }
-    suspend fun shutdown() { retained.set(false);pageOwners.forEach { it.closeAndJoin() };admission.retireAndJoin();scope.cancel();server.stop(0);executor.shutdownNow();repository.httpClient.dispatcher.executorService.shutdownNow();repository.httpClient.connectionPool.evictAll() }
+    suspend fun shutdown() { retained.set(false);pageOwners.forEach { it.closeAndJoin() };admission.retireAndJoin();server.stop(0);executor.shutdownNow();repository.httpClient.dispatcher.executorService.shutdownNow();repository.httpClient.connectionPool.evictAll();pageFixture.shutdown() }
     override fun close() { runBlocking { shutdown() } }
     companion object {
         // The IM gRPC host keeps its production origin too (upstream MessageImRepository, bilibili.app.im.v1.im).
@@ -187,13 +178,37 @@ private fun chatJson(ids: LongRange, more: Boolean, withdrawn: Long = 0) = build
 }.toString()
 
 class DesktopV029ChatTimelineIntegrationTest {
-    private suspend fun ready(f: MessagePageTestFixture, vm: ChatViewModel) {
-        val field = vm.javaClass.getDeclaredField("latestMessagesJob").apply { isAccessible = true }
-        f.waitFor { vm.uiState.value.messagesLoaded && (field.get(vm) as? Job)?.isActive != true }
+    // Match the page owner's UI context; repository IO still uses its real dispatcher.
+    private suspend fun withChatFixture(block: suspend (MessagePageTestFixture) -> Unit) {
+        val fixture = MessagePageTestFixture(Dispatchers.Swing.immediate)
+        try { block(fixture) } finally { fixture.shutdown() }
     }
 
-    @Test fun actualRefreshFillsGapAndPreservesPreviouslyLoadedHistory(): Unit = runBlocking {
-        MessagePageTestFixture().use { f ->
+    private suspend fun ready(vm: ChatViewModel) {
+        val field = vm.javaClass.getDeclaredField("latestMessagesJob").apply { isAccessible = true }
+        val latest = checkNotNull(field.get(vm) as? Job)
+        withTimeout(5_000) { latest.join() }
+        check(latest.isCompleted && !latest.isCancelled && vm.uiState.value.messagesLoaded)
+    }
+
+    private suspend fun awaitEditorCompletion(f: MessagePageTestFixture, action: suspend () -> Unit) {
+        val completed = CompletableDeferred<Unit>()
+        val observed = AtomicBoolean(false)
+        val previous = f.onEditorActivity
+        f.onEditorActivity = {
+            previous()
+            if (f.admission.hasPendingEditorMutations()) observed.set(true)
+            else if (observed.get()) completed.complete(Unit)
+        }
+        try {
+            action()
+            // Admission sends this notification from the real Jobs' completion handlers.
+            withTimeout(5_000) { completed.await() }
+        } finally { f.onEditorActivity = previous }
+    }
+
+    @Test fun actualRefreshFillsGapAndPreservesPreviouslyLoadedHistory(): Unit = runBlocking(Dispatchers.Swing) {
+        withChatFixture { f ->
             val resumed = AtomicBoolean(false)
             f.respond = { hit -> if (hit.path.endsWith("fetch_session_msgs")) {
                 val cursor = hit.query["end_seqno"]?.toLongOrNull() ?: 0L
@@ -204,7 +219,7 @@ class DesktopV029ChatTimelineIntegrationTest {
                     else -> chatJson(40L..69L, true)
                 })
             } else f.default(hit) }
-            val vm = ChatViewModel(7, 1, f.admission); ready(f, vm)
+            val vm = ChatViewModel(7, 1, f.admission); ready(vm)
             vm.loadMoreMessages(); f.waitFor { vm.uiState.value.messages.size == 69 && !vm.uiState.value.isLoadingMore }
             check(vm.uiState.value.minSeqno == 1L && !vm.uiState.value.hasMore)
             resumed.set(true); vm.refreshMessages()
@@ -215,9 +230,9 @@ class DesktopV029ChatTimelineIntegrationTest {
         }
     }
 
-    @Test fun actualRefreshErrorRetainsContentAndRetryClearsError(): Unit = runBlocking {
-        MessagePageTestFixture().use { f ->
-            val vm = ChatViewModel(7, 1, f.admission); ready(f, vm)
+    @Test fun actualRefreshErrorRetainsContentAndRetryClearsError(): Unit = runBlocking(Dispatchers.Swing) {
+        withChatFixture { f ->
+            val vm = ChatViewModel(7, 1, f.admission); ready(vm)
             val before = vm.uiState.value.messages
             f.respond = { hit -> if (hit.path.endsWith("fetch_session_msgs"))
                 MessagePageTestReply("""{"code":-400,"message":"controlled refresh failure"}""") else f.default(hit) }
@@ -229,9 +244,9 @@ class DesktopV029ChatTimelineIntegrationTest {
         }
     }
 
-    @Test fun visibleRefreshCancellationRejectsLateReply(): Unit = runBlocking {
-        MessagePageTestFixture().use { f ->
-            val vm = ChatViewModel(7, 1, f.admission); ready(f, vm)
+    @Test fun visibleRefreshCancellationRejectsLateReply(): Unit = runBlocking(Dispatchers.Swing) {
+        withChatFixture { f ->
+            val vm = ChatViewModel(7, 1, f.admission); ready(vm)
             val before = vm.uiState.value.messages
             val entered = CompletableDeferred<Unit>(); val released = CountDownLatch(1)
             f.respond = { hit -> if (hit.path.endsWith("fetch_session_msgs")) {
@@ -243,9 +258,9 @@ class DesktopV029ChatTimelineIntegrationTest {
         }
     }
 
-    @Test fun accountReplacementRetiresActualInFlightRefresh(): Unit = runBlocking {
-        MessagePageTestFixture().use { f ->
-            val vm = ChatViewModel(7, 1, f.admission); ready(f, vm)
+    @Test fun accountReplacementRetiresActualInFlightRefresh(): Unit = runBlocking(Dispatchers.Swing) {
+        withChatFixture { f ->
+            val vm = ChatViewModel(7, 1, f.admission); ready(vm)
             val before = vm.uiState.value.messages
             val entered = CompletableDeferred<Unit>(); val released = CountDownLatch(1)
             f.respond = { hit -> if (hit.path.endsWith("fetch_session_msgs")) {
@@ -260,23 +275,25 @@ class DesktopV029ChatTimelineIntegrationTest {
         }
     }
 
-    @Test fun rejectedSendRetainsDraftAcknowledgementAndSuccessCanBeConsumed(): Unit = runBlocking {
-        MessagePageTestFixture().use { f ->
-            val vm = ChatViewModel(7, 1, f.admission); ready(f, vm)
+    @Test fun rejectedSendRetainsDraftAcknowledgementAndSuccessCanBeConsumed(): Unit = runBlocking(Dispatchers.Swing) {
+        withChatFixture { f ->
+            val vm = ChatViewModel(7, 1, f.admission); ready(vm)
             f.respond = { hit -> if (hit.path.endsWith("send_msg"))
                 MessagePageTestReply("""{"code":-400,"message":"controlled send failure"}""") else f.default(hit) }
-            vm.sendMessage("keep draft"); f.waitFor { !vm.uiState.value.isSending && vm.uiState.value.sendError != null }
+            awaitEditorCompletion(f) { vm.sendMessage("keep draft") }
+            check(!vm.uiState.value.isSending && vm.uiState.value.sendError != null)
             check(vm.uiState.value.sentText == null && vm.uiState.value.scrollToLatestVersion == 0L)
-            f.respond = { f.default(it) }; vm.sendMessage("keep draft")
-            f.waitFor { vm.uiState.value.sentText == "keep draft" && !vm.uiState.value.isSending }
+            f.respond = { f.default(it) }
+            awaitEditorCompletion(f) { vm.sendMessage("keep draft") }
+            check(vm.uiState.value.sentText == "keep draft" && !vm.uiState.value.isSending)
             vm.consumeSentText("different draft"); check(vm.uiState.value.sentText == "keep draft")
             vm.consumeSentText("keep draft"); check(vm.uiState.value.sentText == null)
         }
     }
 
-    @Test fun coveredPageCannotSetPendingOrSendAndRapidVisibleCallsSubmitOnce(): Unit = runBlocking {
-        MessagePageTestFixture().use { f ->
-            val vm = ChatViewModel(7, 1, f.admission); ready(f, vm)
+    @Test fun coveredPageCannotSetPendingOrSendAndRapidVisibleCallsSubmitOnce(): Unit = runBlocking(Dispatchers.Swing) {
+        withChatFixture { f ->
+            val vm = ChatViewModel(7, 1, f.admission); ready(vm)
             f.visible.set(false); vm.sendMessage("hidden")
             check(!vm.uiState.value.isSending && f.hits.none { it.path.endsWith("send_msg") })
             f.visible.set(true)
@@ -284,15 +301,48 @@ class DesktopV029ChatTimelineIntegrationTest {
             f.respond = { hit -> if (hit.path.endsWith("send_msg")) {
                 entered.complete(Unit); released.await(3, TimeUnit.SECONDS); f.default(hit)
             } else f.default(hit) }
-            vm.sendMessage("visible"); vm.sendMessage("visible")
-            withTimeout(5_000) { entered.await() }; vm.sendMessage("visible"); released.countDown()
-            f.waitFor { vm.uiState.value.sentText == "visible" && !vm.uiState.value.isSending }
+            awaitEditorCompletion(f) {
+                try {
+                    vm.sendMessage("visible"); vm.sendMessage("visible")
+                    withTimeout(5_000) { entered.await() }; vm.sendMessage("visible")
+                } finally { released.countDown() }
+            }
+            check(vm.uiState.value.sentText == "visible" && !vm.uiState.value.isSending)
             check(f.hits.count { it.path.endsWith("send_msg") } == 1)
         }
     }
 
-    @Test fun externalRefreshCallerRetiresNonCancellableFinalPublication(): Unit = runBlocking {
-        MessagePageTestFixture().use { f ->
+    @Test fun lateSessionControlRetainsCompletedSendAcknowledgement(): Unit = runBlocking(Dispatchers.Swing) {
+        withChatFixture { f ->
+            val controlEntered = CompletableDeferred<Unit>()
+            val releaseControl = CountDownLatch(1)
+            f.respond = { hit ->
+                if (hit.path.endsWith("get_session_ss")) {
+                    controlEntered.complete(Unit)
+                    check(releaseControl.await(5, TimeUnit.SECONDS))
+                }
+                f.default(hit)
+            }
+            try {
+                val vm = ChatViewModel(7, 1, f.admission); ready(vm)
+                withTimeout(5_000) { controlEntered.await() }
+                check(vm.uiState.value.isSessionControlLoading)
+                awaitEditorCompletion(f) { vm.sendMessage("while control loads") }
+                check(vm.uiState.value.sentText == "while control loads" && !vm.uiState.value.isSending)
+                releaseControl.countDown()
+                // Join the actual control read, including its final state publication.
+                val field = f.admission.javaClass.getDeclaredField("operations").apply { isAccessible = true }
+                val control = (field.get(f.admission) as Map<*, *>)["chat-control"] as Job
+                withTimeout(5_000) { control.join() }
+                check(!control.isCancelled && !vm.uiState.value.isSessionControlLoading)
+                check(vm.uiState.value.sentText == "while control loads" && !vm.uiState.value.isSending)
+                check(f.hits.count { it.path.endsWith("send_msg") } == 1)
+            } finally { releaseControl.countDown() }
+        }
+    }
+
+    @Test fun externalRefreshCallerRetiresNonCancellableFinalPublication(): Unit = runBlocking(Dispatchers.Swing) {
+        withChatFixture { f ->
             val state = f.admission.stateFlow(0)
             val entered = CompletableDeferred<Unit>(); val released = CompletableDeferred<Unit>()
             val caller = launch {
@@ -573,10 +623,6 @@ class DesktopOriginalMessagePagesTest {
     }
 }
 
-
-@Suppress("UNCHECKED_CAST")
-private fun <T> unusedMessageUiPort(type:Class<T>):T = java.lang.reflect.Proxy.newProxyInstance(
-    type.classLoader,arrayOf(type)) { _,method,_-> error("Unexpected rendering port ${method.name}") } as T
 
 /** Actual PageOwner/ChatViewModel/owned Job regression; no OS window or real account. */
 class DesktopMessageUpdateInstallationHoldTest {

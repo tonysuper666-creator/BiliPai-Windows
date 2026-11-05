@@ -3497,6 +3497,15 @@ val correctedUpstreamTestPaths = setOf(
     "app/src/test/java/com/android/purebilibili/core/ui/skeleton/ContentLoadingSkeletonStructureTest.kt",
     "app/src/test/java/com/android/purebilibili/core/ui/components/AppPreferenceApiStructureTest.kt",
     "app/src/test/java/com/android/purebilibili/core/ui/transition/VideoSharedTransitionPolicyTest.kt",
+    "app/src/test/java/com/android/purebilibili/feature/settings/AppBuildVerificationPolicyTest.kt",
+    "app/src/test/java/com/android/purebilibili/feature/settings/AnimationSettingsScreenStructureTest.kt",
+    "app/src/test/java/com/android/purebilibili/feature/settings/SettingsCoreCombineOrderTest.kt",
+    "app/src/test/java/com/android/purebilibili/feature/settings/SettingsMiuixSimplificationStructureTest.kt",
+    "app/src/test/java/com/android/purebilibili/feature/settings/SettingsRootCategoryContentStructureTest.kt",
+    "app/src/test/java/com/android/purebilibili/feature/space/SpaceTabChromePolicyTest.kt",
+    "app/src/test/java/com/android/purebilibili/feature/space/SpaceLoadPolicyTest.kt",
+    "app/src/test/java/com/android/purebilibili/feature/space/SpaceAggregatedModelMappingTest.kt",
+    "app/src/test/java/com/android/purebilibili/feature/space/SpaceDynamicNavigationPolicyTest.kt",
 )
 val correctedUpstreamTestOutput = layout.buildDirectory.dir("patched-upstream-tests")
 val applyUpstreamTestCorrections by tasks.registering {
@@ -3867,6 +3876,29 @@ val sponsorPresentationTests by tasks.registering(Test::class) {
     systemProperty("bilipai.js.workerResources", jsWorkerOutput.get().asFile.absolutePath)
 }
 tasks.test { finalizedBy(sponsorPresentationTests) }
+// The real application image-loader owner installs Coil's process-wide SingletonImageLoader and refuses to start once
+// anything else in the process has initialized Coil. Tests that construct that owner run, with all of their assertions,
+// one class per fresh worker instead of depending on test order inside :test.
+val applicationImageLoaderOwnerTestClasses = listOf(
+    "com.bilipai.desktop.ui.DesktopIntegerResourceCoilTest",
+    "com.bilipai.desktop.ui.DesktopAboutIconCoilTest",
+)
+val applicationImageLoaderOwnerTests by tasks.registering(Test::class) {
+    group = "verification"
+    description = "Run tests that construct the actual application image-loader owner, each class in its own JVM."
+    dependsOn(tasks.named("testClasses"))
+    testClassesDirs = sourceSets["test"].output.classesDirs
+    classpath = sourceSets["test"].runtimeClasspath
+    useJUnitPlatform()
+    applicationImageLoaderOwnerTestClasses.forEach { filter.includeTestsMatching(it) }
+    maxParallelForks = 1
+    forkEvery = 1
+    systemProperty("java.awt.headless", "true")
+}
+tasks.test {
+    applicationImageLoaderOwnerTestClasses.forEach { filter.excludeTestsMatching(it) }
+    finalizedBy(applicationImageLoaderOwnerTests)
+}
 // Saved credentials are protected by Windows DPAPI only. A non-Windows test host has no system protection, so its
 // test JVMs explicitly select the test-only implementation (DesktopCredentialProtection); Windows tests use DPAPI.
 tasks.withType<Test>().configureEach {

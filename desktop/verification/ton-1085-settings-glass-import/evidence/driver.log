@@ -1,0 +1,13 @@
+patching file 'app/src/test/java/com/android/purebilibili/feature/settings/SettingsMiuixSimplificationStructureTest.kt'
+baseline unique-context matcher agrees with patch(1)
+patching file 'app/src/test/java/com/android/purebilibili/feature/settings/SettingsMiuixSimplificationStructureTest.kt'
+corrected unique-context matcher agrees with patch(1)
+baseline exit 1 tests=5 failures=2 skipped=0 identities=[appearance settings expose one ui style selection while keeping miuix scaffold(), liquid glass adjustment uses live miuix backdrop and commits on release()]
+corrected exit 1 tests=5 failures=1 skipped=0 identities=[appearance settings expose one ui style selection while keeping miuix scaffold()]
+negative-importing-label exit 1 tests=5 failures=2 skipped=0 identities=[appearance settings expose one ui style selection while keeping miuix scaffold(), liquid glass adjustment uses live miuix backdrop and commits on release()]
+negative-import-action exit 1 tests=5 failures=2 skipped=0 identities=[appearance settings expose one ui style selection while keeping miuix scaffold(), liquid glass adjustment uses live miuix backdrop and commits on release()]
+negative-enabled exit 1 tests=5 failures=2 skipped=0 identities=[appearance settings expose one ui style selection while keeping miuix scaffold(), liquid glass adjustment uses live miuix backdrop and commits on release()]
+positive-layout exit 1 tests=5 failures=1 skipped=0 identities=[appearance settings expose one ui style selection while keeping miuix scaffold()]
+negative-directory-title exit 1 tests=5 failures=2 skipped=0 identities=[appearance settings expose one ui style selection while keeping miuix scaffold(), liquid glass adjustment uses live miuix backdrop and commits on release()]
+negative-pager-image exit 1 tests=5 failures=2 skipped=0 identities=[appearance settings expose one ui style selection while keeping miuix scaffold(), liquid glass adjustment uses live miuix backdrop and commits on release()]
+Verified exact 2 -> 1 failure identities, no missing or skipped tests, five counterexamples and one formatting positive.

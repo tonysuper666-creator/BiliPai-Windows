@@ -1,0 +1,68 @@
+package com.bilipai.desktop.ui
+
+import androidx.compose.ui.res.DesktopDrawableTable
+import coil3.PlatformContext
+import coil3.request.ErrorResult
+import coil3.request.ImageRequest
+import coil3.request.SuccessResult
+import com.android.purebilibili.core.store.AppIconAppearance
+import com.android.purebilibili.feature.settings.getIconGroups
+import com.android.purebilibili.feature.settings.resolveIconOptionPreviewRes
+import com.bilipai.desktop.data.DesktopRepository
+import com.bilipai.desktop.data.DesktopSessionStore
+import com.bilipai.desktop.settings.desktopOriginalIconPreviewUri
+import com.android.purebilibili.R
+import kotlinx.coroutines.runBlocking
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Test
+import java.nio.file.Files
+import java.nio.file.Path
+
+/** The About page passes the selected integer resource to AsyncImage, not a classpath URI. */
+class DesktopAboutIconCoilTest {
+    @Test fun aboutSelectedResourcesDecodeThroughTheApplicationOwner(): Unit = runBlocking {
+        val owner = DesktopApplicationImageLoader(
+            DesktopRepository(DesktopSessionStore.temporary()),
+            Files.createTempDirectory(Path.of("build/tmp").toAbsolutePath(), "about-icon-coil"),
+        ) { true }
+        val oldNight = DesktopDrawableTable.nightForImageRequests
+        try {
+            for (dark in listOf(false, true)) {
+                DesktopDrawableTable.nightForImageRequests = dark
+                for (option in getIconGroups().flatMap { it.icons }) {
+                    for (appearance in AppIconAppearance.entries) {
+                        val name = resolveIconOptionPreviewRes(option.key, appearance)
+                        val id = desktopOriginalIconPreviewUri(name, dark)
+                        val result = owner.imageLoader.execute(
+                            ImageRequest.Builder(PlatformContext.INSTANCE).data(id).size(96, 96)
+                                .memoryCacheKey("about-${option.key}-$appearance-$dark").build()
+                        )
+                        assertTrue(result is SuccessResult, "${option.key} $appearance dark=$dark id=$id: $result")
+                        val image = (result as SuccessResult).image
+                        assertTrue(image.width > 0 && image.height > 0, "empty ${option.key} $appearance dark=$dark")
+                        println("about ${option.key} $appearance dark=$dark id=$id ${image.width}x${image.height}")
+                    }
+                }
+            }
+            val invalid = owner.imageLoader.execute(
+                ImageRequest.Builder(PlatformContext.INSTANCE)
+                    .data(coil3.Uri(scheme = "file", path = "/definitely-missing-ton1085/icon.png"))
+                    .size(96, 96).build()
+            )
+            assertTrue(invalid is ErrorResult, "missing icon must fail: $invalid")
+            println("negative missing local icon: ErrorResult")
+            println("registered mappers: ${owner.imageLoader.components.mappers}")
+            println("registered fetchers: ${owner.imageLoader.components.fetcherFactories}")
+            // The upstream integer model uses a distinct desktop fetcher; exercise it separately.
+            val adaptive = owner.imageLoader.execute(
+                ImageRequest.Builder(PlatformContext.INSTANCE).data(R.mipmap.ic_launcher_bilipai_round).size(96, 96).build()
+            )
+            assertTrue(adaptive is SuccessResult, "integer adaptive resource: $adaptive")
+
+        } finally {
+            DesktopDrawableTable.nightForImageRequests = oldNight
+            owner.close()
+        }
+    }
+}
