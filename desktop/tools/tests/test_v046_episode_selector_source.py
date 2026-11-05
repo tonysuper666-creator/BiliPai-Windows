@@ -119,6 +119,28 @@ def run_script_producer(label, output):
         runpy.run_path(str(TOOLS / SCRIPT_PRODUCERS[label]), run_name='__main__')
 
 
+V025 = json.loads((TOOLS / 'v025-canonical-sources.json').read_bytes())
+
+
+def registered_row(rows, path):
+    """The manifest row registering path; ad2967bbf retargeted moved paths to their successor (retargetedFrom)."""
+    found = [row for row in rows if row['path'] == path] or [row for row in rows if row.get('retargetedFrom') == path]
+    if len(found) != 1:
+        raise KeyError(path)
+    return found[0]
+
+
+def registered_reviewed_sha256(rows, path):
+    """The reviewed predecessor identity the manifest vouches for. The legacy read point's manifest pins the legacy
+    bytes directly; the live manifest (re-pinned in ad2967bbf) pins the direct-compile bytes, which the canonical
+    catalog pairs with the reviewed legacy identity of path."""
+    row = registered_row(rows, path)
+    if row['sha256'] != V025['paths'][row['path']]['sha256']:
+        return row['sha256']
+    pin = V025['paths'][path]
+    return pin.get('legacySha256', pin['sha256'])
+
+
 def commit_present(commit):
     return subprocess.run(['git', '-C', str(REPO), 'cat-file', '-e', commit + '^{commit}'], capture_output=True).returncode == 0
 
@@ -192,7 +214,8 @@ class ArchiveAndWiringTests(unittest.TestCase):
         cls.sources, cls.raws, cls.manifest = episode.fixed(REPO)
         cls.build = text_of(REPO / 'desktop/build.gradle.kts')
         cls.catalog = json.loads(text_of(REPO / 'desktop/tools/compatibility-source-inputs.json'))
-        cls.registry = {row['path']: row for row in json.loads(text_of(REPO / 'desktop/upstream-sources.json'))['sources']}
+        cls.rows = json.loads(text_of(REPO / 'desktop/upstream-sources.json'))['sources']
+        cls.registry = {row['path']: row for row in cls.rows}
 
     def copy_archive(self, temp):
         target = Path(temp) / episode.ARCHIVE
@@ -284,7 +307,7 @@ class ArchiveAndWiringTests(unittest.TestCase):
         self.assertTrue(v037_pages.encode() != self.raws['PagesSelector.kt'])
         vendored = canonical_source(REPO, sheet_path).read_bytes().replace(b'\r\n', b'\n')
         self.assertEqual(episode.PREDECESSOR_SHA256['CollectionSheet.kt'], sha(vendored))
-        self.assertEqual(self.registry[sheet_path]['sha256'], sha(vendored))
+        self.assertEqual(registered_reviewed_sha256(self.rows, sheet_path), sha(vendored))
         v031 = coin.sources()[1]['VideoDetailResponse.kt']
         self.assertEqual(episode.PREDECESSOR_SHA256['VideoDetailResponse.kt'], sha(v031))
         for name, key in episode.PREDECESSOR_KEYS.items():
@@ -407,7 +430,7 @@ class ArchiveAndWiringTests(unittest.TestCase):
                          'feature/video/ui/components/CollectionEpisodePolicy.kt', 'feature/video/ui/components/ModalChildScroll.kt'):
             path = episode.APP + relative
             with self.subTest(file=relative):
-                self.assertEqual('direct', self.registry[path].get('mode', 'direct'))
+                self.assertEqual('direct', registered_row(self.rows, path).get('mode', 'direct'))
                 self.assertEqual(upstream_blob(path).replace(b'\r\n', b'\n'),
                                  (REPO / path).read_bytes().replace(b'\r\n', b'\n'))
 

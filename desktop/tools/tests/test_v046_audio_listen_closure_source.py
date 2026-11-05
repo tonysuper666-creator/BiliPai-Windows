@@ -376,7 +376,8 @@ class MusicTests(Fixture, ProofMixin):
             new = set(pattern.findall(self.out(group, relative))) - set(pattern.findall(self.base(group, relative)))
             for imported in sorted(new):
                 name = imported.rsplit('.', 1)[1]
-                declaration = r'(fun|val|var|class|object|interface|typealias)[[:space:]]+(<[^>]*>[[:space:]]+)?([A-Za-z0-9_.<>?, ]+\.)?' + name + r'\b'
+                declaration = r'(fun|val|var|class|object|interface|typealias)[[:space:]]+(<[^>]*>[[:space:]]+)?([A-Za-z0-9_.<>?, ]+\.)?' + name + r'([^A-Za-z0-9_]|$)'
+                # POSIX ERE has no \b (BSD/macOS git grep does not accept it); the class is the same right boundary.
                 found = subprocess.run(['git', '-c', 'core.autocrlf=false', 'grep', '--untracked', '-q', '-E',
                                         declaration, '--', *roots], cwd=REPO).returncode == 0
                 if not found:

@@ -2,11 +2,15 @@
 
 No JVM is started and nothing is compiled. The fast classes use small synthetic Kotlin trees, one per failure
 class of the Source260 compile (head aad198489); `ProducerMirrorTests` drives the real mirror/producer/report
-path on a tiny throw-away git repository; `CurrentIntegrationTree` runs every real producer on this checkout
-and `Source260History` re-runs the gate on the failed head through `git archive`.
+path on a tiny throw-away git repository and `Source260History` re-runs the gate on the failed head through
+`git archive`.
 
-Those last two classes cost minutes each (every producer runs and a 160 MB mirror is written). They always run by
-default; set BP_SYMBOL_GATE_SKIP_HEAVY=1 to leave them out on a deliberate low-resource run. Nothing else changes.
+The whole-tree run on this checkout is retired (TON-1205): the build now compiles app core/ and whole upstream
+modules from the merged root, which the gate's Gradle model cannot read, and the Mac runs compileKotlin /
+compileTestKotlin itself since 67f65de86, so the compiler judges the current universe.
+
+`Source260History` costs about a minute (every producer of the failed head runs and a 160 MB mirror is written).
+It always runs by default; set BP_SYMBOL_GATE_SKIP_HEAVY=1 to leave it out on a deliberate low-resource run.
 """
 from pathlib import Path
 import contextlib
@@ -26,11 +30,10 @@ REPO = Path(__file__).resolve().parents[3]
 TOOLS = REPO / 'desktop/tools'
 sys.path.insert(0, str(TOOLS))
 import check_slice_symbol_closure as gate
+import v025_source_paths
 
 SOURCE260_HEAD = 'aad1984892a4b276f901daae3c1865c0871ac707'
-V025_COMMIT = '79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40'
-GRADLE_FILE = REPO / 'desktop/build.gradle.kts'
-# the two classes that run every real producer cost minutes each; BP_SYMBOL_GATE_SKIP_HEAVY=1 skips them on purpose
+# the class that runs every producer of the failed head costs about a minute; BP_SYMBOL_GATE_SKIP_HEAVY=1 skips it
 SKIP_HEAVY = os.environ.get('BP_SYMBOL_GATE_SKIP_HEAVY') == '1'
 
 
@@ -354,6 +357,21 @@ class GradleModelTests(unittest.TestCase):
         with self.assertRaisesRegex(gate.ToolError, 'computedDir'):
             gate.select_producers(self.model(unresolved_dir))
 
+    def test_a_named_interpreter_resolves_only_when_it_reads_python_executable_first(self):
+        # desktop/build.gradle.kts names the launcher once (67f65de86); the producers keep their command lines.
+        named = self.SYNTHETIC.replace('System.getenv("PYTHON_EXECUTABLE") ?: "python"', 'pythonExecutable')
+        resolved = self.model('val pythonExecutable = System.getenv("PYTHON_EXECUTABLE")\n'
+                              '    ?: if (windows) "python" else "python3"\n' + textwrap.dedent(named))
+        self.assertEqual(self.model().tasks['extractOne'].args, resolved.tasks['extractOne'].args)
+        self.assertEqual([None, None], [resolved.tasks[n].skip for n in ('extractOne', 'extractTwo')])
+        self.assertEqual(('python', ''), resolved.tasks['extractTwo'].args[0])
+        for definition in ('', 'val pythonExecutable = "python3"\n'):
+            with self.subTest(definition=definition):
+                model = self.model(definition + textwrap.dedent(named))
+                self.assertEqual('unresolved Gradle expression in the command line', model.tasks['extractOne'].skip)
+                with self.assertRaisesRegex(gate.ToolError, 'extractOne'):
+                    gate.select_producers(model)
+
     def test_only_outputs_of_producers_a_run_did_not_start_may_be_missing(self):
         model = self.model()
         tasks, skipped = gate.select_producers(model, skip={'extractTwo'})
@@ -366,50 +384,6 @@ class GradleModelTests(unittest.TestCase):
         tasks, skipped = gate.select_producers(model)
         results = [dict(task='extractOne', returncode=0), dict(task='extractTwo', returncode=3)]
         self.assertEqual(['generated/two'], gate.not_run_outputs(model, tasks, skipped, results=results))   # reported as failed
-
-    def test_unrunnable_producers_name_the_directories_they_own_and_the_build_file_still_registers_them(self):
-        self.assertEqual(set(gate.UNRUNNABLE_TASKS), set(gate.UNRUNNABLE_OUTPUTS))
-        model = gate.parse_gradle(GRADLE_FILE.read_text(encoding='utf8'))
-        registered = [rel for owner in ('main', 'test') for kind, rel in model.source_dirs[owner] if kind == 'build']
-        for task, directories in gate.UNRUNNABLE_OUTPUTS.items():
-            for directory in directories:
-                with self.subTest(task=task, directory=directory):
-                    self.assertTrue(any(gate._under(r, directory) for r in registered),
-                                    'no Kotlin source directory is registered below %s any more' % directory)
-        tasks, skipped = gate.select_producers(model)
-        allowed = gate.not_run_outputs(model, tasks, skipped)
-        for relative in ('generated/js-worker', 'generated/native-diagnostic-share/kotlin'):
-            self.assertTrue(any(gate._under(relative, owned) for owned in allowed), relative)
-        self.assertFalse(any(gate._under(r, owned) for r in registered if r.startswith('generated/original')
-                             for owned in allowed), 'a runnable producer directory must never be allowed to be missing')
-
-    def test_real_build_file_is_fully_modelled(self):
-        model = gate.parse_gradle(GRADLE_FILE.read_text(encoding='utf8'))
-        self.assertEqual([], model.unresolved_source_dirs)
-        self.assertGreater(len(model.sync_excludes), 40)
-        self.assertTrue(set(gate.UNRUNNABLE_TASKS) <= set(model.tasks), 'a renamed task escapes the skip list')
-        tasks, skipped = gate.select_producers(model)
-        names = [t.name for t in tasks]
-        self.assertEqual(len(names), len(set(names)))
-        self.assertEqual(sorted(gate.UNRUNNABLE_TASKS), [n for n, _ in skipped])
-        for position, task in enumerate(tasks):
-            for dep in task.deps:
-                if dep in names:
-                    self.assertLess(names.index(dep), position, '%s runs before its dependency %s' % (task.name, dep))
-        for task in tasks:
-            self.assertEqual(('python', ''), task.args[0])
-            self.assertTrue((REPO / 'desktop' / task.tool).is_file(), task.tool)
-        # every build-directory source root is produced by a runnable producer, the vendored Sync, or is named here
-        wanted = {rel for owner in ('main', 'test') for kind, rel in model.source_dirs[owner] if kind == 'build'}
-        produced = {v for t in tasks for k, v in t.args if k == 'build'}
-        known_side_effect_or_unrunnable = {'generated/upstream', 'generated/js-worker',
-                                           'generated/native-diagnostic-share/kotlin',
-                                           'generated/audio-library-original-tests',
-                                           'generated/original-video-interaction-retry-tests',
-                                           # written next to its main output by the independent-pages producer
-                                           'generated/independent-bangumi-pages-tests'}
-        for rel in sorted(wanted - known_side_effect_or_unrunnable):
-            self.assertTrue(any(gate._under(rel, p) or gate._under(p, rel) for p in produced), rel)
 
 
 class ChecksOnSyntheticTrees(unittest.TestCase):
@@ -1237,10 +1211,11 @@ class ExpectedGapsTests(unittest.TestCase):
         self.assertIn('d6bf8b16', seed['evidence'])
         this_file = Path(__file__).read_text(encoding='utf8')
         for guard in ('test_member_the_type_lacks_is_flagged_and_a_compat_extension_retires_it',
-                      'test_retired_seeds_must_keep_a_definer',
-                      'test_the_compat_extension_retires_the_twelfth_seed_in_the_real_tree'):
+                      'test_retired_seeds_must_keep_a_definer'):
             self.assertIn(guard, seed['guardedBy'])
             self.assertIn('def %s(' % guard, this_file)
+        # the real-tree guard is the compiler now that the whole-tree run is retired
+        self.assertIn('compileKotlin', seed['guardedBy'])
         shim = (TOOLS / 'v046_comment_list.py').read_text(encoding='utf8')
         self.assertNotIn('DesktopOriginalCommentMotionCompat.kt', shim)
         self.assertIn('val reducedMotion: Boolean',
@@ -1594,6 +1569,22 @@ class ProducerMirrorTests(unittest.TestCase):
         self.assertFalse((mirror / 'desktop/build').exists())
         self.assertTrue((mirror / 'desktop/tools/gen.py').is_file())
         self.assertEqual('pinned upstream text', gate.git_text(mirror, 'show', git(root, 'rev-list', '--max-parents=0', 'HEAD') + ':marker.txt').strip())
+        self.assertEqual(scratch / 'r', mirror)
+
+    def test_a_mirror_of_the_legacy_read_point_keeps_its_name_so_the_producers_read_the_legacy_pins(self):
+        base = Path(tempfile.mkdtemp(prefix='bp-t-'))
+        self.addCleanup(rmtree_force, base)
+        legacy = base / '.legacy-root'
+        shutil.copytree(str(make_repo(self)), str(legacy))
+        # A scratch of its own, shaped like run_gate's default, so the mirror root stays within MAX_SCRATCH_ROOT on Windows.
+        scratch = Path(tempfile.mkdtemp(prefix='bp-t-'))
+        self.addCleanup(rmtree_force, scratch)
+        mirror, _ = gate.make_scratch_repo(legacy, scratch)
+        self.assertEqual(scratch / '.legacy-root', mirror)
+        self.assertTrue(v025_source_paths._legacy_snapshot(mirror))
+        self.assertFalse((scratch / 'r').exists())
+        result, producers = gate.run_gate(legacy, expected_path=None, options=gate.Options(carried=False))
+        self.assertEqual([('extractGen', 0)], [(r['task'], r['returncode']) for r in producers['results']])
 
     def test_a_registered_directory_nobody_produced_fails_unless_its_producer_was_skipped(self):
         root = make_repo(self, silent=True)
@@ -1821,150 +1812,6 @@ CLOSED_SEEDS = (
 )
 # closed by the v046 danmaku protocol slice (members and identifiers, not top-level declarations)
 DANMAKU_SEEDS = ('invalidateDanmakuSegment', 'parseFailed', 'failedSegmentCount')
-
-
-@unittest.skipIf(SKIP_HEAVY, 'BP_SYMBOL_GATE_SKIP_HEAVY=1')
-@unittest.skipIf(ALLOW_SHALLOW and not (object_exists(V025_COMMIT) and object_exists(gate.TARGET_COMMIT)),
-                 'BP_SYMBOL_GATE_ALLOW_SHALLOW=1 and the pinned upstream objects (v0.2.5, v0.4.6) are not in this clone')
-class CurrentIntegrationTree(unittest.TestCase):
-    """Every real producer, run exactly as Gradle runs them, in a mirror of this checkout (about 3 minutes)."""
-
-    @classmethod
-    def setUpClass(cls):
-        require_history(V025_COMMIT, gate.TARGET_COMMIT)
-        cls.before = gate.repo_state(REPO)
-        cls.scratch = Path(tempfile.mkdtemp(prefix='bp-sc-'))
-        cls.addClassCleanup(rmtree_force, gate._long(cls.scratch))   # also runs when this setUp fails half way
-        cls.root, env = gate.make_scratch_repo(REPO, cls.scratch)
-        cls.model = gate.parse_gradle((cls.root / 'desktop/build.gradle.kts').read_text(encoding='utf8'))
-        cls.tasks, cls.skipped = gate.select_producers(cls.model)
-        cls.allowed = gate.not_run_outputs(cls.model, cls.tasks, cls.skipped)
-        cls.producers = dict(results=gate.run_producers(cls.root, cls.tasks, env), skipped=cls.skipped)
-        cls.sources, cls.notes = gate.collect_sources(cls.root, cls.model)
-        cls.expected = gate.load_expected(REPO / gate.EXPECTED_GAPS_FILE)
-        cls.extra = gate.producer_failures(cls.producers['results'])
-        cls.result = gate.analyze(cls.sources, cls.notes, cls.expected, gate.Options(), extra_findings=cls.extra,
-                                  allowed_unproduced=cls.allowed)
-        cls.after = gate.repo_state(REPO)
-
-    def test_every_producer_ran_and_the_checkout_was_not_written(self):
-        self.assertEqual([], [r['task'] for r in self.producers['results'] if r['returncode']])
-        self.assertGreater(len(self.producers['results']), 100)
-        self.assertEqual(sorted(gate.UNRUNNABLE_TASKS), [n for n, _ in self.skipped])
-        self.assertEqual(self.before, self.after)
-
-    def test_the_universe_has_every_expected_source_kind(self):
-        counts = self.result.counts
-        for key in ('main/desktop', 'main/generated', 'main/vendored', 'test/desktop', 'test/generated',
-                    'carried/archive', 'other/vendored-other'):
-            self.assertGreater(counts.get(key, 0), 50, key)
-        self.assertEqual(['source directory not produced: build/generated/js-worker',
-                          'source directory not produced: build/generated/native-diagnostic-share/kotlin'],
-                         self.result.notes)
-        # exactly those two are the skipped toolchain producers' directories; nothing else may be missing silently
-        self.assertEqual([], [f.symbol for f in self.result.findings if f.check == 'producer-output-missing'])
-        unguarded = gate.analyze(self.sources, self.notes, self.expected, gate.Options(), extra_findings=self.extra)
-        self.assertEqual(['build/generated/js-worker', 'build/generated/native-diagnostic-share/kotlin'],
-                         sorted(f.symbol for f in unguarded.findings if f.check == 'producer-output-missing'))
-
-    def test_gate_passes_with_only_the_explicitly_listed_known_gaps(self):
-        self.assertEqual([], [(f.check, f.symbol, f.file) for f in self.result.unexpected])
-        self.assertEqual([], self.result.stale)
-        self.assertEqual([], [e for e in self.result.latent if e['status'] != 'open'])
-        self.assertTrue(self.result.passed)
-        self.assertGreaterEqual(len(self.result.known), len(self.expected['gaps']))
-
-    def test_the_known_gaps_are_carried_references_plus_one_stated_false_positive(self):
-        by_scope = {}
-        for f in self.result.known:
-            by_scope.setdefault(f.scope, set()).add(f.check)
-        self.assertEqual({'carried': {'unresolved-import', 'unresolved-qualified'},
-                          'compiled': {'unresolved-name'}}, by_scope)
-        symbols = {f.symbol for f in self.result.known}
-        # closed by the identity-badges, core-data-policies and home-card-cascade-definers slices: no longer gaps
-        for closed in CLOSED_SEEDS:
-            self.assertNotIn(closed[0] + '.' + closed[1], symbols)
-        # closed by the v046 danmaku protocol slice: retired, no longer a known gap
-        self.assertNotIn('com.android.purebilibili.data.repository.DanmakuContentRepository.invalidateDanmakuSegment', symbols)
-
-    def test_the_longest_path_a_producer_wrote_is_within_the_measured_limit(self):
-        build = gate._long(self.root / 'desktop/build')
-        prefix = len(gate._plain(str(self.root))) + 1
-        longest = 0
-        for current, _folders, files in os.walk(build):
-            for name in files:
-                longest = max(longest, len(gate._plain(os.path.join(current, name))) - prefix)
-        self.assertGreater(longest, 100)
-        self.assertLessEqual(longest, gate.LONGEST_PRODUCER_PATH,
-                             'a producer now writes a longer path: raise LONGEST_PRODUCER_PATH (and re-check '
-                             'MAX_SCRATCH_ROOT)')
-
-    PROJECT_SYMBOLS = (
-        'BottomPagerPreloadedItemsSaver', 'DanmakuRenderPauseState',
-        'DynamicFeedPageDataSource', 'PlaybackLoadException', 'RecentPlaybackStore', 'StartupAnimationStyle',
-        'SubtitleContentRepository', 'VideoDetailPlaybackErrorNotice', 'VideoLoadStage', 'VideoLoadTimeline',
-        'VideoNetworkPressureObserver')
-
-    def test_a_missing_project_definer_is_never_taught_as_an_ambient_name(self):
-        # These project names must never be learned as ambient library names.
-        # Some now have real definers in migrated modules; their bare use from
-        # another package must still require an import, as the probe below checks.
-        ambient = self.result.ambient
-        self.assertGreater(len(ambient), 500)
-        for name in self.PROJECT_SYMBOLS:
-            with self.subTest(name=name):
-                self.assertNotIn(name, ambient)
-        # no capitalized ambient name is one that a scanned file imports from a project package
-        providers = self.result.providers
-        self.assertEqual([], sorted(n for n in ambient if n[:1].isupper()
-                                    and any(gate._project_package(p) for p in providers.get(n, ()))))
-        # lowercase project names that only an archive uses unbound are not ambient either
-        for name in ('readSeedWallpaperColorScheme', 'readSystemWallpaperSeed'):
-            self.assertNotIn(name, ambient)
-        # the vendored v0.2.5 files still teach stdlib, Java and library names. OverlayClip, taught only by vendored
-        # files outside the compiled set, is androidx.compose.animation.SharedTransitionScope.OverlayClip reached
-        # through an implicit SharedTransitionScope receiver: reviewed, not a project symbol
-        for name in ('OverlayClip', 'Array', 'IllegalStateException', 'Runnable'):
-            self.assertIn(name, ambient)
-        # The probe: project names used without imports are reported, library names are not.
-        calls = '\n'.join('    %s()' % name for name in self.PROJECT_SYMBOLS)
-        text = ('package probe\n\ninternal fun probe() {\n%s\n    MadeUpNeverExistsAnywhere()\n    OverlayClip(1)\n'
-                '    IllegalStateException("x")\n}\n' % calls)
-        info = gate.parse_kotlin(text, 'build/generated/probe/Probe.kt', 'generated', 'main', keep_tokens=True)
-        context = gate.FileContext(self.result.universe, info, providers)
-        findings = gate.check_names(self.result.universe, info, context, ambient, {}, gate.OriginalCache({}), {'names'})
-        self.assertEqual(sorted(self.PROJECT_SYMBOLS + ('MadeUpNeverExistsAnywhere',)),
-                         sorted(f.symbol for f in findings if f.check == 'unresolved-name'))
-
-    def test_the_compat_extension_retires_the_twelfth_seed_in_the_real_tree(self):
-        universe = self.result.universe
-        entry = dict(symbol='reducedMotion', kind='member', owner='AppBottomSheetMotion')
-        self.assertTrue(gate.latent_defined(universe, entry))
-        self.assertEqual([('reducedMotion', 'defined')],
-                         [(e['symbol'], e['status']) for e in self.result.retired if e['symbol'] == 'reducedMotion'])
-        for seed in self.expected['latent']:
-            self.assertFalse(gate.latent_defined(universe, dict(seed)), seed['symbol'])
-
-    def test_the_closed_seeds_keep_their_definers_in_the_real_tree(self):
-        # slices #3, #5 and #6 carried the real v0.4.6 declarations; the gate keeps them guarded as retired seeds
-        status = {e['symbol']: e['status'] for e in self.result.retired}
-        for package, name in CLOSED_SEEDS:
-            with self.subTest(symbol=name):
-                self.assertEqual('defined', status.get(name), package)
-        self.assertEqual(sorted([name for _package, name in CLOSED_SEEDS] + list(DANMAKU_SEEDS) + ['reducedMotion']),
-                         sorted(status))
-        for name in DANMAKU_SEEDS:
-            self.assertEqual('defined', status.get(name), name)
-        known = {f.symbol for f in self.result.known}
-        self.assertNotIn('com.android.purebilibili.data.repository.DanmakuContentRepository.invalidateDanmakuSegment', known)
-
-    def test_analysis_is_deterministic_and_the_report_carries_the_limits(self):
-        again = gate.analyze(self.sources, self.notes, self.expected, gate.Options(), extra_findings=self.extra,
-                             allowed_unproduced=self.allowed)
-        self.assertEqual(gate.render_text(self.result, self.producers), gate.render_text(again, self.producers))
-        text = gate.render_text(self.result, self.producers)
-        self.assertIn('RESULT: PASS', text)
-        self.assertIn('heuristic limits:', text)
 
 
 @unittest.skipIf(SKIP_HEAVY, 'BP_SYMBOL_GATE_SKIP_HEAVY=1')

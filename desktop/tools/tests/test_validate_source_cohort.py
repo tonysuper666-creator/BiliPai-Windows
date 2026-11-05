@@ -167,8 +167,9 @@ print(json.dumps(dict(args=args,classes=json.loads(raw)['classes'],sha256=hashli
 class SourceCohortProductionVersionTest(unittest.TestCase):
     def fixture(self, root):
         from v025_source_paths import canonical_source, canonical_relative
-        repo = Path(root)
         real_repo = TOOL.parents[2]
+        # Same directory name as the read point, so the canonical pin for its tree applies.
+        repo = Path(root)/real_repo.name; repo.mkdir()
         relative = canonical_relative(real_repo, 'app/build.gradle.kts')
         build = repo/relative; build.parent.mkdir(parents=True)
         build.write_bytes(canonical_source(real_repo, 'app/build.gradle.kts').read_bytes())

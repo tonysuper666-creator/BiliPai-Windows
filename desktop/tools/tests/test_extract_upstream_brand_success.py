@@ -18,6 +18,7 @@ REPO = TOOLS.parents[1]
 sys.path.insert(0, str(TOOLS))
 import v029_brand_success as business
 import v044_following as current_following
+import desktop_refresh_adaptation as refresh
 
 
 def load(name, file):
@@ -122,15 +123,20 @@ class BrandSuccessProducerTest(unittest.TestCase):
             row = next(row for row in rows if row.get("windowsBrandSuccessAdaptation"))
             audit = row["windowsBrandSuccessAdaptation"]
             final = producer.safe(output / relative).read_bytes()
-            self.assertEqual(sha(final), audit["afterSha256"])
             self.assertEqual(sha(final), row["output"]["sha256LfUtf8"])
+            # The later desktop refresh layer (591685d9e) rebinds exactly the launch import of the brand stage.
+            launch, refresh_launch = "import kotlinx.coroutines.launch\n", "import com.bilipai.desktop.ui.desktopRefreshLaunch as launch\n"
+            self.assertEqual(1, final.decode().count(refresh_launch))
+            stage = final.decode().replace(refresh_launch, launch)
+            self.assertEqual(final.decode(), refresh.bind_refresh_launch(stage))
+            self.assertEqual(sha(stage.encode()), audit["afterSha256"])
             self.assertEqual(2, len(audit["edits"]))
             baseline = Path(temp) / "before-brand-stage"
             with patch.object(current_following, "bind_brand", lambda text: (text, {})):
                 producer.generate(REPO, baseline, True)
-            original = business.reverse(final.decode(), audit["edits"]).encode()
-            self.assertEqual(producer.safe(baseline / relative).read_bytes(), original)
-            self.assertEqual(sha(original), audit["beforeSha256"])
+            original = business.reverse(stage, audit["edits"])
+            self.assertEqual(producer.safe(baseline / relative).read_bytes(), refresh.bind_refresh_launch(original).encode())
+            self.assertEqual(sha(original.encode()), audit["beforeSha256"])
             self.assertIn("applyRemovedUsers(successMids)", final.decode())
             self.assertIn("emitBrandFeedback = false", final.decode())
 
@@ -138,7 +144,8 @@ class BrandSuccessProducerTest(unittest.TestCase):
         producer = load("brand_success_motion_contract", TOOLS / "extract-upstream-brand-motion.py")
         expected = business.runtime_outputs()
         with tempfile.TemporaryDirectory() as temp:
-            output = Path(temp) / "generated"
+            # The producer refuses any link on its output path; macOS temp roots are links (/tmp, /var).
+            output = Path(temp).resolve() / "generated"
             report = producer.generate(REPO, output)
             self.assertEqual(33, report["generatedFiles"])
             for relative, data in expected.items():

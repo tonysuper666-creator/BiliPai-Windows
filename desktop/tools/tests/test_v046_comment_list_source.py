@@ -15,6 +15,7 @@ sys.path.insert(0, str(TOOLS))
 import v046_comment_list as comments
 import v046_detail_holder_collapse as holder_collapse
 from v046_favorite_editor import restore
+from desktop_refresh_adaptation import unbind_refresh_lists
 
 
 def module(filename):
@@ -137,8 +138,9 @@ class OriginalCommentListSources(unittest.TestCase):
 
     def test_nested_renderer_reconstructs_complete_original_and_retains_actual_windows_actions(self):
         path = comments.PACKAGE+'DesktopOriginalSubReplyDetailComponents.kt'
-        actual = body(self.output/'actual'/path)
-        before = body(self.output/'before'/path)
+        # 591685d9e binds the shared refresh lists after every stage receipt.
+        actual = unbind_refresh_lists(body(self.output/'actual'/path))
+        before = unbind_refresh_lists(body(self.output/'before'/path))
         proof = self.proof('v046-subreply-list-renderer-proof')
         thread_proof = self.proof('v046-comment-thread-host-proof')
         # The v046 comment polish inline entrance stage follows the nested page stage; peel it first.
@@ -309,7 +311,8 @@ class ConnectedCommentPanelSources(unittest.TestCase):
             self.assertEqual(1, actual.count(cover_after))
             # plr-holder-collapse-family is the layer on top of both (append-last): peel its receipt first.
             collapse_proof = self.proof('tablet', holder_collapse.PROOF_DIRECTORY + '/' + label + '-proof')
-            without_collapse = holder_collapse.restore(actual, collapse_proof['retainedToCurrent'])
+            # 591685d9e binds the shared refresh list after every v046 receipt: peel that exact import first.
+            without_collapse = holder_collapse.restore(unbind_refresh_lists(actual), collapse_proof['retainedToCurrent'])
             previous = restore(without_collapse.replace(cover_after, cover_before), proof['retainedToCurrent'])
             owner = comments.declaration(self.syntax, actual, owner_name)
             before_owner = comments.declaration(self.syntax, previous, owner_name)
@@ -356,7 +359,8 @@ class ConnectedCommentPanelSources(unittest.TestCase):
         proof = self.proof('fullscreen', 'v046-main-comment-list-proof')
         # The v046 comment polish host stage follows the main list stage; recover its exact predecessor first.
         host_proof = self.proof('fullscreen', 'v046-comment-sheet-host-proof')
-        actual = restore(actual, host_proof['retainedToCurrent'])
+        # 591685d9e binds the shared refresh list after every v046 receipt: peel that exact import first.
+        actual = restore(unbind_refresh_lists(actual), host_proof['retainedToCurrent'])
         previous = restore(actual, proof['retainedToCurrent'])
         selected = comments.declaration(self.syntax, actual, 'VideoCommentMainList')
         self.assertEqual(comments.declaration(self.syntax, self.sources['VideoCommentSheetHost.kt'], 'VideoCommentMainList'),
@@ -444,7 +448,8 @@ class ConnectedCommentPanelSources(unittest.TestCase):
     def test_dynamic_detail_passes_the_original_actual_visible_list_without_new_state_or_session(self):
         actual = self.generated('dynamic', 'DesktopOriginalDynamicDetailLayout.kt')
         proof = self.proof('dynamic', 'v046-dynamic-detail-avatar-owner-proof')
-        before = restore(actual, proof['retainedToCurrent'])
+        # 591685d9e binds the shared refresh list after every v046 receipt: peel that exact import first.
+        before = restore(unbind_refresh_lists(actual), proof['retainedToCurrent'])
         self.assertIn(proof['originalWiring'], self.sources['DynamicDetailScreen.kt'])
         self.assertIn(proof['originalWiring'], actual)
         self.assertIn('val avatarPushEnabled = com.android.purebilibili.feature.video.ui.components.rememberCommentAvatarPushEnabled()', actual)

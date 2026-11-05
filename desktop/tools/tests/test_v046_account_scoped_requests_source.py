@@ -112,7 +112,7 @@ OWNERS = (
         (UI + 'DesktopHomeRootRequestBinding.kt', 'repository.sessionEpoch==capturedEpoch'),
         (UI + 'DesktopHomeRootRetainer.kt', 'it.capturedEpoch == currentEpoch()'),
         (UI + 'DesktopReadyOriginalRootMount.kt',
-         'LaunchedEffect(handle, epoch, account?.mid, factoryBinding, retry, loginInstalled) {'),
+         'LaunchedEffect(handle, epoch, account?.mid, factoryBinding, retry, loginInstalled, accountInstallation) {'),
         (UI + 'DesktopReadyOriginalRootMount.kt',
          'val installedRoot = handle.retainer.install(epoch, account?.mid, factory.factory)'),
         (UI + 'DesktopReadyOriginalRootMount.kt', 'physicalStack.clear(); physicalStack.addAll(nextInitialStack)'),
@@ -539,7 +539,7 @@ class V046AccountScopedRequestsSourceTest(unittest.TestCase):
 
     def test_the_epoch_effect_rebuilds_the_whole_original_route_stack(self):
         text = flat(read(UI + 'DesktopReadyOriginalRootMount.kt'))
-        effect = text.index('LaunchedEffect(handle, epoch, account?.mid, factoryBinding, retry, loginInstalled) {')
+        effect = text.index('LaunchedEffect(handle, epoch, account?.mid, factoryBinding, retry, loginInstalled, accountInstallation) {')
         stack = text.index('physicalStack.clear(); physicalStack.addAll(nextInitialStack)', effect)
         install = text.index('handle.retainer.install(epoch, account?.mid, factory.factory)', effect)
         closes = [text.index(token, effect) for token in (
@@ -553,8 +553,18 @@ class V046AccountScopedRequestsSourceTest(unittest.TestCase):
                       retainer)
 
     def test_no_windows_code_constructs_the_owner_or_reads_an_android_identity_source(self):
+        # 03a67326f (TON-1084) inverted the identity direction: the direct-compiled upstream TokenManager now reads
+        # its accountIdentity from the Windows owner. The owner names that member exactly once, in the KDoc of the
+        # function that backs it; no Windows code reads it.
+        backing = ('/** TokenManager.accountIdentity: one fixed identity per owner, refused once the owner is retired. */\n'
+                   '    fun accountIdentity(entry: String): kotlinx.coroutines.flow.StateFlow<'
+                   'com.android.purebilibili.core.store.AccountSessionIdentity> =\n')
         for path in sorted((REPO / 'desktop/src/main').rglob('*.kt')):
             text = path.read_text(encoding='utf-8')
+            if path.name == 'DesktopUpstreamOwner.kt':
+                self.assertEqual(1, text.count('TokenManager.accountIdentity'), path.name)
+                self.assertEqual(1, text.count(backing), path.name)
+                text = text.replace(backing, '', 1)
             for needle in ('AccountScopedRequests', 'accountRequests', 'TokenManager.accountIdentity',
                            'object TokenManager', 'val accountIdentity'):
                 self.assertNotIn(needle, text, path.name)

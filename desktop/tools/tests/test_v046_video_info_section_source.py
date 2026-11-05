@@ -301,9 +301,11 @@ class ArchiveAndWiringTests(unittest.TestCase):
         row = next(item for item in recipes if item['originalPath'] == POST_LOAD_PATH)
         self.assertEqual('direct', row['mode'])
         self.assertEqual(row['originalSha256LF'], row['outputSha256LF'])
-        # The old v0.3.6 refresh container stays pinned in its archive, but only the v0.4.6 file is written.
+        # The old v0.3.6 refresh container stays pinned in its archive, but only the v0.4.6 file is written. The desktop
+        # refresh adaptation (591685d9e) names the call once, as a host marker for its lazy-list import alias; it writes no file.
         owners = sorted(p.name for p in TOOLS.glob('*.py') if 'VideoCommentRefreshContainer' in p.read_text(encoding='utf-8'))
-        self.assertEqual(['v036_video_comment_viewport.py', 'v046_video_info_section.py'], owners)
+        self.assertEqual(['desktop_refresh_adaptation.py', 'v036_video_comment_viewport.py', 'v046_video_info_section.py'], owners)
+        self.assertEqual(1, (TOOLS / 'desktop_refresh_adaptation.py').read_text(encoding='utf-8').count("'VideoCommentRefreshContainer(',"))
 
     def test_the_gradle_script_has_balanced_braces(self):
         # The part B leaf commit once dropped the closing brace of the comment polish block, which would have been a

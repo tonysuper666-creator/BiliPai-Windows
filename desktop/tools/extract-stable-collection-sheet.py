@@ -1,5 +1,6 @@
 """Full stable collection UI and exact settings/request bodies with Windows ports."""
 from v025_source_paths import canonical_source as _desktop_canonical_source
+from v025_source_paths import _catalog as _v025_catalog, reviewed_sha256 as _v025_reviewed_sha256
 from pathlib import Path
 import hashlib, importlib.util, json, re, sys
 sys.dont_write_bytecode = True
@@ -10,6 +11,13 @@ def load(name, path):
     result = importlib.util.module_from_spec(spec); spec.loader.exec_module(result)
     return result
 
+def _reviewed_pin(repo, path, registered):
+    # Gradle reads the legacy read point's manifest (legacy bytes); the gate view reads the live manifest,
+    # re-pinned to the direct-compile tree in ad2967bbf. Map the live half of the one reviewed pair in
+    # v025-canonical-sources.json back to the identity of the tree being read.
+    entry = _v025_catalog()['paths'].get(path)
+    return _v025_reviewed_sha256(repo, entry) if entry is not None and registered == entry['sha256'] else registered
+
 def generate(repo, output):
     from v046_episode_selector import validate_outputs as validate_episode_selector_outputs
     validate_episode_selector_outputs(repo, output)
@@ -17,7 +25,7 @@ def generate(repo, output):
     selector = load('collection_selector', repo/'desktop/tools/extract-appearance-platform.py')
     media = load('collection_functions', repo/'desktop/tools/extract-upstream-media.py')
     manifest = json.loads((repo/'desktop/upstream-sources.json').read_text(encoding='utf-8'))
-    pins = {r['path']:r['sha256'] for r in manifest['sources']}
+    pins = {r['path']:_reviewed_pin(repo, r['path'], r['sha256']) for r in manifest['sources']}
     records = []
     def read(path):
         text = (_desktop_canonical_source(repo, path)).read_text(encoding='utf-8').replace('\r\n','\n')
