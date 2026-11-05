@@ -17,6 +17,7 @@ TOOLS = REPO / 'desktop/tools'
 sys.path.insert(0, str(TOOLS))
 import check_slice_symbol_closure as gate
 import v046_home_card_tint_policy as policy
+import v025_source_paths as v025
 
 spec = importlib.util.spec_from_file_location('sync_upstream_home_card_tint_policy', TOOLS / 'sync-upstream.py')
 sync = importlib.util.module_from_spec(spec)
@@ -39,6 +40,10 @@ CANONICAL = policy.UPSTREAM_PATHS[TINT]
 READABILITY_PATH = policy.UPSTREAM_PATHS[READABILITY]
 V025_TINT_SHA256 = 'f4619ed5fe5023360a15e15d62cd0e7204516c7836d838356111f608c3eab7b6'
 V025_TINT_BLOB = '6f774ef1f25bd19ee204146f11787143f52f4b86'
+# ad2967bbf re-pinned the live manifest and catalog to the direct-compile file; 7b992dc09 keeps
+# the v025 bytes this legacy read point holds as the same entry's legacySha256.
+DIRECT_TINT_SHA256 = 'c82a331e17a1c9e05dd5d88f031c9ed1d28576839f8133b8659f3eda7c1c7041'
+DIRECT_TINT_BLOB = '3a6b2eba278e4bd11f33c376dd5b272430114a4f'
 JVM_TEST = REPO / 'desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopHomeCardTintPolicyTest.kt'
 TOP_LEVEL = {
     'WallpaperPalette': (TINT, 'public', 'class'),
@@ -191,8 +196,11 @@ class V046HomeCardTintPolicySourceTest(unittest.TestCase):
                 self.assertNotIn(token, text)
                 self.assertIn(token, self.archive[TINT].decode('utf-8'))
         canonical = json.loads((TOOLS / 'v025-canonical-sources.json').read_text(encoding='utf-8'))
-        self.assertEqual(V025_TINT_SHA256, canonical['paths'][CANONICAL]['sha256'])
-        self.assertEqual(V025_TINT_BLOB, canonical['paths'][CANONICAL]['blob'])
+        entry = canonical['paths'][CANONICAL]
+        self.assertEqual(V025_TINT_SHA256, entry['legacySha256'])
+        self.assertEqual(V025_TINT_SHA256, v025.reviewed_sha256(REPO, entry))
+        self.assertEqual(DIRECT_TINT_SHA256, entry['sha256'])
+        self.assertEqual(DIRECT_TINT_BLOB, entry['blob'])
         # v0.4.6 is a strict superset: every top-level name of the old copy is still declared by the archive file
         old_package, old_decls = declarations(text, CANONICAL)
         new_package, new_decls = declarations(self.archive[TINT].decode('utf-8'), TINT)
@@ -334,7 +342,9 @@ class V046HomeCardTintPolicySourceTest(unittest.TestCase):
         listed = [row for row in sources['sources'] if row['path'] == CANONICAL]
         self.assertEqual(1, len(listed))
         self.assertEqual('direct', listed[0]['mode'])
-        self.assertEqual(V025_TINT_SHA256, listed[0]['sha256'])
+        self.assertEqual(DIRECT_TINT_SHA256, listed[0]['sha256'])
+        reviewed = v025._catalog()['paths'][CANONICAL]
+        self.assertEqual((DIRECT_TINT_SHA256, V025_TINT_SHA256), (reviewed['sha256'], reviewed['legacySha256']))
         self.assertIn('home-full-card', listed[0]['features'])
         self.assertIn(policy.ARCHIVE, self.catalog['buildInputRoots'])
         self.assertEqual(1, self.catalog['buildInputRoots'].count(policy.ARCHIVE))
