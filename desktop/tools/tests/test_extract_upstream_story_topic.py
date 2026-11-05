@@ -6,6 +6,8 @@ REPO=next(path for path in Path(__file__).resolve().parents
 SCRIPT=REPO/"desktop/tools/extract-upstream-story-topic.py"
 if not SCRIPT.exists(): SCRIPT=REPO/"desktop/.local/story-topic-parity/extract-story-topic-platform.py"
 spec=importlib.util.spec_from_file_location("story_topic",SCRIPT); module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+import v035_story
+STORY_FEED=module.BASE+"feature/story/StoryFeedPolicy.kt"
 
 class OriginalStoryTopicExtractTest(unittest.TestCase):
     def test_inventory_is_unique_lf_and_mode_scoped(self):
@@ -29,20 +31,30 @@ class OriginalStoryTopicExtractTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             files=module.generate(REPO,Path(directory))
             expected={'TopicRepository.kt','PortraitPagerSwitchPolicy.kt','StoryUiState.kt',
-                'StoryScreen.kt','TopicDetailStatePolicy.kt','DynamicTopicLinkPolicy.kt'}
+                'StoryScreen.kt','TopicDetailStatePolicy.kt','DynamicTopicLinkPolicy.kt',
+                'StoryFeedPolicy.kt','StoryModels.kt'}
             self.assertEqual(expected,{path.name for path in files})
             self.assertEqual(len(files),len(expected))
-            self.assertTrue({Path(path).name for path in module.DIRECT}.isdisjoint(expected))
+            # The complete fixed v035 projection owns StoryFeedPolicy (aa20fe645); no other direct copy is emitted.
+            self.assertTrue({Path(path).name for path in module.DIRECT if path!=STORY_FEED}.isdisjoint(expected))
+            for name in ('StoryFeedPolicy.kt','StoryModels.kt'):
+                emitted=next(path for path in files if path.name==name).read_bytes()
+                self.assertEqual(v035_story.source(name)[0].encode(),emitted)
             # StoryScreen is a newly complete owner, not an unexplained count increase.
-            original=module.read(REPO,module.BASE+'feature/story/StoryScreen.kt')
+            # Its owner is the complete fixed v035 projection (aa20fe645) with an exact inverse.
+            original,_,projection=v035_story.source('StoryScreen.kt')
+            adapted=v035_story.patch(original,projection['adapters'])
+            self.assertEqual(original,v035_story.patch(adapted,projection['adapters'],inverse=True))
             screen=next(path for path in files if path.name=='StoryScreen.kt').read_text(encoding='utf-8')
-            self.assertEqual(module.adapt_story_root_screen(original).strip(),screen.split('\n',2)[2].strip())
+            self.assertEqual(projection['writerHeader'].split('\n',2)[:2],screen.split('\n',2)[:2])
+            self.assertEqual(adapted.strip(),screen.split('\n',2)[2].strip())
     def test_standalone_preserves_all_three_direct_bodies(self):
         with tempfile.TemporaryDirectory() as directory:
             files=module.generate(REPO,Path(directory),True)
             for path in module.DIRECT:
                 output=next(file for file in files if file.name==Path(path).name).read_text(encoding="utf-8")
-                self.assertEqual(output.split("\n",2)[2],module.read(REPO,path).strip()+"\n")
+                if path==STORY_FEED:self.assertEqual(output,v035_story.source('StoryFeedPolicy.kt')[0])
+                else:self.assertEqual(output.split("\n",2)[2],module.read(REPO,path).strip()+"\n")
     def test_original_topic_mapping_and_defaults_remain(self):
         helpers=module.host(REPO);path=module.ADAPTED[0];original=module.read(REPO,path);body=module.adapt(path,original,helpers)
         self.assertNotIn("NetworkModule",body);self.assertIn("class TopicRepository(private val dynamicApi: DynamicApi)",body)
@@ -65,7 +77,8 @@ class OriginalStoryTopicExtractTest(unittest.TestCase):
     def test_generator_prunes_own_old_direct_preserves_unowned(self):
         helpers=module.host(REPO)
         with tempfile.TemporaryDirectory() as directory:
-            root=Path(directory);path=module.DIRECT[0];original=module.read(REPO,path)
+            root=Path(directory);path=module.DIRECT[1];original=module.read(REPO,path)
+            self.assertNotEqual(STORY_FEED,path)
             target=helpers.write(root,path,original,original);module.generate(REPO,root);self.assertFalse(target.exists())
             target.parent.mkdir(parents=True,exist_ok=True);target.write_text("// user file\n",encoding="utf-8")
             module.generate(REPO,root);self.assertEqual(target.read_text(),"// user file\n")
