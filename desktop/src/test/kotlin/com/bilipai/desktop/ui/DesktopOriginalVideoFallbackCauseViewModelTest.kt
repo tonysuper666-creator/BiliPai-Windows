@@ -391,13 +391,15 @@ class DesktopOriginalVideoFallbackCauseViewModelTest {
             assertEquals(oldCapture.receipt, freshCapture.receipt)
             assertFalse(oldPermission.isCurrent())
             assertFalse(oldPermission.admit { error("Replaced request permission cannot navigate") })
-            h.until { h.vm.detailState.value.requestToken == freshCapture.state.currentLoadRequestToken &&
-                h.vm.detailState.value.relatedLoadState == VideoPlaybackUiState.RelatedLoadState.READY &&
-                h.vm.detailState.value.info != null }
+            // Related and info are independent publications of the recovered request.
+            val freshDetails = withTimeout(5_000) { h.vm.detailState.first {
+                it.requestToken == freshCapture.state.currentLoadRequestToken &&
+                    it.relatedLoadState == VideoPlaybackUiState.RelatedLoadState.READY && it.info != null
+            } }
             val freshPermission = assertNotNull(h.vm.desktopMetadataAdmission.value)
             assertNotSame(oldPermission, freshPermission); assertTrue(freshPermission.isCurrent())
-            assertEquals(before.info?.title, h.vm.detailState.value.info?.title)
-            assertEquals("BV17x411w7KC", h.vm.detailState.value.related.single().bvid)
+            assertEquals(before.info?.title, freshDetails.info?.title)
+            assertEquals("BV17x411w7KC", freshDetails.related.single().bvid)
             assertIs<VideoPlaybackUiState.Loading>(h.vm.uiState.value)
             withTimeout(5_000) { oldCapture.job.join() }; assertTrue(oldCapture.job.isCompleted)
             assertEquals(0, h.selectionApiCalls.get()); assertEquals(0, h.mediaCalls.get())

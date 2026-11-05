@@ -14,6 +14,7 @@ import com.bilipai.desktop.plugins.DesktopPluginContext
 import com.bilipai.desktop.plugins.DesktopPluginStore
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.swing.Swing
 import java.lang.reflect.Proxy
 import java.nio.file.Files
 import kotlin.test.*
@@ -28,7 +29,8 @@ class DesktopWindowsVideoFollowGroupViewModelTest {
 
     private inner class Harness : AutoCloseable {
         val folder = Files.createTempDirectory("original-group-vm-")
-        val scope = CoroutineScope(SupervisorJob() + Dispatchers.Unconfined)
+        // Real protocol IO must resume on the same UI thread as dialog actions and assertions.
+        val scope = CoroutineScope(SupervisorJob() + Dispatchers.Swing.immediate)
         val context = DesktopPluginContext(DesktopPluginStore(folder))
         var account = 1L
         var entry = true
@@ -147,7 +149,7 @@ class DesktopWindowsVideoFollowGroupViewModelTest {
         }
     }
 
-    @Test fun lateLoadAfterSameMidCloseAndReopenCannotChangeSuccessorState() = runBlocking {
+    @Test fun lateLoadAfterSameMidCloseAndReopenCannotChangeSuccessorState() = runBlocking(Dispatchers.Swing) {
         Harness().use { h ->
             val aTags = CompletableDeferred<Result<List<RelationTagItem>>>()
             h.tags = { withContext(NonCancellable) { aTags.await() } }
@@ -168,7 +170,7 @@ class DesktopWindowsVideoFollowGroupViewModelTest {
         }
     }
 
-    @Test fun oldSecondAwaitAndCallbacksCannotMixDifferentTargetOrMutableSaveArguments() = runBlocking {
+    @Test fun oldSecondAwaitAndCallbacksCannotMixDifferentTargetOrMutableSaveArguments() = runBlocking(Dispatchers.Swing) {
         Harness().use { h ->
             val aIds = CompletableDeferred<Result<Set<Long>>>()
             h.ids = { withContext(NonCancellable) { aIds.await() } }
@@ -184,7 +186,7 @@ class DesktopWindowsVideoFollowGroupViewModelTest {
         }
     }
 
-    @Test fun accountAndEqualNumericSourceReplacementRejectBeforeSecondApiAndFinalCommit() = runBlocking {
+    @Test fun accountAndEqualNumericSourceReplacementRejectBeforeSecondApiAndFinalCommit() = runBlocking(Dispatchers.Swing) {
         for (retire in listOf<(Harness) -> Unit>({ it.account = 2 }, { it.accepted = it.publication() })) {
             Harness().use { h ->
                 val tags = CompletableDeferred<Result<List<RelationTagItem>>>()
@@ -208,7 +210,7 @@ class DesktopWindowsVideoFollowGroupViewModelTest {
         }
     }
 
-    @Test fun busyPrecedesStartAndCancellationResultCannotClearNewSaveOrReportSuccess() = runBlocking {
+    @Test fun busyPrecedesStartAndCancellationResultCannotClearNewSaveOrReportSuccess() = runBlocking(Dispatchers.Swing) {
         Harness().use { h ->
             val aResult = CompletableDeferred<Result<Boolean>>()
             h.save = { _, _ -> withContext(NonCancellable) { aResult.await() } }
@@ -230,7 +232,7 @@ class DesktopWindowsVideoFollowGroupViewModelTest {
         }
     }
 
-    @Test fun loadCancellationFailureReleasesOnlyCurrentBusyAndDoesNotStartIdsOrToast() = runBlocking {
+    @Test fun loadCancellationFailureReleasesOnlyCurrentBusyAndDoesNotStartIdsOrToast() = runBlocking(Dispatchers.Swing) {
         Harness().use { h ->
             h.tags = { Result.failure(CancellationException("tags cancelled")) }
             h.open(); h.loaded()
@@ -240,7 +242,7 @@ class DesktopWindowsVideoFollowGroupViewModelTest {
         }
     }
 
-    @Test fun queuedOriginalSaveFeedbackIsDroppedWhenSourceOrDialogChangesBeforeConsumption() = runBlocking {
+    @Test fun queuedOriginalSaveFeedbackIsDroppedWhenSourceOrDialogChangesBeforeConsumption() = runBlocking(Dispatchers.Swing) {
         for (replace in listOf<(Harness) -> Unit>({ it.accepted = it.publication() }, { it.open(44) })) {
             Harness().use { h ->
                 val request = h.open(); h.loaded()
@@ -257,7 +259,7 @@ class DesktopWindowsVideoFollowGroupViewModelTest {
         }
     }
 
-    @Test fun realOverwriteProtocolKeepsResetApplyFailureRetryAndEmptyDefaultSelection() = runBlocking {
+    @Test fun realOverwriteProtocolKeepsResetApplyFailureRetryAndEmptyDefaultSelection() = runBlocking(Dispatchers.Swing) {
         Harness().use { h ->
             val calls = java.util.Collections.synchronizedList(mutableListOf<Pair<String, String>>())
             var failApply = true
@@ -288,7 +290,7 @@ class DesktopWindowsVideoFollowGroupViewModelTest {
         }
     }
 
-    @Test fun cancellingRealProtocolAfterResetCannotApplySelectionOrPublishSuccess() = runBlocking {
+    @Test fun cancellingRealProtocolAfterResetCannotApplySelectionOrPublishSuccess() = runBlocking(Dispatchers.Swing) {
         Harness().use { h ->
             val calls = java.util.Collections.synchronizedList(mutableListOf<String>())
             var caller: Job? = null

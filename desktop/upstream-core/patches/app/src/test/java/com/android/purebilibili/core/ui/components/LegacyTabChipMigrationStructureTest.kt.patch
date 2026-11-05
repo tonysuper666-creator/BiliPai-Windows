@@ -1,0 +1,19 @@
+Upstream-commit: 72a428315de50ac120ed44136b4f4828f25eb831
+Upstream-source-sha256: ea7638c8694b8478bd9b10dd2a7ef2b57e175d7666c1cc430714943994fb39e7
+Reason: Resolve the same retained upstream source from repository root or the app module working directory. Every source-content and behavioral assertion stays unchanged; missing sources still fail loudly.
+
+--- a/app/src/test/java/com/android/purebilibili/core/ui/components/LegacyTabChipMigrationStructureTest.kt
++++ b/app/src/test/java/com/android/purebilibili/core/ui/components/LegacyTabChipMigrationStructureTest.kt
+@@ -18,9 +18,11 @@
+         )
+ 
+         migratedScreens.forEach { path ->
+-            val source = File(path).readText()
++            val source = sourceFile(path).readText()
+             assertTrue(source.contains("AppThemeAdaptiveTabRow("), path)
+             assertFalse(source.contains("AppFilterChip("), path)
+         }
+     }
++    private fun sourceFile(path: String): File = listOf(File(path), File("../$path"))
++        .firstOrNull(File::isFile) ?: error("Missing retained upstream source: $path")
+ }

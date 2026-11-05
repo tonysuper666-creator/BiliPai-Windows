@@ -1,0 +1,31 @@
+Upstream-commit: d02d377921ae69bf34b26c057691eac5c12959fd
+Upstream-source-sha256: ca7db37eba881f9dc838016d651b18781786f0982d05d9f655fc05276b7c16ec
+Reason: Upstream 575a6c242009a99a36d974add4323d8a1e4d0019 deliberately keeps the narrow rail away from a Book vertical hinge. Require the Book rail when enabled, preserve the opt-out and expanded-rail ban, and retain every Tabletop/flat assertion. No production posture policy is changed.
+
+--- a/app/src/test/java/com/android/purebilibili/core/util/NavigationUiPolicyTabletTest.kt
++++ b/app/src/test/java/com/android/purebilibili/core/util/NavigationUiPolicyTabletTest.kt
+@@ -8,20 +8,22 @@
+ class NavigationUiPolicyTabletTest {
+ 
+     @Test
+-    fun sidebarDisabledOnBookPosture() {
++    fun sidebarEnabledOnBookPostureAwayFromVerticalHinge() {
+         val windowSizeClass = WindowSizeClass(
+             widthSizeClass = WindowWidthSizeClass.Expanded,
+             heightSizeClass = WindowHeightSizeClass.Medium,
+             widthDp = 900.dp,
+             heightDp = 800.dp
+         )
+-        assertFalse(
++        assertTrue(
+             shouldUseSidebarNavigationForLayout(
+                 windowSizeClass = windowSizeClass,
+                 tabletUseSidebar = true,
+                 foldPosture = AppFoldPosture.Book
+             )
+         )
++        assertFalse(shouldUseSidebarNavigationForLayout(windowSizeClass, false, AppFoldPosture.Book))
++        assertFalse(shouldUseExpandedNavigationRailForLayout(windowSizeClass, AppFoldPosture.Book))
+     }
+ 
+     @Test

@@ -1,0 +1,13 @@
+import org.gradle.api.tasks.testing.Test
+
+// Gate A (TON-1085): the tested Windows build records every test result in its JUnit XML without failing on
+// test failures; desktop/tools/gate_a.py then compares those results with desktop/tools/gate-a-baseline.json.
+// Compilation, verification and every non-test task still fail the build, and no test is filtered or skipped.
+// The verdict must come from tests executed in this build, never from a cached or up-to-date earlier result.
+gradle.allprojects { project ->
+    project.tasks.withType(Test).configureEach {
+        ignoreFailures = true
+        outputs.cacheIf { false }
+        outputs.upToDateWhen { false }
+    }
+}

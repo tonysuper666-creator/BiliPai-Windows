@@ -728,7 +728,11 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: Windows-unit-test-junit-xml
-          path: desktop/build/test-results/test/TEST-*.xml
+          # Every test task's XML plus the gate A verdict (desktop/tools/gate_a.py) that judged them.
+          path: |
+            desktop/build/test-results/*/TEST-*.xml
+            desktop/upstream-core/build/test-results/*/TEST-*.xml
+            desktop/build/reports/gate-a.json
           if-no-files-found: warn
           retention-days: 1
       - name: Upload packaged native player evidence

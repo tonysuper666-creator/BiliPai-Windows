@@ -99,7 +99,20 @@ internal class DesktopDownloadNotifications(
     private val stillOwned: () -> Boolean,
     private val onOpenDownloads: () -> Unit,
     private val onFailure: (String) -> Unit,
+    /**
+     * The completion notice surface. `null` means this owner supplies one wired to its own status,
+     * which is why the production construction in the Shell needs no argument at all.
+     */
+    completionToast: DesktopDownloadCompletionToast? = null,
 ) : AutoCloseable {
+    private val completionToast: DesktopDownloadCompletionToast = completionToast
+        ?: DesktopDownloadCompletionToast(
+            stillOwned = stillOwned,
+            // The direct call's whole owner gate: scope liveness, window displayability and registry
+            // identity, re-evaluated on the EDT when the queued failure report actually runs.
+            failureOwner = ::ownedOnEdt,
+            onFailure = ::reportFailure,
+        )
     private val closed = AtomicBoolean()
     private val renderGeneration = AtomicLong()
     private val scope = CoroutineScope(parentScope.coroutineContext + SupervisorJob(parentScope.coroutineContext[Job]))
@@ -145,10 +158,7 @@ internal class DesktopDownloadNotifications(
         val arrivals = finished.filter { it.id !in completed }
         completed = finished.map { it.id }.toSet()
         for (task in arrivals) scope.launch(kotlinx.coroutines.Dispatchers.IO) {
-            try {
-                if (!closed.get() && stillOwned()) com.bilipai.desktop.integration.DesktopToastNotifications.show(
-                    "下载完成", task.title, "downloads", task.id.toString(), "downloads")
-            } catch (failure: Exception) { SwingUtilities.invokeLater { if (ownedOnEdt()) reportFailure("下载完成通知失败", failure) } }
+            completionToast.notify(task.id, task.title, closed::get)
         }
         val projection = projectDesktopDownloadNotification(tasks)
         val generation = renderGeneration.incrementAndGet()

@@ -4,20 +4,18 @@ import androidx.compose.runtime.*
 import com.android.purebilibili.navigation3.BiliPaiNavKey
 import com.bilipai.desktop.backup.DesktopBackupUpdateHold
 import com.bilipai.desktop.plugins.DesktopPluginContext
+import com.bilipai.desktop.platform.files.AwtDesktopFileDialogs
+import com.bilipai.desktop.platform.files.DesktopFileDialogs
+import com.bilipai.desktop.platform.files.DesktopFileDialogMode
+import com.bilipai.desktop.platform.files.DesktopFileDialogRequest
 import com.bilipai.desktop.ui.DesktopImageSaveLifetime
 import com.bilipai.desktop.ui.DesktopOriginalPlayerSettingsContext
 import com.bilipai.desktop.ui.DesktopOriginalRootRouteAssembly
 import com.bilipai.desktop.ui.DesktopReadyOriginalRootHandle
-import java.awt.Dialog
-import java.awt.EventQueue
-import java.awt.FileDialog
-import java.awt.Frame
 import java.awt.Window
 import java.nio.file.Path
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicReference
-import kotlin.coroutines.resume
-import kotlin.coroutines.resumeWithException
 import kotlinx.coroutines.*
 
 /** The share editor borrows the actual Ready Root, entry gate and global document.
@@ -99,7 +97,7 @@ internal class DesktopSettingsShareBindings(
     private val admit: ((() -> Unit) -> Boolean),
 ) : AutoCloseable {
     private val alive = AtomicBoolean(true)
-    private val chooser = AtomicReference<FileDialog?>()
+    private val chooser: DesktopFileDialogs = AwtDesktopFileDialogs(::checkpoint)
     val context = DesktopOriginalPlayerSettingsContext(pluginContext, ::isCurrent, ::admitCurrent)
     val service = DesktopSettingsShareService(context)
     // This existing adapter is a UTF-8 file capability, not a record/schema authority.
@@ -122,58 +120,20 @@ internal class DesktopSettingsShareBindings(
     fun tryCommit(action: () -> Unit): Boolean = try { commit(action); true }
         catch (_: CancellationException) { false }
 
-    /** Only the native selector is scheduled on EDT. Neither its modal loop nor payload IO
-     * runs while a Root lock is held. Cancellation/disposal release this exact selector. */
+    /** Selection is shared platform capability; schema, IO and Root admission stay here. */
     suspend fun chooseFile(window: Window, export: Boolean, fileName: String? = null): Path? {
-        val caller = currentCoroutineContext()
-        caller.ensureActive(); checkpoint()
-        return suspendCancellableCoroutine<Path?> { continuation ->
-            val allocated = AtomicReference<FileDialog?>()
-            continuation.invokeOnCancellation {
-                allocated.get()?.let { dialog -> EventQueue.invokeLater { dialog.dispose() } }
-            }
-            EventQueue.invokeLater {
-                if (!continuation.isActive) return@invokeLater
-                var dialog: FileDialog? = null
-                try {
-                    caller.ensureActive(); checkpoint()
-                    check(window.isDisplayable && window.isShowing) { "Settings selector requires its mounted dialog" }
-                    val title = if (export) "导出设置 JSON" else "导入设置 JSON"
-                    val mode = if (export) FileDialog.SAVE else FileDialog.LOAD
-                    val created = when (window) {
-                        is Dialog -> FileDialog(window, title, mode)
-                        is Frame -> FileDialog(window, title, mode)
-                        else -> error("Settings selector requires an actual Frame or Dialog")
-                    }
-                    dialog = created
-                    if (!chooser.compareAndSet(null, created)) error("A settings file selector is already open")
-                    allocated.set(created)
-                    created.isMultipleMode = false
-                    created.setFilenameFilter { _, name -> name.endsWith(".json", ignoreCase = true) }
-                    if (export) {
-                        require(fileName != null && Path.of(fileName).fileName.toString() == fileName && fileName.endsWith(".json"))
-                        created.file = fileName
-                    }
-                    caller.ensureActive(); checkpoint()
-                    created.isVisible = true
-                    caller.ensureActive(); checkpoint()
-                    val selected = created.file?.let { name ->
-                        val leaf = if (export && !name.endsWith(".json", ignoreCase = true)) "$name.json" else name
-                        Path.of(created.directory, leaf)
-                    }
-                    continuation.resume(selected)
-                } catch (error: Exception) {
-                    if (continuation.isActive) continuation.resumeWithException(error)
-                } finally {
-                    dialog?.let { allocated.compareAndSet(it, null); chooser.compareAndSet(it, null); it.dispose() }
-                }
-            }
-        }.also { caller.ensureActive(); checkpoint() }
+        if (export) require(fileName != null && fileName.endsWith(".json", ignoreCase = true))
+        return chooser.chooseFile({ window }, DesktopFileDialogRequest(
+            title = if (export) "导出设置 JSON" else "导入设置 JSON",
+            mode = if (export) DesktopFileDialogMode.SAVE else DesktopFileDialogMode.OPEN,
+            extensions = setOf("json"),
+            suggestedFileName = if (export) fileName else null,
+        ))
     }
 
     fun retire() {
         alive.set(false)
-        chooser.get()?.let { dialog -> EventQueue.invokeLater { dialog.dispose() } }
+        chooser.close()
     }
     override fun close() { retire() }
 }

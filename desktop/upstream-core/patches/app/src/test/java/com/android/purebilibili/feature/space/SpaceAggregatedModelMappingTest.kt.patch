@@ -1,0 +1,14 @@
+Upstream-source-sha256: 3b0537f7d2a28c7f8d130fae650826786af07d39a58c2920668562a5f84d01cd
+Reason: Follow resolveSpaceDisplayedMainTabs and the independent SpaceProfileEnhancementPolicyTest primary-destination contract. Existing assertions still require favorite folders, bangumi, comics, coins and likes to survive aggregation; only library destinations leave the primary rail.
+
+--- a/app/src/test/java/com/android/purebilibili/feature/space/SpaceAggregatedModelMappingTest.kt
++++ b/app/src/test/java/com/android/purebilibili/feature/space/SpaceAggregatedModelMappingTest.kt
+@@ -210,7 +210,7 @@
+         assertEquals("7788", seed.homeComicItems.single().param)
+         assertEquals(SpaceMainTab.HOME, seed.defaultMainTab)
+         assertEquals(SpaceSubTab.VIDEO, seed.defaultSubTab)
+-        assertEquals(listOf("主页", "动态", "投稿", "收藏", "追番"), seed.mainTabs.map { it.title })
++        assertEquals(listOf("主页", "动态", "投稿"), seed.mainTabs.map { it.title })
+         assertEquals(listOf("视频", "图文", "赛季合集"), seed.contributionTabs.map { it.title })
+         assertEquals(88L, seed.contributionTabs.last().seasonId)
+     }

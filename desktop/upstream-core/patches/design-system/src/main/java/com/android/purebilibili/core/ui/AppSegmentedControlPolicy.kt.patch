@@ -1,0 +1,23 @@
+Upstream-source-sha256: 5f6ab6a3b9888ababe428e98ddf82c698829ece5e9bc1b25bd1c83d7f93f2043
+Reason: 分段控件语义圆角给出的高度按 0.1dp 取整
+
+--- a/design-system/src/main/java/com/android/purebilibili/core/ui/AppSegmentedControlPolicy.kt
++++ b/design-system/src/main/java/com/android/purebilibili/core/ui/AppSegmentedControlPolicy.kt
+@@ -7,6 +7,7 @@
+ import com.android.purebilibili.core.theme.AppUiStyle
+ import com.android.purebilibili.core.theme.LocalAppUiStyle
+ import kotlin.math.max
++import kotlin.math.round
+ 
+ data class RoundedControlVisualGeometry(
+     val height: Dp,
+@@ -42,7 +43,8 @@
+     val safeCorner = preferredCornerRadius.coerceAtLeast(0.dp)
+     val safeMinimumHeight = nativeMinimumHeight.coerceAtLeast(0.dp)
+     val safeRatio = maxCornerRatio.coerceIn(0.15f, 0.45f)
+-    val radiusDrivenHeight = (safeCorner.value / safeRatio).dp
++    // 设计令牌按 0.1dp 定义；14.4 / 0.3 的 float 尾数（47.999996）不得变成可见高度。
++    val radiusDrivenHeight = (round(safeCorner.value / safeRatio * 10f) / 10f).dp
+     return RoundedControlVisualGeometry(
+         height = max(safeMinimumHeight.value, radiusDrivenHeight.value).dp,
+         cornerRadius = safeCorner,

@@ -1,0 +1,71 @@
+Upstream-source-sha256: c1b66d20803b697f39f1302f149a278e209b0b4c13cd634a43223e27b0ac86f7
+Reason: Upstream localized four animation settings; retain label, binding and import confirmation checks using the actual resource references. The predictive-back test remains unchanged.
+
+--- a/app/src/test/java/com/android/purebilibili/feature/settings/AnimationSettingsScreenStructureTest.kt
++++ b/app/src/test/java/com/android/purebilibili/feature/settings/AnimationSettingsScreenStructureTest.kt
+@@ -27,7 +27,7 @@
+     fun animationSettingsScreen_exposesRealtimeTransitionBlurToggle() {
+         val source = animationSettingsSource()
+-
++
+-        assertTrue(source.contains("title = \"转场时模糊背景\""))
++        assertLocalizedSetting(source, "animation.video_transition_realtime_blur_enabled", "animation_title_transition_blur", "转场时模糊背景")
+         assertTrue(source.contains("checked = videoTransitionRealtimeBlurEnabled"))
+         assertTrue(source.contains("toggleVideoTransitionRealtimeBlur"))
+     }
+@@ -36,7 +36,7 @@
+     fun animationSettingsScreen_exposesLiveSurfaceCardTransitionToggle() {
+         val source = animationSettingsSource()
+-
++
+-        assertTrue(source.contains("title = \"用当前画面过渡\""))
++        assertLocalizedSetting(source, "animation.live_surface_card_transition_enabled", "animation_title_live_transition", "用当前画面过渡")
+         assertTrue(source.contains("checked = liveSurfaceCardTransitionEnabled"))
+         assertTrue(source.contains("toggleLiveSurfaceCardTransition"))
+         assertTrue(source.contains("enabled = state.cardTransitionEnabled"))
+@@ -47,8 +47,9 @@
+     fun animationSettingsScreen_exposesVideoSharedReturnGestureFollowToggle() {
+         val source = animationSettingsSource()
+-
++
+-        assertTrue(source.contains("title = \"返回时倾斜\""))
+-        assertTrue(source.contains("滑动返回时，画面随手指移动"))
++        assertLocalizedSetting(source, "animation.app_navigation_settings.video_shared_return_gesture_follow_enabled", "animation_title_return_tilt", "返回时倾斜")
++        assertTrue(source.contains("stringResource(R.string.animation_return_tilt_on)"))
++        assertTrue(stringsSource().contains("<string name=\"animation_return_tilt_on\">滑动返回时，画面随手指倾斜</string>"))
+         assertTrue(source.contains("checked = appNavigationSettings.videoSharedReturnGestureFollowEnabled"))
+         assertTrue(source.contains("SettingsManager.setVideoSharedReturnGestureFollowEnabled("))
+         assertTrue(source.contains("enabled = state.cardTransitionEnabled"))
+@@ -70,10 +71,28 @@
+-
++
+         assertTrue(source.contains("ActivityResultContracts.OpenDocument()"))
+         assertTrue(source.contains("readLiquidGlassImportSession(uri)"))
+-        assertTrue(source.contains("title = \"导入液态玻璃设置？\""))
+-        assertTrue(source.contains("预览图片和其他应用设置不会改变"))
++        assertTrue(source.contains("val importSession = pendingLiquidGlassImport"))
++        val dialog = source.substringAfter("val importSession = pendingLiquidGlassImport")
++            .substringBefore("confirmButton = {")
++        assertTrue(dialog.contains("title = {"))
++        val dialogTitle = dialog.substringAfter("title = {").substringBefore("text = {")
++        assertTrue(dialogTitle.contains("stringResource(R.string.animation_import_title)"))
++        assertTrue(stringsSource().contains("<string name=\"animation_import_title\">导入液态玻璃设置？</string>"))
++        assertTrue(dialog.contains("stringResource(R.string.animation_import_unchanged)"))
++        assertTrue(stringsSource().contains("<string name=\"animation_import_unchanged\">预览图片和其他应用设置不会改变。</string>"))
+         assertTrue(source.contains("applyLiquidGlassImport(importSession)"))
+     }
++
++    private fun assertLocalizedSetting(source: String, key: String, resource: String, title: String) {
++        assertTrue(source.contains("\"$key\" -> R.string.$resource"))
++        assertTrue(source.contains("title = localizedAnimationSettingTitle(\"$key\")"))
++        assertTrue(stringsSource().contains("<string name=\"$resource\">$title</string>"))
++    }
++
++    private fun stringsSource(): String = listOf(
++        File("app/src/main/res/values/strings.xml"),
++        File("src/main/res/values/strings.xml"),
++    ).first { it.exists() }.readText()
+-
++
+     private fun animationSettingsSource(): String {
+         return listOf(

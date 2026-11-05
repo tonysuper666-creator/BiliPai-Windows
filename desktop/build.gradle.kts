@@ -3342,7 +3342,7 @@ fun applyUnifiedPatch(original: String, patch: String, label: String): String {
 // Desktop-only fixes against the merged upstream tree. The independent upstream-core
 // project deliberately compiles the unpatched originals so upstream regressions stay visible.
 val desktopUpstreamPatchDirectory = file("upstream-core/patches")
-val desktopUpstreamPatchedFiles = fileTree(desktopUpstreamPatchDirectory) { include("**/*.patch"); exclude("app/src/test/**") }.files
+val desktopUpstreamPatchedFiles = fileTree(desktopUpstreamPatchDirectory) { include("**/*.patch"); exclude("**/src/test/**") }.files
     .map { it.relativeTo(desktopUpstreamPatchDirectory).invariantSeparatorsPath.removeSuffix(".patch") }.toSortedSet()
 // Build-time rewrite rules (TON-1072): one call-site adaptation that every migrated upstream file needs in the same way,
 // so no per-file patch is written for it. A rule turns one call into a desktop bridge call with the same arguments and
@@ -4098,27 +4098,78 @@ kotlin.sourceSets.named("test") {
 
 // Approved upstream test corrections are isolated from production patch outputs.
 // The complete LF-normalized source is pinned: even an edit outside a hunk needs review.
-val correctedVideoTestPaths = setOf(
-    "com/android/purebilibili/feature/video/danmaku/DanmakuConfigPolicyTest.kt",
-    "com/android/purebilibili/feature/video/ui/overlay/ViewPointSegmentBarPolicyTest.kt",
-    "com/android/purebilibili/feature/video/progress/PbpProgressPolicyTest.kt",
-    "com/android/purebilibili/feature/video/ui/section/VideoInfoDisplayPolicyTest.kt",
+val correctedUpstreamTestPaths = setOf(
+    "app/src/test/java/com/android/purebilibili/core/util/NavigationUiPolicyTabletTest.kt",
+    "app/src/test/java/com/android/purebilibili/core/theme/SeedColorSchemeTest.kt",
+    "app/src/test/java/com/android/purebilibili/core/ui/BottomBarScrollHidePolicyTest.kt",
+    "design-system/src/test/java/com/android/purebilibili/core/ui/blur/ProgressiveFadeTest.kt",
+    "design-system/src/test/java/com/android/purebilibili/core/ui/adaptive/DeviceUiProfilePolicyTest.kt",
+    "app/src/test/java/com/android/purebilibili/core/ui/adaptive/DeviceUiProfileTest.kt",
+    "app/src/test/java/com/android/purebilibili/core/ui/components/AppLiquidAwareSearchFieldStructureTest.kt",
+    "app/src/test/java/com/android/purebilibili/core/ui/components/LegacyTabChipMigrationStructureTest.kt",
+    "app/src/test/java/com/android/purebilibili/core/theme/ThemeDynamicColorPolicyTest.kt",
+
+    "app/src/test/java/com/android/purebilibili/core/ui/AdaptiveNativeControlAdoptionStructureTest.kt",
+    "app/src/test/java/com/android/purebilibili/core/ui/OfficialUserIdentityStructureTest.kt",
+    "app/src/test/java/com/android/purebilibili/core/network/NetworkClientPolicyTest.kt",
+    "app/src/test/java/com/android/purebilibili/core/theme/ThemeColorSchemeCompletenessTest.kt",
+    "app/src/test/java/com/android/purebilibili/core/util/BilibiliUrlParserShortLinkTest.kt",
+    "app/src/test/java/com/android/purebilibili/core/ui/transition/VideoCardTransitionBackgroundPolicyTest.kt",
+    "app/src/test/java/com/android/purebilibili/core/util/IdUtilsTest.kt",
+    "design-system/src/test/java/com/android/purebilibili/core/ui/components/AdaptiveListVisualCapabilitiesTest.kt",
+    "app/src/test/java/com/android/purebilibili/core/ui/popup/AppGlassPopupGesturesTest.kt",
+    "app/src/test/java/com/android/purebilibili/core/store/HomeSettingsMappingPolicyTest.kt",
+    "design-system/src/test/java/com/android/purebilibili/core/ui/components/AdaptiveListComponentPolicyTest.kt",
+    "design-system/src/test/java/com/android/purebilibili/core/ui/AdaptiveBottomSheetPolicyTest.kt",
+    "design-system/src/test/java/com/android/purebilibili/core/ui/AppSemanticVisualPolicyTest.kt",
+    "design-system/src/test/java/com/android/purebilibili/core/ui/animation/DampedDragAnimationPolicyTest.kt",
+    "design-system/src/test/java/com/android/purebilibili/core/ui/components/AppPrimitiveComponentsStructureTest.kt",
+    "app/src/test/java/com/android/purebilibili/core/theme/ThemeRoleOverridePolicyTest.kt",
+    "app/src/test/java/com/android/purebilibili/core/ui/transition/VideoCardReturnTimelineTest.kt",
+    "app/src/test/java/com/android/purebilibili/core/buildinfo/BiliPaiApkNamingPolicyTest.kt",
+    "app/src/test/java/com/android/purebilibili/core/ui/AdaptiveLoadingIndicatorIntegrationTest.kt",
+    "app/src/test/java/com/android/purebilibili/core/ui/AdaptiveTooltipIntegrationTest.kt",
+    "app/src/test/java/com/android/purebilibili/core/ui/AppChromeNavigationApiStructureTest.kt",
+    "app/src/test/java/com/android/purebilibili/core/ui/CommentOverlayNavigationBackHandlerStructureTest.kt",
+    "app/src/test/java/com/android/purebilibili/core/ui/components/ThemeNativeSelectionStructureTest.kt",
+    "app/src/test/java/com/android/purebilibili/core/util/PermissionHelperStructureTest.kt",
+    "app/src/test/java/com/android/purebilibili/core/ui/animation/DampedDragAnimationIntegrationTest.kt",
+    "app/src/test/java/com/android/purebilibili/core/ui/common/VerticalPriorityPagerGestureTest.kt",
+    "app/src/test/java/com/android/purebilibili/core/util/GalleryVisualMediaContractsStructureTest.kt",
+    "app/src/test/java/com/android/purebilibili/core/ui/components/VideoListLayoutPolicyTest.kt",
+    "app/src/test/java/com/android/purebilibili/core/ui/skeleton/ContentLoadingSkeletonStructureTest.kt",
+    "app/src/test/java/com/android/purebilibili/core/ui/components/AppPreferenceApiStructureTest.kt",
+    "app/src/test/java/com/android/purebilibili/core/ui/transition/VideoSharedTransitionPolicyTest.kt",
+    "app/src/test/java/com/android/purebilibili/feature/settings/AppBuildVerificationPolicyTest.kt",
+    "app/src/test/java/com/android/purebilibili/feature/settings/AnimationSettingsScreenStructureTest.kt",
+    "app/src/test/java/com/android/purebilibili/feature/settings/SettingsCoreCombineOrderTest.kt",
+    "app/src/test/java/com/android/purebilibili/feature/settings/SettingsMiuixSimplificationStructureTest.kt",
+    "app/src/test/java/com/android/purebilibili/feature/settings/SettingsRootCategoryContentStructureTest.kt",
+    "app/src/test/java/com/android/purebilibili/feature/space/SpaceTabChromePolicyTest.kt",
+    "app/src/test/java/com/android/purebilibili/feature/space/SpaceLoadPolicyTest.kt",
+    "app/src/test/java/com/android/purebilibili/feature/space/SpaceAggregatedModelMappingTest.kt",
+    "app/src/test/java/com/android/purebilibili/feature/space/SpaceDynamicNavigationPolicyTest.kt",
+    // TON-1002 (M4a video): corrections of migrated video feature tests.
+    "app/src/test/java/com/android/purebilibili/feature/video/danmaku/DanmakuConfigPolicyTest.kt",
+    "app/src/test/java/com/android/purebilibili/feature/video/ui/overlay/ViewPointSegmentBarPolicyTest.kt",
+    "app/src/test/java/com/android/purebilibili/feature/video/progress/PbpProgressPolicyTest.kt",
+    "app/src/test/java/com/android/purebilibili/feature/video/ui/section/VideoInfoDisplayPolicyTest.kt",
 )
-val correctedVideoTestOutput = layout.buildDirectory.dir("patched-upstream-tests")
-val applyVideoTestCorrections by tasks.registering {
-    val patches = correctedVideoTestPaths.map { desktopUpstreamPatchDirectory.resolve("app/src/test/java/$it.patch") }
+val correctedUpstreamTestOutput = layout.buildDirectory.dir("patched-upstream-tests")
+val applyUpstreamTestCorrections by tasks.registering {
+    val patches = correctedUpstreamTestPaths.map { desktopUpstreamPatchDirectory.resolve("$it.patch") }
     inputs.files(patches).withPathSensitivity(PathSensitivity.RELATIVE)
-    inputs.files(correctedVideoTestPaths.map { appTestRoot.resolve(it) }).withPathSensitivity(PathSensitivity.RELATIVE)
-    val productionRoot = mergedRepositoryRoot.resolve("app/src/main/java")
-    inputs.files(correctedVideoTestPaths.map { productionRoot.resolve(it.removeSuffix("Test.kt") + ".kt") }
-        .filter { it.isFile }).withPathSensitivity(PathSensitivity.RELATIVE)
-    outputs.dir(correctedVideoTestOutput)
+    inputs.files(correctedUpstreamTestPaths.map { mergedRepositoryRoot.resolve(it) }).withPathSensitivity(PathSensitivity.RELATIVE)
+    // A correction resolving test/implementation disagreement also pins its production policy (FooTest.kt tests Foo.kt).
+    fun productionOf(relative: String) = mergedRepositoryRoot.resolve(relative.replace("/src/test/java/", "/src/main/java/").removeSuffix("Test.kt") + ".kt")
+    inputs.files(correctedUpstreamTestPaths.map { productionOf(it) }.filter { it.isFile }).withPathSensitivity(PathSensitivity.RELATIVE)
+    outputs.dir(correctedUpstreamTestOutput)
     doLast {
-        val output = correctedVideoTestOutput.get().asFile
+        val output = correctedUpstreamTestOutput.get().asFile
         output.deleteRecursively()
-        correctedVideoTestPaths.forEach { relative ->
-            val original = appTestRoot.resolve(relative).readText().replace("\r\n", "\n")
-            val patch = desktopUpstreamPatchDirectory.resolve("app/src/test/java/$relative.patch").readText()
+        correctedUpstreamTestPaths.forEach { relative ->
+            val original = mergedRepositoryRoot.resolve(relative).readText().replace("\r\n", "\n")
+            val patch = desktopUpstreamPatchDirectory.resolve("$relative.patch").readText()
             val expected = Regex("(?m)^Upstream-source-sha256: ([0-9a-f]{64})$").find(patch)?.groupValues?.get(1)
                 ?: throw GradleException("$relative: missing upstream source digest")
             val actual = MessageDigest.getInstance("SHA-256").digest(original.toByteArray(Charsets.UTF_8))
@@ -4130,7 +4181,7 @@ val applyVideoTestCorrections by tasks.registering {
             val productionExpected = Regex("(?m)^Upstream-production-source-sha256: ([0-9a-f]{64})$")
                 .find(patch)?.groupValues?.get(1)
             if (productionExpected != null) {
-                val production = productionRoot.resolve(relative.removeSuffix("Test.kt") + ".kt")
+                val production = productionOf(relative)
                     .readText().replace("\r\n", "\n")
                 val productionActual = MessageDigest.getInstance("SHA-256").digest(production.toByteArray(Charsets.UTF_8))
                     .joinToString("") { "%02x".format(it) }
@@ -4144,8 +4195,9 @@ val applyVideoTestCorrections by tasks.registering {
         }
     }
 }
-tasks.named("compileTestKotlin") { dependsOn(applyVideoTestCorrections) }
-kotlin.sourceSets.named("test") { kotlin.srcDir(correctedVideoTestOutput) }
+tasks.named("compileTestKotlin") { dependsOn(applyUpstreamTestCorrections) }
+kotlin.sourceSets.named("test") { kotlin.srcDir(correctedUpstreamTestOutput) }
+
 
 // M4d (TON-1005): tests of the migrated feature areas join, except those listed in upstream-core/m4d/tests-not-run.tsv
 // (path <TAB> reason) and those whose subject (FooTest.kt tests Foo.kt) is a later step of the area.
@@ -4170,17 +4222,20 @@ val appCoreSourceReadingTestClasses: List<String> = appCoreUpstreamTestPaths.map
     .sorted()
 kotlin.sourceSets.named("test") {
     migratedWholeModuleTestRoots.forEach { kotlin.srcDir(it) }
+    kotlin.exclude { element -> !element.isDirectory &&
+        element.file.toPath().startsWith(mergedRepositoryRoot.toPath()) &&
+        element.file.relativeTo(mergedRepositoryRoot).invariantSeparatorsPath in correctedUpstreamTestPaths }
     kotlin.srcDir(appTestRoot)
     val appTestRootPath = appTestRoot.toPath()
     kotlin.exclude { element -> !element.isDirectory && element.file.toPath().startsWith(appTestRootPath) &&
-        element.file.relativeTo(appTestRoot).invariantSeparatorsPath.let { it !in appCoreUpstreamTestPaths || it in correctedVideoTestPaths } }
+        element.file.relativeTo(appTestRoot).invariantSeparatorsPath.let { it !in appCoreUpstreamTestPaths || "app/src/test/java/$it" in correctedUpstreamTestPaths } }
     val buildDirectoryPath = layout.buildDirectory.get().asFile.toPath()
     kotlin.exclude { element ->
         val file = element.file
         val path = file.invariantSeparatorsPath
         val index = path.lastIndexOf("/com/android/purebilibili/")
         element.file.toPath().startsWith(buildDirectoryPath) &&
-            !element.file.toPath().startsWith(correctedVideoTestOutput.get().asFile.toPath()) && index >= 0 &&
+            !element.file.toPath().startsWith(correctedUpstreamTestOutput.get().asFile.toPath()) && index >= 0 &&
             path.substring(index + 1).let { it in migratedWholeModuleTestPaths || it in appCoreUpstreamTestPaths }
     }
 }
@@ -4470,11 +4525,51 @@ dependencies {
 
 tasks.test {
     useJUnitPlatform { excludeTags("packaged-updater", "native-mux", "js-worker") }
+    // PluginManager and the original Sponsor repository retain process-wide state.
+    // This class runs, with all of its assertions, in the packaging gate's fresh worker below.
+    filter { excludeTestsMatching("com.bilipai.desktop.ui.DesktopOriginalSponsorPresentationAssemblyTest") }
     // The verbatim v0.4.6 suite compares a zero offset with assertEquals(0f, ...), but the zero there is -0.0f (negative width times +0f),
     // and the generic equals() rejects it. The rendered offset is the same zero; the other cases of that class still run.
     filter { excludeTestsMatching("com.android.purebilibili.core.ui.wallpaper.WallpaperTransformPolicyTest.landscapeImageFillsPortraitViewportAndCanReachBothEdges") }
     systemProperty("java.awt.headless", "true")
     systemProperty("bilipai.js.workerResources", jsWorkerOutput.get().asFile.absolutePath)
+}
+val sponsorPresentationTests by tasks.registering(Test::class) {
+    group = "verification"
+    description = "Run actual Sponsor presentation against its own process-lifetime Runtime and loopback transport."
+    dependsOn(tasks.named("testClasses"))
+    testClassesDirs = sourceSets["test"].output.classesDirs
+    classpath = sourceSets["test"].runtimeClasspath
+    useJUnitPlatform()
+    filter { includeTestsMatching("com.bilipai.desktop.ui.DesktopOriginalSponsorPresentationAssemblyTest") }
+    maxParallelForks = 1
+    forkEvery = 1
+    systemProperty("java.awt.headless", "true")
+    systemProperty("bilipai.js.workerResources", jsWorkerOutput.get().asFile.absolutePath)
+}
+tasks.test { finalizedBy(sponsorPresentationTests) }
+// The real application image-loader owner installs Coil's process-wide SingletonImageLoader and refuses to start once
+// anything else in the process has initialized Coil. Tests that construct that owner run, with all of their assertions,
+// one class per fresh worker instead of depending on test order inside :test.
+val applicationImageLoaderOwnerTestClasses = listOf(
+    "com.bilipai.desktop.ui.DesktopIntegerResourceCoilTest",
+    "com.bilipai.desktop.ui.DesktopAboutIconCoilTest",
+)
+val applicationImageLoaderOwnerTests by tasks.registering(Test::class) {
+    group = "verification"
+    description = "Run tests that construct the actual application image-loader owner, each class in its own JVM."
+    dependsOn(tasks.named("testClasses"))
+    testClassesDirs = sourceSets["test"].output.classesDirs
+    classpath = sourceSets["test"].runtimeClasspath
+    useJUnitPlatform()
+    applicationImageLoaderOwnerTestClasses.forEach { filter.includeTestsMatching(it) }
+    maxParallelForks = 1
+    forkEvery = 1
+    systemProperty("java.awt.headless", "true")
+}
+tasks.test {
+    applicationImageLoaderOwnerTestClasses.forEach { filter.excludeTestsMatching(it) }
+    finalizedBy(applicationImageLoaderOwnerTests)
 }
 // Saved credentials are protected by Windows DPAPI only. A non-Windows test host has no system protection, so its
 // test JVMs explicitly select the test-only implementation (DesktopCredentialProtection); Windows tests use DPAPI.
@@ -6520,7 +6615,7 @@ val upstreamDesignSourceTests by tasks.registering(Test::class) {
     migratedSourceReadingTestClasses.forEach { filter.includeTestsMatching(it) }
     filter.isFailOnNoMatchingTests = false
     systemProperty("java.awt.headless", "true")
-    dependsOn(tasks.named("testClasses"), verifyUniqueClassNames)
+    dependsOn(tasks.named("testClasses"), verifyUniqueClassNames, applyUpstreamTestCorrections)
 }
 val upstreamAppCoreSourceTests by tasks.registering(Test::class) {
     group = "verification"
@@ -6532,7 +6627,7 @@ val upstreamAppCoreSourceTests by tasks.registering(Test::class) {
     appCoreSourceReadingTestClasses.forEach { filter.includeTestsMatching(it) }
     filter.isFailOnNoMatchingTests = false
     systemProperty("java.awt.headless", "true")
-    dependsOn(tasks.named("testClasses"), verifyUniqueClassNames)
+    dependsOn(tasks.named("testClasses"), verifyUniqueClassNames, applyUpstreamTestCorrections)
 }
 tasks.test {
     migratedSourceReadingTestClasses.forEach { filter.excludeTestsMatching(it) }

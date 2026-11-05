@@ -107,6 +107,15 @@ class DesktopHomeFullCardTest {
             assertEquals(0xffc83028.toInt(),VideoCardCoverColorStore.extractRepresentativeColor(bitmap)!!.toArgb())}
         assertEquals(0xff808080.toInt(),VideoCardCoverColorStore.resolveRepresentativeSwatch(listOf(DesktopPalette.Swatch(0xff808080.toInt(),10)))!!.rgb)
     }
+    @Test fun greyCoverStillFallsBackToItsOwnQuantizedColor() {
+        Bitmap().use{bitmap->assertTrue(bitmap.allocN32Pixels(64,64));bitmap.erase(0xff808080.toInt())
+            val color=VideoCardCoverColorStore.extractRepresentativeColor(bitmap)
+            assertNotNull(color)
+            val argb=color.toArgb()
+            for(shift in intArrayOf(16,8,0))assertTrue(kotlin.math.abs(((argb ushr shift)and 255)-0x80)<=8,"shift=$shift argb=${argb.toUInt().toString(16)}")
+            assertNull(com.bilipai.desktop.platform.bitmap.extractRepresentativeColor(bitmap))
+        }
+    }
     @Test fun utf8RouteBindingKeepsOriginalUriUnreservedCharactersAndEncodesSecretsAsQueryData() {
         assertEquals("https%3A%2F%2Ffixture.invalid%2F%E5%9B%BE%3Fx%3D1%26y%3Da%20b",encodeDesktopVideoRouteCover("https://fixture.invalid/图?x=1&y=a b"))
         assertEquals("_-!.~'()*",encodeDesktopVideoRouteCover("_-!.~'()*"))

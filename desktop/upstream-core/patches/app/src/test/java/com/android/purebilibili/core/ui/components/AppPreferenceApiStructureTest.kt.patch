@@ -1,0 +1,25 @@
+Upstream-source-sha256: 94601ed8d399ced3c19be64e3ecb42f3b9fd5fb777adb25f3fd1962344f4fe74
+Reason: 两处断言跟随现行实现：(1) AppPreferenceGroup 现为 `ProvideAppEntryIconColors { AdaptivePreferenceGroupRenderer(...) }` 的函数体，不再是 `) = AdaptivePreferenceGroupRenderer(` 的单表达式，改为声明之后的函数体里调用 AdaptivePreferenceGroupRenderer(；(2) 外观设置页自 3b4dc48f9（restore theme color pairs）起不再有文本输入框，必需的中性调用清单去掉 AppTextField，其余仍须出现，且“不得残留旧 IOS 命名”的正则断言原样保留。同类中 settingsSelectionApi（设置页内联 AppSlider）不在本批。生产不动。
+
+--- a/app/src/test/java/com/android/purebilibili/core/ui/components/AppPreferenceApiStructureTest.kt
++++ b/app/src/test/java/com/android/purebilibili/core/ui/components/AppPreferenceApiStructureTest.kt
+@@ -26,7 +26,8 @@
+         assertTrue(source.contains(") = AdaptivePreferenceContent("))
+         assertTrue(source.contains(") = AdaptiveSwitchPreferenceContent("))
+         assertTrue(source.contains(") = AdaptiveSliderPreferenceRenderer("))
+-        assertTrue(source.contains(") = AdaptivePreferenceGroupRenderer("))
++        // AppPreferenceGroup 现在是带分组取色作用域的函数体，仍委托给 AdaptivePreferenceGroupRenderer。
++        assertTrue(source.substringAfter("fun AppPreferenceGroup(").contains("AdaptivePreferenceGroupRenderer("))
+ 
+         val dialogSource = loadSource(
+             "design-system/src/main/java/com/android/purebilibili/core/ui/AppDialogComponents.kt"
+@@ -60,7 +61,8 @@
+ 
+         val requiredNeutralCalls = mapOf(
+             pilotPaths[0] to listOf("AppPreferenceGroup", "SettingsSingleChoicePreference", "AppAlertDialog"),
+-            pilotPaths[1] to listOf("AppPreferenceGroup", "SettingsSingleChoicePreference", "AppTextField"),
++            // 外观页已不再有文本输入框（3b4dc48f9），故不再要求 AppTextField。
++            pilotPaths[1] to listOf("AppPreferenceGroup", "SettingsSingleChoicePreference"),
+             pilotPaths[2] to listOf("AppPreferenceGroup", "AppSliderDialogPreference", "AppAlertDialog"),
+             pilotPaths[3] to listOf("AppTextField"),
+         )

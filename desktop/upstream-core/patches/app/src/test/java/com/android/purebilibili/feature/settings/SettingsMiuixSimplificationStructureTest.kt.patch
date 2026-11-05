@@ -1,0 +1,158 @@
+Upstream-source-sha256: fc812da6faf8ec507ffd49642216b0bf57a108a8a9dcbcf11e5f29a05b9d8996
+Reason: Preserve localized copy and detect distinct theme-aware icon resources.
+
+--- a/app/src/test/java/com/android/purebilibili/feature/settings/SettingsMiuixSimplificationStructureTest.kt
++++ b/app/src/test/java/com/android/purebilibili/feature/settings/SettingsMiuixSimplificationStructureTest.kt
+@@ -38,7 +38,13 @@
+         assertFalse(source.contains("title = \"液态玻璃\""))
+         assertFalse(source.contains("toggleAndroidNativeLiquidGlass("))
+         assertTrue(source.contains("LiquidGlassAdjustmentPanel("))
+-        assertTrue(source.contains("转场时模糊背景"))
++        val blur = source.substringAfter("SettingsItemAnchor(\"animation.video_transition_realtime_blur_enabled\")")
++            .substringBefore("AppPreferenceDivider()")
++        assertTrue(blur.contains("title = localizedAnimationSettingTitle(\"animation.video_transition_realtime_blur_enabled\")"))
++        assertTrue(source.contains("\"animation.video_transition_realtime_blur_enabled\" -> R.string.animation_title_transition_blur"))
++        assertTrue(loadSource("app/src/main/res/values/strings.xml").contains(
++            "<string name=\"animation_title_transition_blur\">转场时模糊背景</string>"
++        ))
+         assertTrue(source.contains("toggleVideoTransitionRealtimeBlur("))
+         assertTrue(source.contains("SettingsPageScaffold("))
+     }
+@@ -64,11 +64,28 @@
+         assertFalse(source.contains("steps = 2"))
+         assertTrue(source.contains("resolveLiquidGlassPresetSliderSettings(value)"))
+-        assertTrue(source.contains("title = \"文字对比度\""))
+-        assertTrue(source.contains("title = \"边缘彩光\""))
+-        assertTrue(source.contains("title = \"玻璃形变\""))
++        val directory = loadSource("app/src/main/java/com/android/purebilibili/feature/settings/SettingsAdditionalDirectory.kt")
++        for ((id, title) in listOf(
++            "glass.content_readability" to "文字对比度",
++            "glass.chromatic_aberration" to "边缘彩光",
++            "glass.content_distortion" to "玻璃形变",
++        )) {
++            assertTrue(Regex("""settingId\s*=\s*"${Regex.escape(id)}"\s*,\s*title\s*=\s*settingItemTitle\s*\(\s*"${Regex.escape(id)}"\s*\)""").containsMatchIn(source))
++            assertTrue(directory.contains("PlaybackSettingItem(\"$id\", \"$title\","))
++        }
+         assertTrue(source.contains("0% 关闭"))
+         assertTrue(source.contains("AppText(\"关闭玻璃形变\")"))
+-        assertTrue(source.contains("AppText(\"分享我的设置\")"))
+-        assertTrue(source.contains("AppText(if (isImportingSettings) \"正在读取\" else \"导入他人设置\")"))
++        val importAnchor = Regex("""AppTextButton\s*\(\s*onClick\s*=\s*onImportSettings\s*,""").find(source)
++        assertTrue(importAnchor != null)
++        val importButton = source.substring(importAnchor.range.first)
++            .substringBefore("onClick = onShareSettings,")
++        assertTrue(importButton.contains("enabled = !isImportingSettings"))
++        val importLabel = Regex(
++            """AppText\s*\(\s*(?:text\s*=\s*)?if\s*\(\s*isImportingSettings\s*\)\s*"正在读取"\s*else\s*"导入他人设置"\s*[,)]"""
++        )
++        assertTrue(importLabel.containsMatchIn(importButton))
++        val shareAnchor = Regex("""AppTextButton\s*\(\s*onClick\s*=\s*onShareSettings\s*,""").find(source)
++        assertTrue(shareAnchor != null)
++        val shareButton = source.substring(shareAnchor.range.first)
++        assertTrue(Regex("""AppText\s*\(\s*(?:text\s*=\s*)?"分享我的设置"\s*[,)]""").containsMatchIn(shareButton))
+         assertTrue(source.contains("preset = LiquidGlassAdvancedPreset.CUSTOM"))
+         assertTrue(source.contains("onAdvancedSettingsCommitted(advancedSettings)"))
+@@ -85,5 +102,5 @@
+         assertTrue(source.contains("rememberPagerState("))
+         assertTrue(source.contains("HorizontalPager("))
+-        assertTrue(source.contains("左右滑动切换内置背景"))
++        assertTrue(source.contains("左右滑动可更换测试背景"))
+         assertTrue(source.contains("bottomBarItems: List<BottomNavItem>"))
+         assertTrue(source.contains("previewBottomBarItems.forEachIndexed"))
+@@ -109,4 +126,6 @@
+         assertTrue(source.contains("Jetpack Compose · Miuix"))
+         assertTrue(source.contains("以及每一位开源贡献者"))
+-        assertTrue(source.contains("painterResource("))
++        val pager = source.substringAfter("HorizontalPager(")
++        assertTrue(pager.contains("AsyncImage("))
++        assertTrue(pager.contains("model = LiquidGlassPreviewArtwork.entries[page].drawableResId"))
+     }
+@@ -123,7 +129,12 @@
+         assertTrue(source.contains("ActivityResultContracts.OpenDocument()"))
+         assertTrue(source.contains("readLiquidGlassImportSession(uri)"))
+         assertTrue(source.contains("applyLiquidGlassImport(importSession)"))
+-        assertTrue(source.contains("预览图片和其他应用设置不会改变"))
++        val dialog = source.substringAfter("val importSession = pendingLiquidGlassImport")
++            .substringBefore("confirmButton = {")
++        assertTrue(dialog.contains("text = stringResource(R.string.animation_import_unchanged)"))
++        assertTrue(loadSource("app/src/main/res/values/strings.xml").contains(
++            "<string name=\"animation_import_unchanged\">预览图片和其他应用设置不会改变。</string>"
++        ))
+         assertTrue(source.contains("resolveVisibleBottomBarItems("))
+         assertTrue(source.contains("resolveBottomBarVisibleItemsForSearchMode("))
+         assertTrue(source.contains("bottomBarSearchEnabled = state.bottomBarSearchEnabled"))
+@@ -169,11 +180,15 @@
+         var groupStartLine = 0
+         var braceDepth = 0
+         var pendingIcon: PendingIcon? = null
++        var iconExpression: StringBuilder? = null
++        var iconParentheses = 0
++        var iconStartLine = 0
+         val entries = mutableListOf<SettingIconEntry>()
+-
++
+         fun flushGroup() {
+             entries
+-                .groupBy { it.icon }
++                .flatMap { entry -> iconKeys(entry.icon).map { key -> key to entry } }
++                .groupBy({ it.first }, { it.second })
+                 .filterValues { it.size > 1 }
+                 .forEach { (icon, repeatedEntries) ->
+                     duplicates += "$path:$groupStartLine repeats $icon for ${
+@@ -182,6 +197,7 @@
+                 }
+             entries.clear()
+             pendingIcon = null
++            iconExpression = null
+         }
+-
++
+         lines.forEachIndexed { index, line ->
+@@ -197,14 +213,21 @@
+                 braceDepth += line.count { it == '{' }
+                 braceDepth -= line.count { it == '}' }
+-
++
+-                Regex("""icon\s*=\s*([^,]+),?""")
+-                    .find(line)
+-                    ?.let { match ->
+-                        pendingIcon = PendingIcon(
+-                            icon = match.groupValues[1].trim(),
+-                            lineNumber = index + 1
+-                        )
++                val iconMatch = if (iconExpression == null) Regex("""\bicon\s*=\s*(.*)""").find(line) else null
++                val iconPart = iconMatch?.groupValues?.get(1) ?: if (iconExpression != null) line else null
++                if (iconPart != null) {
++                    if (iconExpression == null) {
++                        iconExpression = StringBuilder()
++                        iconParentheses = 0
++                        iconStartLine = index + 1
+                     }
++                    iconExpression!!.append(iconPart.trim())
++                    iconParentheses += iconPart.count { it == '(' } - iconPart.count { it == ')' }
++                    if (iconParentheses == 0) {
++                        pendingIcon = PendingIcon(iconExpression.toString().trimEnd(','), iconStartLine)
++                        iconExpression = null
++                    }
++                }
+-
++
+                 Regex("""title\s*=\s*"([^"]+)"""")
+                     .find(line)
+@@ -228,6 +251,15 @@
+         return duplicates
+     }
+-
++
++    private fun iconKeys(expression: String): List<String> {
++        val normalized = expression.replace(Regex("""\s+"""), "")
++        if (!normalized.startsWith("rememberThemeAwareSettingsIcon(")) return listOf(normalized)
++        val material = Regex("""materialSymbolResource=([\w.]+)""").find(normalized)?.groupValues?.get(1)
++        val miuix = Regex("""miuixIcon=([\w.]+)""").find(normalized)?.groupValues?.get(1)
++        require(material != null && miuix != null) { "Unrecognized theme-aware icon: $expression" }
++        return listOf("material:$material", "miuix:$miuix")
++    }
++
+     private data class PendingIcon(
+         val icon: String,
+         val lineNumber: Int
