@@ -1,4 +1,5 @@
 from v025_source_paths import canonical_source as _desktop_canonical_source, canonical_relative as _desktop_canonical_relative
+from v025_source_paths import _catalog as _v025_catalog
 from pathlib import Path
 from desktop_paths import long_path
 import hashlib,importlib.util,json,re,sys,zipfile,subprocess
@@ -28,6 +29,11 @@ def adapt_v025_note_badge(rel,text):
   text=text.replace(before,after,1)
  return text
 
+def _registered_is_pin(path,registered,pin):
+  # Gradle reads the legacy read point's manifest (legacy bytes); the gate view reads the
+  # live manifest, re-pinned to the direct-compile tree. Both must be the one reviewed pair.
+  entry=_v025_catalog()['paths'].get(path)
+  return registered==pin or (entry is not None and registered==entry['sha256'] and entry.get('legacySha256')==pin)
 def wide(p):
  return long_path(Path(p).absolute())
 def write(p,t):wide(p).parent.mkdir(parents=True,exist_ok=True);wide(p).write_bytes(t.encode()if isinstance(t,str)else t)
@@ -238,7 +244,7 @@ def generate(repo,output,standalone=False):
  assert manifest['upstreamCommit']==COMMIT
  records={r['path']:r['sha256']for r in manifest['sources']}
  for path,pin in SOURCE_PINS.items():
-  if path in records:assert records[path]==pin['sha256LF'],path+' existing canonical identity differs'
+  if path in records:assert _registered_is_pin(path,records[path],pin['sha256LF']),path+' existing canonical identity differs'
  parser=module('content_tokens',REPO/'desktop/tools/sync-upstream.py')
  selector=module('content_decls',REPO/'desktop/tools/extract-appearance-platform.py')
  main()

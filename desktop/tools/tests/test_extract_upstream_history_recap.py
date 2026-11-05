@@ -98,7 +98,10 @@ class HistoryRecapProducerTest(unittest.TestCase):
   desktop=TOOLS.parent
   main=desktop/'src/main/kotlin/com/bilipai/desktop'
   caller=(main/'plugins/DesktopSubscriptionRepository.kt').read_text(encoding='utf8')
-  self.assertIn('if (read) FeedReadingStore.recordRead(context, feedItemKey(item))',caller)
+  # 622fbb640 moved the feed stores onto the upstream plugin-sdk Context contract; the one
+  # Android Context is still derived from this repository's own plugin context.
+  self.assertEqual(caller.count('private val upstreamContext = context.asAndroidContext()'),1)
+  self.assertIn('if (read) FeedReadingStore.recordRead(upstreamContext, feedItemKey(item))',caller)
   self.assertIn('readTimestamps = _state.value.reading.readTimestamps',caller);self.assertIn('readProgress = _state.value.reading.readProgress',caller)
   binding=(main/'ui/DesktopPersonalRecapBinding.kt').read_text(encoding='utf8')
   self.assertIn('environment.history',binding);self.assertIn('context.store === preferences.store',binding)

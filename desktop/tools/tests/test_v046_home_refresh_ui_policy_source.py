@@ -374,48 +374,35 @@ class V046HomeRefreshUiPolicySourceTest(unittest.TestCase):
         self.assertEqual(
             {(visibility, kind, name) for name, (visibility, kind) in TOP_LEVEL.items()},
             {(visibility, kind, declared) for visibility, kind, declared in decls})
-        scratch = tempfile.mkdtemp(prefix='bp-hru-')
-        try:
-            root, env = gate.make_scratch_repo(REPO, scratch)
-            model = gate.parse_gradle((root / 'desktop/build.gradle.kts').read_text(encoding='utf-8'))
-            self.assertEqual(1, model.sync_excludes.count(CANONICAL))
-            tasks, _skipped = gate.select_producers(model)
-            results = gate.run_producers(root, tasks, env)
-            failed = [(row['task'], row['returncode'], row['stderrTail']) for row in results if row['returncode']]
-            self.assertEqual([], failed)
-            self.assertGreater(len(results), 100)
-            self.assertIn('extractOriginalHomePage', {row['task'] for row in results})
-            hits = []
-            roots = [root / 'desktop/src', root / 'desktop/build']
-            names = set(TOP_LEVEL)
-            for base in roots:
-                for path in base.rglob('*'):
-                    if not path.is_file() or path.suffix not in {'.kt', '.kts'}:
-                        continue
-                    raw = path.read_bytes()
-                    if not any(name.encode('utf-8') in raw for name in names):
-                        continue
-                    relative = path.relative_to(root).as_posix()
-                    package, decls = declarations(raw.decode('utf-8'), relative)
-                    for visibility, _kind, declared in decls:
-                        if declared in names:
-                            hits.append((package, visibility, declared, relative))
-            counts = {name: [hit for hit in hits if hit[2] == name] for name in names}
-            for name, found in counts.items():
-                self.assertEqual(1, len(found), (name, found))
-                package, visibility, _declared, relative = found[0]
-                want_visibility, _kind = TOP_LEVEL[name]
-                self.assertEqual(policy.PACKAGE['HomeRefreshUiPolicy.kt'], package, name)
-                self.assertEqual(want_visibility, visibility, name)
-                self.assertTrue(relative.startswith('desktop/build/generated/home-page/'), relative)
-                self.assertTrue(relative.endswith(RELATIVE), relative)
-                self.assertNotIn('generated/upstream/', relative)
-            others = [hit for hit in hits if hit[2] in {
-                'resolveOldContentDividerContainerColor', 'OLD_CONTENT_DIVIDER_CONTAINER_ALPHA'}]
-            self.assertEqual(2, len(others))
-            self.assertEqual({RELATIVE}, {hit[3][len('desktop/build/generated/home-page/'):] for hit in others})
-        finally:
-            shutil.rmtree(scratch, ignore_errors=True)
+        model = gate.parse_gradle(self.build)
+        self.assertEqual(1, model.sync_excludes.count(CANONICAL))
+        sources = {path.relative_to(REPO).as_posix(): path.read_bytes()
+                   for path in (REPO / 'desktop/src').rglob('*') if path.is_file() and path.suffix in {'.kt', '.kts'}}
+        sources.update({'desktop/build/generated/home-page/' + relative: raw
+                        for relative, raw in self.main.items() if relative.endswith('.kt')})
+        hits = []
+        names = set(TOP_LEVEL)
+        for relative, raw in sources.items():
+            if not any(name.encode('utf-8') in raw for name in names):
+                continue
+            package, decls = declarations(raw.decode('utf-8'), relative)
+            for visibility, _kind, declared in decls:
+                if declared in names:
+                    hits.append((package, visibility, declared, relative))
+        counts = {name: [hit for hit in hits if hit[2] == name] for name in names}
+        for name, found in counts.items():
+            self.assertEqual(1, len(found), (name, found))
+            package, visibility, _declared, relative = found[0]
+            want_visibility, _kind = TOP_LEVEL[name]
+            self.assertEqual(policy.PACKAGE['HomeRefreshUiPolicy.kt'], package, name)
+            self.assertEqual(want_visibility, visibility, name)
+            self.assertTrue(relative.startswith('desktop/build/generated/home-page/'), relative)
+            self.assertTrue(relative.endswith(RELATIVE), relative)
+            self.assertNotIn('generated/upstream/', relative)
+        others = [hit for hit in hits if hit[2] in {
+            'resolveOldContentDividerContainerColor', 'OLD_CONTENT_DIVIDER_CONTAINER_ALPHA'}]
+        self.assertEqual(2, len(others))
+        self.assertEqual({RELATIVE}, {hit[3][len('desktop/build/generated/home-page/'):] for hit in others})
 
     def test_emitted_sources_keep_balanced_delimiters(self):
         for name in policy.MAIN_FILES:

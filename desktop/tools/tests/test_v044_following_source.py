@@ -37,7 +37,9 @@ class WholeOriginalFollowingSourceTest(unittest.TestCase):
 
     def test_complete_current_viewmodel_and_ui_have_an_exact_whole_original_inverse(self):
         original = following.fixed(REPO)['FollowingListScreen.kt']
-        self.assertEqual(original, undo(self.body, self.proof['originalToWindows']))
+        # 591685d9e binds the desktop refresh launch import after this receipt: peel it exactly first.
+        from desktop_refresh_adaptation import unbind_refresh_launch
+        self.assertEqual(original, undo(unbind_refresh_launch(self.body), self.proof['originalToWindows']))
         self.assertTrue(self.proof['completeOriginalFollowingVmAndUi'])
         row = next(row for row in self.rows if row['path'].endswith('/FollowingListScreen.kt'))
         self.assertEqual(following.COMMIT, row['upstreamCommit'])

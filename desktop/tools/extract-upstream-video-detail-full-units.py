@@ -2,6 +2,7 @@
 Task-only producer; no shared source, registry or build mutation.
 """
 from v025_source_paths import canonical_source as _desktop_canonical_source, canonical_relative as _desktop_canonical_relative
+from v025_source_paths import _catalog as _v025_catalog
 from pathlib import Path
 from desktop_paths import long_path
 import hashlib, importlib.util, json, re, subprocess, sys
@@ -12,6 +13,11 @@ OUTPUT=None
 STANDALONE=False
 COMMIT='79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40'
 BASE='app/src/main/java/com/android/purebilibili/'
+def _registered_is_pin(path,registered,pin):
+    # Gradle reads the legacy read point's manifest (legacy bytes); the gate view reads the
+    # live manifest, re-pinned to the direct-compile tree. Both must be the one reviewed pair.
+    entry=_v025_catalog()['paths'].get(path)
+    return registered==pin or (entry is not None and registered==entry['sha256'] and entry.get('legacySha256')==pin)
 def wide(p):
     return long_path(Path(p).absolute())
 def sha(t):return hashlib.sha256(t.encode() if isinstance(t,str) else t).hexdigest()
@@ -565,7 +571,7 @@ def generate(repo,output,standalone=False):
     assert manifest['upstreamCommit']==COMMIT
     registry={r['path']:r['sha256']for r in manifest['sources']}
     for path,pin in SOURCE_PINS.items():
-        if path in registry:assert registry[path]==pin['sha256LF'],path+' existing registry identity differs'
+        if path in registry:assert _registered_is_pin(path,registry[path],pin['sha256LF']),path+' existing registry identity differs'
     parser=module('video_full_tokens',REPO/'desktop/tools/sync-upstream.py')
     media=module('video_full_functions',REPO/'desktop/tools/extract-upstream-media.py')
     selector=module('video_full_decls',REPO/'desktop/tools/extract-appearance-platform.py')

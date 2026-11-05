@@ -25,6 +25,7 @@ sys.path.insert(0, str(TOOLS))
 import check_slice_symbol_closure as gate
 import v040_chrome_actions as chrome_actions
 import v046_design_system_leaves_a as leaves
+import v025_source_paths as v025
 
 spec = importlib.util.spec_from_file_location('sync_upstream_design_system_leaves_a', TOOLS / 'sync-upstream.py')
 sync = importlib.util.module_from_spec(spec)
@@ -40,7 +41,6 @@ BASE = leaves.BASE
 CANONICAL = {name: BASE + name for name in leaves.MAIN_FILES}
 EXCLUDED_NOW = ('MediaContrastPalette.kt', 'AppPopupSurface.kt', 'AppSemanticVisualPolicy.kt')
 ALREADY_EXCLUDED = ('AppChromeSizeTokens.kt',)
-V040_ARCHIVE = 'desktop/upstream-slices/v040-chrome-actions'
 HAND_WRITTEN_TEST = REPO / 'desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopDesignSystemLeavesATest.kt'
 TOP_LEVEL = {
     'MediaContrastPalette.kt': {('public', 'object', 'MediaContrastPalette')},
@@ -149,28 +149,144 @@ def balanced(case, source):
     case.assertEqual([], stack)
 
 
+# Gradle's mergedRepositoryRoot is the live tree; inside the gate read point it is BILIPAI_LIVE_ROOT.
+MERGED = Path(os.environ.get('BILIPAI_LIVE_ROOT') or REPO).resolve()
+
+
+def gradle_modules(build, name):
+    """`val <name> = listOf("a/", ...)`, followed through one `+ otherList` reference."""
+    match = re.search(r'^val ' + name + r' = listOf\(([^)]*)\)(?: \+ (\w+))?$', build, re.M)
+    if match is None:
+        raise ValueError('build.gradle.kts no longer declares ' + name)
+    modules = re.findall(r'"([^"]+)"', match.group(1))
+    return modules + (gradle_modules(build, match.group(2)) if match.group(2) else [])
+
+
+def canonical_original_identity(catalog, relative):
+    """build.gradle.kts canonicalOriginalIdentity(): the legacy file prepareUpstreamSources copies for a live row."""
+    identity = relative
+    if relative.startswith(tuple(catalog['sourceRoots'])):
+        identity = catalog['previousPaths'].get(relative, relative)
+        if identity is None or identity not in catalog['paths']:
+            raise ValueError('Unknown canonical original source: ' + relative)
+    if (REPO / identity).is_file():
+        return identity
+    predecessors = sorted({old for old, new in catalog['previousPaths'].items() if new == identity and (REPO / old).is_file()})
+    return predecessors[0] if len(predecessors) == 1 else identity
+
+
+def gradle_block(build, header):
+    """The lines of one top-level `val ... = mapOf(` / `setOf(` block of build.gradle.kts."""
+    start = build.index('\n' + header + '\n') + len(header) + 2
+    return build[start:build.index('\n)\n', start)]
+
+
+def gradle_keys(build, name):
+    """The string keys of `val <name>: Map<String, String> = mapOf(...)`."""
+    return re.findall(r'^\s*"([^"]+)" to ', gradle_block(build, 'val ' + name + ': Map<String, String> = mapOf('), re.M)
+
+
+def tsv_keys(relative_directories, trim):
+    keys = []
+    for directory in relative_directories:
+        table = REPO / 'desktop' / directory / 'later-steps.tsv'
+        lines = table.read_text(encoding='utf-8').splitlines() if table.is_file() else []
+        keys += [(line.split('\t', 1)[0].strip() if trim else line.split('\t', 1)[0])
+                 for line in lines if line.strip() and not line.startswith('#')]
+    return set(keys)
+
+
+def kotlin_files(root):
+    return [path.relative_to(MERGED / 'app/src/main/java').as_posix() for path in sorted(root.rglob('*.kt'))] \
+        if root.is_dir() else []
+
+
+def migrated_app_paths(build):
+    """build.gradle.kts migratedAppPaths (TON-1000, M4b, M4c, M4d): the app files compiled from the merged root."""
+    java = MERGED / 'app/src/main/java'
+    prefix = 'com/android/purebilibili/'
+    held = tuple(gradle_keys(build, 'appCoreDesktopOwned') + gradle_keys(build, 'appCoreLaterSteps'))
+    feature_later = tsv_keys(gradle_modules(build, 'appFeatureListDirectories'), trim=False)
+    core = [path for area in ['core'] + gradle_modules(build, 'migratedAppFeatureAreas')
+            for path in kotlin_files(java / prefix / area)
+            if not path[len(prefix):].startswith(held) and path[len(prefix):] not in feature_later]
+    m4d_later = tsv_keys(['upstream-core/m4d'], trim=True)
+    m4d = [path for area in gradle_modules(build, 'migratedAppM4dAreas') for path in kotlin_files(java / prefix / area)
+           if path[len(prefix):] not in m4d_later]
+    single = re.findall(r'^\s*"([^"]+)",', gradle_block(build, 'val migratedAppSingleFiles: Set<String> = setOf('), re.M)
+    m4c_held = set(gradle_keys(build, 'appM4cDesktopOwned') + gradle_keys(build, 'appM4cLaterSteps'))
+    m4c = [path for root in gradle_modules(build, 'migratedAppM4cRoots') for path in kotlin_files(java / root)
+           if path not in m4c_held]
+    return set(core) | set(m4d) | set(single) | set(m4c)
+
+
 @functools.lru_cache(maxsize=1)
-def definer_candidates():
+def merged_modules():
+    """(migratedUpstreamModules, migrated app paths, migrated identities): the module prefixes build.gradle.kts compiles
+    whole from the merged root, the app files it compiles from the merged root, and every `com/android/purebilibili/...`
+    identity in migratedUpstreamRelativePaths, which the main source set drops from build-dir copies."""
     build = (REPO / 'desktop/build.gradle.kts').read_text(encoding='utf-8')
-    excluded = set(gate.parse_gradle(build).sync_excludes)
+    modules = gradle_modules(build, 'migratedUpstreamModules')
+    app = migrated_app_paths(build)
+    identities = set(gate.parse_gradle(build).migrated_paths) | app
+    for module in gradle_modules(build, 'migratedWholeModules'):
+        root = MERGED / module / 'src/main/java'
+        identities |= {path.relative_to(root).as_posix() for path in root.rglob('*.kt')}
+    return tuple(modules), frozenset(app), frozenset(identities)
+
+
+def upstream_identity(path):
+    """build.gradle.kts upstreamIdentity(): the path from the last `com/android/purebilibili/` on, or ''."""
+    path = '/' + path
+    index = path.rfind('/com/android/purebilibili/')
+    return '' if index < 0 else path[index + 1:]
+
+
+@functools.lru_cache(maxsize=1)
+def compile_universe():
+    """(label, file) of every upstream-named Kotlin file the desktop main compile sees after M2 (e2528efba), the way
+    build.gradle.kts selects them: the migratedUpstreamModules compile whole from the merged root, and so do the
+    migratedAppPaths of app/src/main/java; every other direct
+    row of upstream-sources.json is copied by prepareUpstreamSources from the legacy read point at its
+    canonicalOriginalIdentity unless the Sync excludes it; a slice archive file stands for the producer copy at its
+    package path, which the main source set drops when that identity is a migrated module path."""
+    build = (REPO / 'desktop/build.gradle.kts').read_text(encoding='utf-8')
+    model = gate.parse_gradle(build)
+    modules, app, migrated = merged_modules()
+    candidates = []
+    for module in modules:
+        root = MERGED / module / 'src/main/java'
+        candidates += [(path.relative_to(MERGED).as_posix(), path) for path in sorted(root.rglob('*.kt'))]
+    candidates += [('app/src/main/java/' + path, MERGED / 'app/src/main/java' / path) for path in sorted(app)
+                   if (MERGED / 'app/src/main/java' / path).is_file()]
+    catalog = v025._catalog()
+    excluded = set(model.sync_excludes)
     sources = json.loads((REPO / 'desktop/upstream-sources.json').read_text(encoding='utf-8'))['sources']
-    candidates = [REPO / row['path'] for row in sources
-                  if row.get('mode', 'direct') == 'direct' and row['path'].endswith('.kt') and row['path'] not in excluded]
-    candidates += sorted((REPO / 'desktop/upstream-slices').glob('*/*.kt'))
+    for row in sources:
+        path = row['path']
+        if row.get('mode', 'direct') != 'direct' or not path.endswith('.kt') or path in excluded:
+            continue
+        if path.startswith(tuple(modules)) or any(path.endswith('/src/main/java/' + name) for name in migrated):
+            continue
+        identity = canonical_original_identity(catalog, path)
+        candidates.append((identity, REPO / identity))
+    for path in sorted((REPO / 'desktop/upstream-slices').glob('*/*.kt')):
+        package = gate.parse_kotlin(path.read_text(encoding='utf-8'), path.name, 'carried', 'main').package
+        if package.replace('.', '/') + '/' + path.name not in migrated:
+            candidates.append((path.relative_to(REPO).as_posix(), path))
     return tuple(candidates)
 
 
 def definers(name, package):
-    """Files of the compile-relevant sources that declare `name` in `package`: vendored direct files that are not
-    excluded from prepareUpstreamSources, and every slice archive."""
+    """Labels of the compile-universe files that declare `name` in `package`."""
     found = []
-    for path in definer_candidates():
+    for label, path in compile_universe():
         raw = path.read_bytes()
         if name.encode('utf-8') not in raw:
             continue
         info = gate.parse_kotlin(raw.decode('utf-8'), path.name, 'carried', 'main')
         if info.package == package and any(d.name == name and d.visibility != 'private' for d in info.decls):
-            found.append(path.relative_to(REPO).as_posix())
+            found.append(label)
     return found
 
 
@@ -466,11 +582,15 @@ class V046DesignSystemLeavesASourceTest(unittest.TestCase):
     def test_upstream_sources_json_is_untouched_and_the_vendored_pins_match_the_manifest(self):
         sources = json.loads((REPO / 'desktop/upstream-sources.json').read_text(encoding='utf-8'))['sources']
         by_path = {row['path']: row for row in sources}
+        # ad2967bbf re-pinned the live manifest to the merged bytes; the catalog keeps the reviewed live/legacy pair
+        catalog = v025._catalog()['paths']
         for name in EXCLUDED_NOW:
             row = by_path[CANONICAL[name]]
+            entry = catalog[CANONICAL[name]]
             self.assertEqual('direct', row.get('mode', 'direct'), name)
-            self.assertEqual(leaves.VENDORED_LF_SHA256[name], row['sha256'], name)
-            self.assertEqual(leaves.VENDORED_LF_SHA256[name], sha(lf((REPO / CANONICAL[name]).read_bytes())), name)
+            self.assertEqual(entry['sha256'], row['sha256'], name)
+            self.assertEqual(leaves.VENDORED_LF_SHA256[name], entry['legacySha256'], name)
+            self.assertEqual(v025.reviewed_sha256(REPO, entry), sha(lf((REPO / CANONICAL[name]).read_bytes())), name)
         self.assertNotIn(CANONICAL['AppEntryIconPalette.kt'], by_path)
         self.assertFalse((REPO / CANONICAL['AppEntryIconPalette.kt']).exists())
         self.assertEqual(chrome_actions.COMPONENT_DIRECT_PATHS & set(CANONICAL.values()), {CANONICAL['AppChromeSizeTokens.kt']})
@@ -484,13 +604,14 @@ class V046DesignSystemLeavesASourceTest(unittest.TestCase):
             self.assertNotIn(CANONICAL[name], compiled_direct, name)
         # static scan: no compiled direct file, no archive leaf outside the two reviewed ones and nothing desktop-owned
         # declares any top-level name of the five files
+        # after M2 (e2528efba) the compile reads design-system whole from the merged root, so the slice outputs of
+        # these paths are dropped from the main source set and the merged file is the one definer
         names = {declared for rows in TOP_LEVEL.values() for _v, _k, declared in rows}
         owners = {}
-        scanned = [REPO / path for path in sorted(compiled_direct) if path.endswith('.kt')]
-        scanned += sorted((REPO / 'desktop/upstream-slices').glob('*/*.kt'))
+        scanned = list(compile_universe())
         for root in ('desktop/src/main', 'desktop/src/test'):
-            scanned += sorted((REPO / root).rglob('*.kt'))
-        for path in scanned:
+            scanned += [(path.relative_to(REPO).as_posix(), path) for path in sorted((REPO / root).rglob('*.kt'))]
+        for label, path in scanned:
             raw = path.read_bytes()
             if not any(name.encode('utf-8') in raw for name in names):
                 continue
@@ -499,13 +620,11 @@ class V046DesignSystemLeavesASourceTest(unittest.TestCase):
                 continue
             for decl in info.decls:
                 if decl.name in names and decl.visibility != 'private':
-                    owners.setdefault(decl.name, []).append(path.relative_to(REPO).as_posix())
+                    owners.setdefault(decl.name, []).append(label)
         for name in names:
             found = owners.get(name, [])
-            expected = [leaves.ARCHIVE + '/' + file for file, rows in TOP_LEVEL.items()
+            expected = [BASE + file for file, rows in TOP_LEVEL.items()
                         if any(declared == name for _v, _k, declared in rows)]
-            if name in ('AppChromeSizeTokens', 'CompactCapsuleChromeSpec', 'resolveCompactCapsuleChromeSpec'):
-                expected = sorted(expected + [V040_ARCHIVE + '/AppChromeSizeTokens.kt'])   # replaced inside the chain
             with self.subTest(name=name):
                 self.assertEqual(sorted(expected), sorted(found))
 
@@ -540,13 +659,11 @@ class V046DesignSystemLeavesASourceTest(unittest.TestCase):
                 with self.subTest(file=name, symbol=symbol):
                     found = definers(symbol, leaves.PACKAGE)
                     self.assertTrue(found)
-                    self.assertTrue(any(member in (REPO / path).read_text(encoding='utf-8') for path in found), member)
-        # AppContentColors is the v0.4.6 blob, so primaryText() exists in the form AppPopupSurface calls
-        colors = [path for path in definers('AppContentColors', leaves.PACKAGE)]
-        self.assertTrue(colors)
-        for path in colors:
-            if 'v042-search-dependencies' in path:
-                self.assertEqual(git_blob(BASE + 'AppContentColors.kt'), (REPO / path).read_bytes())
+                    files = dict(compile_universe())
+                    self.assertTrue(any(member in files[path].read_text(encoding='utf-8') for path in found), member)
+        # after M2 (e2528efba) the merged design-system module is the one AppContentColors the compile sees, and it
+        # keeps primaryText() in the form AppPopupSurface calls
+        self.assertEqual([BASE + 'AppContentColors.kt'], definers('AppContentColors', leaves.PACKAGE))
 
     def test_inventory_and_catalog_register_the_archive(self):
         self.assertIn(leaves.ARCHIVE, self.catalog['buildInputRoots'])
@@ -585,7 +702,8 @@ class V046DesignSystemLeavesASourceTest(unittest.TestCase):
         text = HAND_WRITTEN_TEST.read_bytes().decode('utf-8')
         self.assertNotIn('\r', text)
         balanced(self, text)
-        self.assertEqual(5, len(re.findall(r'@Test\s+fun ', text)))
+        # 377cdbf77 split the compact capsule height check into one test per style
+        self.assertEqual(7, len(re.findall(r'@Test\s+fun ', text)))
         self.assertIn('package com.bilipai.desktop.ui\n', text)
         self.assertIn('class DesktopDesignSystemLeavesATest {', text)
         imported = set(re.findall(r'^import (com\.android\.purebilibili\.core\.ui\.\w+)$', text, re.M))

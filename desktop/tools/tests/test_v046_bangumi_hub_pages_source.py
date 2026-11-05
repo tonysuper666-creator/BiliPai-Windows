@@ -27,6 +27,15 @@ HOME_HOOKS = [
     (',v046HubPages=v046', ''),
 ]
 PAGES_INVENTORY_HOOK = ',v046HubPages=V046_ROWS'
+# 591685d9e added the desktop refresh binding after this layer: it rewrites only the coroutine launch import of these
+# three home outputs, so the layer stage is the producer without that block and the actual output is that stage bound.
+REFRESH_BLOCK = (" from desktop_refresh_adaptation import bind_refresh_launch\n"
+                 " for name in ['BangumiHubViewModel.kt', 'HomeBangumiTabPage.kt', 'BangumiHubContent.kt']:\n"
+                 "  generated=out/'com/android/purebilibili/feature/bangumi'/name\n"
+                 "  if generated.is_file():\n"
+                 "   generated.write_text(bind_refresh_launch(generated.read_text(encoding='utf-8')),encoding='utf-8',newline='\\n')\n")
+REFRESH_BOUND = ['com/android/purebilibili/feature/bangumi/' + n for n in
+                 ['BangumiHubViewModel.kt', 'HomeBangumiTabPage.kt', 'BangumiHubContent.kt']]
 PAGES_HOOK_BLOCK = ("from v046_bangumi_hub_pages import advance_pages,emit_hub_policy_test\nV046_ROWS=advance_pages(C,OUT)\n"
                     "V046_ROWS.append(emit_hub_policy_test(C,OUT.parent/(OUT.name+'-tests')))\n")
 PLAYER_HOOK_START = '# v0.4.6 follow-session policy (targetSeasonId'
@@ -163,10 +172,14 @@ class BangumiHubPagesSliceTests(unittest.TestCase):
         cls.root = Path(cls.temp.name)
         cls.sources, cls.manifest = hub.fixed(REPO)
         cls.syntax = load('sync-upstream.py')
-        run_producer(TOOLS / HOME_PRODUCER, cls.root / 'home')
+        run_producer(TOOLS / HOME_PRODUCER, cls.root / 'actual-home')
         run_producer(TOOLS / PAGES_PRODUCER, cls.root / 'pages')
         # The same producers with this slice's hook removed give the predecessor stage of every output.
         home = (TOOLS / HOME_PRODUCER).read_text(encoding='utf8')
+        assert home.count(REFRESH_BLOCK) == 1
+        home = home.replace(REFRESH_BLOCK, '')
+        (cls.root / 'home-stage.py').write_text(home, encoding='utf8', newline='\n')
+        run_producer(cls.root / 'home-stage.py', cls.root / 'home')
         pages = (TOOLS / PAGES_PRODUCER).read_text(encoding='utf8')
         for old, new in HOME_HOOKS:
             assert home.count(old) == 1, old
@@ -176,7 +189,7 @@ class BangumiHubPagesSliceTests(unittest.TestCase):
         for name, body, key in [('home-before.py', home, 'home'), ('pages-before.py', pages, 'pages')]:
             (cls.root / name).write_text(body, encoding='utf8', newline='\n')
             run_producer(cls.root / name, cls.root / ('before-' + key))
-        cls.home = cls.root / 'home'
+        cls.home = cls.root / 'actual-home'
         cls.pages = cls.root / 'pages'
         cls.tests = cls.root / 'pages-tests'
         cls.vm = text(cls.pages / hub.OUT_VM)
@@ -343,8 +356,21 @@ class BangumiHubPagesSliceTests(unittest.TestCase):
                 self.assertEqual(text(self.out(hub.OUT_TRANSITION)), text(work / hub.OUT_TRANSITION))
                 # Everything but the producer's own inventory is exactly what the producer run left.
                 skip = INVENTORY['home']
-                self.assertEqual({k: v for k, v in tree(self.home).items() if k != skip},
+                self.assertEqual({k: v for k, v in tree(self.root / 'home').items() if k != skip},
                                  {k: v for k, v in tree(work).items() if k != skip})
+
+    def test_actual_home_output_is_exactly_the_refresh_binding_over_this_layer_stage(self):
+        from desktop_refresh_adaptation import bind_refresh_launch
+        stage, actual = tree(self.root / 'home'), tree(self.home)
+        self.assertEqual(sorted(stage), sorted(actual))
+        changed = sorted(k for k in stage if stage[k] != actual[k])
+        self.assertEqual(sorted(REFRESH_BOUND), changed)
+        for output in REFRESH_BOUND:
+            body = stage[output].decode('utf8')
+            self.assertEqual(1, body.count('import kotlinx.coroutines.launch\n'), output)
+            self.assertEqual(bind_refresh_launch(body).encode('utf8'), actual[output], output)
+            self.assertEqual(body, actual[output].decode('utf8').replace(
+                'import com.bilipai.desktop.ui.desktopRefreshLaunch as launch\n', 'import kotlinx.coroutines.launch\n'), output)
 
     def test_a_changed_adaptation_anchor_is_rejected_by_its_count(self):
         for label, old, new, count in hub.VM_ADAPTATIONS + hub.SCREEN_ADAPTATIONS + hub.TAB_PAGE_ADAPTATIONS + hub.TRANSITION_ADAPTATIONS:

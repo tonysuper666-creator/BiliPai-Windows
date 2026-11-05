@@ -76,10 +76,29 @@ class V030LiveStreamSourceTests(unittest.TestCase):
             self.assertEqual(live.model_declaration(live.fixed_sources()[live.MODEL]), live.model_declaration(generated_model))
             joined_proof = json.loads((output / "v030-live-api-source-proof.json").read_text(encoding="utf8"))
             actual_body = actual.split("import okhttp3.ResponseBody\n\n", 1)[1].removesuffix("\n")
+            # Later sole-API stages (v035 story, v041 search, v044 subscription,
+            # v046 editor and like) run after v030; undo each through its own
+            # receipt to recover the exact v030 output before checking it.
+            def receipt(name):
+                return json.loads((output / name).read_text(encoding="utf8"))
+            import v046_danmaku_like as like
+            stage = like.restore(actual_body, receipt("v046-danmaku-like-api-proof.json")["retainedToCurrent"])
+            stage = like.restore(stage, receipt("v046-favorite-editor-api-proof.json")["retainedToCurrent"])
+            stage = like.restore(stage, receipt("v044-favorite-subscription-api-proof.json")["retainedToCurrent"])
+            search = receipt("v041-search-api-source-proof.json")["canonicalToGenerated"]
+            self.assertEqual(search["afterSha256LF"], live.sha(stage.encode()))
+            stage = live.replay(stage, search["indexedEdits"], True)
+            self.assertEqual(search["beforeSha256LF"], live.sha(stage.encode()))
+            story = receipt("original-v035-story-api-inverse.json")
+            self.assertEqual(story["wholeOutputSha256LF"], live.sha(stage.encode()))
+            self.assertEqual(1, stage.count(story["selectedOriginalDeclaration"]))
+            stage = stage.replace(story["selectedOriginalDeclaration"], story["beforeDeclaration"], 1)
+            self.assertEqual(story["wholeInputSha256LF"], live.sha(stage.encode()))
+            self.assertEqual(joined_proof["completeBody"]["afterSha256LF"], live.sha(stage.encode()))
             edits = joined_proof["completeBody"]["indexedEdits"]
-            before = live.replay(actual_body, edits, True)
+            before = live.replay(stage, edits, True)
             self.assertEqual(joined_proof["completeBody"]["beforeSha256LF"], live.sha(before.encode()))
-            self.assertEqual(actual_body, live.replay(before, edits, False))
+            self.assertEqual(stage, live.replay(before, edits, False))
             selected = joined_proof["countedAdaptations"][0]
             self.assertEqual(1, actual.count(selected["after"]))
             self.assertNotIn("signedParams: Map<String, String>", selected["after"])

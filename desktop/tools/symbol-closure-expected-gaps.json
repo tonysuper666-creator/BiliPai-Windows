@@ -219,7 +219,7 @@
       "reason": "Roadmap seed AppBottomSheetMotion.reducedMotion (Source260 compile errors in CommentContentReveal and CommentCascadingContent, 2 errors): upstream v0.4.6 declares the member and the pinned carried AppSheetComponents lacked it. CLOSED by v046-sheet-motion, which advances the Windows AppSheetComponents to the real v0.4.6 member; the interim compat extension (COMPAT_REDUCED_MOTION in v046_comment_list.py) was removed. The gate fails if the symbol loses every definer.",
       "evidence": "d6bf8b16:design-system/src/main/java/com/android/purebilibili/core/ui/AppSheetComponents.kt:438 declares \"val reducedMotion: Boolean = false\" in AppBottomSheetMotion; the pinned copy of that file has no reducedMotion",
       "retiredBy": "desktop/upstream-slices/v046-sheet-motion (AppSheetComponents.kt, emitted by desktop/tools/v046_sheet_motion.py)",
-      "guardedBy": "this gate (status LOST fails the run); test_symbol_closure.py: ChecksOnSyntheticTrees.test_member_the_type_lacks_is_flagged_and_a_compat_extension_retires_it, ExpectedGapsTests.test_retired_seeds_must_keep_a_definer, CurrentIntegrationTree.test_the_compat_extension_retires_the_twelfth_seed_in_the_real_tree; test_v046_sheet_motion_source.py and test_v046_comment_list_source.py pin the real member",
+      "guardedBy": "this gate (status LOST fails the run); test_symbol_closure.py: ChecksOnSyntheticTrees.test_member_the_type_lacks_is_flagged_and_a_compat_extension_retires_it, ExpectedGapsTests.test_retired_seeds_must_keep_a_definer; Gradle compileKotlin/compileTestKotlin, which fail on a lost definer (the whole-tree CurrentIntegrationTree run retired with TON-1205); test_v046_sheet_motion_source.py and test_v046_comment_list_source.py pin the real member",
       "closedBy": "fnd-sheet-motion-and-glyph",
       "closedByEvidence": "roadmap"
     },
@@ -230,7 +230,7 @@
       "reason": "Roadmap seed AppPressShiftContent. CLOSED by the real v0.4.6 declaration carried verbatim in desktop/upstream-slices/v046-home-card-cascade-definers (AppPressShiftContent.kt, emitted by desktop/tools/v046_home_card_cascade_definers.py). The gate fails if it loses every definer.",
       "evidence": "d6bf8b16:design-system/src/main/java/com/android/purebilibili/core/ui/components/AppPressShiftContent.kt declares it",
       "retiredBy": "desktop/upstream-slices/v046-home-card-cascade-definers (AppPressShiftContent.kt, emitted by desktop/tools/v046_home_card_cascade_definers.py)",
-      "guardedBy": "this gate (status LOST fails the run); test_symbol_closure.py: CurrentIntegrationTree.test_the_closed_seeds_keep_their_definers_in_the_real_tree",
+      "guardedBy": "this gate (status LOST fails the run); Gradle compileKotlin/compileTestKotlin, which fail on a lost definer (the whole-tree CurrentIntegrationTree run retired with TON-1205)",
       "closedBy": "fnd-home-card-cascade-definers",
       "closedByEvidence": "roadmap"
     },
@@ -241,7 +241,7 @@
       "reason": "Roadmap seed userVipPink. CLOSED by the real v0.4.6 declaration carried verbatim in desktop/upstream-slices/v046-identity-badges (UserVipBadge.kt, emitted by desktop/tools/v046_identity_badges.py). The gate fails if it loses every definer.",
       "evidence": "d6bf8b16:design-system/src/main/java/com/android/purebilibili/core/ui/components/UserVipBadge.kt declares userVipPink",
       "retiredBy": "desktop/upstream-slices/v046-identity-badges (UserVipBadge.kt, emitted by desktop/tools/v046_identity_badges.py)",
-      "guardedBy": "this gate (status LOST fails the run); test_symbol_closure.py: CurrentIntegrationTree.test_the_closed_seeds_keep_their_definers_in_the_real_tree",
+      "guardedBy": "this gate (status LOST fails the run); Gradle compileKotlin/compileTestKotlin, which fail on a lost definer (the whole-tree CurrentIntegrationTree run retired with TON-1205)",
       "closedBy": "fnd-identity-badges-vip-pink",
       "closedByEvidence": "roadmap"
     },
@@ -252,7 +252,7 @@
       "reason": "Roadmap seed resolveHistoryProgressLabel. CLOSED by the real v0.4.6 declaration carried verbatim in desktop/upstream-slices/v046-core-data-policies (VideoProgressDisplayPolicy.kt, emitted by desktop/tools/v046_core_data_policies.py). The gate fails if it loses every definer.",
       "evidence": "d6bf8b16:core-data/src/main/java/com/android/purebilibili/data/model/VideoProgressDisplayPolicy.kt declares it",
       "retiredBy": "desktop/upstream-slices/v046-core-data-policies (VideoProgressDisplayPolicy.kt, emitted by desktop/tools/v046_core_data_policies.py)",
-      "guardedBy": "this gate (status LOST fails the run); test_symbol_closure.py: CurrentIntegrationTree.test_the_closed_seeds_keep_their_definers_in_the_real_tree",
+      "guardedBy": "this gate (status LOST fails the run); Gradle compileKotlin/compileTestKotlin, which fail on a lost definer (the whole-tree CurrentIntegrationTree run retired with TON-1205)",
       "closedBy": "fnd-core-data-relocated-policies",
       "closedByEvidence": "roadmap"
     },
@@ -263,7 +263,7 @@
       "reason": "Roadmap seed resolveVideoCardStatsTexts. CLOSED by the real v0.4.6 declaration carried verbatim in desktop/upstream-slices/v046-core-data-policies (VideoCardStatsTextPolicy.kt, emitted by desktop/tools/v046_core_data_policies.py). The gate fails if it loses every definer.",
       "evidence": "d6bf8b16:core-data/src/main/java/com/android/purebilibili/data/model/VideoCardStatsTextPolicy.kt declares it",
       "retiredBy": "desktop/upstream-slices/v046-core-data-policies (VideoCardStatsTextPolicy.kt, emitted by desktop/tools/v046_core_data_policies.py)",
-      "guardedBy": "this gate (status LOST fails the run); test_symbol_closure.py: CurrentIntegrationTree.test_the_closed_seeds_keep_their_definers_in_the_real_tree",
+      "guardedBy": "this gate (status LOST fails the run); Gradle compileKotlin/compileTestKotlin, which fail on a lost definer (the whole-tree CurrentIntegrationTree run retired with TON-1205)",
       "closedBy": "fnd-core-data-relocated-policies",
       "closedByEvidence": "roadmap"
     },
@@ -274,7 +274,7 @@
       "reason": "Roadmap seed resolveWatchLaterDisplayProgressState. CLOSED by the real v0.4.6 declaration carried verbatim in desktop/upstream-slices/v046-core-data-policies (WatchLaterProgressPolicy.kt, emitted by desktop/tools/v046_core_data_policies.py). The gate fails if it loses every definer.",
       "evidence": "d6bf8b16:core-data/src/main/java/com/android/purebilibili/data/model/WatchLaterProgressPolicy.kt declares it",
       "retiredBy": "desktop/upstream-slices/v046-core-data-policies (WatchLaterProgressPolicy.kt, emitted by desktop/tools/v046_core_data_policies.py)",
-      "guardedBy": "this gate (status LOST fails the run); test_symbol_closure.py: CurrentIntegrationTree.test_the_closed_seeds_keep_their_definers_in_the_real_tree",
+      "guardedBy": "this gate (status LOST fails the run); Gradle compileKotlin/compileTestKotlin, which fail on a lost definer (the whole-tree CurrentIntegrationTree run retired with TON-1205)",
       "closedBy": "fnd-core-data-relocated-policies",
       "closedByEvidence": "roadmap"
     },
@@ -285,7 +285,7 @@
       "reason": "Roadmap seed HomeOverlayPillButton. CLOSED by the real v0.4.6 declaration carried verbatim in desktop/upstream-slices/v046-home-card-cascade-definers (HomeOverlayPillButton.kt, emitted by desktop/tools/v046_home_card_cascade_definers.py). The gate fails if it loses every definer.",
       "evidence": "d6bf8b16:app/src/main/java/com/android/purebilibili/feature/home/components/HomeOverlayPillButton.kt declares it",
       "retiredBy": "desktop/upstream-slices/v046-home-card-cascade-definers (HomeOverlayPillButton.kt, emitted by desktop/tools/v046_home_card_cascade_definers.py)",
-      "guardedBy": "this gate (status LOST fails the run); test_symbol_closure.py: CurrentIntegrationTree.test_the_closed_seeds_keep_their_definers_in_the_real_tree",
+      "guardedBy": "this gate (status LOST fails the run); Gradle compileKotlin/compileTestKotlin, which fail on a lost definer (the whole-tree CurrentIntegrationTree run retired with TON-1205)",
       "closedBy": "fnd-home-card-cascade-definers",
       "closedByEvidence": "roadmap"
     },
@@ -296,7 +296,7 @@
       "reason": "Roadmap seed resolveVideoDisplayProgressState. CLOSED by the real v0.4.6 declaration carried verbatim in desktop/upstream-slices/v046-core-data-policies (VideoProgressDisplayPolicy.kt). The gate fails if it loses every definer.",
       "evidence": "d6bf8b16:app-tv/src/main/java/com/android/bilipai/tv/ui/TvApp.kt:65 imports com.android.purebilibili.data.model.resolveVideoDisplayProgressState",
       "retiredBy": "desktop/upstream-slices/v046-core-data-policies (VideoProgressDisplayPolicy.kt, emitted by desktop/tools/v046_core_data_policies.py)",
-      "guardedBy": "this gate (status LOST fails the run); test_symbol_closure.py: CurrentIntegrationTree.test_the_closed_seeds_keep_their_definers_in_the_real_tree",
+      "guardedBy": "this gate (status LOST fails the run); Gradle compileKotlin/compileTestKotlin, which fail on a lost definer (the whole-tree CurrentIntegrationTree run retired with TON-1205)",
       "closedBy": "fnd-core-data-relocated-policies",
       "closedByEvidence": "roadmap"
     },
@@ -307,7 +307,7 @@
       "reason": "Gap resolveOldContentDividerContainerColor (and OLD_CONTENT_DIVIDER_CONTAINER_ALPHA) from the home card cascade slice. CLOSED by the whole v0.4.6 HomeRefreshUiPolicy.kt carried in desktop/upstream-slices/v046-home-refresh-ui-policy (HomeRefreshUiPolicy.kt, emitted by desktop/tools/v046_home_refresh_ui_policy.py; the vendored direct copy is excluded in prepareUpstreamSources). The gate fails if it loses every definer.",
       "evidence": "d6bf8b16:app/src/main/java/com/android/purebilibili/feature/home/HomeRefreshUiPolicy.kt declares it",
       "retiredBy": "desktop/upstream-slices/v046-home-refresh-ui-policy (HomeRefreshUiPolicy.kt, emitted by desktop/tools/v046_home_refresh_ui_policy.py; the vendored direct copy is excluded in prepareUpstreamSources)",
-      "guardedBy": "this gate (status LOST fails the run); test_symbol_closure.py: CurrentIntegrationTree.test_the_closed_seeds_keep_their_definers_in_the_real_tree; test_v046_home_refresh_ui_policy_source.py",
+      "guardedBy": "this gate (status LOST fails the run); Gradle compileKotlin/compileTestKotlin, which fail on a lost definer (the whole-tree CurrentIntegrationTree run retired with TON-1205); test_v046_home_refresh_ui_policy_source.py",
       "closedBy": "fnd-home-card-cascade-definers",
       "closedByEvidence": "roadmap"
     },
@@ -318,7 +318,7 @@
       "reason": "Roadmap seed CommentFraudFeedbackHost, imported by the carried v0.4.6 comment-list archive (BangumiPlayerContent.kt, VideoCommentSheetHost.kt). CLOSED by the whole v0.4.6 shared fraud feedback host carried in desktop/upstream-slices/v046-comment-polish (CommentFraudFeedbackHost.kt, adapted to the Windows feedback port by desktop/tools/v046_comment_polish.py and emitted by the video comment producer); the video detail fraud adapter and the Windows fullscreen comment host both call it. The gate fails if it loses every definer.",
       "evidence": "d6bf8b16:app/src/main/java/com/android/purebilibili/feature/video/ui/components/CommentFraudFeedbackHost.kt declares internal fun CommentFraudFeedbackHost",
       "retiredBy": "desktop/upstream-slices/v046-comment-polish (CommentFraudFeedbackHost.kt, emitted by desktop/tools/v046_comment_polish.py through extract-upstream-video-comment-ui.py)",
-      "guardedBy": "this gate (status LOST fails the run); test_symbol_closure.py: CurrentIntegrationTree.test_the_closed_seeds_keep_their_definers_in_the_real_tree; test_v046_comment_polish_source.py",
+      "guardedBy": "this gate (status LOST fails the run); Gradle compileKotlin/compileTestKotlin, which fail on a lost definer (the whole-tree CurrentIntegrationTree run retired with TON-1205); test_v046_comment_polish_source.py",
       "closedBy": "cmt-closure-merge-and-polish",
       "closedByEvidence": "roadmap"
     },
@@ -329,7 +329,7 @@
       "reason": "Gap AccountScopedRequests, imported by the carried v0.4.3 Home view model and the carried v0.4.4 and v0.4.6 favorite list view models. CLOSED by the whole v0.4.6 AccountScopedRequests.kt carried in desktop/upstream-slices/v046-account-scoped-requests (emitted by desktop/tools/v046_account_scoped_requests.py through the Home view model producer, with the Android TokenManager default removed so a caller passes Root identity flow). No Windows page constructs it: every personal page owner is already retired and rebuilt per Root session epoch, which test_v046_account_scoped_requests_source.py audits. The gate fails if it loses every definer.",
       "evidence": "d6bf8b16:app/src/main/java/com/android/purebilibili/core/coroutines/AccountScopedRequests.kt declares internal class AccountScopedRequests; the carried HomeViewModel.kt and ListViewModel.kt archives import it",
       "retiredBy": "desktop/upstream-slices/v046-account-scoped-requests (AccountScopedRequests.kt, emitted by desktop/tools/v046_account_scoped_requests.py through extract-upstream-home-viewmodel.py)",
-      "guardedBy": "this gate (status LOST fails the run); test_symbol_closure.py: CurrentIntegrationTree.test_the_closed_seeds_keep_their_definers_in_the_real_tree; test_v046_account_scoped_requests_source.py",
+      "guardedBy": "this gate (status LOST fails the run); Gradle compileKotlin/compileTestKotlin, which fail on a lost definer (the whole-tree CurrentIntegrationTree run retired with TON-1205); test_v046_account_scoped_requests_source.py",
       "closedBy": "acct-account-scoped-requests",
       "closedByEvidence": "roadmap"
     },
@@ -371,7 +371,7 @@
       "reason": "Roadmap seed resolveWallpaperGlassAlpha. CLOSED by the whole v0.4.6 VideoCardAdaptiveTintPolicy.kt carried in desktop/upstream-slices/v046-home-card-tint-policy (VideoCardAdaptiveTintPolicy.kt and the WallpaperReadabilityPolicy.kt it imports, emitted by desktop/tools/v046_home_card_tint_policy.py; the vendored direct copy is excluded in prepareUpstreamSources). The gate fails if it loses every definer.",
       "evidence": "d6bf8b16:app/src/main/java/com/android/purebilibili/feature/home/components/cards/VideoCardAdaptiveTintPolicy.kt:108 declares it",
       "retiredBy": "desktop/upstream-slices/v046-home-card-tint-policy (VideoCardAdaptiveTintPolicy.kt and WallpaperReadabilityPolicy.kt, emitted by desktop/tools/v046_home_card_tint_policy.py; the vendored direct copy is excluded in prepareUpstreamSources)",
-      "guardedBy": "this gate (status LOST fails the run); test_symbol_closure.py: CurrentIntegrationTree.test_the_closed_seeds_keep_their_definers_in_the_real_tree; test_v046_home_card_tint_policy_source.py",
+      "guardedBy": "this gate (status LOST fails the run); Gradle compileKotlin/compileTestKotlin, which fail on a lost definer (the whole-tree CurrentIntegrationTree run retired with TON-1205); test_v046_home_card_tint_policy_source.py",
       "closedBy": "fnd-home-card-cascade-definers",
       "closedByEvidence": "roadmap"
     },
@@ -382,7 +382,7 @@
       "reason": "Symbol gate gap AppFloatingToolbar (eight carried favorite, watch-later and tab-role locations import it). CLOSED by the whole v0.4.6 declaration carried verbatim in desktop/upstream-slices/v046-glyph-toolbar-pickers (AppFloatingToolbar.kt, emitted by desktop/tools/v046_glyph_toolbar_pickers.py through the dynamic-detail-container producer). The gate fails if it loses every definer.",
       "evidence": "d6bf8b16:design-system/src/main/java/com/android/purebilibili/core/ui/components/AppFloatingToolbar.kt declares it",
       "retiredBy": "desktop/upstream-slices/v046-glyph-toolbar-pickers (AppFloatingToolbar.kt, emitted by desktop/tools/v046_glyph_toolbar_pickers.py)",
-      "guardedBy": "this gate (status LOST fails the run); test_symbol_closure.py: CurrentIntegrationTree.test_the_closed_seeds_keep_their_definers_in_the_real_tree; test_v046_glyph_toolbar_pickers_source.py",
+      "guardedBy": "this gate (status LOST fails the run); Gradle compileKotlin/compileTestKotlin, which fail on a lost definer (the whole-tree CurrentIntegrationTree run retired with TON-1205); test_v046_glyph_toolbar_pickers_source.py",
       "closedBy": "fnd-sheet-motion-and-glyph",
       "closedByEvidence": "roadmap"
     },
@@ -393,7 +393,7 @@
       "reason": "Carried-reference gap VideoDescriptionAndTags: the carried v0.4.6 TabletVideoLayout.kt (v046-comment-list) calls the shared rich description and tags that v0.4.6 split out of VideoTitleWithDesc. CLOSED by the whole v0.4.6 VideoInfoSection.kt carried in desktop/upstream-slices/v046-video-info-section: the detail units producer emits the complete function (with the file-private OwnerStatsRow it shares a file with) into DesktopOriginalVideoInfoSection.kt, and VideoTitleWithDesc calls it. The roadmap slice vid-info-section-repin names VideoInfoSection.kt (upstreamFiles, firstStep) but not this symbol, so closedBy is an inference from the file. The gate fails if it loses every definer.",
       "evidence": "d6bf8b16:app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoInfoSection.kt declares fun VideoDescriptionAndTags; the carried v046-comment-list TabletVideoLayout.kt:1732 calls it",
       "retiredBy": "desktop/upstream-slices/v046-video-info-section (VideoInfoSection.kt, selected by desktop/tools/extract-upstream-video-detail-full-units.py into DesktopOriginalVideoInfoSection.kt)",
-      "guardedBy": "this gate (status LOST fails the run); test_symbol_closure.py: CurrentIntegrationTree.test_the_closed_seeds_keep_their_definers_in_the_real_tree; test_v046_video_info_section_source.py",
+      "guardedBy": "this gate (status LOST fails the run); Gradle compileKotlin/compileTestKotlin, which fail on a lost definer (the whole-tree CurrentIntegrationTree run retired with TON-1205); test_v046_video_info_section_source.py",
       "closedBy": "vid-info-section-repin",
       "closedByEvidence": "proposed"
     },
@@ -426,7 +426,7 @@
       "reason": "Roadmap seed DarkThemeSchedule (upstream v0.4.2): imported by the carried v042-seed-palette and v046-comment-list SettingsManager archives. RETIRED, not open: the v046-theme-palette-schedule slice emits the whole v0.4.6 DarkThemeSchedule.kt from the appearance producer, and DesktopThemeSettings now carries the schedule.",
       "evidence": "d6bf8b16:app/src/main/java/com/android/purebilibili/feature/settings/DarkThemeSchedule.kt declares data class DarkThemeSchedule(enabled, startMinute, endMinute); the pinned v0.2.5 tree has no such file",
       "retiredBy": "desktop/upstream-slices/v046-theme-palette-schedule (DarkThemeSchedule.kt, emitted whole by desktop/tools/v046_theme_palette_schedule.py from desktop/tools/extract-appearance-platform.py)",
-      "guardedBy": "this gate (status LOST fails the run); test_symbol_closure.py: CurrentIntegrationTree.test_the_closed_seeds_keep_their_definers_in_the_real_tree; test_v046_theme_palette_schedule_source.py",
+      "guardedBy": "this gate (status LOST fails the run); Gradle compileKotlin/compileTestKotlin, which fail on a lost definer (the whole-tree CurrentIntegrationTree run retired with TON-1205); test_v046_theme_palette_schedule_source.py",
       "closedBy": "theme-palette-presets-and-schedule",
       "closedByEvidence": "roadmap"
     },
@@ -437,7 +437,7 @@
       "reason": "Seed isScheduledDarkTheme (upstream v0.4.2): imported by the carried v042-seed-palette PlaybackNotificationColorPolicy. The owner was proposed by the gap author and is now confirmed: it lives in DarkThemeSchedule.kt, the file the roadmap entry names. RETIRED, not open: the same emission declares it, and the Windows minute timer (DesktopScheduledDarkTheme.kt) and the palette builder call it.",
       "evidence": "d6bf8b16:app/src/main/java/com/android/purebilibili/feature/settings/DarkThemeSchedule.kt declares internal fun isScheduledDarkTheme(schedule, minuteOfDay); the pinned v0.2.5 tree has no such file",
       "retiredBy": "desktop/upstream-slices/v046-theme-palette-schedule (DarkThemeSchedule.kt, emitted whole by desktop/tools/v046_theme_palette_schedule.py from desktop/tools/extract-appearance-platform.py)",
-      "guardedBy": "this gate (status LOST fails the run); test_symbol_closure.py: CurrentIntegrationTree.test_the_closed_seeds_keep_their_definers_in_the_real_tree; test_v046_theme_palette_schedule_source.py",
+      "guardedBy": "this gate (status LOST fails the run); Gradle compileKotlin/compileTestKotlin, which fail on a lost definer (the whole-tree CurrentIntegrationTree run retired with TON-1205); test_v046_theme_palette_schedule_source.py",
       "closedBy": "theme-palette-presets-and-schedule",
       "closedByEvidence": "roadmap"
     },
@@ -448,7 +448,7 @@
       "reason": "Seed normalizeDarkThemeSchedule (upstream v0.4.2): imported by the carried v042-seed-palette and v046-comment-list SettingsManager. The owner was proposed by the gap author and is now confirmed: it lives in DarkThemeSchedule.kt, the file the roadmap entry names. RETIRED, not open: the same emission declares it, and decodeDesktopThemeSettings normalizes the three stored keys with it.",
       "evidence": "d6bf8b16:app/src/main/java/com/android/purebilibili/feature/settings/DarkThemeSchedule.kt declares internal fun normalizeDarkThemeSchedule(schedule); the pinned v0.2.5 tree has no such file",
       "retiredBy": "desktop/upstream-slices/v046-theme-palette-schedule (DarkThemeSchedule.kt, emitted whole by desktop/tools/v046_theme_palette_schedule.py from desktop/tools/extract-appearance-platform.py)",
-      "guardedBy": "this gate (status LOST fails the run); test_symbol_closure.py: CurrentIntegrationTree.test_the_closed_seeds_keep_their_definers_in_the_real_tree; test_v046_theme_palette_schedule_source.py",
+      "guardedBy": "this gate (status LOST fails the run); Gradle compileKotlin/compileTestKotlin, which fail on a lost definer (the whole-tree CurrentIntegrationTree run retired with TON-1205); test_v046_theme_palette_schedule_source.py",
       "closedBy": "theme-palette-presets-and-schedule",
       "closedByEvidence": "roadmap"
     },
@@ -459,7 +459,7 @@
       "reason": "Gap WallpaperTransform (carried v042-seed-palette and v046-comment-list SettingsManager). CLOSED by the real v0.4.6 declaration carried verbatim in desktop/upstream-slices/v046-wallpaper-foundation (WallpaperTransformPolicy.kt). The roadmap text names WallpaperTransformPolicy.kt (upstreamFiles and firstStep), the file that declares it, but names neither this symbol nor sanitizeWallpaperTransform: the ownership was the gap author's inference, confirmed by carrying the file. The gate fails if it loses every definer.",
       "evidence": "d6bf8b16:design-system/src/main/java/com/android/purebilibili/core/ui/wallpaper/WallpaperTransformPolicy.kt:6 declares data class WallpaperTransform; the pinned v0.2.5 tree has no such file",
       "retiredBy": "desktop/upstream-slices/v046-wallpaper-foundation (WallpaperTransformPolicy.kt, emitted whole by desktop/tools/v046_wallpaper_foundation.py from desktop/tools/extract-upstream-home-core-refresh.py)",
-      "guardedBy": "this gate (status LOST fails the run); test_symbol_closure.py: CurrentIntegrationTree.test_the_closed_seeds_keep_their_definers_in_the_real_tree, ExpectedGapsTests.test_the_wallpaper_foundation_seeds_are_retired_by_the_carried_archive; test_v046_wallpaper_foundation_source.py",
+      "guardedBy": "this gate (status LOST fails the run); Gradle compileKotlin/compileTestKotlin, which fail on a lost definer (the whole-tree CurrentIntegrationTree run retired with TON-1205); test_symbol_closure.py: ExpectedGapsTests.test_the_wallpaper_foundation_seeds_are_retired_by_the_carried_archive; test_v046_wallpaper_foundation_source.py",
       "closedBy": "wallpaper-foundation-and-adjust",
       "closedByEvidence": "proposed"
     },
@@ -470,7 +470,7 @@
       "reason": "Gap sanitizeWallpaperTransform (carried v042-seed-palette and v046-comment-list SettingsManager). CLOSED by the same whole WallpaperTransformPolicy.kt. The roadmap text names the file, not this symbol: the ownership was the gap author's inference, confirmed by carrying the file. The gate fails if it loses every definer.",
       "evidence": "d6bf8b16:design-system/src/main/java/com/android/purebilibili/core/ui/wallpaper/WallpaperTransformPolicy.kt:12 declares fun sanitizeWallpaperTransform(value); the pinned v0.2.5 tree has no such file",
       "retiredBy": "desktop/upstream-slices/v046-wallpaper-foundation (WallpaperTransformPolicy.kt, emitted whole by desktop/tools/v046_wallpaper_foundation.py from desktop/tools/extract-upstream-home-core-refresh.py)",
-      "guardedBy": "this gate (status LOST fails the run); test_symbol_closure.py: CurrentIntegrationTree.test_the_closed_seeds_keep_their_definers_in_the_real_tree, ExpectedGapsTests.test_the_wallpaper_foundation_seeds_are_retired_by_the_carried_archive; test_v046_wallpaper_foundation_source.py",
+      "guardedBy": "this gate (status LOST fails the run); Gradle compileKotlin/compileTestKotlin, which fail on a lost definer (the whole-tree CurrentIntegrationTree run retired with TON-1205); test_symbol_closure.py: ExpectedGapsTests.test_the_wallpaper_foundation_seeds_are_retired_by_the_carried_archive; test_v046_wallpaper_foundation_source.py",
       "closedBy": "wallpaper-foundation-and-adjust",
       "closedByEvidence": "proposed"
     },
@@ -481,7 +481,7 @@
       "reason": "Gap HomeWallpaperSelection (carried liquid-value-controls, seed-palette, favorite-search and comment-list archives). CLOSED by the real v0.4.6 declaration carried verbatim in desktop/upstream-slices/v046-wallpaper-foundation (HomeWallpaperSelection.kt, the file the roadmap entry names). The gate fails if it loses every definer.",
       "evidence": "d6bf8b16:app/src/main/java/com/android/purebilibili/core/store/home/HomeWallpaperSelection.kt:6 declares data class HomeWallpaperSelection",
       "retiredBy": "desktop/upstream-slices/v046-wallpaper-foundation (HomeWallpaperSelection.kt, emitted whole by desktop/tools/v046_wallpaper_foundation.py from desktop/tools/extract-upstream-home-core-refresh.py)",
-      "guardedBy": "this gate (status LOST fails the run); test_symbol_closure.py: CurrentIntegrationTree.test_the_closed_seeds_keep_their_definers_in_the_real_tree, ExpectedGapsTests.test_the_wallpaper_foundation_seeds_are_retired_by_the_carried_archive; test_v046_wallpaper_foundation_source.py",
+      "guardedBy": "this gate (status LOST fails the run); Gradle compileKotlin/compileTestKotlin, which fail on a lost definer (the whole-tree CurrentIntegrationTree run retired with TON-1205); test_symbol_closure.py: ExpectedGapsTests.test_the_wallpaper_foundation_seeds_are_retired_by_the_carried_archive; test_v046_wallpaper_foundation_source.py",
       "closedBy": "wallpaper-foundation-and-adjust",
       "closedByEvidence": "roadmap"
     },
@@ -492,7 +492,7 @@
       "reason": "Gap LocalHomeWallpaperSelection (carried liquid-value-controls and favorite-search archives). CLOSED by the real v0.4.6 HomeWallpaperPresentation.kt carried verbatim in desktop/upstream-slices/v046-wallpaper-foundation. The roadmap text names HomeWallpaperSelection.kt, not this file; that ownership was the gap author's inference (the local publishes the selection), confirmed by carrying it. The gate fails if it loses every definer.",
       "evidence": "d6bf8b16:app/src/main/java/com/android/purebilibili/core/ui/wallpaper/HomeWallpaperPresentation.kt:7 declares internal val LocalHomeWallpaperSelection",
       "retiredBy": "desktop/upstream-slices/v046-wallpaper-foundation (HomeWallpaperPresentation.kt, emitted whole by desktop/tools/v046_wallpaper_foundation.py from desktop/tools/extract-upstream-home-core-refresh.py)",
-      "guardedBy": "this gate (status LOST fails the run); test_symbol_closure.py: CurrentIntegrationTree.test_the_closed_seeds_keep_their_definers_in_the_real_tree, ExpectedGapsTests.test_the_wallpaper_foundation_seeds_are_retired_by_the_carried_archive; test_v046_wallpaper_foundation_source.py",
+      "guardedBy": "this gate (status LOST fails the run); Gradle compileKotlin/compileTestKotlin, which fail on a lost definer (the whole-tree CurrentIntegrationTree run retired with TON-1205); test_symbol_closure.py: ExpectedGapsTests.test_the_wallpaper_foundation_seeds_are_retired_by_the_carried_archive; test_v046_wallpaper_foundation_source.py",
       "closedBy": "wallpaper-foundation-and-adjust",
       "closedByEvidence": "proposed"
     },
@@ -503,7 +503,7 @@
       "reason": "Gap WallpaperPlaybackCoordinator (carried favorite-search AppNavigation). CLOSED by the real v0.4.6 declaration carried verbatim in desktop/upstream-slices/v046-wallpaper-foundation (WallpaperPlaybackCoordinator.kt, the file the roadmap entry names). Windows has no video wallpaper, so nothing acquires a lease yet; the coordinator is the arbiter for animated image wallpapers and for the adjust preview. The gate fails if it loses every definer.",
       "evidence": "d6bf8b16:app/src/main/java/com/android/purebilibili/core/ui/wallpaper/WallpaperPlaybackCoordinator.kt:6 declares internal class WallpaperPlaybackCoordinator",
       "retiredBy": "desktop/upstream-slices/v046-wallpaper-foundation (WallpaperPlaybackCoordinator.kt, emitted whole by desktop/tools/v046_wallpaper_foundation.py from desktop/tools/extract-upstream-home-core-refresh.py)",
-      "guardedBy": "this gate (status LOST fails the run); test_symbol_closure.py: CurrentIntegrationTree.test_the_closed_seeds_keep_their_definers_in_the_real_tree, ExpectedGapsTests.test_the_wallpaper_foundation_seeds_are_retired_by_the_carried_archive; test_v046_wallpaper_foundation_source.py",
+      "guardedBy": "this gate (status LOST fails the run); Gradle compileKotlin/compileTestKotlin, which fail on a lost definer (the whole-tree CurrentIntegrationTree run retired with TON-1205); test_symbol_closure.py: ExpectedGapsTests.test_the_wallpaper_foundation_seeds_are_retired_by_the_carried_archive; test_v046_wallpaper_foundation_source.py",
       "closedBy": "wallpaper-foundation-and-adjust",
       "closedByEvidence": "roadmap"
     },
@@ -514,7 +514,7 @@
       "reason": "Gap LocalWallpaperPlaybackCoordinator (carried favorite-search AppNavigation). CLOSED by the same whole WallpaperPlaybackCoordinator.kt. The roadmap text names the file, not this symbol: the ownership was the gap author's inference, confirmed by carrying the file. The gate fails if it loses every definer.",
       "evidence": "d6bf8b16:app/src/main/java/com/android/purebilibili/core/ui/wallpaper/WallpaperPlaybackCoordinator.kt:39 declares internal val LocalWallpaperPlaybackCoordinator",
       "retiredBy": "desktop/upstream-slices/v046-wallpaper-foundation (WallpaperPlaybackCoordinator.kt, emitted whole by desktop/tools/v046_wallpaper_foundation.py from desktop/tools/extract-upstream-home-core-refresh.py)",
-      "guardedBy": "this gate (status LOST fails the run); test_symbol_closure.py: CurrentIntegrationTree.test_the_closed_seeds_keep_their_definers_in_the_real_tree, ExpectedGapsTests.test_the_wallpaper_foundation_seeds_are_retired_by_the_carried_archive; test_v046_wallpaper_foundation_source.py",
+      "guardedBy": "this gate (status LOST fails the run); Gradle compileKotlin/compileTestKotlin, which fail on a lost definer (the whole-tree CurrentIntegrationTree run retired with TON-1205); test_symbol_closure.py: ExpectedGapsTests.test_the_wallpaper_foundation_seeds_are_retired_by_the_carried_archive; test_v046_wallpaper_foundation_source.py",
       "closedBy": "wallpaper-foundation-and-adjust",
       "closedByEvidence": "proposed"
     },
@@ -525,7 +525,7 @@
       "reason": "Gap rememberIsStaticWallpaper (carried liquid-value-controls, home-native-cards and favorite-search archives). CLOSED by a Windows-owned definer: the Android original asks BitmapFactory for the bounds and MIME type of a .img import or content: URI, so Windows reads the first bytes of the local file instead (the importer stores every picked image as wallpaper_<id>.img). The roadmap names neither WallpaperMediaType.kt nor this symbol: the ownership was the gap author's inference, confirmed by the Windows binding. The gate fails if it loses every definer.",
       "evidence": "d6bf8b16:app/src/main/java/com/android/purebilibili/core/ui/wallpaper/WallpaperMediaType.kt:15 declares internal fun rememberIsStaticWallpaper(uri); the Android version needs BitmapFactory and content: URIs",
       "retiredBy": "desktop/src/main/kotlin/com/android/purebilibili/core/ui/wallpaper/DesktopWallpaperImageProbe.kt (Windows-owned header probe, no decode)",
-      "guardedBy": "this gate (status LOST fails the run); test_symbol_closure.py: CurrentIntegrationTree.test_the_closed_seeds_keep_their_definers_in_the_real_tree, ExpectedGapsTests.test_the_wallpaper_foundation_seeds_are_retired_by_the_carried_archive; test_v046_wallpaper_foundation_source.py",
+      "guardedBy": "this gate (status LOST fails the run); Gradle compileKotlin/compileTestKotlin, which fail on a lost definer (the whole-tree CurrentIntegrationTree run retired with TON-1205); test_symbol_closure.py: ExpectedGapsTests.test_the_wallpaper_foundation_seeds_are_retired_by_the_carried_archive; test_v046_wallpaper_foundation_source.py",
       "closedBy": "wallpaper-foundation-and-adjust",
       "closedByEvidence": "proposed"
     },
@@ -536,7 +536,7 @@
       "reason": "Gap HomeWallpaperAdjustmentSheet (carried liquid-value-controls AppearanceSettingsScreen). CLOSED by a Windows-owned sheet with the exact original parameter list: the Android sheet needs the v0.4.6 HomeWallpaperBackdrop media load states, the request based WallpaperPaletteStore and the internal WallpaperDeviceTabRow, none of which the Windows tree has, so a pointer drag and the mouse wheel drive the carried crop policy instead of touch gestures. The sheet is not wired into a page yet. The gate fails if it loses every definer.",
       "evidence": "d6bf8b16:app/src/main/java/com/android/purebilibili/feature/profile/HomeWallpaperAdjustmentSheet.kt:44 declares internal fun HomeWallpaperAdjustmentSheet(...); carried as the signature reference in desktop/upstream-slices/v046-wallpaper-foundation",
       "retiredBy": "desktop/src/main/kotlin/com/android/purebilibili/feature/profile/DesktopHomeWallpaperAdjustmentSheet.kt (Windows-owned sheet, same public signature, compared with the carried original by test_v046_wallpaper_foundation_source.py)",
-      "guardedBy": "this gate (status LOST fails the run); test_symbol_closure.py: CurrentIntegrationTree.test_the_closed_seeds_keep_their_definers_in_the_real_tree, ExpectedGapsTests.test_the_wallpaper_foundation_seeds_are_retired_by_the_carried_archive; test_v046_wallpaper_foundation_source.py",
+      "guardedBy": "this gate (status LOST fails the run); Gradle compileKotlin/compileTestKotlin, which fail on a lost definer (the whole-tree CurrentIntegrationTree run retired with TON-1205); test_symbol_closure.py: ExpectedGapsTests.test_the_wallpaper_foundation_seeds_are_retired_by_the_carried_archive; test_v046_wallpaper_foundation_source.py",
       "closedBy": "wallpaper-foundation-and-adjust",
       "closedByEvidence": "roadmap"
     }

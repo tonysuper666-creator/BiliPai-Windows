@@ -42,7 +42,9 @@ class V029ChatSourceTest(unittest.TestCase):
             self.assertIn('reverseLayout = true', screen)
             self.assertIn('uiState.loadMoreError', screen)
 
-    def test_policy_error_ui_and_all_three_original_tests_remain_exact(self):
+    # The desktop copy of the three original ChatTimelinePolicyTest cases was retired in 1c5558950 (M4d): the
+    # upstream app/src/test feature/message/ChatTimelinePolicyTest.kt superset runs in the desktop test set.
+    def test_policy_and_error_ui_remain_exact(self):
         with tempfile.TemporaryDirectory(prefix='bp-chat-policy-') as temporary:
             out = Path(temporary); producer.generate(REPO, out)
             self.assertEqual(source.read(REPO, 'ChatTimelinePolicy.kt'),
@@ -55,9 +57,6 @@ class V029ChatSourceTest(unittest.TestCase):
                 self.assertEqual(''.join(restored[row['adaptedStart']:row['adaptedEnd']]), row['after'])
                 restored[row['adaptedStart']:row['adaptedEnd']] = row['before'].splitlines(True)
             self.assertEqual(source.read(REPO, 'ListLoadError.kt'), ''.join(restored))
-        test = REPO / 'desktop/src/test/kotlin/com/android/purebilibili/feature/message/ChatTimelinePolicyTest.kt'
-        self.assertEqual(source.read(REPO, test.name), test.read_text('utf8'))
-        self.assertEqual(3, test.read_text('utf8').count('@Test'))
 
     def test_raw_source_or_manifest_tampering_is_rejected(self):
         with tempfile.TemporaryDirectory(prefix='bp-chat-pin-') as temporary:

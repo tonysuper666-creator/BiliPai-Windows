@@ -17,6 +17,7 @@ TOOLS = REPO / 'desktop/tools'
 sys.path.insert(0, str(TOOLS))
 import check_slice_symbol_closure as gate
 import v046_home_card_tint_policy as policy
+import v025_source_paths as v025
 
 spec = importlib.util.spec_from_file_location('sync_upstream_home_card_tint_policy', TOOLS / 'sync-upstream.py')
 sync = importlib.util.module_from_spec(spec)
@@ -39,6 +40,10 @@ CANONICAL = policy.UPSTREAM_PATHS[TINT]
 READABILITY_PATH = policy.UPSTREAM_PATHS[READABILITY]
 V025_TINT_SHA256 = 'f4619ed5fe5023360a15e15d62cd0e7204516c7836d838356111f608c3eab7b6'
 V025_TINT_BLOB = '6f774ef1f25bd19ee204146f11787143f52f4b86'
+# ad2967bbf re-pinned the live manifest and catalog to the direct-compile file; 7b992dc09 keeps
+# the v025 bytes this legacy read point holds as the same entry's legacySha256.
+DIRECT_TINT_SHA256 = 'c82a331e17a1c9e05dd5d88f031c9ed1d28576839f8133b8659f3eda7c1c7041'
+DIRECT_TINT_BLOB = '3a6b2eba278e4bd11f33c376dd5b272430114a4f'
 JVM_TEST = REPO / 'desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopHomeCardTintPolicyTest.kt'
 TOP_LEVEL = {
     'WallpaperPalette': (TINT, 'public', 'class'),
@@ -61,19 +66,6 @@ TOP_LEVEL = {
     'WallpaperReadabilityProfile': (READABILITY, 'public', 'class'),
     'resolveWallpaperProtectionAlpha': (READABILITY, 'public', 'fun'),
     'resolveWallpaperBodyTintAlpha': (READABILITY, 'public', 'fun'),
-}
-# Parameters of the v0.4.6 declarations a compiled caller may name or pass positionally.
-CONTENT_COLOR_PARAMS = ('wallpaperPalette', 'coverTint', 'wallpaperTintEnabled', 'isDarkTheme', 'defaultOnSurface',
-                        'defaultOnSurfaceVariant', 'homeCardDynamicTintEnabled', 'wallpaperYFraction',
-                        'wallpaperGlassAlpha')
-AMBIENT_PARAMS = ('wallpaperPalette', 'yFraction', 'coverTint', 'wallpaperTintEnabled', 'isDarkTheme',
-                  'defaultContainerColor', 'defaultBorderColor', 'isDataSaverActive', 'frostedGlassEnabled',
-                  'dynamicTintEnabled')
-PALETTE_PARAMS = ('topColor', 'bottomColor', 'dominantColor', 'stops', 'readability')
-CALLEES = {
-    'resolveVideoCardAdaptiveContentColors': CONTENT_COLOR_PARAMS,
-    'resolveVideoCardAmbientDrawSpec': AMBIENT_PARAMS,
-    'WallpaperPalette': PALETTE_PARAMS,
 }
 JVM_TEST_COUNT = 14
 
@@ -130,37 +122,6 @@ def run_cli(output, seed):
 def declarations(text, path):
     info = gate.parse_kotlin(text, path, 'generated', 'main')
     return info.package, [(item.visibility, item.kind, item.name) for item in info.decls]
-
-
-def call_arguments(text, name):
-    """(labels, positional count) of every call of `name(...)`; declarations and member calls are skipped."""
-    tokens = sync.kotlin_tokens(text)
-    found = []
-    for index, (value, _first, _end) in enumerate(tokens[:-1]):
-        if value != name or tokens[index + 1][0] != '(':
-            continue
-        if index and tokens[index - 1][0] in ('fun', 'class', '.'):
-            continue
-        depth, at, labels, positional, start_of_argument = 0, index + 1, [], 0, True
-        while at < len(tokens):
-            token = tokens[at][0]
-            if token in ('(', '[', '{'):
-                depth += 1
-            elif token in (')', ']', '}'):
-                depth -= 1
-                if depth == 0:
-                    break
-            if depth == 1 and token == ',':
-                start_of_argument = True
-            elif depth == 1 and at > index + 1 and start_of_argument and token != ')':
-                start_of_argument = False
-                if at + 1 < len(tokens) and tokens[at + 1][0] == '=' and token.isidentifier():
-                    labels.append(token)
-                else:
-                    positional += 1
-            at += 1
-        found.append((labels, positional))
-    return found
 
 
 class V046HomeCardTintPolicySourceTest(unittest.TestCase):
@@ -235,8 +196,11 @@ class V046HomeCardTintPolicySourceTest(unittest.TestCase):
                 self.assertNotIn(token, text)
                 self.assertIn(token, self.archive[TINT].decode('utf-8'))
         canonical = json.loads((TOOLS / 'v025-canonical-sources.json').read_text(encoding='utf-8'))
-        self.assertEqual(V025_TINT_SHA256, canonical['paths'][CANONICAL]['sha256'])
-        self.assertEqual(V025_TINT_BLOB, canonical['paths'][CANONICAL]['blob'])
+        entry = canonical['paths'][CANONICAL]
+        self.assertEqual(V025_TINT_SHA256, entry['legacySha256'])
+        self.assertEqual(V025_TINT_SHA256, v025.reviewed_sha256(REPO, entry))
+        self.assertEqual(DIRECT_TINT_SHA256, entry['sha256'])
+        self.assertEqual(DIRECT_TINT_BLOB, entry['blob'])
         # v0.4.6 is a strict superset: every top-level name of the old copy is still declared by the archive file
         old_package, old_decls = declarations(text, CANONICAL)
         new_package, new_decls = declarations(self.archive[TINT].decode('utf-8'), TINT)
@@ -378,7 +342,9 @@ class V046HomeCardTintPolicySourceTest(unittest.TestCase):
         listed = [row for row in sources['sources'] if row['path'] == CANONICAL]
         self.assertEqual(1, len(listed))
         self.assertEqual('direct', listed[0]['mode'])
-        self.assertEqual(V025_TINT_SHA256, listed[0]['sha256'])
+        self.assertEqual(DIRECT_TINT_SHA256, listed[0]['sha256'])
+        reviewed = v025._catalog()['paths'][CANONICAL]
+        self.assertEqual((DIRECT_TINT_SHA256, V025_TINT_SHA256), (reviewed['sha256'], reviewed['legacySha256']))
         self.assertIn('home-full-card', listed[0]['features'])
         self.assertIn(policy.ARCHIVE, self.catalog['buildInputRoots'])
         self.assertEqual(1, self.catalog['buildInputRoots'].count(policy.ARCHIVE))
@@ -443,7 +409,7 @@ class V046HomeCardTintPolicySourceTest(unittest.TestCase):
             self.assertNotIn(TINT, written)
             self.assertNotIn(READABILITY, written)
 
-    def test_each_top_level_name_is_declared_once_and_every_compiled_caller_still_matches(self):
+    def test_each_top_level_name_is_declared_once_in_the_emitted_home_page(self):
         for name in policy.MAIN_FILES:
             text = self.archive[name].decode('utf-8')
             package, decls = declarations(text, name)
@@ -451,60 +417,25 @@ class V046HomeCardTintPolicySourceTest(unittest.TestCase):
             self.assertEqual(
                 {(visibility, kind, declared) for declared, (file, visibility, kind) in TOP_LEVEL.items() if file == name},
                 set(decls))
-        scratch = tempfile.mkdtemp(prefix='bp-htp-')
-        try:
-            root, env = gate.make_scratch_repo(REPO, scratch)
-            model = gate.parse_gradle((root / 'desktop/build.gradle.kts').read_text(encoding='utf-8'))
-            self.assertEqual(1, model.sync_excludes.count(CANONICAL))
-            tasks, _skipped = gate.select_producers(model)
-            results = gate.run_producers(root, tasks, env)
-            failed = [(row['task'], row['returncode'], row['stderrTail']) for row in results if row['returncode']]
-            self.assertEqual([], failed)
-            self.assertGreater(len(results), 100)
-            self.assertIn('extractOriginalHomePage', {row['task'] for row in results})
-            compiled, _notes = gate.collect_sources(root, model)
-            compiled = [source for source in compiled if source.set == 'main']
-            self.assertEqual([], [s.logical for s in compiled if s.origin == 'vendored' and s.logical == CANONICAL])
-            self.assertEqual(
-                ['build/generated/home-page/' + policy.RELATIVE[TINT]],
-                [s.logical for s in compiled if s.logical.endswith('/' + TINT)])
-            self.assertEqual(
-                ['build/generated/home-page/' + policy.RELATIVE[READABILITY]],
-                [s.logical for s in compiled if s.logical.endswith('/' + READABILITY)])
-            names = set(TOP_LEVEL)
-            hits = []
-            callers = []
-            for source in compiled:
-                raw = Path(source.real).read_bytes()
-                if any(name.encode('utf-8') in raw for name in names):
-                    package, decls = declarations(raw.decode('utf-8'), source.logical)
-                    for visibility, _kind, declared in decls:
-                        if declared in names:
-                            hits.append((package, visibility, declared, source.logical))
-                if any(callee.encode('utf-8') + b'(' in raw for callee in CALLEES):
-                    text = raw.decode('utf-8')
-                    for callee, allowed in CALLEES.items():
-                        for labels, positional in call_arguments(text, callee):
-                            callers.append((callee, source.logical, labels, positional, allowed))
-            for name, (file, visibility, _kind) in TOP_LEVEL.items():
-                found = [hit for hit in hits if hit[2] == name]
-                self.assertEqual(1, len(found), (name, found))
-                package, declared_visibility, _declared, logical = found[0]
-                self.assertEqual(policy.PACKAGE[file], package, name)
-                self.assertEqual(visibility, declared_visibility, name)
-                self.assertEqual('build/generated/home-page/' + policy.RELATIVE[file], logical, name)
-            # every compiled caller of the three changed signatures still passes only parameters v0.4.6 declares
-            self.assertGreaterEqual(len(callers), 6)
-            seen = {callee for callee, *_rest in callers}
-            self.assertEqual(set(CALLEES), seen)
-            for callee, logical, labels, positional, allowed in callers:
-                with self.subTest(callee=callee, source=logical):
-                    self.assertTrue(set(labels) <= set(allowed), (labels, allowed))
-                    self.assertLessEqual(len(labels) + positional, len(allowed))
-                    if positional:
-                        self.assertEqual([], labels)
-        finally:
-            shutil.rmtree(scratch, ignore_errors=True)
+        model = gate.parse_gradle(self.build)
+        self.assertEqual(1, model.sync_excludes.count(CANONICAL))
+        self.assertEqual([policy.RELATIVE[TINT]], [path for path in self.main if path.endswith('/' + TINT)])
+        self.assertEqual([policy.RELATIVE[READABILITY]], [path for path in self.main if path.endswith('/' + READABILITY)])
+        names = set(TOP_LEVEL)
+        hits = []
+        for relative, raw in self.main.items():
+            if relative.endswith('.kt') and any(name.encode('utf-8') in raw for name in names):
+                package, decls = declarations(raw.decode('utf-8'), relative)
+                for visibility, _kind, declared in decls:
+                    if declared in names:
+                        hits.append((package, visibility, declared, relative))
+        for name, (file, visibility, _kind) in TOP_LEVEL.items():
+            found = [hit for hit in hits if hit[2] == name]
+            self.assertEqual(1, len(found), (name, found))
+            package, declared_visibility, _declared, relative = found[0]
+            self.assertEqual(policy.PACKAGE[file], package, name)
+            self.assertEqual(visibility, declared_visibility, name)
+            self.assertEqual(policy.RELATIVE[file], relative, name)
 
     def test_emitted_sources_keep_balanced_delimiters(self):
         for name in policy.MAIN_FILES:

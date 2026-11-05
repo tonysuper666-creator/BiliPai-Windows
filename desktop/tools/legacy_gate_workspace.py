@@ -10,6 +10,7 @@ import re
 from pathlib import Path
 import shutil
 import subprocess
+import tarfile
 import tempfile
 
 
@@ -55,7 +56,10 @@ def legacy_gate_workspace(repo):
             archive = Path(temporary) / "originals.tar"
             subprocess.run(["git", "-c", "core.autocrlf=false", "-C", str(repo), "archive",
                             "--format=tar", "-o", str(archive), commit, "--", *originals], check=True)
-            subprocess.run(["tar", "-xf", str(archive), "-C", str(view)], check=True)
+            # Windows resolves "tar" to System32 bsdtar, which decodes ustar names
+            # with the ANSI code page and rejects UTF-8 originals (docs/images/233娘.jpeg).
+            with tarfile.open(archive) as tar:
+                tar.extractall(view, filter="fully_trusted")
             # The symbol gate also models modules compiled from the merged root.
             # Keep those real inputs separate from the old generator originals.
             recipe = repo / "desktop/build.gradle.kts"

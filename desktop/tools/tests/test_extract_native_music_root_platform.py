@@ -22,7 +22,8 @@ class NativeMusicRootExtractionTest(unittest.TestCase):
         self.assertEqual(hashlib.sha256(declaration.encode()).hexdigest(), row['declarationSha256'])
 
     def test_source_identity_is_stable_for_windows_and_linux_checkouts(self):
-        root = Path(self.enterContext(tempfile.TemporaryDirectory()))
+        # Same directory name as the read point, so the canonical pin for its tree applies.
+        root = Path(self.enterContext(tempfile.TemporaryDirectory()))/REPO.name
         source = root/extractor.SOURCE
         source.parent.mkdir(parents=True)
         parser = root/'desktop/tools/sync-upstream.py'

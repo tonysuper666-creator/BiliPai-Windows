@@ -10,7 +10,10 @@ LEGACY_CATALOG_SHA = "2fa53aa78cc27c76a3923cc44750128b3657c340dbcfe44ec13810cbc4
 BASE = "app/src/main/java/com/android/purebilibili/feature/settings/"
 SECTIONS = BASE + "ui/SettingsSections.kt"
 GATE = "app/src/main/java/com/android/purebilibili/feature/agreement/UserAgreementGate.kt"
-AGREEMENT_OWNER_PRODUCER_LF_SHA256 = "b0fb501f5686169b9a9e16ffb98a4133b1c43c69ced959bdcf964de971510cb1"
+AGREEMENT_OWNER_PRODUCER_LF_SHA256 = "867a743bdfce73395a97337c98e7d3d7ea3d0f4af1d26e55231a4a7376e89f36"
+# The pre-merge snapshot keeps its own copy of the profile producer, from before
+# 67f65de86 routed its Windows long-path prefix through desktop_paths.long_path.
+LEGACY_AGREEMENT_OWNER_PRODUCER_LF_SHA256 = "b0fb501f5686169b9a9e16ffb98a4133b1c43c69ced959bdcf964de971510cb1"
 MANAGER = "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt"
 DIRECT = [BASE + "update/" + name + ".kt" for name in ["AppUpdateDownloadState", "AppUpdateReleaseNotesPolicy", "AppUpdateDialogVisualPolicy", "AppUpdateUiPolicy", "AppUpdateAssetSelectionPolicy", "AppBuildVerificationPolicy"]]
 WHOLE = [BASE + "update/" + name + ".kt" for name in ["AppUpdateChecker", "Material3AppUpdateDialog", "MiuixAppUpdateDialog"]]
@@ -103,7 +106,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 def verified_agreement_owner(repo):
     producer = Path(repo) / "desktop/tools/extract-upstream-profile-main.py"
     actual = sha(wide(producer).read_bytes().replace(bytes([13,10]),bytes([10])))
-    if actual != AGREEMENT_OWNER_PRODUCER_LF_SHA256:
+    expected = LEGACY_AGREEMENT_OWNER_PRODUCER_LF_SHA256 if catalog_sha(repo) == LEGACY_CATALOG_SHA else AGREEMENT_OWNER_PRODUCER_LF_SHA256
+    if actual != expected:
         raise AssertionError("Existing complete agreement owner changed")
     return actual
 

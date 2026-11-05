@@ -358,9 +358,12 @@ class ChainTests(unittest.TestCase):
         root, env = gate.make_scratch_repo(REPO, scratch)
         cls.root = root
         model = gate.parse_gradle((root / 'desktop/build.gradle.kts').read_text(encoding='utf-8'))
-        tasks, skipped = gate.select_producers(model, only=set(TASKS))
-        if {task.name for task in tasks} != set(TASKS):
-            raise AssertionError(([task.name for task in tasks], skipped))
+        # Only this chain runs, in its Gradle dependency order and with resolved command lines. The compile-universe
+        # check of select_producers belongs to the retired whole-tree reading; compileKotlin judges the universe now.
+        tasks = [model.tasks[name] for name in TASKS if name in model.tasks]
+        if [task.name for task in tasks] != list(TASKS) or any(task.skip for task in tasks) or any(
+                set(task.deps) & set(TASKS) - set(TASKS[:index]) for index, task in enumerate(tasks)):
+            raise AssertionError([(task.name, task.skip, task.deps) for task in tasks])
         results = gate.run_producers(root, tasks, env)
         failed = [(row['task'], row['returncode'], row['stderrTail']) for row in results if row['returncode']]
         if failed:

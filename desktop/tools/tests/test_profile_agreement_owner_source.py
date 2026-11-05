@@ -3,6 +3,7 @@ from pathlib import Path
 import hashlib
 import importlib.util
 import json
+import os
 import shutil
 import subprocess
 import sys
@@ -38,7 +39,16 @@ class ProfileAgreementOwnerSourceTest(unittest.TestCase):
         prior.write_bytes(old)
         cls.before = cls.root / "before"
         cls.after = cls.root / "after"
-        load("accepted_profile_agreement_owner", prior).generate(REPO, cls.before)
+        accepted = load("accepted_profile_agreement_owner", prior)
+        if os.name != "nt":
+            # The accepted producer predates desktop_paths.long_path (67f65de86) and prefixes
+            # every path with the Windows-only extended-length namespace, which off Windows turns
+            # each path into one literal file name. Off Windows only, its path helper follows the
+            # same rule as the current producer; its bytes stay pinned by BASELINE_SHA and its
+            # generation logic is unchanged.
+            from desktop_paths import long_path
+            accepted.safe = lambda p: long_path(Path(p).absolute())
+        accepted.generate(REPO, cls.before)
         load("current_profile_agreement_owner", REPO / PROFILE).generate(REPO, cls.after)
         proof_path = cls.root / "about-proof.json"
         cls.about.generate(REPO, cls.root / "about", cls.root / "resources", proof_path)
