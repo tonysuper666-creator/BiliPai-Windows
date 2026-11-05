@@ -180,10 +180,9 @@ internal fun DesktopDynamicTimelineFeed(
             Text("${displayed.size} 项",style=MaterialTheme.typography.labelLarge)
         }
     Box(Modifier.weight(1f).fillMaxWidth(),contentAlignment=Alignment.TopCenter) {
-        FeedVerticalStaggeredGrid(columns=if(layout==DynamicFeedLayoutMode.LIST)StaggeredGridCells.Fixed(1)
-            else StaggeredGridCells.Adaptive(resolveDynamicTimelineMinColumnWidth()),state=state.scroll,
-            modifier=Modifier.widthIn(max=resolveDynamicTimelineMaxWidth()).fillMaxSize(),
-            contentPadding=PaddingValues(start=20.dp,top=20.dp,end=20.dp,bottom=20.dp+DESKTOP_REFRESH_SCROLL_RESERVE_DP.dp),
+        FeedVerticalStaggeredGrid(columns=StaggeredGridCells.Fixed(1),state=state.scroll,
+            modifier=Modifier.fillMaxSize(),
+            contentPadding=PaddingValues(top=20.dp,bottom=20.dp+DESKTOP_REFRESH_SCROLL_RESERVE_DP.dp),
             horizontalArrangement=Arrangement.spacedBy(resolveDynamicTimelineHorizontalSpacing()),
             verticalItemSpacing=resolveDynamicTimelineVerticalSpacing(),
             prependItemKeys=if(shouldUseDynamicManualPrependAnchor(com.android.purebilibili.core.store.SettingsManager.DynamicFeedLayoutMode.fromValue(layout.value)))keys else emptyList(),
