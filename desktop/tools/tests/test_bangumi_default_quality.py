@@ -17,6 +17,21 @@ CURRENT_PRE_QUALITY_PRODUCER_SHA256_LF = 'd152efc0f88fe4060364e3831e4447e92cacd2
 HISTORICAL_VM_ADAPTED_SHA256_LF = '9a9cd34aa68fcdea34da3c7d6b953894862e12428bb322703c94ff40a3d82f34'
 HISTORICAL_QUALITY_LAUNCH = '        environment.launch {\n            environment.native.beginEpisode(currentState.seasonDetail, currentState.currentEpisode)\n'
 VM = "com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiPlayerViewModel.kt"
+# Later layers of the same producer (PGC initial detail 4069ad53e, PGC audio download
+# 2bc5c4879, v0.4.6 view model e6f96e081) are each covered by their own receipts; with
+# exactly their hook lines removed the producer is the fixed current-quality stage.
+LATER_STAGE_HOOKS = (
+    "from v034_pgc_initial_detail import apply_and_record as apply_pgc_initial_detail\n",
+    "from v034_pgc_audio_download import apply_and_record as apply_pgc_audio_download\n",
+    "from v046_bangumi_player import apply_view_model as apply_bangumi_v046_view_model,emit_features as "
+    "emit_bangumi_v046_features,validate_outputs as validate_bangumi_v046_outputs\n",
+    "validate_bangumi_v046_outputs(repo,out)\n",
+    " body=apply_pgc_initial_detail(recipe['output'],body,out)\n",
+    " body=apply_pgc_audio_download(recipe['output'],body,out)\n",
+    " body=apply_bangumi_v046_view_model(repo,recipe['output'],body,out)\n",
+    "emit_bangumi_v046_features(repo,out)\n",
+)
+CURRENT_QUALITY_STAGE_PRODUCER_SHA256_LF = '00707559ef649ab74e3e40955029bcfddfdef15cca4149e1e6b45b0a27070f26'
 
 class BangumiDefaultQualityGeneratorTest(unittest.TestCase):
     @classmethod
@@ -27,6 +42,14 @@ class BangumiDefaultQualityGeneratorTest(unittest.TestCase):
         # Reconstruct both the current pre-quality stage and the fixed historical
         # whole producer; the later current-quality recipe is a separate change.
         script = AFTER.read_text(encoding="utf8")
+        for hook in LATER_STAGE_HOOKS:
+            if script.count(hook) != 1:
+                raise AssertionError("Later PGC producer layer hook changed: " + hook)
+            script = script.replace(hook, "")
+        if hashlib.sha256(script.encode()).hexdigest() != CURRENT_QUALITY_STAGE_PRODUCER_SHA256_LF:
+            raise AssertionError("Current sole PGC quality stage no longer reconstructs")
+        cls.stage_producer = cls.root / "current-quality-stage-producer.py"
+        cls.stage_producer.write_text(script, encoding="utf8", newline="\n")
         start = script.index("\nPGC_DEFAULT_QUALITY_EDITS = ")
         end = script.index("\nfor recipe in RECIPES:", start)
         baseline = script[:start] + script[end:]
@@ -85,10 +108,11 @@ class BangumiDefaultQualityGeneratorTest(unittest.TestCase):
                 raise AssertionError("Explicit baseline is not the fixed reconstructed historical producer")
         cls.before = cls.root / "before"
         cls.after = cls.root / "after"
+        cls.actual = cls.root / "actual"
         env = os.environ.copy()
         env["PYTHONDONTWRITEBYTECODE"] = "1"
         env["PYTHONPATH"] = str(BASE / "desktop/tools")
-        for producer, output in ((cls.baseline_producer, cls.before), (AFTER, cls.after)):
+        for producer, output in ((cls.baseline_producer, cls.before), (cls.stage_producer, cls.after), (AFTER, cls.actual)):
             result = subprocess.run([sys.executable, str(producer), "--repo", str(BASE), "--output", str(output)],
                 env=env, capture_output=True, text=True, timeout=30)
             if result.returncode != 0:
@@ -187,6 +211,19 @@ class BangumiDefaultQualityGeneratorTest(unittest.TestCase):
             self.assertEqual((self.before / relative).read_bytes(), (self.after / relative).read_bytes(), str(relative))
         self.assertEqual(set(paths) | {Path("pgc-default-quality-source-inventory.json")},
             {path.relative_to(self.after) for path in self.after.rglob("*") if path.is_file()})
+
+    def test_actual_producer_advances_exactly_this_stage_output(self):
+        # The next layer pins its input; it must be this stage's VM and Base VM bodies.
+        base_vm = "com/android/purebilibili/core/player/DesktopOriginalBangumiBasePlayerViewModel.kt"
+        for relative in (base_vm, VM):
+            stage_body = (self.after / relative).read_text(encoding="utf8").split("\n", 1)[1]
+            receipt = json.loads((self.actual / (Path(relative).stem + ".pgc-initial-detail-source.json")).read_text(encoding="utf8"))
+            self.assertEqual(relative, receipt["path"])
+            self.assertEqual(hashlib.sha256(stage_body.encode()).hexdigest(), receipt["recipe"]["beforeSha256LF"])
+        stage = {path.relative_to(self.after): path.read_bytes() for path in self.after.rglob("*") if path.is_file()}
+        actual = {path.relative_to(self.actual): path.read_bytes() for path in self.actual.rglob("*") if path.is_file()}
+        self.assertEqual(set(), set(stage) - set(actual))
+        self.assertEqual({Path(base_vm), Path(VM)}, {path for path in stage if stage[path] != actual[path]})
 
     def test_original_manual_quality_and_drm_fallback_remain_complete(self):
         updated = self.updated
