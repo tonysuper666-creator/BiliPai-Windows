@@ -666,6 +666,8 @@ val migratedVideoFeaturePaths = setOf(
     "com/android/purebilibili/feature/bangumi/policy/MyFollowStatsDetailPolicy.kt",
     "com/android/purebilibili/feature/bangumi/policy/MyFollowWatchInsightPolicy.kt",
     "com/android/purebilibili/feature/bangumi/ui/player/BangumiSeekHapticPolicy.kt",
+    // TON-1002 OC-1: the overlay contracts compile from upstream; the generated full-controls copy retires.
+    "com/android/purebilibili/feature/video/ui/overlay/VideoPlayerOverlayContracts.kt",
 )
 // Feature areas compiled from the merged root as well (TON-1003, M4b): home, search, dynamic and comment. A file of those
 // areas stays on its legacy copy while upstream-core/m4b/later-steps.tsv lists it (path <TAB> what it waits for);
@@ -3230,7 +3232,9 @@ val upstreamOwnedGeneratedCopies = setOf(
     "bgm-detail/com/android/purebilibili/data/model/CommentFraudStatus.kt",
     "original-favorites/com/android/purebilibili/core/store/DesktopFavoriteAccountIdentity.kt",
     "original-video-state-core/com/android/purebilibili/data/repository/DesktopOriginalVideoRequestAccountScope.kt",
-    "original-video-fullscreen-pager/com/android/purebilibili/feature/video/ui/overlay/PortraitFullscreenOverlay.kt"
+    "original-video-fullscreen-pager/com/android/purebilibili/feature/video/ui/overlay/PortraitFullscreenOverlay.kt",
+    // TON-1002 OC-1: retired with the directly compiled overlay contracts.
+    "original-video-player-full-controls/com/android/purebilibili/feature/video/ui/overlay/VideoPlayerOverlayContracts.kt",
 )
 
 // Generated legacy files that mix desktop code with declarations upstream now owns, or that call
