@@ -19,6 +19,11 @@ OUT=LANE;SOURCES={};CHANGES={};OUTPUTS=[]
 # Roadmap lst-episode-selector-collection: the archive is intact and no output lies inside or around it.
 from v046_episode_selector import validate_outputs as validate_episode_selector_outputs
 validate_episode_selector_outputs(REPO,LANE)
+def _registered_is_pin(path,registered,pin):
+ # Gradle reads the legacy read point's manifest (legacy bytes); the gate view reads the
+ # live manifest, re-pinned to the direct-compile tree. Both must be the one reviewed pair.
+ entry=_v025_catalog()['paths'].get(path)
+ return registered==pin or (entry is not None and registered==entry['sha256'] and entry.get('legacySha256')==pin)
 def safe(p):
  return long_path(Path(p).absolute())
 def _registered_is_pin(path,registered,pin):

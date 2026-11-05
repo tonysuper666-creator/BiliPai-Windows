@@ -1,4 +1,5 @@
 from v025_source_paths import canonical_source as _desktop_canonical_source, canonical_relative as _desktop_canonical_relative
+from v025_source_paths import _catalog as _v025_catalog
 from pathlib import Path
 from desktop_paths import long_path
 import hashlib,importlib.util,json,re,subprocess,sys,difflib
@@ -35,6 +36,11 @@ def validate_fresh_v025_comment_consumer(output,text):
    if actual!=count:raise ValueError('Fresh canonical comment consumer mismatch: '+output+' '+field+' '+str(actual)+' != '+str(count))
  return text
 
+def _registered_is_pin(path,registered,pin):
+ # Gradle reads the legacy read point's manifest (legacy bytes); the gate view reads the
+ # live manifest, re-pinned to the direct-compile tree. Both must be the one reviewed pair.
+ entry=_v025_catalog()['paths'].get(path)
+ return registered==pin or (entry is not None and registered==entry['sha256'] and entry.get('legacySha256')==pin)
 def safe(p):
  s=str(Path(p).absolute())
  return long_path(s)
@@ -55,7 +61,7 @@ def read(rel):
   assert SOURCES[path]['sha256LF']==SOURCE_PINS[path]['sha256LF'] and SOURCES[path]['gitBlob']==SOURCE_PINS[path]['gitBlob'],path
   if not args.standalone:
    rows=[r for r in manifest['sources']if r['path']==path]
-   assert len(rows)==1 and rows[0]['sha256']==SOURCE_PINS[path]['sha256LF'] and FEATURE in rows[0]['features'],path
+   assert len(rows)==1 and _registered_is_pin(path,rows[0]['sha256'],SOURCE_PINS[path]['sha256LF']) and FEATURE in rows[0]['features'],path
 
   write(LANE/'original-retained'/(path+'.txt'),raw)
  return SOURCES[path]['text']
