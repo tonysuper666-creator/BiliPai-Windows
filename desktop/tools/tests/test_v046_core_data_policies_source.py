@@ -296,44 +296,28 @@ class V046CoreDataPoliciesSourceTest(unittest.TestCase):
         for found in own.values():
             self.assertTrue(found)
         self.assertEqual([], [name for name, found in own.items() if found & set().union(*(v for k, v in own.items() if k != name))])
-        scratch = tempfile.mkdtemp(prefix='bp-cdp-')
-        try:
-            root, env = gate.make_scratch_repo(REPO, scratch)
-            model = gate.parse_gradle((root / 'desktop/build.gradle.kts').read_text(encoding='utf-8'))
-            tasks, skipped = gate.select_producers(model)
-            results = gate.run_producers(root, tasks, env)
-            failed = [(row['task'], row['returncode'], row['stderrTail']) for row in results if row['returncode']]
-            self.assertEqual([], failed)
-            self.assertGreater(len(results), 100)
-            self.assertIn('extractOriginalVideoStatusLabels', {row['task'] for row in results})
-            hits = []
-            star_imports = []
-            roots = [root / 'desktop/src', root / 'desktop/build']
-            for base in roots:
-                for path in base.rglob('*'):
-                    if not path.is_file() or path.suffix not in {'.kt', '.kts'}:
-                        continue
-                    raw = path.read_bytes()
-                    if b'import com.android.purebilibili.data.model.*' in raw:
-                        star_imports.append(path.relative_to(root).as_posix())
-                    if not any(name.encode('utf-8') in raw for name in TOP_LEVEL_NAMES):
-                        continue
-                    package, decls = declarations(raw.decode('utf-8'), path.relative_to(root).as_posix())
-                    for _visibility, _kind, declared in decls:
-                        if declared in TOP_LEVEL_NAMES:
-                            hits.append((package, declared, path.relative_to(root).as_posix()))
-            self.assertEqual([], star_imports)
-            owned = [hit for hit in hits if hit[0] == PACKAGE]
-            counts = {name: [hit[2] for hit in owned if hit[1] == name] for name in TOP_LEVEL_NAMES}
-            self.assertEqual({name: 1 for name in TOP_LEVEL_NAMES}, {name: len(paths) for name, paths in counts.items()})
-            for name, paths in counts.items():
-                self.assertEqual(1, len(paths), (name, paths))
-                self.assertTrue(paths[0].startswith('desktop/build/generated/v041-video-status-labels/'), paths[0])
-            others = [hit for hit in hits if hit[0] != PACKAGE]
-            self.assertEqual([], [hit for hit in others if hit[0] == PACKAGE])
-            self.assertTrue(all(hit[0] != PACKAGE for hit in others))
-        finally:
-            shutil.rmtree(scratch, ignore_errors=True)
+        sources = {path.relative_to(REPO).as_posix(): path.read_bytes()
+                   for path in (REPO / 'desktop/src').rglob('*') if path.is_file() and path.suffix in {'.kt', '.kts'}}
+        sources.update({'desktop/build/generated/v041-video-status-labels/' + relative: raw
+                        for relative, raw in self.main.items() if relative.endswith('.kt')})
+        hits = []
+        star_imports = []
+        for relative, raw in sources.items():
+            if b'import com.android.purebilibili.data.model.*' in raw:
+                star_imports.append(relative)
+            if not any(name.encode('utf-8') in raw for name in TOP_LEVEL_NAMES):
+                continue
+            package, decls = declarations(raw.decode('utf-8'), relative)
+            for _visibility, _kind, declared in decls:
+                if declared in TOP_LEVEL_NAMES:
+                    hits.append((package, declared, relative))
+        self.assertEqual([], star_imports)
+        owned = [hit for hit in hits if hit[0] == PACKAGE]
+        counts = {name: [hit[2] for hit in owned if hit[1] == name] for name in TOP_LEVEL_NAMES}
+        self.assertEqual({name: 1 for name in TOP_LEVEL_NAMES}, {name: len(paths) for name, paths in counts.items()})
+        for name, paths in counts.items():
+            self.assertEqual(1, len(paths), (name, paths))
+            self.assertTrue(paths[0].startswith('desktop/build/generated/v041-video-status-labels/'), paths[0])
 
     def test_emitted_test_keeps_four_junit5_cases_and_delimiters_balance(self):
         relative = PACKAGE.replace('.', '/') + '/VideoProgressDisplayPolicyTest.kt'

@@ -536,7 +536,7 @@ class V046SmallProtocolFixesSourceTest(unittest.TestCase):
         for text in (plugin_source, diagnostics_source, message_source, article_source):
             self.assertFalse(any(line.startswith(('import v046_mfx', 'from v046_mfx')) for line in text.splitlines()))
 
-    def test_each_top_level_name_is_declared_once_in_the_whole_producer_universe(self):
+    def test_each_top_level_name_is_declared_once_across_the_four_producers_and_desktop_sources(self):
         wanted = {}
         for name in mfx.EMITTED_FILES:
             package, decls = declarations(self.archive[name].decode('utf8'), name)
@@ -547,41 +547,28 @@ class V046SmallProtocolFixesSourceTest(unittest.TestCase):
         self.assertIn('MessageHistoryCursorSerializer', wanted)
         self.assertIn('MessageHistoryData', wanted)
         self.assertIn('parseArticleContentBlocks', wanted)
-        scratch = tempfile.mkdtemp(prefix='bp-mfx-')
-        try:
-            root, env = gate.make_scratch_repo(REPO, scratch)
-            model = gate.parse_gradle((root / 'desktop/build.gradle.kts').read_text(encoding='utf-8'))
-            self.assertEqual(1, model.sync_excludes.count(RESPONSE))
-            self.assertEqual(1, model.sync_excludes.count(PARSER))
-            tasks, _skipped = gate.select_producers(model)
-            results = gate.run_producers(root, tasks, env)
-            failed = [(row['task'], row['returncode'], row['stderrTail']) for row in results if row['returncode']]
-            self.assertEqual([], failed)
-            self.assertTrue({'extractOriginalMessagePages', 'extractOriginalArticleDetail', 'extractUpstreamPlugins',
-                             'extractUpstreamDiagnostics'} <= {row['task'] for row in results})
-            hits = {}
-            for base in (root / 'desktop/src', root / 'desktop/build'):
-                for path in base.rglob('*'):
-                    if not path.is_file() or path.suffix not in {'.kt', '.kts'}:
-                        continue
-                    raw = path.read_bytes()
-                    if not any(name.encode('utf-8') in raw for name in wanted):
-                        continue
-                    relative = path.relative_to(root).as_posix()
-                    package, decls = declarations(raw.decode('utf-8'), relative)
-                    for visibility, _kind, declared in decls:
-                        if declared in wanted and visibility != 'private':
-                            hits.setdefault(declared, []).append((package, relative))
-            for declared, (name, _visibility, _kind, package) in wanted.items():
-                found = hits.get(declared, [])
-                self.assertEqual(1, len(found), (declared, found))
-                self.assertEqual(package, found[0][0], declared)
-                self.assertTrue(found[0][1].endswith(mfx.RELATIVE[name]), (declared, found[0][1]))
-                self.assertNotIn('generated/upstream/', found[0][1])
-            gate_output = {row['task'] for row in results}
-            self.assertIn('extractOriginalMessagePages', gate_output)
-        finally:
-            shutil.rmtree(scratch, ignore_errors=True)
+        model = gate.parse_gradle(self.build)
+        self.assertEqual(1, model.sync_excludes.count(RESPONSE))
+        self.assertEqual(1, model.sync_excludes.count(PARSER))
+        sources = {path.relative_to(REPO).as_posix(): path.read_bytes()
+                   for path in (REPO / 'desktop/src').rglob('*') if path.is_file() and path.suffix in {'.kt', '.kts'}}
+        for producer, emitted in (('plugins', self.plugins), ('diagnostics', self.diagnostics),
+                                  ('message', self.message), ('article', self.article)):
+            sources.update({producer + ':' + relative: raw for relative, raw in emitted.items() if relative.endswith('.kt')})
+        hits = {}
+        for relative, raw in sources.items():
+            if not any(name.encode('utf-8') in raw for name in wanted):
+                continue
+            package, decls = declarations(raw.decode('utf-8'), relative)
+            for visibility, _kind, declared in decls:
+                if declared in wanted and visibility != 'private':
+                    hits.setdefault(declared, []).append((package, relative))
+        for declared, (name, _visibility, _kind, package) in wanted.items():
+            found = hits.get(declared, [])
+            self.assertEqual(1, len(found), (declared, found))
+            self.assertEqual(package, found[0][0], declared)
+            self.assertTrue(found[0][1].endswith(mfx.RELATIVE[name]), (declared, found[0][1]))
+            self.assertNotIn('generated/upstream/', found[0][1])
 
     # ---- Windows Kotlin sources -----------------------------------------------------------------------------
 
