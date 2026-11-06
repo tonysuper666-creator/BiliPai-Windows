@@ -11,6 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.graphics.toComposeImageBitmap
+import androidx.compose.ui.input.key.*
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
@@ -178,18 +179,45 @@ private fun LoginPasswordForm(login: DesktopLoginRepository, bridge: DesktopCapt
     } }
     if (risk != null) LoginRiskForm(risk!!, login, bridge, ::accept) { risk = null }
     else {
-        OutlinedTextField(username, { username = it; captcha = null }, label = { Text("手机号 / 邮箱 / 用户名") }, singleLine = true, enabled = !work.busy, modifier = Modifier.fillMaxWidth())
-        OutlinedTextField(password, { password = it; captcha = null }, label = { Text("密码") }, visualTransformation = PasswordVisualTransformation(),
-            singleLine = true, enabled = !work.busy, modifier = Modifier.fillMaxWidth())
-        Button(enabled = !work.busy && username.isNotBlank() && password.isNotBlank(), onClick = {
-            work.run {
-                val challenge = captcha
-                val result = challenge?.let { bridge.verify(it) }
-                accept(login.loginPassword(username, password, challenge, result))
-            }
-        }) { Text(if (captcha == null) "登录" else "在浏览器验证并登录") }
+        LoginPasswordFields(username, password, enabled = !work.busy && username.isNotBlank() && password.isNotBlank(), busy = work.busy,
+            submitLabel = if (captcha == null) "登录" else "在浏览器验证并登录",
+            onUsername = { username = it; captcha = null }, onPassword = { password = it; captcha = null },
+            onSubmit = {
+                work.run {
+                    val challenge = captcha
+                    val result = challenge?.let { bridge.verify(it) }
+                    accept(login.loginPassword(username, password, challenge, result))
+                }
+            })
         LoginWorkState(work)
     }
+}
+
+/**
+ * The two credential rows and the submit button of password login. Enter in either row and the button are one submit path with one
+ * readiness rule, so a blank pair does nothing either way and a held key cannot log in twice: the press submits, the release re-arms,
+ * and the login work slot still refuses a second run.
+ */
+@Composable
+internal fun LoginPasswordFields(username: String, password: String, enabled: Boolean, busy: Boolean, submitLabel: String,
+    onUsername: (String) -> Unit, onPassword: (String) -> Unit, onSubmit: () -> Unit) {
+    var entered by remember { mutableStateOf(false) }
+    val submitOnEnter = Modifier.onPreviewKeyEvent { event ->
+        if (event.key != Key.Enter && event.key != Key.NumPadEnter) false
+        else when (event.type) {
+            KeyEventType.KeyUp -> { entered = false; false }
+            KeyEventType.KeyDown -> if (entered) true else {
+                entered = true
+                if (enabled) { onSubmit(); true } else false
+            }
+            else -> false
+        }
+    }
+    OutlinedTextField(username, onUsername, label = { Text("手机号 / 邮箱 / 用户名") }, singleLine = true, enabled = !busy,
+        modifier = Modifier.fillMaxWidth().then(submitOnEnter))
+    OutlinedTextField(password, onPassword, label = { Text("密码") }, visualTransformation = PasswordVisualTransformation(),
+        singleLine = true, enabled = !busy, modifier = Modifier.fillMaxWidth().then(submitOnEnter))
+    Button(enabled = enabled, onClick = onSubmit) { Text(submitLabel) }
 }
 
 @Composable
