@@ -5,6 +5,7 @@ from unittest.mock import patch
 
 TOOLS=Path(__file__).resolve().parents[1]
 REPO=TOOLS.parents[1]
+LIVE=Path(os.environ.get('BILIPAI_LIVE_ROOT') or REPO)
 sys.path.insert(0,str(TOOLS))
 import v030_video_dynamic_share as source
 def load(name,file):
@@ -96,7 +97,11 @@ class VideoDynamicShareSourceTest(unittest.TestCase):
             self.assertTrue(report['fullSourceInverseVerified']);self.assertEqual([],report['edits'])
         rows=json.loads((TOOLS.parent/'upstream-sources.json').read_bytes())['sources']
         row=next(row for row in rows if row['path']==source.SOURCE_PATHS['DynamicCreateModels.kt'])
+        catalog=json.loads((LIVE/'desktop/tools/v025-canonical-sources.json').read_bytes())['paths'][row['path']]
         self.assertEqual('policy-extract',row['mode'])
-        self.assertEqual('e1311bfb5c0999d7d9aecc4399273f30d20af3e394271d2205c31f8f08054d29',row['sha256'])
+        self.assertEqual('e1311bfb5c0999d7d9aecc4399273f30d20af3e394271d2205c31f8f08054d29',catalog['legacySha256'])
+        live=(LIVE/row['path']).read_bytes().replace(b'\r\n',b'\n')
+        self.assertEqual(hashlib.sha256(live).hexdigest(),row['sha256'])
+        self.assertEqual(row['sha256'],catalog['sha256'])
 
 if __name__=='__main__':unittest.main()

@@ -1,6 +1,7 @@
 import importlib.util
 import hashlib
 import json
+import os
 from pathlib import Path
 import tempfile
 import shutil
@@ -10,6 +11,7 @@ from unittest.mock import patch
 from v025_source_paths import canonical_source
 
 REPO = Path(__file__).resolve().parents[3]
+LIVE = Path(os.environ.get('BILIPAI_LIVE_ROOT') or REPO)
 spec = importlib.util.spec_from_file_location("extract_media", REPO / "desktop/tools/extract-upstream-media.py")
 media = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(media)
@@ -40,7 +42,24 @@ internal fun next(): Int { return 1 }
         with tempfile.TemporaryDirectory() as temporary:
             output = Path(temporary)
             generated = media.generate(REPO, output)
-            self.assertEqual(16, len(generated))
+            names = {p.name for p in generated}
+            self.assertEqual({'DesktopMediaPgcPolicies.kt', 'DesktopDownloadDanmakuRepository.kt', 'DesktopDanmakuMetadataParser.kt', 'DesktopOfflinePositionPolicy.kt', 'DesktopLiveHosts.kt', 'LiveDanmakuClient.kt', 'LiveDanmakuConnectionHealthPolicy.kt', 'DanmakuProtocol.kt', 'DesktopLivePolicies.kt', 'LiveInteractionModels.kt', 'LiveRealtimeMessagePolicy.kt', 'LiveDanmakuFilterPolicy.kt', 'DesktopLiveDanmakuItem.kt', 'DesktopLiveModerationRequests.kt', 'DesktopOriginalLiveModerationUi.kt', 'DesktopFollowPolicies.kt', 'DesktopOriginalLiveStreamRequest.kt', 'DesktopOriginalLiveStreamPolicy.kt', 'LiveStreamSourceSheet.kt', 'DesktopLiveReloadBudget.kt', 'DesktopOriginalLiveChatImage.kt', 'DesktopLiveVoteSnapshot.kt', 'LiveVotePanel.kt'}, names)
+            self.assertEqual(23, len(generated))
+            gradle = (LIVE / 'desktop/build.gradle.kts').read_text(encoding='utf-8')
+            self.assertIn('kotlin.srcDir(layout.buildDirectory.dir("generated/media"))', gradle)
+            self.assertIn('it in upstreamOwnedGeneratedCopies || it in appM4dRetiredGeneratedCopies || it in appFeatureRetiredGeneratedCopies', gradle)
+            retired = (LIVE / 'desktop/upstream-core/data/retired-generated.tsv').read_text(encoding='utf-8')
+            exclusions = gradle.split('val upstreamOwnedGeneratedCopies = setOf(', 1)[1].split('\n)', 1)[0]
+            self.assertIn('media/com/android/purebilibili/data/repository/LiveInteractionModels.kt', retired)
+            self.assertIn('media/com/android/purebilibili/feature/live/DesktopLiveDanmakuItem.kt', exclusions)
+            self.assertIn('val migratedAppFeatureAreas = listOf("feature/home/", "feature/search/", "feature/dynamic/", "feature/comment/", "data/")', gradle)
+            for file in generated:
+                relative = file.relative_to(output).as_posix()
+                app = LIVE / 'app/src/main/java' / relative
+                excluded = 'media/' + relative in retired or 'media/' + relative in exclusions
+                migrated = app.is_file() and relative.startswith(('com/android/purebilibili/core/', 'com/android/purebilibili/data/'))
+                compiled = not app.is_file() or relative.startswith('com/android/purebilibili/feature/live/')
+                self.assertTrue(excluded or migrated or compiled, relative)
             image_path = output / "com/android/purebilibili/feature/live/components/DesktopOriginalLiveChatImage.kt"
             self.assertTrue(any(path.samefile(image_path) for path in generated))
             image = image_path.read_bytes()
@@ -125,6 +144,12 @@ internal fun next(): Int { return 1 }
             self.assertIn("System.nanoTime() / 1_000_000L", live)
             self.assertNotIn("NetworkModule.okHttpClient", live)
             self.assertNotIn("SystemClock", live)
+            live_source = (LIVE / 'app/src/main/java/com/android/purebilibili/core/network/socket/LiveDanmakuClient.kt').read_text(encoding='utf-8')
+            socket_patch = (LIVE / 'desktop/upstream-core/patches/app/src/main/java/com/android/purebilibili/core/network/socket/LiveDanmakuClient.kt.patch').read_text(encoding='utf-8')
+            self.assertIn('webSocketFactory.newWebSocket', live_source)
+            self.assertIn('SystemClock.elapsedRealtime()', live_source)
+            self.assertIn('-    private val webSocketFactory: WebSocket.Factory = NetworkModule.okHttpClient,', socket_patch)
+            self.assertIn('+    private val webSocketFactory: WebSocket.Factory = com.bilipai.desktop.data.DesktopUpstreamCalls.webSocket', socket_patch)
             live_policy = (output / "com/android/purebilibili/data/repository/DesktopLivePolicies.kt").read_text(encoding="utf-8")
             live_policy_original = media.read(REPO, media.BASE + "data/repository/LiveRepository.kt")
             for name in ["parseLiveDanmakuPermission", "parseLiveDanmakuHistoryItems", "buildLiveHeartbeatQuery"]:
