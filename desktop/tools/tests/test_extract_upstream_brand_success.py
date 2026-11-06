@@ -138,7 +138,9 @@ class BrandSuccessProducerTest(unittest.TestCase):
         producer = load("brand_success_motion_contract", TOOLS / "extract-upstream-brand-motion.py")
         expected = business.runtime_outputs()
         with tempfile.TemporaryDirectory() as temp:
-            output = Path(temp) / "generated"
+            # Resolve the trusted temporary parent (e.g. macOS /tmp -> /private/tmp)
+            # before testing the producer's strict symlink rejection.
+            output = Path(temp).resolve() / "generated"
             report = producer.generate(REPO, output)
             self.assertEqual(33, report["generatedFiles"])
             for relative, data in expected.items():

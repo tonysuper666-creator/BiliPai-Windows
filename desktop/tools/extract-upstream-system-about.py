@@ -10,7 +10,9 @@ LEGACY_CATALOG_SHA = "2fa53aa78cc27c76a3923cc44750128b3657c340dbcfe44ec13810cbc4
 BASE = "app/src/main/java/com/android/purebilibili/feature/settings/"
 SECTIONS = BASE + "ui/SettingsSections.kt"
 GATE = "app/src/main/java/com/android/purebilibili/feature/agreement/UserAgreementGate.kt"
-AGREEMENT_OWNER_PRODUCER_LF_SHA256 = "b0fb501f5686169b9a9e16ffb98a4133b1c43c69ced959bdcf964de971510cb1"
+# 67f65de86 changed only the producer's platform path helper. The complete
+# agreement output remains pinned by test_profile_agreement_owner_source.
+AGREEMENT_OWNER_PRODUCER_LF_SHA256 = "867a743bdfce73395a97337c98e7d3d7ea3d0f4af1d26e55231a4a7376e89f36"
 MANAGER = "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt"
 DIRECT = [BASE + "update/" + name + ".kt" for name in ["AppUpdateDownloadState", "AppUpdateReleaseNotesPolicy", "AppUpdateDialogVisualPolicy", "AppUpdateUiPolicy", "AppUpdateAssetSelectionPolicy", "AppBuildVerificationPolicy"]]
 WHOLE = [BASE + "update/" + name + ".kt" for name in ["AppUpdateChecker", "Material3AppUpdateDialog", "MiuixAppUpdateDialog"]]

@@ -165,7 +165,8 @@ def generate(repo: Path, output: Path) -> Path:
         canonicalSelectedInverse=True, mappings=[dict(before=before,after=after)],
         wholeCanonicalInterfacesPreserved=True), indent=2)+"\n", encoding="utf8")
     from v030_live_stream import api_delta, emit_models as emit_live_models
-    live_api_body = api_delta("\n\n".join(sections), repo, output)
+    live_api_before = "\n\n".join(sections)
+    live_api_body = api_delta(live_api_before, repo, output)
     from v035_story import adapt_story_api
     live_api_body = adapt_story_api(live_api_body, output)
     from v041_search_all import advance_api
@@ -183,6 +184,13 @@ def generate(repo: Path, output: Path) -> Path:
     live_api_body, like_proof = advance_like_api(repo, live_api_body)
     (output / 'v046-danmaku-like-api-proof.json').write_text(
         json.dumps(like_proof, ensure_ascii=False, indent=2)+'\n', encoding='utf8', newline='\n')
+    from v030_live_stream import whole_proof
+    live_proof_path = output / 'v030-live-api-source-proof.json'
+    live_proof = json.loads(live_proof_path.read_text(encoding='utf8'))
+    live_proof['liveStreamStage'] = live_proof['completeBody']
+    live_proof['completeBody'] = whole_proof(live_api_before, live_api_body)
+    live_proof_path.write_text(json.dumps(live_proof, ensure_ascii=False, indent=2)+'\n',
+                               encoding='utf8', newline='\n')
     generated = "\n".join([
         "// GENERATED from upstream ApiClient.kt; edit the original API or extraction selection, never this file.",
         "// SHA-256: " + hashlib.sha256(source_path.read_bytes()).hexdigest(),
