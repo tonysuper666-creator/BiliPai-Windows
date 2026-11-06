@@ -1,0 +1,7 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/plugin/CdnTransferRuntime.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/plugin/CdnTransferRuntime.kt
+@@ -227,3 +227,3 @@
+     private fun path(url: String): String = runCatching { URI(url).rawPath.orEmpty() }.getOrDefault("")
+-    private fun nowMs(): Long = System.nanoTime() / 1_000_000
++    private fun nowMs(): Long = CdnTransferClock.nowMs()
+ }

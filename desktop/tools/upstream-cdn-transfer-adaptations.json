@@ -6,7 +6,7 @@
       "originalSha256LF": "9e597b4caad37f2abbe172facc223b7ed713e1a9a986d2b5b0416588acd82e3c",
       "gitBlob": "5302775cba64a9d2e5577019fd28075818eeda39",
       "output": "com/android/purebilibili/feature/plugin/CdnPlaybackDataSource.kt",
-      "outputSha256LF": "672bab6762a239f22efab9a82451fcefef71926eaf41a5203df870e926ca5df0",
+      "outputSha256LF": "4b0874ddb729aea9545a17aae559537afa0154b533a5beebb688d5642c8e5dd0",
       "mode": "policy-extract",
       "edits": [
         {
@@ -292,8 +292,22 @@
         {
           "kind": "equal",
           "startLine": 153,
+          "endLineExclusive": 175,
+          "beforeSha256LF": "0792d52a75b0464be1afcbd6dc851f668aa68e5372065c684b4d80cd546756db",
+          "after": null
+        },
+        {
+          "kind": "replace",
+          "startLine": 175,
+          "endLineExclusive": 176,
+          "beforeSha256LF": "6e478b05cc4d361e712d92f3737a4a26a3d177fc5217a9da262d44ab1cd0331f",
+          "after": "            val retired = try { platform.assertCurrent(); false } catch (_: CancellationException) { true }\n            CdnTransferRuntime.finish(delegateHost, success && !retired, canceled = canceled || closed || retired)\n"
+        },
+        {
+          "kind": "equal",
+          "startLine": 176,
           "endLineExclusive": 187,
-          "beforeSha256LF": "064906818b4b6a326ee2620c4ff36583b48180eb9d9a806750125b4ec26ef653",
+          "beforeSha256LF": "2956b7cf0659c1029cb8dd0a53a3e7142c5f041b59dd09f4ad8a571b84fde7ec",
           "after": null
         },
         {
