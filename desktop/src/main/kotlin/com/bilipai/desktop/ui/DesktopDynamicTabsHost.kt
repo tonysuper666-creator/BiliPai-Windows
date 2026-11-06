@@ -39,6 +39,7 @@ import kotlinx.coroutines.sync.withLock
     val preferences=users.preferences
     val visible by preferences.visibleTabs.collectAsState(preferences.initialVisibleTabs)
     val order by preferences.tabOrder.collectAsState(preferences.initialTabOrder)
+    val upListVisible by preferences.upListVisible.collectAsState(preferences.initialUpListVisible)
     val pinned by preferences.pinned.collectAsState(preferences.initialPinned)
     val hidden by preferences.hidden.collectAsState(preferences.initialHidden)
     var settingError by remember(users){mutableStateOf<Throwable?>(null)}
@@ -71,7 +72,7 @@ import kotlinx.coroutines.sync.withLock
     LaunchedEffect(users,allItems){users.updateTimeline(allItems)}
     val listState=rememberLazyListState()
     BoxWithConstraints(Modifier.fillMaxSize()) {
-        val geometry=desktopDynamicReadingGeometry(maxWidth.value,shouldShowDynamicUpPanel(users.selectedLogicalTab))
+        val geometry=desktopDynamicReadingGeometry(maxWidth.value,upListVisible&&shouldShowDynamicUpPanel(users.selectedLogicalTab))
         val hasAside=geometry.asideX!=null
         Column(Modifier.offset(x=geometry.columnX.dp).width((geometry.column + if(hasAside) DYNAMIC_READING_ASIDE_GAP + DYNAMIC_READING_ASIDE_WIDTH else 0).dp).fillMaxHeight()) {
             Row(Modifier.fillMaxWidth().testTag("dynamic-reading-tabs")) {
@@ -84,7 +85,7 @@ import kotlinx.coroutines.sync.withLock
                 }
                 trailing()
             }
-            if(!hasAside&&shouldShowDynamicHorizontalUserList(true,users.selectedLogicalTab)) {
+            if(!hasAside&&shouldShowDynamicHorizontalUserList(upListVisible,users.selectedLogicalTab)) {
                 Box(Modifier.fillMaxWidth().testTag("dynamic-reading-strip")) {
                 HorizontalUserList(users.panelUsers(),users.selectedUid,selfUid=users.selfUid,listState=listState,
                     showHiddenUsers=users.showHidden,hiddenCount=users.hiddenCount,uplistUpdateMids=users.unread,
