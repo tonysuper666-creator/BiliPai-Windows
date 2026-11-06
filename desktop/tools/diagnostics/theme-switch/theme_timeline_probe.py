@@ -4,7 +4,9 @@
 Inputs (at least one):
   --trace       in-app marks written by -Dbilipai.trace.themeSwitch=<file> (JVM System.nanoTime)
   --samples     external pixel/DWM sampler CSV, repeatable (t_s relative to the sampler base)
-  --presentmon  PresentMon CSV with CPUStartQPC; ticks are converted with the trace's QPC frequency
+  --presentmon  PresentMon 2.x CSV with CPUStartQPC; ticks are converted with the trace's QPC frequency.
+                CPUStart is when the CPU began the frame, so the Present() call is CPUStart + MsCPUBusy;
+                return = call + MsInPresentAPI, displayed = call + MsUntilDisplayed
 
 Exit codes: 0 complete and causally ordered; 1 usage/parse error; 2 causal order violated;
 3 a required stage is missing (e.g. no first frame); 4 two clock domains without a sync point.
@@ -309,14 +311,15 @@ def parse_presentmon(path: Path):
         if not reader.fieldnames:
             raise ProbeError(f"{path.name}: PresentMon CSV 没有表头")
         names = {name.strip(): name for name in reader.fieldnames}
-        for need in ("ProcessID", "CPUStartQPC", "MsInPresentAPI"):
+        for need in ("ProcessID", "CPUStartQPC", "MsCPUBusy", "MsInPresentAPI"):
             if need not in names:
-                raise ProbeError(f"{path.name}: PresentMon 缺列 {need}（需 --qpc_time 输出）")
+                raise ProbeError(f"{path.name}: PresentMon 缺列 {need}（需 2.x 默认指标加 --qpc_time，不要 --v1_metrics）")
         rows = []
         for number, row in enumerate(reader, 2):
             try:
                 displayed = row.get(names.get("MsUntilDisplayed", ""), "")
                 rows.append({"pid": int(row[names["ProcessID"]]), "qpc": int(row[names["CPUStartQPC"]]),
+                             "cpu_busy_ms": float(row[names["MsCPUBusy"]]),
                              "in_present_ms": float(row[names["MsInPresentAPI"]]),
                              "until_displayed_ms": float(displayed) if displayed not in ("", "NA", None) else None})
             except (TypeError, ValueError):
@@ -349,21 +352,24 @@ def analyse(args, findings: Findings):
         else:
             pid = _int(header.get("pid"), f"{args.trace.name}: pid")
             rows = [row for row in parse_presentmon(args.presentmon) if row["pid"] == pid]
+            # A frame whose CPU work began before the draw can still carry it: select by the Present() call.
+            calls = sorted(((_qpc_ns(row["qpc"], sync["qpc_freq"]) - offset + round(row["cpu_busy_ms"] * 1e6), row)
+                            for row in rows), key=lambda item: item[0])
             for switch, summary in zip(switches, summaries):
                 draw = switch["stages"].get("frame.draw")
-                after = [row for row in rows if draw and _qpc_ns(row["qpc"], sync["qpc_freq"]) - offset >= draw.t]
                 if not draw:
                     continue
+                after = [(call, row) for call, row in calls if call >= draw.t]
                 if not after:
                     code = EXIT_MISSING if args.require_present else EXIT_OK
-                    findings.add(code, f"切换#{switch['index']}: PresentMon 里该 pid 在首帧后没有 present（未观测）")
+                    findings.add(code, f"切换#{switch['index']}: PresentMon 里该 pid 在首帧后没有 present 调用（未观测）")
                     continue
-                first = after[0]
-                start = _qpc_ns(first["qpc"], sync["qpc_freq"]) - offset
-                summary["present"] = {"draw_to_present_start_ms": _ms(start - draw.t),
-                                      "draw_to_present_return_ms": round(_ms(start - draw.t) + first["in_present_ms"], 3),
+                call, first = after[0]
+                to_call = _ms(call - draw.t)
+                summary["present"] = {"draw_to_present_call_ms": to_call,
+                                      "draw_to_present_return_ms": round(to_call + first["in_present_ms"], 3),
                                       "draw_to_displayed_ms": None if first["until_displayed_ms"] is None
-                                      else round(_ms(start - draw.t) + first["until_displayed_ms"], 3)}
+                                      else round(to_call + first["until_displayed_ms"], 3)}
     for sample in args.samples:
         meta, rows = parse_samples(sample)
         if meta.get("clock") != "qpc" or not sync:

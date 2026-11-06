@@ -37,7 +37,8 @@ class KnownOrder(unittest.TestCase):
         self.assertEqual(segments["frame.draw"], 60.0)
         self.assertEqual(switch["click_to_first_draw_ms"], 680.3)
         self.assertEqual(switch["origin"], "input.release")
-        self.assertEqual(switch["present"], {"draw_to_present_start_ms": 1.2, "draw_to_present_return_ms": 2.0,
+        # The carrying frame's CPUStart is 10 ms before the draw; only CPUStart + MsCPUBusy is the Present() call.
+        self.assertEqual(switch["present"], {"draw_to_present_call_ms": 1.2, "draw_to_present_return_ms": 2.0,
                                              "draw_to_displayed_ms": 18.7})
         merged, = switch["samples"]
         self.assertEqual(merged["client"]["after_origin_ms"], [670.0, 720.0])
@@ -102,6 +103,8 @@ class Usage(unittest.TestCase):
         self.assertEqual(run("--trace", FIXTURES / "unparseable.trace"), probe.EXIT_USAGE)
         self.assertEqual(run(), probe.EXIT_USAGE)
         self.assertEqual(run("--presentmon", FIXTURES / "ordered.presentmon.csv"), probe.EXIT_USAGE)
+        self.assertEqual(run("--trace", FIXTURES / "ordered.trace", "--presentmon",
+                             FIXTURES / "missing-cpu-busy.presentmon.csv"), probe.EXIT_USAGE)
 
 
 if __name__ == "__main__":

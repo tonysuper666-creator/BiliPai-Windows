@@ -60,7 +60,7 @@ python3 -I test_theme_timeline_probe.py -v                   # 合成正例与�
 ### 外部输入的要求
 
 - **像素/DWM 采样器**：表头列 `t_s,dwm_attr20,client_r,client_g,client_b`（`caption_*` 可选），注释行写元数据。要合并进应用时间线，必须加 `# clock=qpc qpc_freq=<Hz> qpc_base_ticks=<t_s=0 时的 QPC>`；鼠标时间写 `# mouse_up_t_s=<s>`（只有 `mouse_down_t_s` 时会多算按住时长，探针会提示）。像素变化一律报区间（上一采样, 变化采样]，读的是 DWM 合成后的桌面，不是面板扫描输出。
-- **PresentMon**：用 2.x 的默认指标加 `--qpc_time`（不要 `--v1_metrics`），需要列 `ProcessID`、`CPUStartQPC`、`MsInPresentAPI`，可选 `MsUntilDisplayed`。`CPUStartQPC + MsInPresentAPI` 是 present 提交返回；`MsUntilDisplayed` 才是显示。
+- **PresentMon**：用 2.x 的默认指标加 `--qpc_time`（不要 `--v1_metrics`），需要列 `ProcessID`、`CPUStartQPC`、`MsCPUBusy`、`MsInPresentAPI`，可选 `MsUntilDisplayed`；缺列按 1 退出。2.x 的 `CPUStartQPC` 是 CPU 开始做这一帧的时刻，不是 `Present()` 调用：调用 = `CPUStartQPC + MsCPUBusy`，提交返回 = 调用 + `MsInPresentAPI`，显示 = 调用 + `MsUntilDisplayed`。探针取首帧之后第一个 `Present()` 调用，它是最早可能带上这帧的提交，不是逐帧对上的证明。
 
 ### 边界
 
