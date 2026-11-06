@@ -96,7 +96,7 @@ val revisionNeutralSourceImportContextMatches =
     revisionNeutralSourceImportRoots.none { file("tools/$it").exists() } && revisionNeutralSourceImportShadowFiles.isEmpty
 // Pin the whole Gradle recipe, including canonical helpers and later wiring.
 // Mask exactly this self-digest assignment; raw build bytes remain task inputs.
-val revisionNeutralSourceGradleRecipeSha256 = "a5a7e2ad6723230625fe2ff0c704a120665bc4ff93ce98899a7fba15a948af21"
+val revisionNeutralSourceGradleRecipeSha256 = "850c93f52e8943600b69006d4ab1ec7efdb3132d1e40ef08ae62b219751320d5"
 val revisionNeutralSourceGradleRecipeMatches = runCatching {
     val recipe = file("build.gradle.kts").readText(Charsets.UTF_8).replace("\r\n", "\n")
     val ownPin = "val revisionNeutralSourceGradleRecipeSha256 = \"$revisionNeutralSourceGradleRecipeSha256\""
@@ -383,6 +383,9 @@ val appM4cLaterSteps: Map<String, String> = mapOf(
     "com/android/purebilibili/feature/audio/lyrics/halcyon/PlayerBlurBackground.kt" to "Bitmap 模糊取样；桌面音乐页还没有模糊底图，先保留旧副本",
     "com/android/purebilibili/feature/audio/lyrics/halcyon/PlayerLyricPerspective.kt" to "依赖 Android Configuration.smallestScreenWidthDp",
     "com/android/purebilibili/feature/audio/lyrics/halcyon/PlayerPalette.kt" to "Bitmap 取色；桌面音乐页还没有从封面取色，先保留旧副本",
+    "com/android/purebilibili/feature/audio/player/AudioLibraryPolicy.kt" to "编译不过（19 处）：未解析 BackgroundAudioSnapshot×3；未解析 accountMid/current/bvid/cid/positionMs×5；Cannot infer type for type parameter×5；具名参数 queue/index/audioUrl/playing/positionMs 不存在×5；需 opt-in ExperimentalStdlibApi×1；等桌面系统媒体库替身（BackgroundAudioSnapshot 在桌面按进程内会话处理的 BackgroundAudioProtocol.kt 里，桌面不编译该协议）",
+    "com/android/purebilibili/feature/audio/player/AudioMediaLibrary.kt" to "编译不过（27 处）：未解析 media3×2；未解析 MediaItem×4；未解析 MediaMetadata×3；未解析 BackgroundAudioSnapshot×3；未解析 backgroundAudioJson×1；未解析 audio_library_*×5；Cannot infer type for type parameter×4；未解析 accountMid×2；等桌面系统媒体库替身（Android MediaLibraryService 浏览树；桌面系统媒体出口是 SMTC，见 player/WindowsMediaSession.kt，只有传输没有浏览树）",
+    "com/android/purebilibili/feature/audio/player/SystemMediaPreferences.kt" to "编译不过（1 处）：未解析 widget×1（feature/widget/PlaybackWidgetProvider 是 Android AppWidget，桌面没有）；桌面单进程也不需要把锁屏/隐私设置镜像给音频进程，设置由 audio/ListenAudioSession.kt 直接读",
     "com/android/purebilibili/feature/audio/screen/AudioNowPlayingBar.kt" to "依赖 Android GL 音浪渲染（gl/dispose）",
     "com/android/purebilibili/feature/audio/screen/AudioNowPlayingBarPresenceMotionPolicy.kt" to "上游删除了 LINKED_DOCK_* 合并动效常量，桌面硬底栏切片（linked-dock）还在用；等 M4b 底部栏改造",
     "com/android/purebilibili/feature/audio/screen/AudioNowPlayingWindowSnapshot.kt" to "Android Canvas/Bitmap 窗口快照；桌面音乐页没有这个快照，先保留旧副本",
