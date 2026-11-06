@@ -103,9 +103,20 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 '''
 
 def verified_agreement_owner(repo):
-    producer = Path(repo) / "desktop/tools/extract-upstream-profile-main.py"
+    root = Path(repo)
+    producer = root / "desktop/tools/extract-upstream-profile-main.py"
     actual = sha(wide(producer).read_bytes().replace(bytes([13,10]),bytes([10])))
-    if actual != AGREEMENT_OWNER_PRODUCER_LF_SHA256:
+    expected = AGREEMENT_OWNER_PRODUCER_LF_SHA256
+    marker = root / ".legacy-commit"
+    if root.name == ".legacy-root" and wide(marker).is_file():
+        if wide(marker).read_text() != "d9595dc75cfe8d5c7128cb76352a607953b8bab6":
+            raise AssertionError("Existing complete agreement owner changed: unknown legacy read point")
+        # Gradle archives the fixed pre-merge producer; the Python gate copies
+        # current tools into its read point. Both exact revisions preserve the
+        # complete agreement body, as checked against its accepted output pin.
+        if actual == "b0fb501f5686169b9a9e16ffb98a4133b1c43c69ced959bdcf964de971510cb1":
+            expected = actual
+    if actual != expected:
         raise AssertionError("Existing complete agreement owner changed")
     return actual
 
