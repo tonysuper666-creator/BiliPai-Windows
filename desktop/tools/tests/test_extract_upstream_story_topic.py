@@ -68,11 +68,24 @@ class OriginalStoryTopicExtractTest(unittest.TestCase):
             self.assertIn(selected,state);self.assertIn(media.data_class(original,"TopicDetailUiState",parser),state)
     def test_generator_prunes_own_old_direct_preserves_unowned(self):
         helpers=module.host(REPO)
-        with tempfile.TemporaryDirectory() as directory:
-            root=Path(directory);path=module.DIRECT[0];original=module.read(REPO,path)
-            target=helpers.write(root,path,original,original);module.generate(REPO,root);self.assertFalse(target.exists())
-            target.parent.mkdir(parents=True,exist_ok=True);target.write_text("// user file\n",encoding="utf-8")
-            module.generate(REPO,root);self.assertEqual(target.read_text(),"// user file\n")
+        for path in module.DIRECT:
+            with self.subTest(path=path), tempfile.TemporaryDirectory() as directory:
+                root=Path(directory);original=module.read(REPO,path)
+                target=helpers.write(root,path,original,original)
+                module.generate(REPO,root)
+                if path == module.DIRECT[0]:
+                    # The v035 sole owner replaces the old generated-header copy.
+                    self.assertEqual(target.read_bytes(),(LIVE/path).read_bytes())
+                else:
+                    self.assertFalse(target.exists())
+                target.parent.mkdir(parents=True,exist_ok=True)
+                target.write_text("// user file\n",encoding="utf-8")
+                if path == module.DIRECT[0]:
+                    with self.assertRaisesRegex(ValueError,"unowned Story model"):
+                        module.generate(REPO,root)
+                else:
+                    module.generate(REPO,root)
+                self.assertEqual(target.read_text(),"// user file\n")
     def test_changed_platform_seam_fails_closed(self):
         helpers=module.host(REPO);path=module.ADAPTED[0];original=module.read(REPO,path).replace("object TopicRepository {","object TopicRepository2 {")
         with self.assertRaises(ValueError):module.adapt(path,original,helpers)
