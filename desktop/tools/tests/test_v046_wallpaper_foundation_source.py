@@ -728,9 +728,41 @@ class V046WallpaperFoundationSourceTest(unittest.TestCase):
         self.assertEqual(set(), open_symbols & set(closed))
         left = {'readSeedWallpaperColorScheme', 'readSystemWallpaperSeed', 'WallpaperMediaLoadState',
                 'WallpaperPaletteRequest', 'WallpaperPaletteResult', 'shouldRenderRootHomeWallpaperMedia'}
-        self.assertTrue(left <= open_symbols)
+        # TON-1235: keep the six original identities, with exactly four open
+        # and two closed by actual main definers. A null stub is not a feature.
+        still_open = {'readSeedWallpaperColorScheme', 'WallpaperMediaLoadState',
+                      'WallpaperPaletteRequest', 'WallpaperPaletteResult'}
+        live_closed = {
+            'readSystemWallpaperSeed': ('com.android.purebilibili.core.theme',
+                'desktop/upstream-core/replacements/com/android/purebilibili/core/theme/SystemWallpaperSeed.kt'),
+            'shouldRenderRootHomeWallpaperMedia': ('com.android.purebilibili.feature.home',
+                'app/src/main/java/com/android/purebilibili/feature/home/HomeGlassVisualPolicy.kt'),
+        }
+        self.assertEqual(still_open, left & open_symbols)
+        self.assertEqual(set(live_closed), left & set(retired))
+        live_root = Path(os.environ.get('BILIPAI_LIVE_ROOT', str(REPO))).resolve()
+        for name, (package, owner) in live_closed.items():
+            with self.subTest(name=name):
+                entry = retired[name]
+                self.assertEqual(package, entry['package'])
+                self.assertEqual('declaration', entry['kind'])
+                self.assertEqual('PR93 live source graph: ' + owner, entry['retiredBy'])
+                self.assertIn('TON-1235 Architect decision', entry['evidence'])
+                self.assertIn(owner, entry['evidence'])
+                self.assertEqual('wallpaper-surfaces-consumers', entry['closedBy'])
+                self.assertIn('check_slice_symbol_closure: LOST fails', entry['guardedBy'])
+                self.assertIn('test_the_closed_seeds_keep_their_definers_in_the_real_tree', entry['guardedBy'])
+                self.assertIn('test_retired_seeds_must_keep_a_definer', entry['guardedBy'])
+                source = live_root / owner
+                self.assertTrue(source.is_file(), owner)
+                actual_package, names = declarations(source.read_text(encoding='utf-8'), owner)
+                self.assertEqual(package, actual_package)
+                self.assertIn(('internal', 'fun', name), names)
+                if name == 'readSystemWallpaperSeed':
+                    self.assertIn('Windows null stub closes only the symbol gap', entry['reason'])
+                    self.assertIn('real wallpaper colour extraction remains wallpaper-surfaces-consumers feature debt', entry['reason'])
         for gap in expected['gaps']:
-            if gap['symbol'].rsplit('.', 1)[-1] in left:
+            if gap['symbol'].rsplit('.', 1)[-1] in still_open:
                 self.assertEqual('wallpaper-surfaces-consumers', gap['closedBy'])
                 self.assertEqual('carried', gap['scope'])
                 self.assertEqual('unresolved-import', gap['check'])

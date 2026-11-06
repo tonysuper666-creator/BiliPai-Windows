@@ -24,6 +24,14 @@ class CommandAttentionExtractionTest(unittest.TestCase):
             out, before = Path(temp) / "after", Path(temp) / "before"
             units.generate(REPO, out)
             actual = units.wide(out / VM).read_text(encoding="utf-8")
+            owner = json.loads((out / "v042-owner-follow-projection-proof.json").read_text(encoding="utf-8"))
+            self.assertEqual(owner["outputSHA256"], hashlib.sha256(actual.encode()).hexdigest())
+            owner_full_inverse = actual
+            for edit in reversed(owner["edits"]):
+                start = edit["offset"]
+                self.assertEqual(edit["after"], owner_full_inverse[start:start + len(edit["after"])])
+                owner_full_inverse = owner_full_inverse[:start] + edit["before"] + owner_full_inverse[start + len(edit["after"]):]
+            self.assertEqual(owner["inputSHA256"], hashlib.sha256(owner_full_inverse.encode()).hexdigest())
             # The Windows like write guard (v046) is the last stage on this view model: peel it first.
             guard = json.loads((out / "v046-like-write-guard-proofs/VideoEngagementViewModel.kt.json").read_text(encoding="utf-8"))
             self.assertEqual(guard["outputSHA256"], hashlib.sha256(actual.encode()).hexdigest())
@@ -44,14 +52,17 @@ class CommandAttentionExtractionTest(unittest.TestCase):
             self.assertEqual(hashlib.sha256(interaction.fixed_sources()["VideoEngagementViewModel.kt"].encode()).hexdigest(), proof["originalSourceSha256LF"])
             self.assertTrue(proof["fullOwnedBodyInverse"])
             inverse = actual
-            owner = json.loads((out / "v042-owner-follow-projection-proof.json").read_text(encoding="utf-8"))
-            self.assertEqual(owner["outputSHA256"], hashlib.sha256(inverse.encode()).hexdigest())
+            stage = owner["ownerFollowStage"]
+            self.assertEqual(owner["inputSHA256"], stage["inputSHA256"])
+            self.assertEqual(stage["edits"], owner["edits"][:len(stage["edits"])])
+            self.assertEqual(stage["outputSHA256"], hashlib.sha256(inverse.encode()).hexdigest())
             self.assertTrue(owner["wholeOriginalMethodInverseRecovered"])
-            for edit in reversed(owner["edits"]):
+            for edit in reversed(stage["edits"]):
                 start = edit["offset"]
                 self.assertEqual(inverse[start:start + len(edit["after"])], edit["after"])
                 inverse = inverse[:start] + edit["before"] + inverse[start + len(edit["after"]):]
-            self.assertEqual(owner["inputSHA256"], hashlib.sha256(inverse.encode()).hexdigest())
+            self.assertEqual(stage["inputSHA256"], hashlib.sha256(inverse.encode()).hexdigest())
+            self.assertEqual(owner_full_inverse, inverse)
             # Current original source already contains repost limits. Undo the
             # actual Windows stages in reverse order, preserving the complete VM.
             for name in ("v037-video-coin-request-boundary-proof.json", "v029-video-feedback-lifetime-proof.json", "v029-video-feedback-origin-proof.json", "v029-video-feedback-state-proof.json"):
