@@ -1,6 +1,6 @@
 --- a/dynamic-full-card/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicCard.kt
 +++ b/dynamic-full-card/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicCard.kt
-@@ -2451,16 +2451,18 @@
+@@ -2451,16 +2451,20 @@
              val rawUrl = action.url
              scope.launch {
                  val target = BilibiliNavigationTargetParser.parse(rawUrl)
@@ -11,6 +11,8 @@
                      val handled = when (target) {
 +                        // Upstream added match targets; this legacy card does not open them (upstream DynamicCard answers false too).
 +                        is BilibiliNavigationTarget.Match -> false
++                        // Upstream v0.7.8 DynamicCard answers false for collection and comment links too.
++                        is BilibiliNavigationTarget.ArticleCollection, is BilibiliNavigationTarget.CommentDetail -> false
                          is BilibiliNavigationTarget.Dynamic -> {
                              if (onDynamicDetailClick != null) {
                                  onDynamicDetailClick(target.dynamicId)

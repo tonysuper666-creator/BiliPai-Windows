@@ -169,6 +169,11 @@ internal object DesktopOriginalSearchSettings {
     fun getHomeSettings(context: DesktopOriginalSearchEnvironment) = context.settings.homeSettings
     fun getSearchHotSectionEnabled(context: DesktopOriginalSearchEnvironment) = DesktopOriginalSearchPreferenceMethods.getSearchHotSectionEnabled(context.originalSettings)
     fun getSearchDiscoverSectionEnabled(context: DesktopOriginalSearchEnvironment) = DesktopOriginalSearchPreferenceMethods.getSearchDiscoverSectionEnabled(context.originalSettings)
+    // Upstream v0.7.8 SettingsManager.getSearchLandingSectionVisible: same three keys, absent = shown.
+    private val searchLandingSectionKeys = listOf("search_hot_control_visible", "search_history_control_visible",
+        "search_discover_control_visible").map(::playerBooleanPreferencesKey)
+    fun getSearchLandingSectionVisible(context: DesktopOriginalSearchEnvironment, index: Int): Flow<Boolean> =
+        context.originalSettings.settingsDataStore.data.map { it[searchLandingSectionKeys[index]] ?: true }
     suspend fun setSearchHotSectionEnabled(context: DesktopOriginalSearchEnvironment, value: Boolean) = DesktopOriginalSearchPreferenceMethods.setSearchHotSectionEnabled(context.originalSettings,value)
     suspend fun setSearchDiscoverSectionEnabled(context: DesktopOriginalSearchEnvironment, value: Boolean) = DesktopOriginalSearchPreferenceMethods.setSearchDiscoverSectionEnabled(context.originalSettings,value)
     fun getSearchSuggestionsEnabled(context: DesktopOriginalSearchEnvironment) = context.suggestionsEnabled

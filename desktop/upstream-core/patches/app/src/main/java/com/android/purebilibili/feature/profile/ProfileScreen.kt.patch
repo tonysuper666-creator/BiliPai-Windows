@@ -129,7 +129,32 @@
      initialEditAccount: Boolean = false,
      onBack: () -> Unit,
      onGoToLogin: () -> Unit,
-@@ -422,11 +403,11 @@ fun ProfileScreen(
+@@ -371,23 +352,13 @@ fun ProfileScreen(
+     skinVideoPlayMode: String? = null,
+     deferImmersiveRenderBudget: Boolean = false,
+     scrollToTopChannel: kotlinx.coroutines.channels.Channel<Unit>? = null
+     // [注意] 移除了 globalHazeState - 双 hazeSource 模式与 Haze 库冲突
+ ) {
+-    var showMyComments by androidx.compose.runtime.saveable.rememberSaveable { mutableStateOf(false) }
+-    androidx.activity.compose.BackHandler(enabled = showMyComments && isCurrentPage) { showMyComments = false }
+-    if (showMyComments) {
+-        com.android.purebilibili.feature.settings.screen.CommentFraudHistoryScreen(
+-            onBack = { showMyComments = false },
+-            archiveMode = true,
+-            onOpenSource = onCommentSourceClick,
+-        )
+-        return
+-    }
++    // The desktop comment history screen has no archive mode yet; without the provider below the "my comments" menu entry stays hidden.
+     CompositionLocalProvider(
+         LocalProfileLedgerNavigation provides onAccountLedgerClick,
+-        LocalProfileCommentsNavigation provides { showMyComments = true },
+     ) {
+         ProfileScreenContent(
+             viewModel = viewModel,
+             isCurrentPage = isCurrentPage,
+             accountSessionRefreshGeneration = accountSessionRefreshGeneration,
+@@ -422,11 +393,11 @@ fun ProfileScreen(
  }
  
  @OptIn(ExperimentalMaterial3Api::class)
@@ -142,7 +167,7 @@
      initialEditAccount: Boolean = false,
      onBack: () -> Unit,
      onGoToLogin: () -> Unit,
-@@ -454,18 +435,17 @@ private fun ProfileScreenContent(
+@@ -454,18 +425,17 @@ private fun ProfileScreenContent(
      deferImmersiveRenderBudget: Boolean = false,
      scrollToTopChannel: kotlinx.coroutines.channels.Channel<Unit>? = null
      // [注意] 移除了 globalHazeState - 双 hazeSource 模式与 Haze 库冲突
@@ -163,7 +188,7 @@
      val skinProfileBackgroundPath = remember(
          windowSizeClass.shouldUseSplitLayout,
          skinBackgroundImagePath,
-@@ -477,29 +457,25 @@ private fun ProfileScreenContent(
+@@ -477,29 +447,25 @@ private fun ProfileScreenContent(
              squaredImagePath = skinSquaredBackgroundImagePath,
          )
      }
@@ -199,7 +224,7 @@
          }
      }
      val isImmersiveMobileProfile = !windowSizeClass.shouldUseSplitLayout &&
-@@ -516,11 +492,11 @@ private fun ProfileScreenContent(
+@@ -516,11 +482,11 @@ private fun ProfileScreenContent(
      )
  
      // [Blur] Haze State: only expose a source when the platform and runtime guard
@@ -212,7 +237,7 @@
          rememberRecoverableHazeState()
      } else {
          null
-@@ -530,44 +506,14 @@ private fun ProfileScreenContent(
+@@ -530,44 +496,14 @@ private fun ProfileScreenContent(
          scrollToTopChannel?.receiveAsFlow()?.collect {
              profileScrollToTopRequestId += 1
          }
@@ -260,7 +285,7 @@
      DisposableEffect(viewModel, isCurrentPage) {
          viewModel.setProfilePageActive(isCurrentPage)
          onDispose { viewModel.setProfilePageActive(false) }
-@@ -587,28 +533,20 @@ private fun ProfileScreenContent(
+@@ -587,28 +523,20 @@ private fun ProfileScreenContent(
          }
      }
  
@@ -292,7 +317,7 @@
                  showAccountSwitchDialog = false
                  onGoToLogin()
              },
-@@ -616,34 +554,34 @@ private fun ProfileScreenContent(
+@@ -616,34 +544,34 @@ private fun ProfileScreenContent(
                  showAccountSwitchDialog = false
                  viewModel.switchAccount(
                      mid = mid,
@@ -333,7 +358,7 @@
              }
          )
      }
-@@ -676,10 +614,11 @@ private fun ProfileScreenContent(
+@@ -676,10 +604,11 @@ private fun ProfileScreenContent(
              )
  
  
@@ -345,7 +370,7 @@
                              user = guestUser,
                              viewModel = viewModel,
                              deferImmersiveRenderBudget = deferImmersiveRenderBudget,
-@@ -827,11 +766,11 @@ private fun ProfileScreenContent(
+@@ -827,11 +756,11 @@ private fun ProfileScreenContent(
                      ownerMid = currentUiState.user.mid
                  )
              }
@@ -358,7 +383,7 @@
              }
  
              AppScaffold(
-@@ -941,11 +880,11 @@ private fun ProfileScreenContent(
+@@ -941,11 +870,11 @@ private fun ProfileScreenContent(
                          onInboxClick = onInboxClick,
                          onVideoClick = onVideoClick,
                          onContributionRetry = viewModel::retryProfileContributions,
@@ -371,7 +396,7 @@
                          onBangumiClick = onBangumiClick,
                          onBangumiMoreClick = onBangumiMoreClick,
                          scrollBehavior = scrollBehavior,
-@@ -992,12 +931,13 @@ private fun BoxScope.ProfileBackground(
+@@ -992,12 +921,13 @@ private fun BoxScope.ProfileBackground(
      val isTablet = windowSizeClass.shouldUseSplitLayout
      val hasSkinVideo = !skinVideoBackgroundPath.isNullOrBlank()
      val hasWallpaper = user.topPhoto.isNotEmpty() || hasSkinVideo
@@ -387,7 +412,7 @@
      val isDarkTheme = colorScheme.surface.luminance() < 0.5f
      val heroHeight = resolveProfileHeroHeightDp(
          screenHeightDp = configuration.screenHeightDp,
-@@ -1103,76 +1043,20 @@ private fun BoxScope.ProfileBackground(
+@@ -1103,76 +1033,20 @@ private fun BoxScope.ProfileBackground(
              )
          }
      }
@@ -466,7 +491,7 @@
  @OptIn(ExperimentalMaterial3Api::class)
  @Composable
  private fun ProfileSpaceContent(
-@@ -1230,32 +1114,36 @@ private fun ProfileSpaceContent(
+@@ -1230,32 +1104,36 @@ private fun ProfileSpaceContent(
      var accountAvatarConfirmation by rememberSaveable(user.mid) { mutableStateOf<String?>(null) }
      var editingAccountField by remember(user.mid) { mutableStateOf<ProfileAccountField?>(null) }
      var showAccountSignDialog by remember(user.mid) { mutableStateOf(false) }
@@ -513,7 +538,7 @@
      }
      var showWallpaperSheet by remember { mutableStateOf(false) }
      var showPhotoPickerDialog by remember { mutableStateOf(false) }
-@@ -1272,30 +1160,20 @@ private fun ProfileSpaceContent(
+@@ -1272,30 +1150,20 @@ private fun ProfileSpaceContent(
              // 子编辑流程（昵称/生日、性别、头像）叠加在编辑资料之上，返回时回到编辑资料。
              onEditField = { field -> editingAccountField = field },
              onEditSex = { showAccountSexDialog = true },
@@ -545,7 +570,7 @@
              initialValue = editableAccount.sign,
              onDismiss = { showAccountSignDialog = false; if (initialEditAccount) showEditDialog = true },
              onSave = { sign ->
-@@ -1335,11 +1213,11 @@ private fun ProfileSpaceContent(
+@@ -1335,11 +1203,11 @@ private fun ProfileSpaceContent(
      }
      accountAvatarConfirmation?.let { image ->
          ProfileAvatarConfirmDialog(
@@ -558,7 +583,7 @@
      if (showAdjustmentSheet && tempSelectedUri != null) {
          ProfileWallpaperAdjustmentSheet(
              imageUri = tempSelectedUri.toString(),
-@@ -1382,13 +1260,11 @@ private fun ProfileSpaceContent(
+@@ -1382,13 +1250,11 @@ private fun ProfileSpaceContent(
              text = { AppText("将打开系统相册选择一张照片作为背景。\n\n仅获取选中照片的访问权限，不会访问其他照片。") },
              confirmButton = {
                  AppButton(
@@ -573,7 +598,7 @@
                      AppText("选择照片")
                  }
              },
-@@ -1472,15 +1348,15 @@ private fun ProfileSpaceContent(
+@@ -1472,15 +1338,15 @@ private fun ProfileSpaceContent(
      val profileExpandedFractionProvider: () -> Float = {
          if (mobileListState.firstVisibleItemIndex > 0) 0f else resolveProfileHeaderExpandedFraction(
              mobileListState.firstVisibleItemScrollOffset.toFloat(), profileCollapseRangeProvider(),
@@ -591,7 +616,7 @@
      }
      val photoRangeProvider: () -> Float = {
          (photoState.viewportWidthPx - profileStatsTopProvider()).coerceAtLeast(0f)
-@@ -2201,11 +2077,11 @@ private fun ProfileSpaceHeroHeader(
+@@ -2201,11 +2067,11 @@ private fun ProfileSpaceHeroHeader(
      onDynamicsClick: () -> Unit,
      showIdentity: Boolean = true,
      topClipProvider: () -> Float = { 0f },
@@ -604,7 +629,7 @@
      // The separate phone identity overlay owns wallpaper/photo colors. Statistics
      // use an opaque page surface in both native themes and both glass states.
      val statisticsChrome = if (!showIdentity) resolveProfileHeroChrome(
-@@ -2559,11 +2435,11 @@ private fun ProfileSpaceStat(
+@@ -2559,11 +2425,11 @@ private fun ProfileSpaceStat(
      value: Int,
      color: Color,
      onClick: (() -> Unit)? = null,
@@ -617,7 +642,7 @@
              .width(width)
              .heightIn(min = 48.dp)
              .then(
-@@ -2594,16 +2470,18 @@ private fun ProfileSpaceTabs(
+@@ -2594,16 +2460,18 @@ private fun ProfileSpaceTabs(
      val tabs = remember { defaultProfileSpaceTabs() }
      val chromeSpec = remember { resolveProfileSpaceTabChromeSpec() }
      val selectedIndex = tabs.indexOfFirst { it.tab == selectedTab }.coerceAtLeast(0)
@@ -638,7 +663,7 @@
          dragSelectionEnabled = tabs.size > 1,
          tapPressRefractionEnabled = true,
          modifier = modifier
-@@ -3121,11 +2999,11 @@ private fun ProfileVideoList(
+@@ -3121,11 +2989,11 @@ private fun ProfileVideoList(
          }
          ProfileContributionContentState.CONTENT -> Unit
      }
@@ -651,7 +676,19 @@
          Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
              VideoListLayoutToggle(
                  singleColumn = listLayout.singleColumn,
-@@ -3253,11 +3131,12 @@ private fun ProfileDynamicCard(
+@@ -3150,11 +3018,10 @@ private fun ProfileVideoList(
+                                 scope = this@LookaheadScope,
+                                 targetModifier = Modifier.width(cardWidth),
+                             )) {
+                                 if (columns == 1) {
+                                     PersonalMediaCardFrame(
+-                                        horizontalCoverMaxWidthDp = com.android.purebilibili.feature.home.components.cards.WIDE_LIST_COVER_MAX_WIDTH_DP,
+                                         headlineContent = {
+                                             AppText(
+                                                 video.title,
+                                                 style = com.android.purebilibili.feature.home.components.cards.horizontalVideoCardTypography().title,
+                                                 maxLines = com.android.purebilibili.core.ui.videoCardTitleMaxLines(),
+@@ -3253,11 +3120,12 @@ private fun ProfileDynamicCard(
      val bodyText = resolveProfileDynamicText(item)
      val orig = item.orig
      val moreIcon = rememberAppMoreIcon()
@@ -665,7 +702,7 @@
      var pendingDeleteAction by remember(item.id_str) { mutableStateOf<DynamicDeleteAction?>(null) }
  
      pendingDeleteAction?.let { action ->
-@@ -3343,16 +3222,12 @@ private fun ProfileDynamicCard(
+@@ -3343,16 +3211,12 @@ private fun ProfileDynamicCard(
                              )
                          },
                          onClick = {
@@ -684,7 +721,7 @@
                      if (deleteAction != null) {
                          AppDropdownMenuItem(
                              text = { AppText(deleteAction.label) },
-@@ -3446,11 +3321,12 @@ private fun ProfileDynamicMajorContent(item: SpaceDynamicItem, onVideoClick: (St
+@@ -3446,11 +3310,12 @@ private fun ProfileDynamicMajorContent(item: SpaceDynamicItem, onVideoClick: (St
          ?: major?.opus?.title?.takeIf { it.isNotBlank() }
          ?: major?.article?.title?.takeIf { it.isNotBlank() }
      val clickableBvid = major?.archive?.bvid?.takeIf { it.isNotBlank() }
@@ -698,7 +735,7 @@
          ImagePreviewTextContent(
              headline = resolveProfileDynamicAuthorName(item),
              body = resolveProfileDynamicText(item).ifBlank { title.orEmpty() }
-@@ -3657,11 +3533,12 @@ private fun ProfileEditAccountDialog(
+@@ -3657,11 +3522,12 @@ private fun ProfileEditAccountDialog(
      onEditSign: () -> Unit,
      onEditField: (ProfileAccountField) -> Unit,
      onEditSex: () -> Unit,
@@ -712,7 +749,7 @@
          title = { AppText("编辑资料") },
          text = {
              Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
-@@ -3674,24 +3551,19 @@ private fun ProfileEditAccountDialog(
+@@ -3674,24 +3540,19 @@ private fun ProfileEditAccountDialog(
                  ProfileAccountEditRow("生日", state.birthday.ifBlank { "未展示" }, enabled = !isSaving) {
                      onEditField(ProfileAccountField.BIRTHDAY)
                  }
@@ -740,7 +777,7 @@
              }
          },
          confirmButton = { AppTextButton(onClick = onDismiss) { AppText("关闭") } },
-@@ -3991,11 +3863,11 @@ fun TabletProfileContent(
+@@ -3991,11 +3852,11 @@ fun TabletProfileContent(
  // Imports moved to top
  
  @OptIn(ExperimentalMaterial3Api::class)
@@ -753,7 +790,7 @@
      onAccountManageClick: () -> Unit = {},
      onHistoryClick: () -> Unit,
      showHistoryService: Boolean = true,
-@@ -4021,17 +3893,15 @@ private fun MobileProfileContent(
+@@ -4021,17 +3882,15 @@ private fun MobileProfileContent(
      val windowSizeClass = LocalWindowSizeClass.current
  
      // 📸 图片选择器
@@ -773,7 +810,7 @@
              tempSelectedUri = uri
              showAdjustmentSheet = true
          }
-@@ -4105,13 +3975,11 @@ private fun MobileProfileContent(
+@@ -4105,13 +3964,11 @@ private fun MobileProfileContent(
              },
              confirmButton = {
                  AppButton(
@@ -788,7 +825,7 @@
                      AppText("选择照片")
                  }
              },
-@@ -4348,12 +4216,12 @@ fun GuestProfileContent(
+@@ -4348,12 +4205,12 @@ fun GuestProfileContent(
                  shape = AppShapes.container(ContainerLevel.Floating),
                  shadowElevation = 16.dp,
                  modifier = Modifier.size(100.dp)
@@ -803,7 +840,7 @@
                      contentDescription = "BiliPai",
                      contentScale = ContentScale.Crop,
                      modifier = Modifier.fillMaxSize()
-@@ -4430,11 +4298,11 @@ fun UserInfoSection(
+@@ -4430,11 +4287,11 @@ fun UserInfoSection(
          horizontalArrangement = if (centered) Arrangement.Center else Arrangement.Start
      ) {
          // 自身头像与评论区头像对齐：右下角叠加认证/大会员角标（对齐 PiliPlus 我的页）。
@@ -816,7 +853,7 @@
                      .size(72.dp)
                      .clip(CircleShape)
                      .background(MaterialTheme.colorScheme.surfaceVariant),
-@@ -4607,12 +4475,13 @@ private fun ProfileWallpaperActionCard(
+@@ -4607,12 +4464,13 @@ private fun ProfileWallpaperActionCard(
      onOfficialWallpaperClick: () -> Unit,
      onLocalAlbumClick: () -> Unit,
      onResetWallpaperClick: () -> Unit,
