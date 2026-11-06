@@ -59,7 +59,7 @@
 | B1 | 播放 | 在画面上按下鼠标只会显示控制条，然后把焦点要回视口（`K/ui/DesktopWindowsVideoPhysicalLeaf.kt:306-313`）；mpv 原生窗口只绑了 `MBTN_LEFT → reveal`、`MOUSE_MOVE → motion`、`SPACE → toggle`（`K/player/MpvNativeWindowInput.kt:17`）。单击画面不会暂停 | 单击画面切换播放/暂停（合约 `click_action`，`desktop/tools/ux/desktop-ux-contract.json:104`，默认 PAUSE，见 `K/appearance/DesktopWindowsUxModel.kt:95`；B 站网页播放器同样如此，推断）。离线播放器也一样：左键松开只显示控制条（`K/ui/DesktopOfflinePointerInput.kt:190-194`） | P0 | M | **S1**（新） |
 | B2 | 播放 | 双击画面不会全屏。`doubleClickAction = FULLSCREEN`（`K/appearance/DesktopWindowsUxModel.kt:96`）有定义，但除了这个类本身（`:66-68`、`:94-96`），全仓库没有任何地方读它 | 双击画面切换全屏，容差 6 dp（合约 `double_click_action` `:111`、`pointer.double_click_tolerance_dp` `:809`）；双击后的播放状态和双击前一样，不被第一下单击顺带翻掉（主流桌面播放器的做法，推断） | P0 | M | **S1**（新）；「即时、不黑屏」的画质要求仍归 U2 TON-1006 #12 |
 | B3 | 播放 | 画面上滚轮不调音量。`wheelAction = VOLUME`（`:94`）同样没人读。全仓库处理滚轮事件（`PointerEventType.Scroll` / `MouseWheel`）的只有直播弹幕、刷新按钮、表情输入、对话框和缩放输入几处，播放器没有；mpv 自带的默认绑定也已关掉（`K/player/MpvPlayer.kt:2000`，`input-default-bindings = no`），所以滚轮在画面上什么都不做 | 画面上每格滚轮音量 ±5；进度条上每格 ±5 s，按住 Shift ±10 s（规范 §8「滚轮」） | P1 | S | **S1**（新） |
-| B4 | 首页卡片 | 右键菜单只有「稍后再看 / 取消收藏 / 不感兴趣」三项（`desktop/tools/ux_home_card.py:38-40`） | 规范 §4 第 5 条定了五项：稍后再看、收藏、复制链接（Ctrl+C）、在小窗播放，分隔线下是不感兴趣 | P1 | S | K3 TON-1054 |
+| B4 | 首页卡片 | 右键菜单的内容来自上游 `app/feature/home/components/cards/VideoCard.kt:2206-2322`，桌面原样编译：`K/ui/DesktopCardContextMenu.kt:84-91` 只换外观、原样渲染传入的菜单项，`desktop/tools/ux_home_card.py:38-40` 只改写其中三项的文案。菜单项是复制 BV 号、稍后再看、AI 总结、访问 UP 主、不感兴趣、拉黑 UP 主、无痕模式；取消收藏只在收藏页传入 `onUnfavorite` 时出现。和规范的五项对得上的只有稍后再看和不感兴趣，收藏、复制链接、在小窗播放都没有（复制的是 BV 号，不是链接） | 规范 §4 第 5 条定了五项：稍后再看、收藏、复制链接（Ctrl+C）、在小窗播放，分隔线下是不感兴趣 | P1 | S | K3 TON-1054 |
 | B5 | 评论、动态、视频区 | 只有导航栏、首页卡片和直播弹幕有右键处理（`isSecondaryPressed` / `desktopCardSecondaryClick` 只出现在 `K/ui/DesktopWindowsNavigationRail.kt`、`K/ui/DesktopCardPointer.kt`、`K/ui/DesktopCardInteractionPolicy.kt`、`K/ui/DesktopLiveChatMessages.kt`）。评论、动态卡片和视频区没有右键菜单 | 右键只作用于光标下的对象；Shift+F10 和菜单键打开同一个菜单（规范 §8「右键」；微软：上下文菜单「挂在单个元素上、右键唤出」，原话） | P1 | M | U4 TON-1007 #7 |
 | B6 | 首页卡片 | 悬停只有高亮效果，没有视频预览；上游的预览只走长按（`app/feature/home/components/cards/VideoCard.kt:1447`，`hasPreviewAction = isLongPressEnabled && onLongClick != null`） | 悬停片刻后在封面上播放预览，或者至少提供不用长按的入口（B 站网页版首页悬停会预览，推断） | P2 | M | 预览本身只记文档；「每个长按都要有替代入口」归 U4 TON-1007 #9 |
 | B7 | 播放 | 进度条悬停预览已实现：有雪碧图时显示缩略图加时间，没有时只显示时间（`K/ui/DesktopWindowsVideoSeekPreview.kt:27-58`，挂在 `K/ui/DesktopWindowsVideoPhysicalLeaf.kt:1269`） | — | 达标 | — | 尺寸是否符合规范 §5 第 4 条（232×130 加章节名）归 U2 TON-1006 #8 |
@@ -96,7 +96,7 @@
 
 | 编号 | 页面 | 现状（证据） | 期望行为（依据） | 级 | 量 | 归属 |
 |---|---|---|---|---|---|---|
-| E1 | 直播、离线、小窗、听视频 | 防熄屏只接在点播和番剧上。`DesktopWindowsVideoWakeLease.acquire`（`K/ui/DesktopWindowsVideoWakeLease.kt:21`，用 `PowerSetRequest` 持有 DISPLAY 和 SYSTEM 两种请求）只有 `K/ui/DesktopOriginalVideoWindowsWindowPort.kt:91-94` 的 `acquireKeepAwake` 一个调用方；后者只被点播和番剧的三处用到（`K/ui/DesktopOriginalVideoSectionWindowsPlatform.kt:575`、`K/ui/DesktopOriginalBangumiPlayerRootOwner.kt:528`、`K/ui/DesktopOriginalVideoRootAssembler.kt:208`），直播、离线、听视频的界面代码都不引用它；全仓库也没有 `SetThreadExecutionState`。另外，切到小窗时会主动放掉请求（`K/ui/DesktopOriginalVideoRootPortraitRendering.kt:121`，`keepAwake = keepAwake && !pip`）。所以看直播、看离线视频、开小窗、只听声音时，屏幕和系统照样会按电源计划熄屏、睡眠 | 只要在播放（含直播、离线、小窗、纯音频）就持有请求，暂停或停止就释放（微软：在需要的场景开始前立即 `PowerSetRequest`，结束后立即 `PowerClearRequest`，原话）。纯音频只需要 SYSTEM，不需要 DISPLAY | P1 | S | **S5**（新） |
+| E1 | 直播、离线、小窗、听视频 | 防熄屏只接在点播和番剧上。`DesktopWindowsVideoWakeLease.acquire`（`K/ui/DesktopWindowsVideoWakeLease.kt:21`，用 `PowerSetRequest` 持有 DISPLAY 和 SYSTEM 两种请求）只有 `K/ui/DesktopOriginalVideoWindowsWindowPort.kt:91-94` 的 `acquireKeepAwake` 一个调用方；后者只被点播和番剧的四处用到（`K/ui/DesktopOriginalVideoSectionWindowsPlatform.kt:575`、`K/ui/DesktopOriginalBangumiPlayerRootOwner.kt:528`、`K/ui/DesktopOriginalVideoRootAssembler.kt:208`，以及点播全屏的转调 `K/ui/DesktopOriginalVideoRootWindowPlatforms.kt:71`），直播、离线、听视频的界面代码都不引用它；全仓库也没有 `SetThreadExecutionState`。另外，切到小窗时会主动放掉请求（`K/ui/DesktopOriginalVideoRootPortraitRendering.kt:121`，`keepAwake = keepAwake && !pip`）。所以看直播、看离线视频、开小窗、只听声音时，屏幕和系统照样会按电源计划熄屏、睡眠 | 只要在播放（含直播、离线、小窗、纯音频）就持有请求，暂停或停止就释放（微软：在需要的场景开始前立即 `PowerSetRequest`，结束后立即 `PowerClearRequest`，原话）。纯音频只需要 SYSTEM，不需要 DISPLAY | P1 | S | **S5**（新） |
 | E2 | 全局 | 媒体键和系统媒体浮层已接好：`WindowsMediaSourceLease` 处理播放、暂停、停止、上下一个、快进快退 10 秒和拖动（`K/DesktopShell.kt:978-1011`） | — | 达标 | — | 真机验收在 TON-1047 |
 | E3 | 全局 | 单实例已实现：第二次启动把激活路由转给已有实例（`K/Main.kt:93-96`，`DesktopSingleInstance.acquire`） | — | 达标 | — | — |
 | E4 | 全局 | 主题默认跟随系统（`K/appearance/DesktopThemePrefs.kt:32`） | — | 达标 | — | — |
@@ -164,9 +164,9 @@
 3. A3：`DesktopShell.kt:755` 的 `searchFocused` 只有声明，没有赋值。
 4. D1：`ReplyComponents.kt:2452-2463` 按「有没有传回调」决定能否选中，`DesktopWindowsVideoCommentsSection.kt:156-157` 总会传回调。
 5. C2：`BangumiScreen.kt:328` 用 `responsiveContentWidth()`，默认 800 dp。
-6. E1：`DesktopWindowsVideoWakeLease.acquire` 只被 `DesktopOriginalVideoWindowsWindowPort.kt:91-94` 调用，后者只被点播和番剧三处用到；`grep -rln -i keepAwake desktop/src/main` 里没有直播、离线、听视频的文件；`DesktopOriginalVideoRootPortraitRendering.kt:121` 在小窗时传 `keepAwake && !pip`。
+6. E1：`DesktopWindowsVideoWakeLease.acquire` 只被 `DesktopOriginalVideoWindowsWindowPort.kt:91-94` 调用，后者只被点播和番剧四处用到（含点播全屏的转调 `DesktopOriginalVideoRootWindowPlatforms.kt:71`）；`grep -rln -i keepAwake desktop/src/main` 里没有直播、离线、听视频的文件；`DesktopOriginalVideoRootPortraitRendering.kt:121` 在小窗时传 `keepAwake && !pip`。
 7. A4：`AdvancedLoginDialog.kt:181-184` 的两个输入框都没有 `keyboardActions`。
-8. B4：`ux_home_card.py:38-40` 菜单只有三项。
+8. B4：首页卡片菜单在 `VideoCard.kt:2206-2322`，项目是复制 BV 号、稍后再看、AI 总结、访问 UP 主、不感兴趣、拉黑、无痕模式（取消收藏只在收藏页出现）；`ux_home_card.py:38-40` 只改写其中三项的文案；规范五项里的收藏、复制链接、在小窗播放都没有。
 9. E2（反证）：`DesktopShell.kt:978-1011` 媒体键确实已经接好。
 10. E3（反证）：`Main.kt:93` 单实例确实已经实现。
 
