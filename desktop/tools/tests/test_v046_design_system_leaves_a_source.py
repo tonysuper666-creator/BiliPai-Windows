@@ -23,6 +23,7 @@ REPO = Path(__file__).resolve().parents[3]
 TOOLS = REPO / 'desktop/tools'
 sys.path.insert(0, str(TOOLS))
 import check_slice_symbol_closure as gate
+from v025_source_paths import registered_source_sha256
 import v040_chrome_actions as chrome_actions
 import v046_design_system_leaves_a as leaves
 
@@ -469,7 +470,9 @@ class V046DesignSystemLeavesASourceTest(unittest.TestCase):
         for name in EXCLUDED_NOW:
             row = by_path[CANONICAL[name]]
             self.assertEqual('direct', row.get('mode', 'direct'), name)
-            self.assertEqual(leaves.VENDORED_LF_SHA256[name], row['sha256'], name)
+            self.assertEqual(leaves.VENDORED_LF_SHA256[name], registered_source_sha256(REPO, row), name)
+            live = Path(os.environ.get('BILIPAI_LIVE_ROOT') or REPO)
+            self.assertEqual(row['sha256'], sha(lf((live / CANONICAL[name]).read_bytes())), name)
             self.assertEqual(leaves.VENDORED_LF_SHA256[name], sha(lf((REPO / CANONICAL[name]).read_bytes())), name)
         self.assertNotIn(CANONICAL['AppEntryIconPalette.kt'], by_path)
         self.assertFalse((REPO / CANONICAL['AppEntryIconPalette.kt']).exists())
@@ -585,7 +588,10 @@ class V046DesignSystemLeavesASourceTest(unittest.TestCase):
         text = HAND_WRITTEN_TEST.read_bytes().decode('utf-8')
         self.assertNotIn('\r', text)
         balanced(self, text)
-        self.assertEqual(5, len(re.findall(r'@Test\s+fun ', text)))
+        self.assertEqual(7, len(re.findall(r'@Test\s+fun ', text)))
+        for name in ('compactCapsuleHeightOfMaterial3FollowsTheUpstreamChromeTokens',
+                     'compactCapsuleHeightOfMiuixFollowsTheUpstreamChromeTokens'):
+            self.assertEqual(1, text.count('fun ' + name + '('))
         self.assertIn('package com.bilipai.desktop.ui\n', text)
         self.assertIn('class DesktopDesignSystemLeavesATest {', text)
         imported = set(re.findall(r'^import (com\.android\.purebilibili\.core\.ui\.\w+)$', text, re.M))

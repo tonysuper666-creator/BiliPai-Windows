@@ -16,17 +16,30 @@ sys.path.insert(0, str(TOOLS))
 VM = "com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt"
 
 
-def restore(body, rows):
+def restore(body, rows, key="offset"):
     for row in reversed(rows):
-        i = row["offset"]
+        i = row[key]
         if body[i:i + len(row["after"])] != row["after"]:
             raise AssertionError("Inverse bytes changed")
         body = body[:i] + row["before"] + body[i + len(row["after"]):]
     return body
 
 
-def restore_final_send_stage(body, row):
+def restore_final_send_stage(body, row, owner_dir):
     assert hashlib.sha256(body.encode()).hexdigest() == row["sha256LF"]
+    comment = json.loads((owner_dir / "v029-comment-selection-VideoPlaybackViewModel.json").read_text(encoding="utf-8"))
+    assert comment["afterSha256LF"] == hashlib.sha256(body.encode()).hexdigest()
+    body = restore(body, comment["inverseEdits"])
+    assert comment["beforeSha256LF"] == hashlib.sha256(body.encode()).hexdigest()
+    whole = json.loads((owner_dir / "v037-complete-known-state-owner-proof.json").read_text(encoding="utf-8"))
+    known = whole["knownStateStage"]
+    assert known["afterSha256LF"] == hashlib.sha256(body.encode()).hexdigest()
+    body = restore(body, known["indexedEdits"], key="afterOffset")
+    assert known["beforeSha256LF"] == hashlib.sha256(body.encode()).hexdigest()
+    for field in ("autoplayContinuationInverseEdits", "nextWatchInverseEdits",
+                  "metadataRelatedInverseEdits", "detailInverseEdits"):
+        body = restore(body, row[field])
+    assert hashlib.sha256(body.encode()).hexdigest() == row["postRelatedAfterSha256LF"]
     for field, checkpoint in (
         ("postRelatedInverseEdits", "postRelatedBeforeSha256LF"),
         ("relatedInverseEdits", "relatedBeforeSha256LF"),
@@ -63,7 +76,7 @@ class OriginalVideoFollowGroupGeneratorTest(unittest.TestCase):
 
     def test_actual_sole_producer_consumes_delta_and_all_three_edits_restore_whole_stage(self):
         self.assertEqual(3, len(self.row["followGroupInverseEdits"]))
-        body = restore(restore_final_send_stage(self.actual, self.row), self.row["failureRecoveryInverseEdits"])
+        body = restore(restore_final_send_stage(self.actual, self.row, self.output / "actual"), self.row["failureRecoveryInverseEdits"])
         baseline = restore(body, self.row["followGroupInverseEdits"])
         replay = []
         self.assertEqual(body, self.owner.follow_group_source_lifetime_delta(VM, baseline, replay))
@@ -110,7 +123,7 @@ class OriginalVideoFollowGroupGeneratorTest(unittest.TestCase):
             with mock.patch.object(self.owner, "_desktop_canonical_source", source), contextlib.redirect_stdout(io.StringIO()):
                 with self.assertRaises(AssertionError):
                     self.owner.generate(REPO, Path(root) / "output", True)
-        stage = restore(restore_final_send_stage(self.actual, self.row), self.row["failureRecoveryInverseEdits"])
+        stage = restore(restore_final_send_stage(self.actual, self.row, self.output / "actual"), self.row["failureRecoveryInverseEdits"])
         rows = self.row["followGroupInverseEdits"]
         changed = stage[:rows[-1]["offset"]] + "!" + stage[rows[-1]["offset"] + 1:]
         with self.assertRaises(AssertionError):

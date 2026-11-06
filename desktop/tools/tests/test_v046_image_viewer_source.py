@@ -20,6 +20,7 @@ REPO = Path(__file__).resolve().parents[3]
 TOOLS = REPO / 'desktop/tools'
 sys.path.insert(0, str(TOOLS))
 import check_slice_symbol_closure as gate
+from v025_source_paths import reviewed_sha256
 import v046_image_viewer as source
 
 spec = importlib.util.spec_from_file_location('sync_upstream_image_viewer', TOOLS / 'sync-upstream.py')
@@ -574,9 +575,13 @@ class V046ImageViewerSourceTest(unittest.TestCase):
         self.assertNotIn(source.UPSTREAM_PATHS[source.MOTION], rows)
         # The producer's own inventory keeps describing the canonical bodies, which this slice does not change.
         inventory = {row['path']: row for row in producer.inventory(REPO)}
+        pins = json.loads((TOOLS / 'v025-canonical-sources.json').read_text(encoding='utf-8'))['paths']
+        live = Path(os.environ.get('BILIPAI_LIVE_ROOT') or REPO)
         for path in EXCLUDED.values():
             self.assertEqual('direct', inventory[path]['mode'])
-            self.assertEqual(rows[path]['sha256'], inventory[path]['sha256'])
+            self.assertEqual(rows[path]['sha256'], pins[path]['sha256'])
+            self.assertEqual(rows[path]['sha256'], sha((live / path).read_bytes().replace(b'\r\n', b'\n')))
+            self.assertEqual(reviewed_sha256(REPO, pins[path]), inventory[path]['sha256'])
         self.assertNotIn(source.ARCHIVE, json.dumps(registry))
 
     def test_inventory_rows_catalog_digest_and_counts_register_the_archive(self):

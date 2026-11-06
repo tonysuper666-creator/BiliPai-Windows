@@ -457,16 +457,20 @@ class V041VideoStatusLabelsSourceTest(unittest.TestCase):
             original = canonical_source(REPO, path)
             relative = original.relative_to(REPO)
             with self.subTest(path=path, mutation='changed'), tempfile.TemporaryDirectory() as tmp:
-                target = Path(tmp) / relative
+                root = Path(tmp) / REPO.name
+                target = root / relative
                 target.parent.mkdir(parents=True)
+                target.write_bytes(original.read_bytes())
+                self.assertEqual(source.baseline(REPO, path), source.baseline(root, path))
                 target.write_bytes(original.read_bytes() + b'\n// changed canonical source\n')
                 with self.assertRaisesRegex(ValueError, 'Canonical original source digest mismatch'):
-                    source.baseline(Path(tmp), path)
+                    source.baseline(root, path)
             with self.subTest(path=path, mutation='crlf'), tempfile.TemporaryDirectory() as tmp:
-                target = Path(tmp) / relative
+                root = Path(tmp) / REPO.name
+                target = root / relative
                 target.parent.mkdir(parents=True)
                 target.write_bytes(original.read_bytes().replace(b'\r\n', b'\n').replace(b'\n', b'\r\n'))
-                self.assertEqual(source.baseline(REPO, path), source.baseline(Path(tmp), path))
+                self.assertEqual(source.baseline(REPO, path), source.baseline(root, path))
         with tempfile.TemporaryDirectory() as tmp:
             repo = Path(tmp)
             copy_archive(repo)
@@ -532,7 +536,9 @@ class V041VideoStatusLabelsSourceTest(unittest.TestCase):
             self.assertEqual(0, build.count('exclude(canonicalOriginalIdentity("' + path + '"))'), path)
         block = task_block(build, 'extractOriginalVideoStatusLabels')
         self.assertIn('dependsOn(prepareUpstreamSources)', block)
-        self.assertIn('"python", "' + PRODUCER + '",', block)
+        self.assertIn('commandLine(pythonExecutable, "' + PRODUCER + '",', block)
+        self.assertEqual(1, build.count('val pythonExecutable = System.getenv("PYTHON_EXECUTABLE")\n'
+                                       '    ?: if (System.getProperty("os.name").startsWith("Windows", ignoreCase = true)) "python" else "python3"\n'))
         for option in ('"--repo", repositoryRoot.absolutePath', '"--output", layout.buildDirectory.dir("generated/v041-video-status-labels")',
                        '"--tests-output", layout.buildDirectory.dir("generated/v041-video-status-label-tests")'):
             self.assertEqual(1, block.count(option), option)

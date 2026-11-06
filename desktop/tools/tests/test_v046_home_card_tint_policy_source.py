@@ -235,8 +235,11 @@ class V046HomeCardTintPolicySourceTest(unittest.TestCase):
                 self.assertNotIn(token, text)
                 self.assertIn(token, self.archive[TINT].decode('utf-8'))
         canonical = json.loads((TOOLS / 'v025-canonical-sources.json').read_text(encoding='utf-8'))
-        self.assertEqual(V025_TINT_SHA256, canonical['paths'][CANONICAL]['sha256'])
-        self.assertEqual(V025_TINT_BLOB, canonical['paths'][CANONICAL]['blob'])
+        self.assertEqual(V025_TINT_SHA256, canonical['paths'][CANONICAL]['legacySha256'])
+        live_raw = (Path(os.environ.get('BILIPAI_LIVE_ROOT') or REPO) / CANONICAL).read_bytes().replace(b'\r\n', b'\n')
+        self.assertEqual(sha(live_raw), canonical['paths'][CANONICAL]['sha256'])
+        self.assertEqual(hashlib.sha1(b'blob ' + str(len(live_raw)).encode() + b'\0' + live_raw).hexdigest(),
+                         canonical['paths'][CANONICAL]['blob'])
         # v0.4.6 is a strict superset: every top-level name of the old copy is still declared by the archive file
         old_package, old_decls = declarations(text, CANONICAL)
         new_package, new_decls = declarations(self.archive[TINT].decode('utf-8'), TINT)
@@ -378,7 +381,10 @@ class V046HomeCardTintPolicySourceTest(unittest.TestCase):
         listed = [row for row in sources['sources'] if row['path'] == CANONICAL]
         self.assertEqual(1, len(listed))
         self.assertEqual('direct', listed[0]['mode'])
-        self.assertEqual(V025_TINT_SHA256, listed[0]['sha256'])
+        canonical = json.loads((TOOLS / 'v025-canonical-sources.json').read_text(encoding='utf-8'))
+        live_raw = (Path(os.environ.get('BILIPAI_LIVE_ROOT') or REPO) / CANONICAL).read_bytes().replace(b'\r\n', b'\n')
+        self.assertEqual(sha(live_raw), canonical['paths'][CANONICAL]['sha256'])
+        self.assertEqual(canonical['paths'][CANONICAL]['sha256'], listed[0]['sha256'])
         self.assertIn('home-full-card', listed[0]['features'])
         self.assertIn(policy.ARCHIVE, self.catalog['buildInputRoots'])
         self.assertEqual(1, self.catalog['buildInputRoots'].count(policy.ARCHIVE))
@@ -464,12 +470,12 @@ class V046HomeCardTintPolicySourceTest(unittest.TestCase):
             self.assertIn('extractOriginalHomePage', {row['task'] for row in results})
             compiled, _notes = gate.collect_sources(root, model)
             compiled = [source for source in compiled if source.set == 'main']
-            self.assertEqual([], [s.logical for s in compiled if s.origin == 'vendored' and s.logical == CANONICAL])
+            self.assertEqual([], [s.logical for s in compiled if s.logical.startswith('build/generated/home-page/') and s.logical.endswith('/' + TINT)])
             self.assertEqual(
-                ['build/generated/home-page/' + policy.RELATIVE[TINT]],
+                [CANONICAL],
                 [s.logical for s in compiled if s.logical.endswith('/' + TINT)])
             self.assertEqual(
-                ['build/generated/home-page/' + policy.RELATIVE[READABILITY]],
+                ['design-system/src/main/java/com/android/purebilibili/core/ui/wallpaper/WallpaperReadabilityPolicy.kt'],
                 [s.logical for s in compiled if s.logical.endswith('/' + READABILITY)])
             names = set(TOP_LEVEL)
             hits = []
@@ -492,7 +498,9 @@ class V046HomeCardTintPolicySourceTest(unittest.TestCase):
                 package, declared_visibility, _declared, logical = found[0]
                 self.assertEqual(policy.PACKAGE[file], package, name)
                 self.assertEqual(visibility, declared_visibility, name)
-                self.assertEqual('build/generated/home-page/' + policy.RELATIVE[file], logical, name)
+                expected = (CANONICAL if file == TINT else
+                            'design-system/src/main/java/com/android/purebilibili/core/ui/wallpaper/WallpaperReadabilityPolicy.kt')
+                self.assertEqual(expected, logical, name)
             # every compiled caller of the three changed signatures still passes only parameters v0.4.6 declares
             self.assertGreaterEqual(len(callers), 6)
             seen = {callee for callee, *_rest in callers}
