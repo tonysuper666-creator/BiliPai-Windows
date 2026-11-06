@@ -2,6 +2,18 @@ package com.bilipai.desktop.ui
 
 import com.bilipai.desktop.appearance.*
 import com.bilipai.desktop.player.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.snapshots.Snapshot
+import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.ui.ImageComposeScene
+import androidx.compose.ui.unit.Density
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.test.TestCoroutineScheduler
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import java.awt.Point
 import java.awt.EventQueue
 import java.awt.event.KeyEvent
@@ -135,6 +147,58 @@ class DesktopPlayerPointerInputTest {
                 }
                 assertTrue(canvas.mouseListeners.isEmpty()); assertTrue(canvas.mouseWheelListeners.isEmpty())
             }
+        }
+    }
+    @OptIn(ExperimentalComposeUiApi::class, ExperimentalCoroutinesApi::class)
+    @Test fun bangumiLockKeepsTheActualNativeInputBridgeInstalled() {
+        EventQueue.invokeAndWait {
+            val scheduler = TestCoroutineScheduler()
+            val errors = mutableListOf<Throwable>()
+            val scope = CoroutineScope(SupervisorJob() + UnconfinedTestDispatcher(scheduler) +
+                CoroutineExceptionHandler { _, error -> errors += error })
+            val native = MpvPlayer()
+            native.loadVersioned(PlaybackSource("file:///synthetic-bangumi-pointer.media"))
+            val version = checkNotNull(native.currentSourceSnapshot()).sourceVersion
+            val player = DesktopOriginalMpvSectionControl(native, { version }, { true },
+                { it(); true }, { false }, {}, {}, { _, _, _, _ -> }, scope,
+                MutableStateFlow<Long?>(null), { it(); true })
+            val platform = java.lang.reflect.Proxy.newProxyInstance(
+                DesktopOriginalBangumiPlayerScreenPlatform::class.java.classLoader,
+                arrayOf(DesktopOriginalBangumiPlayerScreenPlatform::class.java)
+            ) { _, method, _ ->
+                if (method.name == "owns") true else error("Unexpected platform call: ${method.name}")
+            } as DesktopOriginalBangumiPlayerScreenPlatform
+            val canvas = native.surface.components.filterIsInstance<java.awt.Canvas>().single()
+            val originalListeners = canvas.mouseListeners.toSet()
+            val locked = mutableStateOf(false)
+            val scene = ImageComposeScene(100, 60, Density(1f), coroutineContext = scope.coroutineContext) {
+                CompositionLocalProvider(LocalDesktopOriginalBangumiPlayerScreenPlatform provides platform,
+                    LocalDesktopDetailForeground provides true) {
+                    Box(DesktopBangumiNativePointerInput(player, enabled = !locked.value,
+                        onReveal = {}, onFullscreen = {}).fillMaxSize())
+                }
+            }
+            fun render() {
+                Snapshot.sendApplyNotifications()
+                scheduler.runCurrent()
+                scene.render(scheduler.currentTime * 1_000_000L).close()
+                scheduler.runCurrent()
+                assertTrue(errors.isEmpty(), "Unexpected Compose errors: $errors")
+            }
+            try {
+                render()
+                assertEquals(originalListeners.size + 1, canvas.mouseListeners.size)
+                locked.value = true
+                render()
+                assertEquals(originalListeners.size + 1, canvas.mouseListeners.size,
+                    "Lock must keep the production native input bridge installed")
+                locked.value = false
+                render()
+                assertEquals(originalListeners.size + 1, canvas.mouseListeners.size)
+            } finally {
+                scene.close(); scope.cancel(); scheduler.runCurrent(); native.close()
+            }
+            assertEquals(originalListeners, canvas.mouseListeners.toSet())
         }
     }
     @Test fun arrowFullscreenAndMuteCommandsRemainAvailableAfterPointerFocus() {
