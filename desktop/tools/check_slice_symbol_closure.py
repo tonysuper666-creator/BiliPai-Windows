@@ -880,6 +880,7 @@ class GradleModel:
         self.live_graph = False
         self.source_files = []
         self.filters = []
+        self.build_file_excludes = {'main': set(), 'test': set()}
         self.output_owners = {}
 
 
@@ -1142,6 +1143,8 @@ def _resolve_live_graph(root, model):
 
 def _source_in_graph(graph, model, source_set, kind, relative, inner):
     path = relative.rstrip('/') + '/' + inner
+    if kind == 'build' and path in model.build_file_excludes[source_set]:
+        return False
     marker = 'com/android/purebilibili/'
     index = path.rfind('/' + marker)
     identity = path[index + 1:] if index >= 0 else (path if path.startswith(marker) else '')
@@ -1307,6 +1310,12 @@ def _extend_gradle(model, text, masked):
         recipe = text[match.start():end + 1]
         _check_recipe('filter:' + _recipe_digest(recipe), recipe)
         model.filters.append((owner, recipe))
+        # The guarded file-equality predicate excludes one generated test, not its
+        # directory or the upstream file with the same name. Bind it to its source set.
+        point = re.fullmatch(r'kotlin\.exclude\s*\{\s*it\.file\s*==\s*layout\.buildDirectory\.file\("([^"]+)"\)'
+                             r'\.get\(\)\.asFile\s*\}', recipe)
+        if point:
+            model.build_file_excludes[owner].add(point.group(1))
     # Capture declared Exec outputs, rather than guessing ownership from build-directory *inputs*.
     declarations = list(_TASK_HEAD.finditer(text))
     declarations += list(re.finditer(r'tasks\.named\("(\w+)"\)\s*\{', text))

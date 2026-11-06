@@ -238,6 +238,42 @@ kotlin.sourceSets.named("main") { kotlin.srcDir(generated) }
             self.assertFalse(any(p.endswith('/' + gone) for p in tests), gone)
         self.assertEqual(['build/patched-upstream-tests/' + corrected], [p for p in tests if p.endswith(corrected)])
 
+    def test_cadence_point_exclude_keeps_the_upstream_test_and_generated_siblings(self):
+        f = GraphFixture(self)
+        cadence = 'com/bytedance/danmaku/render/engine/RenderFrameCadenceTest.kt'
+        generated = 'generated/original-danmaku-list-menu/policy-tests/' + cadence
+        original = 'danmaku-engine/src/test/java/' + cadence
+        declaration = 'package com.bytedance.danmaku.render.engine\nclass RenderFrameCadenceTest'
+        f.put(f.legacy, 'desktop/build/' + generated, declaration)
+        f.put(f.live, original, declaration)
+        sibling = generated.replace('RenderFrameCadenceTest.kt', 'SiblingTest.kt')
+        f.put(f.legacy, 'desktop/build/' + sibling, 'class SiblingTest')
+        selected = f.collect()
+        tests = [s.logical for s in selected if s.set == 'test']
+        self.assertNotIn('build/' + generated, tests)
+        self.assertIn(original, tests)
+        self.assertIn('build/' + sibling, tests)
+        result = gate.analyze(selected, [], gate.empty_expected(),
+                              gate.Options(names_scope='none', carried=False, checks=['duplicates']))
+        self.assertFalse(any('RenderFrameCadenceTest' in finding.symbol for finding in result.unexpected))
+        # Removing the Gradle predicate restores both files: selection must follow the model,
+        # rather than a filename blacklist which would also hide a newly introduced duplicate.
+        predicate = next(recipe for owner, recipe in f.model.filters if generated in recipe)
+        f.model = gate.parse_gradle(GRADLE.replace(predicate, '', 1))
+        restored = [s.logical for s in f.collect() if s.set == 'test']
+        self.assertIn('build/' + generated, restored)
+        self.assertIn(original, restored)
+
+    def test_cadence_exclude_path_or_predicate_changes_and_unknown_excludes_are_rejected(self):
+        path = 'generated/original-danmaku-list-menu/policy-tests/com/bytedance/danmaku/render/engine/RenderFrameCadenceTest.kt'
+        predicate = next(recipe for owner, recipe in gate.parse_gradle(GRADLE).filters if path in recipe)
+        for changed in (predicate.replace('RenderFrameCadenceTest.kt', 'OtherTest.kt'),
+                        predicate.replace('it.file ==', 'it.file !=')):
+            with self.subTest(predicate=changed), self.assertRaisesRegex(gate.ToolError, 'Unmodelled Gradle recipe'):
+                gate.parse_gradle(GRADLE.replace(predicate, changed, 1))
+        with self.assertRaisesRegex(gate.ToolError, 'Unmodelled Gradle recipe'):
+            gate.parse_gradle(GRADLE + '\nkotlin.sourceSets.named("test") { kotlin.exclude("**/UnknownTest.kt") }')
+
     def test_partial_module_selects_only_registered_main_and_test_paths(self):
         f = GraphFixture(self)
         for source_set, collection in [('main', 'migratedPlaybackModulePaths'), ('test', 'migratedPlaybackModuleTests')]:
