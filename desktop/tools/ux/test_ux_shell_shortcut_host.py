@@ -22,8 +22,8 @@ What is proved.
                       traversal chord, none with the vendored player map, and one owner for F6
   SourceShapeTest     the text of the host (the order of the checks, one effect per action kind, the guards), no global hook and no second
                       key-fallback slot, the frame and Root stack wiring, the hints constant
-  Rh1HunkTest         navigation-owner and fullscreen wiring; shortcut priority after F11 and Esc and before the player branch;
-                      Root shortcuts share the rendered navigation stack and Back owner
+  Rh1HunkTest         navigation-owner and fullscreen wiring; the S3 Esc hunk and its one decision; shortcut priority after F11 and Esc
+                      and before the player branch; Root shortcuts share the rendered navigation stack and Back owner
   FilesTest           line endings, the program scopes of the hygiene suite, the JVM test classes exist and use no window
 
 What is not proved. That the Kotlin compiles or runs. DesktopShellShortcutHostTest and DesktopShellShortcutsTest are the proof of the
@@ -40,12 +40,16 @@ Slice notes, kept here with the pins they explain.
     Stack has routes, chrome bindings and the visible items in every rail mode and on every route, the chrome file is not named by hunk
     RH1. The frame (a free file) lends the rail toggle and the panes.
   * Back at the first page. requestBack at the root of the Home tab runs the back-at-root callback of the Root services, which closes the
-    application (Esc already does that today). Alt+Left and the mouse Back button must not, so the host asks canGoBack first and does
-    nothing at the first page. Esc is unchanged.
-  * The text editor test. The Root has a flag for it (searchFocused) that nothing ever sets, and the leaf uses a Swing text component test
+    application (Esc already does that today, outside a text field). Alt+Left and the mouse Back button must not, so the host asks
+    canGoBack first and does nothing at the first page.
+  * The text editor test. The Root had a flag for it (searchFocused) that nothing ever sets, and the leaf uses a Swing text component test
     that a Compose text field is not. The host asks the focus owner and its parents for getInputMethodRequests: the layer component of the
     Compose scene returns the request of the active text input session and null otherwise (checked in the pinned ui-desktop jar), and a
     Swing text component is tested by type. The Compose half is a [W] item until a real window says so.
+  * Esc in a text field. Slice S3 (TON-1265) gave the Root the same text editor predicate the host asks (desktopShellTextEditorFocused):
+    with the caret in a field Esc is the field's key and never leaves the page; outside a field it leaves fullscreen, else goes back, as
+    before. The replaced branch read searchFocused, which nothing sets, so typing and then pressing Esc left the page. TON1265_ESCAPE_HUNK
+    pins that rewrite, and the S2 pins below are read against the S2-free text (without_s2), so each slice is counted on its own.
 """
 import hashlib
 import re
@@ -661,11 +665,17 @@ class CollisionTest(unittest.TestCase):
         self.assertIsNone(re.search(r"\.register(?:Leaf)?\(", HOST_CODE), "the host adds no slot to the window key fallback")
         self.assertEqual(1, SHELL_CODE.count("windowKeyFallback?.register { event ->"), "the Root keeps its one registration")
 
-    def test_the_existing_f11_and_esc_handling_is_untouched_and_f11_is_marked_existing(self):
+    def test_f11_is_untouched_and_esc_is_decided_once_and_f11_is_marked_existing(self):
+        # F11 is the one chord the Root already handled: one line, unchanged. Esc stays the Root's and is decided in one place, by
+        # desktopShellEscape, before any table row can claim it; the two branches that act on the decision are its only readers.
         self.assertEqual(1, SHELL_CODE.count("if (event.type == KeyEventType.KeyDown && event.key == Key.F11) { toggleOriginalFullscreen(); true }"))
-        self.assertEqual(1, shell.squash(SHELL_CODE).count(
-            "else if (event.type == KeyEventType.KeyDown && event.key == Key.Escape && !searchFocused) { "
-            "if (isFullscreen()) setOriginalFullscreen(false) else homeRootRef.get()?.navigation?.requestBack() true }"))
+        flat = shell.squash(SHELL_CODE)
+        self.assertEqual(1, flat.count(
+            "val escape = if (event.key == Key.Escape) desktopShellEscape(event, desktopShellTextEditorFocused(), isFullscreen()) "
+            "else DesktopShellEscape.NONE"))
+        self.assertEqual(1, flat.count("else if (escape == DesktopShellEscape.LEAVE_FULLSCREEN) { setOriginalFullscreen(false); true }"))
+        self.assertEqual(1, flat.count("else if (escape == DesktopShellEscape.BACK) { homeRootRef.get()?.navigation?.requestBack(); true }"))
+        self.assertNotIn("event.key == Key.Escape && !searchFocused", flat, "the flag nothing sets is not the Esc guard any more")
         self.assertEqual(["F11"], [chord for chord, _k, _d, _dir, existing in ROWS if existing])
 
 
@@ -808,11 +818,7 @@ RH1_S2_HUNKS = (
         "    val rootKeyHandler: (KeyEvent) -> Boolean = { event ->\n",
     ),
     (
-        "                true\n"
-        "            }\n"
         "            else if ((showVideo || section == DesktopSection.STORY) && playing.details != null && playerFocused && !searchFocused && player != null) {\n",
-        "                true\n"
-        "            }\n"
         "            // UX S2 (hunk RH1, part S2): the shell shortcuts of spec 6.1 (Ctrl+K, Alt+Left, F5, Ctrl+1 to 9, F6, F1, Alt+Enter ...).\n"
         "            else if (shellShortcutHost.onKey(event) { toggleOriginalFullscreen() }) true\n"
         "            else if ((showVideo || section == DesktopSection.STORY) && playing.details != null && playerFocused && !searchFocused && player != null) {\n",
@@ -826,13 +832,38 @@ RH1_S2_HUNKS = (
 
 
 
-def reverse_apply(text):
-    """DesktopShell.kt with the three RH1 (part S2) hunks undone, last hunk first."""
-    for before, after in reversed(RH1_S2_HUNKS):
+# The Esc rewrite of slice S3 (TON-1265), a hunk of its own above the S2 branch: the four-line branch guarded by the flag nothing sets
+# becomes the three-line decision read by both branches. Four lines in, four lines out.
+TON1265_ESCAPE_HUNK = (
+    "            if (event.type == KeyEventType.KeyDown && event.key == Key.F11) { toggleOriginalFullscreen(); true }\n"
+    "            else if (event.type == KeyEventType.KeyDown && event.key == Key.Escape && !searchFocused) {\n"
+    "                if (isFullscreen()) setOriginalFullscreen(false) else homeRootRef.get()?.navigation?.requestBack()\n"
+    "                true\n"
+    "            }\n",
+    "            val escape = if (event.key == Key.Escape) desktopShellEscape(event, desktopShellTextEditorFocused(), isFullscreen()) else DesktopShellEscape.NONE\n"
+    "            if (event.type == KeyEventType.KeyDown && event.key == Key.F11) { toggleOriginalFullscreen(); true }\n"
+    "            else if (escape == DesktopShellEscape.LEAVE_FULLSCREEN) { setOriginalFullscreen(false); true }\n"
+    "            else if (escape == DesktopShellEscape.BACK) { homeRootRef.get()?.navigation?.requestBack(); true }\n",
+)
+
+
+def without_hunks(text, hunks):
+    """text with the given (before, after) hunks undone, last hunk first; every "after" block must be in the text exactly once."""
+    for before, after in reversed(hunks):
         if text.count(after) != 1:
-            raise AssertionError("an RH1 hunk is not in the Root shell exactly once: " + after[:80])
+            raise AssertionError("a hunk is not in the Root shell exactly once: " + after[:80])
         text = text.replace(after, before)
     return text
+
+
+def without_s2(text):
+    """DesktopShell.kt as the S3 (TON-1265) commit left it, with the three RH1 (part S2) hunks undone."""
+    return without_hunks(text, RH1_S2_HUNKS)
+
+
+def reverse_apply(text):
+    """DesktopShell.kt as the file both slices were generated from: S2's three hunks and the S3 Esc rewrite undone."""
+    return without_hunks(without_s2(text), (TON1265_ESCAPE_HUNK,))
 
 
 class Rh1HunkTest(unittest.TestCase):
@@ -843,7 +874,9 @@ class Rh1HunkTest(unittest.TestCase):
         self.assertIn("LocalDesktopShellShortcutHost provides shellShortcutHost", SHELL_CODE)
 
     def test_the_hunks_add_five_lines_and_remove_none(self):
-        base = reverse_apply(SHELL).splitlines()
+        # Counted against the text S3 (TON-1265) left, so these are exactly S2's five lines; the Esc rewrite above them has its own
+        # hunk and its own pin below, and this count cannot absorb an edit from either slice's neighbour.
+        base = without_s2(SHELL).splitlines()
         now = SHELL.splitlines()
         self.assertEqual(5, len(now) - len(base))
         added = [line for line in now if line not in base]
@@ -851,13 +884,40 @@ class Rh1HunkTest(unittest.TestCase):
         for line in added:
             self.assertTrue(line.strip().startswith(("// UX S2", "val shellShortcutHost", "else if (shellShortcutHost", "com.bilipai.desktop.ui.LocalDesktopShellShortcutHost")), line)
 
+    def test_the_escape_hunk_replaces_the_dead_flag_with_the_caret_aware_decision(self):
+        # S3 (TON-1265): the old branch read searchFocused, which nothing ever set, so Esc under the caret went back and dropped the draft.
+        # Both directions of the rewrite are exact, so neither the dead guard nor an unrecorded edit next to it can survive.
+        self.assertEqual(1, SHELL.count(TON1265_ESCAPE_HUNK[1]))
+        self.assertEqual(1, reverse_apply(SHELL).count(TON1265_ESCAPE_HUNK[0]))
+        self.assertEqual(1, SHELL.count(
+            "            val escape = if (event.key == Key.Escape) desktopShellEscape(event, "
+            "desktopShellTextEditorFocused(), isFullscreen()) else DesktopShellEscape.NONE\n"))
+        self.assertNotIn("event.key == Key.Escape && !searchFocused", shell.squash(SHELL_CODE))
+
+    def test_the_escape_decision_is_one_function_that_asks_the_field_first(self):
+        flat = shell.squash(SHELL_CODE)
+        self.assertEqual("internal enum class DesktopShellEscape { NONE, LEAVE_FULLSCREEN, BACK }",
+                         flat[flat.index("internal enum class DesktopShellEscape"):flat.index("internal fun desktopShellEscape")].strip())
+        order = ("event.type != KeyEventType.KeyDown || event.key != Key.Escape -> DesktopShellEscape.NONE",
+                 "textEditorFocused -> DesktopShellEscape.NONE",
+                 "fullscreen -> DesktopShellEscape.LEAVE_FULLSCREEN",
+                 "else -> DesktopShellEscape.BACK")
+        for needle in order:
+            self.assertEqual(1, flat.count(needle), needle)
+        positions = [flat.index(needle) for needle in order]
+        self.assertEqual(sorted(positions), positions, "the caret in a field is tested before fullscreen and back")
+        self.assertIn("internal fun desktopShellEscape(event: KeyEvent, textEditorFocused: Boolean, fullscreen: Boolean): DesktopShellEscape",
+                      flat)
+
     def test_the_branch_sits_after_f11_and_esc_and_before_the_player_branch(self):
         flat = shell.squash(SHELL_CODE)
+        esc = flat.index("val escape = if (event.key == Key.Escape) desktopShellEscape(event, desktopShellTextEditorFocused(), isFullscreen()) else DesktopShellEscape.NONE")
         f11 = flat.index("event.key == Key.F11")
-        esc = flat.index("event.key == Key.Escape && !searchFocused")
+        leave_fullscreen = flat.index("else if (escape == DesktopShellEscape.LEAVE_FULLSCREEN) { setOriginalFullscreen(false); true }")
+        back = flat.index("else if (escape == DesktopShellEscape.BACK) { homeRootRef.get()?.navigation?.requestBack(); true }")
         host = flat.index("shellShortcutHost.onKey(event)")
         player = flat.index("else if ((showVideo || section == DesktopSection.STORY) && playing.details != null && playerFocused")
-        self.assertTrue(f11 < esc < host < player)
+        self.assertTrue(esc < f11 < leave_fullscreen < back < host < player)
         self.assertEqual(1, flat.count("shellShortcutHost.onKey(event)"))
         self.assertEqual(1, flat.count("else if (shellShortcutHost.onKey(event) { toggleOriginalFullscreen() }) true"))
 
