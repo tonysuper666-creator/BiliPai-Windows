@@ -1,5 +1,8 @@
 package com.bilipai.desktop.plugins
 
+import com.android.purebilibili.plugin.sdk.RecommendationFeedbackSignals
+import com.android.purebilibili.plugin.sdk.RecommendationMode
+import com.android.purebilibili.plugin.sdk.RecommendationRequest
 import com.android.purebilibili.core.plugin.*
 import com.android.purebilibili.data.model.response.*
 import com.android.purebilibili.feature.home.*

@@ -170,6 +170,7 @@ internal class DesktopShellShortcutHost(
     private val requestBack: () -> Boolean,
     private val textEditorFocused: () -> Boolean = { desktopShellTextEditorFocused() },
     nowMs: () -> Long = { System.nanoTime() / 1_000_000L },
+    private val refreshTargets: DesktopRefreshTargets = DesktopRefreshRegistry.shared,
 ) {
     private var root: DesktopShellRootCommands? = null
     private var frame: DesktopShellFrameCommands? = null
@@ -204,8 +205,12 @@ internal class DesktopShellShortcutHost(
     /** True when the shell consumed the event. toggleFullscreen is the fullscreen switch of the Root, which F11 already uses. */
     fun onKey(event: KeyEvent, toggleFullscreen: () -> Unit): Boolean {
         val data = desktopShellKeyDataOf(event) ?: return false
-        return handleKey(data, toggleFullscreen)
+        return handleKeyOrRefreshFallback(data, toggleFullscreen)
     }
+
+    /** The shell table first; a key that no table row claims on this page may still be the refresh key of a list page's button. */
+    internal fun handleKeyOrRefreshFallback(data: DesktopShellKeyData, toggleFullscreen: () -> Unit): Boolean =
+        handleKey(data, toggleFullscreen) || refreshFallback(data)
 
     internal fun handleKey(data: DesktopShellKeyData, toggleFullscreen: () -> Unit): Boolean {
         if (!data.keyDown) return held.release(data.key)
@@ -242,6 +247,18 @@ internal class DesktopShellShortcutHost(
 
     /** Back through the window navigation owner. At the first page it does nothing (and says it acted): Back must never close the app. */
     private fun back(commands: DesktopShellRootCommands): Boolean = if (commands.canGoBack()) requestBack() else true
+
+    /**
+     * TON-1026: the shell table gives F5 and Ctrl+R to the Home and Dynamic pages only (the contract stays as it is). On every other
+     * list page the key goes to the refresh button that page shows, if one is showing; the player and the search page, and a focused
+     * text editor, keep the key.
+     */
+    private fun refreshFallback(data: DesktopShellKeyData): Boolean {
+        val page = root?.page?.invoke()
+        if (page != DesktopShellPage.OTHER || !desktopRefreshChord(data) || textEditorFocused()) return false
+        if (!refreshTargets.refreshTopmost(DESKTOP_REFRESH_SHORTCUT_SOURCE)) return false
+        return true
+    }
 
     private fun cyclePanes(direction: Int): Boolean {
         val commands = frame ?: return false
@@ -354,22 +371,35 @@ internal fun DesktopShellRootBinding(
     )
     SideEffect { host.bindRoot(commands) }
     DisposableEffect(host, routes) { onDispose { host.unbindRoot(routes) } }
+    // The refresh buttons promise F5 only on the pages where the key reaches them.
+    DisposableEffect(commands.owner) {
+        val provider: () -> DesktopShellPage? = { commands.page() }
+        DesktopRefreshRegistry.pageProvider = provider
+        onDispose { if (DesktopRefreshRegistry.pageProvider === provider) DesktopRefreshRegistry.pageProvider = { null } }
+    }
 }
 
-/** F5 and Ctrl+R: the scroll to the top and refresh that a second click on the selected recommend or dynamic row runs. */
+/**
+ * F5 and Ctrl+R: the scroll to the top and refresh of a second click on the selected recommend row, and for the dynamic page
+ * the same scroll with an unconditional refresh (the second click on its row only refreshes when the list is already at the top).
+ * The corner refresh button of the page does the same two steps (TON-1026).
+ */
 private fun desktopShellRefresh(
     routes: DesktopOriginalRootRouteAssembly,
     chrome: DesktopOriginalRootChromeBindings,
     page: DesktopShellPage,
 ): Boolean {
     if (!routes.owns()) return false
+    // The button the page shows is the first answer: the key and the click then run the very same refresh.
+    if ((page == DesktopShellPage.HOME || page == DesktopShellPage.DYNAMIC) &&
+        DesktopRefreshRegistry.shared.refreshTopmost(DESKTOP_REFRESH_SHORTCUT_SOURCE)) return true
     return when (page) {
         DesktopShellPage.HOME -> {
             chrome.actions.homeDoubleTap()
             true
         }
         DesktopShellPage.DYNAMIC -> {
-            chrome.actions.dynamicDoubleTap()
+            chrome.actions.dynamicRefresh()
             true
         }
         else -> false

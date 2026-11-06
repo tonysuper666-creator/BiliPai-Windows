@@ -1,0 +1,85 @@
+--- a/app/src/main/java/com/android/purebilibili/core/plugin/feed/SubscriptionFeedStore.kt
++++ b/app/src/main/java/com/android/purebilibili/core/plugin/feed/SubscriptionFeedStore.kt
+@@ -1,10 +1,10 @@
+ package com.android.purebilibili.core.plugin.feed
+ 
+ import android.content.Context
+-import android.util.AtomicFile
++import com.bilipai.desktop.plugins.DesktopPluginAtomicFile as AtomicFile
+ import kotlinx.coroutines.Dispatchers
+ import kotlinx.coroutines.flow.MutableStateFlow
+ import kotlinx.coroutines.flow.StateFlow
+ import kotlinx.coroutines.flow.asStateFlow
+ import kotlinx.coroutines.sync.Mutex
+ import kotlinx.coroutines.sync.withLock
+@@ -65,15 +65,17 @@
+         if (!isHttpFeedUrl(trimmedUrl)) {
+             return Result.failure(IllegalArgumentException("只接受 http 或 https 订阅地址"))
+         }
+         return mutex.withLock {
+             withContext(Dispatchers.IO) {
+                 val current = read(context)
+-                val feed = SavedSubscriptionFeed(
++                val existing = current.firstOrNull { it.url == trimmedUrl }
++                val normalizedTitle = title.trim().ifBlank { trimmedUrl }
++                val feed = existing?.copy(title = normalizedTitle) ?: SavedSubscriptionFeed(
+                     id = uniqueFeedId(trimmedUrl, current.map { it.id }.toSet()),
+-                    title = title.trim().ifBlank { trimmedUrl },
++                    title = normalizedTitle,
+                     url = trimmedUrl,
+                 )
+                 write(context, current.filterNot { it.url == feed.url } + feed)
+                 Result.success(feed)
+             }
+         }
+@@ -102,20 +104,24 @@
+                 write(context, read(context).map { if (it.id == id) it.copy(enabled = enabled) else it })
+             }
+         }
+     }
+ 
+     /** 后台标题补全用：仅在标题确实变化时写入，避免 revision 空转。 */
+-    suspend fun updateTitle(context: Context, id: String, title: String) {
++    suspend fun updateTitle(context: Context, id: String, expectedUrl: String,
++        expectedTitle: String, title: String) {
+         val trimmed = title.trim()
+-        if (trimmed.isEmpty()) return
++        if (trimmed.isEmpty() || trimmed == expectedUrl) return
+         mutex.withLock {
+             withContext(Dispatchers.IO) {
+                 val current = read(context)
+-                if (current.none { it.id == id && it.title != trimmed }) return@withContext
+-                write(context, current.map { if (it.id == id) it.copy(title = trimmed) else it })
++                fun eligible(feed: SavedSubscriptionFeed): Boolean =
++                    feed.id == id && feed.url == expectedUrl && feed.title == expectedTitle &&
++                        needsTitleResolution(feed) && feed.title != trimmed
++                if (current.none(::eligible)) return@withContext
++                write(context, current.map { if (eligible(it)) it.copy(title = trimmed) else it })
+             }
+         }
+     }
+ 
+     /** 设置分组；空串表示移出分组。仅变化时写入。 */
+     suspend fun setGroup(context: Context, id: String, group: String) {
+@@ -161,18 +167,18 @@
+         return runCatching {
+             file.openRead().bufferedReader().use {
+                 json.decodeFromString<List<SavedSubscriptionFeed>>(it.readText())
+             }
+         }.getOrElse { error ->
+             // 损坏文件不能静默当作空列表处理：那会把下一次写入固化成“全部订阅消失”。
+-            // 保留坏文件以便排查，返回空并给出显式日志。
++            // 保留坏文件并中止读取，禁止后续写入覆盖。
+             com.android.purebilibili.core.util.Logger.w(
+                 "SubscriptionFeedStore",
+-                "订阅列表文件解析失败，暂按空列表处理: ${error.message}"
++                "订阅列表文件解析失败，已保留原文件: ${error.message}"
+             )
+-            emptyList()
++            throw error
+         }
+     }
+ 
+     private fun file(context: Context): AtomicFile =
+         AtomicFile(File(context.filesDir, "plugin/subscription_feeds.json"))
+ }

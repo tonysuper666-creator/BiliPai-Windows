@@ -1,0 +1,46 @@
+--- a/plugins/com/android/purebilibili/feature/video/danmaku/DesktopPluginDanmakuPolicy.kt
++++ b/plugins/com/android/purebilibili/feature/video/danmaku/DesktopPluginDanmakuPolicy.kt
+@@ -1,14 +1,14 @@
+ // GENERATED from app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuManager.kt; do not edit.
+ // LF-normalized SHA-256: e47511caf21c40e8a4e7e1db6d8223765b2895b29bd8aa62dfdc1f0ef0348e72
+ package com.android.purebilibili.feature.video.danmaku
+ 
+-import com.android.purebilibili.core.plugin.DanmakuItem as PluginDanmakuItem
++import com.android.purebilibili.plugin.sdk.DanmakuItem as PluginDanmakuItem
+ 
+-import com.android.purebilibili.core.plugin.DanmakuPlugin
++import com.android.purebilibili.plugin.sdk.DanmakuPluginApi
+ 
+-import com.android.purebilibili.core.plugin.DanmakuStyle
++import com.android.purebilibili.plugin.sdk.DanmakuStyle
+ 
+ import com.android.purebilibili.core.plugin.json.JsonPluginManager
+ 
+ import com.bilipai.desktop.plugins.DesktopPluginLog as Log
+ 
+@@ -17,11 +17,11 @@
+ internal object DesktopPluginDanmakuPolicy {
+     private const val TAG = "DanmakuManager"
+ 
+     internal fun runDanmakuFilters(
+         item: PluginDanmakuItem,
+-        nativePlugins: List<DanmakuPlugin>,
++        nativePlugins: List<DanmakuPluginApi>,
+         useJsonRules: Boolean
+     ): PluginDanmakuItem? {
+         var current = item
+         nativePlugins.forEach { plugin ->
+             val filtered = try {
+@@ -51,11 +51,11 @@
+         return current
+     }
+ 
+     internal fun collectDanmakuStyle(
+         item: PluginDanmakuItem,
+-        nativePlugins: List<DanmakuPlugin>,
++        nativePlugins: List<DanmakuPluginApi>,
+         useJsonRules: Boolean
+     ): DanmakuStyle? {
+         var style: DanmakuStyle? = null
+         nativePlugins.forEach { plugin ->
+             val next = try {

@@ -1,0 +1,36 @@
+--- a/app/src/main/java/com/android/purebilibili/core/plugin/BuiltinPluginRegistry.kt
++++ b/app/src/main/java/com/android/purebilibili/core/plugin/BuiltinPluginRegistry.kt
+@@ -57,14 +57,15 @@
+             } finally {
+                 readyPluginIds.update { it + plugin.id }
+             }
+         }
+     }
+ 
+-    suspend fun setEnabled(pluginId: String, enabled: Boolean) {
++    suspend fun setEnabled(pluginId: String, enabled: Boolean, stillOwned: () -> Boolean = { true }) {
+         mutex.withLock {
++            if (!stillOwned()) return@withLock
+             val info = mutablePluginsFlow.value.firstOrNull { it.plugin.id == pluginId }
+             if (info == null) {
+                 try {
+                     writeEnabled(pluginId, enabled)
+                     currentCoroutineContext().ensureActive()
+                     pendingEnabledOverrides[pluginId] = enabled
+@@ -76,12 +77,16 @@
+             }
+             if (info.enabled == enabled) return@withLock
+ 
+             try {
+                 if (enabled) info.plugin.onEnable() else info.plugin.onDisable()
+                 currentCoroutineContext().ensureActive()
++                if (!stillOwned()) {
++                    restoreLifecycle(info.plugin, info.enabled)
++                    return@withLock
++                }
+                 writeEnabled(pluginId, enabled)
+                 currentCoroutineContext().ensureActive()
+             } catch (error: Exception) {
+                 restoreLifecycle(info.plugin, info.enabled)
+                 onFailure(pluginId, error)
+                 if (error is CancellationException) throw error

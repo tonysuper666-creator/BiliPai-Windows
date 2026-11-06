@@ -20,7 +20,7 @@ import kotlinx.serialization.json.Json
 import java.nio.file.Path
 import java.lang.ref.WeakReference
 
-typealias DesktopRecommendationMode = DesktopFeedSettings.FeedApiType
+typealias DesktopRecommendationMode = SettingsManager.FeedApiType
 
 /** Original feed settings and negative-feedback storage, bound to atomic Windows preferences. */
 class DesktopDiscoveryPreferences(private val root: Path = DesktopLibrary.directoryForAccount(null),

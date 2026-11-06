@@ -1,0 +1,34 @@
+--- a/app/src/main/java/com/android/purebilibili/core/plugin/PluginManager.kt
++++ b/app/src/main/java/com/android/purebilibili/core/plugin/PluginManager.kt
+@@ -30,13 +30,13 @@
+  * 
+  * 负责管理所有插件的注册、启用/禁用、生命周期调用等。
+  * 使用单例模式，在 Application 启动时初始化。
+  */
+ object PluginManager {
+     
+-    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
++    private val scope = com.bilipai.desktop.plugins.DesktopPluginScopeRegistry.create("com/android/purebilibili/core/plugin/PluginManager.kt:1", Dispatchers.Main)
+     private val registry = BuiltinPluginRegistry(
+         readEnabled = { PluginStore.isEnabled(appContext, it) },
+         writeEnabled = { id, enabled -> PluginStore.setEnabled(appContext, id, enabled) },
+         onFailure = { id, error -> Logger.e(TAG, "Plugin state failed: $id", error) },
+         onEnabledChanged = { plugin, enabled ->
+             if (enabled) {
+@@ -90,14 +90,14 @@
+     /** Wait until a built-in plugin has finished restoring its persisted configuration. */
+     suspend fun awaitPluginReady(pluginId: String) = registry.awaitPluginReady(pluginId)
+     
+     /**
+      * 启用/禁用插件
+      */
+-    suspend fun setEnabled(pluginId: String, enabled: Boolean) =
+-        registry.setEnabled(pluginId, enabled)
++    suspend fun setEnabled(pluginId: String, enabled: Boolean, stillOwned: () -> Boolean = { true }) =
++        registry.setEnabled(pluginId, enabled, stillOwned)
+ 
+     fun isEnabled(pluginId: String): Boolean =
+         plugins.firstOrNull { it.plugin.id == pluginId }?.enabled == true
+ 
+     fun <T : Plugin> getPlugins(type: KClass<T>): List<T> =
+         plugins.mapNotNull { if (type.isInstance(it.plugin)) type.java.cast(it.plugin) else null }

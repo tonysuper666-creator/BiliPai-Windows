@@ -1,6 +1,7 @@
 from pathlib import Path
 import importlib.util
 import json
+import re
 import shutil
 import sys
 import tempfile
@@ -80,7 +81,11 @@ class CurrentProxySourceTests(unittest.TestCase):
         self.assertNotIn('Proxy connect failed uri=', source)
         binding = (REPO / 'desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopNetworkProxyBindings.kt').read_text('utf8')
         self.assertIn('sharedApplicationClient.connectionPool.evictAll()', binding)
-        self.assertLess(binding.index('NetworkProxyStore.save(context,value)'), binding.index('sharedApplicationClient.connectionPool.evictAll()'))
+        adapted = re.search(r'val\s+(\w+)\s*=\s*context\.asAndroidContext\(\)', binding)
+        self.assertIsNotNone(adapted)
+        saved = re.search(r'NetworkProxyStore\.save\(\s*' + re.escape(adapted.group(1)) + r'\s*,\s*value\s*\)', binding)
+        self.assertIsNotNone(saved)
+        self.assertLess(saved.start(), binding.index('sharedApplicationClient.connectionPool.evictAll()'))
         self.assertIn('catch(cancelled:CancellationException){throw cancelled}', binding)
 
     def test_complete_domain_dialog_matches_the_real_generated_textfield_contract(self):

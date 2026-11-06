@@ -1,0 +1,14 @@
+--- a/plugins/com/android/purebilibili/feature/home/DesktopTodayWatchPlanConversion.kt
++++ b/plugins/com/android/purebilibili/feature/home/DesktopTodayWatchPlanConversion.kt
+@@ -1,9 +1,11 @@
+ // GENERATED from app/src/main/java/com/android/purebilibili/feature/home/HomeViewModel.kt; do not edit.
+ // LF-normalized SHA-256: acfeb63539acaf710a4070f59220a1585a38fd1e034d6a7a56a82970998d4352
+ package com.android.purebilibili.feature.home
+ 
++import com.android.purebilibili.plugin.sdk.RecommendationGroup
++import com.android.purebilibili.plugin.sdk.RecommendationMode
+ import com.android.purebilibili.core.plugin.*
+ 
+ import kotlinx.collections.immutable.*
+ 
+ private fun RecommendationMode.toTodayWatchMode(): TodayWatchMode {

@@ -1,0 +1,65 @@
+--- a/plugins/com/android/purebilibili/feature/plugin/AdFilterInsightPolicy.kt
++++ b/plugins/com/android/purebilibili/feature/plugin/AdFilterInsightPolicy.kt
+@@ -1,9 +1,10 @@
+ // GENERATED from app/src/main/java/com/android/purebilibili/feature/plugin/AdFilterInsightPolicy.kt; do not edit.
+ // LF-normalized SHA-256: 432f17f7bdd2e2dc1bd0ff53dc6229ce7280bb7efb7baf6f5cdba7c63e551060
+ package com.android.purebilibili.feature.plugin
+ 
++import com.bilipai.desktop.plugins.asAndroidContext
+ import com.bilipai.desktop.plugins.DesktopPluginContext as Context
+ import com.android.purebilibili.core.plugin.PluginStore
+ import com.android.purebilibili.data.model.response.VideoItem
+ import kotlinx.coroutines.sync.Mutex
+ import kotlinx.coroutines.sync.withLock
+@@ -207,11 +208,11 @@
+     private val writeMutex = Mutex()
+     private val profileWriteMutex = Mutex()
+ 
+     suspend fun readRecords(context: Context): List<AdFilterRecord> {
+         val value = PluginStore.getDataJson(
+-            context = context,
++            context = context.asAndroidContext(),
+             pluginId = ADFILTER_PLUGIN_ID,
+             name = AD_FILTER_HISTORY_STORE_NAME
+         ) ?: return emptyList()
+         return runCatching {
+             json.decodeFromString(
+@@ -229,11 +230,11 @@
+             val nextRecords = (listOf(record) + readRecords(context))
+                 .distinctBy { "${it.reasonType}:${it.bvid}:${it.cid}:${it.videoTitle}:${it.upMid}" }
+                 .sortedByDescending { it.timestampMs }
+                 .take(AD_FILTER_HISTORY_LIMIT)
+             PluginStore.setDataJson(
+-                context = context,
++                context = context.asAndroidContext(),
+                 pluginId = ADFILTER_PLUGIN_ID,
+                 name = AD_FILTER_HISTORY_STORE_NAME,
+                 dataJson = json.encodeToString(
+                     ListSerializer(AdFilterRecord.serializer()),
+                     nextRecords
+@@ -245,11 +246,11 @@
+         }
+     }
+ 
+     suspend fun readUpProfiles(context: Context): List<AdFilterUpProfile> {
+         val value = PluginStore.getDataJson(
+-            context = context,
++            context = context.asAndroidContext(),
+             pluginId = ADFILTER_PLUGIN_ID,
+             name = AD_FILTER_UP_PROFILE_STORE_NAME
+         ) ?: return emptyList()
+         return runCatching {
+             json.decodeFromString(
+@@ -271,11 +272,11 @@
+         profileWriteMutex.withLock {
+             val nextProfiles = mergeAdFilterUpProfiles(validProfiles + readUpProfiles(context))
+                 .sortedByDescending { it.updatedAtMs }
+                 .take(AD_FILTER_UP_PROFILE_LIMIT)
+             PluginStore.setDataJson(
+-                context = context,
++                context = context.asAndroidContext(),
+                 pluginId = ADFILTER_PLUGIN_ID,
+                 name = AD_FILTER_UP_PROFILE_STORE_NAME,
+                 dataJson = json.encodeToString(
+                     ListSerializer(AdFilterUpProfile.serializer()),
+                     nextProfiles

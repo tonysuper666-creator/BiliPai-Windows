@@ -1,0 +1,11 @@
+--- a/core-data/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt
++++ b/core-data/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt
+@@ -1577,7 +1577,7 @@ object CommentRepository {
+             .build()
+ 
+         try {
+-            NetworkModule.okHttpClient.newCall(request).execute().use { response ->
++            com.bilipai.desktop.data.DesktopUpstreamCalls.guest.newCall(request).execute().use { response -> // Desktop: explicit guest owner (TON-1082)
+                 if (response.isSuccessful) response.body?.string() else null
+             }
+         } catch (e: Exception) {

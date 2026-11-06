@@ -1,0 +1,111 @@
+--- a/app/src/main/java/com/android/purebilibili/core/plugin/feed/FeedFetcher.kt
++++ b/app/src/main/java/com/android/purebilibili/core/plugin/feed/FeedFetcher.kt
+@@ -1,12 +1,13 @@
+ package com.android.purebilibili.core.plugin.feed
+ 
+ import kotlinx.coroutines.Dispatchers
+ import kotlinx.coroutines.Job
+ import kotlinx.coroutines.TimeoutCancellationException
+ import kotlinx.coroutines.async
++import kotlinx.coroutines.ensureActive
+ import kotlinx.coroutines.awaitAll
+ import kotlinx.coroutines.suspendCancellableCoroutine
+ import kotlinx.coroutines.supervisorScope
+ import kotlinx.coroutines.sync.Semaphore
+ import kotlinx.coroutines.sync.withPermit
+ import kotlinx.coroutines.withContext
+@@ -25,51 +26,37 @@
+ suspend fun fetchReadableArticle(url: String): Result<ReadableArticle> = withContext(Dispatchers.IO) {
+     val call = if (isHttpFeedUrl(url)) {
+         publicContentHttpClient.newCall(Request.Builder().url(url.trim()).header("User-Agent", "Mozilla/5.0 BiliPai Reader").build())
+     } else null
+     if (call == null) return@withContext Result.failure(IllegalArgumentException("原文地址无效"))
+     runCatching {
+-        // Keep cancellation attached until the body has been read and parsed, so
+-        // leaving the article interrupts both waiting for headers and reading data.
+-        suspendCancellableCoroutine<ReadableArticle> { continuation ->
+-            continuation.invokeOnCancellation { call.cancel() }
+-            call.enqueue(object : okhttp3.Callback {
+-                override fun onFailure(call: okhttp3.Call, error: java.io.IOException) {
+-                    continuation.resumeWith(Result.failure(error))
+-                }
+-
+-                override fun onResponse(call: okhttp3.Call, response: okhttp3.Response) {
+-                    val result = runCatching {
+-                        response.use {
++        // Cancellation of the caller covers waiting for headers and reading the body.
++        com.bilipai.desktop.plugins.DesktopSubscriptionWriteAdmission.executeFeedCall(call) { response ->
++                        run {
+                             if (com.android.purebilibili.core.util.isBilibiliWebHost(response.request.url.host)) {
+                                 throw NativeArticleRedirect(response.request.url.toString())
+                             }
+                             if (!response.isSuccessful) error("原文请求失败 ${response.code}")
+                             val mediaType = response.body.contentType()
+                             if (mediaType != null && mediaType.subtype != "html" && mediaType.subtype != "xhtml+xml") {
+                                 error("此链接不是可阅读的网页")
+                             }
+                             val stream = response.body.byteStream()
+                             val buffer = ByteArray(8 * 1024)
+                             val output = ByteArrayOutputStream()
+-                            while (continuation.isActive) {
++                            while (true) {
+                                 val read = stream.read(buffer)
+                                 if (read < 0) break
+                                 if (output.size() + read > FEED_BODY_LIMIT_BYTES) error("原文内容超过 2MB")
+                                 output.write(buffer, 0, read)
+                             }
+-                            if (!continuation.isActive) throw kotlinx.coroutines.CancellationException()
+                             val charset = response.body.contentType()?.charset(Charsets.UTF_8) ?: Charsets.UTF_8
+                             val page = output.toString(charset.name())
+                             extractReadableArticle(page, response.request.url.toString())
+                                 ?: error("暂时无法提取原文正文")
+                         }
+-                    }
+-                    continuation.resumeWith(result)
+-                }
+-            })
+         }
+     }.onFailure { if (it is kotlinx.coroutines.CancellationException) throw it }
+ }
+ 
+ sealed interface FeedFetchOutcome {
+     data class Modified(
+@@ -103,18 +90,17 @@
+         .apply {
+             etag?.takeIf { it.isNotBlank() }?.let { header("If-None-Match", it) }
+             lastModified?.takeIf { it.isNotBlank() }?.let { header("If-Modified-Since", it) }
+         }
+         .build()
+     val call = publicContentHttpClient.newCall(request)
+-    coroutineContext[Job]?.invokeOnCompletion { call.cancel() }
+     try {
+         withTimeout(FEED_REQUEST_TIMEOUT_MS) {
+             runCatching {
+-                call.execute().use { response ->
+-                    if (response.code == 304) return@use FeedFetchOutcome.NotModified
++                com.bilipai.desktop.plugins.DesktopSubscriptionWriteAdmission.executeFeedCall(call) { response ->
++                    if (response.code == 304) return@executeFeedCall FeedFetchOutcome.NotModified
+                     if (!response.isSuccessful) error("订阅请求失败 ${response.code}")
+                     val stream = response.body.byteStream()
+                     val buffer = ByteArray(8 * 1024)
+                     val output = ByteArrayOutputStream()
+                     while (true) {
+                         val read = stream.read(buffer)
+@@ -131,15 +117,16 @@
+                     FeedFetchOutcome.Modified(
+                         xml = String(bytes, charset).removePrefix("\uFEFF"),
+                         etag = response.header("ETag"),
+                         lastModified = response.header("Last-Modified"),
+                     )
+                 }
+-            }
++            }.onFailure { if (it is kotlinx.coroutines.CancellationException) throw it }
+         }
+     } catch (_: TimeoutCancellationException) {
++        coroutineContext.ensureActive()
+         call.cancel()
+         Result.failure(IllegalStateException("连接超时"))
+     }
+ }
+ 
+ internal fun friendlyFeedError(sourceTitle: String, error: Throwable): String {

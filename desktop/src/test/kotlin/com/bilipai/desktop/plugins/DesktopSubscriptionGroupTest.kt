@@ -35,8 +35,8 @@ class DesktopSubscriptionGroupTest {
     @Test fun `setGroup trims and persists for a fresh repository on the same storage`(): Unit = runBlocking {
         val context = context()
         val repository = DesktopSubscriptionRepository(context) { true }
-        val first = SubscriptionFeedStore.add(context, "First", firstUrl).getOrThrow()
-        val second = SubscriptionFeedStore.add(context, "Second", secondUrl).getOrThrow()
+        val first = SubscriptionFeedStore.add(context.asAndroidContext(), "First", firstUrl).getOrThrow()
+        val second = SubscriptionFeedStore.add(context.asAndroidContext(), "Second", secondUrl).getOrThrow()
         val revision = SubscriptionFeedStore.revision.value
         repository.setGroup(first.id, "  Research  ")
         assertTrue(SubscriptionFeedStore.revision.value > revision)
@@ -66,7 +66,7 @@ class DesktopSubscriptionGroupTest {
         repository.setGroup(existing.id, "  Research  ")
         assertContentEquals(bytes, file.readBytes())
         assertEquals(revision, SubscriptionFeedStore.revision.value)
-        assertEquals(listOf(existing), SubscriptionFeedStore.list(reopen(context)))
+        assertEquals(listOf(existing), SubscriptionFeedStore.list(reopen(context).asAndroidContext()))
         assertEquals(listOf(existing), fresh(context).state.value.sources)
     }
 
@@ -85,7 +85,7 @@ class DesktopSubscriptionGroupTest {
         assertEquals("内置订阅源不能修改分组", missing.message)
         assertContentEquals(bytes, file.readBytes())
         assertEquals(revision, SubscriptionFeedStore.revision.value)
-        assertEquals(listOf(builtIn, user), SubscriptionFeedStore.list(reopen(context)))
+        assertEquals(listOf(builtIn, user), SubscriptionFeedStore.list(reopen(context).asAndroidContext()))
         repository.setGroup(user.id, "Moved")
         assertEquals("Moved", fresh(context).state.value.sources.single { it.id == user.id }.group)
         assertEquals("Keep", fresh(context).state.value.sources.single { it.id == builtIn.id }.group)
@@ -94,10 +94,10 @@ class DesktopSubscriptionGroupTest {
     @Test fun `exported opml nests a changed group and leaves a blank group ungrouped`(): Unit = runBlocking {
         val context = context()
         val repository = DesktopSubscriptionRepository(context) { true }
-        val grouped = SubscriptionFeedStore.add(context, "Grouped", firstUrl).getOrThrow()
-        val flat = SubscriptionFeedStore.add(context, "Flat", secondUrl).getOrThrow()
+        val grouped = SubscriptionFeedStore.add(context.asAndroidContext(), "Grouped", firstUrl).getOrThrow()
+        val flat = SubscriptionFeedStore.add(context.asAndroidContext(), "Flat", secondUrl).getOrThrow()
         repository.setGroup(grouped.id, " A & B ")
-        val saved = SubscriptionFeedStore.list(reopen(context))
+        val saved = SubscriptionFeedStore.list(reopen(context).asAndroidContext())
         assertEquals(grouped.copy(group = "A & B"), saved.single { it.url == firstUrl })
         assertEquals(flat, saved.single { it.url == secondUrl })
         val opml = DesktopSubscriptionRepository(reopen(context)) { true }.exportOpml()

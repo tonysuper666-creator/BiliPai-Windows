@@ -1,0 +1,28 @@
+--- a/com/android/purebilibili/data/repository/MessageImRepository.kt
++++ b/com/android/purebilibili/data/repository/MessageImRepository.kt
+@@ -1,6 +1,6 @@
+ package com.android.purebilibili.data.repository
+ 
+-import com.android.purebilibili.core.network.grpc.BiliGrpcClient
++import com.bilipai.desktop.data.DesktopMessageImCalls
+ import com.android.purebilibili.core.network.grpc.ProtoWire
+ import com.android.purebilibili.data.model.response.SessionAccountInfo
+ import com.android.purebilibili.data.model.response.SessionItem
+@@ -61,7 +61,7 @@
+     private const val SERVICE = "/bilibili.app.im.v1.im/"
+     private suspend fun <T> request(method: String, message: ByteArray = byteArrayOf(), parse: (ByteArray) -> T): Result<T> =
+         withContext(Dispatchers.IO) {
+-            runCatching { parse(BiliGrpcClient.request(SERVICE + method, message)) }
++            runCatching { parse(DesktopMessageImCalls.request(SERVICE + method, message)) }
+                 .onFailure { if (it is CancellationException) throw it }
+         }
+ 
+@@ -86,7 +86,7 @@
+ 
+     suspend fun clearUnread(pageType: Int, session: ImSession? = null): Result<Unit> = request(
+         "ClearUnread", ProtoWire.message(ProtoWire.int32(1, pageType), ProtoWire.bytes(2, session?.id ?: byteArrayOf())),
+-    ) { Unit }.onSuccess { MessageRepository.notifyReadStateChanged() }
++    ) { Unit }.onSuccess { DesktopMessageImCalls.readStateChanged() }
+ 
+     suspend fun clearList(pageType: Int): Result<Unit> = request("DeleteSessionList", ProtoWire.int32(1, pageType)) { Unit }
+ 

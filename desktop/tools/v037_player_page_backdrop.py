@@ -1,5 +1,6 @@
 """Complete original v037 page backdrop with one explicit native recording seam."""
 from pathlib import Path
+from desktop_paths import long_path
 import hashlib,json
 COMMIT='8b47769d22c0d5bc88ae5248cee4aa04ff10d62c'
 MANIFEST_SHA='f9640476d95332a5e6d6a31afd010506779d8fedc4e0903d75b891f58087b914'
@@ -8,7 +9,7 @@ def digest(raw):return hashlib.sha256(raw).hexdigest()
 def wide(p):
  s=str(Path(p).absolute())
  prefix=chr(92)*2+'?'+chr(92)
- return Path(s if s.startswith(prefix) else prefix+s)
+ return long_path(Path(p).absolute())
 def fixed_sources():
  root=Path(__file__).resolve().parent.parent/'upstream-slices/v037-player-page-backdrop'
  raw=(root/'manifest.json').read_bytes()

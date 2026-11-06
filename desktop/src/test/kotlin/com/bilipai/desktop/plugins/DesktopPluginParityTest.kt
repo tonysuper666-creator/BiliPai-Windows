@@ -1,5 +1,12 @@
 package com.bilipai.desktop.plugins
 
+import com.android.purebilibili.core.plugin.BuiltinPlugin
+import androidx.compose.ui.graphics.toArgb
+import com.android.purebilibili.plugin.sdk.DanmakuItem
+import com.android.purebilibili.plugin.sdk.DanmakuPluginApi
+import com.android.purebilibili.plugin.sdk.DanmakuStyle
+import com.android.purebilibili.plugin.sdk.PluginCapability
+import com.android.purebilibili.plugin.sdk.PluginCapabilityManifest
 import androidx.compose.ui.graphics.Color
 import com.android.purebilibili.core.plugin.*
 import com.android.purebilibili.core.plugin.json.*
@@ -22,17 +29,17 @@ class DesktopPluginParityTest {
             banWordForRecommend = "测试|推广", whitelistMids = mapOf(10L to "up"))
         store.setFeedFilterConfig(config)
         store.setFeedFilterEnabled(true)
-        PluginStore.setConfigJson(context, "danmaku_enhance", "{\"enableFilter\":false}")
-        PluginStore.setDataJson(context, "sponsor_block", "skip_history", "[]")
+        PluginStore.setConfigJson(context.asAndroidContext(), "danmaku_enhance", "{\"enableFilter\":false}")
+        PluginStore.setDataJson(context.asAndroidContext(), "sponsor_block", "skip_history", "[]")
         val reopened = DesktopPluginStore(root)
         val reopenedContext = DesktopPluginContext(reopened)
         assertEquals(config, reopened.feedFilterConfig.value)
         assertTrue(reopened.feedFilterEnabled.value)
-        assertTrue(PluginStore.isEnabledFlow(reopenedContext, "bilipai_feed_filter").first())
-        assertEquals("{\"enableFilter\":false}", PluginStore.getConfigJson(reopenedContext, "danmaku_enhance"))
-        assertEquals("[]", PluginStore.getDataJson(reopenedContext, "sponsor_block", "skip_history"))
-        assertTrue(PluginStore.isEnabled(reopenedContext, "dlna_cast"))
-        assertFalse(PluginStore.isEnabled(reopenedContext, "danmaku_enhance"))
+        assertTrue(PluginStore.isEnabledFlow(reopenedContext.asAndroidContext(), "bilipai_feed_filter").first())
+        assertEquals("{\"enableFilter\":false}", PluginStore.getConfigJson(reopenedContext.asAndroidContext(), "danmaku_enhance"))
+        assertEquals("[]", PluginStore.getDataJson(reopenedContext.asAndroidContext(), "sponsor_block", "skip_history"))
+        assertTrue(PluginStore.isEnabled(reopenedContext.asAndroidContext(), "dlna_cast"))
+        assertFalse(PluginStore.isEnabled(reopenedContext.asAndroidContext(), "danmaku_enhance"))
     }
 
     @Test fun `invalid regex cannot replace the prior configuration`(): Unit = runBlocking {
@@ -80,13 +87,13 @@ class DesktopPluginParityTest {
     @Test fun `original danmaku chain falls back after plugin failure and merges style precedence`() {
         val item = DanmakuItem(1, "【翻译】hello", 300, userId = "user")
         val failing = plugin(filter = { throw IllegalStateException("failure") })
-        val modifying = plugin(filter = { it.copy(content = it.content + "!") }, style = DanmakuStyle(textColor = Color.Red, bold = true, scale = 1.2f))
-        val next = plugin(style = DanmakuStyle(backgroundColor = Color.Black, scale = 1f))
+        val modifying = plugin(filter = { it.copy(content = it.content + "!") }, style = DanmakuStyle(textColor = Color.Red.toArgb(), bold = true, scale = 1.2f))
+        val next = plugin(style = DanmakuStyle(backgroundColor = Color.Black.toArgb(), scale = 1f))
         val result = assertNotNull(DesktopPluginDanmakuPolicy.runDanmakuFilters(item, listOf(failing, modifying, next), false))
         assertEquals("【翻译】hello!", result.content)
         val style = assertNotNull(DesktopPluginDanmakuPolicy.collectDanmakuStyle(result, listOf(failing, modifying, next), false))
-        assertEquals(Color.Red, style.textColor)
-        assertEquals(Color.Black, style.backgroundColor)
+        assertEquals(Color.Red.toArgb(), style.textColor)
+        assertEquals(Color.Black.toArgb(), style.backgroundColor)
         assertTrue(style.bold)
         assertEquals(1.2f, style.scale)
         assertNull(DesktopPluginDanmakuPolicy.runDanmakuFilters(item, listOf(plugin(filter = { null })), false))
@@ -114,7 +121,7 @@ class DesktopPluginParityTest {
         assertFalse(resolvePluginCapabilityGrants(manifest, setOf(PluginCapability.NETWORK)).isGranted(PluginCapability.PLAYER_CONTROL))
     }
 
-    private fun plugin(filter: (DanmakuItem) -> DanmakuItem? = { it }, style: DanmakuStyle? = null) = object : DanmakuPlugin {
+    private fun plugin(filter: (DanmakuItem) -> DanmakuItem? = { it }, style: DanmakuStyle? = null) = object : BuiltinPlugin, DanmakuPluginApi {
         override val id = "test"
         override val name = "test"
         override val description = "test"

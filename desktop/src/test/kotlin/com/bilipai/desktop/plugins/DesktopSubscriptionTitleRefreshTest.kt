@@ -64,13 +64,13 @@ class DesktopSubscriptionTitleRefreshTest {
             val urls = listOf(server.origin + "/first", server.origin + "/second")
             assertEquals(2, withTimeout(2000) { repository.importOpml(opml(*urls.toTypedArray())) })
             assertEquals(0, server.requests.get())
-            val before = SubscriptionFeedStore.list(context)
+            val before = SubscriptionFeedStore.list(context.asAndroidContext())
             assertEquals(urls, before.map { it.url })
             assertTrue(before.all { it.title == it.url && it.group == "Research" })
             assertEquals(before, repository.state.value.sources)
             repository.refreshMissingTitles()
             val cold = DesktopPluginContext(DesktopPluginStore(context.filesDir.toPath()))
-            val after = SubscriptionFeedStore.list(cold)
+            val after = SubscriptionFeedStore.list(cold.asAndroidContext())
             assertEquals(before.map { it.id }, after.map { it.id })
             assertTrue(after.all { it.title == "Resolved" && it.group == "Research" && it.enabled })
             assertTrue(server.credentials.all { it.first == null && it.second == null })
@@ -84,11 +84,11 @@ class DesktopSubscriptionTitleRefreshTest {
             val context = context(); val repository = DesktopSubscriptionRepository(context) { true }
             val url = server.origin + "/retry"
             repository.importOpml(opml(url))
-            val before = SubscriptionFeedStore.list(context).single()
+            val before = SubscriptionFeedStore.list(context.asAndroidContext()).single()
             repository.refreshMissingTitles()
-            assertEquals(before, SubscriptionFeedStore.list(context).single())
+            assertEquals(before, SubscriptionFeedStore.list(context.asAndroidContext()).single())
             repository.refreshMissingTitles()
-            assertEquals(before.copy(title = "Recovered"), SubscriptionFeedStore.list(context).single())
+            assertEquals(before.copy(title = "Recovered"), SubscriptionFeedStore.list(context.asAndroidContext()).single())
             assertEquals(2, server.requests.get())
             assertEquals("Recovered", repository.state.value.activeSources.single().title)
         }
@@ -107,7 +107,7 @@ class DesktopSubscriptionTitleRefreshTest {
             val context = context(); val repository = DesktopSubscriptionRepository(context) { true }
             val first = server.origin + "/rename"; val second = server.origin + "/delete"
             repository.importOpml(opml(first, second))
-            val feeds = SubscriptionFeedStore.list(context)
+            val feeds = SubscriptionFeedStore.list(context.asAndroidContext())
             val task = launch(Dispatchers.Default) { repository.refreshMissingTitles() }
             try {
                 await(entered)
@@ -122,7 +122,7 @@ class DesktopSubscriptionTitleRefreshTest {
                 assertFalse(task.isCancelled)
                 assertContentEquals(bytes, file.readBytes())
                 assertEquals(revision, SubscriptionFeedStore.revision.value)
-                assertEquals(listOf(feeds.single { it.url == first }.copy(title = "Manual title")), SubscriptionFeedStore.list(context))
+                assertEquals(listOf(feeds.single { it.url == first }.copy(title = "Manual title")), SubscriptionFeedStore.list(context.asAndroidContext()))
             } finally { release.countDown(); withContext(NonCancellable) { withTimeout(5000) { task.cancelAndJoin() } } }
         }
     }
@@ -230,7 +230,7 @@ class DesktopSubscriptionTitleRefreshTest {
                 eventually { repository.state.value.sources.size == 2 && repository.state.value.sources.none(::needsTitleResolution) }
                 assertTrue(failures.isEmpty())
                 assertEquals(2, server.requests.get())
-                assertTrue(SubscriptionFeedStore.list(context).none(::needsTitleResolution))
+                assertTrue(SubscriptionFeedStore.list(context.asAndroidContext()).none(::needsTitleResolution))
             } finally {
                 release.countDown(); worker.close()
                 withContext(NonCancellable) { withTimeout(5000) { lifetime.closeAndJoin() } }

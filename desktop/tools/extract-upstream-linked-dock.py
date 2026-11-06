@@ -1,12 +1,13 @@
 """Full stable linked dock/search controls; same actual glass/navigation actors."""
 from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
+from desktop_paths import long_path, read_point_tool
 import argparse,hashlib,importlib.util,json,re,subprocess,textwrap,xml.etree.ElementTree as ET
 PIN='79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40';BASE='app/src/main/java/com/android/purebilibili/'
 SOURCES=[BASE+n+'.kt' for n in ['feature/home/components/LinkedBottomDock','feature/home/components/LinkedDockPolicy','feature/home/components/BottomBar','feature/home/components/HomeNavigationIconPolicy','feature/home/HomeScrollOffsetPolicy','feature/home/HomeScreen','feature/audio/screen/AudioNowPlayingBarPresenceMotionPolicy','core/store/SettingsManager','navigation/SearchSubmitPolicy','navigation/AppNavigation']]
 ASSETS=['ms_home_fill_24','ms_history_fill_24','ms_rss_feed_24','bp_nav_home_outline_24','bp_nav_history_outline_24']
 def safe(p):
- v=str(Path(p).absolute());return Path(v if v.startswith('\\\\?\\') else '\\\\?\\'+v)
+ return long_path(Path(p).absolute())
 def read(p):return safe(p).read_text(encoding='utf-8').replace('\r\n','\n')
 def write(p,t):safe(p.parent).mkdir(parents=True,exist_ok=True);safe(p).write_text(t,encoding='utf-8',newline='\n')
 def mod(p,n):
@@ -20,7 +21,7 @@ def local_callback(parser,source,name):
   if depth==0:return textwrap.dedent(source[begin:tokens[k][2]])
  raise AssertionError(name)
 def generate(repo,output):
- identity=mod(repo/'desktop/tools/extract-upstream-dynamic-reply-protocol.py','dock_identity');original,ids=identity.load_pinned_sources(repo,SOURCES)
+ identity=mod(read_point_tool(repo,'extract-upstream-dynamic-reply-protocol.py'),'dock_identity');original,ids=identity.load_pinned_sources(repo,SOURCES)
  parser=mod(repo/'desktop/tools/sync-upstream.py','dock_tokens');decl=mod(repo/'desktop/tools/extract-appearance-platform.py','dock_declarations')
  records=[]
  def emit(path,body,origin,selected=None,adaptations=None):

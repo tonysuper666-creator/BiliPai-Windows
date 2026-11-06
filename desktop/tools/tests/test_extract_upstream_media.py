@@ -40,7 +40,8 @@ internal fun next(): Int { return 1 }
         with tempfile.TemporaryDirectory() as temporary:
             output = Path(temporary)
             generated = media.generate(REPO, output)
-            self.assertEqual(16, len(generated))
+            # 16 at 5fb46cd2a; live moderation (affbc0f86, 8b990a075) and live vote (6039797da, fd99345a0) add seven.
+            self.assertEqual(23, len(generated))
             image_path = output / "com/android/purebilibili/feature/live/components/DesktopOriginalLiveChatImage.kt"
             self.assertTrue(any(path.samefile(image_path) for path in generated))
             image = image_path.read_bytes()

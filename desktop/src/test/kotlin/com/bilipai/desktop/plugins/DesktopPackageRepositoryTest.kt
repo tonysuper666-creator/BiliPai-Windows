@@ -1,5 +1,7 @@
 package com.bilipai.desktop.plugins
 
+import com.android.purebilibili.plugin.sdk.PluginCapability
+import com.android.purebilibili.plugin.sdk.PluginCapabilityManifest
 import com.android.purebilibili.core.plugin.*
 import com.android.purebilibili.core.plugin.kotlinpkg.ExternalKotlinPluginInstallStore
 import com.android.purebilibili.core.plugin.skin.*

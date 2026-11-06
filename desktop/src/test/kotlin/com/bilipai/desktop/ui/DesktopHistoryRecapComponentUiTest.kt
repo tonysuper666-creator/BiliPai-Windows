@@ -1,5 +1,6 @@
 package com.bilipai.desktop.ui
 
+import com.bilipai.desktop.plugins.asAndroidContext
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.*
@@ -145,9 +146,9 @@ class DesktopHistoryRecapComponentUiTest {
             { action -> if (!alive.get()) false else { action(); true } })
         val viewModel = HistoryViewModel(environment)
         suspend fun seedRealReads() {
-            FeedReadingStore.recordRead(context, "builtin:test\u001ftoday", atMs = todayMs)
-            FeedReadingStore.recordRead(context, "builtin:test\u001fthree-days", atMs = sevenMs)
-            FeedReadingStore.recordRead(context, "builtin:test\u001ftwelve-days", atMs = monthMs)
+            FeedReadingStore.recordRead(context.asAndroidContext(), "builtin:test\u001ftoday", atMs = todayMs)
+            FeedReadingStore.recordRead(context.asAndroidContext(), "builtin:test\u001fthree-days", atMs = sevenMs)
+            FeedReadingStore.recordRead(context.asAndroidContext(), "builtin:test\u001ftwelve-days", atMs = monthMs)
         }
         suspend fun close() {
             alive.set(false)

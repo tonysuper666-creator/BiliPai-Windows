@@ -1,0 +1,15 @@
+Upstream-source-sha256: 387fb995ce5b3882098b80246363dddfd4ea5246bb84f806e30e74de455e15a1
+Reason: 第 25 行把 app/build.gradle.kts 的版号钉成字面量 0.2.3-beta.28，而脚本现在是 0.6.7；上游版号随发布推进，这条断言本意是“APK 命名取值于 defaultConfig 的 versionName”。改成断言脚本含 android.defaultConfig.versionName（biliApkVersionName 从这里取值，脚本中出现一次）。不改成 0.6.7，生产版号不动，其余命名断言不动。
+
+--- a/app/src/test/java/com/android/purebilibili/core/buildinfo/BiliPaiApkNamingPolicyTest.kt
++++ b/app/src/test/java/com/android/purebilibili/core/buildinfo/BiliPaiApkNamingPolicyTest.kt
+@@ -22,7 +22,8 @@
+         assertTrue(source.contains("export\${capitalizedVariantName}Apk"))
+         assertTrue(source.contains("finalizedBy(exportTask)"))
+         assertTrue(source.contains("never app-release"))
+-        assertTrue(source.contains("versionName = \"0.2.3-beta.28\""))
++        // 版号随发布推进，测试不再钉死某个字面量；只确认 APK 命名取值于 android.defaultConfig.versionName。
++        assertTrue(source.contains("android.defaultConfig.versionName"))
+         assertTrue(source.contains("Delivery APK must be BiliPai-"))
+     }
+ 

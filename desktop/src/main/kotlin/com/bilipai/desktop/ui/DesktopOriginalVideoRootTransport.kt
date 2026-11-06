@@ -1,6 +1,7 @@
 package com.bilipai.desktop.ui
 
 import com.android.purebilibili.data.model.response.*
+import com.android.purebilibili.feature.video.playback.loader.PlaybackRequest
 import com.android.purebilibili.feature.video.playback.session.PlaybackSessionState
 import com.android.purebilibili.feature.video.viewmodel.VideoPlaybackUiState
 import com.bilipai.desktop.data.DesktopRepository
@@ -29,11 +30,29 @@ internal class DesktopOriginalVideoTransportMetadata(initial: ViewInfo?) {
     init { initial?.let(::remember) }
     fun remember(value: ViewInfo) { if (value.bvid.isNotBlank()) infos[value.bvid] = value }
     fun observed(bvid: String): ViewInfo? = infos[bvid]
+    /** The BV this request is about. A BV request names it; an aid-only original
+     * request acquires it from its own metadata response or the page's commit for
+     * that same aid, never from an unrelated response or latest page. Without
+     * either it is null plus one log line per aid, and publication goes on. */
+    fun bvidFor(request: PlaybackRequest, committed: () -> ViewInfo?,
+        report: (String) -> Unit = ::logDegradation): String? {
+        if (request.bvid.isNotBlank()) return request.bvid
+        if (request.aid > 0L) {
+            infos.values.singleOrNull { it.aid == request.aid }?.let { return it.bvid }
+            committed()?.takeIf { it.aid == request.aid && it.bvid.isNotBlank() }?.let {
+                remember(it)
+                return it.bvid
+            }
+        }
+        if (reported.add("aid:${request.aid}")) report(
+            "Original video metadata is unavailable for this aid-only request; publishing the media transport without a title or matched tracks (aid=${request.aid})")
+        return null
+    }
     /** Observed metadata first, then whatever the page has committed meanwhile
      * (its Success can arrive after this request began), then "" plus one log
      * line per bvid so the degradation stays visible without spamming. */
     fun titleFor(bvid: String, committed: () -> ViewInfo?,
-        report: (String) -> Unit = { com.android.purebilibili.core.util.Logger.w("DesktopOriginalVideoTransport", it) }): String {
+        report: (String) -> Unit = ::logDegradation): String {
         infos[bvid]?.let { return it.title }
         committed()?.takeIf { it.bvid == bvid && it.bvid.isNotBlank() }?.let {
             infos[bvid] = it
@@ -42,6 +61,9 @@ internal class DesktopOriginalVideoTransportMetadata(initial: ViewInfo?) {
         if (reported.add(bvid)) report(
             "Original video metadata is unavailable for this request; publishing the media transport without a title (bvid=$bvid)")
         return ""
+    }
+    private companion object {
+        fun logDegradation(line: String) = com.android.purebilibili.core.util.Logger.w("DesktopOriginalVideoTransport", line)
     }
 }
 
@@ -63,7 +85,11 @@ internal class DesktopOriginalVideoRootRequestTransport(
         raw.binding.assertCurrent()
         return metadata.observed(bvid)
     }
-    fun source(video: String, audio: String?, bvid: String = checkNotNull(stateAtCapture.currentRequest).bvid,
+    private fun resolvedBvid(): String? {
+        raw.binding.assertCurrent()
+        return metadata.bvidFor(checkNotNull(stateAtCapture.currentRequest), committed = { committedInfo() })
+    }
+    fun source(video: String, audio: String?, bvid: String? = resolvedBvid(),
         title: String? = null): PlaybackSource {
         raw.binding.assertCurrent()
         // Exact original UseCase media headers. Cookie comes from this Binding's
@@ -72,12 +98,13 @@ internal class DesktopOriginalVideoRootRequestTransport(
             referer = "https://www.bilibili.com",
             userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
             cookieHeader = raw.binding.captureMediaCookieHeader(video),
-            title = title ?: metadata.titleFor(bvid, committed = { committedInfo() })))
+            title = title ?: bvid?.let { metadata.titleFor(it, committed = { committedInfo() }) }.orEmpty()))
     }
 
     fun tracks(source: PlaybackSource, keys: Map<String, String>): List<DesktopMediaByteTrack> {
         raw.binding.assertCurrent()
-        val bvid = checkNotNull(stateAtCapture.currentRequest).bvid
+        // Unresolved metadata leaves only the source URLs and their keys as aliases.
+        val bvid = resolvedBvid()
         val plays = data.entries.filter { it.key.first == bvid }.map { it.value }
         fun sameKey(url: String, candidate: String): Boolean = url == candidate ||
             (keys[url] != null && keys[url] == keys[candidate])
@@ -109,13 +136,16 @@ internal class DesktopOriginalVideoRootMediaFactory(
     fun request(raw: DesktopOriginalVideoOwnerRequestRepository, state: PlaybackSessionState,
         nativeBaseline: Long, callerJob: Job, native: DesktopOriginalVideoNativeOwner): DesktopOriginalVideoMediaPort {
         val assembly = currentAssembly()
-        val info = (assembly.playback.uiState.value as? VideoPlaybackUiState.Success)?.info
-            ?.takeIf { it.bvid == state.currentRequest?.bvid }
-        // This request's own detail read may still be in flight, so the page's
-        // Success is read again when the title is actually needed.
-        val transport = DesktopOriginalVideoRootRequestTransport(raw, state, info,
-            { (assembly.playback.uiState.value as? VideoPlaybackUiState.Success)?.info },
-            raw::awaitMediaPreparation)
+        // The public stateIn projection can still be Loading in the same turn
+        // that the original VM commits detail, so its backing state is captured,
+        // and captured again when the title is actually needed: this request's
+        // own detail read may still be in flight.
+        val committed = { (assembly.playback.captureDesktopPlaybackState() as? VideoPlaybackUiState.Success)?.info }
+        val info = committed()?.takeIf { detail -> state.currentRequest?.let { request ->
+            if (request.bvid.isNotBlank()) detail.bvid == request.bvid
+            else request.aid > 0L && detail.aid == request.aid
+        } == true }
+        val transport = DesktopOriginalVideoRootRequestTransport(raw, state, info, committed, raw::awaitMediaPreparation)
         // Original settings/background invocations may precede the first load.
         // Keep their captured Binding; require a subject only for media publication.
         val capturedRequest = state.currentRequest

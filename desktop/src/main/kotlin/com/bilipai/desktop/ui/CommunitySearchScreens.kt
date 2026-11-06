@@ -15,7 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
-import com.android.purebilibili.core.plugin.FeedKind
+import com.android.purebilibili.plugin.sdk.FeedKind
 import com.android.purebilibili.data.model.response.*
 import com.android.purebilibili.data.repository.*
 import com.android.purebilibili.feature.search.*

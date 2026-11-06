@@ -1,0 +1,63 @@
+--- a/plugins/com/android/purebilibili/feature/plugin/AdFilterPlugin.kt
++++ b/plugins/com/android/purebilibili/feature/plugin/AdFilterPlugin.kt
+@@ -4,16 +4,18 @@
+ package com.android.purebilibili.feature.plugin
+ 
+ 
+ import com.bilipai.desktop.plugins.DesktopPluginContext as Context
+ //  Material Icons
+-import com.android.purebilibili.core.plugin.FeedPlugin
+-import com.android.purebilibili.core.plugin.PluginCapability
+-import com.android.purebilibili.core.plugin.PluginCapabilityManifest
++import com.android.purebilibili.plugin.sdk.FeedPlugin
++import com.android.purebilibili.plugin.sdk.PluginCapability
++import com.android.purebilibili.plugin.sdk.PluginCapabilityManifest
+ import com.android.purebilibili.core.plugin.PluginManager
+ import com.android.purebilibili.core.plugin.PluginStore
+ import com.bilipai.desktop.plugins.DesktopPluginLog as Logger
++import com.android.purebilibili.core.plugin.BuiltinPlugin
++import com.android.purebilibili.plugin.sdk.FeedKind
+ import com.android.purebilibili.data.model.response.VideoItem
+ import kotlinx.coroutines.CoroutineScope
+ import kotlinx.coroutines.Dispatchers
+ import kotlinx.coroutines.SupervisorJob
+ import kotlinx.coroutines.launch
+@@ -81,11 +83,11 @@
+  * 2. 过滤标题党视频
+  * 3. 过滤低质量视频（播放量低）
+  * 4. UP主拉黑（按名称或MID）
+  * 5. 自定义关键词屏蔽
+  */
+-class AdFilterPlugin : FeedPlugin {
++class AdFilterPlugin : BuiltinPlugin, FeedPlugin<VideoItem> {
+     
+     override val id = ADFILTER_PLUGIN_ID
+     override val name = "去广告增强"
+     override val description = "过滤广告、拉黑UP主、屏蔽关键词"
+     override val version = "2.0.1"
+@@ -147,11 +149,11 @@
+     override suspend fun onDisable() {
+         Logger.d(TAG, "🔴 去广告增强已禁用，本次过滤了 $filteredCount 条内容")
+         filteredCount = 0
+     }
+     
+-    override fun shouldShowItem(item: VideoItem): Boolean {
++    override fun shouldShowItem(item: VideoItem, feedKind: FeedKind): Boolean {
+         //  每次过滤前确保配置是最新的
+         reloadConfigAsync()
+         
+         val title = item.title
+         val upName = item.owner.name
+@@ -278,11 +280,11 @@
+             matchedText = matchedText
+         )
+         ioScope.launch {
+             runCatching {
+                 AdFilterInsightStore.appendRecord(
+-                    PluginManager.getContext(),
++                    com.bilipai.desktop.plugins.desktopPluginContext(PluginManager.getContext()),
+                     enrichAdFilterRecordUpProfile(record)
+                 )
+             }.onFailure { error ->
+                 Logger.w(TAG, "记录过滤历史失败: ${error.message}")
+             }

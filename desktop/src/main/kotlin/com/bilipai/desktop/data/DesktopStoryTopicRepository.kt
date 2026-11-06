@@ -1,15 +1,10 @@
 package com.bilipai.desktop.data
 
-import com.android.purebilibili.core.network.DynamicApi
 import com.android.purebilibili.data.model.response.*
 import com.android.purebilibili.data.repository.TopicRepository
 import com.android.purebilibili.data.repository.TopicFeedPage
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.serialization.json.Json
-import okhttp3.MediaType.Companion.toMediaType
-import retrofit2.Retrofit
-import retrofit2.converter.kotlinx.serialization.asConverterFactory
 
 /** Shares the one authorized DesktopRepository. No separate cookies or player. */
 interface DesktopStoryTopicDataSource {
@@ -23,13 +18,9 @@ interface DesktopStoryTopicDataSource {
 class DesktopStoryTopicRepository(
     private val repository: DesktopRepository,
     private val discovery: DesktopDiscoveryRepository,
+    private val windowOpen: () -> Boolean = { true },
 ) : DesktopStoryTopicDataSource {
     override val sessionEpoch: StateFlow<Long> get() = repository.sessionEpochFlow
-    private val topic = TopicRepository(Retrofit.Builder().baseUrl("https://api.bilibili.com/")
-        .client(repository.httpClient)
-        .addConverterFactory(Json { ignoreUnknownKeys = true; coerceInputValues = true }
-            .asConverterFactory("application/json".toMediaType()))
-        .build().create(DynamicApi::class.java))
 
     override suspend fun homePage(index: Int): List<VideoItem> = owned {
         require(index in 0 until Int.MAX_VALUE)
@@ -41,10 +32,14 @@ class DesktopStoryTopicRepository(
         } catch (cancelled: CancellationException) { throw cancelled }
         catch (_: Exception) { false } // Original VideoRepository returns false on a failed dimension lookup.
     }
-    override suspend fun topicDetails(topicId: Long): TopicTopDetails = owned { topic.getTopicDetail(topicId).getOrThrow() }
+    override suspend fun topicDetails(topicId: Long): TopicTopDetails = owned { upstream { TopicRepository.getTopicDetail(topicId).getOrThrow() } }
     override suspend fun topicFeed(topicId: Long, offset: String, sortBy: Int): TopicFeedPage = owned {
-        topic.getTopicFeed(topicId, offset, sortBy).getOrThrow()
+        upstream { TopicRepository.getTopicFeed(topicId, offset, sortBy).getOrThrow() }
     }
+    /** Upstream TopicRepository runs over NetworkModule: its requests belong to an owner captured when the operation
+     * starts, for this window's account (TON-1082). */
+    private suspend fun <T> upstream(block: suspend () -> T): T =
+        DesktopUpstreamCalls.withOwnerScope(repository.upstreamOwner(DesktopUpstreamPurpose.Main, windowOpen), block)
     private suspend fun <T> owned(action: suspend () -> T): T {
         val epoch = sessionEpoch.value
         repository.ensureSession()

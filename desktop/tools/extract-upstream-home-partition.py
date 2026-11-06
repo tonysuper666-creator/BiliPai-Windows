@@ -37,6 +37,8 @@ def main():
   s=(_desktop_canonical_source(root, path)).read_text(encoding='utf-8');assert sha(s)==pin,path;raw[path]=s
  rows=[]
  def emit(path,s,origin,adaptations):
+  from desktop_refresh_adaptation import bind_refresh_lists, bind_refresh_launch
+  s=bind_refresh_lists(bind_refresh_launch(s))
   p=out/path;p.parent.mkdir(parents=True,exist_ok=True);p.write_text(s,encoding='utf-8',newline='\n')
   rows.append(dict(path=path,origin=origin,sha256LF=sha(s),adaptations=adaptations))
  origin=BASE+'feature/partition/PartitionScreen.kt';s=raw[origin];changes=[]

@@ -1,4 +1,5 @@
 from pathlib import Path
+from desktop_paths import long_path, read_point_tool
 import ast, difflib, hashlib, importlib.util, json, re, subprocess, sys, textwrap
 
 sys.stdout.reconfigure(encoding='utf-8')
@@ -7,7 +8,7 @@ args=argparse.ArgumentParser(description="Whole fixed v0.2.5 HOME branch and ori
 args.add_argument('--repo',type=Path,required=True);args.add_argument('--output',type=Path,required=True)
 cli=args.parse_args();REPO=cli.repo.resolve();OUT=cli.output.resolve()
 COMMIT='79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40'
-def wide(p): return Path('\\\\?\\'+str(p.absolute()))
+def wide(p): return long_path(Path(p).absolute())
 def read(p): return wide(p).read_bytes().decode('utf-8').replace('\r\n','\n')
 def write(p,s):
     wide(p.parent).mkdir(parents=True,exist_ok=True)
@@ -214,7 +215,7 @@ import com.android.purebilibili.core.ui.animation.entrance
 internal fun DesktopOriginalHomeSettingsCategoryEntry(onHomeClick: () -> Unit) {
 '''+entry.replace('SettingsRootCategoryEntranceSection {','DesktopOriginalHomeSettingsEntranceSection {').replace('actions.onHomeClick','onHomeClick')+'\n}\n\n@Composable\n'+wrapper.replace('SettingsRootCategoryEntranceSection(','DesktopOriginalHomeSettingsEntranceSection(')+'\n'
 for rel,s in generated.items():write(gen/rel,s)
-picker=load('home_whole_picker',REPO/'desktop/tools/v025_home_wallpaper_picker.py')
+picker=load('home_whole_picker',read_point_tool(REPO,'v025_home_wallpaper_picker.py'))
 pickerGenerated,pickerProof=picker.generate(REPO,pins)
 for rel,s in pickerGenerated.items():write(gen/rel,s)
 generated.update(pickerGenerated)

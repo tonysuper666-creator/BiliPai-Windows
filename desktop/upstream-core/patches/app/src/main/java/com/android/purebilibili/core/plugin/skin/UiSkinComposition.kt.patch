@@ -1,0 +1,57 @@
+--- a/app/src/main/java/com/android/purebilibili/core/plugin/skin/UiSkinComposition.kt
++++ b/app/src/main/java/com/android/purebilibili/core/plugin/skin/UiSkinComposition.kt
+@@ -8,17 +8,12 @@
+ import androidx.compose.ui.graphics.Color
+ import androidx.compose.ui.layout.ContentScale
+ import androidx.compose.foundation.layout.size
+ import androidx.compose.ui.unit.Dp
+ import androidx.compose.ui.unit.dp
+ import coil3.compose.AsyncImage
+-import com.airbnb.lottie.compose.LottieAnimation
+-import com.airbnb.lottie.compose.LottieCompositionSpec
+-import com.airbnb.lottie.compose.LottieConstants
+-import com.airbnb.lottie.compose.animateLottieCompositionAsState
+-import com.airbnb.lottie.compose.rememberLottieComposition
+ import kotlinx.coroutines.Dispatchers
+ import kotlinx.coroutines.withContext
+ import java.io.File
+ 
+ val LocalUiSkinState = compositionLocalOf { UiSkinState() }
+ 
+@@ -39,32 +34,19 @@
+ 
+ @Composable
+ fun UiSkinAnimatedAsset(
+     path: String,
+     modifier: Modifier = Modifier,
+     size: Dp = 80.dp,
+-    iterations: Int = LottieConstants.IterateForever,
++    iterations: Int = Int.MAX_VALUE, // LottieConstants.IterateForever
+     contentDescription: String? = null,
+ ) {
+     if (path.endsWith(".json", ignoreCase = true)) {
+-        val jsonText by produceState<String?>(initialValue = null, key1 = path) {
+-            value = withContext(Dispatchers.IO) {
+-                runCatching { File(path).readText() }.getOrNull()
+-            }
+-        }
+-        val text = jsonText ?: return
+-        val composition by rememberLottieComposition(LottieCompositionSpec.JsonString(text))
+-        val progress by animateLottieCompositionAsState(
+-            composition = composition,
+-            iterations = iterations,
+-        )
+-        LottieAnimation(
+-            composition = composition,
+-            progress = { progress },
+-            modifier = modifier.size(size),
+-        )
++        if (iterations != 1 && iterations != Int.MAX_VALUE) throw com.bilipai.desktop.compat.UnsupportedDesktopCapability(
++            "Lottie iterations=$iterations", "the desktop Skottie player plays once or forever")
++        com.bilipai.desktop.ui.DesktopUiSkinAsset(path, modifier.size(size), loop = iterations == Int.MAX_VALUE)
+     } else {
+         AsyncImage(
+             model = File(path),
+             contentDescription = contentDescription,
+             contentScale = ContentScale.Fit,
+             modifier = modifier.size(size),

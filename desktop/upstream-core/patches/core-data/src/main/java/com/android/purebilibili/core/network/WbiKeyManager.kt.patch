@@ -1,0 +1,33 @@
+--- a/core-data/src/main/java/com/android/purebilibili/core/network/WbiKeyManager.kt
++++ b/core-data/src/main/java/com/android/purebilibili/core/network/WbiKeyManager.kt
+@@ -42,7 +42,7 @@ object WbiKeyManager {
+      */
+     suspend fun getWbiKeys(): Result<Pair<String, String>> {
+         // 1. 检查内存缓存
+-        val cached = cachedKeys
++        val cached = com.bilipai.desktop.data.DesktopUpstreamCalls.admitted("WbiKeyManager keys") { cachedKeys } // Desktop (TON-1082)
+         if (cached != null && isCacheValid()) {
+             com.android.purebilibili.core.network.CoreDataLog.d(TAG, " Using cached WBI keys")
+             return Result.success(cached)
+@@ -51,7 +51,7 @@ object WbiKeyManager {
+         // 2. 需要刷新，使用互斥锁确保单次刷新
+         return refreshMutex.withLock {
+             // 双重检查：可能在等待锁的过程中其他协程已刷新
+-            val rechecked = cachedKeys
++            val rechecked = com.bilipai.desktop.data.DesktopUpstreamCalls.admitted("WbiKeyManager keys") { cachedKeys } // Desktop (TON-1082)
+             if (rechecked != null && isCacheValid()) {
+                 com.android.purebilibili.core.network.CoreDataLog.d(TAG, " Using cached WBI keys (after lock)")
+                 return@withLock Result.success(rechecked)
+@@ -86,8 +86,10 @@ object WbiKeyManager {
+                 val imgKey = wbiImg.img_url.substringAfterLast("/").substringBefore(".")
+                 val subKey = wbiImg.sub_url.substringAfterLast("/").substringBefore(".")
+                 
+-                cachedKeys = Pair(imgKey, subKey)
+-                cacheTimestamp = System.currentTimeMillis()
++                com.bilipai.desktop.data.DesktopUpstreamCalls.admitted("WbiKeyManager keys") { // Desktop (TON-1082)
++                    cachedKeys = Pair(imgKey, subKey)
++                    cacheTimestamp = System.currentTimeMillis()
++                }
+                 
+                 //  自动持久化到 storage，下次启动时无需再请求网络
+                 try {

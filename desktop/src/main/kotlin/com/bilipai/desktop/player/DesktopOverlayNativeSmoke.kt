@@ -1,6 +1,6 @@
 package com.bilipai.desktop.player
 
-import com.android.purebilibili.core.plugin.DanmakuStyle
+import com.android.purebilibili.plugin.sdk.DanmakuStyle
 import com.bilipai.desktop.danmaku.*
 import java.awt.Color
 import java.awt.Rectangle
@@ -76,7 +76,7 @@ internal object DesktopOverlayNativeSmoke {
             check(overlay.commentCount.value == 0)
             SwingUtilities.invokeAndWait {
                 overlay.setPluginDanmakuProcessor { item -> item.copy(content = "PLUGIN NATIVE PROOF") to
-                    DanmakuStyle(textColor = androidx.compose.ui.graphics.Color(0xff0000ff), bold = true, scale = 1.4f) }
+                    DanmakuStyle(textColor = 0xff0000ff.toInt(), bold = true, scale = 1.4f) }
             }
             ImageIO.write(waitImage("plugin style reaches transparent native HWND") { blue(it) > 100 && red(it) < 20 }, "png",
                 File(outputDirectory, "native-danmaku-plugin-style.png"))

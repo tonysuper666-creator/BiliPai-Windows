@@ -2,7 +2,7 @@ package com.bilipai.desktop.cast
 
 import com.android.purebilibili.core.network.AppSignUtils
 import com.android.purebilibili.core.network.BilibiliApi
-import com.android.purebilibili.core.plugin.CastPluginMediaRequest
+import com.android.purebilibili.plugin.sdk.CastPluginMediaRequest
 import com.android.purebilibili.data.model.response.Dash
 import com.android.purebilibili.data.model.response.PlayUrlData
 import com.android.purebilibili.data.repository.buildTvCastPlayUrlParams

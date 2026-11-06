@@ -324,13 +324,28 @@ def reverse_chain(leaf, chain):
     return text
 
 
+# TON-1028 (core/plugin and plugin-sdk compiled from upstream): SkipAction moved from core.plugin to plugin-sdk; the leaf only
+# follows the package. Undone before V6, so every V6 and V2 pin still holds.
+TON1028_HUNKS = (
+    ("SkipAction from plugin-sdk", (
+        "                                state.skipToMs <= 0L || state.skipToMs != segment.endTimeMs) return@let null",
+        "                            com.android.purebilibili.core.plugin.SkipAction.ShowButton(",
+        "                                state.skipToMs, state.label.orEmpty(), segmentId)",
+    ), (
+        "                                state.skipToMs <= 0L || state.skipToMs != segment.endTimeMs) return@let null",
+        "                            com.android.purebilibili.plugin.sdk.SkipAction.ShowButton(",
+        "                                state.skipToMs, state.label.orEmpty(), segmentId)",
+    )),
+)
+
+
 def reverse_v6(leaf):
-    """The V2 state of the leaf: the hunks of slice V6 undone."""
-    return reverse_chain(leaf, V6_HUNKS)
+    """The V2 state of the leaf: the hunks of the later slices (TON-1028, then V6) undone."""
+    return reverse_chain(reverse_chain(leaf, TON1028_HUNKS), V6_HUNKS)
 
 
 def reverse_apply(leaf):
-    """The base leaf: the newest chain first (V6), then the chain of V2."""
+    """The base leaf: the newest chains first (TON-1028, V6), then the chain of V2."""
     return reverse_chain(reverse_v6(leaf), HUNKS)
 
 

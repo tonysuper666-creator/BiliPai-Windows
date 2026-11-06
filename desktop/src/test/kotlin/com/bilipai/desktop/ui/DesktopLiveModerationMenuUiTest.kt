@@ -21,6 +21,7 @@ import com.bilipai.desktop.data.*
 import com.bilipai.desktop.player.MpvPlayer
 import java.awt.GraphicsEnvironment
 import kotlinx.coroutines.*
+import kotlin.coroutines.CoroutineContext
 import kotlinx.serialization.json.Json
 import org.junit.jupiter.api.parallel.Execution
 import org.junit.jupiter.api.parallel.ExecutionMode
@@ -38,7 +39,7 @@ class DesktopLiveModerationMenuUiTest {
     @Test fun originalMenuPointerActionsKeepTheOriginalItemAndCapturedCurrentSource(): Unit = runBlocking {
         val owner = SourceOwner()
         val item = LiveDanmakuItem("current ordinary message", uid = 77, uname = "Fixture", idStr = "ordinary-menu")
-        val f = Scene(owner, item)
+        val f = Scene(owner, item, coroutineContext)
         try {
             val labels = listOf("复制弹幕信息" to "copy", "去TA的个人空间" to "space", "@TA" to "reply",
                 "屏蔽发送者" to "shield", "举报选中弹幕" to "report")
@@ -67,7 +68,7 @@ class DesktopLiveModerationMenuUiTest {
     @Test fun queuedSourceClickAndEmittedRowPredicateRejectStaleOwnershipWhileFreshRowsStayUsable(): Unit = runBlocking {
         val owner = SourceOwner()
         val item = LiveDanmakuItem("same message id and text", uid = 77, uname = "Fixture", idStr = "retained-id")
-        val f = Scene(owner, item)
+        val f = Scene(owner, item, coroutineContext)
         try {
             f.openMenu()
             val report = assertNotNull(assertNotNull(f.button("举报选中弹幕")).config[SemanticsActions.OnClick].action)
@@ -164,7 +165,7 @@ class DesktopLiveModerationMenuUiTest {
         }
     }
 
-    private class Scene(owner: SourceOwner, initial: LiveDanmakuItem) : AutoCloseable {
+    private class Scene(owner: SourceOwner, initial: LiveDanmakuItem, sceneContext: CoroutineContext) : AutoCloseable {
         var messages by mutableStateOf(listOf(initial))
             private set
         val actions = mutableListOf<Action>()
@@ -175,7 +176,11 @@ class DesktopLiveModerationMenuUiTest {
         private val scene: ImageComposeScene
         init {
             check(GraphicsEnvironment.isHeadless())
-            scene = ImageComposeScene(520, 420, Density(1f)) {
+            // The scene defaults to Dispatchers.Unconfined, so a timer or IO continuation of its effects runs the frame's
+            // snapshot notifications on that other thread while this thread renders it ("Detected multithreaded access to
+            // SnapshotStateObserver", reported to whichever runTest starts next). Run its effects on this test's runBlocking
+            // loop, the thread that pumps the frames, as DesktopDynamicRefreshUiTest does.
+            scene = ImageComposeScene(520, 420, Density(1f), coroutineContext = sceneContext) {
                 val actualWindow = LocalWindowInfo.current
                 val focused = remember(actualWindow) { object : WindowInfo by actualWindow {
                     override val isWindowFocused = true

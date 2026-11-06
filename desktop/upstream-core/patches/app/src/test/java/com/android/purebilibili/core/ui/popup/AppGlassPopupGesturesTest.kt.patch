@@ -1,0 +1,19 @@
+Upstream-source-sha256: 1f3d005648270b637ee3bc155fb1b719d6c8888e402dba9bf98d8cfcd236db76
+Reason: popupElasticFrame 用 center ± halfSize 重建 rect，Rect.center 再从左右/上下反算，float 往返丢一个 ulp（期望 x 位 43160000、实际 43160001，约 1.5e-5 px；y 位相同）。
+width / height 两条已用 0.001f；重心同样按分量各 0.001f 断言，期望仍是原重心加拖拽量。生产函数、加 0f 之类的位移补偿都不做。
+
+--- a/app/src/test/java/com/android/purebilibili/core/ui/popup/AppGlassPopupGesturesTest.kt
++++ b/app/src/test/java/com/android/purebilibili/core/ui/popup/AppGlassPopupGesturesTest.kt
+@@ -123,7 +123,11 @@
+         val swell = 1f + 16f / 360f
+         assertEquals((240f + 15f) * swell, actual.rect.width, 0.001f)
+         assertEquals((360f + 20f) * swell, actual.rect.height, 0.001f)
+-        assertEquals(base.rect.center + Offset(30f, -20f), actual.rect.center)
++        // rect 以 center ± halfSize 重建后，Rect.center 再算回来会丢一个 ulp（约 1.5e-5 px）；
++        // width/height 上面已用 0.001f，重心同样按 0.001f 断言，期望仍是原始重心加拖拽量。
++        val expectedCenter = base.rect.center + Offset(30f, -20f)
++        assertEquals(expectedCenter.x, actual.rect.center.x, 0.001f)
++        assertEquals(expectedCenter.y, actual.rect.center.y, 0.001f)
+     }
+ 
+     @Test

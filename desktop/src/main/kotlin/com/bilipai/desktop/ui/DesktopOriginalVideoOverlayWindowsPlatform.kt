@@ -1,5 +1,9 @@
 package com.bilipai.desktop.ui
 
+import com.bilipai.desktop.plugins.asAndroidContext
+import com.android.purebilibili.plugin.sdk.CastPluginApi
+import com.android.purebilibili.plugin.sdk.CastPluginMediaRequest
+import com.android.purebilibili.plugin.sdk.CastPluginRoute
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -199,9 +203,9 @@ internal class DesktopOriginalVideoOverlayWindowsPlatform(
                 { !closed.get() && !caller.isCancelled && owns() && source.isCurrent() }, caller)
             return withContext(frame) { source.check(); action().also { source.check(); requireOwned() } }
         }
-        override suspend fun cast(context: DesktopPluginContext, route: CastPluginRoute,
+        override suspend fun cast(context: android.content.Context, route: CastPluginRoute,
             media: CastPluginMediaRequest): Result<Unit> {
-            require(context === runtime.context)
+            require(com.bilipai.desktop.plugins.desktopPluginContext(context) === runtime.context)
             val capability = synchronized(resolutionsLock) { resolved.remove(media.url) }
                 ?: throw CancellationException("Original cast resolution expired")
             val preparation = DesktopCastProxySessions.acquirePreparation()

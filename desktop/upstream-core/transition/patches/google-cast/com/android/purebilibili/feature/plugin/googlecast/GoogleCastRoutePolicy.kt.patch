@@ -1,0 +1,12 @@
+--- a/google-cast/com/android/purebilibili/feature/plugin/googlecast/GoogleCastRoutePolicy.kt
++++ b/google-cast/com/android/purebilibili/feature/plugin/googlecast/GoogleCastRoutePolicy.kt
+@@ -1,8 +1,8 @@
+ package com.android.purebilibili.feature.plugin.googlecast
+ 
+-import com.android.purebilibili.core.plugin.CastPluginRoute
++import com.android.purebilibili.plugin.sdk.CastPluginRoute
+ 
+ internal fun toCastPluginRoute(
+     routeId: String,
+     name: String,
+     description: String?,

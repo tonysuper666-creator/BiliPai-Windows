@@ -1,8 +1,8 @@
 package com.bilipai.desktop.ui
 
 import androidx.compose.runtime.Composable
-import com.android.purebilibili.core.plugin.CastPluginApi
-import com.android.purebilibili.core.plugin.CastPluginRoute
+import com.android.purebilibili.plugin.sdk.CastPluginApi
+import com.android.purebilibili.plugin.sdk.CastPluginRoute
 import com.android.purebilibili.data.model.response.PlayUrlData
 import com.android.purebilibili.feature.video.share.VideoSharePayload
 

@@ -7,7 +7,7 @@ import com.android.purebilibili.feature.video.danmaku.resolveDanmakuDriftSyncInt
 import com.android.purebilibili.danmaku.engine.DanmakuRenderConfig
 import com.android.purebilibili.feature.video.danmaku.CommandDanmakuItem
 import com.android.purebilibili.feature.live.LiveDanmakuItem
-import com.android.purebilibili.core.plugin.DanmakuStyle
+import com.android.purebilibili.plugin.sdk.DanmakuStyle
 import com.android.purebilibili.danmaku.parser.bas.BasDanmaku
 import com.android.purebilibili.danmaku.parser.bas.BasTarget
 import com.bilipai.desktop.player.MpvPlayer

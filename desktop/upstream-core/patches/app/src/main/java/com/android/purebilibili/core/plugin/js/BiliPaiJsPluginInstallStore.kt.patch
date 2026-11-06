@@ -1,0 +1,34 @@
+--- a/app/src/main/java/com/android/purebilibili/core/plugin/js/BiliPaiJsPluginInstallStore.kt
++++ b/app/src/main/java/com/android/purebilibili/core/plugin/js/BiliPaiJsPluginInstallStore.kt
+@@ -38,13 +38,13 @@
+             throw IllegalArgumentException(error)
+         }
+         val pluginDir = File(packageDir, manifest.id)
+         pluginDir.mkdirs()
+         metadataDir.mkdirs()
+         val scriptFile = File(pluginDir, "plugin.js")
+-        scriptFile.writeText(script, Charsets.UTF_8)
++        com.bilipai.desktop.plugins.writeDesktopPluginDocument(scriptFile, script)
+         val installed = InstalledBiliPaiJsPlugin(
+             manifest = manifest,
+             sourceUrl = sourceUrl,
+             scriptPath = scriptFile.absolutePath,
+             installedAtMillis = clock(),
+             enabled = false,
+@@ -93,14 +93,14 @@
+             json.decodeFromString(InstalledBiliPaiJsPlugin.serializer(), file.readText(Charsets.UTF_8))
+         }.getOrNull()
+     }
+ 
+     private fun writeInstalled(installed: InstalledBiliPaiJsPlugin) {
+         metadataDir.mkdirs()
+-        metadataFile(installed.manifest.id)
+-            .writeText(json.encodeToString(InstalledBiliPaiJsPlugin.serializer(), installed), Charsets.UTF_8)
++        com.bilipai.desktop.plugins.writeDesktopPluginDocument(metadataFile(installed.manifest.id),
++            json.encodeToString(InstalledBiliPaiJsPlugin.serializer(), installed))
+     }
+ 
+     private fun metadataFile(pluginId: String): File {
+         return File(metadataDir, "$pluginId.json")
+     }
+ 

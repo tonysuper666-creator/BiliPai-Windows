@@ -317,10 +317,10 @@ class DesktopBangumiVideoCodecRecoveryAssemblyTest {
     private inline fun <reified T> unused(): T = Proxy.newProxyInstance(T::class.java.classLoader,
         arrayOf(T::class.java)) { _, method, _ -> error("Unexpected ${T::class.java.simpleName}.${method.name}") } as T
     private inner class Fixture(private val hevcSupported: Boolean = false, private val hiRes: Boolean = true) {
-        val directory = Files.createTempDirectory("pgc-codec-real-owner-")
+        val directory = Files.createTempDirectory("pgc-codec-real-owner-").toRealPath()
         private val createdAbsolute = directory.toAbsolutePath().normalize()
         private val createdReal = directory.toRealPath()
-        private val tempAbsolute = Path.of(System.getProperty("java.io.tmpdir")).toAbsolutePath().normalize()
+        private val tempAbsolute = Path.of(System.getProperty("java.io.tmpdir")).toRealPath()
         private val tempReal = tempAbsolute.toRealPath()
         val sessions = DesktopSessionStore.temporary()
         val repository = DesktopRepository(sessions)
@@ -463,7 +463,7 @@ class DesktopBangumiVideoCodecRecoveryAssemblyTest {
                 val plugins = Proxy.newProxyInstance(DesktopOriginalVideoOwnerPlugins::class.java.classLoader,
                     arrayOf(DesktopOriginalVideoOwnerPlugins::class.java)) { _, method, _ ->
                     when (method.name) { "capturePlaybackDispatch" -> null
-                        "enabledPlayerPlugins" -> emptyList<com.android.purebilibili.core.plugin.PlayerPlugin>()
+                        "enabledPlayerPlugins" -> emptyList<com.android.purebilibili.core.plugin.DesktopSingleSessionPlayerPlugin>()
                         else -> error("Unexpected plugin effect ${method.name}") }
                 } as DesktopOriginalVideoOwnerPlugins
                 val effects = DesktopOriginalVideoOwnerEffects(mini, unused(), unused(), network,

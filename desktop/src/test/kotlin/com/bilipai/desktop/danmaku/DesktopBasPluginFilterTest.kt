@@ -1,7 +1,8 @@
 package com.bilipai.desktop.danmaku
 
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.graphics.Color
-import com.android.purebilibili.core.plugin.DanmakuStyle
+import com.android.purebilibili.plugin.sdk.DanmakuStyle
 import com.android.purebilibili.danmaku.parser.bas.BasDanmaku
 import com.android.purebilibili.danmaku.parser.bas.BasScriptParser
 import java.util.concurrent.CancellationException
@@ -169,7 +170,7 @@ class DesktopBasPluginFilterTest {
         val item = script()
         val processor = DesktopBasPluginProcessor({ it.copy(color = 0xff0000) }, { null })
         assertTrue(filter(listOf(item), DanmakuSettings(allowColorful = false), processor).isEmpty())
-        val whiteOverride = DesktopBasPluginProcessor({ it.copy(color = 0xff0000) }, { DanmakuStyle(textColor = Color.White) })
+        val whiteOverride = DesktopBasPluginProcessor({ it.copy(color = 0xff0000) }, { DanmakuStyle(textColor = Color.White.toArgb()) })
         val output = filter(listOf(item), DanmakuSettings(allowColorful = false), whiteOverride).single()
         assertEquals(0xffffff, output.colorOverride)
         assertEquals(0xff0000, output.color)

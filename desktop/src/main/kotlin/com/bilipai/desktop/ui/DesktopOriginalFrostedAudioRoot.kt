@@ -46,6 +46,8 @@ internal class DesktopOriginalFrostedNavigationActions(
     val navigate: (BottomNavItem) -> Unit,
     val homeDoubleTap: () -> Unit,
     val dynamicDoubleTap: () -> Unit,
+    /** F5 / Ctrl+R on the dynamic page: scroll to the top and always refresh (the double tap only refreshes from the top). */
+    val dynamicRefresh: () -> Unit,
     val searchClick: () -> Unit,
     val openSearch: (String) -> Unit,
     val openNativeTarget: (BilibiliNavigationTarget) -> Unit,
@@ -200,7 +202,7 @@ internal fun DesktopOriginalFrostedAudioNavigation(
         hazeState = hazeState,
         isFloating = navigation.isFloating,
         labelMode = actualExtra.labels,
-        homeSettings = actualHome,
+        homeSettings = actualHome.toUpstreamHomeSettings(),
         onHomeDoubleTap = { if (owner.isOwned()) actions.homeDoubleTap() },
         onDynamicDoubleTap = { if (owner.isOwned()) actions.dynamicDoubleTap() },
         onSearchClick = { if (owner.isOwned()) actions.searchClick() },
@@ -232,3 +234,17 @@ internal fun DesktopOriginalFrostedAudioNavigation(
         animateNowPlayingPresence = navigation.animateNowPlayingPresence,
     )
 }
+
+/** Upstream's FrostedBottomBar reads the whole HomeSettings; the desktop persists only the dock-related subset, the rest keeps upstream's defaults. */
+private fun com.bilipai.desktop.settings.DesktopOriginalFrostedHomePreferences.toUpstreamHomeSettings() = com.android.purebilibili.core.store.HomeSettings(
+    navigationIconCrossScaleEnabled = navigationIconCrossScaleEnabled,
+    isBottomBarSearchEnabled = isBottomBarSearchEnabled,
+    linkedDockMergeOnScrollEnabled = linkedDockMergeOnScrollEnabled,
+    bottomBarSearchAutoExpandMode = bottomBarSearchAutoExpandMode,
+    bottomBarSearchLayoutMode = bottomBarSearchLayoutMode,
+    androidNativeLiquidGlassEnabled = androidNativeLiquidGlassEnabled,
+    liquidGlassProgress = liquidGlassProgress,
+    liquidGlassReadabilityMode = liquidGlassReadabilityMode,
+    liquidGlassAdvancedSettings = liquidGlassAdvancedSettings,
+    bottomBarLiquidGlassPreset = bottomBarLiquidGlassPreset,
+)

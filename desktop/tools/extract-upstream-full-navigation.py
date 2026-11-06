@@ -1,5 +1,6 @@
 from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
+from desktop_paths import long_path
 import importlib.util,sys,re,json,hashlib,textwrap,argparse
 sys.dont_write_bytecode=True
 args_parser=argparse.ArgumentParser(description="Original full BottomBar and applicable Animation controls; Windows preference/icon/lifecycle bindings only.")
@@ -16,7 +17,7 @@ def load(name,path):
     spec=importlib.util.spec_from_file_location(name,path); mod=importlib.util.module_from_spec(spec);spec.loader.exec_module(mod);return mod
 def wide(path):
     value=str(path.absolute())
-    return Path(value if value.startswith('\\\\?\\') else '\\\\?\\'+value)
+    return long_path(value)
 def write(path,value):
     wide(path.parent).mkdir(parents=True,exist_ok=True);wide(path).write_text(value,encoding='utf-8',newline='\n')
 parser=load('full_parser',MAIN/'desktop/tools/sync-upstream.py')

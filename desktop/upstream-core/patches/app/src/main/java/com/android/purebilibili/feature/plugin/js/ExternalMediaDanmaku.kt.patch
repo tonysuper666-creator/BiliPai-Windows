@@ -1,0 +1,18 @@
+Reason: The documented decimal integer format must not be inferred as hex from its length; only # prefixes select RGB/ARGB.
+
+--- a/app/src/main/java/com/android/purebilibili/feature/plugin/js/ExternalMediaDanmaku.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/plugin/js/ExternalMediaDanmaku.kt
+@@ -34,10 +34,11 @@
+ internal fun parseJsDanmuColorInt(raw: String): Int? {
+     val value = raw.trim()
+     if (value.isEmpty()) return null
+-    val hex = value.removePrefix("#")
++    if (!value.startsWith("#")) return value.toLongOrNull()?.toInt()
++    val hex = value.substring(1)
+     return when (hex.length) {
+         6 -> hex.toLongOrNull(16)?.let { (0xFF000000L or it).toInt() }
+         8 -> hex.toLongOrNull(16)?.toInt()
+-        else -> value.toLongOrNull()?.toInt()
++        else -> null
+     }
+ }

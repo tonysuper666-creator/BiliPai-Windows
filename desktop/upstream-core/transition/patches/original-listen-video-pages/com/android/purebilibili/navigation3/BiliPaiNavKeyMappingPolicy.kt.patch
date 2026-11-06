@@ -1,0 +1,21 @@
+--- a/original-listen-video-pages/com/android/purebilibili/navigation3/BiliPaiNavKeyMappingPolicy.kt
++++ b/original-listen-video-pages/com/android/purebilibili/navigation3/BiliPaiNavKeyMappingPolicy.kt
+@@ -71,6 +71,7 @@
+         BiliPaiNavKey.TipsSettings -> ScreenRoutes.TipsSettings.route
+         BiliPaiNavKey.Login -> ScreenRoutes.Login.route
+         BiliPaiNavKey.Profile -> ScreenRoutes.Profile.route
++        is BiliPaiNavKey.AccountLedger -> "account_ledger/${kind.name.lowercase()}"
+         is BiliPaiNavKey.AicuQuery -> ScreenRoutes.AicuQuery.createRoute(uid, category)
+         BiliPaiNavKey.History -> ScreenRoutes.History.route
+         is BiliPaiNavKey.HistorySearch -> "history_search?query=${encodeRouteValue(query)}"
+@@ -216,6 +217,10 @@
+         normalized == ScreenRoutes.TipsSettings.route -> BiliPaiNavKey.TipsSettings
+         normalized == ScreenRoutes.Login.route -> BiliPaiNavKey.Login
+         normalized == ScreenRoutes.Profile.route -> BiliPaiNavKey.Profile
++        segments.firstOrNull() == "account_ledger" && segments.size == 2 -> {
++            val kind = com.android.purebilibili.data.model.AccountLedgerKind.entries.firstOrNull { it.name.equals(segments.getOrNull(1), ignoreCase = true) }
++            if (kind != null) BiliPaiNavKey.AccountLedger(kind) else BiliPaiNavKey.Unknown(normalized)
++        }
+         routeBase == "aicu" -> BiliPaiNavKey.AicuQuery(
+             uid = query["uid"]?.toLongOrNull()?.takeIf { it > 0 } ?: 0L,
+             category = com.android.purebilibili.data.model.response.AicuCategory.fromRoute(query["category"]).name,

@@ -1,6 +1,6 @@
 package com.bilipai.desktop.data
 
-import com.android.purebilibili.core.plugin.FeedKind
+import com.android.purebilibili.plugin.sdk.FeedKind
 import com.android.purebilibili.data.model.response.VideoItem
 import com.android.purebilibili.feature.plugin.BiliPaiFeedFilterConfig
 import com.android.purebilibili.feature.plugin.DesktopFeedFilterEditor

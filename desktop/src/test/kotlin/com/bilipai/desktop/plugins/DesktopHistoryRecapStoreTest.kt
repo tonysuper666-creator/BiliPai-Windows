@@ -21,12 +21,12 @@ class DesktopHistoryRecapStoreTest {
             val file = File(context.filesDir,"plugin/subscription_reading.json")
             file.parentFile.mkdirs()
             file.writeText("""{"items":[],"readKeys":["builtin:old\u001fold"],"fullBodies":{"old":"body"}}""")
-            val old = FeedReadingStore.load(context)
+            val old = FeedReadingStore.load(context.asAndroidContext())
             assertEquals(listOf("builtin:old\u001fold"),old.readKeys)
             assertEquals(mapOf("old" to "body"),old.fullBodies)
             assertTrue(old.readTimestamps.isEmpty());assertTrue(old.readProgress.isEmpty())
-            FeedReadingStore.saveItems(context,listOf(article()))
-            val saved = FeedReadingStore.load(context)
+            FeedReadingStore.saveItems(context.asAndroidContext(),listOf(article()))
+            val saved = FeedReadingStore.load(context.asAndroidContext())
             assertEquals(old.readKeys,saved.readKeys);assertEquals(old.fullBodies,saved.fullBodies)
             assertTrue(saved.readTimestamps.isEmpty())
         }
@@ -34,15 +34,15 @@ class DesktopHistoryRecapStoreTest {
     @Test fun completeOriginalTimestampMethodsUseRealReadTimeAndKeepUnreadHistory(): Unit = runBlocking {
         fixture { context ->
             val key=feedItemKey(article())
-            FeedReadingStore.recordRead(context,key,atMs=123_456L)
-            assertEquals(mapOf(key to 123_456L),FeedReadingStore.loadTimestamps(context))
-            assertEquals(listOf(key),FeedReadingStore.load(context).readKeys)
-            assertEquals(listOf(key to 123_456L),FeedReadingStore.recentReads(context,123_456L))
-            assertTrue(FeedReadingStore.recentReads(context,123_457L).isEmpty())
+            FeedReadingStore.recordRead(context.asAndroidContext(),key,atMs=123_456L)
+            assertEquals(mapOf(key to 123_456L),FeedReadingStore.loadTimestamps(context.asAndroidContext()))
+            assertEquals(listOf(key),FeedReadingStore.load(context.asAndroidContext()).readKeys)
+            assertEquals(listOf(key to 123_456L),FeedReadingStore.recentReads(context.asAndroidContext(),123_456L))
+            assertTrue(FeedReadingStore.recentReads(context.asAndroidContext(),123_457L).isEmpty())
             // Upstream setRead(false) changes the visible marker, not past reading history.
-            FeedReadingStore.setRead(context,key,false)
-            assertTrue(FeedReadingStore.load(context).readKeys.isEmpty())
-            assertEquals(mapOf(key to 123_456L),FeedReadingStore.loadTimestamps(context))
+            FeedReadingStore.setRead(context.asAndroidContext(),key,false)
+            assertTrue(FeedReadingStore.load(context.asAndroidContext()).readKeys.isEmpty())
+            assertEquals(mapOf(key to 123_456L),FeedReadingStore.loadTimestamps(context.asAndroidContext()))
         }
     }
     @Test fun originalTimestampAndProgressBoundsArePreserved(): Unit = runBlocking {
@@ -51,10 +51,10 @@ class DesktopHistoryRecapStoreTest {
         assertEquals(2_000,bounded.size);assertEquals(9_999L,bounded["latest"])
         assertFalse("k0" in bounded);assertEquals(input.filterKeys { it!="k1" },updateReadTimestamps(input,"k1",false,0L))
         fixture { context ->
-            FeedReadingStore.recordProgress(context,"a",120)
-            assertEquals(100,FeedReadingStore.readProgress(context,"a"))
-            FeedReadingStore.recordProgress(context,"a",-1)
-            assertEquals(0,FeedReadingStore.readProgress(context,"a"))
+            FeedReadingStore.recordProgress(context.asAndroidContext(),"a",120)
+            assertEquals(100,FeedReadingStore.readProgress(context.asAndroidContext(),"a"))
+            FeedReadingStore.recordProgress(context.asAndroidContext(),"a",-1)
+            assertEquals(0,FeedReadingStore.readProgress(context.asAndroidContext(),"a"))
         }
     }
     @Test fun actualRssActorRecordsTrueReadInsteadOfArticlePublicationTime(): Unit = runBlocking {
@@ -62,7 +62,7 @@ class DesktopHistoryRecapStoreTest {
             val repository=DesktopSubscriptionRepository(context,enabled={true})
             val item=article();val before=System.currentTimeMillis()
             repository.setRead(item,true)
-            val timestamp=assertNotNull(FeedReadingStore.loadTimestamps(context)[feedItemKey(item)])
+            val timestamp=assertNotNull(FeedReadingStore.loadTimestamps(context.asAndroidContext())[feedItemKey(item)])
             assertTrue(timestamp in before..System.currentTimeMillis())
             assertNotEquals(item.publishedEpochSec!!*1_000L,timestamp)
             assertEquals(timestamp,repository.state.value.reading.readTimestamps[feedItemKey(item)])
@@ -74,7 +74,7 @@ class DesktopHistoryRecapStoreTest {
     @Test fun retiredActualRssWriteCannotReplaceExistingAtomicDocument(): Unit = runBlocking {
         fixture { context ->
             val item=article();val key=feedItemKey(item)
-            FeedReadingStore.recordRead(context,key,42L)
+            FeedReadingStore.recordRead(context.asAndroidContext(),key,42L)
             val file=File(context.filesDir,"plugin/subscription_reading.json");val before=file.readBytes()
             val repository=DesktopSubscriptionRepository(context,enabled={true})
             var commits=0
@@ -84,17 +84,17 @@ class DesktopHistoryRecapStoreTest {
             assertIs<CancellationException>(failed.exceptionOrNull())
             assertEquals(1,commits);assertContentEquals(before,file.readBytes())
             assertTrue(repository.state.value.reading.readTimestamps.isEmpty())
-            assertEquals(mapOf(key to 42L),FeedReadingStore.loadTimestamps(context))
+            assertEquals(mapOf(key to 42L),FeedReadingStore.loadTimestamps(context.asAndroidContext()))
         }
     }
     @Test fun actualReadWritesKeepFullBodiesItemsAndProgressTogether(): Unit = runBlocking {
         fixture { context ->
             val item=article();val key=feedItemKey(item)
-            FeedReadingStore.saveItems(context,listOf(item))
-            FeedReadingStore.saveFullBody(context,key,"complete")
-            FeedReadingStore.recordProgress(context,key,37)
+            FeedReadingStore.saveItems(context.asAndroidContext(),listOf(item))
+            FeedReadingStore.saveFullBody(context.asAndroidContext(),key,"complete")
+            FeedReadingStore.recordProgress(context.asAndroidContext(),key,37)
             DesktopSubscriptionRepository(context,enabled={true}).setRead(item,true)
-            val saved=FeedReadingStore.load(context)
+            val saved=FeedReadingStore.load(context.asAndroidContext())
             assertEquals(listOf(item),saved.items);assertEquals("complete",saved.fullBodies[key])
             assertEquals(37,saved.readProgress[key]);assertNotNull(saved.readTimestamps[key])
             assertEquals(listOf(key),saved.readKeys)

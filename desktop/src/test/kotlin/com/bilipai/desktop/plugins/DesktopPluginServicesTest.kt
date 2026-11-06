@@ -55,11 +55,11 @@ class DesktopPluginServicesTest {
     @Test fun `subscription cache retains unchanged feed entries and original read state`(): Unit = runBlocking {
         val root = Files.createTempDirectory("plugin-feed-")
         val context = DesktopPluginContext(DesktopPluginStore(root))
-        val source = SubscriptionFeedStore.add(context, "测试订阅", "https://example.invalid/feed.xml").getOrThrow()
+        val source = SubscriptionFeedStore.add(context.asAndroidContext(), "测试订阅", "https://example.invalid/feed.xml").getOrThrow()
         val item = ParsedFeedItem("article", "builtin:${source.id}", source.title, "标题", "https://example.invalid/article",
             "作者", 123L, "摘要", "<p>全文</p>", null)
-        FeedReadingStore.saveItems(context, listOf(item))
-        FeedConditionalStore.update(context, mapOf(source.url to FeedConditionalValidators(etag = "revision-1")))
+        FeedReadingStore.saveItems(context.asAndroidContext(), listOf(item))
+        FeedConditionalStore.update(context.asAndroidContext(), mapOf(source.url to FeedConditionalValidators(etag = "revision-1")))
         val repository = DesktopSubscriptionRepository(context) { true }
         repository.loadCached()
         assertEquals(listOf(item), repository.state.value.reading.items)
@@ -69,11 +69,11 @@ class DesktopPluginServicesTest {
         val reopened = DesktopSubscriptionRepository(DesktopPluginContext(DesktopPluginStore(root))) { true }
         reopened.loadCached()
         assertEquals(repository.state.value.reading, reopened.state.value.reading)
-        assertEquals("revision-1", FeedConditionalStore.load(context)[source.url]?.etag)
+        assertEquals("revision-1", FeedConditionalStore.load(context.asAndroidContext())[source.url]?.etag)
         assertTrue(reopened.exportOpml().contains(source.url))
         repository.shutdownForRestore()
         assertFailsWith<IllegalStateException> { repository.remove(source.id) }
-        assertEquals(1, SubscriptionFeedStore.list(context).size)
+        assertEquals(1, SubscriptionFeedStore.list(context.asAndroidContext()).size)
     }
 
     @Test fun `real public feed transport retains articles on 304 and never sends account cookies`(): Unit = runBlocking {

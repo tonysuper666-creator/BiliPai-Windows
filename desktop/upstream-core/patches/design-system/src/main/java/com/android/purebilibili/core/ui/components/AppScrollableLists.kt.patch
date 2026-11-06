@@ -1,0 +1,75 @@
+--- a/design-system/src/main/java/com/android/purebilibili/core/ui/components/AppScrollableLists.kt
++++ b/design-system/src/main/java/com/android/purebilibili/core/ui/components/AppScrollableLists.kt
+@@ -33,64 +33,68 @@
+ fun AppLazyColumn(
+     modifier: Modifier = Modifier,
+     state: LazyListState = rememberLazyListState(),
+     contentPadding: PaddingValues = PaddingValues(0.dp),
+     reverseLayout: Boolean = false,
+     verticalArrangement: Arrangement.Vertical = if (!reverseLayout) Arrangement.Top else Arrangement.Bottom,
+     horizontalAlignment: Alignment.Horizontal = Alignment.Start,
+     flingBehavior: FlingBehavior = ScrollableDefaults.flingBehavior(),
+     userScrollEnabled: Boolean = true,
+     overscrollEffect: OverscrollEffect? = rememberOverscrollEffect(),
+     content: LazyListScope.() -> Unit,
+ ) {
++    com.bilipai.desktop.ui.DesktopRefreshList(state)
++    val refreshPadding = com.bilipai.desktop.ui.desktopRefreshContentPadding(contentPadding)
+     Box(modifier, propagateMinConstraints = true) {
+         LazyColumn(
+-            state = state, contentPadding = contentPadding, reverseLayout = reverseLayout,
++            state = state, contentPadding = refreshPadding, reverseLayout = reverseLayout,
+             verticalArrangement = verticalArrangement, horizontalAlignment = horizontalAlignment,
+             flingBehavior = flingBehavior, userScrollEnabled = userScrollEnabled,
+             overscrollEffect = overscrollEffect, content = content,
+         )
+         if (LocalAppUiStyle.current == AppUiStyle.MIUIX && userScrollEnabled) {
+             Box(Modifier.matchParentSize()) {
+                 VerticalScrollBar(
+                     adapter = rememberScrollBarAdapter(state),
+                     modifier = Modifier.align(Alignment.CenterEnd).fillMaxHeight(),
+-                    trackPadding = contentPadding, reverseLayout = reverseLayout,
++                    trackPadding = refreshPadding, reverseLayout = reverseLayout,
+                 )
+             }
+         }
+     }
+ }
+ 
+ @OptIn(ExperimentalScrollBarApi::class)
+ @Composable
+ fun AppLazyVerticalGrid(
+     columns: GridCells,
+     modifier: Modifier = Modifier,
+     state: LazyGridState = rememberLazyGridState(),
+     contentPadding: PaddingValues = PaddingValues(0.dp),
+     reverseLayout: Boolean = false,
+     verticalArrangement: Arrangement.Vertical = if (!reverseLayout) Arrangement.Top else Arrangement.Bottom,
+     horizontalArrangement: Arrangement.Horizontal = Arrangement.Start,
+     flingBehavior: FlingBehavior = ScrollableDefaults.flingBehavior(),
+     userScrollEnabled: Boolean = true,
+     overscrollEffect: OverscrollEffect? = rememberOverscrollEffect(),
+     content: LazyGridScope.() -> Unit,
+ ) {
++    com.bilipai.desktop.ui.DesktopRefreshList(state)
++    val refreshPadding = com.bilipai.desktop.ui.desktopRefreshContentPadding(contentPadding)
+     Box(modifier, propagateMinConstraints = true) {
+         LazyVerticalGrid(
+-            columns = columns, state = state, contentPadding = contentPadding,
++            columns = columns, state = state, contentPadding = refreshPadding,
+             reverseLayout = reverseLayout, verticalArrangement = verticalArrangement,
+             horizontalArrangement = horizontalArrangement, flingBehavior = flingBehavior,
+             userScrollEnabled = userScrollEnabled, overscrollEffect = overscrollEffect, content = content,
+         )
+         if (LocalAppUiStyle.current == AppUiStyle.MIUIX && userScrollEnabled) {
+             Box(Modifier.matchParentSize()) {
+                 VerticalScrollBar(
+                     adapter = rememberScrollBarAdapter(state),
+                     modifier = Modifier.align(Alignment.CenterEnd).fillMaxHeight(),
+-                    trackPadding = contentPadding, reverseLayout = reverseLayout,
++                    trackPadding = refreshPadding, reverseLayout = reverseLayout,
+                 )
+             }
+         }
+     }
+ }

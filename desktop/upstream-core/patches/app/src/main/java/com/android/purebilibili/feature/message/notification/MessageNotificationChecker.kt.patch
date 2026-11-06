@@ -1,0 +1,93 @@
+--- a/com/android/purebilibili/feature/message/notification/MessageNotificationChecker.kt
++++ b/com/android/purebilibili/feature/message/notification/MessageNotificationChecker.kt
+@@ -14,7 +14,6 @@
+ import com.android.purebilibili.data.model.response.MessageFeedUnreadData
+ import com.android.purebilibili.data.model.response.SessionItem
+ import com.android.purebilibili.data.model.response.SystemNoticeItem
+-import com.android.purebilibili.data.repository.MessageRepository
+ import com.android.purebilibili.feature.message.MessagePreviewParser
+ import com.android.purebilibili.navigation.ScreenRoutes
+ import java.io.IOException
+@@ -26,6 +25,8 @@
+ import kotlinx.coroutines.ensureActive
+ import kotlinx.coroutines.launch
+ import kotlinx.coroutines.flow.first
++import com.bilipai.desktop.ui.desktopMessageNotificationAccount
++import com.bilipai.desktop.ui.desktopMessageNotificationPoll
+ 
+ // Interaction polling queries unread counts; list viewing and acknowledgements stay in message pages.
+ internal interface MessageNotificationSource {
+@@ -40,38 +41,8 @@
+     suspend fun followedLive(page: Int): FollowedLiveData
+ }
+ 
+-private object NetworkMessageNotificationSource : MessageNotificationSource {
+-    override suspend fun sessions() = MessageRepository.getSessions(sessionType = 4, size = 20)
+-        .getOrThrow().session_list.orEmpty()
+-    override suspend fun sessionDetail(talkerId: Long, sessionType: Int): SessionItem {
+-        val response = NetworkModule.messageApi.getSessionDetail(talkerId, sessionType)
+-        check(response.code == 0) { "Session detail code ${response.code}" }
+-        return checkNotNull(response.data).also {
+-            check(it.talker_id == talkerId && it.session_type == sessionType) { "会话详情标识不匹配" }
+-        }
+-    }
+-    override suspend fun feedUnread() = MessageRepository.getFeedUnread().getOrThrow()
+-    override suspend fun systemNotices() = MessageRepository.getSystemNotices().getOrThrow()
+-    override suspend fun dynamicUpdateCount(baseline: String): Int {
+-        val response = NetworkModule.dynamicApi.getDynamicUpdateCount(type = "all", updateBaseline = baseline)
+-        check(response.code == 0) { "Dynamic update code ${response.code}" }
+-        return checkNotNull(response.data).update_num
+-    }
+-    override suspend fun dynamicAuthorUpdates() = DynamicAuthorUpdatesApi.load()
+-    override suspend fun followings(selfMid: Long, page: Int): FollowingsData {
+-        val response = NetworkModule.api.getFollowings(vmid = selfMid, pn = page, ps = 50)
+-        check(response.code == 0) { "Followings code ${response.code}" }
+-        return checkNotNull(response.data)
+-    }
+-    override suspend fun personalDynamicFeed(hostUid: Long, offset: String, page: Int) =
+-        DynamicPersonalFeedApi.load(hostUid, offset, page)
+-    override suspend fun followedLive(page: Int): FollowedLiveData {
+-        val response = NetworkModule.api.getFollowedLive(page = page, pageSize = 10)
+-        check(response.code == 0) { "Followed live code ${response.code}" }
+-        // A missing payload is not evidence that every previously live room went offline.
+-        return checkNotNull(response.data)
+-    }
+-}
++// Desktop: the network source is built per check over this window's Root (desktopMessageNotificationPoll), so every
++// request runs under that account's admission instead of the process-wide NetworkModule and MessageRepository.
+ 
+ internal data class MessageNotificationCheckResult(
+     val state: AccountNotificationState,
+@@ -455,10 +426,12 @@
+         val settings = MessageNotificationSettingsStore.getSettings(context).first()
+         if (!settings.enabled || !MessageNotificationNotifier.canPost(context)) return@withLock true
+         val remoteSession = isMessageNotificationProcess(context)
+-        if (remoteSession) TokenManager.refreshServiceSession(context) else TokenManager.awaitRestore()
+-        val mid = TokenManager.midCache?.takeIf { it > 0 } ?: return@withLock true
+-        val session = TokenManager.sessDataCache?.takeIf { it.isNotBlank() } ?: return@withLock true
+-        fun isSameSession() = TokenManager.midCache == mid && TokenManager.sessDataCache == session
++        // Desktop: the account is this window's Root account, read under its admission; TokenManager is not consulted.
++        // The desktop is one process (isMessageNotificationProcess is false), so the remote-session branches never run.
++        val account = desktopMessageNotificationAccount(context)
++        val mid = account.mid()?.takeIf { it > 0 } ?: return@withLock true
++        val session = account.sessData()?.takeIf { it.isNotBlank() } ?: return@withLock true
++        fun isSameSession() = account.mid() == mid && account.sessData() == session
+         // Login's cookie and profile saves can be separate. Do not pair a new cookie with
+         // a previous account's MID while that transition is being persisted.
+         if (remoteSession && verifiedSession != (mid to session)) {
+@@ -472,13 +445,13 @@
+         }
+         if (MessageNotificationStateStore.checkedRecently(context, mid)) return@withLock true
+         val result = try {
+-            MessageNotificationPoller(NetworkMessageNotificationSource) {
++            desktopMessageNotificationPoll(context) { source -> MessageNotificationPoller(source) {
+                 if (remoteSession) TokenManager.refreshServiceSession(context)
+                 if (!isSameSession()) throw NotificationSessionChanged()
+             }.check(
+                 settings, MessageNotificationStateStore.getState(context, mid), mid,
+                 MessageNotificationNotifier.activeMessageKeys(context, mid),
+-            )
++            ) }
+         } catch (_: NotificationSessionChanged) {
+             return@withLock true
+         }

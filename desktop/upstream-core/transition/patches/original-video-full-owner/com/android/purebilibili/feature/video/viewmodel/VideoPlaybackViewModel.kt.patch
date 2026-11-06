@@ -1,21 +1,73 @@
 --- a/original-video-full-owner/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt
 +++ b/original-video-full-owner/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt
-@@ -1,9 +1,11 @@
+@@ -1,11 +1,13 @@
  package com.android.purebilibili.feature.video.viewmodel
-+
-+import com.bilipai.desktop.plugins.asAndroidContext
  
++import com.bilipai.desktop.plugins.asAndroidContext
++
  import com.android.purebilibili.feature.video.usecase.*
  
  import com.android.purebilibili.core.cooldown.PlaybackCooldownManager
- import com.android.purebilibili.core.plugin.SkipAction
+-import com.android.purebilibili.core.plugin.SkipAction
++import com.android.purebilibili.plugin.sdk.SkipAction
  import com.android.purebilibili.core.store.TodayWatchFeedbackSnapshot
  import com.android.purebilibili.core.store.TodayWatchFeedbackStore
  import com.android.purebilibili.core.store.TodayWatchProfileStore
-@@ -10128,17 +10130,17 @@
-         } else {
-             currentPositionSec - lastCreatorSignalPositionSec
+ import android.util.Log as Logger
+ import com.android.purebilibili.data.model.VideoLoadError
+@@ -1387,11 +1389,11 @@
+     private var sponsorBlockRetryVideo: Pair<String, Long>? = null
+     private var sponsorBlockRetryAtMs = 0L
+     private var sponsorBlockLoadFailures = 0
+ 
+     /** environment.plugins owns settings; mutable playback state belongs to this ViewModel. */
+-    private fun getSessionPlayerPlugins(): List<com.android.purebilibili.core.plugin.PlayerPlugin> =
++    private fun getSessionPlayerPlugins(): List<com.android.purebilibili.core.plugin.DesktopSingleSessionPlayerPlugin> =
+         environment.plugins.enabledPlayerPlugins().map { plugin ->
+             if (plugin is com.android.purebilibili.feature.plugin.SponsorBlockPlugin) sponsorPlaybackPlugin else plugin
          }
+ 
+     // Windows reads ONE immutable publication: source and original UI values are
+@@ -4000,11 +4002,11 @@
+                 ) {
+                     Logger.d("PlayerVM", "⏭️ Ignore stale timeout: bvid=${playbackRequest.bvid} token=$requestToken")
+                     return@launch
+                 }
+                 Logger.e("PlayerVM", "⚠️ Video load timed out for ${playbackRequest.bvid}")
+-                PlaybackCooldownManager.recordFailure(playbackRequest.bvid, "timeout")
++                com.bilipai.desktop.ui.desktopOriginalRecordPlaybackFailure(playbackRequest.bvid, e)
+                 _uiState.value = VideoPlaybackUiState.Error(VideoLoadError.Timeout)
+                 val desktopFailure = _uiState.value as? VideoPlaybackUiState.Error
+                 if (desktopFailure != null) observeDesktopLoadFailure(requestToken, desktopFailure, checkNotNull(kotlinx.coroutines.currentCoroutineContext()[Job]), kotlinx.coroutines.currentCoroutineContext()[com.bilipai.desktop.ui.DesktopVideoBootstrapInvocationContext]?.source)
+             } catch (e: CancellationException) {
+                 Logger.d("PlayerVM", "loadVideo canceled: bvid=${playbackRequest.bvid} token=$requestToken")
+@@ -9407,11 +9409,11 @@
+         publishDesktopSponsorContribution(SponsorContributionUiState(), expected)
+         refreshSponsorContributionAvailability()
+     }
+ 
+     private fun refreshSponsorContributionAvailability(
+-        enabledPlugins: List<com.android.purebilibili.core.plugin.PlayerPlugin> =
++        enabledPlugins: List<com.android.purebilibili.core.plugin.DesktopSingleSessionPlayerPlugin> =
+             getSessionPlayerPlugins(),
+     ) {
+         val current = _sponsorContributionUiState.value
+         if (current.phase !in setOf(SponsorContributionPhase.HIDDEN, SponsorContributionPhase.READY)) return
+         val context = resolveSponsorContributionContext(enabledPlugins)
+@@ -9424,11 +9426,11 @@
+             )
+         }, environment.captureNativePublication())
+     }
+ 
+     private fun resolveSponsorContributionContext(
+-        enabledPlugins: List<com.android.purebilibili.core.plugin.PlayerPlugin> =
++        enabledPlugins: List<com.android.purebilibili.core.plugin.DesktopSingleSessionPlayerPlugin> =
+             getSessionPlayerPlugins(),
+     ): SponsorContributionRequest? {
+         val plugin = enabledPlugins
+             .filterIsInstance<com.android.purebilibili.feature.plugin.SponsorBlockPlugin>()
+             .firstOrNull { it.isCommunityContributionEnabled() }
+@@ -10131,11 +10133,11 @@
          val safeDelta = rawDelta.coerceIn(0L, 45L)
          lastCreatorSignalPositionSec = currentPositionSec
          if (safeDelta <= 0L) return
@@ -28,6 +80,3 @@
              deltaWatchSec = safeDelta
          )
      }
-     
-     fun toast(
-         msg: String,

@@ -1,0 +1,35 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/message/MessageUserInfoLoader.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/message/MessageUserInfoLoader.kt
+@@ -12,26 +12,28 @@
+ /** Shared user-profile completion for inbox and message-share session pickers. */
+ internal object MessageUserInfoLoader {
+-    private var accountIdentity = TokenManager.accountIdentity.value
++    // Desktop (TON-1084): there is no process-wide TokenManager.accountIdentity. The cache belongs to the identity
++    // its caller passes (a message entry's Root account; upstream code inside an owner passes its owner's), and a
++    // different identity clears it, so one account's profiles are never served to another.
++    private var accountIdentity: AccountSessionIdentity? = null
+     private val users = mutableMapOf<Long, UserBasicInfo>()
+ 
+     @Synchronized
+-    fun cached(mid: Long): UserBasicInfo? {
+-        if (accountIdentity != TokenManager.accountIdentity.value) {
++    fun cached(mid: Long, identity: AccountSessionIdentity = TokenManager.accountIdentity.value): UserBasicInfo? {
++        if (accountIdentity != identity) {
+             users.clear()
+-            accountIdentity = TokenManager.accountIdentity.value
++            accountIdentity = identity
+         }
+         return users[mid]
+     }
+ 
+     @Synchronized
+     fun remember(
+         info: UserBasicInfo,
+         identity: AccountSessionIdentity = TokenManager.accountIdentity.value,
+     ): UserBasicInfo? {
+-        if (identity != TokenManager.accountIdentity.value) return null
+-        val merged = InboxUserInfoResolver.mergeFetchedUserInfo(cached(info.mid), info)
++        val merged = InboxUserInfoResolver.mergeFetchedUserInfo(cached(info.mid, identity), info)
+         if (merged != null) users[info.mid] = merged
+         return merged
+     }

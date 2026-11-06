@@ -387,10 +387,14 @@ class V046DynamicCategoryMergeSourceTest(unittest.TestCase):
         # which is not compiled, still calls it. Compiling the v0.4.6 DynamicCommentSheet later must rewrite that call
         # to DesktopOriginalDynamicReactionSheet.
         self.assertFalse(any(group['closedBy'] == 'dyn-category-merge-and-detail-return' for group in expected['groups']))
-        # Two verbatim imports are replaced by their producers on purpose and stay accepted, explained gaps.
-        for symbol in ('com.android.purebilibili.core.network.grpc.DynamicReactionApi',
-                       'com.android.purebilibili.feature.dynamic.components.DynamicSelfAvatar'):
-            self.assertEqual('none (producer adaptation)', listed[symbol], symbol)
+        # The network API is now a real compiled module definition, not an
+        # accepted missing import. The avatar remains a producer adaptation.
+        # core-data/ compiles whole from the merged root, so compileKotlin (not the retired whole-tree gate reading,
+        # TON-1205) proves the definition resolves for DesktopDynamicCardOperations.
+        api = 'com.android.purebilibili.core.network.grpc.DynamicReactionApi'
+        self.assertNotIn(api, listed)
+        self.assertEqual('none (producer adaptation)',
+                         listed['com.android.purebilibili.feature.dynamic.components.DynamicSelfAvatar'])
         self.assertIn('import com.android.purebilibili.core.network.grpc.DynamicReactionApi', self.sources['DynamicReactionSheet.kt'])
         self.assertIn('import com.android.purebilibili.feature.dynamic.components.DynamicSelfAvatar', self.sources['DynamicScreen.kt'])
 

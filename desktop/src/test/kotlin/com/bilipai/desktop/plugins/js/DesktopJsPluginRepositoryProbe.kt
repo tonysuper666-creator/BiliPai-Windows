@@ -1,6 +1,6 @@
 package com.bilipai.desktop.plugins.js
 
-import com.android.purebilibili.core.plugin.PluginCapability
+import com.android.purebilibili.plugin.sdk.PluginCapability
 import com.bilipai.desktop.plugins.DesktopPluginContext
 import com.bilipai.desktop.plugins.DesktopPluginStore
 import kotlinx.coroutines.*

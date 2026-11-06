@@ -1,0 +1,24 @@
+--- a/media/com/android/purebilibili/data/repository/DesktopOriginalLiveStreamRequest.kt
++++ b/media/com/android/purebilibili/data/repository/DesktopOriginalLiveStreamRequest.kt
+@@ -4,21 +4,6 @@
+ import kotlinx.coroutines.CancellationException
+ import kotlinx.coroutines.Dispatchers
+ import kotlinx.coroutines.withContext
+-
+-internal fun buildLivePlayUrlQuery(roomId: Long, qn: Int, onlyAudio: Boolean): Map<String, String> =
+-    buildMap {
+-        put("room_id", roomId.toString())
+-        put("protocol", "0,1")
+-        put("format", "0,1,2")
+-        put("codec", "0,1,2")
+-        put("qn", qn.toString())
+-        put("platform", "web")
+-        put("ptype", "8")
+-        put("dolby", "5")
+-        put("panorama", "1")
+-        put("web_location", "444.8")
+-        if (onlyAudio) put("only_audio", "1")
+-    }
+ 
+ internal suspend fun requestOriginalDesktopLiveStream(
+     api: com.android.purebilibili.core.network.BilibiliApi,

@@ -16,17 +16,31 @@ sys.path.insert(0, str(TOOLS))
 VM = "com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt"
 
 
-def restore(body, rows):
+def restore(body, rows, key="offset"):
     for row in reversed(rows):
-        i = row["offset"]
+        i = row[key]
         if body[i:i + len(row["after"])] != row["after"]:
             raise AssertionError("Inverse bytes changed")
         body = body[:i] + row["before"] + body[i + len(row["after"]):]
     return body
 
 
-def restore_final_send_stage(body, row):
+def restore_final_send_stage(body, row, output):
     assert hashlib.sha256(body.encode()).hexdigest() == row["sha256LF"]
+    # Outer stages added after this contract (detail 38daac558, metadata related aed5c58b1, next watch f373ab762,
+    # autoplay continuation 4cd3b844f, known state 75522724c, comment selection 38512320c) are unwound first,
+    # each through its own recorded proof, in the producer's reverse order.
+    comment = json.loads((output / "v029-comment-selection-VideoPlaybackViewModel.json").read_text(encoding="utf-8"))
+    assert hashlib.sha256(body.encode()).hexdigest() == comment["afterSha256LF"]
+    body = restore(body, comment["inverseEdits"])
+    assert hashlib.sha256(body.encode()).hexdigest() == comment["beforeSha256LF"]
+    known = json.loads((output / "v037-complete-known-state-owner-proof.json").read_text(encoding="utf-8"))
+    assert hashlib.sha256(body.encode()).hexdigest() == known["afterSha256LF"]
+    body = restore(body, known["indexedEdits"], key="afterOffset")
+    assert hashlib.sha256(body.encode()).hexdigest() == known["beforeSha256LF"]
+    for field in ("autoplayContinuationInverseEdits", "nextWatchInverseEdits", "metadataRelatedInverseEdits", "detailInverseEdits"):
+        body = restore(body, row[field])
+    assert hashlib.sha256(body.encode()).hexdigest() == row["postRelatedAfterSha256LF"]
     for field, checkpoint in (
         ("postRelatedInverseEdits", "postRelatedBeforeSha256LF"),
         ("relatedInverseEdits", "relatedBeforeSha256LF"),
@@ -63,7 +77,7 @@ class OriginalVideoFollowGroupGeneratorTest(unittest.TestCase):
 
     def test_actual_sole_producer_consumes_delta_and_all_three_edits_restore_whole_stage(self):
         self.assertEqual(3, len(self.row["followGroupInverseEdits"]))
-        body = restore(restore_final_send_stage(self.actual, self.row), self.row["failureRecoveryInverseEdits"])
+        body = restore(restore_final_send_stage(self.actual, self.row, self.output / "actual"), self.row["failureRecoveryInverseEdits"])
         baseline = restore(body, self.row["followGroupInverseEdits"])
         replay = []
         self.assertEqual(body, self.owner.follow_group_source_lifetime_delta(VM, baseline, replay))
@@ -110,7 +124,7 @@ class OriginalVideoFollowGroupGeneratorTest(unittest.TestCase):
             with mock.patch.object(self.owner, "_desktop_canonical_source", source), contextlib.redirect_stdout(io.StringIO()):
                 with self.assertRaises(AssertionError):
                     self.owner.generate(REPO, Path(root) / "output", True)
-        stage = restore(restore_final_send_stage(self.actual, self.row), self.row["failureRecoveryInverseEdits"])
+        stage = restore(restore_final_send_stage(self.actual, self.row, self.output / "actual"), self.row["failureRecoveryInverseEdits"])
         rows = self.row["followGroupInverseEdits"]
         changed = stage[:rows[-1]["offset"]] + "!" + stage[rows[-1]["offset"] + 1:]
         with self.assertRaises(AssertionError):

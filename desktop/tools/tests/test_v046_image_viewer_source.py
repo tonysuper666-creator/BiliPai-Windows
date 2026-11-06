@@ -574,9 +574,14 @@ class V046ImageViewerSourceTest(unittest.TestCase):
         self.assertNotIn(source.UPSTREAM_PATHS[source.MOTION], rows)
         # The producer's own inventory keeps describing the canonical bodies, which this slice does not change.
         inventory = {row['path']: row for row in producer.inventory(REPO)}
+        # ad2967bbf re-pinned the live registry to the direct-compile bytes; the catalog records the one
+        # reviewed pair (live sha256, legacySha256 = the canonical bodies the inventory describes).
+        catalog = json.loads((REPO / 'desktop/tools/v025-canonical-sources.json').read_bytes())['paths']
         for path in EXCLUDED.values():
             self.assertEqual('direct', inventory[path]['mode'])
-            self.assertEqual(rows[path]['sha256'], inventory[path]['sha256'])
+            pin = catalog[path]
+            self.assertEqual(inventory[path]['sha256'], pin.get('legacySha256', pin['sha256']))
+            self.assertEqual(pin['sha256'], rows[path]['sha256'])
         self.assertNotIn(source.ARCHIVE, json.dumps(registry))
 
     def test_inventory_rows_catalog_digest_and_counts_register_the_archive(self):

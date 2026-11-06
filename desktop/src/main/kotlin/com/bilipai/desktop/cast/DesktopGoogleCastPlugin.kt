@@ -1,9 +1,18 @@
 package com.bilipai.desktop.cast
 
+import com.android.purebilibili.plugin.sdk.CastDiscoveryRequirement
+import com.android.purebilibili.plugin.sdk.CastPluginApi
+import com.android.purebilibili.plugin.sdk.CastPluginMediaRequest
+import com.android.purebilibili.plugin.sdk.CastPluginPlaybackState
+import com.android.purebilibili.plugin.sdk.CastPluginRoute
+import com.android.purebilibili.plugin.sdk.PluginCapability
+import com.android.purebilibili.plugin.sdk.PluginCapabilityManifest
 import com.android.purebilibili.core.plugin.*
 import com.android.purebilibili.feature.plugin.googlecast.GoogleCastMediaLoader
 import com.android.purebilibili.feature.plugin.googlecast.toCastPluginRoute
 import com.bilipai.desktop.plugins.DesktopPluginContext
+import com.bilipai.desktop.plugins.asAndroidContext
+import com.bilipai.desktop.plugins.desktopPluginContext
 import com.bilipai.desktop.plugins.DesktopPluginScopeRegistry
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
@@ -13,7 +22,7 @@ import su.litvak.chromecast.api.v2.DesktopGoogleCastProvider
 import su.litvak.chromecast.api.v2.MediaStatus
 
 /** Original CastPluginApi, actual JVM transport; Android GMS is replaced at this boundary. */
-class DesktopGoogleCastPlugin : CastPluginApi {
+class DesktopGoogleCastPlugin : BuiltinPlugin, CastPluginApi {
     override val id = "google_cast"
     override val name = "Google Cast"
     override val description = "将视频投屏到 Chromecast / Google Cast 设备"
@@ -40,7 +49,10 @@ class DesktopGoogleCastPlugin : CastPluginApi {
     private val _busy = MutableStateFlow(false)
     val isBusy = _busy.asStateFlow()
 
-    override fun startRouteDiscovery(context: DesktopPluginContext) {
+    /** Root starts discovery with the plugin platform it owns. */
+    fun startRouteDiscovery(context: DesktopPluginContext) = startRouteDiscovery(context.asAndroidContext())
+    override fun startRouteDiscovery(androidContext: android.content.Context) {
+        val context = desktopPluginContext(androidContext)
         if (discoveryJob?.isActive == true) return
         val previous = discoveryJob
         discoveryJob = scope.launch {
@@ -67,10 +79,10 @@ class DesktopGoogleCastPlugin : CastPluginApi {
         }
     }
     override fun stopRouteDiscovery() { discoveryJob?.cancel() }
-    override fun refreshRouteDiscovery(context: DesktopPluginContext) {
-        scope.launch { discoveryJob?.cancelAndJoin(); discoveryJob = null; startRouteDiscovery(context) }
+    override fun refreshRouteDiscovery(androidContext: android.content.Context) {
+        scope.launch { discoveryJob?.cancelAndJoin(); discoveryJob = null; startRouteDiscovery(androidContext) }
     }
-    override suspend fun cast(context: DesktopPluginContext, route: CastPluginRoute, media: CastPluginMediaRequest): Result<Unit> {
+    override suspend fun cast(context: android.content.Context, route: CastPluginRoute, media: CastPluginMediaRequest): Result<Unit> {
         pollingJob?.cancelAndJoin(); pollingJob = null
         val result = execute {
             val device = devices.value[route.routeId] ?: error("Cast route no longer available")

@@ -73,7 +73,7 @@ class OriginalThemeChromeSourceTest(unittest.TestCase):
             self.assertEqual(chrome.MANIFEST_SHA256 if name in current_names else seed.MANIFEST_SHA256,
                              row['sourceManifestSHA256'])
 
-    def test_all_six_original_test_classes_keep_whole_bodies_and_only_existing_store_import_adapter(self):
+    def test_all_six_original_test_classes_keep_whole_bodies_and_only_the_reviewed_endpoint_adapters(self):
         count = 0
         for row in self.manifest['files']:
             if row['cases'] is None:
@@ -82,10 +82,17 @@ class OriginalThemeChromeSourceTest(unittest.TestCase):
             self.assertEqual(1, len(targets), row['filename'])
             actual = targets[0].read_text(encoding='utf8')
             if row['filename'] == 'AppThemeEndpointPolicyTest.kt':
-                old = 'import com.android.purebilibili.core.store.AppThemeSettings'
-                new = 'import com.bilipai.desktop.appearance.DesktopThemeSettings as AppThemeSettings'
-                self.assertEqual(1, actual.count(new))
-                actual = actual.replace(new, old, 1)
+                # 6e460b3f5: the store import adapter plus three MIUIX endpoint expectations bridged through
+                # resolveMiuixColorsFromMaterialBridge; each edit is undone from the emitted file to the whole original.
+                self.assertEqual('8bc601cc4154ced3049020e4f50538398a346627b6ca15be7600123c531847c4',
+                                 hashlib.sha256(actual.encode()).hexdigest())
+                self.assertEqual(4, len(seed.ENDPOINT_TEST_EDITS))
+                self.assertEqual(('import com.android.purebilibili.core.store.AppThemeSettings',
+                                  'import com.bilipai.desktop.appearance.DesktopThemeSettings as AppThemeSettings'),
+                                 seed.ENDPOINT_TEST_EDITS[0])
+                for old, new in reversed(seed.ENDPOINT_TEST_EDITS):
+                    self.assertEqual(1, actual.count(new))
+                    actual = actual.replace(new, old, 1)
             self.assertEqual(self.raw[row['filename']].decode(), actual)
             count += row['cases']
         self.assertEqual(33, count)

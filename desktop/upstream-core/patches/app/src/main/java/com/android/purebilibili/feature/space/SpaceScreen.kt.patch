@@ -1,0 +1,1035 @@
+--- a/com/android/purebilibili/feature/space/SpaceScreen.kt
++++ b/com/android/purebilibili/feature/space/SpaceScreen.kt
+@@ -1,30 +1,22 @@
+ package com.android.purebilibili.feature.space
+ 
+-import com.android.purebilibili.navigation.tabIndicatorPosition
+ import com.android.purebilibili.feature.home.effectiveGridColumnCount
+ import com.android.purebilibili.feature.home.effectiveGridColumnCountCompact
+ import com.android.purebilibili.feature.home.gridColumnPinchEnabled
+-import androidx.lifecycle.viewmodel.initializer
+-import androidx.lifecycle.viewmodel.viewModelFactory
+-import androidx.compose.material.icons.outlined.PersonRemove
+-import com.android.purebilibili.feature.following.FanManagementState
+-import com.android.purebilibili.feature.following.FanManagementViewModel
+-import com.android.purebilibili.feature.following.RemoveFanConfirmDialog
+ 
+ import com.android.purebilibili.core.ui.components.rememberFollowActionWithConfirmation
+ import com.android.purebilibili.core.ui.components.VideoStatusBadges
+ import com.android.purebilibili.core.ui.AppContentColors
+ 
+-import android.os.Build
+ import com.android.purebilibili.core.ui.components.videoListItemModifier
+ import com.android.purebilibili.core.ui.components.AnimatedVideoListItem
+ import coil3.request.crossfade
+ import com.android.purebilibili.core.ui.components.AppHorizontalDivider
+ 
+ import androidx.compose.animation.AnimatedVisibility
+ import androidx.compose.animation.EnterTransition
+ import androidx.compose.animation.ExitTransition
+ import com.android.purebilibili.core.ui.common.contentTabPagerGestures
+ import com.android.purebilibili.core.ui.common.rememberContentTabPager
+ import com.android.purebilibili.core.ui.common.stationaryPagerHeader
+ import androidx.compose.foundation.pager.PagerState
+@@ -48,25 +40,25 @@
+ import com.android.purebilibili.feature.home.rememberFeedGridColumnPreference
+ import com.android.purebilibili.feature.home.homeFeedPinchZoom
+ import com.android.purebilibili.feature.home.resolveHomeFeedPinchColumnBounds
+ import com.android.purebilibili.feature.home.resolveHomeFeedStoredColumnCount
+ import com.android.purebilibili.feature.home.isCompactHomeFeedScreen
+ import com.android.purebilibili.feature.home.GridPinchColumnHudPill
+ import com.android.purebilibili.core.ui.components.AppLiquidGlassBackToTopButton
+ import com.android.purebilibili.core.ui.rememberBackToTopButtonEnabled
+ import com.android.purebilibili.core.util.animateScrollToTop
+ import com.android.purebilibili.core.util.shouldShowScrollToTop
+ import androidx.compose.foundation.BorderStroke
+ import androidx.compose.foundation.ExperimentalFoundationApi
+-import com.android.purebilibili.core.ui.common.AppSelectionContainer as SelectionContainer
++import androidx.compose.foundation.text.selection.SelectionContainer
+ import androidx.compose.foundation.background
+ import androidx.compose.foundation.border
+ import com.android.purebilibili.core.ui.components.appActionClickable
+ import com.android.purebilibili.core.ui.components.appActionWithFeedback
+ import androidx.compose.foundation.combinedClickable
+ import androidx.compose.foundation.horizontalScroll
+ import androidx.compose.foundation.interaction.collectIsDraggedAsState
+ import com.android.purebilibili.core.ui.components.AppHorizontalPager as HorizontalPager
+ import androidx.compose.foundation.pager.rememberPagerState
+ import com.android.purebilibili.core.ui.components.liquidDockViewport
+ import androidx.compose.foundation.layout.*
+ import androidx.compose.foundation.lazy.LazyRow
+@@ -123,25 +115,25 @@
+ import com.android.purebilibili.core.ui.components.AppIcon
+ import com.android.purebilibili.core.ui.components.AppIconButton
+ import com.android.purebilibili.core.ui.components.LocalAppTopBarIconBackdrop
+ import com.android.purebilibili.core.ui.components.AppLinearProgressIndicator
+ import androidx.compose.material3.MaterialTheme
+ import com.android.purebilibili.core.ui.components.AppSurface
+ import com.android.purebilibili.core.ui.components.AppText
+ import com.android.purebilibili.core.ui.components.AppTextButton
+ import androidx.compose.material3.TopAppBarDefaults
+ import androidx.compose.runtime.Composable
+ import androidx.compose.runtime.CompositionLocalProvider
+ import androidx.compose.runtime.LaunchedEffect
+-import androidx.lifecycle.compose.collectAsStateWithLifecycle
++import androidx.compose.runtime.collectAsState
+ import androidx.compose.runtime.derivedStateOf
+ import androidx.compose.runtime.getValue
+ import androidx.compose.runtime.mutableStateOf
+ import androidx.compose.runtime.mutableStateMapOf
+ import androidx.compose.runtime.remember
+ import androidx.compose.runtime.saveable.rememberSaveable
+ import androidx.compose.runtime.rememberCoroutineScope
+ import androidx.compose.runtime.setValue
+ import androidx.compose.runtime.snapshotFlow
+ import androidx.compose.ui.Alignment
+ import androidx.compose.ui.Modifier
+ 
+@@ -150,80 +142,75 @@
+ import androidx.compose.ui.focus.FocusRequester
+ import androidx.compose.ui.focus.focusRequester
+ import androidx.compose.ui.graphics.Brush
+ import androidx.compose.ui.graphics.Color
+ import androidx.compose.foundation.gestures.Orientation
+ import androidx.compose.foundation.gestures.scrollable
+ import androidx.compose.ui.semantics.clearAndSetSemantics
+ import androidx.compose.ui.graphics.graphicsLayer
+ import androidx.compose.ui.layout.ContentScale
+ import androidx.compose.ui.layout.boundsInRoot
+ import androidx.compose.ui.layout.layout
+ import androidx.compose.ui.layout.onGloballyPositioned
+-import androidx.compose.ui.platform.LocalConfiguration
+-import androidx.compose.ui.platform.LocalContext
+-import android.content.Intent
++import com.bilipai.desktop.ui.DesktopSpaceWindowConfiguration as LocalConfiguration
++import coil3.compose.LocalPlatformContext as LocalContext
+ import androidx.compose.ui.draw.alpha
+ import androidx.compose.ui.geometry.Rect
+ import androidx.compose.ui.platform.LocalDensity
+ import androidx.compose.ui.platform.LocalViewConfiguration
+-import androidx.compose.ui.res.stringResource
++import com.bilipai.desktop.ui.desktopHomeStringResource as stringResource
++import com.bilipai.desktop.ui.LocalDesktopOriginalSpacePlatform
+ import androidx.compose.ui.text.AnnotatedString
+ import androidx.compose.ui.text.font.FontWeight
+ import androidx.compose.ui.text.rememberTextMeasurer
+ import androidx.compose.ui.text.style.TextAlign
+ import androidx.compose.ui.text.style.TextOverflow
+ import androidx.compose.ui.unit.Dp
+ import androidx.compose.ui.unit.dp
+ import androidx.compose.ui.unit.sp
+-import androidx.lifecycle.viewmodel.compose.viewModel
+ import coil3.compose.AsyncImage
+-import coil3.imageLoader
+ import coil3.request.ImageRequest
+ import com.android.purebilibili.feature.profile.buildForProfileFusion
+ import coil3.size.Scale
+-import com.android.purebilibili.R
+ import com.android.purebilibili.core.theme.AppUiStyle
+ import com.android.purebilibili.core.theme.LocalAppUiStyle
+ import com.android.purebilibili.core.ui.AppScaffold
+ import com.android.purebilibili.core.ui.LocalAppThemeConfig
+ import com.android.purebilibili.core.ui.performance.isLowBlurBudgetForced
+ import com.android.purebilibili.core.ui.AppTopBar
+ import com.android.purebilibili.feature.home.components.BiliPaiImmersiveTopBar
+ import com.android.purebilibili.feature.home.components.shouldUseBiliPaiProgressiveTopBlur
+ import com.android.purebilibili.core.ui.AppShapes
+ import com.android.purebilibili.core.ui.AppSurfaceTokens
+ import com.android.purebilibili.core.ui.globalWallpaperAwareBackground
+ import com.android.purebilibili.core.ui.ContainerLevel
+ import com.android.purebilibili.core.ui.LocalSharedTransitionEnabled
+ import com.android.purebilibili.core.ui.MediaContrastPalette
+ import com.android.purebilibili.core.ui.OfficialVerifyBadgeSpec
+ import com.android.purebilibili.core.ui.OfficialVerifyBadgeTone
+ import com.android.purebilibili.core.ui.blur.BlurSurfaceType
+ import com.android.purebilibili.core.ui.blur.rememberRecoverableHazeState
+ import com.android.purebilibili.core.ui.blur.recoverableBlurEnabled
+-import com.android.purebilibili.core.ui.blur.shouldAllowRenderEffectBackedHazeEffect
+ import com.android.purebilibili.core.ui.blur.unifiedBlur
+ import com.android.purebilibili.core.ui.UserAvatarCornerMarkBadge
+ import com.android.purebilibili.core.ui.resolveOfficialVerifyBadge
+ import com.android.purebilibili.core.ui.resolveUserAvatarCornerMark
+ import com.android.purebilibili.core.ui.components.AppLiquidAwareSearchField
+ import com.android.purebilibili.core.ui.components.AppNativeTabRow
+ import com.android.purebilibili.core.ui.components.AppTabRowIndicatorPresentation
+ import com.android.purebilibili.core.ui.components.AppSegmentOption
+ import com.android.purebilibili.core.ui.components.MiuixNonGlassTabItemWidthMode
+ import com.android.purebilibili.core.ui.components.KeepScrollableTabSelectionVisible
+ import com.android.purebilibili.core.ui.components.AppThemeAdaptiveTabRow
+ import com.android.purebilibili.core.store.HomeSettings
+-import com.android.purebilibili.core.store.SettingsManager
+ import com.android.purebilibili.core.ui.common.copyOnLongPress
+ import com.android.purebilibili.core.ui.common.rememberClipboardCopyHandler
+ import com.android.purebilibili.core.ui.transition.LocalVideoCardSharedElementSourceRoute
+ import com.android.purebilibili.core.ui.transition.LocalVideoSharedTransitionSpeedSettings
+ import com.android.purebilibili.core.ui.transition.VideoCardSourceChromeSnapshot
+ import com.android.purebilibili.core.ui.transition.VideoCardSourceCoverPresentation
+ import com.android.purebilibili.feature.home.components.cards.HorizontalVideoCardFrame
+ import com.android.purebilibili.feature.home.components.cards.HorizontalVideoStatRow
+ import com.android.purebilibili.feature.home.components.cards.VideoCardCoverDurationText
+ import com.android.purebilibili.feature.home.components.cards.resolveVideoCardCoverOverlayTextShadow
+ import com.android.purebilibili.feature.home.components.resolveSharedBottomBarCapsuleShape
+ import com.android.purebilibili.core.ui.transition.VideoCardSourceLayout
+@@ -258,145 +245,126 @@
+ import com.android.purebilibili.core.ui.skeleton.ContentSkeletonBlock
+ import com.android.purebilibili.core.ui.skeleton.rememberStaticSkeletonBlockColor
+ import com.android.purebilibili.data.model.response.SpaceAudioItem
+ import com.android.purebilibili.data.model.response.SpaceDynamicItem
+ import com.android.purebilibili.data.model.response.SpaceTopArcData
+ import com.android.purebilibili.data.model.response.SpaceUserInfo
+ import com.android.purebilibili.data.model.response.SpaceVideoCategory
+ import com.android.purebilibili.data.model.response.SpaceVideoItem
+ import com.android.purebilibili.data.model.response.RelationStatData
+ import com.android.purebilibili.data.model.response.UpStatData
+ import com.android.purebilibili.data.model.response.VideoSortOrder
+ import com.android.purebilibili.feature.dynamic.DynamicDeleteAction
+-import com.android.purebilibili.feature.dynamic.DynamicViewModel
+ import com.android.purebilibili.feature.dynamic.components.DynamicCardV2
+ import com.android.purebilibili.feature.dynamic.components.DynamicCardActions
+ import com.android.purebilibili.feature.dynamic.components.DynamicCardInteractionActions
+ import com.android.purebilibili.feature.dynamic.components.DynamicCardNavigationActions
+ import com.android.purebilibili.feature.dynamic.components.DynamicCardPresentation
+ import com.android.purebilibili.feature.dynamic.components.RichTextContent
+-import com.android.purebilibili.feature.dynamic.components.DynamicCommentOverlayHost
+ import com.android.purebilibili.feature.dynamic.components.ImagePreviewDialog
+ import com.android.purebilibili.feature.dynamic.components.isImagePreviewSourceHidden
+ import com.android.purebilibili.feature.dynamic.components.imagePreviewSourceBounds
+ import com.android.purebilibili.feature.dynamic.components.rememberImagePreviewSourceRect
+ import com.android.purebilibili.feature.dynamic.components.prepareImagePreviewSourceTransition
+ import com.android.purebilibili.feature.dynamic.components.resolveImagePreviewPlaceholderCacheKey
+ import com.android.purebilibili.feature.dynamic.components.RepostDialog
+ import com.android.purebilibili.feature.list.VideoProgressDisplayState
+-import com.android.purebilibili.core.player.PlaybackProgressManager
+ import com.android.purebilibili.core.ui.blur.hazeSourceCompat
+ import com.android.purebilibili.feature.video.ui.feedback.followActionAnchor
+ import kotlinx.coroutines.delay
+ import kotlinx.coroutines.launch
+ import kotlinx.coroutines.flow.collect
+ 
+ // UP 空间多张头图自动轮播间隔
+ private const val SPACE_BANNER_AUTO_ROTATE_INTERVAL_MS = 4_000L
+ 
+ // 课堂 Tab 的骨架行与真实行共用同一种 contentType：数据到达时是 item 原地替换，
+ // 列表不会被整棵重建。
+ private const val SPACE_CHEESE_ROW_CONTENT_TYPE = "space_cheese_row"
+ 
+ @OptIn(androidx.compose.material3.ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
+ @Composable
+-fun SpaceScreen(
++internal fun SpaceScreen(
+     mid: Long,
+     targetBvid: String? = null,
+     onBack: () -> Unit,
+     onVideoClick: (String, Long, Long) -> Unit,
+     onAudioClick: (Long) -> Unit = {},
+     onBangumiClick: (Long) -> Unit = {},
+     onCheeseClick: (Long) -> Unit = onBangumiClick,
+     onWebClick: (String, String) -> Unit = { _, _ -> },
+     onLiveClick: (Long, String, String) -> Unit = { _, _, _ -> },
+     onUserClick: (Long) -> Unit = {},
+     onTopicClick: (Long) -> Unit = {},
+     onTopicKeywordClick: ((String) -> Unit)? = null,
+     onDynamicDetailClick: (String) -> Unit = {},
+     onArticleClick: (Long, String) -> Unit = { _, _ -> },
+     onMatchClick: ((Long) -> Unit)? = null,
+     onViewAllClick: (String, Long, Long, String, String) -> Unit = { _, _, _, _, _ -> },
+     onLikedVideosClick: ((Long, String) -> Unit)? = null,
+     onMessageClick: (Long, String, String) -> Unit = { _, _, _ -> },
+     onFollowingClick: (Long) -> Unit = {},
+     onFansClick: (Long) -> Unit = {},
+     onUpowerRankClick: ((Long, String, Long) -> Unit)? = null,
+     onMemberGuardClick: ((Long, String, Long) -> Unit)? = null,
+-    viewModel: SpaceViewModel = viewModel(),
++    viewModel: SpaceViewModel = LocalDesktopOriginalSpacePlatform.current.viewModel,
+     sharedTransitionScope: SharedTransitionScope? = null,
+     animatedVisibilityScope: AnimatedVisibilityScope? = null,
+     contentTransitionReady: Boolean = true,
+ ) {
+     val context = LocalContext.current
+-    val fanIdentity by com.android.purebilibili.core.store.TokenManager.accountIdentity.collectAsStateWithLifecycle()
+-    val fanModel: FanManagementViewModel = viewModel(
+-        key = "fan_management_$mid",
+-        factory = viewModelFactory { initializer { FanManagementViewModel(mid) } },
+-    )
+-    val rawFanState by fanModel.state.collectAsStateWithLifecycle()
+-    val fanState = rawFanState.takeIf { it.identity == fanIdentity } ?: FanManagementState(identity = fanIdentity)
+-    var showRemoveFanConfirm by remember(mid, fanIdentity) { mutableStateOf(false) }
+-    LaunchedEffect(fanModel) { fanModel.load() }
+-    LaunchedEffect(fanState.message) {
+-        fanState.message?.let { message ->
+-            android.widget.Toast.makeText(context, message, android.widget.Toast.LENGTH_SHORT).show()
+-            fanModel.clearMessage()
+-        }
+-    }
++    val desktopSpacePlatform = LocalDesktopOriginalSpacePlatform.current
+     val queryAicu = com.android.purebilibili.feature.aicu.LocalAicuNavigation.current
+     val copyToClipboard = rememberClipboardCopyHandler()
+-    val playbackProgressManager = remember(context) {
+-        PlaybackProgressManager.getInstance(context)
+-    }
++    val playbackProgressManager = desktopSpacePlatform
+     val videoProgressLookup: (String) -> Long = remember(playbackProgressManager) {
+-        { bvid -> playbackProgressManager.getCachedPosition(bvid) }
++        { bvid -> playbackProgressManager.cachedPosition(bvid) }
+     }
+-    val dynamicInteractionViewModel: DynamicViewModel = viewModel()
+-    val loadedUiState by viewModel.uiState.collectAsStateWithLifecycle()
++    val dynamicInteractionViewModel = desktopSpacePlatform.dynamic
++    val loadedUiState by viewModel.uiState.collectAsState()
+     // Defer only a container's initial expansion. The host keeps ready=true on return,
+     // so an already opened profile never falls back to a skeleton during a back gesture.
+     val uiState = if (contentTransitionReady) loadedUiState else SpaceUiState.Loading
+     val contentRevealAlpha = com.android.purebilibili.core.ui.transition.rememberSharedCardDetailRevealAlpha(
+         entryKey = mid,
+         contentTransitionReady = contentTransitionReady,
+         contentLoaded = uiState !is SpaceUiState.Loading,
+     )
+-    val likedDynamics by dynamicInteractionViewModel.likedDynamics.collectAsStateWithLifecycle()
+-    val dynamicLikeOverrides by dynamicInteractionViewModel.likeOverrides.collectAsStateWithLifecycle()
++    val likedDynamics by dynamicInteractionViewModel.likedDynamics.collectAsState()
++    val dynamicLikeOverrides by dynamicInteractionViewModel.likeOverrides.collectAsState()
+     val forwardCountDeltas = remember { mutableStateMapOf<String, Int>() }
+-    val followGroupDialogVisible by viewModel.followGroupDialogVisible.collectAsStateWithLifecycle()
+-    val followGroupTags by viewModel.followGroupTags.collectAsStateWithLifecycle()
+-    val followGroupSelectedTagIds by viewModel.followGroupSelectedTagIds.collectAsStateWithLifecycle()
+-    val isFollowGroupsLoading by viewModel.isFollowGroupsLoading.collectAsStateWithLifecycle()
+-    val isSavingFollowGroups by viewModel.isSavingFollowGroups.collectAsStateWithLifecycle()
+-    val blockedUpRepository = remember { com.android.purebilibili.data.repository.BlockedUpRepository(context) }
+-    val isBlocked by blockedUpRepository.isBlocked(mid).collectAsStateWithLifecycle(initialValue = false)
++    val followGroupDialogVisible by viewModel.followGroupDialogVisible.collectAsState()
++    val followGroupTags by viewModel.followGroupTags.collectAsState()
++    val followGroupSelectedTagIds by viewModel.followGroupSelectedTagIds.collectAsState()
++    val isFollowGroupsLoading by viewModel.isFollowGroupsLoading.collectAsState()
++    val isSavingFollowGroups by viewModel.isSavingFollowGroups.collectAsState()
++    val blockedUpRepository = desktopSpacePlatform.blockedUps
++    val isBlocked by blockedUpRepository.isBlocked(mid).collectAsState(initial = false)
+     val coroutineScope = rememberCoroutineScope()
+ 
+     var showBlockConfirmDialog by remember { mutableStateOf(false) }
+     var showTopPhotoPreview by remember(mid) { mutableStateOf(false) }
+     var topPhotoSourceRect by remember(mid) { mutableStateOf<Rect?>(null) }
+     // 点击时 banner 实际显示的 URL（装扮头图可能与 topPhoto 不同）
+     var topPhotoBannerUrl by remember(mid) { mutableStateOf<String?>(null) }
+     var avatarSourceRect by remember(mid) { mutableStateOf<Rect?>(null) }
+     var showAvatarPreview by remember(mid) { mutableStateOf(false) }
+     var repostDynamicId by remember { mutableStateOf<String?>(null) }
+     val spaceThemeConfig = LocalAppThemeConfig.current
+     // 交互以用户开关为边界，不跟随模糊性能降级切换，避免滚动过程中改变吸顶规则。
+     val pinContentTabs = shouldPinSpaceContentTabs(spaceThemeConfig.progressiveTopBlurEnabled)
+     val spaceDensity = LocalDensity.current
+     val hazeState = if (
+         spaceThemeConfig.headerBlurEnabled &&
+-            shouldAllowRenderEffectBackedHazeEffect(Build.VERSION.SDK_INT) &&
++            desktopSpacePlatform.supportsRenderEffects &&
+             !isLowBlurBudgetForced()
+     ) rememberRecoverableHazeState() else null
+     val defaultPageGridStates = SpaceMainTab.entries.associateWith { rememberCompatibleStaggeredGridState() }
+     val contributionGridStateFor = remember(mid) {
+         val states = mutableMapOf<String, LazyStaggeredGridState>()
+         val stateFor: (String) -> LazyStaggeredGridState = { id -> states.getOrPut(id) { com.android.purebilibili.core.ui.createCompatibleStaggeredGridState() } }
+         stateFor
+     }
+     val contributionTabId = (uiState as? SpaceUiState.Success)?.selectedContributionTabId.orEmpty()
+     val contributionGridState = remember(mid, contributionTabId) { contributionGridStateFor(contributionTabId) }
+     val pageGridStates = if (pinContentTabs) {
+         defaultPageGridStates + (SpaceMainTab.CONTRIBUTION to contributionGridState)
+@@ -449,72 +417,71 @@
+             state.selectedSubTab in setOf(SpaceSubTab.VIDEO, SpaceSubTab.CHARGING_VIDEO)
+     } == true
+     val showContributionLayoutToggle = currentSuccessState?.let { state ->
+         state.tabShellState.selectedTab == SpaceMainTab.CONTRIBUTION &&
+             state.selectedSubTab in setOf(
+                 SpaceSubTab.VIDEO,
+                 SpaceSubTab.CHARGING_VIDEO,
+                 SpaceSubTab.SEASON_VIDEO,
+                 SpaceSubTab.SERIES,
+             )
+     } == true
+     val playedVideoBvid = targetBvid?.trim().orEmpty()
+-    val playedVideoLocatePromptEnabled by com.android.purebilibili.core.store.SettingsManager
+-        .getSpacePlayedVideoLocatePromptEnabled(context)
+-        .collectAsStateWithLifecycle(initialValue = true)
++    val playedVideoLocatePromptEnabled by desktopSpacePlatform.locatePromptEnabled
++        .collectAsState(initial = true)
+     // The prompt is deliberately scoped to this visit. Persisting the dismissal made a second
+     // visit to the same UP silently lose its locate entry.
+     var playedVideoLocatePromptHandled by remember(mid, playedVideoBvid) {
+         mutableStateOf(false)
+     }
+     val shouldPromptToLocatePlayedVideo = shouldPromptToLocatePlayedVideo(
+         targetBvid = playedVideoBvid,
+         hasLoadedSpace = currentSuccessState != null,
+         promptEnabled = playedVideoLocatePromptEnabled,
+         promptHandled = playedVideoLocatePromptHandled
+     )
+     val locateMessage = currentSuccessState?.locateMessage
+     LaunchedEffect(locateMessage) {
+         locateMessage?.let { message ->
+-            android.widget.Toast.makeText(context, message, android.widget.Toast.LENGTH_SHORT).show()
++            desktopSpacePlatform.feedback(message)
+             viewModel.consumeLocateMessage(message)
+         }
+     }
+     val currentSearchScope = currentSuccessState?.let { success ->
+         resolveSpaceSearchScope(
+             selectedMainTab = success.tabShellState.selectedTab,
+             selectedSubTab = success.selectedSubTab
+         )
+     } ?: SpaceSearchScope.NONE
+     val canSearch = currentSearchScope != SpaceSearchScope.NONE
+     val isSearchMode = currentSuccessState?.isSearchMode == true
+     val hasContributionToolbarForSearch = currentSuccessState?.let { success ->
+         currentSearchScope == SpaceSearchScope.VIDEO &&
+             resolveDisplayedSpaceContributionTabs(
+                 tabs = success.contributionTabs,
+                 totalAudios = success.totalAudios
+             ).isNotEmpty()
+     } == true
+     val screenTitle = currentSuccessState?.userInfo?.name
+         ?.takeIf { it.isNotBlank() }
+-        ?: stringResource(R.string.space_title)
+-    val backLabel = stringResource(R.string.common_back)
++        ?: stringResource("space_title")
++    val backLabel = stringResource("common_back")
+     val collapsedTitleAlpha = animateFloatAsState(
+         targetValue = if (pinContentTabs && pinnedTopChromeScrim >= 1f) 1f else 0f,
+         animationSpec = tween(500, easing = CubicBezierEasing(0.2f, 0f, 0f, 1f)),
+         label = "space_collapsed_title",
+     )
+-    val moreLabel = stringResource(R.string.common_more)
+-    val blockUserLabel = stringResource(R.string.space_block_user)
+-    val unblockUserLabel = stringResource(R.string.space_unblock_user)
++    val moreLabel = stringResource("common_more")
++    val blockUserLabel = stringResource("space_block_user")
++    val unblockUserLabel = stringResource("space_unblock_user")
+ 
+     val spaceProgressiveBlur = shouldUseBiliPaiProgressiveTopBlur(
+         enabled = spaceThemeConfig.progressiveTopBlurEnabled && !spaceThemeConfig.headerBlurEnabled,
+         hasBackdrop = true,
+     ) && !isLowBlurBudgetForced()
+     val spaceFadeActive = spaceThemeConfig.progressiveTopFadeEnabled && !spaceThemeConfig.headerBlurEnabled
+     val spaceChromeSource = if (spaceProgressiveBlur || spaceThemeConfig.liquidGlassEnabled) {
+         com.android.purebilibili.core.ui.blur.rememberChromeBackdropSource()
+     } else {
+         null
+     }
+     val spaceChromeBackdrop = spaceChromeSource?.takeIf {
+@@ -670,41 +637,29 @@
+                                                         )
+                                                     },
+                                                 ),
+                                                 AppWindowAction(
+                                                     label = "复制 UID",
+                                                     icon = Icons.Outlined.ContentCopy,
+                                                     onClick = { copyToClipboard(mid.toString(), "UID") },
+                                                 ),
+                                                 AppWindowAction(
+                                                     label = "分享",
+                                                     icon = Icons.Outlined.Share,
+                                                     onClick = {
+-                                                        val shareIntent = Intent(Intent.ACTION_SEND).apply {
+-                                                            type = "text/plain"
+-                                                            putExtra(Intent.EXTRA_TEXT, "https://space.bilibili.com/$mid")
+-                                                        }
+-                                                        context.startActivity(Intent.createChooser(shareIntent, "分享空间"))
++                                                        desktopSpacePlatform.shareSpace(mid)
+                                                     },
+                                                 ),
+                                             )
+                                         )
+-                                        if (fanState.isFan == true && mid != fanIdentity.mid) {
+-                                            add(listOf(AppWindowAction(
+-                                                label = if (fanState.removing) "移除中…" else "移除粉丝",
+-                                                icon = Icons.Outlined.PersonRemove,
+-                                                enabled = !fanState.removing,
+-                                                onClick = { showRemoveFanConfirm = true },
+-                                            )))
+-                                        }
+                                         add(
+                                             listOf(
+                                                 AppWindowAction(
+                                                     label = "举报",
+                                                     icon = Icons.Outlined.VisibilityOff,
+                                                     iconTint = AppContentColors.error(),
+                                                     onClick = {
+                                                         onWebClick(
+                                                             "https://www.bilibili.com/appeal/?prefid=0&mid=$mid",
+                                                             "举报",
+                                                         )
+                                                     },
+@@ -878,57 +833,44 @@
+                                 prepareImagePreviewSourceTransition(rect)
+                                 avatarSourceRect = rect
+                                 showAvatarPreview = true
+                             },
+                             dynamicCardItems = dynamicCardItems,
+                             likedDynamics = likedDynamics,
+                             likeOverrides = dynamicLikeOverrides,
+                             forwardCountDeltas = forwardCountDeltas,
+                             onSpaceDynamicCommentClick = dynamicInteractionViewModel::openCommentSheet,
+                             onSpaceDynamicRepostClick = { repostDynamicId = it },
+                             onSpaceDynamicLikeClick = { dynamicId, isLiked ->
+                                 dynamicInteractionViewModel.likeDynamic(dynamicId, isLiked) { _, message ->
+-                                    android.widget.Toast.makeText(
+-                                        context,
+-                                        message,
+-                                        android.widget.Toast.LENGTH_SHORT
+-                                    ).show()
++                                    desktopSpacePlatform.feedback(message)
+                                 }
+                             },
+                             onSpaceDynamicReserveClick = dynamicInteractionViewModel::toggleDynamicReserve,
+                             onSpaceDynamicDeleteClick = { action ->
+                                 dynamicInteractionViewModel.deleteDynamic(action) { success, message ->
+-                                    android.widget.Toast.makeText(
+-                                        context,
+-                                        message,
+-                                        android.widget.Toast.LENGTH_SHORT
+-                                    ).show()
++                                    desktopSpacePlatform.feedback(message)
+                                     if (success) viewModel.removeSpaceDynamic(action.dynamicId)
+                                 }
+                             },
+                             sharedTransitionScope = sharedTransitionScope,
+                             animatedVisibilityScope = animatedVisibilityScope,
+                             chromeTopInset = scaffoldPadding.calculateTopPadding(),
+                             pinContentTabs = pinContentTabs,
+                             contributionGridStateFor = contributionGridStateFor,
+                             isInitialLoading = isLoadingSpace,
+                         )
+                         }
+ 
+-                        DynamicCommentOverlayHost(
+-                            viewModel = dynamicInteractionViewModel,
+-                            primaryItems = dynamicCardItems,
+-                            toastContext = context,
+-                            onUserClick = onUserClick,
+-                        )
++                        /* Space v023 sends every card comment click to onDynamicDetailClick; the sole Root full comment/detail route is retained. */
+                     }
+                 }
+ 
+             SpacePlayedVideoLocatePrompt(
+                 visible = shouldPromptToLocatePlayedVideo,
+                 onDismiss = { playedVideoLocatePromptHandled = true },
+                 onConfirm = {
+                     playedVideoLocatePromptHandled = true
+                     viewModel.locatePlayedVideoContribution(playedVideoBvid)
+                 },
+                 modifier = Modifier
+                     .align(Alignment.BottomEnd)
+@@ -1006,84 +948,64 @@
+         ImagePreviewDialog(
+             images = listOf(avatarPreviewUrl),
+             initialIndex = 0,
+             sourceRect = avatarSourceRect,
+             // 头像源是圆形，回位圆角取短边一半
+             sourceCornerRadiusDp = avatarCornerDp,
+             onDismiss = { showAvatarPreview = false }
+         )
+     }
+ 
+     repostDynamicId?.let { dynamicId ->
+         RepostDialog(
+-            contentKey = dynamicId,
+             onDismiss = { repostDynamicId = null },
+-            onRepost = { content, alsoComment, richContents, topic, onComplete ->
+-                dynamicInteractionViewModel.repostDynamic(dynamicId, content, alsoComment, richContents, topic) { success, message ->
+-                    android.widget.Toast.makeText(
+-                        context,
+-                        message,
+-                        android.widget.Toast.LENGTH_SHORT
+-                    ).show()
++            onRepost = { content, alsoComment, onComplete ->
++                dynamicInteractionViewModel.repostDynamic(dynamicId, content, alsoComment) { success, message ->
++                    desktopSpacePlatform.feedback(message)
+                     if (success) {
+                         forwardCountDeltas[dynamicId] = (forwardCountDeltas[dynamicId] ?: 0) + 1
+                         repostDynamicId = null
+                     }
+                     onComplete(success)
+                 }
+             }
+         )
+     }
+ 
+-    if (showRemoveFanConfirm && fanState.isFan == true) {
+-        RemoveFanConfirmDialog(
+-            name = currentSuccessState?.userInfo?.name.orEmpty(),
+-            onDismiss = { showRemoveFanConfirm = false },
+-            onConfirm = { showRemoveFanConfirm = false; fanModel.remove() },
+-        )
+-    }
+ 
+     if (showBlockConfirmDialog) {
+         val userName = currentSuccessState?.userInfo?.name ?: "该用户"
+         val userFace = currentSuccessState?.userInfo?.face.orEmpty()
+         AppAlertDialog(
+             onDismissRequest = { showBlockConfirmDialog = false },
+             title = { AppText(if (isBlocked) "解除屏蔽" else "屏蔽 UP 主") },
+             text = {
+                 AppText(
+                     if (isBlocked) {
+                         "确定要解除对 $userName 的屏蔽吗？"
+                     } else {
+                         "屏蔽后，将不再推荐 $userName 的视频。\n确定要屏蔽吗？"
+                     }
+                 )
+             },
+             confirmButton = {
+                 AppTextButton(
+                     onClick = {
+                         coroutineScope.launch {
+                             if (isBlocked) {
+                                 val result = blockedUpRepository.unblockUpWithBilibiliSync(mid)
+-                                android.widget.Toast.makeText(
+-                                    context,
+-                                    result.message,
+-                                    android.widget.Toast.LENGTH_SHORT
+-                                ).show()
++                                desktopSpacePlatform.feedback(result.message)
+                             } else {
+                                 val result = blockedUpRepository.blockUpWithBilibiliSync(mid, userName, userFace)
+-                                android.widget.Toast.makeText(
+-                                    context,
+-                                    result.message,
+-                                    android.widget.Toast.LENGTH_SHORT
+-                                ).show()
++                                desktopSpacePlatform.feedback(result.message)
+                             }
+                             showBlockConfirmDialog = false
+                         }
+                     }
+                 ) {
+                     AppText(if (isBlocked) "解除屏蔽" else "屏蔽")
+                 }
+             },
+             dismissButton = {
+                 AppTextButton(onClick = { showBlockConfirmDialog = false }) {
+                     AppText("取消")
+                 }
+@@ -1305,39 +1227,39 @@
+     chromeTopInset: Dp = 0.dp,
+     pinContentTabs: Boolean = false,
+     contributionGridStateFor: (String) -> LazyStaggeredGridState,
+     /**
+      * 首屏加载中：在同一个内容网格里铺骨架 item，而不是另起一棵独立的骨架网格。
+      * 骨架与真实卡片共用同一个 LazyVerticalStaggeredGrid / gridState，数据到达时是 item
+      * 原地替换，网格不重建、滚动锚点不丢。
+      */
+     isInitialLoading: Boolean = false,
+     modifier: Modifier = Modifier
+ ) {
+     val context = LocalContext.current
++    val desktopSpacePlatform = LocalDesktopOriginalSpacePlatform.current
+     val windowSizeClass = com.android.purebilibili.core.util.LocalWindowSizeClass.current
+     val windowWidthDp = windowSizeClass.widthDp.value.roundToInt().coerceAtLeast(0)
+     val adaptiveLayoutSpec = remember(windowWidthDp, windowSizeClass.widthSizeClass) {
+         resolveSpaceAdaptiveLayoutSpec(
+             widthDp = windowWidthDp,
+             widthSizeClass = windowSizeClass.widthSizeClass,
+         )
+     }
+     val boundedListModifier = Modifier.responsiveContentWidth(
+         maxWidth = adaptiveLayoutSpec.listContentMaxWidthDp.dp,
+     )
+     // 投稿网格跟随首页信息流设置（固定列数 / 卡宽预设 / 卡片风格），保证排版与首页 feed 一致。
+-    val homeSettings by com.android.purebilibili.core.store.SettingsManager
+-        .getHomeSettings(context)
+-        .collectAsStateWithLifecycle(initialValue = com.android.purebilibili.core.store.HomeSettings())
++    val homeSettings by desktopSpacePlatform.home.settings.homeSettings
++        .collectAsState(initial = com.android.purebilibili.core.store.HomeSettings())
+     val selectedMainTab = state.tabShellState.selectedTab
+     // 各标签页各自持有头部，但轮播页码属于同一个用户空间。
+     var sharedBannerPage by remember(state.userInfo.mid) { mutableStateOf(0) }
+     val contentDensity = LocalDensity.current
+     val displayedMainTabs = resolveSpaceDisplayedMainTabs(
+         tabs = state.mainTabs,
+         selectedTab = selectedMainTab,
+         hasCheese = state.hasCheeseTab || state.cheeseItems.isNotEmpty(),
+     )
+     val selectedPage = displayedMainTabs.indexOfFirst {
+         it.tab == resolveSpacePrimaryTab(selectedMainTab)
+     }.coerceAtLeast(0)
+@@ -1416,25 +1338,25 @@
+                 lastVisible >= totalItems - 6
+         }
+     }
+     val playVideoFromSpace: (String) -> Unit = play@{ bvid ->
+         val playbackTarget = resolveSpacePlaybackTarget(
+             syncedProgress = state.watchProgressByBvid[bvid],
+             localPositionMs = videoProgressLookup(bvid)
+         )
+         val playlist = state.videos
+             .takeIf { videos -> videos.any { it.bvid == bvid } }
+             ?.let { videos -> buildExternalPlaylistFromSpaceVideos(videos, clickedBvid = bvid) }
+             ?: return@play onVideoClick(bvid, playbackTarget.cid, playbackTarget.resumePositionMs)
+-        com.android.purebilibili.feature.video.player.PlaylistManager.setExternalPlaylist(
++        desktopSpacePlatform.playlist.setExternalPlaylist(
+             playlist.playlistItems,
+             playlist.startIndex,
+             source = com.android.purebilibili.feature.video.player.ExternalPlaylistSource.SPACE
+         )
+         onVideoClick(bvid, playbackTarget.cid, playbackTarget.resumePositionMs)
+     }
+     // 首屏骨架阶段不触发「主页 Tab」加载：此时 state 是占位值（mid = 0）。真实数据
+     // 到达后 isInitialLoading 转 false，effect 会以真实 mid 重新触发一次，语义不变。
+     LaunchedEffect(state.userInfo.mid, isInitialLoading) {
+         if (!isInitialLoading) onLoadHome()
+     }
+ 
+@@ -2218,25 +2140,25 @@
+                             message = "动态加载失败，请稍后重试",
+                             onRetry = onLoadDynamic
+                         )
+                     }
+                 } else {
+                     items(
+                         items = dynamicCardItems,
+                         key = { "space_dynamic_${it.id_str}" },
+                         span = { StaggeredGridItemSpan.SingleLane }
+                     ) { dynamic ->
+                         DynamicCardV2(
+                             item = dynamic,
+-                            gifImageLoader = context.imageLoader,
++                            gifImageLoader = coil3.SingletonImageLoader.get(context),
+                             actions = DynamicCardActions(
+                                 navigation = DynamicCardNavigationActions(
+                                     onVideoClick = playVideoFromSpace,
+                                     onBangumiClick = { seasonId, _ -> onBangumiClick(seasonId) },
+                                     onUserClick = onUserClick,
+                                     onTopicClick = onTopicClick,
+                                     onTopicKeywordClick = onTopicKeywordClick,
+                                     onLiveClick = { roomId, title, uname ->
+                                         onLiveClick(roomId, title, uname)
+                                     },
+                                     onMusicClick = onAudioClick,
+                                     onCollectionClick = { mediaId, ownerMid, title, url ->
+@@ -2247,25 +2169,24 @@
+                                         }
+                                     },
+                                     onCourseClick = { url, title ->
+                                         val courseNav = com.android.purebilibili.feature.bangumi.policy.parseCourseNavigation(url)
+                                         if (courseNav != null && courseNav.seasonId > 0L) {
+                                             onCheeseClick(courseNav.seasonId)
+                                         } else {
+                                             onWebClick(url, title)
+                                         }
+                                     },
+                                     onArticleClick = onArticleClick,
+                                     onDynamicDetailClick = onDynamicDetailClick,
+-                                    onMatchClick = onMatchClick,
+                                 ),
+                                 interaction = DynamicCardInteractionActions(
+                                     onCommentClick = { onDynamicDetailClick(dynamic.id_str) },
+                                     onRepostClick = onSpaceDynamicRepostClick,
+                                     onLikeClickWithState = { dynamicId, isLiked ->
+                                         onSpaceDynamicLikeClick(dynamicId, isLiked)
+                                     },
+                                     onDeleteClick = onSpaceDynamicDeleteClick,
+                                     onReserveClick = onSpaceDynamicReserveClick,
+                                 ),
+                             ),
+                             presentation = DynamicCardPresentation(
+@@ -3014,38 +2935,39 @@
+     sharedTransitionScope: SharedTransitionScope?,
+     animatedVisibilityScope: AnimatedVisibilityScope?,
+     chromeTopInset: Dp = 0.dp,
+     outerPadding: Dp = 16.dp,
+     useExpandedLayout: Boolean = false,
+     collapseAsUnit: Boolean = false,
+     bannerPage: Int = 0,
+     onBannerPageChange: (Int) -> Unit = {},
+     bannerPageActive: Boolean = true,
+     contentPageMoving: Boolean = false,
+ ) {
+     val context = LocalContext.current
++    val desktopSpacePlatform = LocalDesktopOriginalSpacePlatform.current
+     val isDarkTheme = com.android.purebilibili.core.ui.isAppInDarkTheme()
+     val resolvedPhoto = if (isDarkTheme && userInfo.nightTopPhoto.isNotBlank()) {
+         userInfo.nightTopPhoto
+     } else {
+         userInfo.topPhoto
+     }
+     val topPhotoUrl = normalizeSpaceTopPhotoUrl(resolvedPhoto)
+     // banner 组件上报的当前实际显示 URL（装扮头图可能不是 topPhoto），
+     // 点击预览时优先用它，保证预览与所见一致。
+     var currentBannerUrl by remember { mutableStateOf<String?>(null) }
+     val displayAvatar = userInfo.face
+     val avatarPreviewEnabled = displayAvatar.isNotBlank()
+     val isOwner = userInfo.mid > 0L &&
+-        userInfo.mid == com.android.purebilibili.core.store.TokenManager.midCache
++        userInfo.mid == desktopSpacePlatform.environment.accountMid
+     val windowSizeClass = com.android.purebilibili.core.util.LocalWindowSizeClass.current
+     val uiSkinState = com.android.purebilibili.core.plugin.skin.LocalUiSkinState.current
+     val activeProfileSkin = uiSkinState.activeSkin?.takeIf {
+         uiSkinState.enabled &&
+             isOwner &&
+             com.android.purebilibili.core.plugin.skin.UiSkinSurface.PROFILE in it.manifest.surfaces
+     }
+     val skinSpaceBackgroundPaths = activeProfileSkin?.manifest?.assets?.spaceBackgrounds.orEmpty()
+         .mapNotNull { background ->
+             val preferLandscape = windowSizeClass.widthDp > windowSizeClass.heightDp
+             activeProfileSkin?.assetFilePath(
+                 if (preferLandscape) background.landscape ?: background.portrait
+@@ -3335,29 +3257,25 @@
+ 
+                     SpaceHeaderRelationActions(
+                         followLabel = followLabel,
+                         isFollowed = userInfo.isFollowed,
+                         followButtonColors = followButtonColors,
+                         onMessageClick = onMessageClick,
+                         onFollowClick = rememberFollowActionWithConfirmation(
+                             targetKey = userInfo.mid,
+                             userName = userInfo.name,
+                             isFollowing = userInfo.isFollowed && !isOwner,
+                             onFollowClick = {
+                                 if (isOwner) {
+-                                    android.widget.Toast.makeText(
+-                                        context,
+-                                        "可在「我的」页面编辑个人资料",
+-                                        android.widget.Toast.LENGTH_SHORT
+-                                    ).show()
++                                    desktopSpacePlatform.feedback("可在「我的」页面编辑个人资料")
+                                 } else {
+                                     onFollowClick()
+                                 }
+                             },
+                         ),
+                         modifier = Modifier.fillMaxWidth(),
+                         isOwner = isOwner,
+                     )
+                 }
+             }
+         }
+ 
+@@ -3639,25 +3557,25 @@
+         }
+     }
+     Column(modifier = modifier) {
+         SpaceMainTabRow(
+             tabs = displayedMainTabs,
+             selectedTab = resolveSpacePrimaryTab(selectedMainTab),
+             onSelect = { tab ->
+                 if (tab == resolveSpacePrimaryTab(selectedMainTab) && onMainTabReselected != null) {
+                     onMainTabReselected()
+                 } else onMainTabSelected(tab)
+             },
+             modifier = Modifier.stationaryPagerHeader(pagerState, page),
+-            indicatorPositionProvider = { pagerState.tabIndicatorPosition },
++            indicatorPositionProvider = { pagerState.currentPage + pagerState.currentPageOffsetFraction },
+             isScrollInProgressProvider = { pagerState.isScrollInProgress },
+         )
+         if (shouldShowSpaceSecondarySwitch(selectedMainTab) && secondarySwitchItems.isNotEmpty()) {
+             SpaceSecondarySwitchRow(
+                 items = secondarySwitchItems,
+                 selectedId = selectedSecondarySwitchId,
+                 onSelect = onSecondarySwitchSelected,
+             )
+         }
+     }
+ }
+ 
+@@ -3725,35 +3643,33 @@
+     val miuixNonGlass = com.android.purebilibili.core.ui.isMiuixNonGlassEnabled()
+     val spec = remember(tabs, selectedTab) {
+         resolveSpaceMainTabChromeSpec(tabs = tabs, selectedTab = selectedTab)
+     }
+     val selectedIndex = tabs.indexOfFirst { it.tab == selectedTab }.coerceAtLeast(0)
+     Column(
+         modifier = modifier
+             .fillMaxWidth()
+             .padding(top = SpaceMainTabTopPadding, bottom = SpaceMainTabBottomPadding)
+     ) {
+         AppThemeAdaptiveTabRow(
+             // Glass indicator fills the measured slot; native geometry keeps its defaults.
+-            liquidGlassAdaptIndicatorToLabel = !com.android.purebilibili.core.ui.LocalAppThemeConfig.current.liquidGlassEnabled,
+             role = com.android.purebilibili.core.ui.components.AppTabRowRole.SECONDARY,
+             options = tabs.map { AppSegmentOption(it.tab, it.title) },
+             selectedValue = tabs[selectedIndex].tab,
+             onSelectionChange = onSelect,
+             indicatorPositionProvider = indicatorPositionProvider,
+             isScrollInProgressProvider = isScrollInProgressProvider,
+             // 玻璃保留独立间距；非玻璃 Miuix 主导航放得下时均匀居中，
+             // 空间不足时仍按完整文字宽度滚动。
+             centerContent = liquidGlassEnabled || miuixNonGlass,
+-            forceEqualWidth = miuixNonGlass,
+             minTabWidth = if (liquidGlassEnabled) 64.dp else androidx.compose.ui.unit.Dp.Unspecified,
+             scrollable = spec.scrollable,
+             dragSelectionEnabled = spec.dragSelectionEnabled,
+             tapPressRefractionEnabled = true,
+             height = spec.heightDp.dp,
+             indicatorHeight = spec.indicatorHeightDp.dp,
+             modifier = Modifier
+                 .fillMaxWidth()
+                 .padding(horizontal = spec.horizontalPaddingDp.dp),
+         )
+     }
+ }
+@@ -3878,24 +3794,25 @@
+                     text = "${FormatUtils.formatStat(group.count)}人加入大航海",
+                     style = MaterialTheme.typography.bodySmall,
+                     color = AppContentColors.secondaryText()
+                 )
+             }
+         }
+     }
+ }
+ 
+ @Composable
+ private fun SpaceSupporterAvatarStack(avatarUrls: List<String>) {
+     val context = LocalContext.current
++    val desktopSpacePlatform = LocalDesktopOriginalSpacePlatform.current
+     Row(verticalAlignment = Alignment.CenterVertically) {
+         avatarUrls.take(3).forEachIndexed { index, url ->
+             Box(
+                 modifier = Modifier
+                     .offset(x = (-6 * index).dp)
+                     .size(18.dp)
+                     .clip(CircleShape)
+                     .border(1.dp, MaterialTheme.colorScheme.surface, CircleShape)
+                     .background(MaterialTheme.colorScheme.surfaceVariant)
+             ) {
+                 AsyncImage(
+                     model = ImageRequest.Builder(context)
+@@ -4006,24 +3923,25 @@
+     video: SpaceVideoItem,
+     progressState: VideoProgressDisplayState,
+     badgeLabel: String? = null,
+     isLocateHighlight: Boolean = false,
+     coverAspectRatio: Float = 16f / 9f,
+     onClick: () -> Unit,
+     sharedTransitionKey: String? = null,
+     sharedTransitionScope: SharedTransitionScope? = null,
+     animatedVisibilityScope: AnimatedVisibilityScope? = null,
+     modifier: Modifier = Modifier
+ ) {
+     val context = LocalContext.current
++    val desktopSpacePlatform = LocalDesktopOriginalSpacePlatform.current
+     val locateHighlightColor by animateColorAsState(
+         targetValue = if (isLocateHighlight) {
+             AppContentColors.accent()
+         } else {
+             Color.Transparent
+         },
+         animationSpec = tween(120),
+         label = "space-video-locate-highlight"
+     )
+     val configuration = LocalConfiguration.current
+     val density = LocalDensity.current
+     val screenWidthPx = remember(configuration.screenWidthDp, density) {
+@@ -4270,24 +4188,25 @@
+ }
+ 
+ @OptIn(ExperimentalSharedTransitionApi::class)
+ @Composable
+ private fun SpaceAggregateMediaCard(
+     item: SpaceAggregateArchiveItem,
+     onClick: () -> Unit,
+     sharedTransitionKey: String? = null,
+     sharedTransitionScope: SharedTransitionScope? = null,
+     animatedVisibilityScope: AnimatedVisibilityScope? = null
+ ) {
+     val context = LocalContext.current
++    val desktopSpacePlatform = LocalDesktopOriginalSpacePlatform.current
+     val configuration = LocalConfiguration.current
+     val density = LocalDensity.current
+     val screenWidthPx = remember(configuration.screenWidthDp, density) {
+         with(density) { configuration.screenWidthDp.dp.toPx() }
+     }
+     val screenHeightPx = remember(configuration.screenHeightDp, density) {
+         with(density) { configuration.screenHeightDp.dp.toPx() }
+     }
+     val densityValue = density.density
+     val sourceRoute = LocalVideoCardSharedElementSourceRoute.current
+     val nativeCardSnapshot = rememberNativeVideoCardSnapshotController(
+         sharedTransitionKey ?: item.cover,
+@@ -4591,24 +4510,25 @@
+     progressState: VideoProgressDisplayState? = null,
+     badgeLabel: String? = null,
+     statusLabels: List<String> = emptyList(),
+     isLocateHighlight: Boolean = false,
+     showTrailingMore: Boolean = true,
+     onClick: () -> Unit,
+     sharedTransitionKey: String? = null,
+     sharedTransitionScope: SharedTransitionScope? = null,
+     animatedVisibilityScope: AnimatedVisibilityScope? = null,
+     modifier: Modifier = Modifier
+ ) {
+     val context = LocalContext.current
++    val desktopSpacePlatform = LocalDesktopOriginalSpacePlatform.current
+     val locateHighlightColor by animateColorAsState(
+         targetValue = if (isLocateHighlight) {
+             AppContentColors.accent()
+         } else {
+             Color.Transparent
+         },
+         animationSpec = tween(120),
+         label = "space-video-locate-highlight"
+     )
+     val configuration = LocalConfiguration.current
+     val density = LocalDensity.current
+     val screenWidthPx = remember(configuration.screenWidthDp, density) {
+@@ -5520,34 +5440,31 @@
+     }
+ }
+ 
+ @OptIn(ExperimentalFoundationApi::class)
+ @Composable
+ private fun SpaceHeaderStat(
+     label: String,
+     value: Long,
+     modifier: Modifier = Modifier,
+     onClick: (() -> Unit)? = null,
+ ) {
+     val context = LocalContext.current
++    val desktopSpacePlatform = LocalDesktopOriginalSpacePlatform.current
+     Column(
+         modifier = modifier
+             .combinedClickable(
+                 onClick = if (onClick != null) appActionWithFeedback(onClick) else ({}),
+                 onLongClick = {
+-                    android.widget.Toast.makeText(
+-                        context,
+-                        "$label: $value",
+-                        android.widget.Toast.LENGTH_SHORT
+-                    ).show()
++                    desktopSpacePlatform.feedback("$label: $value")
+                 }
+             ),
+         horizontalAlignment = Alignment.CenterHorizontally
+     ) {
+         AppText(
+             text = FormatUtils.formatStat(value),
+             style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.SemiBold),
+             color = AppContentColors.primaryText(),
+             maxLines = 1,
+             overflow = TextOverflow.Ellipsis
+         )
+         Spacer(modifier = Modifier.height(2.dp))
+@@ -5599,24 +5516,25 @@
+     topImages: List<com.android.purebilibili.data.model.response.SpaceTopImageItem>,
+     fallbackTopPhotoUrl: String,
+     onCurrentBannerUrlChange: (String?) -> Unit = {},
+     skinBackgroundPaths: List<String> = emptyList(),
+     isDarkTheme: Boolean,
+     sharedPage: Int,
+     onPageChange: (Int) -> Unit,
+     pageActive: Boolean,
+     contentPageMoving: Boolean,
+     modifier: Modifier = Modifier,
+ ) {
+     val context = LocalContext.current
++    val desktopSpacePlatform = LocalDesktopOriginalSpacePlatform.current
+     // 与 PiliPlus 一致：所有背景图统一做亮/暗色调色，保证顶栏与头像在任意封面上可读。
+     val bannerColorFilter = resolveSpaceBannerColorFilter(isLight = !isDarkTheme)
+     if (skinBackgroundPaths.isNotEmpty()) {
+         LaunchedEffect(skinBackgroundPaths) { onCurrentBannerUrlChange(null) }
+         val pagerState = rememberSpaceBannerPager(skinBackgroundPaths.size, sharedPage, pageActive, onPageChange)
+         Box(modifier = modifier) {
+             HorizontalPager(state = pagerState, modifier = Modifier.fillMaxSize()) { page ->
+                 AsyncImage(
+                     model = ImageRequest.Builder(context)
+                         .data(skinBackgroundPaths[page])
+                         .crossfade(true)
+                         .buildForProfileFusion(),

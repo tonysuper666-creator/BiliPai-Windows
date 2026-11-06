@@ -26,6 +26,7 @@ REPO = Path(__file__).resolve().parents[3]
 TOOLS = REPO / 'desktop/tools'
 sys.path.insert(0, str(TOOLS))
 import v046_detail_holder_collapse as collapse
+import desktop_refresh_adaptation as refresh
 
 PKG = 'com/android/purebilibili/'
 SCREEN = PKG + 'feature/video/screen/'
@@ -94,6 +95,18 @@ def balanced(case, text, name, syntax):
             case.assertTrue(stack, name)
             case.assertEqual({')': '(', ']': '[', '}': '{'}[token], stack.pop(), name)
     case.assertEqual([], stack, name)
+
+
+def without_refresh_lists(case, text):
+    """Undo exactly the tablet producer's last layer, bind_refresh_lists (591685d9e), which runs after the collapse receipt."""
+    unbound = text.replace('import androidx.compose.foundation.lazy.*\nimport com.android.purebilibili.core.ui.components.AppLazyColumn as LazyColumn',
+                           'import androidx.compose.foundation.lazy.*', 1)
+    unbound = unbound.replace('import com.android.purebilibili.core.ui.components.AppLazyColumn as LazyColumn\n',
+                              'import androidx.compose.foundation.lazy.LazyColumn\n')
+    unbound = unbound.replace('import com.android.purebilibili.core.ui.components.AppLazyVerticalGrid as LazyVerticalGrid\n',
+                              'import androidx.compose.foundation.lazy.grid.LazyVerticalGrid\n')
+    case.assertEqual(text, refresh.bind_refresh_lists(unbound))
+    return unbound
 
 
 @contextmanager
@@ -265,7 +278,8 @@ class DetailHolderCollapseSourceTests(unittest.TestCase):
             expected = expected.replace(hunk['before'], hunk['after'], 1)
         self.assertEqual(expected, after)
         proof = self.proof('tablet', 'TabletVideoLayout-proof')
-        self.assertEqual(before, collapse.restore(after, proof['retainedToCurrent']))
+        self.assertEqual(without_refresh_lists(self, before),
+                         collapse.restore(without_refresh_lists(self, after), proof['retainedToCurrent']))
         self.assertEqual([h['label'] for h in collapse.TABLET_HUNKS], [r['label'] for r in proof['hunks_applied']])
         # the saved tab is only written by the settled page effect; every request goes through the pager
         self.assertEqual(1, after.count('selectedTab = settledPage'))
@@ -307,7 +321,8 @@ class DetailHolderCollapseSourceTests(unittest.TestCase):
         hunk = collapse.CINEMA_HUNKS[0]
         self.assertEqual(before.replace(hunk['before'], hunk['after'], 1), after)
         self.assertEqual(1, after.count('compactTypography = true,'))
-        self.assertEqual(before, collapse.restore(after, self.proof('tablet', 'TabletCinemaLayout-proof')['retainedToCurrent']))
+        self.assertEqual(without_refresh_lists(self, before), collapse.restore(
+            without_refresh_lists(self, after), self.proof('tablet', 'TabletCinemaLayout-proof')['retainedToCurrent']))
 
     def test_content_section_takes_the_three_compact_title_arguments(self):
         before = self.out('before', 'content', CONTENT_OUTPUT)

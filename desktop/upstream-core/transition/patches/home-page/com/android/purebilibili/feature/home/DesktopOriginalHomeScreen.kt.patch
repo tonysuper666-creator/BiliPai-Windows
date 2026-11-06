@@ -1,11 +1,32 @@
 --- a/home-page/com/android/purebilibili/feature/home/DesktopOriginalHomeScreen.kt
 +++ b/home-page/com/android/purebilibili/feature/home/DesktopOriginalHomeScreen.kt
-@@ -1693,17 +1693,17 @@
-                     collapsedTabInsetPx = collapsedEmbeddedTabInset.toPx(),
-                     minimumTopPaddingPx = statusBarHeight.toPx(),
-                 ).toDp()
-             }
+@@ -2,6 +2,7 @@
+ // LF SHA256 2c959020dec595839527d8c51ebbfb0a8fbf991290ec102cd18ac7b82054d176
+ package com.android.purebilibili.feature.home
+ 
++import com.bilipai.desktop.plugins.asAndroidContext
+ import com.android.purebilibili.core.ui.components.AppText
+ import com.bilipai.desktop.ui.DesktopHomeClock as SystemClock
+ import androidx.compose.animation.*
+@@ -447,7 +448,7 @@
+         homeTopTabSettings,
+     ) {
+         com.android.purebilibili.core.plugin.feed.isSubscriptionPluginOrFeedEnabled(
+-            context = platform.pluginContext,
++            context = platform.pluginContext.asAndroidContext(),
+             installedPlugins = installedPlugins,
+             isPluginPersistedEnabled = isSubscriptionPluginPersistedEnabled,
+         )
+@@ -464,7 +465,7 @@
+     }
+     val localizedTopTabLabels = topTabEntries.map { entry ->
+         when (entry) {
+-            is HomeTopTabEntry.Category -> stringResource(resolveHomeCategoryLabelRes(entry.category))
++            is HomeTopTabEntry.Category -> androidx.compose.ui.res.stringResource(resolveHomeCategoryLabelRes(entry.category))
+             HomeTopTabEntry.Partition -> resolveHomeTopTabEntryLabel(entry)
+             HomeTopTabEntry.Subscriptions -> resolveHomeTopTabEntryLabel(entry)
          }
+@@ -1698,7 +1699,7 @@
      }
      
      // [Feature] Bottom Bar Auto-Hide (based on scroll hide mode)
@@ -14,8 +35,3 @@
      val bottomBarVisibleState = LocalSetBottomBarVisible.current
      
      // [Feature] Global Scroll Offset for Liquid Glass
-     val activeGridState = if (currentCategory == HomeCategory.POPULAR) {
-         popularGridStates[popularSubCategory]
-     } else {
-         gridStates[currentCategory]
-     }

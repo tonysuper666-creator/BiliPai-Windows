@@ -1,5 +1,6 @@
 from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
+from desktop_paths import long_path
 import argparse,hashlib,importlib.util,json,re,subprocess
 arguments=argparse.ArgumentParser();arguments.add_argument('--repo',required=True);arguments.add_argument('--output',required=True);args=arguments.parse_args()
 REPO=Path(args.repo);LANE=Path(args.output);TAG='79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40'
@@ -7,7 +8,7 @@ LANE.mkdir(parents=True,exist_ok=True)
 SOURCE_PINS={'app/src/main/java/com/android/purebilibili/app/PureApplication.kt': '70c522671e5e23941d8179caa905d263c52017e9ab2a06be29598cd7fceb6607', 'app/src/main/java/com/android/purebilibili/app/PureApplicationRuntimeConfig.kt': 'b332821a90253f2cfee7dbdd1845d4708dad8e584878ac53da4f4dccdc9f2582', 'app/src/main/java/com/android/purebilibili/core/lifecycle/BackgroundMemoryTrimPolicy.kt': 'd4a95f3372db9b4434f21cdeeed67f96eac0ab456379d280e040c527b8452d88'}
 sha=lambda b:hashlib.sha256(b).hexdigest()
 def wide(p):
- s=str(Path(p).absolute());return Path(s if s.startswith('\\\\?\\')else'\\\\?\\'+s)
+ return long_path(Path(p).absolute())
 spec=importlib.util.spec_from_file_location('parser',REPO/'desktop/tools/sync-upstream.py');parser=importlib.util.module_from_spec(spec);spec.loader.exec_module(parser)
 rows=[];deltas=[];sources={}
 for name,path in [('application','app/src/main/java/com/android/purebilibili/app/PureApplication.kt'),('runtime','app/src/main/java/com/android/purebilibili/app/PureApplicationRuntimeConfig.kt'),('background','app/src/main/java/com/android/purebilibili/core/lifecycle/BackgroundMemoryTrimPolicy.kt')]:

@@ -1,0 +1,38 @@
+--- a/app/src/main/java/com/android/purebilibili/data/repository/BlockedUpRepository.kt
++++ b/app/src/main/java/com/android/purebilibili/data/repository/BlockedUpRepository.kt
+@@ -1,7 +1,7 @@
+ package com.android.purebilibili.data.repository
+ 
+ import android.content.Context
+-import com.android.purebilibili.core.database.AppDatabase
++import com.bilipai.desktop.data.desktopBlockedUpDao
+ import com.android.purebilibili.core.database.entity.BlockedUp
+ import com.android.purebilibili.core.network.BilibiliApi
+ import com.android.purebilibili.core.network.NetworkModule
+@@ -283,21 +283,11 @@
+     private val api: BilibiliApi = NetworkModule.api
+ ) {
+     companion object {
+-        @Volatile
+-        private var sharedInstance: BlockedUpRepository? = null
+-
+-        /**
+-         * 列表项（评论/相关视频）滚动组合用的共享实例：每项新建仓库会重复打开
+-         * 数据库帮助类，fling 时是新 item 首次组合的主要开销。
+-         */
+-        fun getInstance(context: Context): BlockedUpRepository =
+-            sharedInstance ?: synchronized(this) {
+-                sharedInstance ?: BlockedUpRepository(context.applicationContext)
+-                    .also { sharedInstance = it }
+-            }
+-    }
+-
+-    private val blockedUpDao = AppDatabase.getDatabase(context).blockedUpDao()
++        // Each caller keeps its own storage binding; never retain the first window's Context.
++        fun getInstance(context: Context): BlockedUpRepository = BlockedUpRepository(context)
++    }
++
++    private val blockedUpDao = desktopBlockedUpDao(context)
+ 
+     fun getAllBlockedUps(): Flow<List<BlockedUp>> = blockedUpDao.getAllBlockedUps()
+ 

@@ -1,6 +1,6 @@
 package com.bilipai.desktop.cast
 
-import com.android.purebilibili.core.plugin.CastPluginMediaRequest
+import com.android.purebilibili.plugin.sdk.CastPluginMediaRequest
 import com.bilipai.desktop.data.DesktopRepository
 import com.bilipai.desktop.data.DesktopSessionStore
 import com.bilipai.desktop.player.DesktopRepositoryPlaybackPublication

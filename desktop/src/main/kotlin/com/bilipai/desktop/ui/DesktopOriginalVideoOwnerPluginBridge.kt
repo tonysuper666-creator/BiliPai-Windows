@@ -1,8 +1,8 @@
 package com.bilipai.desktop.ui
 
-import com.android.purebilibili.core.plugin.PlayerPlugin
-import com.android.purebilibili.core.plugin.Plugin
-import com.android.purebilibili.core.plugin.SkipAction
+import com.android.purebilibili.core.plugin.DesktopSingleSessionPlayerPlugin
+import com.android.purebilibili.core.plugin.BuiltinPlugin
+import com.android.purebilibili.plugin.sdk.SkipAction
 import com.android.purebilibili.data.model.response.SponsorSegment
 import com.android.purebilibili.feature.plugin.*
 import com.bilipai.desktop.plugins.DesktopPlayerPluginDispatch
@@ -34,9 +34,9 @@ internal class DesktopOriginalVideoOwnerPluginBridge(
     private val lastBinding = AtomicReference<Binding?>()
     override val sponsorBlock get() = runtime.originalSponsorBlock
 
-    override fun enabledPlugins(): List<Plugin> = runtime.plugins.value.filter { it.enabled }.map { it.plugin }
-    override fun enabledPlayerPlugins(): List<PlayerPlugin> = enabledPlugins().filterIsInstance<PlayerPlugin>()
-    override fun <T : Plugin> enabledPlugins(type: KClass<T>): List<T> =
+    override fun enabledPlugins(): List<BuiltinPlugin> = runtime.plugins.value.filter { it.enabled }.map { it.plugin }
+    override fun enabledPlayerPlugins(): List<DesktopSingleSessionPlayerPlugin> = enabledPlugins().filterIsInstance<DesktopSingleSessionPlayerPlugin>()
+    override fun <T : BuiltinPlugin> enabledPlugins(type: KClass<T>): List<T> =
         enabledPlugins().filter { type.isInstance(it) }.map { @Suppress("UNCHECKED_CAST") (it as T) }
 
     private fun capture(expected: DesktopOriginalVideoAcceptedPublication,
@@ -108,12 +108,12 @@ internal class DesktopOriginalVideoOwnerPluginBridge(
         }
     }
     override suspend fun onPositionUpdate(expected: DesktopOriginalVideoAcceptedPublication,
-        plugin: PlayerPlugin, positionMs: Long): SkipAction? =
+        plugin: DesktopSingleSessionPlayerPlugin, positionMs: Long): SkipAction? =
         runtime.runPlaybackPluginCallback(requireDispatch(expected), plugin) { plugin.onPositionUpdate(positionMs) }
-    override suspend fun onUserSeek(expected: DesktopOriginalVideoAcceptedPublication, plugin: PlayerPlugin, positionMs: Long) {
+    override suspend fun onUserSeek(expected: DesktopOriginalVideoAcceptedPublication, plugin: DesktopSingleSessionPlayerPlugin, positionMs: Long) {
         runtime.mutatePlaybackPlugin(requireDispatch(expected), plugin, allowDisabledSponsor = false) { plugin.onUserSeek(positionMs) }
     }
-    override fun onVideoEnd(plugin: PlayerPlugin) {
+    override fun onVideoEnd(plugin: DesktopSingleSessionPlayerPlugin) {
         val old = lastBinding.get() ?: return
         if (old.dispatch.providers.none { it === plugin }) return
         runtime.retirePlaybackPluginDispatch(old.dispatch)
@@ -169,7 +169,7 @@ internal class DesktopOriginalVideoOwnerPluginBridge(
         }
     }
 
-    private suspend fun <T> newRequestMutation(plugin: Plugin, action: () -> T): T {
+    private suspend fun <T> newRequestMutation(plugin: BuiltinPlugin, action: () -> T): T {
         val repository = invocations.requireRequestRepository()
         val admission = captureCurrentRequestAdmission()
         fun current(): Boolean = try { invocations.requireRequestRepository() === repository }

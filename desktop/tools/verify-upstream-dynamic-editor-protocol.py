@@ -1,5 +1,6 @@
 """Keep the existing Operations class's selected editor members tied to upstream."""
 from pathlib import Path
+from desktop_paths import read_point_tool
 import argparse, hashlib, importlib.util, json, sys
 sys.dont_write_bytecode = True
 
@@ -9,7 +10,7 @@ def main():
     args.add_argument('--output', type=Path, required=True)
     options = args.parse_args()
     repo = options.repo.resolve()
-    producer = repo / 'desktop/tools/extract-upstream-dynamic-editor-protocol.py'
+    producer = read_point_tool(repo, 'extract-upstream-dynamic-editor-protocol.py')
     spec = importlib.util.spec_from_file_location('desktop_editor_protocol', producer)
     module = importlib.util.module_from_spec(spec); spec.loader.exec_module(module)
     expected = module.generate_members(repo).rstrip('\n')

@@ -1,0 +1,161 @@
+--- a/dynamic-reply/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicInlineReplyUi.kt
++++ b/dynamic-reply/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicInlineReplyUi.kt
+@@ -16,6 +16,12 @@
+ import androidx.compose.ui.Modifier
+ import androidx.compose.ui.draw.clip
+ import androidx.compose.ui.graphics.Color
++import androidx.compose.ui.input.key.*
++import androidx.compose.ui.focus.onFocusChanged
++import androidx.compose.ui.text.input.TextFieldValue
++import java.awt.KeyboardFocusManager
++import java.awt.KeyEventDispatcher
++import java.awt.event.KeyEvent as AwtKeyEvent
+ import androidx.compose.ui.focus.FocusRequester
+ import androidx.compose.ui.focus.focusRequester
+ import androidx.compose.ui.platform.LocalFocusManager
+@@ -178,6 +184,25 @@
+     focusRequester: FocusRequester? = null,
+     modifier: Modifier = Modifier,
+ ) {
++    var input by remember { mutableStateOf(TextFieldValue(value)) }
++    if (input.text != value) input = input.copy(text = value, composition = null)
++    var focused by remember { mutableStateOf(false) }
++    var enterDown by remember { mutableStateOf(false) }
++    var enterClaimed by remember { mutableStateOf(false) }
++    // Observe releases even after a successful send clears focus. Never consume
++    // another control's event or re-arm a held Enter on focus changes.
++    DisposableEffect(Unit) {
++        val manager = KeyboardFocusManager.getCurrentKeyboardFocusManager()
++        val releases = KeyEventDispatcher { event ->
++            if (event.id == AwtKeyEvent.KEY_RELEASED && event.keyCode == AwtKeyEvent.VK_ENTER) {
++                enterDown = false
++                enterClaimed = false
++            }
++            false
++        }
++        manager.addKeyEventDispatcher(releases)
++        onDispose { manager.removeKeyEventDispatcher(releases) }
++    }
+     var selectedImages by remember { mutableStateOf<List<String>>(emptyList()) }
+     var isSending by remember { mutableStateOf(false) }
+     var activeSubmission by remember { mutableStateOf<Any?>(null) }
+@@ -198,17 +223,45 @@
+     }
+     val canSend = !isSending && (value.isNotBlank() || selectedImages.isNotEmpty())
+     fun submit() {
+-        if (!canSend) return
++        if (!platform.isOwned() || isSending || input.composition != null ||
++            (input.text.isBlank() && selectedImages.isEmpty())) return
+         isSending = true
+         val submission = Any()
+         activeSubmission = submission
+-        onSubmit(value.trim(), selectedImages) { success ->
++        onSubmit(input.text.trim(), selectedImages) { success ->
+             if (!platform.isOwned() || activeSubmission !== submission) return@onSubmit
+             activeSubmission = null
+-            if (success) selectedImages = emptyList()
++            if (success) {
++                selectedImages = emptyList()
++                input = TextFieldValue()
++            }
+             isSending = false
+         }
+     }
++    val inputModifier = Modifier
++        .onFocusChanged { focused = it.hasFocus }
++        .onPreviewKeyEvent { event ->
++            if (enterClaimed && event.type == KeyEventType.Unknown &&
++                (event.utf16CodePoint == '\n'.code || event.utf16CodePoint == '\r'.code)) return@onPreviewKeyEvent true
++            if (event.key != Key.Enter && event.key != Key.NumPadEnter) return@onPreviewKeyEvent false
++            when (event.type) {
++                KeyEventType.KeyUp -> {
++                    val claimed = enterClaimed
++                    enterDown = false
++                    enterClaimed = false
++                    claimed
++                }
++                KeyEventType.KeyDown -> {
++                    val first = !enterDown
++                    enterDown = true
++                    val shortcut = event.isCtrlPressed && !event.isAltPressed && !event.isMetaPressed
++                    if (shortcut) enterClaimed = true
++                    if (first && shortcut && focused) submit()
++                    enterClaimed
++                }
++                else -> enterClaimed
++            }
++        }
+     val useMiuixNonGlassInput = isMiuixNonGlassEnabled()
+     val dockShape = resolveSharedBottomBarCapsuleShape()
+     val composerHeight = AppSpacingTokens.TripleExtraLarge + AppSpacingTokens.Small
+@@ -281,42 +334,36 @@
+                     },
+                 )
+                 if (useMiuixNonGlassInput) {
+-                    AppOutlinedTextField(
+-                        value = value,
+-                        onValueChange = { if (!isSending) onValueChange(it) },
++                    Column(
++                        modifier = Modifier.fillMaxSize().then(inputModifier)
++                            .then(if (focusRequester != null) Modifier.focusRequester(focusRequester) else Modifier),
++                        verticalArrangement = Arrangement.spacedBy(4.dp),
++                    ) {
++                        top.yukonga.miuix.kmp.basic.TextField(
++                            value = input,
++                            onValueChange = { if (!isSending) { input = it; onValueChange(it.text) } },
++                            modifier = Modifier.fillMaxWidth(),
++                            label = hint,
++                            useLabelAsPlaceholder = true,
++                            singleLine = true,
++                            keyboardOptions = keyboardOptions,
++                            keyboardActions = keyboardActions,
++                            textStyle = MaterialTheme.typography.bodyMedium.copy(
++                                color = fieldTextColor
++                            ),
++                            colors = top.yukonga.miuix.kmp.basic.TextFieldDefaults.textFieldColors(
++                                backgroundColor = top.yukonga.miuix.kmp.theme.MiuixTheme.colorScheme.secondaryContainer,
++                                borderColor = top.yukonga.miuix.kmp.theme.MiuixTheme.colorScheme.primary,
++                            ),
++                        )
++                    }
++                } else {
++                    OutlinedTextField(
++                        value = input,
++                        onValueChange = { if (!isSending) { input = it; onValueChange(it.text) } },
+                         modifier = Modifier
+                             .fillMaxSize()
+-                            .then(if (focusRequester != null) Modifier.focusRequester(focusRequester) else Modifier),
+-                        placeholderText = hint,
+-                        singleLine = true,
+-                        keyboardOptions = keyboardOptions,
+-                        keyboardActions = keyboardActions,
+-                        shape = dockShape,
+-                        textStyle = MaterialTheme.typography.bodyMedium.copy(
+-                            color = fieldTextColor
+-                        ),
+-                        colors = OutlinedTextFieldDefaults.colors(
+-                            focusedContainerColor = fieldColor,
+-                            unfocusedContainerColor = fieldColor,
+-                            disabledContainerColor = fieldColor,
+-                            focusedBorderColor = Color.Transparent,
+-                            unfocusedBorderColor = Color.Transparent,
+-                            disabledBorderColor = Color.Transparent,
+-                            focusedTextColor = fieldTextColor,
+-                            unfocusedTextColor = fieldTextColor,
+-                            disabledTextColor = fieldTextColor.copy(alpha = 0.72f),
+-                            focusedPlaceholderColor = placeholderColor,
+-                            unfocusedPlaceholderColor = placeholderColor,
+-                            disabledPlaceholderColor = placeholderColor,
+-                            cursorColor = fieldTextColor,
+-                        ),
+-                    )
+-                } else {
+-                    OutlinedTextField(
+-                        value = value,
+-                        onValueChange = { if (!isSending) onValueChange(it) },
+-                        modifier = Modifier
+-                            .fillMaxSize()
++                            .then(inputModifier)
+                             .then(if (focusRequester != null) Modifier.focusRequester(focusRequester) else Modifier),
+                         placeholder = {
+                             AppText(

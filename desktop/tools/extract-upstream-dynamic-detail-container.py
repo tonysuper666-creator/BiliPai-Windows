@@ -3,6 +3,7 @@ Direct sources are emitted only in --standalone and copied once by the source re
 """
 from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
+from desktop_paths import long_path
 from v036_comment_viewport import selected_source
 import hashlib
 import importlib.util
@@ -22,7 +23,7 @@ DESIGN = 'design-system/src/main/java/com/android/purebilibili/'
 
 def safe(path):
     value = str(Path(path).absolute())
-    return Path(value if value.startswith('\\\\?\\') else '\\\\?\\' + value)
+    return long_path(value)
 
 def write(path, value):
     safe(path.parent).mkdir(parents=True, exist_ok=True)
@@ -55,6 +56,8 @@ def emit(path, text, name=None, mode='selected-platform-adapt', note=''):
     package = re.search(r'(?m)^package (\S+)',source).group(1)
     target = OUTPUT/package.replace('.','/')/(name or Path(path).name)
     digest = hashlib.sha256(source.encode()).hexdigest()
+    from desktop_refresh_adaptation import bind_refresh_lists
+    text=bind_refresh_lists(text)
     write(target,'// Original source '+path+'\n// LF SHA256 '+digest+'\n'+text)
     inventory.append(dict(path=path,sha256=digest,mode=mode,feature='dynamic-detail-container',output=str(target.relative_to(OUTPUT)),note=note))
 

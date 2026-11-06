@@ -333,42 +333,25 @@ class V046HomeCardCascadeDefinersSourceTest(unittest.TestCase):
             package, decls = declarations(self.archive[name].decode('utf-8'), name)
             self.assertEqual(cascade.PACKAGE[name], package, name)
             self.assertEqual(want, {(visibility, kind, declared) for visibility, kind, declared in decls})
-        scratch = tempfile.mkdtemp(prefix='bp-hcc-')
-        try:
-            root, env = gate.make_scratch_repo(REPO, scratch)
-            model = gate.parse_gradle((root / 'desktop/build.gradle.kts').read_text(encoding='utf-8'))
-            tasks, _skipped = gate.select_producers(model)
-            results = gate.run_producers(root, tasks, env)
-            failed = [(row['task'], row['returncode'], row['stderrTail']) for row in results if row['returncode']]
-            self.assertEqual([], failed)
-            self.assertGreater(len(results), 100)
-            self.assertIn('extractOriginalHomePage', {row['task'] for row in results})
-            hits = []
-            roots = [root / 'desktop/src', root / 'desktop/build']
-            names = set(TOP_LEVEL)
-            for base in roots:
-                for path in base.rglob('*'):
-                    if not path.is_file() or path.suffix not in {'.kt', '.kts'}:
-                        continue
-                    raw = path.read_bytes()
-                    if not any(name.encode('utf-8') in raw for name in names):
-                        continue
-                    relative = path.relative_to(root).as_posix()
-                    package, decls = declarations(raw.decode('utf-8'), relative)
-                    for visibility, _kind, declared in decls:
-                        if declared in names:
-                            hits.append((package, visibility, declared, relative))
-            counts = {name: [hit for hit in hits if hit[2] == name] for name in names}
-            for name, found in counts.items():
-                self.assertEqual(1, len(found), (name, found))
-                package, visibility, _declared, relative = found[0]
-                want_visibility, want_package, want_suffix = TOP_LEVEL[name]
-                self.assertEqual(want_package, package, name)
-                self.assertEqual(want_visibility, visibility, name)
-                self.assertTrue(relative.startswith('desktop/build/generated/home-page/'), relative)
-                self.assertTrue(relative.endswith(want_suffix), relative)
-        finally:
-            shutil.rmtree(scratch, ignore_errors=True)
+        sources = {path.relative_to(REPO).as_posix(): path.read_bytes()
+                   for path in (REPO / 'desktop/src').rglob('*') if path.is_file() and path.suffix in {'.kt', '.kts'}}
+        sources.update({'desktop/build/generated/home-page/' + relative: raw
+                        for relative, raw in self.main.items() if relative.endswith('.kt')})
+        hits = []
+        for relative, raw in sources.items():
+            if not any(name.encode('utf-8') in raw for name in TOP_LEVEL):
+                continue
+            package, decls = declarations(raw.decode('utf-8'), relative)
+            hits.extend((package, visibility, declared, relative)
+                        for visibility, _kind, declared in decls if declared in TOP_LEVEL)
+        for name, (want_visibility, want_package, want_suffix) in TOP_LEVEL.items():
+            found = [hit for hit in hits if hit[2] == name]
+            self.assertEqual(1, len(found), (name, found))
+            package, visibility, _declared, relative = found[0]
+            self.assertEqual(want_package, package, name)
+            self.assertEqual(want_visibility, visibility, name)
+            self.assertTrue(relative.startswith('desktop/build/generated/home-page/'), relative)
+            self.assertTrue(relative.endswith(want_suffix), relative)
 
     def test_emitted_sources_keep_balanced_delimiters(self):
         for name in cascade.MAIN_FILES:

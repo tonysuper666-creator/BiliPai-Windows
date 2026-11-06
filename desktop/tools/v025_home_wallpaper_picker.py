@@ -3,6 +3,7 @@ The normal Home task depends on extractOriginalProfileMain; that output is SHA-p
 No second overview Profile VM or settings/account/network/media authority is emitted.
 """
 from pathlib import Path
+from desktop_paths import long_path
 import difflib, hashlib, importlib.util, re, textwrap
 from v025_source_paths import canonical_source
 
@@ -12,7 +13,7 @@ SCREEN_SHA='5f12de49fb65f3aea34800fba8ae3512a549835c48b63281be85a766ec89eb1b'
 VM_SHA='b8f658eef9e4ac99479479b51b14a9d38d17f6bc7a669694e0b6ee4f02d9e411'
 GENERATED_VM='desktop/build/generated/profile-main/com/android/purebilibili/feature/profile/ProfileViewModel.kt'
 GENERATED_VM_SHA='8c3385478613c9651f760dd4ac2a35583f2791abf3220ccde9ab27fabc26ef9d'
-def wide(p):return Path('\\\\?\\'+str(p.absolute()))
+def wide(p): return long_path(Path(p).absolute())
 def read(p):return wide(p).read_bytes().decode().replace('\r\n','\n')
 def sha(s):return hashlib.sha256(s.encode()).hexdigest()
 def load(name,path):

@@ -1,0 +1,15 @@
+--- a/js/com/android/purebilibili/feature/plugin/js/OriginalBiliPaiJsPluginContentScreen.kt
++++ b/js/com/android/purebilibili/feature/plugin/js/OriginalBiliPaiJsPluginContentScreen.kt
+@@ -61,11 +61,11 @@
+ import kotlinx.coroutines.Job
+ import kotlinx.coroutines.ensureActive
+ import androidx.compose.ui.unit.dp
+ 
+ import com.bilipai.desktop.ui.DesktopJsAuthorizedImage as AsyncImage
+-import com.android.purebilibili.core.plugin.PluginCapability
++import com.android.purebilibili.plugin.sdk.PluginCapability
+ import com.android.purebilibili.core.plugin.js.BiliPaiJsLayouts
+ import com.android.purebilibili.core.plugin.js.BiliPaiJsMediaItem
+ import com.android.purebilibili.core.plugin.js.BiliPaiJsModule
+ import com.android.purebilibili.core.plugin.js.BiliPaiJsParam
+ import com.android.purebilibili.core.plugin.js.BiliPaiJsParamTypes

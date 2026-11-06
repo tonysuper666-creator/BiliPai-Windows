@@ -41,7 +41,7 @@ class DesktopJsSubscriptionTest {
             repository.refresh()
             assertEquals(listOf(item), repository.state.value.reading.items)
             assertTrue(feedItemKey(item) in repository.state.value.reading.readKeys)
-            assertEquals("js-fixture-v1", FeedConditionalStore.load(context)[url]?.etag)
+            assertEquals("js-fixture-v1", FeedConditionalStore.load(context.asAndroidContext())[url]?.etag)
             assertEquals(listOf<String?>(null, null), cookies)
             assertTrue(repository.state.value.errors.isEmpty())
         } finally { server.stop(0) }
@@ -73,19 +73,19 @@ class DesktopJsSubscriptionTest {
             assertTrue(withContext(Dispatchers.IO) { requested.await(5, TimeUnit.SECONDS) })
             revision.incrementAndGet(); release.countDown()
             withTimeout(8_000) { pending.await() }
-            assertTrue(FeedReadingStore.load(context).items.isEmpty())
-            assertTrue(FeedConditionalStore.load(context).isEmpty())
+            assertTrue(FeedReadingStore.load(context.asAndroidContext()).items.isEmpty())
+            assertTrue(FeedConditionalStore.load(context.asAndroidContext()).isEmpty())
             assertFalse(repository.state.value.loading)
         } finally { release.countDown(); server.stop(0) }
     }
 
     @Test fun `cached JS and builtin sources retain independent enable rules`(): Unit = runBlocking {
         val context = context()
-        val builtin = SubscriptionFeedStore.add(context, "Builtin", "https://example.invalid/builtin").getOrThrow()
+        val builtin = SubscriptionFeedStore.add(context.asAndroidContext(), "Builtin", "https://example.invalid/builtin").getOrThrow()
         fun item(id: String) = ParsedFeedItem(id, id, id, id, "https://example.invalid/$id", "", 1, "", "", null)
         val builtinItem = item("builtin:${builtin.id}")
         val jsItem = item("js:fixture:news")
-        FeedReadingStore.saveItems(context, listOf(builtinItem, jsItem))
+        FeedReadingStore.saveItems(context.asAndroidContext(), listOf(builtinItem, jsItem))
         var builtinEnabled = false
         var jsEnabled = true
         val revision = AtomicLong(1)

@@ -6,6 +6,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.lazy.staggeredgrid.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.android.purebilibili.core.store.DesktopDynamicSettings.DynamicFeedLayoutMode
 import com.android.purebilibili.core.ui.components.*
@@ -69,33 +70,52 @@ import kotlinx.coroutines.sync.withLock
     val allItems=timeline("all").page.items
     LaunchedEffect(users,allItems){users.updateTimeline(allItems)}
     val listState=rememberLazyListState()
-    Column(Modifier.fillMaxSize()) {
-        Row(Modifier.fillMaxWidth().padding(horizontal=20.dp)) {
-            AppNativeTabRow(options=users.visibleTabs.map{AppSegmentOption(it.logicalIndex,it.title)},
-                selectedValue=users.selectedLogicalTab,modifier=Modifier.weight(1f),onSelectionChange={write{users.selectTab(it)}})
-            AppIconButton(onClick={
-                if(active&&users.isCurrentOwner()){showAuthorSearch=true;users.prepareAuthorSearch()}
-            },enabled=active&&users.isCurrentOwner()){
-                AppIcon(rememberAppSearchIcon(),contentDescription="搜索 UP 主")
+    BoxWithConstraints(Modifier.fillMaxSize()) {
+        val geometry=desktopDynamicReadingGeometry(maxWidth.value,shouldShowDynamicUpPanel(users.selectedLogicalTab))
+        val hasAside=geometry.asideX!=null
+        Column(Modifier.offset(x=geometry.columnX.dp).width((geometry.column + if(hasAside) DYNAMIC_READING_ASIDE_GAP + DYNAMIC_READING_ASIDE_WIDTH else 0).dp).fillMaxHeight()) {
+            Row(Modifier.fillMaxWidth().testTag("dynamic-reading-tabs")) {
+                AppNativeTabRow(options=users.visibleTabs.map{AppSegmentOption(it.logicalIndex,it.title)},
+                    selectedValue=users.selectedLogicalTab,modifier=Modifier.weight(1f),onSelectionChange={write{users.selectTab(it)}})
+                AppIconButton(onClick={
+                    if(active&&users.isCurrentOwner()){showAuthorSearch=true;users.prepareAuthorSearch()}
+                },enabled=active&&users.isCurrentOwner()){
+                    AppIcon(rememberAppSearchIcon(),contentDescription="搜索 UP 主")
+                }
+                trailing()
             }
-            trailing()
-        }
-        if(shouldShowDynamicHorizontalUserList(true,users.selectedLogicalTab)) {
-            HorizontalUserList(users.panelUsers(),users.selectedUid,selfUid=users.selfUid,listState=listState,
-                showHiddenUsers=users.showHidden,hiddenCount=users.hiddenCount,uplistUpdateMids=users.unread,
-                onUserClick=users::selectUser,onToggleShowHidden=users::toggleShowHidden,
-                onTogglePin={write{preferences.toggleUserPreference(DesktopOriginalDynamicUserPreferenceKeys.KEY_PINNED_USERS,it)}},
-                onToggleHidden={write{preferences.toggleUserPreference(DesktopOriginalDynamicUserPreferenceKeys.KEY_HIDDEN_USERS,it)}})
-        }
-        settingError?.let{CommunityFailure(it,onLogin){settingError=null}}
-        users.followingsError?.let{CommunityFailure(it,onLogin){scope.launch{users.hydrateUsers()}}}
-        Box(Modifier.weight(1f)) {
-            if(selectedAuthorFeed) {
-                DesktopDynamicSelectedUserFeed(users,activeTimeline,timelinePreferences,onOpenUser,onLogin,transform,active,row)
-            } else {
-                val title=allDynamicTabSpecs.first{it.logicalIndex==users.selectedLogicalTab}.title
-                DesktopDynamicTimelineFeed(activeTimeline,timelinePreferences,onLogin,transform,
-                    oldContentDividerLabel=if(selectedType=="all")"以下是之前的动态"else"以下是之前的${title}",active=active,row=row)
+            if(!hasAside&&shouldShowDynamicHorizontalUserList(true,users.selectedLogicalTab)) {
+                Box(Modifier.fillMaxWidth().testTag("dynamic-reading-strip")) {
+                HorizontalUserList(users.panelUsers(),users.selectedUid,selfUid=users.selfUid,listState=listState,
+                    showHiddenUsers=users.showHidden,hiddenCount=users.hiddenCount,uplistUpdateMids=users.unread,
+                    onUserClick=users::selectUser,onToggleShowHidden=users::toggleShowHidden,
+                    onTogglePin={write{preferences.toggleUserPreference(DesktopOriginalDynamicUserPreferenceKeys.KEY_PINNED_USERS,it)}},
+                    onToggleHidden={write{preferences.toggleUserPreference(DesktopOriginalDynamicUserPreferenceKeys.KEY_HIDDEN_USERS,it)}})
+                }
+            }
+            settingError?.let{CommunityFailure(it,onLogin){settingError=null}}
+            users.followingsError?.let{CommunityFailure(it,onLogin){scope.launch{users.hydrateUsers()}}}
+            val displayed=remember(activeTimeline.page.items,transform){transform(activeTimeline.page.items)}
+            if(!selectedAuthorFeed) DesktopDynamicTimelineCount(displayed.size, Modifier.fillMaxWidth().testTag("dynamic-reading-count"))
+            Row(Modifier.weight(1f).fillMaxWidth()) {
+                Box(Modifier.width(geometry.column.dp).fillMaxHeight().testTag("dynamic-reading-feed")) {
+                    if(selectedAuthorFeed) {
+                        DesktopDynamicSelectedUserFeed(users,activeTimeline,timelinePreferences,onOpenUser,onLogin,transform,active,row)
+                    } else {
+                        val title=allDynamicTabSpecs.first{it.logicalIndex==users.selectedLogicalTab}.title
+                        DesktopDynamicTimelineFeed(activeTimeline,timelinePreferences,onLogin,transform,
+                            oldContentDividerLabel=if(selectedType=="all")"以下是之前的动态"else"以下是之前的${title}",active=active,displayedItems=displayed,showCount=false,row=row)
+                    }
+                }
+                if(hasAside) {
+                    Spacer(Modifier.width(DYNAMIC_READING_ASIDE_GAP.dp))
+                    Box(Modifier.width(DYNAMIC_READING_ASIDE_WIDTH.dp).fillMaxHeight().testTag("dynamic-following-aside")) {
+                        DesktopDynamicFollowingAside(users.panelUsers(),users.selectedUid,users.selfUid,users.unread,
+                            users.hiddenCount,users.showHidden,users::selectUser,users::toggleShowHidden,
+                            onPin={write{preferences.toggleUserPreference(DesktopOriginalDynamicUserPreferenceKeys.KEY_PINNED_USERS,it)}},
+                            onHide={write{preferences.toggleUserPreference(DesktopOriginalDynamicUserPreferenceKeys.KEY_HIDDEN_USERS,it)}})
+                    }
+                }
             }
         }
     }
@@ -117,10 +137,20 @@ import kotlinx.coroutines.sync.withLock
     val rows=transform(state.visibleItems(categoryTimeline.page.items))
     val grid=remember(state.selectedUid,state.selectedLogicalTab){LazyStaggeredGridState()}
     val rootScroll = LocalDesktopRootDynamicScroll.current
+    // TON-1026: the corner button and F5 / Ctrl+R share one refresh; a failed one is announced by toast once the request has ended.
+    val toaster=LocalDesktopToaster.current
+    var manualRefresh by remember(state,state.selectedUid){mutableStateOf(false)}
+    fun refreshNow() {manualRefresh=true;state.refreshUser()}
+    LaunchedEffect(state.userLoading) {
+        if(!state.userLoading&&manualRefresh) {
+            manualRefresh=false
+            state.userError?.let{toaster.show(desktopRefreshFailureMessage(it))}
+        }
+    }
     LaunchedEffect(rootScroll, state, state.selectedUid, active) {
         if(!active)return@LaunchedEffect
         rootScroll?.receiveAsFlow()?.collectLatest { request ->
-            applyDesktopRootDynamicScroll(request, grid) { state.refreshUser() }
+            applyDesktopRootDynamicScroll(request, grid) { refreshNow() }
         }
     }
     // The category filters the author's rows; a page without a match keeps paging through the original chain.
@@ -138,13 +168,13 @@ import kotlinx.coroutines.sync.withLock
     // A page without a row of this category is normal: the slot says "loading" while more pages exist (v0.4.6 DynamicScreen).
     val emptyState=resolveDesktopDynamicAuthorEmptyState(loading=state.userLoading,failed=state.userError!=null,
         hasMore=state.hasUserMore,hasDisplayedItems=rows.isNotEmpty())
+    val scope=rememberCoroutineScope()
+    Box(Modifier.fillMaxSize()) {
     Column(Modifier.fillMaxSize()) {
         DynamicSelectedUserFeedHeader(state.panelUsers().firstOrNull{it.uid==state.selectedUid}?.name.orEmpty(),
             state.selectedLogicalTab,{state.selectedUid?.let(onOpenUser)})
-        AppTextButton(enabled=!state.userLoading,onClick=state::refreshUser){AppText("刷新")}
-        FeedVerticalStaggeredGrid(columns=if(layout==DynamicFeedLayoutMode.LIST)StaggeredGridCells.Fixed(1)
-            else StaggeredGridCells.Adaptive(resolveDynamicTimelineMinColumnWidth()),state=grid,
-            modifier=Modifier.widthIn(max=resolveDynamicTimelineMaxWidth()).fillMaxSize(),contentPadding=PaddingValues(20.dp),
+        FeedVerticalStaggeredGrid(columns=StaggeredGridCells.Fixed(1),state=grid,
+            modifier=Modifier.fillMaxSize(),contentPadding=PaddingValues(top=20.dp,bottom=20.dp+DESKTOP_REFRESH_SCROLL_RESERVE_DP.dp),
             horizontalArrangement=Arrangement.spacedBy(resolveDynamicTimelineHorizontalSpacing()),verticalItemSpacing=resolveDynamicTimelineVerticalSpacing()) {
             rows.forEach {item->item(key="dynamic_${dynamicFeedItemKey(item)}"){row(item)}}
             state.userError?.let{error->item(span=StaggeredGridItemSpan.FullLine){CommunityFailure(error,onLogin,state::retryUser)}}
@@ -158,5 +188,7 @@ import kotlinx.coroutines.sync.withLock
                 }}
             if(!state.userLoading&&state.hasUserMore&&state.userError==null&&emptyState!=DesktopDynamicEmptyState.LOADING)item(span=StaggeredGridItemSpan.FullLine){AppPrimaryButton(text="加载更多",onClick=state::loadMoreUser)}
         }
+    }
+    DesktopRefreshButton(refreshing=state.userLoading,reportFailures=false,onRefresh={scope.launch{grid.scrollToItem(0);refreshNow()}})
     }
 }

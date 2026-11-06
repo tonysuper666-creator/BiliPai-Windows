@@ -37,6 +37,51 @@ class DesktopWebDavTest {
         }
     }
 
+    @Test fun `restore reports success to the caller only after the archive replaced the settings`() = runBlocking {
+        withDav { server ->
+            val root = Files.createTempDirectory("webdav-restore-signal-")
+            Files.writeString(root.resolve("library.json"), "{\"a\":1}")
+            val config = WebDavBackupConfig(server.url, "test-user", "test-password", "/backups")
+            WebDavBackupService(DesktopBackupArchive(root)).backupNow(config).getOrThrow()
+            Files.writeString(root.resolve("library.json"), "{}")
+            var signals = 0
+            var contentAtSignal = ""
+            WebDavBackupService(DesktopBackupArchive(root)) { signals++; contentAtSignal = Files.readString(root.resolve("library.json")) }
+                .restoreLatest(config).getOrThrow()
+            assertEquals(1, signals); assertEquals("{\"a\":1}", contentAtSignal)
+        }
+    }
+
+    @Test fun `WebDAV never follows a redirect with the Authorization header`() = runBlocking {
+        withDav { elsewhere ->
+            withDav { server ->
+                server.redirectTo = elsewhere.url
+                val root = Files.createTempDirectory("webdav-redirect-")
+                Files.writeString(root.resolve("library.json"), "{}")
+                val result = WebDavBackupService(DesktopBackupArchive(root)).testConnection(WebDavBackupConfig(server.url, "test-user", "test-password", "/backups"))
+                assertTrue(result.isFailure)
+                assertTrue(elsewhere.calls.isEmpty(), "the redirect target must not receive the credentials: ${elsewhere.calls}")
+            }
+        }
+    }
+
+    @Test fun `restore refuses a download address on another server`() = runBlocking {
+        withDav { elsewhere ->
+            withDav { server ->
+                val root = Files.createTempDirectory("webdav-origin-")
+                Files.writeString(root.resolve("library.json"), "{\"a\":1}")
+                val config = WebDavBackupConfig(server.url, "test-user", "test-password", "/backups")
+                WebDavBackupService(DesktopBackupArchive(root)).backupNow(config).getOrThrow()
+                server.hrefOrigin = elsewhere.url
+                Files.writeString(root.resolve("library.json"), "{}")
+                val result = WebDavBackupService(DesktopBackupArchive(root)).restoreLatest(config)
+                assertTrue(result.isFailure)
+                assertEquals("{}", Files.readString(root.resolve("library.json")))
+                assertTrue(elsewhere.calls.isEmpty(), "the other server must not receive the credentials: ${elsewhere.calls}")
+            }
+        }
+    }
+
     @Test fun `scheduled backup uses original daily cadence and persists success across process instances`() = runBlocking {
         withDav { server ->
             val root = Files.createTempDirectory("webdav-schedule-")
@@ -99,11 +144,17 @@ class DesktopWebDavTest {
         val url get() = "http://127.0.0.1:${server.address.port}"
         val calls = mutableListOf<String>(); val uploads = linkedMapOf<String, ByteArray>(); val directories = mutableSetOf("/")
         var authorized = true
+        var redirectTo: String? = null
+        var hrefOrigin = ""
         init {
             server.createContext("/") { exchange ->
                 val path = exchange.requestURI.path.trimEnd('/').ifEmpty { "/" }
                 val method = exchange.requestMethod
                 calls.add("$method $path depth=${exchange.requestHeaders.getFirst("Depth")}")
+                redirectTo?.let { target ->
+                    exchange.responseHeaders.add("Location", target + exchange.requestURI.path)
+                    exchange.sendResponseHeaders(307, -1); exchange.close(); return@createContext
+                }
                 val expected = "Basic " + Base64.getEncoder().encodeToString("test-user:test-password".toByteArray())
                 var status = 200; var body = byteArrayOf()
                 if (!authorized || exchange.requestHeaders.getFirst("Authorization") != expected) status = 401
@@ -112,7 +163,7 @@ class DesktopWebDavTest {
                         status = 207
                         val files = if (exchange.requestHeaders.getFirst("Depth") == "1") uploads.filterKeys { it.substringBeforeLast('/') == path } else emptyMap()
                         body = ("<d:multistatus xmlns:d=\"DAV:\">" + files.entries.joinToString("") { (name, bytes) ->
-                            "<d:response><d:href>$name</d:href><d:propstat><d:prop><d:getcontentlength>${bytes.size}</d:getcontentlength><d:getlastmodified>Wed, 15 Nov 2023 10:00:00 GMT</d:getlastmodified></d:prop></d:propstat></d:response>"
+                            "<d:response><d:href>$hrefOrigin$name</d:href><d:propstat><d:prop><d:getcontentlength>${bytes.size}</d:getcontentlength><d:getlastmodified>Wed, 15 Nov 2023 10:00:00 GMT</d:getlastmodified></d:prop></d:propstat></d:response>"
                         } + "</d:multistatus>").toByteArray()
                     }
                     "MKCOL" -> { status = if (directories.add(path)) 201 else 405 }

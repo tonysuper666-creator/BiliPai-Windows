@@ -1,0 +1,17 @@
+--- a/app/src/main/java/com/android/purebilibili/core/plugin/feed/FeedTitleResolver.kt
++++ b/app/src/main/java/com/android/purebilibili/core/plugin/feed/FeedTitleResolver.kt
+@@ -66,13 +66,13 @@
+                     gate.withPermit {
+                         val parsedTitle = fetchFeedXml(feed.url).mapCatching { xml ->
+                             parseFeedDocument(xml, sourceId = feed.id, sourceTitle = "", sourceUrl = feed.url).title
+                         }.getOrNull()
+                         val title = parsedTitle?.let { chooseSubscriptionTitle("", it, feed.url) }
+                         if (!title.isNullOrBlank() && title != feed.url) {
+-                            SubscriptionFeedStore.updateTitle(context, feed.id, title)
++                            SubscriptionFeedStore.updateTitle(context, feed.id, feed.url, feed.title, title)
+                         }
+                     }
+                 }
+             }.awaitAll()
+         }
+     }

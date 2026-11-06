@@ -49,10 +49,17 @@ Write-Result $result
 $exit = 1
 try {
     $argList = @('-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', $scriptPath) + $scriptArgs
-    $child = Start-Process -FilePath 'powershell.exe' -PassThru -WindowStyle Hidden -ArgumentList $argList `
+    # -Wait is required: in Windows PowerShell 5.1 a -PassThru process that is only waited on
+    # with WaitForExit() / Wait-Process has no cached handle, so ExitCode comes back null.
+    $child = Start-Process -FilePath 'powershell.exe' -PassThru -Wait -WindowStyle Hidden -ArgumentList $argList `
         -RedirectStandardOutput $childLog -RedirectStandardError ([IO.Path]::ChangeExtension($childLog, '.err.log'))
-    [void]$child.WaitForExit()
-    $exit = $child.ExitCode
+    if ($null -eq $child.ExitCode) {
+        # Never report a missing exit code as success.
+        $result.error = 'child exit code unavailable'
+        $exit = 1
+    } else {
+        $exit = [int]$child.ExitCode
+    }
 } catch {
     $result.error = $_.Exception.Message
     $exit = 1

@@ -1,5 +1,6 @@
 package com.bilipai.desktop.ui
 
+import com.bilipai.desktop.plugins.asAndroidContext
 import com.android.purebilibili.core.plugin.feed.*
 import com.bilipai.desktop.plugins.*
 import kotlinx.coroutines.*
@@ -23,7 +24,7 @@ class DesktopSubscriptionReadingProgressRegressionTest {
             val session = presented.get()
             return DesktopSubscriptionArticleReadingIdentity(item) { presented.get() === session }
         }
-        suspend fun seed(vararg items: ParsedFeedItem) { FeedReadingStore.saveItems(context,items.toList()) }
+        suspend fun seed(vararg items: ParsedFeedItem) { FeedReadingStore.saveItems(context.asAndroidContext(),items.toList()) }
         suspend fun record(item: ParsedFeedItem, identity: DesktopSubscriptionArticleReadingIdentity,
             percent: Int, admit: ((() -> Unit) -> Boolean) = { it(); true }) {
             DesktopSubscriptionWriteAdmission.withOwned({ identity.isOwnedFor(item) },admit) {
@@ -40,9 +41,9 @@ class DesktopSubscriptionReadingProgressRegressionTest {
     @Test fun progressPersistsThroughTheRealRepositoryAndColdReadingStore(): Unit = runBlocking {
         val f=Fixture(); val first=item("article-one"); val other=item("article-two")
         f.seed(first,other)
-        FeedReadingStore.recordRead(f.context,feedItemKey(first),123456789L)
-        FeedReadingStore.saveFullBody(f.context,feedItemKey(first),"Preserved full body")
-        val original=FeedReadingStore.load(f.context)
+        FeedReadingStore.recordRead(f.context.asAndroidContext(),feedItemKey(first),123456789L)
+        FeedReadingStore.saveFullBody(f.context.asAndroidContext(),feedItemKey(first),"Preserved full body")
+        val original=FeedReadingStore.load(f.context.asAndroidContext())
         val identity=f.identity(first)
         try {
             assertEquals(0,f.repository.readProgress(first))
@@ -52,7 +53,7 @@ class DesktopSubscriptionReadingProgressRegressionTest {
             val cold=DesktopSubscriptionRepository(coldContext) { true }
             assertEquals(47,cold.readProgress(first))
             assertEquals(0,cold.readProgress(other))
-            val actual=FeedReadingStore.load(coldContext)
+            val actual=FeedReadingStore.load(coldContext.asAndroidContext())
             assertEquals(original.items,actual.items)
             assertEquals(original.readKeys,actual.readKeys)
             assertEquals(original.readTimestamps,actual.readTimestamps)
@@ -88,7 +89,7 @@ class DesktopSubscriptionReadingProgressRegressionTest {
             f.record(first,a,0)
             assertEquals(0,f.repository.readProgress(first))
             assertEquals(63,f.repository.readProgress(other))
-            assertFalse(feedItemKey(first) in FeedReadingStore.load(f.context).readProgress)
+            assertFalse(feedItemKey(first) in FeedReadingStore.load(f.context.asAndroidContext()).readProgress)
         } finally { a.close(); b.close() }
     }
 
@@ -125,7 +126,7 @@ class DesktopSubscriptionReadingProgressRegressionTest {
             assertEquals(1,commits)
             assertContentEquals(before,f.bytes())
             assertSame(snapshot,f.repository.state.value)
-            assertEquals(52,FeedReadingStore.readProgress(f.context,feedItemKey(article)))
+            assertEquals(52,FeedReadingStore.readProgress(f.context.asAndroidContext(),feedItemKey(article)))
             Files.list(f.readingFile.parent).use { files ->
                 assertFalse(files.anyMatch { it.fileName.toString().startsWith(".plugin-atomic-") })
             }

@@ -1,0 +1,26 @@
+Upstream-source-sha256: 1288ee71bcd2a330a8ab3fbe867fd121ee80248c691c2f4a4db8ca6b92a517d9
+Reason: 第 60 行要求 LottieComponents.kt 含 Telegram 的 utyan_empty2.json 远程地址；现行 EmptyState 经 MaidAnimation 枚举取默认动画（animation: MaidAnimation = MaidAnimation.EMPTY，BlueSnowMaidAnimation 渲染），远程地址与 lf20_wnqlfojb.json 在生产文件里都是 0 次。把正断言改成脚本含 animation: MaidAnimation = MaidAnimation.EMPTY，函数改名；assertFalse(lf20_wnqlfojb.json) 保留。不写回远程地址，生产不动，同文件另外三个方法不动。
+
+--- a/app/src/test/java/com/android/purebilibili/core/ui/AdaptiveLoadingIndicatorIntegrationTest.kt
++++ b/app/src/test/java/com/android/purebilibili/core/ui/AdaptiveLoadingIndicatorIntegrationTest.kt
+@@ -52,16 +52,14 @@
+     }
+ 
+     @Test
+-    fun emptyStateUsesCuteRemoteTelegramRawAnimation() {
++    fun emptyStateDefaultsToTheMaidEmptyAnimation() {
+         val source = loadSource(
+             "app/src/main/java/com/android/purebilibili/core/ui/LottieComponents.kt"
+         )
+ 
+-        assertTrue(
+-            source.contains(
+-                "const val EMPTY = \"https://raw.githubusercontent.com/DrKLO/Telegram/master/TMessagesProj/src/main/res/raw/utyan_empty2.json\""
+-            )
+-        )
++        // EmptyState 现在经 MaidAnimation 枚举取默认动画（BlueSnowMaidAnimation 渲染），
++        // 不再内联远程 Telegram raw 地址；只确认默认参数仍是 MaidAnimation.EMPTY。
++        assertTrue(source.contains("animation: MaidAnimation = MaidAnimation.EMPTY"))
+         assertFalse(source.contains("lf20_wnqlfojb.json"))
+     }
+ 

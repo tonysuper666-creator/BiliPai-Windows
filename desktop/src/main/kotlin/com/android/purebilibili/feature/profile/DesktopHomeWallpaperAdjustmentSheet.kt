@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -37,6 +36,7 @@ import com.bilipai.desktop.ui.desktopWallpaperDeviceForWidth
 import com.bilipai.desktop.ui.desktopWallpaperDrag
 import com.bilipai.desktop.ui.desktopWallpaperPreviewSpace
 import com.bilipai.desktop.ui.desktopWallpaperWheel
+import com.bilipai.desktop.ui.modal.DesktopModalPurpose
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlin.math.roundToInt
@@ -115,18 +115,13 @@ internal fun HomeWallpaperAdjustmentSheet(
     val baseColor = MaterialTheme.colorScheme.background
 
     AppModalBottomSheet(
+        purpose = DesktopModalPurpose.CONFIRM,
         onDismissRequest = { if (!saving) onDismiss() },
-        sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
         containerColor = MaterialTheme.colorScheme.surface,
-    ) {
-        Column(Modifier.fillMaxWidth().navigationBarsPadding().padding(bottom = 16.dp)) {
-            Row(
-                Modifier.fillMaxWidth().padding(horizontal = 16.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
-            ) {
+        footer = {
+            Row(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
+                horizontalArrangement = Arrangement.End, verticalAlignment = Alignment.CenterVertically) {
                 AppTextButton(onClick = onDismiss, enabled = !saving) { AppText("取消") }
-                AppText("调整壁纸", style = MaterialTheme.typography.titleMedium)
                 AppTextButton(
                     onClick = { onSave(mobile, tablet) },
                     enabled = !saving && ready != null && !imageFailed,
@@ -134,6 +129,11 @@ internal fun HomeWallpaperAdjustmentSheet(
                     if (saving) AppCircularProgressIndicator(Modifier.size(18.dp)) else AppText("保存")
                 }
             }
+        },
+    ) {
+        Column(Modifier.fillMaxWidth().padding(bottom = 16.dp)) {
+            AppText("调整壁纸", style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier.padding(horizontal = 24.dp, vertical = 16.dp))
             Row(
                 Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 4.dp),
                 horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally),

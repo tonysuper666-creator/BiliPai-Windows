@@ -1,13 +1,14 @@
 """Three complete stable pure helpers; Windows byte IO is the sole platform actor."""
 from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
+from desktop_paths import long_path
 import argparse,hashlib,subprocess
 COMMIT='79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40'
 SOURCE='app/src/main/java/com/android/purebilibili/core/player/PlaybackMediaCache.kt'
 SOURCE_SHA='9c05458cad086fd2583448883c806af2d610523b9a17f5052346bab2c0fc967a'
 OUTPUT='com/android/purebilibili/core/player/DesktopOriginalPlaybackMediaCachePolicy.kt'
 def wide(p):
-    s=str(Path(p).absolute());prefix=chr(92)*2+'?'+chr(92);return Path(s if s.startswith(prefix)else prefix+s)
+    return long_path(Path(p).absolute())
 def selected(text):
     size=text.split('internal fun resolvePlaybackMediaCacheMaxBytes():',1)[1].split('\n',1)[0]
     max_body='internal fun resolvePlaybackMediaCacheMaxBytes():'+size+'\n'

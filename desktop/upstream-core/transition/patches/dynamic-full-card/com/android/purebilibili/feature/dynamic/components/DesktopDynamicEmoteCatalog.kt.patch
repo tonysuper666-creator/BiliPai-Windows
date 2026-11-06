@@ -1,0 +1,96 @@
+--- a/dynamic-full-card/com/android/purebilibili/feature/dynamic/components/DesktopDynamicEmoteCatalog.kt
++++ b/dynamic-full-card/com/android/purebilibili/feature/dynamic/components/DesktopDynamicEmoteCatalog.kt
+@@ -23,7 +23,7 @@
+     private var cached: Map<String, String> = emptyMap()
+ 
+     @Volatile
+-    private var loadedSessionKey: DynamicEmoteCatalogSessionKey? = null
++    private var loadedSessionKey: DesktopDynamicEmoteSessionKey? = null
+ 
+     @Volatile
+     private var fullyLoaded = false
+@@ -35,7 +35,7 @@
+         stillOwned() && loadedSessionKey == currentSessionKey()
+     }.orEmpty()
+ 
+-    override fun currentSessionKey(): DynamicEmoteCatalogSessionKey = DynamicEmoteCatalogSessionKey(
++    override fun currentSessionKey(): DesktopDynamicEmoteSessionKey = DesktopDynamicEmoteSessionKey(
+         mid = mid(),
+         authenticated = authenticated(),
+     )
+@@ -45,7 +45,7 @@
+         if (!stillOwned()) throw kotlinx.coroutines.CancellationException("Dynamic emote owner retired")
+         val requestedSessionKey = currentSessionKey()
+         val nowMs = System.currentTimeMillis()
+-        if (!shouldReloadDynamicEmoteCatalog(
++        if (!desktopShouldReloadEmoteCatalog(
+                 requestedSessionKey = requestedSessionKey,
+                 loadedSessionKey = loadedSessionKey,
+                 fullyLoaded = fullyLoaded,
+@@ -59,7 +59,7 @@
+             coroutineContext.ensureActive()
+             if (!stillOwned()) throw kotlinx.coroutines.CancellationException("Dynamic emote owner retired")
+             val lockedNowMs = System.currentTimeMillis()
+-            if (!shouldReloadDynamicEmoteCatalog(
++            if (!desktopShouldReloadEmoteCatalog(
+                     requestedSessionKey = requestedSessionKey,
+                     loadedSessionKey = loadedSessionKey,
+                     fullyLoaded = fullyLoaded,
+@@ -84,7 +84,7 @@
+         }
+     }
+ 
+-    private suspend fun loadEmoteUrlMap(): DynamicEmoteCatalogLoadResult {
++    private suspend fun loadEmoteUrlMap(): DesktopDynamicEmoteLoadResult {
+         val result = linkedMapOf<String, String>()
+         // Seed a few common shortcodes so first paint is not empty if the panel request fails.
+         result["[doge]"] =
+@@ -103,9 +103,9 @@
+                 }
+             }.onSuccess { completedBusinessCount += 1 }
+         }
+-        return DynamicEmoteCatalogLoadResult(
++        return DesktopDynamicEmoteLoadResult(
+             entries = result,
+-            complete = completedBusinessCount == DYNAMIC_EMOTE_BUSINESS_COUNT,
++            complete = completedBusinessCount == DESKTOP_DYNAMIC_EMOTE_BUSINESS_COUNT,
+         )
+     }
+ 
+@@ -126,28 +126,28 @@
+     }
+ }
+ 
+-internal data class DynamicEmoteCatalogSessionKey(
++internal data class DesktopDynamicEmoteSessionKey(
+     val mid: Long,
+     val authenticated: Boolean,
+ )
+ 
+-private data class DynamicEmoteCatalogLoadResult(
++private data class DesktopDynamicEmoteLoadResult(
+     val entries: Map<String, String>,
+     val complete: Boolean,
+ )
+ 
+-private const val DYNAMIC_EMOTE_BUSINESS_COUNT = 2
+-internal const val DYNAMIC_EMOTE_RETRY_INTERVAL_MS = 30_000L
++private const val DESKTOP_DYNAMIC_EMOTE_BUSINESS_COUNT = 2
++internal const val DESKTOP_DYNAMIC_EMOTE_RETRY_INTERVAL_MS = 30_000L
+ 
+-internal fun shouldReloadDynamicEmoteCatalog(
+-    requestedSessionKey: DynamicEmoteCatalogSessionKey,
+-    loadedSessionKey: DynamicEmoteCatalogSessionKey?,
++internal fun desktopShouldReloadEmoteCatalog(
++    requestedSessionKey: DesktopDynamicEmoteSessionKey,
++    loadedSessionKey: DesktopDynamicEmoteSessionKey?,
+     fullyLoaded: Boolean,
+     lastAttemptMs: Long,
+     nowMs: Long,
+ ): Boolean {
+     if (loadedSessionKey != requestedSessionKey) return true
+     if (fullyLoaded) return false
+-    return nowMs - lastAttemptMs >= DYNAMIC_EMOTE_RETRY_INTERVAL_MS
++    return nowMs - lastAttemptMs >= DESKTOP_DYNAMIC_EMOTE_RETRY_INTERVAL_MS
+ }
+ 

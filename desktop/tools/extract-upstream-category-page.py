@@ -147,6 +147,9 @@ def generate(repo,output,standalone=False):
    assert row['before'].startswith('import ') or row['before']=='    val context = LocalContext.current\n'
    normalized=normalized.replace(row['before'],'')
  assert inverse==normalized, 'Non-whitelisted Category source adaptation'
+ from desktop_refresh_adaptation import bind_refresh_launch
+ from desktop_refresh_adaptation import bind_refresh_lists
+ text=bind_refresh_lists(bind_refresh_launch(text))
  target=Path(output)/'com/android/purebilibili/feature/category/CategoryScreen.kt'
  write(target,'// Original '+SOURCE+'\n// Original LF SHA256 '+ORIGINAL_SHA+'\n'+text)
  inventory=dict(path=SOURCE,sha256LF=ORIGINAL_SHA,mode='extracted',fullSourceSelected=True,

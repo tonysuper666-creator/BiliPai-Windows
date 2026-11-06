@@ -62,6 +62,7 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
     val savedAccounts: StateFlow<List<DesktopStoredAccountInfo>> = sessions.accounts
     internal val sessionEpoch: Long get() = sessions.generation
     internal val sessionEpochFlow: StateFlow<Long> = sessions.generationState
+    internal val loginInstallation = sessions.loginInstallation
     internal val dynamicCacheSessionGuard: DesktopDynamicCacheSessionGuard get() = sessions
     internal val dynamicCommentCacheStore = DesktopDynamicCommentCacheStore(sessions)
     internal val followStateEvents = DesktopFollowStateEvents(sessions)
@@ -74,6 +75,8 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
         .cookieJar(sessions)
         .connectTimeout(15, TimeUnit.SECONDS)
         .readTimeout(25, TimeUnit.SECONDS)
+        // TON-1026: final HTTP/read/decode outcomes belong to the initiating refresh operation.
+        .addInterceptor(com.bilipai.desktop.ui.DesktopRefreshFailureWatch.interceptor)
         .addInterceptor { chain ->
             val original = chain.request()
             // An owner-bound Call.Factory stamps this before newCall/enqueue. Preserve it here;
@@ -155,15 +158,15 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
         }
         .build()
     private fun retrofit(baseUrl: String): Retrofit = Retrofit.Builder()
-        .baseUrl(baseUrl).client(client)
-        .addConverterFactory(json.asConverterFactory("application/json".toMediaType())).build()
+        .baseUrl(baseUrl).callFactory(com.bilipai.desktop.ui.DesktopRefreshFailureWatch.callFactory(client))
+        .addConverterFactory(com.bilipai.desktop.ui.DesktopRefreshResponseConverter(json.asConverterFactory("application/json".toMediaType()))).build()
     private val api = retrofit("https://api.bilibili.com/").create(BilibiliApi::class.java)
     private val searchApi = retrofit("https://api.bilibili.com/").create(SearchApi::class.java)
     private val passportApi = retrofit("https://passport.bilibili.com/").create(PassportApi::class.java)
     private val validationPassportRetrofit = Retrofit.Builder().baseUrl("https://passport.bilibili.com/")
         .client(client.newBuilder().cookieJar(CookieJar.NO_COOKIES)
             .retryOnConnectionFailure(false).followRedirects(false).followSslRedirects(false).build())
-        .addConverterFactory(json.asConverterFactory("application/json".toMediaType())).build()
+        .addConverterFactory(com.bilipai.desktop.ui.DesktopRefreshResponseConverter(json.asConverterFactory("application/json".toMediaType()))).build()
     private val validationPassportApi = validationPassportRetrofit.create(PassportApi::class.java)
     private val buvidApi = retrofit("https://api.bilibili.com/").create(BuvidApi::class.java)
     private val dynamicApi = retrofit("https://api.bilibili.com/").create(DynamicApi::class.java)
@@ -361,7 +364,7 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
     internal fun ownedPlaybackCallFactory(authorization: DesktopPlaybackAuthorization, stillOwned: () -> Boolean): okhttp3.Call.Factory =
         okhttp3.Call.Factory { request ->
             if (!sessions.isPlaybackAuthorizationCurrent(authorization.receipt) || !stillOwned()) throw java.io.IOException("Playback authorization retired")
-            client.newCall(request.newBuilder().tag(DesktopSessionEpoch::class.java,
+            com.bilipai.desktop.ui.DesktopRefreshFailureWatch.callFactory(client).newCall(request.newBuilder().tag(DesktopSessionEpoch::class.java,
                 DesktopSessionEpoch(authorization.receipt.accountEpoch, stillOwned, playbackAuthorization = authorization)).build())
         }
     internal fun <T> ownedPlaybackService(type: Class<T>, authorization: DesktopPlaybackAuthorization, stillOwned: () -> Boolean): T =
@@ -371,7 +374,7 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
         decorateCalls: ((okhttp3.Call.Factory) -> okhttp3.Call.Factory)?): T =
         Retrofit.Builder().baseUrl("https://api.bilibili.com/").callFactory(ownedPlaybackCallFactory(authorization, stillOwned)
             .let { decorateCalls?.invoke(it) ?: it })
-            .addConverterFactory(json.asConverterFactory("application/json".toMediaType())).build().create(type)
+            .addConverterFactory(com.bilipai.desktop.ui.DesktopRefreshResponseConverter(json.asConverterFactory("application/json".toMediaType()))).build().create(type)
 
     // Original guest CookieJar identity generation expression, now a scalar on the SAME
     // existing transport owner. No second CookieJar/cache/client or account credential copy.
@@ -383,7 +386,7 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
         okhttp3.Call.Factory { request ->
             if (expectedEpoch != sessions.generation || !stillOwned())
                 throw java.io.IOException("Home request owner retired")
-            transport.newCall(request.newBuilder().tag(DesktopSessionEpoch::class.java,
+            com.bilipai.desktop.ui.DesktopRefreshFailureWatch.callFactory(transport).newCall(request.newBuilder().tag(DesktopSessionEpoch::class.java,
                 DesktopSessionEpoch(expectedEpoch, stillOwned, if (guest) homeGuestBuvid3 else null)).build())
         }
 
@@ -420,13 +423,61 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
                 DesktopSessionEpoch(expectedEpoch, stillOwned)).build(), callbacks)
         }
 
+    // TON-1082: owners of upstream NetworkModule requests (DesktopUpstreamOwner). Epoch, window lifetime, account
+    // identity and purpose are captured in one Store admission; requests go through the owned facades above.
+    private val upstreamTransports = DesktopUpstreamTransports { sessions.upstreamHttpCacheRoot }
+    internal fun upstreamOwner(purpose: DesktopUpstreamPurpose, stillOwned: () -> Boolean,
+        expectedEpoch: Long = sessions.generation): DesktopUpstreamOwner {
+        fun identity(epoch: Long) = DesktopUpstreamIdentity(sessions, epoch, sessions.activeAccountMid(),
+            DesktopUpstreamIdentity.digest(sessions.currentCookies()["SESSDATA"]))
+        // TON-1084: TokenManager's values for this owner are read in the same admission as its epoch.
+        fun tokens() = if (purpose === DesktopUpstreamPurpose.Guest) DesktopUpstreamTokens.signedOut(homeGuestBuvid3)
+            else DesktopUpstreamTokens.account(sessions.upstreamTokenSession(), sessions.currentCookies()["buvid3"])
+        return if (purpose is DesktopUpstreamPurpose.Playback) {
+            val receipt = purpose.authorization.receipt
+            sessions.withPlaybackAuthorizationAdmission(receipt, stillOwned) { DesktopUpstreamOwner(this, identity(receipt.accountEpoch), stillOwned, purpose, tokens()) }
+        } else sessions.withHomeRequestAdmission(expectedEpoch, stillOwned) { DesktopUpstreamOwner(this, identity(expectedEpoch), stillOwned, purpose, tokens()) }
+    }
+    internal val upstreamGuestBuvid3: String get() = homeGuestBuvid3
+    internal fun isUpstreamOwnerCurrent(owner: DesktopUpstreamOwner): Boolean = when (val purpose = owner.purpose) {
+        is DesktopUpstreamPurpose.Playback -> sessions.isPlaybackAuthorizationCurrent(purpose.authorization.receipt)
+        else -> sessions.generation == owner.epoch
+    }
+    internal fun <T> withUpstreamOwnerAdmission(owner: DesktopUpstreamOwner, block: () -> T): T = when (val purpose = owner.purpose) {
+        is DesktopUpstreamPurpose.Playback -> sessions.withPlaybackAuthorizationAdmission(purpose.authorization.receipt, owner::owned, block)
+        else -> sessions.withHomeRequestAdmission(owner.epoch, owner::owned, block)
+    }
+    internal fun upstreamCallFactory(owner: DesktopUpstreamOwner, configure: (OkHttpClient.Builder.() -> Unit)?): okhttp3.Call.Factory {
+        fun OkHttpClient.configured() = if (configure == null) this else newBuilder().apply(configure).build()
+        return when (val purpose = owner.purpose) {
+            is DesktopUpstreamPurpose.Playback -> {
+                if (configure != null) throw com.bilipai.desktop.compat.UnsupportedDesktopCapability(
+                    "A reconfigured upstream playback client", "playback requests use the playback authorization facade as it is (TON-1082)")
+                ownedPlaybackCallFactory(purpose.authorization, owner::owned)
+            }
+            DesktopUpstreamPurpose.Guest -> ownedHomeCallFactory(owner.epoch, owner::owned, guest = true,
+                transport = upstreamTransports.guest(client).configured()).let { calls ->
+                    // An explicit guest sends no account credential, whatever the upstream code put in the request.
+                    okhttp3.Call.Factory { request -> calls.newCall(com.bilipai.desktop.network.stripDesktopGuestCredentials(request, networkHop = false)) }
+                }
+            DesktopUpstreamPurpose.Main -> ownedHomeCallFactory(owner.epoch, owner::owned,
+                transport = withUpstreamOwnerAdmission(owner) { upstreamTransports.account(client, owner.identity) }.configured())
+        }
+    }
+    internal fun upstreamWebSocketFactory(owner: DesktopUpstreamOwner): okhttp3.WebSocket.Factory {
+        if (owner.purpose !== DesktopUpstreamPurpose.Main) throw com.bilipai.desktop.compat.UnsupportedDesktopCapability(
+            "An upstream WebSocket for a ${owner.purpose::class.simpleName} owner", "only account sockets have a desktop facade (TON-1082)")
+        return ownedHomeWebSocketFactory(owner.epoch, owner::owned)
+    }
+    internal fun upstreamAccountCacheDirectory(): java.io.File? = upstreamTransports.accountCacheDirectory()
+
     /** Services over the SAME Call.Factory/client/cookie state, used once by retained Home. */
     internal fun <T> ownedHomeService(type: Class<T>, baseUrl: String, expectedEpoch: Long,
         stillOwned: () -> Boolean, guest: Boolean = false, transport: OkHttpClient = client,
         decorateCalls: ((okhttp3.Call.Factory) -> okhttp3.Call.Factory)? = null): T = Retrofit.Builder().baseUrl(baseUrl)
         .callFactory(ownedHomeCallFactory(expectedEpoch, stillOwned, guest, transport)
             .let { decorateCalls?.invoke(it) ?: it })
-        .addConverterFactory(json.asConverterFactory("application/json".toMediaType())).build().create(type)
+        .addConverterFactory(com.bilipai.desktop.ui.DesktopRefreshResponseConverter(json.asConverterFactory("application/json".toMediaType()))).build().create(type)
 
     /** Original official QR authorization endpoints over the EXISTING validation transport.
      * Default system TLS is already used by this owner; no debug trust override, new pool,
@@ -659,6 +710,7 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
 
     private fun resetAuthenticationCaches() {
         visitorInitialized = false
+        upstreamTransports.retireAccount()
         synchronized(playbackProtocolMonitor) {
             wbiKeys = null; wbiExpiresAt = 0L; wbiGeneration = -1L
             appApiCooldownUntilMs = 0L; lastPlayback412Time = 0L

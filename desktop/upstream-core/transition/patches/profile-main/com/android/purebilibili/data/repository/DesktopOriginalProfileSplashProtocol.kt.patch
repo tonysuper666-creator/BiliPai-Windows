@@ -1,0 +1,51 @@
+--- a/profile-main/com/android/purebilibili/data/repository/DesktopOriginalProfileSplashProtocol.kt
++++ b/profile-main/com/android/purebilibili/data/repository/DesktopOriginalProfileSplashProtocol.kt
+@@ -7,11 +7,6 @@
+ import kotlinx.coroutines.async
+ import kotlinx.coroutines.coroutineScope
+ import kotlinx.coroutines.withContext
+-
+-data class OfficialWallpaperCatalog(
+-    val items: List<SplashItem>,
+-    val failedSources: List<String> = emptyList(),
+-)
+ 
+ internal class DesktopOriginalProfileSplashProtocol(private val api: com.android.purebilibili.core.network.SplashApi, archiveApi: WallpaperArchiveApi) {
+     private val archive = DesktopOriginalWallpaperArchiveRepository(archiveApi)
+@@ -88,36 +83,6 @@
+         }
+ }
+ 
+-/** URL aliases deduplicate thumbnails and originals while keeping unrelated items with the same ID. */
+-internal fun mergeOfficialWallpaperCatalogs(vararg catalogs: List<SplashItem>): List<SplashItem> {
+-    val items = mutableListOf<SplashItem>()
+-    val aliases = mutableMapOf<String, Int>()
+-    catalogs.forEach { catalog ->
+-        catalog.filterNot { it.isAd }.forEach itemLoop@ { item ->
+-            val normalized = item.copy(thumb = normalizeWallpaperUrl(item.thumb), image = normalizeWallpaperUrl(item.image))
+-            val urls = listOf(normalized.thumb, normalized.image).filter { it.isNotBlank() }
+-            val contentKeys = urls + normalized.archiveContentHash.takeIf { it.isNotBlank() }
+-                .let { hash -> if (hash == null) emptyList() else listOf("git-blob:$hash") }
+-            if (urls.isEmpty()) return@itemLoop
+-            val existingIndex = contentKeys.firstNotNullOfOrNull { aliases[it] }
+-            val index = existingIndex ?: items.size
+-            if (existingIndex == null) {
+-                items.add(normalized)
+-            } else {
+-                val existing = items[index]
+-                items[index] = existing.copy(
+-                    thumb = existing.thumb.ifBlank { normalized.thumb },
+-                    image = existing.image.ifBlank { normalized.image },
+-                    title = existing.title.ifBlank { normalized.title },
+-                    logoUrl = existing.logoUrl.ifBlank { normalized.logoUrl },
+-                )
+-            }
+-            contentKeys.forEach { aliases[it] = index }
+-        }
+-    }
+-    return items
+-}
+-
+ private fun normalizeWallpaperUrl(url: String): String {
+     val trimmed = url.trim()
+     return when {

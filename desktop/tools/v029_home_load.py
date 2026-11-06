@@ -6,6 +6,7 @@ is counted and its full inverse is retained by the caller's generation receipt.
 import hashlib
 import json
 from pathlib import Path
+from desktop_paths import long_path
 
 COMMIT = "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480"
 BASE = "app/src/main/java/com/android/purebilibili/feature/"
@@ -20,7 +21,7 @@ PINS = {
 
 def wide(path):
     value = str(Path(path).absolute())
-    return Path(value if value.startswith("\\\\?\\") else "\\\\?\\" + value)
+    return long_path(value)
 
 
 def sources(repo):

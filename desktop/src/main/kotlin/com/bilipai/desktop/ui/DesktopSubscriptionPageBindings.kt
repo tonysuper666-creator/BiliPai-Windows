@@ -118,7 +118,11 @@ internal class DesktopSubscriptionPageBindings(
     suspend fun loadFullArticle(item: ParsedFeedItem,
         identity: DesktopSubscriptionArticleReadingIdentity): String =
         readingOwned(item, identity) { repository.loadFullArticle(item) }
-    suspend fun reload() = owned { repository.loadCached(); repository.refresh() }
+    suspend fun reload() = owned {
+        repository.loadCached()
+        repository.refresh()
+        if (repository.state.value.errors.isNotEmpty()) DesktopRefreshFailureWatch.operation()?.failed()
+    }
     suspend fun setRead(item: ParsedFeedItem, read: Boolean) = owned { repository.setRead(item, read) }
     suspend fun saveFullBody(item: ParsedFeedItem, html: String) = owned { repository.saveFullBody(item, html) }
     suspend fun fetchArticleBody(item: ParsedFeedItem): Result<String> = owned { repository.fetchArticleBody(item) }

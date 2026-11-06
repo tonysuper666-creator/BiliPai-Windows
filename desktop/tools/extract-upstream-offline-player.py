@@ -1,6 +1,7 @@
 """Full fixed-tag offline UI. Only actual Windows controls/window/surface/metadata seams are adapted."""
 from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
+from desktop_paths import long_path
 import argparse,hashlib,json,subprocess,importlib.util,re
 COMMIT='79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40'
 BASE='app/src/main/java/com/android/purebilibili/'
@@ -10,7 +11,7 @@ UI_DELTA=[{'label': 'platform import import android.app.Activity', 'before': 'im
 LONG_PRESS_PREFIX='package com.android.purebilibili.core.store.player\nimport com.bilipai.desktop.plugins.DesktopPluginContext\nimport com.bilipai.desktop.plugins.DesktopPreferenceKey\nimport com.android.purebilibili.core.store.DEFAULT_LONG_PRESS_SPEED\nimport com.android.purebilibili.core.store.normalizeLongPressSpeed\nimport kotlinx.coroutines.flow.Flow\nimport kotlinx.coroutines.flow.map\nimport kotlinx.serialization.json.*\nprivate fun floatPreferencesKey(name:String)=DesktopPreferenceKey(name) { value -> (value as? JsonPrimitive)?.floatOrNull }\nprivate val longPressSpeedPreferenceKey = floatPreferencesKey("long_press_speed")\n'
 
 def safe(p):
- s=str(Path(p).absolute());prefix=chr(92)*2+'?'+chr(92);return Path(s if s.startswith(prefix) else prefix+s)
+ return long_path(Path(p).absolute())
 def read(p):return safe(p).read_text(encoding='utf-8').replace('\r\n','\n')
 def write(p,s):
  p=safe(p);p.parent.mkdir(parents=True,exist_ok=True);p.write_text(s,encoding='utf-8',newline='\n')

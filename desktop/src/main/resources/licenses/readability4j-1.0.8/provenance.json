@@ -1,0 +1,9 @@
+{
+  "coordinate": "net.dankito.readability4j:readability4j:1.0.8",
+  "role": "upstream core/plugin/feed/FeedArticleExtractor article readability (same version as the upstream app); its jsoup and slf4j dependencies resolve to the versions already on the desktop runtime classpath",
+  "artifactUrl": "https://repo.maven.apache.org/maven2/net/dankito/readability4j/readability4j/1.0.8/readability4j-1.0.8.jar",
+  "artifactBytes": 80492,
+  "artifactSha256": "515bca66af21b7aca2c451bd75d7fa8c05df25ad74e0243047fa11e0ce2d9223",
+  "licenseSource": "app/src/main/assets/licenses/readability4j.LICENSE (merged upstream tree)",
+  "licenseSha256": "7f0bb083df77f5f4cf575e09429dd9d5a6cbd6f903fef9a427263044b3d6cfe4"
+}

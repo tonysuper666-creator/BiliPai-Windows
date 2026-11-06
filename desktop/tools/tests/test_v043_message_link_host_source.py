@@ -97,7 +97,7 @@ class V043MessageLinkHostSourceTest(unittest.TestCase):
     def test_gradle_uses_the_same_sole_producer_and_declares_its_inputs(self):
         gradle=(REPO/'desktop/build.gradle.kts').read_text(encoding='utf-8')
         self.assertEqual(1,gradle.count('exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/navigation/MessageLinkNavigationPolicy.kt"))'))
-        block=gradle.split('val extractUpstreamSpace by tasks.registering',1)[1].split('val extractUpstreamSpaceImagePreviews',1)[0]
+        block=gradle.split('val extractUpstreamSpace by tasks.registering',1)[1].split('val extractUpstreamSpaceOverview',1)[0]
         self.assertIn('"tools/v043_message_link_host.py"',block)
         self.assertIn('inputs.dir("upstream-slices/v043-message-link-host")',block)
         self.assertIn('inputs.file(canonicalOriginalSource("app/src/main/java/com/android/purebilibili/navigation/MessageLinkNavigationPolicy.kt"))',block)

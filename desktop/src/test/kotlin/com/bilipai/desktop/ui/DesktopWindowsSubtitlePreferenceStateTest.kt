@@ -6,7 +6,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveableStateHolder
 import androidx.compose.ui.ImageComposeScene
 import androidx.compose.ui.unit.Density
-import com.android.purebilibili.core.plugin.PlayerPlugin
+import com.android.purebilibili.core.plugin.DesktopSingleSessionPlayerPlugin
 import com.android.purebilibili.data.model.response.PlayUrlData
 import com.android.purebilibili.feature.video.subtitle.*
 import com.android.purebilibili.feature.video.viewmodel.DesktopVideoCommentRequests
@@ -324,10 +324,10 @@ class DesktopWindowsSubtitlePreferenceStateTest {
      * handle or global NetworkModule owner is introduced for the presentation test.
      */
     private class ActualOwner {
-        private val directory = Files.createTempDirectory("subtitle-actual-saveable-")
+        private val directory = Files.createTempDirectory("subtitle-actual-saveable-").toRealPath()
         private val createdAbsoluteDirectory = directory.toAbsolutePath().normalize()
         private val createdRealDirectory = directory.toRealPath()
-        private val systemTempDirectory = Path.of(System.getProperty("java.io.tmpdir")).toAbsolutePath().normalize()
+        private val systemTempDirectory = Path.of(System.getProperty("java.io.tmpdir")).toRealPath()
         private val systemRealTempDirectory = systemTempDirectory.toRealPath()
         private val sessions = DesktopSessionStore.temporary()
         private val repository = DesktopRepository(sessions)
@@ -370,7 +370,7 @@ class DesktopWindowsSubtitlePreferenceStateTest {
                 { error("No subtitle fixture feedback") })
             val plugins = Proxy.newProxyInstance(DesktopOriginalVideoOwnerPlugins::class.java.classLoader,
                 arrayOf(DesktopOriginalVideoOwnerPlugins::class.java)) { _, method, _ ->
-                when (method.name) { "capturePlaybackDispatch" -> null; "enabledPlayerPlugins" -> emptyList<PlayerPlugin>()
+                when (method.name) { "capturePlaybackDispatch" -> null; "enabledPlayerPlugins" -> emptyList<DesktopSingleSessionPlayerPlugin>()
                     else -> error("No pre-media plugin operation ${method.name}") }
             } as DesktopOriginalVideoOwnerPlugins
             val network = object : DesktopOriginalVideoOwnerNetwork {

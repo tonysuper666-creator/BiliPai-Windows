@@ -1,0 +1,15 @@
+--- a/dynamic-editor/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicPublishComposer.kt
++++ b/dynamic-editor/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicPublishComposer.kt
+@@ -379,9 +379,9 @@
+     if (showMentionDialog) {
+         DynamicMentionPickerDialog(
+             onDismiss = { showMentionDialog = false },
+-            onSelected = { mention ->
+-                mentions = (mentions + mention).distinctBy { it.uid }
+-                text = appendDynamicComposerToken(text, "@${mention.name} ")
++            onSelected = { selected -> // upstream picker returns every selected user (TON-1071)
++                mentions = (mentions + selected).distinctBy { it.uid }
++                text = appendDynamicComposerToken(text, selected.joinToString(separator = "") { "@${it.name} " })
+                 showMentionDialog = false
+             },
+         )

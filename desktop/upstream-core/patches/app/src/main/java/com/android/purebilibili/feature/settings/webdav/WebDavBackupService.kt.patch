@@ -1,0 +1,173 @@
+--- a/com/android/purebilibili/feature/settings/webdav/WebDavBackupService.kt
++++ b/com/android/purebilibili/feature/settings/webdav/WebDavBackupService.kt
+@@ -1,8 +1,7 @@
+ package com.android.purebilibili.feature.settings.webdav
+ 
+ import com.android.purebilibili.core.network.buildAppDns
+-import android.content.Context
+-import com.android.purebilibili.BuildConfig
++import com.bilipai.desktop.backup.WebDavBackupArchivePort
+ import com.android.purebilibili.core.network.NetworkModule
+ import kotlinx.coroutines.Dispatchers
+ import kotlinx.coroutines.withContext
+@@ -11,24 +10,17 @@
+ import okhttp3.OkHttpClient
+ import okhttp3.Request
+ import okhttp3.RequestBody.Companion.toRequestBody
+-import java.io.ByteArrayInputStream
+-import java.io.ByteArrayOutputStream
+-import java.io.File
+ import java.io.IOException
+-import java.time.Instant
+-import java.util.zip.ZipEntry
+-import java.util.zip.ZipInputStream
+-import java.util.zip.ZipOutputStream
+ 
+-private const val ZIP_ENTRY_DATASTORE_SETTINGS = "datastore/settings_prefs.preferences_pb"
+-private const val ZIP_ENTRY_DATASTORE_PLUGIN = "datastore/plugin_prefs.preferences_pb"
+-private const val ZIP_ENTRY_SHARED_PREFS_JSON_PLUGIN = "shared_prefs/json_plugins.xml"
+-private const val ZIP_ENTRY_JSON_PLUGIN_DIR = "json_plugins/"
+-
+ private const val XML_CONTENT_TYPE = "application/xml; charset=utf-8"
+ private const val ZIP_CONTENT_TYPE = "application/zip"
+ 
+-class WebDavBackupService(private val context: Context) {
++// Desktop: the archive content is not Android DataStore/SharedPreferences files; the Windows archive port packs and
++// restores the desktop settings documents (DesktopBackupArchive), so the Context-based packing below is replaced.
++class WebDavBackupService @JvmOverloads constructor(
++    private val archive: WebDavBackupArchivePort,
++    private val onSuccessfulRestore: () -> Unit = {},
++) {
+ 
+     private val httpClient: OkHttpClient by lazy {
+         OkHttpClient.Builder()
+@@ -38,6 +30,9 @@
+             .readTimeout(20, java.util.concurrent.TimeUnit.SECONDS)
+             .writeTimeout(20, java.util.concurrent.TimeUnit.SECONDS)
+             .retryOnConnectionFailure(true)
++            // Desktop: the Authorization header must never follow a redirect to another origin.
++            .followRedirects(false)
++            .followSslRedirects(false)
+             .build()
+     }
+ 
+@@ -101,7 +96,7 @@
+             val latest = selectLatestWebDavBackup(entries)
+                 ?: throw IllegalStateException("未找到可恢复的备份文件")
+ 
+-            val downloadUrl = resolveWebDavDownloadUrl(config.baseUrl, latest.href)
++            val downloadUrl = resolveWebDavDownloadUrl(config.baseUrl, latest.href).also { archive.requireSameOrigin(config.baseUrl, it) }
+             val getRequest = Request.Builder()
+                 .url(downloadUrl)
+                 .header("Authorization", authHeader)
+@@ -112,7 +107,7 @@
+                 if (!response.isSuccessful) {
+                     throw IOException("下载失败: HTTP ${response.code}")
+                 }
+-                response.body.bytes()
++                archive.readDownload(response.body)
+             }
+ 
+             val restoredCount = restoreFromBackupArchive(zipBytes)
+@@ -221,99 +216,7 @@
+         }
+     }
+ 
+-    private fun buildBackupArchive(nowEpochMs: Long): ByteArray {
+-        val output = ByteArrayOutputStream()
+-        ZipOutputStream(output).use { zip ->
+-            val manifest = """
+-                {
+-                  "createdAtEpochMs": $nowEpochMs,
+-                  "createdAtIso": "${Instant.ofEpochMilli(nowEpochMs)}",
+-                  "appVersion": "${BuildConfig.VERSION_NAME}",
+-                  "scope": [
+-                    "$ZIP_ENTRY_DATASTORE_SETTINGS",
+-                    "$ZIP_ENTRY_DATASTORE_PLUGIN",
+-                    "$ZIP_ENTRY_SHARED_PREFS_JSON_PLUGIN",
+-                    "${ZIP_ENTRY_JSON_PLUGIN_DIR}*.json"
+-                  ]
+-                }
+-            """.trimIndent()
+-            zip.putNextEntry(ZipEntry("manifest.json"))
+-            zip.write(manifest.toByteArray(Charsets.UTF_8))
+-            zip.closeEntry()
++    private fun buildBackupArchive(nowEpochMs: Long): ByteArray = archive.create(nowEpochMs)
+ 
+-            addFileIfExists(
+-                zip = zip,
+-                file = File(context.filesDir, "datastore/settings_prefs.preferences_pb"),
+-                entryName = ZIP_ENTRY_DATASTORE_SETTINGS
+-            )
+-            addFileIfExists(
+-                zip = zip,
+-                file = File(context.filesDir, "datastore/plugin_prefs.preferences_pb"),
+-                entryName = ZIP_ENTRY_DATASTORE_PLUGIN
+-            )
+-
+-            val sharedPrefsDir = File(context.applicationInfo.dataDir, "shared_prefs")
+-            addFileIfExists(
+-                zip = zip,
+-                file = File(sharedPrefsDir, "json_plugins.xml"),
+-                entryName = ZIP_ENTRY_SHARED_PREFS_JSON_PLUGIN
+-            )
+-
+-            val pluginDir = File(context.filesDir, "json_plugins")
+-            if (pluginDir.exists() && pluginDir.isDirectory) {
+-                pluginDir.listFiles()
+-                    ?.filter { it.isFile && it.extension.equals("json", ignoreCase = true) }
+-                    ?.sortedBy { it.name }
+-                    ?.forEach { file ->
+-                        addFileIfExists(zip, file, "$ZIP_ENTRY_JSON_PLUGIN_DIR${file.name}")
+-                    }
+-            }
+-        }
+-
+-        return output.toByteArray()
+-    }
+-
+-    private fun addFileIfExists(zip: ZipOutputStream, file: File, entryName: String) {
+-        if (!file.exists() || !file.isFile) return
+-        zip.putNextEntry(ZipEntry(entryName))
+-        file.inputStream().use { input -> input.copyTo(zip) }
+-        zip.closeEntry()
+-    }
+-
+-    private fun restoreFromBackupArchive(zipBytes: ByteArray): Int {
+-        var restored = 0
+-
+-        ZipInputStream(ByteArrayInputStream(zipBytes)).use { zipInput ->
+-            var entry = zipInput.nextEntry
+-            while (entry != null) {
+-                if (!entry.isDirectory) {
+-                    val entryName = entry.name.trim()
+-                    val target = resolveRestoreTarget(entryName)
+-                    if (target != null) {
+-                        target.parentFile?.mkdirs()
+-                        target.outputStream().use { output -> zipInput.copyTo(output) }
+-                        restored++
+-                    }
+-                }
+-                zipInput.closeEntry()
+-                entry = zipInput.nextEntry
+-            }
+-        }
+-
+-        return restored
+-    }
+-
+-    private fun resolveRestoreTarget(entryName: String): File? {
+-        if (entryName.contains("..")) return null
+-        return when {
+-            entryName == ZIP_ENTRY_DATASTORE_SETTINGS -> File(context.filesDir, "datastore/settings_prefs.preferences_pb")
+-            entryName == ZIP_ENTRY_DATASTORE_PLUGIN -> File(context.filesDir, "datastore/plugin_prefs.preferences_pb")
+-            entryName == ZIP_ENTRY_SHARED_PREFS_JSON_PLUGIN -> File(context.applicationInfo.dataDir, "shared_prefs/json_plugins.xml")
+-            entryName.startsWith(ZIP_ENTRY_JSON_PLUGIN_DIR) -> {
+-                val fileName = entryName.removePrefix(ZIP_ENTRY_JSON_PLUGIN_DIR)
+-                if (fileName.isBlank()) null else File(context.filesDir, "json_plugins/$fileName")
+-            }
+-            else -> null
+-        }
+-    }
++    private fun restoreFromBackupArchive(zipBytes: ByteArray): Int = archive.restore(zipBytes, onSuccessfulRestore)
+ }

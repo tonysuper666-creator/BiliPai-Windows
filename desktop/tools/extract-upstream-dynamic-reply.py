@@ -191,6 +191,8 @@ def generate(repo, output):
             body = advance_dynamic_items(repo, body, output)
         elif filename == 'DesktopOriginalReplySettings.kt':
             body = advance_settings(repo, body, output, 'reply')
+        from desktop_refresh_adaptation import bind_refresh_lists, bind_refresh_launch
+        body=bind_refresh_lists(body)
         emitted.append(host.write(output, path, read(repo, path), body, filename))
 
     original = read(repo, REPLY)

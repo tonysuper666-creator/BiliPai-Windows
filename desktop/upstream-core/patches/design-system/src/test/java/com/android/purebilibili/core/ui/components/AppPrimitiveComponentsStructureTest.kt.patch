@@ -1,0 +1,26 @@
+Upstream-source-sha256: 7d2ffe695a6fc3a3ddb3464bfc175f9c7de83a440832e9fe9f2528db610c7e43
+Reason: ca8a6cac6 给 AppMiuixListItem 加了 isMiuixNonGlassEnabled() 分支（分支内用全限定名调用 BasicComponent( 后 return），并把 Row 兜底里的 trailing 内容改成经 ProvideAppActionContentColor 渲染。
+BasicComponent( 的断言改成「只在该分支内、Row 之后不再出现」；trailingContent() 的字面量已随同笔提交消失，改成钉住包装后的渲染调用，比原来更强。heightIn、leadingContent()、无 material3 import 保留。
+
+--- a/design-system/src/test/java/com/android/purebilibili/core/ui/components/AppPrimitiveComponentsStructureTest.kt
++++ b/design-system/src/test/java/com/android/purebilibili/core/ui/components/AppPrimitiveComponentsStructureTest.kt
+@@ -174,10 +174,17 @@
+         assertFalse(facade.contains("import top.yukonga.miuix"))
+ 
+         assertTrue(material.contains("import androidx.compose.material3.ListItem"))
+-        assertFalse(miuix.contains("BasicComponent("))
++        val nonGlassStart = miuix.indexOf("isMiuixNonGlassEnabled()")
++        val basicComponentStart = miuix.indexOf("BasicComponent(")
++        assertTrue(nonGlassStart >= 0)
++        // ca8a6cac6：非玻璃分支用 miuix 原生 BasicComponent 后 return，Row 兜底里不再调用它。
++        assertTrue(basicComponentStart > nonGlassStart)
++        val miuixRowStart = miuix.indexOf("Row(", basicComponentStart)
++        assertTrue(miuixRowStart > basicComponentStart)
++        assertFalse(miuix.substring(miuixRowStart).contains("BasicComponent("))
+         assertTrue(miuix.contains(".heightIn(min = AppChromeSizeTokens.CompactRowMinHeightDp.dp)"))
+         assertTrue(miuix.contains("leadingContent()"))
+-        assertTrue(miuix.contains("trailingContent()"))
++        assertTrue(miuix.contains("ProvideAppActionContentColor(AppContentColors.secondaryText(), trailingContent)"))
+         assertFalse(miuix.contains("import androidx.compose.material3"))
+     }
+ 

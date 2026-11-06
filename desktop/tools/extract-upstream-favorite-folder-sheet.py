@@ -1,6 +1,7 @@
 """Sole original favorite drawer producer. No account/client/store/model replacement."""
 from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
+from desktop_paths import long_path
 import hashlib, json, re, subprocess, sys
 
 COMMIT='79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40'
@@ -16,8 +17,8 @@ PATHS=[BASE+x for x in [
 
 def sha(s): return hashlib.sha256(s.encode('utf-8')).hexdigest()
 def write(p,s):
- value=str(p.absolute());prefix=chr(92)*2+'?'+chr(92)
- p=Path(value if value.startswith(prefix) else prefix+value)
+ value=str(p.absolute())
+ p=long_path(value)
  p.parent.mkdir(parents=True,exist_ok=True);p.write_text(s,encoding='utf-8',newline='\n')
 def save(p,s): write(p,json.dumps(s,ensure_ascii=False,indent=2)+'\n')
 def masked(text):

@@ -28,6 +28,7 @@ import design_system_consumer_table as table_tool
 import v037_shared_tabs_progress as tabs
 import v046_design_system_leaves_a as leaves_a
 import v046_design_system_leaves_b as leaves
+import v025_source_paths as v025
 
 
 def load(name, filename):
@@ -41,6 +42,8 @@ sync = load('sync_upstream_design_system_leaves_b', 'sync-upstream.py')
 components = load('extract_upstream_components_design_system_leaves_b', 'extract-upstream-components.py')
 preferences = load('extract_upstream_preferences_design_system_leaves_b', 'extract-upstream-preferences.py')
 shared = load('extract_upstream_shared_liquid_tabs_design_system_leaves_b', 'extract-upstream-shared-liquid-tabs.py')
+# the post-M2 compile universe (merged modules and app paths, legacy direct rows, slices) the leaves A contract models
+universe = load('test_v046_design_system_leaves_a_source_for_leaves_b', 'tests/test_v046_design_system_leaves_a_source.py')
 
 BASE = leaves.BASE
 CANONICAL = leaves.UPSTREAM_PATHS
@@ -787,30 +790,38 @@ class V046DesignSystemLeavesBSourceTest(unittest.TestCase):
         modes = {'AppPreferenceComponents.kt': 'direct', 'AppCard.kt': 'direct', 'AppDesktopInteraction.kt': 'direct',
                  'AppTonalPillTabPolicy.kt': 'direct', 'AppSelectionPreferenceComponents.kt': 'platform-adapter-reference',
                  'DampedDragAnimation.kt': 'extracted'}
+        # ad2967bbf re-pinned the live manifest to the merged bytes; the catalog keeps the reviewed live/legacy pair
+        catalog = v025._catalog()['paths']
         for name, mode in modes.items():
             row = by_path[CANONICAL[name]]
+            entry = catalog[CANONICAL[name]]
             self.assertEqual(mode, row.get('mode', 'direct'), name)
-            self.assertEqual(leaves.PREDECESSOR_SHA256[name], row['sha256'], name)
-            self.assertEqual(leaves.PREDECESSOR_SHA256[name], sha(lf((REPO / CANONICAL[name]).read_bytes())), name)
+            self.assertEqual(entry['sha256'], row['sha256'], name)
+            self.assertEqual(leaves.PREDECESSOR_SHA256[name], entry['legacySha256'], name)
+            self.assertEqual(v025.reviewed_sha256(REPO, entry), sha(lf((REPO / CANONICAL[name]).read_bytes())), name)
             self.assertNotEqual(self.archive[name], (REPO / CANONICAL[name]).read_bytes().replace(b'\r\n', b'\n'), name)
         self.assertEqual({row['replacedBy'] for row in self.manifest['replacedVendoredCopies']}, set(leaves.EXCLUDED_NOW))
         for row in self.manifest['replacedVendoredCopies']:
-            self.assertEqual(by_path[row['path']]['sha256'], row['vendoredLfSha256'])
+            entry = catalog[row['path']]
+            self.assertEqual(entry['sha256'], by_path[row['path']]['sha256'], row['path'])
+            self.assertEqual(entry['legacySha256'], row['vendoredLfSha256'], row['path'])
 
-    def test_no_compiled_direct_copy_remains_and_every_top_level_name_has_one_producer_output(self):
+    def test_no_compiled_direct_copy_remains_and_every_top_level_name_has_one_merged_definer(self):
         sources = json.loads((REPO / 'desktop/upstream-sources.json').read_text(encoding='utf-8'))['sources']
         excluded = set(gate.parse_gradle(self.build).sync_excludes)
         compiled_direct = {row['path'] for row in sources if row.get('mode', 'direct') == 'direct'} - excluded
         for name in leaves.MAIN_FILES:
             self.assertNotIn(CANONICAL[name], compiled_direct, name)
+        # after M2 (e2528efba) design-system compiles whole from the merged root and the main source set drops every
+        # producer output at one of its paths, so the merged file is the one owner of each name
+        _modules, _app, migrated = universe.merged_modules()
         scanned = {}
         for producer, files in self.out.items():
             for path, raw in files.items():
-                if path.endswith('.kt'):
+                if path.endswith('.kt') and universe.upstream_identity(path) not in migrated:
                     scanned[producer + ':' + path] = raw
-        for path in sorted(compiled_direct):
-            if path.endswith('.kt'):
-                scanned['direct:' + path] = (REPO / path).read_bytes()
+        for label, path in universe.compile_universe():
+            scanned[label] = path.read_bytes()
         for root in ('desktop/src/main', 'desktop/src/test'):
             for path in sorted((REPO / root).rglob('*.kt')):
                 scanned['desktop:' + path.relative_to(REPO).as_posix()] = path.read_bytes()
@@ -827,16 +838,15 @@ class V046DesignSystemLeavesBSourceTest(unittest.TestCase):
                     if pack == package and any(d[2] == declared and d[0] != 'private' for d in decls):
                         owners.append(label)
                 with self.subTest(file=name, declared=declared):
-                    self.assertEqual(1, len(owners), owners)
-                    self.assertTrue(owners[0].endswith('/' + name), owners)
+                    self.assertEqual([CANONICAL[name]], owners)
 
     def test_every_project_import_of_the_carried_files_has_a_definer_in_the_compile_inputs(self):
-        sources = json.loads((REPO / 'desktop/upstream-sources.json').read_text(encoding='utf-8'))['sources']
-        excluded = set(gate.parse_gradle(self.build).sync_excludes)
-        pool = [raw.decode('utf-8') for files in self.out.values() for path, raw in files.items() if path.endswith('.kt')]
-        pool += [(REPO / row['path']).read_bytes().decode('utf-8') for row in sources
-                 if row.get('mode', 'direct') == 'direct' and row['path'].endswith('.kt') and row['path'] not in excluded]
-        pool += [path.read_bytes().decode('utf-8') for path in sorted((REPO / 'desktop/upstream-slices').glob('*/*.kt'))]
+        # the compile inputs after M2 (e2528efba): the producer outputs the main source set keeps, the compile universe
+        # (merged modules and app paths, legacy direct rows, slices) and the desktop sources
+        _modules, _app, migrated = universe.merged_modules()
+        pool = [raw.decode('utf-8') for files in self.out.values() for path, raw in files.items()
+                if path.endswith('.kt') and universe.upstream_identity(path) not in migrated]
+        pool += [path.read_bytes().decode('utf-8') for _label, path in universe.compile_universe()]
         pool += [path.read_bytes().decode('utf-8') for path in sorted((REPO / 'desktop/src/main').rglob('*.kt'))]
         index = {}
         for text in pool:
