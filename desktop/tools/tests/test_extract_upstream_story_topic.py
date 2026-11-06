@@ -1,8 +1,9 @@
-import hashlib, importlib.util, tempfile, unittest
+import hashlib, importlib.util, os, tempfile, unittest
 from pathlib import Path
 
 REPO=next(path for path in Path(__file__).resolve().parents
  if (path/"desktop/tools/extract-upstream-story-topic.py").is_file() and (path/"desktop/upstream-sources.json").is_file())
+LIVE=Path(os.environ.get('BILIPAI_LIVE_ROOT') or REPO)
 SCRIPT=REPO/"desktop/tools/extract-upstream-story-topic.py"
 if not SCRIPT.exists(): SCRIPT=REPO/"desktop/.local/story-topic-parity/extract-story-topic-platform.py"
 spec=importlib.util.spec_from_file_location("story_topic",SCRIPT); module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
@@ -29,18 +30,21 @@ class OriginalStoryTopicExtractTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             files=module.generate(REPO,Path(directory))
             expected={'TopicRepository.kt','PortraitPagerSwitchPolicy.kt','StoryUiState.kt',
-                'StoryScreen.kt','TopicDetailStatePolicy.kt','DynamicTopicLinkPolicy.kt'}
+                'StoryScreen.kt','TopicDetailStatePolicy.kt','DynamicTopicLinkPolicy.kt','StoryFeedPolicy.kt','StoryModels.kt'}
             self.assertEqual(expected,{path.name for path in files})
             self.assertEqual(len(files),len(expected))
-            self.assertTrue({Path(path).name for path in module.DIRECT}.isdisjoint(expected))
+            self.assertTrue({Path(path).name for path in module.DIRECT[1:]}.isdisjoint(expected))
+            for source in (module.DIRECT[0], 'core-data/src/main/java/com/android/purebilibili/data/model/response/StoryModels.kt'):
+                self.assertEqual((LIVE/source).read_bytes(), next(p for p in files if p.name==Path(source).name).read_bytes())
             # StoryScreen is a newly complete owner, not an unexplained count increase.
-            original=module.read(REPO,module.BASE+'feature/story/StoryScreen.kt')
+            original=(LIVE/(module.BASE+'feature/story/StoryScreen.kt')).read_text(encoding='utf-8')
             screen=next(path for path in files if path.name=='StoryScreen.kt').read_text(encoding='utf-8')
             self.assertEqual(module.adapt_story_root_screen(original).strip(),screen.split('\n',2)[2].strip())
     def test_standalone_preserves_all_three_direct_bodies(self):
         with tempfile.TemporaryDirectory() as directory:
             files=module.generate(REPO,Path(directory),True)
-            for path in module.DIRECT:
+            self.assertEqual((LIVE/module.DIRECT[0]).read_bytes(), next(p for p in files if p.name=='StoryFeedPolicy.kt').read_bytes())
+            for path in module.DIRECT[1:]:
                 output=next(file for file in files if file.name==Path(path).name).read_text(encoding="utf-8")
                 self.assertEqual(output.split("\n",2)[2],module.read(REPO,path).strip()+"\n")
     def test_original_topic_mapping_and_defaults_remain(self):

@@ -1,3 +1,4 @@
+from v025_source_paths import registered_source_sha256
 from v025_source_paths import canonical_source as _desktop_canonical_source, canonical_relative as _desktop_canonical_relative
 from pathlib import Path
 from desktop_paths import long_path
@@ -533,7 +534,7 @@ def generate(repo,output,standalone=False,test_output=None):
  SOURCES={};OUTPUTS=[];ADAPT=[];REFERENCES=[]
  manifest=json.loads(wide(REPO/'desktop/upstream-sources.json').read_text(encoding='utf-8'))
  assert manifest['upstreamCommit']==COMMIT
- registry={r['path']:r['sha256']for r in manifest['sources']}
+ registry={r['path']:registered_source_sha256(REPO,r) for r in manifest['sources'] if r['path'] in SOURCE_PINS}
  for path,pin in SOURCE_PINS.items():
   if path in registry:assert registry[path]==pin['sha256LF'],path+' existing registry identity differs'
  parser=module('controls_tokens',REPO/'desktop/tools/sync-upstream.py')

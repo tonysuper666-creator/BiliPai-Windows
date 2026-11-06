@@ -3,8 +3,10 @@
 
 Compilation is deliberately deferred while upstream slices are authored, so dependency cascades only show up
 late. This tool finds the cheap-to-detect ones early. It never writes into the checkout. It mirrors the
-repository into a throw-away directory, runs every source-producing generator there exactly the way Gradle
-runs it (same tool, same arguments, desktop/build as the output root), reads the generator outputs, the
+repository into a throw-away directory, runs the Python producers with Gradle's tools and arguments,
+and projects the Kotlin outputs of explicitly guarded Gradle recipes without starting a JVM. Recipe drift
+fails closed. Direct migrated sources use BILIPAI_LIVE_ROOT; Python producer inputs stay in the legacy
+mirror. The report traces compiled files to their input root and declared producer. It reads these outputs, the
 desktop-owned Kotlin and the carried upstream slice archives, and reports the failure classes that the
 Source260 cloud compile (head aad198489, 24 errors) showed, plus their siblings:
 
@@ -75,6 +77,7 @@ from __future__ import annotations
 import argparse
 import bisect
 import fnmatch
+import hashlib
 import json
 import os
 import re
@@ -85,6 +88,7 @@ import sys
 import tarfile
 import tempfile
 import time
+import xml.etree.ElementTree as ET
 from collections import Counter, defaultdict
 from pathlib import Path
 
@@ -849,7 +853,7 @@ class ToolError(RuntimeError):
 
 
 class Task:
-    __slots__ = ('name', 'tool', 'args', 'deps', 'skip')
+    __slots__ = ('name', 'tool', 'args', 'deps', 'skip', 'written_sources')
 
     def __init__(self, name, tool, args, deps, skip):
         self.name = name
@@ -857,6 +861,7 @@ class Task:
         self.args = args
         self.deps = deps
         self.skip = skip
+        self.written_sources = []
 
 
 class GradleModel:
@@ -871,9 +876,16 @@ class GradleModel:
         self.migrated_modules = []
         self.migrated_paths = set()
         self.upstream_owned_copies = set()
+        self.text = ''
+        self.live_graph = False
+        self.source_files = []
+        self.filters = []
+        self.build_file_excludes = {'main': set(), 'test': set()}
+        self.output_owners = {}
 
 
-_TASK_HEAD = re.compile(r'val (\w+) by tasks\.registering\((\w+)::class\)\s*\{')
+_TASK_HEAD = re.compile(r'val (\w+)(?: by tasks\.registering\((\w+)::class\)|'
+                        r' = if \(hostIsWindows\) tasks\.register<(\w+)>\("\w+"\))\s*\{')
 _VARIABLE = re.compile(r'(?m)^val (\w+) = layout\.buildDirectory\.(?:dir|file)\("([^"]+)"\)\s*$')
 _SOURCE_SET = re.compile(r'(?:kotlin\.)?sourceSets\.named\("(main|test)"\)\s*\{')
 # Producers that need a toolchain the gate must not start (JDK download, MSVC/Windows SDK compile).
@@ -957,22 +969,386 @@ def _eval_arg(raw, variables):
     return ('unresolved', a)
 
 
+def _gradle_value(text, name):
+    """A top-level val initializer; keep literals intact and balance Kotlin delimiters."""
+    match = re.search(r'(?m)^val ' + re.escape(name) + r'(?:\s*:[^=\n]+)?\s*=\s*', text)
+    if not match:
+        return ''
+    start = match.end()
+    masked = mask_kotlin(text)
+    depth = 0
+    for at in range(start, len(text)):
+        char = masked[at]
+        if char in '({[':
+            depth += 1
+        elif char in ')}]':
+            depth -= 1
+        elif char == '\n' and depth == 0:
+            # Kotlin permits continuation operators and member calls on the next line.
+            tail = masked[at + 1:].lstrip()
+            previous = masked[start:at].rstrip()
+            if not tail.startswith(('.', '+', '?:')) and not previous.endswith(('+', '=')):
+                return text[start:at].strip()
+    return text[start:].strip()
+
+
+def _gradle_clean(text):
+    return re.sub(r'""".*?"""|"(?:\\.|[^"\\])*"|//[^\n]*|/\*.*?\*/',
+                  lambda m: '' if m.group().startswith(('//', '/*')) else m.group(), text, flags=re.S)
+
+
+def _gradle_collection(text, name, constructor='setOf'):
+    raw_value = _gradle_value(text, name)
+    value = _gradle_clean(raw_value).strip()
+    if not value:
+        return []
+    # This one collection combines literal entries and computed selections; the latter
+    # are evaluated against LIVE in _resolve_live_graph, under the recipe guard.
+    dynamic = name == 'migratedUpstreamRelativePaths' and value.startswith('migratedWholeModulePaths')
+    if dynamic:
+        _check_recipe(name, raw_value)
+    match = re.search(r'\b' + constructor + r'\(', value) if dynamic else re.match(constructor + r'\(', value)
+    if not match:
+        raise ToolError('Cannot model %s collection %s' % (constructor, name))
+    end = _paren_end(mask_kotlin(value), match.end() - 1)
+    tail = value[end + 1:].strip()
+    if tail and not (name == 'migratedUpstreamModules' and tail == '+ migratedWholeModules'):
+        raise ToolError('Cannot model collection suffix in ' + name)
+    body = _gradle_clean(value[match.end():end])
+    parts = _split_args(body, mask_kotlin(body))
+    if any(not re.fullmatch(r'"[^"$]*"', part) for part in parts):
+        raise ToolError('Nonliteral %s entries in %s' % (constructor, name))
+    return [part[1:-1] for part in parts]
+
+
+def _gradle_map_keys(text, name):
+    value = _gradle_value(text, name)
+    match = re.match(r'mapOf\(', value)
+    if not match:
+        raise ToolError('Cannot model map ' + name)
+    end = _paren_end(mask_kotlin(value), match.end() - 1)
+    if _gradle_clean(value[end + 1:]).strip():
+        raise ToolError('Cannot model map suffix in ' + name)
+    result = {}
+    body = _gradle_clean(value[match.end():end])
+    for part in _split_args(body, mask_kotlin(body)):
+        pair = re.fullmatch(r'"([^"$]*)"\s+to\s+(.+)', part, re.S)
+        if not pair:
+            raise ToolError('Cannot model entry in ' + name)
+        result[pair.group(1)] = pair.group(2)
+    return result
+
+
+def _table(desktop, directory, name):
+    path = desktop / directory / name
+    if not path.is_file():
+        return set()
+    return {line.split('\t', 1)[0].strip() for line in path.read_text(encoding='utf8').splitlines()
+            if line.strip() and not line.startswith('#')}
+
+
+def _relative_kotlin(root):
+    return {p.relative_to(root).as_posix() for p in walk_sources(root, ('.kt',))}
+
+
+def _resolve_live_graph(root, model):
+    """The legacy workspace owns producers; only explicitly migrated originals belong to LIVE."""
+    if not model.live_graph:
+        return None
+    if root.name == '.legacy-root' and not os.environ.get('BILIPAI_LIVE_ROOT'):
+        raise ToolError('The legacy read point requires an explicit BILIPAI_LIVE_ROOT')
+    live = Path(os.environ.get('BILIPAI_LIVE_ROOT') or root).resolve()
+    if not (live / 'app/src/main/java').is_dir():
+        raise ToolError('BILIPAI_LIVE_ROOT has no live app source root: ' + str(live))
+    desktop = root / 'desktop'
+    text = model.text
+    keys = lambda name: set(_gradle_map_keys(text, name))
+    def collection(name, constructor):
+        if not _gradle_value(text, name):
+            raise ToolError('Missing Gradle source collection ' + name)
+        return _gradle_collection(text, name, constructor)
+    strings = lambda name: set(collection(name, 'setOf'))
+    lists = lambda name: collection(name, 'listOf')
+    whole = lists('migratedWholeModules')
+    whole_paths = set().union(*(_relative_kotlin(live / m / 'src/main/java') for m in whole))
+    later = set().union(*(_table(desktop, d, 'later-steps.tsv') for d in lists('appFeatureListDirectories')))
+    retired = set().union(*(_table(desktop, d, 'retired-generated.tsv') for d in lists('appFeatureListDirectories')))
+    m4d_later = _table(desktop, 'upstream-core/m4d', 'later-steps.tsv')
+    m4d_retired = _table(desktop, 'upstream-core/m4d', 'retired-generated.tsv')
+    app = live / 'app/src/main/java'
+    prefix = 'com/android/purebilibili/'
+    owned = keys('appCoreDesktopOwned') | keys('appCoreLaterSteps')
+    core_paths = {prefix + area.rstrip('/') + '/' + p for area in ['core/'] + lists('migratedAppFeatureAreas')
+                  for p in _relative_kotlin(app / prefix / area)}
+    core_paths = {p for p in core_paths if not p.removeprefix(prefix).startswith(tuple(owned))
+                  and p.removeprefix(prefix) not in later} | strings('migratedVideoFeaturePaths')
+    m4d_paths = {prefix + area.rstrip('/') + '/' + p for area in lists('migratedAppM4dAreas')
+                 for p in _relative_kotlin(app / prefix / area)}
+    m4d_paths = {p for p in m4d_paths if p.removeprefix(prefix) not in m4d_later}
+    m4c_paths = {area + p for area in lists('migratedAppM4cRoots') for p in _relative_kotlin(app / area)}
+    m4c_paths -= keys('appM4cDesktopOwned') | keys('appM4cLaterSteps')
+    app_paths = core_paths | m4d_paths | m4c_paths | strings('migratedAppSingleFiles')
+    playback = _gradle_path_map(text, 'migratedPlaybackModulePaths')
+    playback_tests = _gradle_path_map(text, 'migratedPlaybackModuleTests')
+    model.migrated_paths |= whole_paths | app_paths | set().union(*playback.values())
+    model.upstream_owned_copies |= retired | m4d_retired
+    patch_dir = desktop / 'upstream-core/patches'
+    patched = {p.relative_to(patch_dir).as_posix()[:-6] for p in patch_dir.rglob('*.patch')
+               if '/src/test/' not in p.relative_to(patch_dir).as_posix()}
+    replaced = _relative_kotlin(desktop / 'upstream-core/replacements')
+    rewrite_value = _gradle_value(text, 'desktopUpstreamRewriteRules')
+    rewrites = [(re.compile(a), b) for a, b in re.findall(r'Regex\("""(.*?)"""\) to "([^"]*)"', rewrite_value, re.S)]
+    if rewrite_value and not rewrites:
+        raise ToolError('Cannot model desktopUpstreamRewriteRules')
+    rewritten = set()
+    for source_root, paths in [(m + 'src/main/java/', _relative_kotlin(live / m / 'src/main/java'))
+                               for m in model.migrated_modules] + [('app/src/main/java/', app_paths)]:
+        for path in paths - replaced:
+            file = live / source_root / path
+            if file.is_file() and any(pattern.search(file.read_text(encoding='utf8')) for pattern, _ in rewrites):
+                rewritten.add(source_root + path)
+    whole_tests = set().union(*(_relative_kotlin(live / m / 'src/test/java') for m in whole))
+    app_tests_root = live / 'app/src/test/java'
+    candidates = {prefix + area.rstrip('/') + '/' + p for area in ['core/'] + lists('migratedAppM4dAreas')
+                  for p in _relative_kotlin(app_tests_root / prefix / area)}
+    candidates.add(prefix + 'data/repository/MessageImRepositoryTest.kt')
+    not_run = keys('appCoreUpstreamTestsNotRun') | _table(desktop, 'upstream-core/m4d', 'tests-not-run.tsv')
+    banned_import = re.compile(r'^import (org\.junit\.(?!jupiter)|org\.robolectric|io\.mockk|androidx\.test)', re.M)
+    app_tests = set()
+    for path in candidates:
+        file = app_tests_root / path
+        core = path.removeprefix(prefix)
+        subject_later = any(k.endswith('.kt') and core == k[:-3] + 'Test.kt' for k in owned | m4d_later)
+        if (file.is_file() and not banned_import.search(file.read_text(encoding='utf8')) and
+                core not in not_run and not core.startswith(tuple(owned)) and not subject_later):
+            app_tests.add(path)
+    app_tests |= strings('migratedVideoFeatureTestPaths')
+    transition_dir = desktop / 'upstream-core/transition/patches'
+    transition = {p.relative_to(transition_dir).as_posix()[:-6] for p in transition_dir.rglob('*.patch')}
+    transition_producers = _gradle_map_keys(text, 'transitionPatchProducers')
+    unknown = {p.split('/', 1)[0] for p in transition} - transition_producers.keys()
+    if unknown:
+        raise ToolError('Transition patches without a known producer task: ' + ', '.join(sorted(unknown)))
+    registered = set(model.tasks) | {match.group(1) for match in _TASK_HEAD.finditer(text)}
+    for prefix in {p.split('/', 1)[0] for p in transition}:
+        task = transition_producers[prefix][1:-1]
+        if task not in registered:
+            raise ToolError('Unknown transition producer task: ' + task)
+    return dict(live=live, app=app_paths, playback=playback, playback_tests=playback_tests,
+                whole_tests=whole_tests, app_tests=app_tests, corrected=strings('correctedUpstreamTestPaths'),
+                adapted=patched | rewritten, patched=patched, replaced=replaced, rewrites=rewrites,
+                transition=transition,
+                retired_patched={p.split('/', 1)[1].removeprefix('generated/') for p in retired & transition})
+
+
+def _source_in_graph(graph, model, source_set, kind, relative, inner):
+    path = relative.rstrip('/') + '/' + inner
+    if kind == 'build' and path in model.build_file_excludes[source_set]:
+        return False
+    marker = 'com/android/purebilibili/'
+    index = path.rfind('/' + marker)
+    identity = path[index + 1:] if index >= 0 else (path if path.startswith(marker) else '')
+    if kind.startswith('merged'):
+        if source_set == 'main':
+            if path in graph['adapted'] or identity in graph['replaced']:
+                return False
+            if relative == 'app/src/main/java' and inner not in graph['app']:
+                return False
+        else:
+            if path in graph['corrected']:
+                return False
+            if relative == 'app/src/test/java' and inner not in graph['app_tests']:
+                return False
+        selections = graph['playback'] if source_set == 'main' else graph['playback_tests']
+        for directory, selected in selections.items():
+            if relative.rstrip('/') == directory.rstrip('/') and inner not in selected:
+                return False
+    if kind == 'build':
+        if source_set == 'main':
+            if not path.startswith('patched-upstream/') and identity in model.migrated_paths:
+                return False
+            if path.startswith('generated/') and path[len('generated/'):] in model.upstream_owned_copies | graph['transition']:
+                return False
+            if path.startswith('transition-patched/') and path[len('transition-patched/'):] in graph['retired_patched']:
+                return False
+        elif not path.startswith(model.task_outputs['applyUpstreamTestCorrections'] + '/') and identity in graph['whole_tests'] | graph['app_tests']:
+            return False
+    return True
+
+
+def _gradle_path_map(text, name):
+    result = {}
+    for key, value in _gradle_map_keys(text, name).items():
+        result[key] = set(_gradle_collection('val paths = ' + value, 'paths'))
+    return result
+
+
+def _recipe_digest(text):
+    return hashlib.sha256(text.replace('\r\n', '\n').strip().encode('utf8')).hexdigest()
+
+
+# These are executable Kotlin recipes, not arbitrary directories to ignore. Python projects their Kotlin
+# outputs below. Pin each implementation (including helper functions and filters) so a Gradle semantic change
+# is a tool error until its adapter is reviewed. Literal path collections are parsed, never pinned or cached.
+KOTLIN_RECIPES = {'migratedWholeModulePaths': '8560d94b7ad2273c5d7a38bad6c7e3b4fb0ac4c2521fe5b0db720fe10fb31b42',
+ 'migratedAppCorePaths': '8ca4222319fed4572dfc773adc610e77f07ff0e80713c804902d57cfa08a1e37',
+ 'migratedAppM4dPaths': '45dfa65d244b012526849cbcf7ec5700a766b50d6c55ec3f639958da3eb33c6f',
+ 'migratedAppM4cPaths': '12e0682012cb4c8bbe76e37883effda877aa2d1206673662f26988d9ea108590',
+ 'migratedAppPaths': '1bf1db24e91383b514cb0250b2abadd33a75b0c50ec264eef371970795a753fb',
+ 'migratedUpstreamRelativePaths': '3728733b09debbc1b5cddffa2f63ce6754ae265bbb833d7c36a8b3c87d198b93',
+ 'appCoreUpstreamTestPaths': '018e84158f839e2bb55b2861bd31945bab6a5b1a4a79895925a02660d822e304',
+ 'migratedWholeModuleTestRoots': '887f56408f980fbe440acffe91cf7eae07f6fa98194f99236418caa39c7b17aa',
+ 'migratedWholeModuleTestPaths': '4abebebbdb2e984ecf49c19958bd5d97e135b4acc5295b5838f605d5601c1a91',
+ 'appFeatureLaterSteps': '9547234199671a18be53c6dc6b307630a748a8567aa91d61bb2436a50ba0b656',
+ 'appFeatureRetiredGeneratedCopies': '3c335599046237051849acb055dda52cd3de4ec8d97aee992bc00db2cb248afd',
+ 'appM4dLaterSteps': '581d70ec4e011a92b7bb5a220b53b998e99dd37628fd4619d8e502f48bf5cddd',
+ 'appM4dRetiredGeneratedCopies': 'a7934c933bff67a584f7882cd3a8ca801c39275f079eac88e951f0452fe833d5',
+ 'appM4dTestsNotRun': '5c97b936447c6e81b3bb15a30b92c0333cc2e83d45811f19066edab9f28e1cfd',
+ 'desktopUpstreamPatchedFiles': '2f5c29b78c046434dab5fe04af507db4ee2e7549f43bf0c96bfd54a578c5fdf7',
+ 'desktopUpstreamRewrittenFiles': '5df5aa424bad4e44c874bd5c16508038e1bb13887cd2cde5451c4607ae8a71fb',
+ 'desktopUpstreamAdaptedRootFiles': '8b3ad9f4780a88b1d48b18886c14fb734f53ad71fbad27f6d0b0e1a456e0a077',
+ 'applyDesktopUpstreamPatches': '8d00ad2690e3278aa7a3665abfc169cb10e62d381d318ca497d407ecd4743bfc',
+ 'generateUpstreamColorResources': '3100f5857ba4ad8179698f90c906fdd9f9e7f8faeb786020706cdc00fa8bcc78',
+ 'generateUpstreamStringResources': '4b1f158a15be5c05bc1f245dcd1d2f7da8469ad30c267da9495cb0477fff04c2',
+ 'generateUpstreamDrawableResources': '4f6fb2d1503f22b36cbf1f973e45f86b22f040b8e4180c1cb4e7cf20040de13e',
+ 'generateUpstreamPreferenceKeyTypes': '51f3ced025a883b5520c9590f0fa0c04c44c0d9fe222b4a0aad2c611c13468c8',
+ 'generateUpstreamBuildConfig': '7ae607bc492c2d6206fa3e3bd3b399705eca952eab3ec2fdecaa6541007b6a5c',
+ 'applyUpstreamTestCorrections': 'd80889557d3e60a40c25c25428becda703118b507d484ad9770e5204ceabfde9',
+ 'filter:6cc210be3e0f46f3790cd1209fdd287b96a7c084ed3ee48869414e2c86ae358b': '6cc210be3e0f46f3790cd1209fdd287b96a7c084ed3ee48869414e2c86ae358b',
+ 'filter:9df387afb1895f3de990088df38543d43a4e4157ceb426f392d2604d4d2b3dd0': '9df387afb1895f3de990088df38543d43a4e4157ceb426f392d2604d4d2b3dd0',
+ 'filter:39c0a45dce4f01786540e6089b008f229129d7bd1a832de7845ac1c424cee737': '39c0a45dce4f01786540e6089b008f229129d7bd1a832de7845ac1c424cee737',
+ 'filter:a3a669e13bc5400366e5047cbb93c9af8733ff9d46fd2de865251030f0b76e3c': 'a3a669e13bc5400366e5047cbb93c9af8733ff9d46fd2de865251030f0b76e3c',
+ 'filter:12dc87c9fc691d1d5a5e9e01aa04fc4e6377fdcf3d0ea078e38f69d1822ffe52': '12dc87c9fc691d1d5a5e9e01aa04fc4e6377fdcf3d0ea078e38f69d1822ffe52',
+ 'filter:70f051ce8757e99b34e699b60ae9951c0ef82c2acde23f435ecfbc1faff289ee': '70f051ce8757e99b34e699b60ae9951c0ef82c2acde23f435ecfbc1faff289ee',
+ 'filter:fc66ad16d6d00bc966c9545b559cf547051045d9c7b6b15696b8bf4d3bae34be': 'fc66ad16d6d00bc966c9545b559cf547051045d9c7b6b15696b8bf4d3bae34be',
+ 'filter:35cd76a038e22c52b6f3b89e9d1a10d599d9040767385dd5c3d3548f0fc22b08': '35cd76a038e22c52b6f3b89e9d1a10d599d9040767385dd5c3d3548f0fc22b08',
+ 'filter:4cf15b78a834f491ab294d860fae133683d9ac6078b59a94dee11426849e0862': '4cf15b78a834f491ab294d860fae133683d9ac6078b59a94dee11426849e0862',
+ 'filter:83c509c45d6bc57e5ff7e3be8943f5397c4ce90a453f1b93a7b4293a685f76d4': '83c509c45d6bc57e5ff7e3be8943f5397c4ce90a453f1b93a7b4293a685f76d4',
+ 'filter:59cb7da89f6ef81805b667d24c4092568c208216e35a67300e15a9fb3b761494': '59cb7da89f6ef81805b667d24c4092568c208216e35a67300e15a9fb3b761494',
+ 'filter:9fb1e34df34c21b4e2c701b7bcd36a7ddee739a017610ad1ef0f47313fdc4c8c': '9fb1e34df34c21b4e2c701b7bcd36a7ddee739a017610ad1ef0f47313fdc4c8c',
+ 'pythonExecutable': 'e37e810c6d341fbabfe0f49178e48354a8b959a1e97dad211560cffa9afdd8fa'}
+KOTLIN_RECIPES.update({'m4dTable': '121e0e896af007940580bb39daafb621821033e668a72870a51c2f6be604af98', 'patchHelpers': '76b31543efc1766a975b6c656695c714f17333fe9dcd3c1f37631a9fc8203d3b', 'resourceHelpers': '9d0ef222fbac6420c470807a67db3c8acaba4bba0ba725e1f7e927d84fc322ed'})
+KOTLIN_RECIPES.update({
+    'appJavaRoot': '8c53b486c17a265b4693469c302cd63cfed02c1bf0645835fc0e29de73f42fc1',
+    'appTestRoot': '984dfcc1f85630b6a5b0eb11f7db0987e8e583db21b4d21107491567c6f2a1bf',
+    'upstreamReplacementDirectory': '3765ebcb2e44c70efbc19eec6e35637b8c418d22a35a29d752943ad11eda1f01',
+    'desktopUpstreamPatchDirectory': '3a31eaa7244fb37adac80332be021094e554563fe30d8b1ca7b184b1d6f9f43e',
+    'transitionPatchDirectory': 'be0083a18475a22cc4496682ccdbaca38e2271e8f07226f07ed1ad240884eb59',
+    'transitionPatchedGeneratedFiles': '274520d1b49d943b541b96f914d77ede5b202457d7fedd5ecb06a72ef5095f20',
+    'desktopUpstreamRewriteRules': '12d72835b4160ace41cf104f892ac57567cb1cf88c867c7b3cb186acb000af64',
+    'applyTransitionPatches': 'f0c0d7ceabc7d80fbf42be874a3cbb6878f98d2eb4b15e63eecd545cfbbf8014',
+})
+KOTLIN_TASKS = ('generateUpstreamColorResources', 'generateUpstreamStringResources',
+                'generateUpstreamDrawableResources', 'generateUpstreamPreferenceKeyTypes',
+                'generateUpstreamBuildConfig', 'applyDesktopUpstreamPatches', 'applyUpstreamTestCorrections')
+GRAPH_RECIPES = ('migratedWholeModulePaths', 'migratedAppCorePaths', 'migratedAppM4dPaths',
+                 'migratedAppM4cPaths', 'migratedAppPaths', 'migratedUpstreamRelativePaths',
+                 'appCoreUpstreamTestPaths', 'migratedWholeModuleTestRoots', 'migratedWholeModuleTestPaths',
+                 'appFeatureLaterSteps', 'appFeatureRetiredGeneratedCopies', 'appM4dLaterSteps',
+                 'appM4dRetiredGeneratedCopies', 'appM4dTestsNotRun', 'desktopUpstreamPatchedFiles',
+                 'desktopUpstreamRewrittenFiles', 'desktopUpstreamAdaptedRootFiles',
+                 'appJavaRoot', 'appTestRoot', 'upstreamReplacementDirectory', 'desktopUpstreamPatchDirectory',
+                 'transitionPatchDirectory', 'transitionPatchedGeneratedFiles', 'desktopUpstreamRewriteRules')
+
+
+def _check_recipe(name, body):
+    if _recipe_digest(body) != KOTLIN_RECIPES.get(name):
+        raise ToolError('Unmodelled Gradle recipe %s; review its source-graph adapter' % name)
+
+
+def _recipe_sections(text):
+    """Shared helpers are executable parts of the guarded recipes too."""
+    sections = {}
+    for name, start, stop in (
+            ('m4dTable', 'fun m4dTable(', 'val appM4dLaterSteps:'),
+            ('patchHelpers', 'fun applyUnifiedPatch(', '// Root paths of the upstream files a rule applies to.'),
+            ('resourceHelpers', 'val upstreamDrawableDensities =', 'val generateUpstreamStringResources by')):
+        if text.count(start) != 1 or text.count(stop) != 1:
+            raise ToolError('Cannot locate Gradle helper ' + name)
+        sections[name] = text[text.index(start):text.index(stop)]
+    return sections
+
+
+def _extend_gradle(model, text, masked):
+    model.text = text
+    model.live_graph = bool(_gradle_value(text, 'migratedAppPaths'))
+    if model.live_graph:
+        for name in GRAPH_RECIPES:
+            _check_recipe(name, _gradle_value(text, name))
+        for name, body in _recipe_sections(text).items():
+            _check_recipe(name, body)
+        model.migrated_modules += _gradle_collection(text, 'migratedWholeModules', 'listOf')
+    # Every source-producing Kotlin task must have an adapter. Resolving outputs alone would hide
+    # an unknown producer behind an empty (or stale) directory.
+    for match in re.finditer(r'val (\w+) by tasks\.registering\s*\{', text):
+        name = match.group(1)
+        end = _block_end(masked, match.end() - 1)
+        body = text[match.end():end]
+        local = dict(model.variables)
+        local.update(re.findall(r'val (\w+) = layout\.buildDirectory\.dir\("([^"]+)"\)', body))
+        out = re.search(r'outputs\.dir\((\w+)\)', body)
+        if not out or out.group(1) not in local or name == 'applyTransitionPatches':
+            continue
+        if name not in KOTLIN_TASKS:
+            model.output_owners.setdefault(local[out.group(1)], set()).add(name)
+            continue  # selecting this output must fail, even if a stale directory exists
+        _check_recipe(name, body)
+        destination = local[out.group(1)]
+        tool = 'tools/check_slice_symbol_closure.py'
+        model.tasks[name] = Task(name, tool,
+            [('python', ''), ('literal', tool), ('literal', '--materialize-kotlin'), ('literal', name),
+             ('literal', '--repo'), ('repo', ''), ('literal', '--transition-output'), ('build', destination)], [], None)
+        model.task_outputs[name] = destination
+    # Keep source filters as part of the model too. Any new include/exclude predicate fails closed.
+    blocks = [(m.start(), _block_end(masked, m.end() - 1), m.group(1)) for m in _SOURCE_SET.finditer(text)]
+    for match in re.finditer(r'\bkotlin\.(exclude|include)\s*(\{|\()', masked):
+        owner = next((s for a, b, s in blocks if a < match.start() < b), None)
+        if owner is None:
+            continue
+        start = match.end() - 1
+        end = _block_end(masked, start) if masked[start] == '{' else _paren_end(masked, start)
+        recipe = text[match.start():end + 1]
+        _check_recipe('filter:' + _recipe_digest(recipe), recipe)
+        model.filters.append((owner, recipe))
+        # The guarded file-equality predicate excludes one generated test, not its
+        # directory or the upstream file with the same name. Bind it to its source set.
+        point = re.fullmatch(r'kotlin\.exclude\s*\{\s*it\.file\s*==\s*layout\.buildDirectory\.file\("([^"]+)"\)'
+                             r'\.get\(\)\.asFile\s*\}', recipe)
+        if point:
+            model.build_file_excludes[owner].add(point.group(1))
+    # Capture declared Exec outputs, rather than guessing ownership from build-directory *inputs*.
+    declarations = list(_TASK_HEAD.finditer(text))
+    declarations += list(re.finditer(r'tasks\.named\("(\w+)"\)\s*\{', text))
+    for match in declarations:
+        end = _block_end(masked, match.end() - 1)
+        body = text[match.end():end]
+        for output in re.finditer(r'outputs\.dir\(', body):
+            stop = _paren_end(mask_kotlin(body), output.end() - 1)
+            expr = body[output.end():stop].strip()
+            value = _eval_arg(expr + '.get().asFile.absolutePath', model.variables)
+            if value[0] == 'build':
+                model.output_owners.setdefault(value[1], set()).add(match.group(1))
+    for name, destination in model.task_outputs.items():
+        model.output_owners.setdefault(destination, set()).add(name)
+
+
 def parse_gradle(text):
     """Model the producer wiring of desktop/build.gradle.kts without executing it."""
     text = text.replace('\r\n', '\n')
     masked = mask_kotlin(text)
     model = GradleModel()
-    def string_collection(name, constructor):
-        match = re.search(r'\bval ' + name + r' = ' + constructor + r'\((.*?)\)', text, re.S)
-        return re.findall(r'"([^"$]+)"', match.group(1)) if match else []
-
-    model.migrated_modules = string_collection('migratedUpstreamModules', 'listOf')
-    model.migrated_paths = set(string_collection('migratedUpstreamRelativePaths', 'setOf'))
-    model.upstream_owned_copies = set(string_collection('upstreamOwnedGeneratedCopies', 'setOf'))
+    model.migrated_modules = _gradle_collection(text, 'migratedUpstreamModules', 'listOf')
+    model.migrated_paths = set(_gradle_collection(text, 'migratedUpstreamRelativePaths', 'setOf'))
+    model.upstream_owned_copies = set(_gradle_collection(text, 'upstreamOwnedGeneratedCopies'))
     for m in _VARIABLE.finditer(text):
         model.variables[m.group(1)] = m.group(2)
+    argument_variables = dict(model.variables)
+    python = _gradle_value(text, 'pythonExecutable')
+    if python:
+        _check_recipe('pythonExecutable', python)
+        argument_variables['__python_alias__'] = 'pythonExecutable'
     for m in _TASK_HEAD.finditer(text):
-        name, kind = m.group(1), m.group(2)
+        name, kind = m.group(1), m.group(2) or m.group(3)
         open_index = m.end() - 1
         end = _block_end(masked, open_index)
         raw_block = text[open_index:end + 1]
@@ -988,7 +1364,8 @@ def parse_gradle(text):
             continue
         a = cl + len('commandLine')
         b = _paren_end(masked_block, a)
-        args = [_eval_arg(x, model.variables) for x in _split_args(raw_block[a + 1:b], masked_block[a + 1:b])]
+        args = [('python', '') if x == argument_variables.get('__python_alias__') else _eval_arg(_gradle_clean(x).strip(), model.variables)
+                for x in _split_args(raw_block[a + 1:b], masked_block[a + 1:b])]
         deps = []
         for dm in re.finditer(r'dependsOn\(', masked_block):
             e = _paren_end(masked_block, dm.end() - 1)
@@ -1014,6 +1391,8 @@ def parse_gradle(text):
     if transition:
         end = _block_end(masked, transition.end() - 1)
         body = text[transition.end():end]
+        if _gradle_value(text, 'migratedAppPaths'):
+            _check_recipe('applyTransitionPatches', body)
         outputs = re.search(r'outputs\.dir\((\w+)\)', body)
         # The task has local `generated` and `output` variables; use the one
         # actually declared as its output.
@@ -1021,14 +1400,19 @@ def parse_gradle(text):
         if not outputs or outputs.group(1) not in local:
             raise ToolError('Cannot resolve applyTransitionPatches output')
         destination = local[outputs.group(1)]
-        producers = re.search(r'val transitionPatchProducers = mapOf\((.*?)\n\)', text, re.S)
-        deps = re.findall(r'"[^"]+" to "([^"]+)"', producers.group(1)) if producers else []
+        producers = _gradle_map_keys(text, 'transitionPatchProducers') if _gradle_value(text, 'transitionPatchProducers') else {}
+        if any(not re.fullmatch(r'"\w+"', value) for value in producers.values()):
+            raise ToolError('Cannot model transitionPatchProducers task names')
+        deps = sorted({value[1:-1] for value in producers.values()})
         tool = 'tools/check_slice_symbol_closure.py'
         model.tasks[transition.group(1)] = Task(transition.group(1), tool,
             [('python', ''), ('literal', tool), ('literal', '--materialize-transition'),
              ('literal', '--repo'), ('repo', ''), ('literal', '--transition-output'), ('build', destination)], deps, None)
         model.task_outputs[transition.group(1)] = destination
+    _extend_gradle(model, text, masked)
     blocks = [(m.start(), _block_end(masked, m.end() - 1), m.group(1)) for m in _SOURCE_SET.finditer(text)]
+    if re.search(r'\bkotlin\.(?:srcDirs|setSrcDirs)\s*\(', masked):
+        raise ToolError('Unmodelled Gradle source directory collection')
     for m in re.finditer(r'(?<![\w.])kotlin\.srcDir\(', masked):
         e = _paren_end(masked, m.end() - 1)
         expr = ' '.join(text[m.end():e].split())
@@ -1038,6 +1422,13 @@ def parse_gradle(text):
                 owner = which
         if owner is None:
             continue
+        built_by = re.fullmatch(r'files\((.*)\)\.builtBy\((\w+)\)', expr)
+        producer = None
+        if built_by:
+            expr, producer = built_by.groups()
+            if producer not in model.tasks or (producer not in model.task_outputs and model.tasks[producer].skip):
+                model.unresolved_source_dirs.append((owner, 'unknown producer ' + producer))
+                continue
         found = None
         mm = re.fullmatch(r'layout\.buildDirectory\.dir\("([^"]+)"\)', expr)
         if mm:
@@ -1054,6 +1445,38 @@ def parse_gradle(text):
                     model.source_dirs[owner].append(entry)
                 model.source_owners[(owner, *entry)] = module.rstrip('/')
             continue
+        elif expr in ('appJavaRoot', 'appTestRoot'):
+            value = _gradle_value(text, expr)
+            path = re.fullmatch(r'mergedRepositoryRoot\.resolve\("([^"$]+)"\)', value)
+            if path:
+                found = ('merged', path.group(1))
+        elif expr == 'upstreamReplacementDirectory':
+            value = _gradle_value(text, expr)
+            path = re.fullmatch(r'file\("([^"$]+)"\)', value)
+            if path:
+                found = ('project', path.group(1))
+        elif expr == 'it' and 'migratedWholeModuleTestRoots.forEach' in text[max(0, m.start() - 120):m.start()]:
+            for module in _gradle_collection(text, 'migratedWholeModules', 'listOf'):
+                entry = ('merged-optional', module + 'src/test/java')
+                model.source_dirs[owner].append(entry)
+                model.source_owners[(owner, *entry)] = module.rstrip('/')
+            continue
+        elif expr in ('root', 'directory'):
+            collection = 'migratedPlaybackModulePaths' if expr == 'root' else 'migratedPlaybackModuleTests'
+            # A loop variable has meaning only inside its own collection's lexical block.
+            loops = list(re.finditer(collection + r'\.forEach\s*\{', masked[:m.start()]))
+            if loops and _block_end(masked, loops[-1].end() - 1) > m.start():
+                binding = (r'\s*\(relativeRoot, paths\) ->\s*val root = mergedRepositoryRoot\.resolve\(relativeRoot\)'
+                           if expr == 'root' else
+                           r'\s*\(root, selected\) ->\s*val directory = mergedRepositoryRoot\.resolve\(root\)')
+                if not re.match(binding, text[loops[-1].end():m.start()]):
+                    model.unresolved_source_dirs.append((owner, 'unknown loop binding ' + expr))
+                    continue
+                for path in _gradle_path_map(text, collection):
+                    entry = ('merged', path.rstrip('/'))
+                    model.source_dirs[owner].append(entry)
+                    model.source_owners[(owner, *entry)] = path.split('/')[0]
+                continue
         else:
             mm = re.fullmatch(r'(\w+)\.map \{ it\.dir\("([^"]+)"\) \}', expr)
             if mm and mm.group(1) in model.variables:
@@ -1062,10 +1485,19 @@ def parse_gradle(text):
                 mm = re.fullmatch(r'(?:file\()?"([^"$]+)"\)?', expr)
                 if mm:
                     found = ('project', mm.group(1))
+                else:
+                    mm = re.fullmatch(r'mergedRepositoryRoot\.resolve\("([^"$]+)"\)', expr)
+                    if mm:
+                        found = ('merged', mm.group(1))
         if found is None:
             model.unresolved_source_dirs.append((owner, expr))
         elif found not in model.source_dirs[owner]:
             model.source_dirs[owner].append(found)
+        if found and producer:
+            owned = [p for p, names in model.output_owners.items() if producer in names]
+            if found[0] != 'build' or not any(_under(found[1], path) for path in owned):
+                raise ToolError('builtBy output does not own source directory: ' + expr)
+            model.source_owners[(owner, *found)] = producer
     return model
 
 
@@ -1083,6 +1515,11 @@ def select_producers(model, only=None, skip=None):
         raise ToolError('Kotlin source directories this gate cannot resolve: %s' %
                         ', '.join('%s %s' % pair for pair in model.unresolved_source_dirs))
     wanted = [rel for owner in ('main', 'test') for kind, rel in model.source_dirs[owner] if kind == 'build']
+    for output, names in model.output_owners.items():
+        if any(_under(output, source) or _under(source, output) for source in wanted):
+            unknown = names - model.tasks.keys()
+            if unknown:
+                raise ToolError('Unmodelled source producer: ' + ', '.join(sorted(unknown)))
     runnable, skipped = {}, []
     for name, task in model.tasks.items():
         if (only is not None and name not in only) or name.startswith('verify'):
@@ -1224,7 +1661,7 @@ def repo_state(repo):
 
 
 def make_scratch_repo(repo, scratch, revision=None):
-    """Mirror the repository into scratch/r (a working-tree copy or `git archive <revision>`).
+    """Mirror into scratch/r (scratch/.legacy-root for the pinned legacy read point).
 
     Producers run against this mirror, so nothing they write can reach the real checkout. The
     mirror is a throw-away git repository that borrows the real object store through
@@ -1233,7 +1670,9 @@ def make_scratch_repo(repo, scratch, revision=None):
     Returns (scratch repo root, environment overrides).
     """
     repo = Path(repo)
-    root = Path(scratch) / 'r'
+    # canonical_source/reviewed_sha256 distinguish the pinned legacy tree by its
+    # directory identity. Keep it when mirroring that read point for Python Execs.
+    root = (Path(scratch) / ('.legacy-root' if repo.name == '.legacy-root' and revision is None else 'r')).resolve()
     check_scratch_root(root)
     root.mkdir(parents=True, exist_ok=False)
     common = git_text(repo, 'rev-parse', '--git-common-dir')
@@ -1290,15 +1729,27 @@ def materialize_transition(root, output):
     """Execute the current Gradle task's strict, exactly-once unified hunks.
 
     This writes only the scratch producer output, never a checkout or patch.
-    It deliberately preserves CR bytes, as Kotlin readText/split("\\n") does.
+    Historical recipes preserve CR bytes; the guarded current helper normalizes CRLF.
     """
     desktop = Path(root) / 'desktop'
     patches = desktop / 'upstream-core/transition/patches'
     output = Path(output)
+    model = parse_gradle((desktop / 'build.gradle.kts').read_text(encoding='utf8'))
+    if model.live_graph:
+        if (output.resolve() != (desktop / 'build' / model.task_outputs['applyTransitionPatches']).resolve()
+                or not (Path(root) / '.git/objects/info/alternates').is_file()):
+            raise ToolError('Transition adapter may write only its declared scratch output')
+        _resolve_live_graph(Path(root), model)
     if output.exists():
         _remove_tree(output)
     for patch in sorted(patches.rglob('*.patch')):
         relative = patch.relative_to(patches).as_posix()[:-6]
+        if model.live_graph:
+            original = (desktop / 'build/generated' / relative).read_bytes().decode('utf8')
+            patched = _unified_patch(original, patch.read_bytes().decode('utf8'), relative)
+            prefix = '// Generated at build time: build/generated/%s + upstream-core/transition/patches/%s.patch\n' % (relative, relative)
+            _emit(output, relative.split('/', 1)[1].removeprefix('generated/'), prefix + patched)
+            continue
         lines = (desktop / 'build/generated' / relative).read_bytes().decode('utf8').split('\n')
         body = patch.read_bytes().decode('utf8').split('\n')
         at = next(i for i, line in enumerate(body) if line.startswith('--- ')) + 2
@@ -1332,6 +1783,256 @@ def materialize_transition(root, output):
         destination.write_bytes((prefix + '\n'.join(lines)).encode('utf8'))
 
 
+def _unified_patch(original, patch, label):
+    lines = original.replace('\r\n', '\n').split('\n')
+    body = patch.replace('\r\n', '\n').split('\n')
+    headers = [i for i, line in enumerate(body) if line.startswith('--- ')]
+    if not headers:
+        raise ToolError(label + ': missing unified patch header')
+    at = headers[0] + 2
+    while at < len(body):
+        header = body[at]
+        at += 1
+        if not header and at == len(body):
+            break
+        if not header.startswith('@@ '):
+            raise ToolError(label + ': malformed patch hunk ' + header)
+        before, after = [], []
+        while at < len(body) and not body[at].startswith('@@ '):
+            line = body[at]
+            at += 1
+            if not line and at == len(body):
+                break
+            if not line or line[0] not in ' +-':
+                raise ToolError(label + ': unexpected patch line ' + line)
+            if line[0] in ' -':
+                before.append(line[1:])
+            if line[0] in ' +':
+                after.append(line[1:])
+        matches = [i for i in range(len(lines) - len(before) + 1) if lines[i:i + len(before)] == before]
+        if len(matches) != 1:
+            raise ToolError('%s: hunk %s matches %d times' % (label, header, len(matches)))
+        start = matches[0]
+        lines[start:start + len(before)] = after
+    return '\n'.join(lines)
+
+
+def _emit(root, relative, text):
+    destination = root / relative
+    if not destination.resolve().is_relative_to(root.resolve()):
+        raise ToolError('Generated path escapes task output: ' + relative)
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    destination.write_bytes(text.encode('utf8'))
+
+
+def _namespace(live, module):
+    text = (live / module / 'build.gradle.kts').read_text(encoding='utf8')
+    match = re.search(r'namespace\s*=\s*"([^"]+)"', text)
+    if not match:
+        raise ToolError(module + ' has resources but no android namespace')
+    return match.group(1)
+
+
+def _drawable_qualifier(directory):
+    for qualifier in directory.split('-')[1:]:
+        if qualifier in ('night', 'nodpi', 'anydpi', 'ldpi', 'mdpi', 'hdpi', 'xhdpi', 'xxhdpi', 'xxxhdpi'):
+            continue
+        if re.fullmatch(r'v\d+', qualifier) and int(qualifier[1:]) <= 36:
+            continue
+        raise ToolError('Unsupported drawable qualifier ' + directory)
+
+
+def _drawable_modules(live):
+    app_build = (live / 'app/build.gradle.kts').read_text(encoding='utf8')
+    modules = list(dict.fromkeys(['app'] + re.findall(r'project\(":([\w-]+)"\)', app_build)))
+    result = []
+    for module in modules:
+        resources = live / module / 'src/main/res'
+        names = set()
+        if not resources.is_dir():
+            continue
+        for directory in sorted(resources.iterdir()):
+            if not directory.is_dir():
+                continue
+            kind = directory.name.split('-')[0]
+            if kind in ('drawable', 'mipmap'):
+                _drawable_qualifier(directory.name)
+                names.update(kind + '/' + p.name.split('.')[0] for p in directory.iterdir() if p.is_file())
+            if directory.name.startswith('values'):
+                for file in sorted(directory.glob('*.xml')):
+                    for node in ET.parse(file).getroot():
+                        if node.tag == 'item' and node.get('type') in ('drawable', 'mipmap'):
+                            _drawable_qualifier('drawable' + directory.name.removeprefix('values'))
+                            if not re.fullmatch(r'@(drawable|mipmap)/\w+', (node.text or '').strip()):
+                                raise ToolError('Unsupported drawable alias in ' + str(file))
+                            names.add(node.get('type') + '/' + node.attrib['name'])
+        if names:
+            result.append((module, _namespace(live, module), names))
+    return result
+
+
+def _r_source(namespace, tables):
+    out = 'package %s\n\nobject R {\n' % namespace
+    for kind, names in sorted(tables.items()):
+        out += '    object %s {\n' % kind
+        out += ''.join('        const val %s: Int = 0x%x\n' % pair for pair in sorted(names.items()))
+        out += '    }\n'
+    return out + '}\n'
+
+
+def materialize_kotlin(root, name, output):
+    """Project the Kotlin source outputs of guarded Gradle recipes; no JVM or resource packaging.
+
+    This is deliberately bounded: adapters execute XML/name extraction and exact patch operations, and
+    reject recipe drift. They are reported separately from the Python Exec commands actually executed.
+    """
+    root, output = Path(root), Path(output)
+    model = parse_gradle((root / 'desktop/build.gradle.kts').read_text(encoding='utf8'))
+    if name not in KOTLIN_TASKS or name not in model.task_outputs:
+        raise ToolError('No Kotlin source adapter for ' + name)
+    expected = (root / 'desktop/build' / model.task_outputs[name]).resolve()
+    if output.resolve() != expected or not (root / '.git/objects/info/alternates').is_file():
+        raise ToolError('Kotlin source adapters may write only their declared output in a scratch mirror')
+    if output.exists():
+        _remove_tree(output)
+    graph = _resolve_live_graph(root, model)
+    if graph is None:
+        raise ToolError('Kotlin adapter requires the live Gradle graph')
+    live = graph['live']
+    if name in ('applyDesktopUpstreamPatches', 'applyUpstreamTestCorrections'):
+        for relative in sorted(graph['adapted'] if name == 'applyDesktopUpstreamPatches' else graph['corrected']):
+            original = (live / relative).read_text(encoding='utf8').replace('\r\n', '\n')
+            if relative in graph['patched'] or name == 'applyUpstreamTestCorrections':
+                patch = (root / 'desktop/upstream-core/patches' / (relative + '.patch')).read_text(encoding='utf8')
+                if name == 'applyUpstreamTestCorrections':
+                    for header, source in [('Upstream-source-sha256', original),
+                            ('Upstream-production-source-sha256', None)]:
+                        digest = re.search(r'(?m)^' + header + r': ([0-9a-f]{64})$', patch)
+                        if not digest and source is not None:
+                            raise ToolError(relative + ': missing upstream source digest')
+                        if digest:
+                            if source is None:
+                                production = relative.replace('/src/test/java/', '/src/main/java/').removesuffix('Test.kt') + '.kt'
+                                source = (live / production).read_text(encoding='utf8').replace('\r\n', '\n')
+                            if hashlib.sha256(source.encode('utf8')).hexdigest() != digest.group(1):
+                                raise ToolError(relative + ': upstream source digest changed (' + header + ')')
+                original = _unified_patch(original, patch, relative)
+            if name == 'applyDesktopUpstreamPatches':
+                for pattern, replacement in graph['rewrites']:
+                    original = pattern.sub(lambda _m: replacement, original)
+            _emit(output, relative, original)
+        return
+    if name == 'generateUpstreamBuildConfig':
+        script = (live / 'app/build.gradle.kts').read_text(encoding='utf8')
+        code = re.search(r'versionCode\s*=\s*(\d+)', script)
+        version = re.search(r'versionName\s*=\s*"([^"]+)"', script)
+        if not code or not version:
+            raise ToolError('app/build.gradle.kts: versionCode/versionName not found')
+        values = dict(DEBUG='false', BUILD_TYPE='"release"', VERSION_CODE=code.group(1),
+                      VERSION_NAME=json.dumps(version.group(1)), BUILD_COMMIT_SHA='"local"',
+                      BUILD_GIT_REF='""', BUILD_WORKFLOW_RUN_ID='""', BUILD_WORKFLOW_RUN_URL='""', BUILD_RELEASE_TAG='""',
+                      ENABLE_VERBOSE_DEBUG_LOGS='false', ENABLE_VERBOSE_RUNTIME_LOG_PERSISTENCE='false',
+                      ALLOW_HARDCODED_DNS_FALLBACK='false')
+        text = 'package com.android.purebilibili\n\nobject BuildConfig {\n'
+        for field, value in values.items():
+            type_ = 'Boolean' if value in ('true', 'false') else ('Int' if field == 'VERSION_CODE' else 'String')
+            text += '    const val %s: %s = %s\n' % (field, type_, value)
+        _emit(output, 'com/android/purebilibili/BuildConfig.kt', text + '}\n')
+        return
+    if name == 'generateUpstreamPreferenceKeyTypes':
+        names, suffixes = {}, {}
+        literal = re.compile(r'\b(int|long|float|double)PreferencesKey\(\s*"([^"$]+)"\s*\)')
+        scoped = re.compile(r'\b(int|long|float|double)PreferencesKey\(\s*buildScopedDanmakuKeyName\(\s*[\w.]+\s*,\s*"(\w+)"\s*\)\s*\)')
+        for directory in ('app/src/main/java', 'core-data/src/main/java'):
+            for file in walk_sources(live / directory, ('.kt',)):
+                text = file.read_text(encoding='utf8')
+                known = set()
+                for pattern, table in ((literal, names), (scoped, suffixes)):
+                    for match in pattern.finditer(text):
+                        type_, key = match.groups()
+                        if key in table and table[key] != type_:
+                            raise ToolError('%s: conflicting preference type %s' % (file, key))
+                        table[key] = type_
+                        known.add(match.start())
+                for match in re.finditer(r'\b(int|long|float|double)PreferencesKey\(', text):
+                    if match.start() not in known and not text[match.end():].startswith('name'):
+                        raise ToolError('%s: numeric preference key built at runtime' % file)
+        text = 'package com.bilipai.desktop.settings\n\ninternal object DesktopUpstreamPreferenceKeyTypes {\n'
+        for field, table in (('names', names), ('scopedDanmakuSuffixes', suffixes)):
+            text += '    val %s: Map<String, String> = mapOf(\n' % field
+            text += ''.join('        %s to %s,\n' % (json.dumps(k), json.dumps(v)) for k, v in sorted(table.items())) + '    )\n'
+        _emit(output, 'com/bilipai/desktop/settings/DesktopUpstreamPreferenceKeyTypes.kt', text + '}\n')
+        return
+    if name == 'generateUpstreamColorResources':
+        light, night, namespaces = {}, {}, {}
+        for module in model.migrated_modules:
+            resources = live / module / 'src/main/res'
+            if not resources.is_dir():
+                continue
+            namespace = _namespace(live, module)
+            for directory in sorted(resources.iterdir()):
+                if directory.name not in ('values', 'values-night'):
+                    raise ToolError('Unsupported color resource directory ' + str(directory))
+                table = light if directory.name == 'values' else night
+                for file in sorted(directory.iterdir()):
+                    for node in ET.parse(file).getroot():
+                        value = ''.join(node.itertext()).strip()
+                        if node.tag != 'color' or not re.fullmatch(r'#(?:[\da-fA-F]{6}|[\da-fA-F]{8})', value):
+                            raise ToolError('Unsupported color resource in ' + str(file))
+                        key = namespace + '.' + node.attrib['name']
+                        table[key] = int(value[1:], 16) | (0xff000000 if len(value) == 7 else 0)
+                        namespaces[key] = namespace
+        if set(night) - set(light):
+            raise ToolError('Night-only colors without a base value')
+        ids = {key: 0x7f060001 + i for i, key in enumerate(sorted(light))}
+        for namespace in sorted(set(namespaces.values())):
+            _emit(output, namespace.replace('.', '/') + '/R.kt', _r_source(namespace,
+                  {'color': {k[len(namespace) + 1:]: ids[k] for k in sorted(ids) if namespaces[k] == namespace}}))
+        text = 'package androidx.compose.ui.res\n\ninternal object DesktopColorTable {\n'
+        for field, table in (('light', light), ('night', night)):
+            text += '    val %s: Map<Int, Int> = mapOf(\n' % field
+            text += ''.join('        0x%x to 0x%08x.toInt(),\n' % (ids[k], v) for k, v in sorted(table.items())) + '    )\n'
+        _emit(output, 'androidx/compose/ui/res/DesktopColorTable.kt', text + '}\n')
+        return
+    modules = _drawable_modules(live)
+    all_names = sorted(set().union(*(names for _, _, names in modules)))
+    ids = {}
+    for kind, base in (('drawable', 0x7f080001), ('mipmap', 0x7f0f0001)):
+        ids.update({key: base + i for i, key in enumerate(k for k in all_names if k.startswith(kind + '/'))})
+    if name == 'generateUpstreamDrawableResources':
+        for module, namespace, names in modules:
+            if namespace == 'com.android.purebilibili':
+                continue
+            tables = {kind: {key.split('/', 1)[1]: ids[key] for key in names if key.startswith(kind + '/')}
+                      for kind in ('drawable', 'mipmap') if any(k.startswith(kind + '/') for k in names)}
+            _emit(output, 'kotlin/' + namespace.replace('.', '/') + '/R.kt', _r_source(namespace, tables))
+        return
+    if name != 'generateUpstreamStringResources':
+        raise ToolError('No Kotlin source adapter for ' + name)
+    resources = live / 'app/src/main/res'
+    tables = {}
+    qualifiers = {'values', 'values-en', 'values-zh-rTW'}
+    for file in sorted(resources.glob('values*/strings.xml')):
+        if file.parent.name not in qualifiers:
+            raise ToolError('Unsupported string resource qualifier ' + file.parent.name)
+        table = {}
+        for node in ET.parse(file).getroot():
+            if node.tag != 'string' or len(node):
+                raise ToolError('Unsupported string resource in ' + str(file))
+            table[node.attrib['name']] = ''.join(node.itertext())
+        tables[file.parent.name] = table
+    base = tables.get('values', {})
+    if any(set(table) - set(base) for table in tables.values()):
+        raise ToolError('Strings without a default value')
+    result = {'string': {key: 0x7f130001 + i for i, key in enumerate(sorted(base))}}
+    own = next((names for module, _, names in modules if module == 'app'), set())
+    for kind in ('drawable', 'mipmap'):
+        names = {key.split('/', 1)[1]: ids[key] for key in own if key.startswith(kind + '/')}
+        if names:
+            result[kind] = names
+    _emit(output, 'kotlin/com/android/purebilibili/R.kt', _r_source('com.android.purebilibili', result))
+
+
 def run_producers(root, tasks, env_overrides, timeout=1800, log=None):
     """Run every task the way Gradle does: python <desktop>/<tool> <args>, cwd=<desktop>."""
     root = Path(root)
@@ -1343,7 +2044,19 @@ def run_producers(root, tasks, env_overrides, timeout=1800, log=None):
     env['PYTHONDONTWRITEBYTECODE'] = '1'
     env.pop('PYTHON_EXECUTABLE', None)
     results = []
+    # Some Exec tools emit sibling test roots absent from their outputs.dir declarations.
+    # Record actual writes in this fresh mirror rather than guessing those owners from names.
+    def snapshot():
+        result = {}
+        for path in walk_sources(build):
+            stat = os.stat(_long(path))
+            relative = Path(os.path.relpath(_plain(path), _plain(build))).as_posix()
+            result[relative] = (stat.st_mtime_ns, stat.st_size)
+        return result
+
+    previous = snapshot()
     for task in tasks:
+        task.written_sources = []
         command = [sys.executable, '-X', 'utf8', '-B']
         for kind, value in task.args:
             if kind == 'python':
@@ -1363,9 +2076,16 @@ def run_producers(root, tasks, env_overrides, timeout=1800, log=None):
             # not a finding: a producer that never finished gives no output to judge, so the gate cannot judge either
             raise ToolError('producer %s did not finish within %d seconds' % (task.name, timeout))
         elapsed = time.monotonic() - start
+        current = snapshot()
+        task.written_sources = sorted(path for path, signature in current.items()
+                                      if previous.get(path) != signature)
+        previous = current
         stderr = done.stderr.decode('utf8', 'replace').strip().splitlines()[-12:]
         results.append(dict(task=task.name, tool=task.tool, returncode=done.returncode,
-                            seconds=round(elapsed, 1), stderrTail=stderr))
+                            seconds=round(elapsed, 1), stderrTail=stderr,
+                            writtenSources=task.written_sources,
+                            mode='guarded-kotlin-source-adapter' if '--materialize-kotlin' in [v for _, v in task.args]
+                            else 'python-command'))
         if log:
             log('  %-52s rc=%d %6.1fs' % (task.name, done.returncode, elapsed))
     return results
@@ -1460,6 +2180,7 @@ def collect_sources(root, model, extra_dirs=()):
     into findings.
     """
     root = Path(root)
+    graph = _resolve_live_graph(root, model)
     notes = []
     sources = []
     identity, roots = canonical_identity_function(root)
@@ -1497,10 +2218,12 @@ def collect_sources(root, model, extra_dirs=()):
                     continue
                 origin = 'generated'
                 logical_root = 'build/' + relative
-            elif kind == 'merged':
-                merged = root / '.merged-root' if (root / '.merged-root').is_dir() else root
+            elif kind.startswith('merged'):
+                merged = graph['live'] if graph else (root / '.merged-root' if (root / '.merged-root').is_dir() else root)
                 folder = merged / relative
                 if not os.path.isdir(_long(folder)):
+                    if kind == 'merged-optional':
+                        continue
                     raise ToolError('Migrated module source is missing: ' + relative)
                 origin = 'vendored'
                 logical_root = relative
@@ -1513,7 +2236,9 @@ def collect_sources(root, model, extra_dirs=()):
                 logical_root = 'desktop/' + relative
             for real in walk_sources(folder):
                 inner = Path(os.path.relpath(str(real).replace('\\\\?\\', ''), str(folder))).as_posix()
-                if kind == 'build':
+                if graph and not _source_in_graph(graph, model, source_set, kind, relative, inner):
+                    continue
+                if kind == 'build' and not graph:
                     generated_relative = (relative + '/' + inner).removeprefix('generated/')
                     if inner in model.migrated_paths or (relative.startswith('generated/') and
                             generated_relative in model.upstream_owned_copies | patched):
@@ -1534,7 +2259,38 @@ def collect_sources(root, model, extra_dirs=()):
             if relative in direct:
                 continue
             sources.append(Source(relative, real, 'vendored-other', 'other'))
-    return sources, notes
+    # Gradle's FileCollection compiles a physical file once even if source roots overlap.
+    unique = {}
+    for source in sources:
+        unique.setdefault((source.set, os.path.normcase(os.path.realpath(source.real))), source)
+    sources = list(unique.values())
+    model.source_files = []
+    observed_owners = defaultdict(set)
+    for task in model.tasks.values():
+        for path in task.written_sources:
+            observed_owners[path].add(task.name)
+    for source in sources:
+        if source.set not in ('main', 'test'):
+            continue
+        owners = set()
+        if source.logical.startswith('build/'):
+            relative = source.logical[len('build/'):]
+            owners.update(observed_owners[relative])
+            matching = [(len(p), names) for p, names in model.output_owners.items() if _under(relative, p)]
+            if matching:
+                longest = max(size for size, _ in matching)
+                owners.update(set().union(*(names for size, names in matching if size == longest)))
+            if model.live_graph and source.origin == 'generated' and not owners:
+                raise ToolError('Unmodelled producer for compiled source: ' + source.logical)
+        if source.origin == 'vendored' and source.logical in direct:
+            owners.add('prepareUpstreamSources')
+        input_root = ('live' if graph and source.origin == 'vendored' and source.real.resolve().is_relative_to(graph['live'])
+                      else 'producer' if source.origin == 'generated'
+                      else 'workspace' if source.origin in ('desktop', 'third-party') else 'legacy')
+        model.source_files.append(dict(file=source.logical, sourceSet=source.set, origin=source.origin,
+                                       inputRoot=input_root,
+                                       producers=sorted(owners)))
+    return sources, sorted(set(notes))
 
 
 class ScopeIndex:
@@ -3026,19 +3782,20 @@ def run_gate(repo, revision=None, scratch=None, keep_scratch=False, mirror=None,
         only_names = set(only) if only else None
         skip_names = set(skip) if skip else None
         if mirror is None:
+            mirror_name = '.legacy-root' if repo.name == '.legacy-root' and revision is None else 'r'
             if scratch:
                 parent = Path(scratch)
-                check_scratch_root(parent / 'r')
-                if os.path.lexists(_long(parent / 'r')):
-                    raise ToolError('%s already contains "r" (a kept mirror?); remove it or pass another --scratch '
-                                    'directory' % parent)
+                check_scratch_root(parent / mirror_name)
+                if os.path.lexists(_long(parent / mirror_name)):
+                    raise ToolError('%s already contains "%s" (a kept mirror?); remove it or pass another --scratch '
+                                    'directory' % (parent, mirror_name))
                 existed = os.path.isdir(_long(parent))
                 parent.mkdir(parents=True, exist_ok=True)
             else:
                 parent = Path(tempfile.mkdtemp(prefix='bp-sc-'))
                 existed = False
             # only what this run created is removed: a --scratch directory that already held other things keeps them
-            cleanup = None if keep_scratch else (parent / 'r' if existed else parent)
+            cleanup = None if keep_scratch else (parent / mirror_name if existed else parent)
             say('mirroring %s into %s' % ('revision ' + revision if revision else 'the working tree', parent))
             root, env = make_scratch_repo(repo, parent, revision)
             model = parse_gradle((root / 'desktop/build.gradle.kts').read_text(encoding='utf8'))
@@ -3057,6 +3814,8 @@ def run_gate(repo, revision=None, scratch=None, keep_scratch=False, mirror=None,
             tasks, skipped = select_producers(model, only=only_names, skip=skip_names)
         allowed_unproduced = not_run_outputs(model, tasks, skipped, only_names, producers['results'] if producers else ())
         sources, notes = collect_sources(root, model, options.extra_dirs)
+        if producers is not None:
+            producers['sourceGraph'] = model.source_files
         if candidate_paths:
             candidate_dir = Path(tempfile.mkdtemp(prefix='bp-cand-'))
             sources += materialize_candidates(repo, candidate_commit, candidate_paths, candidate_dir)
@@ -3085,6 +3844,7 @@ def main(argv=None):
                     'Producers run in a throw-away mirror; the checkout is never written.')
     parser.add_argument('--repo', default=None, help='repository root (default: this checkout)')
     parser.add_argument('--materialize-transition', action='store_true', help=argparse.SUPPRESS)
+    parser.add_argument('--materialize-kotlin', help=argparse.SUPPRESS)
     parser.add_argument('--transition-output', help=argparse.SUPPRESS)
     parser.add_argument('--revision', default=None,
                         help='mirror `git archive <revision>` instead of the working tree (history calibration)')
@@ -3131,6 +3891,9 @@ def main(argv=None):
     try:
         if args.materialize_transition:
             materialize_transition(repo, args.transition_output)
+            return 0
+        if args.materialize_kotlin:
+            materialize_kotlin(repo, args.materialize_kotlin, args.transition_output)
             return 0
         if args.list_producers:
             model = parse_gradle((repo / 'desktop/build.gradle.kts').read_text(encoding='utf8'))

@@ -3,11 +3,13 @@ import hashlib
 import importlib.util
 import json
 import os
+import re
 import shutil
 import tempfile
 import unittest
 
 REPO = Path(__file__).resolve().parents[3]
+LIVE = Path(os.environ.get("BILIPAI_LIVE_ROOT") or REPO)
 spec = importlib.util.spec_from_file_location("bas_filter", REPO / "desktop/tools/extract-upstream-bas-filter.py")
 tool = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(tool)
@@ -60,7 +62,43 @@ class BasFilterExtractionTest(unittest.TestCase):
     def test_producer_reproduces_actual_checked_in_main_and_original_test_consumers(self):
         output = self.root / "generated"
         proof = tool.generate(REPO, output)
-        for emitted in proof["outputs"]:
+        bas_path = "com/android/purebilibili/feature/video/danmaku/BasDanmakuFilterPolicy.kt"
+        live_bas = LIVE / "app/src/main/java" / bas_path
+        generated_bas = (output / proof["outputs"][0]).read_bytes().split(b"\n", 2)[2]
+        self.assertEqual(generated_bas, physical(live_bas).read_bytes())
+        self.assertEqual(generated_bas, (REPO / ARCHIVE / "BasDanmakuFilterPolicy.kt").read_bytes())
+
+        gradle = (LIVE / "desktop/build.gradle.kts").read_text(encoding="utf-8")
+        video_paths = gradle.split("val migratedVideoFeaturePaths = setOf(", 1)[1].split("\n)", 1)[0]
+        self.assertIn(f'"{bas_path}"', video_paths)
+        core_paths = gradle.split("val migratedAppCorePaths:", 1)[1].split("\nval ", 1)[0]
+        self.assertIn("+ migratedVideoFeaturePaths", core_paths)
+        app_paths = gradle.split("val migratedAppPaths:", 1)[1].split("\nval ", 1)[0]
+        self.assertIn("migratedAppCorePaths", app_paths)
+        self.assertIn('val mergedRepositoryRoot = projectDir.parentFile', gradle)
+        self.assertIn('val appJavaRoot = mergedRepositoryRoot.resolve("app/src/main/java")', gradle)
+        main_sources = re.findall(r'^kotlin\.sourceSets\.named\("main"\) \{\n(.*?)^\}', gradle, re.MULTILINE | re.DOTALL)
+        self.assertTrue(any(
+            "upstreamIdentity(element.file) !in migratedAppPaths" in block
+            and "kotlin.srcDir(appJavaRoot)" in block
+            for block in main_sources
+        ))
+
+        desktop_main = LIVE / "desktop/src/main"
+        self.assertEqual([], list(desktop_main.rglob("DesktopOriginalBasDanmakuFilterPolicy.kt")))
+        package = "package com.android.purebilibili.feature.video.danmaku"
+        declarations = re.compile(r"^(?:(?:internal|private|public)\s+)?fun\s+(shouldDisplayBasDanmaku|isColorfulBasDanmaku)\s*\(", re.MULTILINE)
+        definitions = {name: [] for name in ("shouldDisplayBasDanmaku", "isColorfulBasDanmaku")}
+        for root in (LIVE / "app/src/main", desktop_main):
+            for path in root.rglob("*.kt"):
+                text = physical(path).read_text(encoding="utf-8")
+                if package in text.splitlines():
+                    for name in declarations.findall(text):
+                        definitions[name].append(path)
+        for paths in definitions.values():
+            self.assertEqual([live_bas], paths)
+
+        for emitted in proof["outputs"][1:]:
             kind, relative = emitted.split("/", 1)
             checked_in = REPO / "desktop/src" / kind / "kotlin" / relative
             self.assertEqual((output / emitted).read_bytes(), physical(checked_in).read_bytes(), str(checked_in))

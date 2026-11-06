@@ -17,7 +17,7 @@ import sys
 import tempfile
 import unittest
 
-REPO = Path(__file__).resolve().parents[3]
+REPO = Path(os.environ.get("BILIPAI_LIVE_ROOT") or Path(__file__).resolve().parents[3])
 TOOLS = REPO / 'desktop/tools'
 sys.path.insert(0, str(TOOLS))
 import design_system_consumer_table as table_tool

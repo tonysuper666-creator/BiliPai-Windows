@@ -23,11 +23,11 @@ class MigrationWorkflowTest(unittest.TestCase):
         self.repo = Path(self.directory.name).resolve()
         self.source = self.repo / SOURCE
         self.source.parent.mkdir(parents=True)
-        self.source.write_text("package example\n\nval manager = AndroidManager()\n", encoding="utf-8")
+        self.source.write_text("package example\n\nval manager = AndroidManager()\n", encoding="utf-8", newline="\n")
         self.build = self.repo / "desktop/build.gradle.kts"
         self.build.parent.mkdir()
         self.build.write_text('val migratedVideoFeaturePaths = setOf(\n    "existing.kt",\n)\n'
-                              'val upstreamOwnedGeneratedCopies = setOf(\n    "keep.kt",\n)\n', encoding="utf-8")
+                              'val upstreamOwnedGeneratedCopies = setOf(\n    "keep.kt",\n)\n', encoding="utf-8", newline="\n")
         self.run_git("init", "-q")
         self.run_git("add", ".")
         self.run_git("-c", "user.name=Migration fixture", "-c", "user.email=fixture@example.invalid",
@@ -61,7 +61,7 @@ class MigrationWorkflowTest(unittest.TestCase):
     def test_conflict_preserves_other_planned_files_and_existing_patch(self):
         patch = self.repo / PATCH
         patch.parent.mkdir(parents=True)
-        patch.write_text("existing reviewed desktop adaptation\n")
+        patch.write_text("existing reviewed desktop adaptation\n", encoding="utf-8", newline="\n")
         before = self.build.read_bytes()
         with self.assertRaises(migration.Conflict):
             migration.plan(self.repo, self.recipe)
@@ -81,7 +81,7 @@ class MigrationWorkflowTest(unittest.TestCase):
 
     def test_upstream_change_and_escaped_path_preserve_checkout(self):
         original_build = self.build.read_bytes()
-        self.source.write_text("new upstream API\n")
+        self.source.write_text("new upstream API\n", encoding="utf-8", newline="\n")
         with self.assertRaises(migration.Conflict):
             migration.plan(self.repo, self.recipe)
         escaped = copy.deepcopy(self.recipe)
@@ -106,16 +106,16 @@ class MigrationWorkflowTest(unittest.TestCase):
         (tools / "extract-upstream-video-player-section-full.py").write_text(
             "from pathlib import Path\nimport sys\n"
             "p=Path(sys.argv[2])/" + repr(identity) + "\n"
-            "p.parent.mkdir(parents=True)\np.write_bytes(" + repr(generated) + ")\n")
+            "p.parent.mkdir(parents=True)\np.write_bytes(" + repr(generated) + ")\n", encoding="utf-8", newline="\n")
         (self.repo / "desktop/upstream-slices").mkdir()
-        (self.repo / "desktop/upstream-slices/pin").write_text("fixture\n")
-        (self.repo / "desktop/upstream-sources.json").write_text("{}\n")
+        (self.repo / "desktop/upstream-slices/pin").write_text("fixture\n", encoding="utf-8", newline="\n")
+        (self.repo / "desktop/upstream-sources.json").write_text("{}\n", encoding="utf-8", newline="\n")
         self.run_git("add", ".")
         self.run_git("-c", "user.name=Migration fixture", "-c", "user.email=fixture@example.invalid",
                      "commit", "-qm", "reviewed desktop adaptation")
         base = self.run_git("rev-parse", "HEAD").strip()
-        (self.repo / "desktop/upstream-core/legacy-root.commit").write_text(base + "\n")
-        self.build.write_text(self.build.read_text() + 'val transitionPatchProducers = mapOf(\n)\n')
+        (self.repo / "desktop/upstream-core/legacy-root.commit").write_text(base + "\n", encoding="utf-8", newline="\n")
+        self.build.write_text(self.build.read_text() + 'val transitionPatchProducers = mapOf(\n)\n', encoding="utf-8", newline="\n")
         recipe = copy.deepcopy(self.recipe)
         recipe.update(desktopBaseCommit=base, transitions=[dict(
             producer="original-video-player-section-full", identity=identity,
@@ -130,16 +130,29 @@ class MigrationWorkflowTest(unittest.TestCase):
         changes, _ = migration.plan(self.repo, recipe)
         bundle = migration.export_patch(changes)
         self.assertEqual(self.build.read_bytes(), original_build)
-        subprocess.run(["git", "apply", "--check", "-"], cwd=self.repo, input=bundle, check=True)
-        subprocess.run(["git", "apply", "-"], cwd=self.repo, input=bundle, check=True)
+        # A host with core.autocrlf=true would rewrite the LF registration into CRLF,
+        # which the second plan must keep rejecting; consume the export byte-for-byte.
+        subprocess.run(["git", "-c", "core.autocrlf=false", "apply", "--check", "-"],
+                       cwd=self.repo, input=bundle, check=True)
+        subprocess.run(["git", "-c", "core.autocrlf=false", "apply", "-"],
+                       cwd=self.repo, input=bundle, check=True)
+        self.assertNotIn(b"\r", self.build.read_bytes())
         again, _ = migration.plan(self.repo, recipe)
         self.assertEqual(migration.export_patch(again), b"")
         self.assertTrue(all(old == new for old, new in again.values()))
         generated = self.repo / identity
         generated.parent.mkdir(parents=True)
-        generated.write_text("package example\nval keepDesktopBehavior = false\nval host = oldHost\n")
+        generated.write_text("package example\nval keepDesktopBehavior = false\nval host = oldHost\n", encoding="utf-8", newline="\n")
         self.run_git("apply", relative)
         self.assertEqual(generated.read_text(), "package example\nval keepDesktopBehavior = true\nval host = actualResumeHost\n")
+
+    def test_registration_with_carriage_returns_is_rejected_before_any_write(self):
+        crlf = self.build.read_bytes().replace(b"\n", b"\r\n")
+        self.build.write_bytes(crlf)
+        with self.assertRaisesRegex(migration.Conflict, "Registration file must use LF line endings"):
+            migration.plan(self.repo, self.recipe)
+        self.assertEqual(self.build.read_bytes(), crlf)
+        self.assertFalse((self.repo / PATCH).exists())
 
     def test_transition_conflicts_leave_entire_batch_untouched(self):
         recipe, relative, _ = self.transition_recipe()

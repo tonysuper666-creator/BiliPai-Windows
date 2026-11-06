@@ -8,10 +8,12 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 
 REPO = Path(__file__).resolve().parents[3]
 TOOLS = REPO / "desktop/tools"
 sys.path.insert(0, str(TOOLS))
+from desktop_paths import long_path
 BASELINE = "17705422ea734c49660df11bee3bd4d687bde8da"
 PROFILE = "desktop/tools/extract-upstream-profile-main.py"
 BASELINE_SHA = "17707c046d4e12f55c4bb8c17efe424247c884ff65148215eb4a0ea87610fedf"
@@ -38,7 +40,11 @@ class ProfileAgreementOwnerSourceTest(unittest.TestCase):
         prior.write_bytes(old)
         cls.before = cls.root / "before"
         cls.after = cls.root / "after"
-        load("accepted_profile_agreement_owner", prior).generate(REPO, cls.before)
+        accepted = load("accepted_profile_agreement_owner", prior)
+        # The accepted historical bytes unconditionally prepend a Windows path
+        # prefix. Adapt only that I/O boundary when executing them on macOS.
+        with patch.object(accepted, "safe", lambda path: long_path(Path(path).absolute())):
+            accepted.generate(REPO, cls.before)
         load("current_profile_agreement_owner", REPO / PROFILE).generate(REPO, cls.after)
         proof_path = cls.root / "about-proof.json"
         cls.about.generate(REPO, cls.root / "about", cls.root / "resources", proof_path)

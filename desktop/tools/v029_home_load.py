@@ -4,6 +4,7 @@ This prepares no second data source, account, reducer or request actor. Every ed
 is counted and its full inverse is retained by the caller's generation receipt.
 """
 import hashlib
+import difflib
 import json
 from pathlib import Path
 from desktop_paths import long_path
@@ -78,6 +79,52 @@ class Delta:
             audits.append({"output": label, "beforeSha256LF": hashlib.sha256(self.original.encode()).hexdigest(),
                            "afterSha256LF": hashlib.sha256(self.body.encode()).hexdigest(), "edits": self.edits})
         return self.body
+
+
+def finish_audit(audit, stage_body, emitted_body):
+    """Extend a verified stage receipt through subsequent output adaptations."""
+    digest = lambda text: hashlib.sha256(text.encode()).hexdigest()
+    if digest(stage_body) != audit["afterSha256LF"]:
+        raise ValueError("Home audit stage input differs")
+    restored = stage_body
+    for edit in reversed(audit["edits"]):
+        offset = edit["offset"]
+        if restored[offset:offset + len(edit["after"])] != edit["after"]:
+            raise ValueError("Home audit stage inverse differs")
+        restored = restored[:offset] + edit["before"] + restored[offset + len(edit["after"]):]
+    if digest(restored) != audit["beforeSha256LF"]:
+        raise ValueError("Home audit original differs")
+    original = restored
+    edits = list(audit["edits"])
+    body = stage_body
+    shift = 0
+    old_lines, new_lines = stage_body.splitlines(keepends=True), emitted_body.splitlines(keepends=True)
+    old_offsets, new_offsets = [0], [0]
+    for line in old_lines:
+        old_offsets.append(old_offsets[-1] + len(line))
+    for line in new_lines:
+        new_offsets.append(new_offsets[-1] + len(line))
+    for tag, i, j, start, end in difflib.SequenceMatcher(None, old_lines, new_lines, autojunk=False).get_opcodes():
+        if tag == "equal":
+            continue
+        i, j, start, end = old_offsets[i], old_offsets[j], new_offsets[start], new_offsets[end]
+        offset = i + shift
+        before, after = stage_body[i:j], emitted_body[start:end]
+        if body[offset:offset + len(before)] != before:
+            raise ValueError("Home audit subsequent edit differs")
+        body = body[:offset] + after + body[offset + len(before):]
+        edits.append(dict(offset=offset, before=before, after=after))
+        shift += len(after) - len(before)
+    if body != emitted_body:
+        raise ValueError("Home audit final output differs")
+    for edit in reversed(edits):
+        offset = edit["offset"]
+        if body[offset:offset + len(edit["after"])] != edit["after"]:
+            raise ValueError("Home audit final inverse differs")
+        body = body[:offset] + edit["before"] + body[offset + len(edit["after"]):]
+    if body != original:
+        raise ValueError("Home audit full inverse differs")
+    return {**audit, "afterSha256LF": digest(emitted_body), "edits": edits}
 
 
 # A permission carried only by the existing load coroutine. The same owner and

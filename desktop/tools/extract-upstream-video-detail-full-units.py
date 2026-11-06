@@ -1,3 +1,4 @@
+from v025_source_paths import registered_source_sha256
 """Full stable Video information/action/engagement and shared gesture closure.
 Task-only producer; no shared source, registry or build mutation.
 """
@@ -563,7 +564,7 @@ def generate(repo,output,standalone=False):
     SOURCES={};OUTPUTS=[];ADAPTATIONS=[]
     manifest=json.loads(wide(REPO/'desktop/upstream-sources.json').read_text(encoding='utf-8'))
     assert manifest['upstreamCommit']==COMMIT
-    registry={r['path']:r['sha256']for r in manifest['sources']}
+    registry={r['path']:registered_source_sha256(REPO,r) for r in manifest['sources'] if r['path'] in SOURCE_PINS}
     for path,pin in SOURCE_PINS.items():
         if path in registry:assert registry[path]==pin['sha256LF'],path+' existing registry identity differs'
     parser=module('video_full_tokens',REPO/'desktop/tools/sync-upstream.py')

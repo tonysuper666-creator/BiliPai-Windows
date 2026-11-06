@@ -3400,6 +3400,10 @@ val applyTransitionPatches by tasks.registering {
     val output = layout.buildDirectory.dir("transition-patched")
     val unknown = transitionPatchedGeneratedFiles.map { it.substringBefore('/') }.toSet() - transitionPatchProducers.keys
     require(unknown.isEmpty()) { "Transition patches without a known producer task: $unknown" }
+    // A patch on a copy whose upstream file is compiled instead would revive the retired copy:
+    // the change belongs in upstream-core/patches/<repository path>.patch.
+    val retired = transitionPatchedGeneratedFiles.filter { it in upstreamOwnedGeneratedCopies || it in appM4dRetiredGeneratedCopies }
+    require(retired.isEmpty()) { "Transition patches on retired generated copies (move them to upstream-core/patches): $retired" }
     dependsOn(transitionPatchedGeneratedFiles.map { transitionPatchProducers.getValue(it.substringBefore('/')) }.distinct())
     inputs.dir(transitionPatchDirectory).withPathSensitivity(PathSensitivity.RELATIVE)
     inputs.files(transitionPatchedGeneratedFiles.map { generated.get().file(it) }).withPathSensitivity(PathSensitivity.RELATIVE)
