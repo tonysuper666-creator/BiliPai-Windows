@@ -542,6 +542,7 @@ class GeneratedOutputTests(unittest.TestCase):
         # The player overlay re-pin (v046_player_overlay) applies its own proof AFTER this slice's overlay edit, so its proof of
         # that file records the edited predecessor and differs as well.
         self.assertEqual(sorted([PAGES_OUTPUT, OVERLAY_OUTPUT, 'v037-complete-controls-source-readback.json',
+                                 'buffering-playback-VideoPlayerOverlay.json',
                                  'v046-player-overlay-proofs/VideoPlayerOverlay.kt.json']), differing)
         proof_name = 'v046-follow-confirmation-proofs/VideoPlayerOverlay.kt.json'
         self.assertEqual(real[proof_name], base[proof_name])
@@ -554,7 +555,8 @@ class GeneratedOutputTests(unittest.TestCase):
         # Peeling the one added line gives back exactly the text the proof recorded as its output. The control-center
         # hunks (plr-control-center-motion) are applied after this edit, so they are peeled first.
         import v046_control_center_motion as control_center
-        peeled = overlay
+        controls = load('extract-upstream-video-player-full-controls.py', 'episode_terminal_controls')
+        peeled = controls.restore_buffering_stage(overlay, self.real('controls'), OVERLAY_OUTPUT)
         for hunk in reversed(control_center.OVERLAY_HUNKS):
             self.assertEqual(1, peeled.count(hunk['after']), hunk['label'])
             peeled = peeled.replace(hunk['after'], hunk['before'], 1)
