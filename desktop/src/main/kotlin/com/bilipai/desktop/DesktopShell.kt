@@ -137,6 +137,17 @@ private fun DesktopSection.localizedLabel(strings: DesktopStrings): String = whe
     else -> label
 }
 
+/** What the Root does with Esc (spec 8: the topmost layer first, then back). */
+internal enum class DesktopShellEscape { NONE, LEAVE_FULLSCREEN, BACK }
+
+/** Esc at the Root: leave fullscreen, else go back. Any other key is none of Esc's business. */
+internal fun desktopShellEscape(event: KeyEvent, fullscreen: Boolean): DesktopShellEscape =
+    when {
+        event.type != KeyEventType.KeyDown || event.key != Key.Escape -> DesktopShellEscape.NONE
+        fullscreen -> DesktopShellEscape.LEAVE_FULLSCREEN
+        else -> DesktopShellEscape.BACK
+    }
+
 @Composable
 internal fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: String?, initialVideo: String?,
     onExit: () -> Unit, onToggleFullscreen: () -> Unit, hostWindow: java.awt.Window? = null,
@@ -1770,11 +1781,10 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
     // UX S2 (hunk RH1, part S2): one shell shortcut host. Back goes through the window navigation owner, as Esc does.
     val shellShortcutHost = remember(homeRootRef) { com.bilipai.desktop.ui.DesktopShellShortcutHost({ homeRootRef.get()?.navigation?.requestBack() == true }) }
     val rootKeyHandler: (KeyEvent) -> Boolean = { event ->
+            val escape = if (event.key == Key.Escape) desktopShellEscape(event, isFullscreen()) else DesktopShellEscape.NONE
             if (event.type == KeyEventType.KeyDown && event.key == Key.F11) { toggleOriginalFullscreen(); true }
-            else if (event.type == KeyEventType.KeyDown && event.key == Key.Escape && !searchFocused) {
-                if (isFullscreen()) setOriginalFullscreen(false) else homeRootRef.get()?.navigation?.requestBack()
-                true
-            }
+            else if (escape == DesktopShellEscape.LEAVE_FULLSCREEN) { setOriginalFullscreen(false); true }
+            else if (escape == DesktopShellEscape.BACK) { homeRootRef.get()?.navigation?.requestBack(); true }
             // UX S2 (hunk RH1, part S2): the shell shortcuts of spec 6.1 (Ctrl+K, Alt+Left, F5, Ctrl+1 to 9, F6, F1, Alt+Enter ...).
             else if (shellShortcutHost.onKey(event) { toggleOriginalFullscreen() }) true
             else if ((showVideo || section == DesktopSection.STORY) && playing.details != null && playerFocused && !searchFocused && player != null) {
