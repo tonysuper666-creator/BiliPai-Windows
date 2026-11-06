@@ -5831,7 +5831,35 @@ val verifyJsDomParserDependency by tasks.registering {
         }
     }
 }
-tasks.named("compileKotlin") { dependsOn(verifyJsDomParserDependency) }
+
+// Every shipped license leaf whose provenance records an exact artifact is checked against the resolved bytes.
+val verifyLicensedArtifactProvenance by tasks.registering {
+    val records = fileTree("src/main/resources/licenses") { include("*/provenance.json") }
+    inputs.files(records)
+    doLast {
+        val artifacts = configurations.getByName("runtimeClasspath").resolvedConfiguration.resolvedArtifacts
+        fun digest(bytes: ByteArray) = MessageDigest.getInstance("SHA-256").digest(bytes).joinToString("") { "%02x".format(it) }
+        val pinned = records.files.sorted().map { it to (JsonSlurper().parse(it) as Map<*, *>) }
+            .filter { (_, record) -> record["artifactSha256"] != null }
+        require(pinned.isNotEmpty()) { "No shipped license provenance records an artifact" }
+        pinned.forEach { (provenance, record) ->
+            val coordinate = record["coordinate"].toString()
+            val (group, name) = coordinate.split(":")
+            val matches = artifacts.filter { it.moduleVersion.id.group == group && it.name == name }
+            require(matches.size == 1 && matches.single().moduleVersion.id.toString() == coordinate) {
+                "Licensed artifact was replaced or duplicated: $coordinate"
+            }
+            val bytes = matches.single().file.readBytes()
+            require(bytes.size == (record["artifactBytes"] as Number).toInt() && digest(bytes) == record["artifactSha256"]) {
+                "Licensed artifact bytes changed: $coordinate"
+            }
+            require(digest(File(provenance.parentFile, "LICENSE.txt").readBytes()) == record["licenseSha256"]) {
+                "Shipped license text differs from provenance: $coordinate"
+            }
+        }
+    }
+}
+tasks.named("compileKotlin") { dependsOn(verifyJsDomParserDependency, verifyLicensedArtifactProvenance) }
 
 // Root merges this independent task; no source, classpath, native or renderer overrides.
 tasks.register<JavaExec>("originalOnboardingUiSmoke") {
