@@ -1,12 +1,15 @@
 import hashlib
 import importlib.util
 import json
+import os
 from pathlib import Path
+import re
 import shutil
 import tempfile
 import unittest
 
 REPO = Path(__file__).resolve().parents[3]
+LIVE = Path(os.environ.get('BILIPAI_LIVE_ROOT') or REPO)
 spec = importlib.util.spec_from_file_location('message_pages_v029', REPO / 'desktop/tools/extract-upstream-message-pages.py')
 producer = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(producer)
@@ -55,9 +58,33 @@ class V029ChatSourceTest(unittest.TestCase):
                 self.assertEqual(''.join(restored[row['adaptedStart']:row['adaptedEnd']]), row['after'])
                 restored[row['adaptedStart']:row['adaptedEnd']] = row['before'].splitlines(True)
             self.assertEqual(source.read(REPO, 'ListLoadError.kt'), ''.join(restored))
-        test = REPO / 'desktop/src/test/kotlin/com/android/purebilibili/feature/message/ChatTimelinePolicyTest.kt'
-        self.assertEqual(source.read(REPO, test.name), test.read_text('utf8'))
-        self.assertEqual(3, test.read_text('utf8').count('@Test'))
+        relative = 'com/android/purebilibili/feature/message/ChatTimelinePolicyTest.kt'
+        test = LIVE / 'app/src/test/java' / relative
+        original = source.read(REPO, test.name)
+        actual = test.read_text('utf8')
+        pattern = r'(?ms)^    @Test\n    fun (\w+)\(\) \{.*?^    \}'
+        originals = re.findall(pattern, original)
+        self.assertEqual(len(originals), 3)
+        self.assertEqual(len(set(originals)), 3)
+        for name in originals:
+            expression = r'(?ms)^    @Test\n    fun ' + re.escape(name) + r'\(\) \{.*?^    \}'
+            before = re.findall(expression, original)
+            after = re.findall(expression, actual)
+            self.assertEqual(len(before), 1, name)
+            self.assertEqual(len(after), 1, name)
+            self.assertEqual(before[0], after[0], name)
+        gradle = (LIVE / 'desktop/build.gradle.kts').read_text('utf8')
+        areas = re.search(r'val migratedAppM4dAreas = listOf\((.*?)\)', gradle, re.S)
+        self.assertIsNotNone(areas)
+        self.assertIn('"feature/message/"', areas.group(1))
+        self.assertIn('migratedAppM4dAreas.asSequence().flatMap { appTestRoot.resolve', gradle)
+        self.assertIn('core !in appM4dTestsNotRun', gradle)
+        self.assertIn('kotlin.srcDir(appTestRoot)', gradle)
+        self.assertNotRegex(actual, r'(?m)^import (org\.junit\.(?!jupiter)|org\.robolectric|io\.mockk|androidx\.test)')
+        for table in ('tests-not-run.tsv', 'later-steps.tsv'):
+            entries = (LIVE / 'desktop/upstream-core/m4d' / table).read_text('utf8').splitlines()
+            self.assertNotIn('feature/message/ChatTimelinePolicyTest.kt', [line.split('\t', 1)[0] for line in entries if not line.startswith('#')])
+            self.assertNotIn('feature/message/ChatTimelinePolicy.kt', [line.split('\t', 1)[0] for line in entries if not line.startswith('#')])
 
     def test_raw_source_or_manifest_tampering_is_rejected(self):
         with tempfile.TemporaryDirectory(prefix='bp-chat-pin-') as temporary:
