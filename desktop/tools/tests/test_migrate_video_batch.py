@@ -23,11 +23,11 @@ class MigrationWorkflowTest(unittest.TestCase):
         self.repo = Path(self.directory.name).resolve()
         self.source = self.repo / SOURCE
         self.source.parent.mkdir(parents=True)
-        self.source.write_text("package example\n\nval manager = AndroidManager()\n", encoding="utf-8")
+        self.source.write_text("package example\n\nval manager = AndroidManager()\n", encoding="utf-8", newline="\n")
         self.build = self.repo / "desktop/build.gradle.kts"
         self.build.parent.mkdir()
         self.build.write_text('val migratedVideoFeaturePaths = setOf(\n    "existing.kt",\n)\n'
-                              'val upstreamOwnedGeneratedCopies = setOf(\n    "keep.kt",\n)\n', encoding="utf-8")
+                              'val upstreamOwnedGeneratedCopies = setOf(\n    "keep.kt",\n)\n', encoding="utf-8", newline="\n")
         self.run_git("init", "-q")
         self.run_git("add", ".")
         self.run_git("-c", "user.name=Migration fixture", "-c", "user.email=fixture@example.invalid",
@@ -61,7 +61,7 @@ class MigrationWorkflowTest(unittest.TestCase):
     def test_conflict_preserves_other_planned_files_and_existing_patch(self):
         patch = self.repo / PATCH
         patch.parent.mkdir(parents=True)
-        patch.write_text("existing reviewed desktop adaptation\n")
+        patch.write_text("existing reviewed desktop adaptation\n", encoding="utf-8", newline="\n")
         before = self.build.read_bytes()
         with self.assertRaises(migration.Conflict):
             migration.plan(self.repo, self.recipe)
@@ -81,7 +81,7 @@ class MigrationWorkflowTest(unittest.TestCase):
 
     def test_upstream_change_and_escaped_path_preserve_checkout(self):
         original_build = self.build.read_bytes()
-        self.source.write_text("new upstream API\n")
+        self.source.write_text("new upstream API\n", encoding="utf-8", newline="\n")
         with self.assertRaises(migration.Conflict):
             migration.plan(self.repo, self.recipe)
         escaped = copy.deepcopy(self.recipe)
@@ -106,16 +106,16 @@ class MigrationWorkflowTest(unittest.TestCase):
         (tools / "extract-upstream-video-player-section-full.py").write_text(
             "from pathlib import Path\nimport sys\n"
             "p=Path(sys.argv[2])/" + repr(identity) + "\n"
-            "p.parent.mkdir(parents=True)\np.write_bytes(" + repr(generated) + ")\n")
+            "p.parent.mkdir(parents=True)\np.write_bytes(" + repr(generated) + ")\n", encoding="utf-8", newline="\n")
         (self.repo / "desktop/upstream-slices").mkdir()
-        (self.repo / "desktop/upstream-slices/pin").write_text("fixture\n")
-        (self.repo / "desktop/upstream-sources.json").write_text("{}\n")
+        (self.repo / "desktop/upstream-slices/pin").write_text("fixture\n", encoding="utf-8", newline="\n")
+        (self.repo / "desktop/upstream-sources.json").write_text("{}\n", encoding="utf-8", newline="\n")
         self.run_git("add", ".")
         self.run_git("-c", "user.name=Migration fixture", "-c", "user.email=fixture@example.invalid",
                      "commit", "-qm", "reviewed desktop adaptation")
         base = self.run_git("rev-parse", "HEAD").strip()
-        (self.repo / "desktop/upstream-core/legacy-root.commit").write_text(base + "\n")
-        self.build.write_text(self.build.read_text() + 'val transitionPatchProducers = mapOf(\n)\n')
+        (self.repo / "desktop/upstream-core/legacy-root.commit").write_text(base + "\n", encoding="utf-8", newline="\n")
+        self.build.write_text(self.build.read_text() + 'val transitionPatchProducers = mapOf(\n)\n', encoding="utf-8", newline="\n")
         recipe = copy.deepcopy(self.recipe)
         recipe.update(desktopBaseCommit=base, transitions=[dict(
             producer="original-video-player-section-full", identity=identity,
@@ -137,7 +137,7 @@ class MigrationWorkflowTest(unittest.TestCase):
         self.assertTrue(all(old == new for old, new in again.values()))
         generated = self.repo / identity
         generated.parent.mkdir(parents=True)
-        generated.write_text("package example\nval keepDesktopBehavior = false\nval host = oldHost\n")
+        generated.write_text("package example\nval keepDesktopBehavior = false\nval host = oldHost\n", encoding="utf-8", newline="\n")
         self.run_git("apply", relative)
         self.assertEqual(generated.read_text(), "package example\nval keepDesktopBehavior = true\nval host = actualResumeHost\n")
 

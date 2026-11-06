@@ -5,7 +5,7 @@ Only standalone generation supplies the two full replacement bodies for isolated
 """
 from pathlib import Path
 import argparse, hashlib, json, tempfile
-from v029_home_load import home_page_delta
+from v029_home_load import home_page_delta, finish_audit
 from v033_home_refresh_undo import advance_source as _advance_home_undo
 from v029_brand_consumers import error_consumer as _brand_error_consumer, shared_helpers as _brand_shared_helpers
 
@@ -63,7 +63,7 @@ def generate(repo, output, standalone=False):
     validate_home_card_tint_policy_outputs(repo, output)
     from v043_home_recommendation_badges import check_output
     check_output(repo,output)
-    output=Path(output).resolve();written=[];home_load_audits=[]
+    output=Path(output).resolve();written=[];home_load_audits=[];later_adaptations=[]
     with tempfile.TemporaryDirectory(prefix="bilipai-original-home-") as temporary:
         scope=_assemble(repo,temporary);work=Path(temporary)
         rows=json.loads(scope["read"](work/"producer-inventory.json"))
@@ -76,19 +76,26 @@ def generate(repo, output, standalone=False):
             target=output/Path(*relative.parts[1:])
             body=scope["read"](source)
             if row and row["path"]=="app/src/main/java/com/android/purebilibili/feature/home/HomeScreen.kt":body=_bind_preview_subject(body)
-            body=home_page_delta(repo,target.name,body,home_load_audits)
+            stage_audits=[]
+            body=home_page_delta(repo,target.name,body,stage_audits)
+            home_load_body=body
             from v042_search_dependencies import adapt_home
-            body=adapt_home(repo,target.name,body,home_load_audits)
+            body=adapt_home(repo,target.name,body,later_adaptations)
             from v043_home_native_cards import home_page_delta as native_home_page_delta
-            body=native_home_page_delta(repo,target.name,body,home_load_audits)
+            body=native_home_page_delta(repo,target.name,body,later_adaptations)
             from v043_home_recommendation_badges import apply_card as apply_recommendation_badge
-            body=apply_recommendation_badge(repo,target.name,body,home_load_audits)
-            body=__import__("ux_home_layout").apply_home_layout(repo,target.name,body,home_load_audits)
+            body=apply_recommendation_badge(repo,target.name,body,later_adaptations)
+            body=__import__("ux_home_layout").apply_home_layout(repo,target.name,body,later_adaptations)
             if target.name=='UserVipBadge.kt':
                 from v046_identity_badges import advance
                 body,proof=advance(repo,body)
                 if proof is not None:
                     scope["write"](output/"v046-identity-badges-proof.json", json.dumps(proof, ensure_ascii=False, indent=2)+"\n")
+            for audit in stage_audits:
+                # Receipt paths are relative to the Home package, including its
+                # components directory; a basename loses the real output owner.
+                audit={**audit,"output":target.relative_to(output/"com/android/purebilibili/feature/home").as_posix()}
+                home_load_audits.append(finish_audit(audit,home_load_body,body))
             scope["write"](target,body);written.append(target)
         from v043_home_native_cards import verified_raw
         navigation=output/'com/android/purebilibili/navigation/HomeVideoNavigationPolicy.kt'
@@ -97,7 +104,7 @@ def generate(repo, output, standalone=False):
         output.mkdir(parents=True,exist_ok=True)
         scope["write"](output/"home-page-producer-inventory.json",json.dumps(rows,ensure_ascii=False,indent=2)+"\n")
         scope["write"](output/"home-page-settings-selection.json",scope["read"](work/"settings-selection-evidence.json"))
-        scope["write"](output/"home-page-v029-load-adaptations.json",json.dumps(dict(upstreamCommit="a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",audits=home_load_audits),ensure_ascii=False,indent=2)+"\n")
+        scope["write"](output/"home-page-v029-load-adaptations.json",json.dumps(dict(upstreamCommit="a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",audits=home_load_audits,laterAdaptations=later_adaptations),ensure_ascii=False,indent=2)+"\n")
     # Whole original UserAgreementPolicy is emitted only by prepareUpstreamSources.
     legacy_agreement=output/'com/android/purebilibili/feature/onboarding/UserAgreementPolicy.kt'
     if legacy_agreement.exists():
