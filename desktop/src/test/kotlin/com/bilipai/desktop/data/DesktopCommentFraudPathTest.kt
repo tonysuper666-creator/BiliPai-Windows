@@ -25,15 +25,15 @@ class DesktopCommentFraudPathTest {
 
     @Test fun reopenRecordsThroughShortStateDirectory(): Unit = runBlocking {
         val longRoot = Files.createDirectory(temporary.resolve("Comment fraud long state directory"))
-        val root = if (windows) shortAlias(longRoot) else longRoot
+        val root = if (windows) shortAlias(longRoot) else CanonicalAliasFileSystem(longRoot).root
         val record = CommentFraudRecord(17, 19)
         dao(root).use { it.insertOrUpdate(record) }
         val file = root.resolve("comment_fraud_records/71/records.json")
-        if (windows) {
-            // This is the exact pre-fix predicate: the fixture must exercise its failing branch.
-            assertNotEquals(file.toAbsolutePath().normalize(), UpdateStorage.existingPathWithoutLinks(file),
-                "The fixture did not produce a distinct 8.3 path")
-        }
+        // Exercise the old predicate on every host, not just when NTFS supplies 8.3 names.
+        assertNotEquals(file.toAbsolutePath().normalize(), UpdateStorage.existingPathWithoutLinks(file),
+            "The fixture did not produce distinct lexical and canonical paths")
+        assertEquals(longRoot.resolve("comment_fraud_records/71/records.json").toRealPath(NOFOLLOW_LINKS),
+            UpdateStorage.existingPathWithoutLinks(file))
         dao(root).use { assertEquals(listOf(record), it.getAllRecords()) }
     }
 
@@ -72,6 +72,23 @@ class DesktopCommentFraudPathTest {
             assertFailsWith<IllegalArgumentException> { dao(state) }
             assertEquals("[]", Files.readString(marker))
         } finally { Files.deleteIfExists(redirected) }
+    }
+
+    @Test fun canonicalAliasDoesNotHideSymbolicLinks() {
+        val state = Files.createDirectory(temporary.resolve("alias-state"))
+        val link = Files.createSymbolicLink(temporary.resolve("alias-state-link"), state)
+        try {
+            assertFailsWith<IllegalArgumentException> { dao(CanonicalAliasFileSystem(link).root) }
+            assertTrue(Files.isDirectory(state))
+        } finally { Files.deleteIfExists(link) }
+
+        val directory = Files.createDirectories(state.resolve("comment_fraud_records/71"))
+        val outside = Files.writeString(temporary.resolve("alias-outside.json"), "[]")
+        val recordLink = Files.createSymbolicLink(directory.resolve("records.json"), outside)
+        try {
+            assertFailsWith<IllegalArgumentException> { dao(CanonicalAliasFileSystem(state).root) }
+            assertEquals("[]", Files.readString(outside))
+        } finally { Files.deleteIfExists(recordLink) }
     }
 
     private fun shortAlias(path: Path): Path {
