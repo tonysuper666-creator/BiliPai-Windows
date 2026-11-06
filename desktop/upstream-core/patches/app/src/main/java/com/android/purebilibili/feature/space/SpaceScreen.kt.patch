@@ -574,7 +574,7 @@
                  ) {
                      AppText(if (isBlocked) "解除屏蔽" else "屏蔽")
                  }
-@@ -1435,31 +1350,31 @@ private fun SpaceContent(
+@@ -1435,47 +1350,47 @@ private fun SpaceContent(
       * 首屏加载中：在同一个内容网格里铺骨架 item，而不是另起一棵独立的骨架网格。
       * 骨架与真实卡片共用同一个 LazyVerticalStaggeredGrid / gridState，数据到达时是 item
       * 原地替换，网格不重建、滚动锚点不丢。
@@ -609,6 +609,28 @@
      ).outerPaddingDp).dp
      val selectedMainTab = state.tabShellState.selectedTab
      // 各标签页各自持有头部，但轮播页码属于同一个用户空间。
+     var sharedBannerPage by remember(state.userInfo.mid) { mutableStateOf(0) }
+     val contentDensity = LocalDensity.current
+-    val shopContext = LocalContext.current
+-    val showMemberShop by remember(shopContext) {
+-        com.android.purebilibili.core.store.ContentDisplaySettings.observe(
+-            shopContext, com.android.purebilibili.core.store.ContentDisplaySettings.SHOW_MEMBER_SHOP
+-        )
+-    }.collectAsStateWithLifecycle(initialValue = true)
++    val shopPreferences by remember(desktopSpacePlatform.home.pluginContext) {
++        desktopSpacePlatform.home.pluginContext.store.snapshot("content_display_prefs")
++    }.collectAsState()
++    val shopSetting = com.android.purebilibili.core.store.ContentDisplaySettings.SHOW_MEMBER_SHOP
++    val showMemberShop = shopPreferences[com.bilipai.desktop.plugins.booleanPreferencesKey(shopSetting)]
++        ?: com.android.purebilibili.core.store.ContentDisplaySettings.defaultEnabled(shopSetting)
+     LaunchedEffect(showMemberShop, selectedMainTab) {
+         if (!showMemberShop && selectedMainTab == SpaceMainTab.SHOP) onMainTabSelected(SpaceMainTab.HOME)
+     }
+     var shopReload by remember(state.userInfo.mid) { mutableIntStateOf(0) }
+     val shopResult by produceState<Result<com.android.purebilibili.data.repository.SpaceShopPage>?>(
+         null, state.userInfo.mid, selectedMainTab == SpaceMainTab.SHOP && showMemberShop, shopReload,
+     ) {
+         if (selectedMainTab == SpaceMainTab.SHOP && showMemberShop) {
 @@ -1570,17 +1485,17 @@ private fun SpaceContent(
          val playbackTarget = resolveSpacePlaybackTarget(
              syncedProgress = state.watchProgressByBvid[bvid],
@@ -628,7 +650,30 @@
      }
      // 首屏骨架阶段不触发「主页 Tab」加载：此时 state 是占位值（mid = 0）。真实数据
      // 到达后 isInitialLoading 转 false，effect 会以真实 mid 重新触发一次，语义不变。
-@@ -2529,17 +2444,17 @@ private fun SpaceContent(
+@@ -1709,20 +1624,18 @@ private fun SpaceContent(
+                     },
+                     modifier = Modifier
+                         .padding(horizontal = outerPaddingDp)
+                         .scrollable(
+                             state = pageGridStates.getValue(displayedMainTabs[pagerState.currentPage].tab),
+                             orientation = Orientation.Vertical,
+                             reverseDirection = true,
+                         ),
+-                    indicatorPositionProvider = { pagerState.tabIndicatorPosition },
+-                    isScrollInProgressProvider = { pagerState.isScrollInProgress || pagerState.isTabSelectionInProgress },
+-                    isPagerDraggingProvider = { pagerDragging },
+-                    pagerTargetPositionProvider = { pagerState.targetPage.toFloat() },
++                    indicatorPositionProvider = { pagerState.currentPage + pagerState.currentPageOffsetFraction },
++                    isScrollInProgressProvider = { pagerState.isScrollInProgress },
+                 )
+             },
+         ) { mainTabsSlot ->
+         HorizontalPager(
+             state = pagerState,
+             userScrollEnabled = false,
+             key = { displayedMainTabs[it].tab },
+             modifier = Modifier.fillMaxSize().contentTabPagerGestures(
+@@ -2529,17 +2442,17 @@ private fun SpaceContent(
                  } else {
                      items(
                          items = dynamicCardItems,
@@ -647,7 +692,7 @@
                                      onTopicClick = onTopicClick,
                                      onTopicKeywordClick = onTopicKeywordClick,
                                      onLiveClick = { roomId, title, uname ->
-@@ -2558,17 +2473,16 @@ private fun SpaceContent(
+@@ -2558,17 +2471,16 @@ private fun SpaceContent(
                                          if (courseNav != null && courseNav.seasonId > 0L) {
                                              onCheeseClick(courseNav.seasonId)
                                          } else {
@@ -665,7 +710,7 @@
                                          onSpaceDynamicLikeClick(dynamicId, isLiked)
                                      },
                                      onDeleteClick = onSpaceDynamicDeleteClick,
-@@ -3411,30 +3325,31 @@ private fun SpaceHeader(
+@@ -3411,30 +3323,31 @@ private fun SpaceHeader(
      useExpandedLayout: Boolean = false,
      collapseAsUnit: Boolean = false,
      bannerPage: Int = 0,
@@ -698,7 +743,7 @@
              com.android.purebilibili.core.plugin.skin.UiSkinSurface.PROFILE in it.manifest.surfaces
      }
      val skinSpaceBackgroundPaths = activeProfileSkin?.manifest?.assets?.spaceBackgrounds.orEmpty()
-@@ -3768,17 +3683,21 @@ private fun SpaceHeader(
+@@ -3768,17 +3681,21 @@ private fun SpaceHeader(
                          isFollowed = userInfo.isFollowed,
                          followButtonColors = followButtonColors,
                          onMessageClick = onMessageClick,
@@ -721,7 +766,7 @@
                  }
              }
          }
-@@ -4036,17 +3955,17 @@ private fun SpaceContentTabs(
+@@ -4036,17 +3953,17 @@ private fun SpaceContentTabs(
              tabs = displayedMainTabs,
              selectedTab = resolveSpacePrimaryTab(selectedMainTab),
              onSelect = { tab ->
@@ -740,7 +785,23 @@
                  selectedId = selectedSecondarySwitchId,
                  onSelect = onSecondarySwitchSelected,
              )
-@@ -4126,30 +4045,28 @@ private fun SpaceMainTabRow(
+@@ -4110,46 +4027,39 @@ private val SpaceMainTabBottomPadding = 2.dp
+ @Composable
+ private fun SpaceMainTabRow(
+     tabs: List<SpaceMainTabItem>,
+     selectedTab: SpaceMainTab,
+     onSelect: (SpaceMainTab) -> Unit,
+     modifier: Modifier = Modifier,
+     indicatorPositionProvider: () -> Float,
+     isScrollInProgressProvider: () -> Boolean,
+-    isPagerDraggingProvider: (() -> Boolean)? = null,
+-    pagerTargetPositionProvider: (() -> Float)? = null,
+ ) {
+     val liquidGlassEnabled = LocalAppThemeConfig.current.liquidGlassEnabled
+     val miuixNonGlass = com.android.purebilibili.core.ui.isMiuixNonGlassEnabled()
+     val spec = remember(tabs, selectedTab) {
+         resolveSpaceMainTabChromeSpec(tabs = tabs, selectedTab = selectedTab)
+     }
      val selectedIndex = tabs.indexOfFirst { it.tab == selectedTab }.coerceAtLeast(0)
      Column(
          modifier = modifier
@@ -756,9 +817,9 @@
              onSelectionChange = onSelect,
              indicatorPositionProvider = indicatorPositionProvider,
              isScrollInProgressProvider = isScrollInProgressProvider,
-             // 仅玻璃主栏提供分页交互身份；原生 MD3 / Miuix 保留既有动画路径。
-             isPagerDraggingProvider = if (liquidGlassEnabled) isPagerDraggingProvider else null,
-             pagerTargetPositionProvider = if (liquidGlassEnabled) pagerTargetPositionProvider else null,
+-            // 仅玻璃主栏提供分页交互身份；原生 MD3 / Miuix 保留既有动画路径。
+-            isPagerDraggingProvider = if (liquidGlassEnabled) isPagerDraggingProvider else null,
+-            pagerTargetPositionProvider = if (liquidGlassEnabled) pagerTargetPositionProvider else null,
              // 玻璃保留独立间距；非玻璃 Miuix 主导航放得下时均匀居中，
              // 空间不足时仍按完整文字宽度滚动。
              centerContent = liquidGlassEnabled || miuixNonGlass,
@@ -771,7 +832,7 @@
              indicatorHeight = spec.indicatorHeightDp.dp,
              modifier = Modifier
                  .fillMaxWidth()
-@@ -4282,16 +4199,17 @@ private fun SpaceChargeGuardRow(
+@@ -4282,16 +4192,17 @@ private fun SpaceChargeGuardRow(
              }
          }
      }
@@ -789,7 +850,7 @@
                      .size(18.dp)
                      .clip(CircleShape)
                      .border(1.dp, MaterialTheme.colorScheme.surface, CircleShape)
-@@ -4410,16 +4328,17 @@ private fun SpaceHomeVideoCard(
+@@ -4410,16 +4321,17 @@ private fun SpaceHomeVideoCard(
      coverAspectRatio: Float = 16f / 9f,
      onClick: () -> Unit,
      sharedTransitionKey: String? = null,
@@ -807,7 +868,7 @@
          },
          animationSpec = tween(120),
          label = "space-video-locate-highlight"
-@@ -4679,16 +4598,17 @@ private fun SpaceAggregateMediaCard(
+@@ -4679,16 +4591,17 @@ private fun SpaceAggregateMediaCard(
      item: SpaceAggregateArchiveItem,
      onClick: () -> Unit,
      modifier: Modifier = Modifier,
@@ -825,7 +886,7 @@
      val screenHeightPx = remember(configuration.screenHeightDp, density) {
          with(density) { configuration.screenHeightDp.dp.toPx() }
      }
-@@ -5006,16 +4926,17 @@ private fun SpaceArchiveListItemRow(
+@@ -5006,16 +4919,17 @@ private fun SpaceArchiveListItemRow(
      showTrailingMore: Boolean = true,
      onClick: () -> Unit,
      sharedTransitionKey: String? = null,
@@ -843,7 +904,46 @@
          },
          animationSpec = tween(120),
          label = "space-video-locate-highlight"
-@@ -5948,26 +5869,23 @@ private fun SpaceHeaderRelationActions(
+@@ -5310,36 +5224,28 @@ private fun dispatchSpaceArticleClick(
+ }
+ 
+ @Composable
+ private fun SpaceArticleListItem(
+     article: SpaceArticleItem,
+     onClick: () -> Unit,
+     modifier: Modifier = Modifier,
+ ) {
+-    val target = when (val action = resolveSpaceArticleClickAction(article)) {
+-        is SpaceDynamicClickAction.OpenArticle -> com.android.purebilibili.navigation3.BiliPaiNavKey.ArticleDetail(action.articleId, action.title)
+-        is SpaceDynamicClickAction.OpenDynamicDetail -> com.android.purebilibili.navigation3.BiliPaiNavKey.DynamicDetail(action.dynamicId)
+-        else -> null
+-    }
+-    val container = target?.let { com.android.purebilibili.core.ui.rememberNativeCardContainerTransition(it, onClick) }
+-    val openCard = container?.onClick ?: onClick
+     Column(
+         modifier = modifier
+             .fillMaxWidth()
+             .padding(horizontal = 16.dp)
+-            .then(container?.modifier ?: Modifier)
+             .clip(AppShapes.container(ContainerLevel.Card))
+-            .appActionClickable { openCard() }
++            .appActionClickable { onClick() }
+             .padding(vertical = 6.dp)
+     ) {
+         RichTextContent(
+             desc = remember(article.title) { DynamicDesc(text = article.title) },
+             onUserClick = {},
+-            onBlankTap = openCard,
++            onBlankTap = onClick,
+             fontSize = MaterialTheme.typography.titleMedium.fontSize,
+             fontWeight = FontWeight.SemiBold,
+             lineHeight = MaterialTheme.typography.titleMedium.lineHeight,
+             maxLines = 2,
+             overflow = TextOverflow.Ellipsis
+         )
+         val imageUrls = article.displayImageUrls(com.android.purebilibili.core.ui.isAppInDarkTheme())
+         if (imageUrls.isNotEmpty()) {
+@@ -5948,26 +5854,23 @@ private fun SpaceHeaderRelationActions(
  @Composable
  private fun SpaceHeaderStat(
      label: String,
@@ -872,7 +972,7 @@
              text = FormatUtils.formatStat(value),
              style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.SemiBold),
              color = AppContentColors.primaryText(),
-@@ -6027,16 +5945,17 @@ private fun SpaceHeaderBanner(
+@@ -6027,16 +5930,17 @@ private fun SpaceHeaderBanner(
      isDarkTheme: Boolean,
      sharedPage: Int,
      onPageChange: (Int) -> Unit,
