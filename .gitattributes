@@ -8,6 +8,7 @@ desktop/third-party/graaljs/artifacts.lock.json -text
 desktop/third-party/graaljs/runtime.lock.json -text
 desktop/third-party/graaljs/catalog.json -text
 desktop/src/main/resources/licenses/jsoup-1.21.2/** -text
+desktop/src/main/resources/licenses/readability4j-1.0.8/** -text
 "app/src/main/java/com/android/purebilibili/feature/onboarding/# 视频基本信息" -text
 app/src/main/res/raw/thanos_fragment.glsl -text
 app/src/main/res/raw/thanos_vertex.glsl -text
