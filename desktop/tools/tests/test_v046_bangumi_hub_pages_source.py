@@ -15,6 +15,7 @@ import unittest
 REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(REPO / 'desktop/tools'))
 import v046_bangumi_hub_pages as hub
+from desktop_refresh_adaptation import bind_refresh_launch
 
 TOOLS = REPO / 'desktop/tools'
 UI = REPO / 'desktop/src/main/kotlin/com/bilipai/desktop/ui'
@@ -26,6 +27,23 @@ HOME_HOOKS = [
     (' from v046_bangumi_hub_pages import advance_home\n v046=advance_home(root,out)\n', ''),
     (',v046HubPages=v046', ''),
 ]
+REFRESH_BLOCK = """ from desktop_refresh_adaptation import bind_refresh_launch
+ for name in ['BangumiHubViewModel.kt', 'HomeBangumiTabPage.kt', 'BangumiHubContent.kt']:
+  generated=out/'com/android/purebilibili/feature/bangumi'/name
+  if generated.is_file():
+   generated.write_text(bind_refresh_launch(generated.read_text(encoding='utf-8')),encoding='utf-8',newline='\\n')
+"""
+REFRESH_FILES = {'com/android/purebilibili/feature/bangumi/' + name for name in
+                 ('BangumiHubViewModel.kt', 'HomeBangumiTabPage.kt', 'BangumiHubContent.kt')}
+
+
+def unbind_refresh(body):
+    alias = 'import com.bilipai.desktop.ui.desktopRefreshLaunch as launch'
+    assert body.count(alias) == 1
+    wildcard = 'import kotlinx.coroutines.*\n' + alias
+    if wildcard in body:
+        return body.replace(wildcard, 'import kotlinx.coroutines.*', 1)
+    return body.replace(alias, 'import kotlinx.coroutines.launch', 1)
 PAGES_INVENTORY_HOOK = ',v046HubPages=V046_ROWS'
 PAGES_HOOK_BLOCK = ("from v046_bangumi_hub_pages import advance_pages,emit_hub_policy_test\nV046_ROWS=advance_pages(C,OUT)\n"
                     "V046_ROWS.append(emit_hub_policy_test(C,OUT.parent/(OUT.name+'-tests')))\n")
@@ -171,6 +189,8 @@ class BangumiHubPagesSliceTests(unittest.TestCase):
         for old, new in HOME_HOOKS:
             assert home.count(old) == 1, old
             home = home.replace(old, new)
+        assert home.count(REFRESH_BLOCK) == 1
+        home = home.replace(REFRESH_BLOCK, '')
         assert pages.count(PAGES_HOOK_BLOCK) == 1 and pages.count(PAGES_INVENTORY_HOOK) == 1
         pages = pages.replace(PAGES_HOOK_BLOCK, '').replace(PAGES_INVENTORY_HOOK, '')
         for name, body, key in [('home-before.py', home, 'home'), ('pages-before.py', pages, 'pages')]:
@@ -264,7 +284,11 @@ class BangumiHubPagesSliceTests(unittest.TestCase):
         for output in WHOLE_OUTPUTS + HUNK_OUTPUTS:
             self.assertEqual(self.manifest['beforeFinalOutputs'][output]['sha256'], hub.sha(text(self.out(output, before=True))), output)
         for output in ALL_OUTPUTS:
-            self.assertEqual(self.manifest['afterFinalOutputs'][output]['sha256'], hub.sha(text(self.out(output))), output)
+            final = text(self.out(output))
+            body = unbind_refresh(final) if output in REFRESH_FILES else final
+            if output in REFRESH_FILES:
+                self.assertEqual(final, bind_refresh_launch(body), output)
+            self.assertEqual(self.manifest['afterFinalOutputs'][output]['sha256'], hub.sha(body), output)
         self.assertEqual(sorted(WHOLE_OUTPUTS + HUNK_OUTPUTS), sorted(self.manifest['beforeFinalOutputs']))
         self.assertEqual(sorted(ALL_OUTPUTS), sorted(self.manifest['afterFinalOutputs']))
         self.assertFalse(self.out(hub.OUT_TRANSITION, before=True).exists())
@@ -272,12 +296,18 @@ class BangumiHubPagesSliceTests(unittest.TestCase):
     def test_every_layer_is_the_exact_inverse_of_its_proofs_on_both_ends(self):
         for output in WHOLE_OUTPUTS + HUNK_OUTPUTS:
             proof = self.proof(output)
-            self.assertEqual(text(self.out(output, before=True)), hub.restore(text(self.out(output)), proof['retainedToCurrent']), output)
+            final = text(self.out(output))
+            body = unbind_refresh(final) if output in REFRESH_FILES else final
+            if output in REFRESH_FILES:
+                self.assertEqual(final, bind_refresh_launch(body), output)
+            self.assertEqual(text(self.out(output, before=True)), hub.restore(body, proof['retainedToCurrent']), output)
         for output, leaf, adaptations, header in hub.HOME_WHOLE + hub.PAGES_WHOLE + [hub.TRANSITION]:
             proof = self.proof(output)
             adapted = hub.adapt(self.sources[leaf], adaptations)
             self.assertEqual(self.sources[leaf], hub.restore(adapted, proof['originalToWindows']), output)
             body = text(self.out(output))
+            if output in REFRESH_FILES:
+                body = unbind_refresh(body)
             self.assertTrue(body.endswith(adapted), output)
             self.assertEqual(len(adaptations), proof['adaptationCount'])
             if header:
@@ -340,6 +370,9 @@ class BangumiHubPagesSliceTests(unittest.TestCase):
                 shutil.copytree(self.root / 'before-home', work)
                 (work / hub.OUT_TRANSITION).write_text(stale, encoding='utf8', newline='\n')
                 hub.advance_home(REPO, work)
+                for output in REFRESH_FILES:
+                    target = work / output
+                    target.write_text(bind_refresh_launch(text(target)), encoding='utf8', newline='\n')
                 self.assertEqual(text(self.out(hub.OUT_TRANSITION)), text(work / hub.OUT_TRANSITION))
                 # Everything but the producer's own inventory is exactly what the producer run left.
                 skip = INVENTORY['home']
@@ -361,7 +394,13 @@ class BangumiHubPagesSliceTests(unittest.TestCase):
 
     def test_content_and_policy_are_the_untouched_upstream_bytes_and_every_tab_row_names_its_role(self):
         for output, leaf in [(hub.OUT_HUB_CONTENT, 'BangumiHubContent.kt'), (hub.OUT_HUB_POLICY, 'BangumiHubPolicy.kt')]:
-            self.assertEqual((REPO / hub.ARCHIVE / leaf).read_bytes(), self.out(output).read_bytes().replace(b'\r\n', b'\n'), output)
+            archive = (REPO / hub.ARCHIVE / leaf).read_bytes()
+            if output == hub.OUT_HUB_CONTENT:
+                content = text(self.out(output))
+                self.assertEqual(content, bind_refresh_launch(archive.decode('utf8')))
+                self.assertEqual(archive, unbind_refresh(content).encode('utf8'))
+            else:
+                self.assertEqual(archive, self.out(output).read_bytes().replace(b'\r\n', b'\n'), output)
         for output, leaf in [(hub.OUT_HUB_CONTENT, 'BangumiHubContent.kt'), (hub.OUT_TAB_PAGE, 'HomeBangumiTabPage.kt'),
                              (hub.OUT_SCREEN, 'BangumiScreen.kt')]:
             body = text(self.out(output))
@@ -472,7 +511,7 @@ class BangumiHubPagesSliceTests(unittest.TestCase):
             self.assertRegex(requests, r'suspend fun ' + method + r'\(', method)
         self.assertIn('val followSession: () -> BangumiFollowSession,', environment)
         callers = 0
-        for file in (REPO / 'desktop/src').rglob('*.kt'):
+        for file in (REPO / 'desktop/src/main').rglob('*.kt'):
             body = file.read_text(encoding='utf8')
             callers += body.count('DesktopOriginalBangumiPagesEnvironment(') - body.count('class DesktopOriginalBangumiPagesEnvironment(')
         self.assertEqual(1, callers)
@@ -503,20 +542,22 @@ class BangumiHubPagesSliceTests(unittest.TestCase):
         self.assertEqual(1, content.count('accountGeneration = state.accountGeneration,'))
         self.assertEqual(1, content.count('    accountGeneration: Long,\n'))
         self.assertEqual(1, content.count('remember(accountGeneration)'))
-        # Windows personal page owners are rebuilt per Root session epoch: the audit that established this must still
-        # list both owners of the hub view model, otherwise the constant 0 generation needs a new justification.
+        # The generated copy's constant is for the proof chain; the compiled VM uses the owner identity and epoch.
         owners, sites = audit_tables()
         rows = dict(owners)
         self.assertIn('bangumi-hub', rows)
-        hub_files = {Path(path).name for path, _token in rows['bangumi-hub']}
+        hub_files = {Path(path).name for path, token in rows['bangumi-hub'] if 'DesktopBangumiHubInstance(' in token}
         self.assertEqual({'DesktopOriginalBangumiPagesRoot.kt', 'DesktopOriginalHomeEmbeddedAggregate.kt'}, hub_files)
         for name in hub_files:
-            self.assertTrue(any(Path(path).name == name and 'BangumiHubViewModel(' in token for path, token in rows['bangumi-hub']), name)
-        self.assertEqual(hub_files, sites['BangumiHubViewModel'])
-        # and the only two places that construct the hub view model on Windows are exactly those files
+            self.assertTrue(any(Path(path).name == name and 'DesktopBangumiHubInstance(' in token for path, token in rows['bangumi-hub']), name)
+        self.assertEqual({'DesktopOriginalBangumiHubRoot.kt'}, sites['BangumiHubViewModel'])
         built = {file.name for file in (REPO / 'desktop/src/main').rglob('*.kt')
                  if re.search(r'\bBangumiHubViewModel\(', file.read_text(encoding='utf8'))}
-        self.assertEqual(hub_files, built)
+        self.assertEqual({'DesktopOriginalBangumiHubRoot.kt'}, built)
+        instance_callers = {file.name for file in (REPO / 'desktop/src/main').rglob('*.kt')
+                            if re.search(r'\bDesktopBangumiHubInstance\(', file.read_text(encoding='utf8'))
+                            and 'class DesktopBangumiHubInstance(' not in file.read_text(encoding='utf8')}
+        self.assertEqual(hub_files, instance_callers)
 
     # ---- card transition on Windows ----------------------------------------------------------------------------------
 

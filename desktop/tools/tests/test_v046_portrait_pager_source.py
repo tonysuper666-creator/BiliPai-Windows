@@ -10,6 +10,7 @@ from pathlib import Path
 import hashlib
 import importlib.util
 import json
+import os
 import re
 import shutil
 import subprocess
@@ -23,6 +24,9 @@ TOOLS = REPO / 'desktop/tools'
 sys.path.insert(0, str(TOOLS))
 import v046_follow_confirmation as follow
 import v046_portrait_pager as portrait
+from v025_source_paths import _catalog, registered_source_sha256, reviewed_sha256
+
+LIVE = Path(os.environ.get('BILIPAI_LIVE_ROOT') or REPO)
 
 
 def load(name, filename):
@@ -200,10 +204,16 @@ class PortraitPagerSourceTests(unittest.TestCase):
         canonical = self.story.read(REPO, path)
         self.assertEqual(portrait.CANONICAL_LF_SHA256[portrait.SWITCH_LEAF], sha(canonical))
         self.assertEqual(portrait.PREVIOUS_OUTPUT_SHA256[portrait.SWITCH_LEAF], sha(self.story.adapt(path, canonical, helpers)))
-        registry = {row['path']: row['sha256'] for row in json.loads((REPO / 'desktop/upstream-sources.json').read_bytes())['sources']}
+        registry = {row['path']: row for row in json.loads((REPO / 'desktop/upstream-sources.json').read_bytes())['sources']}
+        catalog = _catalog()
         for leaf, upstream_path in portrait.UPSTREAM_PATHS.items():
             if leaf in portrait.CANONICAL_LF_SHA256:
-                self.assertEqual(portrait.CANONICAL_LF_SHA256[leaf], registry[upstream_path], leaf)
+                if upstream_path in registry:
+                    self.assertEqual(portrait.CANONICAL_LF_SHA256[leaf], registered_source_sha256(REPO, registry[upstream_path]), leaf)
+                else:
+                    self.assertEqual(portrait.CANONICAL_LF_SHA256[leaf], reviewed_sha256(REPO, catalog['paths'][upstream_path]), leaf)
+                    successor = catalog['previousPaths'][upstream_path]
+                    self.assertEqual(registry[successor]['sha256'], sha((LIVE / successor).read_bytes().replace(b'\r\n', b'\n')), leaf)
             else:
                 self.assertNotIn(upstream_path, registry, 'the new v0.4.0 policy has no vendored v0.2.5 copy')
 

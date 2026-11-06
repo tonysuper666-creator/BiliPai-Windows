@@ -28,6 +28,9 @@ import design_system_consumer_table as table_tool
 import v037_shared_tabs_progress as tabs
 import v046_design_system_leaves_a as leaves_a
 import v046_design_system_leaves_b as leaves
+from v025_source_paths import registered_source_sha256
+
+LIVE = Path(os.environ.get('BILIPAI_LIVE_ROOT') or REPO)
 
 
 def load(name, filename):
@@ -790,12 +793,13 @@ class V046DesignSystemLeavesBSourceTest(unittest.TestCase):
         for name, mode in modes.items():
             row = by_path[CANONICAL[name]]
             self.assertEqual(mode, row.get('mode', 'direct'), name)
-            self.assertEqual(leaves.PREDECESSOR_SHA256[name], row['sha256'], name)
+            self.assertEqual(leaves.PREDECESSOR_SHA256[name], registered_source_sha256(REPO, row), name)
+            self.assertEqual(row['sha256'], sha(lf((LIVE / CANONICAL[name]).read_bytes())), name)
             self.assertEqual(leaves.PREDECESSOR_SHA256[name], sha(lf((REPO / CANONICAL[name]).read_bytes())), name)
             self.assertNotEqual(self.archive[name], (REPO / CANONICAL[name]).read_bytes().replace(b'\r\n', b'\n'), name)
         self.assertEqual({row['replacedBy'] for row in self.manifest['replacedVendoredCopies']}, set(leaves.EXCLUDED_NOW))
         for row in self.manifest['replacedVendoredCopies']:
-            self.assertEqual(by_path[row['path']]['sha256'], row['vendoredLfSha256'])
+            self.assertEqual(registered_source_sha256(REPO, by_path[row['path']]), row['vendoredLfSha256'])
 
     def test_no_compiled_direct_copy_remains_and_every_top_level_name_has_one_producer_output(self):
         sources = json.loads((REPO / 'desktop/upstream-sources.json').read_text(encoding='utf-8'))['sources']

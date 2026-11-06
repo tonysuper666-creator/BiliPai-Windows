@@ -12,6 +12,7 @@ import hashlib
 import importlib.util
 import io
 import json
+import os
 import re
 import shutil
 import struct
@@ -39,6 +40,7 @@ sync = load('sync_upstream_control_center', 'sync-upstream.py')
 OUT_ROOT = 'com/android/purebilibili/'
 HAND_WRITTEN = REPO / 'desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopControlCenterMotionRegressionTest.kt'
 GRADLE = (REPO / 'desktop/build.gradle.kts').read_text(encoding='utf-8')
+LIVE = Path(os.environ.get('BILIPAI_LIVE_ROOT') or REPO)
 CATALOG = json.loads((TOOLS / 'compatibility-source-inputs.json').read_bytes())
 GAPS = (TOOLS / 'symbol-closure-expected-gaps.json').read_text(encoding='utf-8')
 PRODUCER = (TOOLS / 'extract-upstream-video-player-full-controls.py').read_text(encoding='utf-8')
@@ -500,10 +502,18 @@ class ControlCenterMotionSourceTests(unittest.TestCase):
             self.assertEqual(1, block.count(line), line)
         self.assertEqual(1, GRADLE.count('upstream-slices/v046-control-center-motion'))
         self.assertEqual(1, GRADLE.count('v046_control_center_motion'))
-        # the v0.3.7 copy stays excluded exactly once; no new canonical file is excluded and no new srcDir is needed
+        # The v0.3.7 copy stays excluded; new names are only direct inputs or excluded generated copies.
         self.assertEqual(1, GRADLE.count('exclude(canonicalOriginalIdentity("%s"))' % cm.UPSTREAM_PATHS[cm.PANEL_FILE]))
+        direct = GRADLE.split('val migratedVideoFeaturePaths = setOf(', 1)[1].split('\n)', 1)[0]
+        excluded = GRADLE.split('val upstreamOwnedGeneratedCopies = setOf(', 1)[1].split('\n)', 1)[0]
         for name in NEW:
-            self.assertEqual(0, GRADLE.count(name), name)
+            self.assertEqual([], [line for line in GRADLE.splitlines() if name in line and
+                                  any(token in line for token in ('canonicalOriginalIdentity(', 'srcDir', 'inputs.', 'v046'))], name)
+            direct_paths = [p for p in re.findall(r'"([^"]+)"', direct) if p.endswith('/' + name)]
+            copies = [p for p in re.findall(r'"([^"]+)"', excluded) if p.endswith('/' + name)]
+            self.assertEqual(len(direct_paths) + len(copies), GRADLE.count(name), name)
+            for path in direct_paths:
+                self.assertTrue((LIVE / 'app/src/main/java' / path).is_file(), path)
         for line in (" from v046_control_center_motion import chain_source as control_center_source\n",
                      " from v046_control_center_motion import advance_emitted as advance_control_center\n",
                      " from v046_control_center_motion import definer_files as control_center_definers\n",

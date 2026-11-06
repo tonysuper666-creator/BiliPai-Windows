@@ -1,6 +1,7 @@
 import importlib.util
 import hashlib
 import json
+import os
 from pathlib import Path
 import subprocess
 import sys
@@ -168,7 +169,7 @@ class SourceCohortProductionVersionTest(unittest.TestCase):
     def fixture(self, root):
         from v025_source_paths import canonical_source, canonical_relative
         repo = Path(root)
-        real_repo = TOOL.parents[2]
+        real_repo = Path(os.environ.get('BILIPAI_LIVE_ROOT') or TOOL.parents[2])
         relative = canonical_relative(real_repo, 'app/build.gradle.kts')
         build = repo/relative; build.parent.mkdir(parents=True)
         build.write_bytes(canonical_source(real_repo, 'app/build.gradle.kts').read_bytes())

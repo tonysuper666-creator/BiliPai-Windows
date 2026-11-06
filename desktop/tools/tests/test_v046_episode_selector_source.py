@@ -14,6 +14,7 @@ import hashlib
 import importlib.util
 import io
 import json
+import os
 import re
 import runpy
 import shutil
@@ -28,6 +29,9 @@ TOOLS = REPO / 'desktop/tools'
 sys.path.insert(0, str(TOOLS))
 import v046_episode_selector as episode
 import v046_detail_holder_collapse as holder_collapse
+from v025_source_paths import registered_source_sha256, _catalog
+
+LIVE = Path(os.environ.get('BILIPAI_LIVE_ROOT') or REPO)
 
 PKG = 'com/android/purebilibili/'
 COMPONENTS = PKG + 'feature/video/ui/components/'
@@ -284,7 +288,8 @@ class ArchiveAndWiringTests(unittest.TestCase):
         self.assertTrue(v037_pages.encode() != self.raws['PagesSelector.kt'])
         vendored = canonical_source(REPO, sheet_path).read_bytes().replace(b'\r\n', b'\n')
         self.assertEqual(episode.PREDECESSOR_SHA256['CollectionSheet.kt'], sha(vendored))
-        self.assertEqual(self.registry[sheet_path]['sha256'], sha(vendored))
+        self.assertEqual(registered_source_sha256(REPO, self.registry[sheet_path]), sha(vendored))
+        self.assertEqual(self.registry[sheet_path]['sha256'], sha(canonical_source(LIVE, sheet_path).read_bytes().replace(b'\r\n', b'\n')))
         v031 = coin.sources()[1]['VideoDetailResponse.kt']
         self.assertEqual(episode.PREDECESSOR_SHA256['VideoDetailResponse.kt'], sha(v031))
         for name, key in episode.PREDECESSOR_KEYS.items():
@@ -407,7 +412,14 @@ class ArchiveAndWiringTests(unittest.TestCase):
                          'feature/video/ui/components/CollectionEpisodePolicy.kt', 'feature/video/ui/components/ModalChildScroll.kt'):
             path = episode.APP + relative
             with self.subTest(file=relative):
-                self.assertEqual('direct', self.registry[path].get('mode', 'direct'))
+                if relative.endswith('/PagesSelectorLayoutPolicy.kt'):
+                    self.assertNotIn(path, self.registry)
+                    prepared = self.build[self.build.index('val prepareUpstreamSources by tasks.registering(Sync::class) {'):
+                                          self.build.index('\nval extractUpstreamApi ')]
+                    self.assertEqual(1, prepared.count('include("' + path + '")'))
+                    self.assertEqual(_catalog()['paths'][path]['sha256'], sha((REPO / path).read_bytes().replace(b'\r\n', b'\n')))
+                else:
+                    self.assertEqual('direct', self.registry[path].get('mode', 'direct'))
                 self.assertEqual(upstream_blob(path).replace(b'\r\n', b'\n'),
                                  (REPO / path).read_bytes().replace(b'\r\n', b'\n'))
 

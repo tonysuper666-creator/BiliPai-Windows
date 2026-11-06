@@ -594,8 +594,10 @@ class V046WallpaperFoundationSourceTest(unittest.TestCase):
             'AppModalBottomSheet': REPO / 'design-system/src/main/java/com/android/purebilibili/core/ui/AppSheetComponents.kt',
         }
         for name, path in kit.items():
-            params = parameters(path.read_text(encoding='utf-8'), name)
             for call in calls(sheet, {name}):
+                definition = (REPO / 'desktop/src/main/kotlin/com/android/purebilibili/core/ui/DesktopPurposeModalBottomSheet.kt'
+                              if name == 'AppModalBottomSheet' and 'purpose' in call['named'] else path)
+                params = parameters(definition.read_text(encoding='utf-8'), name)
                 self.assertEqual('', call_problem(call, params), (name, call))
         # the window chips are the design-system chip (it follows AppUiStyle and the elastic press), never the raw material
         # FilterChip; the vendored AppPrimitiveComponents.kt is excluded from the Windows build, so the chip the sheet really

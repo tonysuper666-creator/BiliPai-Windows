@@ -456,7 +456,8 @@ class ProtocolSourceTests(unittest.TestCase):
         self.assertEqual(1, service.count('File(path).let { it.isFile && it.length() > 0L }'))
         manager = (REPO / 'desktop/src/main/kotlin/com/bilipai/desktop/download/DesktopDownloadManager.kt').read_text(encoding='utf8')
         self.assertEqual(1, manager.count('if (local.totalFileCount == 0) return null'))
-        self.assertEqual(1, manager.count('if (manifest.standardSegmentCount != result.expectedStandardSegmentCount)'))
+        self.assertEqual(1, manager.count('desktopDanmakuStandardSegmentShortfall(Files.readString(Path.of(result.metadataPath)),\n                        result.expectedStandardSegmentCount)?.let { throw IOException(it) }'))
+        self.assertEqual(1, manager.count('if (manifest.standardSegmentCount != expectedStandardSegmentCount)'))
         # nothing about it was ever written down before this slice: the generator docstring now says it plainly
         docstring = ' '.join(Path(proto.__file__).read_text(encoding='utf8').split())
         for sentence in ('an empty slot no longer shifts the later slot numbers',

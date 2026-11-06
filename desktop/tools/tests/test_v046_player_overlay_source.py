@@ -10,6 +10,7 @@ from pathlib import Path
 import hashlib
 import importlib.util
 import json
+import os
 import re
 import shutil
 import subprocess
@@ -22,6 +23,7 @@ REPO = Path(__file__).resolve().parents[3]
 TOOLS = REPO / 'desktop/tools'
 sys.path.insert(0, str(TOOLS))
 import v037_player_chrome as chrome
+from v025_source_paths import registered_source_sha256
 import v037_player_closure as closure
 import v037_player_render as render
 import v042_player_readability as readability
@@ -150,9 +152,12 @@ class PlayerOverlaySourceTests(unittest.TestCase):
                      'LandscapeDanmakuComposer.kt', 'PlayerControlGlass.kt'):
             self.assertEqual(overlay.PREDECESSOR_SHA256[name], sha(by_name[name]), name)
         self.assertEqual(overlay.OVERLAY_PREDECESSOR_SHA256, sha(closure_sources[overlay.OVERLAY_PATH]))
-        registry = {row['path']: row['sha256'] for row in json.loads((REPO / 'desktop/upstream-sources.json').read_bytes())['sources']}
+        registry = {row['path']: row for row in json.loads((REPO / 'desktop/upstream-sources.json').read_bytes())['sources']}
+        live = Path(os.environ.get('BILIPAI_LIVE_ROOT') or REPO)
         for name in overlay.EXCLUDED_NOW:
-            self.assertEqual(overlay.VENDORED_LF_SHA256[name], registry[overlay.UPSTREAM_PATHS[name]], name)
+            path = overlay.UPSTREAM_PATHS[name]
+            self.assertEqual(overlay.VENDORED_LF_SHA256[name], registered_source_sha256(REPO, registry[path]), name)
+            self.assertEqual(registry[path]['sha256'], sha((live / path).read_bytes().replace(b'\r\n', b'\n')), name)
         self.assertEqual(overlay.DESKTOP_TEST_PREVIOUS_SHA256, self.manifest['replacedDesktopTest']['previousSha256'])
 
     @unittest.skipUnless(commit_present(overlay.COMMIT), 'the v0.4.6 upstream commit is not in the local object store')

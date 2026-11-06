@@ -54,6 +54,78 @@ def flat(text):
     return re.sub(r'\s+', ' ', text)
 
 
+def without_comments(text):
+    # Retain strings verbatim, including URLs and the needles being audited.
+    out = []
+    i = 0
+
+    def literal(quote):
+        nonlocal i
+        out.append(quote)
+        i += len(quote)
+        while i < len(text):
+            if text.startswith(quote, i):
+                out.append(quote)
+                i += len(quote)
+                return
+            if quote != '"""' and text[i] == '\\':
+                out.append(text[i:i + 2])
+                i += 2
+            elif quote != "'" and text.startswith('${', i):
+                out.append('${')
+                i += 2
+                scan(True)
+            else:
+                out.append(text[i])
+                i += 1
+        raise ValueError('Unterminated Kotlin literal')
+
+    def scan(template=False):
+        nonlocal i
+        depth = 0
+        while i < len(text):
+            if template and text[i] == '}' and depth == 0:
+                out.append('}')
+                i += 1
+                return
+            if template and text[i] in '{}':
+                depth += 1 if text[i] == '{' else -1
+                out.append(text[i])
+                i += 1
+                continue
+            if text.startswith('//', i):
+                end = text.find('\n', i)
+                i = len(text) if end < 0 else end
+                out.append(' ')
+            elif text.startswith('/*', i):
+                comment_depth = 1
+                i += 2
+                while comment_depth and i < len(text):
+                    if text.startswith('/*', i):
+                        comment_depth += 1
+                        i += 2
+                    elif text.startswith('*/', i):
+                        comment_depth -= 1
+                        i += 2
+                    else:
+                        i += 1
+                if comment_depth:
+                    raise ValueError('Unterminated Kotlin comment')
+                out.append(' ')
+            elif text.startswith('"""', i):
+                literal('"""')
+            elif text[i] in ('"', "'"):
+                literal(text[i])
+            else:
+                out.append(text[i])
+                i += 1
+        if template:
+            raise ValueError('Unterminated Kotlin string template')
+
+    scan()
+    return ''.join(out)
+
+
 def tree(root):
     return {p.relative_to(root).as_posix(): p.read_bytes() for p in sorted(Path(root).rglob('*')) if p.is_file()}
 
@@ -112,7 +184,7 @@ OWNERS = (
         (UI + 'DesktopHomeRootRequestBinding.kt', 'repository.sessionEpoch==capturedEpoch'),
         (UI + 'DesktopHomeRootRetainer.kt', 'it.capturedEpoch == currentEpoch()'),
         (UI + 'DesktopReadyOriginalRootMount.kt',
-         'LaunchedEffect(handle, epoch, account?.mid, factoryBinding, retry, loginInstalled) {'),
+         'LaunchedEffect(handle, epoch, account?.mid, factoryBinding, retry, loginInstalled, accountInstallation) {'),
         (UI + 'DesktopReadyOriginalRootMount.kt',
          'val installedRoot = handle.retainer.install(epoch, account?.mid, factory.factory)'),
         (UI + 'DesktopReadyOriginalRootMount.kt', 'physicalStack.clear(); physicalStack.addAll(nextInitialStack)'),
@@ -120,9 +192,13 @@ OWNERS = (
     ('bangumi-hub', (
         (UI + 'DesktopOriginalBangumiPagesRoot.kt', 'androidx.compose.runtime.key(entryKey, aggregate, gate, appResources) {'),
         (UI + 'DesktopOriginalBangumiPagesRoot.kt', 'repository.sessionEpoch == gate.epoch'),
-        (UI + 'DesktopOriginalBangumiPagesRoot.kt', 'val hub = BangumiHubViewModel(hubEnvironment)'),
-        (UI + 'DesktopOriginalHomeEmbeddedAggregate.kt', 'val bangumi = BangumiHubViewModel(bangumiEnvironment)'),
-        (UI + 'DesktopOriginalHomeEmbeddedAggregate.kt', '}, lifetime::owns, lifetime::commit)'),
+        (UI + 'DesktopOriginalBangumiPagesRoot.kt', 'val hub = DesktopBangumiHubInstance(hubEnvironment).viewModel'),
+        (UI + 'DesktopOriginalBangumiPagesRoot.kt', 'val hubOwner = repository.upstreamOwner(com.bilipai.desktop.data.DesktopUpstreamPurpose.Main, ::owns, gate.epoch)'),
+        (UI + 'DesktopOriginalHomeEmbeddedAggregate.kt', 'val bangumiInstance = DesktopBangumiHubInstance(parentBangumiEnvironment)'),
+        (UI + 'DesktopOriginalHomeEmbeddedAggregate.kt', '}, lifetime::owns, lifetime::commit, bangumiIdentities)'),
+        (UI + 'DesktopOriginalHomeEmbeddedAggregate.kt', 'require(requests.capturedEpoch == gate.epoch)'),
+        (UI + 'DesktopOriginalBangumiHubRoot.kt', 'val viewModel = try { BangumiHubViewModel(environment) }'),
+        (UI + 'DesktopOriginalBangumiHubRoot.kt', '{ job.isActive && parent.isCurrent() },'),
     )),
     ('listen-collection', (
         (UI + 'DesktopOriginalListenVideoCollectionEnvironment.kt',
@@ -166,7 +242,7 @@ VIEW_MODEL_SITES = {
     'LikedVideosViewModel': {'DesktopPersonalListsRoot.kt'},
     'WatchLaterViewModel': {'DesktopPersonalListsRoot.kt'},
     'DesktopOriginalHomeViewModel': {'DesktopHomeRetainedEntry.kt'},
-    'BangumiHubViewModel': {'DesktopOriginalBangumiPagesRoot.kt', 'DesktopOriginalHomeEmbeddedAggregate.kt'},
+    'BangumiHubViewModel': {'DesktopOriginalBangumiHubRoot.kt'},
     'ListenVideoViewModel': {'DesktopOriginalListenVideoEntry.kt'},
     'ProfileViewModel': {'DesktopProfileBindings.kt'},
 }
@@ -539,7 +615,7 @@ class V046AccountScopedRequestsSourceTest(unittest.TestCase):
 
     def test_the_epoch_effect_rebuilds_the_whole_original_route_stack(self):
         text = flat(read(UI + 'DesktopReadyOriginalRootMount.kt'))
-        effect = text.index('LaunchedEffect(handle, epoch, account?.mid, factoryBinding, retry, loginInstalled) {')
+        effect = text.index('LaunchedEffect(handle, epoch, account?.mid, factoryBinding, retry, loginInstalled, accountInstallation) {')
         stack = text.index('physicalStack.clear(); physicalStack.addAll(nextInitialStack)', effect)
         install = text.index('handle.retainer.install(epoch, account?.mid, factory.factory)', effect)
         closes = [text.index(token, effect) for token in (
@@ -555,9 +631,14 @@ class V046AccountScopedRequestsSourceTest(unittest.TestCase):
     def test_no_windows_code_constructs_the_owner_or_reads_an_android_identity_source(self):
         for path in sorted((REPO / 'desktop/src/main').rglob('*.kt')):
             text = path.read_text(encoding='utf-8')
+            text = without_comments(text)
             for needle in ('AccountScopedRequests', 'accountRequests', 'TokenManager.accountIdentity',
                            'object TokenManager', 'val accountIdentity'):
                 self.assertNotIn(needle, text, path.name)
+        self.assertIn('AccountSessionIdentity(owner.tokens(entry).mid, owner.epoch)',
+                      read(WIN + 'data/DesktopUpstreamOwner.kt'))
+        self.assertIn('DesktopUpstreamCalls.accountIdentity("TokenManager.accountIdentity")',
+                      read('desktop/upstream-core/patches/core-data/src/main/java/com/android/purebilibili/core/store/TokenManager.kt.patch'))
         generators = tool_sources()
         mentions = lambda needle: sorted(name for name, text in generators.items() if needle in text)
         # v046_history_in_place.py only names it inside a negative assertion (the carried session must NOT touch accountRequests)
