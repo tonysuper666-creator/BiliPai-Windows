@@ -23,11 +23,29 @@ class OriginalVideoBgmPublicationExtractionTest(unittest.TestCase):
         output = Path(cls.temp.name)
         cls.original_path = tool._desktop_canonical_source(REPO, tool.RECIPES[0]["originalPath"])
         cls.original_raw = cls.original_path.read_bytes()
-        tool.generate(REPO, output / "actual")
+        # Explicitly capture the real BGM stage inside the one real generation; every
+        # later production stage, including the interactive seam, runs unchanged.
+        real = tool.owned_bgm_result_delta
+        captured = []
+        def capture(path, body, inverse=None):
+            result = real(path, body, inverse)
+            if path == VM:
+                captured.append((body, result))
+            return result
+        with patch.object(tool, "owned_bgm_result_delta", side_effect=capture):
+            tool.generate(REPO, output / "actual")
         cls.actual = (output / "actual" / VM).read_text(encoding="utf-8")
-        with patch.object(tool, "owned_bgm_result_delta", side_effect=lambda path, body: body):
-            tool.generate(REPO, output / "before")
-        cls.before = (output / "before" / VM).read_text(encoding="utf-8")
+        assert len(captured) == 1, "exactly one actual BGM stage"
+        cls.stage_before, cls.stage_after = captured[0]
+        cls.stage_inverse = []
+        cls.stage_replayed = real(VM, cls.stage_before, cls.stage_inverse)
+        # Replay the captured stage inverse on the actual final VM: every BGM result
+        # must survive later stages exactly once, giving the whole final VM without BGM.
+        restored = cls.actual
+        for before, after in reversed(cls.stage_inverse):
+            assert restored.count(after) == 1, ("BGM result changed by a later stage", after[:120])
+            restored = restored.replace(after, before, 1)
+        cls.before = restored
         cls.inverse = []
         cls.replayed = tool.owned_bgm_result_delta(VM, cls.before, cls.inverse)
 
@@ -36,6 +54,13 @@ class OriginalVideoBgmPublicationExtractionTest(unittest.TestCase):
         cls.temp.cleanup()
 
     def test_actual_generator_replays_and_entire_inverse_restores_previous_whole_vm(self):
+        self.assertEqual(self.stage_after, self.stage_replayed)
+        restored = self.stage_after
+        for before, after in reversed(self.stage_inverse):
+            self.assertEqual(1, restored.count(after))
+            restored = restored.replace(after, before, 1)
+        self.assertEqual(self.stage_before, restored)
+        self.assertEqual(self.stage_inverse, self.inverse)
         self.assertEqual(self.actual, self.replayed)
         restored = self.actual
         for before, after in reversed(self.inverse):

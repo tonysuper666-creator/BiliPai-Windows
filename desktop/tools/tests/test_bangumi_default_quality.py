@@ -17,6 +17,26 @@ CURRENT_PRE_QUALITY_PRODUCER_SHA256_LF = 'd152efc0f88fe4060364e3831e4447e92cacd2
 HISTORICAL_VM_ADAPTED_SHA256_LF = '9a9cd34aa68fcdea34da3c7d6b953894862e12428bb322703c94ff40a3d82f34'
 HISTORICAL_QUALITY_LAUNCH = '        environment.launch {\n            environment.native.beginEpisode(currentState.seasonDetail, currentState.currentEpisode)\n'
 VM = "com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiPlayerViewModel.kt"
+BASE_VM = "com/android/purebilibili/core/player/DesktopOriginalBangumiBasePlayerViewModel.kt"
+# Three later, separately proven stages (4069ad53e, 2bc5c4879, e6f96e081) follow the
+# quality stage in the sole producer. They are peeled from the actual final output.
+QUALITY_STAGE_PRODUCER_SHA256_LF = '00707559ef649ab74e3e40955029bcfddfdef15cca4149e1e6b45b0a27070f26'
+LATER_STAGE_LINES = (
+    "from v034_pgc_initial_detail import apply_and_record as apply_pgc_initial_detail\n",
+    "from v034_pgc_audio_download import apply_and_record as apply_pgc_audio_download\n",
+    "from v046_bangumi_player import apply_view_model as apply_bangumi_v046_view_model,emit_features as emit_bangumi_v046_features,validate_outputs as validate_bangumi_v046_outputs\n",
+    "validate_bangumi_v046_outputs(repo,out)\n",
+    " body=apply_pgc_initial_detail(recipe['output'],body,out)\n",
+    " body=apply_pgc_audio_download(recipe['output'],body,out)\n",
+    " body=apply_bangumi_v046_view_model(repo,recipe['output'],body,out)\n",
+    "emit_bangumi_v046_features(repo,out)\n")
+LATER_STAGE_RECEIPTS = {
+    "DesktopOriginalBangumiBasePlayerViewModel.pgc-initial-detail-source.json",
+    "DesktopOriginalBangumiPlayerViewModel.pgc-initial-detail-source.json",
+    "DesktopOriginalBangumiPlayerViewModel.pgc-audio-download-source.json",
+    "v046-bangumi-player-proofs/view-model.json",
+    "v046-bangumi-player-proofs/features.json",
+    "com/android/purebilibili/feature/bangumi/ui/player/DesktopOriginalBangumiPlayerFeatures.kt"}
 
 class BangumiDefaultQualityGeneratorTest(unittest.TestCase):
     @classmethod
@@ -26,7 +46,14 @@ class BangumiDefaultQualityGeneratorTest(unittest.TestCase):
         cls.root = Path(cls.temporary.name)
         # Reconstruct both the current pre-quality stage and the fixed historical
         # whole producer; the later current-quality recipe is a separate change.
-        script = AFTER.read_text(encoding="utf8")
+        final_script = AFTER.read_text(encoding="utf8")
+        script = final_script
+        for line in LATER_STAGE_LINES:
+            if script.count(line) != 1:
+                raise AssertionError("Later PGC stage line is not exactly once: " + line)
+            script = script.replace(line, "", 1)
+        if hashlib.sha256(script.encode()).hexdigest() != QUALITY_STAGE_PRODUCER_SHA256_LF:
+            raise AssertionError("Actual PGC quality stage no longer peels from the sole producer")
         start = script.index("\nPGC_DEFAULT_QUALITY_EDITS = ")
         end = script.index("\nfor recipe in RECIPES:", start)
         baseline = script[:start] + script[end:]
@@ -83,19 +110,85 @@ class BangumiDefaultQualityGeneratorTest(unittest.TestCase):
         if BEFORE_OVERRIDE:
             if Path(BEFORE_OVERRIDE).read_text(encoding="utf8") != baseline:
                 raise AssertionError("Explicit baseline is not the fixed reconstructed historical producer")
+        cls.quality_stage_producer = cls.root / "quality-stage-producer.py"
+        cls.quality_stage_producer.write_text(script, encoding="utf8", newline="\n")
         cls.before = cls.root / "before"
         cls.after = cls.root / "after"
+        cls.final = cls.root / "final"
         env = os.environ.copy()
         env["PYTHONDONTWRITEBYTECODE"] = "1"
         env["PYTHONPATH"] = str(BASE / "desktop/tools")
-        for producer, output in ((cls.baseline_producer, cls.before), (AFTER, cls.after)):
+        for producer, output in ((cls.baseline_producer, cls.before), (cls.quality_stage_producer, cls.after), (AFTER, cls.final)):
             result = subprocess.run([sys.executable, str(producer), "--repo", str(BASE), "--output", str(output)],
                 env=env, capture_output=True, text=True, timeout=30)
             if result.returncode != 0:
                 raise AssertionError(result.stdout + result.stderr)
+        cls.peel_final_to_quality_stage()
         cls.original = (cls.before / VM).read_text(encoding="utf8")
         cls.updated = (cls.after / VM).read_text(encoding="utf8")
         cls.proof = json.loads((cls.after / "pgc-default-quality-source-inventory.json").read_text(encoding="utf8"))
+
+    @classmethod
+    def peel_final_to_quality_stage(cls):
+        sys.path.insert(0, str(BASE / "desktop/tools"))
+        import v034_pgc_initial_detail as initial_detail
+        import v034_pgc_audio_download as audio_download
+        import v046_bangumi_player as v046
+        sha = lambda value: hashlib.sha256(value if isinstance(value, bytes) else value.encode()).hexdigest()
+        def require(condition, message):
+            if not condition:
+                raise AssertionError(message)
+        def undo(value, edits, whole):
+            for edit in reversed(edits):
+                offset, before, after = edit["offsetBytes"], edit["before"].encode(), edit["after"].encode()
+                require(not whole or sha(value) == edit["afterWholeSha256"], "later stage whole after " + edit["name"])
+                require(value[offset:offset + len(after)] == after, "later stage exact inverse span " + edit["name"])
+                value = value[:offset] + before + value[offset + len(after):]
+                require(not whole or sha(value) == edit["beforeWholeSha256"], "later stage whole before " + edit["name"])
+            return value
+        stage_files = {p.relative_to(cls.after) for p in cls.after.rglob("*") if p.is_file()}
+        final_files = {p.relative_to(cls.final) for p in cls.final.rglob("*") if p.is_file()}
+        require(final_files - stage_files == {Path(p) for p in LATER_STAGE_RECEIPTS} and stage_files <= final_files,
+            "later PGC stages emit exactly their receipts")
+        initial_raw = (BASE / "desktop/upstream-slices/v034-pgc-initial-detail/manifest.json").read_bytes()
+        audio_raw = (BASE / "desktop/upstream-slices/v034-pgc-initial-detail/audio-download-manifest.json").read_bytes()
+        require(sha(initial_raw) == initial_detail.MANIFEST_SHA256 and sha(audio_raw) == audio_download.MANIFEST_SHA256,
+            "later PGC stage manifests are the pinned ones")
+        initial_recipes, audio = json.loads(initial_raw)["outputs"], json.loads(audio_raw)
+        for relative in sorted(stage_files):
+            final = (cls.final / relative).read_bytes()
+            if relative.as_posix() not in (VM, BASE_VM):
+                require(final == (cls.after / relative).read_bytes(), "later stages changed " + str(relative))
+                continue
+            head, body = final.decode("utf8").split("\n", 1)
+            receipt = json.loads((cls.final / (Path(relative).stem + ".pgc-initial-detail-source.json")).read_text(encoding="utf8"))
+            require(receipt["recipe"] == initial_recipes[relative.as_posix()], "initial-detail receipt is the pinned recipe")
+            if relative.as_posix() == VM:
+                view_model = json.loads((cls.final / "v046-bangumi-player-proofs/view-model.json").read_text(encoding="utf8"))
+                body = v046.restore(body, view_model["retainedToCurrent"])
+                require(sha(body) == audio["afterSha256LF"], "v046 restores to the pinned audio output")
+                body = undo(body.encode(), audio["edits"], True)
+                require(sha(body) == audio["beforeSha256LF"], "audio restores to the pinned initial-detail output")
+            else:
+                body = body.encode()
+            require(sha(body) == receipt["recipe"]["afterSha256LF"], "initial-detail whole after " + str(relative))
+            body = undo(body, receipt["recipe"]["edits"], False)
+            require(sha(body) == receipt["recipe"]["beforeSha256LF"], "initial-detail whole before " + str(relative))
+            stage = (cls.after / relative).read_bytes()
+            require(head.encode() + b"\n" + body == stage, "final output peels exactly to quality stage " + str(relative))
+
+    def test_final_course_method_and_quality_contract_survive_later_stages(self):
+        final = (self.final / VM).read_text(encoding="utf8")
+        start = "    fun downloadCurrentEpisode(context: Context) {"
+        method = lambda text: text[text.index(start):text.index("\n    fun ", text.index(start) + 1)]
+        self.assertEqual(1, final.count(start))
+        self.assertEqual(method(self.updated), method(final))
+        self.assertNotIn("environment.addDownloadTask(task)", final)
+        for anchor in ("val targetQuality = if (requestedQn >= 127)", "isHevcSupported = environment.hevcSupported()",
+                "quality = selectedVideoQuality ?: playData.quality"):
+            self.assertEqual(self.updated.count(anchor), final.count(anchor), anchor)
+        self.assertEqual((self.after / "pgc-default-quality-source-inventory.json").read_bytes(),
+            (self.final / "pgc-default-quality-source-inventory.json").read_bytes())
 
     def test_new_whole_body_delta_has_counted_complete_inverse(self):
         body = self.updated.split("\n", 1)[1]
