@@ -40,6 +40,16 @@ DIRECT=[APP+'feature/home/components/cards/'+n+'.kt' for n in [
  DS+'core/ui/adaptive/DeviceUiProfile.kt',DS+'core/ui/motion/AppMotionTokens.kt',DS+'core/ui/blur/BlurBudgetPolicy.kt',
  DS+'core/ui/MediaContrastPalette.kt',DS+'core/ui/adaptive/RuntimeVisualGuardPolicy.kt',DS+'core/ui/blur/BlurStyles.kt',DS+'core/ui/blur/BlurIntensityVisualPolicy.kt']
 DIRECT+=[DS+'core/ui/adaptive/RuntimeVisualGuardSignalPolicy.kt']
+# Dynamic preview owns this whole original; this producer only inventories it.
+WHOLE_OWNED_ELSEWHERE = {
+ APP+'core/ui/transition/VideoCardSharedElementContext.kt':
+ 'extract-upstream-dynamic-card.py/v035_dynamic_preview.py',
+}
+ORIGINAL_PATHS = tuple(DIRECT)  # Preserve the reviewed inventory order.
+DIRECT = [path for path in ORIGINAL_PATHS if path not in WHOLE_OWNED_ELSEWHERE]
+def source_mode(path):
+ return 'selected' if path in WHOLE_OWNED_ELSEWHERE else 'direct' if path in DIRECT else 'policy-extract'
+
 EXTRACTED={
  APP+'core/util/HomeCoverReturnPrefetch.kt':['HomeCoverReturnPrefetchEntry','HomeCoverReturnPrefetchRegistry','resolveHomeCoverReturnPrefetchCandidates'],
  APP+'core/ui/CompositionLocals.kt':['LocalWallpaperHazeState','LocalDetailedCommentTimeEnabled'],
@@ -123,7 +133,7 @@ def generate(repo, output, standalone=False):
  appearance=load('hc_declarations',repo/'desktop/tools/extract-appearance-platform.py')
  media=load('hc_media',repo/'desktop/tools/extract-upstream-media.py')
  rows=[]
- for path in DIRECT+list(EXTRACTED)+ADAPTED:
+ for path in list(ORIGINAL_PATHS)+list(EXTRACTED)+ADAPTED:
   if path in REPLACED:continue # Whole original replacements below have one output owner.
   source=read(path);pkg=re.search(r'(?m)^package (\S+)',source).group(1);body=source
   changes=[]
@@ -185,8 +195,8 @@ def generate(repo, output, standalone=False):
   body=apply_card(repo,Path(path).name,body,changes)
   body=__import__("ux_home_card").apply_home_card(repo,Path(path).name,body,changes)
   out=HERE/'generated'/pkg.replace('.','/')/Path(path).name
-  if path not in DIRECT or standalone:write(out,'// Original source '+path+'\n// LF SHA256 '+hashlib.sha256(source.encode()).hexdigest()+'\n'+body)
-  rows.append(dict(path=path,mode='direct' if path in DIRECT else 'policy-extract',features=['home-full-card'],sha256=hashlib.sha256(source.encode()).hexdigest(),sha256Bytes=hashlib.sha256((_desktop_canonical_source(REPO, path)).read_bytes()).hexdigest(),changes=changes,generated=str(out.relative_to(HERE))))
+  if path not in ORIGINAL_PATHS or standalone:write(out,'// Original source '+path+'\n// LF SHA256 '+hashlib.sha256(source.encode()).hexdigest()+'\n'+body)
+  rows.append(dict(path=path,mode=source_mode(path),features=['home-full-card'],sha256=hashlib.sha256(source.encode()).hexdigest(),sha256Bytes=hashlib.sha256((_desktop_canonical_source(REPO, path)).read_bytes()).hexdigest(),changes=changes,generated=str(out.relative_to(HERE))))
  for relative,(raw,proof) in originals.items():
   target=HERE/'generated'/relative
   write(target,raw.decode('utf-8'))
@@ -286,12 +296,12 @@ internal fun DesktopOriginalHomeCardVisualFields(state:DesktopHomeCardVisualSett
  write(HERE/'preferences-source-inventory.json',json.dumps(rows,indent=2)+'\n')
 
 def inventory(repo):
- paths=list(dict.fromkeys(DIRECT+list(EXTRACTED)+ADAPTED+[
+ paths=list(dict.fromkeys(list(ORIGINAL_PATHS)+list(EXTRACTED)+ADAPTED+[
   APP+'core/store/SettingsManager.kt',APP+'core/store/HomeCardAppearancePolicy.kt',APP+'feature/settings/screen/AppearanceSettingsScreen.kt',
   APP+'feature/home/components/cards/VideoCardCoverColorStore.kt']))
  # The frozen original frost resolver is in this source, not a desktop synthetic policy.
  paths=[p if not p.endswith('HomeCardAppearancePolicy.kt') else frost_source_path(repo) for p in paths]
- return [dict(path=p,mode='direct' if p in DIRECT else 'policy-extract',features=['home-full-card'],sha256=hashlib.sha256((_desktop_canonical_source(repo, p)).read_text(encoding='utf-8').encode()).hexdigest()) for p in dict.fromkeys(paths)]
+ return [dict(path=p,mode=source_mode(p),features=['home-full-card'],sha256=hashlib.sha256((_desktop_canonical_source(repo, p)).read_text(encoding='utf-8').encode()).hexdigest()) for p in dict.fromkeys(paths)]
 def frost_source_path(repo):
  source=_desktop_canonical_source(repo,'app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt')
  assert source.read_text(encoding='utf-8').count('internal fun resolveHomeCardFrostedGlassEnabled(')==1

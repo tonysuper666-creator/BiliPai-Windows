@@ -25,24 +25,46 @@ class HomeFullCardSourcesTest(unittest.TestCase):
    self.assertTrue(path.startswith('app/src/main/java/com/android/purebilibili/core/'))
  def test_every_original_identity_is_in_main_inventory_with_its_original_features(self):
   rows=g.inventory(REPO);main=json.loads((REPO/'desktop/upstream-sources.json').read_text())
-  byPath={r['path']:r for r in main['sources']}
+  from v025_source_paths import registered_source_sha256
+  live_rows={r['path']:r for r in main['sources']}
+  byPath={path:{**row,'sha256':registered_source_sha256(REPO,row)}
+          for path,row in live_rows.items() if path in {r['path'] for r in rows}}
+  for r in rows:
+   live=(LIVE/r['path']).read_bytes().replace(b'\r\n',b'\n')
+   self.assertEqual(live_rows[r['path']]['sha256'],hashlib.sha256(live).hexdigest())
   self.assertEqual(67,len(rows));self.assertEqual(len(rows),len({r['path']for r in rows}))
   for r in rows:
    self.assertEqual(hashlib.sha256((REPO/r['path']).read_text(encoding='utf-8').encode()).hexdigest(),r['sha256'])
    self.assertEqual(r['sha256'],byPath[r['path']]['sha256']);self.assertEqual(r['mode'],byPath[r['path']]['mode'])
    self.assertIn('home-full-card',byPath[r['path']]['features'])
+  import v035_dynamic_preview as preview
+  _, entries=preview.original_entries()
+  gradle=(LIVE/'desktop/build.gradle.kts').read_text(encoding='utf-8')
+  self.assertIn('val migratedAppCorePaths:',gradle)
+  self.assertIn('val migratedAppPaths: Set<String> = migratedAppCorePaths',gradle)
+  self.assertIn('appJavaRoot.resolve("com/android/purebilibili/core").walkTopDown()',gradle)
+  for path,owner in g.WHOLE_OWNED_ELSEWHERE.items():
+   row=live_rows[path];owned,body=entries[path];adaptation=owned['adaptation']
+   self.assertEqual('selected',row['mode']);self.assertEqual(owner,row['runtimeWholeOriginalOwner'])
+   self.assertEqual([],adaptation['edits']);self.assertTrue(adaptation['fullOriginalInverse'])
+   self.assertEqual(row['sha256'],owned['sha256']);self.assertEqual(row['sha256'],adaptation['adaptedSha256'])
+   live=(LIVE/path).read_bytes().replace(b'\r\n',b'\n')
+   self.assertEqual(body,live);self.assertEqual(row['sha256'],hashlib.sha256(live).hexdigest())
+   self.assertTrue(path.startswith('app/src/main/java/com/android/purebilibili/core/'))
+   self.assertFalse(list((LIVE/'desktop/src').rglob(Path(path).name)))
+
  def test_shared_sync_owns_all_direct_originals_once(self):
   import v043_home_recommendation_badges as badges
   with tempfile.TemporaryDirectory(prefix='bp-full-card-source-')as temporary:
    out=Path(temporary);g.generate(REPO,out);g.generate_preferences()
-   self.assertTrue({Path(p).name for p in g.DIRECT if p not in badges.REPLACED}.isdisjoint({p.name for p in(out/'generated').rglob('*.kt')}))
+   self.assertTrue({Path(p).name for p in set(g.DIRECT)|set(g.WHOLE_OWNED_ELSEWHERE) if p not in badges.REPLACED}.isdisjoint({p.name for p in(out/'generated').rglob('*.kt')}))
    self.check_replaced_originals(out)
  def test_standalone_direct_bodies_are_verbatim_and_generation_is_deterministic(self):
   import v043_home_recommendation_badges as badges
   with tempfile.TemporaryDirectory(prefix='bp-full-card-source-')as temporary:
    out=Path(temporary);g.generate(REPO,out,True);g.generate_preferences()
    before={str(p.relative_to(out)):p.read_bytes()for p in out.rglob('*.kt')}
-   for path in g.DIRECT:
+   for path in set(g.DIRECT)|set(g.WHOLE_OWNED_ELSEWHERE):
     if path in badges.REPLACED:continue
     candidates=list((out/'generated').rglob(Path(path).name));self.assertEqual(1,len(candidates),path)
     self.assertEqual((REPO/path).read_text(encoding='utf-8'),candidates[0].read_text(encoding='utf-8').split('\n',2)[2])
