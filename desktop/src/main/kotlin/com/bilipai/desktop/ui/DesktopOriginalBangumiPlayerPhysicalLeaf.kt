@@ -73,3 +73,31 @@ import kotlinx.coroutines.CancellationException
         }
     }
 }
+
+/** Bound inside the original PGC viewport so revealing updates its actual controls. */
+@Composable internal fun DesktopBangumiNativePointerInput(
+    player: DesktopOriginalMpvSectionControl,
+    enabled: Boolean,
+    onReveal: () -> Unit,
+    onFullscreen: () -> Unit,
+): Modifier {
+    val bound = LocalDesktopOriginalBangumiPlayerScreenPlatform.current
+    val foreground = LocalDesktopDetailForeground.current
+    val native = player.nativePlayer
+    fun seek(delta: Int) {
+        val target = (player.currentPosition + delta * 1000L).coerceAtLeast(0L)
+        player.seekTo(if (player.duration > 0) target.coerceAtMost(player.duration) else target)
+    }
+    fun volume(delta: Int) {
+        val target = (native.state.value.volume.toInt() + delta).coerceIn(0, 100)
+        player.volume = target / 100f
+        bound.showFeedback("音量 $target%")
+    }
+    return DesktopNativePlaybackPointerInput(native,
+        enabled = { enabled && foreground && bound.owns() && player.isOwned() },
+        onReveal = onReveal,
+        onToggle = { if (player.playWhenReady) player.pause() else player.play() },
+        onFullscreen = onFullscreen, onVolume = ::volume, onSeek = ::seek,
+        onShortcut = { code -> desktopPlayerPointerShortcut(code, bound.fullscreen.value,
+            onFullscreen, ::seek, ::volume, { player.toggleMuted() }) })
+}

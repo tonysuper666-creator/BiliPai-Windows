@@ -872,7 +872,7 @@ def check_leaf_v6(leaf):
     need(leaf.count("val input = DesktopWindowsVideoKeyInput(") == 1, "the existing input stays")
     need(leaf.count("windowKeyFallback?.registerLeaf { event -> input.onKey(event) || shortcuts.onKey(event) }") == 1, "the one slot takes both")
     need(leaf.count("shortcuts.releaseHeldInput()") == 1 and leaf.count("shortcuts.close()") == 1, "focus loss and dispose reach the router")
-    need(len(re.findall(r"\bshortcutBinding\b", code)) == 7, "shortcutBinding is used 7 times: %d" % len(re.findall(r"\bshortcutBinding\b", code)))
+    need(len(re.findall(r"\bshortcutBinding\b", code)) == 12, "shortcutBinding is used 12 times (7 keyboard and 5 pointer): %d" % len(re.findall(r"\bshortcutBinding\b", code)))
     need(leaf.count("SideEffect {\n        shortcutBinding.legacyLayout = legacyChrome") == 1, "the binding is filled by one SideEffect from legacyChrome")
     need(leaf.count("DesktopPlayerShortcutEffects(") == 1, "one set of effects")
     need(leaf.count("desktopWindowsRequestPageEntryFocus(") == 1, "one page-entry focus request")

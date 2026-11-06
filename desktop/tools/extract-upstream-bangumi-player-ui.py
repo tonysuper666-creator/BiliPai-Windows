@@ -62,6 +62,34 @@ def windows_bangumi_audio_download_ui(source, output):
  assert inverse==source,'complete current PGC audio UI inverse'
  return s,edits
 
+def windows_bangumi_pointer_ui(source, output):
+ if not output.endswith('/DesktopOriginalBangumiPlayerComponents.kt'):
+  return source,[]
+ # Mount after both showControls and isScreenLocked have been declared.
+ anchor='    val latestOnScreenLockChanged by rememberUpdatedState(onScreenLockChanged)\n'
+ edits=[dict(label='same native and foreground Windows pointer owner',before=anchor,after=anchor+'    val desktopPointerInput = com.bilipai.desktop.ui.DesktopBangumiNativePointerInput(\n        exoPlayer, enabled = !isScreenLocked,\n        onReveal = { showControls = true }, onFullscreen = onToggleFullscreen,\n    )\n')]
+ edits.append(dict(label='replace mobile double tap pause with the shared Windows click arbiter',before='''            .pointerInput(Unit) {
+                detectTapGestures(
+                    onTap = {
+                        showControls = !showControls
+                    },
+                    onDoubleTap = {
+                        if (isScreenLocked) return@detectTapGestures
+                        if (exoPlayer.isPlaying) exoPlayer.pause() else exoPlayer.play()
+                    }
+                )
+            }''',after='            .then(desktopPointerInput)'))
+ s=source
+ for edit in edits:
+  assert s.count(edit['before'])==1,edit['label']
+  s=s.replace(edit['before'],edit['after'],1)
+ inverse=s
+ for edit in reversed(edits):
+  assert inverse.count(edit['after'])==1,edit['label']+' inverse'
+  inverse=inverse.replace(edit['after'],edit['before'],1)
+ assert inverse==source,'Complete PGC pointer adaptation inverse'
+ return s,edits
+
 def main():
  parser=argparse.ArgumentParser();parser.add_argument('--repo',type=Path,required=True);parser.add_argument('--output',type=Path,required=True);a=parser.parse_args()
  records=[]
@@ -94,6 +122,8 @@ def main():
   body=advance_bangumi_ui(a.repo,body,a.output,r['output'])
   from v046_bangumi_player import apply_retry_ui
   body=apply_retry_ui(a.repo,r['output'],body,a.output)
+  body,pointer_edits=windows_bangumi_pointer_ui(body,r['output'])
+  windows_edits.extend(pointer_edits)
   write(a.output,r['output'],body);records.append(dict(source=r['originalPath'],output=r['output'],wholeBody=True,edits=len(r['edits']),originalSha256LF=sha(raw),generatedSha256LF=sha(body),windowsAdaptations=windows_edits))
  from v046_comment_list import emit_bangumi_panel
  emit_bangumi_panel(a.repo,a.output)

@@ -126,7 +126,7 @@ class FixedOfflineErrorPolicyTest(unittest.TestCase):
     def test_desktop_pointer_recipe_restores_the_exact_complete_input(self):
         source = self.desktop_input()
         output, changes = tool.offline_desktop_pointer_ui(source)
-        self.assertEqual(9, len(changes))
+        self.assertEqual(10, len(changes))
         self.assertIn("var isFullscreen by rememberDesktopOfflineFullscreen(bindings.window)", output)
         self.assertNotIn("var isFullscreen by remember(currentTaskId", output)
         for change in reversed(changes):
@@ -153,15 +153,16 @@ class FixedOfflineErrorPolicyTest(unittest.TestCase):
             with self.assertRaises(AssertionError):
                 tool.offline_desktop_pointer_ui(altered)
 
-    def test_desktop_mouse_controls_keep_the_original_tap_and_seek_policies(self):
+    def test_desktop_mouse_controls_share_windows_clicks_and_keep_original_seek_policy(self):
         output, _ = tool.offline_desktop_pointer_ui(self.desktop_input())
         self.assertNotIn("detectDragGestures(", output)
-        self.assertIn("onTap = { showControls = !showControls }", output)
+        self.assertNotIn("onTap = { showControls = !showControls }", output)
+        self.assertIn(".then(desktopPointerInput)", output)
         self.assertIn("DesktopOfflineNativeInput(player,", output)
         self.assertIn("onRevealControls = { showControls = true }", output)
         self.assertIn("onTogglePlayback = { player.playWhenReady = !player.playWhenReady }", output)
-        self.assertIn("onDoubleTap = { offset ->", output)
-        self.assertIn("onLongPress = {", output)
+        self.assertNotIn("onDoubleTap = { offset ->", output)
+        self.assertNotIn("onLongPress = {", output)
         self.assertIn("val seekSource = player.nativePlayer.currentSourceSnapshot()", output)
         self.assertIn("player.nativePlayer.ownsSourceSnapshot(seekSource)", output)
         self.assertIn("sourceIdentity: com.bilipai.desktop.player.OwnedPlaybackSourceSnapshot?", output)
