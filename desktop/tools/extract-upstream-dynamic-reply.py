@@ -195,15 +195,21 @@ def generate(repo, output):
         elif filename == 'DesktopOriginalReplySettings.kt':
             body = advance_settings(repo, body, output, 'reply')
         from desktop_refresh_adaptation import bind_refresh_lists, bind_refresh_launch
+        stage_body=body
         body=bind_refresh_lists(body)
         if final_stage is not None:
             from v044_favorite_detail import inverse_proof
             proof_path = output / final_stage[0]
-            final_proof = json.loads(proof_path.read_text(encoding='utf8'))
-            final_proof['rendererStage'] = final_proof['retainedToCurrent']
-            final_proof['retainedToCurrent'] = inverse_proof(final_stage[1], body)
-            proof_path.write_text(json.dumps(final_proof, ensure_ascii=False, indent=2)+'\n',
-                                  encoding='utf8', newline='\n')
+            if not proof_path.is_file():
+                # Test stages may retain the input without creating a receipt.
+                # A changed stage must always supply its authenticated proof.
+                assert stage_body == final_stage[1], f'missing changed-stage receipt: {proof_path.name}'
+            else:
+                final_proof = json.loads(proof_path.read_text(encoding='utf8'))
+                final_proof['rendererStage'] = final_proof['retainedToCurrent']
+                final_proof['retainedToCurrent'] = inverse_proof(final_stage[1], body)
+                proof_path.write_text(json.dumps(final_proof, ensure_ascii=False, indent=2)+'\n',
+                                      encoding='utf8', newline='\n')
         emitted.append(host.write(output, path, read(repo, path), body, filename))
 
     original = read(repo, REPLY)
