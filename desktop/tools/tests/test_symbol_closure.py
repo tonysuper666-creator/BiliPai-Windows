@@ -444,6 +444,24 @@ class ReceiverBindingTests(unittest.TestCase):
                          found(result))
         self.assertEqual([8], [f.line for f in result.unexpected if f.symbol == 'withTimeoutOrNull'])
 
+    def test_nested_receiver_lambda_binds_but_closed_and_sibling_lambdas_do_not(self):
+        # Findings intentionally coalesce repeated names within one source file;
+        # isolate each boundary so the sibling cannot hide behind the outside use.
+        for body, missing in [
+            ('awaitEachGesture { run { withTimeoutOrNull(100) { 1 } } }', False),
+            ('awaitEachGesture { 1 }; withTimeoutOrNull(100) { 1 }', True),
+            ('awaitEachGesture { 1 }; run { withTimeoutOrNull(100) { 1 } }', True),
+        ]:
+            with self.subTest(body=body):
+                mini = self.timeout_mini()
+                mini.add('g/Use.kt', 'package p\n'
+                         'import androidx.compose.foundation.gestures.awaitEachGesture\n'
+                         'fun a() { ' + body + ' }\n', 'generated')
+                result = mini.run(carried=False)
+                self.assertEqual([('unresolved-name', 'withTimeoutOrNull')] if missing else [],
+                                 found(result))
+                self.assertEqual([3] if missing else [], [f.line for f in result.unexpected])
+
     def test_receiver_import_alias_works_but_an_unrelated_import_does_not_bind_members(self):
         for imported, missing in [('androidx.compose.foundation.gestures.awaitEachGesture', []),
                                   ('example.awaitEachGesture', [('unresolved-name', 'withTimeoutOrNull')])]:
@@ -1248,10 +1266,12 @@ class ExpectedGapsTests(unittest.TestCase):
 
     def test_the_committed_expected_gaps_file_is_well_formed_and_documents_every_gap(self):
         expected = gate.load_expected(REPO / gate.EXPECTED_GAPS_FILE)
-        # The open gap rows shrink with every slice that closes symbols (32 after the wallpaper slice, 31 once the Bangumi hub
-        # and the pagers had landed too), so slices running in parallel cannot each pin the exact count. The floor only catches
-        # an accidental wipe of the file; the exact data is guarded by the gate itself (unexpected and stale gaps fail it).
-        self.assertGreaterEqual(len(expected['gaps']), 15)
+        # TON-1235 closes these exact declarations in the live compile graph.
+        # Preserve the existing wipe guard across that approved move into retiredSeeds.
+        closed = [(e.get('package'), e['symbol']) for e in expected['retired']
+                  if (e.get('package'), e['symbol']) in LIVE_GRAPH_CLOSED]
+        self.assertCountEqual(LIVE_GRAPH_CLOSED, closed)
+        self.assertGreaterEqual(len(expected['gaps']) + len(closed), 15)
         for gap in expected['gaps']:
             self.assertTrue(gap['reason'].strip() and gap['closedBy'].strip(), gap)
             self.assertIn(gap['scope'], gate.KNOWN_SCOPES)
@@ -1278,7 +1298,7 @@ class ExpectedGapsTests(unittest.TestCase):
         self.assertEqual([('AppBottomSheetMotion', 'reducedMotion')],
                          [(e['owner'], e['symbol']) for e in expected['retired']
                           if e.get('owner') and e['symbol'] not in DANMAKU_SEEDS])
-        self.assertEqual(sorted([name for _package, name in CLOSED_SEEDS] + list(DANMAKU_SEEDS)),
+        self.assertEqual(sorted([name for _package, name in CLOSED_SEEDS + LIVE_GRAPH_CLOSED] + list(DANMAKU_SEEDS)),
                          sorted(e['symbol'] for e in expected['retired'] if not e.get('owner') or e['symbol'] in DANMAKU_SEEDS))
 
     def test_the_retired_seed_names_its_shim_its_guards_and_the_slice_that_replaces_it(self):
@@ -1312,7 +1332,7 @@ class ExpectedGapsTests(unittest.TestCase):
         # the roadmap names the proposed groups' slices but not these exact symbols; a reader must see that
         proposed = {g['symbol'].rsplit('.', 1)[-1] for g in expected['gaps'] if g['closedByEvidence'] == 'proposed'}
         for name in ('shouldAttemptInstantArticle',
-                     'readSeedWallpaperColorScheme', 'shouldRenderRootHomeWallpaperMedia', 'WallpaperPaletteRequest'):
+                     'readSeedWallpaperColorScheme', 'WallpaperPaletteRequest'):
             self.assertIn(name, proposed)
         roadmap_named = {g['symbol'].rsplit('.', 1)[-1] for g in expected['gaps'] if g['closedByEvidence'] == 'roadmap'}
         for name in DANMAKU_SEEDS:
@@ -1352,8 +1372,14 @@ class ExpectedGapsTests(unittest.TestCase):
                 self.assertIn(name, retired)
                 self.assertEqual('wallpaper-foundation-and-adjust', retired[name]['closedBy'])
                 self.assertNotIn(name, open_names)
-        left = ('readSeedWallpaperColorScheme', 'readSystemWallpaperSeed', 'WallpaperMediaLoadState',
-                'WallpaperPaletteRequest', 'WallpaperPaletteResult', 'shouldRenderRootHomeWallpaperMedia')
+        # TON-1235: two symbols gained compiled definers; functional wallpaper debt remains.
+        for name in ('readSystemWallpaperSeed', 'shouldRenderRootHomeWallpaperMedia'):
+            self.assertIn(name, retired)
+            self.assertNotIn(name, open_names)
+            self.assertEqual('wallpaper-surfaces-consumers', retired[name]['closedBy'])
+        self.assertIn('null stub', retired['readSystemWallpaperSeed']['reason'])
+        left = ('readSeedWallpaperColorScheme', 'WallpaperMediaLoadState',
+                'WallpaperPaletteRequest', 'WallpaperPaletteResult')
         for name in left:
             with self.subTest(left=name):
                 self.assertIn(name, open_names)
@@ -1873,6 +1899,26 @@ CLOSED_SEEDS = (
     ('com.android.purebilibili.core.ui.wallpaper', 'rememberIsStaticWallpaper'),
     ('com.android.purebilibili.feature.profile', 'HomeWallpaperAdjustmentSheet'),
 )
+# TON-1235: the carried references remain; these symbols now have real main-scope definers.
+LIVE_GRAPH_CLOSED = (
+    ('com.android.purebilibili.core.lifecycle', 'ForegroundSettleBudget'),
+    ('com.android.purebilibili.core.store', 'StartupAnimationStyle'),
+    ('com.android.purebilibili.core.store', 'shouldShowMaidStartup'),
+    ('com.android.purebilibili.core.theme', 'readSystemWallpaperSeed'),
+    ('com.android.purebilibili.core.ui', 'HomeStaggeredGridStateSaver'),
+    ('com.android.purebilibili.core.ui', 'LocalVideoDetailNavigationTransitionScope'),
+    ('com.android.purebilibili.core.ui', 'createHomeStaggeredGridState'),
+    ('com.android.purebilibili.core.ui', 'rememberCompatibleStaggeredGridState'),
+    ('com.android.purebilibili.core.ui', 'rememberHomeStaggeredGridState'),
+    ('com.android.purebilibili.core.ui.transition', 'BlurRenderEffectCache'),
+    ('com.android.purebilibili.core.ui.transition', 'resolveNowPlayingBarMediaLayoutHandoff'),
+    ('com.android.purebilibili.core.ui.transition', 'shouldDeferVideoCardSourceHeavyWork'),
+    ('com.android.purebilibili.feature.bangumi', 'bangumiBrandBadgeColors'),
+    ('com.android.purebilibili.feature.home', 'shouldRenderRootHomeWallpaperMedia'),
+    ('com.android.purebilibili.feature.home.components.cards', 'horizontalVideoCardTypography'),
+    ('com.android.purebilibili.feature.video.screen', 'resolveVideoNavigationStartInFullscreen'),
+)
+
 # closed by the v046 danmaku protocol slice (members and identifiers, not top-level declarations)
 DANMAKU_SEEDS = ('invalidateDanmakuSegment', 'parseFailed', 'failedSegmentCount')
 
@@ -1932,11 +1978,12 @@ class CurrentIntegrationTree(unittest.TestCase):
         by_scope = {}
         for f in self.result.known:
             by_scope.setdefault(f.scope, set()).add(f.check)
-        self.assertEqual({'carried': {'unresolved-import', 'unresolved-qualified'},
-                          'compiled': {'unresolved-name'}}, by_scope)
+        self.assertEqual({'carried': {'unresolved-import', 'unresolved-qualified'}}, by_scope)
         symbols = {f.symbol for f in self.result.known}
+        self.assertNotIn('withTimeoutOrNull', symbols)
+        self.assertFalse(any(f.scope == 'compiled' for f in self.result.known))
         # closed by the identity-badges, core-data-policies and home-card-cascade-definers slices: no longer gaps
-        for closed in CLOSED_SEEDS:
+        for closed in CLOSED_SEEDS + LIVE_GRAPH_CLOSED:
             self.assertNotIn(closed[0] + '.' + closed[1], symbols)
         # closed by the v046 danmaku protocol slice: retired, no longer a known gap
         self.assertNotIn('com.android.purebilibili.data.repository.DanmakuContentRepository.invalidateDanmakuSegment', symbols)
@@ -2002,10 +2049,10 @@ class CurrentIntegrationTree(unittest.TestCase):
     def test_the_closed_seeds_keep_their_definers_in_the_real_tree(self):
         # slices #3, #5 and #6 carried the real v0.4.6 declarations; the gate keeps them guarded as retired seeds
         status = {e['symbol']: e['status'] for e in self.result.retired}
-        for package, name in CLOSED_SEEDS:
+        for package, name in CLOSED_SEEDS + LIVE_GRAPH_CLOSED:
             with self.subTest(symbol=name):
                 self.assertEqual('defined', status.get(name), package)
-        self.assertEqual(sorted([name for _package, name in CLOSED_SEEDS] + list(DANMAKU_SEEDS) + ['reducedMotion']),
+        self.assertEqual(sorted([name for _package, name in CLOSED_SEEDS + LIVE_GRAPH_CLOSED] + list(DANMAKU_SEEDS) + ['reducedMotion']),
                          sorted(status))
         for name in DANMAKU_SEEDS:
             self.assertEqual('defined', status.get(name), name)
