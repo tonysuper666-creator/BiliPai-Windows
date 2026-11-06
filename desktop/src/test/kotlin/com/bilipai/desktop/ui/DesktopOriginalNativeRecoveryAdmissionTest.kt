@@ -251,8 +251,10 @@ class DesktopOriginalNativeRecoveryAdmissionTest {
                 f.actor.fail(-14)
                 withTimeout(5_000) { upstream.diagnosticEvents.first { it.isNotEmpty() } }
                 versions.value = null
-                withTimeout(5_000) { upstream.diagnosticEvents.first { it.isEmpty() } }
-                assertNull(upstream.videoInputFormat.value)
+                withTimeout(5_000) {
+                    upstream.diagnosticEvents.first { it.isEmpty() }
+                    assertNull(upstream.videoInputFormat.first { it == null })
+                }
                 f.entry = false
                 assertFailsWith<CancellationException> { upstream.updateMediaMetadata("retired", "", "") }
                 assertFailsWith<CancellationException> { upstream.setPortraitFullscreen(true) }

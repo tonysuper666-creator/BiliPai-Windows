@@ -42,6 +42,22 @@ import java.util.concurrent.atomic.AtomicReference
 
 data class DesktopEyePaint(val dimAlpha: Float, val warmAlpha: Float, val warmArgb: Int = 0xffffc07a.toInt())
 
+/** Completing the load publishes a video; only cancellation retires its caller. */
+internal fun desktopPlaybackLoadStillOwned(caller: Job?, stillOwned: () -> Boolean): Boolean =
+    caller?.isCancelled != true && stillOwned()
+
+/** Shared admission policy, also testable without the Windows JS worker catalog. */
+internal fun desktopPluginVideoIsCurrent(
+    closing: Boolean, currentVideo: Any?, video: Any,
+    currentGeneration: Long, generation: Long, currentEpoch: Long, epoch: Long,
+    stillOwned: () -> Boolean,
+): Boolean = !closing && currentVideo === video && currentGeneration == generation &&
+    currentEpoch == epoch && stillOwned()
+
+internal fun requireDesktopPlaybackPluginDispatchCurrent(current: Boolean) {
+    if (!current) throw CancellationException("Playback plugin dispatch retired")
+}
+
 /** A captured view of the existing Runtime video, not another generation owner.
  * Root binds its required predicates to one canonical accepted native lease. */
 internal class DesktopPlayerPluginDispatch internal constructor(
@@ -297,9 +313,9 @@ class DesktopPluginRuntime(val store: DesktopPluginStore,
         if (current.any { it.plugin.id == EYE_PROTECTION_PLUGIN_ID && it.enabled }) paint else DesktopEyePaint(0f, 0f)
     }
 
-    private fun isCurrentVideo(video: CurrentVideo): Boolean = !closing.get() &&
-        currentVideo.get() === video && playerGeneration.get() == video.generation &&
-            video.accountEpoch == accountEpoch() && video.stillOwned()
+    private fun isCurrentVideo(video: CurrentVideo): Boolean = desktopPluginVideoIsCurrent(
+        closing.get(), currentVideo.get(), video, playerGeneration.get(), video.generation,
+        accountEpoch(), video.accountEpoch, video.stillOwned)
 
     private fun enabledPlayerDefinitions(): List<BuiltinPlugin> =
         PluginManager.getEnabledPlugins(BuiltinPlugin::class).filter { it is PlayerPluginApi }
@@ -361,7 +377,7 @@ class DesktopPluginRuntime(val store: DesktopPluginStore,
         if (!admission {
             checkOwner()
             video = CurrentVideo(playerGeneration.incrementAndGet(), bvid, cid, accountEpoch(),
-                { caller[Job]?.isCancelled != true && stillOwned() })
+                { desktopPlaybackLoadStillOwned(caller[Job], stillOwned) })
             previous = currentVideo.getAndSet(video)
         }) throw CancellationException("Original Runtime publication rejected")
         val captured = checkNotNull(video)
@@ -405,7 +421,7 @@ class DesktopPluginRuntime(val store: DesktopPluginStore,
 
     private fun requirePlaybackPluginDispatch(dispatch: DesktopPlayerPluginDispatch, plugin: BuiltinPlugin,
         allowDisabledSponsor: Boolean) {
-        if (!isPlaybackPluginDispatchCurrent(dispatch)) throw CancellationException("Playback plugin dispatch retired")
+        requireDesktopPlaybackPluginDispatchCurrent(isPlaybackPluginDispatchCurrent(dispatch))
         val video = dispatch.videoIdentity as CurrentVideo
         val definition = (plugin as? DesktopPlayerPluginSessionHandle)?.definition ?: plugin
         val retainedDisabledSponsor = allowDisabledSponsor && plugin === video.sessions.sponsor()

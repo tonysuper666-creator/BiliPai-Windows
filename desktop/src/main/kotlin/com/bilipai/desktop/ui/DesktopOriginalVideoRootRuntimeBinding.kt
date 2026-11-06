@@ -1,5 +1,7 @@
 package com.bilipai.desktop.ui
 
+import com.bilipai.desktop.plugins.desktopPlaybackLoadStillOwned
+
 import com.bilipai.desktop.data.DesktopRepository
 import com.bilipai.desktop.player.DesktopRepositoryPlaybackPublication
 import com.bilipai.desktop.plugins.DesktopPluginRuntime
@@ -39,7 +41,7 @@ internal class DesktopOriginalVideoRootRuntimeBinding(
             val caller = checkNotNull(currentCoroutineContext()[Job])
             // collectLatest's load job completes normally after publication; the
             // accepted source remains owned until cancellation or native retirement.
-            val stillCurrent = { !caller.isCancelled && gate.owns() && native().isCurrent(expected) }
+            val stillCurrent = { desktopPlaybackLoadStillOwned(caller) { gate.owns() && native().isCurrent(expected) } }
             val publication = DesktopRepositoryPlaybackPublication(repository)
             val calls = publication.calls(repository.httpClient, expected.nativeSource.source, stillCurrent, caller)
             val generation = runtime.onVideoLoadOwned(expected.request.bvid, expected.request.cid,

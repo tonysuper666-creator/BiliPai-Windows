@@ -42,8 +42,8 @@ class DesktopBufferingAnimationUiTimingTest {
         val scene=ImageComposeScene(72,72,Density(1f),coroutineContext=scope.coroutineContext) {}
         val static=withContext(Dispatchers.Default) { loadDesktopBufferingFrames(true) }
         fun measure(action: () -> Unit) {
-            val start=bean.currentThreadCpuTime
-            try { action() } finally { totalUi+=bean.currentThreadCpuTime-start }
+            val start=System.nanoTime()
+            try { action() } finally { totalUi+=System.nanoTime()-start }
         }
         fun render() { Snapshot.sendApplyNotifications(); scheduler.runCurrent(); scene.render(0).close(); scheduler.runCurrent() }
         try {
@@ -77,11 +77,11 @@ class DesktopBufferingAnimationUiTimingTest {
             val first=totalUi/1_000_000.0
             val warm=mutableListOf<Double>()
             repeat(8) { n ->
-                val before=bean.currentThreadCpuTime
+                val before=System.nanoTime()
                 scene.render((n+1)*16_000_000L).close(); scheduler.runCurrent()
-                warm+=(bean.currentThreadCpuTime-before)/1_000_000.0
+                warm+=(System.nanoTime()-before)/1_000_000.0
             }
-            println("BUFFERING_UI_TIMING baselineUiCpuMs=$baseline animationFirstUiCpuMs=$first deltaUiCpuMs=${first-baseline} backgroundWallMs=${background.get()/1_000_000.0} warmUiCpuMs=$warm uiThread=$ui phases=$phases")
+            println("BUFFERING_UI_TIMING baselineUiWallMs=$baseline animationFirstUiWallMs=$first deltaUiWallMs=${first-baseline} backgroundWallMs=${background.get()/1_000_000.0} warmUiWallMs=$warm uiThread=$ui phases=$phases")
             assertEquals(listOf("readStaticBytes","decodeStaticPixels","readAnimationBytes","constructDecoder","decodeFrameZero"),phases.map { it.first })
             assertTrue(phases.all { it.second!=ui },"all reads and pixel preparation must run off UI")
             assertTrue(errors.isEmpty(),errors.toString())
