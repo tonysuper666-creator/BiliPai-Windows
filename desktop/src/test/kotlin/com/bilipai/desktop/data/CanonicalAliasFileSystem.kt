@@ -29,9 +29,12 @@ internal class CanonicalAliasFileSystem(private val target: Path) : FileSystem()
         override fun getParent(): Path? = lexical.parent?.let(::wrap)
         override fun resolve(other: String): Path = wrap(lexical.resolve(other))
         override fun resolve(other: Path): Path = wrap(lexical.resolve((other as? AliasPath)?.lexical ?: other))
+        override fun relativize(other: Path): Path = wrap(lexical.relativize((other as? AliasPath)?.lexical ?: other))
         override fun normalize(): Path = wrap(lexical.normalize())
         override fun toAbsolutePath(): Path = wrap(lexical.toAbsolutePath())
-        override fun toRealPath(vararg options: LinkOption): Path = actual(this).toRealPath(*options)
+        // Keep lexical and canonical paths on the same provider, as NTFS does.
+        // Otherwise inequality could merely reflect different Path implementations.
+        override fun toRealPath(vararg options: LinkOption): Path = wrap(actual(this).toRealPath(*options))
         override fun equals(other: Any?): Boolean = other is AliasPath &&
             other.fileSystem === fileSystem && lexical == other.lexical
         override fun hashCode(): Int = 31 * System.identityHashCode(fileSystem) + lexical.hashCode()
