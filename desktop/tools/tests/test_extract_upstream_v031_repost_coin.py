@@ -13,6 +13,7 @@ TOOLS = REPO / "desktop/tools"
 sys.path.insert(0, str(TOOLS))
 import v031_repost_coin as coin
 import v046_portrait_pager as portrait_pager
+from ton1228_feedback_chain import EngagementChain
 
 
 def load(name):
@@ -122,7 +123,9 @@ class RepostCoinExtractionTest(unittest.TestCase):
                 if path in {coin.VM, coin.PROTOCOL}:
                     for unchanged in ("ensureActive()", "CancellationException"):
                         self.assertEqual(before.count(unchanged), after.count(unchanged))
-        vm = read(self.output / "detail-full-units" / coin.VM)
+        final_vm = read(self.output / "detail-full-units" / coin.VM)
+        chain = EngagementChain(self, REPO, self.output / "detail-full-units")
+        vm = chain.peel_v046(final_vm)
         latest = json.loads(read(self.output / "detail-full-units/v037-repost-contract-source-proof.json"))
         from v037_player_interaction import selected_source_identity
         identity = selected_source_identity(latest["originalPath"])
@@ -138,6 +141,8 @@ class RepostCoinExtractionTest(unittest.TestCase):
             vm = vm[:at] + edit["before"] + vm[at + len(edit["after"]):]
         self.assertEqual(engagement["inputSHA256"], hashlib.sha256(vm.encode()).hexdigest())
         self.assertEqual(hashlib.sha256(vm.encode()).hexdigest(), latest["generatedSha256LF"])
+        replayed = chain.transform(vm, engagement, False)
+        self.assertEqual(final_vm.encode(), chain.replay_v046(replayed).encode())
         self.assertTrue(latest["wholeLatestOriginalRepostContractAlreadySelected"])
         self.assertTrue(latest["previousSemanticDeltaNotReapplied"])
         self.assertIn("val coinLimit: Int get() = if (isRepost) 1 else 2", identity["text"])

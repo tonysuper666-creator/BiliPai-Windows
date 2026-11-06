@@ -1,0 +1,21 @@
+{
+  "sourceCommit": "6f972611b6c0968b715e73e5c2ffe052e8abe421",
+  "sourceIsParentOf": "75522724c",
+  "crossCheckCommit": "5ae0e7a6748ec57751a12242b69712ab14161080",
+  "crossCheckByteIdentical": true,
+  "method": "Run historical extract-upstream-video-detail-full-units.py generate(repo, output, True); undo repost, lifetime, origin, then state in that order. Export commits with git archive; neutralize only Windows extended path literals in disposable Mac copies; GIT_DIR points to the existing object database.",
+  "files": {
+    "pre-feedback-VideoEngagementViewModel.kt": {
+      "sha256": "c60acf33697141b6eff513f49162820a21ffcd9b7550aba411ae4f199d3837fe",
+      "bytes": 27237
+    },
+    "v029-video-feedback-state-proof.json": {
+      "sha256": "b4c787351a360d04c915ee8e45f2b92613876101a7bc23f1345d27b3f758438e",
+      "bytes": 28357
+    },
+    "v029-video-feedback-origin-proof.json": {
+      "sha256": "547edf65f7e62b17ad42cd27a8ac78d7a0da1e56f5f1cba21060f97bb99c2854",
+      "bytes": 5412
+    }
+  }
+}
