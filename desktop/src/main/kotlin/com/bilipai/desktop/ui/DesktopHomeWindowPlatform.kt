@@ -18,6 +18,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import androidx.compose.runtime.withFrameNanos
+import com.bilipai.desktop.diagnostics.DesktopThemeSwitchTrace
 
 /** Current-process AWT lifecycle of this actual Root window, including its OWN modal descendants. */
 internal class DesktopHomeActualWindowBackground(private val root: Window,
@@ -89,6 +90,7 @@ internal class DesktopHomeWindowsClientPolicy(private val window: Window, privat
         EventQueue.invokeLater {
             if (isCurrent()) {
                 window.background = clientBackground()
+                if (DesktopThemeSwitchTrace.enabled) DesktopThemeSwitchTrace.mark("awt.window_background", "rgb" to "%06x".format(window.background.rgb and 0xffffff))
                 metrics.putState("AndroidBarPolicy", "WINDOWS_CLIENT_BACKGROUND(statusDark=$statusBarDark,backgroundIsLight=$backgroundIsLight)")
             }
         }
