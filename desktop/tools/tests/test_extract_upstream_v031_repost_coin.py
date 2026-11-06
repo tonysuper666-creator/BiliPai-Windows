@@ -134,6 +134,7 @@ class RepostCoinExtractionTest(unittest.TestCase):
         # daff05d71 owner-follow rewrites the VM after this repost-contract snapshot.
         engagement = json.loads(read(self.output / "detail-full-units/v042-owner-follow-projection-proof.json"))
         self.assertTrue(engagement["wholePreviousInputInverseRecovered"])
+        engagement = chain.proofs['owner-follow']
         self.assertEqual(engagement["outputSHA256"], hashlib.sha256(vm.encode()).hexdigest())
         for edit in reversed(engagement["edits"]):
             at = edit["offset"]

@@ -62,6 +62,19 @@ class EngagementChain:
     def __init__(self, case, repo, output):
         self.case, self.repo, self.output = case, repo, output
         self.proofs = {name: json.loads(read(output / path)) for name, path in RECEIPTS}
+        # The completed receipt also covers the later triple/like writes. Verify
+        # that whole inverse before selecting its unchanged v042 stage for this
+        # chain, which peels those later writes separately.
+        owner = self.proofs['owner-follow']
+        if 'ownerFollowStage' in owner:
+            final = read(output / VM)
+            previous = self.transform(final, owner, True)
+            case.assertEqual(HASHES['owner-follow'], sha(previous))
+            case.assertEqual(final, self.transform(previous, owner, False))
+            stage = owner['ownerFollowStage']
+            case.assertEqual(owner['inputSHA256'], stage['inputSHA256'])
+            case.assertEqual(HASHES['triple'], stage['outputSHA256'])
+            self.proofs['owner-follow'] = stage
 
     def transform(self, text, proof, reverse):
         c = self.case
