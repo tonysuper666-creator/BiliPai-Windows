@@ -1,5 +1,5 @@
 """Full fixed-tag offline UI. Only actual Windows controls/window/surface/metadata seams are adapted."""
-from v025_source_paths import canonical_source as _desktop_canonical_source
+from v025_source_paths import canonical_source as _desktop_canonical_source, registered_source_sha256
 from pathlib import Path
 from desktop_paths import long_path
 import argparse,hashlib,json,subprocess,importlib.util,re
@@ -193,7 +193,7 @@ def generate(repo,output,standalone=False):
   assert s==blob,'Working original differs from fixed Git blob: '+path
   if not standalone:
    rows=[r for r in manifest['sources'] if r['path']==path]
-   assert len(rows)==1 and rows[0]['sha256']==pin and FEATURE in rows[0]['features'],'Missing sole registered source feature: '+path
+   assert len(rows)==1 and registered_source_sha256(repo,rows[0])==pin and FEATURE in rows[0]['features'],'Missing sole registered source feature: '+path
   originals[path]=s;write(output/'original-retained'/(path+'.txt'),s)
  path=BASE+'feature/download/OfflineVideoPlayerScreen.kt';s=originals[path]
  for change in UI_DELTA:

@@ -2,7 +2,7 @@ from v025_source_paths import canonical_source as _desktop_canonical_source, can
 from pathlib import Path
 from desktop_paths import long_path
 import hashlib,importlib.util,json,re,sys,zipfile,subprocess
-from v025_source_paths import canonical_source as _desktop_canonical_source
+from v025_source_paths import canonical_source as _desktop_canonical_source, registered_source_sha256
 sys.dont_write_bytecode=True
 REPO=None;OUTPUT=None;STANDALONE=False;COMMIT='79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40';BASE='app/src/main/java/com/android/purebilibili/'
 FRESH_V025_COMMENT_COUNTS={'com/android/purebilibili/feature/video/screen/VideoDetailScreenStateHolder.kt': {'isRepliesRefreshing': 2, 'repliesError': 2, 'onRefreshReplies': 2, 'onRefresh': 2}, 'com/android/purebilibili/feature/video/screen/DesktopOriginalVideoContentSection.kt': {'isRepliesRefreshing': 3, 'repliesError': 3, 'onRefreshReplies': 3, 'onRefresh': 0}, 'com/android/purebilibili/feature/video/screen/TabletVideoLayout.kt': {'isRepliesRefreshing': 0, 'repliesError': 3, 'onRefreshReplies': 0, 'onRefresh': 2}, 'com/android/purebilibili/feature/video/screen/TabletCinemaLayout.kt': {'isRepliesRefreshing': 0, 'repliesError': 4, 'onRefreshReplies': 0, 'onRefresh': 2}}
@@ -236,7 +236,7 @@ def generate(repo,output,standalone=False):
  SOURCES={};OUTPUTS=[];ADAPT=[];REFERENCES=[]
  manifest=json.loads(wide(REPO/'desktop/upstream-sources.json').read_text(encoding='utf-8'))
  assert manifest['upstreamCommit']==COMMIT
- records={r['path']:r['sha256']for r in manifest['sources']}
+ records={r['path']:registered_source_sha256(REPO,r)for r in manifest['sources']}
  for path,pin in SOURCE_PINS.items():
   if path in records:assert records[path]==pin['sha256LF'],path+' existing canonical identity differs'
  parser=module('content_tokens',REPO/'desktop/tools/sync-upstream.py')

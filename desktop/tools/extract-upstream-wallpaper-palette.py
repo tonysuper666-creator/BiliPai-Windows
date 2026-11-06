@@ -2,7 +2,7 @@
 The schema and original quantizer are supplied by their existing sole producers.
 No external dependency, settings namespace or image/network owner is created.
 """
-from v025_source_paths import canonical_source as _desktop_canonical_source
+from v025_source_paths import canonical_source as _desktop_canonical_source, registered_source_sha256
 from pathlib import Path
 import argparse,hashlib,json,re,subprocess
 COMMIT='79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40'
@@ -37,7 +37,7 @@ def main():
  blob=subprocess.run(['git','show',COMMIT+':'+PATH],cwd=repo,capture_output=True,check=True).stdout.decode().replace('\r\n','\n')
  assert blob==original,'WallpaperPalette source differs from pinned Git blob'
  rows=[r for r in manifest['sources'] if r['path']==PATH]
- assert len(rows)==1 and rows[0]['sha256']==ORIGINAL_SHA and rows[0]['mode']=='policy-extract','WallpaperPalette sole registry row missing/different'
+ assert len(rows)==1 and registered_source_sha256(repo,rows[0])==ORIGINAL_SHA and rows[0]['mode']=='policy-extract','WallpaperPalette sole registry row missing/different'
  store=adapt(original);assert digest(store)==PREPARED_SHA,'WallpaperPalette Windows adaptation changed'
  write(out/'com/android/purebilibili/feature/home/components/cards/WallpaperPaletteStore.kt',store)
  proof={'pinnedCommit':COMMIT,'originalPath':PATH,'originalSha256LF':ORIGINAL_SHA,'preparedSha256LF':PREPARED_SHA,'wholeOriginalObjectRetained':True,'windowsOwnedInstance':True,'schemaAndQuantizerProduced':False,'generatedSources':1}

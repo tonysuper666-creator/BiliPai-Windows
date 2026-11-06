@@ -1,5 +1,5 @@
 """Complete fixed v025 download list, with exact b209 per-task speed updates and Windows owner seams."""
-from v025_source_paths import canonical_source as _desktop_canonical_source
+from v025_source_paths import canonical_source as _desktop_canonical_source, registered_source_sha256
 from pathlib import Path
 from desktop_paths import long_path
 import argparse,hashlib,importlib.util,json,subprocess,textwrap
@@ -36,7 +36,7 @@ def generate(repo,output,standalone=False):
   assert s==blob,'Working original differs from fixed Git blob: '+path
   if not standalone:
    rows=[row for row in manifest['sources'] if row['path']==path]
-   assert len(rows)==1 and rows[0]['sha256']==pin,'Sole fixed registry identity missing: '+path
+   assert len(rows)==1 and registered_source_sha256(repo,rows[0])==pin,'Sole fixed registry identity missing: '+path
    assert 'stable-download-list-original' in rows[0]['features'],'Required selected-source feature missing: '+path
   original[path]=s;write(output/'original-retained'/(path+'.txt'),s)
  # Retain the complete later source independently; it never replaces the canonical v025 identity.

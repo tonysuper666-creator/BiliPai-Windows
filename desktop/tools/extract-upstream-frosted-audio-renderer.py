@@ -1,5 +1,5 @@
 """Complete original stable Frosted navigation and audio bar source closure."""
-from v025_source_paths import canonical_source as _desktop_canonical_source
+from v025_source_paths import canonical_source as _desktop_canonical_source, registered_source_sha256
 from pathlib import Path
 from desktop_paths import long_path
 import argparse,hashlib,importlib.util,json,re,subprocess
@@ -41,7 +41,7 @@ def generate(repo,output):
  parser=load(repo/'desktop/tools/sync-upstream.py','frosted_audio_tokens')
  for p in SOURCES:
   s=read(_desktop_canonical_source(repo, p));raw=subprocess.check_output(['git','show',PIN+':'+p],cwd=repo).decode().replace('\r\n','\n');assert s==raw,p
-  assert p in rows and rows[p]['sha256']==sha(s),p
+  assert p in rows and registered_source_sha256(repo,rows[p])==sha(s),p
   original[p]=s
  def emit(p,t,name=None,selected=None,adaptations=()):
   package=re.search(r'(?m)^package (\S+)',t).group(1);target=output/package.replace('.','/')/(name or Path(p).name)

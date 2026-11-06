@@ -1,7 +1,7 @@
 """Whole original WallpaperImageImport. Physical IO/metadata are required owned Windows effects.
 No renderer, account/store/client/player/dependency is created by this producer.
 """
-from v025_source_paths import canonical_source as _desktop_canonical_source
+from v025_source_paths import canonical_source as _desktop_canonical_source, registered_source_sha256
 from pathlib import Path
 import argparse,hashlib,json,subprocess
 COMMIT='79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40'
@@ -27,7 +27,7 @@ def main():
  blob=subprocess.run(['git','show',COMMIT+':'+PATH],cwd=repo,capture_output=True,check=True).stdout.decode().replace('\r\n','\n')
  assert blob==original,'Profile import source differs from fixed Git blob'
  rows=[r for r in manifest['sources'] if r['path']==PATH]
- assert len(rows)==1 and rows[0]['sha256']==ORIGINAL_SHA and rows[0]['mode']=='policy-extract','Profile import sole registry row missing/different'
+ assert len(rows)==1 and registered_source_sha256(repo,rows[0])==ORIGINAL_SHA and rows[0]['mode']=='policy-extract','Profile import sole registry row missing/different'
  adapted=adapt(original);assert sha(adapted)==PREPARED_SHA,'Profile import Windows adaptation changed'
  target=out/'com/android/purebilibili/feature/profile/WallpaperImageImport.kt';target.parent.mkdir(parents=True,exist_ok=True)
  target.write_text(adapted,encoding='utf-8',newline='\n')

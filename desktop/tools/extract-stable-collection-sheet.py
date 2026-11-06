@@ -1,5 +1,5 @@
 """Full stable collection UI and exact settings/request bodies with Windows ports."""
-from v025_source_paths import canonical_source as _desktop_canonical_source
+from v025_source_paths import canonical_source as _desktop_canonical_source, registered_source_sha256
 from pathlib import Path
 import hashlib, importlib.util, json, re, sys
 sys.dont_write_bytecode = True
@@ -17,7 +17,7 @@ def generate(repo, output):
     selector = load('collection_selector', repo/'desktop/tools/extract-appearance-platform.py')
     media = load('collection_functions', repo/'desktop/tools/extract-upstream-media.py')
     manifest = json.loads((repo/'desktop/upstream-sources.json').read_text(encoding='utf-8'))
-    pins = {r['path']:r['sha256'] for r in manifest['sources']}
+    pins = {r['path']:registered_source_sha256(repo,r) for r in manifest['sources']}
     records = []
     def read(path):
         text = (_desktop_canonical_source(repo, path)).read_text(encoding='utf-8').replace('\r\n','\n')
