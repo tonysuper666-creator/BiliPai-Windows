@@ -17,6 +17,7 @@ import androidx.compose.ui.input.pointer.*
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.platform.*
 import androidx.compose.ui.semantics.*
+import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.unit.*
 import com.android.purebilibili.core.theme.AppUiStyle
 import com.android.purebilibili.data.model.response.*
@@ -66,6 +67,8 @@ class DesktopWindowsTextSelectionUiTest {
         val pluginContext = fixture.pluginContext
         private val owner = repository.upstreamOwner(DesktopUpstreamPurpose.Main, { true })
         val clipboard = FakeClipboard()
+        /** The context menu's copy label as this composition resolves it ("复制", or "Copy" under an English JVM). */
+        var copyLabel = ""
         init { check(GraphicsEnvironment.isHeadless()); Locale.setDefault(Locale.SIMPLIFIED_CHINESE) }
         private val scene = DesktopUpstreamCalls.withOwner(owner) {
             ImageComposeScene(900, 600, Density(1f), coroutineContext = StandardTestDispatcher(scheduler) +
@@ -74,6 +77,7 @@ class DesktopWindowsTextSelectionUiTest {
                     systemLanguageTags = listOf("zh-CN"), windowSmallestWidthDp = 700) {
                     val original = LocalWindowInfo.current
                     val window = remember(original) { object : WindowInfo by original { override val isWindowFocused = true } }
+                    copyLabel = LocalLocalization.current.copy
                     CompositionLocalProvider(LocalWindowInfo provides window, LocalClipboard provides clipboard,
                         LocalDesktopUpstreamAndroidContext provides pluginContext.asAndroidContext()) {
                         Box(Modifier.fillMaxSize().padding(24.dp)) { this@Scene.content() }
@@ -91,9 +95,21 @@ class DesktopWindowsTextSelectionUiTest {
         fun nodes() = scene.semanticsOwners.flatMap { flatten(it.unmergedRootSemanticsNode) }
         fun texts() = nodes().flatMap { n -> n.config.getOrNull(SemanticsProperties.Text).orEmpty().map { it.text } }
         fun hasText(text: String) = texts().any { it == text }
-        fun bounds(text: String): Rect = nodes().first { n ->
+        private fun node(text: String) = nodes().first { n ->
             n.config.getOrNull(SemanticsProperties.Text)?.any { it.text == text } == true
-        }.boundsInRoot
+        }
+        fun bounds(text: String): Rect = node(text).boundsInRoot
+        /** Centre of [part] inside [text], taken from the text's laid-out glyphs so CJK and digit widths don't matter. */
+        fun centerOf(text: String, part: String): Offset {
+            val n = node(text)
+            val layouts = mutableListOf<TextLayoutResult>()
+            assertTrue(n.config[SemanticsActions.GetTextLayoutResult].action?.invoke(layouts) == true && layouts.isNotEmpty(),
+                "No text layout for <$text>")
+            val from = text.indexOf(part).also { assertTrue(it >= 0, "<$part> not in <$text>") }
+            val first = layouts.first().getBoundingBox(from)
+            val last = layouts.first().getBoundingBox(from + part.length - 1)
+            return n.positionInRoot + Offset((first.left + last.right) / 2f, (first.top + last.bottom) / 2f)
+        }
         /** Start of the text, its end, and a point in the last few characters (where the link sits). */
         fun start(text: String) = bounds(text).let { Offset(it.left + 2f, it.center.y) }
         fun end(text: String) = bounds(text).let { Offset(it.right - 3f, it.center.y) }
@@ -190,9 +206,9 @@ class DesktopWindowsTextSelectionUiTest {
     private fun Scene.assertMenuCopies(text: String) {
         drag(start(text), end(text) + Offset(60f, 0f))
         rightClick(bounds(text).center)
-        assertTrue(hasText("复制"), "Right-click on a selection offers 复制, menu: ${texts()}")
-        click(bounds("复制").center)
-        assertEquals(text, clipboard.text, "The menu's 复制 puts the selection on the clipboard")
+        assertTrue(copyLabel.isNotEmpty() && hasText(copyLabel), "Right-click on a selection offers <$copyLabel>, menu: ${texts()}")
+        click(bounds(copyLabel).center)
+        assertEquals(text, clipboard.text, "The menu's <$copyLabel> puts the selection on the clipboard")
     }
 
     // ---- 视频评论 / 动态评论（RichCommentText） ----
@@ -217,8 +233,7 @@ class DesktopWindowsTextSelectionUiTest {
             assertEquals(0, plain)
 
             s.click(s.start(comment)); assertEquals(1, plain, "A plain click still opens the comment thread")
-            val stamp = s.bounds(comment).let { b -> Offset(b.left + b.width * comment.indexOf("01:23").plus(2) / comment.length, b.center.y) }
-            s.click(stamp); assertEquals(83_000L, seek, "Clicking the timestamp still seeks the video")
+            s.click(s.centerOf(comment, "01:23")); assertEquals(83_000L, seek, "Clicking the timestamp still seeks the video")
             assertEquals(1, plain, "The timestamp click is not also a plain click")
         }
     }
