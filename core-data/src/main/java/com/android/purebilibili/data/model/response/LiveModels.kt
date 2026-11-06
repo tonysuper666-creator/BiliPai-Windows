@@ -205,14 +205,17 @@ data class FollowedLiveData(
     val list: List<FollowedLiveRoom>? = null,
     @JsonNames("living_num", "live_count") val livingNum: Int? = null,
     @JsonNames("not_living_num", "count") val notLivingNum: Int = 0,
-    val pageinfo: PageInfo? = null
+    @JsonNames("page_info") val pageinfo: PageInfo? = null,
+    val pageSize: Int = 0,
+    val totalPage: Int = 0,
 )
 
 @Serializable
+@OptIn(ExperimentalSerializationApi::class)
 data class PageInfo(
     val page: Int = 0,
-    val page_size: Int = 0,
-    val total_page: Int = 0
+    @JsonNames("pageSize") val page_size: Int = 0,
+    @JsonNames("totalPage") val total_page: Int = 0
 )
 
 @Serializable

@@ -10,6 +10,9 @@ class SpaceScrollPolicyTest {
     fun `progressive blur retains flowing tabs while disabled mode pins them`() {
         assertFalse(shouldPinSpaceContentTabs(progressiveTopBlurEnabled = true))
         assertTrue(shouldPinSpaceContentTabs(progressiveTopBlurEnabled = false))
+        assertFalse(shouldPinSpaceContentTabs(progressiveTopBlurEnabled = false, headerBlurEnabled = true))
+        assertFalse(shouldPinSpaceContentTabs(progressiveTopBlurEnabled = true, headerBlurEnabled = true))
+        assertTrue(shouldPinSpaceContentTabs(progressiveTopBlurEnabled = false, headerBlurEnabled = false))
     }
 
     @Test

@@ -45,6 +45,7 @@ import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.onVisibilityChanged
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
@@ -111,6 +112,8 @@ internal fun HomeStyleSingleColumnVideoCard(
     compactPartition: Boolean = false,
 ) {
     val context = LocalContext.current
+    var cardVisibleInWindow by remember(video.bvid, video.aid) { mutableStateOf(false) }
+    val publishTimeText = rememberVideoCardPublishTimeText(video, showPublishTime, cardVisibleInWindow)
     val isLongPressEnabled = com.android.purebilibili.core.ui.LocalVideoCardLongPressEnabled.current
     val contentTypography = horizontalVideoCardTypography()
     val configuration = LocalConfiguration.current
@@ -204,11 +207,7 @@ internal fun HomeStyleSingleColumnVideoCard(
                     // Single-column paints play/danmaku in the info column (not on cover only).
                     infoPresentation = com.android.purebilibili.core.ui.transition
                         .resolveVideoCardSourceInfoPresentation(
-                            publishTimeText = if (showPublishTime) {
-                                FormatUtils.formatPublishTime(video.pubdate)
-                            } else {
-                                ""
-                            },
+                            publishTimeText = publishTimeText,
                             showStatsInInfo = true,
                             showOverflowMenu = onMoreClick != null || trailingContent != null,
                         ),
@@ -239,6 +238,9 @@ internal fun HomeStyleSingleColumnVideoCard(
         coverAspectRatio = coverAspectRatio,
         compactPartition = compactPartition,
         modifier = modifier
+            .onVisibilityChanged(minFractionVisible = 0.01f, minDurationMs = 0L) {
+                cardVisibleInWindow = it
+            }
             .adaptiveCardHoverEffect(shape = cardShape)
             .onGloballyPositioned { coordinates ->
                 cardBounds.value = coordinates.videoCardSourceBoundsInRoot()
@@ -309,9 +311,9 @@ internal fun HomeStyleSingleColumnVideoCard(
                 // 与 PiliPlus 一致：标题占据上方弹性空间，UP 主与播放量等元信息固定在卡片底部。
                 Spacer(Modifier.weight(1f))
                 Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
-                    if (showPublishTime && video.pubdate > 0) {
+                    if (publishTimeText.isNotBlank()) {
                         AppText(
-                            text = FormatUtils.formatPublishTime(video.pubdate) + "  ",
+                            text = publishTimeText + "  ",
                             style = contentTypography.author,
                             color = AppContentColors.secondaryText(),
                             maxLines = 1,
@@ -401,9 +403,9 @@ internal fun HomeStyleSingleColumnVideoCard(
                 danmakuText = FormatUtils.formatStat(video.stat.danmaku.toLong()),
             )
 
-            if (!compactPartition && showPublishTime && video.pubdate > 0) {
+            if (!compactPartition && publishTimeText.isNotBlank()) {
                 AppText(
-                    text = FormatUtils.formatPublishTime(video.pubdate),
+                    text = publishTimeText,
                     style = MaterialTheme.typography.labelSmall,
                     color = AppContentColors.secondaryText(),
                     maxLines = 1,

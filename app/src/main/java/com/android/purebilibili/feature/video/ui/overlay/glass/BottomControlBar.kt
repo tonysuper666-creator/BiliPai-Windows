@@ -81,6 +81,11 @@ import com.android.purebilibili.core.ui.components.AppSwitch
 import com.android.purebilibili.core.ui.components.AppWindowAction
 import com.android.purebilibili.core.ui.components.AppWindowActionMenu
 import com.android.purebilibili.core.player.resolveProgressFraction as resolveSharedProgressFraction
+import android.os.SystemClock
+import com.android.purebilibili.core.player.SeekTickHapticPolicy
+import com.android.purebilibili.core.ui.AppHapticScene
+import com.android.purebilibili.core.util.HapticType
+import com.android.purebilibili.core.util.rememberHapticFeedback
 import com.android.purebilibili.core.ui.drawMediaProgressTrack
 import com.android.purebilibili.data.model.response.SponsorProgressMarker
 import com.android.purebilibili.feature.video.progress.PbpRidgeDensity
@@ -2597,6 +2602,9 @@ fun VideoProgressBar(
     val currentOnSeekDragStart by rememberUpdatedState(onSeekDragStart)
     val currentOnSeekDragUpdate by rememberUpdatedState(onSeekDragUpdate)
     val currentOnSeekDragCancel by rememberUpdatedState(onSeekDragCancel)
+    // 拖动进度条刻度触感：拖起轻振，跨过整秒时短振，快速滑动按 60ms 限频。
+    val seekHaptic = rememberHapticFeedback(AppHapticScene.PLAYER_SEEK)
+    val seekHapticPolicy = remember { SeekTickHapticPolicy() }
     LaunchedEffect(displayPositionMs, isSeekScrubbing) {
         if (!isSeekScrubbing) {
             dragTargetPositionMs = displayPositionMs.coerceAtLeast(0L)
@@ -2721,6 +2729,10 @@ fun VideoProgressBar(
                                     currentOnSeekStart()
                                     currentOnSeekDragStart(targetPositionMs)
                                     currentOnSeekDragUpdate(targetPositionMs)
+                                    if (seekHapticPolicy.start(targetPositionMs, duration, SystemClock.uptimeMillis())) {
+                                        seekHaptic(HapticType.LIGHT)
+                                    }
+                                    seekHapticPolicy.finish()
                                     currentOnSeek(targetPositionMs)
                                 }
                             }
@@ -2742,6 +2754,9 @@ fun VideoProgressBar(
                                             dragTargetPositionMs = targetPositionMs
                                             currentOnSeekStart()
                                             currentOnSeekDragStart(targetPositionMs)
+                                            if (seekHapticPolicy.start(targetPositionMs, duration, SystemClock.uptimeMillis())) {
+                                                seekHaptic(HapticType.LIGHT)
+                                            }
                                         },
                                         onDrag = { change, _ ->
                                             change.consume()
@@ -2753,6 +2768,9 @@ fun VideoProgressBar(
                                             latestDragPositionMs = targetPositionMs
                                             dragTargetPositionMs = targetPositionMs
                                             currentOnSeekDragUpdate(targetPositionMs)
+                                            if (seekHapticPolicy.update(targetPositionMs, SystemClock.uptimeMillis())) {
+                                                seekHaptic(HapticType.GESTURE_STEP)
+                                            }
                                         },
                                         onDragEnd = {
                                             val commitPositionMs = resolveSeekDragCommitPositionMs(
@@ -2761,15 +2779,18 @@ fun VideoProgressBar(
                                             )
                                             dragInProgress = false
                                             currentOnSeek(commitPositionMs)
+                                            seekHapticPolicy.finish()
                                         },
                                         onDragCancel = {
                                             dragInProgress = false
                                             currentOnSeekDragCancel()
+                                            seekHapticPolicy.finish()
                                         }
                                     )
                                 } finally {
                                     if (shouldCancelSeekDragOnPointerInputCompletion(dragInProgress)) {
                                         currentOnSeekDragCancel()
+                                        seekHapticPolicy.finish()
                                     }
                                 }
                             }

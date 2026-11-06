@@ -726,6 +726,7 @@ data class MobileFeedItem(
     val cover: String = "",
     val title: String = "",
     val duration: Long = 0,
+    val pubdate: Long = 0,
     val args: MobileFeedArgs? = null,
     @SerialName("player_args") val playerArgs: MobileFeedPlayerArgs? = null,
     @SerialName("three_point_v2") val threePointV2: List<MobileFeedThreePoint> = emptyList(),
@@ -812,6 +813,7 @@ data class MobileFeedItem(
             tid = args?.tid?.takeIf { it > 0 } ?: args?.rid ?: 0,
             tname = args?.let { it.tname.ifBlank { it.rname } }.orEmpty(),
             duration = if (type == "picture") 0 else (playerArgs?.duration?.takeIf { it > 0 } ?: duration).toInt(),
+            pubdate = pubdate.takeIf { it > 0L } ?: 0L,
             // App 端推荐的 uri 自带播放尺寸，列表阶段就能确定横竖屏；
             // 详情页首帧据此直接进入正确布局，不必等播放器接口回包。
             isVertical = resolveVerticalVideoFromFeedUri(uri) ?: false,

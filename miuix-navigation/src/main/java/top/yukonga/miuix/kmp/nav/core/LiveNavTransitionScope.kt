@@ -33,7 +33,7 @@ import top.yukonga.miuix.kmp.nav.transition.NavTransitionScope
 internal class LiveNavTransitionScope(
     private val presentation: NavPresentation,
     private val entryIndex: Int,
-    private val isRemoving: Boolean,
+    override val isRemoving: Boolean,
     override val change: NavChange,
     override val layoutSize: IntSize,
     override val layoutDirection: LayoutDirection,

@@ -26,6 +26,8 @@ import androidx.compose.ui.graphics.TileMode
 import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.lerp
+import androidx.compose.ui.graphics.drawscope.DrawScope
+import androidx.compose.ui.graphics.layer.CompositingStrategy
 import androidx.compose.ui.graphics.layer.drawLayer
 import androidx.compose.ui.graphics.rememberGraphicsLayer
 import androidx.compose.ui.platform.LocalDensity
@@ -1087,8 +1089,24 @@ internal fun isVideoCardTransitionSnapshotDrawable(
 
 internal class VideoCardTransitionSnapshotHandle(
     val contentLayer: androidx.compose.ui.graphics.layer.GraphicsLayer,
+    private val sourceLayer: androidx.compose.ui.graphics.layer.GraphicsLayer,
     val state: VideoCardTransitionSnapshotLayerState,
 ) {
+    /**
+     * 来源内容与动态景深分层。内层只在快照刷新时录制，使用独立离屏缓存承载复杂页面；
+     * 外层仅引用内层，模糊、透明度与圆角更新不会同时改动内层的图层属性。
+     * 两层均由会话持有，不借用实时页面的 graphicsLayer，来源卸载后仍按原规则刷新。
+     */
+    fun recordSource(scope: DrawScope, drawBlock: DrawScope.() -> Unit) {
+        sourceLayer.compositingStrategy = CompositingStrategy.Offscreen
+        with(scope) {
+            sourceLayer.record(block = drawBlock)
+            contentLayer.record {
+                drawLayer(sourceLayer)
+            }
+        }
+    }
+
     fun clearRenderEffect() {
         contentLayer.renderEffect = null
         contentLayer.shadowElevation = 0f
@@ -1101,6 +1119,13 @@ internal class VideoCardTransitionSnapshotHandle(
         // 标记失效不会清除 GraphicsLayer 的绘制闭包和子层引用。
         // 会话结束后录入空内容，归还旧列表的封面与离屏图层。
         contentLayer.record(
+            density = androidx.compose.ui.unit.Density(1f),
+            layoutDirection = androidx.compose.ui.unit.LayoutDirection.Ltr,
+            size = androidx.compose.ui.unit.IntSize(1, 1),
+        ) {}
+        // 同时移除内层的旧内容与离屏缓存；下次会话重新按当前视口尺寸录制。
+        sourceLayer.compositingStrategy = CompositingStrategy.Auto
+        sourceLayer.record(
             density = androidx.compose.ui.unit.Density(1f),
             layoutDirection = androidx.compose.ui.unit.LayoutDirection.Ltr,
             size = androidx.compose.ui.unit.IntSize(1, 1),
@@ -1155,9 +1180,11 @@ internal fun applyVideoCardTransitionSnapshotFrame(
 @Composable
 internal fun rememberVideoCardTransitionSnapshotHandle(): VideoCardTransitionSnapshotHandle {
     val layer = rememberGraphicsLayer()
-    return remember(layer) {
+    val sourceLayer = rememberGraphicsLayer()
+    return remember(layer, sourceLayer) {
         VideoCardTransitionSnapshotHandle(
             contentLayer = layer,
+            sourceLayer = sourceLayer,
             state = VideoCardTransitionSnapshotLayerState(),
         )
     }
@@ -1248,7 +1275,7 @@ internal fun Modifier.videoCardTransitionBackgroundEffect(
         if (!retainSnapshot) {
             // Host 会话层由 Host IDLE 释放；源页不得因 SettledHidden 误 reset。
             if (!isHostOwnedSnapshot) {
-                snapshotState.reset()
+                effectiveSnapshotHandle.releaseSession()
             }
             snapshotState.markSourceRendererReady(sourceRendererToken, true)
             return@LaunchedEffect
@@ -1284,7 +1311,7 @@ internal fun Modifier.videoCardTransitionBackgroundEffect(
             }
             VideoCardTransitionExposure.Idle -> {
                 if (!isHostOwnedSnapshot) {
-                    snapshotState.reset()
+                    effectiveSnapshotHandle.releaseSession()
                 }
             }
         }
@@ -1463,7 +1490,7 @@ internal fun Modifier.videoCardTransitionBackgroundEffect(
                 }
                 return@drawWithContent
             }
-            contentLayer.record {
+            effectiveSnapshotHandle.recordSource(this) {
                 this@drawWithContent.drawContent()
             }
             snapshotState.markDisplayListFresh()

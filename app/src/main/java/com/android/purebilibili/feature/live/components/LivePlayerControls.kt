@@ -116,7 +116,6 @@ private fun LivePlayerIconButton(
 ) {
     require(label.isNotBlank()) { "Live player icon button label must not be blank" }
 
-    val palette = rememberLiveChromePalette()
     val playerChromeProfile = rememberAppPlayerChromeProfile()
     val visualSpec = remember(playerChromeProfile.tabPresentation) {
         resolveLiveVisualSpec(playerChromeProfile.tabPresentation)
@@ -155,13 +154,16 @@ private fun LivePlayerIconButton(
         ) {
             AppSurface(
                 shape = CircleShape,
-                color = Color.Transparent,
+                // 未开启仍是可用操作，保持图标对比度；状态由底衬与语义区分。
+                color = if (enabled && stateDescription != null && selected) {
+                    LiveStatusPalette.MediaContent.copy(alpha = 0.16f)
+                } else Color.Transparent,
                 modifier = Modifier
                     .size(visualSize)
                     .alpha(if (enabled) 1f else 0.38f)
             ) {
                 Box(contentAlignment = Alignment.Center) {
-                    val tint = LiveStatusPalette.MediaContent.copy(alpha = if (stateDescription != null && !selected) 0.45f else 1f)
+                    val tint = LiveStatusPalette.MediaContent
                     if (iconContent != null) iconContent(tint) else AppIcon(
                         imageVector = requireNotNull(icon), contentDescription = null,
                         tint = tint, modifier = Modifier.size(18.dp),
@@ -211,6 +213,10 @@ fun LivePlayerControls(
     onOpenVolume: () -> Unit = {},
     onOpenPlaybackPreferences: () -> Unit = {},
     onOpenSend: () -> Unit = {},
+    showInteractionToggle: Boolean = false,
+    interactionWindowVisible: Boolean = false,
+    interactionWindowSource: com.android.purebilibili.core.ui.components.AppGlassMenuSource? = null,
+    onToggleInteractionWindow: () -> Unit = {},
     videoFitDesc: String = "",
     videoFitOptions: List<AppWindowAction> = emptyList(),
     currentQualityDesc: String = "",
@@ -293,7 +299,7 @@ fun LivePlayerControls(
     val stateHaptic = rememberHapticFeedback(com.android.purebilibili.core.ui.AppHapticScene.PLAYER_GESTURES)
 
     // 锁定时控制栏强制隐藏
-    val effectiveControlsVisible = isControlsVisible && !isLocked
+    val effectiveControlsVisible = (isControlsVisible || interactionWindowVisible) && !isLocked
     // 将需求交给页面控制录制周期；锁定时解锁按钮仍消费玻璃背景。
     SideEffect {
         onBackdropRequiredChange(effectiveControlsVisible || isLocked || isGestureVisible || menuExpanded || danmakuSettingsVisible)
@@ -510,9 +516,12 @@ fun LivePlayerControls(
                     if (isFullscreen && !compactTop) {
                         LivePlayerStatus(Modifier.padding(end = 10.dp))
                     }
-                    if (isFullscreen) LivePlayerIconButton(
-                        null, "发弹幕", false, true, onOpenSend, glassShape = CircleShape,
-                        iconContent = { tint -> PiliPlusDanmakuSendIcon(tint = tint, size = 22.dp) },
+                    if (showInteractionToggle) LivePlayerIconButton(
+                        Icons.Outlined.ChatBubbleOutline, "弹幕互动窗", interactionWindowVisible, true,
+                        onToggleInteractionWindow, stateDescription = if (interactionWindowVisible) "已打开" else "已关闭",
+                        modifier = if (glass && interactionWindowSource != null) {
+                            Modifier.appGlassMenuSource(interactionWindowSource, onToggleInteractionWindow)
+                        } else Modifier,
                     )
                     if (!compactTop && showPipButton) LivePlayerIconButton(Icons.Outlined.PictureInPictureAlt, "画中画", false, true, onEnterPip, glassShape = CircleShape)
                     if (!compactTop) LivePlayerIconButton(Icons.Outlined.MusicNote, "仅播放音频", isAudioOnly, true, onToggleAudioOnly, if (isAudioOnly) "已开启" else "已关闭", glassShape = CircleShape)
@@ -564,10 +573,14 @@ fun LivePlayerControls(
                     if (!collapseTools) LivePlayerIconButton(Icons.Outlined.Block, "屏蔽", false, true, onOpenBlockSettings)
                     LivePlayerDanmakuControls(
                         enabled = isDanmakuEnabled,
-                        showSettings = !collapseTools,
+                        showSettings = isFullscreen || !collapseTools,
                         onToggle = onToggleDanmaku,
                         onOpenSettings = onOpenDanmakuSettings,
                         source = danmakuSettingsSource,
+                    )
+                    if (isFullscreen) LivePlayerIconButton(
+                        null, "发弹幕", false, true, onOpenSend, glassShape = CircleShape,
+                        iconContent = { tint -> PiliPlusDanmakuSendIcon(tint = tint, size = 22.dp) },
                     )
                     if (!compact) {
                         LivePlayerActionMenu(

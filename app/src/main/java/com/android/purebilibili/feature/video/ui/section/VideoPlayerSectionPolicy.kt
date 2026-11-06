@@ -1169,18 +1169,6 @@ internal fun shouldForceCoverDuringReturnAnimation(
 }
 
 /**
- * 卡片进入详情时保留来源封面，竖向视频也必须等首帧再交接。
- * 无卡片来源的竖屏入口保留原有起播方式；返回转场仍允许封面承接。
- */
-internal fun shouldLoadVideoPlayerCoverImage(
-    isVerticalVideo: Boolean,
-    forceCoverDuringReturnAnimation: Boolean,
-    hasSharedCardTransition: Boolean = false,
-): Boolean {
-    return hasSharedCardTransition || forceCoverDuringReturnAnimation || !isVerticalVideo
-}
-
-/**
  * 即播路径的封面是透明 TextureView 下的底图，不能持续压在视频帧上；
  * CoverFirst 与返回则继续由封面承担最上层交互/共享 morph。
  */
@@ -1373,10 +1361,10 @@ internal fun resolveVideoPlayerEntryPresentationSpec(
         fillCoverViewport = fillCoverViewport,
         showManualStartPlayButton = shouldKeepCoverForManualStart,
         enableManualStartCoverOverlay = shouldKeepCoverForManualStart,
-        // Inline landscape-video covers fill the shared 16:9 placeholder. Fullscreen
-        // and vertical-video covers retain their existing fit behavior.
-        coverContentScaleMode = if ((!isVerticalVideo && !forceCoverDuringReturnAnimation && targetFillsViewport) ||
-            (fillCoverViewport && isVerticalVideo)
+        // 竖屏加载封面按比例裁剪填满当前播放区域，避免横向缩略图居中造成横屏闪现。
+        // 横屏全屏继续完整显示封面；返回封面沿用来源卡片的裁剪规则。
+        coverContentScaleMode = if (
+            !isVerticalVideo && !forceCoverDuringReturnAnimation && targetFillsViewport
         ) {
             VideoPlayerCoverContentScaleMode.Fit
         } else {
@@ -1661,11 +1649,20 @@ internal fun shouldBindInlinePlayerViewToPlayer(
     isPortraitFullscreen: Boolean,
     hostLifecycleStarted: Boolean,
     isInPipMode: Boolean,
-    liveBackPreview: Boolean = false
+    liveBackPreview: Boolean = false,
+    retainBoundSurfaceForReturn: Boolean = false,
 ): Boolean {
     return !isPortraitFullscreen &&
-        (hostLifecycleStarted || isInPipMode || liveBackPreview)
+        (hostLifecycleStarted || isInPipMode || liveBackPreview || retainBoundSurfaceForReturn)
 }
+
+/** 仅延续前台退场 entry 已有的输出，不为隐藏页创建或抢占播放器绑定。 */
+internal fun shouldRetainInlineSurfaceForCardReturn(
+    cardMorphEnabled: Boolean,
+    entryRemoving: Boolean,
+    windowStarted: Boolean,
+    hasBoundPlayer: Boolean,
+): Boolean = cardMorphEnabled && entryRemoving && windowStarted && hasBoundPlayer
 
 /**
  * 退出竖屏全屏后，是否需要为保留的内联 PlayerView 显式重绑 surface。

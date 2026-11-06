@@ -1707,6 +1707,36 @@ class VideoDetailReturnCoverPolicyTest {
     }
 
     @Test
+    fun `fresh detail body waits for landing while an already loaded preview stays mounted`() {
+        assertFalse(shouldShowVideoDetailContent(
+            isTransitionFinished = false,
+            isLeaving = false,
+            rootTransitionOwnsContentAlpha = true,
+            deferFreshEntryContent = true,
+        ))
+        assertTrue(shouldShowVideoDetailContent(
+            isTransitionFinished = true,
+            isLeaving = false,
+            rootTransitionOwnsContentAlpha = true,
+            deferFreshEntryContent = true,
+        ))
+        assertTrue(shouldShowVideoDetailContent(
+            isTransitionFinished = false,
+            isLeaving = false,
+            rootTransitionOwnsContentAlpha = true,
+            keepContentVisibleAfterBackPreview = true,
+            deferFreshEntryContent = true,
+        ))
+        assertFalse(shouldShowVideoDetailContent(
+            isTransitionFinished = false,
+            isLeaving = true,
+            rootTransitionOwnsContentAlpha = true,
+            keepContentVisibleAfterBackPreview = true,
+            deferFreshEntryContent = true,
+        ))
+    }
+
+    @Test
     fun `explicit force cover still switches detail into returning visual state`() {
         assertTrue(
             shouldUseReturningVideoDetailVisualState(

@@ -16,7 +16,6 @@ import com.android.purebilibili.core.ui.AppBottomNavigationHost
 import com.android.purebilibili.core.ui.AppSpacingTokens
 import com.android.purebilibili.core.ui.components.AppNavigationBar
 import com.android.purebilibili.core.ui.components.AppNavigationBarItem
-import com.android.purebilibili.core.ui.components.AppPlatformNavigationBadge
 import com.android.purebilibili.core.ui.components.AppPlatformNavigationBar
 import com.android.purebilibili.core.ui.components.AppPlatformNavigationBarDisplayMode
 import com.android.purebilibili.core.ui.components.AppPlatformNavigationBarItem
@@ -1456,7 +1455,7 @@ internal fun shouldShowBottomBarIcon(labelMode: Int): Boolean {
     }
 }
 
-/** 红点模式的哨兵值：调用方把真实计数映射成它，格式化层负责换成圆点文本。 */
+/** 红点模式的哨兵值：调用方把真实计数映射成它，格式化层提供实心圆点标记。 */
 internal const val BOTTOM_BAR_DYNAMIC_BADGE_DOT = -1
 
 internal fun shouldShowBottomBarDynamicReminderBadge(
@@ -1468,7 +1467,7 @@ internal fun formatBottomBarDynamicReminderBadge(unreadCount: Int): String? {
     return when {
         unreadCount == BOTTOM_BAR_DYNAMIC_BADGE_DOT -> "•"
         unreadCount <= 0 -> null
-        unreadCount > 999 -> "999+"
+        unreadCount > 99 -> "99+"
         else -> unreadCount.toString()
     }
 }
@@ -3217,13 +3216,10 @@ private fun MiuixBottomBar(
                         ),
                         badge = reminderBadgeText?.let { badgeText ->
                             {
-                                AppPlatformNavigationBadge {
-                                    // 等宽数字：未读数进位时徽标宽度只按位数增长。
-                                    AppText(
-                                        text = badgeText,
-                                        style = appTabularNumberTextStyle(),
-                                    )
-                                }
+                                BottomBarReminderBadge(
+                                    badgeText = badgeText,
+                                    modifier = Modifier.offset(x = 6.dp),
+                                )
                             }
                         }
                     )
@@ -4147,7 +4143,7 @@ private fun BiliPaiFloatingBottomBarChrome(
                                         icon = resolveSharedBottomBarIcon(item, currentItem == item, iconStyle),
                                         label = resolveBottomNavItemLabel(item, itemLabels),
                                         badge = badgeText?.let { text ->
-                                            { AppPlatformNavigationBadge { AppText(text, style = appTabularNumberTextStyle()) } }
+                                            { BottomBarReminderBadge(badgeText = text, modifier = Modifier.offset(x = 6.dp)) }
                                         },
                                     )
                                 }
@@ -5373,60 +5369,55 @@ private fun BottomBarReminderBadgeAnchor(
 private fun BottomBarReminderBadgeAnchor(
     badgeText: String?,
     modifier: Modifier = Modifier,
-    /**
-     * Floating BiliPai dock is short (64dp shell). Use a tighter badge offset so the
-     * pill does not clip the top of the reminder badge.
-     */
+    // 紧凑玻璃栏保留上沿空间；徽标完整避开图标轮廓。
     floatingCompact: Boolean = false,
     content: @Composable BoxScope.() -> Unit
 ) {
-    val badgeOffsetX = if (floatingCompact) {
-        AppSpacingTokens.Small
-    } else {
-        AppSpacingTokens.Medium
-    }
-    val badgeOffsetY = if (floatingCompact) {
-        -AppSpacingTokens.Micro
-    } else {
-        -AppSpacingTokens.Small
-    }
+    val badgeSize = if (badgeText == "•") 7.dp else 18.dp
     Box(
         modifier = modifier,
         contentAlignment = Alignment.Center
     ) {
         content()
         if (badgeText != null) {
-            Box(
+            BottomBarReminderBadge(
+                badgeText = badgeText,
                 modifier = Modifier
                     .align(Alignment.TopEnd)
-                    .offset(x = badgeOffsetX, y = badgeOffsetY)
-                    .defaultMinSize(
-                        minWidth = AppSpacingTokens.Large + AppSpacingTokens.Micro,
-                        minHeight = AppSpacingTokens.Large + AppSpacingTokens.Micro
-                    )
-                    .background(iOSRed, CircleShape)
-                    .border(
-                        width = AppSpacingTokens.Micro / 2,
-                        color = AppSurfaceTokens.cardContainer(),
-                        shape = CircleShape
-                    )
-                    .padding(
-                        horizontal = AppSpacingTokens.ExtraSmall + AppSpacingTokens.Micro / 2,
-                        vertical = AppSpacingTokens.Micro / 2
+                    // 徽标靠近图标右上角，利用字形光学边距保留间隙，不参与图标及文字的测量。
+                    .offset(
+                        x = badgeSize - 1.dp,
+                        y = -badgeSize / 2f - if (floatingCompact) 0.dp else 1.dp,
                     ),
-                contentAlignment = Alignment.Center
-            ) {
-                AppText(
-                    text = badgeText,
-                    color = OpticalContrastPalette.Highlight,
-                    // 等宽数字：未读数进位时徽标宽度只按位数增长，不随数字内容抖动。
-                    style = appTabularNumberTextStyle(),
-                    fontSize = MaterialTheme.typography.labelSmall.fontSize,
-                    lineHeight = MaterialTheme.typography.labelSmall.lineHeight,
-                    fontWeight = FontWeight.SemiBold,
-                    maxLines = 1
-                )
-            }
+            )
+        }
+    }
+}
+
+@Composable
+private fun BottomBarReminderBadge(
+    badgeText: String,
+    modifier: Modifier = Modifier,
+) {
+    val isDot = badgeText == "•"
+    Box(
+        modifier = modifier
+            .size(if (isDot) 7.dp else 18.dp)
+            .background(iOSRed, CircleShape)
+            .border(1.dp, AppSurfaceTokens.cardContainer(), CircleShape),
+        contentAlignment = Alignment.Center,
+    ) {
+        // 红点模式直接画实心圆；数字模式限制为 99+，保持等宽等高的正圆。
+        if (!isDot) {
+            AppText(
+                text = badgeText,
+                color = OpticalContrastPalette.Highlight,
+                style = appTabularNumberTextStyle(),
+                fontSize = 9.sp,
+                lineHeight = 10.sp,
+                fontWeight = FontWeight.SemiBold,
+                maxLines = 1,
+            )
         }
     }
 }

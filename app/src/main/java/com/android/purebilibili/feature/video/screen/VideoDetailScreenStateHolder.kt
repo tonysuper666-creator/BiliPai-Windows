@@ -321,7 +321,7 @@ private fun CollapsedPlayerNavigationBar(
                     .fillMaxWidth()
                     .graphicsLayer { alpha = toolbarAlpha },
             ) {
-                // PiliPlus: status-bar app bar and kToolbarHeight video header are two siblings.
+                // 状态栏避让与 56dp 播放工具栏分开占位。
                 Spacer(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -478,6 +478,7 @@ internal fun VideoDetailScreenStateHolder(
     isInPipMode: Boolean = false,
     isVisible: Boolean = true,
     isPlaybackSessionActive: Boolean = isVisible,
+    isOrientationOwner: Boolean = isVisible && !keepLoadedContentForBackPreview,
     onImmersivePlaybackChanged: (Boolean) -> Unit = {},
     viewModel: VideoPlaybackViewModel = viewModel(),
     engagementViewModel: VideoEngagementViewModel = viewModel(),
@@ -607,8 +608,22 @@ internal fun VideoDetailScreenStateHolder(
     )
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val shareInfo = (uiState as? VideoPlaybackUiState.Success)?.info
+    // 跳转锁比播放器离开态保留更久；返回落位后才允许相关推荐再次记录来源像素。
+    var hasCommittedRelatedVideoNavigation by remember(bvid) { mutableStateOf(false) }
+    // 返回预览可以保活播放器，但屏幕方向只由当前导航页控制。
+    val orientationRequestsAllowed = isOrientationOwner && !hasCommittedRelatedVideoNavigation
+    val latestOrientationRequestsAllowed = rememberUpdatedState(orientationRequestsAllowed)
+    val relatedNavigationPageVisible = rememberUpdatedState(isVisible)
     val favoriteFolderMenuAnchor = com.android.purebilibili.feature.video.ui.components.rememberFavoriteFolderMenuAnchor()
     androidx.compose.runtime.CompositionLocalProvider(
+        com.android.purebilibili.feature.video.ui.components.LocalRelatedVideoNavigationAllowed provides {
+            relatedNavigationPageVisible.value && !hasCommittedRelatedVideoNavigation &&
+                canReleaseRelatedVideoNavigation(
+                    phase = videoCardDepthBackgroundState.phaseProvider(),
+                    gestureInProgress = videoCardDepthBackgroundState.isReturnGestureInProgressProvider(),
+                    gestureRestoreInProgress = videoCardDepthBackgroundState.isGestureRestoreInProgressProvider(),
+                )
+        },
         com.android.purebilibili.feature.video.ui.components.LocalFavoriteFolderMenuAnchor provides favoriteFolderMenuAnchor,
         com.android.purebilibili.feature.share.LocalReplyShareContext provides shareInfo?.let {
             com.android.purebilibili.feature.share.ReplyShareContext(
@@ -758,9 +773,6 @@ internal fun VideoDetailScreenStateHolder(
 
     val uriHandler = androidx.compose.ui.platform.LocalUriHandler.current
     var isNavigatingToVideo by presentationState.navigatingToVideoState
-    // `isNavigatingToVideo` 仅覆盖共享元素动画，动画结束会提前复位；NavHost 旧 entry
-    // 仍可能再存活几帧。弹幕主机离开态必须保持到旧 entry 真正销毁。
-    var hasCommittedRelatedVideoNavigation by remember(bvid) { mutableStateOf(false) }
     var isNavigatingToAudioMode by presentationState.navigatingToAudioModeState
     var isNavigatingToMiniMode by presentationState.navigatingToMiniModeState
     var hasAutoEnteredAudioMode by rememberSaveable { mutableStateOf(false) }
@@ -836,7 +848,9 @@ internal fun VideoDetailScreenStateHolder(
     }
     // 横屏评论面板必须用独立列表状态：与竖屏共用时，转全屏途中横屏列表被销毁
     // 会让共享 state 的滚动互斥锁卡死，回竖屏后评论区划不动。
-    val landscapeCommentListState = remember(currentBvid) { LazyListState() }
+    val landscapeCommentListState = rememberSaveable(currentBvid, saver = LazyListState.Saver) {
+        LazyListState()
+    }
     val videoContentPagerState: PagerState = key(currentBvid) {
         rememberPagerState(pageCount = { 2 })
     }
@@ -1121,8 +1135,9 @@ internal fun VideoDetailScreenStateHolder(
     // 进场以动画为主：导航/shell morph 期间不挂载手机正文等重型内容。
     // loadVideo 立即发起按需网络请求，媒体 prepare 才等待 entryTransitionFinished。
     val entryVisualEnabled = transitionEnabled && !deferVideoDetailEntryLoad
+    val navigationOwnsEntryMotion = !transitionEnabled && entryNavigationTransitionScope != null
     // entry 生命周期内只允许完成一次；返回标志或 defer 变化不能重建状态并隐藏已加载正文。
-    var isTransitionFinished by remember {
+    var legacyEntryVisualFinished by remember {
         mutableStateOf(
             when {
                 deferVideoDetailEntryLoad -> false
@@ -1130,6 +1145,13 @@ internal fun VideoDetailScreenStateHolder(
                 else -> false
             }
         )
+    }
+    // 关闭卡片过渡的普通导航直接消费 entry 完成锁存，避免 effect 转发延后一帧。
+    // 卡片形变及无导航宿主的入口继续使用原有本地视觉完成状态。
+    val isTransitionFinished = if (navigationOwnsEntryMotion) {
+        entryTransitionFinished
+    } else {
+        legacyEntryVisualFinished
     }
     val entryVisualProgress = remember(entryVisualEnabled) {
         Animatable(if (entryVisualEnabled) 0f else 1f)
@@ -1159,20 +1181,22 @@ internal fun VideoDetailScreenStateHolder(
         entryVisualEnabled,
         motionSpec.entryPhaseDurationMillis,
         entryHeroDriver,
-        transitionEnabled
+        transitionEnabled,
+        navigationOwnsEntryMotion,
     ) {
+        if (navigationOwnsEntryMotion) return@LaunchedEffect
         when {
             entryHeroDriver != null -> {
                 if (entryTransitionFinished) {
                     entryVisualProgress.snapTo(1f)
-                    isTransitionFinished = true
+                    legacyEntryVisualFinished = true
                 }
             }
             deferVideoDetailEntryLoad -> {
                 // 只允许 true 锁存：相关推荐返回的二次 morph 不得把内容区重新藏起来。
                 if (entryTransitionFinished) {
                     entryVisualProgress.snapTo(1f)
-                    isTransitionFinished = true
+                    legacyEntryVisualFinished = true
                 } else if (!isTransitionFinished) {
                     entryVisualProgress.snapTo(0f)
                 }
@@ -1180,7 +1204,7 @@ internal fun VideoDetailScreenStateHolder(
 
             !transitionEnabled -> {
                 entryVisualProgress.snapTo(1f)
-                isTransitionFinished = true
+                legacyEntryVisualFinished = true
             }
 
             else -> {
@@ -1196,24 +1220,35 @@ internal fun VideoDetailScreenStateHolder(
                         easing = AppMotionEasing.M1Standard
                     )
                 )
-                isTransitionFinished = true
+                legacyEntryVisualFinished = true
             }
         }
     }
 
-    // Keep the existing morph and body reveal intact. Only animated fresh entries
-    // stagger post-landing work; mini-player reuse and animation-off entries bypass it.
+    // 普通导航与整卡导航共用落位后的工作错峰；不借卡片开关改变玻璃或原生布局。
+    // 已有播放器复用入口不延后；entry 内阶段单向锁存，返回预览不重新关闭许可。
     val entryWorkPhase = rememberVideoDetailEntryWorkPhase(
-        staggerWork = transitionEnabled && deferVideoDetailEntryLoad && !reuseFromMiniPlayerAtEntry,
+        staggerWork = shouldStaggerVideoDetailEntryWork(
+            deferEntryLoad = deferVideoDetailEntryLoad,
+            reuseFromMiniPlayerAtEntry = reuseFromMiniPlayerAtEntry,
+        ),
         contentReady = isTransitionFinished && detailContentState != null,
         isVisible = isVisible,
     )
     val entryPlaybackReady = entryTransitionFinished && entryWorkPhase != VideoDetailEntryWorkPhase.Content
     val entryRelatedReady = entryWorkPhase == VideoDetailEntryWorkPhase.Related
     val entryCommentsReady = entryTransitionFinished && entryWorkPhase >= VideoDetailEntryWorkPhase.Comments
+    ReleaseVideoCardCaptureAfterEntryWork(
+        enabled = transitionEnabled,
+        bvid = bvid,
+        sourceRoute = sourceRouteForSharedElement,
+        ready = isTransitionFinished && detailContentState != null && entryRelatedReady,
+        isVisible = isVisible,
+    )
 
     //  监听评论状态
     val commentStateHandle = commentViewModel.commentState.collectAsStateWithLifecycle()
+    VideoCommentScrollPositionEffects(commentStateHandle, commentListState, landscapeCommentListState)
     val subReplyStateHandle = commentViewModel.subReplyState.collectAsStateWithLifecycle()
     val subReplyVisible by remember(subReplyStateHandle) {
         derivedStateOf { subReplyStateHandle.value.visible }
@@ -1351,12 +1386,11 @@ internal fun VideoDetailScreenStateHolder(
     // 按详情路由会话（bvid）保存手动全屏意图：同页切集（下一集 / 合集 / 队列）仍属于同一次
     // 全屏观看，意图必须跨 currentBvid 变化保留——否则方向请求会从「手动全屏」回落到
     // SCREEN_ORIENTATION_USER，被系统/重力转回竖屏，表现为播放中「退出全屏」。
-    // push 到新的详情路由才重置，保持「每次进入新视频页默认非全屏」的语义。
+    // push 到新详情才按入口意图重新初始化；普通入口保持非全屏。
+    // 路由全屏意图只作为本次详情的初值；实际方向统一由下方策略按目标视频决定。
+    // 不在入场时额外请求横屏，避免竖屏目标先横转、再被目标方向纠正。
     var userRequestedFullscreen by rememberSaveable(bvid) {
-        mutableStateOf(false)
-    }
-    var hasHandledStartFullscreenRequest by rememberSaveable(bvid, startInFullscreen) {
-        mutableStateOf(false)
+        mutableStateOf(startInFullscreen)
     }
     var manualPortraitHoldActive by rememberSaveable { mutableStateOf(false) }
     var preserveCurrentFrameOnFullscreenChange by remember { mutableStateOf(false) }
@@ -1413,7 +1447,8 @@ internal fun VideoDetailScreenStateHolder(
     var previousDisplayRole by remember {
         mutableStateOf(displayContext.foldableDisplayRole)
     }
-    LaunchedEffect(activity, displayContext.foldableDisplayRole, usesInWindowFullscreen) {
+    LaunchedEffect(activity, displayContext.foldableDisplayRole, usesInWindowFullscreen, orientationRequestsAllowed) {
+        if (!orientationRequestsAllowed) return@LaunchedEffect
         val shouldReleaseLock =
             com.android.purebilibili.core.util.shouldReleaseOrientationLockOnDisplayRoleChange(
                 previousRole = previousDisplayRole,
@@ -1587,40 +1622,6 @@ internal fun VideoDetailScreenStateHolder(
             presentationState.markNavigatingToAudioMode()
             viewModel.setAudioMode(true)
             onNavigateToAudioMode()
-        }
-    }
-
-    //  路由请求只负责本次视频入口的初始方向。横屏切回竖屏后不能再次把它当成
-    //  新请求，否则 startInFullscreen 会和用户的退出操作互相触发方向切换。
-    //  守卫与 effect 都按详情路由会话（bvid）键控：同页切集不该重放入口的方向请求。
-    LaunchedEffect(
-        startInFullscreen,
-        bvid,
-    ) {
-        if (!startInFullscreen || hasHandledStartFullscreenRequest) return@LaunchedEffect
-        if (!isOrientationDrivenFullscreen) {
-            userRequestedFullscreen = true
-            hasHandledStartFullscreenRequest = true
-        } else {
-            context.findActivity()?.let { activity ->
-                if (!shouldApplyStartFullscreenOrientationRequest(
-                        startInFullscreen = startInFullscreen,
-                        isOrientationDrivenFullscreen = isOrientationDrivenFullscreen,
-                        isLandscape = isLandscape
-                    )
-                ) {
-                    // 已经处于横屏（含分屏 / 小窗横屏）：方向无需再请求，但这次全屏意图必须记下来，
-                    // 否则方向策略会回落 SCREEN_ORIENTATION_USER 把页面转回竖屏。
-                    userRequestedFullscreen = true
-                    hasHandledStartFullscreenRequest = true
-                    return@let
-                }
-                activity.applyPlayerRequestedOrientation(
-                    requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE,
-                    displayContext = displayContext,
-                )
-                hasHandledStartFullscreenRequest = true
-            }
         }
     }
 
@@ -1815,7 +1816,8 @@ internal fun VideoDetailScreenStateHolder(
             .takeIf { miuixVisualAssetsActive }
     val clickCoverSnapshot =
         com.android.purebilibili.core.util.CardPositionManager.lastClickedVideoSourceChromeSnapshot
-            .takeIf { miuixVisualAssetsActive }
+            // 相邻点击即使被导航防抖拒绝，也不能替换当前详情的封面来源。
+            .takeIf { miuixVisualAssetsActive && it === miuixCoverSnapshot }
     val homePrefetchCover = remember(bvid) {
         com.android.purebilibili.core.util.HomeCoverReturnPrefetchRegistry.snapshot()
             .firstOrNull { it.bvid == bvid.trim() }
@@ -2067,12 +2069,14 @@ internal fun VideoDetailScreenStateHolder(
                     } catch (_: Exception) {}
                 }
 
-                // 恢复进入详情页前的方向请求，避免平板误横屏后退不回去。
-                deferredActivity?.applyPlayerRequestedOrientation(
-                    resolveVideoDetailExitRequestedOrientation(
-                        originalRequestedOrientation = entryRequestedOrientation
+                // 仅真正退出详情时恢复；相关推荐接管后，旧页不得延迟覆盖新页的方向。
+                if (deferredShouldHandleAsNavExit) {
+                    deferredActivity?.applyPlayerRequestedOrientation(
+                        resolveVideoDetailExitRequestedOrientation(
+                            originalRequestedOrientation = entryRequestedOrientation
+                        )
                     )
-                )
+                }
             }
         }
     }
@@ -2632,6 +2636,7 @@ internal fun VideoDetailScreenStateHolder(
 
     fun applyContinuousPlayerDecision(decision: ContinuousPlayerTransitionDecision) {
         continuousPlayerPhase = decision.phase
+        if (!orientationRequestsAllowed) return
         when (decision.orientationRequest) {
             ContinuousPlayerOrientationRequest.None -> Unit
             ContinuousPlayerOrientationRequest.Landscape -> {
@@ -2777,8 +2782,9 @@ internal fun VideoDetailScreenStateHolder(
         displayContext,
         isLandscape,
         isFullscreenPlayerLocked,
+        orientationRequestsAllowed,
     ) {
-        if (isFullscreenPlayerLocked) return@LaunchedEffect
+        if (!orientationRequestsAllowed || isFullscreenPlayerLocked) return@LaunchedEffect
         if (usesInWindowFullscreen) return@LaunchedEffect
         val requestedOrientation = resolvePhoneVideoRequestedOrientation(
             autoRotateEnabled = sensorAutoRotateEnabled,
@@ -2838,9 +2844,10 @@ internal fun VideoDetailScreenStateHolder(
         isPortraitFullscreen,
         displayContext,
         isFullscreenPlayerLocked,
+        orientationRequestsAllowed,
         userRequestedFullscreen,
     ) {
-        if (isFullscreenPlayerLocked) {
+        if (!orientationRequestsAllowed || isFullscreenPlayerLocked) {
             lastPhoneAutoRotateLandscapeAppliedAtMs = null
             lastPhoneAutoRotatePortraitAppliedAtMs = null
             return@LaunchedEffect
@@ -2880,11 +2887,12 @@ internal fun VideoDetailScreenStateHolder(
         isPortraitFullscreen,
         displayContext,
         isFullscreenPlayerLocked,
+        orientationRequestsAllowed,
         userRequestedFullscreen,
     ) {
         val hostActivity = activity
         if (
-            hostActivity == null ||
+            !orientationRequestsAllowed || hostActivity == null ||
             isFullscreenPlayerLocked ||
             !shouldObservePhoneAutoRotate(
                 autoRotateEnabled = sensorAutoRotateEnabled,
@@ -2907,6 +2915,7 @@ internal fun VideoDetailScreenStateHolder(
 
         val orientationListener = object : OrientationEventListener(context) {
             override fun onOrientationChanged(orientation: Int) {
+                if (!latestOrientationRequestsAllowed.value) return
                 if (manualPortraitHoldActive) {
                     if (shouldReleasePhoneManualPortraitHold(orientation)) {
                         manualPortraitHoldActive = false
@@ -3252,17 +3261,9 @@ internal fun VideoDetailScreenStateHolder(
     val handlePipClick = {
         // 使用 MiniPlayerManager 进入应用内小窗模式
         miniPlayerManager?.let { manager ->
-            val stopPlaybackOnExit = com.android.purebilibili.core.store.SettingsManager
-                .getStopPlaybackOnExitSync(context)
-            if (stopPlaybackOnExit) {
-                com.android.purebilibili.core.util.Logger.d(
-                    "VideoDetailScreen",
-                    "Stop-on-exit enabled, skip mini mode and leave page directly"
-                )
-                manager.markLeavingByNavigation(expectedBvid = currentBvid)
-                onBack()
-                return@let
-            }
+            // 用户显式点击「小窗」是明确的小窗意图，理应优先于「退出时停止播放」：
+            // 那个设置约束的是普通返回/离开页面，不该把小窗请求改写成退出——
+            // 否则按钮点了等于没点，还会顺手停掉播放（issue #1041 的现象）。
 
             //  [埋点] PiP 进入事件
             com.android.purebilibili.core.util.AnalyticsHelper.logPictureInPicture(
@@ -4236,6 +4237,7 @@ internal fun VideoDetailScreenStateHolder(
                             else -> videoHeight
                         }
                         val standardCollapsedViewportHeight = when {
+                            hidePausedPlayerForComments -> 56.dp
                             useOfficialInlinePortraitDetailExperience -> collapsedPortraitInlineSpec.heightDp.dp
                             portraitPlayerCollapseMode != PortraitPlayerCollapseMode.OFF ||
                                 (hidePausedPlayerForComments && !isVerticalVideo) -> 56.dp
@@ -4244,7 +4246,7 @@ internal fun VideoDetailScreenStateHolder(
                         val collapsedViewportHeight = resolveInlinePlayerCollapsedViewportHeightDp(
                             standardCollapsedHeightDp = standardCollapsedViewportHeight.value,
                             hidePausedPlayerForComments = hidePausedPlayerForComments,
-                            retainPlayToolbar = !isVerticalVideo,
+                            retainPlayToolbar = true,
                         ).dp
                         // 两种竖屏内联体验共用同一套位移语义：手势范围始终等于
                         // “展开高度 - 当前折叠终点”，高度才能只由共享位移推导且保持连续。
@@ -4293,15 +4295,14 @@ internal fun VideoDetailScreenStateHolder(
                             stateName = "video_detail:player_swipe_collapse",
                             isActive = collapseMotionSignalActive,
                         )
-                        // 暂停隐藏播放器时视口高度为 0，但折叠位移不会走完全程；
-                        // 顶部 chrome（渐进模糊/纯色底）需要按"已折叠"处理，否则评论区顶栏透明。
+                        // 顶部材质只在手势实际收起画面后切换，暂停本身不等于已经折叠。
                         val isPlayerCollapsed by remember(
                             inlinePortraitScrollEnabled,
                             collapseRangePx,
                             hidePausedPlayerForComments,
                         ) {
                             derivedStateOf {
-                                hidePausedPlayerForComments || resolveIsPlayerCollapsed(
+                                resolveIsPlayerCollapsed(
                                     swipeHidePlayerEnabled = inlinePortraitScrollEnabled,
                                     playerHeightOffsetPx = inlinePlayerCollapseState.offsetPx,
                                     videoHeightPx = collapseRangePx
@@ -4760,7 +4761,7 @@ internal fun VideoDetailScreenStateHolder(
                             if (
                                 entryOwnsMiuixCardTransition && miuixLandingState.enabled &&
                                 (miuixLandingState.sourceChromeSnapshot?.isNowPlayingBar == true ||
-                                    (CardPositionManager.lastClickedNativeCardBitmap != null &&
+                                    (CardPositionManager.nativeVideoCardBitmapFor(miuixLandingState.sourceChromeSnapshot) != null &&
                                         miuixLandingState.sourceLayout == VideoCardSourceLayout.COVER_ONLY))
                             ) {
                                 { miuixLandingState.sourceBoundsProvider() }
@@ -5171,7 +5172,13 @@ internal fun VideoDetailScreenStateHolder(
                                         },
                                 )
                             }
-                            if (!isVerticalVideo) {
+                            if (shouldShowCollapsedPlayerPlayToolbar(
+                                    isPlaybackPaused = isPlaybackPaused,
+                                    collapseProgress = layoutCollapseProgress,
+                                    viewportHeightDp = inlineViewportHeight.value,
+                                    isFullscreen = isPortraitFullscreen || isFullscreenMode,
+                                )
+                            ) {
                                 CollapsedPlayerNavigationBar(
                                     scrollRatio = layoutCollapseProgress,
                                     topInset = collapsedSystemBarInset,
@@ -5362,6 +5369,10 @@ internal fun VideoDetailScreenStateHolder(
                                         isTransitionFinished = isTransitionFinished ||
                                             keepLoadedContentForBackPreview ||
                                             suppressEnterFadeAfterBackPreview,
+                                        // 首次重正文等入场完成，静态骨架沿用现有材质与揭示几何。
+                                        // 返回预览和已经挂载的内容由完成锁存继续保留。
+                                        deferFreshEntryContent = deferVideoDetailEntryLoad,
+                                        navigationOwnsEntryMotion = navigationOwnsEntryMotion,
                                         isLeaving = isLeaving,
                                         rootTransitionOwnsContentAlpha = detailShellSharedBoundsEnabled,
                                         animateLateEntryContent = currentBvid == bvid &&

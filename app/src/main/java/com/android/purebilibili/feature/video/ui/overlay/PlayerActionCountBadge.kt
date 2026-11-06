@@ -56,10 +56,10 @@ internal fun CountedPlayerAction(
             ) {
                 AppText(
                     text = formatPlayerActionCount(count),
-                    modifier = Modifier.widthIn(max = 32.dp),
+                    modifier = Modifier.widthIn(max = 44.dp),
                     color = AppContentColors.accent(),
-                    fontSize = 8.sp,
-                    lineHeight = 10.sp,
+                    fontSize = 11.sp,
+                    lineHeight = 14.sp,
                     fontWeight = FontWeight.SemiBold,
                     textAlign = TextAlign.End,
                     maxLines = 1,

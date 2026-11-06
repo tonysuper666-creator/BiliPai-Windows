@@ -694,10 +694,11 @@ private fun ImagePreviewOverlayContent(
         if (imageUrl.isEmpty() || isSharing) return
         isSharing = true
         scope.launch {
-            val success = shareImageFromPreview(context, imageUrl, publicContent = publicContent)
-            isSharing = false
-            withContext(Dispatchers.Main.immediate) {
+            try {
+                val success = shareImageFromPreview(context, imageUrl, publicContent = publicContent)
                 handleImageShareResult(success)
+            } finally {
+                isSharing = false
             }
         }
     }
@@ -1334,10 +1335,8 @@ private fun ImagePreviewOverlayContent(
                                     haptic(resolveImagePreviewLongPressSaveStartFeedback())
                                     if (onImageLongPress != null) {
                                         onImageLongPress(imageUrl)
-                                    } else if (!useCommentPreviewChrome) {
-                                        showOrdinaryImageActions = true
                                     } else {
-                                        requestSaveCurrentImage(imageUrl)
+                                        showOrdinaryImageActions = true
                                     }
                                 }
                             },
@@ -1400,10 +1399,8 @@ private fun ImagePreviewOverlayContent(
                                         haptic(resolveImagePreviewLongPressSaveStartFeedback())
                                         if (onImageLongPress != null) {
                                             onImageLongPress(imageUrl)
-                                        } else if (!useCommentPreviewChrome) {
-                                            showOrdinaryImageActions = true
                                         } else {
-                                            requestSaveCurrentImage(imageUrl)
+                                            showOrdinaryImageActions = true
                                         }
                                     }
                                 }
@@ -2006,6 +2003,13 @@ private fun ImagePreviewOverlayContent(
             text = {
                 Column(modifier = Modifier.fillMaxWidth()) {
                     ImagePreviewActionButton(
+                        label = "查看原图",
+                        onClick = {
+                            showOrdinaryImageActions = false
+                            originalQualityPages = originalQualityPages + pagerState.currentPage
+                        }
+                    )
+                    ImagePreviewActionButton(
                         label = "分享",
                         onClick = {
                             showOrdinaryImageActions = false
@@ -2362,12 +2366,6 @@ internal fun resolveImageShareMimeType(imageUrl: String): String {
     }
 }
 
-private fun resolveImageShareExtension(mimeType: String): String = when (mimeType) {
-    "image/gif" -> "gif"
-    "image/webp" -> "webp"
-    "image/png" -> "png"
-    else -> "jpg"
-}
 
 /**
  *  分享图片 - 下载原始图片到应用缓存，再通过 FileProvider 交给系统分享面板
@@ -2375,20 +2373,15 @@ private fun resolveImageShareExtension(mimeType: String): String = when (mimeTyp
 suspend fun shareImageFromPreview(context: Context, imageUrl: String, publicContent: Boolean = false): Boolean {
     val normalizedUrl = normalizeImageUrl(imageUrl)
     if (normalizedUrl.isEmpty()) return false
-    val mimeType = withContext(Dispatchers.IO) {
-        if (normalizedUrl.startsWith("file://") || normalizedUrl.startsWith("content://")) {
-            val uri = android.net.Uri.parse(normalizedUrl)
-            val options = android.graphics.BitmapFactory.Options().apply { inJustDecodeBounds = true }
-            val providerMime = try {
-                context.contentResolver.openInputStream(uri)?.use { android.graphics.BitmapFactory.decodeStream(it, null, options) }
-                context.contentResolver.getType(uri)
-            } catch (_: Exception) { null }
-            options.outMimeType ?: providerMime ?: "image/jpeg"
-        } else resolveImageShareMimeType(normalizedUrl)
-    }
-    val sharedFile = withContext(Dispatchers.IO) {
-        createImagePreviewShareFile(context, normalizedUrl, mimeType, publicContent)
+    val prepared = try {
+        createImagePreviewShareFile(context, normalizedUrl, publicContent)
+    } catch (error: kotlinx.coroutines.CancellationException) {
+        throw error
+    } catch (error: Exception) {
+        Log.e("ImagePreview", "Error preparing original image share", error)
+        null
     } ?: return false
+    val (sharedFile, mimeType) = prepared
 
     return withContext(Dispatchers.Main.immediate) {
         try {
@@ -2419,46 +2412,25 @@ suspend fun shareImageFromPreview(context: Context, imageUrl: String, publicCont
     }
 }
 
-private fun createImagePreviewShareFile(
+/** 分享文件与保存原图共用原始字节来源，MIME 和后缀依据文件内容识别。 */
+private suspend fun createImagePreviewShareFile(
     context: Context,
     imageUrl: String,
-    mimeType: String,
-    publicContent: Boolean = false,
-): File? {
-    return try {
-        val cacheDir = File(context.cacheDir, "shared_images").apply { mkdirs() }
-        cleanupImagePreviewShareCache(cacheDir)
-        val extension = resolveImageShareExtension(mimeType)
-        val outputFile = File(cacheDir, "BiliPai_${System.currentTimeMillis()}.$extension")
-        if (imageUrl.startsWith("file://") || imageUrl.startsWith("content://")) {
-            val input = context.contentResolver.openInputStream(android.net.Uri.parse(imageUrl)) ?: return null
-            input.use { source -> outputFile.outputStream().use { source.copyTo(it) } }
-            return outputFile
+    publicContent: Boolean,
+): Pair<File, String> = withOriginalImageFile(context, imageUrl, publicContent) { original ->
+    val mimeType = originalImageMimeType(original)
+    val cacheDir = File(context.cacheDir, "shared_images").apply { mkdirs() }
+    cleanupImagePreviewShareCache(cacheDir)
+    val outputFile = File.createTempFile("BiliPai_", ".${originalImageExtension(mimeType)}", cacheDir)
+    try {
+        original.inputStream().use { source ->
+            outputFile.outputStream().use { target -> source.copyTo(target, 64 * 1024) }
         }
-        if (publicContent) {
-            com.android.purebilibili.core.plugin.feed.downloadPublicContentToFile(imageUrl, outputFile)
-            return outputFile
-        }
-        val connection = java.net.URL(imageUrl).openConnection() as java.net.HttpURLConnection
-        try {
-            connection.setRequestProperty("Referer", "https://www.bilibili.com/")
-            connection.connect()
-            if (connection.responseCode !in 200..299) {
-                Log.e("ImagePreview", "Failed to download for sharing: ${connection.responseCode}")
-                return null
-            }
-            connection.inputStream.use { inputStream ->
-                outputFile.outputStream().use { outputStream ->
-                    inputStream.copyTo(outputStream)
-                }
-            }
-            outputFile
-        } finally {
-            connection.disconnect()
-        }
-    } catch (e: Exception) {
-        Log.e("ImagePreview", "Error preparing image share", e)
-        null
+        kotlinx.coroutines.currentCoroutineContext().ensureActive()
+        outputFile to mimeType
+    } catch (error: Throwable) {
+        outputFile.delete()
+        throw error
     }
 }
 

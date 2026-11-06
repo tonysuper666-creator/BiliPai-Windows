@@ -695,7 +695,13 @@ private fun FavoriteGenericCategoryCard(
     onLongClick: (() -> Unit)?,
     onRemove: () -> Unit,
 ) {
+    val container = if (item.section == FavoriteSection.ARTICLE && !batchMode && item.id > 0L) {
+        com.android.purebilibili.core.ui.rememberNativeCardContainerTransition(
+            com.android.purebilibili.navigation3.BiliPaiNavKey.DynamicDetail(item.id.toString()), onClick,
+        )
+    } else null
     PersonalMediaCardFrame(
+        modifier = container?.modifier ?: Modifier,
         selected = selected,
         headlineContent = {
             AppText(
@@ -734,7 +740,7 @@ private fun FavoriteGenericCategoryCard(
                 }
             }
         },
-        onClick = if (batchMode) ({ onLongClick?.invoke(); Unit }) else onClick,
+        onClick = if (batchMode) ({ onLongClick?.invoke(); Unit }) else container?.onClick ?: onClick,
         onLongClick = onLongClick,
     )
 }

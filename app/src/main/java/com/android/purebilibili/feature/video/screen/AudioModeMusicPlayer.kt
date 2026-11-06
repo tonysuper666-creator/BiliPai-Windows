@@ -15,6 +15,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -154,7 +155,9 @@ internal fun AudioModeMusicPlayer(
     val lyricsViewModel = androidx.lifecycle.viewmodel.compose.viewModel<MusicViewModel>(
         key = "audio_mode_lyrics"
     )
-    val lyricsState by lyricsViewModel.uiState.collectAsStateWithLifecycle()
+    val suppliedLyricsState by lyricsViewModel.uiState.collectAsStateWithLifecycle()
+    val lyricsState = suppliedLyricsState.takeIf { it.lyricsOwnerKey == "video:${info.bvid}:${info.cid}" }
+        ?: com.android.purebilibili.feature.audio.viewmodel.MusicUiState(isLyricsSearching = true)
     var showCollectionSheet by remember { mutableStateOf(false) }
     var showPageSelector by remember { mutableStateOf(false) }
     var showSleepTimerDialog by remember { mutableStateOf(false) }
@@ -221,10 +224,18 @@ internal fun AudioModeMusicPlayer(
         )
         viewModel.loadVideo(bvid = session.bvid, cid = session.cid, autoPlay = true)
     }
+    val coinSuccessHaptic = rememberUpdatedState(
+        com.android.purebilibili.feature.video.ui.components.rememberVideoActionSuccessHaptic()
+    )
     LaunchedEffect(engagementViewModel) {
         engagementViewModel.events.collect { event ->
             if (event is com.android.purebilibili.feature.video.viewmodel.VideoEngagementEvent.Message) {
                 viewModel.toast(event.text)
+            } else if (event is com.android.purebilibili.feature.video.viewmodel.VideoEngagementEvent.CoinSucceeded &&
+                engagementViewModel.uiState.value.subject == event.subject &&
+                com.android.purebilibili.feature.video.viewmodel.matchesVideoEngagementAccount(event.accountSession)
+            ) {
+                coinSuccessHaptic.value()
             }
         }
     }
@@ -250,7 +261,9 @@ internal fun AudioModeMusicPlayer(
             artist = lyricMetadata.artist,
             bvid = info.bvid,
             cid = info.cid,
-            durationMs = lyricsDurationMs
+            durationMs = lyricsDurationMs,
+            originalTitle = displayTitle,
+            artistIsUploader = lyricMetadata.artist == info.owner.name,
         )
     }
 
@@ -343,9 +356,34 @@ internal fun AudioModeMusicPlayer(
         .getQuickSaveDefaultFolder(LocalContext.current)
         .collectAsStateWithLifecycle(initialValue = false)
 
+    var audioSecondaryTrackKey by remember(info.bvid, info.cid) { mutableStateOf<String?>(null) }
+    var audioSecondaryRequestId by remember(info.bvid, info.cid) { androidx.compose.runtime.mutableIntStateOf(0) }
+    val secondaryTrack = successState.subtitleTracks.firstOrNull {
+        it.trackKey == (audioSecondaryTrackKey ?: successState.subtitleSecondaryTrackKey) &&
+            it.trackKey != successState.subtitlePrimaryTrackKey
+    }
+    val selectedSecondaryCues = androidx.compose.runtime.key(info.bvid, info.cid, secondaryTrack?.trackKey, audioSecondaryTrackKey, audioSecondaryRequestId) {
+        androidx.compose.runtime.produceState<Result<List<com.android.purebilibili.feature.video.subtitle.SubtitleCue>>?>(initialValue = null) {
+            if (audioSecondaryTrackKey != null && secondaryTrack != null) {
+                value = com.android.purebilibili.data.repository.VideoRepository.getSubtitleCues(
+                    subtitleUrl = secondaryTrack.subtitleUrl,
+                    bvid = info.bvid,
+                    cid = info.cid,
+                    subtitleId = secondaryTrack.id,
+                    subtitleIdStr = secondaryTrack.idStr,
+                    subtitleLan = secondaryTrack.lan,
+                )
+            }
+        }
+    }
+    val audioSecondaryCues = when {
+        secondaryTrack == null -> emptyList()
+        audioSecondaryTrackKey == null -> successState.subtitleSecondaryCues
+        else -> selectedSecondaryCues.value?.getOrNull().orEmpty()
+    }
     val subtitleLyrics = remember(
         successState.subtitlePrimaryCues,
-        successState.subtitleSecondaryCues,
+        audioSecondaryCues,
         successState.subtitlePrimaryLikelyAi,
         successState.subtitlePrimaryLanguage,
         successState.subtitleTracks,
@@ -356,7 +394,7 @@ internal fun AudioModeMusicPlayer(
         }
         BiliSubtitleLyricsPolicy.convertSubtitlesToLyricDocument(
             primaryCues = successState.subtitlePrimaryCues,
-            secondaryCues = successState.subtitleSecondaryCues,
+            secondaryCues = audioSecondaryCues,
             isAiGenerated = successState.subtitlePrimaryLikelyAi,
             languageLabel = selectedTrack?.lanDoc ?: successState.subtitlePrimaryLanguage
         )
@@ -420,6 +458,7 @@ internal fun AudioModeMusicPlayer(
         ),
         // Video audio mode owns this player; the position clock stays inside content.
         playbackPositionSource = player,
+        playbackPositionIdentity = "${info.bvid}:${info.cid}",
         onBack = onBack,
         onPlayPause = { player?.handleAudioModePlayPause() },
         onSeek = { positionMs ->
@@ -486,6 +525,15 @@ internal fun AudioModeMusicPlayer(
             }
         },
         subtitleLanguageOptions = subtitleLanguageOptions,
+        secondarySubtitleLanguageOptions = subtitleLanguageOptions.filter { it.first != successState.subtitlePrimaryTrackKey },
+        selectedSecondarySubtitleTrackKey = secondaryTrack?.trackKey,
+        onSecondarySubtitleTrackSelected = { trackKey ->
+            videoSubtitlesEnabled = true
+            subtitleLanguageManuallySelected = true
+            audioSecondaryTrackKey = trackKey
+            audioSecondaryRequestId += 1
+        },
+        secondarySubtitleError = selectedSecondaryCues.value?.exceptionOrNull()?.let { "附加字幕加载失败，请重新选择语言重试" },
         videoSubtitlesEnabled = videoSubtitlesEnabled,
         onVideoSubtitlesEnabledChange = { videoSubtitlesEnabled = it },
         selectedSubtitleTrackKey = successState.subtitlePrimaryTrackKey,
@@ -496,7 +544,10 @@ internal fun AudioModeMusicPlayer(
         },
         onLyricsRetry = lyricsViewModel::retryLyrics,
         onLyricsSearch = lyricsViewModel::searchLyrics,
-        onLyricsCandidateSelected = lyricsViewModel::selectLyricsCandidate,
+        onLyricsCandidateSelected = { index ->
+            subtitleLanguageManuallySelected = false
+            lyricsViewModel.selectLyricsCandidate(index)
+        },
         onVideoModeClick = {
             AudioNowPlayingSession.dismiss()
             onVideoModeClick(info.bvid, info.cid)

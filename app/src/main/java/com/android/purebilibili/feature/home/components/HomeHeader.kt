@@ -2164,22 +2164,20 @@ fun HomeHeader(
     val tabProtectionVisibility = if (!hideTopTabs && expandedTabHeight > 0.dp) {
         (tabAlpha * tabContentAlpha * (currentTabHeight / expandedTabHeight).coerceIn(0f, 1f)).coerceIn(0f, 1f)
     } else 0f
-    // 只有非玻璃渐进顶栏延后清晰端；玻璃及其他控件继续使用原始调节参数。
-    val continuousSlabTuning = if (nativeProgressiveProtection && tabProtectionVisibility > 0f) {
+    // 只有非玻璃渐进顶栏限制模糊清晰端，分类保护另由遮罩承担；玻璃继续使用原始参数。
+    // 不依赖分类显隐插值，收起分类或交换搜索/分类顺序后仍在实际控件底部归零。
+    val continuousSlabTuning = if (nativeProgressiveLayout) {
         val gradient = homeTopReadabilityBlurGradient(
             gradient = ProgressiveBlur.Top.copy(
                 startFraction = liquidGlassTuning.progressiveBlurStartFraction,
                 endFraction = liquidGlassTuning.progressiveBlurEndFraction,
                 curve = liquidGlassTuning.progressiveBlurCurve,
             ),
-            tabBottomFraction = (protectionTabBottom / continuousSlabHeight).coerceIn(0f, 1f),
-            clearEndFraction = ((protectionTabBottom + 24.dp) / continuousSlabHeight).coerceIn(0f, 1f),
+            contentBottomFraction = (protectionContentBottom / continuousSlabHeight).coerceIn(0f, 1f),
         )
         liquidGlassTuning.copy(
-            progressiveBlurStartFraction = liquidGlassTuning.progressiveBlurStartFraction +
-                (gradient.startFraction - liquidGlassTuning.progressiveBlurStartFraction) * tabProtectionVisibility,
-            progressiveBlurEndFraction = liquidGlassTuning.progressiveBlurEndFraction +
-                (gradient.endFraction - liquidGlassTuning.progressiveBlurEndFraction) * tabProtectionVisibility,
+            progressiveBlurStartFraction = gradient.startFraction,
+            progressiveBlurEndFraction = gradient.endFraction,
         )
     } else liquidGlassTuning
     val topTabsContent: @Composable (Dp) -> Unit = { maxDockWidth ->

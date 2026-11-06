@@ -28,6 +28,7 @@ import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
+import com.android.purebilibili.core.ui.components.appGlassMenuSource
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -191,6 +192,7 @@ fun TopControlBar(
     onLikeClick: () -> Unit = {},
     onDislikeClick: () -> Unit = {},
     onCoinClick: () -> Unit = {},
+    shareMenuSource: com.android.purebilibili.core.ui.components.AppGlassMenuSource? = null,
     onShareClick: () -> Unit = {},
     onCommentClick: () -> Unit = {},
     onCastClick: () -> Unit = {}, // Added Cast callback
@@ -529,6 +531,7 @@ fun TopControlBar(
                             glassEnabled = isFullscreen || glassControls,
                             icon = Icons.Outlined.Share,
                             contentDescription = "分享",
+                            modifier = shareMenuSource?.let { Modifier.appGlassMenuSource(it, onOpen = onShareClick) } ?: Modifier,
                             isActive = false,
                             onClick = onShareClick,
                             buttonSizeDp = layoutPolicy.buttonSizeDp,

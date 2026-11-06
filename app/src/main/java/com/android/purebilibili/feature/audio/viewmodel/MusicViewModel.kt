@@ -21,6 +21,8 @@ import com.android.purebilibili.feature.audio.player.MusicPlaybackSource
 import com.android.purebilibili.feature.video.player.MiniPlayerManager
 import java.io.File
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -37,6 +39,7 @@ internal data class MusicUiState(
     val songInfo: SongInfoData? = null,
     val lyrics: String? = null,
     val lyricsDocument: LyricDocument? = null,
+    val lyricsOwnerKey: String? = null,
     val lyricsError: String? = null,
     val lyricCandidates: List<LyricCandidate> = emptyList(),
     val isLyricsSearching: Boolean = false,
@@ -208,16 +211,25 @@ internal class MusicViewModel : ViewModel() {
         artist: String,
         bvid: String,
         cid: Long,
-        durationMs: Long
+        durationMs: Long,
+        originalTitle: String = title,
+        artistIsUploader: Boolean = true,
     ) {
+        val cacheKey = MusicPlaybackSource.VideoAudio(bvid, cid, title).stableId
+        val query = LyricQuery(title, artist, durationMs, originalTitle, artistIsUploader)
+        if (lastLyricsCacheKey == cacheKey && _uiState.value.lyricsDocument?.manuallySelected == true) {
+            lastLyricsQuery = query
+            return
+        }
         lyricsJob?.cancel()
+        lyricsOffsetSaveJob?.cancel()
         lyricsJob = viewModelScope.launch {
             _uiState.update {
-                it.copy(lyricsDocument = null, lyricsError = null, isLyricsSearching = true)
+                it.copy(lyricsDocument = null, lyricsOwnerKey = cacheKey, lyricsError = null, lyricCandidates = emptyList(), isLyricsSearching = true)
             }
             loadLyrics(
-                cacheKey = MusicPlaybackSource.VideoAudio(bvid, cid, title).stableId,
-                query = LyricQuery(title, artist, durationMs),
+                cacheKey = cacheKey,
+                query = query,
                 bilibiliLyrics = null
             )
         }
@@ -227,12 +239,12 @@ internal class MusicViewModel : ViewModel() {
         val cacheKey = lastLyricsCacheKey ?: return
         val query = lastLyricsQuery ?: return
         lyricsJob?.cancel()
+        lyricsOffsetSaveJob?.cancel()
         lyricsJob = viewModelScope.launch {
             _uiState.update {
                 it.copy(lyricsDocument = null, lyricCandidates = emptyList(), isLyricsSearching = true)
             }
             loadLyrics(cacheKey, query, lastBilibiliLyrics, forceRefresh = true)
-            _uiState.update { it.copy(isLyricsSearching = false) }
         }
     }
 
@@ -241,9 +253,12 @@ internal class MusicViewModel : ViewModel() {
         val previousQuery = lastLyricsQuery ?: return
         val repository = lyricsRepository ?: return
         lyricsJob?.cancel()
+        lyricsOffsetSaveJob?.cancel()
         lyricsJob = viewModelScope.launch {
             _uiState.update { it.copy(isLyricsSearching = true, lyricCandidates = emptyList()) }
             val candidates = repository.search(previousQuery.copy(title = title.ifBlank { previousQuery.title }))
+            currentCoroutineContext().ensureActive()
+            if (lastLyricsCacheKey != cacheKey) return@launch
             lastLyricsCacheKey = cacheKey
             _uiState.update { it.copy(isLyricsSearching = false, lyricCandidates = candidates) }
         }
@@ -254,9 +269,13 @@ internal class MusicViewModel : ViewModel() {
         val candidate = _uiState.value.lyricCandidates.getOrNull(index) ?: return
         val repository = lyricsRepository ?: return
         lyricsJob?.cancel()
+        lyricsOffsetSaveJob?.cancel()
         lyricsJob = viewModelScope.launch {
             _uiState.update { it.copy(isLyricsSearching = true) }
-            when (val result = repository.select(cacheKey, candidate)) {
+            val result = repository.select(cacheKey, candidate)
+            currentCoroutineContext().ensureActive()
+            if (lastLyricsCacheKey != cacheKey) return@launch
+            when (result) {
                 is LyricsLoadResult.Found -> _uiState.update {
                     it.copy(
                         lyricsDocument = result.document,
@@ -280,11 +299,15 @@ internal class MusicViewModel : ViewModel() {
         forceRefresh: Boolean = false
     ) {
         val repository = lyricsRepository ?: return
-        _uiState.update { it.copy(isLyricsSearching = true, lyricsError = null) }
+        currentCoroutineContext().ensureActive()
+        _uiState.update { it.copy(isLyricsSearching = true, lyricsError = null, lyricsOwnerKey = cacheKey) }
         lastLyricsCacheKey = cacheKey
         lastLyricsQuery = query
         lastBilibiliLyrics = bilibiliLyrics
-        when (val result = repository.load(cacheKey, query, bilibiliLyrics, forceRefresh)) {
+        val result = repository.load(cacheKey, query, bilibiliLyrics, forceRefresh)
+        currentCoroutineContext().ensureActive()
+        if (lastLyricsCacheKey != cacheKey) return
+        when (result) {
             is LyricsLoadResult.Found -> {
                 val document = result.document
                 _uiState.update {

@@ -494,7 +494,6 @@
     <string name="settings_feed_api_changed">Switched to %1$s. Pull to refresh to apply.</string>
     <string name="settings_donate_qr_description">Donation QR code</string>
     <string name="settings_donate_thanks">Thank you for your support!</string>
-    <string name="settings_donate_dismiss_hint">Tap the QR code or close button to dismiss</string>
     <string name="settings_update_tap_to_check">Tap to check</string>
     <string name="settings_search_history_title">Search history</string>
     <string name="settings_search_history_clear_all">Clear all</string>
@@ -939,4 +938,20 @@
     <string name="animation_page_zoom">Zoom with fade</string>
     <string name="animation_page_circular_reveal">Circular reveal (from center)</string>
     <string name="animation_page_ios">iOS style (slide and parallax)</string>
+    <string name="settings_donate_title">Help BiliPai keep getting better</string>
+    <string name="settings_donate_intro">If BiliPai makes watching videos more enjoyable, you can support its ongoing development and maintenance.</string>
+    <string name="settings_donate_voluntary">Support is optional. Choose any amount.</string>
+    <string name="settings_donate_steps">1. Save the appreciation code to your gallery\n2. Open WeChat → Scan → Album\n3. Select the image and complete your contribution in WeChat</string>
+    <string name="settings_donate_enlarge">Tap to view full image</string>
+    <string name="settings_donate_save">Save appreciation code</string>
+    <string name="settings_donate_saving">Saving…</string>
+    <string name="settings_donate_save_again">Save appreciation code again</string>
+    <string name="settings_donate_saved">Saved to your gallery. Open WeChat, then choose the image from Scan → Album.</string>
+    <string name="settings_donate_open_wechat">Open WeChat</string>
+    <string name="settings_donate_save_failed">Could not save. Check available storage and try again, or open the full image and take a screenshot.</string>
+    <string name="settings_donate_permission_denied">Storage permission is needed to save to your gallery. You can also open the full image and take a screenshot.</string>
+    <string name="settings_donate_wechat_unavailable">Could not open WeChat. Open it manually and choose the code from Scan → Album.</string>
+    <string name="settings_donate_preview_hint">Original image · Touch and hold to save to your gallery</string>
+    <string name="settings_donate_save_confirm_title">Save appreciation code?</string>
+    <string name="settings_donate_save_confirm_message">Save the original appreciation code image to your gallery?</string>
 </resources>

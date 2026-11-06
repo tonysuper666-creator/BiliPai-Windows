@@ -55,6 +55,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Rect
@@ -378,10 +379,22 @@ fun VideoCommentSheetHost(
         mainSheetVisible = mainSheetVisible,
         subReplyVisible = subReplyState.visible
     )
-    val mainCommentListState = rememberLazyListState()
-    LaunchedEffect(aid) {
-        if (mainCommentListState.firstVisibleItemIndex != 0 || mainCommentListState.firstVisibleItemScrollOffset != 0) {
-            mainCommentListState.scrollToItem(0)
+    val scrollMemory = commentViewModel.fullscreenCommentScrollMemory
+    val scrollSession = remember(scrollMemory, aid, commentState.sortMode) {
+        scrollMemory.open(aid, commentState.sortMode)
+    }
+    val mainCommentListState = remember(scrollSession) {
+        androidx.compose.foundation.lazy.LazyListState(scrollSession.index, scrollSession.offset)
+    }
+    LaunchedEffect(scrollSession, mainCommentListState, commentState.replies.isNotEmpty()) {
+        // 空列表和加载骨架不能把尚未恢复的阅读位置写成顶部。
+        if (commentState.replies.isEmpty()) return@LaunchedEffect
+        snapshotFlow {
+            if (mainCommentListState.layoutInfo.totalItemsCount > 0) {
+                mainCommentListState.firstVisibleItemIndex to mainCommentListState.firstVisibleItemScrollOffset
+            } else null
+        }.collect { position ->
+            if (position != null) scrollMemory.save(scrollSession, position.first, position.second)
         }
     }
     val hostVisible = hostContent != VideoCommentSheetHostContent.HIDDEN
@@ -908,12 +921,15 @@ internal fun VideoCommentMainList(
             count = state.replyCount,
             sortMode = state.sortMode,
             onSortModeChange = { mode ->
-                viewModel.setSortMode(mode)
-                scope.launch { SettingsManager.setCommentDefaultSortMode(context, mode.apiMode) }
+                if (mode != state.sortMode) {
+                    // 排序切换与列表回顶一起生效，不保留旧排序的滚动锚点。
+                    listState.requestScrollToItem(0)
+                    viewModel.setSortMode(mode)
+                    scope.launch { SettingsManager.setCommentDefaultSortMode(context, mode.apiMode) }
+                }
             },
             onSearchClick = { showCommentSearchSheet = true },
             compactTypography = true,
-            scrollState = listState,
             modifier = Modifier
                 .fillMaxWidth()
                 .then(headerDragModifier),

@@ -199,3 +199,38 @@ lib/utils/page_utils.dart and lib/grpc/bilibili/im/type.pbenum.dart.
 PiliPlus contributors; GPL-3.0. The Android implementation uses the existing
 rendering, account, networking and theme components. Distributed under GPLv3.
 License copy: artwork/third-party/piliplus/LICENSE in the source distribution.
+
+Coin selection interaction and content display/filter behavior referenced against
+PiliPlus (GPL-3.0): lib/pages/video/pay_coins/view.dart,
+lib/pages/setting/models/extra_settings.dart, lib/models/dynamics/result.dart,
+and lib/grpc/reply.dart. https://github.com/bggRGjQaUbCoE/PiliPlus
+When Blue Snow Maid animation is enabled, the Android implementation retains
+BiliPai's character artwork. The disabled path adapts the coin-selection layout,
+gestures and finite animation timeline from lib/pages/video/pay_coins/view.dart
+at revision 3d0aed958b3b7e59c39c121196f189f429719904, and includes its raster
+assets from assets/images/paycoins/ as drawable-nodpi/coin_toss_*.png:
+ic_22_mario.png, ic_22_gun_sister.png, ic_22_not_enough_pay.png,
+ic_pay_coins_box.png, ic_coins_one.png, ic_coins_two.png, ic_thunder_1.png,
+ic_thunder_2.png, ic_thunder_3.png, ic_left.png, ic_left_disable.png,
+ic_right.png, ic_right_disable.png and ic_panel_close.png.
+PiliPlus contributors; repository license GPL-3.0. Distributed as part of
+BiliPai under GPLv3.
+License copy: artwork/third-party/piliplus/LICENSE in the source distribution.
+
+UP small-shop behavior and API fields referenced against PiliPlus (GPL-3.0):
+lib/pages/member_shop/, lib/models_new/space/space_shop/, lib/http/member.dart.
+https://github.com/bggRGjQaUbCoE/PiliPlus
+License copy: artwork/third-party/piliplus/LICENSE in the source distribution.
+
+Followed-live pagination behavior referenced against PiliPlus (GPL-3.0):
+lib/http/live.dart, lib/models_new/live/live_follow/data.dart,
+lib/pages/live_follow/controller.dart. https://github.com/bggRGjQaUbCoE/PiliPlus
+License copy: artwork/third-party/piliplus/LICENSE in the source distribution.
+
+Subtitle synchronization design reference:
+PiliPlus, revision 3d0aed958b3b7e59c39c121196f189f429719904 (GPL-3.0).
+https://github.com/bggRGjQaUbCoE/PiliPlus
+Reviewed lib/pages/video/controller.dart (setSubtitle) and
+lib/utils/subtitle_utils.dart for player-clock subtitle timing and track caching.
+BiliPai retains its Android text renderers and implements event-driven position
+updates and cue-boundary scheduling with Media3 Player events and Kotlin coroutines.

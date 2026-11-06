@@ -339,6 +339,7 @@ internal fun resolveDynamicOpusLinkCardAction(card: OpusLinkCard): DynamicOpusLi
             epId = target.epId
         )
         is BilibiliNavigationTarget.Match -> DynamicOpusLinkCardAction.OpenMatch(target.contestId)
+        is BilibiliNavigationTarget.ArticleCollection,
         is BilibiliNavigationTarget.Music,
         is BilibiliNavigationTarget.Search,
         is BilibiliNavigationTarget.PopularFeed,

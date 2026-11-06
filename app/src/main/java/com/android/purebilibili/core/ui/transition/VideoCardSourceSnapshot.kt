@@ -109,6 +109,12 @@ internal data class VideoCardSourceChromeSnapshot(
     val isNowPlayingBar: Boolean = false,
 )
 
+/** 相同内容也可能来自另一次点击；只有原始快照实例能使用该次点击的像素。 */
+internal fun ownsVideoCardSourceSnapshot(
+    expected: VideoCardSourceChromeSnapshot?,
+    recorded: VideoCardSourceChromeSnapshot?,
+): Boolean = expected != null && expected === recorded
+
 /** Freeze the measured source-cover decode size together with the click-time snapshot. */
 internal fun VideoCardSourceChromeSnapshot.withMeasuredCoverDecodeSize(
     coverBounds: Rect?,

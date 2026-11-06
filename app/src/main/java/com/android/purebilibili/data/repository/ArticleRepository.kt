@@ -22,7 +22,10 @@ data class ArticleDetailUiModel(
     val authorFace: String,
     val publishTime: String,
     val bannerUrl: String?,
-    val blocks: List<ArticleContentBlock>
+    val blocks: List<ArticleContentBlock>,
+    val dynamicId: String = "",
+    val collection: com.android.purebilibili.data.model.response.ArticleCollectionInfo? = null,
+    val stats: com.android.purebilibili.data.model.response.ArticleStats? = null,
 )
 
 object ArticleRepository {
@@ -57,7 +60,9 @@ object ArticleRepository {
             }
 
             val data = requireNotNull(response.data)
-            val fromView = data.toUiModel()
+            val fromView = data.toUiModel().let {
+                if (it.articleId > 0L) it else it.copy(articleId = articleId)
+            }
             val opusBlocks = fetchOpusArticleBlocks(data.dynamicId)
             var merged = if (opusBlocks.isEmpty()) {
                 fromView
@@ -68,7 +73,59 @@ object ArticleRepository {
                 fetchPublicNoteArticle(articleId)?.let { merged = it }
             }
             runCatching { HistoryRepository.reportArticleView(merged.articleId) }
+                .onFailure { if (it is CancellationException) throw it }
             merged
+        }.onFailure { if (it is CancellationException) throw it }
+    }
+
+    suspend fun getCollection(collectionId: Long): Result<com.android.purebilibili.data.model.response.ArticleCollectionData> = articleRequest {
+        require(collectionId > 0L) { "文集编号无效" }
+        val response = articleApi.getCollection(collectionId)
+        check(response.code == 0) { response.message.ifBlank { "文集加载失败" } }
+        requireNotNull(response.data) { "文集暂不可用" }
+    }
+
+    suspend fun getArticleInfo(articleId: Long): Result<com.android.purebilibili.data.model.response.ArticleInfoData> =
+        articleRequest {
+            val response = articleApi.getArticleInfo(signWithWbi(mapOf(
+                "id" to articleId.toString(), "mobi_app" to "pc", "from" to "web",
+                "gaia_source" to "main_web",
+            )))
+            check(response.code == 0) { response.message.ifBlank { "互动信息加载失败" } }
+            requireNotNull(response.data) { "互动信息暂不可用" }
+        }
+
+    suspend fun setFavorite(articleId: Long, favorite: Boolean): Result<Unit> = articleRequest {
+        val csrf = requireArticleCsrf()
+        val response = if (favorite) articleApi.addFavorite(articleId, csrf)
+            else articleApi.removeFavorite(articleId, csrf)
+        check(response.code == 0) { response.message.ifBlank { "收藏失败，请重试" } }
+    }
+
+    suspend fun setLike(article: ArticleDetailUiModel, liked: Boolean): Result<Unit> = articleRequest {
+        val csrf = requireArticleCsrf()
+        val response = if (article.dynamicId.isNotBlank()) {
+            NetworkModule.dynamicApi.likeDynamic(
+                csrf = csrf,
+                body = com.android.purebilibili.core.network.DynamicThumbRequest(
+                    dyn_id_str = article.dynamicId, up = if (liked) 1 else 2,
+                ),
+            )
+        } else articleApi.likeArticle(article.articleId, if (liked) 1 else 2, csrf)
+        check(response.code == 0) { response.message.ifBlank { "点赞失败，请重试" } }
+    }
+
+    private fun requireArticleCsrf(): String =
+        com.android.purebilibili.core.store.TokenManager.csrfCache
+            ?.takeIf { it.isNotBlank() } ?: error("请先登录")
+
+    private suspend fun <T> articleRequest(block: suspend () -> T): Result<T> = withContext(Dispatchers.IO) {
+        try {
+            Result.success(block())
+        } catch (cancelled: CancellationException) {
+            throw cancelled
+        } catch (error: Exception) {
+            Result.failure(error)
         }
     }
 
@@ -114,7 +171,7 @@ object ArticleRepository {
             opusContentBlocksToArticleBlocks(
                 response.data?.item?.modules?.module_dynamic?.major?.opus?.contentBlocks.orEmpty()
             )
-        }.getOrDefault(emptyList())
+        }.onFailure { if (it is CancellationException) throw it }.getOrDefault(emptyList())
     }
 
     private fun ArticleViewData.toUiModel(): ArticleDetailUiModel {
@@ -149,7 +206,10 @@ object ArticleRepository {
             authorFace = author?.face.normalizeImageUrl().orEmpty(),
             publishTime = FormatUtils.formatPrecisePublishTime(publishTime),
             bannerUrl = resolvedBanner,
-            blocks = parsedBlocks
+            blocks = parsedBlocks,
+            dynamicId = dynamicId,
+            collection = list,
+            stats = stats,
         )
     }
 
@@ -164,6 +224,8 @@ object ArticleRepository {
             } else {
                 params
             }
+        } catch (cancelled: CancellationException) {
+            throw cancelled
         } catch (_: Exception) {
             params
         }

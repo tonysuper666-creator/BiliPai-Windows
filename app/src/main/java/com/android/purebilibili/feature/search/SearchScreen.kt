@@ -686,7 +686,6 @@ fun SearchScreen(
     onVideoDetailReturnAnimationConsumed: () -> Unit = {},
     onUpResultClick: ((Long, String) -> Unit)? = null,
     onBangumiResultClick: ((Long, String) -> Unit)? = null,
-    onArticleResultClick: ((Long, String, String) -> Unit)? = null,
     backEnabled: Boolean = true,
 ) {
     val topChromePolicy = rememberAppTopChromePolicy()
@@ -2113,7 +2112,9 @@ fun SearchScreen(
                                                             bvid = video.bvid,
                                                             contentType = video.contentType,
                                                             navigationUrl = video.navigationUrl,
-                                                            title = video.title
+                                                            title = video.title,
+                                                            videoId = video.id,
+                                                            ownerName = video.owner.name
                                                         )
                                                     ) {
                                                         is SearchResultNavigationTarget.Video -> {
@@ -2129,6 +2130,8 @@ fun SearchScreen(
                                                         }
                                                         is SearchResultNavigationTarget.Web ->
                                                             onWebClick(target.url, target.title)
+                                                        is SearchResultNavigationTarget.LiveRoom ->
+                                                            onLiveClick(target.roomId, target.title, target.uname)
                                                         else -> Unit
                                                     }
                                                 }
@@ -2522,9 +2525,6 @@ fun SearchScreen(
                                             item = articleItem,
                                             appearance = genericResultCardAppearance,
                                             onClick = { onArticleClick(articleItem.id, articleItem.title) },
-                                            onTransitionClick = onArticleResultClick?.let { openResult ->
-                                                { key -> openResult(articleItem.id, articleItem.title, key) }
-                                            },
                                         )
                                         if (targetSearchType == state.searchType && index == pageResultState.articleResults.size - 3 && pageResultState.hasMoreResults && !pageResultState.isLoadingMore) {
                                             LaunchedEffect(pageResultState.currentPage, targetSearchType) {
@@ -4342,17 +4342,14 @@ internal fun UpSearchResultCard(
 ) {
     val useMiuixPresentation = LocalAppUiStyle.current == AppUiStyle.MIUIX
     val cleanedItem = remember(upItem) { upItem.cleanupFields() }
-    val transitionKey = rememberSaveable(upItem.mid) {
-        "${searchUpContainerKey(upItem.mid)}:${java.util.UUID.randomUUID()}"
-    }
-
-    val sharedTransitionScope = LocalSharedTransitionScope.current
-    val animatedVisibilityScope = LocalAnimatedVisibilityScope.current
+    val container = com.android.purebilibili.core.ui.rememberNativeCardContainerTransition(
+        com.android.purebilibili.navigation3.BiliPaiNavKey.Space(upItem.mid), onClick,
+    )
 
     SearchResultCardSurface(
         appearance = appearance,
-        onClick = { onTransitionClick?.invoke(transitionKey) ?: onClick() },
-        modifier = Modifier.fillMaxWidth().searchResultContainerBounds(transitionKey)
+        onClick = container.onClick,
+        modifier = Modifier.fillMaxWidth().then(container.modifier)
     ) {
         Row(
             modifier = Modifier
@@ -4363,15 +4360,7 @@ internal fun UpSearchResultCard(
             verticalAlignment = Alignment.CenterVertically
         ) {
             // 头像
-            val avatarModifier = if (sharedTransitionScope != null && animatedVisibilityScope != null) {
-                with(sharedTransitionScope) {
-                    Modifier.sharedBounds(
-                        rememberSharedContentState(key = com.android.purebilibili.core.ui.transition.avatarSharedElementKey(cleanedItem.mid)),
-                        animatedVisibilityScope = animatedVisibilityScope,
-                        clipInOverlayDuringTransition = OverlayClip(CircleShape)
-                    )
-                }
-            } else Modifier
+            val avatarModifier = Modifier
 
             val verifyBadge = cleanedItem.official_verify?.let { verify ->
                 resolveOfficialVerifyBadge(type = verify.type, desc = verify.desc)
@@ -4527,13 +4516,13 @@ internal fun BangumiSearchResultCard(
     onTransitionClick: ((String) -> Unit)? = null,
 ) {
     val useMiuixPresentation = LocalAppUiStyle.current == AppUiStyle.MIUIX
-    val transitionKey = rememberSaveable(item.seasonId) {
-        "${searchBangumiContainerKey(item.seasonId)}:${java.util.UUID.randomUUID()}"
-    }
+    val container = com.android.purebilibili.core.ui.rememberNativeCardContainerTransition(
+        com.android.purebilibili.navigation3.BiliPaiNavKey.BangumiDetail(item.seasonId), onClick,
+    )
     SearchResultCardSurface(
         appearance = appearance,
-        onClick = { onTransitionClick?.invoke(transitionKey) ?: onClick() },
-        modifier = Modifier.searchResultContainerBounds(transitionKey),
+        onClick = container.onClick,
+        modifier = container.modifier,
     ) {
         Row(
             modifier = Modifier
@@ -5163,15 +5152,21 @@ internal fun ArticleSearchResultCard(
     item: SearchArticleItem,
     appearance: SearchResultCardAppearance,
     onClick: () -> Unit,
-    onTransitionClick: ((String) -> Unit)? = null,
 ) {
-    val transitionKey = rememberSaveable(item.id) {
-        "${searchArticleContainerKey(item.id)}:${java.util.UUID.randomUUID()}"
+    val nativeTarget = when (val target = resolveArticleNavigationTarget(item.id)) {
+        is ArticleNavigationTarget.NativeArticle -> com.android.purebilibili.navigation3.BiliPaiNavKey.ArticleDetail(target.articleId, item.title)
+        is ArticleNavigationTarget.NativeDynamic -> com.android.purebilibili.navigation3.BiliPaiNavKey.DynamicDetail(target.dynamicId)
+        null -> null
+    }
+    val container = nativeTarget?.let {
+        com.android.purebilibili.core.ui.rememberNativeCardContainerTransition(it, onClick)
     }
     SearchResultCardSurface(
         appearance = appearance,
-        onClick = { onTransitionClick?.invoke(transitionKey) ?: onClick() },
-        modifier = Modifier.searchResultContainerBounds(transitionKey),
+        // 专栏与图文只走导航卡片容器；关闭动效时仍用同一目标正常跳转，
+        // 不回退搜索页内部的共享元素宿主，确保返回回收到这张结果卡片。
+        onClick = container?.onClick ?: onClick,
+        modifier = container?.modifier ?: Modifier,
     ) {
         val metaLine = buildString {
             val publishTime = FormatUtils.formatPublishTime(item.pubTime)

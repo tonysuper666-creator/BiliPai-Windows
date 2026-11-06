@@ -48,6 +48,10 @@ internal fun resolveWebViewNavigationAction(
     }
 
     val target = BilibiliNavigationTargetParser.parse(urlString)
+    // 显式网页入口的自动重定向保留在网页内，点击文集链接时才进入原生页面。
+    if (target is BilibiliNavigationTarget.ArticleCollection && !hasUserGesture) {
+        return WebViewNavigationAction.AllowWebLoad
+    }
     return if (target != null) {
         WebViewNavigationAction.DispatchTarget(target)
     } else {

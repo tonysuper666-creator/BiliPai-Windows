@@ -8,6 +8,26 @@ import kotlin.test.assertTrue
 
 class VideoCardReturnTimelineTest {
     @Test
+    fun wholeCardAndMediaFinishTogetherAndRewindFromTheSameDepth() {
+        val start = VideoCardTransitionVisualTimeline.WHOLE_CARD_RETURN_START
+        val end = VideoCardTransitionVisualTimeline.WHOLE_CARD_RETURN_END
+        assertEquals(end, VideoCardTransitionVisualTimeline.MEDIA_RETURN_END)
+        assertEquals(0f, resolveVideoCardWholeCardReturnHandoffAlpha(1f - start), .0001f)
+        assertEquals(1f, resolveVideoCardWholeCardReturnHandoffAlpha(1f - end), .0001f)
+        val samples = (0..100).map { step ->
+            val depth = 1f - step / 100f
+            val alpha = resolveVideoCardWholeCardReturnHandoffAlpha(depth)
+            assertTrue(alpha + .0001f >= resolveVideoCardLiveReturnVisualHandoffAlpha(depth))
+            alpha
+        }
+        assertTrue(samples.zipWithNext().all { (before, after) -> before <= after })
+        val reversed = (100 downTo 0).map { step ->
+            resolveVideoCardWholeCardReturnHandoffAlpha(1f - step / 100f)
+        }
+        assertEquals(samples, reversed.reversed())
+    }
+
+    @Test
     fun landingMediaAndTitleShareGentleEndpointsAndReverseTogether() {
         val start = VideoCardTransitionVisualTimeline.MEDIA_RETURN_START
         val end = VideoCardTransitionVisualTimeline.MEDIA_RETURN_END

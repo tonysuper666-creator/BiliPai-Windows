@@ -178,9 +178,11 @@ internal fun HistoryPersonalCard(
     val video = item.videoItem
     val context = LocalContext.current
     val coverShape = AppShapes.mediaCover()
+    val containerTarget = if (batchMode) null else resolveHistoryCardContainerTarget(item)
+    val usesVideoTransition = !batchMode && containerTarget == null && item.business != HistoryBusiness.ARTICLE
     val transition = rememberPersonalCardVideoTransition(
         bvid = video.bvid,
-        transitionEnabled = transitionEnabled,
+        transitionEnabled = transitionEnabled && usesVideoTransition,
         clipShape = coverShape,
     )
     val progressState = remember(item.progress, video.duration, video.view_at) {
@@ -199,8 +201,8 @@ internal fun HistoryPersonalCard(
             .diskCacheKey(stationaryCoverUrl)
             .build()
     }
-    val triggerClick = {
-        if (!batchMode) {
+    val legacyTriggerClick = {
+        if (transitionEnabled && usesVideoTransition) {
             transition.recordPosition(
                 bvid = video.bvid,
                 stacked = stacked,
@@ -233,6 +235,15 @@ internal fun HistoryPersonalCard(
         }
         onClick()
     }
+
+    val contentContainer = containerTarget?.let {
+        com.android.purebilibili.core.ui.rememberNativeCardContainerTransition(
+            target = it,
+            onClick = legacyTriggerClick,
+            enabled = transitionEnabled,
+        )
+    }
+    val triggerClick = contentContainer?.onClick ?: legacyTriggerClick
 
     val coverOverlayTextStyle = remember {
         TextStyle(shadow = resolveVideoCardCoverOverlayTextShadow())
@@ -295,7 +306,7 @@ internal fun HistoryPersonalCard(
             stacked = true,
             selected = selected,
             modifier = modifier
-                .then(transition.shellModifier)
+                .then(contentContainer?.modifier ?: transition.shellModifier)
                 .onGloballyPositioned { transition.bounds.cardBounds = it.videoCardSourceBoundsInRoot() },
             nativeSnapshotModifier = transition.nativeCardSnapshot.modifier,
             coverOverlayModifier = transition.nativeCardSnapshot.coverOverlayModifier,
@@ -340,7 +351,7 @@ internal fun HistoryPersonalCard(
     HorizontalVideoCardFrame(
         modifier = modifier
             .fillMaxWidth()
-            .then(transition.shellModifier)
+            .then(contentContainer?.modifier ?: transition.shellModifier)
             .clip(coverShape)
             .then(transition.nativeCardSnapshot.modifier)
             .wallpaperAwareMediaCardBackground(AppSurfaceTokens.cardContainer(), coverShape)

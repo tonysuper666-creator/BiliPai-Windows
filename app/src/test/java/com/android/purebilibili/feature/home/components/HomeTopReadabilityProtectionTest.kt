@@ -31,12 +31,35 @@ class HomeTopReadabilityProtectionTest {
     }
 
     @Test
-    fun clearEndMovesBelowLabelsEvenWhenCoverageSettingIsShort() {
+    fun shortCoverageRemainsContinuousInsteadOfBecomingAFullStrengthBand() {
         val original = ProgressiveBlur.Top.copy(endFraction = 0.5f, curve = 1.25f)
-        val result = homeTopReadabilityBlurGradient(original, 0.75f, 0.95f)
-        assertEquals(0.75f, result.startFraction, 0.0001f)
-        assertEquals(0.95f, result.endFraction, 0.0001f)
+        val result = homeTopReadabilityBlurGradient(original, 0.75f)
+        assertEquals(original.startFraction, result.startFraction, 0.0001f)
+        assertEquals(0.5f, result.endFraction, 0.0001f)
         assertEquals(original.curve, result.curve, 0.0001f)
         assertTrue(result.endFraction > result.startFraction)
+    }
+
+    @Test
+    fun fullCoverageClearsAtControlsInsteadOfExtendingIntoTheFeed() {
+        val original = ProgressiveBlur.Top.copy(startFraction = 0f, endFraction = 1f)
+        // 不同窗口密度及控件收起高度均按当前控件边界计算，标签顺序不参与曲线。
+        for ((contentHeight, drawingHeight) in listOf(152f to 196f, 304f to 392f, 80f to 112f)) {
+            val result = homeTopReadabilityBlurGradient(original, contentHeight / drawingHeight)
+            assertEquals(0f, result.startFraction, 0.0001f)
+            assertEquals(contentHeight, result.endFraction * drawingHeight, 0.0001f)
+            assertEquals(original.curve, result.curve, 0.0001f)
+        }
+        assertEquals(1f, original.endFraction, 0.0001f)
+    }
+
+    @Test
+    fun shortenedControlsKeepCustomStartBeforeTheClearEnd() {
+        val result = homeTopReadabilityBlurGradient(
+            ProgressiveBlur.Top.copy(startFraction = 0.8f, endFraction = 1f),
+            contentBottomFraction = 0.4f,
+        )
+        assertEquals(0.4f, result.endFraction, 0.0001f)
+        assertTrue(result.startFraction >= 0f && result.startFraction < result.endFraction)
     }
 }

@@ -86,7 +86,6 @@ import com.android.purebilibili.core.ui.transition.videoCardShellSharedBoundsOrE
 import com.android.purebilibili.feature.home.HomeCoverRequestSpec
 import com.android.purebilibili.feature.home.resolveHomeCoverImageSource
 import com.android.purebilibili.feature.home.resolveHomeCardEnterAnimationEnabledAtMount
-import com.android.purebilibili.feature.video.ui.section.resolveCompactPublishTimeRowText
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.*
 import kotlin.math.roundToInt
@@ -184,13 +183,7 @@ internal fun StoryVideoCard(
     var measuredCoverSize by remember(coverCacheKey) {
         mutableStateOf(androidx.compose.ui.unit.IntSize.Zero)
     }
-    val publishTimeRowText = remember(showPublishTime, video.pubdate) {
-        if (!showPublishTime) {
-            ""
-        } else {
-            resolveCompactPublishTimeRowText(pubdate = video.pubdate)
-        }
-    }
+    val publishTimeRowText = rememberVideoCardPublishTimeText(video, showPublishTime, cardVisibleInWindow)
     val emphasizePublishTime = false
 
     //  [新增] 长按删除菜单状态
@@ -461,8 +454,6 @@ internal fun StoryVideoCard(
                 isQuickReturnFromDetail = isQuickReturningFromVideoDetail,
             )
         ) {
-        Spacer(modifier = Modifier.weight(1f))
-
         AppText(
             text = video.title,
             color = AppContentColors.primaryText(),

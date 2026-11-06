@@ -2207,6 +2207,7 @@ fun HomeScreen(
                                     onAreaDetailClick = onLiveAreaDetailClick,
                                     showNavigationBack = false,
                                     embeddedInHome = true,
+                                    isCurrentPage = isTopLevelActive && pagerState.currentPage == page,
                                     contentTopPadding = topPadding,
                                     scrollToTopRequestId = liveScrollToTopRequestId,
                                 )

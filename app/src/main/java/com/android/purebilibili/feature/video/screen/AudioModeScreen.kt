@@ -228,10 +228,22 @@ fun AudioModeScreen(
             playerChromeProfile.effects.supportsIndependentLiquidGlass,
         androidNativeLiquidGlassEnabled = homeSettings.androidNativeLiquidGlassEnabled,
     )
+    val shouldCreateStandalonePlayer = remember(initialBvid) {
+        shouldCreateAudioModeStandalonePlayer(
+            hasPlayer = viewModel.currentPlayer != null,
+            initialBvid = initialBvid
+        )
+    }
     var cachedSuccessState by remember(initialBvid, initialCid) {
         mutableStateOf<VideoPlaybackUiState.Success?>(null)
     }
     var initialSourceResolved by remember(initialBvid, initialCid) { mutableStateOf(initialBvid.isBlank()) }
+    // 本页是否已经发起（或由独立播放器发起）入口内容加载。
+    var entryLoadRequested by remember(initialBvid, initialCid) {
+        mutableStateOf(shouldCreateStandalonePlayer)
+    }
+    // 入口加载之后是否观察到过 Loading；只有此时到达的成功态才属于本次会话。
+    var sawLoadingSinceEntry by remember(initialBvid, initialCid) { mutableStateOf(false) }
 
     LaunchedEffect(subjectSnapshot, uiState) {
         val subject = subjectSnapshot ?: return@LaunchedEffect
@@ -247,22 +259,49 @@ fun AudioModeScreen(
         )
     }
 
-    LaunchedEffect(uiState, initialBvid, initialCid) {
+    LaunchedEffect(initialBvid, initialCid, initialResumePositionMs, shouldCreateStandalonePlayer) {
+        if (shouldCreateStandalonePlayer || initialBvid.isBlank()) return@LaunchedEffect
+        entryLoadRequested = true
+        // 本页建立时可能已有别的曲目在加载（例如队列里的「下一首」已经发起请求）：
+        // 此时再发入口请求会取消并覆盖那次加载，把播放拉回入口曲目；交给首屏门控
+        // 等这次加载落地即可。
+        val currentState = viewModel.uiState.value
+        val inFlightBvid = viewModel.detailState.value.requestBvid
+        if (shouldSkipAudioModeEntryLoadForInFlightSwitch(
+                isLoading = currentState is VideoPlaybackUiState.Loading,
+                inFlightBvid = inFlightBvid,
+                requestedBvid = initialBvid,
+            )
+        ) {
+            return@LaunchedEffect
+        }
+        viewModel.loadVideo(
+            bvid = initialBvid,
+            cid = initialCid,
+            autoPlay = true,
+            fallbackResumePositionMs = initialResumePositionMs
+        )
+    }
+    LaunchedEffect(uiState, initialBvid, initialCid, entryLoadRequested) {
+        if (entryLoadRequested && uiState is VideoPlaybackUiState.Loading) {
+            sawLoadingSinceEntry = true
+        }
         val success = uiState as? VideoPlaybackUiState.Success ?: return@LaunchedEffect
-        if (matchesAudioModeInitialSource(initialBvid, initialCid, success.info.bvid, success.info.cid)) {
-            initialSourceResolved = true
+        if (!initialSourceResolved) {
+            initialSourceResolved = shouldResolveAudioModeInitialSource(
+                requestedBvid = initialBvid,
+                requestedCid = initialCid,
+                loadedBvid = success.info.bvid,
+                loadedCid = success.info.cid,
+                entryLoadRequested = entryLoadRequested,
+                sawLoadingSinceEntry = sawLoadingSinceEntry,
+            )
         }
         if (initialSourceResolved) cachedSuccessState = success
     }
     val displayState = if (initialSourceResolved) {
         (uiState as? VideoPlaybackUiState.Success) ?: cachedSuccessState
     } else null
-    val shouldCreateStandalonePlayer = remember(initialBvid) {
-        shouldCreateAudioModeStandalonePlayer(
-            hasPlayer = viewModel.currentPlayer != null,
-            initialBvid = initialBvid
-        )
-    }
     val standalonePlayerState = if (shouldCreateStandalonePlayer) {
         rememberVideoPlayerState(
             context = context,
@@ -276,16 +315,6 @@ fun AudioModeScreen(
     }
     val player = standalonePlayerState?.player ?: viewModel.currentPlayer
 
-    LaunchedEffect(initialBvid, initialCid, initialResumePositionMs, shouldCreateStandalonePlayer) {
-        if (!shouldCreateStandalonePlayer && initialBvid.isNotBlank()) {
-            viewModel.loadVideo(
-                bvid = initialBvid,
-                cid = initialCid,
-                autoPlay = true,
-                fallbackResumePositionMs = initialResumePositionMs
-            )
-        }
-    }
     // 复用旧 Success 进入（如小横条展开）时播放器可能已被释放：无 player 且入口
     // 未携带 bvid 时，用缓存内容强制重载自愈，避免停留在只有封面的死页面。
     LaunchedEffect(player, displayState, initialBvid) {
@@ -303,6 +332,9 @@ fun AudioModeScreen(
     }
     DisposableEffect(viewModel) {
         viewModel.setAudioMode(true)
+        // 听视频没有画面入场过渡，媒体 prepare 不必等它；若沿用详情页入场时写入的
+        // "暂不许 prepare"，切歌请求会挂起在准备阶段，表现为一直加载、切换不完成。
+        viewModel.setPlaybackPreparationAllowed(true)
         AudioNowPlayingSession.markListening()
         onDispose { viewModel.setAudioMode(false) }
     }

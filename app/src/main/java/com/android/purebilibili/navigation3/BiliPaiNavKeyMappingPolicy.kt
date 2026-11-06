@@ -152,7 +152,8 @@ internal fun BiliPaiNavKey.toLegacyRoute(): String {
             initialVertical = initialVertical,
             directPortraitEntry = directPortraitEntry,
         )
-        is BiliPaiNavKey.ArticleDetail -> ScreenRoutes.ArticleDetail.createRoute(articleId, title)
+        is BiliPaiNavKey.ArticleCollection -> ScreenRoutes.ArticleCollection.createRoute(collectionId, title, currentArticleId)
+        is BiliPaiNavKey.ArticleDetail -> ScreenRoutes.ArticleDetail.createRoute(articleId, title, commentRootRpid, commentTargetRpid)
         is BiliPaiNavKey.DynamicDetail -> ScreenRoutes.DynamicDetail.createRoute(
             dynamicId = dynamicId,
             commentRootRpid = commentRootRpid,
@@ -388,10 +389,19 @@ internal fun legacyRouteToBiliPaiNavKey(route: String?): BiliPaiNavKey {
                 sourceRoute = null
             )
         }
+        segments.firstOrNull() == "article_collection" && segments.size >= 2 -> {
+            BiliPaiNavKey.ArticleCollection(
+                collectionId = segments[1].toLongOrNull() ?: 0L,
+                title = query["title"].orEmpty(),
+                currentArticleId = query["currentArticleId"]?.toLongOrNull() ?: 0L,
+            )
+        }
         segments.firstOrNull() == "article" && segments.size >= 2 -> {
             BiliPaiNavKey.ArticleDetail(
                 articleId = segments[1].toLongOrNull() ?: 0L,
-                title = query["title"].orEmpty()
+                title = query["title"].orEmpty(),
+                commentRootRpid = query["commentRootRpid"]?.toLongOrNull()?.coerceAtLeast(0L) ?: 0L,
+                commentTargetRpid = query["commentTargetRpid"]?.toLongOrNull()?.coerceAtLeast(0L) ?: 0L,
             )
         }
         segments.firstOrNull() == "dynamic_detail" && segments.size >= 2 -> {

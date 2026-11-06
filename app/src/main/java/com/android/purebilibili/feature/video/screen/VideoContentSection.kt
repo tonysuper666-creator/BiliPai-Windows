@@ -1687,14 +1687,12 @@ internal fun VideoCommentTab(
                     onSortModeChange = onSortModeChange,
                     onSearchClick = onSearchClick,
                     compactTypography = compactSortHeader,
-                    scrollState = listState,
                 )
             } else {
                 CommentListHeader(
                     count = replyCount,
                     title = "${sortMode.label}评论",
                     compactTypography = compactSortHeader,
-                    scrollState = listState,
                 )
             }
         } else if (showHeader) {
@@ -1702,7 +1700,6 @@ internal fun VideoCommentTab(
                 count = replyCount,
                 title = "${sortMode.label}评论",
                 compactTypography = compactSortHeader,
-                scrollState = listState,
             )
         }
         val contentDensity = LocalDensity.current
@@ -1960,15 +1957,26 @@ internal fun LandscapeCommentPanel(
                             )
                         }
                     }
-                    CommentSortFilterBar(
-                        scrollState = listState,
-                        sortMode = sortMode,
-                        onSortModeChange = onSortModeChange,
+                    // 操作组跟随面板靠向屏幕外侧；玻璃与原生控件保留各自尺寸和触控范围。
+                    Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(start = 12.dp, end = 12.dp, bottom = 8.dp),
-                        onSearchClick = { showCommentSearchSheet = true },
-                    )
+                            .padding(horizontal = 8.dp)
+                            .padding(bottom = 8.dp),
+                        horizontalArrangement = if (isOnLeft) Arrangement.Start else Arrangement.End,
+                    ) {
+                        CommentSortFilterBar(
+                            sortMode = sortMode,
+                            onSortModeChange = { mode ->
+                                if (mode != sortMode) {
+                                    // 新排序从首条展示；取消旧滚动锚点对新评论列表的保位。
+                                    listState.requestScrollToItem(0)
+                                    onSortModeChange(mode)
+                                }
+                            },
+                            onSearchClick = { showCommentSearchSheet = true },
+                        )
+                    }
                     AppHorizontalDivider(color = commentAppearance.secondaryTextColor.copy(alpha = 0.18f))
                     if (threadContent != null) {
                         threadContent { images, index, rect, textContent ->
@@ -2017,6 +2025,8 @@ internal fun LandscapeCommentPanel(
                             onCommentHate = onCommentHate,
                             likedComments = likedComments,
                             hatedComments = hatedComments,
+                            sortMode = sortMode,
+                            onSortModeChange = onSortModeChange,
                             onCommentUrlClick = onCommentUrlClick,
                             onReportComment = onReportComment,
                             onToggleTopComment = onToggleTopComment,

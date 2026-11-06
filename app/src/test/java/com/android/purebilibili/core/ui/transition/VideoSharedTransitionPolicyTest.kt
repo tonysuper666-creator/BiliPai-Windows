@@ -3,6 +3,7 @@ package com.android.purebilibili.core.ui.transition
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.Easing
 import androidx.compose.animation.core.TweenSpec
 import androidx.compose.ui.geometry.Rect
 import com.android.purebilibili.core.ui.motion.AppMotionEasing
@@ -34,16 +35,53 @@ class VideoSharedTransitionPolicyTest {
     }
 
     @Test
-    fun automaticHeroAndContentShareCurveWhilePredictiveSeekRemainsLinear() {
+    fun entryAndCancelKeepTheirCurveWhileAutomaticReturnHasItsOwnPacing() {
         val curve = resolveVideoCardSharedTransitionSpatialEasing()
         val hero = resolveVideoHeroMotionSpec(360)
         val content = resolveVideoCardSharedTransitionMotionSpec("home", true)
         assertSame(curve, hero.enterSpatialSpec)
-        assertSame(curve, hero.returnSpatialSpec)
+        assertSame(curve, hero.cancelSpatialSpec)
+        assertTrue(hero.returnSpatialSpec.transform(.5f) < curve.transform(.5f))
         assertSame(curve, content.enterAlphaEasing)
         assertSame(curve, content.returnAlphaEasing)
         assertSame(LinearEasing, hero.predictiveSeekSpec)
         assertSame(LinearEasing, hero.effectsEasing)
+        val reduced = resolveVideoHeroMotionSpec(360, reducedMotion = true)
+        assertSame(curve, reduced.returnSpatialSpec)
+        assertSame(curve, reduced.cancelSpatialSpec)
+    }
+
+    @Test
+    fun automaticReturnKeepsAHandoffWindowAndReducesTheNearStationaryTail() {
+        val hero = resolveVideoHeroMotionSpec(360)
+        fun timeAtProgress(curve: Easing, progress: Float): Float {
+            var low = 0f
+            var high = 1f
+            repeat(24) {
+                val time = (low + high) / 2f
+                if (curve.transform(time) < progress) low = time else high = time
+            }
+            return (low + high) / 2f
+        }
+        val start = timeAtProgress(hero.returnSpatialSpec, VideoCardTransitionVisualTimeline.MEDIA_RETURN_START)
+        val end = timeAtProgress(hero.returnSpatialSpec, VideoCardTransitionVisualTimeline.MEDIA_RETURN_END)
+        // 接管从时间后半段开始，并保留至少四分之一总时长，不能靠骤然换图压缩尾段。
+        assertTrue(start in 0.50f..0.58f)
+        assertTrue(end - start >= .25f)
+        assertTrue(1f - end in 0.10f..0.20f)
+        assertTrue(end > timeAtProgress(hero.enterSpatialSpec, VideoCardTransitionVisualTimeline.MEDIA_RETURN_END))
+        var previous = 0f
+        for (step in 0..1000) {
+            val progress = hero.returnSpatialSpec.transform(step / 1000f)
+            assertTrue(progress in previous..1f)
+            previous = progress
+            val depth = 1f - progress
+            val media = resolveVideoCardLiveReturnVisualHandoffAlpha(depth)
+            assertEquals(media, resolveVideoCardSourceChromeReturnAlpha(depth), .0001f)
+            assertTrue(resolveVideoCardWholeCardReturnHandoffAlpha(depth) + .0001f >= media)
+        }
+        assertEquals(0f, hero.returnSpatialSpec.transform(0f))
+        assertEquals(1f, hero.returnSpatialSpec.transform(1f))
     }
     @Test
     fun heroGeometryUsesDpNotPixelsAndKeepsMissingBoundsFallback() {
@@ -103,7 +141,7 @@ class VideoSharedTransitionPolicyTest {
             interactive = false) as TweenSpec<*>
         assertSame(LinearEasing, seek.easing)
         assertEquals(resolveVideoHeroMotionSpec(motion.durationMillis).returnDurationMillis, auto.durationMillis)
-        assertSame(resolveVideoCardSharedTransitionSpatialEasing(), auto.easing)
+        assertSame(resolveVideoHeroMotionSpec(motion.durationMillis).returnSpatialSpec, auto.easing)
     }
 
     @Test

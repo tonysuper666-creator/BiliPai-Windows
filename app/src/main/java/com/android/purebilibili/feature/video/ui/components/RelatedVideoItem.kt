@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -30,6 +31,7 @@ import com.android.purebilibili.core.ui.components.AppGlassMenuSource
 import com.android.purebilibili.core.ui.components.appGlassMenuSource
 import com.android.purebilibili.core.ui.components.rememberAppGlassMenuSource
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -189,7 +191,8 @@ internal val LocalRelatedVideoCardLayout = androidx.compose.runtime.staticCompos
 
 internal const val RELATED_VIDEO_SKELETON_ROW_COUNT = 3
 
-
+/** 点击前同步读取父页的跳转锁，避免被拒绝的连点先覆盖来源卡片快照。 */
+internal val LocalRelatedVideoNavigationAllowed = compositionLocalOf<() -> Boolean> { { true } }
 
 /**
  * 相关推荐单列横卡：点击时冻结来源标识、几何与 chrome，供整卡 Morph 及逐层返回。
@@ -266,7 +269,9 @@ fun RelatedVideoItem(
             .diskCacheKey(stationaryCoverUrl)
             .build()
     }
-    val triggerRelatedVideoClick = {
+    val relatedVideoNavigationAllowed = LocalRelatedVideoNavigationAllowed.current
+    val triggerRelatedVideoClick = relatedClick@{
+        if (!relatedVideoNavigationAllowed()) return@relatedClick
         cardCoordinatesRef.value
             ?.takeIf { it.isAttached }
             ?.videoCardSourceBoundsInRoot()
@@ -347,6 +352,7 @@ fun RelatedVideoItem(
         HorizontalVideoCardFrame(
             coverAspectRatio = coverAspectRatio,
             stacked = stacked,
+            fillInfoHeight = true,
             coverModifier = Modifier.onGloballyPositioned { coordinates ->
                 coverCoordinatesRef.value = coordinates
             },
@@ -379,6 +385,9 @@ fun RelatedVideoItem(
                     color = AppContentColors.primaryText(),
                     modifier = Modifier.fillMaxWidth(),
                 )
+                if (!stacked) {
+                    Spacer(Modifier.weight(1f))
+                }
                 Column(verticalArrangement = Arrangement.spacedBy(AppSpacingTokens.ExtraSmall)) {
                     Row(
                         modifier = Modifier.fillMaxWidth(),

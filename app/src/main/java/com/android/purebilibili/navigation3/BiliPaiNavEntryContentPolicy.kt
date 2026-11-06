@@ -71,6 +71,7 @@ internal enum class BiliPaiNavEntryContentRole {
     WEB,
     DYNAMIC_DETAIL,
     ARTICLE_DETAIL,
+    ARTICLE_COLLECTION,
     LIVE,
     BANGUMI_DETAIL,
     BANGUMI_REVIEW,
@@ -157,6 +158,7 @@ internal fun resolveBiliPaiNavEntryContentRole(key: BiliPaiNavKey): BiliPaiNavEn
         is BiliPaiNavKey.Web -> BiliPaiNavEntryContentRole.WEB
         is BiliPaiNavKey.DynamicDetail -> BiliPaiNavEntryContentRole.DYNAMIC_DETAIL
         is BiliPaiNavKey.CommentDetail -> BiliPaiNavEntryContentRole.COMMENT_DETAIL
+        is BiliPaiNavKey.ArticleCollection -> BiliPaiNavEntryContentRole.ARTICLE_COLLECTION
         is BiliPaiNavKey.ArticleDetail -> BiliPaiNavEntryContentRole.ARTICLE_DETAIL
         is BiliPaiNavKey.Live -> BiliPaiNavEntryContentRole.LIVE
         is BiliPaiNavKey.BangumiDetail -> BiliPaiNavEntryContentRole.BANGUMI_DETAIL

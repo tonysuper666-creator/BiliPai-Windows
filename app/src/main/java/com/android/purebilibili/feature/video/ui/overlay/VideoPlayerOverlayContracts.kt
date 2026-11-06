@@ -239,6 +239,7 @@ data class VideoPlayerOverlayActions(
     val onDoubleTapLike: () -> Unit = {},
     val onAspectRatioChange: (VideoAspectRatio) -> Unit = {},
     val onShare: (() -> Unit)? = null,
+    val shareMenuSource: com.android.purebilibili.core.ui.components.AppGlassMenuSource? = null,
     val onReloadVideo: () -> Unit = {},
     val onSleepTimerChange: (Int?) -> Unit = {},
     val onFlipHorizontal: () -> Unit = {},

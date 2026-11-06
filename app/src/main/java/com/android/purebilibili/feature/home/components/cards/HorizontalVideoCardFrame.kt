@@ -17,7 +17,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.constrainHeight
@@ -45,13 +44,13 @@ internal fun HorizontalVideoCardFrame(
     stacked: Boolean = false,
     compactPartition: Boolean = false,
     allowPortraitCover: Boolean = false,
+    fillInfoHeight: Boolean = compactPartition,
 ) {
     // MD3、Miuix 和玻璃共用布局；封面保持所选比例。
     val effectiveAspectRatio = coverAspectRatio.takeIf {
         it.isFinite() && if (allowPortraitCover) it > 0f else it > 1f
     }
         ?: HORIZONTAL_VIDEO_CARD_COVER_ASPECT_RATIO
-    val resolvedMinimumHeight = resolveHorizontalVideoCardMinimumHeightDp(LocalDensity.current.fontScale, effectiveAspectRatio).dp
     val infoPadding = if (compactPartition) 4.dp else HORIZONTAL_VIDEO_CARD_INFO_PADDING_DP.dp
     val infoEndPadding = if (trailingContent == null) infoPadding else
         (HORIZONTAL_VIDEO_CARD_ACTION_SIZE_DP + HORIZONTAL_VIDEO_CARD_ACTION_INSET_DP +
@@ -127,7 +126,8 @@ internal fun HorizontalVideoCardFrame(
                 // 窄列表为封面留出更多空间；宽列表保留文字和操作区的空间。
                 val widthDp = width.toDp().value
                 val widthFraction = 0.55f - 0.10f * ((widthDp - 320f) / 160f).coerceIn(0f, 1f)
-                val maxCoverWidth = if (compactPartition) {
+                // 同宽列表的封面尺寸固定，不随标题换行、关注标记或统计信息的高度变化。
+                val coverWidth = if (compactPartition) {
                     // 封面以 88dp 高度为基准，压缩封面宽度换取标题单行容量；窄窗口仍为文字保留空间。
                     minOf(
                         (88.dp.toPx() * effectiveAspectRatio).toInt(),
@@ -137,17 +137,10 @@ internal fun HorizontalVideoCardFrame(
                 } else {
                     (width * widthFraction).toInt().coerceAtMost(width - gap)
                 }
-                val minHeight = minOf(resolvedMinimumHeight.roundToPx(), (maxCoverWidth / effectiveAspectRatio).toInt())
-                // Reserve the largest allowed cover while estimating text height. The actual
-                // cover and information are then measured once with non-overlapping bounds.
-                val estimatedInfoHeight = measurables[1].minIntrinsicHeight((width - gap - maxCoverWidth).coerceAtLeast(0))
-                val desiredHeight = maxOf(minHeight, estimatedInfoHeight)
-                val coverWidth = if (compactPartition) maxCoverWidth else
-                    (desiredHeight * effectiveAspectRatio).toInt().coerceIn(0, maxCoverWidth)
                 val coverHeight = (coverWidth / effectiveAspectRatio).toInt()
                 val infoWidth = (width - gap - coverWidth).coerceAtLeast(0)
-                // 分区紧凑模式下信息列至少与封面等高，使元信息行可以固定在卡片底部。
-                val infoMinHeight = if (compactPartition) {
+                // 按入口选择信息列与封面等高，供底部元信息使用弹性空白；上下排列不扩高。
+                val infoMinHeight = if (fillInfoHeight) {
                     coverHeight.coerceAtMost(
                         if (constraints.maxHeight != Constraints.Infinity) constraints.maxHeight else coverHeight
                     )
@@ -160,7 +153,7 @@ internal fun HorizontalVideoCardFrame(
                         minHeight = infoMinHeight, maxHeight = constraints.maxHeight,
                     )
                 )
-                val height = constraints.constrainHeight(maxOf(minHeight, coverHeight, info.height))
+                val height = constraints.constrainHeight(maxOf(coverHeight, info.height))
                 val cover = measurables[0].measure(Constraints.fixed(coverWidth, minOf(coverHeight, height)))
                 layout(width, height) {
                     cover.placeRelative(0, 0)

@@ -12,7 +12,12 @@ sealed interface BilibiliNavigationTarget {
     data class BangumiSeason(val seasonId: Long, val mediaId: Long = 0L) : BilibiliNavigationTarget
     data class BangumiEpisode(val epId: Long) : BilibiliNavigationTarget
     data class Music(val musicId: String) : BilibiliNavigationTarget
-    data class Article(val articleId: Long) : BilibiliNavigationTarget
+    data class Article(
+        val articleId: Long,
+        val commentRootRpid: Long = 0L,
+        val commentTargetRpid: Long = 0L,
+    ) : BilibiliNavigationTarget
+    data class ArticleCollection(val collectionId: Long) : BilibiliNavigationTarget
 
     /** 赛事比赛详情页，contestId 即 cid。 */
     data class Match(val contestId: Long) : BilibiliNavigationTarget
@@ -41,13 +46,30 @@ object BilibiliNavigationTargetParser {
     fun parse(input: String): BilibiliNavigationTarget? {
         if (input.isBlank()) return null
 
-        parseSingleCandidate(input)?.let { return it }
+        parseSingleCandidate(input)?.let { return withArticleCommentLocation(it, input) }
 
         BilibiliUrlParser.extractUrls(input).forEach { url ->
-            parseSingleCandidate(url)?.let { return it }
+            parseSingleCandidate(url)?.let { return withArticleCommentLocation(it, url) }
         }
 
         return null
+    }
+
+    private fun withArticleCommentLocation(target: BilibiliNavigationTarget, input: String): BilibiliNavigationTarget {
+        if (target !is BilibiliNavigationTarget.Article) return target
+        val uri = runCatching { URI(input.trim()) }.getOrNull() ?: return target
+        val query = extractQueryParameters(uri.rawQuery)
+        fun positive(vararg keys: String): Long = keys.firstNotNullOfOrNull {
+            query[it]?.toLongOrNull()?.takeIf { value -> value > 0L }
+        } ?: 0L
+        val reply = positive("comment_secondary_id", "comment_id", "reply_id", "rpid", "target_id", "anchor", "source_id")
+            .takeIf { it > 0L } ?: Regex("reply(\\d+)", RegexOption.IGNORE_CASE)
+                .find(uri.fragment.orEmpty())?.groupValues?.get(1)?.toLongOrNull() ?: 0L
+        val root = positive("comment_root_id", "root_reply_id", "root_id", "root")
+            .takeIf { it > 0L } ?: reply
+        // 包装链接没有外层位置参数时，保留内层文章携带的位置。
+        if (root <= 0L) return target
+        return target.copy(commentRootRpid = root, commentTargetRpid = reply.takeIf { it != root } ?: 0L)
     }
 
     suspend fun resolve(input: String): BilibiliNavigationTarget? {
@@ -65,6 +87,10 @@ object BilibiliNavigationTargetParser {
         val normalizedInput = normalizeInput(input) ?: input.trim()
         val plainTextTarget = mapParseResult(BilibiliUrlParser.parse(normalizedInput))
         if ("://" !in normalizedInput) {
+            Regex("rl([0-9]+)", RegexOption.IGNORE_CASE).matchEntire(normalizedInput)
+                ?.groupValues?.get(1)?.toLongOrNull()?.takeIf { it > 0L }?.let {
+                    return BilibiliNavigationTarget.ArticleCollection(it)
+                }
             return plainTextTarget ?: parseBangumiPlayValue(normalizedInput)
         }
 
@@ -160,7 +186,12 @@ object BilibiliNavigationTargetParser {
                 resolvePgcTarget(pathSegments)?.let { return it }
             }
 
+            host == "readlist" -> {
+                resolveArticleCollectionTarget(listOf("readlist") + pathSegments, queryMap)?.let { return it }
+            }
+
             host == "read" -> {
+                resolveArticleCollectionTarget(pathSegments, queryMap)?.let { return it }
                 resolveArticleTarget(pathSegments, queryMap, allowBareReadPath = true)?.let { return it }
             }
 
@@ -222,6 +253,7 @@ object BilibiliNavigationTargetParser {
 
             isBilibiliHost(host) -> {
                 resolveMatchTarget(pathSegments, queryMap)?.let { return it }
+                resolveArticleCollectionTarget(pathSegments, queryMap)?.let { return it }
                 resolveArticleTarget(pathSegments, queryMap, allowBareReadPath = false)?.let { return it }
                 resolveBangumiTarget(pathSegments)?.let { return it }
             }
@@ -284,11 +316,26 @@ object BilibiliNavigationTargetParser {
         return null
     }
 
+    private fun resolveArticleCollectionTarget(
+        pathSegments: List<String>,
+        queryMap: Map<String, String>,
+    ): BilibiliNavigationTarget.ArticleCollection? {
+        val index = pathSegments.indexOfFirst {
+            it.equals("readlist", ignoreCase = true) || it.equals("mobile-readlist", ignoreCase = true)
+        }
+        if (index < 0) return null
+        val raw = pathSegments.getOrNull(index + 1) ?: queryMap["list_id"] ?: queryMap["id"] ?: return null
+        val value = raw.replace(Regex("^rl", RegexOption.IGNORE_CASE), "")
+        if (value.isEmpty() || !value.all(Char::isDigit)) return null
+        return value.toLongOrNull()?.takeIf { it > 0L }?.let { BilibiliNavigationTarget.ArticleCollection(it) }
+    }
+
     private fun resolveArticleTarget(
         pathSegments: List<String>,
         queryMap: Map<String, String>,
         allowBareReadPath: Boolean
     ): BilibiliNavigationTarget? {
+        if (pathSegments.any { it.equals("readlist", true) || it.equals("mobile-readlist", true) }) return null
         val readIndex = pathSegments.indexOfFirst { it.equals("read", ignoreCase = true) }
         if (readIndex < 0 && !allowBareReadPath) return null
 

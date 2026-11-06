@@ -1,13 +1,13 @@
-package com.android.purebilibili.feature.bangumi.ui.player
+package com.android.purebilibili.core.player
 
 import kotlin.test.Test
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
-class BangumiSeekHapticPolicyTest {
+class SeekTickHapticPolicyTest {
     @Test
     fun feedbackRequiresUserSessionAndAChangedSecond() {
-        val policy = BangumiSeekHapticPolicy()
+        val policy = SeekTickHapticPolicy()
         assertFalse(policy.update(5_000, 0))
         assertTrue(policy.start(5_100, 60_000, 0))
         assertFalse(policy.update(5_900, 100))
@@ -18,7 +18,7 @@ class BangumiSeekHapticPolicyTest {
 
     @Test
     fun rapidCrossingsAreLimitedAndNotReplayedWhenHeld() {
-        val policy = BangumiSeekHapticPolicy()
+        val policy = SeekTickHapticPolicy()
         policy.start(0, 60_000, 0)
         assertFalse(policy.update(1_000, 20))
         assertFalse(policy.update(2_000, 40))
@@ -30,7 +30,7 @@ class BangumiSeekHapticPolicyTest {
 
     @Test
     fun finishAndInvalidDurationStaySilentAndNewSessionResetsCooldown() {
-        val policy = BangumiSeekHapticPolicy()
+        val policy = SeekTickHapticPolicy()
         assertFalse(policy.start(500, -1, 0))
         assertFalse(policy.update(2_000, 100))
         assertTrue(policy.start(0, 5_000, 200))

@@ -103,7 +103,10 @@ internal fun rememberLiveCardContainerTransition(
     val layer = rememberGraphicsLayer()
     val radiusPx = with(LocalDensity.current) { cornerRadius.toPx() }
     SideEffect {
-        sources.sources[target]?.takeIf { it.anchor === anchor }?.layer = layer
+        sources.sources[target]?.takeIf { it.anchor === anchor }?.let { source ->
+            source.layer = layer
+            source.color = color
+        }
     }
     DisposableEffect(anchor) {
         onDispose { anchor.detach() }

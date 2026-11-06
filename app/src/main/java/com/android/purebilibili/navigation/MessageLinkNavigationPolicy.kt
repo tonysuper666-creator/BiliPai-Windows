@@ -29,7 +29,12 @@ internal sealed interface MessageLinkNavigationAction {
     data class BangumiSeason(val seasonId: Long, val mediaId: Long = 0L) : MessageLinkNavigationAction
     data class BangumiEpisode(val epId: Long) : MessageLinkNavigationAction
     data class Music(val musicId: String) : MessageLinkNavigationAction
-    data class Article(val articleId: Long) : MessageLinkNavigationAction
+    data class Article(
+        val articleId: Long,
+        val rootReplyId: Long = 0L,
+        val targetReplyId: Long = 0L,
+    ) : MessageLinkNavigationAction
+    data class ArticleCollection(val collectionId: Long) : MessageLinkNavigationAction
     data class Web(val url: String) : MessageLinkNavigationAction
 }
 
@@ -90,7 +95,12 @@ internal fun resolveMessageLinkNavigationAction(rawLink: String): MessageLinkNav
         )
         is BilibiliNavigationTarget.BangumiEpisode -> MessageLinkNavigationAction.BangumiEpisode(target.epId)
         is BilibiliNavigationTarget.Music -> MessageLinkNavigationAction.Music(target.musicId)
-        is BilibiliNavigationTarget.Article -> MessageLinkNavigationAction.Article(target.articleId)
+        is BilibiliNavigationTarget.ArticleCollection -> MessageLinkNavigationAction.ArticleCollection(target.collectionId)
+        is BilibiliNavigationTarget.Article -> MessageLinkNavigationAction.Article(
+            target.articleId,
+            commentLocation?.rootReplyId ?: target.commentRootRpid,
+            commentLocation?.targetReplyId ?: target.commentTargetRpid,
+        )
         else -> {
             val trimmed = rawLink.trim()
             if (trimmed.startsWith("http://", ignoreCase = true) || trimmed.startsWith("https://", ignoreCase = true)) {
@@ -148,6 +158,9 @@ private fun resolveMessageCommentNavigationAction(rawLink: String): MessageLinkN
             12 -> "bilibili://read/cv$oid"
             else -> "bilibili://video/$oid"
         }
+        if (effectivePageType == 12 && oid > 0L) {
+            return MessageLinkNavigationAction.Article(oid, rootReplyId.coerceAtLeast(0L), targetReplyId.coerceAtLeast(0L))
+        }
         return MessageLinkNavigationAction.CommentDetail(
             oid = oid,
             rootReplyId = rootReplyId,
@@ -190,6 +203,9 @@ private fun resolveMessageCommentNavigationAction(rawLink: String): MessageLinkN
         }
     }
 
+    if (effectiveBusinessId == 12 && oid > 0L) {
+        return MessageLinkNavigationAction.Article(oid, rootReplyId.coerceAtLeast(0L), parsedTargetReplyId.coerceAtLeast(0L))
+    }
     return MessageLinkNavigationAction.CommentDetail(
         oid = oid,
         rootReplyId = rootReplyId,
@@ -205,7 +221,8 @@ private fun resolveMessageCommentLocation(rawLink: String): MessageCommentLocati
     val rootReplyId = queryMap.firstPositiveLong(
         "comment_root_id",
         "root_reply_id",
-        "root_id"
+        "root_id",
+        "root"
     )
     val targetReplyId = queryMap.firstPositiveLong(
         "comment_secondary_id",
