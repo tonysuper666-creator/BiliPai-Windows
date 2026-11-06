@@ -130,8 +130,13 @@ class MigrationWorkflowTest(unittest.TestCase):
         changes, _ = migration.plan(self.repo, recipe)
         bundle = migration.export_patch(changes)
         self.assertEqual(self.build.read_bytes(), original_build)
-        subprocess.run(["git", "apply", "--check", "-"], cwd=self.repo, input=bundle, check=True)
-        subprocess.run(["git", "apply", "-"], cwd=self.repo, input=bundle, check=True)
+        # A host with core.autocrlf=true would rewrite the LF registration into CRLF,
+        # which the second plan must keep rejecting; consume the export byte-for-byte.
+        subprocess.run(["git", "-c", "core.autocrlf=false", "apply", "--check", "-"],
+                       cwd=self.repo, input=bundle, check=True)
+        subprocess.run(["git", "-c", "core.autocrlf=false", "apply", "-"],
+                       cwd=self.repo, input=bundle, check=True)
+        self.assertNotIn(b"\r", self.build.read_bytes())
         again, _ = migration.plan(self.repo, recipe)
         self.assertEqual(migration.export_patch(again), b"")
         self.assertTrue(all(old == new for old, new in again.values()))
@@ -140,6 +145,14 @@ class MigrationWorkflowTest(unittest.TestCase):
         generated.write_text("package example\nval keepDesktopBehavior = false\nval host = oldHost\n", encoding="utf-8", newline="\n")
         self.run_git("apply", relative)
         self.assertEqual(generated.read_text(), "package example\nval keepDesktopBehavior = true\nval host = actualResumeHost\n")
+
+    def test_registration_with_carriage_returns_is_rejected_before_any_write(self):
+        crlf = self.build.read_bytes().replace(b"\n", b"\r\n")
+        self.build.write_bytes(crlf)
+        with self.assertRaisesRegex(migration.Conflict, "Registration file must use LF line endings"):
+            migration.plan(self.repo, self.recipe)
+        self.assertEqual(self.build.read_bytes(), crlf)
+        self.assertFalse((self.repo / PATCH).exists())
 
     def test_transition_conflicts_leave_entire_batch_untouched(self):
         recipe, relative, _ = self.transition_recipe()
