@@ -8,6 +8,7 @@ import tempfile
 import unittest
 
 REPO = Path(__file__).resolve().parents[3]
+LIVE = Path(os.environ.get('BILIPAI_LIVE_ROOT') or REPO)
 spec = importlib.util.spec_from_file_location("bas_filter", REPO / "desktop/tools/extract-upstream-bas-filter.py")
 tool = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(tool)
@@ -63,7 +64,21 @@ class BasFilterExtractionTest(unittest.TestCase):
         for emitted in proof["outputs"]:
             kind, relative = emitted.split("/", 1)
             checked_in = REPO / "desktop/src" / kind / "kotlin" / relative
-            self.assertEqual((output / emitted).read_bytes(), physical(checked_in).read_bytes(), str(checked_in))
+            if relative.endswith('/DesktopOriginalBasDanmakuFilterPolicy.kt'):
+                migrated = 'com/android/purebilibili/feature/video/danmaku/BasDanmakuFilterPolicy.kt'
+                actual = LIVE / 'app/src/main/java' / migrated
+                self.assertFalse(checked_in.exists())
+                self.assertEqual((output / emitted).read_bytes().split(b'\n', 2)[2],
+                                 physical(actual).read_bytes())
+                build = (LIVE / 'desktop/build.gradle.kts').read_text(encoding='utf-8')
+                selected = build.split('val migratedVideoFeaturePaths = setOf(', 1)[1].split('\n)', 1)[0]
+                self.assertEqual(1, selected.count('"' + migrated + '"'))
+                self.assertIn('.toSortedSet() + migratedVideoFeaturePaths', build)
+                self.assertIn('val migratedAppPaths: Set<String> = migratedAppCorePaths +', build)
+                self.assertIn('upstreamIdentity(element.file) !in migratedAppPaths', build)
+                self.assertIn('kotlin.srcDir(appJavaRoot)', build)
+            else:
+                self.assertEqual((output / emitted).read_bytes(), physical(checked_in).read_bytes(), str(checked_in))
         generated = (output / proof["outputs"][1]).read_text(encoding="utf-8")
         self.assertEqual(1, generated.count("budget: DesktopBasDocumentBudget, onRejected:"))
         self.assertNotIn("DesktopBasDocumentBudget()", generated)

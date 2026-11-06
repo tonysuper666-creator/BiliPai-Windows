@@ -55,7 +55,8 @@ def read(rel):
   assert SOURCES[path]['sha256LF']==SOURCE_PINS[path]['sha256LF'] and SOURCES[path]['gitBlob']==SOURCE_PINS[path]['gitBlob'],path
   if not args.standalone:
    rows=[r for r in manifest['sources']if r['path']==path]
-   assert len(rows)==1 and rows[0]['sha256']==SOURCE_PINS[path]['sha256LF'] and FEATURE in rows[0]['features'],path
+   from v025_source_paths import registered_source_sha256
+   assert len(rows)==1 and registered_source_sha256(REPO,rows[0])==SOURCE_PINS[path]['sha256LF'] and FEATURE in rows[0]['features'],path
 
   write(LANE/'original-retained'/(path+'.txt'),raw)
  return SOURCES[path]['text']
@@ -68,6 +69,7 @@ def between(t,start,end,after,label):
  a=t.index(start);b=t.index(end,a);return replace(t,t[a:b],after,label)
 def emit(rel,t,original):
  from v037_player_known_presentation import apply as apply_known_presentation
+ known_before=t
  t=apply_known_presentation(rel,t,REPO,LANE)
  t=validate_fresh_v025_comment_consumer("com/android/purebilibili/"+rel,t)
  from v046_comment_list import advance_bottom_bar, advance_bottom_calls, advance_tablet_avatars
@@ -91,6 +93,14 @@ def emit(rel,t,original):
  if BASE+original in DIRECT and not args.standalone:return
  from desktop_refresh_adaptation import bind_refresh_lists
  t=bind_refresh_lists(t)
+ known_proof=LANE/(Path(rel).name+'.v037-known-presentation-proof.json')
+ if safe(known_proof).exists():
+  from v029_comment_search import whole_proof
+  proof=json.loads(safe(known_proof).read_bytes())
+  proof['knownPresentationStage']={key:proof[key] for key in
+      ('beforeSha256LF','afterSha256LF','indexedEdits','exactCompleteInverse')}
+  proof.update(whole_proof(known_before,t))
+  write(known_proof,json.dumps(proof,ensure_ascii=False,indent=2)+'\n')
  p=OUT/'com/android/purebilibili'/rel;write(p,t)
  OUTPUTS.append({'path':str(p),'sha256LF':sha(t),'original':BASE+original})
 def common(t):
