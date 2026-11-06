@@ -111,6 +111,7 @@ def emit(path,t,origin,mode):
         if repostProof is not None:mode="fixed-v031-repost-coin-owned-delta"
     from v042_owner_follow import apply as apply_owner_follow
     t,owner_follow_proof=apply_owner_follow(path,t,globals())
+    owner_follow_output=t
     if owner_follow_proof is not None:mode='mixed-original-v037-v042-engagement-owned-projection'
     # v0.4.6 isTripleSubmitting and the guarded doTripleAction (roadmap dmk-command-merge-hot-banners). It sits before the
     # follow confirmation and the like write guard so that those two stay contiguous; it only touches doTripleAction.
@@ -120,8 +121,38 @@ def emit(path,t,origin,mode):
     t=apply_follow_confirmation(REPO,path,t,OUTPUT)
     from v046_like_write_guard import apply_and_record as apply_like_write_guard
     t=apply_like_write_guard(REPO,path,t,OUTPUT)
+    if owner_follow_proof is not None:
+        finish_owner_follow_receipt(owner_follow_proof,owner_follow_output,t)
+        save(OUTPUT/'v042-owner-follow-projection-proof.json',owner_follow_proof)
     if STANDALONE or mode!='direct':write(OUTPUT/path,t)
     OUTPUTS.append(dict(path=path,origin=origin,mode=mode,sha256LF=sha(t),physicalLines=len(t.splitlines()),generated=STANDALONE or mode!='direct'))
+
+def finish_owner_follow_receipt(proof,previous,final):
+    """Keep the reviewed follow stage and authenticate the final emitted VM."""
+    from v029_comment_search import whole_proof
+    if proof['outputSHA256'] != sha(previous):
+        raise ValueError('Owner follow stage output changed')
+    edits=list(proof['edits'])
+    before=previous
+    for edit in reversed(edits):
+        at=edit['offset']
+        if before[at:at+len(edit['after'])] != edit['after']:
+            raise ValueError('Owner follow stage inverse changed')
+        before=before[:at]+edit['before']+before[at+len(edit['after']):]
+    if sha(before) != proof['inputSHA256']:
+        raise ValueError('Owner follow stage input changed')
+    proof['ownerFollowStage']={key:proof[key] for key in ('inputSHA256','outputSHA256','edits')}
+    for edit in reversed(whole_proof(previous,final)['indexedEdits']):
+        edits.append(dict(offset=edit['beforeOffset'],before=edit['before'],after=edit['after'],label='Final engagement adaptations'))
+    replay=before
+    for edit in edits:
+        at=edit['offset']
+        if replay[at:at+len(edit['before'])] != edit['before']:
+            raise ValueError('Final owner follow receipt replay changed')
+        replay=replay[:at]+edit['after']+replay[at+len(edit['before']):]
+    if replay != final:
+        raise ValueError('Final owner follow receipt does not cover the complete VM')
+    proof.update(edits=edits,outputSHA256=sha(final))
 def function_range(t,name):
     matches=list(re.finditer(r'(?m)^[ \t]*(?:(?:internal|private|suspend|inline)\s+)*fun\s+(?:[\w.]+\.)?'+re.escape(name)+r'\s*\(',t));assert len(matches)==1,(name,len(matches))
     m=matches[0];tokens=parser.kotlin_tokens(t);i=next(i for i,(_,a,_)in enumerate(tokens) if a>=m.start())
