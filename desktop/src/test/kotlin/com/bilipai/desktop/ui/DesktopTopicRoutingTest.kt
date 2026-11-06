@@ -28,6 +28,7 @@ class DesktopTopicRoutingTest {
         val commands = commands(routes::add)
         val cases = listOf(
             "bilibili://search?keyword=%E8%80%81%E7%95%AA%E8%8C%84" to "老番茄",
+            "bili://search?keyword=%E4%B8%AD%E6%96%87" to "中文",
             "https://search.bilibili.com/all?keyword=100%25+%E6%B5%8B%E8%AF%95" to "100% 测试",
             "bilibili://search?keyword=%20%E4%B8%AD%E6%96%87%20" to "中文",
             "bilibili://search?keyword=first&keyword=second" to "second",
@@ -41,7 +42,10 @@ class DesktopTopicRoutingTest {
             assertEquals(keyword, route.keyword, url)
             assertEquals(DesktopShellPage.SEARCH, desktopShellPageOf(route))
         }
-        listOf("bilibili://search?keyword=", "bilibili://search?keyword=%20", "bilibili://search?keyword=%zz")
+        listOf("bilibili://search?keyword=", "bilibili://search?keyword=%20", "bilibili://search?keyword=%zz",
+            "ftp://search?keyword=hello", "javascript:search?keyword=hello",
+            "ftp://browser/?url=bilibili%3A%2F%2Fsearch%3Fkeyword%3Dhello",
+            "unsupported://browser/?url=bilibili%3A%2F%2Fsearch%3Fkeyword%3Dhello")
             .forEach { desktopOriginalOpenMessageLink(it, commands, "search-test") }
         assertTrue(routes.isEmpty())
         desktopOriginalOpenMessageLink("https://example.com/path", commands, "search-test")

@@ -182,34 +182,82 @@ CAPTURES_BY_CASE['search_link'] = [
     '350-dynamic-topic-actual-search', '360-search-links-back-video',
 ]
 
+SEARCH_LINK_SCHEMA = ('bilibili://search?from=appcommentline_search'
+    '&search_query=%E8%80%81%E7%95%AA%E8%8C%84&keyword=%E8%80%81%E7%95%AA%E8%8C%84&seid=4815162342108')
+SEARCH_LINK_DYNAMIC_ID = '990000000000000001'
+SEARCH_LINK_ROWS = ('300-comment-search-link-click', '310-comment-link-actual-search', '320-comment-search-back-video',
+    '330-comment-dynamic-link-detail', '340-dynamic-topic-click', '350-dynamic-topic-actual-search', '360-search-links-back-video')
+
 def verify_search_link(receipt, by, transport):
+    """Actual owned mouse input on both original hosts; never a fixture route, Back or stack write."""
     for key in ('searchLinkProofRequested','searchLinkProofCompleted','searchLinkReadResponsesAreSynthetic'):
         if receipt.get(key) is not True: raise ValueError('Missing actual Main search-link assertion: ' + key)
-    for key in ('commentSearchProofRequested','composerInputProofRequested','syntheticAccountSeededThroughActualSessionStore',
-                'commentPublishingAccepted','loginUiAccepted','commentsSent'):
+    for key in ('commentSearchProofRequested','commentSearchInputProofCompleted','commentSearchReadResponsesAreSynthetic',
+                'commentSearchPhysicalTextHumanReviewRequired','composerInputProofRequested','composerInputProofCompleted',
+                'syntheticAccountSeededThroughActualSessionStore','commentPublishingAccepted','imageUploadAccepted',
+                'loginUiAccepted','commentsSent','nvidiaUiProofRequested','nvidiaUiProofCompleted',
+                'interactionProofRequested','interactionProofCompleted','featureInputProofCompleted','hotInputProofRequested',
+                'hotInputProofCompleted','collectionInputProofRequested','collectionInputProofCompleted',
+                'videoMetadataProofCompleted','bgmInputProofRequested','bgmInputProofCompleted','pipInputProofRequested',
+                'pipInputProofCompleted','originalInteractionProofRequested','originalInteractionProofCompleted',
+                'physicalStackWrittenByFixture','directPhysicalStackListMutation','newNativeActorCreatedByFixture',
+                'newRootCreatedByFixture'):
         if receipt.get(key) is not False: raise ValueError('Mixed search-link proof: ' + key)
-    if transport.get('searchLinkResponsesAreSynthetic') is not True or transport.get('realAccountUsed') is not False:
+    if transport.get('searchLinkResponsesAreSynthetic') is not True or transport.get('sameActualRepository') is not True:
         raise ValueError('Unexpected search-link account/transport')
+    for key in ('realAccountUsed','realBilibiliDataAccepted','newRootCreated','newPlayerCreated','newControllerCreated',
+                'originalVmStateWritten','actualNativeStateWritten','physicalStackWritten','commentSearchResponsesAreSynthetic',
+                'composerInputResponsesAreSynthetic','commentsSent','creatorFollowMutationSubmitted',
+                'bgmAccountMutationSubmitted','originalInteractionRemoteMutationSubmitted','collectionSubscriptionMutationSubmitted'):
+        if transport.get(key) is not False: raise ValueError('Unexpected search-link transport scope: ' + key)
     if transport.get('commentSearch') is not None or transport.get('composerInput') is not None:
         raise ValueError('Mixed search-link replay modes')
     detail = transport['searchLink']
     if (detail.get('commentKeyword') != '老番茄' or detail.get('dynamicTopicKeyword') != '中文话题验收' or
-        detail.get('dynamicId') != '990000000000000001' or 'appcommentline_search' not in detail.get('commentSearchSchema', '')):
+        detail.get('dynamicId') != SEARCH_LINK_DYNAMIC_ID or detail.get('commentSearchSchema') != SEARCH_LINK_SCHEMA):
         raise ValueError('Search-link fixture identity changed')
+    if detail.get('syntheticGuestTransportOnly') is not True: raise ValueError('Search-link replay was not guest-only')
     for key in ('accountMutationSubmitted','fixtureRoutePushed'):
         if detail.get(key) is not False: raise ValueError('Unexpected search-link scope: ' + key)
+    reads = detail.get('readRequests')
+    if type(reads) is not list or not reads or any(type(r) is not dict or r.get('method') != 'GET' for r in reads):
+        raise ValueError('Search-link reads were not guest GET only')
+    for read_ in reads:
+        if read_.get('kind') == 'reply':
+            if read_.get('path') not in ('/x/v2/reply/wbi/main', '/x/v2/reply/main'): raise ValueError('Unexpected reply read')
+        elif read_.get('kind') == 'dynamicDetail':
+            if (read_.get('path') not in ('/x/polymer/web-dynamic/v1/detail', '/x/polymer/web-dynamic/desktop/v1/detail') or
+                read_.get('id') != SEARCH_LINK_DYNAMIC_ID): raise ValueError('Unexpected dynamic detail read')
+        else: raise ValueError('Unexpected search-link read kind')
+    if not any(r.get('kind') == 'reply' and r.get('videoRoots') is True and r.get('oid') == '170001' and r.get('type') == '1'
+               for r in reads): raise ValueError('Original video comment read not observed')
+    if not any(r.get('kind') == 'dynamicDetail' for r in reads): raise ValueError('Original dynamic detail read not observed')
+    for row_id in SEARCH_LINK_ROWS:
+        row = by[row_id]
+        for key in ('fixtureRoutePushed','fixtureBackCommandUsed','physicalStackWrittenByFixture','directPhysicalStackListMutation'):
+            if row.get(key, False) is not False: raise ValueError('Search-link fixture substituted navigation: ' + row_id)
+    click = by['300-comment-search-link-click']
+    if click.get('label') != '老番茄' or click.get('appUrlSchema') != SEARCH_LINK_SCHEMA or click.get('wireUrlEmpty') is not True:
+        raise ValueError('Comment click did not use the observed empty-url app schema wire')
     for row_id, keyword in (('310-comment-link-actual-search', '老番茄'), ('350-dynamic-topic-actual-search', '中文话题验收')):
         row = by[row_id]
         if row.get('keyType') != 'Search' or row.get('keyword') != keyword or row.get('drawnSearchEditorValue') != keyword or \
                 row.get('fixtureRoutePushed') is not False:
             raise ValueError('Actual Search did not draw the clicked keyword: ' + row_id)
-    if by['330-comment-dynamic-link-detail'].get('keyType') != 'DynamicDetail':
+    dynamic = by['330-comment-dynamic-link-detail']
+    if dynamic.get('keyType') != 'DynamicDetail' or dynamic.get('dynamicId') != SEARCH_LINK_DYNAMIC_ID or \
+            dynamic.get('fixtureRoutePushed') is not False:
         raise ValueError('Comment dynamic link did not open the actual dynamic detail')
+    topic = by['340-dynamic-topic-click']
+    if topic.get('label') != '中文话题验收' or type(topic.get('topicId')) is not int or topic['topicId'] != 0:
+        raise ValueError('Dynamic topic identity changed')
     for row_id in ('300-comment-search-link-click', '340-dynamic-topic-click'):
         if by[row_id].get('inputMechanism') != 'OWNED_COMPOSE_AWT_MOUSE_EVENT':
             raise ValueError('Search link was not clicked through owned input: ' + row_id)
     for row_id in ('320-comment-search-back-video', '360-search-links-back-video'):
-        if by[row_id].get('keyType') != 'VideoDetail' or by[row_id].get('sameStackRestored') is not True:
+        row = by[row_id]
+        if row.get('keyType') != 'VideoDetail' or row.get('sameStackRestored') is not True or \
+                row.get('fixtureRoutePushed') is not False or row.get('fixtureBackCommandUsed') is not False:
             raise ValueError('Original Back did not restore the video: ' + row_id)
 
 CAPTURES_BY_CASE['fullscreen'] = [

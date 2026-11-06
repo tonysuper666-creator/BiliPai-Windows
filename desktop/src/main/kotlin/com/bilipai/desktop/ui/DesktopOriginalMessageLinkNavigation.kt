@@ -10,6 +10,10 @@ internal val LocalDesktopOriginalMessageLinkNavigation = staticCompositionLocalO
     error("Original message links require the actual retained Root route")
 }
 
+// Only an outer scheme the old Web branch or original deep links already accepted may
+// reach the original search parser; it unwraps ?url= before judging the scheme.
+private val desktopMessageSearchSchemes = setOf("http", "https", "bilibili", "bili")
+
 internal fun desktopOriginalOpenMessageLink(rawLink: String, commands: DesktopOriginalRootRouteCommands, sourceRoute: String) {
     when (val action = resolveMessageLinkNavigationAction(rawLink)) {
         is MessageLinkNavigationAction.Video -> {
@@ -75,7 +79,9 @@ internal fun desktopOriginalOpenMessageLink(rawLink: String, commands: DesktopOr
             commands.push(BiliPaiNavKey.ArticleDetail(action.articleId))
         }
         is MessageLinkNavigationAction.Web -> {
-            val search = BilibiliNavigationTargetParser.parse(rawLink) as? BilibiliNavigationTarget.Search
+            val scheme = rawLink.trim().substringBefore("://", "").lowercase()
+            val search = if (scheme in desktopMessageSearchSchemes)
+                BilibiliNavigationTargetParser.parse(rawLink) as? BilibiliNavigationTarget.Search else null
             if (search != null) {
                 commands.push(BiliPaiNavKey.Search(search.keyword))
             } else {

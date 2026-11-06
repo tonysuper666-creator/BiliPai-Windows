@@ -2642,7 +2642,8 @@ object WindowsVideoActualRootUiFixture {
         searchMouse("返回")
         returnToVideo(beforeCommentBack)
         check(edt { routes.stack.toList() } == stackBefore) { "Search Back did not restore the original stack" }
-        record("320-comment-search-back-video", mapOf("sameStackRestored" to JsonPrimitive(true)))
+        record("320-comment-search-back-video", mapOf("sameStackRestored" to JsonPrimitive(true),
+            "fixtureRoutePushed" to JsonPrimitive(false), "fixtureBackCommandUsed" to JsonPrimitive(false)))
 
         // 2. Ordinary dynamic link from a comment still opens CommunityContentScreen.
         openComments(WindowsSearchLinkReplay.DYNAMIC_LINK_TITLE)
