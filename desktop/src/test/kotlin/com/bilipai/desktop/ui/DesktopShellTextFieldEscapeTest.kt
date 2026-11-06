@@ -32,9 +32,9 @@ import kotlin.test.*
 
 /**
  * Esc with the caret in a text field of the shell (A3 of the desktop audit): the search box, the comment box and the private message
- * input each keep the page. The root surface of this scene carries the Esc decision of DesktopShell.kt (desktopShellEscape), and the
- * focus owner of the scene is a Compose layer that reports a text input session while a field has the caret, exactly as the real
- * window does.
+ * input each keep the page. The root surface of this scene carries the Esc decision of DesktopShell.kt (desktopShellEscape) and
+ * reads the caret from the same text editor predicate the shell uses (desktopShellTextEditorFocused): the focus owner of the scene is
+ * a Compose layer that reports a text input session while a field has the caret, exactly as the real window does.
  * No account, no network, no OS window.
  */
 class DesktopShellTextFieldEscapeTest {
@@ -68,7 +68,7 @@ class DesktopShellTextFieldEscapeTest {
                 CompositionLocalProvider(LocalWindowInfo provides window) {
                     InterceptPlatformTextInput(interceptor = { _, _ -> awaitCancellation() }) {
                         Surface(Modifier.fillMaxSize().onKeyEvent { event ->
-                            val escape = if (event.key == Key.Escape) desktopShellEscape(event, fullscreen) else DesktopShellEscape.NONE
+                            val escape = if (event.key == Key.Escape) desktopShellEscape(event, desktopShellTextEditorFocused(layer), fullscreen) else DesktopShellEscape.NONE
                             if (escape == DesktopShellEscape.LEAVE_FULLSCREEN) { leftFullscreen++; true }
                             else if (escape == DesktopShellEscape.BACK) { back++; true }
                             else false

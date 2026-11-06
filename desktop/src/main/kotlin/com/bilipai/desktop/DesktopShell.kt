@@ -140,10 +140,12 @@ private fun DesktopSection.localizedLabel(strings: DesktopStrings): String = whe
 /** What the Root does with Esc (spec 8: the topmost layer first, then back). */
 internal enum class DesktopShellEscape { NONE, LEAVE_FULLSCREEN, BACK }
 
-/** Esc at the Root: leave fullscreen, else go back. Any other key is none of Esc's business. */
-internal fun desktopShellEscape(event: KeyEvent, fullscreen: Boolean): DesktopShellEscape =
+/** Esc at the Root: leave fullscreen, else go back. Any other key is none of Esc's business, and with the caret in a text field Esc
+ *  belongs to the field (close suggestions, clear the selection, drop the caret), never to the page (spec 8). */
+internal fun desktopShellEscape(event: KeyEvent, textEditorFocused: Boolean, fullscreen: Boolean): DesktopShellEscape =
     when {
         event.type != KeyEventType.KeyDown || event.key != Key.Escape -> DesktopShellEscape.NONE
+        textEditorFocused -> DesktopShellEscape.NONE
         fullscreen -> DesktopShellEscape.LEAVE_FULLSCREEN
         else -> DesktopShellEscape.BACK
     }
@@ -1781,7 +1783,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
     // UX S2 (hunk RH1, part S2): one shell shortcut host. Back goes through the window navigation owner, as Esc does.
     val shellShortcutHost = remember(homeRootRef) { com.bilipai.desktop.ui.DesktopShellShortcutHost({ homeRootRef.get()?.navigation?.requestBack() == true }) }
     val rootKeyHandler: (KeyEvent) -> Boolean = { event ->
-            val escape = if (event.key == Key.Escape) desktopShellEscape(event, isFullscreen()) else DesktopShellEscape.NONE
+            val escape = if (event.key == Key.Escape) desktopShellEscape(event, desktopShellTextEditorFocused(), isFullscreen()) else DesktopShellEscape.NONE
             if (event.type == KeyEventType.KeyDown && event.key == Key.F11) { toggleOriginalFullscreen(); true }
             else if (escape == DesktopShellEscape.LEAVE_FULLSCREEN) { setOriginalFullscreen(false); true }
             else if (escape == DesktopShellEscape.BACK) { homeRootRef.get()?.navigation?.requestBack(); true }
