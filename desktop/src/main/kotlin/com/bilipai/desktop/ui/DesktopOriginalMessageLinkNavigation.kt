@@ -1,5 +1,7 @@
 package com.bilipai.desktop.ui
 import androidx.compose.runtime.staticCompositionLocalOf
+import com.android.purebilibili.core.util.BilibiliNavigationTarget
+import com.android.purebilibili.core.util.BilibiliNavigationTargetParser
 import com.android.purebilibili.navigation.*
 import com.android.purebilibili.navigation3.*
 
@@ -73,9 +75,14 @@ internal fun desktopOriginalOpenMessageLink(rawLink: String, commands: DesktopOr
             commands.push(BiliPaiNavKey.ArticleDetail(action.articleId))
         }
         is MessageLinkNavigationAction.Web -> {
-            val url = action.url.trim()
-            if (url.startsWith("http://", ignoreCase = true) || url.startsWith("https://", ignoreCase = true)) {
-                commands.push(BiliPaiNavKey.Web(url))
+            val search = BilibiliNavigationTargetParser.parse(rawLink) as? BilibiliNavigationTarget.Search
+            if (search != null) {
+                commands.push(BiliPaiNavKey.Search(search.keyword))
+            } else {
+                val url = action.url.trim()
+                if (url.startsWith("http://", ignoreCase = true) || url.startsWith("https://", ignoreCase = true)) {
+                    commands.push(BiliPaiNavKey.Web(url))
+                }
             }
         }
     }
