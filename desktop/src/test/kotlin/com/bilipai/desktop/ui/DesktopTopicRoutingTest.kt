@@ -19,6 +19,7 @@ import com.android.purebilibili.navigation3.BiliPaiNavKey
 import com.android.purebilibili.navigation3.legacyRouteToBiliPaiNavKey
 import com.bilipai.desktop.appearance.*
 import java.lang.reflect.Proxy
+import kotlinx.serialization.json.Json
 import kotlin.test.*
 
 class DesktopTopicRoutingTest {
@@ -47,15 +48,23 @@ class DesktopTopicRoutingTest {
         assertEquals("https://example.com/path", assertIs<BiliPaiNavKey.Web>(routes.single()).url)
     }
 
-    @Test fun `comment rich search link responds to a pointer click`() = assertRichSearchClick(comment = true)
+    @Test fun `comment rich search fixture selects app schema and dispatches the click`() = assertRichSearchClick(comment = true)
 
-    @Test fun `dynamic rich search link responds to a pointer click`() = assertRichSearchClick(comment = false)
+    @Test fun `dynamic rich search fixture exposes keyword to its callback`() = assertRichSearchClick(comment = false)
 
     @OptIn(ExperimentalComposeUiApi::class, androidx.compose.ui.InternalComposeUiApi::class)
     private fun assertRichSearchClick(comment: Boolean) {
         val routes = mutableListOf<BiliPaiNavKey>()
         val commands = commands(routes::add)
-        val url = "bilibili://search?keyword=%E8%80%81%E7%95%AA%E8%8C%84"
+        val url = if (comment)
+            "bilibili://search?from=appcommentline_search&keyword=%E8%80%81%E7%95%AA%E8%8C%84&seid=123456"
+        else "bilibili://search?keyword=%E8%80%81%E7%95%AA%E8%8C%84"
+        // This is the observed wire shape: the normal URL is empty and the app schema
+        // supplies the link. It is a component/dispatch test, not a full host UI test.
+        val commentLink = Json.decodeFromString<ReplyContentUrl>(
+            """{"title":"老番茄","url":"","app_url_schema":"$url"}""")
+        assertEquals("", commentLink.url)
+        assertEquals(url, commentLink.appUrlSchema)
         val emotes = object : DesktopDynamicEmotes {
             override fun snapshot() = emptyMap<String, String>()
             override fun currentSessionKey(): Any = "search-fixture"
@@ -79,16 +88,12 @@ class DesktopTopicRoutingTest {
                     CompositionLocalProvider(LocalDesktopDynamicCardBindings provides platform) {
                         if (comment) {
                             RichCommentText(text = "link", fontSize = 18.sp, emoteMap = emptyMap(),
-                                content = ReplyContent(message = "link", urls = mapOf("link" to
-                                    ReplyContentUrl(title = "老番茄", appUrlSchema = url))),
+                                content = ReplyContent(message = "link", urls = mapOf("link" to commentLink)),
                                 onUrlClick = { clicked += it; desktopOriginalOpenMessageLink(it, commands, "comment") })
                         } else {
                             RichTextContent(desc = DynamicDesc(rich_text_nodes = listOf(
                                 RichTextNode(type = "RICH_TEXT_NODE_TYPE_WEB", text = "老番茄", jump_url = url))),
-                                onUserClick = {}, onTopicKeywordClick = { keyword ->
-                                    clicked += keyword
-                                    if (keyword.isNotBlank()) commands.push(BiliPaiNavKey.Search(keyword))
-                                })
+                                onUserClick = {}, onTopicKeywordClick = { keyword -> clicked += keyword })
                         }
                     }
                 }
@@ -106,10 +111,14 @@ class DesktopTopicRoutingTest {
                 scene.sendPointerEvent(PointerEventType.Release, point, buttons = PointerButtons())
                 settle()
                 assertEquals(listOf(if (comment) url else "老番茄"), clicked, "actual rich text callback")
-                val route = assertIs<BiliPaiNavKey.Search>(routes.singleOrNull(), if (comment) "comment" else "dynamic")
-                assertEquals("老番茄", route.keyword)
-                assertEquals(DesktopShellPage.SEARCH, desktopShellPageOf(route))
-                routes.clear()
+                if (comment) {
+                    val route = assertIs<BiliPaiNavKey.Search>(routes.singleOrNull(), "comment dispatch")
+                    assertEquals("老番茄", route.keyword)
+                    assertEquals(DesktopShellPage.SEARCH, desktopShellPageOf(route))
+                } else {
+                    // The real host has not been mounted here; do not manufacture a route.
+                    assertTrue(routes.isEmpty())
+                }
             } finally { scene.close() }
         }
     }
