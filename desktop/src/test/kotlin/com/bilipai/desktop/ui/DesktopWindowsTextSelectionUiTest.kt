@@ -2,6 +2,7 @@
     kotlinx.coroutines.ExperimentalCoroutinesApi::class)
 package com.bilipai.desktop.ui
 
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
@@ -22,7 +23,9 @@ import androidx.compose.ui.unit.*
 import com.android.purebilibili.core.theme.AppUiStyle
 import com.android.purebilibili.data.model.response.*
 import com.android.purebilibili.feature.dynamic.components.RichTextContent
+import com.android.purebilibili.feature.message.MessageBubble
 import com.android.purebilibili.feature.message.RichMessageText
+import com.android.purebilibili.feature.message.messageSecondaryClick
 import com.android.purebilibili.feature.video.ui.components.RichCommentText
 import com.bilipai.desktop.appearance.*
 import com.bilipai.desktop.data.*
@@ -145,6 +148,20 @@ class DesktopWindowsTextSelectionUiTest {
             scene.sendPointerEvent(PointerEventType.Release, to, timeMillis = next(),
                 buttons = PointerButtons(), button = PointerButton.Primary); advance()
         }
+        /** Press, keep the mouse still past the long-press timeout, then drag and release. */
+        fun holdThenDrag(from: Offset, to: Offset) {
+            eventMillis += 1_000
+            scene.sendPointerEvent(PointerEventType.Move, from, timeMillis = next())
+            scene.sendPointerEvent(PointerEventType.Press, from, timeMillis = next(),
+                buttons = PointerButtons(isPrimaryPressed = true), button = PointerButton.Primary)
+            advance(1); scheduler.advanceTimeBy(900); advance(); eventMillis += 900
+            for (step in 1..8) {
+                scene.sendPointerEvent(PointerEventType.Move, from + (to - from) * (step / 8f), timeMillis = next(),
+                    buttons = PointerButtons(isPrimaryPressed = true)); advance(1)
+            }
+            scene.sendPointerEvent(PointerEventType.Release, to, timeMillis = next(),
+                buttons = PointerButtons(), button = PointerButton.Primary); advance()
+        }
         fun rightClick(at: Offset) {
             eventMillis += 1_000
             scene.sendPointerEvent(PointerEventType.Move, at, timeMillis = next())
@@ -163,6 +180,7 @@ class DesktopWindowsTextSelectionUiTest {
             }
             advance()
         }
+        fun focusedBounds() = nodes().lastOrNull { it.config.getOrNull(SemanticsProperties.Focused) == true }?.boundsInRoot
         fun focusedTag() = nodes().lastOrNull { it.config.getOrNull(SemanticsProperties.Focused) == true }
             ?.config?.getOrNull(SemanticsProperties.TestTag)
         /** Ctrl+C on Windows; the same copy shortcut is Cmd+C when this suite runs on a Mac host. */
@@ -331,16 +349,20 @@ class DesktopWindowsTextSelectionUiTest {
     private val chatUrl = "https://www.bilibili.com/video/BV1xx411c7mD"
     private val chatLinked = "资料在这里 $chatUrl"
 
-    private fun chatScene(style: AppUiStyle, withLink: Boolean = true,
-        frame: @Composable (@Composable () -> Unit) -> Unit = { it() }, onLink: (String) -> Unit) = Scene(style) {
+    /** A real message page owner around [content]; only text renders, the owner is never asked for a page or request. */
+    @Composable private fun Scene.MessagePage(content: @Composable () -> Unit) {
         val pageOwner = remember {
-            // Only RichMessageText renders; the owner is real but never asked for a page or request.
             val community = DesktopCommunityRepository(repository, DesktopBlockedUpStore(fixture.pluginContext))
             DesktopOriginalMessagePageOwner(repository, community, repository.sessionEpoch, 42, fixture.scope,
                 { true }, { true }, { action -> action(); true }, fixture.home, {}, false)
                 .also { owner -> onClose = { runBlocking { owner.closeAndJoin() } } }
         }
-        CompositionLocalProvider(LocalDesktopMessagePageOwner provides pageOwner) {
+        CompositionLocalProvider(LocalDesktopMessagePageOwner provides pageOwner, content = content)
+    }
+
+    private fun chatScene(style: AppUiStyle, withLink: Boolean = true,
+        frame: @Composable (@Composable () -> Unit) -> Unit = { it() }, onLink: (String) -> Unit) = Scene(style) {
+        MessagePage {
             frame {
                 Column(verticalArrangement = Arrangement.spacedBy(24.dp)) {
                     RichMessageText(text = chatPlain, emoteInfos = emptyList(), color = Color.Unspecified, fontSize = 16.sp)
@@ -348,6 +370,15 @@ class DesktopWindowsTextSelectionUiTest {
                         fontSize = 16.sp, onLinkClick = onLink)
                 }
             }
+        }
+    }
+
+    /** The chat page's own bubble (MessageBubble), with its long-press / right-click action dialog counted. */
+    private fun bubbleScene(style: AppUiStyle, text: String = chatPlain, onAction: (() -> Unit)?,
+        frame: @Composable (@Composable () -> Unit) -> Unit = { it() }) = Scene(style) {
+        MessagePage {
+            frame { MessageBubble(message = PrivateMessageItem(msg_type = 1, content = text), isOwnMessage = false,
+                onLongPress = onAction, onLinkClick = {}) }
         }
     }
 
@@ -379,5 +410,82 @@ class DesktopWindowsTextSelectionUiTest {
             RichTextNode(type = "RICH_TEXT_NODE_TYPE_TEXT", text = dynamicPlain, orig_text = dynamicPlain)))
         dynamicScene(style, {}, {}, plainDesc, { Framed(it) }).use { s -> s.assertTabSkipsTextAndDragStillCopies(dynamicPlain) }
         chatScene(style, withLink = false, frame = { Framed(it) }) {}.use { s -> s.assertTabSkipsTextAndDragStillCopies(chatPlain) }
+    }
+
+    // ---- 复核用例（Sage，TON-1333）；第一条的外层改为真实气泡，见下方说明 ----
+
+    /**
+     * Review case 1. The review wrote the bubble's frame as `Framed { SelectionContainer { content() } }`, i.e. the
+     * upstream bubble's native SelectionContainer copied into the test; no fix to the bubble can change a container the
+     * test itself builds, so the frame here renders the real [MessageBubble] instead. Same name, same assertions.
+     */
+    @TestFactory fun reviewTabSkipsChatTextInsideTheRealBubbleSelectionContainer() = styles("review tab bubble") { style ->
+        bubbleScene(style, onAction = null, frame = { content -> Framed { content() } })
+            .use { s -> s.assertTabSkipsTextAndDragStillCopies(chatPlain) }
+    }
+
+    @TestFactory fun reviewRightClickOnSelectedBubbleTextOpensOneMenu() = styles("review bubble menu") { style ->
+        var actionDialogs = 0
+        chatScene(style, frame = { content -> Box(Modifier.combinedClickable(onClick = {}, onLongClick = { actionDialogs++ })
+            .messageSecondaryClick { actionDialogs++ }) { content() } }) {}.use { s ->
+            s.advance(); s.assertMenuCopies(chatPlain)
+            assertEquals(0, actionDialogs, "Right-click on selected bubble text opened the message action dialog too")
+        }
+    }
+
+    // ---- 真实私信气泡（MessageBubble） ----
+
+    @TestFactory fun realBubbleRightClickOnSelectionOnlyCopiesAndWithoutSelectionOpensTheActions() = styles("real bubble menu") { style ->
+        var actionDialogs = 0
+        bubbleScene(style, onAction = { actionDialogs++ }).use { s ->
+            s.advance(); s.assertMenuCopies(chatPlain)
+            assertEquals(0, actionDialogs, "Right-click on the selection shows only the copy menu")
+        }
+        bubbleScene(style, onAction = { actionDialogs++ }).use { s ->
+            s.advance(); s.rightClick(s.bounds(chatPlain).center)
+            assertEquals(1, actionDialogs, "Right-click on an unselected bubble still opens its message actions")
+            assertFalse(s.hasText(s.copyLabel), "Without a selection there is nothing to copy, menu: ${s.texts()}")
+        }
+    }
+
+    @TestFactory fun realBubbleHoldingTheMouseBeforeDraggingStillSelectsWithoutTheActionDialog() = styles("real bubble hold") { style ->
+        var actionDialogs = 0
+        bubbleScene(style, onAction = { actionDialogs++ }).use { s ->
+            s.advance()
+            s.longPress(s.start(chatPlain), PointerType.Mouse)
+            assertEquals(0, actionDialogs, "Holding the mouse on a bubble does not pop the action dialog")
+            s.holdThenDrag(s.start(chatPlain), s.end(chatPlain) + Offset(60f, 0f)); s.copyShortcut()
+            assertEquals(chatPlain, s.clipboard.text, "Holding before dragging still selects the whole message")
+            assertEquals(0, actionDialogs, "The hold-then-drag is a selection, not a long press")
+        }
+    }
+
+    @TestFactory fun realBubbleTouchLongPressStillOpensTheActions() = styles("real bubble touch") { style ->
+        var actionDialogs = 0
+        bubbleScene(style, onAction = { actionDialogs++ }).use { s ->
+            s.advance()
+            s.longPress(s.start(chatPlain), PointerType.Touch)
+            assertEquals(1, actionDialogs, "Touch keeps the long press for the message actions")
+        }
+    }
+
+    @TestFactory fun shiftTabFromTheControlAfterALinkedMessageStopsOnTheLinkThenLeaves() = styles("shift tab link") { style ->
+        chatScene(style, frame = { Framed(it) }) {}.use { s ->
+            s.advance()
+            val link = s.bounds(chatLinked)
+            tailrec fun Scene.walk(shift: Boolean, until: String, stops: List<Rect?> = emptyList()): List<Rect?> {
+                tab(shift); val tag = focusedTag()
+                return if (tag == until || stops.size > 6) stops else walk(shift, until, stops + focusedBounds())
+            }
+            s.tab(); assertEquals("before", s.focusedTag())
+            val forward = s.walk(shift = false, until = "after")
+            val backward = s.walk(shift = true, until = "before")
+            assertEquals("before", s.focusedTag(), "Shift+Tab gets back to the control before the messages")
+            for ((name, stops) in listOf("Tab" to forward, "Shift+Tab" to backward)) {
+                assertTrue(stops.isNotEmpty(), "$name stops on the link")
+                assertTrue(stops.all { it != null && link.contains(it.center) && it.width < link.width },
+                    "$name only stops on the link inside the text, never on the text block itself: $stops (text $link)")
+            }
+        }
     }
 }

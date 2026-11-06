@@ -18,15 +18,7 @@
  import androidx.compose.foundation.layout.*
  import com.android.purebilibili.core.ui.components.AppLazyColumn as LazyColumn
  import androidx.compose.foundation.lazy.items
-@@ -47,7 +43,6 @@
- import androidx.compose.ui.draw.clip
- import androidx.compose.ui.graphics.Color
- import androidx.compose.ui.graphics.luminance
--import androidx.compose.ui.input.pointer.pointerInput
- import androidx.compose.ui.layout.ContentScale
- import androidx.compose.ui.platform.LocalConfiguration
- import androidx.compose.ui.platform.LocalContext
-@@ -56,12 +51,12 @@
+@@ -56,12 +52,12 @@
  import androidx.compose.ui.text.Placeholder
  import androidx.compose.ui.text.PlaceholderVerticalAlign
  import androidx.compose.ui.text.SpanStyle
@@ -40,7 +32,7 @@
  import androidx.compose.ui.text.withStyle
  import androidx.compose.ui.text.TextStyle
  import androidx.compose.ui.unit.Dp
-@@ -71,7 +66,6 @@
+@@ -71,7 +67,6 @@
  import com.android.purebilibili.core.store.HomeWallpaperEffectMode
  import com.android.purebilibili.core.store.SettingsManager
  import com.android.purebilibili.core.ui.LocalGlobalWallpaperBackdropVisible
@@ -48,7 +40,7 @@
  import coil3.compose.AsyncImage
  import com.android.purebilibili.core.ui.AppAlertDialog
  import com.android.purebilibili.core.ui.AppSurfaceTokens
-@@ -91,7 +85,6 @@
+@@ -91,7 +86,6 @@
  import com.android.purebilibili.core.ui.components.AppTextButton
  import com.android.purebilibili.core.ui.rememberAppBackIcon
  import com.android.purebilibili.core.util.FormatUtils
@@ -56,7 +48,7 @@
  import com.android.purebilibili.data.model.response.EmoteInfo
  import com.android.purebilibili.data.model.response.PrivateMessageItem
  import com.android.purebilibili.data.repository.MessageSessionControlInfo
-@@ -111,9 +104,6 @@
+@@ -111,9 +105,6 @@
  import java.text.SimpleDateFormat
  import java.util.*
  import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -66,7 +58,7 @@
  import com.android.purebilibili.feature.common.ListLoadError
  import com.android.purebilibili.core.ui.AdaptiveLoadingIndicator
  import kotlinx.coroutines.delay
-@@ -144,18 +134,12 @@
+@@ -144,18 +135,12 @@
  // 小横条停靠在底部时的默认占位高度（横条高度 + 外边距），用于让输入框避开它
  @Composable
  private fun resolveChatMiniPlayerBottomAvoidance(): Dp {
@@ -87,7 +79,7 @@
      talkerId: Long,
      sessionType: Int,
      userName: String,
-@@ -163,9 +147,10 @@
+@@ -163,9 +148,10 @@
      onBack: () -> Unit,
      onNavigateToVideo: (String) -> Unit,
      onOpenBilibiliLink: (String) -> Unit = {},
@@ -100,7 +92,7 @@
      val rawUiState by viewModel.uiState.collectAsStateWithLifecycle()
      val uiState = rawUiState.takeIf { it.accountIdentity == accountIdentity }
          ?: ChatUiState(accountIdentity = accountIdentity)
-@@ -188,10 +173,11 @@
+@@ -188,10 +174,11 @@
      val scrollScope = rememberCoroutineScope()
      var followLatest by rememberSaveable(talkerId, sessionType, accountIdentity) { mutableStateOf(true) }
      var handledScrollVersion by remember(viewModel, accountIdentity) { mutableStateOf(uiState.scrollToLatestVersion) }
@@ -116,7 +108,7 @@
              while (isActive) {
                  viewModel.refreshMessages()
                  delay(5_000L)
-@@ -211,10 +197,8 @@
+@@ -211,10 +198,8 @@
      val context = LocalContext.current
      val keyboard = androidx.compose.ui.platform.LocalSoftwareKeyboardController.current
      val focusManager = androidx.compose.ui.platform.LocalFocusManager.current
@@ -129,7 +121,7 @@
              viewModel.sendImageMessage(context, uri)
          }
          imagePickIdentity = null
-@@ -236,7 +220,7 @@
+@@ -236,7 +221,7 @@
          return
      }
      previewImage?.let { url ->
@@ -138,7 +130,7 @@
      }
      actionMessage?.let { message ->
          val own = message.sender_uid == viewModel.currentUserMid
-@@ -254,7 +238,7 @@
+@@ -254,7 +239,7 @@
      val lowBlurBudget = isLowBlurBudgetForced()
      val chatChromeSource = if (
          chatThemeConfig.progressiveTopBlurEnabled &&
@@ -147,7 +139,7 @@
              !lowBlurBudget
      ) {
          rememberChromeBackdropSource()
-@@ -265,7 +249,7 @@
+@@ -265,7 +250,7 @@
          chatThemeConfig.headerBlurEnabled &&
              !chatThemeConfig.progressiveTopBlurEnabled &&
              !lowBlurBudget &&
@@ -156,7 +148,7 @@
      ) {
          rememberRecoverableHazeState(initialBlurEnabled = true)
      } else {
-@@ -554,7 +538,6 @@
+@@ -554,7 +539,6 @@
                      onPickImage = {
                          imagePickIdentity = accountIdentity
                          imagePickerLauncher.launch(
@@ -164,7 +156,45 @@
                          )
                      },
                      isSending = uiState.isSending,
-@@ -1418,7 +1401,7 @@
+@@ -990,14 +974,24 @@
+                 modifier = Modifier.fillMaxWidth(),
+                 contentAlignment = if (message.msg_type in setOf(10, 13, 16, 18)) Alignment.TopCenter else if (isOwnMessage) Alignment.TopEnd else Alignment.TopStart,
+             ) {
++                // Windows：鼠标按住停顿后再拖是选字，不弹操作框（鼠标用右键打开）；触屏长按照旧。
++                var pressedByMouse by remember { mutableStateOf(false) }
+                 AppSurface(
+                     modifier = Modifier
+                         .widthIn(max = resolveMessageBubbleMaxWidth(maxWidth))
+                         .then(
+                             if (message.msg_status != 1 && onLongPress != null) {
+-                                Modifier.combinedClickable(
++                                Modifier.pointerInput(Unit) {
++                                    awaitPointerEventScope {
++                                        while (true) {
++                                            awaitPointerEvent(androidx.compose.ui.input.pointer.PointerEventPass.Initial)
++                                                .changes.firstOrNull { it.pressed && !it.previousPressed }
++                                                ?.let { pressedByMouse = it.type == androidx.compose.ui.input.pointer.PointerType.Mouse }
++                                        }
++                                    }
++                                }.combinedClickable(
+                                     onClick = {},
+-                                    onLongClick = onLongPress
++                                    onLongClick = { if (!pressedByMouse) onLongPress() }
+                                 ).messageSecondaryClick { onLongPress() }
+                             } else {
+                                 Modifier
+@@ -1025,7 +1019,9 @@
+                         message.msg_type == 1 -> {
+                             // 文字消息 - 支持表情渲染
+                             val content = parseTextContent(message.content)
+-                            androidx.compose.foundation.text.selection.SelectionContainer {
++                            // 选择由 RichMessageText 里的 DesktopSelectionContainer 提供，只留这一层：Tab 不停在正文上。
++                            // 右键选中的文字只弹「复制」；没选中时右键仍打开这条消息的操作。
++                            com.bilipai.desktop.ui.DesktopTextSecondaryClick(onWithoutSelection = onLongPress) {
+                             EmoteText(
+                                 text = content,
+                                 emoteInfos = emoteInfos,
+@@ -1418,7 +1414,7 @@
      linkColor: Color = AppContentColors.accent(),  // 使用主题色
      onLinkClick: ((String) -> Unit)? = null
  ) {
@@ -173,7 +203,7 @@
  
      // 构建表情映射 (text -> EmoteInfo)
      val emoteMap = remember(emoteInfos) {
-@@ -1453,7 +1436,9 @@
+@@ -1453,7 +1449,9 @@
  
      // 如果没有特殊内容，直接显示文本
      if (allMatches.isEmpty()) {
@@ -184,7 +214,7 @@
          return
      }
  
-@@ -1477,15 +1462,26 @@
+@@ -1477,15 +1475,26 @@
                      }
                  }
                  "url" -> {
@@ -218,7 +248,7 @@
                  }
              }
  
-@@ -1518,42 +1514,15 @@
+@@ -1518,42 +1527,15 @@
          }
      }
  

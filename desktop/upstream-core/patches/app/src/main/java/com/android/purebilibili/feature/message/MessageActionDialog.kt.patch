@@ -1,0 +1,17 @@
+--- a/com/android/purebilibili/feature/message/MessageActionDialog.kt
++++ b/com/android/purebilibili/feature/message/MessageActionDialog.kt
+@@ -27,12 +27,12 @@
+     }, confirmButton = {})
+ }
+ 
+-/** 鼠标右键与触屏长按使用同一操作集合。 */
++/** 鼠标右键与触屏长按使用同一操作集合；里面的内容已经处理了这次右键（例如选中文字的「复制」菜单）就不再弹。 */
+ internal fun Modifier.messageSecondaryClick(onClick: () -> Unit): Modifier = pointerInput(onClick) {
+     awaitPointerEventScope {
+         while (true) {
+             val event = awaitPointerEvent()
+-            if (event.type == PointerEventType.Press && event.buttons.isSecondaryPressed) {
++            if (event.type == PointerEventType.Press && event.buttons.isSecondaryPressed && event.changes.none { it.isConsumed }) {
+                 onClick()
+                 event.changes.forEach { it.consume() }
+             }
