@@ -2,12 +2,15 @@ from pathlib import Path
 import hashlib
 import importlib.util
 import json
+import os
+import re
 import shutil
 import sys
 import tempfile
 import unittest
 
 REPO = Path(__file__).resolve().parents[3]
+LIVE = Path(os.environ.get('BILIPAI_LIVE_ROOT') or REPO)
 sys.path.insert(0, str(REPO / 'desktop/tools'))
 spec = importlib.util.spec_from_file_location('danmaku_v029_config', REPO / 'desktop/tools/extract-upstream-danmaku-list-menu.py')
 tool = importlib.util.module_from_spec(spec)
@@ -61,7 +64,15 @@ class CompleteV029DanmakuConfigTest(unittest.TestCase):
             self.assertEqual(expected.count(before), 1)
             expected = expected.replace(before, after)
         actual = (REPO / 'desktop/src/test/kotlin/com/android/purebilibili/feature/video/danmaku/DanmakuConfigV029PolicyTest.kt').read_text(encoding='utf-8')
-        self.assertEqual(expected, actual)
+        pattern = r'    @Test\n    fun `pinned duration should clamp to safe bounds`\(\) \{.*?\n    \}'
+        old = re.findall(pattern, expected, re.S)
+        new = re.findall(pattern, actual, re.S)
+        self.assertEqual(1, len(old)); self.assertEqual(1, len(new))
+        self.assertEqual(expected.replace(old[0], new[0], 1), actual)
+        config = (LIVE / 'app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuConfig.kt').read_text(encoding='utf-8')
+        self.assertIn('staticDurationSeconds.coerceIn(1f, 50f)', config)
+        for duration, result in (('0.5f', '1000L'), ('18.0f', '18000L'), ('60f', '50000L')):
+            self.assertIn(f'assertEquals({result}, resolveDanmakuPinnedDurationMillis({duration}))', new[0])
         self.assertEqual(actual.count('@Test'), 13)
 
     def test_fresh_whole_producer_uses_actual_v038_config_and_complete_v029_live_constructor(self):
