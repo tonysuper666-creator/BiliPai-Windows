@@ -75,6 +75,9 @@ class VideoFeedbackHostExtractionTest(unittest.TestCase):
             repost_vm = repost_vm.replace(edit["after"], edit["before"], 1)
         self.assertEqual(triple["inputSHA256"], feedback.sha(repost_vm))
         owner = json.loads(read(self.output / "v042-owner-follow-projection-proof.json"))
+        self.assertEqual(guard['outputSHA256'], owner['outputSHA256'])
+        self.assertEqual(owner['inputSHA256'], owner['ownerFollowStage']['inputSHA256'])
+        owner = owner['ownerFollowStage']
         self.assertEqual(owner["outputSHA256"], feedback.sha(repost_vm))
         for edit in reversed(owner["edits"]):
             start = edit["offset"]
@@ -147,6 +150,19 @@ class VideoFeedbackHostExtractionTest(unittest.TestCase):
         self.assertEqual(1, leaf.count("DesktopWindowsVideoCoinSection(engagementBinding)"))
         section = read(ui / "DesktopWindowsVideoEngagementSection.kt")
         self.assertEqual(1, section.count("onConfirm = { count, alsoLike -> currentBinding.coin(request, count, alsoLike); Unit },"))
+        coin_section = section[section.index('internal fun DesktopWindowsVideoCoinSection('):
+                               section.index('internal fun DesktopWindowsVideoFollowGroupSection(')]
+        for anchor in ('request.sourceOwner !== currentBinding.sourceOwner',
+                       '!currentBinding.isOwned() || !request.isOwned()) return',
+                       'key(request) {', 'onDispose { request.close() }',
+                       'val dismiss = { currentBinding.dismissCoinDialog(request); Unit }',
+                       'onDismiss = dismiss', 'maxCoins = state.coinLimit'):
+            self.assertIn(anchor, coin_section)
+        coin = section[section.index('    fun coin(request:'):section.index('    fun feedback(')]
+        for anchor in ('value.desktopCoinDialogRequest !== request',
+                       'count !in 1..(value.coinLimit - value.coinCount)', 'request = request)',
+                       'return state.value.desktopCoinDialogRequest !== request && !request.isOwned()'):
+            self.assertIn(anchor, coin)
         self.assertIn("LocalAwtWindow.current !== root.window", mount)
         self.assertIn("it === snapshot.desktopFeedbackOrigin(kind)", mount)
         self.assertIn("root.owns() && binding.isFeedbackOwned() && binding.admitFeedback {}", mount)

@@ -19,11 +19,13 @@ from pathlib import Path
 import sys
 import tempfile
 import unittest
+from unittest import mock
 
 REPO = Path(__file__).resolve().parents[3]
 TOOLS = REPO / "desktop/tools"
 sys.path.insert(0, str(TOOLS))
 import v029_video_feedback as feedback
+import v029_video_feedback_origin as legacy_origin
 import v037_feedback_origin as origin
 import v037_video_feedback_adapter as adapter
 
@@ -82,6 +84,12 @@ def peel_engagement_guards(output: Path, text: str):
             raise AssertionError("Triple submit guard inverse mismatch: " + edit["label"])
         text = text.replace(edit["after"], edit["before"], 1)
     owner = json.loads(read(output / "v042-owner-follow-projection-proof.json"))
+    if owner['outputSHA256'] != guard['outputSHA256']:
+        raise AssertionError('Final owner follow receipt does not cover the physical VM')
+    final_owner = owner
+    owner = owner['ownerFollowStage']
+    if owner['inputSHA256'] != final_owner['inputSHA256']:
+        raise AssertionError('Owner follow stage input changed in the final receipt')
     if feedback.sha(text) != triple["inputSHA256"] or feedback.sha(text) != owner["outputSHA256"]:
         raise AssertionError("Owner follow is not directly below the triple submit guard")
     for edit in reversed(owner["edits"]):
@@ -100,7 +108,14 @@ class VideoFeedbackExtractionTest(unittest.TestCase):
         cls.temp = tempfile.TemporaryDirectory(prefix="bilipai-video-feedback-")
         cls.addClassCleanup(cls.temp.cleanup)
         cls.output = Path(cls.temp.name) / "generated"
-        producer.generate(REPO, cls.output, True)
+        cls.actual_feedback_inputs = []
+        actual_adapter = adapter.apply_latest_feedback
+        def capture(path, text, parser):
+            if path == feedback.OUTPUT_VM:
+                cls.actual_feedback_inputs.append(text)
+            return actual_adapter(path, text, parser)
+        with mock.patch.object(adapter, 'apply_latest_feedback', side_effect=capture):
+            producer.generate(REPO, cls.output, True)
         cls.output_vm = read(cls.output / feedback.OUTPUT_VM)
         cls.repost_contract_vm, cls.guard_proof = peel_engagement_guards(cls.output, cls.output_vm)
         cls.repost_proof = json.loads(read(cls.output / "v037-repost-contract-source-proof.json"))
@@ -136,6 +151,10 @@ class VideoFeedbackExtractionTest(unittest.TestCase):
         self.assertEqual(self.origin_proof["afterSha256LF"], self.lifetime_proof["beforeSha256LF"])
         self.assertEqual(feedback.sha(self.vm), self.origin_proof["afterSha256LF"])
         self.assertEqual(animation[0]["fixedCommit"], feedback.COMMIT)
+        self.assertEqual({'VideoInteractionUseCase.kt.repost-coin-proof.json',
+                          'TripleActionVisualStatePolicy.kt.repost-coin-proof.json'},
+                         {path.name for path in self.output.glob('*.repost-coin-proof.json')})
+        self.assertFalse((self.output / 'v046-follow-confirmation-proofs/VideoEngagementViewModel.kt.json').exists())
 
     def test_complete_vm_two_stage_inverse_and_reapplication_are_exact(self):
         intermediate = undo(self.vm, self.origin_proof)
@@ -144,6 +163,8 @@ class VideoFeedbackExtractionTest(unittest.TestCase):
         original_owned = undo_indexed(intermediate, self.state_proof)
         self.assertEqual(PRE_FEEDBACK_OWNED_VM_SHA256_LF, feedback.sha(original_owned))
         self.assertEqual(feedback.sha(original_owned), self.state_proof["beforeSha256LF"])
+        self.assertEqual([original_owned], self.actual_feedback_inputs)
+        self.assertEqual(PRE_FEEDBACK_OWNED_VM_SHA256_LF, feedback.sha(self.actual_feedback_inputs[0]))
         first, first_proof = adapter.apply_latest_feedback(feedback.OUTPUT_VM, original_owned, producer.parser)
         final, final_proof = origin.apply_feedback_origin(feedback.OUTPUT_VM, first)
         self.assertEqual(intermediate, first); self.assertEqual(self.vm, final)
@@ -233,9 +254,15 @@ class VideoFeedbackExtractionTest(unittest.TestCase):
         self.assertIn("::feedbackLifetimeOwned, feedbackAdmission", command)
 
     def test_foreign_paths_noop_and_wrong_or_duplicate_stage_anchors_fail_closed(self):
+        self.assertEqual(feedback.apply_video_feedback('foreign.kt', 'unchanged', producer.parser), ('unchanged', None))
         self.assertEqual(origin.apply_feedback_origin("foreign.kt", "unchanged"), ("unchanged", None))
         self.assertEqual(adapter.apply_latest_feedback("foreign.kt", "unchanged", producer.parser), ("unchanged", None))
         first = undo(self.vm, self.origin_proof)
+        pre = undo_indexed(first, self.state_proof)
+        with self.assertRaises(AssertionError):
+            feedback.apply_video_feedback(feedback.OUTPUT_VM, pre, producer.parser)
+        with self.assertRaises(AssertionError):
+            legacy_origin.apply_feedback_origin(feedback.OUTPUT_VM, first)
         anchor = "    val tripleCelebrationFinished: Boolean = false\n)"
         for broken in (first.replace(anchor, "    val foreign: Boolean = false\n)", 1), first + "\n" + anchor):
             with self.assertRaises(AssertionError):
