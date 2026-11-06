@@ -2,12 +2,14 @@ from pathlib import Path
 import hashlib
 import importlib.util
 import json
+import os
 import shutil
 import sys
 import tempfile
 import unittest
 
 REPO = Path(__file__).resolve().parents[3]
+LIVE = Path(os.environ.get('BILIPAI_LIVE_ROOT') or REPO)
 sys.path.insert(0, str(REPO / "desktop/tools"))
 spec = importlib.util.spec_from_file_location("danmaku_hot_settings", REPO / "desktop/tools/extract-upstream-danmaku-settings.py")
 tool = importlib.util.module_from_spec(spec)
@@ -54,7 +56,12 @@ class HotDanmakuSettingsExtractionTest(unittest.TestCase):
         colors = (output / 'com/android/purebilibili/core/ui/AppContentColors.kt').read_text(encoding='utf-8')
         required = set(re.findall(r'AppContentColors\.(\w+)\(', panel))
         self.assertEqual({'accent', 'error', 'onAccent'}, required)
-        self.assertEqual(required, set(re.findall(r'fun (\w+)\(\): Color', colors)))
+        self.assertTrue(required <= set(re.findall(r'fun (\w+)\(\): Color', colors)))
+        live_colors = (LIVE / 'design-system/src/main/java/com/android/purebilibili/core/ui/AppContentColors.kt').read_text(encoding='utf-8')
+        declared = set(re.findall(r'fun (\w+)\(\): Color', live_colors))
+        self.assertTrue(required <= declared)
+        live_panel = (LIVE / 'app/src/main/java/com/android/purebilibili/feature/video/ui/components/DanmakuSettingsPanel.kt').read_text(encoding='utf-8')
+        self.assertTrue(set(re.findall(r'AppContentColors\.(\w+)\(', live_panel)) <= declared)
         for name in required:
             start = originals['AppContentColors.kt'].index('    @Composable\n    @ReadOnlyComposable\n    fun '+name+'(): Color')
             end = originals['AppContentColors.kt'].index('\n\n', start)

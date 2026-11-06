@@ -1,10 +1,28 @@
 from pathlib import Path
-import hashlib,importlib.util,json,sys,tempfile,unittest
+import hashlib,importlib.util,json,os,sys,tempfile,unittest
 sys.dont_write_bytecode=True
 REPO=next(p for p in Path(__file__).resolve().parents if (p/'desktop/build.gradle.kts').is_file() and (p/'app/src/main/java').is_dir())
+LIVE=Path(os.environ.get('BILIPAI_LIVE_ROOT') or REPO)
 spec=importlib.util.spec_from_file_location('full_card_source',REPO/'desktop/tools/extract-upstream-home-full-card.py')
 g=importlib.util.module_from_spec(spec);spec.loader.exec_module(g)
 class HomeFullCardSourcesTest(unittest.TestCase):
+ def check_replaced_originals(self,out):
+  import v043_home_recommendation_badges as badges
+  raw=badges.verified_raw(REPO)
+  rows=json.loads((LIVE/'desktop/tools/v025-canonical-sources.json').read_text(encoding='utf-8'))['paths']
+  gradle=(LIVE/'desktop/build.gradle.kts').read_text(encoding='utf-8')
+  self.assertIn('val migratedAppCorePaths:',gradle)
+  self.assertIn('val migratedAppPaths: Set<String> = migratedAppCorePaths',gradle)
+  self.assertIn('appJavaRoot.resolve("com/android/purebilibili/core").walkTopDown()',gradle)
+  self.assertEqual(set(badges.REPLACED), set(g.DIRECT) & set(badges.REPLACED))
+  for path in set(g.DIRECT) & set(badges.REPLACED):
+   name=Path(path).name
+   self.assertEqual(raw[name],next((out/'generated').rglob(name)).read_bytes())
+   legacy=(REPO/path).read_bytes().replace(b'\r\n',b'\n')
+   self.assertEqual(badges.PREDECESSORS[name],hashlib.sha256(legacy).hexdigest())
+   self.assertEqual(rows[path]['legacySha256'],hashlib.sha256(legacy).hexdigest())
+   self.assertTrue((LIVE/path).is_file())
+   self.assertTrue(path.startswith('app/src/main/java/com/android/purebilibili/core/'))
  def test_every_original_identity_is_in_main_inventory_with_its_original_features(self):
   rows=g.inventory(REPO);main=json.loads((REPO/'desktop/upstream-sources.json').read_text())
   byPath={r['path']:r for r in main['sources']}
@@ -14,16 +32,21 @@ class HomeFullCardSourcesTest(unittest.TestCase):
    self.assertEqual(r['sha256'],byPath[r['path']]['sha256']);self.assertEqual(r['mode'],byPath[r['path']]['mode'])
    self.assertIn('home-full-card',byPath[r['path']]['features'])
  def test_shared_sync_owns_all_direct_originals_once(self):
+  import v043_home_recommendation_badges as badges
   with tempfile.TemporaryDirectory(prefix='bp-full-card-source-')as temporary:
    out=Path(temporary);g.generate(REPO,out);g.generate_preferences()
-   self.assertTrue({Path(p).name for p in g.DIRECT}.isdisjoint({p.name for p in(out/'generated').rglob('*.kt')}))
+   self.assertTrue({Path(p).name for p in g.DIRECT if p not in badges.REPLACED}.isdisjoint({p.name for p in(out/'generated').rglob('*.kt')}))
+   self.check_replaced_originals(out)
  def test_standalone_direct_bodies_are_verbatim_and_generation_is_deterministic(self):
+  import v043_home_recommendation_badges as badges
   with tempfile.TemporaryDirectory(prefix='bp-full-card-source-')as temporary:
    out=Path(temporary);g.generate(REPO,out,True);g.generate_preferences()
    before={str(p.relative_to(out)):p.read_bytes()for p in out.rglob('*.kt')}
    for path in g.DIRECT:
+    if path in badges.REPLACED:continue
     candidates=list((out/'generated').rglob(Path(path).name));self.assertEqual(1,len(candidates),path)
     self.assertEqual((REPO/path).read_text(encoding='utf-8'),candidates[0].read_text(encoding='utf-8').split('\n',2)[2])
+   self.check_replaced_originals(out)
    g.generate(REPO,out,True);g.generate_preferences()
    self.assertEqual(before,{str(p.relative_to(out)):p.read_bytes()for p in out.rglob('*.kt')})
  def test_original_visual_setters_keep_their_source_bodies(self):
