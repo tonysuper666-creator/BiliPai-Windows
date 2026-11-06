@@ -1,6 +1,15 @@
 --- a/com/android/purebilibili/core/ui/effect/LiquidLens.kt
 +++ b/com/android/purebilibili/core/ui/effect/LiquidLens.kt
-@@ -13,6 +13,7 @@
+@@ -4,24 +4,25 @@
+ package com.android.purebilibili.core.ui.effect
+ 
+ // Matched to compose-miuix-ui/miuix revision 5c91d5e5, component/liquid/Lens.kt.
+ // Adapted from Kyant0/AndroidLiquidGlass — https://github.com/Kyant0/AndroidLiquidGlass (Apache 2.0).
+ 
+ import androidx.compose.ui.geometry.Rect
+ import androidx.compose.foundation.shape.CornerBasedShape
+ import androidx.compose.ui.unit.LayoutDirection
+ import androidx.compose.ui.util.fastCoerceAtMost
  import top.yukonga.miuix.kmp.blur.BackdropEffectScope
  import top.yukonga.miuix.kmp.blur.isRuntimeShaderSupported
  import top.yukonga.miuix.kmp.blur.runtimeShaderEffect
@@ -8,7 +17,25 @@
  import kotlin.math.ceil
  
  /**
-@@ -80,6 +81,7 @@
+  * Rounded-rect refraction lens with optional chromatic dispersion.
+  *
+  * @param chromaticAberration Strength of the rim chromatic dispersion. `0` disables the
+  *  effect (cheaper non-dispersion shader is used). Typical values: `0.1` for subtle,
+  *  `0.2` for Apple-pill-like, `0.3+` for pronounced rainbow halo. The dispersion offset
+  *  scales with the refraction depth so it concentrates at the rim band's outer edge.
+  */
+ fun BackdropEffectScope.lens(
+     refractionHeight: Float,
+@@ -71,154 +72,162 @@
+     val scaledSizeW = (outlineBounds?.width ?: size.width) / sf
+     val scaledSizeH = (outlineBounds?.height ?: size.height) / sf
+     val scaledPadding = padding / sf
+     val scaledRefractionHeight = refractionHeight / sf
+     val scaledRefractionAmount = refractionAmount / sf
+     val scaledRadii = FloatArray(radii.size) { radii[it] / sf }
+ 
+     runtimeShaderEffect(
+         key = key,
          shaderString = shaderString,
          uniformShaderName = "content",
      ) {
@@ -16,15 +43,67 @@
          setFloatUniform("size", scaledSizeW, scaledSizeH)
          setFloatUniform("offset", -scaledPadding - (outlineBounds?.left ?: 0f) / sf,
              -scaledPadding - (outlineBounds?.top ?: 0f) / sf)
-@@ -91,6 +93,7 @@
+         setFloatUniform("cornerRadii", scaledRadii)
+         setFloatUniform("refractionHeight", scaledRefractionHeight)
+         setFloatUniform("refractionAmount", -scaledRefractionAmount)
+         setFloatUniform("depthEffect", if (depthEffect) 1f else 0f)
+         if (dispersionEnabled) {
              setFloatUniform("chromaticBandHorizontal", if (chromaticBandHorizontal) 1f else 0f)
              setFloatUniform("chromaticAberration", chromaticAberration)
              setFloatUniform("chromaticEdgeBand", chromaticEdgeBand?.coerceAtLeast(0f)?.div(sf) ?: -1f)
-+        }
          }
++        }
      }
  }
-@@ -141,7 +144,7 @@
+ 
+ private fun BackdropEffectScope.roundedRectCornerRadii(): FloatArray? {
+     val cornerShape = shape as? CornerBasedShape ?: return null
+     val sizePx = size
+     val maxRadius = sizePx.minDimension / 2f
+     val isLtr = layoutDirection == LayoutDirection.Ltr
+     val topLeft = if (isLtr) cornerShape.topStart.toPx(sizePx, this) else cornerShape.topEnd.toPx(sizePx, this)
+     val topRight = if (isLtr) cornerShape.topEnd.toPx(sizePx, this) else cornerShape.topStart.toPx(sizePx, this)
+     val bottomRight = if (isLtr) cornerShape.bottomEnd.toPx(sizePx, this) else cornerShape.bottomStart.toPx(sizePx, this)
+     val bottomLeft = if (isLtr) cornerShape.bottomStart.toPx(sizePx, this) else cornerShape.bottomEnd.toPx(sizePx, this)
+     return floatArrayOf(
+         topLeft.fastCoerceAtMost(maxRadius),
+         topRight.fastCoerceAtMost(maxRadius),
+         bottomRight.fastCoerceAtMost(maxRadius),
+         bottomLeft.fastCoerceAtMost(maxRadius),
+     )
+ }
+ 
+ private const val ROUNDED_RECT_SDF = """
++float2 safeNormalize(float2 vector) {
++    return vector / max(length(vector), 0.0001);
++}
++
+ float radiusAt(float2 coord, float4 radii) {
+     if (coord.x >= 0.0) {
+         if (coord.y <= 0.0) return radii.y;
+         else return radii.z;
+     } else {
+         if (coord.y <= 0.0) return radii.x;
+         else return radii.w;
+     }
+ }
+ 
+ float sdRoundedRect(float2 coord, float2 halfSize, float radius) {
+     float2 cornerCoord = abs(coord) - (halfSize - float2(radius));
+     float outside = length(max(cornerCoord, 0.0)) - radius;
+     float inside = min(max(cornerCoord.x, cornerCoord.y), 0.0);
+     return outside + inside;
+ }
+ 
+ float2 gradSdRoundedRect(float2 coord, float2 halfSize, float radius) {
+     float2 cornerCoord = abs(coord) - (halfSize - float2(radius));
+     if (cornerCoord.x >= 0.0 || cornerCoord.y >= 0.0) {
+-        return sign(coord) * normalize(max(cornerCoord, 0.0));
++        return sign(coord) * safeNormalize(max(cornerCoord, 0.0));
+     } else {
+         float gradX = step(cornerCoord.y, cornerCoord.x);
+         return sign(coord) * float2(gradX, 1.0 - gradX);
+     }
  }
  """
  
@@ -33,7 +112,38 @@
  uniform shader content;
  
  uniform float2 size;
-@@ -177,7 +180,7 @@
+ uniform float2 offset;
+ uniform float4 cornerRadii;
+ uniform float refractionHeight;
+ uniform float refractionAmount;
+ uniform float depthEffect;
+ 
+ $ROUNDED_RECT_SDF
+ 
+ float circleMap(float x) {
+-    return 1.0 - sqrt(1.0 - x * x);
++    float clampedX = clamp(x, 0.0, 1.0);
++    return 1.0 - sqrt(max(1.0 - clampedX * clampedX, 0.0));
+ }
+ 
+ half4 main(float2 coord) {
+     float2 halfSize = size * 0.5;
+     float2 centeredCoord = (coord + offset) - halfSize;
+     float radius = radiusAt(centeredCoord, cornerRadii);
+ 
+     float sd = sdRoundedRect(centeredCoord, halfSize, radius);
+     if (-sd >= refractionHeight) {
+         return content.eval(coord);
+     }
+     sd = min(sd, 0.0);
+ 
+     float d = circleMap(1.0 - -sd / refractionHeight) * refractionAmount;
+     float gradRadius = min(radius * 1.5, min(halfSize.x, halfSize.y));
+-    float2 grad = normalize(gradSdRoundedRect(centeredCoord, halfSize, gradRadius) + depthEffect * normalize(centeredCoord));
++    float2 grad = safeNormalize(gradSdRoundedRect(centeredCoord, halfSize, gradRadius) + depthEffect * safeNormalize(centeredCoord));
+ 
+     float2 refractedCoord = coord + d * grad;
+     return content.eval(refractedCoord);
  }
  """
  
@@ -42,3 +152,47 @@
  uniform shader content;
  
  uniform float2 size;
+ uniform float2 offset;
+ uniform float4 cornerRadii;
+ uniform float refractionHeight;
+ uniform float refractionAmount;
+ uniform float depthEffect;
+ uniform float chromaticAberration;
+ uniform float chromaticEdgeBand;
+ uniform float chromaticBandHorizontal;
+ 
+ $ROUNDED_RECT_SDF
+ 
+ float circleMap(float x) {
+-    return 1.0 - sqrt(1.0 - x * x);
++    float clampedX = clamp(x, 0.0, 1.0);
++    return 1.0 - sqrt(max(1.0 - clampedX * clampedX, 0.0));
+ }
+ 
+ half4 main(float2 coord) {
+     float2 halfSize = size * 0.5;
+     float2 centeredCoord = (coord + offset) - halfSize;
+     float radius = radiusAt(centeredCoord, cornerRadii);
+ 
+     float sd = sdRoundedRect(centeredCoord, halfSize, radius);
+     if (-sd >= refractionHeight) {
+         return content.eval(coord);
+     }
+     sd = min(sd, 0.0);
+ 
+     float d = circleMap(1.0 - -sd / refractionHeight) * refractionAmount;
+     float gradRadius = min(radius * 1.5, min(halfSize.x, halfSize.y));
+-    float2 grad = normalize(gradSdRoundedRect(centeredCoord, halfSize, gradRadius) + depthEffect * normalize(centeredCoord));
++    float2 grad = safeNormalize(gradSdRoundedRect(centeredCoord, halfSize, gradRadius) + depthEffect * safeNormalize(centeredCoord));
+ 
+     float2 refractedCoord = coord + d * grad;
+     // 普通透镜保留原光谱权重；dock 指示器只在选定轴超出轨道的区域色散。
+     float dispersionWeight = (centeredCoord.x * centeredCoord.y) / (halfSize.x * halfSize.y);
+     if (chromaticEdgeBand >= 0.0) {
+         float edgeDistance = chromaticBandHorizontal > 0.5
+             ? halfSize.x - abs(centeredCoord.x)
+             : halfSize.y - abs(centeredCoord.y);
+         // A fixed local-pixel feather makes subpixel bands fade in from zero.
+         // Shrinking feather with the band made the outermost pixel jump straight
+         // to full dispersion for any positive band (and degenerate at zero).
+         float feather = 1.0;
