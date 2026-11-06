@@ -43,6 +43,22 @@ def reviewed_sha256(repo, pin):
         return pin["legacySha256"]
     return pin["sha256"]
 
+def registered_source_sha256(repo, row):
+    """Authenticate an inventory row, then select this read point's exact pin.
+
+    Gradle's archived inventory and the Python gate's live inventory describe
+    the same reviewed source lineage. Neither inventory may repin the original.
+    """
+    pin = _catalog()["paths"].get(row["path"])
+    if pin is None:
+        return row["sha256"]
+    allowed = {pin["sha256"]}
+    if _legacy_snapshot(Path(repo).resolve()):
+        allowed.add(reviewed_sha256(repo, pin))
+    if row["sha256"] not in allowed:
+        raise ValueError("Registered original source digest mismatch: " + row["path"])
+    return reviewed_sha256(repo, pin)
+
 def canonical_source(repo, relative):
     root=Path(repo).resolve()
     target=canonical_relative(root,relative)

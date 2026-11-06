@@ -1,3 +1,4 @@
+from v025_source_paths import registered_source_sha256
 from v025_source_paths import canonical_source as _desktop_canonical_source, canonical_relative as _desktop_canonical_relative
 from pathlib import Path
 from desktop_paths import long_path
@@ -421,7 +422,7 @@ def generate(repo,output,standalone=False,test_output=None):
  from v046_danmaku_hot_command import validate_outputs
  validate_outputs(REPO,OUTPUT,test_output)
  manifest=json.loads(wide(REPO/'desktop/upstream-sources.json').read_text(encoding='utf-8'));assert manifest['upstreamCommit']==COMMIT
- registered={r['path']:r['sha256']for r in manifest['sources']}
+ registered={r['path']:registered_source_sha256(REPO,r) for r in manifest['sources'] if r['path'] in SOURCE_PINS}
  for path,pin in SOURCE_PINS.items():
   if path in registered:assert registered[path]==pin['sha256LF'],path+' registered original identity changed'
  parser=module('section_tokens',REPO/'desktop/tools/sync-upstream.py');selector=module('section_declarations',REPO/'desktop/tools/extract-appearance-platform.py');protocol=module('section_brackets',REPO/'desktop/tools/extract-upstream-dynamic-reply-protocol.py')

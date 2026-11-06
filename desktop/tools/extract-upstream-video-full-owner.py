@@ -1335,9 +1335,17 @@ def generate(repo,output,standalone=False):
   from v035_autoplay_continuation import apply_and_record as apply_autoplay_continuation
   body,autoplayContinuationProof=apply_autoplay_continuation(recipe['output'],body,output)
   from v037_player_known_state import apply_owner as apply_known_state
+  known_state_before=body
   body,knownStateProof=apply_known_state(recipe['output'],body,repo,output)
   from v029_comment_composer import legacy_comment_selection_delta
   body=legacy_comment_selection_delta(recipe['output'],body,output)
+  if knownStateProof is not None:
+   from v029_comment_search import whole_proof
+   knownStateProof['knownStateStage']={key:knownStateProof[key] for key in
+       ('beforeSha256LF','afterSha256LF','indexedEdits','exactCompleteInverse')}
+   knownStateProof.update(whole_proof(known_state_before,body))
+   (Path(output)/'v037-complete-known-state-owner-proof.json').write_text(
+       json.dumps(knownStateProof,ensure_ascii=False,indent=2)+'\n',encoding='utf8',newline='\n')
   emitted=standalone or recipe['mode']!='direct'
   if emitted:
    target=wide(Path(output)/recipe['output']);target.parent.mkdir(parents=True,exist_ok=True)

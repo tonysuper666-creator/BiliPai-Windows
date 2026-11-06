@@ -17,6 +17,7 @@ TOOLS = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(TOOLS))
 import v029_video_feedback as feedback
 import v029_video_feedback_host as host
+from ton1228_feedback_chain import EngagementChain, HASHES
 
 
 def load(name, path):
@@ -58,10 +59,10 @@ class VideoFeedbackHostExtractionTest(unittest.TestCase):
                 self.assertEqual(row["sha256LF"], feedback.sha(read(self.output / row["path"])), row["path"])
         origin_proof = json.loads(read(self.output / "v029-video-feedback-origin-proof.json"))
         lifetime = json.loads(read(self.output / "v029-video-feedback-lifetime-proof.json"))
-        import v031_repost_coin as repost
         output_vm = read(self.output / feedback.OUTPUT_VM)
-        repost_proof = json.loads(read(self.output / "VideoEngagementViewModel.kt.repost-coin-proof.json"))
-        final_vm = repost.undo(output_vm, repost_proof)
+        stages = EngagementChain(self, REPO, self.output).peel(output_vm, through='coin-request')
+        final_vm = stages['coin-request']
+        self.assertEqual(HASHES['coin-request'], feedback.sha(final_vm))
         self.assertEqual(lifetime["beforeSha256LF"], origin_proof["afterSha256LF"])
         self.assertEqual(lifetime["afterSha256LF"], feedback.sha(final_vm))
         restored = final_vm
@@ -69,6 +70,7 @@ class VideoFeedbackHostExtractionTest(unittest.TestCase):
             self.assertEqual(1, restored.count(edit["after"]))
             restored = restored.replace(edit["after"], edit["before"], 1)
         self.assertEqual(origin_proof["afterSha256LF"], feedback.sha(restored))
+        self.assertEqual(HASHES['lifetime'], feedback.sha(restored))
         self.assertIn("else presentation.admitFeedback(check)", final_vm)
 
     def test_both_complete_original_decorative_blocks_have_exact_counted_inverse(self):
@@ -112,7 +114,25 @@ class VideoFeedbackHostExtractionTest(unittest.TestCase):
         self.assertIn("val expected = feedbackSource", leaf)
         feedback_index = leaf.index("DesktopWindowsConfirmedVideoFeedback(binding, viewportSize, native.surface, feedbackBounds)")
         self.assertIn("if (presentationAlive && !pipActive)", leaf[feedback_index - 150:feedback_index])
-        self.assertIn("if (engagementBinding?.coin(count, false) == true)", leaf)
+        self.assertEqual(1, leaf.count("DesktopWindowsVideoCoinSection(engagementBinding)"))
+        self.assertIn("engagementBinding?.openCoinDialog()", leaf)
+        self.assertNotIn("engagementBinding?.coin(", leaf)
+        section = read(ui / "DesktopWindowsVideoEngagementSection.kt")
+        self.assertEqual(1, section.count("onConfirm = { count, alsoLike -> currentBinding.coin(request, count, alsoLike); Unit }"))
+        signature = "    fun coin(request: DesktopWindowsVideoCoinDialogRequest, count: Int, alsoLike: Boolean)"
+        self.assertEqual(1, section.count(signature))
+        coin = feedback.function(section[section.index(signature):], "coin", producer.parser)
+        self.assertIn(signature, coin)
+        for marker in ("request.sourceOwner !== sourceOwner", "value.desktopCoinDialogRequest !== request",
+                       "!request.isOwned()", "presentation = presentation, request = request",
+                       "return state.value.desktopCoinDialogRequest !== request && !request.isOwned()"):
+            self.assertIn(marker, coin)
+        coin_section = feedback.function(section.replace("internal fun DesktopWindowsVideoCoinSection(",
+                                                        "    fun DesktopWindowsVideoCoinSection("),
+                                         "DesktopWindowsVideoCoinSection", producer.parser)
+        for marker in ("request.sourceOwner !== currentBinding.sourceOwner", "DisposableEffect(request)",
+                       "onDispose { request.close() }", "currentBinding.dismissCoinDialog(request)"):
+            self.assertIn(marker, coin_section)
         self.assertIn("LocalAwtWindow.current !== root.window", mount)
         self.assertIn("it === snapshot.desktopFeedbackOrigin(kind)", mount)
         self.assertIn("root.owns() && binding.isFeedbackOwned() && binding.admitFeedback {}", mount)
