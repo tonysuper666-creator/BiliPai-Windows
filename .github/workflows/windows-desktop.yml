@@ -62,22 +62,6 @@ on:
         type: choice
         options: [surface, shader-clear, surface-debug, surface-load-order]
         default: surface
-  push:
-    branches: ['desktop/windows']
-    paths:
-      - 'desktop/**'
-      - '.github/workflows/windows-desktop.yml'
-      - 'app/**'
-      - 'settings-core/**'
-      - 'gradle/wrapper/**'
-      - 'gradlew.bat'
-  pull_request:
-    paths:
-      - 'desktop/**'
-      - '.github/workflows/windows-desktop.yml'
-      - 'gradle/wrapper/**'
-      - 'gradlew.bat'
-
 permissions:
   contents: read
 
