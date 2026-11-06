@@ -536,6 +536,9 @@ class V046ThemeTokensSourceTest(unittest.TestCase):
             self.assertEqual([rows[
                 {'AppTextStyles': 'AppTextStyles.kt', 'Md3Typography': 'Type.kt', 'BiliMiuixTypography': 'Type.kt',
                  'resolveMaterialTypography': 'AndroidNativeVariantThemePolicy.kt'}[name]]['path']], by_name[name], name)
+        for path in {h[1] for h in hits if h[0] == 'main'}:
+            self.assertNotIn('generated/upstream/', path)
+
     def test_original_tests_have_one_definer_each(self):
         hits = self.compiled_declarations()
         for fqcn in JVM_TEST_CLASSES:
