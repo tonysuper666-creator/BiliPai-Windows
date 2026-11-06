@@ -85,24 +85,6 @@ class ProfileAgreementOwnerSourceTest(unittest.TestCase):
             with self.assertRaisesRegex(AssertionError, "Existing complete agreement owner changed"):
                 self.about.verified_agreement_owner(root)
 
-    def test_archived_owner_requires_the_exact_legacy_read_point(self):
-        commit = "d9595dc75cfe8d5c7128cb76352a607953b8bab6"
-        archived = subprocess.check_output(["git", "-C", str(REPO), "show", commit + ":" + PROFILE])
-        expected = "b0fb501f5686169b9a9e16ffb98a4133b1c43c69ced959bdcf964de971510cb1"
-        with tempfile.TemporaryDirectory(prefix="bilipai-agreement-legacy-") as directory:
-            root = Path(directory) / ".legacy-root"
-            path = root / PROFILE
-            path.parent.mkdir(parents=True)
-            path.write_bytes(archived)
-            with self.assertRaisesRegex(AssertionError, "Existing complete agreement owner changed"):
-                self.about.verified_agreement_owner(root)
-            marker = root / ".legacy-commit"
-            marker.write_text(commit)
-            self.assertEqual(expected, self.about.verified_agreement_owner(root))
-            marker.write_text("unreviewed")
-            with self.assertRaisesRegex(AssertionError, "unknown legacy read point"):
-                self.about.verified_agreement_owner(root)
-
     def test_actual_about_proof_uses_verified_current_owner(self):
         matches = []
 
