@@ -1257,6 +1257,52 @@ def sponsor_original_ui_source_delta(path, body, audit=None):
  if audit is not None:audit.extend(edits)
  return body
 
+def playback_speed_source_continuity_delta(path, body):
+ # Upstream 540d86f92: speed only updates render parameters. Rebuilding the
+ # audio/video source drops buffer and first frame, so the cover covers video again.
+ if path != 'com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt': return body
+ before='''        val previousSpeed = player.playbackParameters.speed
+        val normalizedSpeed = speed.coerceAtLeast(0.1f)
+        player.playbackParameters = PlaybackParameters(normalizedSpeed, 1.0f)
+
+        val current = _uiState.value as? VideoPlaybackUiState.Success ?: return true
+        if (current.isQualitySwitching) return true
+
+        val audioPreference = current.requestedAudioQuality
+        if (!shouldRefreshPremiumAudioForPlaybackSpeedChange(
+                requestedAudioQuality = audioPreference,
+                previousPlaybackSpeed = previousSpeed,
+                nextPlaybackSpeed = normalizedSpeed
+            )
+        ) {
+            return true
+        }
+
+        environment.invocations.launch {
+            refreshPlaybackAudioForSpeedCompatibility(
+                current = current,
+                audioPreference = audioPreference,
+                currentPos = player.currentPosition.coerceAtLeast(0L),
+                playWhenReady = player.playWhenReady
+            )
+        }
+        return true
+    }
+'''
+ after='''        val normalizedSpeed = speed.coerceAtLeast(0.1f)
+        player.playbackParameters = PlaybackParameters(normalizedSpeed, 1.0f)
+        // 倍速只更新渲染参数；重建音视频源会清掉缓冲和首帧，使封面重新盖住视频。
+        // 音质兼容选择留在加载/显式切换音质时，实际解码失败仍走已有音频回退。
+        return true
+    }
+'''
+ anchor='    fun applyPlaybackSpeedFromUi(speed: Float): Boolean {\n        if (hasDesktopBangumiPlayback()) return false\n        val player = exoPlayer ?: return false\n'
+ assert body.count(anchor)==1 and body.count(anchor+before)==1,'applyPlaybackSpeedFromUi source continuity'
+ body=body.replace(anchor+before,anchor+after)
+ imported='import com.android.purebilibili.feature.video.playback.policy.shouldRefreshPremiumAudioForPlaybackSpeedChange\n'
+ assert body.count(imported)==1 and body.count('shouldRefreshPremiumAudioForPlaybackSpeedChange')==1,'speed refresh policy has no other owner caller'
+ return body.replace(imported,'')
+
 def generate(repo,output,standalone=False):
  outputs=[];follow_group_audits=[]
  for recipe in RECIPES:
@@ -1338,6 +1384,7 @@ def generate(repo,output,standalone=False):
   body,knownStateProof=apply_known_state(recipe['output'],body,repo,output)
   from v029_comment_composer import legacy_comment_selection_delta
   body=legacy_comment_selection_delta(recipe['output'],body,output)
+  body=playback_speed_source_continuity_delta(recipe['output'],body)
   emitted=standalone or recipe['mode']!='direct'
   if emitted:
    target=wide(Path(output)/recipe['output']);target.parent.mkdir(parents=True,exist_ok=True)
