@@ -8,6 +8,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
@@ -21,6 +22,7 @@ import com.android.purebilibili.core.ui.LocalAppThemeConfig
 import com.android.purebilibili.feature.video.ui.overlay.BottomControlBar
 import com.android.purebilibili.feature.video.ui.overlay.PlayerProgress
 import org.junit.Assert.assertTrue
+import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -29,6 +31,68 @@ import top.yukonga.miuix.kmp.theme.MiuixTheme
 @RunWith(AndroidJUnit4::class)
 class BottomControlBarUiRegressionTest {
     @get:Rule val rule = createComposeRule()
+
+    @Test
+    fun seekPreviewStaysAboveTrackWithoutMovingControlsAcrossOrientationsAndMaterials() {
+        val scrubbing = mutableStateOf(false)
+        val landscape = mutableStateOf(false)
+        val glass = mutableStateOf(false)
+        val style = mutableStateOf(AppUiStyle.MATERIAL3)
+        val withImage = mutableStateOf(true)
+        val shot = com.android.purebilibili.data.model.response.VideoshotData(
+            image = listOf(""), index = listOf(0L),
+        )
+        rule.setContent {
+            BoxWithConstraints(Modifier.fillMaxSize()) {
+                val density = LocalDensity.current.density * maxWidth.value / 900f
+                CompositionLocalProvider(
+                    LocalDensity provides Density(density, 1f),
+                    LocalAppUiStyle provides style.value,
+                    LocalAppThemeConfig provides AppThemeConfig(liquidGlassEnabled = glass.value),
+                ) {
+                    MaterialTheme { MiuixTheme {
+                        Box(Modifier.fillMaxSize()) {
+                            BottomControlBar(
+                                modifier = Modifier.align(Alignment.BottomCenter)
+                                    .width(if (landscape.value) 840.dp else 320.dp),
+                                progress = PlayerProgress(52_000, 269_000),
+                                isFullscreen = landscape.value,
+                                viewportIsLandscape = landscape.value,
+                                viewportWidthDpOverride = if (landscape.value) 840 else 320,
+                                isSeekScrubbing = scrubbing.value,
+                                videoshotData = shot.takeIf { withImage.value },
+                                onSeek = {}, onToggleFullscreen = {},
+                            )
+                        }
+                    } }
+                }
+            }
+        }
+        for (uiStyle in AppUiStyle.entries) {
+            for (wide in listOf(false, true)) {
+                for (useGlass in listOf(false, true)) {
+                    rule.runOnIdle {
+                        style.value = uiStyle; landscape.value = wide
+                        glass.value = useGlass; scrubbing.value = false
+                    }
+                    val controls = rule.onNodeWithTag("player_fullscreen_toggle")
+                        .fetchSemanticsNode().boundsInRoot
+                    for (image in listOf(false, true)) {
+                        rule.runOnIdle { withImage.value = image; scrubbing.value = true }
+                        val preview = rule.onNodeWithTag("player_seek_preview")
+                            .assertIsDisplayed().fetchSemanticsNode().boundsInRoot
+                        val progress = rule.onNodeWithTag("player_progress")
+                            .fetchSemanticsNode().boundsInRoot
+                        val updatedControls = rule.onNodeWithTag("player_fullscreen_toggle")
+                            .fetchSemanticsNode().boundsInRoot
+                        assertTrue("Preview must end above track", preview.bottom <= progress.top)
+                        assertEquals(controls.top, updatedControls.top, 1f)
+                        assertEquals(controls.bottom, updatedControls.bottom, 1f)
+                    }
+                }
+            }
+        }
+    }
 
     @Test
     fun referenceGateAndEpisodeAvailability_doNotDependOnMaterialOrOrientation() {

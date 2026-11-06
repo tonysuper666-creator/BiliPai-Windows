@@ -182,16 +182,32 @@ class SearchMotionBudgetPolicyTest {
     }
 
     @Test
-    fun searchBack_returnsFromResultsToLandingAndThenLeavesSearch() {
+    fun emptySearchEntry_returnsFromResultsToLandingAndThenLeavesSearch() {
         for (focused in listOf(false, true)) {
             for (suggestions in listOf(false, true)) {
                 assertEquals(
                     SearchBackAction.RETURN_TO_LANDING,
-                    resolveSearchBackAction(true, suggestions, focused),
+                    resolveSearchBackAction(true, suggestions, focused, openedWithKeyword = false),
                 )
                 assertEquals(
                     SearchBackAction.LEAVE_SEARCH,
-                    resolveSearchBackAction(false, suggestions, focused),
+                    resolveSearchBackAction(false, suggestions, focused, openedWithKeyword = false),
+                )
+            }
+        }
+    }
+
+    @Test
+    fun keywordSearchEntry_leavesResultsWithoutInventingLandingHistory() {
+        for (focused in listOf(false, true)) {
+            for (suggestions in listOf(false, true)) {
+                assertEquals(
+                    SearchBackAction.LEAVE_SEARCH,
+                    resolveSearchBackAction(true, suggestions, focused, openedWithKeyword = true),
+                )
+                assertEquals(
+                    SearchBackAction.LEAVE_SEARCH,
+                    resolveSearchBackAction(false, suggestions, focused, openedWithKeyword = true),
                 )
             }
         }

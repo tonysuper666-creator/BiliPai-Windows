@@ -65,7 +65,50 @@ internal fun selectBestLyricCandidate(
     durationToleranceMs: Long = LYRIC_MATCH_DURATION_TOLERANCE_MS
 ): LyricCandidate? {
     return rankLyricCandidates(query, candidates, durationToleranceMs)
-        .firstOrNull { scoreLyricCandidate(query, it) >= minimumScore }
+        .firstOrNull { isAutomaticLyricCandidateAllowed(query, it, minimumScore, durationToleranceMs) }
+}
+
+/** 自动采用要求版本一致；UP 名称不是已确认的演唱者，缺少歌手证据时收紧时长条件。 */
+internal fun isAutomaticLyricCandidateAllowed(
+    query: LyricQuery,
+    candidate: LyricCandidate,
+    minimumScore: Double = LYRIC_MATCH_MINIMUM_SCORE,
+    durationToleranceMs: Long = LYRIC_MATCH_DURATION_TOLERANCE_MS,
+): Boolean {
+    if (!lyricVersionsMatch(query.originalTitle, candidate.title)) return false
+    if (query.durationMs > 0L && candidate.durationMs > 0L &&
+        abs(query.durationMs - candidate.durationMs) > durationToleranceMs
+    ) return false
+    val match = matchLyricCandidate(query, candidate)
+    if (match.score < minimumScore || match.titleScore < 0.72) return false
+    val performerKnown = (!query.artistIsUploader && query.artist.isNotBlank()) ||
+        extractPerformerVariants(query.originalTitle).isNotEmpty()
+    if (performerKnown) return match.artistScore >= 0.50
+    return match.titleScore >= 0.90 && query.durationMs > 0L && candidate.durationMs > 0L &&
+        abs(query.durationMs - candidate.durationMs) <= durationToleranceMs
+}
+
+private val lyricVersionPatterns = listOf(
+    Regex("\\blive\\b|现场|演唱会|舞台版", RegexOption.IGNORE_CASE),
+    Regex("\\bcover\\b|翻唱|翻自", RegexOption.IGNORE_CASE),
+    Regex("\\bremix\\b|混音", RegexOption.IGNORE_CASE),
+    Regex("\\binstrumental\\b|\\bkaraoke\\b|伴奏|纯音乐", RegexOption.IGNORE_CASE),
+    Regex("\\bsped\\s*up\\b|加速版|升速版", RegexOption.IGNORE_CASE),
+    Regex("\\bslowed\\b|降速版|慢速版", RegexOption.IGNORE_CASE),
+)
+
+internal fun lyricVersionsMatch(left: String, right: String): Boolean {
+    fun versions(value: String): Set<Int> = lyricVersionPatterns
+        .mapIndexedNotNull { index, pattern -> index.takeIf { pattern.containsMatchIn(value) } }.toSet()
+    return versions(left) == versions(right)
+}
+
+/** 行内容必须有相似性，时间靠近本身不足以证明是同一句歌词。 */
+internal fun lyricLinesMatch(left: String, right: String): Boolean {
+    val normalizedLeft = normalizeLyricMatchText(left)
+    val normalizedRight = normalizeLyricMatchText(right)
+    return normalizedLeft.isNotBlank() && normalizedRight.isNotBlank() &&
+        stringSimilarity(normalizedLeft, normalizedRight) >= 0.50
 }
 
 private fun matchLyricCandidate(
@@ -78,7 +121,7 @@ private fun matchLyricCandidate(
     )
     val queryArtistVariants = buildList {
         addAll(lyricArtistMatchVariants(query.artist))
-        addAll(extractPerformerVariants(query.title))
+        addAll(extractPerformerVariants(query.originalTitle))
     }.filter(String::isNotBlank).distinct()
     val artistScore = maximumVariantSimilarity(
         queryArtistVariants,
@@ -106,10 +149,10 @@ private fun lyricTitleMatchVariants(value: String): List<String> {
         Regex("[“\"]([^”\"]+)[”\"]")
     ).flatMap { pattern ->
         pattern.findAll(value).map { match ->
-            normalizeLyricMatchText(stripVideoNoise(match.groupValues[1]), removeBracketedPrefix = true)
+            normalizeLyricMatchText(stripLyricVideoNoise(match.groupValues[1]), removeBracketedPrefix = true)
         }.toList()
     }
-    val cleaned = stripVideoNoise(value)
+    val cleaned = stripLyricVideoNoise(value)
     val separatorParts = cleaned.split(Regex("\\s+[-|｜]\\s+"))
     return (quoted + listOf(value, cleaned) + separatorParts).map {
         normalizeLyricMatchText(it, removeBracketedPrefix = true)
@@ -119,7 +162,7 @@ private fun lyricTitleMatchVariants(value: String): List<String> {
 }
 
 private fun lyricArtistMatchVariants(value: String): List<String> {
-    val cleaned = stripVideoNoise(value)
+    val cleaned = stripLyricVideoNoise(value)
     val parts = cleaned.split(
         Regex("(?i)\\s*(?:[,，、/&+·;；]|\\bfeat\\.?\\b|\\bft\\.?\\b|\\bfeaturing\\b|\\bwith\\b)\\s*")
     )
@@ -137,15 +180,11 @@ private fun extractPerformerVariants(value: String): List<String> {
         .toList()
 }
 
-private fun stripVideoNoise(value: String): String {
-    return value
-        .replace(
-            Regex(
-                "(?i)(?:4k|8k|\\d{3,4}p|hdr|official|music video|video|audio|lyrics?|lyric video|mv|live|cover|remix|官方|现场版|完整版|高音质|歌词版|片段|舞台版|纯音乐|伴奏|伴奏版|卡拉ok|karaoke|instrumental|piano|独奏|翻唱|自存|无损|flac|hi-res|重制版|翻自)"
-            ),
-            " "
-        )
-}
+private val lyricVideoNoisePattern = Regex(
+    "(?i)(?:\\b(?:4k|8k|\\d{3,4}p|hdr|official|music video|lyric video|video|audio|lyrics?|mv|live|cover|remix|karaoke|instrumental|piano|flac|hi-res)\\b|官方|现场版|完整版|高音质|歌词版|片段|舞台版|纯音乐|伴奏版|伴奏|卡拉ok|独奏|翻唱|自存|无损|重制版|翻自)"
+)
+
+internal fun stripLyricVideoNoise(value: String): String = value.replace(lyricVideoNoisePattern, " ")
 
 private fun maximumVariantSimilarity(
     leftVariants: List<String>,
@@ -161,7 +200,7 @@ private fun lyricDurationScore(
     candidate: LyricCandidate,
     strongMetadata: Boolean
 ): Double {
-    if (query.durationMs <= 0L || candidate.durationMs <= 0L) return 1.0
+    if (query.durationMs <= 0L || candidate.durationMs <= 0L) return 0.5
     val differenceMs = abs(query.durationMs - candidate.durationMs)
     return when {
         differenceMs <= LYRIC_MATCH_DURATION_TOLERANCE_MS -> {

@@ -167,16 +167,16 @@ internal object PlaybackMediaCache {
             .sumOf { it.length() }
     }
 
-    fun clear(context: Context) {
+    fun clear(context: Context): Result<Unit> =
         runCatching {
             simpleCache?.release()
             simpleCache = null
-            cacheDir(context).deleteRecursively()
+            val directory = cacheDir(context)
+            check(!directory.exists() || directory.deleteRecursively()) { "部分媒体分片缓存无法清理" }
             Logger.d(TAG, "播放器媒体缓存已清理")
         }.onFailure { error ->
             Logger.w(TAG, "播放器媒体缓存清理失败: ${error.message}")
         }
-    }
 
     fun snapshotStats(): PlaybackMediaCacheStats {
         return PlaybackMediaCacheStats(

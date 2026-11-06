@@ -23,7 +23,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.media3.common.Player
@@ -50,7 +49,7 @@ internal fun PlayerSeekPreview(
     if (visible) {
         // 🖼️ Seek 模式：显示带缩略图的预览气泡
         // zIndex must sit above forced return cover (100f) so landscape seek feedback is never buried.
-        Box(
+        BoxWithConstraints(
             modifier = modifier,
             contentAlignment = Alignment.Center
         ) {
@@ -64,7 +63,7 @@ internal fun PlayerSeekPreview(
                         videoAspectRatio = player.videoSize.takeIf { it.width > 0 && it.height > 0 }
                             ?.let { it.width.toFloat() / it.height.toFloat() }
                             ?: com.android.purebilibili.feature.video.ui.components.PORTRAIT_SEEK_PREVIEW_ASPECT_RATIO,
-                        containerHeightDp = LocalConfiguration.current.screenHeightDp
+                        containerHeightDp = maxHeight.value.toInt()
                     )
                 } else {
                     // 普通播放器保留横向预览；竖屏全屏统一使用大尺寸 9:16 预览。
@@ -75,7 +74,8 @@ internal fun PlayerSeekPreview(
                         durationMs = player.duration,
                         offsetX = 0f,
                         containerWidth = 0f,
-                        placement = com.android.purebilibili.feature.video.ui.components.SeekPreviewBubblePlacement.Centered
+                        placement = com.android.purebilibili.feature.video.ui.components.SeekPreviewBubblePlacement.Centered,
+                        containerHeightDp = maxHeight.value.toInt(),
                     )
                 }
             } else {

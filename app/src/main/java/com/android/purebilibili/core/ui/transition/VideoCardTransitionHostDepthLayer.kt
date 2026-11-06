@@ -116,6 +116,7 @@ internal fun VideoCardTransitionHostDepthLayer(
                     canvasSize = size,
                     sourceBounds = sourceBoundsProvider(),
                     layerAlpha = frozenLayerAlpha,
+                    rasterScale = snapshotHandle.prepareEffectLayer(this, frame.blurRadiusPx),
                 )
                 if (shouldDrawVideoCardTransitionScaleGapFill(frame.contentScale)) {
                     drawRect(

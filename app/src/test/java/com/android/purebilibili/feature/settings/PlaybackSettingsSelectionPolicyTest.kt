@@ -211,9 +211,9 @@ class PlaybackSettingsSelectionPolicyTest {
     fun `resolveDefaultPlaybackQualityOptions should only expose fixed quality tiers`() {
         val options = resolveDefaultPlaybackQualityOptions()
 
-        assertEquals(listOf(126, 125, 116, 80, 64, 32, 16), options.map { it.value })
+        assertEquals(listOf(126, 125, 120, 116, 112, 80, 64, 32, 16), options.map { it.value })
         assertEquals(
-            listOf("杜比视界", "4K HDR", "1080P60", "1080P", "720P", "480P", "360P"),
+            listOf("杜比视界", "HDR", "4K", "1080P60", "1080P+", "1080P", "720P", "480P", "360P"),
             options.map { it.label }
         )
     }

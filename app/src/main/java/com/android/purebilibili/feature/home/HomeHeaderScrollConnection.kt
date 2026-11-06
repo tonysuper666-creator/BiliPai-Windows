@@ -32,14 +32,17 @@ internal data class HomeHeaderScrollConfiguration(
     val liquidGlassEnabled: Boolean,
     val hideType: HomeBarHideType,
     val collapseMode: CommonListHeaderCollapseMode = CommonListHeaderCollapseMode.SHOW_ON_REVERSE_SCROLL,
-)
+) {
+    val coordinatesChrome: Boolean
+        get() = collapseEnabled || (bottomBarAutoHideEnabled && !useSideNavigation) || liquidGlassEnabled
+}
 
 @Composable
 internal fun rememberHomeHeaderScrollConnection(
     configuration: HomeHeaderScrollConfiguration,
     pagerState: PagerState,
     topTabEntries: List<HomeTopTabEntry>,
-    activeGridStateProvider: () -> LazyStaggeredGridState?,
+    activeGridStateProvider: () -> HomeFeedGridState?,
     subscriptionListState: LazyStaggeredGridState,
     partitionListState: LazyListState = rememberLazyListState(),
     revealLocked: Boolean,
@@ -84,24 +87,38 @@ internal fun rememberHomeHeaderScrollConnection(
                 val onSubscriptionTab = currentEntry == HomeTopTabEntry.Subscriptions
                 val onPartitionTab = currentEntry == HomeTopTabEntry.Partition
                 val activeGridState = currentActiveGridState.value()
-                val headerListIndex = resolveHomeHeaderListIndex(
-                    displayedEntryIsSubscription = onSubscriptionTab,
-                    categoryFirstVisibleIndex = activeGridState?.firstVisibleItemIndex ?: 0,
-                    subscriptionFirstVisibleIndex = subscriptionListState.firstVisibleItemIndex,
-                )
-                val activeList = if (onSubscriptionTab) subscriptionListState else activeGridState
-                // 仅回顶模式依据当前列表位置决定是否恢复；反向恢复模式允许浏览中展开。
-                val canRevealHeader = if (onPartitionTab) partitionListState.firstVisibleItemIndex == 0 else canRevealHomeHeaderForList(
-                    firstVisibleItemIndex = headerListIndex,
-                    listMissing = !onSubscriptionTab && activeGridState == null,
-                )
-                val listAtTop = if (onPartitionTab) !partitionListState.canScrollBackward else activeList?.let { !it.canScrollBackward } == true
+                val listAtTop = when {
+                    onPartitionTab -> !partitionListState.canScrollBackward
+                    onSubscriptionTab -> !subscriptionListState.canScrollBackward
+                    else -> activeGridState?.canScrollBackward == false
+                }
                 // 刷新保护只在当前列表顶部生效，避免请求中或切页残留状态强制展开。
                 if (currentRefreshInteractionActive.value() && listAtTop) {
                     currentOnHeaderOffsetChanged.value(0f, false)
                     currentOnTabsCollapsedChanged.value(false)
                     return Offset.Zero
                 }
+                // Native fixed bars still report scroll for dock/search behavior, but
+                // need no header reducer or tab visibility writes. Keep refresh and
+                // gesture guards above shared with the full coordinator.
+                if (!configuration.coordinatesChrome) {
+                    resolveNextHomeGlobalScrollOffset(
+                        currentOffset = globalScrollOffset.floatValue,
+                        scrollDeltaY = available.y,
+                        liquidGlassEnabled = false,
+                    )?.let { globalScrollOffset.floatValue = it }
+                    return Offset.Zero
+                }
+                val headerListIndex = resolveHomeHeaderListIndex(
+                    displayedEntryIsSubscription = onSubscriptionTab,
+                    categoryFirstVisibleIndex = activeGridState?.firstVisibleItemIndex ?: 0,
+                    subscriptionFirstVisibleIndex = subscriptionListState.firstVisibleItemIndex,
+                )
+                // 仅回顶模式依据当前列表位置决定是否恢复；反向恢复模式允许浏览中展开。
+                val canRevealHeader = if (onPartitionTab) partitionListState.firstVisibleItemIndex == 0 else canRevealHomeHeaderForList(
+                    firstVisibleItemIndex = headerListIndex,
+                    listMissing = !onSubscriptionTab && activeGridState == null,
+                )
                 val oldHeaderOffset = headerOffsetProvider()
                 val revealConsumedY = resolveHomeHeaderRevealConsumedY(
                     currentHeaderOffsetPx = oldHeaderOffset,

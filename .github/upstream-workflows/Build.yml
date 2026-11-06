@@ -8,20 +8,25 @@ on:
         type: choice
         description: '选择编译类型'
         required: true
-        default: 'dev'
+        default: 'release'
         options:
-          - 'dev'
           - 'release'
+          - 'dev'
 
 permissions:
   contents: write
   actions: read
   attestations: write
   id-token: write
+  packages: read
 
-# Temporary distribution policy: GitHub mirrors source only; APKs are published in Telegram.
+# 同一分支/标签的新 push 会取消仍在跑的旧构建，避免并行重复消耗 runner。
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+
 env:
-  GITHUB_APK_DISTRIBUTION_ENABLED: "false"
+  GITHUB_APK_DISTRIBUTION_ENABLED: "true"
 
 jobs:
   quality-guards:
@@ -62,10 +67,9 @@ jobs:
         run: |
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             echo "build_type=${{ github.event.inputs.build_type }}" >> $GITHUB_OUTPUT
-          elif [[ "${GITHUB_REF}" == refs/tags/v* ]]; then
-            echo "build_type=release" >> $GITHUB_OUTPUT
           else
-            echo "build_type=dev" >> $GITHUB_OUTPUT
+            # push 一律编译正式版：dev 包名的 google-services 客户端不在 FCM 密钥里。
+            echo "build_type=release" >> $GITHUB_OUTPUT
           fi
           echo "构建类型已设置"
   
@@ -80,8 +84,11 @@ jobs:
         with:
           cache-read-only: ${{ github.ref != 'refs/heads/main' }}
   
-      - name: Set up Android SDK and NDK
-        uses: android-actions/setup-android@v3
+      # runner 镜像自带 Android SDK；这里只需接受许可证，AGP 会按需安装缺失组件。
+      # 原 android-actions/setup-android@v3 会安装已被 Google 移除的 `tools` 包，
+      # runner 镜像更新后 sdkmanager 直接退出 1（上游已知问题），故绕开。
+      - name: Accept Android SDK licenses
+        run: yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null || true
   
       - name: Grant execute permission to gradlew
         run: chmod +x gradlew
@@ -90,16 +97,37 @@ jobs:
         run: |
           cd ./app
           echo "${{ secrets.FCM }}" | base64 -d > google-services.json
+
+      - name: Configure release signing
+        if: steps.set_build_type.outputs.build_type == 'release'
+        env:
+          KEYSTORE_BASE64: ${{ secrets.RELEASE_KEYSTORE_BASE64 }}
+          BILI_RELEASE_STORE_PASSWORD: ${{ secrets.RELEASE_STORE_PASSWORD }}
+          BILI_RELEASE_KEY_ALIAS: ${{ secrets.RELEASE_KEY_ALIAS }}
+          BILI_RELEASE_KEY_PASSWORD: ${{ secrets.RELEASE_KEY_PASSWORD }}
+        run: |
+          if [ -z "$KEYSTORE_BASE64" ] || [ -z "$BILI_RELEASE_STORE_PASSWORD" ] || [ -z "$BILI_RELEASE_KEY_ALIAS" ] || [ -z "$BILI_RELEASE_KEY_PASSWORD" ]; then
+            echo 'Release signing secrets are missing.' >&2
+            exit 1
+          fi
+          printf '%s' "$KEYSTORE_BASE64" | base64 -d > "$RUNNER_TEMP/release.keystore"
+          echo "BILI_RELEASE_STORE_FILE=$RUNNER_TEMP/release.keystore" >> "$GITHUB_ENV"
   
       - name: Build APK
         env:
+          # GitHub Packages（Miuix SNAPSHOT）解析需要 token 鉴权，匿名 401。
+          GITHUB_TOKEN: ${{ github.token }}
           BILI_BUILD_COMMIT_SHA: ${{ github.sha }}
           BILI_BUILD_GIT_REF: ${{ github.ref }}
           BILI_BUILD_WORKFLOW_RUN_ID: ${{ github.run_id }}
           BILI_BUILD_WORKFLOW_RUN_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
           BILI_BUILD_RELEASE_TAG: ${{ startsWith(github.ref, 'refs/tags/') && github.ref_name || '' }}
+          BILI_RELEASE_STORE_PASSWORD: ${{ secrets.RELEASE_STORE_PASSWORD }}
+          BILI_RELEASE_KEY_ALIAS: ${{ secrets.RELEASE_KEY_ALIAS }}
+          BILI_RELEASE_KEY_PASSWORD: ${{ secrets.RELEASE_KEY_PASSWORD }}
         run: |
           COMMON_ARGS=(
+            "--max-workers=4"
             "-Pbili.build.commitSha=${BILI_BUILD_COMMIT_SHA}"
             "-Pbili.build.gitRef=${BILI_BUILD_GIT_REF}"
             "-Pbili.build.workflowRunId=${BILI_BUILD_WORKFLOW_RUN_ID}"
@@ -245,14 +273,32 @@ jobs:
           RELEASE_TAG: ${{ github.ref_name }}
           DIST_DIR: ${{ github.workspace }}/build/release-evidence
         run: |
+          python3 - <<'PY'
+          import os
+          import re
+          from pathlib import Path
+
+          tag = os.environ["RELEASE_TAG"]
+          changelog = Path("CHANGELOG.md").read_text(encoding="utf-8")
+          heading = re.compile(r"^##\s+" + re.escape(tag) + r"(?:\s|$).*$", re.MULTILINE)
+          match = heading.search(changelog)
+          if not match:
+              raise SystemExit(f"No changelog entry found for {tag}")
+          next_heading = re.search(r"^##\s+", changelog[match.end():], re.MULTILINE)
+          end = match.end() + next_heading.start() if next_heading else len(changelog)
+          notes = changelog[match.end():end].strip()
+          if not notes:
+              raise SystemExit(f"Changelog entry for {tag} is empty")
+          Path(os.environ["RUNNER_TEMP"], "release-notes.md").write_text(notes + "\n", encoding="utf-8")
+          PY
           gh release view "$RELEASE_TAG" --json isDraft >/dev/null 2>&1 || \
             gh release create "$RELEASE_TAG" \
               --draft \
               --title "$RELEASE_TAG" \
-              --generate-notes
+              --notes-file "$RUNNER_TEMP/release-notes.md"
 
           gh release upload "$RELEASE_TAG" "$DIST_DIR"/* --clobber
-          gh release edit "$RELEASE_TAG" --draft=false
+          gh release edit "$RELEASE_TAG" --notes-file "$RUNNER_TEMP/release-notes.md" --draft=false
 
   skipped-due-to-no-fcm:
     runs-on: ubuntu-latest

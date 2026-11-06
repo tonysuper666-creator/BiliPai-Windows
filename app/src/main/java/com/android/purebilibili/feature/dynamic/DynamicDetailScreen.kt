@@ -101,6 +101,7 @@ import com.android.purebilibili.feature.video.ui.components.resolveBottomInputBa
 import com.android.purebilibili.feature.video.ui.components.shouldUseFloatingLiquidBottomInputBar
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import com.android.purebilibili.core.ui.blur.rememberChromeBackdropSource
 import com.android.purebilibili.core.ui.wallpaper.sharedGlobalWallpaperBackground
@@ -119,6 +120,7 @@ fun DynamicDetailScreen(
     dynamicId: String,
     openCommentRootRpid: Long = 0L,
     openCommentTargetRpid: Long = 0L,
+    openComments: Boolean = false,
     onBack: () -> Unit,
     onVideoClick: (String) -> Unit,
     onBangumiClick: (Long, Long) -> Unit = { _, _ -> },
@@ -149,6 +151,7 @@ fun DynamicDetailScreen(
 
     val uiState = if (contentTransitionReady) loadedUiState else DynamicDetailUiState.Loading
     androidx.compose.runtime.CompositionLocalProvider(
+        com.android.purebilibili.core.ui.transition.LocalDynamicCommentPreviewVisible provides false,
         com.android.purebilibili.feature.share.LocalReplyShareContext provides
             com.android.purebilibili.feature.share.ReplyShareContext("https://t.bilibili.com/$dynamicId", title = "动态"),
     ) {
@@ -192,10 +195,14 @@ fun DynamicDetailScreen(
     val likeOverrides by interactionViewModel.likeOverrides.collectAsStateWithLifecycle()
     // 评论区一次性读取单一状态：以前 5 个 flow 分别发射，加载完成时会出现中间帧。
     val commentUiState by interactionViewModel.commentUiState.collectAsStateWithLifecycle()
-    val comments = commentUiState.comments
+    val comments = remember(
+        commentUiState.comments,
+        commentUiState.pinnedRootReplyId,
+        commentUiState.pinnedReply,
+    ) { resolveDynamicDetailDisplayComments(commentUiState) }
     val commentsLoading = commentUiState.isLoading
     val commentsRefreshing = commentUiState.isRefreshing
-    val commentsRefreshError = commentUiState.refreshError
+    val commentsRefreshError = commentUiState.pinnedReplyError ?: commentUiState.refreshError
     val commentsLoadingMore = commentUiState.isLoadingMore
     val commentTotalCount = commentUiState.totalCount
     // 骨架槽位数按可视高度估算：铺满首屏，数据到达时列表不会被撑长或缩短。
@@ -219,7 +226,10 @@ fun DynamicDetailScreen(
     var forwardCountDelta by remember(dynamicId) { mutableIntStateOf(0) }
     var subReplyCoveredBlurProgress by remember { mutableFloatStateOf(0f) }
     val avatarPushEnabled = com.android.purebilibili.feature.video.ui.components.rememberCommentAvatarPushEnabled()
-    val detailListState = rememberLazyListState()
+    val detailListState = rememberLazyListState(
+        initialFirstVisibleItemIndex =
+            if (openComments || openCommentRootRpid > 0L || openCommentTargetRpid > 0L) 1 else 0,
+    )
     //  [新增] 大屏/横屏分栏：右栏评论列表
     val commentListState = rememberLazyListState()
     val useSplitLayout = LocalWindowSizeClass.current.shouldUseSplitLayout
@@ -325,8 +335,24 @@ fun DynamicDetailScreen(
                         interactionViewModel.openCommentSheet(
                             item = state.item,
                             rootReplyId = openCommentRootRpid,
-                            targetReplyId = openCommentTargetRpid
+                            targetReplyId = openCommentTargetRpid,
+                            pinRootReply = true,
                         )
+                        if (openComments || openCommentRootRpid > 0L || openCommentTargetRpid > 0L) {
+                            detailScrollScope.launch {
+                                val listState = if (useSplitLayout) commentListState else detailListState
+                                val headerIndex = if (useSplitLayout) 0 else 1
+                                snapshotFlow {
+                                    val current = commentUiState
+                                    val pinReady = openCommentRootRpid <= 0L ||
+                                        current.pinnedReply?.rpid == openCommentRootRpid ||
+                                        current.pinnedReplyError != null
+                                    current.dynamicId == state.item.id_str && !current.isLoading && pinReady &&
+                                        listState.layoutInfo.totalItemsCount > headerIndex
+                                }.first { it }
+                                listState.scrollToItem(headerIndex)
+                            }
+                        }
                     }
                 }
 
@@ -355,6 +381,16 @@ fun DynamicDetailScreen(
                         }
                 }
 
+                val showCommentsInPlace: () -> Unit = {
+                    detailScrollScope.launch {
+                        if (useSplitLayout) {
+                            commentListState.animateScrollToItem(0)
+                        } else {
+                            detailListState.animateScrollToItem(1)
+                        }
+                    }
+                }
+
                 //  [新增] 卡片与评论内容提取，供分栏/单列两种布局复用
                 val cardContent: androidx.compose.foundation.lazy.LazyListScope.() -> Unit = {
                     item {
@@ -378,15 +414,7 @@ fun DynamicDetailScreen(
                                     onMatchClick = onMatchClick,
                                 ),
                                 interaction = DynamicCardInteractionActions(
-                                    onCommentClick = {
-                                        detailScrollScope.launch {
-                                            if (useSplitLayout) {
-                                                commentListState.animateScrollToItem(0)
-                                            } else {
-                                                detailListState.animateScrollToItem(1)
-                                            }
-                                        }
-                                    },
+                                    onCommentClick = { showCommentsInPlace() },
                                     onRepostClick = { showRepostDialog = it },
                                     onLikeClickWithState = { targetDynamicId, isLiked ->
                                         interactionViewModel.likeDynamic(
@@ -474,7 +502,14 @@ fun DynamicDetailScreen(
                         comments = comments,
                         isLoading = commentsLoading,
                         isLoadingMore = commentsLoadingMore,
-                        onViewReplies = { reply -> interactionViewModel.openSubReply(reply) },
+                        onViewReplies = { reply, targetReplyId ->
+                            val target = if (targetReplyId > 0L || reply.rpid != commentUiState.pinnedRootReplyId) {
+                                targetReplyId
+                            } else {
+                                commentUiState.pinnedTargetReplyId
+                            }
+                            interactionViewModel.openSubReply(reply, target)
+                        },
                         onReply = { reply -> interactionViewModel.startCommentReply(reply) },
                         onLike = { reply -> interactionViewModel.likeComment(reply.rpid) },
                         onHate = { reply ->

@@ -11,6 +11,7 @@ import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -220,22 +221,9 @@ internal fun LandscapeDanmakuComposerEditor(
         }
     }
     CompositionLocalProvider(LocalAppButtonSlotColorCorrectionEnabled provides false) {
-    Column(
-        modifier = modifier.widthIn(max = 450.dp)
-            .clip(RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp))
-            .background(LandscapeDanmakuSurfaceColor)
-            .pointerInput(Unit) { detectTapGestures { } }
-            .windowInsetsPadding(
-                WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal + WindowInsetsSides.Bottom)
-            )
-            .padding(horizontal = 12.dp, vertical = 8.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
-    ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-        ) {
+    BoxWithConstraints(modifier = modifier) {
+        val narrowInputRow = maxWidth < 320.dp
+        val styleControl: @Composable () -> Unit = {
             AppIconButton(
                 onClick = {
                     if (!showStylePanel) {
@@ -254,6 +242,34 @@ internal fun LandscapeDanmakuComposerEditor(
                     modifier = Modifier.semantics { contentDescription = "弹幕样式" },
                 )
             }
+        }
+        val clearControl: @Composable () -> Unit = {
+            if (text.isNotBlank() && !isSending) {
+                AppIconButton(onClick = {
+                    text = ""
+                    onDraftChange("", attentionCommandChecked)
+                }, modifier = Modifier.size(32.dp)) {
+                    AppIcon(Icons.Outlined.Close, contentDescription = "清空")
+                }
+            }
+        }
+    Column(
+        modifier = Modifier.widthIn(max = 450.dp)
+            .clip(RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp))
+            .background(LandscapeDanmakuSurfaceColor)
+            .pointerInput(Unit) { detectTapGestures { } }
+            .windowInsetsPadding(
+                WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal + WindowInsetsSides.Bottom)
+            )
+            .padding(horizontal = 12.dp, vertical = 8.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            if (!narrowInputRow) styleControl()
 
             BasicTextField(
                 value = text,
@@ -311,19 +327,12 @@ internal fun LandscapeDanmakuComposerEditor(
                     }
                 },
             )
-            if (text.isNotBlank() && !isSending) {
-                AppIconButton(onClick = {
-                    text = ""
-                    onDraftChange("", attentionCommandChecked)
-                }, modifier = Modifier.size(32.dp)) {
-                    AppIcon(Icons.Outlined.Close, contentDescription = "清空")
-                }
-            }
+            if (!narrowInputRow) clearControl()
 
             AppIconButton(
                 onClick = sendMessage,
                 enabled = visible && text.isNotBlank() && !isSending,
-                modifier = Modifier.size(48.dp),
+                modifier = Modifier.size(48.dp).testTag("danmaku_landscape_send"),
             ) {
                 if (isSending) {
                     AppCircularProgressIndicator(
@@ -339,6 +348,17 @@ internal fun LandscapeDanmakuComposerEditor(
                         modifier = Modifier.size(28.dp),
                     )
                 }
+            }
+        }
+
+        if (narrowInputRow) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+            ) {
+                styleControl()
+                clearControl()
             }
         }
 
@@ -454,6 +474,8 @@ internal fun LandscapeDanmakuComposerEditor(
             }
         }
     }
+    }
+
     }
 
     if (visible && showCustomColorPicker) {

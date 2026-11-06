@@ -11,11 +11,11 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -29,9 +29,6 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.snap
-import androidx.compose.animation.core.tween
 import androidx.compose.animation.animateContentSize
 import androidx.compose.material.icons.outlined.ArrowDownward
 import androidx.compose.material.icons.outlined.ArrowUpward
@@ -42,9 +39,6 @@ import androidx.compose.material.icons.outlined.Share
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.rememberModalBottomSheetState
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -56,26 +50,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.navigationevent.NavigationEventInfo
-import androidx.navigationevent.NavigationEventTransitionState
-import androidx.navigationevent.compose.LocalNavigationEventDispatcherOwner
-import androidx.navigationevent.compose.NavigationBackHandler
-import androidx.navigationevent.compose.rememberNavigationEventState
-import androidx.navigationevent.findViewTreeNavigationEventDispatcherOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
-import com.android.purebilibili.core.ui.AppModalBottomSheet
 import com.android.purebilibili.core.ui.AppShapes
 import com.android.purebilibili.core.ui.ContainerLevel
 import com.android.purebilibili.core.store.SettingsManager
@@ -113,27 +97,9 @@ fun CollectionSheet(
     currentCid: Long = 0L,
     currentVideoInfo: com.android.purebilibili.data.model.response.ViewInfo? = null,
     onDismiss: () -> Unit,
-    onEpisodeClick: (UgcEpisode) -> Unit
+    onEpisodeClick: (UgcEpisode) -> Unit,
+    inlinePanel: Boolean = false,
 ) {
-    var sheetVisible by remember { mutableStateOf(true) }
-    val backState = rememberNavigationEventState(NavigationEventInfo.None)
-    var committedBackProgress by remember { mutableFloatStateOf(0f) }
-    val backTransition = backState.transitionState as? NavigationEventTransitionState.InProgress
-    val motionEnabled = com.android.purebilibili.core.ui.LocalPredictiveBackGestureEnabled.current &&
-        com.android.purebilibili.core.ui.LocalComponentMotionEnabled.current &&
-        !com.android.purebilibili.core.ui.LocalSystemReduceMotion.current
-    val backProgress = animateFloatAsState(
-        targetValue = if (!motionEnabled) 0f else if (!sheetVisible) committedBackProgress else
-            backTransition?.takeIf {
-                it.direction == NavigationEventTransitionState.TRANSITIONING_BACK
-            }?.latestEvent?.progress?.coerceIn(0f, 1f) ?: 0f,
-        animationSpec = if (backTransition != null || !motionEnabled) snap() else tween(180),
-        label = "collectionPredictiveBack",
-    )
-    val requestDismiss: () -> Unit = {
-        committedBackProgress = backProgress.value
-        sheetVisible = false
-    }
     val selectionHaptic = rememberHapticFeedback(com.android.purebilibili.core.ui.AppHapticScene.MENUS)
     val sheetMaxHeight = episodeSheetMaxHeight()
     val context = LocalContext.current
@@ -206,45 +172,18 @@ fun CollectionSheet(
         }
     }
 
-    AppModalBottomSheet(
-        onDismissRequest = onDismiss,
-        visible = sheetVisible,
-        useTimedSlideMotion = true,
-        dismissOnBackPress = false,
-        // 返回由合集所在窗口接管；完成后交给各材质的原生收起动画。
-        modifier = Modifier.graphicsLayer {
-            val progress = backProgress.value
-            transformOrigin = TransformOrigin(0.5f, 1f)
-            scaleX = 1f - 0.06f * progress
-            scaleY = 1f - 0.06f * progress
-            translationY = size.height * 0.12f * progress
-        },
-        sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
-        windowInsets = WindowInsets(0.dp)  //  沉浸式
-    ) {
-        // 必须在弹窗内容里读取窗口 owner，避免处理器挂到下层视频路由。
-        val windowOwner = checkNotNull(
-            LocalView.current.findViewTreeNavigationEventDispatcherOwner()
-                ?: LocalNavigationEventDispatcherOwner.current
-        ) { "Collection sheet must provide a window navigation dispatcher" }
-        CompositionLocalProvider(LocalNavigationEventDispatcherOwner provides windowOwner) {
-            NavigationBackHandler(
-                state = backState,
-                // 收起动画结束前仍消费返回，避免连续侧滑穿透到视频页面。
-                isBackEnabled = true,
-                onBackCompleted = { if (sheetVisible) requestDismiss() },
-            )
-        }
+    EpisodeSelectionSheet(onDismiss = onDismiss, inlinePanel = inlinePanel) { requestDismiss ->
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .heightIn(max = sheetMaxHeight)
+                .then(if (inlinePanel) Modifier.fillMaxSize() else Modifier.heightIn(max = sheetMaxHeight))
         ) {
             // ── 工具栏（PiliPlus：标题 + 收藏 + 跳转/定位 + 排序 + 关闭）──
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .heightIn(min = 44.dp)
+                    .horizontalScroll(rememberScrollState())
                     .padding(horizontal = 10.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -265,7 +204,7 @@ fun CollectionSheet(
                     ),
                     fontSize = MaterialTheme.typography.labelMedium.fontSize
                 )
-                Spacer(modifier = Modifier.weight(1f))
+                Spacer(modifier = Modifier.width(8.dp))
                 EpisodeListNavigationActions(
                     onTopClick = { scrollToEpisode(0) },
                     onBottomClick = { scrollToEpisode(sortedEpisodes.lastIndex) },
@@ -413,9 +352,8 @@ fun CollectionSheet(
                 state = listState,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(1f, fill = false)
-                    .heightIn(max = 460.dp),
-                contentPadding = PaddingValues(vertical = 8.dp)
+                    .weight(1f, fill = false),
+                contentPadding = PaddingValues(top = 7.dp, bottom = 16.dp)
             ) {
                 itemsIndexed(
                     sortedEpisodes,
@@ -471,14 +409,22 @@ internal fun CollectionEpisodeRow(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable(onClick = onClick)
-            .padding(horizontal = 16.dp, vertical = 8.dp)
     ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
+        BoxWithConstraints(modifier = Modifier.fillMaxWidth()) {
+        val coverWidth = minOf(160.dp, maxWidth * 0.40f)
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(112.dp)
+                .clickable(onClick = onClick)
+                .padding(horizontal = 12.dp, vertical = 6.dp),
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
             Box(
                 modifier = Modifier
-                    .width(132.dp)
-                    .aspectRatio(16f / 9f)
+                    .width(coverWidth)
+                    .height(100.dp)
                     .clip(AppShapes.container(ContainerLevel.Chip))
                     .background(MaterialTheme.colorScheme.surfaceVariant)
             ) {
@@ -505,8 +451,7 @@ internal fun CollectionEpisodeRow(
                         .padding(4.dp),
                 )
             }
-            Spacer(modifier = Modifier.width(12.dp))
-            Column(modifier = Modifier.weight(1f)) {
+            Column(modifier = Modifier.weight(1f).height(100.dp)) {
                 AppText(
                     text = episode.title,
                     style = MaterialTheme.typography.bodyMedium,
@@ -517,7 +462,8 @@ internal fun CollectionEpisodeRow(
                         AppContentColors.primaryText()
                     },
                     maxLines = 2,
-                    overflow = TextOverflow.Ellipsis
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.weight(1f),
                 )
                 if (publishTimeText.isNotBlank()) {
                     Spacer(modifier = Modifier.height(4.dp))
@@ -530,27 +476,25 @@ internal fun CollectionEpisodeRow(
                     )
                 }
                 val stat = arc?.stat
-                if (stat != null && (stat.view > 0 || stat.danmaku > 0)) {
+                if (stat != null) {
                     Spacer(modifier = Modifier.height(4.dp))
                     // 复用全局统计原子（图标/字号/间距与其他卡片一致）
                     HorizontalVideoStatRow(
                         playText = FormatUtils.formatStat(stat.view.toLong()),
-                        danmakuText = if (stat.danmaku > 0) {
-                            FormatUtils.formatStat(stat.danmaku.toLong())
-                        } else {
-                            ""
-                        }
+                        danmakuText = FormatUtils.formatStat(stat.danmaku.toLong())
                     )
                 }
             }
         }
+        }
 
         // 分 P chips：单集多 P 时展示
         if (episode.pages.size > 1) {
-            Spacer(modifier = Modifier.height(6.dp))
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .padding(horizontal = 12.dp, vertical = 5.dp)
+                    .height(45.dp)
                     .horizontalScroll(rememberScrollState()),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {

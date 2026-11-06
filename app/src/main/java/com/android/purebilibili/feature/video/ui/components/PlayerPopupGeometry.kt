@@ -7,6 +7,14 @@ import androidx.compose.ui.unit.LayoutDirection
 
 internal data class PlayerPopupViewport(val bounds: IntRect, val maxHeight: Int)
 
+/** 缩窗后的旧锚点收回当前安全区，避免菜单仍围绕窗口外的按钮位置测量。 */
+internal fun resolvePlayerPopupAnchorBounds(anchor: IntRect, safe: IntRect): IntRect = IntRect(
+    anchor.left.coerceIn(safe.left, safe.right),
+    anchor.top.coerceIn(safe.top, safe.bottom),
+    anchor.right.coerceIn(safe.left, safe.right),
+    anchor.bottom.coerceIn(safe.top, safe.bottom),
+)
+
 /** All values are host-window pixels, including the measured control-row anchor. */
 internal fun resolvePlayerPopupViewport(
     safeWindowBounds: IntRect,

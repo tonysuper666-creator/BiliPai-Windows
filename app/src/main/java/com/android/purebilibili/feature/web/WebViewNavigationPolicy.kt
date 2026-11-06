@@ -2,6 +2,7 @@ package com.android.purebilibili.feature.web
 
 import com.android.purebilibili.core.util.BilibiliNavigationTarget
 import com.android.purebilibili.core.util.BilibiliNavigationTargetParser
+import com.android.purebilibili.core.util.hasCommentLocation
 
 internal sealed interface WebViewNavigationAction {
     data object AllowWebLoad : WebViewNavigationAction
@@ -29,13 +30,18 @@ internal fun resolveWebViewNavigationAction(
         return WebViewNavigationAction.AllowWebLoad
     }
 
+    // 空间子页包含网页投稿、充电等独立内容，不能丢掉路径后拦回 UP 主首页。
+    if (isOfficialSpaceSubpageUrl(trimmedUrl)) {
+        return WebViewNavigationAction.AllowWebLoad
+    }
+
     if (isCustomScheme) {
         if (!hasUserGesture) {
             return WebViewNavigationAction.Block
         }
 
         val target = BilibiliNavigationTargetParser.parse(urlString)
-        if (target is BilibiliNavigationTarget.Dynamic) {
+        if (target != null && (target is BilibiliNavigationTarget.Dynamic || target.hasCommentLocation)) {
             return WebViewNavigationAction.DispatchTarget(target)
         }
 
@@ -48,6 +54,10 @@ internal fun resolveWebViewNavigationAction(
     }
 
     val target = BilibiliNavigationTargetParser.parse(urlString)
+    // 显式网页入口的自动重定向保留在网页内，点击文集链接时才进入原生页面。
+    if (target is BilibiliNavigationTarget.ArticleCollection && !hasUserGesture) {
+        return WebViewNavigationAction.AllowWebLoad
+    }
     return if (target != null) {
         WebViewNavigationAction.DispatchTarget(target)
     } else {
@@ -62,6 +72,13 @@ internal fun shouldOpenWebUrlExternally(urlString: String): Boolean {
     ) return false
     val host = uri.host?.lowercase() ?: return false
     return !com.android.purebilibili.core.util.isBilibiliWebHost(host)
+}
+
+internal fun isOfficialSpaceSubpageUrl(urlString: String): Boolean {
+    val uri = runCatching { java.net.URI(urlString.trim()) }.getOrNull() ?: return false
+    val segments = uri.path.orEmpty().split('/').filter { it.isNotBlank() }
+    return uri.host.equals("space.bilibili.com", ignoreCase = true) && segments.size > 1 &&
+        segments.first().toLongOrNull()?.let { it > 0L } == true
 }
 
 internal fun isOfficialMusicDetailUrl(urlString: String): Boolean {
