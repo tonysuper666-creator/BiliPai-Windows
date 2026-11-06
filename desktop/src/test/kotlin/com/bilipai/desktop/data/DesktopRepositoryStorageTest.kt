@@ -78,7 +78,16 @@ class DesktopRepositoryStorageTest {
                 status = CommentFraudStatus.NORMAL, postTime = 100, context = context)
             val saved = assertNotNull(dao.getRecordByRpid(17))
             assertEquals(saved, CommentFraudRepository.getAllRecordsFlow(context).first().single())
-            assertEquals(1, CommentFraudRepository.importFromJson(CommentFraudRepository.exportToJson(context), context).getOrThrow())
+            val backup = CommentFraudRepository.exportToJson(context)
+            // Upstream import only adds missing records; an existing record keeps its local state.
+            assertEquals(0, CommentFraudRepository.importFromJson(backup, context).getOrThrow())
+            assertEquals(listOf(saved), dao.getAllRecords())
+            DesktopCommentFraudJsonDao(directory, 71, { true }, { it(); true }).use { reopened ->
+                assertEquals(listOf(saved), reopened.getAllRecords())
+            }
+            CommentFraudRepository.deleteLocalRecord(17, context)
+            assertTrue(dao.getAllRecords().isEmpty())
+            assertEquals(1, CommentFraudRepository.importFromJson(backup, context).getOrThrow())
             DesktopCommentFraudJsonDao(directory, 71, { true }, { it(); true }).use { reopened ->
                 assertEquals(listOf(saved), reopened.getAllRecords())
             }
