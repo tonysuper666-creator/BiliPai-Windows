@@ -1,6 +1,6 @@
 --- a/com/android/purebilibili/core/ui/effect/LiquidLens.kt
 +++ b/com/android/purebilibili/core/ui/effect/LiquidLens.kt
-@@ -13,6 +13,7 @@
+@@ -13,6 +13,7 @@ import androidx.compose.ui.util.fastCoerceAtMost
  import top.yukonga.miuix.kmp.blur.BackdropEffectScope
  import top.yukonga.miuix.kmp.blur.isRuntimeShaderSupported
  import top.yukonga.miuix.kmp.blur.runtimeShaderEffect
@@ -8,23 +8,28 @@
  import kotlin.math.ceil
  
  /**
-@@ -80,6 +81,7 @@
-         shaderString = shaderString,
-         uniformShaderName = "content",
-     ) {
-+        withDesktopWindowsGlassUniformCache {
-         setFloatUniform("size", scaledSizeW, scaledSizeH)
-         setFloatUniform("offset", -scaledPadding - (outlineBounds?.left ?: 0f) / sf,
-             -scaledPadding - (outlineBounds?.top ?: 0f) / sf)
-@@ -91,6 +93,7 @@
-             setFloatUniform("chromaticBandHorizontal", if (chromaticBandHorizontal) 1f else 0f)
-             setFloatUniform("chromaticAberration", chromaticAberration)
-             setFloatUniform("chromaticEdgeBand", chromaticEdgeBand?.coerceAtLeast(0f)?.div(sf) ?: -1f)
-+        }
-         }
-     }
- }
-@@ -141,7 +144,7 @@
+@@ -132,9 +133,11 @@ fun BackdropEffectScope.lens(
+                 shaderString = shaderString,
+                 uniformShaderName = "content",
+             ) {
++                withDesktopWindowsGlassUniformCache {
+                 setFloatUniform("size", scaledSizeW, scaledSizeH)
+                 setFloatUniform("offset", offsetX, offsetY)
+-                setFloatUniform("cornerRadii", scaledTopLeft, scaledTopRight, scaledBottomRight, scaledBottomLeft)
++                // Desktop: the uniform cache writer has no 4-float overload; same uniform as a float4 array.
++                setFloatUniform("cornerRadii", floatArrayOf(scaledTopLeft, scaledTopRight, scaledBottomRight, scaledBottomLeft))
+                 setFloatUniform("refractionHeight", scaledRefractionHeight)
+                 setFloatUniform("refractionAmount", -scaledRefractionAmount)
+                 setFloatUniform("depthEffect", depth)
+@@ -143,6 +146,7 @@ fun BackdropEffectScope.lens(
+                     setFloatUniform("chromaticAberration", chromaticAberration)
+                     setFloatUniform("chromaticEdgeBand", edgeBand)
+                 }
++                }
+             }
+             cache.store(renderEffect)
+         } finally {
+@@ -181,7 +185,7 @@ float2 gradSdRoundedRect(float2 coord, float2 halfSize, float radius) {
  }
  """
  
@@ -33,7 +38,7 @@
  uniform shader content;
  
  uniform float2 size;
-@@ -177,7 +180,7 @@
+@@ -217,7 +221,7 @@ half4 main(float2 coord) {
  }
  """
  
