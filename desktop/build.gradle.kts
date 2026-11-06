@@ -96,7 +96,7 @@ val revisionNeutralSourceImportContextMatches =
     revisionNeutralSourceImportRoots.none { file("tools/$it").exists() } && revisionNeutralSourceImportShadowFiles.isEmpty
 // Pin the whole Gradle recipe, including canonical helpers and later wiring.
 // Mask exactly this self-digest assignment; raw build bytes remain task inputs.
-val revisionNeutralSourceGradleRecipeSha256 = "94300f2a1a2ce9e12546389a5a0b0a04f420d839c3e6dd335b632f5b4e2ad14c"
+val revisionNeutralSourceGradleRecipeSha256 = "a5a7e2ad6723230625fe2ff0c704a120665bc4ff93ce98899a7fba15a948af21"
 val revisionNeutralSourceGradleRecipeMatches = runCatching {
     val recipe = file("build.gradle.kts").readText(Charsets.UTF_8).replace("\r\n", "\n")
     val ownPin = "val revisionNeutralSourceGradleRecipeSha256 = \"$revisionNeutralSourceGradleRecipeSha256\""
@@ -3227,8 +3227,9 @@ val generateUpstreamDrawableResources by tasks.registering {
                         val kind = when (val tag = javax.xml.parsers.DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(file).documentElement.tagName) {
                             "vector" -> "vector"
                             "adaptive-icon" -> "adaptive"
-                            // Splash-screen compositions; the desktop has no Android splash screen. Their ids load loudly.
-                            "layer-list", "bitmap" -> tag
+                            // Splash-screen compositions and home-screen widget backgrounds (v0.7.8 widget_playback_background);
+                            // the desktop has no Android splash screen or app widgets. Their ids load loudly.
+                            "layer-list", "bitmap", "shape" -> tag
                             else -> throw GradleException("$where: <$tag> drawables are not implemented on the desktop")
                         }
                         // A colour without a base value would crash on Android below that qualifier too; the id stays and
