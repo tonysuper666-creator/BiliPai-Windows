@@ -51,12 +51,29 @@ class CompleteUpDanmakuSourceTest(unittest.TestCase):
             'VideoPlaybackViewModel.kt.v034-detail-inverse.json',
         ):
             proof = json.loads((self.output / 'owner' / filename).read_bytes())
+            if filename == 'v037-complete-known-state-owner-proof.json':
+                whole = proof
+                proof = whole['knownStateStage']
+                final = (self.output / 'owner' / next(row['path'] for row in self.owner_inventory
+                         if row['path'].endswith('/VideoPlaybackViewModel.kt'))).read_text(encoding='utf8')
+                self.assertTrue(whole['exactCompleteInverse'])
+                self.assertTrue(proof['exactCompleteInverse'])
+                self.assertEqual(whole['beforeSha256LF'], proof['beforeSha256LF'])
+                self.assertEqual(whole['afterSha256LF'], hashlib.sha256(final.encode()).hexdigest())
+                restored = final
+                for edit in reversed(whole['indexedEdits']):
+                    offset = edit['afterOffset']
+                    self.assertEqual(edit['after'], restored[offset:offset+len(edit['after'])])
+                    restored = restored[:offset] + edit['before'] + restored[offset+len(edit['after']):]
+                self.assertEqual(whole['beforeSha256LF'], hashlib.sha256(restored.encode()).hexdigest())
             self.assertEqual(proof['afterSha256LF'], hashlib.sha256(body.encode()).hexdigest())
             for edit in reversed(proof.get('indexedEdits', proof.get('inverseEdits', []))):
                 offset = edit.get('afterOffset', edit.get('offset'))
                 self.assertEqual(edit['after'], body[offset:offset+len(edit['after'])])
                 body = body[:offset] + edit['before'] + body[offset+len(edit['after']):]
             self.assertEqual(proof['beforeSha256LF'], hashlib.sha256(body.encode()).hexdigest())
+            if filename == 'v037-complete-known-state-owner-proof.json':
+                self.assertEqual(restored, body)
         return body
 
     def test_six_fixed_blobs_and_manifest_match_exact_immutable_identity(self):

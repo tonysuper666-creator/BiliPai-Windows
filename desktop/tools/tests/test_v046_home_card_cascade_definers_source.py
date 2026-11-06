@@ -344,20 +344,21 @@ class V046HomeCardCascadeDefinersSourceTest(unittest.TestCase):
             self.assertGreater(len(results), 100)
             self.assertIn('extractOriginalHomePage', {row['task'] for row in results})
             hits = []
-            roots = [root / 'desktop/src', root / 'desktop/build']
             names = set(TOP_LEVEL)
-            for base in roots:
-                for path in base.rglob('*'):
-                    if not path.is_file() or path.suffix not in {'.kt', '.kts'}:
-                        continue
-                    raw = path.read_bytes()
-                    if not any(name.encode('utf-8') in raw for name in names):
-                        continue
-                    relative = path.relative_to(root).as_posix()
-                    package, decls = declarations(raw.decode('utf-8'), relative)
-                    for visibility, _kind, declared in decls:
-                        if declared in names:
-                            hits.append((package, visibility, declared, relative))
+            compiled, _notes = gate.collect_sources(root, model)
+            compiled = [source for source in compiled if source.set == 'main']
+            self.assertFalse(any(source.logical.startswith('build/generated/home-page/')
+                                 for source in compiled))
+            for source in compiled:
+                if not source.logical.endswith(('.kt', '.kts')):
+                    continue
+                raw = Path(source.real).read_bytes()
+                if not any(name.encode('utf-8') in raw for name in names):
+                    continue
+                package, decls = declarations(raw.decode('utf-8'), source.logical)
+                for visibility, _kind, declared in decls:
+                    if declared in names:
+                        hits.append((package, visibility, declared, source.logical))
             counts = {name: [hit for hit in hits if hit[2] == name] for name in names}
             for name, found in counts.items():
                 self.assertEqual(1, len(found), (name, found))
@@ -365,8 +366,7 @@ class V046HomeCardCascadeDefinersSourceTest(unittest.TestCase):
                 want_visibility, want_package, want_suffix = TOP_LEVEL[name]
                 self.assertEqual(want_package, package, name)
                 self.assertEqual(want_visibility, visibility, name)
-                self.assertTrue(relative.startswith('desktop/build/generated/home-page/'), relative)
-                self.assertTrue(relative.endswith(want_suffix), relative)
+                self.assertEqual('app/src/main/java/' + want_suffix, relative)
         finally:
             shutil.rmtree(scratch, ignore_errors=True)
 

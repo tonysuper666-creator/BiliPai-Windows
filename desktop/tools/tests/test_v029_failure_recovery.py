@@ -61,9 +61,18 @@ class FailureRecoveryGeneratorTests(unittest.TestCase):
         original_actual = restore(original_actual, comment["inverseEdits"])
         self.assertEqual(comment["beforeSha256LF"], hashlib.sha256(original_actual.encode()).hexdigest())
         known = json.loads((self.root / "owner" / "v037-complete-known-state-owner-proof.json").read_text(encoding="utf-8"))
+        whole = known
+        known = whole['knownStateStage']
+        self.assertTrue(whole['exactCompleteInverse'])
+        self.assertTrue(known['exactCompleteInverse'])
+        self.assertEqual(whole['beforeSha256LF'], known['beforeSha256LF'])
+        self.assertEqual(whole['afterSha256LF'], hashlib.sha256(actual.encode()).hexdigest())
+        whole_inverse = restore(actual, whole['indexedEdits'], key='afterOffset')
+        self.assertEqual(whole['beforeSha256LF'], hashlib.sha256(whole_inverse.encode()).hexdigest())
         self.assertEqual(known["afterSha256LF"], hashlib.sha256(original_actual.encode()).hexdigest())
         original_actual = restore(original_actual, known["indexedEdits"], key="afterOffset")
         self.assertEqual(known["beforeSha256LF"], hashlib.sha256(original_actual.encode()).hexdigest())
+        self.assertEqual(whole_inverse, original_actual)
         for field in (
             "autoplayContinuationInverseEdits",
             "nextWatchInverseEdits",
