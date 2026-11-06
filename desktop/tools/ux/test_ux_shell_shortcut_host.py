@@ -812,16 +812,25 @@ class Rh1HunkTest(unittest.TestCase):
         self.assertIn("shellShortcutHost.onKey(event) { toggleOriginalFullscreen() }", SHELL_CODE)
         self.assertIn("LocalDesktopShellShortcutHost provides shellShortcutHost", SHELL_CODE)
 
-    def test_the_root_asks_the_shared_esc_decision_before_the_host_takes_the_key(self):
-        # The Root hands every key to desktopShellRootEsc first (F11, then Esc: field, fullscreen, back) and only then offers it to the
-        # host, so the owner of the caret keeps Esc ahead of the sheet shortcuts. What the decision returns on the real search, comment
-        # and message pages is proved on the JVM by DesktopShellTextFieldEscapeTest; here only the composition order is checked.
+    def test_the_root_esc_chain_then_the_host_then_the_player_take_the_key(self):
+        # The order of the Root handler is the priority of the layers: the Root's own Esc chain (F11, Esc in a field, Esc in fullscreen,
+        # Esc back) first, then the sheet shortcuts of the host, then the player branch. A player branch moved above the host would steal
+        # Alt+Left or F6; one moved above the Esc chain would steal Esc while the caret sits in a field.
         start = SHELL.index("val rootKeyHandler: (KeyEvent) -> Boolean = { event ->")
         end = SHELL.index("val latestRootKeyHandler by rememberUpdatedState(rootKeyHandler)")
         block = shell.squash(SHELL[start:end])
         self.assertIn("desktopShellRootEsc(event, desktopShellTextEditorFocused(), isFullscreen(),", block)
         self.assertEqual(1, block.count("shellShortcutHost.onKey(event)"))
-        self.assertLess(block.index("desktopShellRootEsc("), block.index("shellShortcutHost.onKey(event)"))
+        esc = block.index("desktopShellRootEsc(")
+        host = block.index("else if (shellShortcutHost.onKey(event) { toggleOriginalFullscreen() }) true")
+        player = block.index("else if ((showVideo || section == DesktopSection.STORY) && playing.details != null && playerFocused")
+        self.assertLess(esc, host, "the Root's Esc chain keeps the key ahead of the sheet shortcuts")
+        self.assertLess(host, player, "the sheet shortcuts keep the key ahead of the player branch")
+        # Inside the chain F11 comes first, exactly as it did when both keys stood inline in the handler: a fullscreen toggle must not be
+        # read as Esc.
+        chain = shell.squash(SHELL[SHELL.index("internal fun desktopShellRootEsc("):
+                                     SHELL.index("fun DesktopApp(")])
+        self.assertLess(chain.index("event.key == Key.F11"), chain.index("when (desktopShellEscape("))
 
     def test_the_branch_is_inside_the_root_key_handler_and_the_val_is_outside_it(self):
         start = SHELL.index("val rootKeyHandler: (KeyEvent) -> Boolean = { event ->")
