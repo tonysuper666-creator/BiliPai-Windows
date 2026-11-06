@@ -96,7 +96,7 @@ val revisionNeutralSourceImportContextMatches =
     revisionNeutralSourceImportRoots.none { file("tools/$it").exists() } && revisionNeutralSourceImportShadowFiles.isEmpty
 // Pin the whole Gradle recipe, including canonical helpers and later wiring.
 // Mask exactly this self-digest assignment; raw build bytes remain task inputs.
-val revisionNeutralSourceGradleRecipeSha256 = "2287a34c4bc8a62b4b58b3c01433f2b682287e4947fea8574faca9cef2600202"
+val revisionNeutralSourceGradleRecipeSha256 = "09026d78807dab825926c537ff7ecca26574b2db3268b531e65f5c5d1825eac5"
 val revisionNeutralSourceGradleRecipeMatches = runCatching {
     val recipe = file("build.gradle.kts").readText(Charsets.UTF_8).replace("\r\n", "\n")
     val ownPin = "val revisionNeutralSourceGradleRecipeSha256 = \"$revisionNeutralSourceGradleRecipeSha256\""
@@ -1101,8 +1101,10 @@ val extractUpstreamSettingsHome by tasks.registering(Exec::class) {
     workingDir(projectDir)
     commandLine(pythonExecutable, "tools/extract-upstream-settings-home.py",
         "--repo", repositoryRoot.absolutePath,
+        "--current-repo", mergedRepositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/settings-home").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-settings-home.py", "tools/extract-upstream-plugins.py", "tools/extract-upstream-media.py", "tools/sync-upstream.py")
+    inputs.file(mergedRepositoryRoot.resolve("app/src/main/java/com/android/purebilibili/feature/home/HomeViewModel.kt"))
     inputs.files(sources.filter { "settings-home-section-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/settings-home"))
@@ -3418,9 +3420,12 @@ val verifyUpstreamReplacements by tasks.registering {
 // Upstream's own unit tests of the migrated design modules run in the desktop test set; the pinned older copies of the
 // same test classes that the generators extract are skipped, since both cannot exist under one class name.
 val migratedWholeModuleTestRoots = migratedWholeModules.map { mergedRepositoryRoot.resolve(it + "src/test/java") }.filter { it.isDirectory }
+// TON-1315: select this current core-data test, replacing the v046 generated copy
+// without importing the rest of core-data's Android test graph.
+val currentVideoProgressTest = mergedRepositoryRoot.resolve("core-data/src/test/java/com/android/purebilibili/data/model/VideoProgressDisplayPolicyTest.kt")
 val migratedWholeModuleTestPaths: Set<String> = migratedWholeModuleTestRoots.flatMap { root ->
     root.walkTopDown().filter { it.isFile && it.extension == "kt" }.map { it.relativeTo(root).invariantSeparatorsPath }.toList()
-}.toSet()
+}.toSet() + "com/android/purebilibili/data/model/VideoProgressDisplayPolicyTest.kt"
 // Upstream tests that read upstream source files relative to their Gradle module (design-system/) run in their own task
 // with that working directory; the other desktop tests keep theirs.
 val migratedSourceReadingTestClasses: List<String> = migratedWholeModuleTestRoots.flatMap { root ->
@@ -3551,7 +3556,8 @@ val appCoreUpstreamTestPaths: Set<String> = (appTestRoot.resolve("com/android/pu
         // TON-1120: upstream's IM wire tests run against the directly compiled MessageImRepository.
         sequenceOf(appTestRoot.resolve("com/android/purebilibili/data/repository/MessageImRepositoryTest.kt")) +
         // TON-1297: the migrated v0.7.8 SearchMotionBudgetPolicy is the only compiled one; its own test replaces the v0.4.6 producer copy.
-        sequenceOf(appTestRoot.resolve("com/android/purebilibili/feature/search/SearchMotionBudgetPolicyTest.kt")))
+        sequenceOf(appTestRoot.resolve("com/android/purebilibili/feature/search/SearchMotionBudgetPolicyTest.kt"),
+            appTestRoot.resolve("com/android/purebilibili/feature/settings/CacheClearUiPolicyTest.kt")))
     .filter { it.isFile && it.extension == "kt" }
     // JUnit 4, Robolectric, mockk and androidx.test are not on the desktop test classpath; JUnit 5 (org.junit.jupiter) is.
     .filter { file -> !Regex("""^import (org\.junit\.(?!jupiter)|org\.robolectric|io\.mockk|androidx\.test)""", RegexOption.MULTILINE).containsMatchIn(file.readText()) }
@@ -3568,6 +3574,10 @@ val appCoreSourceReadingTestClasses: List<String> = appCoreUpstreamTestPaths.map
     .sorted()
 kotlin.sourceSets.named("test") {
     migratedWholeModuleTestRoots.forEach { kotlin.srcDir(it) }
+    kotlin.srcDir(currentVideoProgressTest.parentFile)
+    kotlin.exclude { element -> !element.isDirectory &&
+        element.file.toPath().startsWith(currentVideoProgressTest.parentFile.toPath()) &&
+        element.file != currentVideoProgressTest }
     kotlin.exclude { element -> !element.isDirectory &&
         element.file.toPath().startsWith(mergedRepositoryRoot.toPath()) &&
         element.file.relativeTo(mergedRepositoryRoot).invariantSeparatorsPath in correctedUpstreamTestPaths }
@@ -3582,7 +3592,10 @@ kotlin.sourceSets.named("test") {
         val index = path.lastIndexOf("/com/android/purebilibili/")
         element.file.toPath().startsWith(buildDirectoryPath) &&
             !element.file.toPath().startsWith(correctedUpstreamTestOutput.get().asFile.toPath()) && index >= 0 &&
-            path.substring(index + 1).let { it in migratedWholeModuleTestPaths || it in appCoreUpstreamTestPaths }
+            path.substring(index + 1).let { it in migratedWholeModuleTestPaths || it in appCoreUpstreamTestPaths ||
+                // The pinned v029 class was renamed by its producer. All policy
+                // cases now run from the newer root CacheClearUiPolicyTest.
+                it == "com/android/purebilibili/feature/settings/DesktopV029CacheClearUiPolicyTest.kt" }
     }
 }
 
@@ -4631,6 +4644,7 @@ val extractOriginalStorageSettings by tasks.registering(Exec::class) {
     workingDir(projectDir)
     commandLine(pythonExecutable, "tools/extract-upstream-storage-settings.py",
         "--repo", repositoryRoot.absolutePath,
+        "--current-repo", mergedRepositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/original-storage-settings").get().asFile.absolutePath,
         "--tests-output", layout.buildDirectory.dir("generated/original-storage-settings-tests").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-storage-settings.py", "tools/extract-upstream-media.py",
@@ -4641,6 +4655,7 @@ val extractOriginalStorageSettings by tasks.registering(Exec::class) {
     inputs.files(originalResources.filter { "desktop-storage-cache-settings-owner-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })
     inputs.file("tools/v029_brand_cache_clear.py")
+    inputs.file(mergedRepositoryRoot.resolve("app/src/main/java/com/android/purebilibili/feature/settings/screen/SettingsScreen.kt"))
     inputs.dir("upstream-slices/v029-brand-cache-clear")
     outputs.dir(layout.buildDirectory.dir("generated/original-storage-settings"))
     outputs.dir(layout.buildDirectory.dir("generated/original-storage-settings-tests"))
