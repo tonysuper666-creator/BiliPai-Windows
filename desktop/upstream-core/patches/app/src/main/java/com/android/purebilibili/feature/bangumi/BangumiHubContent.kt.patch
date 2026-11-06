@@ -19,3 +19,25 @@
      }
      LaunchedEffect(pager, enabled) {
          if (!enabled) return@LaunchedEffect
+@@ -336,10 +337,20 @@
+     AdaptivePullToRefreshBox(
+         isRefreshing = isRefreshing,
+         onRefresh = onRefresh,
+         modifier = Modifier.fillMaxSize(),
+     ) {
+         LazyVerticalGrid(
+-            columns = GridCells.Adaptive(112.dp),
++            columns = GridCells.Fixed(
++                com.bilipai.desktop.ui.desktopResolveHomeFeedGridColumns(
++                    layout = com.bilipai.desktop.ui.desktopHomeFeedLayoutKey(),
++                    contentWidthDp = com.bilipai.desktop.ui.desktopHomeFeedContentWidth(
++                        com.android.purebilibili.core.util.LocalWindowSizeClass.current.widthDp,
++                    ).value.toInt(),
++                    displayMode = 0,
++                    fixedColumnCount = 0,
++                    cardWidthPreset = com.android.purebilibili.core.store.HomeFeedCardWidthPreset.AUTO,
++                ),
++            ),
+             state = gridState,
+             contentPadding = PaddingValues(start = 12.dp, top = listTopPadding + 8.dp, end = 12.dp, bottom = listBottomPadding),
+             horizontalArrangement = Arrangement.spacedBy(10.dp),

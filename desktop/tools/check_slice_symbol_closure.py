@@ -1236,7 +1236,7 @@ KOTLIN_RECIPES.update({
     'transitionPatchDirectory': 'be0083a18475a22cc4496682ccdbaca38e2271e8f07226f07ed1ad240884eb59',
     'transitionPatchedGeneratedFiles': '274520d1b49d943b541b96f914d77ede5b202457d7fedd5ecb06a72ef5095f20',
     'desktopUpstreamRewriteRules': '12d72835b4160ace41cf104f892ac57567cb1cf88c867c7b3cb186acb000af64',
-    'applyTransitionPatches': '6d670ee5e960186bab2f67d2da2d53f882753179dd33af53f496b1942e7a8b96',
+    'applyTransitionPatches': 'f0c0d7ceabc7d80fbf42be874a3cbb6878f98d2eb4b15e63eecd545cfbbf8014',
 })
 KOTLIN_TASKS = ('generateUpstreamColorResources', 'generateUpstreamStringResources',
                 'generateUpstreamDrawableResources', 'generateUpstreamPreferenceKeyTypes',
