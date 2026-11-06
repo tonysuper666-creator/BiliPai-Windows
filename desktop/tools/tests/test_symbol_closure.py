@@ -2068,6 +2068,32 @@ class CurrentIntegrationTree(unittest.TestCase):
         self.assertIn('heuristic limits:', text)
 
 
+@contextlib.contextmanager
+def source260_posix_producer_paths():
+    """Open historical producer paths on macOS without changing Windows.
+
+    Head aad198489's producers prepend ``\\\\?\\\\`` to every absolute path and
+    do not check ``os.name``. That is the Windows extended-length namespace, so
+    the same head's producers exit 0 on Windows and FileNotFound on macOS.
+    The hook lives in a directory that is not on the default PYTHONPATH. It is
+    installed only for the producer subprocesses of this class, then removed.
+    """
+    if os.name == 'nt':
+        yield
+        return
+    shim = Path(__file__).resolve().parent / 'fixtures' / 'source260_posix_longpath'
+    key = 'PYTHONPATH'
+    previous = os.environ.get(key)
+    os.environ[key] = str(shim) if not previous else str(shim) + os.pathsep + previous
+    try:
+        yield
+    finally:
+        if previous is None:
+            os.environ.pop(key, None)
+        else:
+            os.environ[key] = previous
+
+
 @unittest.skipIf(SKIP_HEAVY, 'BP_SYMBOL_GATE_SKIP_HEAVY=1')
 @unittest.skipIf(ALLOW_SHALLOW and not object_exists(SOURCE260_HEAD),
                  'BP_SYMBOL_GATE_ALLOW_SHALLOW=1 and the failed Source260 head is not in this clone')
@@ -2077,8 +2103,9 @@ class Source260History(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         require_history(SOURCE260_HEAD)
-        cls.result, cls.producers = gate.run_gate(
-            REPO, revision=SOURCE260_HEAD, expected_path=None, options=gate.Options(carried=False))
+        with source260_posix_producer_paths():
+            cls.result, cls.producers = gate.run_gate(
+                REPO, revision=SOURCE260_HEAD, expected_path=None, options=gate.Options(carried=False))
 
     def locations(self, check, symbol):
         return [f for f in self.result.unexpected if f.check == check and f.symbol == symbol]
