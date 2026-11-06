@@ -321,103 +321,6 @@ class CommentUiCaseReceiptTests(unittest.TestCase):
         observation['observations'][0]['sameAcceptedPublicationIdentity'] = False
         with self.assertRaisesRegex(ValueError, 'original comment'): self.verify('search', observation, transport)
 
-    def rejects_search_link(self, observation, transport):
-        with self.assertRaises(ValueError) as caught: self.verify('search_link', observation, transport)
-        self.assertNotIn('owned path', str(caught.exception))
-
-    def test_search_link_actual_owned_clicks_and_five_captures_are_accepted(self):
-        result = self.verify('search_link')
-        self.assertEqual([x['path'] for x in result], [x + '-screen.png' for x in RUNNER.CAPTURES_BY_CASE['search_link']])
-
-    def test_search_link_rejects_fixture_navigation_substitutes(self):
-        def receipt(key): return lambda observation, transport: observation.__setitem__(key, True)
-        def at(row_id, key, value):
-            def change(observation, transport):
-                next(row for row in observation['observations'] if row['id'] == row_id)[key] = value
-            return change
-        for name, change in (
-                ('fixture stack', receipt('physicalStackWrittenByFixture')),
-                ('direct stack', receipt('directPhysicalStackListMutation')),
-                ('fixture native actor', receipt('newNativeActorCreatedByFixture')),
-                ('fixture root', receipt('newRootCreatedByFixture')),
-                ('fixture back', at('360-search-links-back-video', 'fixtureBackCommandUsed', True)),
-                ('fixture route back', at('320-comment-search-back-video', 'fixtureRoutePushed', True)),
-                ('fixture search route', at('310-comment-link-actual-search', 'fixtureRoutePushed', True)),
-                ('row stack write', at('340-dynamic-topic-click', 'physicalStackWrittenByFixture', True)),
-                ('row direct stack', at('300-comment-search-link-click', 'directPhysicalStackListMutation', True)),
-                ('back not restored', at('320-comment-search-back-video', 'sameStackRestored', False)),
-                ('mixed comment search', receipt('commentSearchProofRequested'))):
-            with self.subTest(name):
-                observation, transport = self.evidence('search_link')
-                change(observation, transport)
-                self.rejects_search_link(observation, transport)
-
-    def test_search_link_dynamic_topic_wire_and_input_identity_are_exact(self):
-        def at(row_id, key, value):
-            def change(observation, transport):
-                next(row for row in observation['observations'] if row['id'] == row_id)[key] = value
-            return change
-        def detail(key, value): return lambda observation, transport: transport['searchLink'].__setitem__(key, value)
-        for name, change in (
-                ('wrong dynamic row', at('330-comment-dynamic-link-detail', 'dynamicId', '777')),
-                ('wrong dynamic key', at('330-comment-dynamic-link-detail', 'keyType', 'Search')),
-                ('wrong topic', at('340-dynamic-topic-click', 'topicId', 123)),
-                ('bool topic', at('340-dynamic-topic-click', 'topicId', False)),
-                ('wrong topic label', at('340-dynamic-topic-click', 'label', '其他话题')),
-                ('nonempty wire', at('300-comment-search-link-click', 'wireUrlEmpty', False)),
-                ('partial schema', at('300-comment-search-link-click', 'appUrlSchema', 'bilibili://search?keyword=老番茄')),
-                ('wrong label', at('300-comment-search-link-click', 'label', '别的')),
-                ('fixture input', at('300-comment-search-link-click', 'inputMechanism', 'FIXTURE_ROUTE')),
-                ('topic input', at('340-dynamic-topic-click', 'inputMechanism', 'OS_ROBOT')),
-                ('wrong editor', at('310-comment-link-actual-search', 'drawnSearchEditorValue', '')),
-                ('wrong topic search', at('350-dynamic-topic-actual-search', 'keyword', '老番茄')),
-                ('wrong detail dynamic', detail('dynamicId', '777')),
-                ('wrong detail schema', detail('commentSearchSchema', 'bilibili://search?keyword=x')),
-                ('wrong detail keyword', detail('commentKeyword', 'hello')),
-                ('fixture detail route', detail('fixtureRoutePushed', True))):
-            with self.subTest(name):
-                observation, transport = self.evidence('search_link')
-                change(observation, transport)
-                self.rejects_search_link(observation, transport)
-
-    def test_search_link_requires_guest_get_reply_and_dynamic_read_trace(self):
-        def reads(value): return lambda transport: transport['searchLink'].__setitem__('readRequests', value)
-        reply = dict(kind='reply', path='/x/v2/reply/wbi/main', method='GET', oid='170001', type='1', videoRoots=True)
-        dynamic = dict(kind='dynamicDetail', path='/x/polymer/web-dynamic/v1/detail', method='GET',
-            id=RUNNER.SEARCH_LINK_DYNAMIC_ID)
-        for name, change in (
-                ('no trace', reads([])),
-                ('missing trace', lambda transport: transport['searchLink'].pop('readRequests')),
-                ('no dynamic read', reads([reply])),
-                ('no video read', reads([dict(reply, videoRoots=False, oid='1'), dynamic])),
-                ('post read', reads([dict(reply, method='POST'), dynamic])),
-                ('other path', reads([dict(reply, path='/x/v2/reply/add'), dynamic])),
-                ('other dynamic', reads([reply, dict(dynamic, id='777')])),
-                ('other kind', reads([reply, dynamic, dict(kind='search', path='/x/web-interface/search', method='GET')])),
-                ('not guest', lambda transport: transport['searchLink'].__setitem__('syntheticGuestTransportOnly', False)),
-                ('mutation', lambda transport: transport['searchLink'].__setitem__('accountMutationSubmitted', True)),
-                ('real account', lambda transport: transport.__setitem__('realAccountUsed', True)),
-                ('stack written', lambda transport: transport.__setitem__('physicalStackWritten', True)),
-                ('not synthetic', lambda transport: transport.__setitem__('searchLinkResponsesAreSynthetic', False)),
-                ('mixed replay', lambda transport: transport.__setitem__('commentSearch', dict())),
-                ('guest post', lambda transport: transport['apiRequests'].append(
-                    dict(method='POST', host='api.bilibili.com', path='/x/v2/reply/add')))):
-            with self.subTest(name):
-                observation, transport = self.evidence('search_link')
-                change(transport)
-                self.rejects_search_link(observation, transport)
-
-    def test_search_link_capture_cannot_be_omitted_or_borrowed_by_search(self):
-        observation, transport = self.evidence('search_link')
-        self.write(observation, transport, 'search_link')
-        (self.report / '330-comment-dynamic-link-detail-screen.png').unlink()
-        with self.assertRaises((ValueError, OSError)):
-            RUNNER.verify(self.report, self.local, self.health, self.token, self.process, 'search_link')
-        observation, transport = self.evidence('search')
-        with self.assertRaises((ValueError, KeyError)): self.verify('search_link', observation, transport)
-        observation, transport = self.evidence('search_link')
-        with self.assertRaises((ValueError, KeyError)): self.verify('search', observation, transport)
-
     def test_composer_complete_actual_generation_store_and_controls_evidence(self):
         result = self.verify('composer')
         self.assertEqual(len(result), 8)
@@ -763,6 +666,116 @@ class CommentUiCaseReceiptTests(unittest.TestCase):
         self.assertIn('canvasRobot.mouseMove(point.x, point.y)', seam)
         self.assertIn('check(!EventQueue.isDispatchThread())', seam)
         self.assertNotIn('dispatchEvent(MouseEvent', seam)
+
+
+class SearchLinkReceiptTests(unittest.TestCase):
+    """search_link receipts on a resolved temp root, so a linked TMPDIR cannot stand in for a rejection."""
+    write = CommentUiCaseReceiptTests.write
+    evidence = CommentUiCaseReceiptTests.evidence
+    verify = CommentUiCaseReceiptTests.verify
+
+    def setUp(self):
+        CommentUiCaseReceiptTests.setUp(self)
+        self.root = self.root.resolve()
+        self.report, self.local = self.root / 'report', self.root / 'local'
+        self.health = self.local / 'startup-health.txt'
+
+    def rejects_search_link(self, observation, transport):
+        with self.assertRaises(ValueError) as caught: self.verify('search_link', observation, transport)
+        self.assertNotIn('owned path', str(caught.exception))
+
+    def test_search_link_actual_owned_clicks_and_five_captures_are_accepted(self):
+        result = self.verify('search_link')
+        self.assertEqual([x['path'] for x in result], [x + '-screen.png' for x in RUNNER.CAPTURES_BY_CASE['search_link']])
+
+    def test_search_link_rejects_fixture_navigation_substitutes(self):
+        def receipt(key): return lambda observation, transport: observation.__setitem__(key, True)
+        def at(row_id, key, value):
+            def change(observation, transport):
+                next(row for row in observation['observations'] if row['id'] == row_id)[key] = value
+            return change
+        for name, change in (
+                ('fixture stack', receipt('physicalStackWrittenByFixture')),
+                ('direct stack', receipt('directPhysicalStackListMutation')),
+                ('fixture native actor', receipt('newNativeActorCreatedByFixture')),
+                ('fixture root', receipt('newRootCreatedByFixture')),
+                ('fixture back', at('360-search-links-back-video', 'fixtureBackCommandUsed', True)),
+                ('fixture route back', at('320-comment-search-back-video', 'fixtureRoutePushed', True)),
+                ('fixture search route', at('310-comment-link-actual-search', 'fixtureRoutePushed', True)),
+                ('row stack write', at('340-dynamic-topic-click', 'physicalStackWrittenByFixture', True)),
+                ('row direct stack', at('300-comment-search-link-click', 'directPhysicalStackListMutation', True)),
+                ('back not restored', at('320-comment-search-back-video', 'sameStackRestored', False)),
+                ('mixed comment search', receipt('commentSearchProofRequested'))):
+            with self.subTest(name):
+                observation, transport = self.evidence('search_link')
+                change(observation, transport)
+                self.rejects_search_link(observation, transport)
+
+    def test_search_link_dynamic_topic_wire_and_input_identity_are_exact(self):
+        def at(row_id, key, value):
+            def change(observation, transport):
+                next(row for row in observation['observations'] if row['id'] == row_id)[key] = value
+            return change
+        def detail(key, value): return lambda observation, transport: transport['searchLink'].__setitem__(key, value)
+        for name, change in (
+                ('wrong dynamic row', at('330-comment-dynamic-link-detail', 'dynamicId', '777')),
+                ('wrong dynamic key', at('330-comment-dynamic-link-detail', 'keyType', 'Search')),
+                ('wrong topic', at('340-dynamic-topic-click', 'topicId', 123)),
+                ('bool topic', at('340-dynamic-topic-click', 'topicId', False)),
+                ('wrong topic label', at('340-dynamic-topic-click', 'label', '其他话题')),
+                ('nonempty wire', at('300-comment-search-link-click', 'wireUrlEmpty', False)),
+                ('partial schema', at('300-comment-search-link-click', 'appUrlSchema', 'bilibili://search?keyword=老番茄')),
+                ('wrong label', at('300-comment-search-link-click', 'label', '别的')),
+                ('fixture input', at('300-comment-search-link-click', 'inputMechanism', 'FIXTURE_ROUTE')),
+                ('topic input', at('340-dynamic-topic-click', 'inputMechanism', 'OS_ROBOT')),
+                ('wrong editor', at('310-comment-link-actual-search', 'drawnSearchEditorValue', '')),
+                ('wrong topic search', at('350-dynamic-topic-actual-search', 'keyword', '老番茄')),
+                ('wrong detail dynamic', detail('dynamicId', '777')),
+                ('wrong detail schema', detail('commentSearchSchema', 'bilibili://search?keyword=x')),
+                ('wrong detail keyword', detail('commentKeyword', 'hello')),
+                ('fixture detail route', detail('fixtureRoutePushed', True))):
+            with self.subTest(name):
+                observation, transport = self.evidence('search_link')
+                change(observation, transport)
+                self.rejects_search_link(observation, transport)
+
+    def test_search_link_requires_guest_get_reply_and_dynamic_read_trace(self):
+        def reads(value): return lambda transport: transport['searchLink'].__setitem__('readRequests', value)
+        reply = dict(kind='reply', path='/x/v2/reply/wbi/main', method='GET', oid='170001', type='1', videoRoots=True)
+        dynamic = dict(kind='dynamicDetail', path='/x/polymer/web-dynamic/v1/detail', method='GET',
+            id=RUNNER.SEARCH_LINK_DYNAMIC_ID)
+        for name, change in (
+                ('no trace', reads([])),
+                ('missing trace', lambda transport: transport['searchLink'].pop('readRequests')),
+                ('no dynamic read', reads([reply])),
+                ('no video read', reads([dict(reply, videoRoots=False, oid='1'), dynamic])),
+                ('post read', reads([dict(reply, method='POST'), dynamic])),
+                ('other path', reads([dict(reply, path='/x/v2/reply/add'), dynamic])),
+                ('other dynamic', reads([reply, dict(dynamic, id='777')])),
+                ('other kind', reads([reply, dynamic, dict(kind='search', path='/x/web-interface/search', method='GET')])),
+                ('not guest', lambda transport: transport['searchLink'].__setitem__('syntheticGuestTransportOnly', False)),
+                ('mutation', lambda transport: transport['searchLink'].__setitem__('accountMutationSubmitted', True)),
+                ('real account', lambda transport: transport.__setitem__('realAccountUsed', True)),
+                ('stack written', lambda transport: transport.__setitem__('physicalStackWritten', True)),
+                ('not synthetic', lambda transport: transport.__setitem__('searchLinkResponsesAreSynthetic', False)),
+                ('mixed replay', lambda transport: transport.__setitem__('commentSearch', dict())),
+                ('guest post', lambda transport: transport['apiRequests'].append(
+                    dict(method='POST', host='api.bilibili.com', path='/x/v2/reply/add')))):
+            with self.subTest(name):
+                observation, transport = self.evidence('search_link')
+                change(transport)
+                self.rejects_search_link(observation, transport)
+
+    def test_search_link_capture_cannot_be_omitted_or_borrowed_by_search(self):
+        observation, transport = self.evidence('search_link')
+        self.write(observation, transport, 'search_link')
+        (self.report / '330-comment-dynamic-link-detail-screen.png').unlink()
+        with self.assertRaises((ValueError, OSError)):
+            RUNNER.verify(self.report, self.local, self.health, self.token, self.process, 'search_link')
+        observation, transport = self.evidence('search')
+        with self.assertRaises((ValueError, KeyError)): self.verify('search_link', observation, transport)
+        observation, transport = self.evidence('search_link')
+        with self.assertRaises((ValueError, KeyError)): self.verify('search', observation, transport)
 
 
 class VideoShareReceiptTests(unittest.TestCase):
