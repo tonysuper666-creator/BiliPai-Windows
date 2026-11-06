@@ -7,6 +7,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.ImageComposeScene
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.input.key.*
 import androidx.compose.ui.input.pointer.*
 import androidx.compose.ui.platform.*
@@ -36,14 +37,16 @@ import kotlin.test.*
 /**
  * Esc with the caret in a text field of the shell (A3 of the desktop audit). The scene mounts the three real places of the shell that
  * hold the caret while the user types — the search screen, the comment box and the private message input — and drives them through
- * the very branch the Root runs (desktopShellRootEsc, the F11/Esc arm of rootKeyHandler): F11 toggles fullscreen, Esc leaves
- * fullscreen, then Esc goes back, and with the caret in a field the branch leaves the key alone so the page, the caret and the draft
- * stay.
+ * the very branch the Root runs (desktopShellRootEsc, the F11/Esc arm of rootKeyHandler): F11 toggles fullscreen; Esc with the caret
+ * in a field ends the input (the caret leaves the field, the draft and the page stay); the next Esc leaves fullscreen, then goes back.
+ * The Compose text field does not handle Esc itself, so a Root that left the key to the field would leave the user stuck in it.
  *
  * Whether a field holds the caret is read from the mounted page itself: the focused semantics node that carries SetText is a text
  * field with the caret (the same fact desktopShellTextEditorFocused reads from the window's focus owner; the offscreen scene has no
- * AWT focus owner, so the page's own focus state is the honest source here). No account, no network, no OS window: the HTTP client
- * of the search page is answered locally with an empty payload and the text input sessions are intercepted.
+ * AWT focus owner, so the page's own focus state is the honest source here). A key the scene does not consume is handed to the same
+ * Root branch, as the window key fallback of DesktopShell.kt does once no Compose focus target is left below the Surface. No account,
+ * no network, no OS window: the HTTP client of the search page is answered locally (one suggestion for any draft, an empty payload
+ * otherwise) and the text input sessions are intercepted.
  */
 class DesktopShellTextFieldEscapeTest {
     /** The three places of the shell that hold the caret while the user types. */
@@ -57,6 +60,8 @@ class DesktopShellTextFieldEscapeTest {
     private var leftFullscreen = 0
     private var fullscreenToggles = 0
     private var escapeSeen = 0
+    private var released = 0
+    private var focusManager: FocusManager? = null
     private var handled: Boolean? = null
     private var fullscreen = false
 
@@ -88,6 +93,7 @@ class DesktopShellTextFieldEscapeTest {
                 val original = LocalWindowInfo.current
                 val window = remember(original) { object : WindowInfo by original { override val isWindowFocused = true } }
                 CompositionLocalProvider(LocalWindowInfo provides window, LocalDesktopCommentBindings provides comments) {
+                    focusManager = LocalFocusManager.current
                     InterceptPlatformTextInput(interceptor = { input, _ -> request = input; awaitCancellation() }) {
                         Box(Modifier.fillMaxSize().onKeyEvent(::rootKey)) {
                             Column(Modifier.fillMaxSize()) {
@@ -112,7 +118,8 @@ class DesktopShellTextFieldEscapeTest {
         val result = desktopShellRootEsc(event, caretInTextField(), fullscreen,
             toggleFullscreen = { fullscreen = !fullscreen; fullscreenToggles++ },
             leaveFullscreen = { fullscreen = false; leftFullscreen++ },
-            requestBack = { back++ })
+            requestBack = { back++ },
+            releaseEditor = { released++; requireNotNull(focusManager).clearFocus(force = true) })
         handled = result
         return result
     }
@@ -128,9 +135,14 @@ class DesktopShellTextFieldEscapeTest {
         it.config.getOrNull(SemanticsProperties.Focused) == true && it.config.contains(SemanticsActions.SetText)
     }
     private fun field() = nodes().first { it.config.contains(SemanticsActions.SetText) }
-    private fun draft() = nodes().firstOrNull {
-        it.config.getOrNull(SemanticsProperties.Focused) == true && it.config.contains(SemanticsActions.SetText)
-    }?.config?.getOrNull(SemanticsProperties.EditableText)?.text
+    /** The draft the field shows, with or without the caret. */
+    private fun draft() = field().config.getOrNull(SemanticsProperties.EditableText)?.text
+    private fun shows(text: String) = nodes().any { node -> node.config.getOrNull(SemanticsProperties.Text).orEmpty().any { it.text == text } }
+    /** The suggestions are fetched off the scene's dispatcher after a 300 ms debounce: let both clocks run until [done] or give up. */
+    private fun settleUntil(done: () -> Boolean): Boolean {
+        repeat(60) { if (done()) return true; settle(); Thread.sleep(20) }
+        return done()
+    }
     private fun click(target: SemanticsNode) {
         val point = target.boundsInWindow.center
         scene!!.sendPointerEvent(PointerEventType.Press, point, buttons = PointerButtons(isPrimaryPressed = true))
@@ -141,17 +153,23 @@ class DesktopShellTextFieldEscapeTest {
         requireNotNull(request).onEditCommand(listOf(SetSelectionCommand(0, Int.MAX_VALUE), CommitTextCommand(value, 1)))
         settle()
     }
-    private fun escape() { scene!!.sendKeyEvent(KeyEvent(Key.Escape, KeyEventType.KeyDown)); settle() }
+    /** Esc as the window delivers it: to the scene first, and what the scene leaves to the window key fallback of the Root. */
+    private fun escape() {
+        val event = KeyEvent(Key.Escape, KeyEventType.KeyDown)
+        if (!scene!!.sendKeyEvent(event)) rootKey(event)
+        settle()
+    }
     private fun f11() { scene!!.sendKeyEvent(KeyEvent(Key.F11, KeyEventType.KeyDown)); settle() }
 
     private fun closeScene() { scene?.let { runCatching { it.close() } }; scene = null }
     private fun reset() {
         closeScene()
-        request = null; back = 0; leftFullscreen = 0; fullscreenToggles = 0; escapeSeen = 0; handled = null; fullscreen = false
+        request = null; back = 0; leftFullscreen = 0; fullscreenToggles = 0; escapeSeen = 0; released = 0; handled = null; fullscreen = false
+        focusManager = null
     }
 
     @TestFactory
-    fun escWithTheCaretInTheFieldBelongsToTheField() = Page.entries.map { page ->
+    fun escWithTheCaretInTheFieldEndsTheInputThenGoesBack() = Page.entries.map { page ->
         DynamicTest.dynamicTest(page.label) {
             reset()
             try {
@@ -162,24 +180,27 @@ class DesktopShellTextFieldEscapeTest {
                 assertTrue(caretInTextField(), "${page.label}: the page reports the caret inside its field")
 
                 escape()
+                assertEquals(1, escapeSeen, "${page.label}: the Root really received the key")
+                assertEquals(true, handled, "${page.label}: the Root takes the key, so it is not lost")
+                assertEquals(1, released, "${page.label}: Esc ends the input")
+                assertFalse(caretInTextField(), "${page.label}: the caret left the field")
+                assertEquals("草稿", draft(), "${page.label}: the draft is untouched")
                 assertEquals(0, back, "${page.label}: Esc must not go back while the caret is in a text field")
                 assertEquals(0, leftFullscreen, "${page.label}: and must not leave fullscreen either")
-                assertEquals(1, escapeSeen, "${page.label}: the Root really received the key")
-                assertEquals(false, handled, "${page.label}: the Root declines the key")
-                assertTrue(caretInTextField(), "${page.label}: the field keeps the caret")
-                assertEquals("草稿", draft(), "${page.label}: the draft is untouched")
 
-                outside()
-                assertFalse(caretInTextField(), "${page.label}: the caret left the field")
                 escape()
-                assertEquals(1, back, "${page.label}: outside a text field Esc still goes back")
-                assertEquals(true, handled, "${page.label}: and the Root takes the key")
+                assertEquals(1, back, "${page.label}: the next Esc goes back")
+                assertEquals(1, released, "${page.label}: and is not taken for the field again")
+
+                click(field())
+                assertTrue(caretInTextField(), "${page.label}: a click puts the caret back")
+                assertEquals("草稿", draft(), "${page.label}: on the draft the user left")
             } finally { closeScene() }
         }
     }
 
     @TestFactory
-    fun escInFullscreenLeavesFullscreenFirstUnlessTheCaretOwnsIt() = Page.entries.map { page ->
+    fun escInFullscreenEndsTheInputThenLeavesFullscreenThenGoesBack() = Page.entries.map { page ->
         DynamicTest.dynamicTest(page.label) {
             reset()
             try {
@@ -187,19 +208,41 @@ class DesktopShellTextFieldEscapeTest {
                 click(field()); type("草稿")
                 fullscreen = true
                 escape()
-                assertEquals(0, back, "${page.label}: the caret keeps the page in fullscreen too")
-                assertEquals(0, leftFullscreen, "${page.label}: and keeps fullscreen")
+                assertEquals(1, released, "${page.label}: the first Esc ends the input")
+                assertFalse(caretInTextField(), "${page.label}: the caret left the field")
                 assertTrue(fullscreen, "${page.label}: still fullscreen")
+                assertEquals(0, leftFullscreen, "${page.label}: the first Esc keeps fullscreen")
+                assertEquals(0, back, "${page.label}: and keeps the page")
 
-                outside()
                 escape()
-                assertEquals(1, leftFullscreen, "${page.label}: Esc leaves fullscreen first")
+                assertEquals(1, leftFullscreen, "${page.label}: the second Esc leaves fullscreen")
                 assertFalse(fullscreen, "${page.label}: fullscreen is off")
                 assertEquals(0, back, "${page.label}: and does not also go back")
                 escape()
-                assertEquals(1, back, "${page.label}: the next Esc goes back")
+                assertEquals(1, back, "${page.label}: the third Esc goes back")
+                assertEquals("草稿", draft(), "${page.label}: the draft survived all of it")
             } finally { closeScene() }
         }
+    }
+
+    @org.junit.jupiter.api.Test
+    fun escInTheSearchFieldClosesTheSuggestionsOfTheDraft() {
+        reset()
+        try {
+            build(Page.SEARCH); settle()
+            click(field()); type("草稿")
+            assertTrue(settleUntil { shows(SUGGESTION) }, "the draft brings up its suggestion")
+
+            escape()
+            assertFalse(shows(SUGGESTION), "Esc closes the suggestions")
+            assertFalse(caretInTextField(), "and ends the input in the same press")
+            assertEquals("草稿", draft(), "the draft stays")
+            assertEquals(0, back, "the page stays")
+            assertFalse(settleUntil { shows(SUGGESTION) }, "a suggestion still in flight does not come back")
+
+            click(field()); type("草稿二")
+            assertTrue(settleUntil { shows(SUGGESTION) }, "typing on asks for suggestions again")
+        } finally { closeScene() }
     }
 
     @TestFactory
@@ -222,9 +265,12 @@ class DesktopShellTextFieldEscapeTest {
 
     private companion object {
         /** No test traffic leaves the process: every request is answered locally with an empty success payload. */
+        const val SUGGESTION = "草稿推荐"
         val offlineClient: OkHttpClient = OkHttpClient.Builder().addInterceptor { chain ->
+            val body = if (chain.request().url.encodedPath == "/main/suggest")
+                """{"code":0,"result":{"tag":[{"value":"$SUGGESTION","name":"$SUGGESTION"}]}}""" else """{"code":0,"data":{}}"""
             Response.Builder().request(chain.request()).protocol(Protocol.HTTP_1_1).code(200).message("OK")
-                .body("""{"code":0,"data":{}}""".toResponseBody("application/json".toMediaType())).build()
+                .body(body.toResponseBody("application/json".toMediaType())).build()
         }.build()
     }
 }
