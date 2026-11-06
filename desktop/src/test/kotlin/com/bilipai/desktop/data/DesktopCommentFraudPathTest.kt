@@ -8,6 +8,7 @@ import com.sun.jna.win32.StdCallLibrary
 import java.nio.file.Files
 import java.nio.file.LinkOption.NOFOLLOW_LINKS
 import java.nio.file.Path
+import java.nio.file.attribute.BasicFileAttributes
 import java.util.concurrent.TimeUnit
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.BeforeEach
@@ -94,6 +95,7 @@ class DesktopCommentFraudPathTest {
             assertEquals("[]", Files.readString(marker))
             assertTrue(Files.exists(redirected, NOFOLLOW_LINKS))
             assertTrue(Files.isSameFile(redirected, target))
+            assertRedirectedDirectory(redirected, target)
             assertChildren(target, "records.json")
             assertChildren(parent, "71")
         } finally { Files.deleteIfExists(redirected) }
@@ -166,6 +168,7 @@ class DesktopCommentFraudPathTest {
                 assertEquals("[]", Files.readString(outside))
                 assertTrue(Files.exists(redirected, NOFOLLOW_LINKS))
                 assertTrue(Files.isSameFile(redirected, target))
+                assertRedirectedDirectory(redirected, target)
                 assertChildren(target, "records.json")
                 assertChildren(original, "records.json")
                 assertChildren(parent, "71", "original")
@@ -218,6 +221,16 @@ class DesktopCommentFraudPathTest {
     private fun assertSymbolicLink(link: Path, target: Path) {
         assertTrue(Files.isSymbolicLink(link))
         assertEquals(target, Files.readSymbolicLink(link))
+    }
+
+    private fun assertRedirectedDirectory(link: Path, target: Path) {
+        if (windows) {
+            val attributes = Files.readAttributes(link, BasicFileAttributes::class.java, NOFOLLOW_LINKS)
+            assertTrue(attributes.isOther, "The junction must remain a reparse point")
+            assertTrue(!attributes.isSymbolicLink)
+        } else {
+            assertSymbolicLink(link, target)
+        }
     }
 
     private fun assertChildren(directory: Path, vararg names: String) {
