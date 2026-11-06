@@ -23,6 +23,5 @@ upstreamAppCoreSourceTests	SpaceLocatePagingStructureTest×1	读取上游源码�
 upstreamAppCoreSourceTests	SpaceScreenStructureTest×8	读取上游源码文本，断言的字符串在上游文件里不存在
 upstreamAppCoreSourceTests	VisualEffectTogglePolicyTest×1	读取上游源码文本，断言的字符串在上游文件里不存在
 test	SpaceLoadPolicyTest×2	测试构造的 SpaceAggregateCard 缺 name/face，上游 resolveSpaceInitialSeedFromAggregate 对此直接返回 null（上游测试陈旧，TON-1108）
-test	SpaceAggregatedModelMappingTest×1	测试期望主标签含收藏、追番；上游 resolveSpaceDisplayedMainTabs 现只保留主页/动态/投稿（同包的 SpaceProfileEnhancementPolicyTest 按新行为通过；上游测试陈旧，TON-1108）
-test	SpaceDynamicNavigationPolicyTest×1	测试期望 OpenDynamicDetail；当前上游点击策略与桌面 dynamic-full-card 副本都返回 OpenArticle（专栏卡片统一打开专栏渲染器，/opus/ 跳转链接也一样），点击策略保持 OpenArticle（上游测试陈旧，TON-1108）
+test	SpaceAggregatedModelMappingTest×1	v0.7.8 新增的充电预览测试未给 card.face，上游 resolveSpaceInitialSeedFromAggregate 对空头像返回 null（上游测试与上游源码不一致，TON-1297）；原主标签断言已随上游改为主页/动态/投稿
 test	ChatStructuredMessagesTest.sessionTipJoinsTextWithoutExposingPayload	kotlinx-serialization 1.11.0 的 Json.parseToJsonElement("invalid") 解析成字面量而不抛错，parseChatTip 返回 "invalid" 而非空串；上游与桌面同版本，上游 JVM 单测同样失败（上游缺陷，TON-1120）

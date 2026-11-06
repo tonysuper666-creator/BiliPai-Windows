@@ -3461,6 +3461,7 @@ val appCoreUpstreamTestsNotRun: Map<String, String> = mapOf(
     "core/theme/AppThemeEndpointPolicyTest.kt" to "it calls feature/video resolvePlaybackNotificationAccentColor, which moves with M4a",
     "core/plugin/js/BiliPaiJsNativeExampleTest.kt" to "it reads examples/plugins/tv-live.bilipai.js, which the merge leaves out; the desktop copy runs the byte-identical script from desktop/src/test/fixtures",
     "core/ui/adaptive/DeviceUiProfilePolicyTest.kt" to "the same test class (same package and name) as design-system DeviceUiProfilePolicyTest, which runs",
+    "core/util/ArticleCollectionNavigationTest.kt" to "its subject is not on the desktop yet: the v0.7.8 article collection page (navigation3 ArticleCollection key, MainActivity and WebView dispatch), TON-1314 item 4",
 )
 // Approved upstream test corrections are isolated from production patch outputs.
 // The complete LF-normalized source is pinned: even an edit outside a hunk needs review.
@@ -3510,7 +3511,6 @@ val correctedUpstreamTestPaths = setOf(
     "app/src/test/java/com/android/purebilibili/feature/space/SpaceTabChromePolicyTest.kt",
     "app/src/test/java/com/android/purebilibili/feature/space/SpaceLoadPolicyTest.kt",
     "app/src/test/java/com/android/purebilibili/feature/space/SpaceAggregatedModelMappingTest.kt",
-    "app/src/test/java/com/android/purebilibili/feature/space/SpaceDynamicNavigationPolicyTest.kt",
 )
 val correctedUpstreamTestOutput = layout.buildDirectory.dir("patched-upstream-tests")
 val applyUpstreamTestCorrections by tasks.registering {
@@ -3547,7 +3547,9 @@ val appM4dTestsNotRun: Map<String, String> = m4dTable("tests-not-run.tsv").toMap
 val appCoreUpstreamTestPaths: Set<String> = (appTestRoot.resolve("com/android/purebilibili/core").walkTopDown() +
         migratedAppM4dAreas.asSequence().flatMap { appTestRoot.resolve("com/android/purebilibili/$it").walkTopDown() } +
         // TON-1120: upstream's IM wire tests run against the directly compiled MessageImRepository.
-        sequenceOf(appTestRoot.resolve("com/android/purebilibili/data/repository/MessageImRepositoryTest.kt")))
+        sequenceOf(appTestRoot.resolve("com/android/purebilibili/data/repository/MessageImRepositoryTest.kt")) +
+        // TON-1297: the migrated v0.7.8 SearchMotionBudgetPolicy is the only compiled one; its own test replaces the v0.4.6 producer copy.
+        sequenceOf(appTestRoot.resolve("com/android/purebilibili/feature/search/SearchMotionBudgetPolicyTest.kt")))
     .filter { it.isFile && it.extension == "kt" }
     // JUnit 4, Robolectric, mockk and androidx.test are not on the desktop test classpath; JUnit 5 (org.junit.jupiter) is.
     .filter { file -> !Regex("""^import (org\.junit\.(?!jupiter)|org\.robolectric|io\.mockk|androidx\.test)""", RegexOption.MULTILINE).containsMatchIn(file.readText()) }
