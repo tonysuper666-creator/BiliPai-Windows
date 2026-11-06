@@ -7,7 +7,7 @@ from unittest.mock import patch
 
 import check_slice_symbol_closure as gate
 import v035_story as story
-from v025_source_paths import wide
+from v035_story import wide
 
 
 class LongPathOwnershipTests(unittest.TestCase):
