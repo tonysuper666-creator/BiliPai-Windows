@@ -1,0 +1,31 @@
+--- a/com/android/purebilibili/feature/home/components/cards/HomeStyleSingleColumnVideoCard.kt
++++ b/com/android/purebilibili/feature/home/components/cards/HomeStyleSingleColumnVideoCard.kt
+@@ -289,15 +289,19 @@
+         },
+         coverOverlayModifier = nativeCardSnapshot.coverOverlayModifier,
+         coverContent = {
+-            com.android.purebilibili.core.ui.components.PageAwareAsyncImage(
+-                dimInDarkTheme = true,
+-                loadingAllowed = com.android.purebilibili.feature.home.LocalHomeCardCoverLoadingAllowed.current
+-                    ?: com.android.purebilibili.core.ui.components.LocalPageImageLoadingAllowed.current,
+-                model = coverRequest,
+-                contentDescription = null,
+-                contentScale = ContentScale.Crop,
+-                modifier = Modifier.fillMaxSize(),
+-            )
++            // The desktop image renderer consumes its loading gate through this local.
++            androidx.compose.runtime.CompositionLocalProvider(
++                com.android.purebilibili.core.ui.components.LocalPageImageLoadingAllowed provides
++                    (com.android.purebilibili.feature.home.LocalHomeCardCoverLoadingAllowed.current
++                        ?: com.android.purebilibili.core.ui.components.LocalPageImageLoadingAllowed.current),
++            ) {
++                com.android.purebilibili.core.ui.components.PageAwareAsyncImage(
++                    model = coverRequest,
++                    contentDescription = null,
++                    contentScale = ContentScale.Crop,
++                    modifier = Modifier.fillMaxSize(),
++                )
++            }
+         },
+         coverOverlayContent = {
+             VideoStatusBadges(

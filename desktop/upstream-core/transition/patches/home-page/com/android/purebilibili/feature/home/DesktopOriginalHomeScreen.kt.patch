@@ -8,6 +8,15 @@
  import com.android.purebilibili.core.ui.components.AppText
  import com.bilipai.desktop.ui.DesktopHomeClock as SystemClock
  import androidx.compose.animation.*
+@@ -96,7 +97,7 @@
+ import com.android.purebilibili.feature.home.policy.resolveHomeHeaderTransitionRunning
+ import com.android.purebilibili.feature.home.policy.resolveHomeHeaderSettleTransition
+ import com.android.purebilibili.feature.home.policy.resolveHomeEmbeddedPageTopPaddingPx
+-import com.android.purebilibili.feature.home.policy.shouldApplyHomeFeedScrollAnchor
++import com.android.purebilibili.feature.home.policy.resolveHomeFeedScrollRestorePlan
+ import com.android.purebilibili.feature.home.policy.shouldHandleHomeVerticalPreScroll
+ import com.android.purebilibili.feature.home.policy.shouldRestoreHomeFeedScrollAnchor
+ import com.android.purebilibili.feature.home.policy.reduceHomeBottomBarListScroll
 @@ -447,7 +448,7 @@
          homeTopTabSettings,
      ) {
@@ -26,7 +35,46 @@
              HomeTopTabEntry.Partition -> resolveHomeTopTabEntryLabel(entry)
              HomeTopTabEntry.Subscriptions -> resolveHomeTopTabEntryLabel(entry)
          }
-@@ -1698,7 +1699,7 @@
+@@ -650,7 +651,8 @@
+                     popularSubCategory = popularSubCategory,
+                     firstVisibleItemIndex = gridState.firstVisibleItemIndex,
+                     firstVisibleItemScrollOffset = gridState.firstVisibleItemScrollOffset,
+-                    headerOffsetPx = headerOffsetHeightPx
++                    headerOffsetPx = headerOffsetHeightPx,
++                    regularGrid = false
+                 )
+             }
+             hasSyncedPagerWithState = false
+@@ -680,18 +682,20 @@
+             pendingFeedScrollAnchor = null
+             return@LaunchedEffect
+         }
+-        if (
+-            shouldApplyHomeFeedScrollAnchor(
+-                currentIndex = gridState.firstVisibleItemIndex,
+-                currentOffset = gridState.firstVisibleItemScrollOffset,
+-                currentHeaderOffsetPx = headerOffsetHeightPx,
+-                anchor = restoreAnchor
+-            )
+-        ) {
++        val restorePlan = resolveHomeFeedScrollRestorePlan(
++            currentIndex = gridState.firstVisibleItemIndex,
++            currentOffset = gridState.firstVisibleItemScrollOffset,
++            currentHeaderOffsetPx = headerOffsetHeightPx,
++            anchor = restoreAnchor,
++            currentRegularGrid = false
++        )
++        if (restorePlan.restoreGrid) {
+             gridState.scrollToItem(
+                 restoreAnchor.firstVisibleItemIndex,
+                 restoreAnchor.firstVisibleItemScrollOffset
+             )
++        }
++        if (restorePlan.restoreHeader) {
+             setHeaderOffsetImmediate(restoreAnchor.headerOffsetPx)
+         }
+         pendingFeedScrollAnchor = null
+@@ -1698,7 +1702,7 @@
      }
      
      // [Feature] Bottom Bar Auto-Hide (based on scroll hide mode)
@@ -35,3 +83,21 @@
      val bottomBarVisibleState = LocalSetBottomBarVisible.current
      
      // [Feature] Global Scroll Offset for Liquid Glass
+@@ -1820,7 +1824,8 @@
+                     popularSubCategory = popularSubCategory,
+                     firstVisibleItemIndex = activeGridState.firstVisibleItemIndex,
+                     firstVisibleItemScrollOffset = activeGridState.firstVisibleItemScrollOffset,
+-                    headerOffsetPx = headerOffsetHeightPx
++                    headerOffsetPx = headerOffsetHeightPx,
++                    regularGrid = false
+                 )
+             }
+             hideTopTabsForForwardDetailNav = false
+@@ -1903,7 +1908,6 @@
+             isLightBackgroundProvider = videoCardTransitionBackgroundState.isLightBackgroundProvider,
+             realtimeBlurEnabledProvider = {
+                 shouldUseRealtimeVideoCardTransitionBackgroundBlur(
+-                    source = backgroundSource,
+                     realtimeBlurEnabled = videoCardTransitionBackgroundState
+                         .realtimeBlurEnabledProvider(),
+                 )

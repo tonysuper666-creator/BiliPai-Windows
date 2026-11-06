@@ -1,0 +1,27 @@
+--- a/home-page/com/android/purebilibili/feature/home/components/HomeHeader.kt
++++ b/home-page/com/android/purebilibili/feature/home/components/HomeHeader.kt
+@@ -216,11 +216,14 @@
+     bottomBarFloating: Boolean,
+ ): Boolean = !liquidGlassEnabled && !bottomBarFloating
+ 
++internal const val HOME_TOP_RIGHT_BADGE_DOT = -1
++
+ internal fun formatHomeTopRightUnreadBadge(
+     action: HomeTopRightAction,
+     unreadCount: Int
+ ): String? {
+-    if (action != HomeTopRightAction.INBOX || unreadCount <= 0) return null
++    if (action != HomeTopRightAction.INBOX || unreadCount == 0) return null
++    if (unreadCount == HOME_TOP_RIGHT_BADGE_DOT) return "•"
+     return if (unreadCount > 99) "99+" else unreadCount.toString()
+ }
+ 
+@@ -256,6 +259,8 @@
+     action: HomeTopRightAction,
+     unreadCount: Int
+ ): String {
++    if (action != HomeTopRightAction.INBOX || unreadCount == 0) return action.label
++    if (unreadCount == HOME_TOP_RIGHT_BADGE_DOT) return "${action.label}，有未读消息"
+     val badgeText = formatHomeTopRightUnreadBadge(action, unreadCount) ?: return action.label
+     return "${action.label}，$badgeText 条未读"
+ }
