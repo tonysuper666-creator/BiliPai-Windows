@@ -71,6 +71,9 @@ def bind_screen(repo, drop_logs):
             '        val context = environment.cacheContext.forRequest { generation == followingGeneration && writeGeneration == cacheWriteGeneration }\n'
             '        val snapshotUsers')
     body = drop_logs(body)
+    # Finish platform bindings before recording the final brand-stage inverse.
+    from desktop_refresh_adaptation import bind_refresh_launch
+    body = bind_refresh_launch(body)
     body, brand = bind_brand(body)
     need('emitBrandFeedback = false' in body and 'loadAllRemainingPages(' not in body,
          'Current explicit paging or aggregate feedback contract changed')
