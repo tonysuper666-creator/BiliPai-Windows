@@ -412,6 +412,60 @@ class GradleModelTests(unittest.TestCase):
             self.assertTrue(any(gate._under(rel, p) or gate._under(p, rel) for p in produced), rel)
 
 
+class ReceiverBindingTests(unittest.TestCase):
+    def timeout_mini(self):
+        mini = Mini(self)
+        # Known external names must have a binding in the subject file. Unknown
+        # lowercase names are intentionally outside this gate's detection contract.
+        mini.add('a/Imports.kt', 'package corpus\nimport kotlinx.coroutines.withTimeout\n'
+                 'import kotlinx.coroutines.withTimeoutOrNull\nimport fixture.withTimeoutOrTypo\n',
+                 'archive', 'carried')
+        return mini
+
+    def test_error_is_default_imported_without_teaching_unknown_error_names(self):
+        mini = Mini(self)
+        mini.add('g/Use.kt', 'package p\nfun a() = Error()\nfun b() = MissingError()\n', 'generated')
+        self.assertEqual([('unresolved-name', 'MissingError')], found(mini.run(carried=False)))
+
+    def test_await_each_gesture_members_are_visible_only_inside_its_receiver(self):
+        mini = self.timeout_mini()
+        mini.add('g/Use.kt', '''\
+            package p
+            import androidx.compose.foundation.gestures.awaitEachGesture
+            fun inside() = awaitEachGesture {
+                withTimeoutOrNull(100) { 1 }
+                withTimeout(100) { 1 }
+                withTimeoutOrTypo(100) { 1 }
+            }
+            fun outside() = withTimeoutOrNull(100) { 1 }
+            ''', 'generated')
+        result = mini.run(carried=False)
+        self.assertEqual([('unresolved-name', 'withTimeoutOrNull'), ('unresolved-name', 'withTimeoutOrTypo')],
+                         found(result))
+        self.assertEqual([8], [f.line for f in result.unexpected if f.symbol == 'withTimeoutOrNull'])
+
+    def test_receiver_import_alias_works_but_an_unrelated_import_does_not_bind_members(self):
+        for imported, missing in [('androidx.compose.foundation.gestures.awaitEachGesture', []),
+                                  ('example.awaitEachGesture', [('unresolved-name', 'withTimeoutOrNull')])]:
+            with self.subTest(imported=imported):
+                mini = self.timeout_mini()
+                mini.add('g/Use.kt', 'package p\nimport %s as gesture\n'
+                         'fun a() = gesture { withTimeoutOrNull(100) { 1 } }\n' % imported, 'generated')
+                self.assertEqual(missing, found(mini.run(carried=False)))
+
+    def test_local_function_shadowing_receiver_import_does_not_bind_members(self):
+        mini = self.timeout_mini()
+        mini.add('g/Use.kt', '''\
+            package p
+            import androidx.compose.foundation.gestures.awaitEachGesture
+            fun a() {
+                fun awaitEachGesture(block: () -> Int) = block()
+                awaitEachGesture { withTimeoutOrNull(100) { 1 } }
+            }
+            ''', 'generated')
+        self.assertEqual([('unresolved-name', 'withTimeoutOrNull')], found(mini.run(carried=False)))
+
+
 class ChecksOnSyntheticTrees(unittest.TestCase):
     """One small tree per failure class; each has a positive and a negative case."""
 

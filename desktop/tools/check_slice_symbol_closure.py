@@ -2660,6 +2660,17 @@ _LAMBDA_FILLER = frozenset([',', ':', '(', ')', '<', '>', '?', '.', '*'])
 STDLIB_DOTTED = frozenset(['let', 'also', 'apply', 'run', 'takeIf', 'takeUnless', 'to', 'javaClass', 'equals',
                            'hashCode', 'toString', 'copy'])
 ALWAYS_BOUND = frozenset(['Companion', '_'])
+# kotlin.Error (a java.lang.Error alias on JVM) is imported by Kotlin itself. Its
+# visibility does not depend on whether the frozen training corpus happens to use it.
+DEFAULT_IMPORTED_TYPES = frozenset(['Error'])
+
+# awaitEachGesture's block has an AwaitPointerEventScope receiver. These are the
+# receiver's actual member functions, not kotlinx.coroutines top-level imports.
+# Keep the binding tied to both the imported API and the lexical block: accepting
+# either spelling file-wide would hide a missing import outside that receiver.
+IMPLICIT_RECEIVER_MEMBERS = {
+    'androidx.compose.foundation.gestures.awaitEachGesture': frozenset(['withTimeout', 'withTimeoutOrNull']),
+}
 
 
 def _declare_type_params(toks, j, b, declared):
@@ -2846,6 +2857,23 @@ class FileContext:
         self.closed_stars = frozenset(star for star in self.stars
                                       if _project_path(star) and universe.known_package(visible, star))
         self.import_lines = {imp.line for imp in info.imports}
+        self.receiver_regions = []
+        toks = info.toks or []
+        for index, token in enumerate(toks):
+            members = IMPLICIT_RECEIVER_MEMBERS.get(self.imports.get(token))
+            if not members or token in self.package_names:
+                continue
+            start = index + 1
+            if start < len(toks) and toks[start] == '(':
+                start = _match(toks, start, '(', ')') + 1
+            if start < len(toks) and toks[start] == '{':
+                end = _match(toks, start, '{', '}')
+                if toks[end] == '}':
+                    self.receiver_regions.append((start, end, token, members))
+
+    def receiver_resolves(self, name, index, facts):
+        return any(start < index < end and name in members and call not in facts.declared
+                   for start, end, call, members in self.receiver_regions)
 
     def star_provides(self, name, path=None):
         """True when a star import of this file brings `name` into scope."""
@@ -2861,7 +2889,7 @@ class FileContext:
         ambient, so every matching star counts and the corpus cannot teach a missing project symbol as ambient."""
         if name in facts.declared or name in self.imports or name in self.package_names:
             return True
-        if name in ALWAYS_BOUND or name in ambient:
+        if name in ALWAYS_BOUND or name in DEFAULT_IMPORTED_TYPES or name in ambient:
             return True
         providers = self.providers.get(name)
         if providers:
@@ -2880,7 +2908,8 @@ def unresolved_uses(ctx, facts, ambient, locals_elsewhere=(), learning=False):
     for name, index in facts.uses:
         if name in seen:
             continue
-        if not ctx.resolves(name, facts, ambient, locals_elsewhere, learning):
+        if not (ctx.receiver_resolves(name, index, facts) or
+                ctx.resolves(name, facts, ambient, locals_elsewhere, learning)):
             seen.add(name)
             result.append((name, index))
     return result
