@@ -150,6 +150,18 @@ internal fun desktopShellEscape(event: KeyEvent, textEditorFocused: Boolean, ful
         else -> DesktopShellEscape.BACK
     }
 
+/** The F11/Esc branch of the Root key handler, in the order the shortcuts are claimed: F11 toggles fullscreen, Esc leaves fullscreen,
+ *  then Esc goes back — and with the caret in a text field the whole branch leaves the key alone, so the page stays. */
+internal fun desktopShellRootEsc(event: KeyEvent, textEditorFocused: Boolean, fullscreen: Boolean,
+    toggleFullscreen: () -> Unit, leaveFullscreen: () -> Unit, requestBack: () -> Unit): Boolean {
+    if (event.type == KeyEventType.KeyDown && event.key == Key.F11) { toggleFullscreen(); return true }
+    return when (desktopShellEscape(event, textEditorFocused, fullscreen)) {
+        DesktopShellEscape.LEAVE_FULLSCREEN -> { leaveFullscreen(); true }
+        DesktopShellEscape.BACK -> { requestBack(); true }
+        DesktopShellEscape.NONE -> false
+    }
+}
+
 @Composable
 internal fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: String?, initialVideo: String?,
     onExit: () -> Unit, onToggleFullscreen: () -> Unit, hostWindow: java.awt.Window? = null,
@@ -1783,10 +1795,9 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
     // UX S2 (hunk RH1, part S2): one shell shortcut host. Back goes through the window navigation owner, as Esc does.
     val shellShortcutHost = remember(homeRootRef) { com.bilipai.desktop.ui.DesktopShellShortcutHost({ homeRootRef.get()?.navigation?.requestBack() == true }) }
     val rootKeyHandler: (KeyEvent) -> Boolean = { event ->
-            val escape = if (event.key == Key.Escape) desktopShellEscape(event, desktopShellTextEditorFocused(), isFullscreen()) else DesktopShellEscape.NONE
-            if (event.type == KeyEventType.KeyDown && event.key == Key.F11) { toggleOriginalFullscreen(); true }
-            else if (escape == DesktopShellEscape.LEAVE_FULLSCREEN) { setOriginalFullscreen(false); true }
-            else if (escape == DesktopShellEscape.BACK) { homeRootRef.get()?.navigation?.requestBack(); true }
+            val escapeHandled = desktopShellRootEsc(event, desktopShellTextEditorFocused(), isFullscreen(),
+                ::toggleOriginalFullscreen, { setOriginalFullscreen(false) }, { homeRootRef.get()?.navigation?.requestBack() })
+            if (escapeHandled) true
             // UX S2 (hunk RH1, part S2): the shell shortcuts of spec 6.1 (Ctrl+K, Alt+Left, F5, Ctrl+1 to 9, F6, F1, Alt+Enter ...).
             else if (shellShortcutHost.onKey(event) { toggleOriginalFullscreen() }) true
             else if ((showVideo || section == DesktopSection.STORY) && playing.details != null && playerFocused && !searchFocused && player != null) {

@@ -21,8 +21,9 @@ import org.junit.jupiter.api.TestFactory
 import kotlin.test.*
 
 /**
- * Enter in the account or the password row of the login dialog (B4 of the desktop audit): the same submit as the 登录 button, nothing
- * at all while a row is blank, and one login per key press even when the key is held.
+ * Enter in the account or the password row of the login dialog (B4 of the desktop audit): the same submit as the 登录 button, the
+ * prompt that names the row that is still blank, one login per key press even when the key is held or the login disables the rows
+ * mid-press, and no login at all while an input method composes the text or while a modifier turns Enter into someone else's shortcut.
  *
  * The scene hosts the very composable the dialog renders (LoginPasswordFields), so both affordances are driven through the same
  * production code; the dialog around it needs a repository, a captcha bridge and a network, which is why this test stops at the form.
@@ -33,8 +34,10 @@ class DesktopLoginPasswordEnterSubmitTest {
     private var time = 0L
     private var scene: ImageComposeScene? = null
     private var request: PlatformTextInputMethodRequest? = null
-    private var username by mutableStateOf("")
-    private var password by mutableStateOf("")
+    private var username by mutableStateOf(TextFieldValue(""))
+    private var password by mutableStateOf(TextFieldValue(""))
+    private var busy by mutableStateOf(false)
+    private var markBusyOnSubmit = false
     private val submits = mutableListOf<Pair<String, String>>()
 
     private fun build() {
@@ -45,11 +48,9 @@ class DesktopLoginPasswordEnterSubmitTest {
                 CompositionLocalProvider(LocalWindowInfo provides window) {
                     InterceptPlatformTextInput(interceptor = { r, _ -> request = r; awaitCancellation() }) {
                         Column(Modifier.fillMaxSize().padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                            // The readiness rule the dialog passes in: busy or a blank row disables the submit.
-                            LoginPasswordFields(username, password, enabled = username.isNotBlank() && password.isNotBlank(),
-                                busy = false, submitLabel = "登录",
+                            LoginPasswordFields(username, password, busy = busy, submitLabel = "登录",
                                 onUsername = { username = it }, onPassword = { password = it },
-                                onSubmit = { submits += username to password })
+                                onSubmit = { submits += username.text to password.text; if (markBusyOnSubmit) busy = true })
                         }
                     }
                 }
@@ -75,6 +76,10 @@ class DesktopLoginPasswordEnterSubmitTest {
     private fun button() = nodes().first { node ->
         node.config.getOrNull(SemanticsProperties.Text)?.any { it.text == "登录" } == true
     }
+    /** Everything the user can read on the form right now. */
+    private fun shown(): List<String> = nodes().flatMap { node ->
+        node.config.getOrNull(SemanticsProperties.Text)?.map { it.text }.orEmpty()
+    }
     private fun focus(index: Int) {
         click(row(index))
         assertNotNull(request, "Row $index must start a text input session")
@@ -83,8 +88,18 @@ class DesktopLoginPasswordEnterSubmitTest {
         requireNotNull(request).onEditCommand(listOf(SetSelectionCommand(0, Int.MAX_VALUE), CommitTextCommand(value, 1)))
         settle()
     }
-    private fun enter(down: Boolean = true) {
-        scene!!.sendKeyEvent(KeyEvent(Key.Enter, if (down) KeyEventType.KeyDown else KeyEventType.KeyUp)); settle()
+    /** The input method is mid-composition on the focused row: the candidate is shown in the field but not yet committed. */
+    private fun compose(value: String) {
+        requireNotNull(request).onEditCommand(listOf(SetComposingTextCommand(value, 1)))
+        settle()
+    }
+    private fun commit(value: String) {
+        requireNotNull(request).onEditCommand(listOf(CommitTextCommand(value, 1)))
+        settle()
+    }
+    private fun enter(down: Boolean = true, ctrl: Boolean = false, alt: Boolean = false, shift: Boolean = false, meta: Boolean = false) {
+        scene!!.sendKeyEvent(KeyEvent(Key.Enter, if (down) KeyEventType.KeyDown else KeyEventType.KeyUp,
+            isCtrlPressed = ctrl, isAltPressed = alt, isShiftPressed = shift, isMetaPressed = meta)); settle()
     }
 
     /** One press is a down followed by a release, as the window delivers it. */
@@ -93,7 +108,8 @@ class DesktopLoginPasswordEnterSubmitTest {
     private fun closeScene() { scene?.let { runCatching { it.close() } }; scene = null }
     private fun reset() {
         closeScene()
-        request = null; username = ""; password = ""; submits.clear()
+        request = null; username = TextFieldValue(""); password = TextFieldValue("")
+        busy = false; markBusyOnSubmit = false; submits.clear()
     }
 
     @TestFactory
@@ -114,19 +130,33 @@ class DesktopLoginPasswordEnterSubmitTest {
     }
 
     @TestFactory
-    fun aBlankRowDoesNothingJustLikeTheDisabledButton() = listOf("both blank" to 0, "password blank" to 1).map { (state, _) ->
+    fun aBlankRowAsksForTheRowItIsMissing() = listOf("两行都空" to 0, "只有账号空" to 1, "只有密码空" to 0).map { (state, row) ->
         DynamicTest.dynamicTest(state) {
             reset()
             try {
                 build(); settle()
-                if (state == "password blank") { focus(0); text("alice") }
-                focus(if (state == "password blank") 1 else 0)
-                press()
-                assertTrue(submits.isEmpty(), "$state: Enter must do nothing")
+                when (state) {
+                    "只有账号空" -> { focus(1); text("secret") }
+                    "只有密码空" -> { focus(0); text("alice") }
+                }
+                val expected = when (state) {
+                    "两行都空" -> "请输入手机号 / 邮箱 / 用户名和密码"
+                    "只有账号空" -> "请输入手机号 / 邮箱 / 用户名"
+                    else -> "请输入密码"
+                }
+                focus(row); press()
+                assertTrue(submits.isEmpty(), "$state: Enter must not log in")
+                assertTrue(shown().contains(expected), "$state: Enter tells the user what is missing, shown=${shown()}")
                 click(button())
-                assertTrue(submits.isEmpty(), "$state: so must the disabled button")
-                if (state == "password blank") { focus(1); text("secret") }
-                else { focus(0); text("alice"); focus(1); text("secret") }
+                assertTrue(submits.isEmpty(), "$state: the button must not log in either")
+                assertTrue(shown().contains(expected), "$state: the button says the same thing, shown=${shown()}")
+                // Filling the missing row clears the prompt and the next Enter really logs in.
+                when (state) {
+                    "只有账号空" -> { focus(0); text("alice") }
+                    "只有密码空" -> { focus(1); text("secret") }
+                    else -> { focus(0); text("alice"); focus(1); text("secret") }
+                }
+                assertFalse(shown().contains(expected), "$state: typing clears the prompt")
                 focus(1); press()
                 assertEquals(listOf("alice" to "secret"), submits, "$state: once both rows are filled Enter submits")
             } finally { closeScene() }
@@ -144,6 +174,60 @@ class DesktopLoginPasswordEnterSubmitTest {
                 assertEquals(1, submits.size, "A held Enter must log in once, not once per repeat")
                 enter(down = false); press()
                 assertEquals(2, submits.size, "A fresh press after the release logs in again")
+            } finally { closeScene() }
+        }
+    }
+
+    @TestFactory
+    fun aLoginThatDisablesTheRowsDoesNotSwallowTheNextEnter() = listOf(1).map { _ ->
+        DynamicTest.dynamicTest("登录中禁用两行后重试") {
+            reset()
+            try {
+                build(); settle()
+                focus(0); text("alice"); focus(1); text("secret")
+                markBusyOnSubmit = true
+                enter()
+                assertTrue(busy, "The first Enter starts the login")
+                assertEquals(1, submits.size, "The first Enter submits once")
+                // The running login disables both rows, so this release never reaches the form; the press must not stay armed.
+                enter(down = false)
+                busy = false; settle()
+                focus(1); press()
+                assertEquals(2, submits.size, "After the login ends, a fresh Enter must submit again")
+            } finally { closeScene() }
+        }
+    }
+
+    @TestFactory
+    fun aModifiedEnterBelongsToTheShortcutLayers() = listOf("ctrl", "alt", "shift", "meta").map { modifier ->
+        DynamicTest.dynamicTest("修饰键 $modifier + 回车") {
+            reset()
+            try {
+                build(); settle()
+                focus(0); text("alice"); focus(1); text("secret")
+                enter(ctrl = modifier == "ctrl", alt = modifier == "alt", shift = modifier == "shift", meta = modifier == "meta")
+                assertTrue(submits.isEmpty(), "$modifier+Enter must not log in")
+                enter(down = false, ctrl = modifier == "ctrl", alt = modifier == "alt", shift = modifier == "shift", meta = modifier == "meta")
+                press()
+                assertEquals(1, submits.size, "$modifier+Enter must not have armed the plain Enter either")
+            } finally { closeScene() }
+        }
+    }
+
+    @TestFactory
+    fun enterDuringAnImeCompositionConfirmsTheCandidateFirst() = listOf("账号框" to 0, "密码框" to 1).map { (row, index) ->
+        DynamicTest.dynamicTest("预编辑于$row") {
+            reset()
+            try {
+                build(); settle()
+                focus(0); text("alice"); focus(1); text("secret")
+                focus(index); compose("候选")
+                enter()
+                assertTrue(submits.isEmpty(), "$row: Enter must confirm the composition, not log in; actual=$submits")
+                commit("候选")
+                press()
+                val expected = if (index == 0) "alice候选" to "secret" else "alice" to "secret候选"
+                assertEquals(listOf(expected), submits, "$row: after the commit Enter logs in with the confirmed text")
             } finally { closeScene() }
         }
     }
