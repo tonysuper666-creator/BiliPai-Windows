@@ -18,7 +18,7 @@ TOOLS = REPO / "desktop/tools"
 sys.path.insert(0, str(TOOLS))
 import v029_video_feedback as feedback
 import v029_video_feedback_origin as origin
-import v031_repost_coin as repost
+from ton1228_feedback_chain import EngagementChain, HASHES, historical_inputs
 
 
 def load(name: str, path: Path):
@@ -52,19 +52,21 @@ class VideoFeedbackExtractionTest(unittest.TestCase):
         cls.output = Path(cls.temp.name) / "generated"
         producer.generate(REPO, cls.output, True)
         cls.output_vm = read(cls.output / feedback.OUTPUT_VM)
-        cls.repost_proof = json.loads(read(cls.output / "VideoEngagementViewModel.kt.repost-coin-proof.json"))
-        cls.final_vm = repost.undo(cls.output_vm, cls.repost_proof)
+        cls.vm = cls.output_vm
         cls.lifetime_proof = json.loads(read(cls.output / 'v029-video-feedback-lifetime-proof.json'))
-        cls.vm = undo(cls.final_vm, cls.lifetime_proof)
         cls.state_proof = json.loads(read(cls.output / "v029-video-feedback-state-proof.json"))
         cls.origin_proof = json.loads(read(cls.output / "v029-video-feedback-origin-proof.json"))
         cls.animation_proof = json.loads(read(cls.output / "v029-video-feedback-celebration-proof.json"))
+        original, cls.historical_state_proof, cls.historical_origin_proof = historical_inputs()
+        first, _ = feedback.apply_video_feedback(feedback.OUTPUT_VM, original, producer.parser)
+        cls.historical_vm, _ = origin.apply_feedback_origin(feedback.OUTPUT_VM, first)
 
     def test_actual_unique_producer_consumption_has_final_physical_output_hashes(self):
         source = read(TOOLS / "extract-upstream-video-detail-full-units.py")
-        self.assertEqual(1, source.count("t,feedbackProof=apply_video_feedback(path,t,parser)"))
+        self.assertEqual(1, source.count("t,feedbackProof=apply_latest_feedback(path,t,parser)"))
+        self.assertNotRegex(source, r"\bapply_video_feedback\s*\(")
         self.assertEqual(1, source.count("t,feedbackOriginProof=apply_feedback_origin(path,t)"))
-        self.assertLess(source.index("t,feedbackProof=apply_video_feedback(path,t,parser)"),
+        self.assertLess(source.index("t,feedbackProof=apply_latest_feedback(path,t,parser)"),
                         source.index("t,feedbackOriginProof=apply_feedback_origin(path,t)"))
         binding = json.loads(read(self.output / "source-bindings.json"))
         outputs = binding["outputs"]
@@ -75,23 +77,29 @@ class VideoFeedbackExtractionTest(unittest.TestCase):
         vm = [row for row in outputs if row["path"] == feedback.OUTPUT_VM]
         animation = [row for row in outputs if row["path"] == feedback.OUTPUT_ANIMATIONS]
         self.assertEqual(1, len(vm)); self.assertEqual(1, len(animation))
-        self.assertEqual(vm[0]["sha256LF"], self.repost_proof["afterSha256LF"])
-        self.assertEqual(self.repost_proof["beforeSha256LF"], self.lifetime_proof["afterSha256LF"])
+        chain = EngagementChain(self, REPO, self.output)
+        stages = chain.peel(self.output_vm)
+        self.assertEqual(vm[0]["sha256LF"], feedback.sha(self.output_vm))
+        self.assertEqual(feedback.sha(stages['coin-request']), self.lifetime_proof["afterSha256LF"])
         self.assertEqual(self.origin_proof["afterSha256LF"], self.lifetime_proof["beforeSha256LF"])
-        self.assertEqual(feedback.sha(self.vm), self.origin_proof["afterSha256LF"])
+        self.assertEqual(feedback.sha(stages['lifetime']), self.origin_proof["afterSha256LF"])
         self.assertEqual(animation[0]["fixedCommit"], feedback.COMMIT)
 
     def test_complete_vm_two_stage_inverse_and_reapplication_are_exact(self):
-        intermediate = undo(self.vm, self.origin_proof)
-        self.assertEqual(feedback.sha(intermediate), self.origin_proof["beforeSha256LF"])
-        self.assertEqual(feedback.sha(intermediate), self.state_proof["afterSha256LF"])
-        original_owned = undo(intermediate, self.state_proof)
+        intermediate = undo(self.historical_vm, self.historical_origin_proof)
+        self.assertEqual(feedback.sha(intermediate), self.historical_origin_proof["beforeSha256LF"])
+        self.assertEqual(feedback.sha(intermediate), self.historical_state_proof["afterSha256LF"])
+        original_owned = undo(intermediate, self.historical_state_proof)
         self.assertEqual(PRE_FEEDBACK_OWNED_VM_SHA256_LF, feedback.sha(original_owned))
-        self.assertEqual(feedback.sha(original_owned), self.state_proof["beforeSha256LF"])
+        self.assertEqual(feedback.sha(original_owned), self.historical_state_proof["beforeSha256LF"])
         first, first_proof = feedback.apply_video_feedback(feedback.OUTPUT_VM, original_owned, producer.parser)
         final, final_proof = origin.apply_feedback_origin(feedback.OUTPUT_VM, first)
-        self.assertEqual(intermediate, first); self.assertEqual(self.vm, final)
-        self.assertEqual(self.state_proof, first_proof); self.assertEqual(self.origin_proof, final_proof)
+        self.assertEqual(intermediate, first); self.assertEqual(self.historical_vm, final)
+        self.assertEqual(self.historical_state_proof, first_proof); self.assertEqual(self.historical_origin_proof, final_proof)
+        with self.assertRaises(AssertionError):
+            feedback.apply_video_feedback(feedback.OUTPUT_VM, first, producer.parser)
+        with self.assertRaises(AssertionError):
+            origin.apply_feedback_origin(feedback.OUTPUT_VM, final)
 
     def test_whole_original_animations_and_all_fixed_raw_identities_are_exact(self):
         manifest, originals = feedback.sources()
@@ -179,13 +187,25 @@ class VideoFeedbackExtractionTest(unittest.TestCase):
     def test_foreign_paths_noop_and_wrong_or_duplicate_stage_anchors_fail_closed(self):
         self.assertEqual(origin.apply_feedback_origin("foreign.kt", "unchanged"), ("unchanged", None))
         self.assertEqual(feedback.apply_video_feedback("foreign.kt", "unchanged", producer.parser), ("unchanged", None))
-        first = undo(self.vm, self.origin_proof)
+        first = undo(self.historical_vm, self.historical_origin_proof)
         anchor = "    val tripleCelebrationFinished: Boolean = false\n)"
         for broken in (first.replace(anchor, "    val foreign: Boolean = false\n)", 1), first + "\n" + anchor):
             with self.assertRaises(AssertionError):
                 origin.apply_feedback_origin(feedback.OUTPUT_VM, broken)
         with self.assertRaises(AssertionError):
-            origin.apply_feedback_origin(feedback.OUTPUT_VM, self.vm)
+            origin.apply_feedback_origin(feedback.OUTPUT_VM, self.historical_vm)
+        stages = EngagementChain(self, REPO, self.output).peel(self.output_vm)
+        self.assertEqual(HASHES['state'], feedback.sha(stages['state']))
+        self.assertEqual(HASHES['origin'], feedback.sha(stages['origin']))
+        with self.assertRaises(AssertionError):
+            feedback.apply_video_feedback(feedback.OUTPUT_VM, stages['state'], producer.parser)
+        with self.assertRaises(AssertionError):
+            origin.apply_feedback_origin(feedback.OUTPUT_VM, stages['origin'])
+
+    def test_current_v037_chain_inverts_from_final_vm_to_feedback_input(self):
+        chain = EngagementChain(self, REPO, self.output)
+        stages = chain.peel(self.output_vm)
+        self.assertEqual(self.output_vm.encode(), chain.replay(stages['state']).encode())
 
 
 if __name__ == "__main__":

@@ -1,0 +1,60 @@
+{
+  "schema": 1,
+  "beforeSha256LF": "475cc92397b5b8dc442f500180769e31997f213f68dcfcac9f71bfd9f88accc1",
+  "afterSha256LF": "fa7a3550764e7a28ba52fb3105edf59ae2c65aac76bdff7058d74b0f7d86cc94",
+  "edits": [
+    {
+      "label": "Read-only Windows metadata beside original per-channel confirmed state",
+      "before": "    val tripleCelebrationFinished: Boolean = false\n)",
+      "after": "    val tripleCelebrationFinished: Boolean = false,\n    val desktopLikeFeedbackOrigin: com.bilipai.desktop.ui.DesktopWindowsVideoFeedbackOrigin? = null,\n    val desktopMaidFeedbackOrigin: com.bilipai.desktop.ui.DesktopWindowsVideoFeedbackOrigin? = null,\n    val desktopTripleFeedbackOrigin: com.bilipai.desktop.ui.DesktopWindowsVideoFeedbackOrigin? = null\n)"
+    },
+    {
+      "label": "Confirmed Like source captured in the same owned CAS; unlike clears its receipt",
+      "before": "                            maidAction = null,\n                            likeBurstId = if (liked) current.likeBurstId + 1 else current.likeBurstId\n",
+      "after": "                            maidAction = null,\n                            likeBurstId = if (liked) current.likeBurstId + 1 else current.likeBurstId,\n                            desktopMaidFeedbackOrigin = null,\n                            desktopLikeFeedbackOrigin = if (liked) com.bilipai.desktop.ui.DesktopWindowsVideoFeedbackOrigin.capture(com.bilipai.desktop.ui.DesktopWindowsVideoFeedbackKind.LIKE, current.likeBurstId + 1, current.subject) else null\n"
+    },
+    {
+      "label": "Confirmed Dislike source metadata; no optimistic receipt",
+      "before": "                            maidActionId = if (disliked) current.maidActionId + 1 else current.maidActionId,\n",
+      "after": "                            maidActionId = if (disliked) current.maidActionId + 1 else current.maidActionId,\n                            desktopLikeFeedbackOrigin = null,\n                            desktopMaidFeedbackOrigin = if (disliked) com.bilipai.desktop.ui.DesktopWindowsVideoFeedbackOrigin.capture(com.bilipai.desktop.ui.DesktopWindowsVideoFeedbackKind.DISLIKE, current.maidActionId + 1, current.subject) else null,\n"
+    },
+    {
+      "label": "Confirmed Coin source metadata in original protocol-success commit",
+      "before": "                            maidActionId = current.maidActionId + 1,\n",
+      "after": "                            maidActionId = current.maidActionId + 1,\n                            desktopLikeFeedbackOrigin = null,\n                            desktopMaidFeedbackOrigin = com.bilipai.desktop.ui.DesktopWindowsVideoFeedbackOrigin.capture(com.bilipai.desktop.ui.DesktopWindowsVideoFeedbackKind.COIN, current.maidActionId + 1, current.subject),\n"
+    },
+    {
+      "label": "Only actual allSuccess triple obtains the captured accepted source receipt",
+      "before": "                                tripleCelebrationFinished = false\n",
+      "after": "                                tripleCelebrationFinished = false,\n                                desktopLikeFeedbackOrigin = null,\n                                desktopMaidFeedbackOrigin = null,\n                                desktopTripleFeedbackOrigin = if (result.allSuccess) com.bilipai.desktop.ui.DesktopWindowsVideoFeedbackOrigin.capture(com.bilipai.desktop.ui.DesktopWindowsVideoFeedbackKind.TRIPLE, celebrationId, current.subject) else null\n"
+    },
+    {
+      "label": "Original expected-id Like dismissal retires only that channel receipt",
+      "before": "if (expectedId == null || it.likeBurstId == expectedId) it.copy(likeBurstVisible = false) else it",
+      "after": "if (expectedId == null || it.likeBurstId == expectedId) it.copy(likeBurstVisible = false, desktopLikeFeedbackOrigin = null) else it"
+    },
+    {
+      "label": "Only a stamped share presentation can produce renderable share metadata; no global listener",
+      "before": "                maidActionId = it.maidActionId + 1\n",
+      "after": "                maidActionId = it.maidActionId + 1,\n                desktopLikeFeedbackOrigin = null,\n                desktopMaidFeedbackOrigin = com.bilipai.desktop.ui.DesktopWindowsVideoFeedbackOrigin.capture(com.bilipai.desktop.ui.DesktopWindowsVideoFeedbackKind.SHARE, it.maidActionId + 1, it.subject)\n"
+    },
+    {
+      "label": "Original expected-id Maid dismissal retires matching metadata",
+      "before": "if (it.maidActionId == expectedId) it.copy(maidAction = null) else it",
+      "after": "if (it.maidActionId == expectedId) it.copy(maidAction = null, desktopMaidFeedbackOrigin = null) else it"
+    },
+    {
+      "label": "Original completed-current Triple retires only matching origin",
+      "before": "it.copy(tripleCelebrationVisible = false, tripleCelebrationFinished = true)",
+      "after": "it.copy(tripleCelebrationVisible = false, tripleCelebrationFinished = true, desktopTripleFeedbackOrigin = null)"
+    },
+    {
+      "label": "Original cancellation does not mark completion",
+      "before": "it.copy(tripleCelebrationVisible = false, tripleCelebrationFinished = false)",
+      "after": "it.copy(tripleCelebrationVisible = false, tripleCelebrationFinished = false, desktopTripleFeedbackOrigin = null)"
+    }
+  ],
+  "wholeVmInverseExact": true,
+  "runtimeHostMounted": false,
+  "originAuthority": "Existing domain state, stamped existing presentation and exact accepted publication only"
+}
