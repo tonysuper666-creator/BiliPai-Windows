@@ -2,6 +2,7 @@
 import hashlib
 import importlib.util
 import json
+import os
 from pathlib import Path
 import shutil
 import sys
@@ -10,6 +11,7 @@ import unittest
 from unittest.mock import patch
 
 REPO = Path(__file__).resolve().parents[3]
+LIVE = Path(os.environ.get("BILIPAI_LIVE_ROOT") or REPO)
 TOOLS = REPO / "desktop/tools"
 sys.path.insert(0, str(TOOLS))
 import v029_command_vote as source
@@ -140,7 +142,7 @@ class V029CommandVoteExtractionTest(unittest.TestCase):
             rows = [r for r in manifest["sources"] if r["path"] == path]
             self.assertEqual(1, len(rows)); self.assertEqual("extracted", rows[0]["mode"])
             from v025_source_paths import canonical_source
-            original = section.wide(canonical_source(REPO, path)).read_bytes().replace(b"\r\n", b"\n")
+            original = section.wide(canonical_source(LIVE, path)).read_bytes().replace(b"\r\n", b"\n")
             self.assertEqual(rows[0]["sha256"], hashlib.sha256(original).hexdigest())
 
 
