@@ -77,14 +77,14 @@
              return
          }
  
--        fun buildResult(candidates: List<VideoItem>): RecommendationResult {
-+        fun buildResult(candidates: List<VideoItem>): RecommendationResult<VideoItem> {
-             return recommendationPlugin.buildRecommendations(
-                 RecommendationRequest(
-                     historyVideos = historySample,
-                     candidateVideos = candidates,
+-        suspend fun buildResult(candidates: List<VideoItem>): RecommendationResult {
++        suspend fun buildResult(candidates: List<VideoItem>): RecommendationResult<VideoItem> {
+             val request = RecommendationRequest(
+                     historyVideos = historySample.toList(),
+                     candidateVideos = candidates.toList(),
                      mode = runtime.mode.toRecommendationMode(),
-@@ -1286,11 +1288,11 @@
+                     strategy = runtime.recommendationStrategy,
+@@ -1294,11 +1296,11 @@
  
      private suspend fun recordTodayWatchNegativeFeedback(
          video: VideoItem,
@@ -97,7 +97,7 @@
                  title = video.title,
                  creatorName = video.owner.name,
                  creatorMid = video.owner.mid,
-@@ -1307,11 +1309,11 @@
+@@ -1315,11 +1317,11 @@
          todayDislikedKeywords.addAll(snapshot.dislikedKeywords)
          environment.todayWatchFeedback.saveSnapshot(snapshot)
      }
@@ -110,7 +110,7 @@
          todayDislikedCreatorMids.clear()
          todayDislikedCreatorMids.addAll(snapshot.dislikedCreatorMids)
          todayDislikedKeywords.clear()
-@@ -1326,11 +1328,11 @@
+@@ -1334,11 +1336,11 @@
              dislikedKeywords = todayDislikedKeywords
          )
      }
