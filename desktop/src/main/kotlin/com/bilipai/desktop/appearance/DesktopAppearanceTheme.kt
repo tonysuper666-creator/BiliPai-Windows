@@ -97,9 +97,9 @@ fun DesktopAppearanceTheme(
     val systemDark = rememberDesktopSystemDarkTheme()
     val scheduledDark = rememberDesktopScheduledDarkTheme(settings.darkThemeSchedule)
     val palette = remember(settings, systemDark, scheduledDark) {
-        val start = System.nanoTime()
+        val start = if (DesktopThemeSwitchTrace.enabled) System.nanoTime() else 0L
         buildDesktopAppearancePalette(settings, systemDark, scheduledDark).also {
-            DesktopThemeSwitchTrace.mark("theme.palette_built", "dark" to it.dark, "dur_ns" to System.nanoTime() - start)
+            if (DesktopThemeSwitchTrace.enabled) DesktopThemeSwitchTrace.mark("theme.palette_built", "dark" to it.dark, "dur_ns" to System.nanoTime() - start)
         }
     }
     val languages = systemLanguageTags ?: remember { WindowsUiLanguage.preferredTags() }

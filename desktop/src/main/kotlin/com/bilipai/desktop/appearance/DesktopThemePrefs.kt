@@ -68,14 +68,14 @@ class DesktopThemePrefs(
     private val legacyWindowsDark: Boolean? = null,
 ) {
     val settings: Flow<DesktopThemeSettings> = store.snapshot(NAMESPACE)
-        .map { initialSettings().also { DesktopThemeSwitchTrace.mark("prefs.settings_emit", "mode" to it.themeMode.name) } }
+        .map { initialSettings().also { if (DesktopThemeSwitchTrace.enabled) DesktopThemeSwitchTrace.mark("prefs.settings_emit", "mode" to it.themeMode.name) } }
         .distinctUntilChanged()
 
     fun initialSettings(): DesktopThemeSettings {
-        val start = System.nanoTime()
+        val start = if (DesktopThemeSwitchTrace.enabled) System.nanoTime() else 0L
         return decodeDesktopThemeSettings(
             store.preferences(NAMESPACE), store.preferences("theme_cache"), legacyWindowsDark,
-        ).also { DesktopThemeSwitchTrace.mark("prefs.decode", "dur_ns" to System.nanoTime() - start) }
+        ).also { if (DesktopThemeSwitchTrace.enabled) DesktopThemeSwitchTrace.mark("prefs.decode", "dur_ns" to System.nanoTime() - start) }
     }
 
     /** Same atomic new-key + old-key removal semantics as ThemeSelectionStore. */
@@ -111,9 +111,9 @@ class DesktopThemePrefs(
     ))
 
     suspend fun setThemeMode(mode: AppThemeMode) {
-        DesktopThemeSwitchTrace.mark("pref.request", "mode" to mode.name, "entry" to "settings")
+        if (DesktopThemeSwitchTrace.enabled) DesktopThemeSwitchTrace.mark("pref.request", "mode" to mode.name, "entry" to "settings")
         withContext(Dispatchers.IO) {
-        DesktopThemeSwitchTrace.mark("pref.io_start", "entry" to "settings")
+        if (DesktopThemeSwitchTrace.enabled) DesktopThemeSwitchTrace.mark("pref.io_start", "entry" to "settings")
         val caller = kotlinx.coroutines.currentCoroutineContext()
         caller.ensureActive()
         writeOriginalThemeMode(mode) { caller.ensureActive() }
@@ -121,14 +121,14 @@ class DesktopThemePrefs(
 
     suspend fun setThemeModeOwned(mode: AppThemeMode, owns: () -> Boolean,
         withOwnedAdmission: ((() -> Unit) -> Boolean)) {
-        DesktopThemeSwitchTrace.mark("pref.request", "mode" to mode.name, "entry" to "profile")
+        if (DesktopThemeSwitchTrace.enabled) DesktopThemeSwitchTrace.mark("pref.request", "mode" to mode.name, "entry" to "profile")
         withContext(Dispatchers.IO) {
-        DesktopThemeSwitchTrace.mark("pref.io_start", "entry" to "profile")
+        if (DesktopThemeSwitchTrace.enabled) DesktopThemeSwitchTrace.mark("pref.io_start", "entry" to "profile")
         val caller = kotlinx.coroutines.currentCoroutineContext()
         caller.ensureActive()
         if (!owns()) throw kotlinx.coroutines.CancellationException("Profile theme entry retired")
-        DesktopThemeSwitchTrace.mark("pref.admission_wait")
-        if (!withOwnedAdmission { DesktopThemeSwitchTrace.mark("pref.admission_acquired");caller.ensureActive();writeOriginalThemeMode(mode) { caller.ensureActive();if(!owns())throw kotlinx.coroutines.CancellationException("Profile theme entry retired") } })
+        if (DesktopThemeSwitchTrace.enabled) DesktopThemeSwitchTrace.mark("pref.admission_wait")
+        if (!withOwnedAdmission { if (DesktopThemeSwitchTrace.enabled) DesktopThemeSwitchTrace.mark("pref.admission_acquired");caller.ensureActive();writeOriginalThemeMode(mode) { caller.ensureActive();if(!owns())throw kotlinx.coroutines.CancellationException("Profile theme entry retired") } })
             throw kotlinx.coroutines.CancellationException("Profile theme entry retired")
     } }
 

@@ -6,11 +6,16 @@ Inputs (at least one):
   --samples     external pixel/DWM sampler CSV, repeatable (t_s relative to the sampler base)
   --presentmon  PresentMon 2.x CSV with CPUStartQPC; ticks are converted with the trace's QPC frequency.
                 CPUStart is when the CPU began the frame, so the Present() call is CPUStart + MsCPUBusy;
-                return = call + MsInPresentAPI, displayed = call + MsUntilDisplayed
+                return = call + MsInPresentAPI, displayed = call + MsUntilDisplayed.
+                Only v2.3.1-style columns (MsCPUBusy); v2.3.0 names it CPUBusy and is rejected (exit 1).
+
+Marks are ordered by timestamp, not file line: a producer can be pre-empted between nanoTime() and
+the queue. A switch owns the marks from its pref.request to the next one; its Present is the first
+same-pid call at or after its first frame and before the next pref.request, and no row serves twice.
 
 Exit codes: 0 complete and causally ordered; 1 usage/parse error; 2 causal order violated;
-3 a required stage is missing (e.g. no first frame); 4 two clock domains without a sync point.
-When several apply, the most severe wins: 1 > 4 > 2 > 3.
+3 a required stage is missing (e.g. no first frame, marks dropped by the app); 4 two clock domains
+without a sync point. When several apply, the most severe wins: 1 > 4 > 2 > 3.
 
 A pixel change is only ever reported as the interval (previous sample, changing sample]:
 the sampler reads the DWM-composed desktop, not the panel scan-out.
@@ -51,9 +56,10 @@ SEGMENTS = (
     ("theme.palette_built", "theme.applied", "整树重组+apply"),
     ("theme.applied", "frame.draw", "布局+根绘制录制完成"),
 )
-# Marks only meaningful once the new palette exists (startup/older applies are not this switch).
+# Marks only meaningful once the new palette is applied (startup/older draws are not this switch).
 _AFTER_APPLY = {"frame.draw", "frame.next"}
-_AFTER_PALETTE = {"dwm.set_start", "dwm.set_end", "awt.window_background"}
+_INTS = {"dur_ns", "epoch", "bytes", "when_ms", "now_ms", "frame_nanos", "hr", "button"}
+_BOOLS = {"dark", "light", "atomic"}
 
 
 class ProbeError(Exception):
@@ -89,6 +95,10 @@ def _pairs(tokens, where):
     return out
 
 
+def _bool(value):
+    return {"true": True, "false": False}.get(str(value).lower())
+
+
 def _int(value, where):
     try:
         return int(value)
@@ -96,8 +106,20 @@ def _int(value, where):
         raise ProbeError(f"{where}: 需要整数，得到 {value!r}") from None
 
 
+def _fields(tokens, where):
+    out = _pairs(tokens, where)
+    for key, value in out.items():
+        if key in _INTS:
+            out[key] = _int(value, f"{where} {key}")
+        elif key in _BOOLS:
+            out[key] = _bool(value)
+            if out[key] is None:
+                raise ProbeError(f"{where} {key}: 需要 true/false，得到 {value!r}")
+    return out
+
+
 def parse_trace(path: Path):
-    header, sync, events = None, None, []
+    header, sync, events, dropped, end = None, None, [], 0, None
     for number, raw in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
         line = raw.strip()
         where = f"{path.name}:{number}"
@@ -116,14 +138,21 @@ def parse_trace(path: Path):
                         raise ProbeError(f"{where}: clock_sync 缺 {key}")
                 if sync["qpc_freq"] <= 0 or sync["jvm_nano_after"] < sync["jvm_nano_before"]:
                     raise ProbeError(f"{where}: clock_sync 数值无效")
+            elif parts[:1] in (["dropped"], ["end"]):
+                key = "total" if parts[0] == "dropped" else "dropped"
+                count = _int(_pairs(parts[1:], where).get(key), f"{where} {key}")
+                dropped = max(dropped, count)
+                if parts[0] == "end":
+                    end = count
             continue
         parts = line.split()
         if len(parts) < 2:
             raise ProbeError(f"{where}: 打点行至少要有 <nanoTime> <event>")
-        events.append(Event(_int(parts[0], where), parts[1], _pairs(parts[2:], where), number))
+        events.append(Event(_int(parts[0], where), parts[1], _fields(parts[2:], where), number))
     if header is None:
         raise ProbeError(f"{path.name}: 缺 '# ton1210-trace v1' 表头")
-    return header, sync, events
+    events.sort(key=lambda event: (event.t, event.line))
+    return header, sync, events, {"dropped": dropped, "ended": end is not None}
 
 
 def parse_samples(path: Path):
@@ -210,10 +239,6 @@ def analyse_samples_only(path: Path, findings: Findings):
     return report
 
 
-def _bool(value):
-    return {"true": True, "false": False}.get(str(value).lower())
-
-
 def split_switches(events):
     requests = [index for index, event in enumerate(events) if event.name == "pref.request"]
     switches = []
@@ -229,19 +254,23 @@ def split_switches(events):
         dwm_sets, decodes = [], []
         for event in events[index + 1:end]:
             if event.name in ("theme.palette_built", "theme.applied") and target_dark is not None \
-                    and _bool(event.fields.get("dark")) != target_dark:
+                    and event.fields.get("dark") != target_dark:
                 continue
             if event.name in _AFTER_APPLY and "theme.applied" not in stages:
                 continue
-            if event.name in _AFTER_PALETTE and "theme.palette_built" not in stages:
-                continue
             if event.name == "dwm.set_end":
                 dwm_sets.append(event)
+            # Every DWM set stays listed; only one that sets this switch's target can be its stage,
+            # so a set before the new palette is reported (exit 2) instead of silently dropped.
+            if event.name.startswith("dwm.set_") and target_dark is not None \
+                    and event.fields.get("light") != (not target_dark):
+                continue
             if event.name == "prefs.decode" and "frame.draw" not in stages:
                 decodes.append(event)
             stages.setdefault(event.name, event)
         switches.append({"index": order, "target_dark": target_dark, "stages": stages,
-                         "dwm_sets": dwm_sets, "decodes": decodes})
+                         "dwm_sets": dwm_sets, "decodes": decodes,
+                         "until": events[end].t if end < len(events) else None})
     return switches
 
 
@@ -291,13 +320,13 @@ def summarise_switch(switch):
             out["segments_ms"].append({"from": a, "to": b, "label": label, "ms": _ms(t[b] - t[a])})
     palette = stages.get("theme.palette_built")
     if palette and "dur_ns" in palette.fields:
-        out["palette_build_ms"] = _ms(int(palette.fields["dur_ns"]))
+        out["palette_build_ms"] = _ms(palette.fields["dur_ns"])
     edt = [e for e in switch["decodes"] if "AWT-EventQueue" in e.fields.get("thread", "")]
-    out["edt_decode"] = {"count": len(edt), "ms": _ms(sum(int(e.fields.get("dur_ns", 0)) for e in edt))}
+    out["edt_decode"] = {"count": len(edt), "ms": _ms(sum(e.fields.get("dur_ns", 0) for e in edt))}
     target_light = None if switch["target_dark"] is None else not switch["target_dark"]
     for event in switch["dwm_sets"]:
-        out["dwm_sets"].append({"ms": _ms(event.t - origin), "light": _bool(event.fields.get("light")),
-                                "target": _bool(event.fields.get("light")) == target_light,
+        out["dwm_sets"].append({"ms": _ms(event.t - origin), "light": event.fields.get("light"),
+                                "target": event.fields.get("light") == target_light,
                                 "thread": event.fields.get("thread")})
     if "frame.draw" in t:
         out["click_to_first_draw_ms"] = _ms(t["frame.draw"] - origin)
@@ -333,10 +362,11 @@ def analyse(args, findings: Findings):
         for sample in args.samples:
             report["samples_only"].append(analyse_samples_only(sample, findings))
         return report
-    header, sync, events = parse_trace(args.trace)
+    header, sync, events, health = parse_trace(args.trace)
     switches = split_switches(events)
     if not switches:
         findings.add(EXIT_MISSING, f"{args.trace.name}: 没有 pref.request，无法切出主题切换")
+    report["trace"] = health
     offset = error = None
     if sync:
         offset, error = clock_offset(sync)
@@ -346,6 +376,12 @@ def analyse(args, findings: Findings):
         label = f"切换#{switch['index']}"
         check_switch(switch, findings, label)
         summaries.append(summarise_switch(switch))
+    if health["dropped"]:
+        findings.add(EXIT_MISSING, f"{args.trace.name}: 应用队列满丢了 {health['dropped']} 条打点，"
+                                   "“首帧”等阶段可能被后来的同名打点顶替")
+    if not health["ended"]:
+        findings.add(EXIT_OK, f"{args.trace.name}: 没有 '# end' 结束行（未正常退出或写入失败），"
+                              "不能排除尾部打点丢失")
     if args.presentmon:
         if not sync:
             findings.add(EXIT_CLOCK, "PresentMon 是 QPC 时钟，但 trace 没有 clock_sync，无法对齐")
@@ -353,18 +389,23 @@ def analyse(args, findings: Findings):
             pid = _int(header.get("pid"), f"{args.trace.name}: pid")
             rows = [row for row in parse_presentmon(args.presentmon) if row["pid"] == pid]
             # A frame whose CPU work began before the draw can still carry it: select by the Present() call.
-            calls = sorted(((_qpc_ns(row["qpc"], sync["qpc_freq"]) - offset + round(row["cpu_busy_ms"] * 1e6), row)
-                            for row in rows), key=lambda item: item[0])
+            calls = sorted(((_qpc_ns(row["qpc"], sync["qpc_freq"]) - offset + round(row["cpu_busy_ms"] * 1e6), number, row)
+                            for number, row in enumerate(rows)), key=lambda item: item[:2])
+            claimed = set()
             for switch, summary in zip(switches, summaries):
                 draw = switch["stages"].get("frame.draw")
                 if not draw:
                     continue
-                after = [(call, row) for call, row in calls if call >= draw.t]
+                until = switch["until"]
+                after = [(call, number, row) for call, number, row in calls if call >= draw.t
+                         and (until is None or call < until) and number not in claimed]
                 if not after:
                     code = EXIT_MISSING if args.require_present else EXIT_OK
-                    findings.add(code, f"切换#{switch['index']}: PresentMon 里该 pid 在首帧后没有 present 调用（未观测）")
+                    findings.add(code, f"切换#{switch['index']}: PresentMon 里该 pid 在首帧后、下一次 pref.request 前"
+                                       "没有 present 调用（未观测）")
                     continue
-                call, first = after[0]
+                call, number, first = after[0]
+                claimed.add(number)
                 to_call = _ms(call - draw.t)
                 summary["present"] = {"draw_to_present_call_ms": to_call,
                                       "draw_to_present_return_ms": round(to_call + first["in_present_ms"], 3),
@@ -438,7 +479,7 @@ def render(report, findings: Findings):
         for dwm in item["dwm_sets"]:
             lines.append(f"  DWM attr20 light={dwm['light']} 于 {dwm['ms']} ms target={dwm['target']} 线程={dwm['thread']}")
         if "present" in item:
-            lines.append(f"  present {item['present']}")
+            lines.append(f"  present（首个窗口内候选，非逐帧对应证明） {item['present']}")
         for merged in item.get("samples", []):
             lines.append(f"  采样 {merged}")
     for code, text in findings.notes:

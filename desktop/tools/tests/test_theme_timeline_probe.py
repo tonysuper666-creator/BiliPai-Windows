@@ -4,18 +4,24 @@ import contextlib
 import importlib.util
 import io
 from pathlib import Path
+import tempfile
 import unittest
 
-HERE = Path(__file__).resolve().parent
-FIXTURES = HERE / "fixtures"
-_spec = importlib.util.spec_from_file_location("theme_timeline_probe", HERE / "theme_timeline_probe.py")
+PROBE = Path(__file__).resolve().parents[3] / "desktop/tools/diagnostics/theme-switch"
+FIXTURES = PROBE / "fixtures"
+_spec = importlib.util.spec_from_file_location("theme_timeline_probe", PROBE / "theme_timeline_probe.py")
 probe = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(probe)
 
 
 def run(*argv):
-    with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
-        return probe.main([str(a) for a in argv])
+    return run_captured(*argv)[0]
+
+
+def run_captured(*argv):
+    out, err = io.StringIO(), io.StringIO()
+    with contextlib.redirect_stdout(out), contextlib.redirect_stderr(err):
+        return probe.main([str(a) for a in argv]), out.getvalue(), err.getvalue()
 
 
 def analyse(trace=None, samples=(), presentmon=None, require_present=False):
@@ -61,6 +67,25 @@ class OutOfOrder(unittest.TestCase):
     def test_force_before_write_is_a_causal_violation(self):
         self.assertEqual(run("--trace", FIXTURES / "out-of-order.trace"), probe.EXIT_ORDER)
 
+    def test_file_order_does_not_decide_causal_order(self):
+        # theme.applied reached the file after frame.draw although its timestamp is earlier.
+        report, findings = analyse(FIXTURES / "arrival-reordered.trace")
+        self.assertEqual(findings.code, probe.EXIT_OK, findings.notes)
+        self.assertEqual(report["switches"][0]["click_to_first_draw_ms"], 680.3)
+
+    def test_target_dwm_set_before_new_palette_is_reported(self):
+        report, findings = analyse(FIXTURES / "dwm-before-palette.trace")
+        self.assertEqual(findings.code, probe.EXIT_ORDER)
+        self.assertTrue(any("DWM 设置早于新 palette 构建" in text for _, text in findings.notes), findings.notes)
+        self.assertEqual([d["target"] for d in report["switches"][0]["dwm_sets"]], [True])
+
+    def test_stale_dwm_set_is_listed_but_not_the_switch_stage(self):
+        report, findings = analyse(FIXTURES / "dwm-stale-set.trace")
+        self.assertEqual(findings.code, probe.EXIT_OK, findings.notes)
+        switch, = report["switches"]
+        self.assertEqual([(d["light"], d["target"]) for d in switch["dwm_sets"]], [(False, False), (True, True)])
+        self.assertEqual(switch["marks_ms"]["dwm.set_start"], 620.4)
+
     def test_pixel_change_before_first_frame_is_rejected(self):
         _, findings = analyse(FIXTURES / "ordered.trace", [FIXTURES / "pixel-before-draw.samples.csv"])
         self.assertEqual(findings.code, probe.EXIT_ORDER)
@@ -97,6 +122,28 @@ class MissingFirstFrame(unittest.TestCase):
         report, _ = analyse(trace, presentmon=present)
         self.assertNotIn("present", report["switches"][0])
 
+    def test_a_later_switch_present_is_not_borrowed(self):
+        trace, present = FIXTURES / "two-switches.trace", FIXTURES / "only-second-present.presentmon.csv"
+        self.assertEqual(run("--trace", trace, "--presentmon", present, "--require-present"), probe.EXIT_MISSING)
+        report, findings = analyse(trace, presentmon=present)
+        self.assertEqual(findings.code, probe.EXIT_OK, findings.notes)
+        first, second = report["switches"]
+        self.assertNotIn("present", first)
+        self.assertEqual(second["present"], {"draw_to_present_call_ms": 1.2, "draw_to_present_return_ms": 2.0,
+                                             "draw_to_displayed_ms": 18.7})
+
+    def test_marks_dropped_by_the_app_make_the_timeline_incomplete(self):
+        report, findings = analyse(FIXTURES / "dropped.trace")
+        self.assertEqual(findings.code, probe.EXIT_MISSING)
+        self.assertEqual(report["trace"], {"dropped": 3, "ended": True})
+
+    def test_missing_end_line_is_only_a_note(self):
+        _, findings = analyse(FIXTURES / "ordered.trace")
+        self.assertIn((probe.EXIT_OK, True), [(code, "没有 '# end' 结束行" in text) for code, text in findings.notes])
+        report, findings = analyse(FIXTURES / "ended.trace")
+        self.assertEqual((findings.code, findings.notes), (probe.EXIT_OK, []))
+        self.assertEqual(report["trace"], {"dropped": 0, "ended": True})
+
 
 class Usage(unittest.TestCase):
     def test_parse_and_usage_errors(self):
@@ -105,6 +152,21 @@ class Usage(unittest.TestCase):
         self.assertEqual(run("--presentmon", FIXTURES / "ordered.presentmon.csv"), probe.EXIT_USAGE)
         self.assertEqual(run("--trace", FIXTURES / "ordered.trace", "--presentmon",
                              FIXTURES / "missing-cpu-busy.presentmon.csv"), probe.EXIT_USAGE)
+
+    def test_malformed_field_values_are_parse_errors_without_a_report(self):
+        ordered = (FIXTURES / "ordered.trace").read_text(encoding="utf-8")
+        for case, text in (("dur_ns", ordered.replace("dur_ns=24000000", "dur_ns=invalid")),
+                           ("hr", ordered.replace("hr=0", "hr=0x0")),
+                           ("dark", ordered.replace("dark=false", "dark=maybe", 1)),
+                           ("end", ordered + "# end dropped=x\n")):
+            with self.subTest(case), tempfile.TemporaryDirectory() as scratch:
+                trace, report = Path(scratch) / "bad.trace", Path(scratch) / "report.json"
+                trace.write_text(text, encoding="utf-8")
+                code, out, err = run_captured("--trace", trace, "--json", report)
+                self.assertEqual((code, out), (probe.EXIT_USAGE, ""))
+                self.assertIn("解析失败", err)
+                self.assertNotIn("Traceback", err)
+                self.assertFalse(report.exists())
 
 
 if __name__ == "__main__":

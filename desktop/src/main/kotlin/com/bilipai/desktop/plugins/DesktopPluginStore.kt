@@ -242,9 +242,9 @@ class DesktopPluginStore(val root: Path) {
 
     /** Same backing, one atomic document publication for original canonical theme + startup cache. */
     internal fun updateThemeFromSnapshot(checkPublication: () -> Unit, edit: (JsonObject, JsonObject) -> Map<String, Map<String, JsonElement?>>) {
-        DesktopThemeSwitchTrace.mark("store.lock_request")
+        if (DesktopThemeSwitchTrace.enabled) DesktopThemeSwitchTrace.mark("store.lock_request")
         synchronized(backing) {
-        DesktopThemeSwitchTrace.mark("store.lock_acquired")
+        if (DesktopThemeSwitchTrace.enabled) DesktopThemeSwitchTrace.mark("store.lock_acquired")
         check(!backing.writesFrozen) { "插件已停止，不能写入旧设置实例" }
         requireObjectNamespace("settings"); requireObjectNamespace("theme_cache")
         val updates = edit(preferences("settings"), preferences("theme_cache"))
@@ -262,15 +262,15 @@ class DesktopPluginStore(val root: Path) {
             Files.writeString(temporary, json.encodeToString(next))
             if (DesktopThemeSwitchTrace.enabled) DesktopThemeSwitchTrace.mark("store.written", "bytes" to Files.size(temporary))
             FileChannel.open(temporary, StandardOpenOption.WRITE).use { it.force(true) }
-            DesktopThemeSwitchTrace.mark("store.forced")
+            if (DesktopThemeSwitchTrace.enabled) DesktopThemeSwitchTrace.mark("store.forced")
             DesktopSubscriptionWriteAdmission.checkCurrentRequestOrOriginal()
             checkPublication()
-            try { Files.move(temporary, backing.file, StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING); DesktopThemeSwitchTrace.mark("store.moved", "atomic" to true) }
-            catch (_: java.nio.file.AtomicMoveNotSupportedException) { Files.move(temporary, backing.file, StandardCopyOption.REPLACE_EXISTING); DesktopThemeSwitchTrace.mark("store.moved", "atomic" to false) }
+            try { Files.move(temporary, backing.file, StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING); if (DesktopThemeSwitchTrace.enabled) DesktopThemeSwitchTrace.mark("store.moved", "atomic" to true) }
+            catch (_: java.nio.file.AtomicMoveNotSupportedException) { Files.move(temporary, backing.file, StandardCopyOption.REPLACE_EXISTING); if (DesktopThemeSwitchTrace.enabled) DesktopThemeSwitchTrace.mark("store.moved", "atomic" to false) }
         } finally { Files.deleteIfExists(temporary) }
         backing.document = next
         for (name in updates.keys) backing.snapshots[name]?.value = DesktopPreferenceSnapshot(preferences(name))
-        DesktopThemeSwitchTrace.mark("store.published")
+        if (DesktopThemeSwitchTrace.enabled) DesktopThemeSwitchTrace.mark("store.published")
     } }
 
     /** All facades for this old file generation become read-only before restoration. */
