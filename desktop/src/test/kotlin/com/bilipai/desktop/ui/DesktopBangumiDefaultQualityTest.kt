@@ -132,6 +132,27 @@ class DesktopBangumiDefaultQualityTest {
         }
     }
 
+    @Test fun premiumAudioSpeedChangeKeepsCurrentSourceWithoutAudioSwitch(): Unit = runBlocking {
+        fixture(autoHighest = false) { f ->
+            f.reply = { Result.success(response(80, listOf(video(80)))) }
+            f.vm.loadBangumiPlay(19, 41)
+            f.awaitPlans(1)
+            f.awaitRequestFinished()
+            // Hi-Res requested; under the old policy 1.0x -> 2.0x rebuilt the audio source.
+            @Suppress("UNCHECKED_CAST")
+            val state = BangumiPlayerViewModel::class.java.getDeclaredField("_uiState")
+                .apply { isAccessible = true }.get(f.vm) as MutableStateFlow<BangumiPlayerState>
+            state.value = (state.value as BangumiPlayerState.Success).copy(requestedAudioQuality = 30251)
+            f.ownsPlaybackSource = true
+            val launchedBefore = f.launchedRequestCount
+            f.vm.applyPlaybackSpeedFromUi(2.0f)
+            delay(100L)
+            assertEquals(launchedBefore, f.launchedRequestCount, "Speed change starts no audio switch request")
+            assertEquals(1, f.plans.size, "No replacement source is published")
+            assertEquals(listOf(80), f.requests.toList())
+        }
+    }
+
     private suspend fun fixture(autoHighest: Boolean, hdr: Boolean = false, hevc: Boolean = true,
         vip: Boolean = true, loggedIn: Boolean = true, block: suspend (Fixture) -> Unit) {
         val f = Fixture(autoHighest, hdr, hevc, vip, loggedIn)
@@ -150,6 +171,9 @@ class DesktopBangumiDefaultQualityTest {
         val resetPlayers = CopyOnWriteArrayList<Boolean>()
         private val requestFinished = CompletableDeferred<Unit>()
         private val launchedRequests = CopyOnWriteArrayList<Job>()
+        val launchedRequestCount: Int get() = launchedRequests.size
+        /** Plan-only by default; a test may let the VM reach the attached player. */
+        @Volatile var ownsPlaybackSource = false
         var reply: suspend (Int) -> Result<BangumiVideoInfo> = { error("Set synthetic response") }
         private val player = MpvPlayer()
         private val section = DesktopOriginalMpvSectionControl(player, { null }, active::get,
@@ -242,7 +266,7 @@ class DesktopBangumiDefaultQualityTest {
             { _, _, _ -> error("No CDN plugin") }, { _, _, _ -> check(active.get()) },
             { _: DownloadTask -> error("No download action") }, { check(it === section) },
             { block -> scope.launch(block = block).also { launchedRequests += it } }, { action -> if (active.get()) { action(); true } else false },
-            active::get, { false }, object : DesktopOriginalVideoOwnerNetwork {
+            active::get, { ownsPlaybackSource }, object : DesktopOriginalVideoOwnerNetwork {
                 override fun cdnNetwork() = error("No CDN observation")
                 override fun isMobileData() = false
                 override fun isWifi() = true

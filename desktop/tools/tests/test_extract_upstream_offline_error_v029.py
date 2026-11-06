@@ -184,5 +184,90 @@ class FixedOfflineErrorPolicyTest(unittest.TestCase):
                 tool.offline_desktop_pointer_ui(invalid)
 
 
+class BangumiPointerMergeTest(unittest.TestCase):
+    """Run the real producer: a merge must keep pointer AND buffering/retry UI."""
+    @classmethod
+    def setUpClass(cls):
+        from unittest import mock
+        spec = importlib.util.spec_from_file_location("bangumi_pointer_merge", TOOLS / "extract-upstream-bangumi-player-ui.py")
+        cls.producer = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(cls.producer)
+        cls.temp = tempfile.TemporaryDirectory(prefix="bangumi-pointer-merge-")
+        cls.addClassCleanup(cls.temp.cleanup)
+        cls.output = Path(cls.temp.name) / "generated"
+        cls.stages = {}
+        def recording(name):
+            original = getattr(cls.producer, name)
+            def apply(source, output):
+                result, edits = original(source, output)
+                if edits:
+                    cls.stages[name] = (source, result, edits, output)
+                return result, edits
+            return apply
+        with mock.patch.object(sys, "argv", ["producer", "--repo", str(REPO / ".legacy-root"),
+                                             "--output", str(cls.output)]), \
+             mock.patch.object(cls.producer, "windows_bangumi_pointer_ui", recording("windows_bangumi_pointer_ui")), \
+             mock.patch.object(cls.producer, "windows_bangumi_buffering_playback_toggle_ui",
+                               recording("windows_bangumi_buffering_playback_toggle_ui")):
+            cls.producer.main()
+
+    def assert_integrated(self, root):
+        components = (root / "com/android/purebilibili/feature/bangumi/ui/player/DesktopOriginalBangumiPlayerComponents.kt").read_text()
+        screen = (root / "com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiPlayerScreen.kt").read_text()
+        self.assertEqual(1, components.count(".then(desktopPointerInput)"))
+        self.assertEqual(1, components.count("DesktopBangumiNativePointerInput("))
+        self.assertIn("enabled = !isScreenLocked", components)
+        self.assertIn("onFullscreen = onToggleFullscreen", components)
+        self.assertNotIn("if (exoPlayer.isPlaying) exoPlayer.pause() else exoPlayer.play()", components)
+        self.assertIn("resolveOverlayPlaybackButtonPlayingState(", screen)
+        self.assertIn("it.isPlaying, it.playWhenReady, it.playbackState", screen)
+        self.assertIn("togglePlayerPlaybackFromUserAction(it)", screen)
+        self.assertIn("platform.observePlaybackFailure(error)", screen)
+        self.assertIn("platform.observePlaybackReady()", screen)
+        self.assertIn("onRetry = { viewModel.retry() }", screen)
+
+    def test_production_pipeline_keeps_pointer_buffering_and_error_recovery(self):
+        self.assert_integrated(self.output)
+        self.assertEqual({"windows_bangumi_pointer_ui", "windows_bangumi_buffering_playback_toggle_ui"}, set(self.stages))
+
+    def test_both_adapters_restore_the_complete_production_input(self):
+        for name, (source, result, edits, output) in self.stages.items():
+            with self.subTest(adapter=name):
+                self.assertEqual(2, len(edits))
+                self.assertEqual(result, (self.output / output).read_text())
+                for edit in reversed(edits):
+                    self.assertEqual(1, result.count(edit["after"]))
+                    result = result.replace(edit["after"], edit["before"], 1)
+                self.assertEqual(source, result)
+
+    def test_each_missing_duplicate_or_drifted_production_anchor_is_rejected(self):
+        for name, (source, _, edits, output) in self.stages.items():
+            for edit in edits:
+                anchor = edit["before"]
+                for mutation, altered in (("missing", source.replace(anchor, "", 1)),
+                                          ("duplicate", source + anchor),
+                                          ("drift", source.replace(anchor, anchor.replace(" ", "", 1), 1))):
+                    with self.subTest(adapter=name, anchor=edit["label"], mutation=mutation):
+                        with self.assertRaises(AssertionError):
+                            getattr(self.producer, name)(altered, output)
+
+    def test_adapters_leave_other_production_files_unchanged(self):
+        for name, (source, _, _, output) in self.stages.items():
+            other = "unrelated/Other.kt"
+            self.assertEqual((source, []), getattr(self.producer, name)(source, other))
+
+    def test_pipeline_hook_loss_is_detected_on_actual_generated_output(self):
+        from unittest import mock
+        for name in self.stages:
+            with self.subTest(adapter=name):
+                output = Path(self.temp.name) / name
+                with mock.patch.object(sys, "argv", ["producer", "--repo", str(REPO / ".legacy-root"),
+                                                     "--output", str(output)]), \
+                     mock.patch.object(self.producer, name, lambda source, output: (source, [])):
+                    self.producer.main()
+                with self.assertRaises(AssertionError):
+                    self.assert_integrated(output)
+
+
 if __name__ == "__main__":
     unittest.main()

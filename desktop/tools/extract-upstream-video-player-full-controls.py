@@ -56,6 +56,104 @@ def read(rel):
  from v046_player_overlay import chain_source as overlay_source
  from v046_control_center_motion import chain_source as control_center_source
  return control_center_source(REPO,path,overlay_source(REPO,path,episode_selected_source(path,closure_source(path,selected_source(path,SOURCES[path]['text'])),REPO)))
+def buffering_center_playback_ui(rel,t):
+ # Upstream cda4979a9: buffering stops frame output, not the user's intent to play.
+ # The centre key stays reachable while buffering and pauses by playWhenReady.
+ # Last layer of both outputs, after every overlay proof and the control-center motion.
+ if rel=='feature/video/usecase/DesktopOriginalOverlayPlaybackActions.kt':
+  return adapt(t,'''    if (isShowingPauseIcon && player.playbackState != Player.STATE_ENDED) {
+        pausePlayerFromUserAction(player)''','''    // Buffering stops frame output, not the user's intent to play; the icon may lag a player event.
+    val shouldPause = if (player.playbackState == Player.STATE_BUFFERING) {
+        player.playWhenReady
+    } else {
+        isShowingPauseIcon
+    }
+    if (shouldPause && player.playbackState != Player.STATE_ENDED) {
+        pausePlayerFromUserAction(player)''','Buffering pause follows the player intent, not the lagging icon')
+ if rel!='feature/video/ui/overlay/VideoPlayerOverlay.kt':return t
+ t=adapt(t,'''            applyPlaybackButtonUserAction(
+                player = player,
+                isShowingPauseIcon = isPlaying
+            )
+            isPlaying = !isPlaying
+''','''            applyPlaybackButtonUserAction(
+                player = player,
+                isShowingPauseIcon = isPlaying
+            )
+            isPlaying = resolveOverlayPlaybackButtonPlayingState(
+                isPlaying = player.isPlaying,
+                playWhenReady = player.playWhenReady,
+                playbackState = player.playbackState,
+                hasPendingSeekResume = hasPendingSeekResume
+            )
+''','Centre icon reads the actual player intent after a buffering toggle')
+ t=adapt(t,'''        CenterPlaybackControl(
+            visible = (!isFullscreen || liquidGlassEnabled) && isVisible &&
+                (pluginPlaybackStatus.first || player.playbackState == Player.STATE_READY || player.playbackState == Player.STATE_ENDED) &&
+                centerLoadingUiState == null &&
+                !isScreenLocked && !isSeekScrubbing && !danmakuComposerVisible &&
+                !endDrawerVisible && !landscapeCommentPanelVisible && !showInsightDetails,
+            isPlaying = effectiveIsPlaying,
+            onPlayPause = { togglePlayPause() },
+            diameter = if (isFullscreen) 72.dp else 56.dp,
+            modifier = Modifier.align(Alignment.Center),
+        )
+''','''        CenterPlaybackControl(
+            visible = (!isFullscreen || liquidGlassEnabled) && isVisible &&
+                centerPlaybackControlUnobstructed,
+            isPlaying = effectiveIsPlaying,
+            onPlayPause = { togglePlayPause() },
+            diameter = centerPlaybackDiameter,
+            modifier = Modifier.align(Alignment.Center),
+        )
+        // Buffering keeps the centre key clickable; a corner badge replaces the hidden centre spinner.
+        AnimatedVisibility(
+            visible = showCenterPlaybackControl && centerPlaybackBuffering,
+            modifier = Modifier.align(Alignment.Center),
+            enter = fadeIn(OverlayControlFadeSpec),
+            exit = fadeOut(OverlayControlFadeSpec)
+        ) {
+            Box(modifier = Modifier.size(centerPlaybackDiameter)) {
+                AdaptiveLoadingIndicator(
+                    size = 20.dp,
+                    color = Color.White,
+                    modifier = Modifier.align(Alignment.TopEnd).offset(x = 6.dp, y = (-6).dp)
+                )
+            }
+        }
+''','Centre key stays visible while buffering, with a corner buffering badge')
+ t=adapt(t,'''    val effectiveIsPlaying = if (pluginPlaybackStatus.first) pluginPlaybackStatus.second else isPlaying
+''','''    val effectiveIsPlaying = if (pluginPlaybackStatus.first) pluginPlaybackStatus.second else isPlaying
+    val centerPlaybackDiameter = if (isFullscreen) 72.dp else 56.dp
+''','Centre key and its buffering badge share one diameter')
+ # Declared after centerLoadingUiState so the centre key may replace the loading card while buffering.
+ anchor='    val themePrimary = MaterialTheme.colorScheme.primary\n'
+ t=adapt(t,anchor,'''    val centerPlaybackControlUnobstructed =
+        (pluginPlaybackStatus.first || player.playbackState == Player.STATE_READY ||
+            player.playbackState == Player.STATE_BUFFERING || player.playbackState == Player.STATE_ENDED) &&
+        !isScreenLocked && !isSeekScrubbing && !danmakuComposerVisible &&
+        !endDrawerVisible && !landscapeCommentPanelVisible && !showInsightDetails
+    val showCenterPlaybackControl = (!isFullscreen || liquidGlassEnabled) && isVisible &&
+        centerPlaybackControlUnobstructed
+    val centerPlaybackBuffering = !pluginPlaybackStatus.first && player.playWhenReady &&
+        (player.playbackState == Player.STATE_BUFFERING || centerLoadingUiState != null)
+'''+anchor,'Centre key visibility admits buffering')
+ t=adapt(t,'''        // --- 5.4  缓冲加载指示器 ---
+        AnimatedVisibility(
+            visible = shouldShowBufferingIndicator(
+''','''        // --- 5.4  缓冲加载指示器 ---
+        AnimatedVisibility(
+            visible = !showCenterPlaybackControl && shouldShowBufferingIndicator(
+''','Centre buffering spinner yields to the clickable centre key')
+ t=adapt(t,'''            visible = centerLoadingUiState != null,
+            modifier = Modifier.align(Alignment.Center),
+''','''            visible = centerLoadingUiState != null && !showCenterPlaybackControl,
+            modifier = Modifier.align(Alignment.Center),
+''','Centre loading card yields to the clickable centre key')
+ return adapt(t,'''            visible = isQualitySwitching && centerLoadingUiState == null,
+''','''            visible = isQualitySwitching && centerLoadingUiState == null && !showCenterPlaybackControl,
+''','Quality switching card yields to the clickable centre key')
+
 def emit(rel,t,origin,mode):
  from v046_follow_confirmation import apply_and_record as apply_follow_confirmation
  t=apply_follow_confirmation(REPO,'com/android/purebilibili/'+rel,t,OUTPUT)
@@ -68,6 +166,7 @@ def emit(rel,t,origin,mode):
  # blobs: the end drawer width sync and motion groups, the glass sheet header and its motion groups).
  from v046_control_center_motion import advance_emitted as advance_control_center
  t,control_center_rows=advance_control_center(rel,t);ADAPT.extend(control_center_rows)
+ t=buffering_center_playback_ui(rel,t)
  canonical=SOURCES.get(BASE+origin,{}).get('text')
  direct=mode=='direct-complete-original' and canonical==t
  if STANDALONE or not direct:write(OUTPUT/'com/android/purebilibili'/rel,t)
