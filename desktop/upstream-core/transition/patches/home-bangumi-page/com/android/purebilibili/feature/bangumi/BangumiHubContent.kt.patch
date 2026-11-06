@@ -1,0 +1,25 @@
+--- a/home-bangumi-page/com/android/purebilibili/feature/bangumi/BangumiHubContent.kt
++++ b/home-bangumi-page/com/android/purebilibili/feature/bangumi/BangumiHubContent.kt
+@@ -295,13 +295,23 @@
+         modifier = Modifier.fillMaxSize(),
+     ) {
+         LazyVerticalGrid(
+-            columns = GridCells.Adaptive(112.dp),
++            columns = GridCells.Fixed(
++                com.bilipai.desktop.ui.desktopResolveHomeFeedGridColumns(
++                    layout = com.bilipai.desktop.ui.desktopHomeFeedLayoutKey(),
++                    contentWidthDp = com.bilipai.desktop.ui.desktopHomeFeedContentWidth(
++                        com.android.purebilibili.core.util.LocalWindowSizeClass.current.widthDp,
++                    ).value.toInt(),
++                    displayMode = 0,
++                    fixedColumnCount = 0,
++                    cardWidthPreset = com.android.purebilibili.core.store.HomeFeedCardWidthPreset.AUTO,
++                ),
++            ),
+             state = gridState,
+             contentPadding = PaddingValues(start = 12.dp, top = listTopPadding + 8.dp, end = 12.dp, bottom = listBottomPadding),
+             horizontalArrangement = Arrangement.spacedBy(10.dp),
+             verticalArrangement = Arrangement.spacedBy(14.dp),
+         ) {
+             item(span = { GridItemSpan(maxLineSpan) }, key = "follow_header") {
+                 val followLabel = if (channel == BangumiChannel.BANGUMI) "追番" else "追剧"
