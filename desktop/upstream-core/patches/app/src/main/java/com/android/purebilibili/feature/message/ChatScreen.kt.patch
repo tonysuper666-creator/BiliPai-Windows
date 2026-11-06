@@ -18,7 +18,15 @@
  import androidx.compose.foundation.layout.*
  import com.android.purebilibili.core.ui.components.AppLazyColumn as LazyColumn
  import androidx.compose.foundation.lazy.items
-@@ -56,12 +52,12 @@
+@@ -29,6 +25,7 @@
+ import androidx.compose.ui.text.input.TextFieldValue
+ import androidx.compose.ui.focus.FocusRequester
+ import androidx.compose.ui.focus.focusRequester
++import androidx.compose.ui.focus.focusProperties
+ import androidx.compose.ui.focus.onFocusChanged
+ import androidx.compose.material.icons.outlined.Keyboard
+ import androidx.compose.material.icons.outlined.EmojiEmotions
+@@ -56,12 +53,12 @@
  import androidx.compose.ui.text.Placeholder
  import androidx.compose.ui.text.PlaceholderVerticalAlign
  import androidx.compose.ui.text.SpanStyle
@@ -32,7 +40,7 @@
  import androidx.compose.ui.text.withStyle
  import androidx.compose.ui.text.TextStyle
  import androidx.compose.ui.unit.Dp
-@@ -71,7 +67,6 @@
+@@ -71,7 +68,6 @@
  import com.android.purebilibili.core.store.HomeWallpaperEffectMode
  import com.android.purebilibili.core.store.SettingsManager
  import com.android.purebilibili.core.ui.LocalGlobalWallpaperBackdropVisible
@@ -40,7 +48,7 @@
  import coil3.compose.AsyncImage
  import com.android.purebilibili.core.ui.AppAlertDialog
  import com.android.purebilibili.core.ui.AppSurfaceTokens
-@@ -91,7 +86,6 @@
+@@ -91,7 +87,6 @@
  import com.android.purebilibili.core.ui.components.AppTextButton
  import com.android.purebilibili.core.ui.rememberAppBackIcon
  import com.android.purebilibili.core.util.FormatUtils
@@ -48,7 +56,7 @@
  import com.android.purebilibili.data.model.response.EmoteInfo
  import com.android.purebilibili.data.model.response.PrivateMessageItem
  import com.android.purebilibili.data.repository.MessageSessionControlInfo
-@@ -111,9 +105,6 @@
+@@ -111,9 +106,6 @@
  import java.text.SimpleDateFormat
  import java.util.*
  import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -58,7 +66,7 @@
  import com.android.purebilibili.feature.common.ListLoadError
  import com.android.purebilibili.core.ui.AdaptiveLoadingIndicator
  import kotlinx.coroutines.delay
-@@ -144,18 +135,12 @@
+@@ -144,18 +136,12 @@
  // 小横条停靠在底部时的默认占位高度（横条高度 + 外边距），用于让输入框避开它
  @Composable
  private fun resolveChatMiniPlayerBottomAvoidance(): Dp {
@@ -79,7 +87,7 @@
      talkerId: Long,
      sessionType: Int,
      userName: String,
-@@ -163,9 +148,10 @@
+@@ -163,9 +149,10 @@
      onBack: () -> Unit,
      onNavigateToVideo: (String) -> Unit,
      onOpenBilibiliLink: (String) -> Unit = {},
@@ -92,7 +100,7 @@
      val rawUiState by viewModel.uiState.collectAsStateWithLifecycle()
      val uiState = rawUiState.takeIf { it.accountIdentity == accountIdentity }
          ?: ChatUiState(accountIdentity = accountIdentity)
-@@ -188,10 +174,11 @@
+@@ -188,10 +175,11 @@
      val scrollScope = rememberCoroutineScope()
      var followLatest by rememberSaveable(talkerId, sessionType, accountIdentity) { mutableStateOf(true) }
      var handledScrollVersion by remember(viewModel, accountIdentity) { mutableStateOf(uiState.scrollToLatestVersion) }
@@ -108,7 +116,7 @@
              while (isActive) {
                  viewModel.refreshMessages()
                  delay(5_000L)
-@@ -211,10 +198,8 @@
+@@ -211,10 +199,8 @@
      val context = LocalContext.current
      val keyboard = androidx.compose.ui.platform.LocalSoftwareKeyboardController.current
      val focusManager = androidx.compose.ui.platform.LocalFocusManager.current
@@ -121,7 +129,7 @@
              viewModel.sendImageMessage(context, uri)
          }
          imagePickIdentity = null
-@@ -236,7 +221,7 @@
+@@ -236,7 +222,7 @@
          return
      }
      previewImage?.let { url ->
@@ -130,7 +138,7 @@
      }
      actionMessage?.let { message ->
          val own = message.sender_uid == viewModel.currentUserMid
-@@ -254,7 +239,7 @@
+@@ -254,7 +240,7 @@
      val lowBlurBudget = isLowBlurBudgetForced()
      val chatChromeSource = if (
          chatThemeConfig.progressiveTopBlurEnabled &&
@@ -139,7 +147,7 @@
              !lowBlurBudget
      ) {
          rememberChromeBackdropSource()
-@@ -265,7 +250,7 @@
+@@ -265,7 +251,7 @@
          chatThemeConfig.headerBlurEnabled &&
              !chatThemeConfig.progressiveTopBlurEnabled &&
              !lowBlurBudget &&
@@ -148,7 +156,7 @@
      ) {
          rememberRecoverableHazeState(initialBlurEnabled = true)
      } else {
-@@ -554,7 +539,6 @@
+@@ -554,7 +540,6 @@
                      onPickImage = {
                          imagePickIdentity = accountIdentity
                          imagePickerLauncher.launch(
@@ -156,7 +164,7 @@
                          )
                      },
                      isSending = uiState.isSending,
-@@ -990,14 +974,24 @@
+@@ -990,14 +975,27 @@
                  modifier = Modifier.fillMaxWidth(),
                  contentAlignment = if (message.msg_type in setOf(10, 13, 16, 18)) Alignment.TopCenter else if (isOwnMessage) Alignment.TopEnd else Alignment.TopStart,
              ) {
@@ -176,14 +184,17 @@
 +                                                ?.let { pressedByMouse = it.type == androidx.compose.ui.input.pointer.PointerType.Mouse }
 +                                        }
 +                                    }
-+                                }.combinedClickable(
++                                }
++                                    // 这层只接鼠标和触屏手势（onClick 为空），不做 Tab 停靠点；正文里的链接仍可聚焦。
++                                    .focusProperties { canFocus = false }
++                                    .combinedClickable(
                                      onClick = {},
 -                                    onLongClick = onLongPress
 +                                    onLongClick = { if (!pressedByMouse) onLongPress() }
                                  ).messageSecondaryClick { onLongPress() }
                              } else {
                                  Modifier
-@@ -1025,7 +1019,9 @@
+@@ -1025,7 +1023,9 @@
                          message.msg_type == 1 -> {
                              // 文字消息 - 支持表情渲染
                              val content = parseTextContent(message.content)
@@ -194,7 +205,7 @@
                              EmoteText(
                                  text = content,
                                  emoteInfos = emoteInfos,
-@@ -1418,7 +1414,7 @@
+@@ -1418,7 +1418,7 @@
      linkColor: Color = AppContentColors.accent(),  // 使用主题色
      onLinkClick: ((String) -> Unit)? = null
  ) {
@@ -203,7 +214,7 @@
  
      // 构建表情映射 (text -> EmoteInfo)
      val emoteMap = remember(emoteInfos) {
-@@ -1453,7 +1449,9 @@
+@@ -1453,7 +1453,9 @@
  
      // 如果没有特殊内容，直接显示文本
      if (allMatches.isEmpty()) {
@@ -214,7 +225,7 @@
          return
      }
  
-@@ -1477,15 +1475,26 @@
+@@ -1477,15 +1479,26 @@
                      }
                  }
                  "url" -> {
@@ -248,7 +259,7 @@
                  }
              }
  
-@@ -1518,42 +1527,15 @@
+@@ -1518,42 +1531,15 @@
          }
      }
  

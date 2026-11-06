@@ -373,12 +373,15 @@ class DesktopWindowsTextSelectionUiTest {
         }
     }
 
-    /** The chat page's own bubble (MessageBubble), with its long-press / right-click action dialog counted. */
-    private fun bubbleScene(style: AppUiStyle, text: String = chatPlain, onAction: (() -> Unit)?,
-        frame: @Composable (@Composable () -> Unit) -> Unit = { it() }) = Scene(style) {
+    /**
+     * The chat page's own bubble (MessageBubble). Like ChatScreen, it always gets a message action (long press /
+     * right-click), so the bubble's own gesture layer is part of every case here.
+     */
+    private fun bubbleScene(style: AppUiStyle, text: String = chatPlain, onAction: () -> Unit = {},
+        onLink: (String) -> Unit = {}, frame: @Composable (@Composable () -> Unit) -> Unit = { it() }) = Scene(style) {
         MessagePage {
             frame { MessageBubble(message = PrivateMessageItem(msg_type = 1, content = text), isOwnMessage = false,
-                onLongPress = onAction, onLinkClick = {}) }
+                onLongPress = onAction, onLinkClick = onLink) }
         }
     }
 
@@ -420,7 +423,7 @@ class DesktopWindowsTextSelectionUiTest {
      * test itself builds, so the frame here renders the real [MessageBubble] instead. Same name, same assertions.
      */
     @TestFactory fun reviewTabSkipsChatTextInsideTheRealBubbleSelectionContainer() = styles("review tab bubble") { style ->
-        bubbleScene(style, onAction = null, frame = { content -> Framed { content() } })
+        bubbleScene(style, frame = { content -> Framed { content() } })
             .use { s -> s.assertTabSkipsTextAndDragStillCopies(chatPlain) }
     }
 
@@ -469,23 +472,46 @@ class DesktopWindowsTextSelectionUiTest {
         }
     }
 
+    /** Tab and Shift+Tab between the controls around [text] stop only on its link, never on the text or what holds it. */
+    private fun Scene.assertTabOnlyStopsOnTheLink(text: String) {
+        advance()
+        val link = bounds(text)
+        tailrec fun Scene.walk(shift: Boolean, until: String, stops: List<Rect?> = emptyList()): List<Rect?> {
+            tab(shift); val tag = focusedTag()
+            return if (tag == until || stops.size > 6) stops else walk(shift, until, stops + focusedBounds())
+        }
+        tab(); assertEquals("before", focusedTag())
+        val forward = walk(shift = false, until = "after")
+        val backward = walk(shift = true, until = "before")
+        assertEquals("before", focusedTag(), "Shift+Tab gets back to the control before the messages")
+        for ((name, stops) in listOf("Tab" to forward, "Shift+Tab" to backward)) {
+            assertTrue(stops.isNotEmpty(), "$name stops on the link")
+            assertTrue(stops.all { it != null && link.contains(it.center) && it.width < link.width },
+                "$name only stops on the link inside the text, never on the text block itself: $stops (text $link)")
+        }
+    }
+
     @TestFactory fun shiftTabFromTheControlAfterALinkedMessageStopsOnTheLinkThenLeaves() = styles("shift tab link") { style ->
-        chatScene(style, frame = { Framed(it) }) {}.use { s ->
+        chatScene(style, frame = { Framed(it) }) {}.use { s -> s.assertTabOnlyStopsOnTheLink(chatLinked) }
+    }
+
+    @TestFactory fun realBubbleWithALinkKeepsTabOnTheLinkAndStillCopiesAndOpens() = styles("real bubble link") { style ->
+        val links = mutableListOf<String>()
+        var actionDialogs = 0
+        bubbleScene(style, text = chatLinked, onAction = { actionDialogs++ }, onLink = { links += it },
+            frame = { Framed(it) }).use { s ->
+            s.assertTabOnlyStopsOnTheLink(chatLinked)
+        }
+        bubbleScene(style, text = chatLinked, onAction = { actionDialogs++ }, onLink = { links += it },
+            frame = { Framed(it) }).use { s ->
             s.advance()
-            val link = s.bounds(chatLinked)
-            tailrec fun Scene.walk(shift: Boolean, until: String, stops: List<Rect?> = emptyList()): List<Rect?> {
-                tab(shift); val tag = focusedTag()
-                return if (tag == until || stops.size > 6) stops else walk(shift, until, stops + focusedBounds())
-            }
-            s.tab(); assertEquals("before", s.focusedTag())
-            val forward = s.walk(shift = false, until = "after")
-            val backward = s.walk(shift = true, until = "before")
-            assertEquals("before", s.focusedTag(), "Shift+Tab gets back to the control before the messages")
-            for ((name, stops) in listOf("Tab" to forward, "Shift+Tab" to backward)) {
-                assertTrue(stops.isNotEmpty(), "$name stops on the link")
-                assertTrue(stops.all { it != null && link.contains(it.center) && it.width < link.width },
-                    "$name only stops on the link inside the text, never on the text block itself: $stops (text $link)")
-            }
+            // The bubble's width cap wraps this message: drag from the first line's start to past the last line's end.
+            val text = s.bounds(chatLinked)
+            s.drag(Offset(text.left + 2f, text.top + 4f), Offset(text.right + 60f, text.bottom - 4f)); s.copyShortcut()
+            assertEquals(chatLinked, s.clipboard.text, "A drag copies the whole linked message")
+            assertTrue(links.isEmpty(), "Selecting across the link does not open it")
+            s.click(s.centerOf(chatLinked, "BV1xx411c7mD")); assertEquals(listOf(chatUrl), links, "Clicking the link still opens it")
+            assertEquals(0, actionDialogs, "Neither the keyboard walk nor the drag opened the message actions")
         }
     }
 }
