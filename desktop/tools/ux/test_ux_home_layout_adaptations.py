@@ -451,9 +451,11 @@ class WiringTest(unittest.TestCase):
 
 def declaring_packages(name):
     """Packages of the Kotlin files in the repository that declare a top-level name (git grep, read only)."""
-    pattern = r"(^|[ \t])(fun|class|object|interface|typealias|val|var)[ \t]+(<[^>]*>[ \t]+)?([A-Za-z0-9_<>?, ]+\.)?%s\b" % re.escape(name)
+    pattern = r"(^|[[:space:]])(fun|class|object|interface|typealias|val|var)[[:space:]]+(<[^>]*>[[:space:]]+)?([A-Za-z0-9_<>?, ]+\.)?%s([^[:alnum:]_]|$)" % re.escape(name)
     result = subprocess.run(["git", "-c", "core.autocrlf=false", "grep", "--untracked", "-l", "-E", pattern, "--", "app", "design-system", "desktop/src/main"],
                             cwd=str(REPO), stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False)
+    if result.returncode not in (0, 1):
+        raise RuntimeError("git grep failed: " + result.stderr.decode("utf-8", "replace"))
     packages = set()
     for line in result.stdout.decode("utf-8", "replace").splitlines():
         if not line.endswith(".kt"):
