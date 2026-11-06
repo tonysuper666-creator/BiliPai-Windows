@@ -2,87 +2,79 @@
  "schema": 1,
  "gate": "A",
  "rule": "No new failing identity, no missing or newly skipped baseline identity, new tests pass, same upstream trees.",
- "baselineSha": "a3af95b29b85de895aeb7ec37cc40247468c6b55",
+ "baselineSha": "8d658416745b7a6f8cd8bb868ca2e2840c1a07ba",
  "upstream": {
-  "tag": "v0.6.7",
-  "commit": "25ce80f0f19758dd955d07be7967af8a734922fe",
+  "tag": "v0.7.8",
+  "commit": "60d41e542ec7bff4f79e5eee54ce52750e8ba525",
   "trees": {
    ".mailmap": "f6ee11e845368851dfc6cfab2d3a9d9777dbc687",
-   "CHANGELOG.md": "98736727e95dbcb972ed0e30aec497126aa798d2",
+   "CHANGELOG.md": "be44b8bcfaaafb598d7b871f074e2fcbba9ddbd3",
    "LICENSE": "f288702d2fa16d3cdf0035b15a9fcbc552cd88e7",
-   "README_EN.md": "1808600b03d90eda7e12b5b6a1f6fc4fe3708c7d",
+   "README.md": "75bc0269aa5780a7d5d8c563660f4edcc8f1fd22",
+   "README_EN.md": "259b0d6651f2e0692b34baddd4068a7d1565e3ef",
    "THIRD_PARTY_NOTICES.md": "92ea4d5fc95e8bdfe64fda86274c8faf23596799",
-   "app": "984b3c6c4afbdd786ca476fc4dd07d4de1e05ee4",
-   "app-tv": "a2a1e34ccb88ba3596e6b719c991bd4ae73516dc",
-   "artwork": "caee7f49ec076151f88e04a892d8f4017bc7cbaa",
+   "app-tv": "46a380dd94b561f224eff79a2694816b815b6094",
+   "artwork": "950e15110655c1e5591a2cfe4339402557b90068",
    "baselineprofile": "2c1e3beecb245d69e178b9b7f075a2a6057573fd",
    "brand-motion": "71d09eb2c757cae68d39fe38a8294dad5734004c",
-   "build-logic": "5fb17be5723fd2a68beeeb2abefcdb9c7d235e9c",
+   "build-logic": "2a436eea2eab67c2104c1aa936ab533756d3b8f3",
    "build.gradle.kts": "a98b71b5cba23becd4fe3ff0c81264fea5666b90",
    "ci-lint": "e59f536c00b1a4b80ade67452a2e4c485a2d9972",
    "compose_stability.conf": "6e91cfe9c5fcea57970babef2f417d6f8356634d",
-   "core-data": "b660ffd5e0441f32ba297332a2cf7445b3860e05",
-   "core-player": "359991d516292a40b32e38cdbc4276f18f96f27f",
+   "core-data": "39e214cb4b6bb9403a5ebf9bc4ee74f95b03b114",
+   "core-player": "699e6ffc58ab2f9f2f850ff768f296ce9a520204",
    "danmaku-engine": "907577c1e49d582e92dfd9acb582ad9b810749b1",
-   "design-system": "d22064e19f5cca71b509c10649f6234c6ca2d6be",
+   "design-system": "5229364023352b1307eecb331b339090198f27f3",
    "design-tokens": "a3e3b5fb3933f5d51bb54dd9f9f5c268fe655c22",
-   "docs": "233800ee4eb4bf32964e5f3533eb33a53068fedf",
+   "docs": "bfb9b18f1e29a385537d7aa5a600f668658a9bdb",
    "dolby-ffmpeg-decoder": "8c9d7e171ce4eea260cf4b9abe8be98ce16cc900",
    "gradle": "5f657a5e9cd9e82957c95018c0063b24589d3b9d",
-   "gradle.properties": "9dab2fd3ce0032dcd1be4282d86221507747c146",
+   "gradle.properties": "695b92cf8502b6f90b2d55b50aee9a8c9ab07945",
    "gradlew": "ef07e0162b183eb9d19a2c9ba7035c283af9f8dd",
    "gradlew.bat": "5eed7ee8452842305a18a4eb967442683808226a",
-   "miuix-navigation": "a60fbb7524a98897c07f168d2c8d555c864a82d0",
+   "miuix-navigation": "c633256508ca76dfc572a861c3d6d874cb4333ff",
    "network-core": "3138dc04248c191488ff7c3b03b0ffd29a9152e0",
    "plugin-sdk": "ff78b498a54c0e67c94ac77230cdfdc500cc3909",
    "plugins": "d7993392ef324b3cd1e32604ba5cc9cbd813cb57",
-   "scripts": "9d3e03430fb07f2e1e6c91c75ae96a9570c6b95d",
+   "scripts": "9d56d3c56eed44a3628905d32128a0ba02fc4429",
    "settings-core": "ad796ca59cf328b0605143f3229605d7b372be02",
    "settings.gradle.kts": "c4f97a9ad0709b2d47ea975029e0ec0acf443e61"
   }
  },
- "source": "Windows VM BiliPai-Win11 (ssh winvm), clean detached worktree, JDK 21.0.12.1 fixed toolchain, 2026-11-03 04:14-04:45 UTC, 7651 test cases",
+ "source": "Windows VM BiliPai-Win11 (ssh winvm), clean detached worktree, JDK 21.0.12.1 fixed toolchain, 2026-11-06 17:22-17:47 UTC, 7783 test cases",
  "command": "gradlew.bat <fixed-toolchain> -p desktop --console=plain --continue test sponsorPresentationTests verifyUniqueClassNames",
  "generator": "python desktop/tools/gate_a.py baseline (Root only)",
  "counts": {
-  "tests": 7651,
-  "failed": 82,
+  "tests": 7783,
+  "failed": 45,
   "skipped": 0
  },
  "failingSources": {
   "com.android.purebilibili.core.network.policy.NetworkProxyPolicyTest": "network-core/src/test/java/com/android/purebilibili/core/network/policy/NetworkProxyPolicyTest.kt",
   "com.android.purebilibili.core.ui.LocalNavigationBackHandlerStructureTest": "app/src/test/java/com/android/purebilibili/core/ui/LocalNavigationBackHandlerStructureTest.kt",
   "com.android.purebilibili.core.ui.components.AppPreferenceApiStructureTest": "app/src/test/java/com/android/purebilibili/core/ui/components/AppPreferenceApiStructureTest.kt",
-  "com.android.purebilibili.core.ui.components.LegacyTabChipMigrationStructureTest": "app/src/test/java/com/android/purebilibili/core/ui/components/LegacyTabChipMigrationStructureTest.kt",
   "com.android.purebilibili.core.ui.migration.NativeThemeMigrationBoundaryTest": "app/src/test/java/com/android/purebilibili/core/ui/migration/NativeThemeMigrationBoundaryTest.kt",
-  "com.android.purebilibili.core.ui.transition.VideoCardLandingFeedbackPolicyTest": "app/src/test/java/com/android/purebilibili/core/ui/transition/VideoCardLandingFeedbackPolicyTest.kt",
+  "com.android.purebilibili.core.ui.transition.VideoSharedTransitionPolicyTest": "app/src/test/java/com/android/purebilibili/core/ui/transition/VideoSharedTransitionPolicyTest.kt",
   "com.android.purebilibili.core.util.HomeCoverReturnPrefetchStructureTest": "app/src/test/java/com/android/purebilibili/core/util/HomeCoverReturnPrefetchStructureTest.kt",
   "com.android.purebilibili.data.model.response.VideoStatusLabelsTest": "core-data/src/test/java/com/android/purebilibili/data/model/response/VideoStatusLabelsTest.kt",
-  "com.android.purebilibili.feature.message.ChatStructuredMessagesTest": "app/src/test/java/com/android/purebilibili/feature/message/ChatStructuredMessagesTest.kt",
-  "com.android.purebilibili.feature.plugin.js.ExternalMediaDanmakuMappingTest": "app/src/test/java/com/android/purebilibili/feature/plugin/js/ExternalMediaDanmakuMappingTest.kt",
-  "com.android.purebilibili.feature.profile.ProfileShapeStructureTest": "app/src/test/java/com/android/purebilibili/feature/profile/ProfileShapeStructureTest.kt",
+  "com.android.purebilibili.data.repository.MobileCommentPaginationTest": "core-data/src/test/java/com/android/purebilibili/data/repository/MobileCommentPaginationTest.kt",
   "com.android.purebilibili.feature.settings.AnimationSettingsScreenStructureTest": "app/src/test/java/com/android/purebilibili/feature/settings/AnimationSettingsScreenStructureTest.kt",
-  "com.android.purebilibili.feature.settings.AppBuildVerificationPolicyTest": "app/src/test/java/com/android/purebilibili/feature/settings/AppBuildVerificationPolicyTest.kt",
   "com.android.purebilibili.feature.settings.AppSegmentedControlPolicyTest": "app/src/test/java/com/android/purebilibili/feature/settings/AppSegmentedControlPolicyTest.kt",
   "com.android.purebilibili.feature.settings.AppearanceSettingsNavigationPolicyTest": "app/src/test/java/com/android/purebilibili/feature/settings/AppearanceSettingsNavigationPolicyTest.kt",
-  "com.android.purebilibili.feature.settings.MiuixV2MigrationStructureTest": "app/src/test/java/com/android/purebilibili/feature/settings/MiuixV2MigrationStructureTest.kt",
+  "com.android.purebilibili.feature.settings.MiuixThemeFacadeStructureTest": "app/src/test/java/com/android/purebilibili/feature/settings/MiuixThemeFacadeStructureTest.kt",
   "com.android.purebilibili.feature.settings.OpenSourceLicensesPolicyTest": "app/src/test/java/com/android/purebilibili/feature/settings/OpenSourceLicensesPolicyTest.kt",
-  "com.android.purebilibili.feature.settings.SettingsCoreCombineOrderTest": "app/src/test/java/com/android/purebilibili/feature/settings/SettingsCoreCombineOrderTest.kt",
   "com.android.purebilibili.feature.settings.SettingsEntranceMotionStructureTest": "app/src/test/java/com/android/purebilibili/feature/settings/SettingsEntranceMotionStructureTest.kt",
+  "com.android.purebilibili.feature.settings.SettingsIconReuseStructureTest": "app/src/test/java/com/android/purebilibili/feature/settings/SettingsIconReuseStructureTest.kt",
   "com.android.purebilibili.feature.settings.SettingsInformationArchitecturePolicyTest": "app/src/test/java/com/android/purebilibili/feature/settings/SettingsInformationArchitecturePolicyTest.kt",
   "com.android.purebilibili.feature.settings.SettingsLocalBackHandlerStructureTest": "app/src/test/java/com/android/purebilibili/feature/settings/SettingsLocalBackHandlerStructureTest.kt",
-  "com.android.purebilibili.feature.settings.SettingsMiuixSimplificationStructureTest": "app/src/test/java/com/android/purebilibili/feature/settings/SettingsMiuixSimplificationStructureTest.kt",
   "com.android.purebilibili.feature.settings.SettingsPageBlurPreferenceStructureTest": "app/src/test/java/com/android/purebilibili/feature/settings/SettingsPageBlurPreferenceStructureTest.kt",
   "com.android.purebilibili.feature.settings.SettingsPrivacyAuthenticationStructureTest": "app/src/test/java/com/android/purebilibili/feature/settings/SettingsPrivacyAuthenticationStructureTest.kt",
   "com.android.purebilibili.feature.settings.SettingsRootCategoryContentStructureTest": "app/src/test/java/com/android/purebilibili/feature/settings/SettingsRootCategoryContentStructureTest.kt",
   "com.android.purebilibili.feature.settings.SettingsTabletLayoutPolicyTest": "app/src/test/java/com/android/purebilibili/feature/settings/SettingsTabletLayoutPolicyTest.kt",
   "com.android.purebilibili.feature.settings.VisualEffectTogglePolicyTest": "app/src/test/java/com/android/purebilibili/feature/settings/VisualEffectTogglePolicyTest.kt",
   "com.android.purebilibili.feature.space.SpaceAggregatedModelMappingTest": "app/src/test/java/com/android/purebilibili/feature/space/SpaceAggregatedModelMappingTest.kt",
-  "com.android.purebilibili.feature.space.SpaceDynamicNavigationPolicyTest": "app/src/test/java/com/android/purebilibili/feature/space/SpaceDynamicNavigationPolicyTest.kt",
-  "com.android.purebilibili.feature.space.SpaceLoadPolicyTest": "app/src/test/java/com/android/purebilibili/feature/space/SpaceLoadPolicyTest.kt",
   "com.android.purebilibili.feature.space.SpaceLocatePagingStructureTest": "app/src/test/java/com/android/purebilibili/feature/space/SpaceLocatePagingStructureTest.kt",
-  "com.android.purebilibili.feature.space.SpaceScreenStructureTest": "app/src/test/java/com/android/purebilibili/feature/space/SpaceScreenStructureTest.kt",
-  "com.android.purebilibili.feature.space.SpaceTabChromePolicyTest": "app/src/test/java/com/android/purebilibili/feature/space/SpaceTabChromePolicyTest.kt"
+  "com.android.purebilibili.feature.space.SpaceScreenStructureTest": "app/src/test/java/com/android/purebilibili/feature/space/SpaceScreenStructureTest.kt"
  },
  "failing": {
   "desktop:com.android.purebilibili.core.ui.LocalNavigationBackHandlerStructureTest": [
@@ -90,9 +82,6 @@
   ],
   "desktop:com.android.purebilibili.core.ui.components.AppPreferenceApiStructureTest": [
    "settingsSelectionApi_usesDialogPreferencesWithoutInlineSegments()"
-  ],
-  "desktop:com.android.purebilibili.core.ui.components.LegacyTabChipMigrationStructureTest": [
-   "known page selectors cannot regress to filter chips()"
   ],
   "desktop:com.android.purebilibili.core.ui.migration.NativeThemeMigrationBoundaryTest": [
    "appDirectButtonCallsUseFacade()",
@@ -106,33 +95,14 @@
    "liquidGlassExceptionSetCannotExpandOrChangeIdentity()",
    "sharedMiuixNavigationExceptionSetCannotExpandOrChangeIdentity()"
   ],
-  "desktop:com.android.purebilibili.core.ui.transition.VideoCardLandingFeedbackPolicyTest": [
-   "combinedMotionReleasesOutwardOnceAndFinishesAtOriginalSize()"
+  "desktop:com.android.purebilibili.core.ui.transition.VideoSharedTransitionPolicyTest": [
+   "cardShellSharedBoundsKeepsLiveReturnVisibleBeforeSourceCoverFadesIn()"
   ],
   "desktop:com.android.purebilibili.core.util.HomeCoverReturnPrefetchStructureTest": [
    "appNavigationTriggersPrefetchOnGestureAndCommit()"
   ],
-  "desktop:com.android.purebilibili.feature.message.ChatStructuredMessagesTest": [
-   "sessionTipJoinsTextWithoutExposingPayload()"
-  ],
-  "desktop:com.android.purebilibili.feature.plugin.js.ExternalMediaDanmakuMappingTest": [
-   "mapsModeTextTimeAndColorIntoEngineItems()"
-  ],
-  "desktop:com.android.purebilibili.feature.profile.ProfileShapeStructureTest": [
-   "profile surfaces use semantic theme shapes()"
-  ],
   "desktop:com.android.purebilibili.feature.settings.AnimationSettingsScreenStructureTest": [
-   "animationSettingsScreen_controlsGlobalPredictivePreviewIndependently()",
-   "animationSettingsScreen_exposesLiveSurfaceCardTransitionToggle()",
-   "animationSettingsScreen_exposesRealtimeTransitionBlurToggle()",
-   "animationSettingsScreen_exposesVideoSharedReturnGestureFollowToggle()",
-   "animationSettingsScreen_importsLiquidGlassSettingsAfterConfirmation()"
-  ],
-  "desktop:com.android.purebilibili.feature.settings.AppBuildVerificationPolicyTest": [
-   "resolveAppBuildVerificationState returns likely verified when mutable release digest matches without embedded provenance()",
-   "resolveAppBuildVerificationState returns unverified when release is mutable()",
-   "resolveAppBuildVerificationState returns verified when immutable release digest matches local apk()",
-   "resolveBuildFingerprintSubtitle describes matched immutable release with attestation()"
+   "animationSettingsScreen_controlsGlobalPredictivePreviewIndependently()"
   ],
   "desktop:com.android.purebilibili.feature.settings.AppSegmentedControlPolicyTest": [
    "defaultSettingsIndicatorRenderPolicyMatchesCommentSortIndicator()"
@@ -140,38 +110,25 @@
   "desktop:com.android.purebilibili.feature.settings.AppearanceSettingsNavigationPolicyTest": [
    "bottomBarSearchBelongsToNavigationSettings()"
   ],
-  "desktop:com.android.purebilibili.feature.settings.MiuixV2MigrationStructureTest": [
-   "buildGradle_includesMiuixIconsArtifact()",
-   "buildGradle_includesMiuixShaderArtifact()",
-   "buildGradle_includesMiuixSquircleArtifact()",
-   "featureLayer_avoidsDirectMiuixThemeColorSchemeReads()",
-   "homeScreen_usesAdaptivePullToRefreshBox()",
-   "md3SegmentedControl_routesMiuixVariantToTabRow()",
-   "versionCatalog_pinsMiuixToPublishedUpstreamSnapshot()"
+  "desktop:com.android.purebilibili.feature.settings.MiuixThemeFacadeStructureTest": [
+   "featureLayer_avoidsDirectMiuixThemeColorSchemeReads()"
   ],
   "desktop:com.android.purebilibili.feature.settings.OpenSourceLicensesPolicyTest": [
    "openSourceLibraries_coverRuntimeDependenciesAndLiquidGlassReferences()",
    "openSourceScreen_notesAcknowledgementListMayNotBeExhaustive()"
   ],
-  "desktop:com.android.purebilibili.feature.settings.SettingsCoreCombineOrderTest": [
-   "core settings flows keep the frozen index order()"
-  ],
   "desktop:com.android.purebilibili.feature.settings.SettingsEntranceMotionStructureTest": [
    "settingsRootWaitsForNavigationAndBypassesGroupWhenDisabled()",
    "settingsSearchUsesSameNavigationGate()"
+  ],
+  "desktop:com.android.purebilibili.feature.settings.SettingsIconReuseStructureTest": [
+   "settings groups avoid duplicate setting icons()"
   ],
   "desktop:com.android.purebilibili.feature.settings.SettingsInformationArchitecturePolicyTest": [
    "appearanceHomeAndInteractionSettingsHaveIndependentOwners()"
   ],
   "desktop:com.android.purebilibili.feature.settings.SettingsLocalBackHandlerStructureTest": [
    "settingsLocalBackHandler_usesNavigationBackHandler()"
-  ],
-  "desktop:com.android.purebilibili.feature.settings.SettingsMiuixSimplificationStructureTest": [
-   "animation liquid glass section keeps tuning without independent switches()",
-   "animation settings keeps tuning but no independent glass toggles()",
-   "appearance settings expose one ui style selection while keeping miuix scaffold()",
-   "liquid glass adjustment uses live miuix backdrop and commits on release()",
-   "settings groups avoid duplicate setting icons()"
   ],
   "desktop:com.android.purebilibili.feature.settings.SettingsPageBlurPreferenceStructureTest": [
    "miuixSettingsPageUsesUpstreamSurfaceIndependentlyFromGlassChrome()",
@@ -181,15 +138,8 @@
    "privacyOptionsUseSeparateSwitchesForHistoryAndContentAuthentication()"
   ],
   "desktop:com.android.purebilibili.feature.settings.SettingsRootCategoryContentStructureTest": [
-   "aboutDevelopers_useGithubProfilesAndClickableAvatars()",
-   "aboutProjectOverview_usesRasterLauncherAssetForComposePainter()",
-   "aboutSectionShowsProjectOverviewAndStaticDevelopersBeforeRows()",
-   "broadSettingsEntriesOpenAtPageStartWhileSubtopicEntriesUsePreciseFocus()",
-   "feedApiSection_usesNativeSwitchAndSliderItems()",
-   "settingsSearchSubmitsResultFocusBeforeOpeningDetailPage()",
-   "settingsSubpages_useNagramStyleSectionNames()",
-   "tabletSettingsCategoryDrawer_showsSubtitle()",
-   "tabletSettingsShell_usesNavDrivenCategoryRail()"
+   "appNavigation_wrapsSettingsSubtreeRoutesWithTabletShell()",
+   "feedApiSection_usesNativeSwitchAndSliderItems()"
   ],
   "desktop:com.android.purebilibili.feature.settings.SettingsTabletLayoutPolicyTest": [
    "tabletLandscape_keepsMasterAndDetailContentScrollable()"
@@ -198,14 +148,7 @@
    "animation settings no longer exposes per-surface liquid glass entries()"
   ],
   "desktop:com.android.purebilibili.feature.space.SpaceAggregatedModelMappingTest": [
-   "resolveSpaceInitialSeedFromAggregate maps core header and seeded content()"
-  ],
-  "desktop:com.android.purebilibili.feature.space.SpaceDynamicNavigationPolicyTest": [
-   "resolveSpaceDynamicClickAction_opensDynamicDetailWhenArticleJumpUrlIsOpus()"
-  ],
-  "desktop:com.android.purebilibili.feature.space.SpaceLoadPolicyTest": [
-   "resolveSpaceInitialSeedFromAggregate detects cheese tab in tab2()",
-   "resolveSpaceInitialSeedFromAggregate keeps PiliPlus space tag contract()"
+   "charging selection keeps ordinary home previews and reservation metadata separate()"
   ],
   "desktop:com.android.purebilibili.feature.space.SpaceLocatePagingStructureTest": [
    "locate paging observes completion and stops after a failed request()"
@@ -220,18 +163,14 @@
    "space search action scrolls to focused search bar and dynamic body opens comments()",
    "space video cards freeze native pixels for return morph()"
   ],
-  "desktop:com.android.purebilibili.feature.space.SpaceTabChromePolicyTest": [
-   "contribution tab chrome keeps drag selection for three contribution entries()",
-   "contribution tab chrome prefers selected id and uses compact secondary chrome()",
-   "contribution toolbar uses compact chrome and icon first actions on narrow phones()",
-   "main tab chrome resolves selected index and keeps touch target height()",
-   "secondary switch caps longest title to three visible slots()"
-  ],
   "upstream-core:com.android.purebilibili.core.network.policy.NetworkProxyPolicyTest": [
    "domain rules tolerate protocol path port and wildcard noise()"
   ],
   "upstream-core:com.android.purebilibili.data.model.response.VideoStatusLabelsTest": [
    "mobileFeedDurationIsNotMistakenForAnInterfaceBadge"
+  ],
+  "upstream-core:com.android.purebilibili.data.repository.MobileCommentPaginationTest": [
+   "loaded comments with offset and zero numeric cursor remain valid for the next request()"
   ]
  },
  "skipped": {},
@@ -406,6 +345,11 @@
    "all independent players enable platform first ffmpeg fallback()",
    "app packages the arm64 eac3 decoder module()",
    "software decoder capability changes dolby presentation only when platform decoder is absent()"
+  ],
+  "desktop:com.android.purebilibili.core.player.SeekTickHapticPolicyTest": [
+   "feedbackRequiresUserSessionAndAChangedSecond()",
+   "finishAndInvalidDurationStaySilentAndNewSessionResetsCooldown()",
+   "rapidCrossingsAreLimitedAndNotReplayedWhenHeld()"
   ],
   "desktop:com.android.purebilibili.core.plugin.BuiltinPluginDefaultPolicyTest": [
    "castPluginsAreEnabledByDefault()",
@@ -705,6 +649,10 @@
    "toggle collection subscription adds missing id()",
    "toggle collection subscription removes existing id()"
   ],
+  "desktop:com.android.purebilibili.core.store.ContentDisplayPreferencesTest": [
+   "invalid imported display values fall back to existing defaults()",
+   "legacy retention preserves actual behavior including missing defaults()"
+  ],
   "desktop:com.android.purebilibili.core.store.DanmakuSettingsMappingPolicyTest": [
    "arbitraryDisplayAreaValues_preservePiliSelections()",
    "firstFontScaleEditKeepsDefaultForUntouchedOrientationAndClampsEditedValue()",
@@ -749,7 +697,6 @@
    "legacyHeaderCollapseBoolean_mapsToEquivalentCollapseMode()",
    "legacySharedLiquidGlassToggle_backfillsBottomSwitchOnly()",
    "legacySharedLiquidGlassToggle_trueStillBackfillsBottomSwitch()",
-   "normalizeHomeRefreshCount_clampsToSupportedRange()",
    "populatedPreferences_mapHideTopTabs()",
    "populatedPreferences_mapToHomeSettingsCorrectly()",
    "searchOnlyCollapseMode_mapsCorrectlyAndEnablesCollapse()",
@@ -806,8 +753,6 @@
    "pausedOnlyPortraitCollapseModePreference_keepsSavedUserChoice()",
    "populatedPreferences_mapAndNormalizeInteractionSettings()",
    "portraitCollapseModePreference_takesPriorityOverLegacySwitch()",
-   "relativeSeekMode_preservesIndependentFixedSettingsIncludingUnbounded()",
-   "relativeSeekPercent_normalizesNearestOptionWithoutIntegerOverflow()",
    "removingPlaybackOption_doesNotChangeIndependentLongPressSpeed()",
    "savedDoubleTapSeekPreference_keepsUserChoice()"
   ],
@@ -916,6 +861,13 @@
    "font import keeps supported local file extensions()",
    "font import probes glyph coverage with injectable probe()",
    "imported font defaults to full coverage and keeps cjk flag()"
+  ],
+  "desktop:com.android.purebilibili.core.theme.AppFontWeightAxisTest": [
+   "collectionUsesFirstFaceAndAbsoluteTableOffsets()",
+   "emptyVariationTableUsesStaticFontMatching()",
+   "incompleteAxesAreRejectedInsteadOfClaimingWeightSupport()",
+   "staticFontDoesNotAdvertiseVariableWeights()",
+   "weightAxisIsFoundAfterOtherAxesAndPreservesFractionalRange()"
   ],
   "desktop:com.android.purebilibili.core.theme.AppFontWeightPolicyTest": [
    "followTheme_keepsBaselineWeights()",
@@ -1383,11 +1335,6 @@
    "readable custom foreground is preserved()",
    "transparent text and outlined buttons preserve custom theme foreground()"
   ],
-  "desktop:com.android.purebilibili.core.ui.CommentOverlayNavigationBackHandlerStructureTest": [
-   "commentWindowUsesItsOwnDispatcherAndDisablesDefaultDismissal()",
-   "dynamicCommentSheetsUseNavigationEventBackHandling()",
-   "videoCommentOverlayUsesNavigationEventBackHandling()"
-  ],
   "desktop:com.android.purebilibili.core.ui.ContentCardSurfacePolicyTest": [
    "materialContentCardsKeepLegacyGlassShellDefaults()",
    "messageFeedAndSearchSurfacesAdoptSharedPolicy()",
@@ -1545,6 +1492,11 @@
    "glass dock uses strongest haze material and highest cover alpha()",
    "light tier keeps background most visible()",
    "medium tier stays between light and heavy()"
+  ],
+  "desktop:com.android.purebilibili.core.ui.blur.PagerBackdropRecordingTest": [
+   "retainedPagesOutsideTheViewportDoNotRecord()",
+   "swipeKeepsBothPartiallyExposedPagesRecording()",
+   "visibleContentPaddingAndMultiplePagesUseTheActualViewport()"
   ],
   "desktop:com.android.purebilibili.core.ui.blur.ProgressiveFadeTest": [
    "alpha factors match telegram non-linear easing curve()",
@@ -1722,12 +1674,12 @@
    "scrolled card preserves its clipped offset without a chrome item()",
    "unchanged data pagination and already restored layouts do not scroll()"
   ],
-  "desktop:com.android.purebilibili.core.ui.components.LegacyTabChipMigrationStructureTest": [
-   "known page selectors cannot regress to filter chips()"
-  ],
   "desktop:com.android.purebilibili.core.ui.components.LiquidDockViewportStructureTest": [
    "liquid dock viewport keeps the horizontal shell rounded()",
    "scrolling is owned by the shared dock instead of the page row()"
+  ],
+  "desktop:com.android.purebilibili.core.ui.components.ScrollFeedbackPolicyTest": [
+   "standard keeps each caller original spring and presets only change damping()"
   ],
   "desktop:com.android.purebilibili.core.ui.components.TabSelectionScrollTest": [
    "centering accounts for shell padding and retains space contribution behavior()",
@@ -1743,9 +1695,6 @@
    "partialItemsRevealOnlyTheirClippedPart()",
    "viewportInsetsAndOversizedLabelsUseActualEdges()",
    "visibleUnequalWidthItemDoesNotMoveItsNeighbors()"
-  ],
-  "desktop:com.android.purebilibili.core.ui.components.ThemeNativeSelectionStructureTest": [
-   "sharedMediaCardsUseNativeCheckboxesInsteadOfPaintedSelectionOverlays()"
   ],
   "desktop:com.android.purebilibili.core.ui.components.UpBadgeNamePolicyTest": [
    "resolveUpStatsText joins follower and video count when available()",
@@ -1881,9 +1830,11 @@
    "centeredDismissalShrinksMonotonicallyInsteadOfJumpingBetweenBezierRoots()",
    "closingMidOpeningContinuesFromTheCurrentFrame()",
    "detachedSourceFadesItsRemainingOpticsInsteadOfLeavingASecondLobe()",
+   "earlyCloseAndReopenPreserveMaterialAndNeckAtTheTurn()",
    "earlyReturnPreservesTheSourceGlyphAndUnionAtTheTurn()",
    "edgeAndNarrowWindowPlacementStaysWithinTheHost()",
    "interruptedRoundnessStaysWithinTheCurrentShapeAcrossDensityAndTinyMenus()",
+   "materialHandoffStaysBoundedAndContinuousWhenAnEarlyCloseReverses()",
    "menuWithoutASourceControlShrinksInsteadOfFlyingIntoItsAnchor()",
    "openingCornersSettleWithoutUndershootingOrSnappingAtTheEnd()",
    "openingSettlesOnTheMeasuredCardWithoutChangingItsBounds()",
@@ -1896,6 +1847,8 @@
    "settledOpticalOutlineKeepsTheCardCornerInsteadOfBecomingAnEllipse()",
    "sourceAvailabilitySelectsTheSharedCloseClockAndFallbackHasNoReturningGlyph()",
    "sourceControlStartsAndEndsAtItsOwnBounds()",
+   "sourceMorphRevealsItsShellBeforeTextAndTransfersMaterialContinuously()",
+   "sourceOwnsItsBackingAtBothEndsAndMenuOwnsItWhenExpanded()",
    "spatialMotionAndBlurRemainEquivalentAcrossDisplayDensities()",
    "springOvershootNeverProducesInvalidOpticalGeometry()",
    "unionConnectsNearbySurfacesWithoutFillingADistantGap()"
@@ -1904,6 +1857,11 @@
    "darkTintRaisesCardHctToneBySevenAndUsesSixtyThreePercent()",
    "lightTintUsesThemeSurfaceBrightAtFiftyFivePercent()",
    "missingOrUnknownPaletteKeepsOriginalColors()"
+  ],
+  "desktop:com.android.purebilibili.core.ui.popup.ElasticPopupMotionTest": [
+   "changingPreferenceDoesNotChangeAnOpenMenusReturnStyle()",
+   "interruptedClosingAndReopeningPreserveTheCurrentFrameAndVelocity()",
+   "openingAndReturnHaveFiniteEndpointsAcrossWindowSizesAndDensities()"
   ],
   "desktop:com.android.purebilibili.core.ui.popup.RetainedDialogRegistryTest": [
    "childExitDoesNotCloseItsParentOrRemoveANewDialog()",
@@ -1944,8 +1902,16 @@
    "shouldApplyPredictiveBlur_onlyForClassicCardWhenEnabled()",
    "shouldApplyPredictiveBlur_skipsSettingsIosPushPop()"
   ],
+  "desktop:com.android.purebilibili.core.ui.transition.VideoCardBlurRasterPolicyTest": [
+   "blurStrengthIsEqualInScreenPixelsAfterRasterCompensation()",
+   "nearClearUsesOriginalResolutionAndStrongBlurUsesQuarterPixelArea()",
+   "rasterSwitchPreservesScreenGeometryAtEveryCardPivot()"
+  ],
   "desktop:com.android.purebilibili.core.ui.transition.VideoCardFloatingBackdropPolicyTest": [
-   "onlyPausesForCoveredVideoWithoutConsumers()"
+   "bottomBarRetainsRecordingDuringMotionExceptWhenFullyCovered()",
+   "glassStopsRecordingWhenNoChromeConsumesTheSource()",
+   "independentPlaybackAndFloatingContentKeepTheirBackgroundWithoutTheBottomBar()",
+   "nativeMaterialsKeepTheirExistingRecordingPolicy()"
   ],
   "desktop:com.android.purebilibili.core.ui.transition.VideoCardLandingFeedbackPolicyTest": [
    "combinedMotionReleasesOutwardOnceAndFinishesAtOriginalSize()",
@@ -1962,7 +1928,6 @@
    "recreatedCardCanClaimLandingWithoutHavingObservedReturningButOnlyOnce()"
   ],
   "desktop:com.android.purebilibili.core.ui.transition.VideoCardNativeSnapshotPolicyTest": [
-   "clickFreezeIsReadByTheAlreadyMountedDrawModifier()",
    "clickKeepsTheListCardUntilTheFlyingOverlayCoversIt()",
    "coverLatchIsSingleDirectionalUntilIdle()",
    "coverLatchSetsImmediatelyWhenTheReturnGestureTakesOver()",
@@ -2011,12 +1976,18 @@
    "sourceChromeHandsOffWithTheLiveCover()",
    "stackedOpeningStartsAtTheMeasuredCoverAndReleasesWithSourceChrome()",
    "timeline_alignsMorphDurationSettleAndChromeReveal()",
-   "visualTimeline_stagesOpeningReturnAndReducedMotionWithoutScale()"
+   "visualTimeline_stagesOpeningReturnAndReducedMotionWithoutScale()",
+   "wholeCardAndMediaFinishTogetherAndRewindFromTheSameDepth()"
   ],
   "desktop:com.android.purebilibili.core.ui.transition.VideoCardSnapshotSourceExclusionTest": [
    "exclusionClipsToCanvasAndNeverHidesUnrelatedPane()",
    "originalSlotStaysEmptyThroughSettleEvenAtZeroDepth()",
    "sourceHoleUsesSnapshotCanvasCoordinatesOnSplitScreens()"
+  ],
+  "desktop:com.android.purebilibili.core.ui.transition.VideoCardSourceSnapshotOwnershipTest": [
+   "missingOrReleasedSnapshotCannotBorrowGlobalPixels()",
+   "rejectedNeighbourClickCannotSupplyPixelsToTheFirstTransition()",
+   "repeatedClickWithIdenticalTextStillHasIndependentPixelOwnership()"
   ],
   "desktop:com.android.purebilibili.core.ui.transition.VideoCardSourceSnapshotTest": [
    "fallsBackToCoverOnlyWithoutMeasuredCover()",
@@ -2080,7 +2051,6 @@
    "paintRetainedSourceOnlyWhenSettledHiddenStyleDecision()",
    "predictiveBackAndCancellationResolveToExposedThenHiddenStates()",
    "predictiveBackBottomBarUsesTheRetainedTabInsteadOfTheVideoRoute()",
-   "quickReturnSnapsDepthBlurClearToAvoidCoverBlurFlash()",
    "reducedMotionTierSkipsRealtimeBlurAndDepthScaleButKeepsScrim()",
    "relatedAndNonTabSourcesDoNotRevealTheHomeBottomBar()",
    "relatedAndPartitionUseTheSameWholePageDepth()",
@@ -2134,7 +2104,6 @@
    "remountedSourceTransfersDepthOwnershipAfterPreparation()",
    "settledHiddenForcesFullDepthForPredictiveReadyState()",
    "snapshotDrawableRequiresFreshDisplayList()",
-   "sourceNeverYieldsEmptyDrawToHost()",
    "unpreparedSourceNeverYieldsToHostWithoutDrawableSnapshot()"
   ],
   "desktop:com.android.purebilibili.core.ui.transition.VideoSharedTransitionPolicyTabletTest": [
@@ -2144,13 +2113,14 @@
    "motionSpecInheritsAdaptiveDuration()"
   ],
   "desktop:com.android.purebilibili.core.ui.transition.VideoSharedTransitionPolicyTest": [
-   "automaticHeroAndContentShareCurveWhilePredictiveSeekRemainsLinear()",
+   "automaticReturnKeepsAHandoffWindowAndReducesTheNearStationaryTail()",
    "cardCurveReducesFrontRushAndNearStationaryTailWithoutOvershoot()",
    "cardShellSharedBoundsHelperUsesCardShellKeyNotCoverKey()",
    "cardShellSharedBoundsKeepsLiveReturnVisibleBeforeSourceCoverFadesIn()",
    "cardShellSharedBoundsScalesTowardTopNotCenter()",
    "coverSharedTransition_enabled_whenTransitionAndScopesAreReady()",
    "detailReturnFade_immediateKeepsLiveSurface_coverFirstStillUsesCover()",
+   "entryAndCancelKeepTheirCurveWhileAutomaticReturnHasItsOwnPacing()",
    "heroEffectsAndSeekAreMonotonicAndSpatialPulseIsBounded()",
    "heroGeometryUsesDpNotPixelsAndKeepsMissingBoundsFallback()",
    "heroKeepsSpeedPreferencesAndNoAnimationZeroDuration()",
@@ -2227,15 +2197,36 @@
    "normalizedTransformMatchesPreviewAtAnotherResolution()",
    "visibleSamplingRegionTracksFocalPointAndZoom()"
   ],
+  "desktop:com.android.purebilibili.core.util.ArticleCommentNavigationTest": [
+   "encodedQueryTargetHasPriorityOverFragmentAndEqualRootIsNormalized()",
+   "invalidCommentIdsDoNotTurnReadingIntoCommentEntry()",
+   "nativeAndWebLinksPreserveCommentLocation()",
+   "notificationCommentLinksKeepArticleIdentityEvenWhenEntryUriMigratesToOpus()",
+   "targetOnlyAndRootOnlyLocationsRemainDistinct()",
+   "unrelatedOrOverflowingFragmentsDoNotCreateCommentLocation()"
+  ],
   "desktop:com.android.purebilibili.core.util.BiliImageQualityPolicyTest": [
+   "custom preview quality preserves signed foreign and animated resources()",
+   "custom quality replaces existing quality without stacking transforms()",
    "existing quality is replaced and repeated preparation is idempotent()",
    "foreign signed animated and local resources remain unchanged()",
    "normal and saver use distinct quality URLs without changing dimensions()",
-   "raw cover and avatar keep their aspect ratio()"
+   "raw cover and avatar keep their aspect ratio()",
+   "view original overrides preview compression and default keeps source URL()"
   ],
   "desktop:com.android.purebilibili.core.util.BilibiliNavigationTargetParserTest": [
+   "contentLinksKeepCommentLocationAcrossVideoAndDynamicIdentities()",
+   "dynamicCommentTabAndActualReplyLocationArePreservedTogether()",
+   "dynamicCommentTabRequestsCommentsWithoutInventingReplyIds()",
    "externalLookalikesAndWrappedLinksCannotClaimNativeTargets()",
    "genuineNativeTargetsKeepPriorityAcrossContentTypes()",
+   "legacyPictureAndMusicCommentBusinessesDoNotBecomeVideoIdentities()",
+   "nativePathRootWinsWhileQueryTargetOverridesPathAndFragment()",
+   "nonPositiveOrOverflowingSubjectIdsCannotProduceCommentTargets()",
+   "normalDynamicLinksAndOtherContentDoNotAcquireCommentTabIntent()",
+   "officialComment3RejectsInvalidSubjectsAndMissingRealLocation()",
+   "officialComment3RoutesKeepBusinessRootAndSecondaryReply()",
+   "officialReplyAliasesAlsoWorkOnContentLinksWithoutInventingARoot()",
    "parse_articleMobileReadUrl_resolvesArticleTarget()",
    "parse_articleReadUrl_resolvesArticleTarget()",
    "parse_bangumiMediaUrl_resolvesMediaTarget()",
@@ -2344,8 +2335,7 @@
    "unmeasuredRemountDoesNotReplaceEarlierMeasuredRegistration()"
   ],
   "desktop:com.android.purebilibili.core.util.HomeCoverReturnPrefetchStructureTest": [
-   "appNavigationTriggersPrefetchOnGestureAndCommit()",
-   "videoCardRegistersVisibleCoverOnComposition()"
+   "appNavigationTriggersPrefetchOnGestureAndCommit()"
   ],
   "desktop:com.android.purebilibili.core.util.IdUtilsTest": [
    "av2bv_convertsKnownAidsCorrectly()",
@@ -2457,9 +2447,9 @@
    "zero duration set is instantaneous and remains seek independent()"
   ],
   "desktop:com.android.purebilibili.data.model.VideoProgressDisplayPolicyTest": [
+   "cloud history retains backward seeks zero and completion over stale local progress()",
    "default negative progress requires history metadata to mean completed()",
    "history and watch later retain their different completion boundaries()",
-   "history combines local position with server completion without changing its rule()",
    "missing duration keeps known position without fabricating a progress bar()"
   ],
   "desktop:com.android.purebilibili.data.model.response.FavoriteModelsMappingTest": [
@@ -3082,6 +3072,16 @@
   "desktop:com.android.purebilibili.feature.plugin.TodayWatchTasteInsightPolicyTest": [
    "tasteInsightState_exposesModeFocusAndRecentNegativeFeedback()"
   ],
+  "desktop:com.android.purebilibili.feature.plugin.VideoTagFilterTest": [
+   "batchDeadlineKeepsUnresolvedVideosButStillHidesCompletedMatches()",
+   "boundsConcurrentRequestsAndKeepsOrderWhenTheyFinishOutOfOrder()",
+   "cachesSuccessfulEmptyTagsButNeverRequestsMissingIdentity()",
+   "cancellationPropagatesWithoutCachingAnEmptySuccess()",
+   "emptyRulesDoNotFetchAndChangingRulesUsesCachedTags()",
+   "expiresTagsAndEvictsLeastRecentlyUsedVideo()",
+   "failedLookupKeepsVideoAndDoesNotCacheFailure()",
+   "matchesActualTagsNotTheTitleAndPreservesSurvivorOrder()"
+  ],
   "desktop:com.android.purebilibili.feature.plugin.js.BiliPaiJsLayoutPresetTest": [
    "parseRejectsUnknownVersionAndBlankIdentifiersAndBadLayout()",
    "parsesValidPresetAndRoundTripsThroughEncoding()"
@@ -3155,9 +3155,6 @@
    "firstAutomaticLoad_startsWhenNothingHasLoadedYet()",
    "inFlightLoad_rejectsAutomaticButAllowsForceToInvalidateOldLoad()",
    "manualRefresh_canBypassBootstrapLoadGate()"
-  ],
-  "desktop:com.android.purebilibili.feature.profile.ProfileShapeStructureTest": [
-   "profile surfaces use semantic theme shapes()"
   ],
   "desktop:com.android.purebilibili.feature.profile.ProfileSpacePolicyTest": [
    "aggregate merge preserves already loaded bangumi and dynamic content()",
@@ -3247,15 +3244,16 @@
    "autoFocus_isDisabledForSearchDestinationEntry()",
    "autoFocus_remainsDisabledForResultsAndConsumedState()",
    "clearFocus_onlyWhenEnteringResults()",
+   "emptySearchEntry_returnsFromResultsToLandingAndThenLeavesSearch()",
    "focusedQueryClear_retainsImeAndIgnoresLandingKeywordUntilGuardElapses()",
    "idleSearchState_keepsFullBudgetAndHaze()",
+   "keywordSearchEntry_leavesResultsWithoutInventingLandingHistory()",
    "landingBootstrap_onlyRunsAfterStartupSettlesOnEmptyLandingState()",
    "newSearchSession_resetsResultScroll()",
    "queryEdit_onResultsKeepsResultsChrome()",
    "restoredSearchScreen_doesNotResetExistingResultScroll()",
    "scrollingResults_keepsHazeEnabled()",
    "scrollingResults_shouldNotForceLowHeaderBlurBudget()",
-   "searchBack_returnsFromResultsToLandingAndThenLeavesSearch()",
    "searchCardTransition_followsGlobalSettingRegardlessOfBudget()",
    "startupPending_forcesReducedMotionAndDisablesHaze()"
   ],
@@ -3371,60 +3369,49 @@
    "blockedUpMetaLine_doesNotShowUnknownLevelWhenProfileIsNotLoaded()",
    "blockedUpMetaLine_includesLevelAndAccountState()"
   ],
-  "desktop:com.android.purebilibili.feature.settings.DarkThemeScheduleTest": [
-   "daytimeAndDisabledSchedulesUseTheirOwnInterval()",
-   "invalidImportedTimesNormalizeToSafeValues()",
-   "overnightScheduleIncludesStartAndExcludesEnd()",
-   "scheduleOverridesManualModeButDisablingItRestoresManualMode()"
-  ],
-  "desktop:com.android.purebilibili.feature.settings.DesktopV029CacheClearUiPolicyTest": [
-   "cacheClearAnimationDialog_drawsBehindSystemBars()",
-   "cacheClearAnimationDialog_usesNativeCircularProgressInsteadOfCustomParticles()",
+  "desktop:com.android.purebilibili.feature.settings.CacheClearUiPolicyTest": [
    "cacheClearOptions_explainSelectableCleanupScope()",
    "clearButtonLabel_usesSelectedBytes()",
    "defaultCacheClearTargets_focusOnPlaybackRecovery()",
    "donutHitTarget_ignoresHoleAndSelectsClockwiseSlice()",
    "donutPercents_redistributeWhenASliceIsUnchecked()",
    "donutSegments_fillRingFromSelectedBytesAndUpdatePercents()",
+   "markAnimationCompleteOnlyWhenClearSucceeded()",
+   "metadataOnlySelectionRemainsActionableWithoutDiskShare()",
+   "progressDistinguishesPreparationFromRealCompletedSteps()",
    "resolveCacheClearConfirmationMessage_summarizesSelectedTargets()",
+   "resolveFailureMessageWithFallback()",
    "resolveSelectedCacheBytes_sumsOnlyCheckedBuckets()",
-   "resolveSelectedCacheSizeSummary_updatesWithSelectedTargets()"
+   "resolveSelectedCacheSizeSummary_updatesWithSelectedTargets()",
+   "roundedPercentsPreserveTotalAndExcludeZeroBuckets()",
+   "tinyCategoriesRemainTouchableWithoutInventingZeroShares()",
+   "unknownAndZeroCachesDoNotCreateInventedSlices()"
   ],
-  "desktop:com.android.purebilibili.feature.settings.DiagnosticsMd3AlignmentStructureTest": [
-   "export logs description uses subtitle only in md3()"
+  "desktop:com.android.purebilibili.feature.settings.CommentArchivePolicyTest": [
+   "importAllowsLegacyUnknownOwnersAndRejectsInvalidIdentity()",
+   "sourceLinksRespectSubjectIdentity()"
+  ],
+  "desktop:com.android.purebilibili.feature.settings.CommentBackupCodecTest": [
+   "compatibleExportPreservesImportedPicturesAndControlMetadata()",
+   "importsProto3Int64AndSecondsWithoutPrecisionLossOrInventingVisibility()",
+   "nativeBackupStillImportsAndMissingOwnerRemainsUnknown()",
+   "rejectsFractionalIdsTimeOverflowAndUnknownFormatBeforeSaving()"
+  ],
+  "desktop:com.android.purebilibili.feature.settings.DarkThemeScheduleTest": [
+   "daytimeAndDisabledSchedulesUseTheirOwnInterval()",
+   "invalidImportedTimesNormalizeToSafeValues()",
+   "overnightScheduleIncludesStartAndExcludesEnd()",
+   "scheduleOverridesManualModeButDisablingItRestoresManualMode()"
+  ],
+  "desktop:com.android.purebilibili.feature.settings.DonationPreviewGeometryTest": [
+   "containerUsesExactEndpointsAndOneContinuousGeometryInBothOrientations()",
+   "springOvershootNeverExceedsSafeWindow()"
   ],
   "desktop:com.android.purebilibili.feature.settings.IconSettingsVisualPolicyTest": [
    "icon settings background is opaque to avoid previous page bleed through()"
   ],
-  "desktop:com.android.purebilibili.feature.settings.MiuixV2MigrationStructureTest": [
-   "adaptivePullToRefreshBox_routesMiuixVariantToMiuixPullToRefresh()",
-   "adaptiveScaffoldPolicy_requiresMiuixPopupHostOnMiuixVariant()",
-   "adaptiveScaffold_miuixPathMountsPopupHostForOverlayDialogs()",
-   "appAlertDialog_routesMiuixStyleToWindowDialog()",
-   "appSurfaceTokens_exposesFullMiuixSemanticPalette()",
-   "appSurfaceTokens_exposesMiuixSemanticColors()",
-   "buildGradle_includesMiuixIconsArtifact()",
-   "buildGradle_includesMiuixShaderArtifact()",
-   "buildGradle_includesMiuixSquircleArtifact()",
-   "featureLayer_avoidsDirectMiuixThemeColorSchemeReads()",
-   "featureLayer_doesNotCallIosLargeTitleBarDirectly()",
-   "homePullRefreshPolicy_routesMiuixToNativeIndicator()",
-   "homeScreen_usesAdaptivePullToRefreshBox()",
-   "ioSearchBar_miuixBranchUsesOfficialInputField()",
-   "iosSectionTitle_usesMiuixSmallTitleOnMiuixBranch()",
-   "legacyIosLargeTitleBar_isRemovedAfterFeatureMigration()",
-   "md3SegmentedControl_routesMiuixVariantToTabRow()",
-   "md3SegmentedControl_usesAdaptiveSquircleBackground()",
-   "miuixDockedBottomBar_routesStandardItemsThroughPlatformNavigationFacade()",
-   "searchTopBar_usesNeutralSearchField()",
-   "settingsShareScreen_usesSettingsPageScaffold_notLargeTitleBar()",
-   "themeController_remembersUserThemeInputsWithMiuixBridgeColors()",
-   "versionCatalog_pinsMiuixToPublishedUpstreamSnapshot()",
-   "webDavBackupScreen_usesSettingsPageScaffold_notLargeTitleBar()"
-  ],
-  "desktop:com.android.purebilibili.feature.settings.MobileSettingsRootSectionOrderTest": [
-   "rootSections_shouldUseSceneTitles()",
-   "shouldUseSceneBasedOrderForSettingsHome()"
+  "desktop:com.android.purebilibili.feature.settings.MiuixThemeFacadeStructureTest": [
+   "featureLayer_avoidsDirectMiuixThemeColorSchemeReads()"
   ],
   "desktop:com.android.purebilibili.feature.settings.OpenSourceLicensesPolicyTest": [
    "openSourceLibraries_coverRuntimeDependenciesAndLiquidGlassReferences()",
@@ -3467,6 +3454,9 @@
    "settingsRootWaitsForNavigationAndBypassesGroupWhenDisabled()",
    "settingsSearchUsesSameNavigationGate()"
   ],
+  "desktop:com.android.purebilibili.feature.settings.SettingsIconReuseStructureTest": [
+   "settings groups avoid duplicate setting icons()"
+  ],
   "desktop:com.android.purebilibili.feature.settings.SettingsInformationArchitecturePolicyTest": [
    "appearanceHomeAndInteractionSettingsHaveIndependentOwners()",
    "homeSearchResultNavigatesToDedicatedHomeSettingsPage()",
@@ -3484,13 +3474,6 @@
    "settingsScreen_registersNav3CategoryNavigation()",
    "settingsScreen_registersOneCoordinatedLocalBackHandler()",
    "settingsScreens_avoidClassicBackHandler()"
-  ],
-  "desktop:com.android.purebilibili.feature.settings.SettingsMiuixSimplificationStructureTest": [
-   "animation liquid glass section keeps tuning without independent switches()",
-   "animation settings keeps tuning but no independent glass toggles()",
-   "appearance settings expose one ui style selection while keeping miuix scaffold()",
-   "liquid glass adjustment uses live miuix backdrop and commits on release()",
-   "settings groups avoid duplicate setting icons()"
   ],
   "desktop:com.android.purebilibili.feature.settings.SettingsPageBlurPreferenceStructureTest": [
    "miuixSettingsPageUsesUpstreamSurfaceIndependentlyFromGlassChrome()",
@@ -3606,7 +3589,15 @@
    "final server page arithmetic does not overflow()",
    "oldest first starts at final server page including partial pages()"
   ],
+  "desktop:com.android.purebilibili.feature.space.FavoriteResourceOrderPolicyTest": [
+   "changed sets duplicates and invalid resource identity are rejected()",
+   "move supports up down first last and ignores missing identity()",
+   "payload produces every target order and preserves unloaded suffix()",
+   "sort modes use the correct server order()",
+   "unchanged order produces no operation and first move uses zero predecessor()"
+  ],
   "desktop:com.android.purebilibili.feature.space.SpaceAggregatedModelMappingTest": [
+   "charging selection keeps ordinary home previews and reservation metadata separate()",
    "resolveSpaceInitialSeedFromAggregate adds article contribution tab when article content exists()",
    "resolveSpaceInitialSeedFromAggregate falls back to provided top photos()",
    "resolveSpaceInitialSeedFromAggregate maps core header and seeded content()",
@@ -3614,7 +3605,8 @@
   ],
   "desktop:com.android.purebilibili.feature.space.SpaceArticlePresentationPolicyTest": [
    "available remote view remains visible()",
-   "empty remote view renders an unavailable reading count instead of fake zero()"
+   "empty remote view renders an unavailable reading count instead of fake zero()",
+   "opus preserves formatted counts and does not fabricate missing counts()"
   ],
   "desktop:com.android.purebilibili.feature.space.SpaceChargeBadgePolicyTest": [
    "chargingSpaceVideoShowsChargeBadge()",
@@ -3631,6 +3623,7 @@
    "resolveSpaceDynamicCardItem_mapsForwardOrigForNestedDisplay()",
    "resolveSpaceDynamicCardItem_preservesAuthorAvatarMarks()",
    "resolveSpaceDynamicCardItem_preservesDeleteMenuParams()",
+   "resolveSpaceDynamicCardItem_preservesOfficialPreviewMetadataAndWebContentForReposts()",
    "resolveSpaceDynamicCardItems_maps_space_article_to_shared_article_card()",
    "resolveSpaceDynamicCardItems_maps_space_draw_to_shared_media_capable_card()",
    "resolveSpaceDynamicCardItems_preserves_space_archive_charge_badge()",
@@ -3643,12 +3636,12 @@
    "toDynamicRichTextNode_prefersOrigTextAndKeepsJumpUrlForAt()"
   ],
   "desktop:com.android.purebilibili.feature.space.SpaceDynamicNavigationPolicyTest": [
+   "knownCvIdIsNotOverwrittenByMigratedOpusLink()",
    "resolveSpaceArticleClickAction_keepsLegacyArticleForCvId()",
    "resolveSpaceArticleClickAction_opensDynamicDetailForOpusIdWithoutJumpUrl()",
    "resolveSpaceArticleClickAction_opensDynamicDetailForOpusJumpUrl()",
    "resolveSpaceDynamicClickAction_matches_shared_dynamic_primary_action()",
    "resolveSpaceDynamicClickAction_opensArticleWhenArticleMajorHasId()",
-   "resolveSpaceDynamicClickAction_opensDynamicDetailWhenArticleJumpUrlIsOpus()",
    "resolveSpaceDynamicClickAction_prefersVideoWhenArchiveBvidExists()",
    "resolveSpaceDynamicClickAction_returnsNoneWhenNoBvidAndNoId()",
    "resolveSpaceDynamicClickAction_usesDesktopDynamicDetailWhenNoVideo()"
@@ -3730,6 +3723,7 @@
    "space queue retains video statistics and publish time()"
   ],
   "desktop:com.android.purebilibili.feature.space.SpaceProfileEnhancementPolicyTest": [
+   "article opus and opus filters survive collection tab enrichment()",
    "buildHeaderState collects favorite folders()",
    "buildInitialTabShellState populates each tab()",
    "discovered opus content adds the missing article contribution tab()",
@@ -3745,6 +3739,7 @@
    "resolveSpaceSecondarySwitchItems includes cheese when available()",
    "resolveSpaceTopPhoto picks first non blank source()",
    "resolveSpaceTopPhoto skips invalid placeholders and falls back to card photos()",
+   "shop selection survives the saved main tab index()",
    "shouldEnableSpaceTopPhotoPreview only when url is not blank()"
   ],
   "desktop:com.android.purebilibili.feature.space.SpaceScreenStructureTest": [
@@ -3771,6 +3766,7 @@
   "desktop:com.android.purebilibili.feature.space.SpaceScrollPolicyTest": [
    "long and short profiles fade only during final toolbar height()",
    "progressive blur retains flowing tabs while disabled mode pins them()",
+   "solid top fade shares flowing layout with either blur and pins only when all are off()",
    "tabs approach toolbar naturally and stop below its actual inset()"
   ],
   "desktop:com.android.purebilibili.feature.space.SpaceSelectionChipColorPolicyTest": [
@@ -4714,6 +4710,13 @@
    "the default tables are the upstream simplified chinese values()",
    "traditional chinese reads values-zh-rTW and falls back to the default for untranslated strings()"
   ],
+  "desktop:com.bilipai.desktop.compat.DesktopUriQueryTest": [
+   "first occurrence empty values and absent values follow Android query semantics()",
+   "parameter names are encoded before matching()",
+   "query values decode plus as space and preserve escaped plus()",
+   "relative links are hierarchical and opaque links reject query access()",
+   "shop deep link preserves nested query separators and decodes once()"
+  ],
   "desktop:com.bilipai.desktop.compat.UpstreamSharedResourcesTest": [
    "bitmapResourcesDecodeToNonEmptyImages()",
    "coilLoadsUpstreamMipmapIdsAndAndroidContextRequests()",
@@ -5339,7 +5342,7 @@
    "mobileModeUsesTvIdentityAndOriginalRefreshPullSemantics()",
    "oldAccountActionCannotWriteNewAccountsLocalFeedback()",
    "originalFeedbackReasonsAndCreatorActionsRetainExactSemantics()",
-   "originalModeDefaultsAndRefreshNormalizationArePreserved()",
+   "originalModeDefaultsAndUpstreamRequestSizeArePreserved()",
    "originalNegativeFilterSeparatesShortPartitionTermsFromTitleFalsePositives()",
    "originalRetrofitMergedEndpointDoesNotDoubleEncodeSignedValues()",
    "pluginFeedbackClearUpdatesTheSameObservableAccountSnapshot()",
@@ -6690,9 +6693,9 @@
    "the startup metadata consumer reads the key the About switch writes()"
   ],
   "desktop:com.bilipai.desktop.settings.DesktopCacheClearComponentUiTest": [
-   "onlyPublishedCompleteProgressShowsOriginalSuccessAndDispatchesOneDelayedDismissInBothUiStyles()",
+   "onlyPublishedCompleteProgressShowsOriginalSuccessAndDispatchesOneAnimationDismissInBothUiStyles()",
    "originalCleaningShowsActualProgressAndCharacterButNeverCompletesBusinessInEitherUiStyle()",
-   "retiredCompleteTimerCannotDismissNewPendingProgressAndHostUsesCurrentOwnerAndPublication()"
+   "retiredCompleteAnimationCannotDismissNewPendingProgressAndHostUsesCurrentOwnerAndPublication()"
   ],
   "desktop:com.bilipai.desktop.settings.DesktopCollectionPreferenceAdmissionTest": [
    "originalSortAndSubscriptionPersistThroughSameStoreAndColdFacade()",
@@ -6938,6 +6941,10 @@
   "desktop:com.bilipai.desktop.ui.DesignSystemGalleryRenderTest": [
    "primitivesRenderNonBlankInBothStylesAndModes()"
   ],
+  "desktop:com.bilipai.desktop.ui.DesktopAboutIconCoilTest": [
+   "generatedAboutCardPassesSelectionAndCurrentThemeToCoil()",
+   "selectedAboutIconUsesAppearanceAndRealLoader()"
+  ],
   "desktop:com.bilipai.desktop.ui.DesktopAccountLedgerTest": [
    "aRetiredPageCannotStartAQueuedRequestOrRefresh()",
    "aSameMidReloginRetiresTheOldPageBeforeNewCredentialsCanBeRead()",
@@ -7014,6 +7021,7 @@
    "explicitOffUsesStoredNetworkDefaultInsteadOfHdrOrVipHints()",
    "lateInitialReplyCannotPublishAfterActualEntryAdmissionRetires()",
    "manualQualityAfterAutoHighestUsesTheExplicitOriginalRequest()",
+   "premiumAudioSpeedChangeKeepsCurrentSourceWithoutAudioSwitch()",
    "rootAutoHighestSelectsValidSdr4kInsteadOfResponse112()",
    "serverPermissionDowngradeAndInvalidHigherUrlsRemainAuthoritative()"
   ],
@@ -7136,6 +7144,11 @@
   "desktop:com.bilipai.desktop.ui.DesktopBrowseMemoryTest": [
    "accountMemoryDoesNotShareSearchPagesOrScreenState()",
    "revisitingRecommendationSourceRestoresOriginalPageCursorFeedbackAndFailure()"
+  ],
+  "desktop:com.bilipai.desktop.ui.DesktopBufferingPlaybackButtonTest": [
+   "bufferingWhilePausedPressResumes()",
+   "bufferingWithPlayIntentShowsPauseAndPressPauses()",
+   "collapsedBarToggleFollowsPlayIntentWhileBuffering()"
   ],
   "desktop:com.bilipai.desktop.ui.DesktopCardInteractionPolicyTest": [
    "aChordWithThePrimaryButtonAndAPrimaryPressAreLeftToTheVendoredGesture()",
@@ -7262,6 +7275,10 @@
    "selectedUpAndAllMirrorAreChangedExactlyOnce()",
    "unfoldUsesOriginalPolicyAndKeepsPaginationEnvelope()"
   ],
+  "desktop:com.bilipai.desktop.ui.DesktopDynamicCommentShortcutTest": [
+   "MATERIAL3",
+   "MIUIX"
+  ],
   "desktop:com.bilipai.desktop.ui.DesktopDynamicEditorUpdateHoldTest": [
    "actualSubmissionStillHoldsAfterDismissUntilItsJobCompletes()",
    "cancellationBeforeActualBodyStartsCannotLeaveInstallationHeld()",
@@ -7292,11 +7309,37 @@
    "initialFailureWithNoMessageAlsoStopsAutomaticPagingUntilExplicitRefresh()",
    "selectedUserFailureStopsAutomaticPagingAndExplicitRetryPreservesRowsAndOffset()"
   ],
+  "desktop:com.bilipai.desktop.ui.DesktopDynamicImagePreviewKeyboardTest": [
+   "background editor owns arrows / MATERIAL3",
+   "background editor owns arrows / MIUIX",
+   "image actions before image / MATERIAL3",
+   "image actions before image / MIUIX",
+   "original list, bounds and return target / MATERIAL3",
+   "original list, bounds and return target / MIUIX",
+   "topmost image before parent / MATERIAL3",
+   "topmost image before parent / MIUIX"
+  ],
+  "desktop:com.bilipai.desktop.ui.DesktopDynamicReadingHostTest": [
+   "actualHostUsesReadingBoundsAndOnlyOneFollowingPresentation()",
+   "keyboardFocusMovesFromTabsThroughFeedToAside()",
+   "pgcLoadingAndEmptyUseTheSameMountedHost()"
+  ],
+  "desktop:com.bilipai.desktop.ui.DesktopDynamicReadingLayoutTest": [
+   "goldenHostWidths()",
+   "pgcAndNarrowHostsDoNotAllocateAnAside()",
+   "productionValuesMatchContract()"
+  ],
   "desktop:com.bilipai.desktop.ui.DesktopDynamicRefreshUiTest": [
    "aFailedRefreshToastsTheReasonKeepsTheRowsAndTheButtonWorksAgain()",
    "f5ThroughTheRegistryAndTheRootScrollChannelRunTheSameRefreshAsTheClick()",
    "theCornerButtonRefreshesTheFeedOnceIsBusyWhileItRunsAndFreesAgain()",
    "theEndOfTheFeedScrollsClearOfTheButton()"
+  ],
+  "desktop:com.bilipai.desktop.ui.DesktopDynamicReplyReadingPanelTest": [
+   "escapeClosesOnlyTheReplyOverItsActualParentModal()",
+   "omittedContainerStillUsesTheOriginalSheetWithOriginalContent()",
+   "originalLazyListScrollsKeepsItsPositionOnUpdatesAndNeverMovesTheBackground()",
+   "originalReplyEntersFocusTrapsTabAndRestoresOpenerWithoutNestingSheets()"
   ],
   "desktop:com.bilipai.desktop.ui.DesktopDynamicResourceNavigationTest": [
    "blankLinksDoNotOpenAnotherDestination()",
@@ -7587,6 +7630,9 @@
    "lateOldRevisionIsReleasedEvenAfterReturningToTheSameDimensions()",
    "sameUrlGetsNewSizeWithoutReplacingEditorDocumentCaretOrDraft()"
   ],
+  "desktop:com.bilipai.desktop.ui.DesktopIntegerResourceCoilTest": [
+   "applicationOwnerLoadsResourceModelsAndAboutUris()"
+  ],
   "desktop:com.bilipai.desktop.ui.DesktopLazyScrollbarsTest": [
    "aSingleRowThatFitsIsNoTallerThanTheViewport()",
    "aThumbOffsetMapsBackToTheFirstItemOfItsRow()",
@@ -7600,9 +7646,14 @@
   ],
   "desktop:com.bilipai.desktop.ui.DesktopListenLyricsDisplayDocumentTest": [
    "anAbsentDocumentStaysAbsentInBothModes()",
+   "decoratedLyricsStillCleanNotesAndPreserveTimingInBothTranslationModes()",
    "hiddenTranslationsClearOnlyTranslationsAndRomanization()",
+   "hidingAlreadyAbsentTranslationsDoesNotRecreateTheDocument()",
    "shownTranslationsReturnTheSameDocumentInstance()",
    "theSourceDocumentIsNotChangedSoShowingAgainNeedsNoReload()"
+  ],
+  "desktop:com.bilipai.desktop.ui.DesktopListenVideoPagerComposeTest": [
+   "entersSwitchesToAlbumsAndDisposes()"
   ],
   "desktop:com.bilipai.desktop.ui.DesktopListenVideoViewModelTest": [
    "a retired owner admits no state write and its late result is dropped()",
@@ -7679,6 +7730,10 @@
    "oldJobCompletionCannotReleaseReopenedLoginInstanceOrItsActualWork()",
    "onlyCommittedFormHoldsAndExplicitDisposalDoesNotLeaveHistoricalRouteHold()",
    "originalLoginWorkFailurePreservesErrorAndFormUntilDismiss()"
+  ],
+  "desktop:com.bilipai.desktop.ui.DesktopM4dPayloadRegressionTest": [
+   "decimalColorParsingDoesNotDependOnDigitCount()",
+   "sessionTipsRejectBareLiteralsAndKeepQuotedText()"
   ],
   "desktop:com.bilipai.desktop.ui.DesktopMessageLoginGateTest": [
    "signedOutMessageEntryShowsTheLoginGateAndOpensLogin()"
@@ -8274,7 +8329,9 @@
    "miuixBoxHasACornerButtonThatRefreshesOnce()",
    "onlyAPlainF5OrCtrlRIsTheRefreshChordAndOnlyListPagesPromiseIt()",
    "theBackToTopButtonRisesAboveTheRefreshButtonInTheSameCorner()",
+   "theCornerButtonKeepsTheSpecifiedMarginAndListEndReserve()",
    "theDesktopNeverMountsThePullGestureAndTheTargetIsBigEnough()",
+   "theEndOfTheListStopsAboveTheCornerButton()",
    "theHoldEndsWhenTheOwnerAnswersAndWhenTheTimeoutRunsOut()",
    "theKeyStaysWithTheEditorThePlayerAndTheSearchPage()",
    "theNewestVisibleButtonTakesTheKeyAndAHiddenOneNeverDoes()",
@@ -8658,6 +8715,7 @@
    "actualRefreshFillsGapAndPreservesPreviouslyLoadedHistory()",
    "coveredPageCannotSetPendingOrSendAndRapidVisibleCallsSubmitOnce()",
    "externalRefreshCallerRetiresNonCancellableFinalPublication()",
+   "lateSessionControlRetainsCompletedSendAcknowledgement()",
    "rejectedSendRetainsDraftAcknowledgementAndSuccessCanBeConsumed()",
    "visibleRefreshCancellationRejectsLateReply()"
   ],
@@ -8710,6 +8768,9 @@
    "triplePress_completedHoldSubmitsOnlyOnceAndNextHoldStartsFresh()",
    "triplePress_releasedOrIncompleteHoldCannotSubmit()",
    "triplePress_restartingDuringRetractionDoesNotInheritOldProgress()"
+  ],
+  "desktop:com.bilipai.desktop.ui.DesktopVideoPlaybackSpeedContinuityTest": [
+   "premiumAudioSpeedChangeOnlyUpdatesRate()"
   ],
   "desktop:com.bilipai.desktop.ui.DesktopVideoShareSourceSaveTest": [
    "completeCopyPrecedesSourceAdmissionWhichPrecedesRetainedRootCommit()",
@@ -9534,6 +9595,24 @@
    "toastHostShowsOneToastAtATimeRunsItsActionOnceAndExpires()",
    "toggleRowIsInertWhileLoadingThenTogglesOnceThroughItsSingleAction()"
   ],
+  "desktop:com.bilipai.desktop.ui.modal.DesktopModalDefaultBaselineTest": [
+   "untaggedSheetRendersThroughTheExistingUpstreamOverload()"
+  ],
+  "desktop:com.bilipai.desktop.ui.modal.DesktopModalGeometryTest": [
+   "confirmationAndReadingStayInsideSmallAndUltrawideWindowsAtEveryScale()",
+   "optionsFlipAboveTheAnchorAndClampAtEveryEdge()",
+   "optionsRequireARealAnchorAndDegenerateWindowsNeverProduceNegativeSizes()",
+   "readingPanelUsesTheContractDefaultShareAndClampAtEveryScale()"
+  ],
+  "desktop:com.bilipai.desktop.ui.modal.DesktopModalUiTest": [
+   "actualOptInSheetEntersFocusCyclesBothDirectionsAndRestoresTheOpener()",
+   "actualWallpaperPilotKeepsSavingActionsDisabledAndRejectsEscapeUntilSavingEnds()",
+   "confirmationScrollsItsBodyWithFixedFooterAndNeverScrollsTheBackground()",
+   "escapeClosesOnlyTheTopmostLayerAndReturnsToTheParentControl()",
+   "optionsUseRealAnchorFlipCompactRowsAndViewportClamping()",
+   "readingPanelCompletesItsExitBeforeDismissingAndReducedMotionSkipsTheWait()",
+   "readingPanelUsesTheSameRightAlignedLayerAsTheNativeHost()"
+  ],
   "desktop:com.bilipai.desktop.update.DesktopUpdateMonitoringTest": [
    "Windows own-release clock stays six hours and disabled interval does not check()",
    "a full own release page requires its empty terminal page before reporting current()",
@@ -9676,6 +9755,11 @@
    "third party redirects never receive the session cookie collection()",
    "web playback headers match the final cookie account and guests clear account headers()"
   ],
+  "upstream-core:com.android.purebilibili.core.network.AccountPurposeRoutingTest": [
+   "explicit credentials and prebound signed requests remain authoritative()",
+   "history identity and csrf are rebound together while media fields stay intact()",
+   "routes only documented host path and method combinations()"
+  ],
   "upstream-core:com.android.purebilibili.core.network.BilibiliRequestHeaderPolicyTest": [
    "Bilibili services and media retain default headers()",
    "RSS image hosts and lookalike domains do not receive Bilibili headers()"
@@ -9695,6 +9779,18 @@
    "unsuccessfulOrIncompleteSecondPageCannotExposeFirstPageFalse",
    "unterminatedEmptyPageCannotExposeEarlierReadFlags"
   ],
+  "upstream-core:com.android.purebilibili.core.network.grpc.DynamicCommentPreviewApiTest": [
+   "authorBodyAndCommentEmojiRemainOneLocatedRichSummary",
+   "hitWithoutSummaryDiffersFromMissingCardAndEmptyInteractionIsStillAHit",
+   "likeAvatarCoverAndUnknownIconsNeverBecomeComments",
+   "mismatchedInteractionDynamicAndInvalidCardIdsCannotLeakAnotherSummary",
+   "missingBusinessSubjectAndDescriptionIdsDoNotCreateFallbackTargets",
+   "nestedForwardsUseTheExistingSixteenLevelLimit",
+   "onePageKeepsDifferentDynamicsAndForwardedOriginalsIndependentlyAddressable",
+   "repeatedCommentItemsDoNotShareClickMetadataOrBorrowTheirNeighboursFloor",
+   "verifiedDescriptionEnumsDoNotTurnResourceIdsIntoUsersOrFloors",
+   "zeroDefaultCommentIconAndLongOpaqueRootStringsAreNotTruncated"
+  ],
   "upstream-core:com.android.purebilibili.core.network.grpc.DynamicPersonalFeedApiTest": [
    "blockedCardsCannotBecomeRenderableNotificationCandidates",
    "foldedSourceMetadataStillKeepsItsActualOriginalDynamicTarget",
@@ -9711,6 +9807,10 @@
    "preservesCesu8EmojiCompatibilityForServerStrings()",
    "rejectsTruncatedFieldsInvalidTagsAndOverlongVarints()",
    "skipsAnUnknownGroupWithoutTreatingItsFieldsAsTopLevel()"
+  ],
+  "upstream-core:com.android.purebilibili.core.network.grpc.SpaceOpusApiTest": [
+   "replyRetainsOpusIdentityCollectionNavigationAndThemeSpecificCovers()",
+   "requestCarriesHostFilterAndTheServerCursor()"
   ],
   "upstream-core:com.android.purebilibili.core.network.policy.NetworkFallbackPolicyTest": [
    "supported hosts do not use hardcoded ip fallback when disabled()",
@@ -9736,10 +9836,14 @@
    "transientDecryptFailureIsNotCached()"
   ],
   "upstream-core:com.android.purebilibili.data.model.VideoProgressDisplayPolicyTest": [
+   "cloud history retains backward seeks zero and completion over stale local progress()",
    "default negative progress requires history metadata to mean completed()",
    "history and watch later retain their different completion boundaries()",
-   "history combines local position with server completion without changing its rule()",
    "missing duration keeps known position without fabricating a progress bar()"
+  ],
+  "upstream-core:com.android.purebilibili.data.model.response.ArticleInteractionModelsTest": [
+   "like status is independent from total likes()",
+   "liked article can have a zero count and missing statistics stay unknown()"
   ],
   "upstream-core:com.android.purebilibili.data.model.response.DashAudioSelectionTest": [
    "autoAndMissingRawIdUseBestOrdinarySourceRatherThanClosestNumericId",
@@ -9752,6 +9856,7 @@
    "adsAndUnsupportedCardsRemainFiltered",
    "cardGotoRoutesBangumiWithoutLeakingEpisodeAsAv",
    "endpointStatusFlagsSurviveBothRecommendationConversions",
+   "mobileRecommendationPreservesPublishTimeWithoutInventingMissingDates",
    "nativeUrisResolveWhenParamIsMissing",
    "pictureHasDistinctIdentityLabelAndNoPlaybackMetadata",
    "webNativeCardsPreserveTypeAndOrdinaryVideosKeepBvid"
@@ -9789,6 +9894,7 @@
   "upstream-core:com.android.purebilibili.data.model.response.VideoStatusLabelsTest": [
    "courseSearchUsesGlobalLabelAndRetainsServerBadges",
    "mobileFeedDurationIsNotMistakenForAnInterfaceBadge",
+   "mobileFeedPlaybackDimensionsProduceVerticalBadge",
    "ordinaryVideosHaveNoStatusBadgesAndBlankServerLabelsAreIgnored",
    "popularChargingAndServerLabelsSurviveConversionWithoutDuplicates",
    "rightsSupportInteractiveAndPaidVideoWithoutChargingMisclassification",
@@ -9797,6 +9903,12 @@
   "upstream-core:com.android.purebilibili.data.repository.CommentEmotePackagesTest": [
    "emptyUserPanel_preservesAllPackagesAndRestoresMissingStandardGroups",
    "missingContents_areReplacedWithoutDuplicatingCategoriesOrOverwritingUserPacks"
+  ],
+  "upstream-core:com.android.purebilibili.data.repository.CommentFirstPageRecoveryTest": [
+   "empty first page with detail count recovers without changing order()",
+   "persistent empty page is a retryable failure with bounded requests()",
+   "real zero explicit empty state and later pages do not retry()",
+   "server failure is preserved and cancellation propagates()"
   ],
   "upstream-core:com.android.purebilibili.data.repository.CommentFraudDetectionPolicyTest": [
    "abnormal fraud results use dialog instead of light message",
@@ -9828,6 +9940,7 @@
    "buildDetailListRequest keeps both sort modes target and pagination offset",
    "buildDialogListRequest keeps dialog id and pagination offset",
    "buildMainListRequest keeps required fields and pagination offset",
+   "main list keeps curated title and empty guidance without triggering fallback",
    "parseDetailListReply maps root replies to reply data",
    "parseDialogListReply maps replies directly",
    "parseMainListReply keeps cesu8 surrogate text from grpc comments",
@@ -9890,6 +10003,16 @@
    "shouldTryGrpcMainList supports hot and time modes with offset paging",
    "sub reply detail list keeps rest page size pagination available"
   ],
+  "upstream-core:com.android.purebilibili.data.repository.CommentSectionNoticeTest": [
+   "filtering ordinary titles preserves special server guidance",
+   "ordinary comments do not acquire a curated notice",
+   "web selection and server guidance survive json parsing"
+  ],
+  "upstream-core:com.android.purebilibili.data.repository.GoodsReplyFilterTest": [
+   "filter cleans pinned hot and nested replies while preserving counts and paging",
+   "goods metadata and tetris links are filtered without matching ordinary shopping discussions",
+   "grpc goods extra survives decoding into the shared reply model"
+  ],
   "upstream-core:com.android.purebilibili.data.repository.HdQrLoginPolicyTest": [
    "HD credentials cannot silently use legacy Android or TV signing()",
    "qr generation and polling keep the same HD signing identity()"
@@ -9897,10 +10020,12 @@
   "upstream-core:com.android.purebilibili.data.repository.MobileCommentPaginationTest": [
    "REST numeric next comes from response rather than local page()",
    "empty or duplicate batches can continue while cursor advances()",
+   "first main page sends independent sort mode without legacy cursor()",
    "legacy empty intermediate pages continue and repeated offset is rejected()",
    "legacy pages stay on legacy route and finish using root count()",
+   "loaded comments with offset and zero numeric cursor remain valid for the next request()",
    "location supplementation keeps main pagination and pinned ordering()",
-   "mobile MainList uses PiliPlus cursor request and preserves int64 next()",
+   "numeric cursor alone cannot continue grpc offset pagination()",
    "real empty success ends but missing continuation with remaining count fails()",
    "thread missing or repeating cursor is an error while empty advancing page continues()"
   ],
@@ -9935,7 +10060,9 @@
   ],
   "upstream-core:com.android.purebilibili.data.repository.PlayerInfoHistoryTest": [
    "omittedHistoryIsDistinctFromNoPreviousPart()",
-   "playerInfoRetainsTheServerHistoryPart()"
+   "omittedOnlineCountStaysUnknownWhileServerZeroIsRetained()",
+   "playerInfoRetainsTheServerHistoryPart()",
+   "resumeProgressIsBoundToTheWatchedPartAndKeepsZeroDistinctFromUnknown()"
   ],
   "upstream-core:com.android.purebilibili.data.repository.RegionVideoFallbackPolicyTest": [
    "main region fallback translates legacy tid to ranking v2 rid",
@@ -9948,6 +10075,14 @@
    "Cookie-only login does not send an empty access key or select TV signing()",
    "TV login token retains its issuing application signature()",
    "phone login token is included in the HD signature()"
+  ],
+  "upstream-core:com.android.purebilibili.data.repository.SpaceProfileExtrasMappingTest": [
+   "medalWallRetainsWornMedalOwnerAndLiveLink()",
+   "reservationsKeepTheirOwnIdentityStateDynamicAndLotteryTarget()",
+   "webUploadTagsKeepPartitionChargingAndUnknownCountsDistinct()"
+  ],
+  "upstream-core:com.android.purebilibili.data.repository.SpaceProfileRequestTest": [
+   "chargingFilterSurvivesSearchSortAndPaginationWhileOrdinaryVideosRemainUnfiltered()"
   ],
   "upstream-core:com.android.purebilibili.data.repository.VideoRequestAccountScopeTest": [
    "accountAndPermissionChangesProduceDifferentScopes()",
