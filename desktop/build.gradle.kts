@@ -96,7 +96,7 @@ val revisionNeutralSourceImportContextMatches =
     revisionNeutralSourceImportRoots.none { file("tools/$it").exists() } && revisionNeutralSourceImportShadowFiles.isEmpty
 // Pin the whole Gradle recipe, including canonical helpers and later wiring.
 // Mask exactly this self-digest assignment; raw build bytes remain task inputs.
-val revisionNeutralSourceGradleRecipeSha256 = "d4f38704eb7a44b516228cd97b878a9498ae497b8f1adcfa5c389cbb8433f70a"
+val revisionNeutralSourceGradleRecipeSha256 = "6b0d95e02f439d6116022b487d0111c36ffb1008770c73c026da5da1e6836155"
 val revisionNeutralSourceGradleRecipeMatches = runCatching {
     val recipe = file("build.gradle.kts").readText(Charsets.UTF_8).replace("\r\n", "\n")
     val ownPin = "val revisionNeutralSourceGradleRecipeSha256 = \"$revisionNeutralSourceGradleRecipeSha256\""
@@ -2762,6 +2762,7 @@ val transitionPatchProducers = mapOf(
     "frosted-audio-renderer" to "extractFrostedAudioRenderer",
     "original-bangumi-player-ui" to "extractOriginalBangumiPlayerUi",
     "original-video-fullscreen-pager" to "extractOriginalVideoFullscreenPager",
+    "original-video-player-section-full" to "extractOriginalVideoPlayerSectionFull",
     "original-video-full-owner" to "extractOriginalVideoFullOwner",
     "original-aicu" to "extractOriginalAicu",
     "home-viewmodel" to "extractOriginalHomeViewModel",
