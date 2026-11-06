@@ -13,6 +13,8 @@ GATE = "app/src/main/java/com/android/purebilibili/feature/agreement/UserAgreeme
 # 67f65de86 changed only the producer's platform path helper. The complete
 # agreement output remains pinned by test_profile_agreement_owner_source.
 AGREEMENT_OWNER_PRODUCER_LF_SHA256 = "867a743bdfce73395a97337c98e7d3d7ea3d0f4af1d26e55231a4a7376e89f36"
+# Gradle's archived read point carries the owner as committed at legacy-root.commit.
+LEGACY_AGREEMENT_OWNER_PRODUCER_LF_SHA256 = "b0fb501f5686169b9a9e16ffb98a4133b1c43c69ced959bdcf964de971510cb1"
 MANAGER = "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt"
 DIRECT = [BASE + "update/" + name + ".kt" for name in ["AppUpdateDownloadState", "AppUpdateReleaseNotesPolicy", "AppUpdateDialogVisualPolicy", "AppUpdateUiPolicy", "AppUpdateAssetSelectionPolicy", "AppBuildVerificationPolicy"]]
 WHOLE = [BASE + "update/" + name + ".kt" for name in ["AppUpdateChecker", "Material3AppUpdateDialog", "MiuixAppUpdateDialog"]]
@@ -21,10 +23,16 @@ def wide(path):
     raw = os.path.abspath(os.fspath(path))
     return Path(raw if os.name != "nt" or raw.startswith("\\\\?\\") else "\\\\?\\" + raw)
 def sha(raw): return hashlib.sha256(raw).hexdigest()
+def archived_read_point(repo):
+    # Gradle passes the pre-merge snapshot at <repo>/.legacy-root. The Python
+    # gate view has the same name but live desktop files and a .merged-root.
+    return Path(repo).resolve().name == ".legacy-root" and not (Path(repo) / ".merged-root").is_dir()
 def catalog_sha(repo):
-    # Gradle passes the pre-merge snapshot at <repo>/.legacy-root. That catalog
-    # file is the v0.2.5 pin set. A live checkout carries the direct-compile catalog.
-    return LEGACY_CATALOG_SHA if (Path(repo).resolve().name == ".legacy-root" and not (Path(repo) / ".merged-root").is_dir()) else CATALOG_SHA
+    # The archived catalog file is the v0.2.5 pin set. A live checkout carries the direct-compile catalog.
+    return LEGACY_CATALOG_SHA if archived_read_point(repo) else CATALOG_SHA
+def agreement_owner_sha(repo):
+    # Exactly one owner identity per read point; the two are not interchangeable.
+    return LEGACY_AGREEMENT_OWNER_PRODUCER_LF_SHA256 if archived_read_point(repo) else AGREEMENT_OWNER_PRODUCER_LF_SHA256
 def emit(path, value):
     wide(path.parent).mkdir(parents=True, exist_ok=True)
     wide(path).write_bytes(value.encode("utf-8") if isinstance(value,str) else value)
@@ -105,7 +113,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 def verified_agreement_owner(repo):
     producer = Path(repo) / "desktop/tools/extract-upstream-profile-main.py"
     actual = sha(wide(producer).read_bytes().replace(bytes([13,10]),bytes([10])))
-    if actual != AGREEMENT_OWNER_PRODUCER_LF_SHA256:
+    if actual != agreement_owner_sha(repo):
         raise AssertionError("Existing complete agreement owner changed")
     return actual
 
