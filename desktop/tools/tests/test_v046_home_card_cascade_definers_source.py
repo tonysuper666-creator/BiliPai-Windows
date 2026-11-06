@@ -29,13 +29,13 @@ PRODUCER = 'tools/extract-upstream-home-page.py'
 TOP_LEVEL = {
     'HomeOverlayPillButton': (
         'internal', 'com.android.purebilibili.feature.home.components',
-        'com/android/purebilibili/feature/home/components/HomeOverlayPillButton.kt'),
+        'app/src/main/java/com/android/purebilibili/feature/home/components/HomeOverlayPillButton.kt'),
     'AppPressShiftContent': (
         'public', 'com.android.purebilibili.core.ui.components',
-        'com/android/purebilibili/core/ui/components/AppPressShiftContent.kt'),
+        'design-system/src/main/java/com/android/purebilibili/core/ui/components/AppPressShiftContent.kt'),
     'rememberPressShiftPressedState': (
         'public', 'com.android.purebilibili.core.ui.components',
-        'com/android/purebilibili/core/ui/components/AppPressShiftContent.kt'),
+        'design-system/src/main/java/com/android/purebilibili/core/ui/components/AppPressShiftContent.kt'),
 }
 
 
@@ -347,8 +347,8 @@ class V046HomeCardCascadeDefinersSourceTest(unittest.TestCase):
             names = set(TOP_LEVEL)
             compiled, _notes = gate.collect_sources(root, model)
             compiled = [source for source in compiled if source.set == 'main']
-            self.assertFalse(any(source.logical.startswith('build/generated/home-page/')
-                                 for source in compiled))
+            retired = {'build/generated/home-page/' + suffix for suffix in cascade.RELATIVE.values()}
+            self.assertEqual([], [source.logical for source in compiled if source.logical in retired])
             for source in compiled:
                 if not source.logical.endswith(('.kt', '.kts')):
                     continue
@@ -358,6 +358,8 @@ class V046HomeCardCascadeDefinersSourceTest(unittest.TestCase):
                 package, decls = declarations(raw.decode('utf-8'), source.logical)
                 for visibility, _kind, declared in decls:
                     if declared in names:
+                        self.assertFalse(source.logical.startswith('build/generated/home-page/'),
+                                         (declared, source.logical))
                         hits.append((package, visibility, declared, source.logical))
             counts = {name: [hit for hit in hits if hit[2] == name] for name in names}
             for name, found in counts.items():
@@ -366,7 +368,9 @@ class V046HomeCardCascadeDefinersSourceTest(unittest.TestCase):
                 want_visibility, want_package, want_suffix = TOP_LEVEL[name]
                 self.assertEqual(want_package, package, name)
                 self.assertEqual(want_visibility, visibility, name)
-                self.assertEqual('app/src/main/java/' + want_suffix, relative)
+                self.assertEqual(want_suffix, relative)
+                owner = next(source for source in compiled if source.logical == relative)
+                self.assertEqual(self.archive[Path(relative).name], Path(owner.real).read_bytes())
         finally:
             shutil.rmtree(scratch, ignore_errors=True)
 
