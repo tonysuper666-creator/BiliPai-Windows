@@ -307,9 +307,15 @@ class ConnectedCommentPanelSources(unittest.TestCase):
             cover_after, cover_before = ((episode.TABLET_PAGES_AFTER, episode.TABLET_PAGES_BEFORE) if label == 'TabletVideoLayout'
                                          else (episode.CINEMA_PAGES_AFTER, episode.CINEMA_PAGES_BEFORE))
             self.assertEqual(1, actual.count(cover_after))
-            # plr-holder-collapse-family is the layer on top of both (append-last): peel its receipt first.
+            # bind_refresh_lists is the last emit stage. On a refresh host it rewrites the LazyColumn
+            # import after the collapse receipt is sealed. Peel that one line, then the receipt.
+            refresh_before = 'import androidx.compose.foundation.lazy.LazyColumn\n'
+            refresh_after = 'import com.android.purebilibili.core.ui.components.AppLazyColumn as LazyColumn\n'
+            self.assertEqual(1, actual.count(refresh_after))
+            self.assertNotIn(refresh_before, actual)
+            # plr-holder-collapse-family is the layer under that import (append-last): peel its receipt next.
             collapse_proof = self.proof('tablet', holder_collapse.PROOF_DIRECTORY + '/' + label + '-proof')
-            without_collapse = holder_collapse.restore(actual, collapse_proof['retainedToCurrent'])
+            without_collapse = holder_collapse.restore(actual.replace(refresh_after, refresh_before, 1), collapse_proof['retainedToCurrent'])
             previous = restore(without_collapse.replace(cover_after, cover_before), proof['retainedToCurrent'])
             owner = comments.declaration(self.syntax, actual, owner_name)
             before_owner = comments.declaration(self.syntax, previous, owner_name)
@@ -354,9 +360,14 @@ class ConnectedCommentPanelSources(unittest.TestCase):
     def test_fullscreen_and_music_main_list_keep_whole_original_with_real_full_search_and_skeletons(self):
         actual = self.generated('fullscreen', 'VideoCommentSheetHost.kt')
         proof = self.proof('fullscreen', 'v046-main-comment-list-proof')
-        # The v046 comment polish host stage follows the main list stage; recover its exact predecessor first.
+        # bind_refresh_lists rewrites the LazyColumn import after the host receipt is sealed.
+        # Peel that one line, then the host stage, then the main-list receipt.
+        refresh_before = 'import androidx.compose.foundation.lazy.LazyColumn\n'
+        refresh_after = 'import com.android.purebilibili.core.ui.components.AppLazyColumn as LazyColumn\n'
+        self.assertEqual(1, actual.count(refresh_after))
+        self.assertNotIn(refresh_before, actual)
         host_proof = self.proof('fullscreen', 'v046-comment-sheet-host-proof')
-        actual = restore(actual, host_proof['retainedToCurrent'])
+        actual = restore(actual.replace(refresh_after, refresh_before, 1), host_proof['retainedToCurrent'])
         previous = restore(actual, proof['retainedToCurrent'])
         selected = comments.declaration(self.syntax, actual, 'VideoCommentMainList')
         self.assertEqual(comments.declaration(self.syntax, self.sources['VideoCommentSheetHost.kt'], 'VideoCommentMainList'),
@@ -444,7 +455,11 @@ class ConnectedCommentPanelSources(unittest.TestCase):
     def test_dynamic_detail_passes_the_original_actual_visible_list_without_new_state_or_session(self):
         actual = self.generated('dynamic', 'DesktopOriginalDynamicDetailLayout.kt')
         proof = self.proof('dynamic', 'v046-dynamic-detail-avatar-owner-proof')
-        before = restore(actual, proof['retainedToCurrent'])
+        # bind_refresh_lists appends the AppLazyColumn alias under the star import after this receipt is sealed.
+        refresh = ('import androidx.compose.foundation.lazy.*\n'
+                   'import com.android.purebilibili.core.ui.components.AppLazyColumn as LazyColumn\n')
+        self.assertEqual(1, actual.count(refresh))
+        before = restore(actual.replace(refresh, 'import androidx.compose.foundation.lazy.*\n', 1), proof['retainedToCurrent'])
         self.assertIn(proof['originalWiring'], self.sources['DynamicDetailScreen.kt'])
         self.assertIn(proof['originalWiring'], actual)
         self.assertIn('val avatarPushEnabled = com.android.purebilibili.feature.video.ui.components.rememberCommentAvatarPushEnabled()', actual)

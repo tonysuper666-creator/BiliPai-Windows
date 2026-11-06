@@ -265,7 +265,14 @@ class DetailHolderCollapseSourceTests(unittest.TestCase):
             expected = expected.replace(hunk['before'], hunk['after'], 1)
         self.assertEqual(expected, after)
         proof = self.proof('tablet', 'TabletVideoLayout-proof')
-        self.assertEqual(before, collapse.restore(after, proof['retainedToCurrent']))
+        # bind_refresh_lists rewrites the LazyColumn import after this receipt is sealed, in both runs.
+        refresh_before = 'import androidx.compose.foundation.lazy.LazyColumn\n'
+        refresh_after = 'import com.android.purebilibili.core.ui.components.AppLazyColumn as LazyColumn\n'
+        self.assertEqual((1, 1), (after.count(refresh_after), before.count(refresh_after)))
+        self.assertNotIn(refresh_before, after)
+        self.assertNotIn(refresh_before, before)
+        self.assertEqual(before.replace(refresh_after, refresh_before, 1),
+                         collapse.restore(after.replace(refresh_after, refresh_before, 1), proof['retainedToCurrent']))
         self.assertEqual([h['label'] for h in collapse.TABLET_HUNKS], [r['label'] for r in proof['hunks_applied']])
         # the saved tab is only written by the settled page effect; every request goes through the pager
         self.assertEqual(1, after.count('selectedTab = settledPage'))
@@ -307,7 +314,15 @@ class DetailHolderCollapseSourceTests(unittest.TestCase):
         hunk = collapse.CINEMA_HUNKS[0]
         self.assertEqual(before.replace(hunk['before'], hunk['after'], 1), after)
         self.assertEqual(1, after.count('compactTypography = true,'))
-        self.assertEqual(before, collapse.restore(after, self.proof('tablet', 'TabletCinemaLayout-proof')['retainedToCurrent']))
+        # bind_refresh_lists rewrites the LazyColumn import after this receipt is sealed, in both runs.
+        refresh_before = 'import androidx.compose.foundation.lazy.LazyColumn\n'
+        refresh_after = 'import com.android.purebilibili.core.ui.components.AppLazyColumn as LazyColumn\n'
+        self.assertEqual((1, 1), (after.count(refresh_after), before.count(refresh_after)))
+        self.assertNotIn(refresh_before, after)
+        self.assertNotIn(refresh_before, before)
+        self.assertEqual(before.replace(refresh_after, refresh_before, 1),
+                         collapse.restore(after.replace(refresh_after, refresh_before, 1),
+                                          self.proof('tablet', 'TabletCinemaLayout-proof')['retainedToCurrent']))
 
     def test_content_section_takes_the_three_compact_title_arguments(self):
         before = self.out('before', 'content', CONTENT_OUTPUT)

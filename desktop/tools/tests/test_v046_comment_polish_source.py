@@ -358,7 +358,14 @@ class V046CommentPolishSourceTest(unittest.TestCase):
         final = text(self.real['pager'], HOST)
         before = text(self.base['pager'], HOST)
         proof = self.proof('pager', 'v046-comment-sheet-host-proof.json')
-        self.assertEqual(before, restore(final, proof['retainedToCurrent']))
+        # bind_refresh_lists rewrites the LazyColumn import after the host receipt is sealed, in both runs.
+        refresh_before = 'import androidx.compose.foundation.lazy.LazyColumn\n'
+        refresh_after = 'import com.android.purebilibili.core.ui.components.AppLazyColumn as LazyColumn\n'
+        self.assertEqual((1, 1), (final.count(refresh_after), before.count(refresh_after)))
+        self.assertNotIn(refresh_before, final)
+        self.assertNotIn(refresh_before, before)
+        self.assertEqual(before.replace(refresh_after, refresh_before, 1),
+                         restore(final.replace(refresh_after, refresh_before, 1), proof['retainedToCurrent']))
         name = 'VideoCommentSheetHost'
         old = comment_list.declaration(self.parser, before, name)
         new = comment_list.declaration(self.parser, final, name)
@@ -411,7 +418,14 @@ class V046CommentPolishSourceTest(unittest.TestCase):
         final = text(self.real['pager'], HOST)
         proof = self.proof('pager', 'v046-comment-sheet-host-proof.json')
         hunks = proof['retainedToCurrent']['hunks']
-        self.assertEqual(before, restore(final, proof['retainedToCurrent']))
+        # Same post-receipt LazyColumn import rewrite as the host declaration test. The hunks do not include it.
+        refresh_before = 'import androidx.compose.foundation.lazy.LazyColumn\n'
+        refresh_after = 'import com.android.purebilibili.core.ui.components.AppLazyColumn as LazyColumn\n'
+        self.assertEqual((1, 1), (final.count(refresh_after), before.count(refresh_after)))
+        self.assertNotIn(refresh_before, final)
+        self.assertNotIn(refresh_before, before)
+        self.assertEqual(before.replace(refresh_after, refresh_before, 1),
+                         restore(final.replace(refresh_after, refresh_before, 1), proof['retainedToCurrent']))
         changed_text = '\n'.join(h['before'] + h['after'] for h in hunks)
         for survivor in ('VideoCommentMainList(', 'resolveVideoCommentSheetHostContent(', 'rememberLazyListState()'):
             self.assertNotIn(survivor, changed_text)
