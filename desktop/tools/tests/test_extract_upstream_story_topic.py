@@ -1,4 +1,5 @@
-import hashlib, importlib.util, os, tempfile, unittest
+import hashlib, importlib.util, json, os, tempfile, unittest
+from unittest.mock import patch
 from pathlib import Path
 
 REPO=next(path for path in Path(__file__).resolve().parents
@@ -33,13 +34,29 @@ class OriginalStoryTopicExtractTest(unittest.TestCase):
                 'StoryScreen.kt','TopicDetailStatePolicy.kt','DynamicTopicLinkPolicy.kt','StoryFeedPolicy.kt','StoryModels.kt'}
             self.assertEqual(expected,{path.name for path in files})
             self.assertEqual(len(files),len(expected))
+            self.assertEqual({'StoryFeedPolicy.kt'}, {Path(path).name for path in module.DIRECT} & expected)
             self.assertTrue({Path(path).name for path in module.DIRECT[1:]}.isdisjoint(expected))
+            import v035_story
+            raw, record, projection = v035_story.source('StoryFeedPolicy.kt')
+            policies = [path for path in files if path.name == 'StoryFeedPolicy.kt']
+            self.assertEqual([Path(directory)/projection['output']], policies)
+            self.assertEqual(raw.encode('utf-8'), policies[0].read_bytes())
+            proof = json.loads((Path(directory)/'original-v035-story-direct-inverse.json').read_text(encoding='utf-8'))
+            self.assertTrue(proof['completeRawCopies'])
+            self.assertEqual([v035_story.source(name)[1] for name in ('StoryFeedPolicy.kt', 'StoryModels.kt')], proof['sources'])
+            self.assertIn(record, proof['sources'])
             for source in (module.DIRECT[0], 'core-data/src/main/java/com/android/purebilibili/data/model/response/StoryModels.kt'):
                 self.assertEqual((LIVE/source).read_bytes(), next(p for p in files if p.name==Path(source).name).read_bytes())
             # StoryScreen is a newly complete owner, not an unexplained count increase.
             original=(LIVE/(module.BASE+'feature/story/StoryScreen.kt')).read_text(encoding='utf-8')
             screen=next(path for path in files if path.name=='StoryScreen.kt').read_text(encoding='utf-8')
             self.assertEqual(module.adapt_story_root_screen(original).strip(),screen.split('\n',2)[2].strip())
+            helper = module.host(REPO)
+            with patch.object(module, 'host', return_value=helper), patch.object(helper, 'write', wraps=helper.write) as write:
+                module.generate(REPO, Path(directory))
+            # The DIRECT loop must leave this one output to emit_story_models.
+            self.assertTrue(write.call_args_list)
+            self.assertNotIn(module.DIRECT[0], [call.args[1] for call in write.call_args_list])
     def test_standalone_preserves_all_three_direct_bodies(self):
         with tempfile.TemporaryDirectory() as directory:
             files=module.generate(REPO,Path(directory),True)
