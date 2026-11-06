@@ -177,6 +177,41 @@ CAPTURES_BY_CASE['video_share'] = [
     '233-share-dynamic-retry-error', '234-share-dynamic-success',
 ]
 
+CAPTURES_BY_CASE['search_link'] = [
+    '300-comment-search-link-before', '310-comment-link-actual-search', '330-comment-dynamic-link-detail',
+    '350-dynamic-topic-actual-search', '360-search-links-back-video',
+]
+
+def verify_search_link(receipt, by, transport):
+    for key in ('searchLinkProofRequested','searchLinkProofCompleted','searchLinkReadResponsesAreSynthetic'):
+        if receipt.get(key) is not True: raise ValueError('Missing actual Main search-link assertion: ' + key)
+    for key in ('commentSearchProofRequested','composerInputProofRequested','syntheticAccountSeededThroughActualSessionStore',
+                'commentPublishingAccepted','loginUiAccepted','commentsSent'):
+        if receipt.get(key) is not False: raise ValueError('Mixed search-link proof: ' + key)
+    if transport.get('searchLinkResponsesAreSynthetic') is not True or transport.get('realAccountUsed') is not False:
+        raise ValueError('Unexpected search-link account/transport')
+    if transport.get('commentSearch') is not None or transport.get('composerInput') is not None:
+        raise ValueError('Mixed search-link replay modes')
+    detail = transport['searchLink']
+    if (detail.get('commentKeyword') != '老番茄' or detail.get('dynamicTopicKeyword') != '中文话题验收' or
+        detail.get('dynamicId') != '990000000000000001' or 'appcommentline_search' not in detail.get('commentSearchSchema', '')):
+        raise ValueError('Search-link fixture identity changed')
+    for key in ('accountMutationSubmitted','fixtureRoutePushed'):
+        if detail.get(key) is not False: raise ValueError('Unexpected search-link scope: ' + key)
+    for row_id, keyword in (('310-comment-link-actual-search', '老番茄'), ('350-dynamic-topic-actual-search', '中文话题验收')):
+        row = by[row_id]
+        if row.get('keyType') != 'Search' or row.get('keyword') != keyword or row.get('drawnSearchEditorValue') != keyword or \
+                row.get('fixtureRoutePushed') is not False:
+            raise ValueError('Actual Search did not draw the clicked keyword: ' + row_id)
+    if by['330-comment-dynamic-link-detail'].get('keyType') != 'DynamicDetail':
+        raise ValueError('Comment dynamic link did not open the actual dynamic detail')
+    for row_id in ('300-comment-search-link-click', '340-dynamic-topic-click'):
+        if by[row_id].get('inputMechanism') != 'OWNED_COMPOSE_AWT_MOUSE_EVENT':
+            raise ValueError('Search link was not clicked through owned input: ' + row_id)
+    for row_id in ('320-comment-search-back-video', '360-search-links-back-video'):
+        if by[row_id].get('keyType') != 'VideoDetail' or by[row_id].get('sameStackRestored') is not True:
+            raise ValueError('Original Back did not restore the video: ' + row_id)
+
 CAPTURES_BY_CASE['fullscreen'] = [
     '121-fullscreen-idle-hidden', '122-fullscreen-mouse-restored', '123-fullscreen-paused-hold',
 ]
@@ -615,6 +650,8 @@ def verify(report, local, health, token, process, ui_case='search'):
             if detail.get(key) is not True: raise ValueError('Original read cycle not completed')
         if detail.get('chargedControlProtobufField') != 31 or detail.get('subReplyOriginalRootRequested') != 91001:
             raise ValueError('Wrong original protobuf/root identity')
+    elif ui_case == 'search_link':
+        verify_search_link(receipt, by, transport)
     elif ui_case == 'fullscreen':
         verify_fullscreen(receipt, by, transport)
     elif video_share:

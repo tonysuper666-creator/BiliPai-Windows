@@ -2565,6 +2565,130 @@ object WindowsVideoActualRootUiFixture {
             "appScaleChangedByFixture" to JsonPrimitive(false)))
     }
 
+    /** Two original link hosts on the same actual Root: the production video comment
+     * list and CommunityContentScreen's dynamic detail. Only owned AWT mouse input reaches
+     * them; the drawn Search editor is the oracle, never a callback or fixture route push. */
+    private fun exerciseSearchLinks(localReplay: WindowsVideoLocalReplay) {
+        check(!EventQueue.isDispatchThread())
+        sameNative(); check(playing())
+        checkNotNull(localReplay.searchLinkReplay) { "Search-link proof requires its guest GET-only transport script" }
+        val back = setOf("返回", "Back")
+        fun leaf(scope: AccessibleContext, label: String, action: Boolean): AccessibleContext {
+            val matches = descendants(scope).filter { (if (action) hasLabel(it, label) else it.accessibleName == label) && visible(it) &&
+                (!action || (it.accessibleAction?.accessibleActionCount ?: 0) == 1) &&
+                it.accessibleRole != javax.accessibility.AccessibleRole.PAGE_TAB }
+            check(matches.isNotEmpty()) { "No visible original '$label'" }
+            val sizes = matches.associateWith { descendants(it).size }
+            val minimum = requireNotNull(sizes.values.minOrNull())
+            return matches.filter { sizes[it] == minimum }.single()
+        }
+        fun commentLink(label: String): AccessibleContext? = runCatching {
+            current(); check(commentsTabSelected()); leaf(detailPaneScope(), label, action = false)
+        }.getOrNull()
+        fun openComments(label: String) {
+            if (edt { runCatching { detailPaneScope() }.isFailure }) {
+                click("详情")
+                await("owned detail viewport before search links") { edt { runCatching { detailPaneScope() }.isSuccess } }
+            }
+            if (!edt { runCatching { commentsTabSelected() }.getOrDefault(false) }) edt {
+                val tab = descendants(detailPaneScope()).single { it.accessibleName == "评论" && visible(it) &&
+                    it.accessibleRole == javax.accessibility.AccessibleRole.PAGE_TAB &&
+                    (it.accessibleAction?.accessibleActionCount ?: 0) == 1 }
+                clickOwnedComposeMouse(window(), tab)
+            }
+            await("original video comment '$label' drawn from the REST wire") { edt { commentLink(label) != null } }
+        }
+        fun awaitSearch(keyword: String, after: Long) {
+            await("actual original Search drawn for '$keyword'") { edt {
+                val frame = pendingCurrent() ?: return@edt false
+                frame.serial > after && frame.key == BiliPaiNavKey.Search(keyword) && routes.currentKey == frame.key &&
+                    runCatching { searchValue() == keyword }.getOrDefault(false)
+            } }
+            Thread.sleep(1200)
+            edt { check(current().key == BiliPaiNavKey.Search(keyword) && searchValue() == keyword) }
+        }
+        fun returnToVideo(after: Long) {
+            await("original Back restores the same VideoDetail") { edt {
+                val frame = pendingCurrent() ?: return@edt false
+                frame.serial > after && (frame.key as? BiliPaiNavKey.VideoDetail)?.bvid == video && runCatching { videoScope() }.isSuccess
+            } }
+            // Leaving the page may legitimately retire its native owner; re-acquire only
+            // the original Canvas the restored page publishes.
+            acquireActualNativePlayer()
+            await("restored original source playing") { actualPlayer.currentSourceSnapshot() != null && playing() }
+            accepted = requireNotNull(actualPlayer.currentSourceSnapshot())
+            sameNative()
+        }
+        val stackBefore = edt { routes.stack.toList() }
+
+        // 1. Production video comment: empty url, keyword only in app_url_schema.
+        openComments(WindowsSearchLinkReplay.COMMENT_KEYWORD)
+        actions.capture("300-comment-search-link-before", edt { current() })
+        val beforeComment = edt { current().serial }
+        edt {
+            val node = requireNotNull(commentLink(WindowsSearchLinkReplay.COMMENT_KEYWORD))
+            record("300-comment-search-link-click", mapOf("label" to JsonPrimitive(WindowsSearchLinkReplay.COMMENT_KEYWORD),
+                "appUrlSchema" to JsonPrimitive(WindowsSearchLinkReplay.SEARCH_SCHEMA), "wireUrlEmpty" to JsonPrimitive(true),
+                "inputMechanism" to JsonPrimitive("OWNED_COMPOSE_AWT_MOUSE_EVENT")))
+            clickOwnedComposeMouse(window(), node)
+        }
+        awaitSearch(WindowsSearchLinkReplay.COMMENT_KEYWORD, beforeComment)
+        actions.capture("310-comment-link-actual-search", edt { current() })
+        record("310-comment-link-actual-search", mapOf("keyword" to JsonPrimitive(WindowsSearchLinkReplay.COMMENT_KEYWORD),
+            "drawnSearchEditorValue" to JsonPrimitive(edt { searchValue() }),
+            "stack" to JsonArray(edt { routes.stack.map { JsonPrimitive(it.javaClass.simpleName) } }),
+            "fixtureRoutePushed" to JsonPrimitive(false)))
+        val beforeCommentBack = edt { current().serial }
+        searchMouse("返回")
+        returnToVideo(beforeCommentBack)
+        check(edt { routes.stack.toList() } == stackBefore) { "Search Back did not restore the original stack" }
+        record("320-comment-search-back-video", mapOf("sameStackRestored" to JsonPrimitive(true)))
+
+        // 2. Ordinary dynamic link from a comment still opens CommunityContentScreen.
+        openComments(WindowsSearchLinkReplay.DYNAMIC_LINK_TITLE)
+        val beforeDynamic = edt { current().serial }
+        edt { clickOwnedComposeMouse(window(), requireNotNull(commentLink(WindowsSearchLinkReplay.DYNAMIC_LINK_TITLE))) }
+        val dynamicKey = BiliPaiNavKey.DynamicDetail(WindowsSearchLinkReplay.DYNAMIC_ID)
+        fun dynamicTopic(): AccessibleContext? = runCatching {
+            current(); check(routes.currentKey == dynamicKey)
+            check(all().any { hasLabel(it, WindowsSearchLinkReplay.DYNAMIC_TEXT) && visible(it) })
+            leaf(window().accessibleContext, WindowsSearchLinkReplay.DYNAMIC_TOPIC_KEYWORD, action = true)
+        }.getOrNull()
+        await("original dynamic detail and its topic label drawn") { edt {
+            val frame = pendingCurrent() ?: return@edt false
+            frame.serial > beforeDynamic && frame.key == dynamicKey && dynamicTopic() != null
+        } }
+        Thread.sleep(1200)
+        actions.capture("330-comment-dynamic-link-detail", edt { current() })
+        record("330-comment-dynamic-link-detail", mapOf("dynamicId" to JsonPrimitive(WindowsSearchLinkReplay.DYNAMIC_ID),
+            "fixtureRoutePushed" to JsonPrimitive(false)))
+
+        // 3. CommunityContentScreen topic without id -> openTopicKeyword -> actual Search.
+        val beforeTopic = edt { current().serial }
+        edt {
+            record("340-dynamic-topic-click", mapOf("label" to JsonPrimitive(WindowsSearchLinkReplay.DYNAMIC_TOPIC_KEYWORD),
+                "topicId" to JsonPrimitive(0), "inputMechanism" to JsonPrimitive("OWNED_COMPOSE_AWT_MOUSE_EVENT")))
+            clickOwnedComposeMouse(window(), requireNotNull(dynamicTopic()))
+        }
+        awaitSearch(WindowsSearchLinkReplay.DYNAMIC_TOPIC_KEYWORD, beforeTopic)
+        actions.capture("350-dynamic-topic-actual-search", edt { current() })
+        record("350-dynamic-topic-actual-search", mapOf("keyword" to JsonPrimitive(WindowsSearchLinkReplay.DYNAMIC_TOPIC_KEYWORD),
+            "drawnSearchEditorValue" to JsonPrimitive(edt { searchValue() }), "fixtureRoutePushed" to JsonPrimitive(false)))
+        val beforeTopicBack = edt { current().serial }
+        searchMouse("返回")
+        await("original Search Back restores the dynamic detail") { edt {
+            val frame = pendingCurrent() ?: return@edt false
+            frame.serial > beforeTopicBack && frame.key == dynamicKey && dynamicTopic() != null
+        } }
+        val beforeDynamicBack = edt { current().serial }
+        edt { clickOwnedComposeMouse(window(), leaf(window().accessibleContext, "返回", action = true).also {
+            check(back.any { label -> hasLabel(it, label) }) }) }
+        returnToVideo(beforeDynamicBack)
+        check(edt { routes.stack.toList() } == stackBefore) { "Dynamic Back did not restore the original stack" }
+        actions.capture("360-search-links-back-video", edt { current() })
+        record("360-search-links-back-video", mapOf("sameStackRestored" to JsonPrimitive(true),
+            "fixtureRoutePushed" to JsonPrimitive(false), "fixtureBackCommandUsed" to JsonPrimitive(false)))
+    }
     private fun exerciseCommentSearch(localReplay: WindowsVideoLocalReplay) {
         check(!EventQueue.isDispatchThread())
         sameNative(); check(playing())
@@ -5900,7 +6024,7 @@ object WindowsVideoActualRootUiFixture {
         check(initialPlacement == WindowPlacement.Floating)
         val independentComposerReplay = replay && localReplay != null &&
             System.getProperty("bilipai.validation.composerInput") == "true" &&
-            listOf("commentSearchInput", "videoDynamicShareInput", "fullscreenIdleInput", "nvidiaInput",
+            listOf("commentSearchInput", "searchLinkInput", "videoDynamicShareInput", "fullscreenIdleInput", "nvidiaInput",
                 "scaleInput", "featureInput", "hotInput", "collectionInput", "metadataInput", "bgmInput",
                 "pipInput", "originalInteractionInput").none { System.getProperty("bilipai.validation.$it") == "true" }
         clockAndCapture("110-ordinary-playing", allowInitialUniformDiagnostic = independentComposerReplay)
@@ -5915,6 +6039,9 @@ object WindowsVideoActualRootUiFixture {
         } else if (System.getProperty("bilipai.validation.commentSearchInput") == "true") {
             check(replay) { "Comment search proof requires the isolated guest API/loopback replay" }
             exerciseCommentSearch(requireNotNull(localReplay))
+        } else if (System.getProperty("bilipai.validation.searchLinkInput") == "true") {
+            check(replay) { "Search-link proof requires the isolated guest GET-only replay" }
+            exerciseSearchLinks(requireNotNull(localReplay))
         } else {
         exercisePlayerMenu()
         if (System.getProperty("bilipai.validation.featureInput") == "true") exerciseChapterControls()
@@ -6087,6 +6214,7 @@ object WindowsVideoActualRootUiFixture {
                         return@Thread
                     }
                     if (System.getProperty("bilipai.validation.commentSearchInput") == "true" ||
+                        System.getProperty("bilipai.validation.searchLinkInput") == "true" ||
                         System.getProperty("bilipai.validation.composerInput") == "true" ||
                         System.getProperty("bilipai.validation.fullscreenIdleInput") == "true") {
                         check(replay != null)
@@ -6144,6 +6272,9 @@ object WindowsVideoActualRootUiFixture {
                         put("commentSearchInputProofCompleted", System.getProperty("bilipai.validation.commentSearchInput") == "true")
                         put("commentSearchReadResponsesAreSynthetic", System.getProperty("bilipai.validation.commentSearchInput") == "true")
                         put("commentSearchPhysicalTextHumanReviewRequired", System.getProperty("bilipai.validation.commentSearchInput") == "true")
+                        put("searchLinkProofRequested", System.getProperty("bilipai.validation.searchLinkInput") == "true")
+                        put("searchLinkProofCompleted", System.getProperty("bilipai.validation.searchLinkInput") == "true")
+                        put("searchLinkReadResponsesAreSynthetic", System.getProperty("bilipai.validation.searchLinkInput") == "true")
                         put("composerInputProofRequested", System.getProperty("bilipai.validation.composerInput") == "true" && System.getProperty("bilipai.validation.videoDynamicShareInput") != "true")
                         put("composerInputProofCompleted", System.getProperty("bilipai.validation.composerInput") == "true" && System.getProperty("bilipai.validation.videoDynamicShareInput") != "true")
                         put("videoDynamicShareProofRequested", System.getProperty("bilipai.validation.videoDynamicShareInput") == "true")
@@ -6155,6 +6286,7 @@ object WindowsVideoActualRootUiFixture {
                         put("syntheticAccountSeededThroughActualSessionStore", System.getProperty("bilipai.validation.composerInput") == "true")
                         put("commentPublishingAccepted", false); put("imageUploadAccepted", false); put("loginUiAccepted", false)
                         put("ordinaryFullscreenResizeRegressionExecuted", System.getProperty("bilipai.validation.commentSearchInput") != "true" &&
+                            System.getProperty("bilipai.validation.searchLinkInput") != "true" &&
                             System.getProperty("bilipai.validation.composerInput") != "true")
                         put("commentSearchFourKTested", false)
                         put("originalInteractionProofRequested", System.getProperty("bilipai.validation.originalInteractionInput") == "true")
