@@ -206,11 +206,11 @@
       "sha256CanonicalBytes": "5c3174b74edc6f2b9e0743594b8bd3c7f31e4f4405758cc9872b3fe1de1d28b4"
     },
     "app/build.gradle.kts": {
-      "blob": "de05202c9517ccd6199e9d9044d7bb692fd68225",
-      "sha256": "8cc478735527f9ace59ae1775258643030ba304fac7aef8f301bf867fc60f91b",
+      "blob": "268faa195cf2be1081e3317d0f2554ad4192b82f",
+      "sha256": "2effa06516310b858d81f1979939998097c6316502f4d2e042c184d03c710323",
       "legacySha256": "683162c801ebca4ba7507dd217f255549b99a5ad787807b236e4de1231d2a3d6",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "8cc478735527f9ace59ae1775258643030ba304fac7aef8f301bf867fc60f91b"
+      "sha256CanonicalBytes": "2effa06516310b858d81f1979939998097c6316502f4d2e042c184d03c710323"
     },
     "app/lint-baseline.xml": {
       "blob": "f4b01486b90f151ab17292b950b7db334cab3c01",
@@ -489,11 +489,11 @@
       "sha256CanonicalBytes": "7de9ea20e90d2c50b50e7e6af2f3e2b0c1884d7ba65c6fa483272bd0e2479c54"
     },
     "app/src/main/java/com/android/purebilibili/MainActivity.kt": {
-      "blob": "6cf963ec4fd405e8571188e009e40bc0a8e2d8be",
-      "sha256": "6ff06daba72a01b6559bb6365efbf7401c68822f485edae389952378d02e0d2f",
+      "blob": "684b7e06c9a4e5ce2c38b5c60fcc4a71f45ed748",
+      "sha256": "7d5eca01aa72ed749ace97d1607dbb7d2ef02c39ee1c3928e838fe1872fcd6aa",
       "legacySha256": "fb836e7cd9a798e05230b6b92d813d99464ea170d863a1cf091a8ebbbef41ada",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "6ff06daba72a01b6559bb6365efbf7401c68822f485edae389952378d02e0d2f"
+      "sha256CanonicalBytes": "7d5eca01aa72ed749ace97d1607dbb7d2ef02c39ee1c3928e838fe1872fcd6aa"
     },
     "app/src/main/java/com/android/purebilibili/MainActivitySplashAliases.kt": {
       "blob": "2d347ffaa9c536e8da095d45dd1a797fc3686ae7",
@@ -709,11 +709,11 @@
       "sha256CanonicalBytes": "1d936a944d526a8b2d5a8ad5901224fe09fb005010e32399dca78f5a6a9db1b3"
     },
     "app/src/main/java/com/android/purebilibili/core/player/PlaybackMediaCache.kt": {
-      "blob": "c934993c921c37d8308e1d89dc6d880016623b4b",
-      "sha256": "ae93e7ca6f90e70901e1643281e950036779328171f033a79b1304a2c637355a",
+      "blob": "e5c12ce8443c1048ce388b89968b9895be13e0ae",
+      "sha256": "946f35a88ef30358ae92ea984fa906621700ec850a816b85853bd3c2352438be",
       "legacySha256": "9c05458cad086fd2583448883c806af2d610523b9a17f5052346bab2c0fc967a",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "ae93e7ca6f90e70901e1643281e950036779328171f033a79b1304a2c637355a"
+      "sha256CanonicalBytes": "946f35a88ef30358ae92ea984fa906621700ec850a816b85853bd3c2352438be"
     },
     "app/src/main/java/com/android/purebilibili/core/player/PlayerVolumeController.kt": {
       "blob": "4d6b075227c3b0cbea93316cdfb26dab72cd5f17",
@@ -1128,11 +1128,11 @@
       "sha256CanonicalBytes": "da55c7243a61dc25294d5a55e9a230ba097fb9e2e929e85bb6d47440739fd9c5"
     },
     "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt": {
-      "blob": "cd25c0b309f14ce14f70fe6209d8e0b48cb19feb",
-      "sha256": "1e33c9a81a2e679fc85310d17a969934be66da9b137b57bd6d9c36b47c10451e",
+      "blob": "cdcc8ccf769a45c6429a97636eae0606c2cd14ca",
+      "sha256": "1613e0c790b79f1349d5dcf87d90a3183eeadf70b51109f044b8c16978c3e4a5",
       "legacySha256": "5799bb8802992594ae9494b48d6357ee00ecc7be03d97ed0dcb5fede7774328c",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "1e33c9a81a2e679fc85310d17a969934be66da9b137b57bd6d9c36b47c10451e"
+      "sha256CanonicalBytes": "1613e0c790b79f1349d5dcf87d90a3183eeadf70b51109f044b8c16978c3e4a5"
     },
     "app/src/main/java/com/android/purebilibili/core/store/SettingsPrefsCache.kt": {
       "blob": "1e16ab413c04c64d556588f3c62a5e51771dfc76",
@@ -1236,11 +1236,11 @@
       "sha256CanonicalBytes": "f3996c0e728f84662fb5c266b0786d1b419cc5e4e38986769e6a309bf0c13675"
     },
     "app/src/main/java/com/android/purebilibili/core/ui/BottomBarScrollHidePolicy.kt": {
-      "blob": "05d5e45e64a8cc1b07c8f85ff61bc14b3e5f3ce8",
-      "sha256": "73646b631c85707b3d7cc25e12d858923171c746a60f28f4a3fdc47309f3767c",
+      "blob": "da902523c40609dcd7196ee532185433d9f3cce5",
+      "sha256": "0adccaa6d8495ba2bf227924a5046d09e2a2d2282f16584cc5bfb4050f154ed1",
       "legacySha256": "dd5ca81c9d5daba937f9cba5c02e7cea22181d04352cdd33b37751db0e7c23eb",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "73646b631c85707b3d7cc25e12d858923171c746a60f28f4a3fdc47309f3767c"
+      "sha256CanonicalBytes": "0adccaa6d8495ba2bf227924a5046d09e2a2d2282f16584cc5bfb4050f154ed1"
     },
     "app/src/main/java/com/android/purebilibili/core/ui/CommentWindowNavigation.kt": {
       "blob": "f67cb84af2c4effd37b238d70c29a9a8eb30c119",
@@ -1671,18 +1671,18 @@
       "sha256CanonicalBytes": "e0fb38885f702bb527ce58125f3684fb31a496aaa581fbf183b573b942e7b886"
     },
     "app/src/main/java/com/android/purebilibili/core/ui/transition/VideoCardNativeSnapshot.kt": {
-      "blob": "ccb9e5c73a4f9514199d1ad91470e185708a6e45",
-      "sha256": "8685aa018cb781c58584269b82a6d84fe0ce10f2260feca3505687d7b5bdfa6c",
+      "blob": "845018b64d77d75cbab63a4db1bc96ea43a71709",
+      "sha256": "dc450000a7f7791522fe09b7c4a00cbf2e1e9a05b32e1e0b1e95ddd6875ea35a",
       "legacySha256": "5dc06767d28792a5b8a60f26600e16af8b3bb8c345f9f05ced343f1bb0ba784f",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "8685aa018cb781c58584269b82a6d84fe0ce10f2260feca3505687d7b5bdfa6c"
+      "sha256CanonicalBytes": "dc450000a7f7791522fe09b7c4a00cbf2e1e9a05b32e1e0b1e95ddd6875ea35a"
     },
     "app/src/main/java/com/android/purebilibili/core/ui/transition/VideoCardReturnTimeline.kt": {
-      "blob": "58438682ba897bb60583be8bd8e688e3b95d3659",
-      "sha256": "bb060eab963d460dbc69ba5ebc18a06aeca9750881063af25fc16384e35e602a",
+      "blob": "70e68ec49a5a6cbe0f6d0d22001f3fe3ca6a09f1",
+      "sha256": "aa057b20a48c14d1d96322c2362b39eec1e98d23426c41fcea9e74c35ce5ce41",
       "legacySha256": "f729123fd68416dc1daac5643c858f56f00db8323546ae6c8e6c644940cc670f",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "bb060eab963d460dbc69ba5ebc18a06aeca9750881063af25fc16384e35e602a"
+      "sha256CanonicalBytes": "aa057b20a48c14d1d96322c2362b39eec1e98d23426c41fcea9e74c35ce5ce41"
     },
     "app/src/main/java/com/android/purebilibili/core/ui/transition/VideoCardSharedElementContext.kt": {
       "blob": "0f9b39245ce2ab475196b709c84eaf4ac9c7546e",
@@ -1704,18 +1704,18 @@
       "sha256CanonicalBytes": "77ce9eae1873072da807cf2eda0f596cc9c60a8f44e431ea39c5e594050e602d"
     },
     "app/src/main/java/com/android/purebilibili/core/ui/transition/VideoCardSourceSnapshot.kt": {
-      "blob": "507ee9f3d20f94f55a2ddf632c5a9e79e78082b2",
-      "sha256": "57a423c4ba5b6fe06980722f57ebe377bf285e77ff748d539d7e9a2d2a39b94d",
+      "blob": "af802f30e5585a3dfdad54fc4fa8d8b33e6a5c84",
+      "sha256": "c770176985cc7ea405b794d5711dd76855dd5506cdfc3295a8ae4731e99806a8",
       "legacySha256": "6dea5fc155bbf1908bb8a89bc5dbcf5880ce9ca63d4c4a340298bfe791e39a48",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "57a423c4ba5b6fe06980722f57ebe377bf285e77ff748d539d7e9a2d2a39b94d"
+      "sha256CanonicalBytes": "c770176985cc7ea405b794d5711dd76855dd5506cdfc3295a8ae4731e99806a8"
     },
     "app/src/main/java/com/android/purebilibili/core/ui/transition/VideoCardTransitionBackgroundPolicy.kt": {
-      "blob": "cf51d547a786f55f2dbb45aee51d685d7cbb863d",
-      "sha256": "dbdfde70c31ce49c0b61c99bc1fe81416bd703add507dacb9f21bdf05719deae",
+      "blob": "0c9ccf388fe7c10328132008078e8fa69236e2f0",
+      "sha256": "19ca586e27072e3e4f9debb73752f03110b3eed8e281c2c6d9b81210f8f88482",
       "legacySha256": "f20b8cee2e9b5179876bc4ed93d598344badbe469da60b3ba7758f8bb9b3d191",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "dbdfde70c31ce49c0b61c99bc1fe81416bd703add507dacb9f21bdf05719deae"
+      "sha256CanonicalBytes": "19ca586e27072e3e4f9debb73752f03110b3eed8e281c2c6d9b81210f8f88482"
     },
     "app/src/main/java/com/android/purebilibili/core/ui/transition/VideoCardTransitionClock.kt": {
       "blob": "216d940594d6ce19ae2a0a0deb6485a08376eb47",
@@ -1758,11 +1758,11 @@
       "sha256CanonicalBytes": "19ebb881c55aa0490b1b7e586cfb84d2dfbb4cb00dee5070b453808c7c6e2a11"
     },
     "app/src/main/java/com/android/purebilibili/core/ui/transition/VideoSharedTransitionPolicy.kt": {
-      "blob": "9f99940c7dbfcbee73083c8307998b9b6cf3bf54",
-      "sha256": "17812c99ba2c1bfcd6b3f4f221b795a28dd1d2b22fc7cd376858d815b3472bf3",
+      "blob": "e203ac2be321be02dd1c8d4736162297f8a0ae66",
+      "sha256": "9b6c42dac6203ae7469aea8064af0160e3ac78960042a482b6107ae1f8f532b6",
       "legacySha256": "b99f204a6de2443eb75f150580e1522b96e46d7448da0ffda6b4b6a46711e9b7",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "17812c99ba2c1bfcd6b3f4f221b795a28dd1d2b22fc7cd376858d815b3472bf3"
+      "sha256CanonicalBytes": "9b6c42dac6203ae7469aea8064af0160e3ac78960042a482b6107ae1f8f532b6"
     },
     "app/src/main/java/com/android/purebilibili/core/ui/util/DeviceCornerRadius.kt": {
       "blob": "591d571bc5cfac574a3db22c7cd62c286e322c5c",
@@ -1803,11 +1803,11 @@
       "sha256CanonicalBytes": "30fbcce3374d18b7fea7af8efbfbc4e32be9051db8e8ff6f27c04c8d4a1ffd3a"
     },
     "app/src/main/java/com/android/purebilibili/core/util/BilibiliNavigationTargetParser.kt": {
-      "blob": "1cd4ed26e63126588b766ad4a39638500964c030",
-      "sha256": "8af26db9e2239078700b8cfcc092f53aa0d3044888c142bee8c3485938d0bf7d",
+      "blob": "a5a701d18bd0e009a39bc96f568713cf4e032e86",
+      "sha256": "c7b9bb6285f027cd4252d3abc107df448a2c06da2180e9ddfd7c6d8db19b1dd7",
       "legacySha256": "bf3f2e86d526e60a48787f17b578afea86f0515e8ee62894bfdeb7eec5d63dd8",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "8af26db9e2239078700b8cfcc092f53aa0d3044888c142bee8c3485938d0bf7d"
+      "sha256CanonicalBytes": "c7b9bb6285f027cd4252d3abc107df448a2c06da2180e9ddfd7c6d8db19b1dd7"
     },
     "app/src/main/java/com/android/purebilibili/core/util/BilibiliUrlParser.kt": {
       "blob": "f082232d597e59b8eae8fd24fbd93d92d7ac37f3",
@@ -1817,18 +1817,18 @@
       "sha256CanonicalBytes": "bae695d7bec9f041e5111fc621ba2ab9b39ddd23aaabc166acd52015637b500b"
     },
     "app/src/main/java/com/android/purebilibili/core/util/CacheUtils.kt": {
-      "blob": "6e40bcded09d82f8f8595518cfcce619b4d4ab7e",
-      "sha256": "479ab2ad419d689b20ca949f5db310a9d15964ee6a720bd4537adc8a71e185c2",
+      "blob": "34edaeffc6fa42850b8634ec031ffb8f4452ed68",
+      "sha256": "86f42b54af5134103ef6c0345ea5055587ee6c68c465ef81a056cc526f24fb90",
       "legacySha256": "0d840fd24445c9a103a64172594678ef03b9ba7aaa82d14c762df382c915bf36",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "479ab2ad419d689b20ca949f5db310a9d15964ee6a720bd4537adc8a71e185c2"
+      "sha256CanonicalBytes": "86f42b54af5134103ef6c0345ea5055587ee6c68c465ef81a056cc526f24fb90"
     },
     "app/src/main/java/com/android/purebilibili/core/util/CardPositionManager.kt": {
-      "blob": "7f04475ae6986aa11cbe38e7c4501614d7a07a6c",
-      "sha256": "81c8a33fe61bc8744483bce53550c9fb961bc28af1e310ad62809c1b14ad5e55",
+      "blob": "d7995a2cceda40592b7f83280b1bb6726bb366e7",
+      "sha256": "cad524309fb894269a683e389d72614c4a61f4b9c4c88bc9bb37196eeecc8d75",
       "legacySha256": "9d915444e1db154b773c33618b3c399909c005df2e066576935b5eb118e04090",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "81c8a33fe61bc8744483bce53550c9fb961bc28af1e310ad62809c1b14ad5e55"
+      "sha256CanonicalBytes": "cad524309fb894269a683e389d72614c4a61f4b9c4c88bc9bb37196eeecc8d75"
     },
     "app/src/main/java/com/android/purebilibili/core/util/CrashReporter.kt": {
       "blob": "1143546e2ebe5f40d676a19d292901142a767279",
@@ -2033,11 +2033,11 @@
       "sha256CanonicalBytes": "dbad9d9eec41d0b912af06b8d40ac7ae79391a5e6b52f0b782f5f898935acf09"
     },
     "app/src/main/java/com/android/purebilibili/data/repository/ArticleRepository.kt": {
-      "blob": "d35ed47919f2f6e60258c86d4229b9aa7e6e5f77",
-      "sha256": "69d797e8122b98dfc5857812641b9563f6d3127efa52d54ce72eb754faf5f108",
+      "blob": "ee6bc28fe4c0b514f668c6ce67ec38bbdcf15dca",
+      "sha256": "7e567e586549dd7d567c2ba3a7fbacbd23e2bae2d5b95b0f1a5ba2736ce4e704",
       "legacySha256": "b42056c99849da15d3020bd51fafcf48e2e289798a3de1b926d76575a42f061b",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "69d797e8122b98dfc5857812641b9563f6d3127efa52d54ce72eb754faf5f108"
+      "sha256CanonicalBytes": "7e567e586549dd7d567c2ba3a7fbacbd23e2bae2d5b95b0f1a5ba2736ce4e704"
     },
     "app/src/main/java/com/android/purebilibili/data/repository/AudioRepository.kt": {
       "blob": "968a2464384f9977d87bf590fd8a6125f61fc967",
@@ -2116,10 +2116,11 @@
       "sha256CanonicalBytes": "402b50b17e24c334096c61541e5743f7f2f9ee1d224c8e6a4f25041b417ddb86"
     },
     "app/src/main/java/com/android/purebilibili/data/repository/DynamicDetailFallbackPolicy.kt": {
-      "blob": "89ca42fec2b77e5836bdc3a8058a9de4d641778b",
-      "sha256": "e76d7920556f2fb7a6939ca85188fd2511a54658c8098b3c7a2b18d877358365",
+      "blob": "8c7f70e5cdc4fd7b50b24c73c66ae5169fea8a26",
+      "sha256": "aebc2202d3a11648f0cc2f8a11cdd0dc5f6fd1cd70c141989c8d72d06bbf4fa2",
+      "legacySha256": "e76d7920556f2fb7a6939ca85188fd2511a54658c8098b3c7a2b18d877358365",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "e76d7920556f2fb7a6939ca85188fd2511a54658c8098b3c7a2b18d877358365"
+      "sha256CanonicalBytes": "aebc2202d3a11648f0cc2f8a11cdd0dc5f6fd1cd70c141989c8d72d06bbf4fa2"
     },
     "app/src/main/java/com/android/purebilibili/data/repository/DynamicFeedFetchPolicy.kt": {
       "blob": "5a4cca098c0ccb426605ec5c933f45989ecd7b4b",
@@ -2134,11 +2135,11 @@
       "sha256CanonicalBytes": "6b13443f7929b6026bce396e585ff2991daf9802e2547e5602fedf740229ec61"
     },
     "app/src/main/java/com/android/purebilibili/data/repository/DynamicRepository.kt": {
-      "blob": "59476188af4d2b67008ec06f27327e19b9817c9e",
-      "sha256": "d393f585f925dd70842e1ed8c77b4b2e46cef322c3227e00adab7c7daabac5db",
+      "blob": "8e71daaee54d3ed25cfdf3028300eb87b347e374",
+      "sha256": "84fc3888d936aef0b3c453ac37dd51b55d48afafa918a2fc42c887ca9629697f",
       "legacySha256": "890574b7e97781458fcd6d393068d54c30864270ed914a33683d2815b3f0d63b",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "d393f585f925dd70842e1ed8c77b4b2e46cef322c3227e00adab7c7daabac5db"
+      "sha256CanonicalBytes": "84fc3888d936aef0b3c453ac37dd51b55d48afafa918a2fc42c887ca9629697f"
     },
     "app/src/main/java/com/android/purebilibili/data/repository/DynamicVoteRepository.kt": {
       "blob": "b2e1f46149685f5a6078a789571f444d5ff0b0f4",
@@ -2168,11 +2169,11 @@
       "sha256CanonicalBytes": "fd84f0f4afb6aeff68fa67cc9a3cefe2bc9994014fdcf4dab199ba701831ad97"
     },
     "app/src/main/java/com/android/purebilibili/data/repository/LiveFeedParsePolicy.kt": {
-      "blob": "94127cd1af13ad35c9e1a094a66279855fbd5135",
-      "sha256": "026875bde28c22aab6474d5876ddd092827076c5fba50ef942636c4221296b13",
+      "blob": "0df53ff6286b37aa3f98b4d426d96e586395a0bc",
+      "sha256": "452148f288bf0a5acc9c380d03461c9ad5c09c91b0a9e616c81a7d3bec3f33eb",
       "legacySha256": "83e53199389f2b8aeaf9241257cea31b940066d30a5b87a671ff83ee717eb7d7",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "026875bde28c22aab6474d5876ddd092827076c5fba50ef942636c4221296b13"
+      "sha256CanonicalBytes": "452148f288bf0a5acc9c380d03461c9ad5c09c91b0a9e616c81a7d3bec3f33eb"
     },
     "app/src/main/java/com/android/purebilibili/data/repository/LiveInteractionModels.kt": {
       "blob": "7c604d59471c00d075cd3020ada29828246df39f",
@@ -2182,11 +2183,11 @@
       "sha256CanonicalBytes": "3e39c52005eda733dedc280a277bda8333ac94f7638c790ef8b07d7e4fb28331"
     },
     "app/src/main/java/com/android/purebilibili/data/repository/LiveRepository.kt": {
-      "blob": "027f4a16297b88910dec4845567d74f660c9552c",
-      "sha256": "3412cbba267a5ccaf321acac0f0536ad3434b20fa506ab58a64d7a45b302b2ad",
+      "blob": "cbb7b1ab766ef6319513edf1f59c354fef46bedb",
+      "sha256": "b18c861fa979939ce6c05953b460912e587261025dc7b65af9bb94b3b3717d1c",
       "legacySha256": "2d0007e82c53f1a4af5f4f298699decbc14c0623e88e50a3e7415c2ab3f374ac",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "3412cbba267a5ccaf321acac0f0536ad3434b20fa506ab58a64d7a45b302b2ad"
+      "sha256CanonicalBytes": "b18c861fa979939ce6c05953b460912e587261025dc7b65af9bb94b3b3717d1c"
     },
     "app/src/main/java/com/android/purebilibili/data/repository/MessageRepository.kt": {
       "blob": "7cf6380b6c5a4d404337f5a82c5b2867a0ce3a0b",
@@ -2209,10 +2210,11 @@
       "sha256CanonicalBytes": "aec7644652a53118dd9c34b402d8f1ea4755d7921de4fc1781e1e4eb55a58e6b"
     },
     "app/src/main/java/com/android/purebilibili/data/repository/PersonalFavoriteRepository.kt": {
-      "blob": "0d815187734547fc714785279e4bc43a67dbc85c",
-      "sha256": "111ac686901e10a02af5bd61c71ceaef6c48682ea9eb0376777feb4baaadc351",
+      "blob": "5dd27fd93c0980d3164b1ccf3d1819c4e0dc98cc",
+      "sha256": "abaf07f8e66ad0b061f4c0a12a99ec805f05e377cbf62cebe62fe21ca5e904e1",
+      "legacySha256": "111ac686901e10a02af5bd61c71ceaef6c48682ea9eb0376777feb4baaadc351",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "111ac686901e10a02af5bd61c71ceaef6c48682ea9eb0376777feb4baaadc351"
+      "sha256CanonicalBytes": "abaf07f8e66ad0b061f4c0a12a99ec805f05e377cbf62cebe62fe21ca5e904e1"
     },
     "app/src/main/java/com/android/purebilibili/data/repository/SplashRepository.kt": {
       "blob": "c0413ac646513f3551850ede811c61fb8571258b",
@@ -2235,10 +2237,11 @@
       "sha256CanonicalBytes": "eabfa1b745aef056823514b1fb6739dd76b8ca3ec176e56f78cb017e1e12c4e2"
     },
     "app/src/main/java/com/android/purebilibili/data/repository/TopicRepository.kt": {
-      "blob": "d7b9f1b79013f1fd3159cc2c7dc223749e651e66",
-      "sha256": "17d62c25e59bba979650a5633dea928338cd205c0e78ceac8bd185f048b28a64",
+      "blob": "bb694970e55245a81ec6ce30e28db54f1f3004a7",
+      "sha256": "4180c249f9db939b126b06fac29ed7649554c988c7c95ef468f1a12d9e084549",
+      "legacySha256": "17d62c25e59bba979650a5633dea928338cd205c0e78ceac8bd185f048b28a64",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "17d62c25e59bba979650a5633dea928338cd205c0e78ceac8bd185f048b28a64"
+      "sha256CanonicalBytes": "4180c249f9db939b126b06fac29ed7649554c988c7c95ef468f1a12d9e084549"
     },
     "app/src/main/java/com/android/purebilibili/data/repository/UserRepository.kt": {
       "blob": "795172ea8ed6138c0507e30ac5a6c1921c9b017f",
@@ -2259,11 +2262,11 @@
       "sha256CanonicalBytes": "460517c5566870edd4e4662c4837ef80613a7ee04df5d695ebf0b91196de191e"
     },
     "app/src/main/java/com/android/purebilibili/data/repository/VideoRepository.kt": {
-      "blob": "fdc1abb14bc4f248e32c1d7f55089a1bb7851609",
-      "sha256": "cb9059bf4827dd47280697caf342f3321a8e3846432e2b1677b95d8b46a5b215",
+      "blob": "60c09a2da35ddf122b38f66be5236db98a20cccd",
+      "sha256": "d267102610a8f99d8312e5fd848e98a4a25e66e8ce2ff02a19980093efaaea0a",
       "legacySha256": "acf05cba9a89666533378eef35a21609484a02ccd874a460c259c3f3363d1e64",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "cb9059bf4827dd47280697caf342f3321a8e3846432e2b1677b95d8b46a5b215"
+      "sha256CanonicalBytes": "d267102610a8f99d8312e5fd848e98a4a25e66e8ce2ff02a19980093efaaea0a"
     },
     "app/src/main/java/com/android/purebilibili/data/repository/ViewGrpcRepository.kt": {
       "blob": "71d6448b7e79822e457e4236b8f5a74fb8373575",
@@ -2429,17 +2432,18 @@
       "sha256CanonicalBytes": "40024374baebf0e59f655bcbf2435c78e61ec72ce677d719f7463e40928041bb"
     },
     "app/src/main/java/com/android/purebilibili/feature/article/ArticleContentBlockParser.kt": {
-      "blob": "49190bbf68d5313df79c8bcfea7e10da4405daa3",
-      "sha256": "463e5c2457c38c5fb5e8091194f8ff4af5e7191e86baec29bfd115e7a2ca0870",
+      "blob": "a497fcd06d87e66f7a8ede65242ad3bb6a78d154",
+      "sha256": "3c6597e8adbb8a599a7388fe017462b8fc533fa44491977876c245dd90e0dea9",
       "legacySha256": "3a27b12a7f89e0b804995ad5918be43f3a7b87caefd111fe128bb91511f31bee",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "463e5c2457c38c5fb5e8091194f8ff4af5e7191e86baec29bfd115e7a2ca0870"
+      "sha256CanonicalBytes": "3c6597e8adbb8a599a7388fe017462b8fc533fa44491977876c245dd90e0dea9"
     },
     "app/src/main/java/com/android/purebilibili/feature/article/ArticleContentLoadPolicy.kt": {
-      "blob": "b9de149841009942176809c9485382608a2d5a74",
-      "sha256": "dfd43615f65ff0709bab244fab844a9c232d6f411a66f87255004cad3771f632",
+      "blob": "a9559eee957d095269eac041028cebf025460e01",
+      "sha256": "5e77f12f09baa963f8ba7656b8f14f018df0505be7464808d56dde01c766137d",
+      "legacySha256": "dfd43615f65ff0709bab244fab844a9c232d6f411a66f87255004cad3771f632",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "dfd43615f65ff0709bab244fab844a9c232d6f411a66f87255004cad3771f632"
+      "sha256CanonicalBytes": "5e77f12f09baa963f8ba7656b8f14f018df0505be7464808d56dde01c766137d"
     },
     "app/src/main/java/com/android/purebilibili/feature/article/ArticleDetailLayoutPolicy.kt": {
       "blob": "cf798a41b6bf7d8e2384f975719c1020687950ad",
@@ -2448,11 +2452,11 @@
       "sha256CanonicalBytes": "005b05efaba6390f785a1740fc6881bfcc31e58a56b1ef4d639368a91b88359b"
     },
     "app/src/main/java/com/android/purebilibili/feature/article/ArticleDetailScreen.kt": {
-      "blob": "750968d61d3e420992889ad0ba3ade2f3d9a0c19",
-      "sha256": "a89f39e6e60732ddc2bdc657d633671a34a76aeb4f640355a00d1c4c712b5c15",
+      "blob": "db91162201590e714a13f8f0b078b3362eea00b2",
+      "sha256": "0da1776bd8b55d8746a2bfdd35bcaa6973e424f76e5d2b180f88f49064ebd48e",
       "legacySha256": "8642ffbde6e31c9db3fe0948741d85ce2d20cfa364287bc32ffc1ea6c33c25c5",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "a89f39e6e60732ddc2bdc657d633671a34a76aeb4f640355a00d1c4c712b5c15"
+      "sha256CanonicalBytes": "0da1776bd8b55d8746a2bfdd35bcaa6973e424f76e5d2b180f88f49064ebd48e"
     },
     "app/src/main/java/com/android/purebilibili/feature/article/ArticleImagePreviewPolicy.kt": {
       "blob": "6ae225906703703e85e4b7af373e8f0f2fb08353",
@@ -2461,10 +2465,11 @@
       "sha256CanonicalBytes": "61f0e181cd82c97a5268081c78ff4f8bd39727df82a7e904f294fd8c68c7872a"
     },
     "app/src/main/java/com/android/purebilibili/feature/article/ArticleRichTextRenderer.kt": {
-      "blob": "7e63528f8ede9d2513dee6ab1fd48bfc1226100e",
-      "sha256": "4ddf0670b9fbabbda3e1f765ca868ea60c2df1159089a1c8ec86274c628dc723",
+      "blob": "28ffc7691c11da0becca5047f4fbbc391aaa1d60",
+      "sha256": "fcb6f0c8f16e71339b00e122985602d823348710c8af14e5987147d8b2dd8ba9",
+      "legacySha256": "4ddf0670b9fbabbda3e1f765ca868ea60c2df1159089a1c8ec86274c628dc723",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "4ddf0670b9fbabbda3e1f765ca868ea60c2df1159089a1c8ec86274c628dc723"
+      "sha256CanonicalBytes": "fcb6f0c8f16e71339b00e122985602d823348710c8af14e5987147d8b2dd8ba9"
     },
     "app/src/main/java/com/android/purebilibili/feature/article/ArticleSharedTransitionPolicy.kt": {
       "blob": "488efa2b1df23a15562ed2b1a376fbbb944c31f9",
@@ -2517,10 +2522,11 @@
       "sha256CanonicalBytes": "e6acbeb26fa108864ee25d4666159b430bb7fd9bcae7b8deda3261b00d83bf92"
     },
     "app/src/main/java/com/android/purebilibili/feature/audio/lyrics/BiliSubtitleLyricsPolicy.kt": {
-      "blob": "d537a4c7e1c2256b930a3a6c631ae4c9bbf14f6d",
-      "sha256": "0ebe7253b59bd278e0c4e7344e3c2bcd87bbeb08d31c2990950c34750ba12ed6",
+      "blob": "fb04eb4825a683d1756394c009778c56219afbcf",
+      "sha256": "d21c7d453002f6a8f9b5f70525766bbddd81f56d4b6787825ab4f8874c1c9b5f",
+      "legacySha256": "0ebe7253b59bd278e0c4e7344e3c2bcd87bbeb08d31c2990950c34750ba12ed6",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "0ebe7253b59bd278e0c4e7344e3c2bcd87bbeb08d31c2990950c34750ba12ed6"
+      "sha256CanonicalBytes": "d21c7d453002f6a8f9b5f70525766bbddd81f56d4b6787825ab4f8874c1c9b5f"
     },
     "app/src/main/java/com/android/purebilibili/feature/audio/lyrics/FileLyricsCache.kt": {
       "blob": "79c0df25d9ac5197963010e3923d57d139d19ca3",
@@ -2542,16 +2548,18 @@
       "sha256CanonicalBytes": "72f3fa7e56f16cee8d1192206d0f38bb439e93f166e4d411ca33fa3628f9123d"
     },
     "app/src/main/java/com/android/purebilibili/feature/audio/lyrics/LyricsMatchingPolicy.kt": {
-      "blob": "a2f03be84017f91d80ea014bf0587f56f2f0394b",
-      "sha256": "3c1408f7d01b2948bff3adf1ce3589e259f7888d066202d6beb3a95727705ccc",
+      "blob": "ae549eb6fc3d3fbcb4836579711f419d08c0a21c",
+      "sha256": "adce10f1a594e7eb46139720aac919d161ada476fa8ba88d964946cf4c9a68a1",
+      "legacySha256": "3c1408f7d01b2948bff3adf1ce3589e259f7888d066202d6beb3a95727705ccc",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "3c1408f7d01b2948bff3adf1ce3589e259f7888d066202d6beb3a95727705ccc"
+      "sha256CanonicalBytes": "adce10f1a594e7eb46139720aac919d161ada476fa8ba88d964946cf4c9a68a1"
     },
     "app/src/main/java/com/android/purebilibili/feature/audio/lyrics/LyricsModels.kt": {
-      "blob": "ecf9973aa8e6b29aabd9714b7cb9cb17f3a739f4",
-      "sha256": "07e27eac6d147822b61e59967a20ad0602f6372680ed514ae40f40bdacadb3e5",
+      "blob": "89859f3d18dca7303f13940dde6e63f7312b7fe4",
+      "sha256": "02650e5f19ed8d2580ca6b9d2eb6ac7a31a749828f45dcfe5351495f637f8e81",
+      "legacySha256": "07e27eac6d147822b61e59967a20ad0602f6372680ed514ae40f40bdacadb3e5",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "07e27eac6d147822b61e59967a20ad0602f6372680ed514ae40f40bdacadb3e5"
+      "sha256CanonicalBytes": "02650e5f19ed8d2580ca6b9d2eb6ac7a31a749828f45dcfe5351495f637f8e81"
     },
     "app/src/main/java/com/android/purebilibili/feature/audio/lyrics/LyricsNetworkProviders.kt": {
       "blob": "19c3d6857235a9089d43a85266815b45b42c081b",
@@ -2560,17 +2568,18 @@
       "sha256CanonicalBytes": "cbd31b9742625d0a25422347e59435cd4e0fb94b4d585f397b23e80b5a0a4b32"
     },
     "app/src/main/java/com/android/purebilibili/feature/audio/lyrics/LyricsParser.kt": {
-      "blob": "687858ef45529cb298e24a37127fe8a0b36a58ea",
-      "sha256": "97c5584402f15caf49b38a18cb50f6b993245d89c722a5381c772b1bfc71dd0a",
+      "blob": "c9b2fca305d5ca265612606f6c1cbe808b37729a",
+      "sha256": "a9883cb0b106fdeb1088c8e70f48aa3b6b8b2dc6f7cd3d9d876d2a375f5d8dc4",
       "legacySha256": "50d73073ad60865ce05d98b8bf931a891d1a1157d21c1886248d873e9445a73b",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "97c5584402f15caf49b38a18cb50f6b993245d89c722a5381c772b1bfc71dd0a"
+      "sha256CanonicalBytes": "a9883cb0b106fdeb1088c8e70f48aa3b6b8b2dc6f7cd3d9d876d2a375f5d8dc4"
     },
     "app/src/main/java/com/android/purebilibili/feature/audio/lyrics/LyricsRepository.kt": {
-      "blob": "f1b00d3bcc9617e7bb7cf1668b59d8348f52bc9c",
-      "sha256": "d3883ba6e770f010a8cfda72135a5e6f3bc485448363414b31a26a07a5ff78ba",
+      "blob": "872409a9e2ae20fc0f1a42584edad0290f67a93f",
+      "sha256": "6e83212e03bc8b230b0d04924cfa6e536d7b8742c0ba7f1166ff0e3fe5ead2e1",
+      "legacySha256": "d3883ba6e770f010a8cfda72135a5e6f3bc485448363414b31a26a07a5ff78ba",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "d3883ba6e770f010a8cfda72135a5e6f3bc485448363414b31a26a07a5ff78ba"
+      "sha256CanonicalBytes": "6e83212e03bc8b230b0d04924cfa6e536d7b8742c0ba7f1166ff0e3fe5ead2e1"
     },
     "app/src/main/java/com/android/purebilibili/feature/audio/lyrics/LyricsTimelinePolicy.kt": {
       "blob": "ca5119832beb218baa7131599c54fffbff679140",
@@ -2579,10 +2588,11 @@
       "sha256CanonicalBytes": "73a4acda64eb4a836311607aaada245a25f52d6136dfb29c3f168b1bcff3f71d"
     },
     "app/src/main/java/com/android/purebilibili/feature/audio/lyrics/LyricsWordAlignmentPolicy.kt": {
-      "blob": "a867df74ccc18ef67d71f0fa66f03d38415d70f9",
-      "sha256": "ce95f915e69ef4145faee13719eab5feb480617883d96c5e77b60601c5fcf402",
+      "blob": "72dd8e59f869938dbc4144c3598fbf95ce24f4a9",
+      "sha256": "1b12208272962617e9f906441c203b6ed6fbec41a5f5b5781037c4addc68adc8",
+      "legacySha256": "ce95f915e69ef4145faee13719eab5feb480617883d96c5e77b60601c5fcf402",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "ce95f915e69ef4145faee13719eab5feb480617883d96c5e77b60601c5fcf402"
+      "sha256CanonicalBytes": "1b12208272962617e9f906441c203b6ed6fbec41a5f5b5781037c4addc68adc8"
     },
     "app/src/main/java/com/android/purebilibili/feature/audio/lyrics/halcyon/AppleCoverFlowBackground.kt": {
       "blob": "6bbe12328724989a5c668994261cebf5b5323ae4",
@@ -2611,11 +2621,11 @@
       "sha256CanonicalBytes": "3a071c1f28ecb7c182389528d83941648013fbf7684f072fedde69e084b12d6c"
     },
     "app/src/main/java/com/android/purebilibili/feature/audio/lyrics/halcyon/AppleMusicLyricsView.kt": {
-      "blob": "729419bc7f1bd91b5595bab8649493a5e1632ad3",
-      "sha256": "0659ea46bad1e1124ab6688b51d4a1ad7dc866c5c0751c9c6c086de9284b0e21",
+      "blob": "1f197e98034d58ffbec366c606cb8ddd22de820f",
+      "sha256": "384ca029263f4f886f17d4b60f322c7436f3d666eccfd9986ac4a46f9363a312",
       "legacySha256": "deeaee2422f18c6f5bad05186235eccb900fe77e48d864751be0545f9974ff67",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "0659ea46bad1e1124ab6688b51d4a1ad7dc866c5c0751c9c6c086de9284b0e21"
+      "sha256CanonicalBytes": "384ca029263f4f886f17d4b60f322c7436f3d666eccfd9986ac4a46f9363a312"
     },
     "app/src/main/java/com/android/purebilibili/feature/audio/lyrics/halcyon/HalcyonLyricModels.kt": {
       "blob": "5873af8925ce8ed143c85f1db2dc0f584de8525a",
@@ -2706,11 +2716,11 @@
       "sha256CanonicalBytes": "f321e2655da8eeef1e5fbb535f63bc3759af7d5279681d9e066010b1cc08c0c2"
     },
     "app/src/main/java/com/android/purebilibili/feature/audio/screen/ExternalPlaylistImportDialog.kt": {
-      "blob": "f1c00c3a0b276dc3b8efb962551fac83cd9ef39a",
-      "sha256": "2c0489ce4747ed2d4cc5353a13b69dde3646c3999ca0690e403b840486b5569a",
+      "blob": "4123329e7a21f51bf00a5f2c83fa4c5c92ae077b",
+      "sha256": "2e2f623cba6aa013ce0a961b5a0e7eb699c94f482c2813167f0109e01a081ab1",
       "legacySha256": "26cb46a8d744f16eb448c3242ade46d4edc9363c7109fdaf7b86d07c3fd91c97",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "2c0489ce4747ed2d4cc5353a13b69dde3646c3999ca0690e403b840486b5569a"
+      "sha256CanonicalBytes": "2e2f623cba6aa013ce0a961b5a0e7eb699c94f482c2813167f0109e01a081ab1"
     },
     "app/src/main/java/com/android/purebilibili/feature/audio/screen/ListenVideoLayoutPolicy.kt": {
       "blob": "34ccf332483216b6d0e523f961275d6a49bb7709",
@@ -2752,11 +2762,11 @@
       "sha256CanonicalBytes": "738fe3fde78c5a611268a7cca31f8bf47186f2ba70d59c826efbaaea3914a5de"
     },
     "app/src/main/java/com/android/purebilibili/feature/audio/screen/MusicPlayerContent.kt": {
-      "blob": "b6cd4a2d9dcdd01c9ee9d4b5197e1e61fd0e8e8e",
-      "sha256": "fd210a2306a6c1cd837e8bbc6898c8160e9c4584eb9e2383322d62b83511ce53",
+      "blob": "176577a09ef94ac1c472b0727ccbf4c9eed3a1d5",
+      "sha256": "60cf15542d0aca2db221413715f154bda9db48ded193dfbab29d5c46305ce05e",
       "legacySha256": "2a200f2661989021073992af6fbe041a8a973dd8e9a1e221f8935283aebb538d",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "fd210a2306a6c1cd837e8bbc6898c8160e9c4584eb9e2383322d62b83511ce53"
+      "sha256CanonicalBytes": "60cf15542d0aca2db221413715f154bda9db48ded193dfbab29d5c46305ce05e"
     },
     "app/src/main/java/com/android/purebilibili/feature/audio/screen/MusicPlayerLayoutPolicy.kt": {
       "blob": "157ff1b59398673823d145ff271804911ee50cf1",
@@ -2804,11 +2814,11 @@
       "sha256CanonicalBytes": "9b714739d1f7aa76151d135c6118db055b8a3ecb1e3d5dd645f4435f73b117ca"
     },
     "app/src/main/java/com/android/purebilibili/feature/audio/viewmodel/MusicViewModel.kt": {
-      "blob": "b408f67dd187823c5ec2e81c8238619b3f6c782e",
-      "sha256": "46ea8fcd11a527d6f95f7d18549e2707b8a141b137208dfff8068a9c7c6aa67b",
+      "blob": "b78180ac288b4ad5f4dd1fc678c2e334b00b4316",
+      "sha256": "fafc2502bf5ec60eac740c4d3631b90034717a6a7c6878902162e4d42477c38f",
       "legacySha256": "e5f8b1a5375cd071ac7114fec95624ca64365cb808a16758292a816d9f88aa25",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "46ea8fcd11a527d6f95f7d18549e2707b8a141b137208dfff8068a9c7c6aa67b"
+      "sha256CanonicalBytes": "fafc2502bf5ec60eac740c4d3631b90034717a6a7c6878902162e4d42477c38f"
     },
     "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiDashManifestPolicy.kt": {
       "blob": "4f89943938ac064a3fedb9671594df4b7a59ce89",
@@ -2830,11 +2840,11 @@
       "sha256CanonicalBytes": "ee8ac2498ab5de0f46aa01b81ab8f2bae11e7775ebea5b04b6220388206bfe8c"
     },
     "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiHubContent.kt": {
-      "blob": "5f743dba02341fa4f0c0f01326c904b8c3eb5aa8",
-      "sha256": "9ab7aa6b81a55ae77bf82ee52903ee1a2d909e5579f863f3d58ead17a578f5a9",
+      "blob": "748d5346272e44729e8dd049bbfea8dda16ee46d",
+      "sha256": "f13257a1aa8b5d0babb9460ab355dee0b9404d5d5f7cc825d35d70369e84af9a",
       "legacySha256": "de00b9fc1ba0910d4b778c8d76e1f72237c74042fffb6ef14a3dadf2711604b3",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "9ab7aa6b81a55ae77bf82ee52903ee1a2d909e5579f863f3d58ead17a578f5a9"
+      "sha256CanonicalBytes": "f13257a1aa8b5d0babb9460ab355dee0b9404d5d5f7cc825d35d70369e84af9a"
     },
     "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiHubSkeletons.kt": {
       "blob": "c1d3e971a5944cedeb512e2d5bef9434c4911494",
@@ -2857,18 +2867,18 @@
       "sha256CanonicalBytes": "a4e38309ce483cd28a6f04e1ff55f174ac3aff6850adeb46c31d903d9fe9a90d"
     },
     "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiPlayerScreen.kt": {
-      "blob": "b4ecf83bbe994cb2826e14237ed7d3078fc679b5",
-      "sha256": "932a0fa4579a49c6f643fffbff2a3eaf4f0b4262e8e5123805cc4a3833412a78",
+      "blob": "522ae1532a73f25d305a260b730052aaed15e15c",
+      "sha256": "7d2a5c49e62082bd301b2aa9e4dd0c59f77a6c0ab66c4993406cf6283fbee90e",
       "legacySha256": "cff9a1c2ffac42afb302b4aa89211686e7d866155e6c30874c94bf28df825a6b",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "932a0fa4579a49c6f643fffbff2a3eaf4f0b4262e8e5123805cc4a3833412a78"
+      "sha256CanonicalBytes": "7d2a5c49e62082bd301b2aa9e4dd0c59f77a6c0ab66c4993406cf6283fbee90e"
     },
     "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiPlayerViewModel.kt": {
-      "blob": "19f2397ad1bfcf379a7d2caa1326ca8dffb5be56",
-      "sha256": "0121fe7bf1da3ba038f1da748fa75a3cc2b3b92d43f16f51e3d777e6c2792ea5",
+      "blob": "3067a408bbbf0da2303208f7c13e7f799597b111",
+      "sha256": "cae442b910fb09dd9116d5feecbeaa9f5f690633e8c0ab287f1657d43f2f99ba",
       "legacySha256": "248357d5366512c99e1f4ef761cfe9fc4ed8bee0e625254af72f112823baf057",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "0121fe7bf1da3ba038f1da748fa75a3cc2b3b92d43f16f51e3d777e6c2792ea5"
+      "sha256CanonicalBytes": "cae442b910fb09dd9116d5feecbeaa9f5f690633e8c0ab287f1657d43f2f99ba"
     },
     "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiReviewScreen.kt": {
       "blob": "42ac9ffcf0a4bf0d5b13561521ee196faf51f488",
@@ -3017,11 +3027,11 @@
       "sha256CanonicalBytes": "5101af602ed6541b2fb81a636759b2c7590b70abf77c42153cd8354bf004f2af"
     },
     "app/src/main/java/com/android/purebilibili/feature/bangumi/ui/player/BangumiPlayerOverlayHost.kt": {
-      "blob": "0a26695d1f6bbffb4f73cca3bdfe8e599392feb0",
-      "sha256": "45036ce7b7398c20154c5176cff916a5cc3a3fb2a05cfc3c92962cd65934fb1f",
+      "blob": "e0a2faeae6279995f33a8e6ebdbfb1af658ade74",
+      "sha256": "905182d2ae89a4d4c4d98f040415753dd0f2f71ea15036a610263abe40757742",
       "legacySha256": "d0311f2db0e0b75796fe0c3bf53a6d9b9bd494024bd1051d9d8e46478050576a",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "45036ce7b7398c20154c5176cff916a5cc3a3fb2a05cfc3c92962cd65934fb1f"
+      "sha256CanonicalBytes": "905182d2ae89a4d4c4d98f040415753dd0f2f71ea15036a610263abe40757742"
     },
     "app/src/main/java/com/android/purebilibili/feature/cast/DeviceListDialog.kt": {
       "blob": "54c8a0ea53648542ae59363c7cf1c382ab3898a3",
@@ -3173,11 +3183,11 @@
       "sha256CanonicalBytes": "302043abe505129ac17d54dff21c48904103316852f0a59e2e6aca531629a45f"
     },
     "app/src/main/java/com/android/purebilibili/feature/download/DownloadManager.kt": {
-      "blob": "f8e2768b40bf0e35a302539629a1e63be352e39c",
-      "sha256": "ee68d3cb5b882216472ebae16942c3b8666eafd8bac4a550f27ec06aae158242",
+      "blob": "ee0e2188525773df07e2aec0cdc08c9ef5075729",
+      "sha256": "3df905a7c19517baadd3179e310f5eeed1b40751ded302b22cc0c7571945b0fa",
       "legacySha256": "f1c78637c9a13b99e70a7732b6fd3836712784628c1903539b34de5b57817c64",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "ee68d3cb5b882216472ebae16942c3b8666eafd8bac4a550f27ec06aae158242"
+      "sha256CanonicalBytes": "3df905a7c19517baadd3179e310f5eeed1b40751ded302b22cc0c7571945b0fa"
     },
     "app/src/main/java/com/android/purebilibili/feature/download/DownloadPersistencePolicy.kt": {
       "blob": "aedcb3b1a0505bce01032feed6d5f9635ee20366",
@@ -3391,11 +3401,11 @@
       "sha256CanonicalBytes": "186db5818b60afbc8adb4f0490eac9d9f1a30ae46c5095925cee2d6133d4a9d8"
     },
     "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicViewModel.kt": {
-      "blob": "7e27d62e5100779b390add1a8f90ebf95375a002",
-      "sha256": "41a70f9e256c6c13bc3edf4550f0ab726c1227a6fe40ec3e46979bce0b074c7d",
+      "blob": "969385307c102c5f0d8487848f23396973dac64a",
+      "sha256": "53abf236afd6ec331989083ce5166ec553564eaccb2feec99161623514d448a3",
       "legacySha256": "7b418a34a6cbe270406afc1178af3dcbfe4a65b59ae5015743a846eaa2a54f5d",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "41a70f9e256c6c13bc3edf4550f0ab726c1227a6fe40ec3e46979bce0b074c7d"
+      "sha256CanonicalBytes": "53abf236afd6ec331989083ce5166ec553564eaccb2feec99161623514d448a3"
     },
     "app/src/main/java/com/android/purebilibili/feature/dynamic/components/ActionButton.kt": {
       "blob": "fa46d9a7a5deec8af36cc529c7badcf8ffd3617d",
@@ -3438,18 +3448,18 @@
       "sha256CanonicalBytes": "506f98027f1bc205d0fa4909c7f8235095ba5739dbdc2a1d77b92aea967c4b7f"
     },
     "app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicCard.kt": {
-      "blob": "bf1a784cde9e0f7688fafc644fb8c8ec60bd328e",
-      "sha256": "a44a8896941777a229563e9cc4845aba8ba1ccf5e839337f2b9d53217bdf08fc",
+      "blob": "20386160792cd7fc562ecd87be4680f415779fbb",
+      "sha256": "e5720661354f3221d16428516891493217dd6bf6ee83df5c334c93f265af0d9f",
       "legacySha256": "72b0ffd85f3492b66d8a2cfc4663e2cd5c334a347f4e55f1490f2cf84d8a8d4b",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "a44a8896941777a229563e9cc4845aba8ba1ccf5e839337f2b9d53217bdf08fc"
+      "sha256CanonicalBytes": "e5720661354f3221d16428516891493217dd6bf6ee83df5c334c93f265af0d9f"
     },
     "app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicCardClickPolicy.kt": {
-      "blob": "e8bf5aeb030088812cbdbccb2cb708a6205b5482",
-      "sha256": "b9cb648c8a687677b6948a4d016e925f06c8ce9f5e5070593bfbaeaa33f476fb",
+      "blob": "452b0c267661affc7251fcc6bc8476d29b5ae6bc",
+      "sha256": "60cfb465f83b68194ceab9ce51e683d01f3325e8e9a18198d7e5ab529c12c874",
       "legacySha256": "07a68b1521bb7a4c11f885dd68f4a0c680a4112050866e3bf6310996928b5d2d",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "b9cb648c8a687677b6948a4d016e925f06c8ce9f5e5070593bfbaeaa33f476fb"
+      "sha256CanonicalBytes": "60cfb465f83b68194ceab9ce51e683d01f3325e8e9a18198d7e5ab529c12c874"
     },
     "app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicCardFoldPolicy.kt": {
       "blob": "dd7eb8e14d0e197b52bec66f3b806f285aa35690",
@@ -3611,11 +3621,11 @@
       "sha256CanonicalBytes": "f96f6472309c9fc7d9b6dcb54d16b1306b28694363a4c21bd7ff2c1bde04a689"
     },
     "app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewDialog.kt": {
-      "blob": "62167b17ac56e514b719ceadfa5378cf760ef501",
-      "sha256": "6f4961d97f7885f91551a8bcf2b5aeb60a05f379686afe8f3ba4357e8d32047f",
+      "blob": "1781e288c0af69dfd02ef376106d82d05a0499f7",
+      "sha256": "a16b3d5a2025113bcde6f342ab42ccc9de6706a3906270374207d0f2e0d2f432",
       "legacySha256": "a9a83bb404aa172f6e7929fb758a0eb08e5108b5f0d4abf71b89161b1920c9dd",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "6f4961d97f7885f91551a8bcf2b5aeb60a05f379686afe8f3ba4357e8d32047f"
+      "sha256CanonicalBytes": "a16b3d5a2025113bcde6f342ab42ccc9de6706a3906270374207d0f2e0d2f432"
     },
     "app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewFeedbackPolicy.kt": {
       "blob": "90fd265ac2184c0107f0560dac9c75b543753dae",
@@ -3879,11 +3889,11 @@
       "sha256CanonicalBytes": "985fd2b1dc74372cca2a67382df97938de759551861a7528809dec57f8ccea6a"
     },
     "app/src/main/java/com/android/purebilibili/feature/home/HomeScreen.kt": {
-      "blob": "85dd90fa9afd830e7b2617953e89b3cb5d872844",
-      "sha256": "68a4805926bc937bc8fe68ab4dd97988306fcdf7ba8f5b49c572047b8b951c2f",
+      "blob": "8fc09df53a8750afd3c22197b3160dc648a954ba",
+      "sha256": "51725b7a187b5c65784b13fa31bc520aa84f370b41cfc01931d1f32430dfae48",
       "legacySha256": "2c959020dec595839527d8c51ebbfb0a8fbf991290ec102cd18ac7b82054d176",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "68a4805926bc937bc8fe68ab4dd97988306fcdf7ba8f5b49c572047b8b951c2f"
+      "sha256CanonicalBytes": "51725b7a187b5c65784b13fa31bc520aa84f370b41cfc01931d1f32430dfae48"
     },
     "app/src/main/java/com/android/purebilibili/feature/home/HomeScrollOffsetPolicy.kt": {
       "blob": "1f8d96aa6dc3e28c08c6bdcef70b98e8afb3343d",
@@ -4026,11 +4036,11 @@
       "sha256CanonicalBytes": "0d62f01e9fb55151333b5c7de117f0251e47d926f414901a517bf3bdac30f8df"
     },
     "app/src/main/java/com/android/purebilibili/feature/home/components/BottomBar.kt": {
-      "blob": "2715e3fe424dca8932e97e77ce20c734e7da270d",
-      "sha256": "cb73998118b1e1bde23b9976f23ba838f016174c2f7dc9e508d949e280579d6e",
+      "blob": "722ea8e4f2125ad55efcc166561b06361b74815e",
+      "sha256": "7fa2d8d7a5a15b588d908d2c4e960cc4ba52ea257e11773211450e88bb0b8d8d",
       "legacySha256": "10db9a207acb5b309f4aa6d5977e30d862d8fe6829d9582edb546a8ada42d1cc",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "cb73998118b1e1bde23b9976f23ba838f016174c2f7dc9e508d949e280579d6e"
+      "sha256CanonicalBytes": "7fa2d8d7a5a15b588d908d2c4e960cc4ba52ea257e11773211450e88bb0b8d8d"
     },
     "app/src/main/java/com/android/purebilibili/feature/home/components/BottomBarChromeMotionSpec.kt": {
       "blob": "3bc113dd914fcdd9c69d134187ccacde6c50f609",
@@ -4061,11 +4071,11 @@
       "sha256CanonicalBytes": "094e78171ec1ad19287ce0a72b4575f898e3f28031206fcadae7c9021cc0ed3d"
     },
     "app/src/main/java/com/android/purebilibili/feature/home/components/BottomBarMatchedLiquidChrome.kt": {
-      "blob": "c79dc47662262bf7317f2c832cd1599cf2fdd6bb",
-      "sha256": "770691fa0e66b9828f0a0cdb7548bbf1776a2409f941717650200290bf16500c",
+      "blob": "f1f5511ed73e342c7d944b3f9175ffd45a697a35",
+      "sha256": "906e54f844bbf46393170b507028952a50a051f838c37203af9a590703fcb02f",
       "legacySha256": "a952a41fc91d694bdc0410f3bba89806acf0b2f33272c071aca97500bcbeb5ad",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "770691fa0e66b9828f0a0cdb7548bbf1776a2409f941717650200290bf16500c"
+      "sha256CanonicalBytes": "906e54f844bbf46393170b507028952a50a051f838c37203af9a590703fcb02f"
     },
     "app/src/main/java/com/android/purebilibili/feature/home/components/BottomBarTypographySpec.kt": {
       "blob": "50154420e94af5a3f3d12a16ab8fd3a6c4cfdee2",
@@ -4117,11 +4127,11 @@
       "sha256CanonicalBytes": "6eee4ae7c005525b0f3dfa82ee6a02f3dc204db73972971141eca9b0a5def529"
     },
     "app/src/main/java/com/android/purebilibili/feature/home/components/HomeHeader.kt": {
-      "blob": "3f1c75c7e30515a686617c9ee8f2812414e9d4e2",
-      "sha256": "e211425c1137899ef5cf3d619611664288cb00adbeddba227394a624892e786b",
+      "blob": "1795beb27b71d9de2880b60e5bb7e99b894b2dcd",
+      "sha256": "2f9805a1ab79d630648731df2e9ea1f90ff8c65ade57be00c4db89e27a993e65",
       "legacySha256": "1ba57234efcb2f7e7e9f410cc38b9f258a5dd042f8b8b8e8d5f09971ad7d6687",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "e211425c1137899ef5cf3d619611664288cb00adbeddba227394a624892e786b"
+      "sha256CanonicalBytes": "2f9805a1ab79d630648731df2e9ea1f90ff8c65ade57be00c4db89e27a993e65"
     },
     "app/src/main/java/com/android/purebilibili/feature/home/components/HomeHeroCarousel.kt": {
       "blob": "d9f3b20547d7701a41d4af7d7ad27d089b6ba214",
@@ -4325,11 +4335,11 @@
       "sha256CanonicalBytes": "9a7343aba6f211bcaf90dd24b33291d912fc2ee309e873854aa0aa331bfaa6d4"
     },
     "app/src/main/java/com/android/purebilibili/feature/home/components/cards/HomeStyleSingleColumnVideoCard.kt": {
-      "blob": "4ca8b804e431b780bd91e2d2609f2dcd04fea89e",
-      "sha256": "3e1478b59ba2de2d7476f1852261785e2d25dbec77f3adfd7cdab4c4d5b54c72",
+      "blob": "9fc4329b1f9302b7b95ea99a23e7852e9f6182d5",
+      "sha256": "0226fc75b589a8c7e2f367598fbbdbd685a3a055b168338a85e9b3e03f1b679a",
       "legacySha256": "0791f3f41c662f0e9eb6d196593637bc8d832122deafe6a4cf3d05f541072f78",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "3e1478b59ba2de2d7476f1852261785e2d25dbec77f3adfd7cdab4c4d5b54c72"
+      "sha256CanonicalBytes": "0226fc75b589a8c7e2f367598fbbdbd685a3a055b168338a85e9b3e03f1b679a"
     },
     "app/src/main/java/com/android/purebilibili/feature/home/components/cards/HomeVideoGlassBadgeStylePolicy.kt": {
       "blob": "7dc336c5f80e3796d2fe0bdc42997786aa5043ea",
@@ -4338,11 +4348,11 @@
       "sha256CanonicalBytes": "fdcf061feb7b50c5ba26f1bdb646b33918aab00e6299a5d06d8931298493f73a"
     },
     "app/src/main/java/com/android/purebilibili/feature/home/components/cards/HorizontalVideoCardFrame.kt": {
-      "blob": "8c4d9749b8191ff671a1db9b0879ae66e952a84d",
-      "sha256": "ed1e6cbfa5269c8feabd708d9c7bcf610fb955bf2e020aa0dff20b520a6d9615",
+      "blob": "4bd72b8623b7cf9ad902475804fd612e13069a69",
+      "sha256": "1ccec1db1a080c5a7e21418714dc732140b5eab09f6a6e2f799a379823511103",
       "legacySha256": "89db4391653197234f591f36492b98d84e529db410026fa9eb6c8f67e4200de4",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "ed1e6cbfa5269c8feabd708d9c7bcf610fb955bf2e020aa0dff20b520a6d9615"
+      "sha256CanonicalBytes": "1ccec1db1a080c5a7e21418714dc732140b5eab09f6a6e2f799a379823511103"
     },
     "app/src/main/java/com/android/purebilibili/feature/home/components/cards/HorizontalVideoCardLayoutPolicy.kt": {
       "blob": "b0d176cca18ee7330fa14c2c9fa4f84702bbddac",
@@ -4359,18 +4369,18 @@
       "sha256CanonicalBytes": "9e249cd106d5b5834a8ea5d27ef84f4b69f027b361be150d07c166d3e633f043"
     },
     "app/src/main/java/com/android/purebilibili/feature/home/components/cards/StoryVideoCard.kt": {
-      "blob": "ddb3e2295337494dc28c0e15b8de054ed63b3a60",
-      "sha256": "ac440c5edd0e69df6b58c808634014d7f3256caf5136f4fee0fae02f128a3553",
+      "blob": "a485957e0ab596b0f48e165dd5c158ea52adbf17",
+      "sha256": "d8f159bdbdbddb5bd5547e58f75bc04ffaff7badb4e6cc2c288c7a226de7993b",
       "legacySha256": "5c1d96c026bbe54f7d9214b2123695f9ce05ff960d50b7e720dd94a6894bb77a",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "ac440c5edd0e69df6b58c808634014d7f3256caf5136f4fee0fae02f128a3553"
+      "sha256CanonicalBytes": "d8f159bdbdbddb5bd5547e58f75bc04ffaff7badb4e6cc2c288c7a226de7993b"
     },
     "app/src/main/java/com/android/purebilibili/feature/home/components/cards/VideoCard.kt": {
-      "blob": "49a36bcb1469d66e186752246279c997caac2a45",
-      "sha256": "91112c70439150386de92cf32a0688b61086925051e960c18a3f6b5ba1e7bd5d",
+      "blob": "25fd1414d18e739d087b3629e8d602f7aa0b3a43",
+      "sha256": "b5f475fac829129a946ea4d9463362a0041aad1de4aa9356eafc1a9f0a2a5792",
       "legacySha256": "4486fe0d03db8218921f662f5036566ab56243d97b2df5d14c9f4e628beb7938",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "91112c70439150386de92cf32a0688b61086925051e960c18a3f6b5ba1e7bd5d"
+      "sha256CanonicalBytes": "b5f475fac829129a946ea4d9463362a0041aad1de4aa9356eafc1a9f0a2a5792"
     },
     "app/src/main/java/com/android/purebilibili/feature/home/components/cards/VideoCardAdaptiveTintPolicy.kt": {
       "blob": "3a6b2eba278e4bd11f33c376dd5b272430114a4f",
@@ -4624,11 +4634,11 @@
       "sha256CanonicalBytes": "3ea3c007e9f5d6e092685cabea5b44f5c92d6bd549b1dcbbd8f102fcbeece2bd"
     },
     "app/src/main/java/com/android/purebilibili/feature/list/FavoriteCategoryScreen.kt": {
-      "blob": "8b12b1c5791854f73b72d69d6a92b5710c3e07d0",
-      "sha256": "570458105cb32942e5ea4f134e441cebce57c20fbf59f44ab2a996d6539549cf",
+      "blob": "e2b0eeceb5367caf72115862ae7f896f0c0366fe",
+      "sha256": "bf35e6b459192d6d03e38d541268e62731cf73c1898f34e5541100b00dcb3985",
       "legacySha256": "c05f746c158f6ee2cc76837d08eab985082bc65e2b82e6b29e217887e8eb240d",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "570458105cb32942e5ea4f134e441cebce57c20fbf59f44ab2a996d6539549cf"
+      "sha256CanonicalBytes": "bf35e6b459192d6d03e38d541268e62731cf73c1898f34e5541100b00dcb3985"
     },
     "app/src/main/java/com/android/purebilibili/feature/list/FavoriteCollectionPolicy.kt": {
       "blob": "e7dff37c19cdc4162fff9da9ff7461bf03716aa1",
@@ -4691,10 +4701,11 @@
       "sha256CanonicalBytes": "1752257e734b5b47ea6572c3422c76459e1d363050b513b047c1f9f4e63badf7"
     },
     "app/src/main/java/com/android/purebilibili/feature/list/HistoryNavigationPolicy.kt": {
-      "blob": "18a5de20d25a6dd76100e283123eccf156bdef6a",
-      "sha256": "088f7ad8fe4a0095d34ff992e42f0bc9369ba7eb63b1faaa28bd56d9cefeff97",
+      "blob": "a18c67befd4ce857fc4750edffc3854c4a673fcd",
+      "sha256": "2552daddc4f5d35626d96221a881201e36c10a197f6da16e26701fed66e1971a",
+      "legacySha256": "088f7ad8fe4a0095d34ff992e42f0bc9369ba7eb63b1faaa28bd56d9cefeff97",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "088f7ad8fe4a0095d34ff992e42f0bc9369ba7eb63b1faaa28bd56d9cefeff97"
+      "sha256CanonicalBytes": "2552daddc4f5d35626d96221a881201e36c10a197f6da16e26701fed66e1971a"
     },
     "app/src/main/java/com/android/purebilibili/feature/list/HistoryPaginationPolicy.kt": {
       "blob": "50d2367a58f09364e7cbcda9a1728fc210eb55bd",
@@ -4703,11 +4714,11 @@
       "sha256CanonicalBytes": "c0ef2e3465f90c3f62d72b0b019095bfe10163457d8c2c495877a94a421ddc39"
     },
     "app/src/main/java/com/android/purebilibili/feature/list/HistoryPersonalCard.kt": {
-      "blob": "b0d61d1f9947c34dd562bdab9a4048f50003dea1",
-      "sha256": "b2c826714f8ff9e55ed1cea66712be8d2c750aba3739289ff879279dbe2e40c2",
+      "blob": "e164efb5f7fd2f83c8f786fef5a5cc078e08d3d0",
+      "sha256": "d870e640bb816ab334fc0a4c0b3a8a282491939c9474fcd54ecaea3c0ac9edf0",
       "legacySha256": "71dafbef774d4fd3d3538a76b7ab887f178381992393b0802bd41bc17ca2f5f5",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "b2c826714f8ff9e55ed1cea66712be8d2c750aba3739289ff879279dbe2e40c2"
+      "sha256CanonicalBytes": "d870e640bb816ab334fc0a4c0b3a8a282491939c9474fcd54ecaea3c0ac9edf0"
     },
     "app/src/main/java/com/android/purebilibili/feature/list/HistoryPlaybackPolicy.kt": {
       "blob": "20896d8ad5d5f3f6e5568a6be0dd6186109fe074",
@@ -4784,11 +4795,11 @@
       "sha256CanonicalBytes": "9a1a0181acd251aae3bfd43e9a937cc8c69e40b58c76e1eb7d369de539c27f31"
     },
     "app/src/main/java/com/android/purebilibili/feature/live/LiveFollowingScreen.kt": {
-      "blob": "f1bab1cf2cdcfafaedf6f232428838736dcd21f9",
-      "sha256": "c4eeb1c27bf2eec3dca25b302e728d59bc545415deeacd6b9c36e32ab22e804a",
+      "blob": "e36ed8f0d73c1df4961f0d28c1c21c8f18f23789",
+      "sha256": "342f1ccbd77740f22f33b152cf6bd2ccb05f664089077b74f13b5d11d5b5ee37",
       "legacySha256": "75bc6e38c891944425834a188973a314abf4c4d24a7fbbf50c6d44560ad32b59",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "c4eeb1c27bf2eec3dca25b302e728d59bc545415deeacd6b9c36e32ab22e804a"
+      "sha256CanonicalBytes": "342f1ccbd77740f22f33b152cf6bd2ccb05f664089077b74f13b5d11d5b5ee37"
     },
     "app/src/main/java/com/android/purebilibili/feature/live/LiveHomeAreaSelectionPolicy.kt": {
       "blob": "9e095fdeb0e40ace2948c314b62be8b2e251b6a6",
@@ -4811,11 +4822,11 @@
       "sha256CanonicalBytes": "640b381b73fe268210ba4f85e0ef387dd22ce4deeaeb3ec507cf97b858273e72"
     },
     "app/src/main/java/com/android/purebilibili/feature/live/LiveListScreen.kt": {
-      "blob": "d41d8330b592220bf004bf5dbc9d0cab2096fbad",
-      "sha256": "fe1b41f095b22c16a7c52f087a2b41d8e6e27f91a4021276d678da1aa96da209",
+      "blob": "6e16276276d30aa19e36a6764356ab4b80b55860",
+      "sha256": "cf3831a2423d36ea5985ddc1253d6fe0c4760729641531fbd9ca644c6b8bbee7",
       "legacySha256": "03dc6486343f5fd0e50831279e1c02d805f0538a4daf06dd46c3ccbdac109756",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "fe1b41f095b22c16a7c52f087a2b41d8e6e27f91a4021276d678da1aa96da209"
+      "sha256CanonicalBytes": "cf3831a2423d36ea5985ddc1253d6fe0c4760729641531fbd9ca644c6b8bbee7"
     },
     "app/src/main/java/com/android/purebilibili/feature/live/LiveListTabColorPolicy.kt": {
       "blob": "d83105a6d470713c7c70740123737d3a214f12ee",
@@ -5472,11 +5483,11 @@
       "sha256CanonicalBytes": "1192a58b70dbf9cdcedae6ecca370a45fdd8b4b274a0e382368f6ecf5fcfe192"
     },
     "app/src/main/java/com/android/purebilibili/feature/plugin/CdnRegionPolicy.kt": {
-      "blob": "cacd072ec8734245016abad23499488fa199f3bb",
-      "sha256": "148f438b6564f7de8629e38f59ba4f08cba89fde9bd53320cf59561237863f50",
+      "blob": "195219fc1f9ad92c284358a2e7745f9577d5533a",
+      "sha256": "55e15cbc205ff8a8a2253a635cd36faf4caab39223a9f84ba8903d90ed6debba",
       "legacySha256": "1d84da07dff3496332cf77ced82be71194bb7b490a459dcadb75698dee4b98f0",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "148f438b6564f7de8629e38f59ba4f08cba89fde9bd53320cf59561237863f50"
+      "sha256CanonicalBytes": "55e15cbc205ff8a8a2253a635cd36faf4caab39223a9f84ba8903d90ed6debba"
     },
     "app/src/main/java/com/android/purebilibili/feature/plugin/CdnTransferPanel.kt": {
       "blob": "f26bf5ac41a9fc14f0374ba21d5209184b12bf0e",
@@ -5563,11 +5574,11 @@
       "sha256CanonicalBytes": "38acd3813be676bced405db8d6dd7d01243dad639be4ac688202278054d898a2"
     },
     "app/src/main/java/com/android/purebilibili/feature/plugin/SponsorBlockPlugin.kt": {
-      "blob": "dbcaff29c66a14918211fd742a68682f3899a45b",
-      "sha256": "277aff727f127a85a6f763d037cc55d0e2b4776e9e22662ffb80549706d764b9",
+      "blob": "fdd5d2b1b347e088f2bf630e685355adeca473e8",
+      "sha256": "26bd2abb2141d4b9e97ba24dd2483340d4c48dffdb60b34c303eafa8853aaf21",
       "legacySha256": "2de1124c57a7b6f3ff16f1678813cc52a475c5a12c6ae285b965a1a1a8001cbe",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "277aff727f127a85a6f763d037cc55d0e2b4776e9e22662ffb80549706d764b9"
+      "sha256CanonicalBytes": "26bd2abb2141d4b9e97ba24dd2483340d4c48dffdb60b34c303eafa8853aaf21"
     },
     "app/src/main/java/com/android/purebilibili/feature/plugin/SubscriptionFeedPlugin.kt": {
       "blob": "10ef8ad2197e9e1cb66d03e23800a67bfa8cd11e",
@@ -5731,11 +5742,11 @@
       "sha256CanonicalBytes": "7379cef1ef5e616ee24643a38fac19ba424950d84698bb8a8b315e571df96a13"
     },
     "app/src/main/java/com/android/purebilibili/feature/profile/ProfileViewModel.kt": {
-      "blob": "38ee2acf1cf52f9acc0523cbd8b1fc5085cebb02",
-      "sha256": "8730192a4d228af15dc4874292d82b059405a60494ce30a0b3e2d38cd7ee67f3",
+      "blob": "ea7afe51fde23084af5fefc52a68a370979da6e6",
+      "sha256": "7a9ade46290422200a41ad88527ad1d694bd38af34628375842f4e5b9ede5465",
       "legacySha256": "b8f658eef9e4ac99479479b51b14a9d38d17f6bc7a669694e0b6ee4f02d9e411",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "8730192a4d228af15dc4874292d82b059405a60494ce30a0b3e2d38cd7ee67f3"
+      "sha256CanonicalBytes": "7a9ade46290422200a41ad88527ad1d694bd38af34628375842f4e5b9ede5465"
     },
     "app/src/main/java/com/android/purebilibili/feature/profile/SplashWallpaperPickerSheet.kt": {
       "blob": "511a7469c01a1ef01fec97398f1183df79eb906b",
@@ -5803,10 +5814,11 @@
       "sha256CanonicalBytes": "b7dfdb90f97f9e48c0f9fd58c2c56f9d841e4e23d1f85fd60c9161f6e87129c7"
     },
     "app/src/main/java/com/android/purebilibili/feature/search/SearchArticleNavigationPolicy.kt": {
-      "blob": "96f3b8ec4f173f9af99ae90c8fdb33e5f2746e82",
-      "sha256": "98daed344df34c2f5a7ec69050a0959feec821445d63b7edbdd19b812ccb1495",
+      "blob": "0289b45f61ae4cc3e9f91fb49f7cf4553cecdad3",
+      "sha256": "7daad760a49be45543ab58cd00ebba83fbfbae92eccb33fbce9b5f31297b3da3",
+      "legacySha256": "98daed344df34c2f5a7ec69050a0959feec821445d63b7edbdd19b812ccb1495",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "98daed344df34c2f5a7ec69050a0959feec821445d63b7edbdd19b812ccb1495"
+      "sha256CanonicalBytes": "7daad760a49be45543ab58cd00ebba83fbfbae92eccb33fbce9b5f31297b3da3"
     },
     "app/src/main/java/com/android/purebilibili/feature/search/SearchContentStatePolicy.kt": {
       "blob": "2c22582285cb53d8cf2cdc01e7411a83dcf06531",
@@ -5849,17 +5861,18 @@
       "sha256CanonicalBytes": "be1422a9670240aa8f15e70695f154f97c1277e180fff51b5c1beebb49d9ad38"
     },
     "app/src/main/java/com/android/purebilibili/feature/search/SearchResultNavigationPolicy.kt": {
-      "blob": "9a2c143805fffe6e775dc08a2f3e4276d45fe09e",
-      "sha256": "3b049c25c74d3c4da671e4400a54d8ba7ba8b10c9e9afd2d859f23eb203cbff2",
+      "blob": "28c2eb4b450a5d46805aabaafff13b858d55cb30",
+      "sha256": "a5e1bd386fee14d653d0d9669810e35711d961144491e1b8995a5cd8a686880e",
+      "legacySha256": "3b049c25c74d3c4da671e4400a54d8ba7ba8b10c9e9afd2d859f23eb203cbff2",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "3b049c25c74d3c4da671e4400a54d8ba7ba8b10c9e9afd2d859f23eb203cbff2"
+      "sha256CanonicalBytes": "a5e1bd386fee14d653d0d9669810e35711d961144491e1b8995a5cd8a686880e"
     },
     "app/src/main/java/com/android/purebilibili/feature/search/SearchScreen.kt": {
-      "blob": "5ac8f5977465ee793d619146097697216104a345",
-      "sha256": "9e0e987794c75f3e668e75993ddddab1a6fa648cc6374fe0222fff7229b5e42c",
+      "blob": "525a6e68675313116c380fb36d1b1a46469318f6",
+      "sha256": "22999491bb8a0433dbeb79d27cbf228de490205728681283e37e4b1bc0ef3cd6",
       "legacySha256": "d5e95624fa21466c605516bb7b517c8265349a32795c9e9da65344f9ed9dd603",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "9e0e987794c75f3e668e75993ddddab1a6fa648cc6374fe0222fff7229b5e42c"
+      "sha256CanonicalBytes": "22999491bb8a0433dbeb79d27cbf228de490205728681283e37e4b1bc0ef3cd6"
     },
     "app/src/main/java/com/android/purebilibili/feature/search/SearchSelectionChipColorPolicy.kt": {
       "blob": "f3d2be686927cb9f7f9524794d7fd3214377cc1a",
@@ -5906,11 +5919,11 @@
       "sha256CanonicalBytes": "3c603442fce0a28c8a38581674023749befe45b0024d2305860ebd441471d59f"
     },
     "app/src/main/java/com/android/purebilibili/feature/search/SearchViewModel.kt": {
-      "blob": "588abcfd44a710c80d6629f5b0c738720190c1b9",
-      "sha256": "37073bcb9235ce60b0bc9b7d932cb3c195d506393eef6933e5cf6449b6b1b6b6",
+      "blob": "2bdfad3722cf07f3f1ff850ddb2d8b1d3f3f1cf8",
+      "sha256": "479e1e98516c5b67f7c9d83fce65a748d8a9818b4d2e708dcf902a412c7324e1",
       "legacySha256": "4047d582671222148c28c7a8abb0feb294185e605a1208109dcb15ed8c79a600",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "37073bcb9235ce60b0bc9b7d932cb3c195d506393eef6933e5cf6449b6b1b6b6"
+      "sha256CanonicalBytes": "479e1e98516c5b67f7c9d83fce65a748d8a9818b4d2e708dcf902a412c7324e1"
     },
     "app/src/main/java/com/android/purebilibili/feature/search/TopicDetailScreen.kt": {
       "blob": "7d85703d207cf92dbf1f4fc6f0a9c243a6405842",
@@ -5987,10 +6000,11 @@
       "sha256CanonicalBytes": "a28a313607e6eb97a62713004d17a23f8e56b0d9900ee193181c640bac1a4bf9"
     },
     "app/src/main/java/com/android/purebilibili/feature/settings/CacheClearUiPolicy.kt": {
-      "blob": "d54468300d948fb19d3712747dd3053559904b58",
-      "sha256": "5a3659469307fd48462114c2c88b2873078ee0448e39f6960846cd23a7bb5d70",
+      "blob": "bf0cb84c5b4e1f4855ebfd6afaa866c09e8ed30b",
+      "sha256": "332050f6e27dd8a8f5201b87c6a6c860cfacd0ccf2b540c4fbdaf8af3266774f",
+      "legacySha256": "5a3659469307fd48462114c2c88b2873078ee0448e39f6960846cd23a7bb5d70",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "5a3659469307fd48462114c2c88b2873078ee0448e39f6960846cd23a7bb5d70"
+      "sha256CanonicalBytes": "332050f6e27dd8a8f5201b87c6a6c860cfacd0ccf2b540c4fbdaf8af3266774f"
     },
     "app/src/main/java/com/android/purebilibili/feature/settings/DarkThemeStyle.kt": {
       "blob": "86099e736893b079ea454dc264fd68d0808153dd",
@@ -6111,11 +6125,11 @@
       "sha256CanonicalBytes": "f21907758fc8070756fd8e9329e7b81c9223f66f176ef4e5e6e86ae595d404ef"
     },
     "app/src/main/java/com/android/purebilibili/feature/settings/SettingsSemanticIconPolicy.kt": {
-      "blob": "1398ff944b46fba28db0656c72747493d133dd37",
-      "sha256": "4c0543f7b69063ee53ed484e3e2e22344ffc68a3f52e49ce379e26e8a93281da",
+      "blob": "9c444eb0e62b771ac52213de91651bc2ff41dd0a",
+      "sha256": "6903708d47197c3106bf9570bd21c81e27ff7461ea8fa20cbdbe20e9ee7a6713",
       "legacySha256": "b208983b36fe392708836eb45e7712ff72862454e84f40fba708a17cfc097d54",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "4c0543f7b69063ee53ed484e3e2e22344ffc68a3f52e49ce379e26e8a93281da"
+      "sha256CanonicalBytes": "6903708d47197c3106bf9570bd21c81e27ff7461ea8fa20cbdbe20e9ee7a6713"
     },
     "app/src/main/java/com/android/purebilibili/feature/settings/SettingsSiblingIconPalettePolicy.kt": {
       "blob": "23698fffb49341e189be76f14bfe7d76d692bcc0",
@@ -6131,11 +6145,11 @@
       "sha256CanonicalBytes": "869e2c5307429aebea8c5ea0eac91d39e40ffca45e0ae180891ccaf17da0d97c"
     },
     "app/src/main/java/com/android/purebilibili/feature/settings/SettingsViewModel.kt": {
-      "blob": "de017131054f9b46d883501d7d9c525b92b6a714",
-      "sha256": "5f91ae4dd057f09548de2128b215a8311f01a414bb1e50ce782094af3996ff3d",
+      "blob": "1d7364a81d1a4d1a0c3e35cb93889d19572fee99",
+      "sha256": "c840608cf347c50a037402e21f8abc1a25d0ddad14777fc519858c39edf0ed3f",
       "legacySha256": "eda6a70ef0e32386580c96badf27ea808d3a29af08acf2628e3439aecf5ad787",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "5f91ae4dd057f09548de2128b215a8311f01a414bb1e50ce782094af3996ff3d"
+      "sha256CanonicalBytes": "c840608cf347c50a037402e21f8abc1a25d0ddad14777fc519858c39edf0ed3f"
     },
     "app/src/main/java/com/android/purebilibili/feature/settings/SettingsVisualSpec.kt": {
       "blob": "99502b89a1a7fe3557f7ad2aa8cd6b2caa876714",
@@ -6206,11 +6220,11 @@
       "sha256CanonicalBytes": "ccf5b8ec42a241a8c040829396418b34d2fd6881846301bf7bd4e3ee8a8e54a0"
     },
     "app/src/main/java/com/android/purebilibili/feature/settings/screen/AppearanceSettingsScreen.kt": {
-      "blob": "54127493486b0e5cb5f6aa6e261330be08ea80de",
-      "sha256": "fdf5540f96630353d5bb4b5cbf18d898bc08140f15a73e890f1444a19b877912",
+      "blob": "ebd64fec002f04611f2253f873e7676a12b99185",
+      "sha256": "227333f86660ea64cd4301eb2c03fbdbe63ca3e642a7caf3948c4891840f059e",
       "legacySha256": "91d372c45a2d2c5b784c53b9890db4a67f361b41841feab08a44d2855c5e4ace",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "fdf5540f96630353d5bb4b5cbf18d898bc08140f15a73e890f1444a19b877912"
+      "sha256CanonicalBytes": "227333f86660ea64cd4301eb2c03fbdbe63ca3e642a7caf3948c4891840f059e"
     },
     "app/src/main/java/com/android/purebilibili/feature/settings/screen/BlockedListFileService.kt": {
       "blob": "a8a3bda185c9a434125a7dbc35f9f8eff9c99c12",
@@ -6272,11 +6286,11 @@
       "sha256CanonicalBytes": "8e0d5488adfdeeeddb0739939eaf3c6a5fd079b2bf10ba998948311f974bc1ab"
     },
     "app/src/main/java/com/android/purebilibili/feature/settings/screen/PlaybackSettingsScreen.kt": {
-      "blob": "99cebefc37a4ef4f019d82395255290865228f42",
-      "sha256": "3dfdc259eb6ace928d7dacc050836e537eea8cac1bc957ea1b4155885728ad26",
+      "blob": "48bf67377ba425a313d6fb21580c4424e8aa31a2",
+      "sha256": "8be3f16261558c3342c910c583ac9a1a093c91ae16e5b5729591234dfb7fa10b",
       "legacySha256": "0e3121d36ba9b94f855e2b8ff3349f945816259f922dd82166fcf5f252b3e3bd",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "3dfdc259eb6ace928d7dacc050836e537eea8cac1bc957ea1b4155885728ad26"
+      "sha256CanonicalBytes": "8be3f16261558c3342c910c583ac9a1a093c91ae16e5b5729591234dfb7fa10b"
     },
     "app/src/main/java/com/android/purebilibili/feature/settings/screen/PluginsScreen.kt": {
       "blob": "c7b242647862c3d27735896d92e0e249e821164b",
@@ -6298,11 +6312,11 @@
       "sha256CanonicalBytes": "7e1ad9445b9339f2b447bcc087f2f0468f8bb27f3b3326a57efa78569443ba22"
     },
     "app/src/main/java/com/android/purebilibili/feature/settings/screen/SettingsScreen.kt": {
-      "blob": "b63be452f26c3e7f1a5e156eda856cf9b7b54622",
-      "sha256": "9b87be311bd1f4888ab5ba982b9a1227b01a01dcd210cf6a51e7508c05daca15",
+      "blob": "6ffb92bb9366a059ece0bccd65152e534390da55",
+      "sha256": "b59235e8c8c4b1513828ec49afb975472b7834c7afec716deb424e2893957686",
       "legacySha256": "a683216a92ed0a4079eea64955425da2abcf2f596ae2790e9909f21611a54a1a",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "9b87be311bd1f4888ab5ba982b9a1227b01a01dcd210cf6a51e7508c05daca15"
+      "sha256CanonicalBytes": "b59235e8c8c4b1513828ec49afb975472b7834c7afec716deb424e2893957686"
     },
     "app/src/main/java/com/android/purebilibili/feature/settings/screen/SettingsSearchHistorySection.kt": {
       "blob": "989670206edc2c96de60db19effe116a3dbaac1a",
@@ -6380,11 +6394,11 @@
       "sha256CanonicalBytes": "9b22e8c1828c9d2c0390919bce57394c5c9cd41dbe3c6a3316586f567a20f727"
     },
     "app/src/main/java/com/android/purebilibili/feature/settings/ui/CacheClearAnimation.kt": {
-      "blob": "10e91e2018317de34a40606484289d74fffac56f",
-      "sha256": "c9321cbba5fa156eca88cbda3833037261f69753e15644a24ef75972dbef43fd",
+      "blob": "777893dd2b96d4f907a0e24c678e753d06c77565",
+      "sha256": "55f5187aab33cc9e49e7994790e9cda69bea682897396acdf8ca1230ae4fc113",
       "legacySha256": "1c521f406465df4c51450243e49db9d4d217d6fea3f0f70b262d556233007588",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "c9321cbba5fa156eca88cbda3833037261f69753e15644a24ef75972dbef43fd"
+      "sha256CanonicalBytes": "55f5187aab33cc9e49e7994790e9cda69bea682897396acdf8ca1230ae4fc113"
     },
     "app/src/main/java/com/android/purebilibili/feature/settings/ui/SettingsComponents.kt": {
       "blob": "7d455f6180758e035a35579ebb89a69aa7b6cd88",
@@ -6407,11 +6421,11 @@
       "sha256CanonicalBytes": "f6125aeaf4c361b6e148adb55dae79287adc467343d775b40b368fd371746337"
     },
     "app/src/main/java/com/android/purebilibili/feature/settings/ui/SettingsSections.kt": {
-      "blob": "2fcbb36298b7a145196c3c99db3f11259716422f",
-      "sha256": "bd51d59266d81af023c5c41bf0bb85e4ed0e78dcbd55b63123cc68bcdeed3cd2",
+      "blob": "92ee34ff5719ee85a7e90de083ce6b2b61326023",
+      "sha256": "7be8c85faa8a47664a36df4dd88ba23e8a26fdeb59414b07c214faab1ce65793",
       "legacySha256": "e306f73ee7cf49877248eb01063816d50f43f61b47c9d41a52ab372917de54f7",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "bd51d59266d81af023c5c41bf0bb85e4ed0e78dcbd55b63123cc68bcdeed3cd2"
+      "sha256CanonicalBytes": "7be8c85faa8a47664a36df4dd88ba23e8a26fdeb59414b07c214faab1ce65793"
     },
     "app/src/main/java/com/android/purebilibili/feature/settings/update/AppBuildVerificationPolicy.kt": {
       "blob": "71419875f56422d59f5fe3b1fa1986339698c461",
@@ -6570,16 +6584,18 @@
       "sha256CanonicalBytes": "35f011010c3ae5eac7c10457dc47464eb0d28c38c33876d625d373f3d986c3dc"
     },
     "app/src/main/java/com/android/purebilibili/feature/space/SpaceDynamicLoadPolicy.kt": {
-      "blob": "ec15686c98449549b41aa017f2c3fca09a9b22f5",
-      "sha256": "80f69bede8bf1b8605ad795a7b1e56ee4f62c728b9be83d842577225671865b4",
+      "blob": "be279ffd5b91e3dceb73759dcef350f967b19bf1",
+      "sha256": "def6b36315dd082f87c40559bac9475988787aad34100564a695ed21588f0a58",
+      "legacySha256": "80f69bede8bf1b8605ad795a7b1e56ee4f62c728b9be83d842577225671865b4",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "80f69bede8bf1b8605ad795a7b1e56ee4f62c728b9be83d842577225671865b4"
+      "sha256CanonicalBytes": "def6b36315dd082f87c40559bac9475988787aad34100564a695ed21588f0a58"
     },
     "app/src/main/java/com/android/purebilibili/feature/space/SpaceDynamicNavigationPolicy.kt": {
-      "blob": "c908e0a0c88db459d92c0843a2b0b28682cdc755",
-      "sha256": "87b1ba33fed13e0284b2af43e3252e9ff08ade19929803618fdbce7b1af09b6b",
+      "blob": "fe99987f09a340c2f7cff621580a0b6a27fd1901",
+      "sha256": "355499eafbcc406263f4ad3102cc28ebd193a706a4f741288d922806f5db2089",
+      "legacySha256": "87b1ba33fed13e0284b2af43e3252e9ff08ade19929803618fdbce7b1af09b6b",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "87b1ba33fed13e0284b2af43e3252e9ff08ade19929803618fdbce7b1af09b6b"
+      "sha256CanonicalBytes": "355499eafbcc406263f4ad3102cc28ebd193a706a4f741288d922806f5db2089"
     },
     "app/src/main/java/com/android/purebilibili/feature/space/SpaceHeaderPresentationPolicy.kt": {
       "blob": "5c26384604d44d8caa0992f74547576f0907e551",
@@ -6615,17 +6631,18 @@
       "sha256CanonicalBytes": "55ec246c81b4bc78fdcb2e74d1b6ec86766773b0bdaf02d9e9736fd4679bf227"
     },
     "app/src/main/java/com/android/purebilibili/feature/space/SpaceProfileEnhancementPolicy.kt": {
-      "blob": "70645ed9b07e7ab4db080fdbcfe78ee92334011a",
-      "sha256": "75e4bf39a45d7cc0596a66ef547c2138bff6e598de6660554602f20737256590",
+      "blob": "24fc45d823d0c1e435af5ac5cb7029751766a754",
+      "sha256": "84d5f3fb01ebdffb413edbb328a19bb53caa9db861d4666852e3300e2982e0ba",
+      "legacySha256": "75e4bf39a45d7cc0596a66ef547c2138bff6e598de6660554602f20737256590",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "75e4bf39a45d7cc0596a66ef547c2138bff6e598de6660554602f20737256590"
+      "sha256CanonicalBytes": "84d5f3fb01ebdffb413edbb328a19bb53caa9db861d4666852e3300e2982e0ba"
     },
     "app/src/main/java/com/android/purebilibili/feature/space/SpaceScreen.kt": {
-      "blob": "b51f5243df0bf58fe5564f1561dadfb75b546e86",
-      "sha256": "68886a09fffae6570d70b6038ca34bffda2bc9a921a05521581330a13663775c",
+      "blob": "5326cfd6e37c1ed3d839a77be11b9bb64dc46dc8",
+      "sha256": "53d93e8a3c492f0a82ca5604333c61a32e2551843100814f52acc21113b3d04d",
       "legacySha256": "4fa39d30048c5d3c371c0a7b44258370825c93b1e60e321bc8663e92e9311a2e",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "68886a09fffae6570d70b6038ca34bffda2bc9a921a05521581330a13663775c"
+      "sha256CanonicalBytes": "53d93e8a3c492f0a82ca5604333c61a32e2551843100814f52acc21113b3d04d"
     },
     "app/src/main/java/com/android/purebilibili/feature/space/SpaceSelectionChipColorPolicy.kt": {
       "blob": "8552b468e8094f80e9fe8816faf935432b2a5488",
@@ -6660,11 +6677,11 @@
       "sha256CanonicalBytes": "0970836848746c1b9eae833074d3dd6a125e25dc1ee23bb8aec25455cdf45758"
     },
     "app/src/main/java/com/android/purebilibili/feature/space/SpaceViewModel.kt": {
-      "blob": "c816cd4a2116896780b64d9f0401fb3c1b172a12",
-      "sha256": "094ff8739dce76b9a97ce1385e9a8da837eb5bd827134e61b7879a565e8fab99",
+      "blob": "8e6a5c48df02280ffbf9928da5dea5548539a35b",
+      "sha256": "73ed01ca558a441c2ef179f46c7d39cee2b96de59323635a994a303304db16a0",
       "legacySha256": "c54a7d24b03ecd5ff177b98c9007756c7f1e87d3629218019dd34b76907212af",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "094ff8739dce76b9a97ce1385e9a8da837eb5bd827134e61b7879a565e8fab99"
+      "sha256CanonicalBytes": "73ed01ca558a441c2ef179f46c7d39cee2b96de59323635a994a303304db16a0"
     },
     "app/src/main/java/com/android/purebilibili/feature/story/StoryFeedPolicy.kt": {
       "blob": "c6ae3da6fe5fe675ab6d88f6dc7419efedcbe61c",
@@ -6674,11 +6691,11 @@
       "sha256CanonicalBytes": "8bd1836d296695fe268ccff899399c81dd4f91e8103af1d63a3b1eb7d3e88f49"
     },
     "app/src/main/java/com/android/purebilibili/feature/story/StoryScreen.kt": {
-      "blob": "a7a73b1f6cb433f66992a8be2f0d07cbf39d01ea",
-      "sha256": "61e0dd5ac17c57f9e897eb43ad5adb611f36754576d678e8d0b343c6729228a2",
+      "blob": "33f76d0aea95f331351ccfbed60bedfc8a9b15e9",
+      "sha256": "25ea68a0a66be056dba93007962cb7a25c92616f7579742534acfcb5f983f2f7",
       "legacySha256": "bd85559d3998515508d93378f1476950eda1973cde86b2c8591b1d525396c471",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "61e0dd5ac17c57f9e897eb43ad5adb611f36754576d678e8d0b343c6729228a2"
+      "sha256CanonicalBytes": "25ea68a0a66be056dba93007962cb7a25c92616f7579742534acfcb5f983f2f7"
     },
     "app/src/main/java/com/android/purebilibili/feature/story/StoryViewModel.kt": {
       "blob": "918d74bc8625de13fff9c6a3ff9d705168395726",
@@ -7114,11 +7131,11 @@
       "sha256CanonicalBytes": "e9eff6ee140a4b8cbdbe0188f2b2fecb35242db7cd5fb2a029f9d1695bcbed61"
     },
     "app/src/main/java/com/android/purebilibili/feature/video/screen/AudioModeMusicPlayer.kt": {
-      "blob": "8a775d32653bd3c135f7e473b3da485eb297f680",
-      "sha256": "26e675517af0a6ae6cac34486a3a60b590d855f071b5d9bee3df7b521d60b211",
+      "blob": "3543e21bdeb0e64abca036a6a8a5b75e1fa0f339",
+      "sha256": "6e3d7b13fba85c33b4f04f9c12d3c4798157fd2f3daabfe0277320d8db5c4bdf",
       "legacySha256": "4aa801e622630315ff95d9ba5bb4c277ecee524055ef4f5ccc5c71e648f136ea",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "26e675517af0a6ae6cac34486a3a60b590d855f071b5d9bee3df7b521d60b211"
+      "sha256CanonicalBytes": "6e3d7b13fba85c33b4f04f9c12d3c4798157fd2f3daabfe0277320d8db5c4bdf"
     },
     "app/src/main/java/com/android/purebilibili/feature/video/screen/AudioModeRenderPolicy.kt": {
       "blob": "bec7a90ff76b17041d743e03e640e6ef4898c3f4",
@@ -7127,11 +7144,11 @@
       "sha256CanonicalBytes": "47fa416b0e751f51191695929920beaf08b048d8d67d6192c752306049df8c75"
     },
     "app/src/main/java/com/android/purebilibili/feature/video/screen/AudioModeScreen.kt": {
-      "blob": "fcf5ad779ab678143ffb48bb1187dde238aa02b5",
-      "sha256": "b23a255536255919454b5926f00bab9fc097184c78524a992cfe399d5a209de7",
+      "blob": "02af6d0a86c51503b17d88ed9f167d9b6ef99e92",
+      "sha256": "3404b8e265ff4a376ac85d76b7c39d4d1b8c7099499ded540fc32fedf5e38426",
       "legacySha256": "8be4fda06237bf87601aa55f844bc501991a426fbde778f3abe6b264fd87ce2d",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "b23a255536255919454b5926f00bab9fc097184c78524a992cfe399d5a209de7"
+      "sha256CanonicalBytes": "3404b8e265ff4a376ac85d76b7c39d4d1b8c7099499ded540fc32fedf5e38426"
     },
     "app/src/main/java/com/android/purebilibili/feature/video/screen/ContinuousPlayerTransitionPolicy.kt": {
       "blob": "efe941a4cfecfadaceb3d567cd5e85e47242398a",
@@ -7162,18 +7179,18 @@
       "sha256CanonicalBytes": "8e889082fdc8c8171a582e68fe122ba8b917831ef2998cf399f9858f8a2c223d"
     },
     "app/src/main/java/com/android/purebilibili/feature/video/screen/PortraitDetailPresentationPolicy.kt": {
-      "blob": "2144f8a34c74fd0a37edc1d6153b2d3e8ae7e507",
-      "sha256": "8cf83083a45f83ea1e4ee79e43f0cf87febf47f6f3c4ea38fcbcc3b5c91dd1d1",
+      "blob": "564b4c9a624bf39e5933923b26e1495dab8f1b8e",
+      "sha256": "eb2e1c07861bfc98752eb7c299dbead73290b05ccacb124d4298f8b42afe8732",
       "legacySha256": "2daaffbd12cbfd62f560bbfa4c008629aa7b8aff846453cd2762de7c242711de",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "8cf83083a45f83ea1e4ee79e43f0cf87febf47f6f3c4ea38fcbcc3b5c91dd1d1"
+      "sha256CanonicalBytes": "eb2e1c07861bfc98752eb7c299dbead73290b05ccacb124d4298f8b42afe8732"
     },
     "app/src/main/java/com/android/purebilibili/feature/video/screen/TabletCinemaLayout.kt": {
-      "blob": "0f9170dd11b14c9d4a205bf771998b24c79c4dd1",
-      "sha256": "5b997b2ff8bc51cf1831e7add256ea33fccf855d63d2618f7db1e08b24f80048",
+      "blob": "0fa3ff8a2a661ae552104b80c6a7bbc8b505d40f",
+      "sha256": "f0ae73c48ffc55785a19fe45d388fc72672e92910c63db77a8eb880e95dd6954",
       "legacySha256": "58c3765fdf1f86f25589b338e3f60cf3ea9a575fd660ccce9df16117713fde76",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "5b997b2ff8bc51cf1831e7add256ea33fccf855d63d2618f7db1e08b24f80048"
+      "sha256CanonicalBytes": "f0ae73c48ffc55785a19fe45d388fc72672e92910c63db77a8eb880e95dd6954"
     },
     "app/src/main/java/com/android/purebilibili/feature/video/screen/TabletDanmakuChromeState.kt": {
       "blob": "ae64cbb4d20175e6923b5ecb470e3759204f26d4",
@@ -7196,11 +7213,11 @@
       "sha256CanonicalBytes": "1cf26d5e09804fd84ebd0e39e744e2dd025cf328983c73a26e64b0d112c24d40"
     },
     "app/src/main/java/com/android/purebilibili/feature/video/screen/TabletVideoLayout.kt": {
-      "blob": "725e263c31dd947dd0987f087bd7a8446d53305b",
-      "sha256": "688a1cfa5a1c730ee64e7ca1413b44036b9d94e725c077b7da3c6d81c962c26a",
+      "blob": "80adef6818a58ac74432daed4588403499e19734",
+      "sha256": "1ea32ccf4aae00ee24aadae43cba7433f64927ca0caed52843462203f31b0bf3",
       "legacySha256": "f301b7b66fbced10e280c1a3777d545e3809194765f66fd724c2ed7192f215d8",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "688a1cfa5a1c730ee64e7ca1413b44036b9d94e725c077b7da3c6d81c962c26a"
+      "sha256CanonicalBytes": "1ea32ccf4aae00ee24aadae43cba7433f64927ca0caed52843462203f31b0bf3"
     },
     "app/src/main/java/com/android/purebilibili/feature/video/screen/TabletVideoLayoutPolicy.kt": {
       "blob": "6227d6ebee10196bbe3cf3ba2cf74b63fde5593b",
@@ -7215,11 +7232,11 @@
       "sha256CanonicalBytes": "c012f6c1a1d3feafb9dc5d79a82cae7315e97bdce9a7685ace2bd8adc7aa05c3"
     },
     "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoContentSection.kt": {
-      "blob": "49fa01a4fded1a4976cf7d17dcb4c8f5e1856413",
-      "sha256": "34c42cfe7958a6ba0b9bdff3b4b5ad7547207615afe5642a29c97bd322b30629",
+      "blob": "a2b244a82dd633d8f356a0cfe2937dbb5abf2422",
+      "sha256": "d0a731bebf9333001441a8982bd87153d20e7257b80b90396c815c9fd653a0e2",
       "legacySha256": "201e634e46b680a92a0c8219b1f3f1fd4da1cf69c58291f3b5feca39bbc7839f",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "34c42cfe7958a6ba0b9bdff3b4b5ad7547207615afe5642a29c97bd322b30629"
+      "sha256CanonicalBytes": "d0a731bebf9333001441a8982bd87153d20e7257b80b90396c815c9fd653a0e2"
     },
     "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailBackPolicy.kt": {
       "blob": "124a574ed190f84d77d551422120626620365a85",
@@ -7236,18 +7253,18 @@
       "sha256CanonicalBytes": "a147bdc1b918c1a7aca36c99e164709f45a639aa2f32ff4c646cdd3a89db5eca"
     },
     "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailCommonOverlayAdapter.kt": {
-      "blob": "ee0b6ebf3b0a9eb268fc30c30e570c3da0432349",
-      "sha256": "e12382280c172b0203c25517a613ff2de9a6466e374b2773870245d092c5a2b9",
+      "blob": "ff9470afbc35262d8e36fc30560230d30864ebd8",
+      "sha256": "ebd90646404bbc0b29a68115901aaf6696f9ebd55ffc13852a0fbf59271542cb",
       "legacySha256": "02c777a25f8e3a76fe790dadc97cc475f4f66875d4642ef014c1bd92ed3b87b3",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "e12382280c172b0203c25517a613ff2de9a6466e374b2773870245d092c5a2b9"
+      "sha256CanonicalBytes": "ebd90646404bbc0b29a68115901aaf6696f9ebd55ffc13852a0fbf59271542cb"
     },
     "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailDomainEffects.kt": {
-      "blob": "8850159b18acbffb5843bf377e3424bcfc101624",
-      "sha256": "e876af92de77b35438dfcc681edf506e1aa709bdca079715c196e06a376b0bb6",
+      "blob": "fffd374c7c006353aaae40014fbecc133ee49507",
+      "sha256": "ac5c2b8fc396c677b601f9167f5e37433f8452a834a30eec595b33cf633ae86f",
       "legacySha256": "7fefec7a8302cdc4e2a9957b4082c6a00300948327686043e983c6aca6c2d20f",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "e876af92de77b35438dfcc681edf506e1aa709bdca079715c196e06a376b0bb6"
+      "sha256CanonicalBytes": "ac5c2b8fc396c677b601f9167f5e37433f8452a834a30eec595b33cf633ae86f"
     },
     "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailDownloadOverlayAdapter.kt": {
       "blob": "617297e214422395b3d9fb4b0d461ae842218570",
@@ -7257,11 +7274,11 @@
       "sha256CanonicalBytes": "795e00f8e335a13aed18ab26cefcbaee196c3baedc702c98bca8d630b787ed48"
     },
     "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailEntryLoadPolicy.kt": {
-      "blob": "e38ca3a96888e1febd37db77f2ad048405234151",
-      "sha256": "f0e2df371ca1569d53505b9578fd7bf3740d221a8bc81f51a5e8fdbdd67edc61",
+      "blob": "b229659b70913b13857f582e8d1b878ea0f0636b",
+      "sha256": "b12bea6d894b0b69cb12a08ea2392c1b710c61a3c59bdd3547465d407a31a88b",
       "legacySha256": "2183baac9247a40dce5c19933871305bb6e6483678149f4f81bd035105203ee6",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "f0e2df371ca1569d53505b9578fd7bf3740d221a8bc81f51a5e8fdbdd67edc61"
+      "sha256CanonicalBytes": "b12bea6d894b0b69cb12a08ea2392c1b710c61a3c59bdd3547465d407a31a88b"
     },
     "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailEntryTransitionObserver.kt": {
       "blob": "4d9be0d328a8622e86a638a1897cfd701f38b102",
@@ -7311,11 +7328,11 @@
       "sha256CanonicalBytes": "30077130111e17179ca942ac0bb11eabd4ff4331314941e1813a2cbe55fe204a"
     },
     "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailPhoneContent.kt": {
-      "blob": "c223ecacf0cf831e17cb530b46eba06f1aaa7247",
-      "sha256": "ca822f1fa0d21a308dcb7a65a2b319f11533f92a840d54d370359c3b3f2923f7",
+      "blob": "a5cf4fd93f8a7bccfacec3651a0126f96d67889c",
+      "sha256": "4b18e9080c01a87e5109121e51ed71645c1b62c8d46a9f2e74a227387b359648",
       "legacySha256": "bac36991d55c7216bbab6fca041f98db41eac9a476e5c195b2f37b2bcba48723",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "ca822f1fa0d21a308dcb7a65a2b319f11533f92a840d54d370359c3b3f2923f7"
+      "sha256CanonicalBytes": "4b18e9080c01a87e5109121e51ed71645c1b62c8d46a9f2e74a227387b359648"
     },
     "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailPlatformEffectsHost.kt": {
       "blob": "a3105d77028f78859c0453b6b66e54c904ea8a03",
@@ -7325,11 +7342,11 @@
       "sha256CanonicalBytes": "6531ec870c69e150bbb8421dffef12e6dbead71912d9e045ad673e3f4b9a34bf"
     },
     "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailPlatformPolicy.kt": {
-      "blob": "021d3bfdd88695022d9174e2960daae9cf3bdb73",
-      "sha256": "181ee3127d4d06e4bca3b1ed8ad18c0b6fd50110067b9a99432364b6501b66af",
+      "blob": "92f32e7073d5054d00397c34417add64bd36c4c6",
+      "sha256": "ee033dd07c365cf888fb55af7c4ec365973755d26a6457963129760efedd8a95",
       "legacySha256": "de8e0f554e1674b3c64c05b57ac2cf1846d2bf95e94d4c0eff5fa8f11314a636",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "181ee3127d4d06e4bca3b1ed8ad18c0b6fd50110067b9a99432364b6501b66af"
+      "sha256CanonicalBytes": "ee033dd07c365cf888fb55af7c4ec365973755d26a6457963129760efedd8a95"
     },
     "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailPlaybackSessionEffects.kt": {
       "blob": "8ac314edb5b689f762deafe21b300a9435633402",
@@ -7387,11 +7404,11 @@
       "sha256CanonicalBytes": "6e44a6374a5e2e88a2773bbf68331061ac7ab314b43195445499f3f9ce29ac85"
     },
     "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailReturnSourceCardChrome.kt": {
-      "blob": "778b4eba8878ee3cccbd64c0185e2fc260d70c43",
-      "sha256": "d0316de5a092d4d46ea5f4b01dd0963095a16544daede7b8b7d018f1065ef649",
+      "blob": "ae74e49731f45983239f2acf1e858f0352a92437",
+      "sha256": "4ae50ed346e3575903281af63fb6c71b03fbb712199a5531e41fca7da604ba39",
       "legacySha256": "171ea0305072f6e06c31ff6dfaa6b0762583b3daecd97dc31a88d8e024d5bfd8",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "d0316de5a092d4d46ea5f4b01dd0963095a16544daede7b8b7d018f1065ef649"
+      "sha256CanonicalBytes": "4ae50ed346e3575903281af63fb6c71b03fbb712199a5531e41fca7da604ba39"
     },
     "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailScreen.kt": {
       "blob": "9488f5045fb0ca124e8e24f20823cdce30895ea5",
@@ -7407,11 +7424,11 @@
       "sha256CanonicalBytes": "0677ca103e4c6e9f3abfada4c35497bdcf951d875ec322526b286f120fae6f61"
     },
     "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailScreenStateHolder.kt": {
-      "blob": "68b074b6e37c35ed93a689da63c4958ad2d04633",
-      "sha256": "3312d06c67bf8ae856727a27dc19a85fbf6bba530e2e5eca6383007e4666160a",
+      "blob": "30a95a1e73d4728058613f93b1fc59b0aed99f27",
+      "sha256": "13f8bc302bf995ae853563ffc807e45d660604bd9507a3d7a42d28558e91ec8b",
       "legacySha256": "da2dcc7750c8de172348a2007580f0d8dd46669e443e28e62d847bb3d033e1f7",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "3312d06c67bf8ae856727a27dc19a85fbf6bba530e2e5eca6383007e4666160a"
+      "sha256CanonicalBytes": "13f8bc302bf995ae853563ffc807e45d660604bd9507a3d7a42d28558e91ec8b"
     },
     "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailSessionPolicy.kt": {
       "blob": "d02bdaf383a06e647d6013e9ba87b7ef86aa7104",
@@ -7433,11 +7450,11 @@
       "sha256CanonicalBytes": "6b2d1414fc5c265d685b9c03ad570bb5cd2eb8b9de8ffb7e0a83f52e2cc6c7a5"
     },
     "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailTransitionPolicy.kt": {
-      "blob": "cd44bb1c47e79acc779c144713522159de0dc93f",
-      "sha256": "de47966d40dbc97e9b04328caa30e236720cbee54f722aad8895fa666de97e83",
+      "blob": "8d5603e4ecebe66fc57ddb1cfe81639c348e55ca",
+      "sha256": "093560bb49d70d041453464b77b126836f9f5472bbb88a28bced5ab078449d9d",
       "legacySha256": "c290ce6bf77d4d3a79817658f42382a8c2f9a3905ae5017b77a1fdfe229af301",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "de47966d40dbc97e9b04328caa30e236720cbee54f722aad8895fa666de97e83"
+      "sha256CanonicalBytes": "093560bb49d70d041453464b77b126836f9f5472bbb88a28bced5ab078449d9d"
     },
     "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoFavoriteActionPolicy.kt": {
       "blob": "53bb4791cf213ae140037b778a63dcf9636e4ac9",
@@ -7486,11 +7503,11 @@
       "sha256CanonicalBytes": "747de2cfee4e5b9b4aba510ba9765887d6853eec49798f0be1ca0050addaa422"
     },
     "app/src/main/java/com/android/purebilibili/feature/video/share/VideoShareSheet.kt": {
-      "blob": "76c7f6a025edafe3e3d7d4a0d19d3b544208ae00",
-      "sha256": "58b7dd39cdefc52d3473a66884179fedc5ba2315414ea6ffb4153ef955ef67d6",
+      "blob": "0769911d17c45b252ebaacc16aa5b66ffcf8dcc0",
+      "sha256": "4d1ffc790ad5154f45ec8e84e3f8119187d2d7017dcc139e072c328d89852950",
       "legacySha256": "1316c7769903345835c34e7b38922a24caefd970070bd48007cc505b2db7f6fd",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "58b7dd39cdefc52d3473a66884179fedc5ba2315414ea6ffb4153ef955ef67d6"
+      "sha256CanonicalBytes": "4d1ffc790ad5154f45ec8e84e3f8119187d2d7017dcc139e072c328d89852950"
     },
     "app/src/main/java/com/android/purebilibili/feature/video/share/VideoShareSheetMotion.kt": {
       "blob": "692901995a30a3406d4fa2e934c46e9b8adae899",
@@ -7573,11 +7590,11 @@
       "sha256CanonicalBytes": "98c7d006924f1b76afb38f22bccab71ea7cacdce1618e779e3c2bf3ba00c4873"
     },
     "app/src/main/java/com/android/purebilibili/feature/video/ui/components/BottomInputBar.kt": {
-      "blob": "4646aaa34207530ce97d8dbc749f42c314fa59af",
-      "sha256": "614fdf792a6fa5d0a33f34ece03a3f21daba774f27e03955fc052e469eb8251d",
+      "blob": "6e925df1d059a7bc080c38d021951d09faeca5a5",
+      "sha256": "b0ff3ca790427e46ad4891edc9d123aafe13781a04de9dae704522202ed72d03",
       "legacySha256": "11bded8eb078551356ee7c392102810f6703552786074e5574a751d1d5b2f4c4",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "614fdf792a6fa5d0a33f34ece03a3f21daba774f27e03955fc052e469eb8251d"
+      "sha256CanonicalBytes": "b0ff3ca790427e46ad4891edc9d123aafe13781a04de9dae704522202ed72d03"
     },
     "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CelebrationAnimations.kt": {
       "blob": "6a4b46c3e119b6c3b957f392deca23f4d316d148",
@@ -7606,11 +7623,11 @@
       "sha256CanonicalBytes": "964174cee6a0261a430094eb85af8008bf6d51555d11617da3053f4d3b5f5b78"
     },
     "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CoinDialog.kt": {
-      "blob": "d791f97947e4f3ef920d77c89d6e8fcfb609f102",
-      "sha256": "ddc26c2c7d9b0e1085f4f997d41424056339838a585c9579e64c3c8ad869a3f5",
+      "blob": "2ab97844de825f7f503b9a3f77ddb68a8f15560f",
+      "sha256": "c99c3085db653600d41ff1433618eeb03f6337782ae742f4842c9aed8095dbba",
       "legacySha256": "5b97ab40f2e4cec89e6757d5eab103c1936ca91da3fe6199849d39abe4f0898b",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "ddc26c2c7d9b0e1085f4f997d41424056339838a585c9579e64c3c8ad869a3f5"
+      "sha256CanonicalBytes": "c99c3085db653600d41ff1433618eeb03f6337782ae742f4842c9aed8095dbba"
     },
     "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CollectionEpisodePolicy.kt": {
       "blob": "c3e1091c306a5245223d37c8718c6bd198f1df56",
@@ -7680,11 +7697,11 @@
       "sha256CanonicalBytes": "15d1181f278a2ca5b86dae5ff4a3eb1fa0c8b3f811fc5e66a00af233a7de76f2"
     },
     "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CommentSortFilterBar.kt": {
-      "blob": "b07ef68cac75807e7852aa8ff5a20dea6315d92c",
-      "sha256": "0564883dddce06e94334753d096735d64c64789bb80fdca0f69a39531399cb4b",
+      "blob": "2653bf13df8c8f63b4fb0aa3c8b4ee0fa33c7a75",
+      "sha256": "2cf00f7454898bd321bb1b7d41a2c1a2c78979f2f956fc2646366f1d4ac4091c",
       "legacySha256": "8a47a92187486ced7686861df44f1ef283f790acd80284656d55751853e144e2",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "0564883dddce06e94334753d096735d64c64789bb80fdca0f69a39531399cb4b"
+      "sha256CanonicalBytes": "2cf00f7454898bd321bb1b7d41a2c1a2c78979f2f956fc2646366f1d4ac4091c"
     },
     "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CommentThreadDrag.kt": {
       "blob": "c68f4787ce64013268ce93cc44bdc8e54922d91f",
@@ -7847,11 +7864,11 @@
       "sha256CanonicalBytes": "b87743ace09b4bf1105afeb7773d807c900d6194d67f165e6687ffdbe2704fc5"
     },
     "app/src/main/java/com/android/purebilibili/feature/video/ui/components/RelatedVideoItem.kt": {
-      "blob": "3bd52c74667bad6661120e2c9980d028d81e57d8",
-      "sha256": "9e92ff248ac7cb3b393dab9beb302fd9b62672914979a0196a1354bf423a9ec4",
+      "blob": "e3600488693333e4997beb423a6290489715465d",
+      "sha256": "6ccfbb720c86d9cbc75bda205eec3e8c58adb7a228f9f59bc48ffb5263fc474e",
       "legacySha256": "00c0e0ec11fa04524c2f0c131e806a4f92e037cac322e79e434b00615e2e82f2",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "9e92ff248ac7cb3b393dab9beb302fd9b62672914979a0196a1354bf423a9ec4"
+      "sha256CanonicalBytes": "6ccfbb720c86d9cbc75bda205eec3e8c58adb7a228f9f59bc48ffb5263fc474e"
     },
     "app/src/main/java/com/android/purebilibili/feature/video/ui/components/ReplyCommentImageSaver.kt": {
       "blob": "670b685da32de4a72090ba4358fb9631f4192576",
@@ -7861,11 +7878,11 @@
       "sha256CanonicalBytes": "d34a99e35607252d3bbef9e6b4e80b2533739b01a4052dcd8b67dfa718c8a57f"
     },
     "app/src/main/java/com/android/purebilibili/feature/video/ui/components/ReplyComponents.kt": {
-      "blob": "b20b3e68d20e926e3df12a91b6e02017975e40a8",
-      "sha256": "bc8e2465f33819e1fa9367fce434d6b47f5f9e248ae8b9cad2fb15f97c63c7c1",
+      "blob": "55799e6ae147c24bd2597950de293431323a22da",
+      "sha256": "2ec80ab74eb80ab43056bf457ec7705b958666ea88c444a348e8858154dacc2d",
       "legacySha256": "fcd9065876e3815af5337c9f43579c5bbd53e6d66d3dbfd8efb51bd43c9b66f1",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "bc8e2465f33819e1fa9367fce434d6b47f5f9e248ae8b9cad2fb15f97c63c7c1"
+      "sha256CanonicalBytes": "2ec80ab74eb80ab43056bf457ec7705b958666ea88c444a348e8858154dacc2d"
     },
     "app/src/main/java/com/android/purebilibili/feature/video/ui/components/SeekPreviewBubble.kt": {
       "blob": "b8fba50118dc863bde2f377776fcfa304d30cc8a",
@@ -7903,11 +7920,11 @@
       "sha256CanonicalBytes": "999b5ef65d07b1808d3a73dd3da438d41eaa6f7bf5528a48d5f725f853a8c622"
     },
     "app/src/main/java/com/android/purebilibili/feature/video/ui/components/SubReplySheet.kt": {
-      "blob": "dba43ac572d54323ca0e5171d6d638592e5029be",
-      "sha256": "5dd791112157fd980ef6dce5d70f9b1f668398becf5055fd425ef1bc688ffb76",
+      "blob": "570b848d31172a49d81ce6ffa0e7527b164f3aa6",
+      "sha256": "bee0cf0647ecb8784e32c7d568e95b015dc86987ead92643431b4851b085df1c",
       "legacySha256": "78714b908e0e64a90325e7ebbcea38daaba57e8aa6e6bc3dec11d740ed7de783",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "5dd791112157fd980ef6dce5d70f9b1f668398becf5055fd425ef1bc688ffb76"
+      "sha256CanonicalBytes": "bee0cf0647ecb8784e32c7d568e95b015dc86987ead92643431b4851b085df1c"
     },
     "app/src/main/java/com/android/purebilibili/feature/video/ui/components/TwoFingerSpeedFeedbackOverlay.kt": {
       "blob": "10ac13d9d0b08539f29cb9f562bb74bfeb3d1f41",
@@ -7970,11 +7987,11 @@
       "sha256CanonicalBytes": "89cd53e725343a801476a762cba314deb597dd1ee5fb5ed91dc301a8666b088f"
     },
     "app/src/main/java/com/android/purebilibili/feature/video/ui/components/VideoCommentSheetHost.kt": {
-      "blob": "79b5d1a7faa4c6c99afe56271655e35261dd703a",
-      "sha256": "edd2cebaaa7620ecf783d0521d01c4a9e5b85de7abe51297c4c463f9f3dbc421",
+      "blob": "cfcd006fa93754673e2dea00938c44766d16ecb9",
+      "sha256": "830f7bb196f60bff49223acb75683f8d5612d4ed0c0f3aa25f40db6bdc3c7e1e",
       "legacySha256": "f6196e9ee8e916146e439342c4f0fd6031ab551daedc6ed4c19efb84c546e778",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "edd2cebaaa7620ecf783d0521d01c4a9e5b85de7abe51297c4c463f9f3dbc421"
+      "sha256CanonicalBytes": "830f7bb196f60bff49223acb75683f8d5612d4ed0c0f3aa25f40db6bdc3c7e1e"
     },
     "app/src/main/java/com/android/purebilibili/feature/video/ui/components/VideoCommentVoteCard.kt": {
       "blob": "036657a5cb30f683f0f83bfdf3a9d5585f18a5ee",
@@ -8310,11 +8327,11 @@
       "sha256CanonicalBytes": "e3d0c752ffbae04ced8255ec55ad1b3ec5eca446f3d997cbdeaa8312fbabe694"
     },
     "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PortraitProgressBar.kt": {
-      "blob": "7e2ff39f675c1302ae2cd7001e2114c2fa0b899d",
-      "sha256": "d6bebbe9f271fb5cf0f31ab94c8d2273cabd443df7d1d91439c552bce3757680",
+      "blob": "16b9d23e5f9532ad5802d1bb8717a47b45f8c199",
+      "sha256": "c00297a2141a4752f6b3b38696c119d7ee5aad24c4b92fbaabad1c61e503e179",
       "legacySha256": "fc1d5baefa3033d00be84ced887d801f9148dd19934a2dbf527ed08611c51b7f",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "d6bebbe9f271fb5cf0f31ab94c8d2273cabd443df7d1d91439c552bce3757680"
+      "sha256CanonicalBytes": "c00297a2141a4752f6b3b38696c119d7ee5aad24c4b92fbaabad1c61e503e179"
     },
     "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PortraitProgressBarLayoutPolicy.kt": {
       "blob": "cfdad61ed663090dab32ada0ddd68483bdd25318",
@@ -8323,11 +8340,11 @@
       "sha256CanonicalBytes": "e21eea72c439b7ce10c8dd803b9d3762fce37a7ee3f5df58b026fd6c4640ab21"
     },
     "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PortraitSubtitleOverlay.kt": {
-      "blob": "33eee2d991d2faf497d6e63f62ba1607f4fa610f",
-      "sha256": "9692aac38f3d8a88ad4e0841d89783c2824e09aa7cd47997397765155e4ab192",
+      "blob": "6184d0ec7899ff473dcd013e64d42fdc78ade7e0",
+      "sha256": "0db6488dcfc5b5fbf5a4483c1dd7d4897889159abb64ff243ea0480cf8230fcc",
       "legacySha256": "06cbba3f9a6e3b43805c9619c56fdde19dc06feb5ed02fd68f5a2e0acb3d2195",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "9692aac38f3d8a88ad4e0841d89783c2824e09aa7cd47997397765155e4ab192"
+      "sha256CanonicalBytes": "0db6488dcfc5b5fbf5a4483c1dd7d4897889159abb64ff243ea0480cf8230fcc"
     },
     "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PortraitTopBarLayoutPolicy.kt": {
       "blob": "d25e96bb94506624457c76faa22918e6b8eeff27",
@@ -8342,11 +8359,11 @@
       "sha256CanonicalBytes": "44b3f6ff1010e7d4dc9c7d6e206b9991e542db5e946fcb0715203e1b7afcbb0d"
     },
     "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/TopControlBar.kt": {
-      "blob": "f165180652af7e34a97ad6c7d27696075105ab80",
-      "sha256": "0de949f848f69c9911931113b8b45b496dc797e5fd234e6f75cfda13634e085e",
+      "blob": "ceb0aa56a4ccdfe1f05455ebcb223b5793e64caa",
+      "sha256": "bdf47c12195db639b51f88379ad52354e870776fc8b3f715feb64189dd5637e6",
       "legacySha256": "9a85c36745eb9304f8fcdffa6fd373f4c05f234bcb26a94d6cddf6b0b4ba782b",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "0de949f848f69c9911931113b8b45b496dc797e5fd234e6f75cfda13634e085e"
+      "sha256CanonicalBytes": "bdf47c12195db639b51f88379ad52354e870776fc8b3f715feb64189dd5637e6"
     },
     "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/TopControlBarLayoutPolicy.kt": {
       "blob": "a4c7c48720f24d0fb7bbff17b2835e9755dfe902",
@@ -8356,18 +8373,18 @@
       "sha256CanonicalBytes": "e10d7d3721b9f6b347292eb3ee7aad19aebee1320f36233f8459b55a0f33d1fa"
     },
     "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/VideoPlayerOverlay.kt": {
-      "blob": "3fdd861bdfc1ea31cdc78ba2eafd92e24c66c3f9",
-      "sha256": "b56f482db0f339ade6de0b86983636ae74e6bd6c8a27da6bd9ced16f93843253",
+      "blob": "b256ca805c460cc1ba873b8ca2ad73ea8a798b24",
+      "sha256": "23eda2b007afae8ee7fe23789fb3b93a8f458a55eb5c1a9a19f002fe1bb13b7f",
       "legacySha256": "84d34c70fd9abc4156f6aa7b7f69f66f1a8689d31a3b8954b26a506292a4cf11",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "b56f482db0f339ade6de0b86983636ae74e6bd6c8a27da6bd9ced16f93843253"
+      "sha256CanonicalBytes": "23eda2b007afae8ee7fe23789fb3b93a8f458a55eb5c1a9a19f002fe1bb13b7f"
     },
     "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/VideoPlayerOverlayContracts.kt": {
-      "blob": "ee777cd148d1efc6534c74334103ab99c0af52f4",
-      "sha256": "ec2596862320c9b65423bdb2340b19e0b74bb3758d6dfea8a9a3e2da3db9e0a8",
+      "blob": "24b6c333e33885b6134dac9c5cb044227ab3aa29",
+      "sha256": "bb59f94b4e35ad66f497da237bd821ca9bdcefa31a1f94d15e59978a2f0648a8",
       "legacySha256": "ef20a04275904d50dc49b39fb462b266402a76eb13969e4249fcca935fa18a27",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "ec2596862320c9b65423bdb2340b19e0b74bb3758d6dfea8a9a3e2da3db9e0a8"
+      "sha256CanonicalBytes": "bb59f94b4e35ad66f497da237bd821ca9bdcefa31a1f94d15e59978a2f0648a8"
     },
     "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/VideoPlayerOverlayVisualPolicy.kt": {
       "blob": "b898dbdd3bb97f705a3a0edfcb7251b35cfd79de",
@@ -8442,11 +8459,11 @@
       "sha256CanonicalBytes": "07d1b7f3be4d80677f0de0b96157448cda5947e6c855c6501a3e84058689a401"
     },
     "app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitPagerSwitchPolicy.kt": {
-      "blob": "52a3d133a8dffe3d27f511261bb87ceca868ac72",
-      "sha256": "9b775643f49efbdf7623c110d00a45263a648e66517a55aefd7ab4a217f01e09",
+      "blob": "f6aa877d4d3002aa5acde4f59f2623adf1455126",
+      "sha256": "4088823dbaca246680d9b58d9e4cb6a980c97c0206d75fdacd243dce54ec0c97",
       "legacySha256": "6805c3dfcd1f853d5251c47001cbb5a16adfa070e46971468dd84e3c7c0c59c0",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "9b775643f49efbdf7623c110d00a45263a648e66517a55aefd7ab4a217f01e09"
+      "sha256CanonicalBytes": "4088823dbaca246680d9b58d9e4cb6a980c97c0206d75fdacd243dce54ec0c97"
     },
     "app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitPlaybackAdvancePolicy.kt": {
       "blob": "f3a1b79fa5145465711a89f81b15777fc779077c",
@@ -8474,11 +8491,11 @@
       "sha256CanonicalBytes": "7f72149e48f3c41d763397de0cfe0cb4f0ab2f1a4e9a51ea3849530fbc2fdf88"
     },
     "app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitVideoPager.kt": {
-      "blob": "9e09e2553c42b2d0aeb11d6a51e566e555d6408b",
-      "sha256": "0a3248f7758c38297bfde35f280897c9dd5edbd3e59aac25e66f62e5d9d25400",
+      "blob": "42751ee6a9c3b05867dc52f7218d7b50fd4c6c97",
+      "sha256": "fd3da8d0cd8ac87f390afc144ed631ad7851d28a937eabc6596db9aeb497bdcd",
       "legacySha256": "ca1788c9cacd98dc948f29f12afcc3a398446bf8c176e1b5745324fc8cb91229",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "0a3248f7758c38297bfde35f280897c9dd5edbd3e59aac25e66f62e5d9d25400"
+      "sha256CanonicalBytes": "fd3da8d0cd8ac87f390afc144ed631ad7851d28a937eabc6596db9aeb497bdcd"
     },
     "app/src/main/java/com/android/purebilibili/feature/video/ui/section/AiSummarySection.kt": {
       "blob": "84951e9125c6432b20552f4310fabd37dc46b216",
@@ -8502,11 +8519,11 @@
       "sha256CanonicalBytes": "102517869d9709ab439d1998ccbc6d83ead806ecd00536e846de9027d97b631c"
     },
     "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoActionSection.kt": {
-      "blob": "7a7cf56ef206963c71373b00e853ee5b8e6427df",
-      "sha256": "f843b5f19a2917ff728d7d26dfdba7b91051d16565e1ac2a95211a0353ab29e1",
+      "blob": "457e338050f7eb789c48e908d752bf7106483561",
+      "sha256": "f99b5de795c170f716eb1dbd8dec9cf5d0869f1d38d5b7ca5d04e9f89d47562f",
       "legacySha256": "799f5d6fdd39adba83bd59aa52860b3d3378908b135aed4c55527e50686dc03a",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "f843b5f19a2917ff728d7d26dfdba7b91051d16565e1ac2a95211a0353ab29e1"
+      "sha256CanonicalBytes": "f99b5de795c170f716eb1dbd8dec9cf5d0869f1d38d5b7ca5d04e9f89d47562f"
     },
     "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoDetailMotionBudgetPolicy.kt": {
       "blob": "b94cbef2c11d59f82539c0ee83baaf9e5912eb60",
@@ -8556,11 +8573,11 @@
       "sha256CanonicalBytes": "056e56c4f25f75725c5a62a67f0fb8d3a7d19bf21282addf9e3733ae96b73d09"
     },
     "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoPlayerSection.kt": {
-      "blob": "4c4829362ccc8b70334b5faba514afb0d96ccf98",
-      "sha256": "77c34367c4053384b2fc8253937aa3321c7f73f068c05dcb04805c47f43ed768",
+      "blob": "e333b1e86dd162a0a931c78baae0da4477dd75ab",
+      "sha256": "c02f66886509330945276d2aab6b31063dbbaa01e406223c8d296612f5f835af",
       "legacySha256": "db3d1ba69d077473e1f3433e8f0bbbe146d4fb9c15d592802038f2000931c0ad",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "77c34367c4053384b2fc8253937aa3321c7f73f068c05dcb04805c47f43ed768"
+      "sha256CanonicalBytes": "c02f66886509330945276d2aab6b31063dbbaa01e406223c8d296612f5f835af"
     },
     "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoPlayerSectionContracts.kt": {
       "blob": "5bfd421f91ccdcfcb855e64745481329c0f72976",
@@ -8570,11 +8587,11 @@
       "sha256CanonicalBytes": "9186f283af441a0e3520b9dca190b86f16bb0406ec8971d943087bbba5d7be15"
     },
     "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoPlayerSectionPolicy.kt": {
-      "blob": "136936692aec2285a21a85a4450ff4a59c35cbc5",
-      "sha256": "3de38afdc01996b2578224e2ad470a4c73279191947f499bc3201a0d633c1fe8",
+      "blob": "a1089ecc0f9b40157b57fef6cd866a1ea8575386",
+      "sha256": "691d3501a4b82100777d53232a7fcae4897234ab65afad93acebb0b120375e77",
       "legacySha256": "198913c1d091d5aed119b90fedfbb7e77183457584c49c737c4aae7f113f37c0",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "3de38afdc01996b2578224e2ad470a4c73279191947f499bc3201a0d633c1fe8"
+      "sha256CanonicalBytes": "691d3501a4b82100777d53232a7fcae4897234ab65afad93acebb0b120375e77"
     },
     "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoPlayerTopBarPolicy.kt": {
       "blob": "fb21628e19a112281ce069aff2fcf885bc15ae1e",
@@ -8674,11 +8691,11 @@
       "sha256CanonicalBytes": "ad9aedd9f6888dfd6cbe7cef1bbafda68fe9d09d73e264742ff484f1734955e6"
     },
     "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoCommentViewModel.kt": {
-      "blob": "0d01e88886fb6b61f7c4e1c101b5254ceae9f602",
-      "sha256": "946fb7ad92fc115ef63b5cf6f92a39fffe6356294bddbf07c4ed58096e03fdb9",
+      "blob": "746b6bd79c0afb4e823beab218aec8c8badabdb8",
+      "sha256": "74e5c654162c22137b5a5a166839ebaa140c8d5f6ad3f60a292fda98931aa153",
       "legacySha256": "cc5218c45a2d5fadbbb56bfb3fa3ece860f7c0324ccf9d55176339143ab78769",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "946fb7ad92fc115ef63b5cf6f92a39fffe6356294bddbf07c4ed58096e03fdb9"
+      "sha256CanonicalBytes": "74e5c654162c22137b5a5a166839ebaa140c8d5f6ad3f60a292fda98931aa153"
     },
     "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoComposerDraftState.kt": {
       "blob": "91991fd8be9442b0b6990e2dfdca974db2a0da8a",
@@ -8700,18 +8717,18 @@
       "sha256CanonicalBytes": "73fcfd5af57e257658164b7adbd2b103c412686a91efa5b8db99d1f67a84f491"
     },
     "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoEngagementViewModel.kt": {
-      "blob": "02979c3f3e58873832652ff803aa38db6cb8bf69",
-      "sha256": "c179dbd2ea9219a024bc1acbe1e6d23650d0c1a5a3f59bdd25537d5e7640c9f3",
+      "blob": "4d7f0e76ef55724808dffb1fda8855f8ce287230",
+      "sha256": "5047c69f23470faa3e41154be98d847b3d89b80ef164471a34464824e92747ef",
       "legacySha256": "62c0eae9b9447cfd615a5972ab8f58be906ca2a0cee184ccd57cf8b997ebbb1f",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "c179dbd2ea9219a024bc1acbe1e6d23650d0c1a5a3f59bdd25537d5e7640c9f3"
+      "sha256CanonicalBytes": "5047c69f23470faa3e41154be98d847b3d89b80ef164471a34464824e92747ef"
     },
     "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt": {
-      "blob": "cb1f94625cf0eabebc98f53477304d23ec0c9769",
-      "sha256": "3d1c2ec4a190aa458f230c5b9645531d73315159f5ea18a7cb93399d7f76435c",
+      "blob": "7fc5b5584f54756f257572ade62b7d614b0ffa0a",
+      "sha256": "7dda14e09dcc14c05029ddf2338a41f483c5cd38660b5a9751343d5488fc51c5",
       "legacySha256": "94f0f773e693e430f0a4be8e0206b57f7f74dd00a84f5af571151b3278637426",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "3d1c2ec4a190aa458f230c5b9645531d73315159f5ea18a7cb93399d7f76435c"
+      "sha256CanonicalBytes": "7dda14e09dcc14c05029ddf2338a41f483c5cd38660b5a9751343d5488fc51c5"
     },
     "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoSubjectSnapshot.kt": {
       "blob": "e777d48af71287cb7c68f3317c6eb417c3bdda29",
@@ -8759,11 +8776,11 @@
       "sha256CanonicalBytes": "f5bf7191a72fc9212eff03643d4e0befb9e69464925fa2bd4b9c7a6410981808"
     },
     "app/src/main/java/com/android/purebilibili/navigation/AppNavigation.kt": {
-      "blob": "327882fe7d1e278868f98a286f3cccc64b2892f5",
-      "sha256": "be4f32294cb5408099141fb0ac69d1aa8e08784155a1d37eeb95cdd3e5b4778a",
+      "blob": "a10f18f28b87d415e3b458e8ef6b1660389492e9",
+      "sha256": "7f682ea061a43f51b99c23a4ab1e5611e71a56cc5ceb2475099ac255a58e8918",
       "legacySha256": "729021fb73c3ec4aa2aedb0d4de5706c3d72c43928f6b5f0a8da4e80c693ccca",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "be4f32294cb5408099141fb0ac69d1aa8e08784155a1d37eeb95cdd3e5b4778a"
+      "sha256CanonicalBytes": "7f682ea061a43f51b99c23a4ab1e5611e71a56cc5ceb2475099ac255a58e8918"
     },
     "app/src/main/java/com/android/purebilibili/navigation/AppNavigationAppearancePolicy.kt": {
       "blob": "d041a3237d2770bfa099634098a8adc7a59483cc",
@@ -8819,10 +8836,11 @@
       "sha256CanonicalBytes": "a200fa3f69483c27b0d4b4f86e6f0a59b3068dfd1bf6de67fa1ef38a70dbfeeb"
     },
     "app/src/main/java/com/android/purebilibili/navigation/MessageLinkNavigationPolicy.kt": {
-      "blob": "9ea862ac7e86f624ab123cf9c0c1b1acb3d8c095",
-      "sha256": "3208a12aa98ecc40dfd560dc444bbfadab982cc3c33f6eb8cc18adec3467e2b1",
+      "blob": "dd4cb990539534d83e2fbc29682b8a02afd48fc2",
+      "sha256": "4a618dde38b22aecc3efc9564909dfd50305b9dd88507b5f7c2464940d73eb71",
+      "legacySha256": "3208a12aa98ecc40dfd560dc444bbfadab982cc3c33f6eb8cc18adec3467e2b1",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "3208a12aa98ecc40dfd560dc444bbfadab982cc3c33f6eb8cc18adec3467e2b1"
+      "sha256CanonicalBytes": "4a618dde38b22aecc3efc9564909dfd50305b9dd88507b5f7c2464940d73eb71"
     },
     "app/src/main/java/com/android/purebilibili/navigation/PagerSelectionMotion.kt": {
       "blob": "05f84df3cb748723b29cf4990cc478f81fe3474b",
@@ -8838,11 +8856,11 @@
       "sha256CanonicalBytes": "db6acd4e2437714daf595fa29fb2ab4aefb554ebdd6dea54cb8354c2ef011f57"
     },
     "app/src/main/java/com/android/purebilibili/navigation/ScreenRoutes.kt": {
-      "blob": "53b6c114b8a354bea870b3bcac8af30dfe8d048d",
-      "sha256": "87f538787a9239a164e64835e0f16e3b3d340c902ae131e762a61d89e56a1f8a",
+      "blob": "559b21daacbd8124b8fb2e40c789644d7c1b6af2",
+      "sha256": "a7f6897277a07edd304daa69cc5cd68e9de4543320ff79dd78a3c46793cdeee3",
       "legacySha256": "126c93b0e6c3a6cc8d0930bd1724dffd088e3a588997fb9ab6662a8baa110e1d",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "87f538787a9239a164e64835e0f16e3b3d340c902ae131e762a61d89e56a1f8a"
+      "sha256CanonicalBytes": "a7f6897277a07edd304daa69cc5cd68e9de4543320ff79dd78a3c46793cdeee3"
     },
     "app/src/main/java/com/android/purebilibili/navigation/SearchSubmitPolicy.kt": {
       "blob": "c50e36d1cffa1e002eef53c6b1eeeef04326acf1",
@@ -8882,39 +8900,39 @@
       "sha256CanonicalBytes": "cc381f04fadc094a91c6f643f70143065ab91a27742980569bf79cdd20a2d72b"
     },
     "app/src/main/java/com/android/purebilibili/navigation3/BiliPaiNavDisplayHost.kt": {
-      "blob": "6b446ab239e3543f844ce413d3e053be665c7e1f",
-      "sha256": "957f76c16bbd551a4b67ae01bc81962a94a0a62faffe86b6a95176cd027d2411",
+      "blob": "32d730db48c04416a2b16de28b75f246fd861046",
+      "sha256": "c352fa3b47e1d54caae2771b20897392575125a07ace0b9ebd7708ad26160a62",
       "legacySha256": "a8dca87288a95e8a7c107b7ff735a883b5170bd26996f2a3befa71fb756d2b00",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "957f76c16bbd551a4b67ae01bc81962a94a0a62faffe86b6a95176cd027d2411"
+      "sha256CanonicalBytes": "c352fa3b47e1d54caae2771b20897392575125a07ace0b9ebd7708ad26160a62"
     },
     "app/src/main/java/com/android/purebilibili/navigation3/BiliPaiNavEntryContentPolicy.kt": {
-      "blob": "71130aa52d72406c176ba136dbebd7d2861e7991",
-      "sha256": "4a143b673bf87a3133a6803b63fee3e9a2911df520eb063393ed5e804d98fca1",
+      "blob": "95c7fb0c8898a95968b22e9231c90e07f8a7ed41",
+      "sha256": "f3a06b4d365f38c506c80b001c89f5e907b357a5bae32f7e00895e64ee3e108a",
       "legacySha256": "cb1d370f7b79fe10a43bb1d3c42938da146da886f9522e5ff7ee30ee0248b158",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "4a143b673bf87a3133a6803b63fee3e9a2911df520eb063393ed5e804d98fca1"
+      "sha256CanonicalBytes": "f3a06b4d365f38c506c80b001c89f5e907b357a5bae32f7e00895e64ee3e108a"
     },
     "app/src/main/java/com/android/purebilibili/navigation3/BiliPaiNavEntryProvider.kt": {
-      "blob": "5f3c656f0b99170e46ef2a87f64ef225974fdb9e",
-      "sha256": "ad9f3716c4ba8037538b582b6b4f0b5806523b9beed211b156c22f289e7845dd",
+      "blob": "6c95ef0fc5785e85a65e437273875c8cdfcd49f8",
+      "sha256": "889a0ed865715adb843c7f4118bdc31171c82c1ef47c686f7a154bebe0ead2db",
       "legacySha256": "862a3c54e37997a1cdc9ec5e9c9eef636c51341b5a80f77e01b1cf97dbc1b09e",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "ad9f3716c4ba8037538b582b6b4f0b5806523b9beed211b156c22f289e7845dd"
+      "sha256CanonicalBytes": "889a0ed865715adb843c7f4118bdc31171c82c1ef47c686f7a154bebe0ead2db"
     },
     "app/src/main/java/com/android/purebilibili/navigation3/BiliPaiNavKey.kt": {
-      "blob": "8862c050350ff0e11a7a40a58c13fd54fa0b446c",
-      "sha256": "0e5c988ecaa485588edfc369484ea3605aa4815ad4d6465687f9d31f31986771",
+      "blob": "9ce853403fcf13a8e57ea85ec97f37b45cd8e489",
+      "sha256": "6776347343946b50652eb929851a8ddf8587d4a3d0acf4fc7777ef37aa37f6a9",
       "legacySha256": "1637952c78fccb2677ee73640b70ab876746d693fbca438365d285812fa76c85",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "0e5c988ecaa485588edfc369484ea3605aa4815ad4d6465687f9d31f31986771"
+      "sha256CanonicalBytes": "6776347343946b50652eb929851a8ddf8587d4a3d0acf4fc7777ef37aa37f6a9"
     },
     "app/src/main/java/com/android/purebilibili/navigation3/BiliPaiNavKeyMappingPolicy.kt": {
-      "blob": "e420bd604eeb6b2e616613d571e58833f547d7e5",
-      "sha256": "e0ab6bdcff5ef4c6ac18b7a4159f47a57cacc4113b6432de872fb18818686dfd",
+      "blob": "23a8815d54d1d3836b1b03c96db74712c494e335",
+      "sha256": "7284c57e439ec703fc4c5c93d99b7ac848ef67d09d17fc8d22f87b44080b4233",
       "legacySha256": "6e8c956f101e679ad0a96786ce8c114845ddb3c3e27cc41551c261f5407a586d",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "e0ab6bdcff5ef4c6ac18b7a4159f47a57cacc4113b6432de872fb18818686dfd"
+      "sha256CanonicalBytes": "7284c57e439ec703fc4c5c93d99b7ac848ef67d09d17fc8d22f87b44080b4233"
     },
     "app/src/main/java/com/android/purebilibili/navigation3/BiliPaiNavMotionPolicy.kt": {
       "blob": "e2572e6e3e77849c2670d32f6f8ec5b54e8a6916",
@@ -8995,11 +9013,11 @@
       "sha256CanonicalBytes": "3b567320ea162d1c091fa4d814f3ee6bc312a9ce10af6d907793b740c1bd23b2"
     },
     "app/src/main/java/com/android/purebilibili/navigation3/predictiveback/MiuixVideoCardNavTransition.kt": {
-      "blob": "8d3a3f027fbe0b97e1d099ee888d521c4e643f46",
-      "sha256": "02447db8e893b63e01da888db09e96863ab1b61a22ef619ac25dbcb17416e050",
+      "blob": "7ba0bb81b5602127ba74ffff5fd8c41cd11d1f9f",
+      "sha256": "676d4789cc8bc4651ea3d6ef02df82223c987e8f2f7c79e1697e5c7b92eafde0",
       "legacySha256": "19965da9da3926d574f6ab8ee4f1611bfc7965d2d16fe3c713b3bd7c101b51c7",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "02447db8e893b63e01da888db09e96863ab1b61a22ef619ac25dbcb17416e050"
+      "sha256CanonicalBytes": "676d4789cc8bc4651ea3d6ef02df82223c987e8f2f7c79e1697e5c7b92eafde0"
     },
     "app/src/main/java/com/android/purebilibili/navigation3/predictiveback/NavTransitionEasing.kt": {
       "blob": "c32db3983ea4b9bd67044109b7f4509246b165da",
@@ -9033,11 +9051,11 @@
       "sha256CanonicalBytes": "740880d8176a1d2e429dcd081203ee4d6a8f13d420d06288cb8085d0fe9feab0"
     },
     "app/src/main/java/com/android/purebilibili/navigation3/predictiveback/VideoCardGestureFollowState.kt": {
-      "blob": "f9fdab8ca7be4decf487325be19738e1b8272ddb",
-      "sha256": "f91c6ef945538d4e98019fb825d560687186bd0c4ff63329fb189fa8870a8bb2",
+      "blob": "94955410ce1f312a3c834c197005d21af4c8cf39",
+      "sha256": "517b89e237126481eac54bfbfd7c5bdbbd4244c2bf9a5fb47868fa241d688a6f",
       "legacySha256": "11c18d17dc5118921ec89ad5656452517c366b7867ba8c4f332027b2ee4fce35",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "f91c6ef945538d4e98019fb825d560687186bd0c4ff63329fb189fa8870a8bb2"
+      "sha256CanonicalBytes": "517b89e237126481eac54bfbfd7c5bdbbd4244c2bf9a5fb47868fa241d688a6f"
     },
     "app/src/main/res/drawable-night/ic_launcher_bilipai_monet_background.xml": {
       "blob": "af50074727e72f4296d854e7f69661fdf94185fa",
@@ -9184,10 +9202,11 @@
       "sha256CanonicalBytes": "e49822ddc3f52fec582f7b9ce70757119882f77d41078e3de169fc7484d99339"
     },
     "app/src/main/res/drawable/author_qr.jpg": {
-      "blob": "5dec6b8c700fd4d48b707c46bdc69aaf76250a8c",
-      "sha256": "ebd531d83556e51a92fdd5d4d64946f037730416cff44957a8018d063b5bb610",
+      "blob": "d29939ee71e73b80213c5c0b584ecde02465ff22",
+      "sha256": "3453d382fce2fd25d5a5b8f0015738bfd1cd64502b7ce15458bf3f852cb9fbe0",
+      "legacySha256": "ebd531d83556e51a92fdd5d4d64946f037730416cff44957a8018d063b5bb610",
       "hashNormalization": "raw",
-      "sha256CanonicalBytes": "ebd531d83556e51a92fdd5d4d64946f037730416cff44957a8018d063b5bb610"
+      "sha256CanonicalBytes": "3453d382fce2fd25d5a5b8f0015738bfd1cd64502b7ce15458bf3f852cb9fbe0"
     },
     "app/src/main/res/drawable/bp_nav_history_outline_24.xml": {
       "blob": "40f02d548d9fe7b2878320f5b7d355529c958fea",
@@ -12880,11 +12899,11 @@
       "sha256CanonicalBytes": "8602253347b52f544b0968eac9ad06b07a36118e52d0df51dbb2114b5c50043d"
     },
     "app/src/main/res/values-en/strings.xml": {
-      "blob": "284f4d9ea8fdd1d4d708acf8fe6dcacc5131a046",
-      "sha256": "f2ebc01d6654f43bdbd0720a20afd8327c5a42da3b39c8fb662566e9ae158350",
+      "blob": "955e55ab32b1be6d348f21d087adacca2cdd2445",
+      "sha256": "654a22e7694422295322ee1ab04415da645bb0f631ebaf3ff4ba8c845d35c22a",
       "legacySha256": "940292e7ddef7233e39e7e5ff6a38ec8b9e5c33858d79151e8525dc7347948e2",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "f2ebc01d6654f43bdbd0720a20afd8327c5a42da3b39c8fb662566e9ae158350"
+      "sha256CanonicalBytes": "654a22e7694422295322ee1ab04415da645bb0f631ebaf3ff4ba8c845d35c22a"
     },
     "app/src/main/res/values-night-v31/colors.xml": {
       "blob": "b5f30619357253ed12a0aad928c8f5affc62be62",
@@ -12924,11 +12943,11 @@
       "sha256CanonicalBytes": "64815d4d7d074db9be170406189c814ffd336ec429788400fe86e72ca7811faf"
     },
     "app/src/main/res/values/strings.xml": {
-      "blob": "77c8b31fb84c168b06fefa2aa426e90d7c470448",
-      "sha256": "4deb33849028561095de82bb2ca8222de78a2cadf34aba4fd0e693d95a22cb9c",
+      "blob": "2bd640184165c0f3655bd96e02004ee3c18ad245",
+      "sha256": "4599f6e21c87417dbb529ff1b3c1943f2eb052dc4d2283f5043a7780b105a822",
       "legacySha256": "1c698f101a92c528d86af0eaaa6cbd2b1e02d4c535d1292c135aa733c3357f60",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "4deb33849028561095de82bb2ca8222de78a2cadf34aba4fd0e693d95a22cb9c"
+      "sha256CanonicalBytes": "4599f6e21c87417dbb529ff1b3c1943f2eb052dc4d2283f5043a7780b105a822"
     },
     "app/src/main/res/values/themes.xml": {
       "blob": "9e072d3ad91de98464c9b26f01c0f089ee66c008",
@@ -19988,11 +20007,11 @@
       "sha256CanonicalBytes": "a7f6fcfda7fcfbe9704117ef70e0d8880ea7dcbad7f86f7253f2d3bb47b2709d"
     },
     "core-data/src/main/java/com/android/purebilibili/core/network/ApiClient.kt": {
-      "blob": "3258cdcd4b6d05d5987da6a0bb87c5a5540e53ed",
-      "sha256": "198f3380957582f2e53a119b3855a86a88ab0f999ee73fbb16801088b86a061b",
+      "blob": "1439e366f9f4d958358e805f67e43086006c67ba",
+      "sha256": "518ac83e2d0683efe9ee9562b635c26c0abf0bfb535057c2e8b29c6dedb24330",
       "legacySha256": "dbd4762470843e5d3776e2aa5ed830df4d4c8571980e70cf12cdc37bc4c92060",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "198f3380957582f2e53a119b3855a86a88ab0f999ee73fbb16801088b86a061b"
+      "sha256CanonicalBytes": "518ac83e2d0683efe9ee9562b635c26c0abf0bfb535057c2e8b29c6dedb24330"
     },
     "core-data/src/main/java/com/android/purebilibili/core/network/AppSignUtils.kt": {
       "blob": "136268955748c6516471a728e729961b28a36a24",
@@ -20103,10 +20122,11 @@
       "sha256CanonicalBytes": "662e875cfe1543d8f3117c39565a29ee1cbd3cfc8a2d84e2ffa4f0f2dd1e89cc"
     },
     "core-data/src/main/java/com/android/purebilibili/data/model/response/ArticleModels.kt": {
-      "blob": "d421bc63139833a312bd181b115c8d04b0925dc3",
-      "sha256": "d9b8b9f633e4142a65f1a0324cbd9eabbc5e7d755f3ca7084a63412806a5ebb8",
+      "blob": "2267b24decd090537fb44cc22c3fd52a9fdeaa53",
+      "sha256": "51c420c56901d5286a47d38c74798ec45e3a819db2679d7496d3ca2478ec1002",
+      "legacySha256": "d9b8b9f633e4142a65f1a0324cbd9eabbc5e7d755f3ca7084a63412806a5ebb8",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "d9b8b9f633e4142a65f1a0324cbd9eabbc5e7d755f3ca7084a63412806a5ebb8"
+      "sha256CanonicalBytes": "51c420c56901d5286a47d38c74798ec45e3a819db2679d7496d3ca2478ec1002"
     },
     "core-data/src/main/java/com/android/purebilibili/data/model/response/AudioModels.kt": {
       "blob": "a5fbae0656f14bc80ecb3e36f73b9e34a6ea8585",
@@ -20153,11 +20173,11 @@
       "sha256CanonicalBytes": "042b18e7c276e9477456e55ca6d64abb5c54dc01d20359654dc47edd3d72e3ee"
     },
     "core-data/src/main/java/com/android/purebilibili/data/model/response/DynamicModels.kt": {
-      "blob": "d7b6a0ff475dcf9fa11d7e701be8f1477f5c5d0c",
-      "sha256": "ba9f84089b7715ce6efae409b2c85cc3d6c61b18fe9cd8ffa3d7ec04e2614c85",
+      "blob": "7e52d2d2bacb814424a278b4b12bb6694d71c70d",
+      "sha256": "cb022c71daa5d7fc810588de24a02a46ce0a73527745a8f10fb63647c1c6631f",
       "legacySha256": "c8d19d401efb4e24ea687e333c3689a431e0f4a82a0e4e055d1eaae7b8ae6dbe",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "ba9f84089b7715ce6efae409b2c85cc3d6c61b18fe9cd8ffa3d7ec04e2614c85"
+      "sha256CanonicalBytes": "cb022c71daa5d7fc810588de24a02a46ce0a73527745a8f10fb63647c1c6631f"
     },
     "core-data/src/main/java/com/android/purebilibili/data/model/response/DynamicVoteModels.kt": {
       "blob": "dc7950a416c3330c468f11a4a68190cd02c2dd26",
@@ -20203,11 +20223,11 @@
       "sha256CanonicalBytes": "4cb0cb760b2ffcb81445a4b732a1561e77c3f5b27b413df34d675bd618045143"
     },
     "core-data/src/main/java/com/android/purebilibili/data/model/response/ListModels.kt": {
-      "blob": "76f3edda48886a7d56ce32b58aadc848ff336085",
-      "sha256": "8a5ba5fe3392abce2b42fa310390a631d1f249273a56669bb0e03de4fa0241f2",
+      "blob": "e06c1515e7bcf39a025342511af20aad29935b41",
+      "sha256": "b050cb3305af4273168ead10679d1c70fd3af4e7f0058d55fac5ae0eaa9b35e2",
       "legacySha256": "edca7acceea286c44cbffbaf30e818e4b6d3544d6e2252332abddb6f3b76b88c",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "8a5ba5fe3392abce2b42fa310390a631d1f249273a56669bb0e03de4fa0241f2"
+      "sha256CanonicalBytes": "b050cb3305af4273168ead10679d1c70fd3af4e7f0058d55fac5ae0eaa9b35e2"
     },
     "core-data/src/main/java/com/android/purebilibili/data/model/response/LiveDanmuInfoResponse.kt": {
       "blob": "652a2e03b91f8c5ab1d3fb5f7b4f664809766ee9",
@@ -20230,11 +20250,11 @@
       "sha256CanonicalBytes": "d543d27be898258a8c42bb0f95157cbbae9a4145f93c6dc0f05d04749eba99ff"
     },
     "core-data/src/main/java/com/android/purebilibili/data/model/response/LiveModels.kt": {
-      "blob": "12d1d708a5eabb1e69b220289699cff4a5235488",
-      "sha256": "b34324a6d1eb467c70c58e16fe503fcfd11d85587cd18a4808bc81dd6a69b1e0",
+      "blob": "3432edcea78c82c885c547d1a52e8a9e4caeaacc",
+      "sha256": "762c52f5b9843ba48bcf0404973bb397c6087d0fc4b04711b6306dabb99bee36",
       "legacySha256": "6ec6138583a2436c4e08823e056f63b05354b07df1cff7881ddeb124618b2b12",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "b34324a6d1eb467c70c58e16fe503fcfd11d85587cd18a4808bc81dd6a69b1e0"
+      "sha256CanonicalBytes": "762c52f5b9843ba48bcf0404973bb397c6087d0fc4b04711b6306dabb99bee36"
     },
     "core-data/src/main/java/com/android/purebilibili/data/model/response/LoginModels.kt": {
       "blob": "44eb24ddc46754806a57965faff2ada87df40ff0",
@@ -20288,11 +20308,11 @@
       "sha256CanonicalBytes": "c0024333b0fbf888673c1100c1c22c166bde9129ab4c69f1276d07511268ead1"
     },
     "core-data/src/main/java/com/android/purebilibili/data/model/response/ResponseModels.kt": {
-      "blob": "21a160c19a7aca3f3858aec45a4fd50e2362bb6e",
-      "sha256": "6b973ec8416dfb98681edbd30c39ff4559e9d9960764dbd61236770bed12fea7",
+      "blob": "3f0e4218ff115c273a19b673be7920c4688761b3",
+      "sha256": "215ec15b44f77ae9810edf418ed6f284204780e4d8d8a989e83ef3e973ab189b",
       "legacySha256": "fed6db98e75157fdfef5f9de3916a690808c506c10656747f90b504a1e95221f",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "6b973ec8416dfb98681edbd30c39ff4559e9d9960764dbd61236770bed12fea7"
+      "sha256CanonicalBytes": "215ec15b44f77ae9810edf418ed6f284204780e4d8d8a989e83ef3e973ab189b"
     },
     "core-data/src/main/java/com/android/purebilibili/data/model/response/SearchModels.kt": {
       "blob": "797ba07285ab44c8c405ba4fe96d7208c35607ad",
@@ -20309,11 +20329,11 @@
       "sha256CanonicalBytes": "d87a096556e6b37f7ab8f7cbfa51f7c8dfbbb3d1f7cce1abf848d92a2b912329"
     },
     "core-data/src/main/java/com/android/purebilibili/data/model/response/SpaceModels.kt": {
-      "blob": "48f8347e406193fb6d5061c9f0a335d75a70b1e0",
-      "sha256": "3fdd9795a060157922f5bbfa28c705d193fd401247e5d975b0f60eefdedcaf4b",
+      "blob": "1cda46ded3efa8d84af068ab308b201dcc1ad6f1",
+      "sha256": "28d88dc034ec86900fdb6278f54247c38bfb49c141e8cc7bce16ede20e62829e",
       "legacySha256": "9e77b72177ab540e523dcf38fc1923d8500cefb83d8047b1aaaff8a10503af37",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "3fdd9795a060157922f5bbfa28c705d193fd401247e5d975b0f60eefdedcaf4b"
+      "sha256CanonicalBytes": "28d88dc034ec86900fdb6278f54247c38bfb49c141e8cc7bce16ede20e62829e"
     },
     "core-data/src/main/java/com/android/purebilibili/data/model/response/SplashModels.kt": {
       "blob": "45f11e69641a456a42881be1c5b52ac4e43c99d2",
@@ -20361,11 +20381,11 @@
       "sha256CanonicalBytes": "e320f9d20d528c7bfa6299b34cb50dc7e2769d3f2c3110323e9b60a9d09f7329"
     },
     "core-data/src/main/java/com/android/purebilibili/data/model/response/VideoResponse.kt": {
-      "blob": "8ef8f7634cf37cdf566b751fd1b26dd470956ae7",
-      "sha256": "9af1e42ac0dc8cc2a7d7ff0e8da6fe1daa1cf57b6d16d89cf69171785910b283",
+      "blob": "4ade486801c85414b92473628fca1ce065a44631",
+      "sha256": "7379d9698a430d1d46df5e5b15fe9541f476a47e4b4f618b0be1abc03adecd40",
       "legacySha256": "832cf6489050cb4c400073ca118be422f7b699ade8abb71af21f3236b589bb92",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "9af1e42ac0dc8cc2a7d7ff0e8da6fe1daa1cf57b6d16d89cf69171785910b283"
+      "sha256CanonicalBytes": "7379d9698a430d1d46df5e5b15fe9541f476a47e4b4f618b0be1abc03adecd40"
     },
     "core-data/src/main/java/com/android/purebilibili/data/model/response/VideoVerticalInferencePolicy.kt": {
       "blob": "7c1d9bcf3f9562365902eb609ccdc4cf7063150d",
@@ -21351,11 +21371,11 @@
       "sha256CanonicalBytes": "793764e76952d76d1b81584b55cefcdeba3f0bed3358a90dc92b05c48bb68cc4"
     },
     "design-system/src/main/java/com/android/purebilibili/core/ui/components/AdaptivePreferenceComponents.kt": {
-      "blob": "072911228257d6189c9c13cbcfd0b73b97ad389c",
-      "sha256": "d6ae834175851f81be345e3e5645457fb96834c771779eb42c0f919aa6c08317",
+      "blob": "34a88f2e9f93f2ab585db489cb82c9018edcdc12",
+      "sha256": "44c0e550bdde710df6f61891086c472e621eedf951a0a2983c0f7e2ff43137f6",
       "legacySha256": "f4a1fbaf5d25526754512a5d4e416521b442de4d8a408362a1fe71ef920b814c",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "d6ae834175851f81be345e3e5645457fb96834c771779eb42c0f919aa6c08317"
+      "sha256CanonicalBytes": "44c0e550bdde710df6f61891086c472e621eedf951a0a2983c0f7e2ff43137f6"
     },
     "design-system/src/main/java/com/android/purebilibili/core/ui/components/AppBackToTopButton.kt": {
       "blob": "337cd1fbe571a626bf25e61c31471dbe7deed1a0",
@@ -22917,16 +22937,16 @@
       "sha256CanonicalBytes": "eafd64da8201199b8d2af1dc546720ebf6b9822440e9ef39af7ff1adc8ccce98"
     },
     "app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicLinkCardPolicy.kt": {
-      "blob": "aba5a6de1237dc4de7a18deae20b00454866950a",
-      "sha256": "5783e6a0084ffe9916def97cd3a7736e97a917ff8030fab0037d62975f5c5a84",
+      "blob": "4bf47aded397c84f3faaabfa1dc778921a9f9712",
+      "sha256": "57210fd719f7b72196d5b410ba14df9e801230599d971e27dc804e57d8d1cf21",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "5783e6a0084ffe9916def97cd3a7736e97a917ff8030fab0037d62975f5c5a84"
+      "sha256CanonicalBytes": "57210fd719f7b72196d5b410ba14df9e801230599d971e27dc804e57d8d1cf21"
     },
     "app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicLinkCard.kt": {
-      "blob": "9c07a79000b32fd3ab03730d5edc3d590fee7171",
-      "sha256": "593716a33c4a68e6539e43abf78760c59fa37543791a25b34af820ba398ffee7",
+      "blob": "bb593ad7d280288867e581203fd4fff2ea3665ab",
+      "sha256": "f86f61604f7f8aa95b45588117da1b207d44aeae154aeeadba81e548efa9e054",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "593716a33c4a68e6539e43abf78760c59fa37543791a25b34af820ba398ffee7"
+      "sha256CanonicalBytes": "f86f61604f7f8aa95b45588117da1b207d44aeae154aeeadba81e548efa9e054"
     },
     "core-data/src/main/java/com/android/purebilibili/core/network/grpc/ProtoWire.kt": {
       "blob": "20975ebd9604474bb61bc0e74637d762a5646c76",
@@ -22941,16 +22961,16 @@
       "sha256CanonicalBytes": "18e5ab7fae60cb0b62a0309076aeedd521d460e563d405676064e23f0b60ca01"
     },
     "core-data/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt": {
-      "blob": "5c2771855502daa269d87eebd6d69457cf236ec6",
-      "sha256": "56423b5d941e72d3f08900ca8ef251f36cf33ca3c08ee6918ff86139780c8233",
+      "blob": "d38bb60b0d281b8f196c3bfb54886875e287fafa",
+      "sha256": "fbdf98ab6468aecb52106715af20492f0abadbae84ecd3a7fab017aa3f7cace1",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "56423b5d941e72d3f08900ca8ef251f36cf33ca3c08ee6918ff86139780c8233"
+      "sha256CanonicalBytes": "fbdf98ab6468aecb52106715af20492f0abadbae84ecd3a7fab017aa3f7cace1"
     },
     "core-data/src/main/java/com/android/purebilibili/data/repository/CommentGrpcRepository.kt": {
-      "blob": "ef4f9eff723a8858107d07b8260d6777364c6a8c",
-      "sha256": "3f803d3799903b3259c0a3aa281d7ecfe7faa8725b834157c781d31ac44f7748",
+      "blob": "3425df7337b4ab40b7a3e8b1af5b275878b058a5",
+      "sha256": "396dc5c788b60e230125fa38cae1f8ad95967f572fad28e0d25be2923161a4f2",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "3f803d3799903b3259c0a3aa281d7ecfe7faa8725b834157c781d31ac44f7748"
+      "sha256CanonicalBytes": "396dc5c788b60e230125fa38cae1f8ad95967f572fad28e0d25be2923161a4f2"
     },
     "core-data/src/main/java/com/android/purebilibili/data/repository/CommentReadAccessPolicy.kt": {
       "blob": "857a5895ad2da6d6bbd0ba2c712e646f112d4fa9",
@@ -22989,10 +23009,10 @@
       "sha256CanonicalBytes": "7492c7c08544b96b2570542f95026acf4195a1fb99ce47d33e1d4ad2cb7abe62"
     },
     "app/src/main/java/com/android/purebilibili/feature/video/ui/components/PlayerEpisodeMenuPolicy.kt": {
-      "blob": "a72438281cef1105505cba98151fbcf9c8357e0e",
-      "sha256": "413cfb082b79cb6e38adae8800109c2d6b53fc5a6b0bac79ce0ed5eace11a20e",
+      "blob": "16c241dbab410b98436b91c848ab275edebbf217",
+      "sha256": "62fe254b50fb39fe2bac19e2f496254730a7e3d9627b0b958fab03b16464c684",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "413cfb082b79cb6e38adae8800109c2d6b53fc5a6b0bac79ce0ed5eace11a20e"
+      "sha256CanonicalBytes": "62fe254b50fb39fe2bac19e2f496254730a7e3d9627b0b958fab03b16464c684"
     },
     "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/glass/PortraitTopBarLayoutPolicy.kt": {
       "blob": "11a2c4b38c3cbe13403b04880675866d33e20b4a",
