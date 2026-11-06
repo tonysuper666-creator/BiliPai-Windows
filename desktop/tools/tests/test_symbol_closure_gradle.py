@@ -64,6 +64,62 @@ class GraphFixture:
 
 
 class GradleSourceGraphTests(unittest.TestCase):
+    def test_sync_copies_are_filtered_by_the_actual_main_source_set(self):
+        f = GraphFixture(self)
+        path = 'app/src/main/java/' + PREFIX + 'fixture/Retired.kt'
+        f.put(f.legacy, path, 'class Retired')
+        f.put(f.legacy, 'desktop/tools/v025-canonical-sources.json', json.dumps(dict(
+            sourceRoots=[path], previousPaths={}, paths={path: {}})))
+        f.put(f.legacy, 'desktop/upstream-sources.json', json.dumps(dict(sources=[dict(path=path, mode='direct')])))
+        self.assertIn(path, {s.logical for s in f.collect()})
+        f.model.upstream_owned_copies.add('upstream/' + path)
+        self.assertNotIn(path, {s.logical for s in f.collect()})
+        # The task still copies the original; compile selection alone excludes the retired copy.
+        self.assertIn(path, gate.sync_sources(f.legacy, f.model))
+
+    def test_sync_keeps_literal_legacy_policy_and_resolves_one_original_predecessor(self):
+        f = GraphFixture(self)
+        literal = 'app/src/main/java/' + PREFIX + 'feature/video/ui/components/PagesSelectorLayoutPolicy.kt'
+        old = 'app/src/main/java/' + PREFIX + 'fixture/Before.kt'
+        new = 'app/src/main/java/' + PREFIX + 'fixture/After.kt'
+        f.put(f.legacy, literal, 'class LegacySelectorPolicy')
+        f.put(f.legacy, old, 'class OriginalBefore')
+        f.put(f.live, new, 'class LiveAfter')
+        f.put(f.legacy, 'desktop/tools/v025-canonical-sources.json', json.dumps(dict(
+            sourceRoots=[old, new], previousPaths={old: new}, paths={new: {}})))
+        f.put(f.legacy, 'desktop/upstream-sources.json', json.dumps(dict(sources=[dict(path=new, mode='direct')])))
+        selected = {s.logical for s in f.collect()}
+        self.assertIn(literal, selected)
+        self.assertIn(old, selected)
+        self.assertNotIn(new, selected)
+        output = f.legacy / 'desktop/build/generated/upstream'
+        gate.materialize_upstream(f.legacy, output)
+        self.assertEqual(b'class OriginalBefore', (output / old).read_bytes())
+        self.assertEqual(b'class LegacySelectorPolicy', (output / literal).read_bytes())
+        with self.assertRaisesRegex(gate.ToolError, 'declared scratch output'):
+            gate.materialize_upstream(f.legacy, f.live / 'elsewhere')
+
+    def test_sync_filters_raw_migrated_identity_before_resolving_legacy_predecessor(self):
+        f = GraphFixture(self)
+        old = 'app/src/main/java/' + PREFIX + 'fixture/Before.kt'
+        target = sorted(gate._gradle_collection(GRADLE, 'migratedVideoFeaturePaths', 'setOf'))[0]
+        new = 'app/src/main/java/' + target
+        f.put(f.legacy, old, 'class StalePredecessor')
+        f.put(f.live, new, 'class CurrentOriginal')
+        f.put(f.legacy, 'desktop/tools/v025-canonical-sources.json', json.dumps(dict(
+            sourceRoots=[old, new], previousPaths={old: new}, paths={new: {}})))
+        f.put(f.legacy, 'desktop/upstream-sources.json', json.dumps(dict(sources=[dict(path=new, mode='direct')])))
+        selected = {s.logical for s in f.collect()}
+        self.assertNotIn(old, selected)
+        self.assertIn(new, selected)
+
+    def test_sync_recipe_and_identity_helper_changes_require_a_reviewed_adapter(self):
+        for before, after in [('into(generatedUpstream)', 'into(unknownOutput)'),
+                              ('predecessors.size == 1', 'predecessors.size > 0'),
+                              ('path.startsWith(it)', 'path.endsWith(it)')]:
+            with self.subTest(change=before), self.assertRaisesRegex(gate.ToolError, 'Unmodelled Gradle recipe'):
+                gate.parse_gradle(GRADLE.replace(before, after, 1))
+
     def test_current_wiring_resolves_every_source_root_and_kotlin_owner(self):
         model = gate.parse_gradle(GRADLE)
         self.assertEqual([], model.unresolved_source_dirs)

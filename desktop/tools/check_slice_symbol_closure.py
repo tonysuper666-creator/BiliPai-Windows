@@ -871,6 +871,7 @@ class GradleModel:
         self.source_dirs = {'main': [], 'test': []}   # (kind, relative path)
         self.unresolved_source_dirs = []
         self.sync_excludes = []
+        self.sync_includes = []
         self.task_outputs = {}
         self.source_owners = {}
         self.migrated_modules = []
@@ -1190,7 +1191,10 @@ def _recipe_digest(text):
 # These are executable Kotlin recipes, not arbitrary directories to ignore. Python projects their Kotlin
 # outputs below. Pin each implementation (including helper functions and filters) so a Gradle semantic change
 # is a tool error until its adapter is reviewed. Literal path collections are parsed, never pinned or cached.
-KOTLIN_RECIPES = {'migratedWholeModulePaths': '8560d94b7ad2273c5d7a38bad6c7e3b4fb0ac4c2521fe5b0db720fe10fb31b42',
+KOTLIN_RECIPES = {'prepareUpstreamSources': '8dde6f5e76029188f6bed208fd826b31dea0a2b2ec7bd11876091065fa293be4',
+ 'canonicalOriginalIdentity': 'ae965a9d7770ac4a78a1b0a487d31fd37cf9c01a2991d731af63064f24daccc5',
+ 'migratedUpstreamSource': '4a81d9908b1dfb9f16730d17772807e9ab7e097b9fe90e95111b41eeec379a5d',
+ 'migratedWholeModulePaths': '8560d94b7ad2273c5d7a38bad6c7e3b4fb0ac4c2521fe5b0db720fe10fb31b42',
  'migratedAppCorePaths': '8ca4222319fed4572dfc773adc610e77f07ff0e80713c804902d57cfa08a1e37',
  'migratedAppM4dPaths': '45dfa65d244b012526849cbcf7ec5700a766b50d6c55ec3f639958da3eb33c6f',
  'migratedAppM4cPaths': '12e0682012cb4c8bbe76e37883effda877aa2d1206673662f26988d9ea108590',
@@ -1337,6 +1341,7 @@ def parse_gradle(text):
     text = text.replace('\r\n', '\n')
     masked = mask_kotlin(text)
     model = GradleModel()
+    sync_recipe = None
     model.migrated_modules = _gradle_collection(text, 'migratedUpstreamModules', 'listOf')
     model.migrated_paths = set(_gradle_collection(text, 'migratedUpstreamRelativePaths', 'setOf'))
     model.upstream_owned_copies = set(_gradle_collection(text, 'upstreamOwnedGeneratedCopies'))
@@ -1354,6 +1359,8 @@ def parse_gradle(text):
         raw_block = text[open_index:end + 1]
         masked_block = masked[open_index:end + 1]
         if kind == 'Sync' and name == 'prepareUpstreamSources':
+            sync_recipe = raw_block
+            model.sync_includes = re.findall(r'include\("([^"$]*)"\)', raw_block)
             model.sync_excludes = re.findall(r'exclude\(canonicalOriginalIdentity\("([^"]+)"\)\)', raw_block)
             if len(model.sync_excludes) != masked_block.count('exclude('):
                 raise ToolError('prepareUpstreamSources has exclusions this gate does not model')
@@ -1410,6 +1417,20 @@ def parse_gradle(text):
              ('literal', '--repo'), ('repo', ''), ('literal', '--transition-output'), ('build', destination)], deps, None)
         model.task_outputs[transition.group(1)] = destination
     _extend_gradle(model, text, masked)
+    if model.live_graph and sync_recipe:
+        _check_recipe('prepareUpstreamSources', sync_recipe)
+        for name in ('canonicalOriginalIdentity', 'migratedUpstreamSource'):
+            start = text.index('fun ' + name + '(')
+            stop = (_block_end(masked, text.index('{', start)) + 1
+                    if name == 'canonicalOriginalIdentity' else text.index('\n\n', start))
+            _check_recipe(name, text[start:stop])
+        tool = 'tools/check_slice_symbol_closure.py'
+        destination = model.variables['generatedUpstream']
+        model.tasks['prepareUpstreamSources'] = Task('prepareUpstreamSources', tool,
+            [('python', ''), ('literal', tool), ('literal', '--materialize-upstream'),
+             ('literal', '--repo'), ('repo', ''), ('literal', '--transition-output'), ('build', destination)], [], None)
+        model.task_outputs['prepareUpstreamSources'] = destination
+        model.output_owners.setdefault(destination, set()).add('prepareUpstreamSources')
     blocks = [(m.start(), _block_end(masked, m.end() - 1), m.group(1)) for m in _SOURCE_SET.finditer(text)]
     if re.search(r'\bkotlin\.(?:srcDirs|setSrcDirs)\s*\(', masked):
         raise ToolError('Unmodelled Gradle source directory collection')
@@ -2154,6 +2175,49 @@ def canonical_identity_function(root):
     return identity, roots
 
 
+def sync_sources(root, model):
+    """Mirror Gradle's raw-path migration filter and legacy predecessor resolution."""
+    root = Path(root)
+    identity, _ = canonical_identity_function(root)
+    catalog = json.loads((root / 'desktop/tools/v025-canonical-sources.json').read_text(encoding='utf8'))
+    def original(path):
+        resolved = identity(path)
+        if (root / resolved).is_file():
+            return resolved
+        predecessors = {old for old, current in catalog['previousPaths'].items()
+                        if current == resolved and (root / old).is_file()}
+        return next(iter(predecessors)) if len(predecessors) == 1 else resolved
+    manifest = json.loads((root / 'desktop/upstream-sources.json').read_text(encoding='utf8'))
+    direct = {original(entry['path']) for entry in manifest['sources']
+              if entry.get('mode', 'direct') == 'direct'
+              and not entry['path'].startswith(tuple(model.migrated_modules))
+              and not any(entry['path'].endswith('/src/main/java/' + name) for name in model.migrated_paths)}
+    # A literal Sync include, like a Gradle file-tree pattern, selects existing files only.
+    direct |= {path for path in model.sync_includes if (root / path).is_file()}
+    direct -= {original(path) for path in model.sync_excludes}
+    return direct
+
+
+def materialize_upstream(root, output):
+    """Copy the guarded Sync task's original inputs into its scratch-only output."""
+    root, output = Path(root), Path(output)
+    desktop = root / 'desktop'
+    model = parse_gradle((desktop / 'build.gradle.kts').read_text(encoding='utf8'))
+    if (not model.live_graph or output.resolve() != (desktop / 'build' / model.task_outputs['prepareUpstreamSources']).resolve()
+            or not (root / '.git/objects/info/alternates').is_file()):
+        raise ToolError('Upstream Sync adapter may write only its declared scratch output')
+    _resolve_live_graph(root, model)
+    if output.exists():
+        _remove_tree(output)
+    for relative in sorted(sync_sources(root, model)):
+        original = root / relative
+        if not original.is_file():
+            raise ToolError('Direct upstream source is missing: ' + relative)
+        destination = output / relative
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        destination.write_bytes(original.read_bytes())
+
+
 def walk_sources(directory, suffixes=('.kt', '.java')):
     directory = Path(directory)
     found = []
@@ -2185,15 +2249,21 @@ def collect_sources(root, model, extra_dirs=()):
     sources = []
     identity, roots = canonical_identity_function(root)
     manifest = json.loads((root / 'desktop/upstream-sources.json').read_text(encoding='utf8'))
-    direct = {identity(entry['path']) for entry in manifest['sources'] if entry.get('mode', 'direct') == 'direct'}
-    direct -= {identity(path) for path in model.sync_excludes}
-    direct = {path for path in direct if not path.startswith(tuple(model.migrated_modules))
-              and not any(path.endswith('/src/main/java/' + name) for name in model.migrated_paths)}
+    if graph:
+        direct = sync_sources(root, model)
+    else:
+        direct = {identity(entry['path']) for entry in manifest['sources'] if entry.get('mode', 'direct') == 'direct'}
+        direct -= {identity(path) for path in model.sync_excludes}
+        direct = {path for path in direct if not path.startswith(tuple(model.migrated_modules))
+                  and not any(path.endswith('/src/main/java/' + name) for name in model.migrated_paths)}
     patched = {p.relative_to(root / 'desktop/upstream-core/transition/patches').as_posix()[:-6]
                for p in (root / 'desktop/upstream-core/transition/patches').rglob('*.patch')} if model.task_outputs else set()
     compiled_real = set()
     for relative in sorted(direct):
         if not relative.endswith(('.kt', '.java')):
+            continue
+        # Sync includes are still subject to the main source set's generated-copy exclusions.
+        if graph and not _source_in_graph(graph, model, 'main', 'build', 'generated/upstream', relative):
             continue
         real = root / relative
         # the long-path form keeps the existence test and later reads honest below a deep mirror root
@@ -3844,6 +3914,7 @@ def main(argv=None):
                     'Producers run in a throw-away mirror; the checkout is never written.')
     parser.add_argument('--repo', default=None, help='repository root (default: this checkout)')
     parser.add_argument('--materialize-transition', action='store_true', help=argparse.SUPPRESS)
+    parser.add_argument('--materialize-upstream', action='store_true', help=argparse.SUPPRESS)
     parser.add_argument('--materialize-kotlin', help=argparse.SUPPRESS)
     parser.add_argument('--transition-output', help=argparse.SUPPRESS)
     parser.add_argument('--revision', default=None,
@@ -3889,6 +3960,9 @@ def main(argv=None):
             sys.stderr.flush()
 
     try:
+        if args.materialize_upstream:
+            materialize_upstream(repo, args.transition_output)
+            return 0
         if args.materialize_transition:
             materialize_transition(repo, args.transition_output)
             return 0
