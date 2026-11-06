@@ -285,6 +285,48 @@ def bangumi_explicit_reload_delta(path, body):
  PGC_EXPLICIT_RELOAD_PROOFS.append({'path':path,'beforeSha256LF':sha(original),'afterSha256LF':sha(body),'completeInverse':True,'edits':PGC_EXPLICIT_RELOAD_EDITS})
  return body
 
+def bangumi_playback_speed_source_continuity_delta(path,body):
+ # Upstream 540d86f92: speed keeps the current audio track, video buffer and play state.
+ if not path.endswith('/DesktopOriginalBangumiPlayerViewModel.kt'):return body
+ before='''    /**
+     * 处理 Hi-Res/杜比在高倍速下的临时回退，并在回到兼容倍速时恢复用户选择。
+     */
+    fun applyPlaybackSpeedFromUi(speed: Float) {
+        val player = exoPlayer ?: return
+        val previousSpeed = player.playbackParameters.speed
+        val normalizedSpeed = speed.coerceAtLeast(0.1f)
+        player.setPlaybackSpeed(normalizedSpeed)
+
+        val currentState = _uiState.value as? BangumiPlayerState.Success ?: return
+        if (!shouldRefreshPremiumAudioForPlaybackSpeedChange(
+                requestedAudioQuality = currentState.requestedAudioQuality,
+                previousPlaybackSpeed = previousSpeed,
+                nextPlaybackSpeed = normalizedSpeed
+            )
+        ) {
+            return
+        }
+
+        environment.launch {
+            switchAudioQuality(currentState.requestedAudioQuality)
+        }
+    }
+'''
+ after='''    /**
+     * 仅更新倍速，保留当前音轨、视频缓冲和播放状态。
+     */
+    fun applyPlaybackSpeedFromUi(speed: Float) {
+        val player = exoPlayer ?: return
+        val normalizedSpeed = speed.coerceAtLeast(0.1f)
+        player.setPlaybackSpeed(normalizedSpeed)
+    }
+'''
+ assert body.count(before)==1,'bangumi applyPlaybackSpeedFromUi source continuity'
+ body=body.replace(before,after)
+ imported='import com.android.purebilibili.feature.video.playback.policy.shouldRefreshPremiumAudioForPlaybackSpeedChange\n'
+ assert body.count(imported)==1 and body.count('shouldRefreshPremiumAudioForPlaybackSpeedChange')==1,'speed refresh policy has no other bangumi caller'
+ return body.replace(imported,'')
+
 for recipe in RECIPES:
  raw=(_desktop_canonical_source(repo, recipe['originalPath'])).read_text(encoding='utf8').replace('\r\n','\n');assert sha(raw)==recipe['originalSha256LF']
  body=raw
@@ -306,6 +348,7 @@ for recipe in RECIPES:
  body=apply_pgc_initial_detail(recipe['output'],body,out)
  body=apply_pgc_audio_download(recipe['output'],body,out)
  body=apply_bangumi_v046_view_model(repo,recipe['output'],body,out)
+ body=bangumi_playback_speed_source_continuity_delta(recipe['output'],body)
  target=out/recipe['output'];target.parent.mkdir(parents=True,exist_ok=True)
  target.write_text('// GENERATED full original body; upstream '+PROTOCOL['upstreamCommit']+'; LF '+recipe['originalSha256LF']+'\n'+body,encoding='utf8',newline='\n')
 spec=importlib.util.spec_from_file_location('parser',repo/'desktop/tools/sync-upstream.py');parser=importlib.util.module_from_spec(spec);spec.loader.exec_module(parser)
