@@ -37,10 +37,23 @@ def project_story(name,output):
   completeOriginalInverseExact=True,emittedSha256=p['emittedSha256']))
  return original,adapted
 def emit_story_models(output):
- results=[]
+ pending=[]
  for name in ('StoryFeedPolicy.kt','StoryModels.kt'):
   original,record,p=source(name);raw=original.encode();assert sha(raw)==p['emittedSha256']
-  target=wide(Path(output)/p['output']);target.parent.mkdir(parents=True,exist_ok=True);target.write_bytes(raw);results.append(target)
+  target=wide(Path(output)/p['output'])
+  if target.is_symlink() or not target.resolve().is_relative_to(Path(output).resolve()):
+   raise ValueError('Story model output escapes its owner: '+str(target))
+  if target.exists():
+   if not target.is_file():raise ValueError('Story model output is not a regular file: '+str(target))
+   previous=target.read_bytes()
+   owner=('// GENERATED from '+record['originalPath']+'; do not edit.').encode()
+   if previous!=raw and previous.split(b'\n',1)[0].rstrip(b'\r')!=owner:
+    raise ValueError('Refusing to overwrite an unowned Story model: '+str(target))
+  pending.append((target,raw))
+ # Check both owners before either write, so an unowned sibling stays intact.
+ results=[]
+ for target,raw in pending:
+  target.parent.mkdir(parents=True,exist_ok=True);target.write_bytes(raw);results.append(target)
  proof(output,'original-v035-story-direct-inverse.json',dict(sources=[source(x)[1] for x in ('StoryFeedPolicy.kt','StoryModels.kt')],completeRawCopies=True))
  return results
 def story_protocol(output):
