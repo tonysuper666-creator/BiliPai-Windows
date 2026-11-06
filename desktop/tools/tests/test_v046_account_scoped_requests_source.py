@@ -54,75 +54,114 @@ def flat(text):
     return re.sub(r'\s+', ' ', text)
 
 
-def without_comments(text):
-    # Retain strings verbatim, including URLs and the needles being audited.
+class LexError(Exception):
+    pass
+
+def kotlin_code(text):
     out = []
-    i = 0
+    i, n = 0, len(text)
 
-    def literal(quote):
-        nonlocal i
-        out.append(quote)
-        i += len(quote)
-        while i < len(text):
-            if text.startswith(quote, i):
-                out.append(quote)
-                i += len(quote)
-                return
-            if quote != '"""' and text[i] == '\\':
-                out.append(text[i:i + 2])
-                i += 2
-            elif quote != "'" and text.startswith('${', i):
-                out.append('${')
-                i += 2
-                scan(True)
-            else:
-                out.append(text[i])
-                i += 1
-        raise ValueError('Unterminated Kotlin literal')
-
-    def scan(template=False):
+    def code(stop_at_brace):
         nonlocal i
         depth = 0
-        while i < len(text):
-            if template and text[i] == '}' and depth == 0:
-                out.append('}')
-                i += 1
-                return
-            if template and text[i] in '{}':
-                depth += 1 if text[i] == '{' else -1
-                out.append(text[i])
-                i += 1
-                continue
+        while i < n:
+            c = text[i]
             if text.startswith('//', i):
-                end = text.find('\n', i)
-                i = len(text) if end < 0 else end
-                out.append(' ')
-            elif text.startswith('/*', i):
-                comment_depth = 1
-                i += 2
-                while comment_depth and i < len(text):
+                j = text.find('\n', i)
+                i = n if j < 0 else j
+                continue
+            if text.startswith('/*', i):
+                level, i = 1, i + 2
+                while level:
+                    if i >= n:
+                        raise LexError('unterminated block comment')
                     if text.startswith('/*', i):
-                        comment_depth += 1
-                        i += 2
+                        level, i = level + 1, i + 2
                     elif text.startswith('*/', i):
-                        comment_depth -= 1
-                        i += 2
+                        level, i = level - 1, i + 2
                     else:
                         i += 1
-                if comment_depth:
-                    raise ValueError('Unterminated Kotlin comment')
                 out.append(' ')
-            elif text.startswith('"""', i):
-                literal('"""')
-            elif text[i] in ('"', "'"):
-                literal(text[i])
-            else:
-                out.append(text[i])
+                continue
+            if text.startswith('"""', i):
+                i += 3
+                string(raw=True)
+                continue
+            if c == '"':
                 i += 1
-        if template:
-            raise ValueError('Unterminated Kotlin string template')
+                string(raw=False)
+                continue
+            if c == "'":
+                j = i + 1
+                if j < n and text[j] == '\\':
+                    j += 2
+                    while j < n and text[j] != "'":
+                        j += 1
+                else:
+                    j += 1
+                if j >= n or text[j] != "'":
+                    raise LexError('bad char literal at %d' % i)
+                out.append("''")
+                i = j + 1
+                continue
+            if stop_at_brace:
+                if c == '{':
+                    depth += 1
+                elif c == '}':
+                    if depth == 0:
+                        i += 1
+                        return
+                    depth -= 1
+            out.append(c)
+            i += 1
+        if stop_at_brace:
+            raise LexError('unterminated template')
 
-    scan()
+    def string(raw):
+        nonlocal i
+        out.append('""')
+        while True:
+            if i >= n:
+                raise LexError('unterminated string')
+            if raw and text.startswith('"""', i):
+                i += 3
+                while i < n and text[i] == '"':  # """"" : extra quotes belong to content
+                    i += 1
+                return
+            c = text[i]
+            if not raw and c == '"':
+                i += 1
+                return
+            if not raw and c == '\\':
+                i += 2
+                continue
+            if not raw and c == '\n':
+                raise LexError('newline in string')
+            if text.startswith('${', i):
+                i += 2
+                out.append(' (')
+                code(stop_at_brace=True)
+                out.append(') ')
+                continue
+            if c == '$' and i + 1 < n and (text[i + 1] == '_' or text[i + 1].isalpha()):
+                # simple template $identifier: the identifier is code, not content
+                j = i + 2
+                while j < n and (text[j] == '_' or text[j].isalnum()):
+                    j += 1
+                out.append(' (' + text[i + 1:j] + ') ')
+                i = j
+                continue
+            if c == '$' and i + 1 < n and text[i + 1] == '`':
+                # simple template $`quoted identifier`
+                j = text.find('`', i + 2)
+                if j < 0 or '\n' in text[i + 2:j]:
+                    raise LexError('unterminated quoted template identifier at %d' % i)
+                out.append(' (' + text[i + 2:j] + ') ')
+                i = j + 1
+                continue
+            i += 1
+
+    code(stop_at_brace=False)
     return ''.join(out)
 
 
@@ -631,7 +670,7 @@ class V046AccountScopedRequestsSourceTest(unittest.TestCase):
     def test_no_windows_code_constructs_the_owner_or_reads_an_android_identity_source(self):
         for path in sorted((REPO / 'desktop/src/main').rglob('*.kt')):
             text = path.read_text(encoding='utf-8')
-            text = without_comments(text)
+            text = kotlin_code(text)
             for needle in ('AccountScopedRequests', 'accountRequests', 'TokenManager.accountIdentity',
                            'object TokenManager', 'val accountIdentity'):
                 self.assertNotIn(needle, text, path.name)

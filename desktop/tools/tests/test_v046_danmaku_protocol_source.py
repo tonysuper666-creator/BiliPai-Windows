@@ -6,6 +6,7 @@ from pathlib import Path
 import hashlib
 import importlib.util
 import json
+import os
 import re
 import shutil
 import sys
@@ -471,16 +472,65 @@ class ProtocolSourceTests(unittest.TestCase):
 
     def test_the_cadence_decision_rests_on_these_facts_and_changes_nothing(self):
         platform = (DESKTOP / 'DesktopDanmakuFramePlatform.kt').read_text(encoding='utf8')
-        self.assertIn('Pacing decision (slice dmk-protocol-hardening', platform)
-        # the product comment states the technical reasoning plainly: capped by construction, faster is unmeasured
-        self.assertIn('hard-capped at 60 fps by construction', platform)
-        self.assertIn('Whether a faster loop would actually be shown is unmeasured', platform)
+        # PR93 cadence decision: one desktop request owner paces frames on one absolute timeline from the mounted
+        # display's refresh rate (1..1000 Hz, unknown or invalid -> 60). The comment states plainly that this is the
+        # requested cadence, not a claim about achieved paint fps.
+        self.assertIn('Swing is not a vsync source:\n * the display rate sets the requested cadence, not a claim about '
+                      'achieved paint fps.', platform)
         self.assertNotIn('no GUI may', platform)
         self.assertNotIn('while slices are authored', platform)
+        self.assertEqual(1, platform.count('import com.bytedance.danmaku.render.engine.RenderFrameCadence\n'))
+        self.assertEqual(1, platform.count(
+            'internal typealias DesktopOriginalDanmakuFrameRequests = DesktopDanmakuFrameRequests\n'))
+        self.assertEqual(1, platform.count('internal class DesktopDanmakuFrameRequests(\n'
+                                           '    private val platform: DesktopDanmakuFramePlatform,\n'
+                                           '    private val visible: () -> Boolean,\n'
+                                           '    private val render: () -> Boolean,\n) {\n'))
+        self.assertEqual(1, platform.count('    private val cadence = RenderFrameCadence()\n'))
+        self.assertEqual(1, platform.count('val rate = platform.refreshRateHz().takeIf { it in 1..1000 } ?: 60\n'))
+        self.assertEqual(1, platform.count('val interval = 1_000_000_000L / rate\n'))
+        self.assertEqual(1, platform.count('    private var intervalNs = 1_000_000_000L / 60\n'))
+        self.assertEqual(1, platform.count('platform.requestFrameCallback(callback, nextFrameNs)'))
+        self.assertEqual(1, platform.count('if (!cadence.shouldRender(timeNs) || (nextFrameNs != 0L && timeNs < nextFrameNs)) {'))
+        self.assertEqual(1, platform.count('cadence.onFrame(timeNs)'))
+        self.assertEqual(1, platform.count('        cadence.reset()\n'))
+        self.assertEqual(1, platform.count('    fun updateVisibilityScheduling() {\n'
+                                           '        if (visible()) requestRenderFrame() else cancelRenderFrames()\n    }\n'))
+        self.assertEqual(1, platform.count('    fun refreshRateHz(): Int = 60\n'))
         self.assertIn('requestFrameCallback(callback: (Long) -> Unit, deadlineNanos: Long)', platform)
         self.assertEqual(1, platform.count('frameTimer.initialDelay ='))
-        self.assertNotIn('refreshRate', platform.split('internal class SwingDesktopDanmakuFramePlatform', 1)[1])
-        # the carried original class is the limiter: 1e9/60 ns, not adapted by Windows
+        swing = platform.split('internal class SwingDesktopDanmakuFramePlatform', 1)[1]
+        self.assertEqual(1, swing.count('(\n    private val currentDisplayRefreshRate: () -> Int = { 60 },\n)'))
+        self.assertEqual(['refreshRateHz(): Int = currentDisplayRefreshRate()'],
+                         re.findall(r'refreshRateHz\(\)[^\n]*', swing))
+        self.assertEqual(1, swing.count('    override fun close() {\n'))
+        self.assertNotIn('defaultScreenDevice', platform)
+        self.assertNotIn('getRefreshRate', platform)
+        # the compiled limiter is the merged danmaku-engine original (frame ordering only, no fixed interval); the
+        # two v038 generated copies are upstream-owned and excluded from compilation
+        build = (REPO / 'desktop/build.gradle.kts').read_text(encoding='utf8')
+        merged = build[build.index('val migratedPlaybackModulePaths = mapOf(\n'):]
+        merged = merged[:merged.index('\n)\n')]
+        engine = merged[merged.index('    "danmaku-engine/src/main/java/" to setOf(\n'):]
+        engine = engine[:engine.index('\n    ),')]
+        self.assertEqual(1, engine.count('        "com/bytedance/danmaku/render/engine/RenderFrameCadence.kt",\n'))
+        owned = build[build.index('val upstreamOwnedGeneratedCopies = setOf(\n'):]
+        owned = owned[:owned.index('\n)\n')]
+        for copy in ('original-danmaku-list-menu/com/bytedance/danmaku/render/engine/RenderFrameCadence.kt',
+                     'original-danmaku-list-menu/com/bilipai/desktop/danmaku/DesktopOriginalDanmakuFrameRequests.kt'):
+            self.assertEqual(1, owned.count('    "' + copy + '",\n'), copy)
+        self.assertEqual(1, build.count('it in upstreamOwnedGeneratedCopies || '))
+        live = Path(os.environ.get('BILIPAI_LIVE_ROOT') or REPO)  # danmaku-engine is a direct migrated source
+        merged_cadence = (live / 'danmaku-engine/src/main/java/com/bytedance/danmaku/render/engine/RenderFrameCadence.kt'
+                          ).read_text(encoding='utf8')
+        self.assertEqual(1, merged_cadence.count('internal class RenderFrameCadence {'))
+        self.assertEqual(1, merged_cadence.count('fun reset() { lastFrameNs = null }'))
+        self.assertNotIn('FRAME_INTERVAL_NS', merged_cadence)
+        # the Windows-owned regression for this scheduler stays in the test set
+        scheduling = (REPO / 'desktop/src/test/kotlin/com/bilipai/desktop/danmaku/DesktopDisplayFrameSchedulingTest.kt'
+                      ).read_text(encoding='utf8')
+        self.assertEqual(9, scheduling.count('@Test'))
+        # source of the excluded v038 generated copy: the carried original keeps its own 1e9/60 ns limiter
         cadence = (REPO / 'desktop/upstream-slices/v038-danmaku-cadence/RenderFrameCadence.kt').read_text(encoding='utf8')
         self.assertIn('const val FRAME_INTERVAL_NS = 1_000_000_000L / 60L', cadence)
         self.assertIn('Absolute deadlines avoid dropping to 45fps on a 90Hz panel or drifting at 120Hz.', cadence)
@@ -489,7 +539,21 @@ class ProtocolSourceTests(unittest.TestCase):
         self.assertIn('platform.requestFrameCallback(renderFrame, cadence.nextFrameNs)', generator)
         # the overlay is a single transparent Swing window repainted per frame
         overlay = (DESKTOP / 'DanmakuOverlay.kt').read_text(encoding='utf8')
-        self.assertEqual(1, overlay.count('DesktopOriginalDanmakuFrameRequests(framePlatform, ::canRenderOverlay, ::tick)'))
+        self.assertEqual(0, overlay.count('DesktopOriginalDanmakuFrameRequests('))
+        self.assertEqual(1, overlay.count(
+            'private val frameRequests = DesktopDanmakuFrameRequests(framePlatform, ::canRenderOverlay, ::tick)\n'))
+        self.assertEqual(1, overlay.count('    private fun canRenderOverlay(): Boolean {\n'))
+        self.assertEqual(1, overlay.count('    private fun tick(): Boolean {\n'))
+        self.assertEqual(1, overlay.count('frameRequests.updateVisibilityScheduling()'))
+        self.assertEqual(1, overlay.count('frameRequests.cancelRenderFrames(); framePlatform.close()'))
+        # the rate comes from the display the overlay (or, before it is shown, the player surface) is mounted on
+        self.assertEqual(1, overlay.count(
+            '    private val framePlatform = SwingDesktopDanmakuFramePlatform {\n'
+            '        (overlay?.takeIf { it.isShowing }?.graphicsConfiguration ?: player.surface.graphicsConfiguration)\n'
+            '            ?.device?.displayMode?.refreshRate ?: 0\n    }\n'))
+        self.assertEqual(['            ?.device?.displayMode?.refreshRate ?: 0'],
+                         re.findall(r'[^\n]*\brefreshRate\b[^\n]*', overlay))
+        self.assertEqual([], [line for line in overlay.splitlines() if 'defaultScreenDevice' in line and 'refresh' in line])
         self.assertIn('overlay = JWindow(currentOwner)', overlay)
         # no desktop danmaku source derives a pacing interval from the monitor
         for path in DESKTOP.glob('*.kt'):

@@ -437,17 +437,30 @@ class V046HomeCardTintPolicySourceTest(unittest.TestCase):
         self.assertIn(CANONICAL, full_card.DIRECT)
         self.assertNotIn(CANONICAL, full_card.EXTRACTED)
         self.assertNotIn(CANONICAL, full_card.ADAPTED)
+        # ORIGINAL_PATHS is the reviewed inventory; only whole originals another producer owns leave DIRECT.
+        self.assertIn(CANONICAL, full_card.ORIGINAL_PATHS)
+        self.assertNotIn(CANONICAL, full_card.WHOLE_OWNED_ELSEWHERE)
+        self.assertEqual([path for path in full_card.ORIGINAL_PATHS if path not in full_card.WHOLE_OWNED_ELSEWHERE],
+                         full_card.DIRECT)
         rows = {row['path']: row for row in full_card.inventory(REPO)}
         self.assertEqual('direct', rows[CANONICAL]['mode'])
         self.assertEqual(V025_TINT_SHA256, rows[CANONICAL]['sha256'])
-        # the shared Sync no longer copies it, so production must never emit a second copy from the full-card side
-        producer = (TOOLS / 'extract-upstream-home-full-card.py').read_text(encoding='utf-8')
-        self.assertEqual(1, producer.count("if path not in DIRECT or standalone:write(out,"))
-        with tempfile.TemporaryDirectory(prefix='bp-htp-full-') as tmp:
-            full_card.generate(REPO, Path(tmp))
-            written = {p.name for p in Path(tmp).rglob('*.kt')}
-            self.assertNotIn(TINT, written)
-            self.assertNotIn(READABILITY, written)
+        # the shared Sync no longer copies it, so production must never emit a second copy from the full-card side;
+        # --standalone proves the same loop reaches this original and writes it exactly once.
+        for standalone in (False, True):
+            with self.subTest(standalone=standalone), tempfile.TemporaryDirectory(prefix='bp-htp-full-') as tmp:
+                full_card.generate(REPO, Path(tmp), standalone)
+                written = sorted(p.relative_to(tmp).as_posix() for p in Path(tmp).rglob(TINT))
+                generated = json.loads((Path(tmp) / 'source-inventory.json').read_text(encoding='utf-8'))
+                tint = [row for row in generated if row['path'] == CANONICAL]
+                self.assertEqual(['direct'], [row['mode'] for row in tint])
+                self.assertEqual([Path(tint[0]['generated']).as_posix()] if standalone else [], written)
+                self.assertEqual([], list(Path(tmp).rglob(READABILITY)))
+                if not standalone:
+                    # Every inventoried original stays with its one owner: shared Sync or the whole-original producer.
+                    self.assertEqual([], [row['path'] for row in generated if row['path'] in full_card.ORIGINAL_PATHS
+                                          and row['mode'] in ('direct', 'selected')
+                                          and (Path(tmp) / row['generated']).exists()])
 
     def test_each_top_level_name_is_declared_once_and_every_compiled_caller_still_matches(self):
         for name in policy.MAIN_FILES:
@@ -503,6 +516,26 @@ class V046HomeCardTintPolicySourceTest(unittest.TestCase):
                 self.assertEqual(expected, logical, name)
             # every compiled caller of the three changed signatures still passes only parameters v0.4.6 declares
             self.assertGreaterEqual(len(callers), 6)
+            store = 'build/generated/wallpaper-palette/com/android/purebilibili/feature/home/components/cards/WallpaperPaletteStore.kt'
+            card = 'build/generated/home-full-card/generated/com/android/purebilibili/feature/home/components/cards/VideoCard.kt'
+            message = 'app/src/main/java/com/android/purebilibili/feature/message/'
+            content = ('wallpaperPalette', 'coverTint', 'wallpaperTintEnabled', 'isDarkTheme', 'defaultOnSurface',
+                       'defaultOnSurfaceVariant', 'homeCardDynamicTintEnabled')
+            palette_labels = ('topColor', 'bottomColor', 'dominantColor', 'stops')
+            self.assertEqual(sorted([
+                ('WallpaperPalette', store, (), 4),
+                ('WallpaperPalette', store, palette_labels, 0),
+                ('WallpaperPalette', store, palette_labels, 0),
+                ('resolveVideoCardAdaptiveContentColors', message + 'MessageGlassSurface.kt', content, 0),
+                ('resolveVideoCardAdaptiveContentColors', card, content, 0),
+                ('resolveVideoCardAmbientDrawSpec', message + 'MessageGlassSurfacePolicy.kt',
+                 ('wallpaperPalette', 'yFraction', 'coverTint', 'wallpaperTintEnabled', 'isDarkTheme',
+                  'defaultContainerColor', 'defaultBorderColor', 'frostedGlassEnabled'), 0),
+                ('resolveVideoCardAmbientDrawSpec', card,
+                 ('wallpaperPalette', 'yFraction', 'coverTint', 'wallpaperTintEnabled', 'isDarkTheme',
+                  'defaultContainerColor', 'defaultBorderColor', 'isDataSaverActive', 'frostedGlassEnabled',
+                  'dynamicTintEnabled'), 0),
+            ]), sorted((callee, logical, tuple(labels), positional) for callee, logical, labels, positional, _allowed in callers))
             seen = {callee for callee, *_rest in callers}
             self.assertEqual(set(CALLEES), seen)
             for callee, logical, labels, positional, allowed in callers:

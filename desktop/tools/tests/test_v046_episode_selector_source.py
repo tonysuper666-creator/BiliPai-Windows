@@ -566,6 +566,34 @@ class GeneratedOutputTests(unittest.TestCase):
         self.assertEqual(1, overlay.count('    val coverUrl = state.coverUrl\n'))
         self.assertLess(overlay.index('val coverUrl = state.coverUrl'), overlay.index(episode.OVERLAY_PAGES_AFTER))
 
+    def assert_refreshed_receipt_adds_only(self, real, base, generated, baseline, line):
+        from v029_comment_search import whole_proof
+        def inverse(after, edits):
+            text = after
+            for edit in reversed(edits):
+                position = edit['afterOffset']
+                self.assertEqual(edit['after'], text[position:position + len(edit['after'])])
+                text = text[:position] + edit['before'] + text[position + len(edit['after']):]
+            return text
+        receipt = ('beforeSha256LF', 'afterSha256LF', 'indexedEdits', 'exactCompleteInverse')
+        self.assertEqual(sorted(base), sorted(real))
+        self.assertEqual({key: base[key] for key in base if key not in receipt},
+                         {key: real[key] for key in real if key not in receipt})
+        # whole-file inverse of the emitted text, every edit included (the refresh LazyColumn import as well), back to
+        # the one known_before text that both runs start from and that the known-presentation stage itself starts from
+        known_before = inverse(generated, real['indexedEdits'])
+        self.assertEqual(known_before, inverse(baseline, base['indexedEdits']))
+        self.assertEqual(sha(known_before), real['beforeSha256LF'])
+        self.assertEqual(real['beforeSha256LF'], real['knownPresentationStage']['beforeSha256LF'])
+        self.assertEqual((sha(generated), sha(baseline)), (real['afterSha256LF'], base['afterSha256LF']))
+        # canonical receipts (not hand-edited): recomputing the whole proof gives the recorded one
+        self.assertEqual(whole_proof(known_before, generated), {key: real[key] for key in receipt})
+        self.assertEqual(whole_proof(known_before, baseline), {key: base[key] for key in receipt})
+        rows = lambda proof: [(edit['beforeOffset'], edit['before'], edit['after']) for edit in proof['indexedEdits']]
+        self.assertEqual([], [row for row in rows(base) if row not in rows(real)])
+        self.assertEqual([('', line + '\n')], [row[1:] for row in rows(real) if row not in rows(base)])
+        self.assertEqual(len(base['indexedEdits']) + 1, len(real['indexedEdits']))
+
     def test_the_large_screen_callers_pass_the_video_cover_exactly_as_v046_does(self):
         # The TabletVideoLayout call sits in ScrollableVideoInfoSection, which TabletVideoInfoPane renders for
         # LargeScreenVideoLayout on a wide, horizontally adapted window (the 4K and 5K path). TabletCinemaLayout (no caller in
@@ -591,7 +619,18 @@ class GeneratedOutputTests(unittest.TestCase):
             proofs = [name for name in real if name.endswith('proof.json')
                       and not name.startswith(holder_collapse.PROOF_DIRECTORY + '/')]
             if producer != 'audio':
-                self.assertEqual([], [name for name in proofs if real[name] != base[name]])
+                # The v037 known-presentation receipt is refreshed at the end of emit() over the whole span known_before ->
+                # emitted file (every tablet layer and bind_refresh_lists), so it is the one lower proof that must change,
+                # and its only change may be this slice's one cover line.
+                refreshed = sorted(name + '.v037-known-presentation-proof.json'
+                                   for prod, name, _key, _line in LARGE_SCREEN_SITES if prod == producer)
+                self.assertEqual(refreshed, [name for name in proofs if real[name] != base[name]])
+                for prod, name, _key, line in LARGE_SCREEN_SITES:
+                    if prod == producer:
+                        self.assert_refreshed_receipt_adds_only(
+                            json.loads(real[name + '.v037-known-presentation-proof.json']),
+                            json.loads(base[name + '.v037-known-presentation-proof.json']),
+                            text_of(self.real(producer, SCREEN + name)), text_of(self.base(producer, SCREEN + name)), line)
         for producer, name, key, line in LARGE_SCREEN_SITES:
             with self.subTest(file=name):
                 before_anchor, after_anchor = getattr(episode, key.upper() + '_PAGES_BEFORE'), getattr(episode, key.upper() + '_PAGES_AFTER')
