@@ -118,7 +118,7 @@ internal class DesktopOriginalVideoRootPortraitRendering(
                 VideoAspectRatio.fromResizeMode(resizeMode))
             section.NativeViewport(bounds, layout, resizeMode,
                 revealAlpha = 1f, revealScale = 1f, freeScale = 1f, panX = 0f, panY = 0f,
-                flipHorizontal = false, flipVertical = false, visible = !pip, keepAwake = keepAwake && !pip)
+                flipHorizontal = false, flipVertical = false, visible = !pip, keepAwake = keepAwake)
         } else Box(bounds)
     }
 
