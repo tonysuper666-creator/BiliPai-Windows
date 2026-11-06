@@ -1,0 +1,323 @@
+@file:OptIn(androidx.compose.ui.ExperimentalComposeUiApi::class, androidx.compose.ui.InternalComposeUiApi::class,
+    kotlinx.coroutines.ExperimentalCoroutinesApi::class)
+package com.bilipai.desktop.ui
+
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.layout.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.ImageComposeScene
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.key.*
+import androidx.compose.ui.input.pointer.*
+import androidx.compose.ui.platform.*
+import androidx.compose.ui.semantics.*
+import androidx.compose.ui.unit.*
+import com.android.purebilibili.core.theme.AppUiStyle
+import com.android.purebilibili.data.model.response.*
+import com.android.purebilibili.feature.dynamic.components.RichTextContent
+import com.android.purebilibili.feature.message.RichMessageText
+import com.android.purebilibili.feature.video.ui.components.RichCommentText
+import com.bilipai.desktop.appearance.*
+import com.bilipai.desktop.data.*
+import com.bilipai.desktop.plugins.asAndroidContext
+import java.awt.GraphicsEnvironment
+import java.awt.datatransfer.DataFlavor
+import java.awt.datatransfer.Transferable
+import java.lang.reflect.Proxy
+import java.util.Locale
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.TestCoroutineScheduler
+import org.junit.jupiter.api.DynamicTest
+import org.junit.jupiter.api.TestFactory
+import kotlin.test.*
+
+/** Windows drag-to-copy on the actual comment, dynamic body and private-message renderers. */
+class DesktopWindowsTextSelectionUiTest {
+    private fun styles(scenario: String, body: (AppUiStyle) -> Unit) = AppUiStyle.entries.map { style ->
+        DynamicTest.dynamicTest("$scenario / ${style.name}") { body(style) }
+    }
+
+    private class FakeClipboard : Clipboard {
+        var text: String? = null
+        override suspend fun getClipEntry(): ClipEntry? = null
+        override suspend fun setClipEntry(clipEntry: ClipEntry?) {
+            text = (clipEntry?.nativeClipEntry as? Transferable)?.getTransferData(DataFlavor.stringFlavor) as? String
+        }
+        override val nativeClipboard: NativeClipboard get() = Any()
+    }
+
+    private class Scene(style: AppUiStyle, content: @Composable Scene.() -> Unit) : AutoCloseable {
+        private val scheduler = TestCoroutineScheduler()
+        private var frameNanos = 0L
+        private var eventMillis = 10_000L
+        private val errors = mutableListOf<Throwable>()
+        private val previousLocale = Locale.getDefault()
+        val fixture = DesktopPageTestFixture()
+        var onClose: () -> Unit = {}
+        val repository = DesktopRepository(DesktopSessionStore.temporary())
+        val pluginContext = fixture.pluginContext
+        private val owner = repository.upstreamOwner(DesktopUpstreamPurpose.Main, { true })
+        val clipboard = FakeClipboard()
+        init { check(GraphicsEnvironment.isHeadless()); Locale.setDefault(Locale.SIMPLIFIED_CHINESE) }
+        private val scene = DesktopUpstreamCalls.withOwner(owner) {
+            ImageComposeScene(900, 600, Density(1f), coroutineContext = StandardTestDispatcher(scheduler) +
+                DesktopUpstreamScope(owner) + CoroutineExceptionHandler { _, error -> errors += error }) {
+                DesktopAppearanceTheme(DesktopThemeSettings(uiStyle = style, hapticFeedbackEnabled = false),
+                    systemLanguageTags = listOf("zh-CN"), windowSmallestWidthDp = 700) {
+                    val original = LocalWindowInfo.current
+                    val window = remember(original) { object : WindowInfo by original { override val isWindowFocused = true } }
+                    CompositionLocalProvider(LocalWindowInfo provides window, LocalClipboard provides clipboard,
+                        LocalDesktopUpstreamAndroidContext provides pluginContext.asAndroidContext()) {
+                        Box(Modifier.fillMaxSize().padding(24.dp)) { this@Scene.content() }
+                    }
+                }
+            }
+        }
+
+        fun advance(frames: Int = 20) { repeat(frames) {
+            scheduler.runCurrent(); frameNanos += 30_000_000
+            DesktopUpstreamCalls.withOwner(owner) { scene.render(frameNanos).close() }; scheduler.runCurrent()
+            errors.firstOrNull()?.let { throw AssertionError("Text selection composition failed", it) }
+        } }
+        private fun flatten(n: SemanticsNode): List<SemanticsNode> = listOf(n) + n.children.flatMap(::flatten)
+        fun nodes() = scene.semanticsOwners.flatMap { flatten(it.unmergedRootSemanticsNode) }
+        fun texts() = nodes().flatMap { n -> n.config.getOrNull(SemanticsProperties.Text).orEmpty().map { it.text } }
+        fun hasText(text: String) = texts().any { it == text }
+        fun bounds(text: String): Rect = nodes().first { n ->
+            n.config.getOrNull(SemanticsProperties.Text)?.any { it.text == text } == true
+        }.boundsInRoot
+        /** Start of the text, its end, and a point in the last few characters (where the link sits). */
+        fun start(text: String) = bounds(text).let { Offset(it.left + 2f, it.center.y) }
+        fun end(text: String) = bounds(text).let { Offset(it.right - 3f, it.center.y) }
+        private fun next(step: Long = 40) = eventMillis.also { eventMillis += step }
+
+        fun click(at: Offset, type: PointerType = PointerType.Mouse) {
+            eventMillis += 1_000 // never a double click with the previous gesture
+            scene.sendPointerEvent(PointerEventType.Move, at, timeMillis = next(), type = type)
+            scene.sendPointerEvent(PointerEventType.Press, at, timeMillis = next(), type = type,
+                buttons = PointerButtons(isPrimaryPressed = true), button = PointerButton.Primary)
+            scene.sendPointerEvent(PointerEventType.Release, at, timeMillis = next(), type = type,
+                buttons = PointerButtons(), button = PointerButton.Primary); advance()
+        }
+        fun longPress(at: Offset, type: PointerType) {
+            eventMillis += 1_000
+            scene.sendPointerEvent(PointerEventType.Move, at, timeMillis = next(), type = type)
+            scene.sendPointerEvent(PointerEventType.Press, at, timeMillis = next(), type = type,
+                buttons = PointerButtons(isPrimaryPressed = true), button = PointerButton.Primary)
+            advance(1); scheduler.advanceTimeBy(900); advance()
+            scene.sendPointerEvent(PointerEventType.Release, at, timeMillis = next(900), type = type,
+                buttons = PointerButtons(), button = PointerButton.Primary); advance()
+        }
+        fun drag(from: Offset, to: Offset) {
+            eventMillis += 1_000
+            scene.sendPointerEvent(PointerEventType.Move, from, timeMillis = next())
+            scene.sendPointerEvent(PointerEventType.Press, from, timeMillis = next(),
+                buttons = PointerButtons(isPrimaryPressed = true), button = PointerButton.Primary); advance(2)
+            for (step in 1..8) {
+                val p = from + (to - from) * (step / 8f)
+                scene.sendPointerEvent(PointerEventType.Move, p, timeMillis = next(), buttons = PointerButtons(isPrimaryPressed = true))
+                advance(1)
+            }
+            scene.sendPointerEvent(PointerEventType.Release, to, timeMillis = next(),
+                buttons = PointerButtons(), button = PointerButton.Primary); advance()
+        }
+        fun rightClick(at: Offset) {
+            eventMillis += 1_000
+            scene.sendPointerEvent(PointerEventType.Move, at, timeMillis = next())
+            scene.sendPointerEvent(PointerEventType.Press, at, timeMillis = next(),
+                buttons = PointerButtons(isSecondaryPressed = true), button = PointerButton.Secondary)
+            scene.sendPointerEvent(PointerEventType.Release, at, timeMillis = next(),
+                buttons = PointerButtons(), button = PointerButton.Secondary); advance()
+        }
+        fun wheel(at: Offset, rows: Float) {
+            scene.sendPointerEvent(PointerEventType.Move, at, timeMillis = next())
+            scene.sendPointerEvent(PointerEventType.Scroll, at, timeMillis = next(), scrollDelta = Offset(0f, rows)); advance()
+        }
+        /** Ctrl+C on Windows; the same copy shortcut is Cmd+C when this suite runs on a Mac host. */
+        fun copyShortcut() {
+            val mac = System.getProperty("os.name").startsWith("Mac")
+            for (type in listOf(KeyEventType.KeyDown, KeyEventType.KeyUp)) {
+                scene.sendKeyEvent(KeyEvent(Key.C, type, isCtrlPressed = !mac, isMetaPressed = mac))
+            }
+            advance()
+        }
+        override fun close() {
+            try { scene.close() } finally {
+                try { onClose() } finally { Locale.setDefault(previousLocale); repository.logout(); fixture.close() }
+            }
+        }
+    }
+
+    /** Select from the first character to past the end, copy, and return what reached the clipboard. */
+    private fun Scene.selectAllByDragAndCopy(text: String): String? {
+        drag(start(text), end(text) + Offset(60f, 0f)); copyShortcut(); return clipboard.text
+    }
+
+    /** Select the whole text, right-click the selection and copy through the menu. */
+    private fun Scene.assertMenuCopies(text: String) {
+        drag(start(text), end(text) + Offset(60f, 0f))
+        rightClick(bounds(text).center)
+        assertTrue(hasText("复制"), "Right-click on a selection offers 复制, menu: ${texts()}")
+        click(bounds("复制").center)
+        assertEquals(text, clipboard.text, "The menu's 复制 puts the selection on the clipboard")
+    }
+
+    // ---- 视频评论 / 动态评论（RichCommentText） ----
+
+    private val comment = "这条评论可以直接选中 01:23 复制"
+
+    @Composable private fun Comment(onTime: (Long) -> Unit, onPlain: () -> Unit) {
+        RichCommentText(text = comment, fontSize = 16.sp, color = Color.Unspecified, emoteMap = emptyMap(),
+            onTimestampClick = onTime, maxTimestampMs = 600_000L, onUrlClick = {}, onPlainTextClick = onPlain)
+    }
+
+    @TestFactory fun commentDragSelectsAndCopiesWhileTimestampAndPlainClickStillWork() = styles("comment drag copy") { style ->
+        var seek = -1L; var plain = 0
+        Scene(style) { Comment({ seek = it }, { plain++ }) }.use { s ->
+            s.advance()
+            s.drag(s.start(comment), s.bounds(comment).center); s.copyShortcut()
+            val part = s.clipboard.text
+            assertTrue(!part.isNullOrEmpty() && comment.startsWith(part) && part.length < comment.length,
+                "Dragging to the middle copies exactly the selected beginning, got <$part>")
+            assertEquals(0, plain, "A drag selection must not count as a click that opens the thread")
+            assertEquals(comment, s.selectAllByDragAndCopy(comment))
+            assertEquals(0, plain)
+
+            s.click(s.start(comment)); assertEquals(1, plain, "A plain click still opens the comment thread")
+            val stamp = s.bounds(comment).let { b -> Offset(b.left + b.width * comment.indexOf("01:23").plus(2) / comment.length, b.center.y) }
+            s.click(stamp); assertEquals(83_000L, seek, "Clicking the timestamp still seeks the video")
+            assertEquals(1, plain, "The timestamp click is not also a plain click")
+        }
+    }
+
+    @TestFactory fun commentRightClickOnSelectionOffersCopy() = styles("comment context menu") { style ->
+        Scene(style) { Comment({}, {}) }.use { s ->
+            s.advance()
+            s.assertMenuCopies(comment)
+        }
+    }
+
+    @TestFactory fun commentDragInsideAListSelectsTextInsteadOfScrollingAndTheWheelStillScrolls() = styles("comment list") { style ->
+        val state = LazyListState()
+        Scene(style) {
+            LazyColumn(Modifier.fillMaxSize(), state = state) {
+                items(40) { index -> if (index == 0) Comment({}, {}) else Spacer(Modifier.height(60.dp)) }
+            }
+        }.use { s ->
+            s.advance()
+            val from = s.start(comment)
+            s.drag(from, from + Offset(0f, 300f))
+            assertEquals(0, state.firstVisibleItemIndex); assertEquals(0, state.firstVisibleItemScrollOffset,
+                "Dragging the mouse inside a comment selects text, it does not drag the list")
+            assertFalse(s.clipboard.text != null, "Nothing is copied without the copy command")
+            s.copyShortcut(); assertTrue(s.clipboard.text.orEmpty().startsWith(comment), "The vertical drag selected the comment")
+            s.wheel(from, 3f)
+            assertTrue(state.firstVisibleItemIndex > 0 || state.firstVisibleItemScrollOffset > 0, "The wheel still scrolls the list")
+        }
+    }
+
+    // ---- 动态正文（RichTextContent） ----
+
+    private val dynamicPlain = "动态正文不用长按也能拖选 "
+    private val dynamicUser = "@测试UP"
+    private val dynamicText = dynamicPlain + dynamicUser
+    private val dynamicDesc = DynamicDesc(text = dynamicText, rich_text_nodes = listOf(
+        RichTextNode(type = "RICH_TEXT_NODE_TYPE_TEXT", text = dynamicPlain, orig_text = dynamicPlain),
+        RichTextNode(type = "RICH_TEXT_NODE_TYPE_AT", text = dynamicUser, orig_text = dynamicUser, rid = "4242"),
+    ))
+    private val emotes = object : DesktopDynamicEmotes {
+        override fun snapshot() = emptyMap<String, String>()
+        override fun currentSessionKey(): Any = "selection-fixture"
+        override suspend fun ensureLoaded() = snapshot()
+    }
+    private fun platform(context: com.bilipai.desktop.plugins.DesktopPluginContext): DesktopDynamicCardPlatform =
+        Proxy.newProxyInstance(DesktopDynamicCardPlatform::class.java.classLoader,
+            arrayOf(DesktopDynamicCardPlatform::class.java)) { proxy, method, args ->
+            when (method.name) {
+                "equals" -> proxy === args?.get(0)
+                "hashCode" -> System.identityHashCode(proxy)
+                "toString" -> "SelectionFixturePlatform"
+                "isOwned" -> true
+                "getContext" -> context
+                "getEmotes" -> emotes
+                else -> error("Unexpected platform call: ${method.name}")
+            }
+        } as DesktopDynamicCardPlatform
+
+    private fun dynamicScene(style: AppUiStyle, onUser: (Long) -> Unit, onBlank: () -> Unit) = Scene(style) {
+        val bindings = remember { platform(pluginContext) }
+        CompositionLocalProvider(LocalDesktopDynamicCardBindings provides bindings) {
+            RichTextContent(desc = dynamicDesc, onUserClick = onUser, onBlankTap = onBlank)
+        }
+    }
+
+    @TestFactory fun dynamicBodyDragSelectsWithoutTheLongPressDialogAndLinksStillOpen() = styles("dynamic body") { style ->
+        var user = 0L; var blank = 0
+        dynamicScene(style, { user = it }, { blank++ }).use { s ->
+            s.advance()
+            assertEquals(dynamicText, s.selectAllByDragAndCopy(dynamicText), "The dynamic body copies straight from a drag")
+            assertFalse(s.hasText("选择动态内容"), "Drag selection opens no selection dialog")
+            assertEquals(0, blank, "A drag is not a tap on the card")
+
+            s.longPress(s.start(dynamicText), PointerType.Mouse)
+            assertFalse(s.hasText("选择动态内容"), "Holding the mouse before dragging is not interrupted by the dialog")
+
+            s.click(s.start(dynamicText)); assertEquals(1, blank, "A plain click on the body still reaches the card")
+            s.click(s.end(dynamicText)); assertEquals(4242L, user, "The @ link still opens the user")
+            assertEquals(1, blank)
+        }
+    }
+
+    @TestFactory fun dynamicBodyTouchLongPressStillOpensTheFullTextSheet() = styles("dynamic touch long press") { style ->
+        dynamicScene(style, {}, {}).use { s ->
+            s.advance()
+            s.longPress(s.start(dynamicText), PointerType.Touch)
+            assertTrue(s.hasText("选择动态内容"), "Touch keeps the long-press full-text sheet as an extra entry")
+        }
+    }
+
+    // ---- 私信气泡（RichMessageText） ----
+
+    private val chatPlain = "私信纯文字也能选中复制"
+    private val chatUrl = "https://www.bilibili.com/video/BV1xx411c7mD"
+    private val chatLinked = "资料在这里 $chatUrl"
+
+    private fun chatScene(style: AppUiStyle, onLink: (String) -> Unit) = Scene(style) {
+        val pageOwner = remember {
+            // Only RichMessageText renders; the owner is real but never asked for a page or request.
+            val community = DesktopCommunityRepository(repository, DesktopBlockedUpStore(fixture.pluginContext))
+            DesktopOriginalMessagePageOwner(repository, community, repository.sessionEpoch, 42, fixture.scope,
+                { true }, { true }, { action -> action(); true }, fixture.home, {}, false)
+                .also { owner -> onClose = { runBlocking { owner.closeAndJoin() } } }
+        }
+        CompositionLocalProvider(LocalDesktopMessagePageOwner provides pageOwner) {
+            Column(verticalArrangement = Arrangement.spacedBy(24.dp)) {
+                RichMessageText(text = chatPlain, emoteInfos = emptyList(), color = Color.Unspecified, fontSize = 16.sp)
+                RichMessageText(text = chatLinked, emoteInfos = emptyList(), color = Color.Unspecified, fontSize = 16.sp,
+                    onLinkClick = onLink)
+            }
+        }
+    }
+
+    @TestFactory fun chatBubbleTextSelectsAndCopiesAndItsLinkStillOpens() = styles("chat bubble") { style ->
+        val links = mutableListOf<String>()
+        chatScene(style) { links += it }.use { s ->
+            s.advance()
+            assertEquals(chatPlain, s.selectAllByDragAndCopy(chatPlain), "A plain message bubble copies from a drag")
+            assertEquals(chatLinked, s.selectAllByDragAndCopy(chatLinked), "A bubble with a link copies from a drag")
+            assertTrue(links.isEmpty(), "Selecting across a link does not open it")
+            s.click(s.end(chatLinked)); assertEquals(listOf(chatUrl), links, "Clicking the link still opens it")
+        }
+    }
+
+    @TestFactory fun dynamicBodyAndChatBubbleRightClickOfferCopy() = styles("dynamic and chat context menu") { style ->
+        dynamicScene(style, {}, {}).use { s -> s.advance(); s.assertMenuCopies(dynamicText) }
+        chatScene(style) {}.use { s -> s.advance(); s.assertMenuCopies(chatPlain); s.assertMenuCopies(chatLinked) }
+    }
+}

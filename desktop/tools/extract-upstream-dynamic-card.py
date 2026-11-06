@@ -145,6 +145,8 @@ def generate(repo,output,standalone=False,shared_closure=False):
    # v0.4.6 resolveUpNameColor reads `secondary` as the annual-VIP colour; this original still passes the theme colour.
    from v046_identity_badge_palette import up_name_vip_pink
    before,after=up_name_vip_pink('DynamicCard.kt',s);s=replace(s,before,after)
+   from windows_text_selection import dynamic_rich_text
+   s=dynamic_rich_text(s)
   elif p.endswith('VideoCards.kt'):
    # Original static cover/info are preserved. Android's shared-element capture
    # remains an explicit missing platform seam, not an invented transition.
