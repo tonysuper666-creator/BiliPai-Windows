@@ -54,7 +54,19 @@
      onPlayEpisode: ((Long, com.android.purebilibili.data.model.response.BangumiEpisode) -> Unit)? = null,
      onReviewsClick: (Long, String) -> Unit = { _, _ -> },
      onUserClick: (Long) -> Unit = {},
-@@ -139,7 +135,7 @@
+@@ -123,6 +119,11 @@
+     )
+     val snackbarHostState = remember { SnackbarHostState() }
+     val context = LocalContext.current
++    // Home feed width: window minus the rail in the desktop layout, the vendored cap in classic.
++    // The phone 800 dp default stays off this page.
++    val desktopBangumiHubWidth = com.bilipai.desktop.ui.desktopHomeFeedContentWidth(
++        com.android.purebilibili.core.util.LocalWindowSizeClass.current.widthDp,
++    )
+     val scope = rememberCoroutineScope()
+     val keyboard = LocalSoftwareKeyboardController.current
+     val focusRequester = remember { FocusRequester() }
+@@ -139,7 +140,7 @@
          }
      }
  
@@ -63,7 +75,7 @@
          .collectAsStateWithLifecycle(initialValue = true)
  
      LaunchedEffect(initialType) { viewModel.initialize(initialType) }
-@@ -166,7 +162,7 @@
+@@ -166,7 +167,7 @@
      val hazeState = if (
          headerBlurRequested &&
          !lowBlurBudget &&
@@ -72,7 +84,7 @@
      ) rememberRecoverableHazeState() else null
      val hazeReady = hazeState?.let { recoverableBlurEnabled(it) } == true
      val progressiveRequested = themeConfig.progressiveTopBlurEnabled && !headerBlurRequested
-@@ -279,8 +275,9 @@
+@@ -279,8 +280,9 @@
                              role = com.android.purebilibili.core.ui.components.AppTabRowRole.PRIMARY,
                              options = BangumiChannel.entries.map { AppSegmentOption(it, it.label) },
                              selectedValue = state.channel,
@@ -83,7 +95,34 @@
                              } else null,
                              isScrollInProgressProvider = {
                                  state.page == BangumiHubPage.HOME && channelPager.isScrollInProgress
-@@ -381,7 +378,7 @@
+@@ -297,7 +299,7 @@
+                                 com.android.purebilibili.core.ui.AppChromeSizeTokens.BottomBarMatchedSegmentedIndicatorHeightDp.dp,
+                             modifier = Modifier
+                                 .fillMaxWidth()
+-                                .responsiveContentWidth()
++                                .responsiveContentWidth(maxWidth = desktopBangumiHubWidth)
+                                 .padding(horizontal = 16.dp, vertical = if (themeConfig.liquidGlassEnabled) 6.dp else 8.dp),
+                             miuixBackdrop = chromeBackdrop,
+                         )
+@@ -315,7 +317,7 @@
+                             tapPressRefractionEnabled = true,
+                             modifier = Modifier
+                                 .fillMaxWidth()
+-                                .responsiveContentWidth()
++                                .responsiveContentWidth(maxWidth = desktopBangumiHubWidth)
+                                 .padding(horizontal = 12.dp, vertical = 8.dp),
+                             miuixBackdrop = chromeBackdrop,
+                         )
+@@ -345,7 +347,7 @@
+             ) {
+                 // 沉浸顶栏使用列表内部留白，让滚动内容进入采样区域；普通顶栏保留外部避让。
+                 Box(
+-                    modifier = Modifier.fillMaxSize().responsiveContentWidth()
++                    modifier = Modifier.fillMaxSize().responsiveContentWidth(maxWidth = desktopBangumiHubWidth)
+                         .padding(top = if (chromeActive) 0.dp else listTopPadding).clipToBounds(),
+                 ) {
+                     BangumiHubContent(
+@@ -381,7 +383,7 @@
                          onLoadMoreSearch = viewModel::loadMoreSearch,
                          onSaveCover = { url, title ->
                              scope.launch {
@@ -92,7 +131,7 @@
                                  snackbarHostState.showSnackbar(if (saved) "封面已保存" else "保存封面失败")
                              }
                          },
-@@ -418,7 +415,7 @@
+@@ -418,7 +420,7 @@
  /** Source-compatible bridge for callers that injected the former combined ViewModel. */
  @Deprecated("BangumiScreen now owns a dedicated lightweight hub state holder")
  @Composable
@@ -101,7 +140,7 @@
      onBack: () -> Unit,
      onBangumiClick: (Long) -> Unit,
      onBangumiEpisodeClick: (Long, Long) -> Unit = { seasonId, _ -> onBangumiClick(seasonId) },
-@@ -430,6 +427,7 @@
+@@ -430,6 +432,7 @@
          onBangumiClick = onBangumiClick,
          onBangumiEpisodeClick = onBangumiEpisodeClick,
          initialType = initialType,
