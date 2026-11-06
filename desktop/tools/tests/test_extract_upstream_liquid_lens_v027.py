@@ -3,6 +3,8 @@ from pathlib import Path
 import hashlib
 import importlib.util
 import json
+import os
+import re
 import shutil
 import subprocess
 import sys
@@ -11,6 +13,7 @@ import unittest
 from unittest.mock import patch
 
 REPO = Path(__file__).resolve().parents[3]
+LIVE = Path(os.environ.get('BILIPAI_LIVE_ROOT') or REPO)
 TOOLS = REPO / "desktop/tools"
 sys.path.insert(0, str(TOOLS))
 spec = importlib.util.spec_from_file_location("liquid_lens_v027", TOOLS / "extract-upstream-shared-liquid-tabs.py")
@@ -20,52 +23,56 @@ LENS_OUTPUT = "generated/com/android/purebilibili/feature/home/components/liquid
 
 
 class DesktopOriginalLiquidGlassThemeBindingTest(unittest.TestCase):
-    # This class reads fixed sources and evaluates the pure recipe only. No generator/output.
     theme_paths = (tool.HOME + "FloatingDockChrome.kt", tool.HOME + "BottomBarMatchedLiquidChrome.kt")
 
     def fixed_original(self, path):
-        original = tool.read(tool._desktop_canonical_source(REPO, path))
-        fixed = subprocess.check_output(["git", "show", tool.COMMIT + ":" + path], cwd=REPO).decode("utf-8").replace("\r\n", "\n")
-        self.assertEqual(fixed, original)
+        original = tool._native_source(REPO, path, tool.read(tool._desktop_canonical_source(REPO, path)))
+        pins = {'FloatingDockChrome.kt': '89bfe07642dca9c4424454edd782ffa0763a2802c2bf93b4f8c8046ae450cf36', 'BottomBarMatchedLiquidChrome.kt': 'eb3df1fe7470aee80838c2b44da94298d622d6608f8b14a8304679cb452a1c07'}
+        self.assertEqual(pins[Path(path).name], tool.sha(original))
         return original
+
+    def verify_theme_recipe(self, path):
+        original = self.fixed_original(path)
+        before = 'com.android.purebilibili.core.ui.isAppInDarkTheme()'
+        after = 'com.bilipai.desktop.appearance.isDesktopInDarkTheme()'
+        count = 2 if path.endswith('FloatingDockChrome.kt') else 1
+        self.assertEqual([(before, after, count)], tool.desktop_glass_theme_transforms(path))
+        self.assertEqual(count, original.count(before))
+        self.assertEqual(0, original.count(after))
+        adapted = original.replace(before, after)
+        self.assertEqual(0, adapted.count('isAppInDarkTheme()'))
+        self.assertEqual(count, adapted.count(after))
+        self.assertEqual(original, adapted.replace(after, before))
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory)
+            tool.generate(REPO, output)
+            inventory = json.loads((output / 'source-inventory.json').read_text(encoding='utf-8'))
+            record = next(row for row in inventory['sources'] if row['path'] == path)
+            emitted = tool.read(output / record['output'])
+            self.assertEqual(0, emitted.count('isAppInDarkTheme()'))
+            self.assertEqual(count, emitted.count(after))
 
     def test_fixed_original_glass_sources_complete_inverse_preserves_algorithms(self):
         for path in self.theme_paths:
             with self.subTest(path=path):
-                original = self.fixed_original(path)
-                transforms = tool.desktop_glass_theme_transforms(path)
-                self.assertEqual([("import androidx.compose.foundation.isSystemInDarkTheme\n",
-                    "import com.bilipai.desktop.appearance.isDesktopInDarkTheme as isSystemInDarkTheme\n")], transforms)
-                adapted = original
-                for before, after in transforms:
-                    adapted = tool.one(adapted, before, after)
-                restored = adapted
-                for before, after in reversed(transforms):
-                    restored = tool.one(restored, after, before)
-                self.assertEqual(original, restored)
-                self.assertEqual(tool.sha(original), tool.sha(restored))
-                # Every original theme caller and complete render body remains intact.
-                self.assertEqual(original.count("isSystemInDarkTheme()"), adapted.count("isSystemInDarkTheme()"))
+                self.verify_theme_recipe(path)
 
     def test_selected_chrome_import_recipe_complete_inverse(self):
         path = tool.HOME + "BottomBarMatchedLiquidChrome.kt"
-        original = self.fixed_original(path)
-        # emit copies the full original import list before adapting selected declarations.
-        imports = "\n".join(line for line in original.splitlines() if line.startswith("import ")) + "\n"
-        before, after = tool.desktop_glass_theme_transforms(path)[0]
-        adapted = tool.one(imports, before, after)
-        self.assertEqual(imports, tool.one(adapted, after, before))
-        self.assertNotIn(before, adapted)
-        self.assertEqual(1, adapted.count(after))
+        self.verify_theme_recipe(path)
 
     def test_missing_or_duplicate_original_theme_import_is_rejected(self):
         for path in self.theme_paths:
             original = self.fixed_original(path)
-            before, after = tool.desktop_glass_theme_transforms(path)[0]
+            before, after, count = tool.desktop_glass_theme_transforms(path)[0]
             for altered in (original.replace(before, "", 1), original + before):
                 with self.subTest(path=path, import_count=altered.count(before)):
-                    with self.assertRaises(AssertionError):
-                        tool.one(altered, before, after)
+                    select = tool._native_source
+                    def changed(repo, selected_path, previous):
+                        return altered if selected_path == path else select(repo, selected_path, previous)
+                    with tempfile.TemporaryDirectory() as directory, patch.object(tool, '_native_source', side_effect=changed):
+                        with self.assertRaisesRegex(AssertionError, 'Exact theme/platform symbol multiplicity'):
+                            tool.generate(REPO, Path(directory))
 
     def test_theme_recipe_is_scoped_to_exact_original_glass_paths(self):
         for path in (tool.V027_LENS_PATH, tool.HOME + "FloatingBottomBar.kt",
@@ -87,32 +94,49 @@ class FixedOriginalLiquidLensTest(unittest.TestCase):
         cls.temporary.cleanup()
 
     def test_complete_generated_lens_inverse_restores_fixed_original_with_only_two_visibility_edits(self):
-        original, identity = tool.fixed_v027_lens(REPO)
+        import v040_native_chrome as native
+        original = native.fixed_sources(REPO)[tool.V027_LENS_PATH].decode('utf-8')
+        identity = native.identity_for(REPO, tool.V027_LENS_PATH)
+        self.assertEqual('222ac588fe6ed2b0a168024a4233f4a1de0877db71ef0cf566677c0680f5f99a', tool.sha(original))
         generated = tool.read(self.output / LENS_OUTPUT)
-        header = "// OriginalSource: " + tool.V027_LENS_PATH + "\n// OriginalSHA256: " + tool.V027_LENS_SHA256 + "\n// OriginalCommit: " + tool.V027_LENS_COMMIT + "\n"
+        header = "// OriginalSource: " + tool.V027_LENS_PATH + "\n// OriginalSHA256: " + tool.sha(original) + "\n// OriginalCommit: " + native.COMMIT + "\n"
         self.assertTrue(generated.startswith(header))
-        adapted = generated[len(header):]
-        visibility = tool.lens_preflight_visibility_transforms()
-        self.assertEqual(2, len(visibility))
-        transforms = visibility + tool.desktop_glass_uniform_transforms()
-        self.assertEqual(5, len(transforms))
-        restored = adapted
-        for before, after in reversed(transforms):
-            self.assertEqual(1, restored.count(after))
-            restored = restored.replace(after, before, 1)
-        self.assertEqual(original, restored)
-        self.assertEqual(tool.V027_LENS_SHA256, hashlib.sha256(restored.encode("utf-8")).hexdigest())
+        self.assertEqual(original, generated[len(header):])
         record = next(row for row in self.inventory["sources"] if row["path"] == tool.V027_LENS_PATH)
         self.assertEqual(identity, record["sourceIdentity"])
-        self.assertEqual([dict(original=a, replacement=b) for a, b in transforms], record["adaptations"])
+        self.assertEqual([], record["adaptations"])
         self.assertEqual(tool.COMMIT, self.inventory["originalCommit"])
-        self.assertEqual([identity], self.inventory["sourceOverrides"])
+        self.assertIn(identity, self.inventory["sourceOverrides"])
+        patch_path = LIVE / 'desktop/upstream-core/patches/design-system/src/main/java/com/android/purebilibili/core/ui/effect/LiquidLens.kt.patch'
+        lines = patch_path.read_text(encoding='utf-8').splitlines(keepends=True)
+        removed = [line[1:] for line in lines if line.startswith('-') and not line.startswith('---')]
+        added = [line[1:] for line in lines if line.startswith('+') and not line.startswith('+++')]
+        self.assertEqual([f'private const val {name} = """\n' for name in tool.LENS_PREFLIGHT_CONSTANTS], removed)
+        self.assertEqual(['import com.bilipai.desktop.ui.withDesktopWindowsGlassUniformCache\n', '        withDesktopWindowsGlassUniformCache {\n', '        }\n'] + [f'internal const val {name} = """\n' for name in tool.LENS_PREFLIGHT_CONSTANTS], added)
+        source = (LIVE / 'design-system/src/main/java/com/android/purebilibili/core/ui/effect/LiquidLens.kt').read_text(encoding='utf-8').splitlines(keepends=True)
+        cursor = 0; result = []
+        for line in lines[2:]:
+            if line.startswith('@@'):
+                start = int(re.match(r'@@ -(\d+)', line).group(1)) - 1
+                self.assertGreaterEqual(start, cursor)
+                result.extend(source[cursor:start]); cursor = start
+            elif line.startswith((' ', '-')):
+                self.assertEqual(source[cursor], line[1:]); cursor += 1
+                if line.startswith(' '): result.append(line[1:])
+            elif line.startswith('+'):
+                result.append(line[1:])
+        result.extend(source[cursor:])
+        self.assertEqual(2, sum('internal const val ' + name in ''.join(result) for name in tool.LENS_PREFLIGHT_CONSTANTS))
 
     def test_source_override_does_not_change_any_other_original_renderer_output(self):
         baseline = tool.read(tool._desktop_canonical_source(REPO, tool.V027_LENS_PATH))
         self.assertEqual("579ced36f6e1f15cb9d906b42c4cf64180c598a7f5083189c12cc30ceea00e8e", tool.sha(baseline))
         before = Path(self.temporary.name) / "v025-reference"
-        with patch.object(tool, "fixed_v027_lens", return_value=(baseline, None)):
+        select = tool._previous_native_source
+        def changed(repo, path, previous):
+            current = select(repo, path, previous)
+            return current + '\n// override isolation probe\n' if path == tool.V027_LENS_PATH else current
+        with patch.object(tool, "_previous_native_source", side_effect=changed):
             tool.generate(REPO, before)
         def outputs(directory):
             return {p.relative_to(tool.safe(directory)).as_posix(): p.read_bytes()
