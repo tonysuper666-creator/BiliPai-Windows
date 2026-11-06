@@ -1,4 +1,4 @@
-from v025_source_paths import canonical_source as _desktop_canonical_source
+from v025_source_paths import canonical_source as _desktop_canonical_source, registered_source_sha256
 from pathlib import Path
 from desktop_paths import long_path
 import hashlib,importlib.util,json,re,subprocess,sys,difflib
@@ -32,7 +32,7 @@ def read(rel):
  assert SOURCES[p]['sha256LF']==SOURCE_PINS[p]['sha256LF'] and SOURCES[p]['gitBlob']==SOURCE_PINS[p]['gitBlob'],p
  if not args.standalone:
   rows=[r for r in manifest['sources']if r['path']==p]
-  assert len(rows)==1 and rows[0]['sha256']==SOURCE_PINS[p]['sha256LF'] and FEATURE in rows[0]['features'],p
+  assert len(rows)==1 and registered_source_sha256(REPO,rows[0])==SOURCE_PINS[p]['sha256LF'] and FEATURE in rows[0]['features'],p
  write(LANE/'original-retained'/(p+'.txt'),raw);return raw.decode()
 def replace(t,b,a,label,all=False):
  n=t.count(b);assert n>0 and(all or n==1),(CURRENT,label,n)

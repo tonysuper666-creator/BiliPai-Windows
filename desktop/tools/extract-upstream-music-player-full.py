@@ -1,4 +1,4 @@
-from v025_source_paths import canonical_source as _desktop_canonical_source
+from v025_source_paths import canonical_source as _desktop_canonical_source, registered_source_sha256, registered_source_row
 from pathlib import Path
 from desktop_paths import long_path
 import hashlib,importlib.util,json,re,subprocess,sys,difflib
@@ -31,8 +31,8 @@ def read(rel):
   assert sha(raw)==SOURCE_PINS[p]['sha256LF']
   assert subprocess.check_output(['git','rev-parse',COMMIT+':'+p],cwd=REPO,text=True).strip()==SOURCE_PINS[p]['gitBlob']
   if not args.standalone:
-   rows=[r for r in manifest['sources']if r['path']==p]
-   assert len(rows)==1 and rows[0]['sha256']==SOURCE_PINS[p]['sha256LF'] and FEATURE in rows[0]['features'],p
+   row=registered_source_row(REPO,manifest,p)
+   assert registered_source_sha256(REPO,row)==SOURCE_PINS[p]['sha256LF'] and FEATURE in row['features'],p
 
   SOURCES[p]={'text':raw.decode(),'sha256LF':sha(raw),'gitBlob':subprocess.check_output(['git','rev-parse',COMMIT+':'+p],cwd=REPO,text=True).strip()};write(LANE/'original-retained'/(p+'.txt'),raw)
  return SOURCES[p]['text']
