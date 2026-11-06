@@ -8,6 +8,7 @@ import hashlib, importlib.util, json, os, shutil, subprocess, sys, tempfile, uni
 
 TOOLS=Path(os.environ.get('BILIPAI_BRAND_HISTORY_TOOLS', str(Path(__file__).resolve().parents[1])))
 REPO=Path(os.environ.get('BILIPAI_BRAND_HISTORY_BASE_REPO', str(TOOLS.parents[1])))
+LIVE=Path(os.environ.get('BILIPAI_LIVE_ROOT') or REPO)
 def wide(p):
     s=str(p.absolute());return Path(s if s.startswith('\\\\?\\') else '\\\\?\\'+s) if os.name=='nt' else p
 def sha(raw):return hashlib.sha256(raw.encode() if isinstance(raw,str) else raw).hexdigest()
@@ -54,13 +55,17 @@ class BrandHistoryProducerTest(unittest.TestCase):
     def test_existing_transport_owner_and_other_sources_keep_authenticated_baselines(self):
         output,rows=self.generated();history=[r for r in rows if 'historySourceAdaptation' in r]
         self.assertEqual(len(history),3)
-        catalog=load('history_canonical_contract','v025_source_paths.py')._catalog()
+        source_paths=load('history_canonical_contract','v025_source_paths.py')
+        catalog=source_paths._catalog()
         compatibility=load('history_all_retained_inputs','sync-upstream.py').adapted_compatibility_inputs(REPO)
         # The raw new three-file slice does not change the existing canonical catalog.
         for row in rows:
             if row in history or "recapGeneratedAdaptation" in row:continue
             if row['upstreamCommit']==catalog['upstreamCommit']:
-                self.assertEqual(row['sha256LfUtf8'],catalog['paths'][row['path']]['sha256'])
+                pin=catalog['paths'][row['path']]
+                self.assertEqual(row['sha256LfUtf8'],source_paths.reviewed_sha256(REPO,pin))
+                live=source_paths.canonical_source(LIVE,row['path']).read_bytes().replace(b'\r\n',b'\n')
+                self.assertEqual(pin['sha256'],sha(live))
             else:
                 fixed=[item for item in compatibility if item['upstreamCommit']==row['upstreamCommit'] and
                     (item['path']==row['path'] or item['localPath']==row['path'])]
