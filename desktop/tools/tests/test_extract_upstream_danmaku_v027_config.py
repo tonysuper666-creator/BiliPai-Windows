@@ -2,6 +2,8 @@ from pathlib import Path
 import importlib.util
 import hashlib
 import json
+import os
+import re
 import shutil
 import tempfile
 import sys
@@ -9,6 +11,7 @@ import unittest
 
 HERE=Path(__file__).resolve().parent
 REPO=HERE.parents[2]
+LIVE=Path(os.environ.get('BILIPAI_LIVE_ROOT') or REPO)
 TOOLS=REPO/'desktop/tools'
 sys.path.insert(0,str(TOOLS))
 spec=importlib.util.spec_from_file_location('danmaku_v027_config',REPO/'desktop/tools/extract-upstream-danmaku-list-menu.py')
@@ -89,14 +92,52 @@ class CompleteV027DanmakuConfigTest(unittest.TestCase):
         for before,after in edits:
             self.assertEqual(expected.count(before),1)
             expected=expected.replace(before,after)
-        adapted=(REPO/'desktop/src/test/kotlin/com/android/purebilibili/feature/video/danmaku/DanmakuConfigPolicyTest.kt').read_text(encoding='utf-8')
-        self.assertEqual(adapted,expected)
+        app_path='com/android/purebilibili/feature/video/danmaku/DanmakuConfigPolicyTest.kt'
+        app_test=(LIVE/'app/src/test/java'/app_path).read_text(encoding='utf-8')
+        old_viewport='text size ignores the container box so every surface renders the same'
+        new_viewport='viewport geometry alone does not imply fullscreen presentation'
+        pinned='pinned duration should clamp to safe bounds'
+        names=re.findall(r'(?m)^    fun `([^`]+)`\(\)',original)
+        self.assertEqual(len(names),12)
+        self.assertEqual(len(set(names)),12)
+        self.assertIn(old_viewport,names)
+        self.assertIn(pinned,names)
+        def function(text,name):
+            pattern=r'(?ms)^    @Test\n    fun `'+re.escape(name)+r'`\(\) \{.*?^    \}'
+            matches=re.findall(pattern,text)
+            self.assertEqual(len(matches),1,name)
+            return matches[0]
+        for name in names:
+            if name not in (old_viewport,pinned):
+                self.assertEqual(function(original,name),function(app_test,name),name)
+
+        self.assertIn('coerceIn(1f, 50f)',(LIVE/'app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuConfig.kt').read_text(encoding='utf-8'))
+        desktop=(LIVE/'desktop/src/test/kotlin/com/android/purebilibili/feature/video/danmaku/DanmakuConfigV029PolicyTest.kt').read_text(encoding='utf-8')
+        for text in (app_test,desktop):
+            body=function(text,pinned)
+            for value,argument in [('1000L','0.5f'),('4000L','4.0f'),('18000L','18.0f'),('50000L','60f')]:
+                self.assertIn(f'assertEquals({value}, resolveDanmakuPinnedDurationMillis({argument}))',body)
+
+        viewport=(LIVE/'desktop/src/test/kotlin/com/android/purebilibili/feature/video/danmaku/DesktopDanmakuViewportGeometryTest.kt').read_text(encoding='utf-8')
+        adapted=function(viewport,new_viewport)
+        self.assertEqual(adapted,function(expected,new_viewport))
         restored=adapted
-        for before,after in reversed(edits):
+        for before,after in reversed(edits[3:]):
             self.assertEqual(restored.count(after),1)
             restored=restored.replace(after,before)
-        self.assertEqual(restored,original)
-        self.assertEqual(adapted.count('@Test'),12)
+        self.assertEqual(restored,function(original,old_viewport))
+
+        patch=(LIVE/'desktop/upstream-core/patches/app/src/test/java'/f'{app_path}.patch').read_text(encoding='utf-8')
+        self.assertIn('Upstream-source-sha256: '+hashlib.sha256(app_test.encode('utf-8')).hexdigest(),patch)
+        removed=[line for line in patch.splitlines() if line.startswith('-') and not line.startswith('---')]
+        added=[line for line in patch.splitlines() if line.startswith('+') and not line.startswith('+++')]
+        self.assertEqual(removed,['-import org.junit.Assert.assertEquals','-import org.junit.Assert.assertTrue','-import org.junit.Test'])
+        self.assertEqual(added,['+import org.junit.jupiter.api.Assertions.assertEquals','+import org.junit.jupiter.api.Assertions.assertTrue','+import org.junit.jupiter.api.Test'])
+        gradle=(LIVE/'desktop/build.gradle.kts').read_text(encoding='utf-8')
+        for name,path in [('correctedUpstreamTestPaths','app/src/test/java/'+app_path),('migratedVideoFeatureTestPaths',app_path)]:
+            block=re.search(r'val '+name+r'\s*=\s*setOf\((.*?)\n\)',gradle,re.S)
+            self.assertIsNotNone(block,name)
+            self.assertIn('"'+path+'"',block.group(1))
 
 
 if __name__=='__main__':unittest.main()
