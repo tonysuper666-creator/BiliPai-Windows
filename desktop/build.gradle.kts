@@ -96,7 +96,7 @@ val revisionNeutralSourceImportContextMatches =
     revisionNeutralSourceImportRoots.none { file("tools/$it").exists() } && revisionNeutralSourceImportShadowFiles.isEmpty
 // Pin the whole Gradle recipe, including canonical helpers and later wiring.
 // Mask exactly this self-digest assignment; raw build bytes remain task inputs.
-val revisionNeutralSourceGradleRecipeSha256 = "850c93f52e8943600b69006d4ab1ec7efdb3132d1e40ef08ae62b219751320d5"
+val revisionNeutralSourceGradleRecipeSha256 = "d4f38704eb7a44b516228cd97b878a9498ae497b8f1adcfa5c389cbb8433f70a"
 val revisionNeutralSourceGradleRecipeMatches = runCatching {
     val recipe = file("build.gradle.kts").readText(Charsets.UTF_8).replace("\r\n", "\n")
     val ownPin = "val revisionNeutralSourceGradleRecipeSha256 = \"$revisionNeutralSourceGradleRecipeSha256\""
@@ -244,11 +244,14 @@ val appCoreDesktopOwned: Map<String, String> = mapOf(
     "core/database/dao/BlockedUpDao.kt" to "Room 数据库；桌面用 JSON 存储（DesktopBlockedUpStore、DesktopCommentFraudJsonDao 等）",
     "core/database/dao/CommentFraudDao.kt" to "Room 数据库；桌面用 JSON 存储（DesktopBlockedUpStore、DesktopCommentFraudJsonDao 等）",
     "core/lifecycle/BackgroundManager.kt" to "Android 进程前后台与内存回收回调",
+    "core/lifecycle/BackgroundStateFlow.kt" to "依赖 Android BackgroundManager 的进程生命周期流；桌面窗口前后台由 DesktopHomeActualWindowBackground 提供，仅 Android VideoPlaybackViewModel 使用此流",
     "core/lifecycle/BackgroundMemoryTrimPolicy.kt" to "Android 进程前后台与内存回收回调",
     "core/performance/Android17Diagnostics.kt" to "Android 进程退出与 Android 17 诊断；桌面诊断走 DesktopDiagnostics",
     "core/performance/NativeExitTrace.kt" to "Android 进程退出与 Android 17 诊断；桌面诊断走 DesktopDiagnostics",
     "core/performance/ProcessExitContext.kt" to "Android 进程退出与 Android 17 诊断；桌面诊断走 DesktopDiagnostics",
     "core/player/BasePlayerViewModel.kt" to "Media3/ExoPlayer 播放栈；桌面播放走 mpv（com.bilipai.desktop.player）",
+    "core/player/AppVideoDecoderPreference.kt" to "Media3 DefaultRenderersFactory/ExoPlayer 解码器偏好与诊断；桌面解码器选择走 com.bilipai.desktop.player 的 mpv 配置",
+    "core/player/PlaybackPositionState.kt" to "Media3 Player 事件与播放时钟；桌面播放位置由 com.bilipai.desktop.player 的 mpv 状态提供",
     "core/player/HiResCompatibleRenderersFactory.kt" to "Media3/ExoPlayer 播放栈；桌面播放走 mpv（com.bilipai.desktop.player）",
     "core/player/LoudnessAwareRenderersFactory.kt" to "Media3/ExoPlayer 播放栈；桌面播放走 mpv（com.bilipai.desktop.player）",
     "core/player/LoudnessNormalizationAudioProcessor.kt" to "Media3/ExoPlayer 播放栈；桌面播放走 mpv（com.bilipai.desktop.player）",
@@ -294,6 +297,7 @@ val appCoreDesktopOwned: Map<String, String> = mapOf(
     "core/util/PipAspectRatioPolicy.kt" to "Android 系统栏、折叠屏、挖孔与画中画窗口",
     "core/util/ShareUtils.kt" to "Android 权限、相册、分享面板、ConnectivityManager 与应用缓存目录",
     "core/util/VideoSurfaceCompatibility.kt" to "Android 系统栏、折叠屏、挖孔与画中画窗口",
+    "core/util/VideoTrackCapabilities.kt" to "Media3 Format/MediaCodecSelector 的 Android 视频轨解码能力查询；桌面轨道与硬解能力由 mpv 播放栈处理",
     "core/util/WindowSizeUtils.kt" to "Android 系统栏、折叠屏、挖孔与画中画窗口",
     "core/plugin/js/BiliPaiJsRuntime.kt" to "Android WebView 执行 JS 插件；桌面 JS 插件走隔离的 JS worker（com.bilipai.desktop.plugins.js）",
     "core/plugin/feed/PublicContentImageLoader.kt" to "Android Coil ImageLoader（GIF/动画解码器与 Android 磁盘缓存）；桌面公共内容图片走 DesktopPublicContentImageRouting，同一无凭据图片客户端",

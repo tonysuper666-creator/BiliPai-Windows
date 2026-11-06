@@ -5,6 +5,10 @@ import java.io.File
 /** Desktop android.graphics.Typeface over a Skia typeface. createFromFile fails for a file Skia cannot read as a font,
  * as Android does, so callers that load a font to validate it keep working. */
 class Typeface private constructor(internal val skia: org.jetbrains.skia.Typeface) {
+    val isItalic: Boolean get() = skia.isItalic
+    val isBold: Boolean get() = skia.isBold
+    val weight: Int get() = skia.fontStyle.weight
+
     companion object {
         @JvmStatic fun createFromFile(file: File): Typeface =
             org.jetbrains.skia.FontMgr.default.makeFromFile(file.absolutePath)?.let(::Typeface)
