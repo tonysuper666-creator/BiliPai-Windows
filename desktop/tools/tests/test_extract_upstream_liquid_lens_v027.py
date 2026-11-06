@@ -109,24 +109,49 @@ class FixedOriginalLiquidLensTest(unittest.TestCase):
         self.assertIn(identity, self.inventory["sourceOverrides"])
         patch_path = LIVE / 'desktop/upstream-core/patches/design-system/src/main/java/com/android/purebilibili/core/ui/effect/LiquidLens.kt.patch'
         lines = patch_path.read_text(encoding='utf-8').splitlines(keepends=True)
+        self.assertEqual('6be65f71d93a15101f313f3610e5adc1db205c4907d1cf6446252850c7420087', tool.sha(''.join(lines)))
+        self.assertEqual(5, sum(line.startswith('@@') for line in lines))
         removed = [line[1:] for line in lines if line.startswith('-') and not line.startswith('---')]
         added = [line[1:] for line in lines if line.startswith('+') and not line.startswith('+++')]
         self.assertEqual([f'private const val {name} = """\n' for name in tool.LENS_PREFLIGHT_CONSTANTS], removed)
         self.assertEqual(['import com.bilipai.desktop.ui.withDesktopWindowsGlassUniformCache\n', '        withDesktopWindowsGlassUniformCache {\n', '        }\n'] + [f'internal const val {name} = """\n' for name in tool.LENS_PREFLIGHT_CONSTANTS], added)
-        source = (LIVE / 'design-system/src/main/java/com/android/purebilibili/core/ui/effect/LiquidLens.kt').read_text(encoding='utf-8').splitlines(keepends=True)
-        cursor = 0; result = []
-        for line in lines[2:]:
-            if line.startswith('@@'):
-                start = int(re.match(r'@@ -(\d+)', line).group(1)) - 1
-                self.assertGreaterEqual(start, cursor)
-                result.extend(source[cursor:start]); cursor = start
-            elif line.startswith((' ', '-')):
-                self.assertEqual(source[cursor], line[1:]); cursor += 1
-                if line.startswith(' '): result.append(line[1:])
-            elif line.startswith('+'):
-                result.append(line[1:])
-        result.extend(source[cursor:])
-        self.assertEqual(2, sum('internal const val ' + name in ''.join(result) for name in tool.LENS_PREFLIGHT_CONSTANTS))
+        # Upstream 2ecca2d24: protect the entire compiled shader, including
+        # arithmetic outside the patch contexts (TON-1225 r2, item 10).
+        source = (LIVE / 'design-system/src/main/java/com/android/purebilibili/core/ui/effect/LiquidLens.kt').read_text(encoding='utf-8')
+        self.assertEqual('d8213ec04aa1e566eabbb4d3117a5b37fc6d9ae40bbc0796bc77ffd16d8f4acf', tool.sha(source))
+        raw = source.encode('utf-8')
+        self.assertEqual('e976c48ff39af90c5ff96d6728ff110ac08fb509', hashlib.sha1(b'blob ' + str(len(raw)).encode() + b'\0' + raw).hexdigest())
+
+        def exact_patch(text, reverse=False):
+            # Exact declared positions and every context/removal byte; no fuzz
+            # or offset search. The reverse checks the complete patched file.
+            source_lines = text.splitlines(keepends=True)
+            cursor = 0; result = []
+            for line in lines[2:]:
+                if line.startswith('@@'):
+                    hunk = re.match(r'@@ -(\d+)(?:,\d+)? \+(\d+)', line)
+                    self.assertIsNotNone(hunk)
+                    start = int(hunk.group(2 if reverse else 1)) - 1
+                    self.assertGreaterEqual(start, cursor)
+                    result.extend(source_lines[cursor:start]); cursor = start
+                else:
+                    kind = line[:1]
+                    if reverse:
+                        kind = {'+': '-', '-': '+'}.get(kind, kind)
+                    if kind in (' ', '-'):
+                        self.assertEqual(source_lines[cursor], line[1:]); cursor += 1
+                        if kind == ' ': result.append(line[1:])
+                    elif kind == '+':
+                        result.append(line[1:])
+                    else:
+                        self.fail('Unexpected patch line: ' + line)
+            result.extend(source_lines[cursor:])
+            return ''.join(result)
+
+        adapted = exact_patch(source)
+        self.assertEqual('948f3c27ae4c33ddebd524e83fbbcbd51598b6f8d6c361e0372e76bb0cb1494d', tool.sha(adapted))
+        self.assertEqual(source.encode('utf-8'), exact_patch(adapted, reverse=True).encode('utf-8'))
+        self.assertEqual(2, sum('internal const val ' + name in adapted for name in tool.LENS_PREFLIGHT_CONSTANTS))
 
     def test_source_override_does_not_change_any_other_original_renderer_output(self):
         baseline = tool.read(tool._desktop_canonical_source(REPO, tool.V027_LENS_PATH))

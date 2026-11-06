@@ -308,27 +308,30 @@ class V046CoreDataPoliciesSourceTest(unittest.TestCase):
             self.assertIn('extractOriginalVideoStatusLabels', {row['task'] for row in results})
             hits = []
             star_imports = []
-            roots = [root / 'desktop/src', root / 'desktop/build']
-            for base in roots:
-                for path in base.rglob('*'):
-                    if not path.is_file() or path.suffix not in {'.kt', '.kts'}:
-                        continue
-                    raw = path.read_bytes()
-                    if b'import com.android.purebilibili.data.model.*' in raw:
-                        star_imports.append(path.relative_to(root).as_posix())
-                    if not any(name.encode('utf-8') in raw for name in TOP_LEVEL_NAMES):
-                        continue
-                    package, decls = declarations(raw.decode('utf-8'), path.relative_to(root).as_posix())
-                    for _visibility, _kind, declared in decls:
-                        if declared in TOP_LEVEL_NAMES:
-                            hits.append((package, declared, path.relative_to(root).as_posix()))
+            compiled, _notes = gate.collect_sources(root, model)
+            compiled = [source for source in compiled if source.set == 'main']
+            self.assertFalse(any(source.logical.startswith('build/generated/v041-video-status-labels/')
+                                 for source in compiled))
+            for source in compiled:
+                if not source.logical.endswith(('.kt', '.kts')):
+                    continue
+                raw = Path(source.real).read_bytes()
+                if b'import com.android.purebilibili.data.model.*' in raw:
+                    star_imports.append(source.logical)
+                if not any(name.encode('utf-8') in raw for name in TOP_LEVEL_NAMES):
+                    continue
+                package, decls = declarations(raw.decode('utf-8'), source.logical)
+                for _visibility, _kind, declared in decls:
+                    if declared in TOP_LEVEL_NAMES:
+                        hits.append((package, declared, source.logical))
             self.assertEqual([], star_imports)
             owned = [hit for hit in hits if hit[0] == PACKAGE]
             counts = {name: [hit[2] for hit in owned if hit[1] == name] for name in TOP_LEVEL_NAMES}
             self.assertEqual({name: 1 for name in TOP_LEVEL_NAMES}, {name: len(paths) for name, paths in counts.items()})
             for name, paths in counts.items():
                 self.assertEqual(1, len(paths), (name, paths))
-                self.assertTrue(paths[0].startswith('desktop/build/generated/v041-video-status-labels/'), paths[0])
+                self.assertTrue(paths[0].startswith(('app/src/main/java/com/android/purebilibili/data/model/',
+                                                         'core-data/src/main/java/com/android/purebilibili/data/model/')), paths[0])
             others = [hit for hit in hits if hit[0] != PACKAGE]
             self.assertEqual([], [hit for hit in others if hit[0] == PACKAGE])
             self.assertTrue(all(hit[0] != PACKAGE for hit in others))

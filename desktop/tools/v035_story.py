@@ -41,7 +41,7 @@ def emit_story_models(output):
  for name in ('StoryFeedPolicy.kt','StoryModels.kt'):
   original,record,p=source(name);raw=original.encode();assert sha(raw)==p['emittedSha256']
   target=wide(Path(output)/p['output'])
-  if target.is_symlink() or not target.resolve().is_relative_to(Path(output).resolve()):
+  if target.is_symlink() or not target.resolve().is_relative_to(wide(Path(output)).resolve()):
    raise ValueError('Story model output escapes its owner: '+str(target))
   if target.exists():
    if not target.is_file():raise ValueError('Story model output is not a regular file: '+str(target))

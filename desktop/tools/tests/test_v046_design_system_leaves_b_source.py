@@ -24,6 +24,7 @@ REPO = Path(__file__).resolve().parents[3]
 TOOLS = REPO / 'desktop/tools'
 sys.path.insert(0, str(TOOLS))
 import check_slice_symbol_closure as gate
+from compiled_source_fixture import compiled_main
 import design_system_consumer_table as table_tool
 import v037_shared_tabs_progress as tabs
 import v046_design_system_leaves_a as leaves_a
@@ -802,22 +803,9 @@ class V046DesignSystemLeavesBSourceTest(unittest.TestCase):
             self.assertEqual(registered_source_sha256(REPO, by_path[row['path']]), row['vendoredLfSha256'])
 
     def test_no_compiled_direct_copy_remains_and_every_top_level_name_has_one_producer_output(self):
-        sources = json.loads((REPO / 'desktop/upstream-sources.json').read_text(encoding='utf-8'))['sources']
-        excluded = set(gate.parse_gradle(self.build).sync_excludes)
-        compiled_direct = {row['path'] for row in sources if row.get('mode', 'direct') == 'direct'} - excluded
-        for name in leaves.MAIN_FILES:
-            self.assertNotIn(CANONICAL[name], compiled_direct, name)
-        scanned = {}
-        for producer, files in self.out.items():
-            for path, raw in files.items():
-                if path.endswith('.kt'):
-                    scanned[producer + ':' + path] = raw
-        for path in sorted(compiled_direct):
-            if path.endswith('.kt'):
-                scanned['direct:' + path] = (REPO / path).read_bytes()
-        for root in ('desktop/src/main', 'desktop/src/test'):
-            for path in sorted((REPO / root).rglob('*.kt')):
-                scanned['desktop:' + path.relative_to(REPO).as_posix()] = path.read_bytes()
+        scanned = {logical: text.encode('utf-8') for logical, text in compiled_main()}
+        self.assertFalse(any(path.startswith('build/generated/upstream-components/') and
+                             Path(path).name in leaves.MAIN_FILES for path in scanned))
         for name, wanted in TOP_LEVEL.items():
             package = leaves.PACKAGES[name]
             for visibility, kind, declared in sorted(wanted):
@@ -835,13 +823,7 @@ class V046DesignSystemLeavesBSourceTest(unittest.TestCase):
                     self.assertTrue(owners[0].endswith('/' + name), owners)
 
     def test_every_project_import_of_the_carried_files_has_a_definer_in_the_compile_inputs(self):
-        sources = json.loads((REPO / 'desktop/upstream-sources.json').read_text(encoding='utf-8'))['sources']
-        excluded = set(gate.parse_gradle(self.build).sync_excludes)
-        pool = [raw.decode('utf-8') for files in self.out.values() for path, raw in files.items() if path.endswith('.kt')]
-        pool += [(REPO / row['path']).read_bytes().decode('utf-8') for row in sources
-                 if row.get('mode', 'direct') == 'direct' and row['path'].endswith('.kt') and row['path'] not in excluded]
-        pool += [path.read_bytes().decode('utf-8') for path in sorted((REPO / 'desktop/upstream-slices').glob('*/*.kt'))]
-        pool += [path.read_bytes().decode('utf-8') for path in sorted((REPO / 'desktop/src/main').rglob('*.kt'))]
+        pool = [text for _logical, text in compiled_main()]
         index = {}
         for text in pool:
             package, decls = declarations(text)

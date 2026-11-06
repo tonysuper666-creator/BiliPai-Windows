@@ -3,18 +3,6 @@
   "description": "Known gaps for desktop/tools/check_slice_symbol_closure.py. A gap listed here is accepted; a gap listed but no longer observed is stale and fails the gate (a partial run judges only the gaps its checks can observe). Every slice appends the gaps it knowingly leaves and removes the ones it closes. closedByEvidence says how firm the owner is: roadmap = that slice's roadmap text names the symbol; proposed = the gap author's inference, to be confirmed or reassigned by the slice owner; unassigned = no roadmap slice owns it. retiredSeeds are roadmap seeds a generated shim already defines; the gate fails if one loses its definer.",
   "groups": [
     {
-      "reason": "ForegroundSettleBudget is referenced by carried home archives and not declared (roadmap seed).",
-      "closedBy": "fnd-motion-gate-and-resource-hooks",
-      "closedByEvidence": "roadmap",
-      "gaps": [
-        {
-          "scope": "carried",
-          "check": "unresolved-qualified",
-          "symbol": "com.android.purebilibili.core.lifecycle.ForegroundSettleBudget"
-        }
-      ]
-    },
-    {
       "reason": "Instant-article symbols called by the carried favorite-search archive.",
       "closedBy": "rss-reader-page-repin",
       "closedByEvidence": "roadmap",
@@ -35,18 +23,6 @@
           "scope": "carried",
           "check": "unresolved-qualified",
           "symbol": "com.android.purebilibili.feature.web.shouldAttemptInstantArticle"
-        }
-      ]
-    },
-    {
-      "reason": "Windows desktop-wallpaper seed: SystemWallpaperSeed.kt reads the Android system accent palette (system_accent1_500, Android 12+). Windows has no such palette resource; the equivalent is a new platform reader of the desktop accent or wallpaper colour, which the roadmap puts in wallpaper-surfaces-consumers (\"needs a Windows desktop-wallpaper seed provider\"). wallpaper-foundation-and-adjust deliberately does not add it: nothing in the compiled tree would call it and a registry or wallpaper reader is platform work that needs its own review. The carried Theme.kt and PlaybackNotificationColorPolicy.kt call readSystemWallpaperSeed(context).",
-      "closedBy": "wallpaper-surfaces-consumers",
-      "closedByEvidence": "roadmap",
-      "gaps": [
-        {
-          "scope": "carried",
-          "check": "unresolved-import",
-          "symbol": "com.android.purebilibili.core.theme.readSystemWallpaperSeed"
         }
       ]
     },
@@ -74,11 +50,6 @@
           "scope": "carried",
           "check": "unresolved-import",
           "symbol": "com.android.purebilibili.feature.home.components.cards.WallpaperPaletteResult"
-        },
-        {
-          "scope": "carried",
-          "check": "unresolved-import",
-          "symbol": "com.android.purebilibili.feature.home.shouldRenderRootHomeWallpaperMedia"
         }
       ]
     },
@@ -89,64 +60,9 @@
       "gaps": [
         {
           "scope": "carried",
-          "check": "unresolved-import",
-          "symbol": "com.android.purebilibili.core.ui.LocalVideoDetailNavigationTransitionScope"
-        },
-        {
-          "scope": "carried",
-          "check": "unresolved-import",
-          "symbol": "com.android.purebilibili.core.ui.rememberCompatibleStaggeredGridState"
-        },
-        {
-          "scope": "carried",
-          "check": "unresolved-import",
-          "symbol": "com.android.purebilibili.core.ui.rememberHomeStaggeredGridState"
-        },
-        {
-          "scope": "carried",
-          "check": "unresolved-import",
-          "symbol": "com.android.purebilibili.core.ui.transition.BlurRenderEffectCache"
-        },
-        {
-          "scope": "carried",
-          "check": "unresolved-qualified",
-          "symbol": "com.android.purebilibili.core.store.StartupAnimationStyle"
-        },
-        {
-          "scope": "carried",
-          "check": "unresolved-qualified",
-          "symbol": "com.android.purebilibili.core.store.shouldShowMaidStartup"
-        },
-        {
-          "scope": "carried",
-          "check": "unresolved-qualified",
-          "symbol": "com.android.purebilibili.core.ui.HomeStaggeredGridStateSaver"
-        },
-        {
-          "scope": "carried",
-          "check": "unresolved-qualified",
-          "symbol": "com.android.purebilibili.core.ui.createHomeStaggeredGridState"
-        },
-        {
-          "scope": "carried",
-          "check": "unresolved-qualified",
-          "symbol": "com.android.purebilibili.core.ui.transition.resolveNowPlayingBarMediaLayoutHandoff"
-        },
-        {
-          "scope": "carried",
-          "check": "unresolved-qualified",
-          "symbol": "com.android.purebilibili.core.ui.transition.shouldDeferVideoCardSourceHeavyWork"
-        },
-        {
-          "scope": "carried",
           "check": "unresolved-qualified",
           "symbol": "com.android.purebilibili.core.util.prefersTextureVideoSurface",
           "reason": "Verbatim upstream file in a carried slice archive references prefersTextureVideoSurface, which no compiled, carried or vendored source declares. The roadmap names it only as an exclusion (v032-android-service-surface-build is superseded-by-desktop: the Windows media service replaces prefersTextureVideoSurface with false), so no slice brings it and the first slice that emits the referencing file must apply that replacement."
-        },
-        {
-          "scope": "carried",
-          "check": "unresolved-qualified",
-          "symbol": "com.android.purebilibili.feature.bangumi.bangumiBrandBadgeColors"
         },
         {
           "scope": "carried",
@@ -157,31 +73,6 @@
           "scope": "carried",
           "check": "unresolved-qualified",
           "symbol": "com.android.purebilibili.feature.download.DownloadManager.isInitialized"
-        },
-        {
-          "scope": "carried",
-          "check": "unresolved-qualified",
-          "symbol": "com.android.purebilibili.feature.home.components.cards.horizontalVideoCardTypography"
-        },
-        {
-          "scope": "carried",
-          "check": "unresolved-qualified",
-          "symbol": "com.android.purebilibili.feature.video.screen.resolveVideoNavigationStartInFullscreen"
-        }
-      ]
-    },
-    {
-      "reason": "Heuristic false positive of the name scan: withTimeoutOrNull is a member of AwaitPointerEventScope, called inside awaitEachGesture; the gate cannot see implicit receivers (stated heuristic limit).",
-      "closedBy": "none (heuristic limit)",
-      "closedByEvidence": "unassigned",
-      "gaps": [
-        {
-          "scope": "compiled",
-          "check": "unresolved-name",
-          "symbol": "withTimeoutOrNull",
-          "paths": [
-            "build/generated/original-video-player-section-full/*/DesktopOriginalPlayerTapGestures.kt"
-          ]
         }
       ]
     },
@@ -539,6 +430,182 @@
       "guardedBy": "this gate (status LOST fails the run); test_symbol_closure.py: CurrentIntegrationTree.test_the_closed_seeds_keep_their_definers_in_the_real_tree, ExpectedGapsTests.test_the_wallpaper_foundation_seeds_are_retired_by_the_carried_archive; test_v046_wallpaper_foundation_source.py",
       "closedBy": "wallpaper-foundation-and-adjust",
       "closedByEvidence": "roadmap"
+    },
+    {
+      "symbol": "ForegroundSettleBudget",
+      "kind": "declaration",
+      "package": "com.android.purebilibili.core.lifecycle",
+      "reason": "CLOSED symbol gap: PR93 resolves the actual Gradle main source graph; the carried reference remains and its compiled definer is app/src/main/java/com/android/purebilibili/core/lifecycle/ForegroundSettleBudget.kt. Losing all definers fails this gate.",
+      "evidence": "TON-1235 Architect decision 2026-11-06; actual main definer: app/src/main/java/com/android/purebilibili/core/lifecycle/ForegroundSettleBudget.kt",
+      "retiredBy": "PR93 live source graph: app/src/main/java/com/android/purebilibili/core/lifecycle/ForegroundSettleBudget.kt",
+      "guardedBy": "check_slice_symbol_closure: LOST fails; test_symbol_closure.py: CurrentIntegrationTree.test_the_closed_seeds_keep_their_definers_in_the_real_tree and ExpectedGapsTests.test_retired_seeds_must_keep_a_definer",
+      "closedBy": "fnd-motion-gate-and-resource-hooks",
+      "closedByEvidence": "roadmap"
+    },
+    {
+      "symbol": "readSystemWallpaperSeed",
+      "kind": "declaration",
+      "package": "com.android.purebilibili.core.theme",
+      "reason": "CLOSED symbol gap: PR93 resolves the actual Gradle main source graph; the carried reference remains and its compiled definer is desktop/upstream-core/replacements/com/android/purebilibili/core/theme/SystemWallpaperSeed.kt. Losing all definers fails this gate. Windows null stub closes only the symbol gap; real wallpaper colour extraction remains wallpaper-surfaces-consumers feature debt.",
+      "evidence": "TON-1235 Architect decision 2026-11-06; actual main definer: desktop/upstream-core/replacements/com/android/purebilibili/core/theme/SystemWallpaperSeed.kt",
+      "retiredBy": "PR93 live source graph: desktop/upstream-core/replacements/com/android/purebilibili/core/theme/SystemWallpaperSeed.kt",
+      "guardedBy": "check_slice_symbol_closure: LOST fails; test_symbol_closure.py: CurrentIntegrationTree.test_the_closed_seeds_keep_their_definers_in_the_real_tree and ExpectedGapsTests.test_retired_seeds_must_keep_a_definer",
+      "closedBy": "wallpaper-surfaces-consumers",
+      "closedByEvidence": "roadmap"
+    },
+    {
+      "symbol": "shouldRenderRootHomeWallpaperMedia",
+      "kind": "declaration",
+      "package": "com.android.purebilibili.feature.home",
+      "reason": "CLOSED symbol gap: PR93 resolves the actual Gradle main source graph; the carried reference remains and its compiled definer is app/src/main/java/com/android/purebilibili/feature/home/HomeGlassVisualPolicy.kt. Losing all definers fails this gate. Closing owner is the reviewed live graph migration (inference from the compiled source graph).",
+      "evidence": "TON-1235 Architect decision 2026-11-06; actual main definer: app/src/main/java/com/android/purebilibili/feature/home/HomeGlassVisualPolicy.kt",
+      "retiredBy": "PR93 live source graph: app/src/main/java/com/android/purebilibili/feature/home/HomeGlassVisualPolicy.kt",
+      "guardedBy": "check_slice_symbol_closure: LOST fails; test_symbol_closure.py: CurrentIntegrationTree.test_the_closed_seeds_keep_their_definers_in_the_real_tree and ExpectedGapsTests.test_retired_seeds_must_keep_a_definer",
+      "closedBy": "wallpaper-surfaces-consumers",
+      "closedByEvidence": "proposed"
+    },
+    {
+      "symbol": "LocalVideoDetailNavigationTransitionScope",
+      "kind": "declaration",
+      "package": "com.android.purebilibili.core.ui",
+      "reason": "CLOSED symbol gap: PR93 resolves the actual Gradle main source graph; the carried reference remains and its compiled definer is app/src/main/java/com/android/purebilibili/core/ui/SharedTransitionProvider.kt. Losing all definers fails this gate. Closing owner is the reviewed live graph migration (inference from the compiled source graph).",
+      "evidence": "TON-1235 Architect decision 2026-11-06; actual main definer: app/src/main/java/com/android/purebilibili/core/ui/SharedTransitionProvider.kt",
+      "retiredBy": "PR93 live source graph: app/src/main/java/com/android/purebilibili/core/ui/SharedTransitionProvider.kt",
+      "guardedBy": "check_slice_symbol_closure: LOST fails; test_symbol_closure.py: CurrentIntegrationTree.test_the_closed_seeds_keep_their_definers_in_the_real_tree and ExpectedGapsTests.test_retired_seeds_must_keep_a_definer",
+      "closedBy": "PR93 live graph directly compiles upstream definers",
+      "closedByEvidence": "proposed"
+    },
+    {
+      "symbol": "rememberCompatibleStaggeredGridState",
+      "kind": "declaration",
+      "package": "com.android.purebilibili.core.ui",
+      "reason": "CLOSED symbol gap: PR93 resolves the actual Gradle main source graph; the carried reference remains and its compiled definer is app/src/main/java/com/android/purebilibili/core/ui/CompatibleStaggeredGridState.kt. Losing all definers fails this gate. Closing owner is the reviewed live graph migration (inference from the compiled source graph).",
+      "evidence": "TON-1235 Architect decision 2026-11-06; actual main definer: app/src/main/java/com/android/purebilibili/core/ui/CompatibleStaggeredGridState.kt",
+      "retiredBy": "PR93 live source graph: app/src/main/java/com/android/purebilibili/core/ui/CompatibleStaggeredGridState.kt",
+      "guardedBy": "check_slice_symbol_closure: LOST fails; test_symbol_closure.py: CurrentIntegrationTree.test_the_closed_seeds_keep_their_definers_in_the_real_tree and ExpectedGapsTests.test_retired_seeds_must_keep_a_definer",
+      "closedBy": "PR93 live graph directly compiles upstream definers",
+      "closedByEvidence": "proposed"
+    },
+    {
+      "symbol": "rememberHomeStaggeredGridState",
+      "kind": "declaration",
+      "package": "com.android.purebilibili.core.ui",
+      "reason": "CLOSED symbol gap: PR93 resolves the actual Gradle main source graph; the carried reference remains and its compiled definer is app/src/main/java/com/android/purebilibili/core/ui/CompatibleStaggeredGridState.kt. Losing all definers fails this gate. Closing owner is the reviewed live graph migration (inference from the compiled source graph).",
+      "evidence": "TON-1235 Architect decision 2026-11-06; actual main definer: app/src/main/java/com/android/purebilibili/core/ui/CompatibleStaggeredGridState.kt",
+      "retiredBy": "PR93 live source graph: app/src/main/java/com/android/purebilibili/core/ui/CompatibleStaggeredGridState.kt",
+      "guardedBy": "check_slice_symbol_closure: LOST fails; test_symbol_closure.py: CurrentIntegrationTree.test_the_closed_seeds_keep_their_definers_in_the_real_tree and ExpectedGapsTests.test_retired_seeds_must_keep_a_definer",
+      "closedBy": "PR93 live graph directly compiles upstream definers",
+      "closedByEvidence": "proposed"
+    },
+    {
+      "symbol": "BlurRenderEffectCache",
+      "kind": "declaration",
+      "package": "com.android.purebilibili.core.ui.transition",
+      "reason": "CLOSED symbol gap: PR93 resolves the actual Gradle main source graph; the carried reference remains and its compiled definer is app/src/main/java/com/android/purebilibili/core/ui/transition/BlurRenderEffectCache.kt. Losing all definers fails this gate. Closing owner is the reviewed live graph migration (inference from the compiled source graph).",
+      "evidence": "TON-1235 Architect decision 2026-11-06; actual main definer: app/src/main/java/com/android/purebilibili/core/ui/transition/BlurRenderEffectCache.kt",
+      "retiredBy": "PR93 live source graph: app/src/main/java/com/android/purebilibili/core/ui/transition/BlurRenderEffectCache.kt",
+      "guardedBy": "check_slice_symbol_closure: LOST fails; test_symbol_closure.py: CurrentIntegrationTree.test_the_closed_seeds_keep_their_definers_in_the_real_tree and ExpectedGapsTests.test_retired_seeds_must_keep_a_definer",
+      "closedBy": "PR93 live graph directly compiles upstream definers",
+      "closedByEvidence": "proposed"
+    },
+    {
+      "symbol": "StartupAnimationStyle",
+      "kind": "declaration",
+      "package": "com.android.purebilibili.core.store",
+      "reason": "CLOSED symbol gap: PR93 resolves the actual Gradle main source graph; the carried reference remains and its compiled definer is app/src/main/java/com/android/purebilibili/core/store/StartupAnimationStyle.kt. Losing all definers fails this gate. Closing owner is the reviewed live graph migration (inference from the compiled source graph).",
+      "evidence": "TON-1235 Architect decision 2026-11-06; actual main definer: app/src/main/java/com/android/purebilibili/core/store/StartupAnimationStyle.kt",
+      "retiredBy": "PR93 live source graph: app/src/main/java/com/android/purebilibili/core/store/StartupAnimationStyle.kt",
+      "guardedBy": "check_slice_symbol_closure: LOST fails; test_symbol_closure.py: CurrentIntegrationTree.test_the_closed_seeds_keep_their_definers_in_the_real_tree and ExpectedGapsTests.test_retired_seeds_must_keep_a_definer",
+      "closedBy": "PR93 live graph directly compiles upstream definers",
+      "closedByEvidence": "proposed"
+    },
+    {
+      "symbol": "shouldShowMaidStartup",
+      "kind": "declaration",
+      "package": "com.android.purebilibili.core.store",
+      "reason": "CLOSED symbol gap: PR93 resolves the actual Gradle main source graph; the carried reference remains and its compiled definer is app/src/main/java/com/android/purebilibili/core/store/StartupAnimationStyle.kt. Losing all definers fails this gate. Closing owner is the reviewed live graph migration (inference from the compiled source graph).",
+      "evidence": "TON-1235 Architect decision 2026-11-06; actual main definer: app/src/main/java/com/android/purebilibili/core/store/StartupAnimationStyle.kt",
+      "retiredBy": "PR93 live source graph: app/src/main/java/com/android/purebilibili/core/store/StartupAnimationStyle.kt",
+      "guardedBy": "check_slice_symbol_closure: LOST fails; test_symbol_closure.py: CurrentIntegrationTree.test_the_closed_seeds_keep_their_definers_in_the_real_tree and ExpectedGapsTests.test_retired_seeds_must_keep_a_definer",
+      "closedBy": "PR93 live graph directly compiles upstream definers",
+      "closedByEvidence": "proposed"
+    },
+    {
+      "symbol": "HomeStaggeredGridStateSaver",
+      "kind": "declaration",
+      "package": "com.android.purebilibili.core.ui",
+      "reason": "CLOSED symbol gap: PR93 resolves the actual Gradle main source graph; the carried reference remains and its compiled definer is app/src/main/java/com/android/purebilibili/core/ui/CompatibleStaggeredGridState.kt. Losing all definers fails this gate. Closing owner is the reviewed live graph migration (inference from the compiled source graph).",
+      "evidence": "TON-1235 Architect decision 2026-11-06; actual main definer: app/src/main/java/com/android/purebilibili/core/ui/CompatibleStaggeredGridState.kt",
+      "retiredBy": "PR93 live source graph: app/src/main/java/com/android/purebilibili/core/ui/CompatibleStaggeredGridState.kt",
+      "guardedBy": "check_slice_symbol_closure: LOST fails; test_symbol_closure.py: CurrentIntegrationTree.test_the_closed_seeds_keep_their_definers_in_the_real_tree and ExpectedGapsTests.test_retired_seeds_must_keep_a_definer",
+      "closedBy": "PR93 live graph directly compiles upstream definers",
+      "closedByEvidence": "proposed"
+    },
+    {
+      "symbol": "createHomeStaggeredGridState",
+      "kind": "declaration",
+      "package": "com.android.purebilibili.core.ui",
+      "reason": "CLOSED symbol gap: PR93 resolves the actual Gradle main source graph; the carried reference remains and its compiled definer is app/src/main/java/com/android/purebilibili/core/ui/CompatibleStaggeredGridState.kt. Losing all definers fails this gate. Closing owner is the reviewed live graph migration (inference from the compiled source graph).",
+      "evidence": "TON-1235 Architect decision 2026-11-06; actual main definer: app/src/main/java/com/android/purebilibili/core/ui/CompatibleStaggeredGridState.kt",
+      "retiredBy": "PR93 live source graph: app/src/main/java/com/android/purebilibili/core/ui/CompatibleStaggeredGridState.kt",
+      "guardedBy": "check_slice_symbol_closure: LOST fails; test_symbol_closure.py: CurrentIntegrationTree.test_the_closed_seeds_keep_their_definers_in_the_real_tree and ExpectedGapsTests.test_retired_seeds_must_keep_a_definer",
+      "closedBy": "PR93 live graph directly compiles upstream definers",
+      "closedByEvidence": "proposed"
+    },
+    {
+      "symbol": "resolveNowPlayingBarMediaLayoutHandoff",
+      "kind": "declaration",
+      "package": "com.android.purebilibili.core.ui.transition",
+      "reason": "CLOSED symbol gap: PR93 resolves the actual Gradle main source graph; the carried reference remains and its compiled definer is app/src/main/java/com/android/purebilibili/core/ui/transition/NowPlayingBarHandoff.kt. Losing all definers fails this gate. Closing owner is the reviewed live graph migration (inference from the compiled source graph).",
+      "evidence": "TON-1235 Architect decision 2026-11-06; actual main definer: app/src/main/java/com/android/purebilibili/core/ui/transition/NowPlayingBarHandoff.kt",
+      "retiredBy": "PR93 live source graph: app/src/main/java/com/android/purebilibili/core/ui/transition/NowPlayingBarHandoff.kt",
+      "guardedBy": "check_slice_symbol_closure: LOST fails; test_symbol_closure.py: CurrentIntegrationTree.test_the_closed_seeds_keep_their_definers_in_the_real_tree and ExpectedGapsTests.test_retired_seeds_must_keep_a_definer",
+      "closedBy": "PR93 live graph directly compiles upstream definers",
+      "closedByEvidence": "proposed"
+    },
+    {
+      "symbol": "shouldDeferVideoCardSourceHeavyWork",
+      "kind": "declaration",
+      "package": "com.android.purebilibili.core.ui.transition",
+      "reason": "CLOSED symbol gap: PR93 resolves the actual Gradle main source graph; the carried reference remains and its compiled definer is app/src/main/java/com/android/purebilibili/core/ui/transition/VideoCardTransitionExposure.kt. Losing all definers fails this gate. Closing owner is the reviewed live graph migration (inference from the compiled source graph).",
+      "evidence": "TON-1235 Architect decision 2026-11-06; actual main definer: app/src/main/java/com/android/purebilibili/core/ui/transition/VideoCardTransitionExposure.kt",
+      "retiredBy": "PR93 live source graph: app/src/main/java/com/android/purebilibili/core/ui/transition/VideoCardTransitionExposure.kt",
+      "guardedBy": "check_slice_symbol_closure: LOST fails; test_symbol_closure.py: CurrentIntegrationTree.test_the_closed_seeds_keep_their_definers_in_the_real_tree and ExpectedGapsTests.test_retired_seeds_must_keep_a_definer",
+      "closedBy": "PR93 live graph directly compiles upstream definers",
+      "closedByEvidence": "proposed"
+    },
+    {
+      "symbol": "bangumiBrandBadgeColors",
+      "kind": "declaration",
+      "package": "com.android.purebilibili.feature.bangumi",
+      "reason": "CLOSED symbol gap: PR93 resolves the actual Gradle main source graph; the carried reference remains and its compiled definer is build/patched-upstream/app/src/main/java/com/android/purebilibili/feature/bangumi/policy/BangumiUiPolicy.kt. Losing all definers fails this gate. Closing owner is the reviewed live graph migration (inference from the compiled source graph).",
+      "evidence": "TON-1235 Architect decision 2026-11-06; actual main definer: build/patched-upstream/app/src/main/java/com/android/purebilibili/feature/bangumi/policy/BangumiUiPolicy.kt",
+      "retiredBy": "PR93 live source graph: build/patched-upstream/app/src/main/java/com/android/purebilibili/feature/bangumi/policy/BangumiUiPolicy.kt",
+      "guardedBy": "check_slice_symbol_closure: LOST fails; test_symbol_closure.py: CurrentIntegrationTree.test_the_closed_seeds_keep_their_definers_in_the_real_tree and ExpectedGapsTests.test_retired_seeds_must_keep_a_definer",
+      "closedBy": "PR93 live graph directly compiles upstream definers",
+      "closedByEvidence": "proposed"
+    },
+    {
+      "symbol": "horizontalVideoCardTypography",
+      "kind": "declaration",
+      "package": "com.android.purebilibili.feature.home.components.cards",
+      "reason": "CLOSED symbol gap: PR93 resolves the actual Gradle main source graph; the carried reference remains and its compiled definer is app/src/main/java/com/android/purebilibili/feature/home/components/cards/HorizontalVideoCardLayoutPolicy.kt. Losing all definers fails this gate. Closing owner is the reviewed live graph migration (inference from the compiled source graph).",
+      "evidence": "TON-1235 Architect decision 2026-11-06; actual main definer: app/src/main/java/com/android/purebilibili/feature/home/components/cards/HorizontalVideoCardLayoutPolicy.kt",
+      "retiredBy": "PR93 live source graph: app/src/main/java/com/android/purebilibili/feature/home/components/cards/HorizontalVideoCardLayoutPolicy.kt",
+      "guardedBy": "check_slice_symbol_closure: LOST fails; test_symbol_closure.py: CurrentIntegrationTree.test_the_closed_seeds_keep_their_definers_in_the_real_tree and ExpectedGapsTests.test_retired_seeds_must_keep_a_definer",
+      "closedBy": "PR93 live graph directly compiles upstream definers",
+      "closedByEvidence": "proposed"
+    },
+    {
+      "symbol": "resolveVideoNavigationStartInFullscreen",
+      "kind": "declaration",
+      "package": "com.android.purebilibili.feature.video.screen",
+      "reason": "CLOSED symbol gap: PR93 resolves the actual Gradle main source graph; the carried reference remains and its compiled definer is build/patched-upstream/app/src/main/java/com/android/purebilibili/feature/video/screen/VideoNavigationCidPolicy.kt. Losing all definers fails this gate. Closing owner is the reviewed live graph migration (inference from the compiled source graph).",
+      "evidence": "TON-1235 Architect decision 2026-11-06; actual main definer: build/patched-upstream/app/src/main/java/com/android/purebilibili/feature/video/screen/VideoNavigationCidPolicy.kt",
+      "retiredBy": "PR93 live source graph: build/patched-upstream/app/src/main/java/com/android/purebilibili/feature/video/screen/VideoNavigationCidPolicy.kt",
+      "guardedBy": "check_slice_symbol_closure: LOST fails; test_symbol_closure.py: CurrentIntegrationTree.test_the_closed_seeds_keep_their_definers_in_the_real_tree and ExpectedGapsTests.test_retired_seeds_must_keep_a_definer",
+      "closedBy": "PR93 live graph directly compiles upstream definers",
+      "closedByEvidence": "proposed"
     }
   ],
   "syntheticDefiners": [

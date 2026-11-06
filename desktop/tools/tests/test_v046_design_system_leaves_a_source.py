@@ -23,6 +23,7 @@ REPO = Path(__file__).resolve().parents[3]
 TOOLS = REPO / 'desktop/tools'
 sys.path.insert(0, str(TOOLS))
 import check_slice_symbol_closure as gate
+from compiled_source_fixture import compiled_main
 from v025_source_paths import registered_source_sha256
 import v040_chrome_actions as chrome_actions
 import v046_design_system_leaves_a as leaves
@@ -150,28 +151,14 @@ def balanced(case, source):
     case.assertEqual([], stack)
 
 
-@functools.lru_cache(maxsize=1)
-def definer_candidates():
-    build = (REPO / 'desktop/build.gradle.kts').read_text(encoding='utf-8')
-    excluded = set(gate.parse_gradle(build).sync_excludes)
-    sources = json.loads((REPO / 'desktop/upstream-sources.json').read_text(encoding='utf-8'))['sources']
-    candidates = [REPO / row['path'] for row in sources
-                  if row.get('mode', 'direct') == 'direct' and row['path'].endswith('.kt') and row['path'] not in excluded]
-    candidates += sorted((REPO / 'desktop/upstream-slices').glob('*/*.kt'))
-    return tuple(candidates)
-
-
 def definers(name, package):
-    """Files of the compile-relevant sources that declare `name` in `package`: vendored direct files that are not
-    excluded from prepareUpstreamSources, and every slice archive."""
     found = []
-    for path in definer_candidates():
-        raw = path.read_bytes()
-        if name.encode('utf-8') not in raw:
+    for logical, text in compiled_main():
+        if name not in text:
             continue
-        info = gate.parse_kotlin(raw.decode('utf-8'), path.name, 'carried', 'main')
+        info = gate.parse_kotlin(text, logical, 'compiled', 'main')
         if info.package == package and any(d.name == name and d.visibility != 'private' for d in info.decls):
-            found.append(path.relative_to(REPO).as_posix())
+            found.append(logical)
     return found
 
 
@@ -480,37 +467,16 @@ class V046DesignSystemLeavesASourceTest(unittest.TestCase):
         self.assertEqual({row['replacedBy'] for row in self.manifest['replacedVendoredCopies']}, set(EXCLUDED_NOW))
 
     def test_the_vendored_direct_copies_are_no_longer_compiled_and_the_leaf_files_have_one_definer(self):
-        sources = json.loads((REPO / 'desktop/upstream-sources.json').read_text(encoding='utf-8'))['sources']
-        excluded = set(gate.parse_gradle(self.build).sync_excludes)
-        compiled_direct = {row['path'] for row in sources if row.get('mode', 'direct') == 'direct'} - excluded
-        for name in leaves.MAIN_FILES:
-            self.assertNotIn(CANONICAL[name], compiled_direct, name)
-        # static scan: no compiled direct file, no archive leaf outside the two reviewed ones and nothing desktop-owned
-        # declares any top-level name of the five files
-        names = {declared for rows in TOP_LEVEL.values() for _v, _k, declared in rows}
-        owners = {}
-        scanned = [REPO / path for path in sorted(compiled_direct) if path.endswith('.kt')]
-        scanned += sorted((REPO / 'desktop/upstream-slices').glob('*/*.kt'))
-        for root in ('desktop/src/main', 'desktop/src/test'):
-            scanned += sorted((REPO / root).rglob('*.kt'))
-        for path in scanned:
-            raw = path.read_bytes()
-            if not any(name.encode('utf-8') in raw for name in names):
-                continue
-            info = gate.parse_kotlin(raw.decode('utf-8'), path.name, 'carried', 'main')
-            if info.package != leaves.PACKAGE:
-                continue
-            for decl in info.decls:
-                if decl.name in names and decl.visibility != 'private':
-                    owners.setdefault(decl.name, []).append(path.relative_to(REPO).as_posix())
-        for name in names:
-            found = owners.get(name, [])
-            expected = [leaves.ARCHIVE + '/' + file for file, rows in TOP_LEVEL.items()
-                        if any(declared == name for _v, _k, declared in rows)]
-            if name in ('AppChromeSizeTokens', 'CompactCapsuleChromeSpec', 'resolveCompactCapsuleChromeSpec'):
-                expected = sorted(expected + [V040_ARCHIVE + '/AppChromeSizeTokens.kt'])   # replaced inside the chain
-            with self.subTest(name=name):
-                self.assertEqual(sorted(expected), sorted(found))
+        compiled = compiled_main()
+        self.assertFalse(any(path.startswith('build/generated/upstream-components/') and
+                             Path(path).name in leaves.MAIN_FILES for path, _ in compiled))
+        for filename, rows in TOP_LEVEL.items():
+            for visibility, _kind, name in rows:
+                if visibility == 'private':
+                    continue
+                found = definers(name, leaves.PACKAGE)
+                with self.subTest(name=name):
+                    self.assertEqual([CANONICAL[filename]], found)
 
     def test_nobody_else_emits_these_files_in_production(self):
         tools = sorted(path for path in TOOLS.glob('*.py') if not path.name.startswith('test_'))
@@ -543,13 +509,13 @@ class V046DesignSystemLeavesASourceTest(unittest.TestCase):
                 with self.subTest(file=name, symbol=symbol):
                     found = definers(symbol, leaves.PACKAGE)
                     self.assertTrue(found)
-                    self.assertTrue(any(member in (REPO / path).read_text(encoding='utf-8') for path in found), member)
+                    self.assertTrue(any(member in dict(compiled_main())[path] for path in found), member)
         # AppContentColors is the v0.4.6 blob, so primaryText() exists in the form AppPopupSurface calls
         colors = [path for path in definers('AppContentColors', leaves.PACKAGE)]
         self.assertTrue(colors)
         for path in colors:
             if 'v042-search-dependencies' in path:
-                self.assertEqual(git_blob(BASE + 'AppContentColors.kt'), (REPO / path).read_bytes())
+                self.assertEqual(git_blob(BASE + 'AppContentColors.kt'), dict(compiled_main())[path].encode('utf-8'))
 
     def test_inventory_and_catalog_register_the_archive(self):
         self.assertIn(leaves.ARCHIVE, self.catalog['buildInputRoots'])

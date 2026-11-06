@@ -1049,7 +1049,8 @@ def _table(desktop, directory, name):
 
 
 def _relative_kotlin(root):
-    return {p.relative_to(root).as_posix() for p in walk_sources(root, ('.kt',))}
+    base = Path(_plain(_long(root)))
+    return {Path(_plain(p)).relative_to(base).as_posix() for p in walk_sources(root, ('.kt',))}
 
 
 def _resolve_live_graph(root, model):
@@ -3346,7 +3347,7 @@ CLI_NAMES_SCOPES = ('generated', 'none')
 
 HEURISTIC_LIMITS = (
     'This is a lexical scan, not a compiler: no overload resolution, typealias expansion, generics, '
-    'inheritance across libraries, implicit receivers or visibility rules.',
+    'inheritance across libraries or visibility rules. Only the awaitEachGesture implicit receiver is modeled.',
     'Only symbols in com.android.purebilibili.*, com.bilipai.desktop.* and android.* are resolved by name; '
     'AndroidX and third-party imports are never checked; a star import is checked for its package and, for a known '
     'project package, for the names it supplies (library and unknown-package stars stay lenient).',
