@@ -51,6 +51,8 @@ internal class DesktopOriginalFrostedNavigationActions(
     val searchClick: () -> Unit,
     val openSearch: (String) -> Unit,
     val openNativeTarget: (BilibiliNavigationTarget) -> Unit,
+    /** Original search-submit links (b23 short links, share text) go to Root's original content-link opener. */
+    val openLink: (String) -> Unit,
     val searchTransitionFinished: (Int) -> Unit,
     val toggleSidebar: (() -> Unit)?,
     val historySearchChannel: SendChannel<String>?,
@@ -210,7 +212,7 @@ internal fun DesktopOriginalFrostedAudioNavigation(
             submitDesktopOriginalBottomBarSearchKeyword(text, actualHome.isBottomBarSearchEnabled,
                 actualExtra.listScoped, navigation.isMainHost, navigation.currentItem,
                 actions.historySearchChannel, actions.favoriteSearchChannel, actions.watchLaterSearchChannel,
-                actions.openSearch, actions.openNativeTarget, owner.isOwned)
+                actions.openSearch, actions.openNativeTarget, actions.openLink, owner.isOwned)
         },
         searchLaunchKey = navigation.searchLaunchKey,
         onSearchLaunchTransitionFinished = { if (owner.isOwned()) actions.searchTransitionFinished(it) },

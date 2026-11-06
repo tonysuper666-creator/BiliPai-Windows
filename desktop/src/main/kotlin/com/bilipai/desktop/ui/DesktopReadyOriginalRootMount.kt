@@ -468,6 +468,7 @@ internal class DesktopReadyOriginalRootHandle(
             },
             { query -> routes.push(BiliPaiNavKey.Search(query)) },
             { target -> dispatchDesktopReadyNativeTarget(root, routes, target) },
+            services.openExternalLink,
             { searchLaunch = 0 }, { scope.launch { prefs.setTabletUseSidebar(!prefs.navigation.value.tabletUseSidebar) } },
             personalLists.historySearchChannel, services.favoriteSearch, personalLists.watchLaterSearchChannel)
         val chromeBindings = DesktopOriginalRootChromeBindings(owner, navPreferences, scope, actions, audio,
