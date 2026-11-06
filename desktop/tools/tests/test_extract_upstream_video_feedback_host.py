@@ -58,40 +58,10 @@ class VideoFeedbackHostExtractionTest(unittest.TestCase):
                 self.assertEqual(row["sha256LF"], feedback.sha(read(self.output / row["path"])), row["path"])
         origin_proof = json.loads(read(self.output / "v029-video-feedback-origin-proof.json"))
         lifetime = json.loads(read(self.output / "v029-video-feedback-lifetime-proof.json"))
-        # Since 75522724c the latest original already carries the repost contract (no v031
-        # delta proof); the coin request boundary (75522724c), owner follow (daff05d71), triple
-        # submit guard (6e5839bb4) and like write guard (3d205010a) sit above the lifetime stage.
+        import v031_repost_coin as repost
         output_vm = read(self.output / feedback.OUTPUT_VM)
-        guard = json.loads(read(self.output / "v046-like-write-guard-proofs/VideoEngagementViewModel.kt.json"))
-        self.assertEqual(guard["outputSHA256"], feedback.sha(output_vm))
-        at = guard["offset"]
-        self.assertEqual(guard["after"], output_vm[at:at + len(guard["after"])])
-        repost_vm = output_vm[:at] + guard["before"] + output_vm[at + len(guard["after"]):]
-        self.assertEqual(guard["inputSHA256"], feedback.sha(repost_vm))
-        triple = json.loads(read(self.output / "v046-triple-submission-proofs/VideoEngagementViewModel.kt.json"))
-        self.assertEqual(triple["outputSHA256"], feedback.sha(repost_vm))
-        for edit in reversed(triple["edits"]):
-            self.assertEqual(1, repost_vm.count(edit["after"]), edit["label"])
-            repost_vm = repost_vm.replace(edit["after"], edit["before"], 1)
-        self.assertEqual(triple["inputSHA256"], feedback.sha(repost_vm))
-        owner = json.loads(read(self.output / "v042-owner-follow-projection-proof.json"))
-        self.assertEqual(owner["outputSHA256"], feedback.sha(repost_vm))
-        for edit in reversed(owner["edits"]):
-            start = edit["offset"]
-            self.assertEqual(edit["after"], repost_vm[start:start + len(edit["after"])])
-            repost_vm = repost_vm[:start] + edit["before"] + repost_vm[start + len(edit["after"]):]
-        self.assertEqual(owner["inputSHA256"], feedback.sha(repost_vm))
-        repost_proof = json.loads(read(self.output / "v037-repost-contract-source-proof.json"))
-        self.assertTrue(repost_proof["wholeLatestOriginalRepostContractAlreadySelected"])
-        self.assertEqual(repost_proof["generatedSha256LF"], feedback.sha(repost_vm))
-        coin_request = json.loads(read(self.output / "v037-video-coin-request-boundary-proof.json"))
-        self.assertEqual(coin_request["afterSha256LF"], feedback.sha(repost_vm))
-        final_vm = repost_vm
-        for edit in reversed(coin_request["indexedEdits"]):
-            start = edit["afterOffset"]
-            self.assertEqual(edit["after"], final_vm[start:start + len(edit["after"])])
-            final_vm = final_vm[:start] + edit["before"] + final_vm[start + len(edit["after"]):]
-        self.assertEqual(coin_request["beforeSha256LF"], feedback.sha(final_vm))
+        repost_proof = json.loads(read(self.output / "VideoEngagementViewModel.kt.repost-coin-proof.json"))
+        final_vm = repost.undo(output_vm, repost_proof)
         self.assertEqual(lifetime["beforeSha256LF"], origin_proof["afterSha256LF"])
         self.assertEqual(lifetime["afterSha256LF"], feedback.sha(final_vm))
         restored = final_vm
@@ -142,11 +112,7 @@ class VideoFeedbackHostExtractionTest(unittest.TestCase):
         self.assertIn("val expected = feedbackSource", leaf)
         feedback_index = leaf.index("DesktopWindowsConfirmedVideoFeedback(binding, viewportSize, native.surface, feedbackBounds)")
         self.assertIn("if (presentationAlive && !pipActive)", leaf[feedback_index - 150:feedback_index])
-        # 5b7b627e3 moved the coin dialog out of the leaf into the request-scoped section;
-        # its confirmation still dispatches through the same engagement binding.
-        self.assertEqual(1, leaf.count("DesktopWindowsVideoCoinSection(engagementBinding)"))
-        section = read(ui / "DesktopWindowsVideoEngagementSection.kt")
-        self.assertEqual(1, section.count("onConfirm = { count, alsoLike -> currentBinding.coin(request, count, alsoLike); Unit },"))
+        self.assertIn("if (engagementBinding?.coin(count, false) == true)", leaf)
         self.assertIn("LocalAwtWindow.current !== root.window", mount)
         self.assertIn("it === snapshot.desktopFeedbackOrigin(kind)", mount)
         self.assertIn("root.owns() && binding.isFeedbackOwned() && binding.admitFeedback {}", mount)

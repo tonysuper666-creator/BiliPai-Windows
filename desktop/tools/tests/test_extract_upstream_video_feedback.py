@@ -2,13 +2,6 @@
 
 The pre-feedback hash identifies the complete existing canonical owned VM,
 including its reviewed desktop adaptation. It is not a replacement raw pin.
-
-Since 75522724c the producer's two feedback stages are the v037 latest-feedback
-adapter and the v037 feedback origin, and the latest original already carries the
-repost contract (v037-repost-contract-source-proof.json, no v031 delta). The
-coin request boundary (75522724c), the v042 owner follow (daff05d71), the v046
-triple submit guard (6e5839bb4) and the v046 like write guard (3d205010a) are
-stacked above the feedback lifetime; each is peeled with its own recorded proof.
 """
 from __future__ import annotations
 
@@ -24,8 +17,8 @@ REPO = Path(__file__).resolve().parents[3]
 TOOLS = REPO / "desktop/tools"
 sys.path.insert(0, str(TOOLS))
 import v029_video_feedback as feedback
-import v037_feedback_origin as origin
-import v037_video_feedback_adapter as adapter
+import v029_video_feedback_origin as origin
+import v031_repost_coin as repost
 
 
 def load(name: str, path: Path):
@@ -36,8 +29,7 @@ def load(name: str, path: Path):
 
 
 producer = load("video_feedback_actual_producer", TOOLS / "extract-upstream-video-detail-full-units.py")
-# Re-pinned at 75522724c: the latest original VM (repost contract included) is the pre-feedback input.
-PRE_FEEDBACK_OWNED_VM_SHA256_LF = "b3214587cdb01e8e8a16c85ed2bdd80b6abdf2cd96c994957a4f40ecd7cd8573"
+PRE_FEEDBACK_OWNED_VM_SHA256_LF = "c60acf33697141b6eff513f49162820a21ffcd9b7550aba411ae4f199d3837fe"
 
 
 def read(path: Path) -> str:
@@ -52,48 +44,6 @@ def undo(text: str, proof: dict) -> str:
     return text
 
 
-def undo_indexed(text: str, proof: dict) -> str:
-    if feedback.sha(text) != proof["afterSha256LF"]:
-        raise AssertionError("Indexed complete-source inverse starts from a different source")
-    for edit in reversed(proof["indexedEdits"]):
-        start = edit["afterOffset"]
-        if text[start:start + len(edit["after"])] != edit["after"]:
-            raise AssertionError("Indexed complete-source inverse mismatch")
-        text = text[:start] + edit["before"] + text[start + len(edit["after"]):]
-    if feedback.sha(text) != proof["beforeSha256LF"]:
-        raise AssertionError("Indexed complete-source inverse did not restore its input")
-    return text
-
-
-def peel_engagement_guards(output: Path, text: str):
-    """Undo the like guard, triple guard and owner follow; return the repost-contract VM."""
-    guard = json.loads(read(output / "v046-like-write-guard-proofs/VideoEngagementViewModel.kt.json"))
-    if feedback.sha(text) != guard["outputSHA256"]:
-        raise AssertionError("Like write guard proof is not the final view model")
-    at = guard["offset"]
-    if text[at:at + len(guard["after"])] != guard["after"]:
-        raise AssertionError("Like write guard inverse mismatch")
-    text = text[:at] + guard["before"] + text[at + len(guard["after"]):]
-    triple = json.loads(read(output / "v046-triple-submission-proofs/VideoEngagementViewModel.kt.json"))
-    if feedback.sha(text) != guard["inputSHA256"] or feedback.sha(text) != triple["outputSHA256"]:
-        raise AssertionError("Triple submit guard is not directly below the like write guard")
-    for edit in reversed(triple["edits"]):
-        if text.count(edit["after"]) != 1:
-            raise AssertionError("Triple submit guard inverse mismatch: " + edit["label"])
-        text = text.replace(edit["after"], edit["before"], 1)
-    owner = json.loads(read(output / "v042-owner-follow-projection-proof.json"))
-    if feedback.sha(text) != triple["inputSHA256"] or feedback.sha(text) != owner["outputSHA256"]:
-        raise AssertionError("Owner follow is not directly below the triple submit guard")
-    for edit in reversed(owner["edits"]):
-        start = edit["offset"]
-        if text[start:start + len(edit["after"])] != edit["after"]:
-            raise AssertionError("Owner follow inverse mismatch")
-        text = text[:start] + edit["before"] + text[start + len(edit["after"]):]
-    if feedback.sha(text) != owner["inputSHA256"]:
-        raise AssertionError("Owner follow inverse did not restore its input")
-    return text, guard
-
-
 class VideoFeedbackExtractionTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -102,10 +52,8 @@ class VideoFeedbackExtractionTest(unittest.TestCase):
         cls.output = Path(cls.temp.name) / "generated"
         producer.generate(REPO, cls.output, True)
         cls.output_vm = read(cls.output / feedback.OUTPUT_VM)
-        cls.repost_contract_vm, cls.guard_proof = peel_engagement_guards(cls.output, cls.output_vm)
-        cls.repost_proof = json.loads(read(cls.output / "v037-repost-contract-source-proof.json"))
-        cls.coin_request_proof = json.loads(read(cls.output / "v037-video-coin-request-boundary-proof.json"))
-        cls.final_vm = undo_indexed(cls.repost_contract_vm, cls.coin_request_proof)
+        cls.repost_proof = json.loads(read(cls.output / "VideoEngagementViewModel.kt.repost-coin-proof.json"))
+        cls.final_vm = repost.undo(cls.output_vm, cls.repost_proof)
         cls.lifetime_proof = json.loads(read(cls.output / 'v029-video-feedback-lifetime-proof.json'))
         cls.vm = undo(cls.final_vm, cls.lifetime_proof)
         cls.state_proof = json.loads(read(cls.output / "v029-video-feedback-state-proof.json"))
@@ -114,10 +62,9 @@ class VideoFeedbackExtractionTest(unittest.TestCase):
 
     def test_actual_unique_producer_consumption_has_final_physical_output_hashes(self):
         source = read(TOOLS / "extract-upstream-video-detail-full-units.py")
-        self.assertEqual(1, source.count("t,feedbackProof=apply_latest_feedback(path,t,parser)"))
-        self.assertEqual(1, source.count("from v037_feedback_origin import apply_feedback_origin"))
+        self.assertEqual(1, source.count("t,feedbackProof=apply_video_feedback(path,t,parser)"))
         self.assertEqual(1, source.count("t,feedbackOriginProof=apply_feedback_origin(path,t)"))
-        self.assertLess(source.index("t,feedbackProof=apply_latest_feedback(path,t,parser)"),
+        self.assertLess(source.index("t,feedbackProof=apply_video_feedback(path,t,parser)"),
                         source.index("t,feedbackOriginProof=apply_feedback_origin(path,t)"))
         binding = json.loads(read(self.output / "source-bindings.json"))
         outputs = binding["outputs"]
@@ -128,11 +75,8 @@ class VideoFeedbackExtractionTest(unittest.TestCase):
         vm = [row for row in outputs if row["path"] == feedback.OUTPUT_VM]
         animation = [row for row in outputs if row["path"] == feedback.OUTPUT_ANIMATIONS]
         self.assertEqual(1, len(vm)); self.assertEqual(1, len(animation))
-        self.assertEqual(vm[0]["sha256LF"], self.guard_proof["outputSHA256"])
-        self.assertEqual(self.repost_proof["generatedSha256LF"], feedback.sha(self.repost_contract_vm))
-        self.assertTrue(self.repost_proof["wholeLatestOriginalRepostContractAlreadySelected"])
-        self.assertEqual(self.repost_proof["generatedSha256LF"], self.coin_request_proof["afterSha256LF"])
-        self.assertEqual(self.coin_request_proof["beforeSha256LF"], self.lifetime_proof["afterSha256LF"])
+        self.assertEqual(vm[0]["sha256LF"], self.repost_proof["afterSha256LF"])
+        self.assertEqual(self.repost_proof["beforeSha256LF"], self.lifetime_proof["afterSha256LF"])
         self.assertEqual(self.origin_proof["afterSha256LF"], self.lifetime_proof["beforeSha256LF"])
         self.assertEqual(feedback.sha(self.vm), self.origin_proof["afterSha256LF"])
         self.assertEqual(animation[0]["fixedCommit"], feedback.COMMIT)
@@ -141,10 +85,10 @@ class VideoFeedbackExtractionTest(unittest.TestCase):
         intermediate = undo(self.vm, self.origin_proof)
         self.assertEqual(feedback.sha(intermediate), self.origin_proof["beforeSha256LF"])
         self.assertEqual(feedback.sha(intermediate), self.state_proof["afterSha256LF"])
-        original_owned = undo_indexed(intermediate, self.state_proof)
+        original_owned = undo(intermediate, self.state_proof)
         self.assertEqual(PRE_FEEDBACK_OWNED_VM_SHA256_LF, feedback.sha(original_owned))
         self.assertEqual(feedback.sha(original_owned), self.state_proof["beforeSha256LF"])
-        first, first_proof = adapter.apply_latest_feedback(feedback.OUTPUT_VM, original_owned, producer.parser)
+        first, first_proof = feedback.apply_video_feedback(feedback.OUTPUT_VM, original_owned, producer.parser)
         final, final_proof = origin.apply_feedback_origin(feedback.OUTPUT_VM, first)
         self.assertEqual(intermediate, first); self.assertEqual(self.vm, final)
         self.assertEqual(self.state_proof, first_proof); self.assertEqual(self.origin_proof, final_proof)
@@ -234,7 +178,7 @@ class VideoFeedbackExtractionTest(unittest.TestCase):
 
     def test_foreign_paths_noop_and_wrong_or_duplicate_stage_anchors_fail_closed(self):
         self.assertEqual(origin.apply_feedback_origin("foreign.kt", "unchanged"), ("unchanged", None))
-        self.assertEqual(adapter.apply_latest_feedback("foreign.kt", "unchanged", producer.parser), ("unchanged", None))
+        self.assertEqual(feedback.apply_video_feedback("foreign.kt", "unchanged", producer.parser), ("unchanged", None))
         first = undo(self.vm, self.origin_proof)
         anchor = "    val tripleCelebrationFinished: Boolean = false\n)"
         for broken in (first.replace(anchor, "    val foreign: Boolean = false\n)", 1), first + "\n" + anchor):
