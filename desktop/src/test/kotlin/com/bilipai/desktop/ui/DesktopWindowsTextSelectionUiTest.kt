@@ -2,6 +2,7 @@
     kotlinx.coroutines.ExperimentalCoroutinesApi::class)
 package com.bilipai.desktop.ui
 
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.layout.*
@@ -13,6 +14,7 @@ import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.key.*
 import androidx.compose.ui.input.pointer.*
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.platform.*
 import androidx.compose.ui.semantics.*
 import androidx.compose.ui.unit.*
@@ -139,6 +141,14 @@ class DesktopWindowsTextSelectionUiTest {
             scene.sendPointerEvent(PointerEventType.Move, at, timeMillis = next())
             scene.sendPointerEvent(PointerEventType.Scroll, at, timeMillis = next(), scrollDelta = Offset(0f, rows)); advance()
         }
+        fun tab(shift: Boolean = false) {
+            for (type in listOf(KeyEventType.KeyDown, KeyEventType.KeyUp)) {
+                scene.sendKeyEvent(KeyEvent(Key.Tab, type, isShiftPressed = shift))
+            }
+            advance()
+        }
+        fun focusedTag() = nodes().lastOrNull { it.config.getOrNull(SemanticsProperties.Focused) == true }
+            ?.config?.getOrNull(SemanticsProperties.TestTag)
         /** Ctrl+C on Windows; the same copy shortcut is Cmd+C when this suite runs on a Mac host. */
         fun copyShortcut() {
             val mac = System.getProperty("os.name").startsWith("Mac")
@@ -157,6 +167,23 @@ class DesktopWindowsTextSelectionUiTest {
     /** Select from the first character to past the end, copy, and return what reached the clipboard. */
     private fun Scene.selectAllByDragAndCopy(text: String): String? {
         drag(start(text), end(text) + Offset(60f, 0f)); copyShortcut(); return clipboard.text
+    }
+
+    /** Two keyboard stops around the selectable text, like the buttons above and below a comment. */
+    @Composable private fun Framed(content: @Composable () -> Unit) = Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+        Box(Modifier.size(40.dp).testTag("before").focusable())
+        content()
+        Box(Modifier.size(40.dp).testTag("after").focusable())
+    }
+
+    /** Tab walks past plain text (links stay keyboard stops) from the control before it to the one after; a drag still copies. */
+    private fun Scene.assertTabSkipsTextAndDragStillCopies(text: String) {
+        advance()
+        tab(); assertEquals("before", focusedTag())
+        tab(); assertEquals("after", focusedTag(), "Tab never stops on selectable text")
+        assertEquals(text, selectAllByDragAndCopy(text), "The text still copies from a drag")
+        tab(); assertEquals("after", focusedTag(), "Tab from a selection moves on to the next control")
+        tab(shift = true); assertEquals("before", focusedTag(), "Shift+Tab walks back past the text too")
     }
 
     /** Select the whole text, right-click the selection and copy through the menu. */
@@ -250,10 +277,11 @@ class DesktopWindowsTextSelectionUiTest {
             }
         } as DesktopDynamicCardPlatform
 
-    private fun dynamicScene(style: AppUiStyle, onUser: (Long) -> Unit, onBlank: () -> Unit) = Scene(style) {
+    private fun dynamicScene(style: AppUiStyle, onUser: (Long) -> Unit, onBlank: () -> Unit,
+        desc: DynamicDesc = dynamicDesc, frame: @Composable (@Composable () -> Unit) -> Unit = { it() }) = Scene(style) {
         val bindings = remember { platform(pluginContext) }
         CompositionLocalProvider(LocalDesktopDynamicCardBindings provides bindings) {
-            RichTextContent(desc = dynamicDesc, onUserClick = onUser, onBlankTap = onBlank)
+            frame { RichTextContent(desc = desc, onUserClick = onUser, onBlankTap = onBlank) }
         }
     }
 
@@ -288,7 +316,8 @@ class DesktopWindowsTextSelectionUiTest {
     private val chatUrl = "https://www.bilibili.com/video/BV1xx411c7mD"
     private val chatLinked = "资料在这里 $chatUrl"
 
-    private fun chatScene(style: AppUiStyle, onLink: (String) -> Unit) = Scene(style) {
+    private fun chatScene(style: AppUiStyle, withLink: Boolean = true,
+        frame: @Composable (@Composable () -> Unit) -> Unit = { it() }, onLink: (String) -> Unit) = Scene(style) {
         val pageOwner = remember {
             // Only RichMessageText renders; the owner is real but never asked for a page or request.
             val community = DesktopCommunityRepository(repository, DesktopBlockedUpStore(fixture.pluginContext))
@@ -297,10 +326,12 @@ class DesktopWindowsTextSelectionUiTest {
                 .also { owner -> onClose = { runBlocking { owner.closeAndJoin() } } }
         }
         CompositionLocalProvider(LocalDesktopMessagePageOwner provides pageOwner) {
-            Column(verticalArrangement = Arrangement.spacedBy(24.dp)) {
-                RichMessageText(text = chatPlain, emoteInfos = emptyList(), color = Color.Unspecified, fontSize = 16.sp)
-                RichMessageText(text = chatLinked, emoteInfos = emptyList(), color = Color.Unspecified, fontSize = 16.sp,
-                    onLinkClick = onLink)
+            frame {
+                Column(verticalArrangement = Arrangement.spacedBy(24.dp)) {
+                    RichMessageText(text = chatPlain, emoteInfos = emptyList(), color = Color.Unspecified, fontSize = 16.sp)
+                    if (withLink) RichMessageText(text = chatLinked, emoteInfos = emptyList(), color = Color.Unspecified,
+                        fontSize = 16.sp, onLinkClick = onLink)
+                }
             }
         }
     }
@@ -319,5 +350,19 @@ class DesktopWindowsTextSelectionUiTest {
     @TestFactory fun dynamicBodyAndChatBubbleRightClickOfferCopy() = styles("dynamic and chat context menu") { style ->
         dynamicScene(style, {}, {}).use { s -> s.advance(); s.assertMenuCopies(dynamicText) }
         chatScene(style) {}.use { s -> s.advance(); s.assertMenuCopies(chatPlain); s.assertMenuCopies(chatLinked) }
+    }
+
+    @TestFactory fun keyboardTabSkipsSelectableCommentDynamicAndChatText() = styles("tab skips text") { style ->
+        val plainComment = "没有链接的评论，Tab 直接跳过"
+        Scene(style) {
+            Framed {
+                RichCommentText(text = plainComment, fontSize = 16.sp, color = Color.Unspecified, emoteMap = emptyMap(),
+                    onTimestampClick = {}, maxTimestampMs = 600_000L, onUrlClick = {}, onPlainTextClick = {})
+            }
+        }.use { s -> s.assertTabSkipsTextAndDragStillCopies(plainComment) }
+        val plainDesc = DynamicDesc(text = dynamicPlain, rich_text_nodes = listOf(
+            RichTextNode(type = "RICH_TEXT_NODE_TYPE_TEXT", text = dynamicPlain, orig_text = dynamicPlain)))
+        dynamicScene(style, {}, {}, plainDesc, { Framed(it) }).use { s -> s.assertTabSkipsTextAndDragStillCopies(dynamicPlain) }
+        chatScene(style, withLink = false, frame = { Framed(it) }) {}.use { s -> s.assertTabSkipsTextAndDragStillCopies(chatPlain) }
     }
 }

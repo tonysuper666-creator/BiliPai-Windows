@@ -136,8 +136,23 @@ WINDOWS_RICH_COMMENT_SELECTION = '''    // Windows：评论正文始终可以直
 '''
 
 
+RICH_COMMENT_SELECTION_CONTAINER = '''    if (selectionEnabled) {
+        SelectionContainer {
+            content()
+        }
+'''
+
+# 选择容器只在鼠标按下时拿焦点：Ctrl+C 能复制拖选的文字，Tab 不会停在评论正文上。
+WINDOWS_RICH_COMMENT_SELECTION_CONTAINER = '''    if (selectionEnabled) {
+        com.bilipai.desktop.ui.DesktopSelectionContainer {
+            content()
+        }
+'''
+
+
 def windows_drag_selection(text):
-    return once(text, RICH_COMMENT_SELECTION_GATE, WINDOWS_RICH_COMMENT_SELECTION)
+    text = once(text, RICH_COMMENT_SELECTION_GATE, WINDOWS_RICH_COMMENT_SELECTION)
+    return once(text, RICH_COMMENT_SELECTION_CONTAINER, WINDOWS_RICH_COMMENT_SELECTION_CONTAINER)
 
 
 def advance_reply_components(repo, before, output):

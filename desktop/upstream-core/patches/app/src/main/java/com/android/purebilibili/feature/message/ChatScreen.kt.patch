@@ -178,7 +178,7 @@
      // 如果没有特殊内容，直接显示文本
      if (allMatches.isEmpty()) {
 -        AppText(text = text, color = color, style = style, fontSize = fontSize)
-+        androidx.compose.foundation.text.selection.SelectionContainer {
++        com.bilipai.desktop.ui.DesktopSelectionContainer {
 +            AppText(text = text, color = color, style = style, fontSize = fontSize)
 +        }
          return
@@ -258,7 +258,7 @@
 -            }
 -        }
 -    )
-+    androidx.compose.foundation.text.selection.SelectionContainer {
++    com.bilipai.desktop.ui.DesktopSelectionContainer {
 +        AppText(
 +            text = annotatedString,
 +            color = color,
