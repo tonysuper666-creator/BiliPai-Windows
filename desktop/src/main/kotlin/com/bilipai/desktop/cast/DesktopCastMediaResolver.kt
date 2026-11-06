@@ -128,6 +128,6 @@ internal fun buildDesktopCastDash(context: DesktopPluginContext, dash: Dash, qua
     val proxyVideo = video.copy(baseUrl = LocalProxyServer.getProxyUrl(context, requirePlayableCastUrl(video.getValidUrl()), streamHeaders), backupUrl = null)
     val proxyAudio = audio.copy(baseUrl = LocalProxyServer.getProxyUrl(context, requirePlayableCastUrl(audio.getValidUrl()), streamHeaders), backupUrl = null)
     val manifest = buildLocalDashManifest(durationMs.takeIf { it > 0 } ?: dash.duration * 1000L,
-        (dash.minBufferTime * 1000f).toLong().coerceAtLeast(0), listOf(proxyVideo), listOf(proxyAudio))
+        (dash.minBufferTime * 1000f).toLong().coerceAtLeast(0), listOf(proxyVideo), listOf(proxyAudio), useResolvedBaseUrls = true)
     return LocalProxyServer.registerDashManifest(context, manifest)
 }

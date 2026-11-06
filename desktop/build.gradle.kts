@@ -96,7 +96,7 @@ val revisionNeutralSourceImportContextMatches =
     revisionNeutralSourceImportRoots.none { file("tools/$it").exists() } && revisionNeutralSourceImportShadowFiles.isEmpty
 // Pin the whole Gradle recipe, including canonical helpers and later wiring.
 // Mask exactly this self-digest assignment; raw build bytes remain task inputs.
-val revisionNeutralSourceGradleRecipeSha256 = "d5b1370a5698d4419247e56061865fbf1eb93a5989afd1dd044a0291016a6c32"
+val revisionNeutralSourceGradleRecipeSha256 = "2287a34c4bc8a62b4b58b3c01433f2b682287e4947fea8574faca9cef2600202"
 val revisionNeutralSourceGradleRecipeMatches = runCatching {
     val recipe = file("build.gradle.kts").readText(Charsets.UTF_8).replace("\r\n", "\n")
     val ownPin = "val revisionNeutralSourceGradleRecipeSha256 = \"$revisionNeutralSourceGradleRecipeSha256\""
@@ -442,6 +442,8 @@ val migratedAppM4cPaths: Set<String> = migratedAppM4cRoots.flatMap { root ->
 }.toSortedSet()
 val migratedAppPaths: Set<String> = migratedAppCorePaths + migratedAppM4dPaths + migratedAppSingleFiles + migratedAppM4cPaths
 val migratedUpstreamRelativePaths = migratedWholeModulePaths + migratedAppPaths + setOf(
+    // TON-1316: the desktop DASH patch replaces the legacy generated copy too.
+    "com/android/purebilibili/core/player/dash/LocalDashManifestBuilder.kt",
     "com/android/purebilibili/core/network/AppSignUtils.kt",
     "com/android/purebilibili/core/network/WbiUtils.kt",
     "com/android/purebilibili/core/network/grpc/ProtoWire.kt",
