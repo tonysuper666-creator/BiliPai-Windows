@@ -107,12 +107,36 @@ UP_NAME_OWNERS = {
     'DynamicCard.kt': dict(
         upstream='app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicCard.kt',
         output='com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicCard.kt',
-        generated='build/generated/dynamic-full-card/', producer='extract-upstream-dynamic-card.py'),
+        generated='build/generated/dynamic-full-card/', producer='extract-upstream-dynamic-card.py',
+        compiled='build/transition-patched/'),
     'SpaceScreen.kt': dict(
         upstream='app/src/main/java/com/android/purebilibili/feature/space/SpaceScreen.kt',
         output='com/android/purebilibili/feature/space/SpaceScreen.kt',
-        generated='build/generated/original-space-pages/', producer='extract-upstream-space-pages.py'),
+        generated='build/generated/original-space-pages/', producer='extract-upstream-space-pages.py',
+        compiled='build/patched-upstream/app/src/main/java/'),
 }
+# Every compiled resolveUpNameColor call as (logical owner, secondary argument) at PR93 head 487d5d24.
+COMPILED_UP_NAME_ROWS = sorted([
+    ('build/generated/dynamic-reply/com/android/purebilibili/feature/video/ui/components/DesktopOriginalReplyComponents.kt',
+     'com.android.purebilibili.core.ui.components.userVipPink()'),
+    ('build/generated/dynamic-reply/com/android/purebilibili/feature/video/ui/components/DesktopOriginalReplyComponents.kt',
+     'com.android.purebilibili.core.ui.components.userVipPink()'),
+    ('build/generated/original-video-detail-units/com/android/purebilibili/feature/video/ui/section/DesktopOriginalVideoInfoSection.kt',
+     'secondaryColor'),
+    ('build/generated/original-video-detail-units/com/android/purebilibili/feature/video/ui/section/DesktopOriginalVideoInfoSection.kt',
+     'secondaryColor'),
+    ('build/patched-upstream/app/src/main/java/com/android/purebilibili/feature/space/SpaceScreen.kt',
+     'com.android.purebilibili.core.ui.components.userVipPink()'),
+    ('build/patched-upstream/app/src/main/java/com/android/purebilibili/feature/video/ui/components/CommentSearchSheet.kt',
+     'com.android.purebilibili.core.ui.components.userVipPink()'),
+    ('build/transition-patched/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicCard.kt',
+     'com.android.purebilibili.core.ui.components.userVipPink()'),
+    ('build/transition-patched/com/android/purebilibili/feature/video/ui/components/DesktopOriginalSubReplyDetailComponents.kt',
+     'com.android.purebilibili.core.ui.components.userVipPink()'),
+])
+COMPILED_USER_UP_BADGE = 'build/patched-upstream/app/src/main/java/com/android/purebilibili/core/ui/components/UserUpBadge.kt'
+COMPILED_UP_BADGE_TEST = ('build/generated/original-refresh-policy-tests/'
+                          'com/android/purebilibili/core/ui/components/UpBadgeNamePolicyTest.kt')
 VIDEO_INFO_OWNER = dict(
     upstream='app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoInfoSection.kt',
     output='com/android/purebilibili/feature/video/ui/section/DesktopOriginalVideoInfoSection.kt',
@@ -926,9 +950,9 @@ class V046IdentityBadgePaletteUniverseTest(unittest.TestCase):
             else:
                 self.assertEqual(['modifier', 'containerColor', 'contentColor', 'content'],
                                  [label for label, _ in parameters(text, 'AppMaterial3Badge' if 'Material3' in logical else 'AppMiuixBadge')])
-        self.assertEqual({'build/generated/home-page/com/android/purebilibili/core/ui/components/UserVipBadge.kt'},
+        self.assertEqual({'design-system/src/main/java/com/android/purebilibili/core/ui/components/UserVipBadge.kt'},
                          {row[0] for row in self.declared['userVipPink']})
-        self.assertEqual(['build/generated/components/com/android/purebilibili/core/ui/ButtonVisualPolicy.kt'],
+        self.assertEqual(['design-system/src/main/java/com/android/purebilibili/core/ui/ButtonVisualPolicy.kt'],
                          [row[0] for row in self.declared['resolveButtonContentColor']])
         corner = palette.main_bodies(REPO)[0]['UserAvatarCornerMark.kt'].decode('utf-8')
         self.assertEqual(1, corner.count('import com.android.purebilibili.core.ui.components.userVipPink\n'))
@@ -965,6 +989,7 @@ class V046IdentityBadgePaletteUniverseTest(unittest.TestCase):
         for logical, text, secondary in self.up_name_rows:
             by_file.setdefault(logical, (text, []))[1].append(secondary)
         self.assertGreaterEqual(len(self.up_name_rows), 8)
+        self.assertEqual(COMPILED_UP_NAME_ROWS, sorted((logical, secondary) for logical, _text, secondary in self.up_name_rows))
         stale = []
         for logical, (text, secondaries) in by_file.items():
             for secondary in secondaries:
@@ -975,7 +1000,7 @@ class V046IdentityBadgePaletteUniverseTest(unittest.TestCase):
         for name, owner in UP_NAME_OWNERS.items():
             with self.subTest(name=name):
                 row = palette.UP_NAME_MIGRATIONS[name]
-                text, secondaries = by_file[owner['generated'] + owner['output']]
+                text, secondaries = by_file[owner['compiled'] + owner['output']]
                 self.assertEqual(row['calls'], len(secondaries))
                 self.assertEqual(1, text.count(row['after']))
                 self.assertEqual(0, text.count(row['before']))
@@ -1005,12 +1030,29 @@ class V046IdentityBadgePaletteUniverseTest(unittest.TestCase):
                 continue
             raw = Path(source.real).read_bytes()
             if b'UserUpBadgeVisualSpec' in raw or b'resolveUserUpBadgeVisualSpec' in raw:
-                self.assertIn(source.logical, {
-                    'build/generated/home-page/' + MAIN_RELATIVE['UserUpBadge.kt'],
-                    'build/generated/original-refresh-policy-tests/' + TEST_RELATIVE['UpBadgeNamePolicyTest.kt'],
-                }, source.logical)
-            if source.logical.startswith('build/generated/home-page/') and source.logical.endswith('UserUpBadge.kt'):
+                self.assertIn(source.logical, {COMPILED_USER_UP_BADGE, COMPILED_UP_BADGE_TEST}, source.logical)
+            if source.logical == COMPILED_USER_UP_BADGE:
                 self.assertNotIn(b'fontSp', raw)
+        self.assertEqual('build/patched-upstream/app/src/main/java/' + MAIN_RELATIVE['UserUpBadge.kt'], COMPILED_USER_UP_BADGE)
+        self.assertEqual('build/generated/original-refresh-policy-tests/' + TEST_RELATIVE['UpBadgeNamePolicyTest.kt'],
+                         COMPILED_UP_BADGE_TEST)
+        readers = sorted(source.logical for source in self.compiled if source.logical.endswith('.kt') and (
+            b'UserUpBadgeVisualSpec' in Path(source.real).read_bytes()))
+        self.assertEqual(sorted([COMPILED_USER_UP_BADGE, COMPILED_UP_BADGE_TEST]), readers)
+        # one compiled definer per FQN: the main badge composable and the original policy test class
+        owners = {'main': [], 'test': []}
+        for source in self.compiled:
+            raw = Path(source.real).read_bytes()
+            if not source.logical.endswith('.kt') or not (b'UserUpBadge' in raw or b'UpBadgeNamePolicyTest' in raw):
+                continue
+            info = gate.parse_kotlin(raw.decode('utf-8'), source.logical, source.origin, source.set)
+            for item in info.decls:
+                if (source.set, item.name) in (('main', 'UserUpBadge'), ('test', 'UpBadgeNamePolicyTest')):
+                    owners[source.set].append((info.package, item.name, item.kind, source.logical))
+        self.assertEqual([('com.android.purebilibili.core.ui.components', 'UserUpBadge', 'fun', COMPILED_USER_UP_BADGE)],
+                         owners['main'])
+        self.assertEqual([('com.android.purebilibili.core.ui.components', 'UpBadgeNamePolicyTest', 'class',
+                           COMPILED_UP_BADGE_TEST)], owners['test'])
         old_pink = [source.logical for source in self.compiled
                     if source.logical.endswith('.kt') and b'Color(0xFFFB7299)' in Path(source.real).read_bytes()
                     and 'UpBadgeNamePolicy' in source.logical]

@@ -36,6 +36,11 @@ appearance_spec.loader.exec_module(appearance)
 
 PRODUCER = 'tools/extract-appearance-platform.py'
 TASK = 'extractUpstreamAppearance'
+# The compiled PureBiliBiliTheme is the patched upstream Theme.kt this producer writes (no dependencies).
+PATCH_TASK = 'applyDesktopUpstreamPatches'
+COMPILED_THEME = 'build/patched-upstream/app/src/main/java/com/android/purebilibili/core/theme/Theme.kt'
+COMPILED_DISPLAY_POLICY = 'design-system/src/main/java/com/android/purebilibili/core/theme/AppDisplayPolicy.kt'
+COMPILED_VARIANT_POLICY = 'design-system/src/main/java/com/android/purebilibili/core/theme/AndroidNativeVariantThemePolicy.kt'
 FEATURE = 'v046-theme-tokens'
 R_T1 = ('R-T1 (Root, 2026-10-19): adopt the v0.4.6 Material baseline typography as is, with no extra 4K '
         'compensation. The desktop app has its own display scale (default 125 percent times the Windows '
@@ -445,10 +450,10 @@ class V046ThemeTokensSourceTest(unittest.TestCase):
         try:
             root, env = gate.make_scratch_repo(REPO, scratch)
             model = gate.parse_gradle((root / 'desktop/build.gradle.kts').read_text(encoding='utf-8'))
-            tasks, _skipped = gate.select_producers(model, only={TASK})
-            self.assertEqual([TASK], [task.name for task in tasks])
+            tasks, _skipped = gate.select_producers(model, only={TASK, PATCH_TASK})
+            self.assertEqual({TASK, PATCH_TASK}, {task.name for task in tasks})
             results = gate.run_producers(root, tasks, env)
-            self.assertEqual([0], [row['returncode'] for row in results], results)
+            self.assertEqual([0, 0], [row['returncode'] for row in results], results)
             sources, _notes = gate.collect_sources(root, model)
             wanted = set()
             for name in tokens.MAIN_FILES:
@@ -463,6 +468,9 @@ class V046ThemeTokensSourceTest(unittest.TestCase):
             for source in sources:
                 if source.set not in ('main', 'test'):
                     continue
+                if source.set == 'main' and source.logical.rsplit('/', 1)[-1] in tokens.MAIN_FILES:
+                    self.assertNotIn('generated/upstream/', source.logical)
+                    self.assertNotIn('generated/appearance/', source.logical)
                 raw = source.real.read_bytes()
                 if source.set == 'main' and not any(n in raw for n in needles):
                     continue
@@ -472,6 +480,9 @@ class V046ThemeTokensSourceTest(unittest.TestCase):
                 for decl in info.decls:
                     hits.append((source.set, source.logical, info.package, decl.visibility, decl.kind,
                                  decl.receiver, decl.name, decl.sig))
+            type(self).compiled_text = {source.logical: source.real.read_text(encoding='utf-8') for source in sources
+                                        if source.set == 'main' and source.logical.endswith(('/core/theme/Theme.kt',
+                                                                                            '/core/theme/AppDisplayPolicy.kt'))}
             type(self).universe_cache = hits
             return hits
         finally:
@@ -479,12 +490,37 @@ class V046ThemeTokensSourceTest(unittest.TestCase):
 
     def test_each_top_level_declaration_of_the_six_files_has_one_definer_and_it_is_the_archive_copy(self):
         hits = self.compiled_declarations()
+        self.assertEqual('845317a46a61c54e843c02fa1dafa28d8bcb2a752b3fdfe80e0201f085e43563',
+                         sha(self.archive['manifest.json']))
+        rows = {row['filename']: row for row in json.loads(self.archive['manifest.json'])['files']}
+        live_root = Path(os.environ.get('BILIPAI_LIVE_ROOT') or REPO)
         for name in tokens.MAIN_FILES:
-            text = self.archive[name].decode('utf-8')
-            info = gate.parse_kotlin(text, name, 'archive', 'carried')
+            row = rows[name]
+            relative = row['path'].split('/src/main/java/', 1)[1]
+            paths = [live_root / module / 'src/main/java' / relative
+                     for module in ('design-system', 'design-tokens', 'app')
+                     if (live_root / module / 'src/main/java' / relative).is_file()]
+            self.assertEqual([live_root / row['path']], paths, name)
+            archived = self.archive[name]
+            live = paths[0].read_bytes()
+            self.assertEqual(row['sha256'], sha(archived), name)
+            if name == 'AndroidNativeVariantThemePolicy.kt':
+                before = '    AppUiStyle.MATERIAL3 -> MotionScheme.expressive()\n'.encode()
+                after = ('    // 普通 MD3 组件在两种玻璃状态下共用标准动效；玻璃 dock 自行管理材质反馈。\n'
+                         '    AppUiStyle.MATERIAL3 -> MotionScheme.standard()\n').encode()
+                self.assertEqual('0778cf426165b12a5b9715b9413317697a803b993486d2acbce7a0741812f96e', sha(archived))
+                self.assertEqual('bf9a7966084707ff03fe8613bbf940abddfed4c4672843a10716ae8a564860bf', sha(live))
+                self.assertEqual((1, 0, 0, 1), (archived.count(before), live.count(before),
+                                                 archived.count(after), live.count(after)))
+                self.assertEqual(live, archived.replace(before, after))
+                self.assertEqual(archived, live.replace(after, before))
+            else:
+                self.assertEqual(archived, live, name)
+            text = live.decode('utf-8')
+            info = gate.parse_kotlin(text, name, 'live', 'main')
             self.assertEqual(tokens.PACKAGE, info.package)
             self.assertGreater(len(info.decls), 0)
-            expected_path = 'build/generated/appearance/' + tokens.RELATIVE[name]
+            expected_path = row['path']
             for decl in info.decls:
                 with self.subTest(file=name, declaration=decl.label()):
                     found = [h for h in hits if h[0] == 'main' and h[2] == info.package and h[6] == decl.name
@@ -497,9 +533,9 @@ class V046ThemeTokensSourceTest(unittest.TestCase):
             if hit[0] == 'main':
                 by_name.setdefault(hit[6], []).append(hit[1])
         for name in ('AppTextStyles', 'Md3Typography', 'BiliMiuixTypography', 'resolveMaterialTypography'):
-            self.assertEqual(['build/generated/appearance/' + tokens.RELATIVE[
+            self.assertEqual([rows[
                 {'AppTextStyles': 'AppTextStyles.kt', 'Md3Typography': 'Type.kt', 'BiliMiuixTypography': 'Type.kt',
-                 'resolveMaterialTypography': 'AndroidNativeVariantThemePolicy.kt'}[name]]], by_name[name], name)
+                 'resolveMaterialTypography': 'AndroidNativeVariantThemePolicy.kt'}[name]]['path']], by_name[name], name)
         for path in {h[1] for h in hits if h[0] == 'main'}:
             self.assertNotIn('generated/upstream/', path)
 
@@ -524,32 +560,48 @@ class V046ThemeTokensSourceTest(unittest.TestCase):
         resolve = [h for h in hits if h[0] == 'main' and h[6] == 'resolveMaterialTypography']
         self.assertEqual(1, len(resolve))
         self.assertEqual((tokens.PACKAGE, 'fun', ''), (resolve[0][2], resolve[0][4], resolve[0][5]))
+        self.assertEqual((COMPILED_VARIANT_POLICY, 'public', 'AppUiStyle,Boolean'), (resolve[0][1], resolve[0][3], resolve[0][7]))
         convert = [h for h in hits if h[0] == 'main' and h[6] == 'toMiuixTextStyles']
         self.assertEqual(1, len(convert))
         self.assertEqual((tokens.PACKAGE, 'fun', 'Typography'), (convert[0][2], convert[0][4], convert[0][5]))
-        self.assertTrue(convert[0][1].endswith('AppDisplayPolicy.kt'))
-        # The two Typography transforms the Windows theme applies between the calls exist once each.
-        for name in ('scaled', 'withFontWeight'):
-            ext = [h for h in hits if h[0] == 'main' and h[6] == name and h[5] == 'Typography' and h[3] == 'public']
-            self.assertEqual(1, len(ext), name)
+        self.assertEqual((COMPILED_DISPLAY_POLICY, 'public', ''), (convert[0][1], convert[0][3], convert[0][7]))
+        # Every compiled public overload of the chain transforms, keyed by receiver: the Material chain uses the
+        # Typography ones, the Miuix chain (after .toMiuixTextStyles(): TextStyles) the TextStyles ones. The
+        # TextStyle / TextUnit helpers stay private to the policy file.
+        for name, parameter in (('scaled', 'Float'), ('withFontFamily', 'FontFamily?'), ('withFontWeight', 'FontWeight?')):
+            public = sorted((h[5], h[7], h[1], h[2], h[4]) for h in hits
+                            if h[0] == 'main' and h[6] == name and h[3] != 'private')
+            self.assertEqual([('TextStyles', parameter, COMPILED_DISPLAY_POLICY, tokens.PACKAGE, 'fun'),
+                              ('Typography', parameter, COMPILED_DISPLAY_POLICY, tokens.PACKAGE, 'fun')], public, name)
+        display = re.sub(r'\s+', ' ', type(self).compiled_text[COMPILED_DISPLAY_POLICY])
+        self.assertEqual(1, display.count('fun Typography.toMiuixTextStyles(): TextStyles = defaultTextStyles('))
+        for declaration in ('fun TextStyles.scaled(multiplier: Float): TextStyles {',
+                            'fun TextStyles.withFontFamily(fontFamily: FontFamily?): TextStyles {',
+                            'fun TextStyles.withFontWeight(fontWeight: FontWeight?): TextStyles {'):
+            self.assertEqual(1, display.count(declaration), declaration)
         signature = self.archive['AndroidNativeVariantThemePolicy.kt'].decode('utf-8')
         declared = re.search(r'fun resolveMaterialTypography\(\s*uiStyle: AppUiStyle,\s*'
                              r'liquidGlassEnabled: Boolean = true,?\s*\): Typography = Md3Typography', signature)
         self.assertIsNotNone(declared)
         self.assertIn('fun Typography.toMiuixTextStyles(): TextStyles = defaultTextStyles(',
                       self.archive['AppDisplayPolicy.kt'].decode('utf-8'))
-        # Source-version evidence only, NOT compiled: the appearance producer emits no PureBiliBiliTheme, so
-        # this archived v0.4.3 Theme.kt call chain is never part of the compile universe (asserted below).
-        # It documents the order the original theme uses: convert first, then scale and re-weight the TextStyles.
-        carried = (REPO / 'desktop/upstream-slices/v043-theme-chrome/Theme.kt').read_text(encoding='utf-8')
-        miuix_chain = carried[carried.index('val miuixTextStyles = remember('):]
+        # The compiled theme is the patched upstream Theme.kt: the only PureBiliBiliTheme definer. Its Miuix chain
+        # converts first, then scales, sets the family and re-weights the TextStyles, each step exactly once.
+        self.assertEqual([COMPILED_THEME], sorted(n for n in type(self).compiled_text if n.endswith('/Theme.kt')))
+        self.assertEqual([(COMPILED_THEME, tokens.PACKAGE, 'public', 'fun', '')],
+                         [(h[1], h[2], h[3], h[4], h[5]) for h in hits if h[0] == 'main' and h[6] == 'PureBiliBiliTheme'])
+        compiled = type(self).compiled_text[COMPILED_THEME]
+        self.assertEqual(1, compiled.count('val miuixTextStyles = remember('))
+        miuix_chain = compiled[compiled.index('val miuixTextStyles = remember('):]
         miuix_chain = miuix_chain[:miuix_chain.index('\n    }\n')]
-        order = [miuix_chain.index(token) for token in
-                 ('resolveMaterialTypography(', '.toMiuixTextStyles()', '.scaled(', '.withFontWeight(')]
+        steps = ('resolveMaterialTypography(uiStyle, liquidGlassEnabled)', '.toMiuixTextStyles()',
+                 '.scaled(fontSizePreset.multiplier)', '.withFontFamily(appFontFamily)',
+                 '.withFontWeight(appFontWeightPreset.fontWeight)')
+        self.assertEqual([1] * len(steps), [miuix_chain.count(step) for step in steps])
+        order = [miuix_chain.index(step) for step in steps]
         self.assertEqual(sorted(order), order)
-        self.assertEqual([], [h for h in hits if h[0] == 'main' and h[6] == 'PureBiliBiliTheme'])
-        self.assertTrue(any(h[0] == 'main' and h[1].endswith('/Theme.kt') for h in hits),
-                        'the emitted Theme.kt must be in the analysed universe for the PureBiliBiliTheme check')
+        self.assertEqual('valmiuixTextStyles=remember(uiStyle,liquidGlassEnabled,fontSizePreset,appFontFamily,'
+                         'appFontWeightPreset){' + ''.join(steps).replace(' ', ''), re.sub(r'\s+', '', miuix_chain))
         # Windows-owned theme: asserted by meaning, not by formatting. The Miuix text styles come only from
         # the desktop-owned helper (convert first, then scale, then weight); the Material typography keeps its own
         # scaled and weighted chain; nothing else in the Windows tree converts or resolves the typography.

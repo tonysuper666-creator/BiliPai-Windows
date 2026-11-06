@@ -12,7 +12,7 @@ REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(REPO/'desktop/tools'))
 import v046_comment_list as comments
 import v046_comment_thread as thread
-from v046_favorite_editor import restore
+from v046_favorite_editor import restore, sha
 
 
 def body(path):
@@ -34,7 +34,9 @@ class OriginalNestedPageSources(unittest.TestCase):
         relative = comments.PACKAGE+'DesktopOriginalSubReplyDetailComponents.kt'
         # The v046 comment polish inline entrance stage follows the nested page stage; recover this stage's own output.
         entrance = json.loads((cls.output/'actual/v046-inline-subreply-entrance-proof.json').read_bytes())
-        cls.actual = restore(body(cls.output/'actual'/relative), entrance['retainedToCurrent'])
+        cls.final = body(cls.output/'actual'/relative)
+        cls.entrance = entrance
+        cls.actual = restore(cls.final, entrance['retainedToCurrent'])
         cls.previous = body(cls.output/'previous'/relative)
         cls.original = comments.fixed(REPO)[0]['SubReplyDetailComponents.kt']
         cls.proof = json.loads((cls.output/'actual/v046-comment-thread-host-proof.json').read_bytes())
@@ -53,7 +55,20 @@ class OriginalNestedPageSources(unittest.TestCase):
         self.assertTrue(self.proof['completeOriginalHostDeclaration'])
 
     def test_actual_file_inverse_preserves_all_existing_actions_and_renderers(self):
-        self.assertEqual(self.previous, restore(self.actual, self.proof['retainedToCurrent']))
+        # bind_refresh_lists is the last stage of emit() in both runs (AdaptivePullToRefreshBox host). In the actual run its
+        # edit sits in the entrance receipt (retainedToCurrent spans entrance + refresh, rendererStage the entrance alone);
+        # the previous run has no stage receipt, so this is its exact refresh receipt: this one import line, nothing else.
+        refresh = ('import androidx.compose.foundation.lazy.LazyColumn\n',
+                   'import com.android.purebilibili.core.ui.components.AppLazyColumn as LazyColumn\n')
+        self.assertEqual((1, 0), (self.final.count(refresh[1]), self.final.count(refresh[0])))
+        self.assertEqual(sha(self.final), self.entrance['retainedToCurrent']['afterSHA256'])
+        self.assertEqual((sha(self.actual), sha(self.actual)),
+                         (self.entrance['retainedToCurrent']['beforeSHA256'], self.entrance['rendererStage']['beforeSHA256']))
+        self.assertEqual(self.entrance['rendererStage']['afterSHA256'], sha(self.final.replace(refresh[1], refresh[0])))
+        retained = restore(self.actual, self.proof['retainedToCurrent'])
+        self.assertEqual((1, 0), (retained.count(refresh[0]), retained.count(refresh[1])))
+        self.assertEqual((1, 0), (self.previous.count(refresh[1]), self.previous.count(refresh[0])))
+        self.assertEqual(retained, self.previous.replace(refresh[1], refresh[0]))
         for name in ['SubReplyDetailItem', 'SubReplyAuxiliaryBadge', 'SubReplyDetailStaggeredReveal']:
             self.assertEqual(comments.declaration(self.parser, self.previous, name),
                              comments.declaration(self.parser, self.actual, name))

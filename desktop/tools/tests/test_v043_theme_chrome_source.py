@@ -82,10 +82,10 @@ class OriginalThemeChromeSourceTest(unittest.TestCase):
             self.assertEqual(1, len(targets), row['filename'])
             actual = targets[0].read_text(encoding='utf8')
             if row['filename'] == 'AppThemeEndpointPolicyTest.kt':
-                old = 'import com.android.purebilibili.core.store.AppThemeSettings'
-                new = 'import com.bilipai.desktop.appearance.DesktopThemeSettings as AppThemeSettings'
-                self.assertEqual(1, actual.count(new))
-                actual = actual.replace(new, old, 1)
+                self.assertEqual(4, len(seed.ENDPOINT_TEST_EDITS))
+                for before, after in reversed(seed.ENDPOINT_TEST_EDITS):
+                    self.assertEqual(1, actual.count(after), after)
+                    actual = actual.replace(after, before, 1)
             self.assertEqual(self.raw[row['filename']].decode(), actual)
             count += row['cases']
         self.assertEqual(33, count)

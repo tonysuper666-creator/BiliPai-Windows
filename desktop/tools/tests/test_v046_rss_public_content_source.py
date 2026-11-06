@@ -7,6 +7,7 @@ from unittest import mock
 import hashlib
 import importlib.util
 import json
+import os
 import re
 import shutil
 import subprocess
@@ -15,6 +16,8 @@ import tempfile
 import unittest
 
 REPO = Path(__file__).resolve().parents[3]
+# Direct sources compile from the live merged root; inside a legacy gate view REPO/app is the legacy pin.
+LIVE = Path(os.environ.get('BILIPAI_LIVE_ROOT') or REPO)
 TOOLS = REPO / 'desktop/tools'
 sys.path.insert(0, str(TOOLS))
 import check_slice_symbol_closure as gate
@@ -30,6 +33,29 @@ producer_spec.loader.exec_module(producer)
 
 FEED = 'com/android/purebilibili/core/plugin/feed/'
 EXTRACTOR = 'app/src/main/java/com/android/purebilibili/core/plugin/feed/FeedArticleExtractor.kt'
+EXTRACTOR_TEST = 'app/src/test/java/com/android/purebilibili/core/plugin/feed/FeedArticleExtractorTest.kt'
+# whenApproved 3 (TON-1232 r4, for Root): the direct owner keeps both v0.4.6 files whole, (sha256, git blob) at d6bf8b16.
+EXTRACTOR_PAIR = {
+    EXTRACTOR: ('81fa6dbf42c61486a3dedacc1af86485e7ac4cb1c95e7eb66e7bb6af082d9d1b', '790f03df61da35eb7d4a2d741ec94133b0c0bc88'),
+    EXTRACTOR_TEST: ('6e07e42ea54ea4c23b3aeb101563db2291c5dc8f6c5f085fbbe02035531caf58', 'afa80b7fa07e5c33012cb8cf44f6ed169f577aa5'),
+}
+EXTRACTOR_CASES = [
+    'standalone reader receives metadata and the resolved source URL',
+    'local readability retains article while dropping comments and recommendations',
+    'short Chinese article retains headings and lazy images with absolute URLs',
+    'malformed nesting and angle brackets in attributes do not truncate the article',
+    'hidden text and executable content are not retained',
+    'link directories and script-only pages leave the feed summary intact',
+    'unreasonably large pages are rejected before extraction',
+]
+# whenApproved 4 (TON-1232 r4, for Root): the compiled Windows article read point. FeedFetcher is a migrated app core
+# path, so Windows compiles the live v0.4.6 file through its desktop patch (build/patched-upstream); the generated
+# plugins copy of the same identity is an excluded legacy copy.
+FETCHER = 'app/src/main/java/com/android/purebilibili/core/plugin/feed/FeedFetcher.kt'
+FETCHER_PATCH = 'desktop/upstream-core/patches/' + FETCHER + '.patch'
+FETCHER_LIVE = ('31c4419863e8785a49e71defd0fe0b84ef03af57dbb78c57e443c2c1c0024f9c', '6becaa4ed3a266556f5c64eeeb75e6777c5579007bce1024690030c111eeb9ab')
+ARTICLE_READ = '                            extractReadableArticle(page, response.request.url.toString())\n'
+
 POLICY = REPO / 'desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopBilibiliRequestHeaderPolicy.kt'
 REPOSITORY = REPO / 'desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt'
 LOADER = REPO / 'desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopApplicationImageLoader.kt'
@@ -72,6 +98,28 @@ def prepare_block(build):
 def declarations(text, path):
     info = gate.parse_kotlin(text, path, 'generated', 'main')
     return info.package, [(item.visibility, item.kind, item.name) for item in info.decls]
+
+
+def apply_exact_patch(text, patch):
+    '''Applies a unified diff whose every context and removed line matches exactly; no fuzz, no offset.'''
+    lines, out, at = text.splitlines(keepends=True), [], 0
+    hunks = re.split(r'(?m)^@@ -(\d+)(?:,\d+)? \+\d+(?:,\d+)? @@.*\n', patch)[1:]
+    for start, body in zip(hunks[::2], hunks[1::2]):
+        start = int(start) - 1
+        if start < at:
+            raise ValueError('hunks out of order')
+        out += lines[at:start]; at = start
+        for line in body.splitlines(keepends=True):
+            kind, rest = line[0], line[1:]
+            if kind not in ' -+':
+                raise ValueError('unexpected patch line %r' % line)
+            if kind in ' -':
+                if at >= len(lines) or lines[at] != rest:
+                    raise ValueError('patch line %d does not match: %r' % (at + 1, rest))
+                at += 1
+            if kind in ' +':
+                out.append(rest)
+    return ''.join(out + lines[at:])
 
 
 class V046RssPublicContentSourceTest(unittest.TestCase):
@@ -152,13 +200,27 @@ class V046RssPublicContentSourceTest(unittest.TestCase):
         self.assertEqual('org.jsoup:jsoup:1.21.2 in desktop/build.gradle.kts', pending['proposed'][1]['replaces'])
         self.assertFalse(self.manifest['compiled'])
         self.assertFalse(self.manifest['jvmTestsExecuted'])
-        self.assertNotIn('readability4j', self.build)
+        # Architect decision (TON-1232 r3, for Root): the build keeps readability4j 1.0.8 as its only new artifact.
+        # Its jsoup 1.11.2 / slf4j-api 1.7.25 / kotlin-stdlib 1.3.72 edges resolve up to the pins below, so the
+        # slice's proposed jsoup 1.23.2 replacement is not taken and this archive record stays as proposed.
+        self.assertEqual(['    implementation("net.dankito.readability4j:readability4j:1.0.8")'],
+                         [line for line in self.build.splitlines() if 'readability4j' in line])
         self.assertEqual(1, self.build.count('implementation("org.jsoup:jsoup:1.21.2")'))
         self.assertNotIn('jsoup:1.23', self.build)
         self.assertEqual(1, self.build.count('implementation("org.slf4j:slf4j-api:2.0.17")'))
         licenses = REPO / 'desktop/src/main/resources/licenses'
-        for path in licenses.rglob('*'):
-            self.assertNotIn('readability4j', path.name.lower(), str(path))
+        self.assertEqual(['readability4j-1.0.8', 'readability4j-1.0.8/LICENSE.txt', 'readability4j-1.0.8/provenance.json'],
+                         sorted(path.relative_to(licenses).as_posix() for path in licenses.rglob('*')
+                                if 'readability4j' in path.relative_to(licenses).as_posix().lower()))
+        shipped = licenses / 'readability4j-1.0.8'
+        provenance = json.loads((shipped / 'provenance.json').read_text(encoding='utf-8'))
+        self.assertEqual('net.dankito.readability4j:readability4j:1.0.8', provenance['coordinate'])
+        self.assertEqual('https://repo.maven.apache.org/maven2/net/dankito/readability4j/readability4j/1.0.8/'
+                         'readability4j-1.0.8.jar', provenance['artifactUrl'])
+        self.assertEqual((80492, '515bca66af21b7aca2c451bd75d7fa8c05df25ad74e0243047fa11e0ce2d9223'),
+                         (provenance['artifactBytes'], provenance['artifactSha256']))
+        self.assertEqual(sha(self.archive[source.NOTICE]), provenance['licenseSha256'])
+        self.assertEqual(provenance['licenseSha256'], sha((shipped / 'LICENSE.txt').read_bytes()))
         carried = licenses / 'upstream-carried-assets'
         self.assertNotIn('readability', (carried / 'provenance.json').read_text(encoding='utf-8').lower())
         self.assertNotIn('readability', (carried / 'NOTICE.txt').read_text(encoding='utf-8').lower())
@@ -170,10 +232,45 @@ class V046RssPublicContentSourceTest(unittest.TestCase):
         self.assertEqual([], [path for path in self.main if path.endswith('.LICENSE')])
         self.assertEqual(sha(self.archive[source.NOTICE]), self.proof['noticeStagedNotShipped']['sha256'])
 
-    def test_the_article_extractor_is_untouched_until_the_dependency_is_approved(self):
-        extractor = (REPO / EXTRACTOR).read_text(encoding='utf-8').replace('\r\n', '\n')
-        self.assertIn('fun extractArticleBody(pageHtml: String): String? {', extractor)
-        self.assertNotIn('readability4j', extractor)
+    def test_the_direct_article_extractor_owner_retains_both_v046_files_byte_for_byte(self):
+        # whenApproved 3. The direct owner is the live merged root: a migrated app core path, compiled straight from
+        # app/src/main/java with no desktop patch or rewrite (prepareUpstreamSources leaves migrated sources out). Upstream
+        # drift of either file fails here and is answered by a new pinned decision, never by deleting this.
+        raws = {path: (LIVE / path).read_bytes() for path in EXTRACTOR_PAIR}
+        self.assertEqual(EXTRACTOR_PAIR, {path: (sha(raw), hashlib.sha1(b'blob %d\0' % len(raw) + raw).hexdigest())
+                                          for path, raw in raws.items()})
+        if shutil.which('git'):
+            for path, raw in raws.items():
+                self.assertEqual(raw, subprocess.run(['git', '-c', 'core.autocrlf=false', '-C', str(REPO), 'cat-file',
+                                                      'blob', source.COMMIT + ':' + path], capture_output=True, check=True).stdout)
+        extractor, test = (raws[path].decode('utf-8') for path in (EXTRACTOR, EXTRACTOR_TEST))
+        self.assertFalse((REPO / ('desktop/upstream-core/patches/' + EXTRACTOR + '.patch')).exists())
+        self.assertIsNone(re.search(r'ImageRequest\.Builder\(|SingletonImageLoader\.get\(', extractor))
+        self.assertEqual(1, extractor.count('fun extractArticleBody(pageHtml: String, baseUrl: String = ""): String? =\n'))
+        self.assertEqual(1, extractor.count('import net.dankito.readability4j.Readability4J\n'))
+        self.assertEqual(EXTRACTOR_CASES, re.findall(r'@Test\s+fun `([^`]+)`\(\)', test))
+        self.assertEqual(7, test.count('@Test'))
+        self.assertIsNone(re.search(r'(?m)^import (org\.junit\.(?!jupiter)|org\.robolectric|io\.mockk|androidx\.test)', test))
+        # The upstream test runs from appTestRoot: core is walked whole and nothing in the build names this pair
+        # except the dependency comment, so no not-run, desktop-owned, later-step or corrected entry excludes it.
+        self.assertEqual(1, self.build.count('appTestRoot.resolve("com/android/purebilibili/core").walkTopDown()'))
+        self.assertEqual(['    // Upstream core/plugin/feed/FeedArticleExtractor (TON-1028): article readability, same version as upstream app.'],
+                         [line for line in self.build.splitlines() if 'FeedArticleExtractor' in line])
+        core_test = EXTRACTOR_TEST.split('com/android/purebilibili/', 1)[1]
+        self.assertEqual([], [key for key in set(re.findall(r'"([\w/.\-]+)" to ', self.build))
+                              if core_test.startswith(key) or key == core_test.replace('Test.kt', '.kt')])
+        self.assertNotIn('FeedArticleExtractor', (REPO / 'desktop/upstream-core/m4d/tests-not-run.tsv').read_text(encoding='utf-8'))
+        # producer.inventory(REPO) hashes the legacy pin inside the view; the committed source inventory names the live bytes.
+        inventory = json.loads((REPO / 'desktop/upstream-sources.json').read_text(encoding='utf-8'))
+        self.assertEqual([('direct', EXTRACTOR_PAIR[EXTRACTOR][0])],
+                         [(row['mode'], row['sha256']) for row in inventory['sources'] if row['path'] == EXTRACTOR])
+        # Exactly one compiled definer of the article read: the direct owner.
+        definers = sorted(path.relative_to(LIVE).as_posix() for path in (LIVE / 'app/src/main/java').rglob('*.kt')
+                          if 'fun extractArticleBody(' in path.read_text(encoding='utf-8'))
+        definers += sorted(path.relative_to(REPO).as_posix() for path in (REPO / 'desktop/src/main').rglob('*.kt')
+                           if 'fun extractArticleBody(' in path.read_text(encoding='utf-8'))
+        definers += sorted(path for path, raw in self.main.items() if path.endswith('.kt') and b'fun extractArticleBody(' in raw)
+        self.assertEqual([EXTRACTOR], definers)
         self.assertEqual(0, self.build.count('canonicalOriginalIdentity("' + EXTRACTOR + '")'))
         self.assertEqual([], [path for path in self.main if 'ArticleExtractor' in path])
         self.assertEqual([], [path for path in self.tests if 'ArticleExtractor' in path])
@@ -248,6 +345,54 @@ class V046RssPublicContentSourceTest(unittest.TestCase):
         self.assertEqual(1, len(proof['hunks']))
         self.assertEqual('publicContentHttpClient', proof['publicClient'])
         self.assertFalse(proof['mainCompiled'])
+
+    def test_compiled_windows_fetcher_passes_the_response_url_as_article_base(self):
+        # whenApproved 4. Windows reads articles through fetchArticleHtml -> fetchReadableArticle of the live v0.4.6
+        # FeedFetcher after its desktop patch; that one read passes the final response URL as the base URL.
+        raw = (LIVE / FETCHER).read_bytes()
+        self.assertEqual(FETCHER_LIVE[0], sha(raw))
+        if shutil.which('git'):
+            self.assertEqual(raw, subprocess.run(['git', '-c', 'core.autocrlf=false', '-C', str(REPO), 'cat-file',
+                                                  'blob', source.COMMIT + ':' + FETCHER], capture_output=True, check=True).stdout)
+        patch = (REPO / FETCHER_PATCH).read_text(encoding='utf-8')
+        self.assertEqual(['--- a/' + FETCHER, '+++ b/' + FETCHER], patch.splitlines()[:2])
+        compiled = apply_exact_patch(raw.decode('utf-8'), patch)
+        self.assertEqual(FETCHER_LIVE[1], sha(compiled.encode('utf-8')))
+        # applyDesktopUpstreamPatches then runs the build-time rewrite rules; none of them matches this file.
+        self.assertIsNone(re.search(r'ImageRequest\.Builder\(|SingletonImageLoader\.get\(', compiled))
+        self.assertEqual((1, 0), (compiled.count(ARTICLE_READ), compiled.count('extractArticleBody(')))
+        self.assertEqual(1, compiled.count('extractReadableArticle('))
+        self.assertEqual(1, compiled.count('suspend fun fetchArticleHtml(url: String): Result<String> = fetchReadableArticle(url).map { it.html }\n'))
+        start = compiled.index('suspend fun fetchReadableArticle(url: String)')
+        block = compiled[start:compiled.index('\nsuspend fun ', start)]
+        self.assertEqual(1, block.count('executeFeedCall(call) { response ->'))
+        self.assertLess(block.index('executeFeedCall(call) { response ->'), block.index(ARTICLE_READ))
+        self.assertTrue(block[block.index(ARTICLE_READ) + len(ARTICLE_READ):].lstrip().startswith('?: error("暂时无法提取原文正文")'))
+        # Build wiring that makes the patched live file the compiled one: core is migrated whole, nothing keeps
+        # FeedFetcher back, the root file is replaced by its patched copy, and generated copies of migrated
+        # identities (the plugins FeedFetcher extracted from the legacy pin) are excluded.
+        for line in ('val migratedAppCorePaths: Set<String> = (appJavaRoot.resolve("com/android/purebilibili/core").walkTopDown() +',
+                     'val migratedAppPaths: Set<String> = migratedAppCorePaths + migratedAppM4dPaths + migratedAppSingleFiles + migratedAppM4cPaths',
+                     'val desktopUpstreamPatchDirectory = file("upstream-core/patches")',
+                     'val desktopUpstreamAdaptedRootFiles: Set<String> = (desktopUpstreamPatchedFiles + desktopUpstreamRewrittenFiles).toSortedSet()',
+                     '    kotlin.exclude { element -> element.file in adaptedRootFiles }',
+                     '        path.startsWith(buildDirectoryPath) && !path.startsWith(patchedDirectoryPath) && upstreamIdentity(element.file) in migratedUpstreamRelativePaths',
+                     '    kotlin.srcDir(applyDesktopUpstreamPatches)',
+                     '    kotlin.exclude { element -> !element.isDirectory && element.file.toPath().startsWith(appJavaRootPath) && upstreamIdentity(element.file) !in migratedAppPaths }',
+                     '    kotlin.srcDir(appJavaRoot)'):
+            self.assertEqual(1, self.build.splitlines().count(line), line)
+        core = FETCHER.split('com/android/purebilibili/', 1)[1]
+        self.assertEqual([], [key for key in set(re.findall(r'"([\w/.\-]+)" to ', self.build)) if core.startswith(key)])
+        self.assertEqual([], [line for name in ('m4b', 'data', 'm4c') for line in
+                              ((REPO / 'desktop/upstream-core' / name / 'later-steps.tsv').read_text(encoding='utf-8').splitlines()
+                               if (REPO / 'desktop/upstream-core' / name / 'later-steps.tsv').is_file() else [])
+                              if line.split('\t', 1)[0] == core])
+        self.assertIn(FEED + 'FeedFetcher.kt', self.main)
+        self.assertEqual(FEED + 'FeedFetcher.kt', FETCHER.split('app/src/main/java/', 1)[1])
+        # No desktop code shadows the read path.
+        self.assertEqual([], sorted(path.relative_to(REPO).as_posix() for path in (REPO / 'desktop/src/main').rglob('*.kt')
+                                    if re.search(r'fun (fetchArticleHtml|fetchReadableArticle|extractReadableArticle)\(',
+                                                 path.read_text(encoding='utf-8'))))
 
     def test_patching_the_fetcher_layer_out_changes_only_the_fetcher_and_the_receipt(self):
         self.assertEqual(set(self.main), set(self.patched))
