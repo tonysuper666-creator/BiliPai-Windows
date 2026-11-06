@@ -98,7 +98,12 @@ class HistoryRecapProducerTest(unittest.TestCase):
   desktop=TOOLS.parent
   main=desktop/'src/main/kotlin/com/bilipai/desktop'
   caller=(main/'plugins/DesktopSubscriptionRepository.kt').read_text(encoding='utf8')
-  self.assertIn('if (read) FeedReadingStore.recordRead(context, feedItemKey(item))',caller)
+  self.assertEqual(1,caller.count('if (read) FeedReadingStore.recordRead(upstreamContext, feedItemKey(item))'))
+  self.assertEqual(1,caller.count('private val upstreamContext = context.asAndroidContext()'))
+  self.assertNotRegex(caller,r'Store\.\w+\(context')
+  adapter=(main/'plugins/DesktopAndroidContext.kt').read_text(encoding='utf8')
+  self.assertIn('android.content.Context(desktop.filesDir)',adapter)
+  self.assertIn('override val filesDir: java.io.File get() = desktop.filesDir',adapter)
   self.assertIn('readTimestamps = _state.value.reading.readTimestamps',caller);self.assertIn('readProgress = _state.value.reading.readProgress',caller)
   binding=(main/'ui/DesktopPersonalRecapBinding.kt').read_text(encoding='utf8')
   self.assertIn('environment.history',binding);self.assertIn('context.store === preferences.store',binding)

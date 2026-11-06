@@ -5,6 +5,7 @@ TOOLS=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(TOOLS))
 import v029_comment_search as fixed
 REPO=TOOLS.parents[1]
+LIVE=Path(os.environ.get('BILIPAI_LIVE_ROOT') or REPO)
 def wide(p):
     s=os.path.abspath(p)
     return Path('\\\\?\\'+s) if os.name=='nt' and not s.startswith('\\\\?\\') else Path(s)
@@ -63,19 +64,20 @@ class V029CommentSearchSourceTest(unittest.TestCase):
             wide(p).write_bytes(wide(p).read_bytes()+b' ')
             with self.assertRaisesRegex(ValueError,'manifest changed'): fixed.fixed_sources(repo)
 
-    def assert_original_inverse(self,path,generated,selection,original=None):
+    def assert_original_inverse(self,path,generated,selection,original=None,final_adaptation=None):
         p=selection['originalToPlatform'];before=self.original[path] if original is None else original;after=forward(before,p)
         self.assertEqual(before,inverse(after,p));self.assertEqual(digest(before.encode()),p['beforeSha256LF'])
         self.assertEqual(digest(after.encode()),p['afterSha256LF']);self.assertTrue(p['exactCompleteInverse'])
-        self.assertTrue(generated.endswith(after))
+        self.assertTrue(generated.endswith(final_adaptation(after) if final_adaptation else after))
 
     def test_full_original_vm_sheet_and_grpc_generate_with_exact_inverse(self):
         out=self.outputs['bgm-detail'];data=json.loads(read(out/'bgm-source-identities.json'))
         selection=next(x['v036VideoCommentCache'] for x in data['sourceSelection'] if 'v036VideoCommentCache' in x)
         from v036_video_comment_cache import read_sources
+        from desktop_refresh_adaptation import bind_refresh_launch
         self.assertEqual('v0.3.6',selection['fixedUpstreamTag'])
         self.assert_original_inverse(fixed.VM,read(out/'com/android/purebilibili/feature/video/viewmodel/VideoCommentViewModel.kt'),selection,
-            original=read_sources()['VideoCommentViewModel.kt'])
+            original=read_sources()['VideoCommentViewModel.kt'],final_adaptation=bind_refresh_launch)
         out=self.outputs['video-comment-ui']
         from v046_favorite_editor import restore
         current_search=read(out/'com/android/purebilibili/feature/video/ui/components/CommentSearchSheet.kt')
@@ -125,7 +127,10 @@ class V029CommentSearchSourceTest(unittest.TestCase):
         self.assertEqual(1,len(model))
         manifest=json.loads(read(REPO/'desktop/upstream-sources.json'))
         row=next(r for r in manifest['sources'] if r['path']==fixed.MODEL)
-        self.assertEqual('policy-extract',row['mode']);self.assertEqual(fixed.CANONICAL_MODEL_SHA,row['sha256'])
+        from v025_source_paths import canonical_source
+        self.assertEqual('policy-extract',row['mode'])
+        self.assertEqual(row['sha256'],digest(read(canonical_source(LIVE,fixed.MODEL)).encode()))
+        self.assertEqual(fixed.CANONICAL_MODEL_SHA,digest(read(REPO/fixed.MODEL).encode()))
         self.assertNotIn(fixed.MODEL,[r['path'] for r in manifest['sources'] if r['mode']=='direct'])
 
 if __name__=='__main__': unittest.main()
