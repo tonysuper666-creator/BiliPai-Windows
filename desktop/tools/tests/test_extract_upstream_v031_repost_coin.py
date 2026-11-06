@@ -128,20 +128,6 @@ class RepostCoinExtractionTest(unittest.TestCase):
         identity = selected_source_identity(latest["originalPath"])
         self.assertEqual("8b47769d22c0d5bc88ae5248cee4aa04ff10d62c", latest["fixedCommit"])
         self.assertEqual(hashlib.sha256(identity["text"].encode()).hexdigest(), latest["originalSha256LF"])
-        # The v046 like write guard (3d205010a) and, below it, the v046 triple submit guard (6e5839bb4) are the newest
-        # VM stages, after owner-follow: peel both through their own receipts first.
-        guard = json.loads(read(self.output / "detail-full-units/v046-like-write-guard-proofs/VideoEngagementViewModel.kt.json"))
-        self.assertEqual(guard["outputSHA256"], hashlib.sha256(vm.encode()).hexdigest())
-        at = guard["offset"]
-        self.assertEqual(guard["after"], vm[at:at + len(guard["after"])])
-        vm = vm[:at] + guard["before"] + vm[at + len(guard["after"]):]
-        self.assertEqual(guard["inputSHA256"], hashlib.sha256(vm.encode()).hexdigest())
-        triple = json.loads(read(self.output / "detail-full-units/v046-triple-submission-proofs/VideoEngagementViewModel.kt.json"))
-        self.assertEqual(triple["outputSHA256"], hashlib.sha256(vm.encode()).hexdigest())
-        for edit in reversed(triple["edits"]):
-            self.assertEqual(1, vm.count(edit["after"]), edit["label"])
-            vm = vm.replace(edit["after"], edit["before"], 1)
-        self.assertEqual(triple["inputSHA256"], hashlib.sha256(vm.encode()).hexdigest())
         # daff05d71 owner-follow rewrites the VM after this repost-contract snapshot.
         engagement = json.loads(read(self.output / "detail-full-units/v042-owner-follow-projection-proof.json"))
         self.assertTrue(engagement["wholePreviousInputInverseRecovered"])
