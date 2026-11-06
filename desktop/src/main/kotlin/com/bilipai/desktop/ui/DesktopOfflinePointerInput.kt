@@ -103,12 +103,14 @@ internal class DesktopOfflineNativeInputBridge(
     private val pointerTolerance: () -> Double = { 6.0 },
     private val onShortcut: (Int) -> Boolean = { false },
     private val handleAwtKeys: Boolean = true,
+    private val actionsEnabled: () -> Boolean = { true },
 ) : AutoCloseable {
     private val canvas = surface.components.filterIsInstance<java.awt.Canvas>().single()
     private val oldFocusable = surface.isFocusable
     private var closed = false
     private var press: OwnedPlaybackSourceSnapshot? = null
     private var pressPoint: java.awt.Point? = null
+    private var pressAllowsAction = false
     private val heldKeys = mutableSetOf<Int>()
     private var heldSpace: OwnedPlaybackSourceSnapshot? = null
     private fun current(): OwnedPlaybackSourceSnapshot? =
@@ -130,6 +132,15 @@ internal class DesktopOfflineNativeInputBridge(
     ) {
         check(java.awt.EventQueue.isDispatchThread())
         val captured = current() ?: return
+        if (!actionsEnabled()) {
+            releaseHeldInput()
+            if (kind == com.bilipai.desktop.player.MpvNativeWindowInputKind.MOTION ||
+                kind == com.bilipai.desktop.player.MpvNativeWindowInputKind.REVEAL) {
+                if (kind == com.bilipai.desktop.player.MpvNativeWindowInputKind.REVEAL) requestNativeFocus()
+                onRevealControls()
+            }
+            return
+        }
         if (kind == com.bilipai.desktop.player.MpvNativeWindowInputKind.REVEAL) requestNativeFocus()
         onRevealControls()
         if (kind == com.bilipai.desktop.player.MpvNativeWindowInputKind.TOGGLE && matches(captured)) onTogglePlayback()
@@ -147,6 +158,7 @@ internal class DesktopOfflineNativeInputBridge(
      * focusable menu dialogs fail current()'s active-window admission. Consumed
      * text-input events and modified keys still keep their original behavior. */
     internal fun windowKeyInput(event: java.awt.event.KeyEvent): Boolean {
+        if (!actionsEnabled()) { releaseHeldInput(); return false }
         // A consumed key-up cannot command playback, but it still ends this
         // physical press. Otherwise an editor/IME-consumed release leaves the
         // repeat guard latched and suppresses the next real Space press.
@@ -165,6 +177,7 @@ internal class DesktopOfflineNativeInputBridge(
      * offline page has no inline editor; focusable menus fail current(). */
     internal fun windowKeyInput(event: KeyEvent): Boolean {
         check(java.awt.EventQueue.isDispatchThread())
+        if (!actionsEnabled()) { releaseHeldInput(); return false }
         if (event.key != Key.Spacebar) {
             val code = when (event.key) {
                 Key.DirectionLeft -> java.awt.event.KeyEvent.VK_LEFT
@@ -207,6 +220,7 @@ internal class DesktopOfflineNativeInputBridge(
         return captured != null && (!requireSurfaceFocus || canReceiveKey()) && matches(captured)
     }
     private fun keyPressed(event: java.awt.event.KeyEvent, requireSurfaceFocus: Boolean) {
+        if (!actionsEnabled()) { releaseHeldInput(); return }
         if (event.keyCode != java.awt.event.KeyEvent.VK_SPACE) {
             if (!event.isConsumed && !event.isControlDown && !event.isAltDown && !event.isMetaDown &&
                 !event.isShiftDown && (!requireSurfaceFocus || canReceiveKey()) && current() != null &&
@@ -237,6 +251,7 @@ internal class DesktopOfflineNativeInputBridge(
                 event.isControlDown || event.isAltDown || event.isMetaDown) return
             press = current() ?: return
             pressPoint = event.locationOnScreen
+            pressAllowsAction = actionsEnabled()
             requestNativeFocus()
         }
         override fun mouseReleased(event: java.awt.event.MouseEvent) {
@@ -246,12 +261,14 @@ internal class DesktopOfflineNativeInputBridge(
                 captured != null && matches(captured)) {
                 onRevealControls()
                 val origin = pressPoint
-                if (origin != null && origin.distance(event.locationOnScreen) <= pointerTolerance())
+                if (pressAllowsAction && actionsEnabled() && origin != null && origin.distance(event.locationOnScreen) <= pointerTolerance())
                     pointer?.click(captured, event.locationOnScreen, System.nanoTime() / 1_000_000)
+                else if (!pressAllowsAction || !actionsEnabled()) pointer?.cancel()
             }
-            pressPoint = null
+            pressPoint = null; pressAllowsAction = false
         }
         override fun mouseWheelMoved(event: java.awt.event.MouseWheelEvent) {
+            if (!actionsEnabled()) { releaseHeldInput(); return }
             if (!event.isConsumed && !event.isControlDown && !event.isAltDown && !event.isMetaDown && current() != null) {
                 onRevealControls()
                 pointer?.wheel(-event.wheelRotation)
@@ -261,7 +278,7 @@ internal class DesktopOfflineNativeInputBridge(
     }
     internal fun releaseHeldInput() {
         check(java.awt.EventQueue.isDispatchThread())
-        press = null; pressPoint = null; heldSpace = null; heldKeys.clear(); pointer?.cancel()
+        press = null; pressPoint = null; pressAllowsAction = false; heldSpace = null; heldKeys.clear(); pointer?.cancel()
     }
     private val focus = object : java.awt.event.FocusAdapter() {
         override fun focusLost(event: java.awt.event.FocusEvent) { releaseHeldInput() }
@@ -405,11 +422,13 @@ internal fun DesktopNativePlaybackPointerInput(
     onShortcut: (Int) -> Boolean,
     handleAwtKeys: Boolean = true,
     handleWindowKeys: Boolean = false,
+    actionsEnabled: () -> Boolean = { true },
 ): Modifier {
     val window = LocalDesktopWindowsPlayerWindow.current
     val ux = com.bilipai.desktop.appearance.LocalDesktopWindowsUx.current
     val settings = ux.settings.collectAsState()
     val latestEnabled = rememberUpdatedState(enabled)
+    val latestActionsEnabled = rememberUpdatedState(actionsEnabled)
     val latestReveal = rememberUpdatedState(onReveal)
     val latestToggle = rememberUpdatedState(onToggle)
     val latestFullscreen = rememberUpdatedState(onFullscreen)
@@ -419,20 +438,23 @@ internal fun DesktopNativePlaybackPointerInput(
     val density = rememberUpdatedState(androidx.compose.ui.platform.LocalDensity.current.density)
     val fallback = LocalDesktopWindowKeyFallback.current
     val presented = enabled()
+    val actionsActive = actionsEnabled()
     fun owns(source: OwnedPlaybackSourceSnapshot) = latestEnabled.value() && native.ownsSourceSnapshot(source)
+    fun ownsAction(source: OwnedPlaybackSourceSnapshot) = latestActionsEnabled.value() && owns(source)
     fun tolerance() = 6.0 * density.value / (window?.graphicsConfiguration?.defaultTransform?.scaleX ?: 1.0)
-    val pointer = remember(native, window, fallback, handleAwtKeys, handleWindowKeys, presented) {
-        DesktopPlayerPointerInput({ settings.value }, ::owns,
+    val pointer = remember(native, window, fallback, handleAwtKeys, handleWindowKeys, presented, actionsActive) {
+        DesktopPlayerPointerInput({ settings.value }, ::ownsAction,
             { latestToggle.value() }, { latestFullscreen.value() },
             { latestVolume.value(it) }, { latestSeek.value(it) }, tolerance = ::tolerance)
     }
-    androidx.compose.runtime.DisposableEffect(native, window, fallback, handleAwtKeys, handleWindowKeys, presented) {
+    androidx.compose.runtime.DisposableEffect(native, window, fallback, handleAwtKeys, handleWindowKeys, presented, actionsActive) {
         if (!presented) return@DisposableEffect onDispose { pointer.close() }
         val input = DesktopOfflineNativeInputBridge(native.surface,
             { if (latestEnabled.value()) native.currentSourceSnapshot() else null }, ::owns,
             { latestReveal.value() }, { latestToggle.value() },
             pointer = pointer, pointerTolerance = ::tolerance,
-            onShortcut = { latestShortcut.value(it) }, handleAwtKeys = handleAwtKeys)
+            onShortcut = { latestShortcut.value(it) }, handleAwtKeys = handleAwtKeys,
+            actionsEnabled = { latestActionsEnabled.value() })
         val registration = native.observeNativeWindowInput { event ->
             native.admitNativeWindowInput(event) { if (latestEnabled.value()) input.nativeWindowInput(event) }
         }
@@ -470,11 +492,13 @@ internal fun DesktopNativePlaybackPointerInput(
                         val captured = pressed; pressed = null
                         if (captured != null && owns(captured) && origin?.distance(point)?.let { it <= tolerance() } == true) {
                             latestReveal.value()
-                            pointer.click(captured, point, System.nanoTime() / 1_000_000)
+                            if (latestActionsEnabled.value()) pointer.click(captured, point, System.nanoTime() / 1_000_000)
+                            else pointer.cancel()
                             change.consume()
                         }
                     }
                     PointerEventType.Scroll -> {
+                        if (!latestActionsEnabled.value()) { pointer.cancel(); continue }
                         val notches = kotlin.math.round(-change.scrollDelta.y).toInt()
                         if (notches != 0) { latestReveal.value(); pointer.wheel(notches); change.consume() }
                     }

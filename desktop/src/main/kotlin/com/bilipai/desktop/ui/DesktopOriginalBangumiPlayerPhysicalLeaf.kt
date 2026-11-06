@@ -94,7 +94,8 @@ import kotlinx.coroutines.CancellationException
         bound.showFeedback("音量 $target%")
     }
     return DesktopNativePlaybackPointerInput(native,
-        enabled = { enabled && foreground && bound.owns() && player.isOwned() },
+        enabled = { foreground && bound.owns() && player.isOwned() },
+        actionsEnabled = { enabled },
         onReveal = onReveal,
         onToggle = { if (player.playWhenReady) player.pause() else player.play() },
         onFullscreen = onFullscreen, onVolume = ::volume, onSeek = ::seek,

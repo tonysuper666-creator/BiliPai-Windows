@@ -149,6 +149,59 @@ class DesktopPlayerPointerInputTest {
             }
         }
     }
+    @Test fun lockedNativeBridgeRevealsControlsButRejectsPlaybackGesturesAndKeys() {
+        EventQueue.invokeAndWait {
+            Fixture().use { f ->
+                val surface = java.awt.Panel().apply { add(java.awt.Canvas()) }
+                val canvas = surface.components.single()
+                var actionsEnabled = false
+                var reveals = 0
+                DesktopOfflineNativeInputBridge(surface, { f.source }, { f.active },
+                    { reveals++ }, { f.toggles++ }, canUseSurface = { f.active },
+                    canReceiveKey = { true }, requestNativeFocus = {}, pointer = f.input,
+                    actionsEnabled = { actionsEnabled },
+                    onShortcut = { f.fullscreenChanges++; true }).use { bridge ->
+                    fun native(kind: MpvNativeWindowInputKind, time: Long = 0) =
+                        bridge.nativeWindowInput(kind, Point(20, 20), time)
+                    native(MpvNativeWindowInputKind.MOTION)
+                    native(MpvNativeWindowInputKind.REVEAL, 1000)
+                    native(MpvNativeWindowInputKind.REVEAL, 1100)
+                    assertEquals(3, reveals)
+                    native(MpvNativeWindowInputKind.TOGGLE)
+                    native(MpvNativeWindowInputKind.WHEEL_DOWN)
+                    native(MpvNativeWindowInputKind.FULLSCREEN)
+                    assertFalse(bridge.windowKeyInput(KeyEvent(canvas, KeyEvent.KEY_PRESSED, 0, 0,
+                        KeyEvent.VK_SPACE, ' ')))
+                    assertFalse(bridge.windowKeyInput(KeyEvent(canvas, KeyEvent.KEY_PRESSED, 0, 0,
+                        KeyEvent.VK_F, 'f')))
+                    canvas.mouseWheelListeners.forEach { it.mouseWheelMoved(MouseWheelEvent(canvas,
+                        MouseEvent.MOUSE_WHEEL, 0, 0, 20, 20, 0, false,
+                        MouseWheelEvent.WHEEL_UNIT_SCROLL, 3, -2)) }
+                    canvas.mouseMotionListeners.forEach { it.mouseMoved(MouseEvent(canvas,
+                        MouseEvent.MOUSE_MOVED, 0, 0, 20, 20, 20, 20, 0, false, 0)) }
+                    canvas.mouseListeners.forEach { it.mousePressed(MouseEvent(canvas,
+                        MouseEvent.MOUSE_PRESSED, 0, 0, 20, 20, 20, 20, 1, false, MouseEvent.BUTTON1)) }
+                    canvas.mouseListeners.forEach { it.mouseReleased(MouseEvent(canvas,
+                        MouseEvent.MOUSE_RELEASED, 0, 0, 20, 20, 20, 20, 1, false, MouseEvent.BUTTON1)) }
+                    assertEquals(5, reveals)
+                    f.expire()
+                    assertEquals(0, f.toggles)
+                    assertEquals(0, f.fullscreenChanges)
+                    assertEquals(50, f.volume)
+                    canvas.mouseListeners.forEach { it.mousePressed(MouseEvent(canvas,
+                        MouseEvent.MOUSE_PRESSED, 0, 0, 20, 20, 20, 20, 1, false, MouseEvent.BUTTON1)) }
+                    actionsEnabled = true
+                    canvas.mouseListeners.forEach { it.mouseReleased(MouseEvent(canvas,
+                        MouseEvent.MOUSE_RELEASED, 0, 0, 20, 20, 20, 20, 1, false, MouseEvent.BUTTON1)) }
+                    f.expire()
+                    assertEquals(0, f.toggles, "A press begun while locked must not toggle after unlock")
+                    native(MpvNativeWindowInputKind.REVEAL, 2000)
+                    f.expire()
+                    assertEquals(1, f.toggles)
+                }
+            }
+        }
+    }
     @OptIn(ExperimentalComposeUiApi::class, ExperimentalCoroutinesApi::class)
     @Test fun bangumiLockKeepsTheActualNativeInputBridgeInstalled() {
         EventQueue.invokeAndWait {
