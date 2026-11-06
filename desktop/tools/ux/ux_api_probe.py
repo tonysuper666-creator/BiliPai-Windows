@@ -252,6 +252,9 @@ def candidate_roots():
     for gradle_home in gradle_homes:
         cache = gradle_home / "caches/modules-2/files-2.1"
         if cache.is_dir():
+            # Compose 1.12's JetBrains runtime artifact is a metadata-only bridge
+            # to androidx.compose.runtime; search the actual classes first.
+            roots += sorted(path.parent for path in cache.glob("androidx.compose.runtime/runtime-desktop/*/*/*.jar"))
             roots += sorted(path.parent for path in cache.glob("org.jetbrains.compose.*/*-desktop/*/*/*.jar"))
     return roots
 

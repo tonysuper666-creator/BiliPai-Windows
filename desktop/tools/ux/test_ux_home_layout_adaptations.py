@@ -433,8 +433,30 @@ class WiringTest(unittest.TestCase):
         block = self.task_block("extractOriginalHomePage")
         self.assertIn('"tools/extract-upstream-home-core-refresh.py"', block)
         self.assertIn("tools/extract-upstream-home-page.py", block)
-        core = source.read(TOOLS / "extract-upstream-home-core-refresh.py")
-        self.assertIn("desktop/tools/extract-upstream-home-page.py", core)
+        self.assert_core_runs_hooked_producer(self.load_core())
+
+    @staticmethod
+    def load_core():
+        spec = importlib.util.spec_from_file_location("ux_home_core_refresh", TOOLS / "extract-upstream-home-core-refresh.py")
+        core = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(core)
+        return core
+
+    def assert_core_runs_hooked_producer(self, core):
+        with tempfile.TemporaryDirectory(prefix="bp-ux-home-wiring-") as output:
+            argv = ["core", "--repo", str(REPO), "--output", output, "--test-output", output + "-tests"]
+            with (mock.patch.object(sys, "argv", argv),
+                  mock.patch("v046_identity_badge_palette.validate_outputs"),
+                  mock.patch("v046_wallpaper_foundation.validate_outputs"),
+                  mock.patch.object(core.subprocess, "run", return_value=subprocess.CompletedProcess([], 23)) as run):
+                self.assertEqual(23, core.main(), "producer failure must propagate")
+                run.assert_called_once_with([sys.executable, str(PRODUCER), "--repo", str(REPO), "--output", output])
+
+    def test_the_wiring_check_rejects_a_different_producer(self):
+        core = self.load_core()
+        with mock.patch.object(core, "read_point_tool", return_value=TOOLS / "wrong-producer.py"):
+            with self.assertRaises(AssertionError):
+                self.assert_core_runs_hooked_producer(core)
 
     def test_only_the_hook_and_the_tests_name_the_module(self):
         names = sorted(path.name for path in TOOLS.glob("*.py") if path.name != "ux_home_layout.py" and "ux_home_layout" in source.read(path))
