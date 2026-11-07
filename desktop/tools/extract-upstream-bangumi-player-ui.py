@@ -62,6 +62,31 @@ def windows_bangumi_audio_download_ui(source, output):
  assert inverse==source,'complete current PGC audio UI inverse'
  return s,edits
 
+def windows_bangumi_buffering_playback_toggle_ui(source, output):
+ # Upstream cda4979a9: while buffering, the collapsed-bar button follows playWhenReady, not frame output.
+ if not output.endswith('/DesktopOriginalBangumiPlayerScreen.kt'):
+  return source,[]
+ edits=[dict(label='collapsed bar shows the play intent while buffering',before='                            isPlaying = exoPlayer?.isPlaying == true,\n',after='                            isPlaying = exoPlayer?.let {\n                                com.android.purebilibili.feature.video.ui.overlay.resolveOverlayPlaybackButtonPlayingState(\n                                    it.isPlaying, it.playWhenReady, it.playbackState\n                                )\n                            } == true,\n'),
+  dict(label='collapsed bar toggles through the shared user playback action',before='''                                inlinePlayerCollapseState.restore()
+                                if (exoPlayer?.isPlaying == true) {
+                                    exoPlayer?.pause()
+                                } else {
+                                    exoPlayer?.play()
+                                }
+''',after='''                                inlinePlayerCollapseState.restore()
+                                exoPlayer?.let { com.android.purebilibili.feature.video.usecase.togglePlayerPlaybackFromUserAction(it) }
+''')]
+ s=source
+ for edit in edits:
+  assert s.count(edit['before'])==1,edit['label']
+  s=s.replace(edit['before'],edit['after'],1)
+ inverse=s
+ for edit in reversed(edits):
+  assert inverse.count(edit['after'])==1,edit['label']+' inverse'
+  inverse=inverse.replace(edit['after'],edit['before'],1)
+ assert inverse==source,'complete PGC buffering playback toggle inverse'
+ return s,edits
+
 def main():
  parser=argparse.ArgumentParser();parser.add_argument('--repo',type=Path,required=True);parser.add_argument('--output',type=Path,required=True);a=parser.parse_args()
  records=[]
@@ -94,6 +119,8 @@ def main():
   body=advance_bangumi_ui(a.repo,body,a.output,r['output'])
   from v046_bangumi_player import apply_retry_ui
   body=apply_retry_ui(a.repo,r['output'],body,a.output)
+  body,buffering_edits=windows_bangumi_buffering_playback_toggle_ui(body,r['output'])
+  windows_edits.extend(buffering_edits)
   write(a.output,r['output'],body);records.append(dict(source=r['originalPath'],output=r['output'],wholeBody=True,edits=len(r['edits']),originalSha256LF=sha(raw),generatedSha256LF=sha(body),windowsAdaptations=windows_edits))
  from v046_comment_list import emit_bangumi_panel
  emit_bangumi_panel(a.repo,a.output)

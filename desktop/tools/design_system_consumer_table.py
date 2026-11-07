@@ -46,6 +46,7 @@ from pathlib import Path
 TOOLS = Path(__file__).resolve().parent
 sys.path.insert(0, str(TOOLS))
 import check_slice_symbol_closure as gate  # noqa: E402  (the Kotlin lexer/parser of the symbol-closure gate)
+import v025_source_paths as v025  # noqa: E402  (the reviewed catalog of moved upstream paths)
 
 SCHEMA_VERSION = 1
 COMMIT = gate.TARGET_COMMIT
@@ -53,6 +54,7 @@ DESIGN_ROOTS = ('design-system/src/main/', 'design-tokens/src/main/')
 SOURCES_FILE = 'desktop/upstream-sources.json'
 CATALOG_FILE = 'desktop/tools/compatibility-source-inputs.json'
 DESKTOP_KOTLIN = 'desktop/src/main/kotlin'
+MERGED_ROOT = '.merged-root'
 STATUS_ORDER = ('absent', 'older', 'partial', 'current')
 # members every class has or the compiler synthesises; never evidence of version skew
 SYNTHETIC_MEMBERS = gate.ANY_MEMBERS | gate.DATA_MEMBERS | gate.ENUM_MEMBERS | frozenset(['Companion'])
@@ -160,6 +162,26 @@ def _read_consumer(repo, label):
     return raw, gate.parse_kotlin(text_of(raw), label, 'consumed', 'main', keep_tokens=True)
 
 
+def carried_path(repo, path):
+    """The repository file that carries a manifest row. Inside the pre-merge read point a module compiled from the
+    merged root has its live copy under .merged-root (legacy_gate_workspace.py), which is what the build compiles;
+    otherwise the row path itself, or, when that file is not in this tree (the read point after ad2967bbf moved rows
+    to their merged paths), the one reviewed predecessor that desktop/build.gradle.kts canonicalOriginalIdentity()
+    copies for the row."""
+    repo = Path(repo)
+    if (repo / MERGED_ROOT / path).is_file():
+        return MERGED_ROOT + '/' + path
+    if (repo / path).is_file():
+        return path
+    catalog = v025._catalog()
+    identity = catalog['previousPaths'].get(path, path) if path.startswith(tuple(catalog['sourceRoots'])) else path
+    if identity and (repo / identity).is_file():
+        return identity
+    predecessors = sorted({old for old, new in catalog['previousPaths'].items()
+                           if new == identity and (repo / old).is_file()})
+    return predecessors[0] if len(predecessors) == 1 else path
+
+
 def load_consumers(repo):
     repo = Path(repo)
     consumers, notes = [], {'vendoredSkipped': 0, 'archiveSkipped': 0, 'missing': []}
@@ -169,11 +191,12 @@ def load_consumers(repo):
         if not path.endswith('.kt') or mode == 'reference-only':
             notes['vendoredSkipped'] += 1
             continue
-        loaded = _read_consumer(repo, path)
+        label = carried_path(repo, path)
+        loaded = _read_consumer(repo, label)
         if loaded is None:
             notes['missing'].append(path)
             continue
-        consumers.append(Consumer(path, 'vendored', mode, path, mode == 'direct', loaded[1], lf_sha256(loaded[0])))
+        consumers.append(Consumer(label, 'vendored', mode, path, mode == 'direct', loaded[1], lf_sha256(loaded[0])))
     catalog = json.loads((repo / CATALOG_FILE).read_text(encoding='utf8'))
     for entry in catalog['inputs']:
         local = entry['localPath']

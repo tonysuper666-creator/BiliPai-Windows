@@ -88,9 +88,10 @@ import top.yukonga.miuix.kmp.basic.TooltipAnchorPosition
  * and during the short window between the click and the moment the owner reports isRefreshing, so a double click starts one refresh.
  */
 
+/** Spec §4 item 6: a 44dp button 24dp from the bottom right corner, with 16dp of air above it. */
 internal const val DESKTOP_REFRESH_BUTTON_SIZE_DP = 44
-internal const val DESKTOP_REFRESH_BUTTON_MARGIN_DP = 20
-internal const val DESKTOP_REFRESH_BUTTON_GAP_DP = 12
+internal const val DESKTOP_REFRESH_BUTTON_MARGIN_DP = 24
+internal const val DESKTOP_REFRESH_BUTTON_GAP_DP = 16
 
 /**
  * Work to do before the list's own refresh starts, provided by a host that knows how to scroll its lists (Home: the pager's
@@ -104,7 +105,7 @@ internal const val DESKTOP_REFRESH_STACK_LIFT_DP = DESKTOP_REFRESH_BUTTON_SIZE_D
 /** How long a click is held as "refreshing" while the owner has not yet reported isRefreshing (a refresh that the owner declines never reports it). */
 internal const val DESKTOP_REFRESH_PENDING_TIMEOUT_MS = 1_500L
 
-/** Space a list keeps free at its end so that its last row, and the menu of a card in the last column, can be scrolled clear of the button. */
+/** Space a list keeps free at its end so that its last row, and the menu of a card in the last column, can be scrolled clear of the button: 24 + 44 + 16 = 84dp of spec §4 item 6. */
 internal const val DESKTOP_REFRESH_SCROLL_RESERVE_DP = DESKTOP_REFRESH_BUTTON_MARGIN_DP + DESKTOP_REFRESH_BUTTON_SIZE_DP + DESKTOP_REFRESH_BUTTON_GAP_DP
 
 internal const val DESKTOP_REFRESH_LABEL = "刷新"

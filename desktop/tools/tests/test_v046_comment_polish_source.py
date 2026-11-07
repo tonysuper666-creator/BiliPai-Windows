@@ -17,6 +17,7 @@ import check_slice_symbol_closure as gate
 import v046_comment_list as comment_list
 import v046_comment_polish as polish
 from v046_favorite_editor import restore
+from desktop_refresh_adaptation import unbind_refresh_lists
 from v025_source_paths import canonical_source
 
 
@@ -35,6 +36,7 @@ BGM = load('extract-upstream-bgm-detail.py', 'extract_bgm_comment_polish')
 
 COMPONENTS = 'com/android/purebilibili/feature/video/ui/components/'
 SUBREPLY = COMPONENTS + 'DesktopOriginalSubReplyDetailComponents.kt'
+SPLIT_ITEM_STATES_PROOF = 'v046-comment-detail-split-item-states-proof.json'
 HOST = COMPONENTS + 'VideoCommentSheetHost.kt'
 FRAUD_HOST = 'com/android/purebilibili/' + polish.FRAUD_HOST_RELATIVE
 ADAPTER = 'com/android/purebilibili/' + polish.ADAPTER_RELATIVE
@@ -66,6 +68,11 @@ def text(files, relative):
 def body(files, relative):
     """A dynamic-reply output without its two-line GENERATED header."""
     return text(files, relative).split('\n', 2)[2]
+
+
+def staged(value):
+    """The body the stage receipts describe: 591685d9e binds the shared refresh lists after them."""
+    return unbind_refresh_lists(value)
 
 
 def run_all(root, patched):
@@ -206,7 +213,9 @@ class V046CommentPolishSourceTest(unittest.TestCase):
         self.assertFalse(proof['jvmTestsExecuted'])
         # Every other emitted file of the reply producer is untouched by the font file.
         self.assertEqual({polish.APPEARANCE_RELATIVE, polish.APPEARANCE_TEST_RELATIVE,
-                          'v046-comment-appearance-proof.json', 'v046-inline-subreply-entrance-proof.json', SUBREPLY},
+                          'v046-comment-appearance-proof.json', 'v046-inline-subreply-entrance-proof.json',
+                          # The comment-detail split item states follow the entrance; their receipt records its body.
+                          SPLIT_ITEM_STATES_PROOF, SUBREPLY},
                          self.changed('reply'))
 
     def test_comment_font_policy_suite_is_the_original_with_one_class_rename(self):
@@ -313,8 +322,10 @@ class V046CommentPolishSourceTest(unittest.TestCase):
     # ---------------------------------------------------------------- inline nested reply entrance
 
     def test_inline_nested_reply_entrance_is_the_whole_original_declaration(self):
-        final = body(self.real['reply'], SUBREPLY)
-        before = body(self.base['reply'], SUBREPLY)
+        # The comment-detail split item states run after the entrance in both outputs; peel each receipt.
+        final = restore(staged(body(self.real['reply'], SUBREPLY)), self.proof('reply', SPLIT_ITEM_STATES_PROOF)['retainedToCurrent'])
+        before = restore(staged(body(self.base['reply'], SUBREPLY)),
+                         json.loads(self.base['reply'][SPLIT_ITEM_STATES_PROOF])['retainedToCurrent'])
         proof = self.proof('reply', 'v046-inline-subreply-entrance-proof.json')
         self.assertEqual(before, restore(final, proof['retainedToCurrent']))
         name = 'VideoInlineSubReplyDetailContent'
@@ -355,8 +366,8 @@ class V046CommentPolishSourceTest(unittest.TestCase):
     # ---------------------------------------------------------------- fullscreen comment host
 
     def test_fullscreen_host_is_the_whole_v046_declaration_with_only_platform_adaptations(self):
-        final = text(self.real['pager'], HOST)
-        before = text(self.base['pager'], HOST)
+        final = staged(text(self.real['pager'], HOST))
+        before = staged(text(self.base['pager'], HOST))
         proof = self.proof('pager', 'v046-comment-sheet-host-proof.json')
         self.assertEqual(before, restore(final, proof['retainedToCurrent']))
         name = 'VideoCommentSheetHost'
@@ -407,8 +418,8 @@ class V046CommentPolishSourceTest(unittest.TestCase):
                                                                           if p.endswith('.kt') or p.startswith('v046')})
 
     def test_host_body_change_is_limited_to_the_documented_hunks(self):
-        before = text(self.base['pager'], HOST)
-        final = text(self.real['pager'], HOST)
+        before = staged(text(self.base['pager'], HOST))
+        final = staged(text(self.real['pager'], HOST))
         proof = self.proof('pager', 'v046-comment-sheet-host-proof.json')
         hunks = proof['retainedToCurrent']['hunks']
         self.assertEqual(before, restore(final, proof['retainedToCurrent']))
@@ -495,17 +506,17 @@ class V046CommentPolishSourceTest(unittest.TestCase):
             detail = text(self.base['bgm'], DETAIL)
             self.assertRaises(ValueError, polish.advance_comment_detail_screen, REPO, detail + '\n', out)
             self.assertRaises(ValueError, polish.advance_comment_detail_screen, REPO, text(self.real['bgm'], DETAIL), out)
-            host = text(self.base['pager'], HOST)
+            host = staged(text(self.base['pager'], HOST))
             self.assertRaises((ValueError, AssertionError), polish.advance_comment_sheet_host, REPO, 'package x\n', out)
             self.assertRaises(ValueError, polish.advance_comment_sheet_host, REPO,
                               host.replace('val hostVisible = ', 'val hostVisible2 = ', 1), out)
-            self.assertRaises(ValueError, polish.advance_comment_sheet_host, REPO, text(self.real['pager'], HOST), out)
-            before = body(self.base['reply'], SUBREPLY)
+            self.assertRaises(ValueError, polish.advance_comment_sheet_host, REPO, staged(text(self.real['pager'], HOST)), out)
+            before = staged(body(self.base['reply'], SUBREPLY))
             self.assertRaises((ValueError, AssertionError), polish.advance_inline_entrance, REPO, 'package x\n', out)
             self.assertRaises(ValueError, polish.advance_inline_entrance, REPO,
                               before.replace('if (!state.visible || rootReply == null) return',
                                              'if (!state.visible || rootReply == null) return // x', 1), out)
-            self.assertRaises(ValueError, polish.advance_inline_entrance, REPO, body(self.real['reply'], SUBREPLY), out)
+            self.assertRaises(ValueError, polish.advance_inline_entrance, REPO, staged(body(self.real['reply'], SUBREPLY)), out)
             self.assertEqual([], list(out.iterdir()))
 
     def test_unused_import_removal_refuses_a_name_that_is_still_used(self):

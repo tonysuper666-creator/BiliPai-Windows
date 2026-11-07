@@ -3,12 +3,15 @@ package com.bilipai.desktop.ui
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -297,6 +300,70 @@ class DesktopPageRefreshButtonTest {
             assertTrue(top.bottom <= refresh.top, "back to top $top must sit above refresh $refresh")
             assertTrue(top.right > Scene.WIDTH - 60f, "same corner column")
         } finally { scene.close() }
+    }
+
+    @Test fun theCornerButtonKeepsTheSpecifiedMarginAndListEndReserve() {
+        // Spec §4 item 6: a 44dp button 24dp from the corner, and the list end keeps 44 + 24 + 16 = 84dp, so the last row stops
+        // 16dp above the button. theEndOfTheListStopsAboveTheCornerButton measures the two real boxes against the same numbers.
+        assertEquals(44, DESKTOP_REFRESH_BUTTON_SIZE_DP)
+        assertEquals(24, DESKTOP_REFRESH_BUTTON_MARGIN_DP)
+        assertEquals(84, DESKTOP_REFRESH_SCROLL_RESERVE_DP)
+        // The back-to-top button still rises above the refresh slot with the same gap.
+        assertEquals(44 + 16, DESKTOP_REFRESH_STACK_LIFT_DP)
+    }
+
+    /** The list a page scrolls to its end keeps its last row clear of the real corner button of the patched box (spec §4 item 6). */
+    @Test fun theEndOfTheListStopsAboveTheCornerButton() = runBlocking<Unit> {
+        val width = 520
+        val height = 420
+        val lastRow = 59
+        val scene = ImageComposeScene(width, height, Density(1f)) {
+            val actualWindow = LocalWindowInfo.current
+            val focused = androidx.compose.runtime.remember(actualWindow) { object : WindowInfo by actualWindow {
+                override val isWindowFocused = true
+            } }
+            CompositionLocalProvider(LocalWindowInfo provides focused) {
+                MaterialTheme {
+                    AdaptivePullToRefreshBox(isRefreshing = false, onRefresh = {}, modifier = Modifier.fillMaxSize()) {
+                        val state = rememberLazyListState()
+                        LaunchedEffect(Unit) { state.scrollToItem(lastRow) }
+                        // What the pages do: the end padding the box reserves, read from the composition local it provides.
+                        LazyColumn(
+                            Modifier.fillMaxSize(),
+                            state = state,
+                            contentPadding = desktopRefreshContentPadding(PaddingValues()),
+                        ) { items(lastRow + 1) { Text("row $it") } }
+                    }
+                }
+            }
+        }
+        try {
+            fun nodes(node: SemanticsNode): List<SemanticsNode> = listOf(node) + node.children.flatMap(::nodes)
+            fun find(predicate: (SemanticsNode) -> Boolean): SemanticsNode? =
+                scene.semanticsOwners.flatMap { nodes(it.unmergedRootSemanticsNode) }.firstOrNull(predicate)
+            val row = { find { it.config.getOrNull(SemanticsProperties.Text)?.any { text -> text.text == "row $lastRow" } == true } }
+            val button = {
+                find {
+                    it.config.getOrNull(SemanticsProperties.ContentDescription)?.contains("刷新") == true &&
+                        it.config.getOrNull(SemanticsProperties.Role) != null
+                }
+            }
+            var nanos = 0L
+            withTimeout(6_000) {
+                do { nanos = maxOf(System.nanoTime(), nanos + 1); scene.render(nanos).close(); delay(12) }
+                while (row() == null || button() == null)
+            }
+            val rowBounds = assertNotNull(row()).boundsInRoot
+            val buttonBounds = assertNotNull(button()).boundsInRoot
+            // The 24dp corner: the button ends 24dp from both edges of the box.
+            assertEquals(width - 24f, buttonBounds.right, 1f, "button right $buttonBounds")
+            assertEquals(height - 24f, buttonBounds.bottom, 1f, "button bottom $buttonBounds")
+            // The last row ends 16dp above the button, not under it.
+            val clearance = buttonBounds.top - rowBounds.bottom
+            assertTrue(clearance >= 15.5f, "row $rowBounds must end above button $buttonBounds, clearance ${clearance}dp")
+        } finally {
+            scene.close()
+        }
     }
 
     private class Scene(style: AppUiStyle, enabled: Boolean = true) : AutoCloseable {

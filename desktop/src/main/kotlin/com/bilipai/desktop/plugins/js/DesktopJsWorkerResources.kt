@@ -6,6 +6,17 @@ import java.nio.file.LinkOption.NOFOLLOW_LINKS
 import java.nio.file.Path
 import java.security.MessageDigest
 
+/** The exact non-digest marker the non-Windows `prepareJsWorker` placeholder writes in place of a catalog digest. */
+internal const val DESKTOP_JS_WORKER_UNAVAILABLE_MARKER = "unavailable: the JS worker image is a Windows x64 build product"
+
+/**
+ * True only for that exact marker on a non-Windows host: there the JS lane has no worker at all.
+ * Every other value, and the marker itself on Windows, goes through [DesktopJsWorkerResources] and fails closed.
+ */
+internal fun desktopJsWorkerUnavailableOnThisHost(expectedCatalogSha256: String = DESKTOP_JS_WORKER_CATALOG_SHA256,
+    osName: String = System.getProperty("os.name", "")): Boolean =
+    expectedCatalogSha256 == DESKTOP_JS_WORKER_UNAVAILABLE_MARKER && !osName.startsWith("Windows", ignoreCase = true)
+
 /** Only the build's fixed, individually verified worker resources can form a guest classpath. */
 class DesktopJsWorkerResources(private val resources: Path,
     private val expectedCatalogSha256: String = DESKTOP_JS_WORKER_CATALOG_SHA256) {

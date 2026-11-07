@@ -66,6 +66,22 @@ def main():
  adapt('SettingsManager\n        .getHomeFeedCardStyle(context)','context.settings.homeFeedCardStyle')
  for getter,field in [('getHomeUpBadgesVisible','showHomeUpBadges'),('getHomeDurationStyle','homeDurationStyle'),('getHomePublishTimeVisible','showHomePublishTime')]:
   adapt('SettingsManager\n        .'+getter+'(context)','com.android.purebilibili.core.store.DesktopOriginalHomeCardVisualSettings\n        .getSettings(context.pluginContext).map { it.'+field+' }')
+ # Port only the upstream side-placement behavior. Keep both children at stable
+ # composition sites so switching sides cannot recreate either lazy-list state.
+ adapt('import androidx.compose.ui.Modifier', 'import androidx.compose.ui.Modifier\nimport androidx.compose.ui.layout.Layout\nimport androidx.compose.ui.unit.Constraints')
+ adapt('    val homeSettings by context.settings.homeSettings.collectAsStateWithLifecycle(initialValue = HomeSettings())',
+       '    val homeSettings by context.settings.homeSettings.collectAsStateWithLifecycle(initialValue = HomeSettings())\n'
+       '    val partitionPreferences = remember(context.pluginContext) { com.bilipai.desktop.settings.DesktopPartitionPreferences(context.pluginContext) }\n'
+       '    val sideRailOnRight by partitionPreferences.onRight.collectAsState(initial = partitionPreferences.initialSideRailOnRight())')
+ adapt('    val startPadding = contentPadding.calculateStartPadding(layoutDirection)\n    val endPadding = contentPadding.calculateEndPadding(layoutDirection)',
+       '    val leftPadding = contentPadding.calculateLeftPadding(layoutDirection)\n    val rightPadding = contentPadding.calculateRightPadding(layoutDirection)')
+ adapt('        Row(\n            modifier = Modifier\n                .fillMaxSize()', '        Layout(\n            modifier = Modifier\n                .fillMaxSize()')
+ adapt('                )\n        ) {\n            PartitionSideRail(', '                ),\n            content = {\n            PartitionSideRail(')
+ adapt('                contentPadding = PaddingValues(\n                    start = startPadding,\n                    top = topPadding + 8.dp,\n                    bottom = bottomPadding,\n                    end = 4.dp', '                contentPadding = PaddingValues.Absolute(\n                    left = if (sideRailOnRight) 4.dp else leftPadding,\n                    top = topPadding + 8.dp,\n                    bottom = bottomPadding,\n                    right = if (sideRailOnRight) rightPadding else 4.dp')
+ adapt('                    .weight(1f)\n                    .graphicsLayer { translationX = sideRailVideoPushPx }',
+       '                    .graphicsLayer { translationX = sideRailVideoPushPx * if (sideRailOnRight) -1f else 1f }')
+ adapt('                    contentPadding = PaddingValues(\n                        start = 8.dp,\n                        top = partitionRefreshIndicatorTopInset,\n                        end = endPadding,\n                        bottom = bottomPadding\n                    ),', '                    contentPadding = PaddingValues.Absolute(\n                        left = if (sideRailOnRight) leftPadding else 8.dp,\n                        top = partitionRefreshIndicatorTopInset,\n                        right = if (sideRailOnRight) 8.dp else rightPadding,\n                        bottom = bottomPadding\n                    ),')
+ adapt('                    onVideoClick = onVideoClick\n                )\n            }\n        }\n    }\n}', '                    onVideoClick = onVideoClick\n                )\n            }\n            }\n        ) { measurables, constraints ->\n            val rail = measurables[0].measure(constraints.copy(minWidth = 0))\n            val list = measurables[1].measure(\n                Constraints.fixed((constraints.maxWidth - rail.width).coerceAtLeast(0), constraints.maxHeight)\n            )\n            layout(constraints.maxWidth, constraints.maxHeight) {\n                rail.place(if (sideRailOnRight) list.width else 0, 0)\n                list.place(if (sideRailOnRight) 0 else rail.width, 0)\n            }\n        }\n    }\n}')
  s=s.replace('import kotlinx.coroutines.flow.update','import kotlinx.coroutines.flow.update\nimport kotlinx.coroutines.flow.map')
  reverse=s.replace('import kotlinx.coroutines.flow.update\nimport kotlinx.coroutines.flow.map','import kotlinx.coroutines.flow.update')
  for row in reversed(changes):

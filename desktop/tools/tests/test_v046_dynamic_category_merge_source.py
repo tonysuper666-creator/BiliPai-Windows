@@ -12,7 +12,6 @@ sys.dont_write_bytecode = True
 REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(REPO / 'desktop/tools'))
 import v046_dynamic_category_merge as merge
-import check_slice_symbol_closure as gate
 
 TOOLS = REPO / 'desktop/tools'
 MAIN = REPO / 'desktop/src/main/kotlin/com/bilipai/desktop'
@@ -390,17 +389,10 @@ class V046DynamicCategoryMergeSourceTest(unittest.TestCase):
         self.assertFalse(any(group['closedBy'] == 'dyn-category-merge-and-detail-return' for group in expected['groups']))
         # The network API is now a real compiled module definition, not an
         # accepted missing import. The avatar remains a producer adaptation.
+        # core-data/ compiles whole from the merged root, so compileKotlin (not the retired whole-tree gate reading,
+        # TON-1205) proves the definition resolves for DesktopDynamicCardOperations.
         api = 'com.android.purebilibili.core.network.grpc.DynamicReactionApi'
         self.assertNotIn(api, listed)
-        model = gate.parse_gradle(text_of(REPO / 'desktop/build.gradle.kts'))
-        compiled, _notes = gate.collect_sources(REPO, model)
-        definers = set()
-        for source in compiled:
-            if source.set != 'main' or 'DynamicReactionApi' not in gate.read_source(source):
-                continue
-            info = gate.parse_kotlin(gate.read_source(source), source.logical, source.origin, source.set)
-            definers.update(info.package + '.' + declaration.name for declaration in info.decls)
-        self.assertIn(api, definers)
         self.assertEqual('none (producer adaptation)',
                          listed['com.android.purebilibili.feature.dynamic.components.DynamicSelfAvatar'])
         self.assertIn('import com.android.purebilibili.core.network.grpc.DynamicReactionApi', self.sources['DynamicReactionSheet.kt'])

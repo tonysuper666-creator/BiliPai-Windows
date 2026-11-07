@@ -97,4 +97,10 @@ import com.android.purebilibili.danmaku.parser.DanmakuProto
  proof_path=output/"v029-command-vote-proof.json";proof=json.loads(proof_path.read_text(encoding="utf-8"))
  proof.update(gradeFullInverse=True,gradeEdits=grade_edits,summaryResolverWholeSha256=hashlib.sha256(summary_resolver.encode()).hexdigest(),summaryRequestWholeSha256=hashlib.sha256(summary_request.encode()).hexdigest())
  proof_path.write_text(json.dumps(proof,ensure_ascii=False,indent=2)+"\n",encoding="utf-8",newline="\n")
-if __name__=="__main__":generate(Path(sys.argv[1]).resolve(),Path(sys.argv[2]).resolve())
+if __name__=="__main__":
+ import argparse
+ cli = argparse.ArgumentParser(description=__doc__)
+ cli.add_argument("repository", type=Path, help="prepared legacy repository read point")
+ cli.add_argument("output", type=Path, help="private output directory for generated sources and inverse receipts")
+ args = cli.parse_args()
+ generate(args.repository.resolve(), args.output.resolve())

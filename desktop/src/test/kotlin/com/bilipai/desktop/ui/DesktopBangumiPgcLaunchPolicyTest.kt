@@ -2,6 +2,7 @@ package com.bilipai.desktop.ui
 
 import com.android.purebilibili.data.model.response.BangumiDetail
 import com.android.purebilibili.data.model.response.BangumiEpisode
+import com.android.purebilibili.data.model.response.BangumiSection
 import com.android.purebilibili.data.model.response.UserStatus
 import com.android.purebilibili.navigation3.BiliPaiNavKey
 import kotlin.test.*
@@ -70,6 +71,21 @@ class DesktopBangumiPgcLaunchPolicyTest {
         assertFalse(desktopBangumiSameDecodedSeason(withoutEpisodes, withoutEpisodes.copy(title = "copy")))
         val empty = BangumiDetail(seasonId = 19, episodes = emptyList())
         assertFalse(desktopBangumiSameDecodedSeason(empty, empty.copy(title = "copy")))
+    }
+
+    @Test fun `a section-only season borrows only from its own decoded section container`() {
+        val decoded = BangumiDetail(seasonId = 19, section = listOf(
+            BangumiSection(episodes = listOf(episode(43, 4301, 106)))))
+        // Switch/next hand the Success copy back; it keeps both decoded containers.
+        assertTrue(desktopBangumiSameDecodedSeason(decoded, successCopy(decoded)))
+        // A separately decoded section with equal data, or a main list shared with another
+        // decode, is never this season's receipt.
+        assertFalse(desktopBangumiSameDecodedSeason(decoded, decoded.copy(section = decoded.section!!.toList())))
+        val main = season()
+        assertFalse(desktopBangumiSameDecodedSeason(main, main.copy(section = decoded.section)))
+        assertFalse(desktopBangumiSameDecodedSeason(decoded, decoded.copy(seasonId = 20)))
+        val emptySection = BangumiDetail(seasonId = 19, section = listOf(BangumiSection(episodes = emptyList())))
+        assertFalse(desktopBangumiSameDecodedSeason(emptySection, successCopy(emptySection)))
     }
 
     @Test fun `entry is reused only for the exact key instance`() {

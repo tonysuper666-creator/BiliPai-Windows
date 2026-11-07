@@ -35,7 +35,8 @@ import java.util.concurrent.atomic.AtomicBoolean
             }
         }
         DisposableEffect(scope) { onDispose { open.set(false);scope.cancel() } }
-        if (owns()) CommentDetailScreen(oid=key.oid,rootId=key.rootId,targetId=key.targetId,
+        // The standalone NavEntry is the one comment surface that splits on wide windows.
+        if (owns()) CompositionLocalProvider(LocalDesktopCommentDetailSplitPanes provides true) { CommentDetailScreen(oid=key.oid,rootId=key.rootId,targetId=key.targetId,
             type=key.type,enterUri=key.enterUri,
             onBack={ if(active) routes.callbackFor(key) { routes.back() } },
             onOpenLink=messageLink,
@@ -44,7 +45,7 @@ import java.util.concurrent.atomic.AtomicBoolean
             admitUiAction={ action ->
                 var admitted=false
                 commit { if(active && routes.currentKey==key) { action();admitted=true } } && admitted
-            })
+            }) }
     }
 }
 

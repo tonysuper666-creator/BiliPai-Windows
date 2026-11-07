@@ -2850,5 +2850,41 @@
         "expect": {"x": 100, "y": 50, "width": 1360, "height": 900, "maximized": true}
       }
     ]
+  },
+  "reading": {
+    "about": "K6 (TON-1057 / TON-1199): dynamic reading column and the followed-UP aside, measured on the width the dynamic host receives (client width minus rail footprint, the feed 'wc').",
+    "dynamic": {
+      "column_min": 640,
+      "column_max": 760,
+      "side_padding": 24,
+      "aside_gap": 24,
+      "aside_width": 280,
+      "aside_from_content_width": 992,
+      "golden": [
+        {"id": "w960-collapsed", "wc": 888, "expect": {"aside": false, "column": 760, "column_x": 64}},
+        {"id": "below-aside", "wc": 991, "expect": {"aside": false, "column": 760, "column_x": 115.5}},
+        {
+          "id": "aside-edge",
+          "wc": 992,
+          "expect": {"aside": true, "column": 640, "column_x": 24, "aside_x": 688}
+        },
+        {
+          "id": "w1280-expanded",
+          "wc": 1064,
+          "expect": {"aside": true, "column": 712, "column_x": 24, "aside_x": 760}
+        },
+        {
+          "id": "w1279-collapsed",
+          "wc": 1207,
+          "expect": {"aside": true, "column": 760, "column_x": 71.5, "aside_x": 855.5}
+        },
+        {"id": "w1536", "wc": 1320, "expect": {"aside": true, "column": 760, "column_x": 128, "aside_x": 912}},
+        {
+          "id": "w2731-real",
+          "wc": 2515,
+          "expect": {"aside": true, "column": 760, "column_x": 725.5, "aside_x": 1509.5}
+        }
+      ]
+    }
   }
 }

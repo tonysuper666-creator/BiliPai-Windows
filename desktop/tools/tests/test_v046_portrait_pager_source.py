@@ -25,6 +25,28 @@ import v046_follow_confirmation as follow
 import v046_portrait_pager as portrait
 
 
+V025 = json.loads((TOOLS / 'v025-canonical-sources.json').read_bytes())
+
+
+def registered_row(rows, path):
+    """The manifest row registering path; ad2967bbf retargeted moved paths to their successor (retargetedFrom)."""
+    found = [row for row in rows if row['path'] == path] or [row for row in rows if row.get('retargetedFrom') == path]
+    if len(found) != 1:
+        raise KeyError(path)
+    return found[0]
+
+
+def registered_reviewed_sha256(rows, path):
+    """The reviewed predecessor identity the manifest vouches for. The legacy read point's manifest pins the legacy
+    bytes directly; the live manifest (re-pinned in ad2967bbf) pins the direct-compile bytes, which the canonical
+    catalog pairs with the reviewed legacy identity of path."""
+    row = registered_row(rows, path)
+    if row['sha256'] != V025['paths'][row['path']]['sha256']:
+        return row['sha256']
+    pin = V025['paths'][path]
+    return pin.get('legacySha256', pin['sha256'])
+
+
 def load(name, filename):
     spec = importlib.util.spec_from_file_location(name, TOOLS / filename)
     module = importlib.util.module_from_spec(spec)
@@ -200,12 +222,13 @@ class PortraitPagerSourceTests(unittest.TestCase):
         canonical = self.story.read(REPO, path)
         self.assertEqual(portrait.CANONICAL_LF_SHA256[portrait.SWITCH_LEAF], sha(canonical))
         self.assertEqual(portrait.PREVIOUS_OUTPUT_SHA256[portrait.SWITCH_LEAF], sha(self.story.adapt(path, canonical, helpers)))
-        registry = {row['path']: row['sha256'] for row in json.loads((REPO / 'desktop/upstream-sources.json').read_bytes())['sources']}
+        rows = json.loads((REPO / 'desktop/upstream-sources.json').read_bytes())['sources']
         for leaf, upstream_path in portrait.UPSTREAM_PATHS.items():
             if leaf in portrait.CANONICAL_LF_SHA256:
-                self.assertEqual(portrait.CANONICAL_LF_SHA256[leaf], registry[upstream_path], leaf)
+                self.assertEqual(portrait.CANONICAL_LF_SHA256[leaf], registered_reviewed_sha256(rows, upstream_path), leaf)
             else:
-                self.assertNotIn(upstream_path, registry, 'the new v0.4.0 policy has no vendored v0.2.5 copy')
+                with self.assertRaises(KeyError, msg='the new v0.4.0 policy has no vendored v0.2.5 copy'):
+                    registered_row(rows, upstream_path)
 
     @unittest.skipUnless(commit_present(portrait.COMMIT), 'the v0.4.6 upstream commit is not in the local object store')
     def test_every_leaf_is_the_v046_blob_and_every_pager_hunk_text_is_upstream(self):
