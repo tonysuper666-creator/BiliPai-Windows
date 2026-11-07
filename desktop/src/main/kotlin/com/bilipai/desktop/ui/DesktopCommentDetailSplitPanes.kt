@@ -10,19 +10,23 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.Layout
+import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.layout.onPlaced
-import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
+import kotlin.math.roundToInt
 
 /** Spec §6: two columns from 960dp of available width, each column at most 760dp. */
 internal const val DESKTOP_COMMENT_DETAIL_SPLIT_MIN_WIDTH_DP = 960
@@ -44,7 +48,9 @@ internal data class DesktopCommentDetailReadingPosition(
 )
 
 /** Narrow lazy item 0 is root ([rootHeight]) + section header; wide item 0 is only the header and
- * the root sits in the context pane. Reply items keep the same key and index either way. */
+ * the root sits in the context pane. Reply items keep the same key and index either way. A point
+ * inside the original comment is only a pixel guess here: its text reflows with the pane width, so
+ * [DesktopCommentDetailSplitState] re-reads it as a [DesktopCommentDetailRootPoint] once laid out. */
 internal fun mapDesktopCommentDetailReadingPosition(
     position: DesktopCommentDetailReadingPosition,
     toSplit: Boolean,
@@ -57,6 +63,47 @@ internal fun mapDesktopCommentDetailReadingPosition(
     else -> DesktopCommentDetailReadingPosition(0, position.contextScroll, position.contextScroll)
 }
 
+/** A reading point in the original comment that survives reflow: the [ordinal]th text with the same
+ * [text], the line holding character [char] and [intoLine] px below that line's top (negative
+ * above the text, e.g. in the author row). Past the last text it is [fromEnd] px above the end,
+ * which also reaches into the section header below. */
+internal sealed interface DesktopCommentDetailRootPoint {
+    data class Text(val text: String, val ordinal: Int, val char: Int, val intoLine: Float) : DesktopCommentDetailRootPoint
+    data class FromEnd(val fromEnd: Int) : DesktopCommentDetailRootPoint
+}
+
+/** One laid-out text of the original comment, [top] px below the comment's own top. */
+internal class DesktopCommentDetailRootText(val text: String, val top: Float, val layout: TextLayoutResult)
+
+internal fun DesktopCommentDetailRootPoint.Text.ordinalIn(texts: List<DesktopCommentDetailRootText>) =
+    texts.filter { it.text == text }.getOrNull(ordinal)
+
+/** Reading point [y] px below the original comment's top, in the texts laid out at the old width. */
+internal fun desktopCommentDetailRootPointAt(
+    y: Int,
+    height: Int,
+    texts: List<DesktopCommentDetailRootText>,
+): DesktopCommentDetailRootPoint {
+    val index = texts.indexOfFirst { y < it.top + it.layout.size.height }
+    if (index < 0) return DesktopCommentDetailRootPoint.FromEnd(height - y)
+    val found = texts[index]
+    val line = found.layout.getLineForVerticalPosition((y - found.top).coerceAtLeast(0f))
+    val ordinal = texts.subList(0, index).count { it.text == found.text }
+    return DesktopCommentDetailRootPoint.Text(found.text, ordinal, found.layout.getLineStart(line),
+        y - found.top - found.layout.getLineTop(line))
+}
+
+/** Where [point] is now, px below the original comment's top; null if its text is gone. */
+internal fun DesktopCommentDetailRootPoint.offsetIn(height: Int, texts: List<DesktopCommentDetailRootText>): Int? =
+    when (this) {
+        is DesktopCommentDetailRootPoint.FromEnd -> height - fromEnd
+        is DesktopCommentDetailRootPoint.Text -> ordinalIn(texts)?.let { found ->
+            val line = found.layout.getLineForOffset(char.coerceIn(0, found.layout.layoutInput.text.length))
+            val lineHeight = found.layout.getLineBottom(line) - found.layout.getLineTop(line)
+            (found.top + found.layout.getLineTop(line) + intoLine.coerceAtMost(lineHeight)).roundToInt()
+        }
+    }
+
 /** Per root comment; owned by the one SubReplyDetailContent so the entry jump can reach it. */
 @Stable
 internal class DesktopCommentDetailSplitState {
@@ -64,8 +111,14 @@ internal class DesktopCommentDetailSplitState {
         private set
     private var split: Boolean? = null
     internal var rootHeight = 0
-    private var pendingRootOffset: Int? = null
+    private var pendingRoot: DesktopCommentDetailRootPoint? = null
+    private var pendingContext: DesktopCommentDetailRootPoint? = null
+    internal var rootTexts: DesktopCommentDetailRootTexts? = null
     internal val rootItem = DesktopCommentDetailRootItemStates()
+
+    /** The original comment at the old width is still laid out while the new width composes. */
+    private fun pointAt(y: Int): DesktopCommentDetailRootPoint =
+        desktopCommentDetailRootPointAt(y, rootHeight, rootTexts?.texts().orEmpty())
 
     /** Applied in composition, before the list measures with its new item 0. */
     fun onWidthClass(split: Boolean, listState: LazyListState) {
@@ -76,23 +129,86 @@ internal class DesktopCommentDetailSplitState {
         val offset = listState.firstVisibleItemScrollOffset
         val mapped = mapDesktopCommentDetailReadingPosition(
             DesktopCommentDetailReadingPosition(index, offset, contextScroll.value), split, rootHeight)
+        pendingRoot = null
+        pendingContext = if (split && index == 0 && offset < rootHeight) pointAt(offset) else null
         if (split) contextScroll = ScrollState(mapped.contextScroll)
-        pendingRootOffset = null
         when {
-            mapped.listIndex == index && mapped.listOffset == offset -> Unit
             // The width is only known while measuring, so lazy item 0 still holds the header alone
             // for this frame; an offset into the original comment would spill into reply #1.
-            !split && mapped.listIndex == 0 && mapped.listOffset > offset -> pendingRootOffset = mapped.listOffset
+            !split && index == 0 -> pendingRoot =
+                if (offset > 0) DesktopCommentDetailRootPoint.FromEnd(-offset) else pointAt(contextScroll.value)
+            mapped.listIndex == index && mapped.listOffset == offset -> Unit
             else -> listState.requestScrollToItem(mapped.listIndex, mapped.listOffset)
         }
     }
 
-    /** The original comment is back in lazy item 0: continue at the line read in the context pane. */
-    internal fun onRootPlacedInList(listState: LazyListState) {
-        val offset = pendingRootOffset ?: return
-        pendingRootOffset = null
-        if (listState.firstVisibleItemIndex == 0) listState.requestScrollToItem(0, offset)
+    /** The original comment is laid out at the new width: continue at the text being read. */
+    internal fun onRootPlaced(texts: DesktopCommentDetailRootTexts, listState: LazyListState?, height: Int) {
+        rootTexts = texts
+        rootHeight = height
+        val point = (if (listState == null) pendingContext else pendingRoot) ?: return
+        // Not every text is placed yet: the last one to be placed comes back here.
+        val laidOut = texts.texts() ?: return
+        if (listState == null) pendingContext = null else pendingRoot = null
+        // The text being read is gone (e.g. its renderer changed): keep the pixel mapping.
+        val offset = point.offsetIn(height, laidOut) ?: return
+        if (listState == null) contextScroll.dispatchRawDelta((offset - contextScroll.value).toFloat())
+        else if (listState.firstVisibleItemIndex == 0) listState.requestScrollToItem(0, offset.coerceAtLeast(0))
     }
+}
+
+/** The original comment's texts in one root slot, in composition order, as they are drawn. */
+internal class DesktopCommentDetailRootTexts(
+    private val state: DesktopCommentDetailSplitState,
+    private val listState: LazyListState?,
+) {
+    internal val hooks = mutableListOf<DesktopCommentDetailRootTextHook>()
+    private var coordinates: LayoutCoordinates? = null
+
+    fun onSlotPlaced(coordinates: LayoutCoordinates) {
+        this.coordinates = coordinates
+        state.onRootPlaced(this, listState, coordinates.size.height)
+    }
+
+    fun onTextPlaced() {
+        coordinates?.let { state.onRootPlaced(this, listState, it.size.height) }
+    }
+
+    /** Null until every text has a layout and a place at the current width. */
+    fun texts(): List<DesktopCommentDetailRootText>? {
+        val root = coordinates?.takeIf { it.isAttached } ?: return null
+        return hooks.map { hook ->
+            val layout = hook.layout
+            val placed = hook.coordinates?.takeIf { it.isAttached }
+            if (layout == null || placed == null) return null
+            DesktopCommentDetailRootText(hook.text, root.localPositionOf(placed, Offset.Zero).y, layout)
+        }
+    }
+}
+
+/** What the original comment's rich text passes to its own `AppText`. */
+internal class DesktopCommentDetailRootTextHook(val text: String, texts: DesktopCommentDetailRootTexts) {
+    internal var layout: TextLayoutResult? = null
+    internal var coordinates: LayoutCoordinates? = null
+    val onTextLayout: (TextLayoutResult) -> Unit = { layout = it }
+    val modifier: Modifier = Modifier.onPlaced {
+        coordinates = it
+        texts.onTextPlaced()
+    }
+}
+
+private val LocalDesktopCommentDetailRootTexts = staticCompositionLocalOf<DesktopCommentDetailRootTexts?> { null }
+
+/** Inside the split root slot the rich text reports its lines; everywhere else it is unchanged. */
+@Composable
+internal fun rememberDesktopCommentDetailRootText(text: String): DesktopCommentDetailRootTextHook? {
+    val texts = LocalDesktopCommentDetailRootTexts.current ?: return null
+    val hook = remember(texts, text) { DesktopCommentDetailRootTextHook(text, texts) }
+    DisposableEffect(hook) {
+        texts.hooks += hook
+        onDispose { texts.hooks -= hook }
+    }
+    return hook
 }
 
 /** The original comment's item states (expanded hated body, sheets, translation) by name. Lazy
@@ -132,10 +248,15 @@ internal fun DesktopCommentDetailRootSlot(
         Box { content() }
         return
     }
-    CompositionLocalProvider(LocalDesktopCommentDetailRootItemStates provides state.rootItem) {
-        Box(modifier = Modifier.onSizeChanged { state.rootHeight = it.height }.onPlaced {
-            if (listState != null) state.onRootPlacedInList(listState)
-        }) { content() }
+    val texts = remember(state, listState) { DesktopCommentDetailRootTexts(state, listState) }
+    DisposableEffect(texts) {
+        onDispose { if (state.rootTexts === texts) state.rootTexts = null }
+    }
+    CompositionLocalProvider(
+        LocalDesktopCommentDetailRootItemStates provides state.rootItem,
+        LocalDesktopCommentDetailRootTexts provides texts,
+    ) {
+        Box(modifier = Modifier.onPlaced(texts::onSlotPlaced)) { content() }
     }
 }
 

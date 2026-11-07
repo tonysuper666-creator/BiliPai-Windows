@@ -111,6 +111,38 @@ def advance_split_item_states(repo, before, output):
     return after
 
 
+
+# RichCommentText's own AppText: the original comment's lines reach the split owner, so a reading
+# point survives the reflow between pane widths. Outside the split root slot the hook is null.
+ROOT_TEXT_BEFORE = (
+    '        AppText(\n'
+    '            text = annotatedString,\n'
+    '            inlineContent = inlineContent,\n'
+    '            fontSize = fontSize,\n'
+    '            color = color,\n'
+    '            lineHeight = (fontSize.value * 1.5).sp,\n'
+    '            maxLines = maxLines,\n'
+    '            modifier = textModifier\n'
+    '        )\n')
+ROOT_TEXT_AFTER = (
+    '        val desktopRootText = com.bilipai.desktop.ui.rememberDesktopCommentDetailRootText(text)\n'
+    + ROOT_TEXT_BEFORE.replace('            modifier = textModifier\n',
+        '            onTextLayout = desktopRootText?.onTextLayout ?: {},\n'
+        '            modifier = desktopRootText?.let { textModifier.then(it.modifier) } ?: textModifier\n'))
+
+
+def desktop_root_text_layout(text):
+    return exact(text, ROOT_TEXT_BEFORE, ROOT_TEXT_AFTER)
+
+
+def advance_root_text_layout(repo, before, output):
+    """Last reply-components stage: the rich comment text reports its layout inside the split root slot."""
+    after = desktop_root_text_layout(before)
+    save(repo, output, 'v046-comment-detail-root-text-proof', dict(upstreamCommit=COMMIT,
+        sourceManifestSHA256=MANIFEST_SHA256, hookedFunction='RichCommentText',
+        retainedToCurrent=inverse_proof(before, after)))
+    return after
+
 def desktop_split_panes(body):
     """Standalone comment detail on a wide window: original comment | replies.
 

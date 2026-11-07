@@ -12,6 +12,7 @@ import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.input.pointer.*
 import androidx.compose.ui.platform.*
 import androidx.compose.ui.semantics.*
+import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.unit.*
 import com.android.purebilibili.data.model.CommentFraudStatus
 import com.android.purebilibili.data.model.response.*
@@ -67,9 +68,10 @@ internal abstract class DesktopCommentDetailSplitScenes {
     }
 
     private var rootLines = 30
+    private var rootSuffix = ""
     private val root get() = ReplyItem(rpid = ROOT, oid = OID, action = 2, rcount = 60,
         member = ReplyMember(mid = "7", uname = "楼主"),
-        content = ReplyContent(message = (0 until rootLines).joinToString("\n") { "Root line $it" }))
+        content = ReplyContent(message = (0 until rootLines).joinToString("\n") { "Root line $it$rootSuffix" }))
     protected val replies = (1..60).map { ReplyItem(rpid = ROOT + it, oid = OID, root = ROOT, action = if (it == 1) 2 else 0,
         member = ReplyMember(mid = "${10 + it}", uname = "用户$it"), content = ReplyContent(message = "Reply $it")) }
 
@@ -103,8 +105,13 @@ internal abstract class DesktopCommentDetailSplitScenes {
         override fun removeListener(listener: DesktopHomeWindowBackgroundPort.Listener) {}
     }, 0f, false)
 
-    protected inner class Scene(width: Int, private val targetId: Long = 0L, rootLines: Int = 30) : AutoCloseable {
-        init { this@DesktopCommentDetailSplitScenes.rootLines = rootLines }
+    /** [longLines] makes every root paragraph wrap, at a different count per pane width. */
+    protected inner class Scene(width: Int, private val targetId: Long = 0L, rootLines: Int = 30,
+        longLines: Boolean = false) : AutoCloseable {
+        init {
+            this@DesktopCommentDetailSplitScenes.rootLines = rootLines
+            rootSuffix = if (longLines) " " + "content ".repeat(14) else ""
+        }
         private var time = 0L
         private val scheduler = TestCoroutineScheduler()
         private val errors = mutableListOf<Throwable>()
@@ -175,6 +182,17 @@ internal abstract class DesktopCommentDetailSplitScenes {
             return replies.mapNotNull { reply -> all("$ACTION_PREFIX${reply.rpid}").singleOrNull()?.let { reply.rpid to it.positionInWindow.y - list.top } }
                 .filter { it.second >= 0f }.minBy { it.second }
         }
+        /** The characters of the original comment's line at the top of [viewportTag], read from the
+         * real text layout, so a reflowed line still names the text being read. */
+        fun lineAtTop(viewportTag: String): ReadingLine {
+            val node = texts("Root line 0").single { it.config.contains(SemanticsActions.GetTextLayoutResult) }
+            val layouts = mutableListOf<TextLayoutResult>()
+            assertTrue(assertNotNull(node.config[SemanticsActions.GetTextLayoutResult].action)(layouts))
+            val layout = layouts.single()
+            val line = layout.getLineForVerticalPosition((bounds(viewportTag).top - node.positionInWindow.y).coerceAtLeast(0f))
+            val start = layout.getLineStart(line)
+            return ReadingLine(start until layout.getLineEnd(line), layout.layoutInput.text.text.take(start).count { it == '\n' })
+        }
         override fun close() {
             scene.close()
             vmScope.cancel()
@@ -183,6 +201,9 @@ internal abstract class DesktopCommentDetailSplitScenes {
             transport.connectionPool.evictAll()
         }
     }
+
+    /** [paragraph] is the numbered "Root line" the [chars] belong to. */
+    protected data class ReadingLine(val chars: IntRange, val paragraph: Int)
 
     protected companion object {
         const val OID = 170001L
@@ -263,6 +284,30 @@ internal class DesktopCommentDetailSplitPanesTest : DesktopCommentDetailSplitSce
             assertEquals(narrowOffset, s.bounds(SUB_REPLY_DETAIL_LIST_TAG).top - s.top(SUB_REPLY_DETAIL_ROOT_TAG), 1f,
                 "Back to one column at the same line of the original comment")
             assertEquals(0, s.collapsedIn(rootArea()), "The original comment is still expanded after the round trip")
+        }
+    }
+
+    @Test fun wrappedOriginalCommentKeepsTheLineBeingReadAcrossTheBreakpoint() {
+        Scene(959, rootLines = 120, longLines = true).use { s ->
+            s.settle()
+            s.click(s.texts(HATED_PROMPT).single { s.bounds(SUB_REPLY_DETAIL_ROOT_TAG).contains(it.boundsInWindow.center) })
+            s.scroll(s.bounds(SUB_REPLY_DETAIL_LIST_TAG).center, delta = 20f)
+            val narrow = s.lineAtTop(SUB_REPLY_DETAIL_LIST_TAG)
+            assertTrue(narrow.paragraph > 0, "Reading below the first paragraph: $narrow")
+
+            // 760dp text reflows into a 479dp pane: the same characters, not the same pixels, stay on top.
+            s.resize(960)
+            val wide = s.lineAtTop(DESKTOP_COMMENT_DETAIL_CONTEXT_PANE_TAG)
+            assertTrue(narrow.chars.first in wide.chars, "Narrow line $narrow is the wide top line $wide")
+            assertEquals(narrow.paragraph, wide.paragraph)
+
+            s.scroll(s.bounds(DESKTOP_COMMENT_DETAIL_CONTEXT_PANE_TAG).center, delta = 5f)
+            val further = s.lineAtTop(DESKTOP_COMMENT_DETAIL_CONTEXT_PANE_TAG)
+            assertTrue(further.paragraph > wide.paragraph, "Read further in the context pane: $further")
+            s.resize(959)
+            val back = s.lineAtTop(SUB_REPLY_DETAIL_LIST_TAG)
+            assertTrue(further.chars.first in back.chars, "Wide line $further is the narrow top line $back")
+            assertEquals(further.paragraph, back.paragraph)
         }
     }
 

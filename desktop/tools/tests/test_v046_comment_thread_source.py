@@ -172,6 +172,22 @@ class OriginalNestedPageSources(unittest.TestCase):
                             input=stage, capture_output=True, text=True)
         self.assertEqual(0, ok.returncode, ok.stderr)
 
+    def test_root_text_hook_reaches_only_the_rich_comment_text_and_inverts(self):
+        receipt = json.loads((self.output/'actual/v046-comment-detail-root-text-proof.json').read_bytes())
+        final = unbind_refresh_lists(body(self.output/'actual'/comments.PACKAGE/'DesktopOriginalReplyComponents.kt'))
+        stage = restore(final, receipt['retainedToCurrent'])
+        self.assertEqual(final, thread.desktop_root_text_layout(stage))
+        hook = 'val desktopRootText = com.bilipai.desktop.ui.rememberDesktopCommentDetailRootText(text)\n'
+        self.assertEqual(0, stage.count(hook))
+        self.assertEqual(1, final.count(hook))
+        rich = final.index('fun RichCommentText(')
+        self.assertLess(rich, final.index(hook))
+        self.assertLess(final.index(hook), final.index('\n@Composable', rich))
+        for broken in (stage.replace(thread.ROOT_TEXT_BEFORE, '', 1),
+                       stage.replace(thread.ROOT_TEXT_BEFORE, thread.ROOT_TEXT_BEFORE*2, 1)):
+            with self.assertRaisesRegex(ValueError, 'Comment detail split anchor changed'):
+                thread.desktop_root_text_layout(broken)
+
     def test_all32_original_cases_use_the_actual_generated_production_source(self):
         original = thread.fixed_tests(REPO)
         actual = (self.output/'actual/test'/comments.PACKAGE/'V046SubReplyDetailPresentationOriginalTest.kt').read_text(encoding='utf8')

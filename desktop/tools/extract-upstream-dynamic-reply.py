@@ -180,6 +180,8 @@ def generate(repo, output):
         from v046_comment_list import advance_reply_components, advance_subreply_components, advance_dynamic_items, advance_settings, emit_shared
         if filename == 'DesktopOriginalReplyComponents.kt':
             body = advance_reply_components(repo, body, output)
+            from v046_comment_thread import advance_root_text_layout
+            body = advance_root_text_layout(repo, body, output)
             emit_shared(repo, output)
         elif filename == 'DesktopOriginalSubReplyDetailComponents.kt':
             body = advance_subreply_components(repo, body, output)

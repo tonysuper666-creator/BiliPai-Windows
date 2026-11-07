@@ -48,7 +48,8 @@ class OriginalCommentListSources(unittest.TestCase):
              patch.object(comments, 'emit_shared', return_value={}), \
              patch('v046_comment_thread.advance', side_effect=lambda repo, before, output: before), \
              patch('v046_comment_polish.advance_inline_entrance', side_effect=lambda repo, before, output: before), \
-             patch('v046_comment_thread.advance_split_item_states', side_effect=lambda repo, before, output: before):
+             patch('v046_comment_thread.advance_split_item_states', side_effect=lambda repo, before, output: before), \
+             patch('v046_comment_thread.advance_root_text_layout', side_effect=lambda repo, before, output: before):
             cls.owner.generate(REPO, cls.output/'before')
 
     @classmethod
@@ -60,7 +61,8 @@ class OriginalCommentListSources(unittest.TestCase):
 
     def test_actual_whole_renderer_inverse_preserves_every_other_current_declaration(self):
         path = comments.PACKAGE+'DesktopOriginalReplyComponents.kt'
-        current = body(self.output/'actual'/path)
+        # The comment-detail root text hook follows the list renderer; peel it first.
+        current = restore(body(self.output/'actual'/path), self.proof('v046-comment-detail-root-text-proof')['retainedToCurrent'])
         previous = body(self.output/'before'/path)
         proof = self.proof('v046-reply-list-renderer-proof')
         self.assertEqual(previous, restore(current, proof['retainedToCurrent']))
