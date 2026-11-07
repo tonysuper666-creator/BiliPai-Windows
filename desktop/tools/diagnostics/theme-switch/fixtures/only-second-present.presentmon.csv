@@ -1,0 +1,2 @@
+Application,ProcessID,SwapChainAddress,PresentRuntime,SyncInterval,PresentFlags,AllowsTearing,PresentMode,CPUStartQPC,MsBetweenPresents,MsInPresentAPI,MsUntilDisplayed,MsCPUBusy,MsCPUWait
+BiliPai.exe,4242,0x0,Other,1,0,0,Composed: Copy with GPU GDI,57502990,17.8,0.8,17.5,11.2,0.8
