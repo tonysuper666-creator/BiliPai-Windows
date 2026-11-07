@@ -48,8 +48,12 @@ class PictureInPictureController(
     private val onSeekTo: ((Double) -> Unit)? = null,
     /** Direct Swing hosts remove their slot here; Compose hosts observe active. */
     private val onDetachSurface: (() -> Unit)? = null,
+    /** Runs when an open request is accepted, before the asynchronous handoff starts. */
+    private val onOpenAccepted: (() -> Unit)? = null,
     /** Runs on a user close/return while a floating session exists, before the surface goes back. */
     private val onUserReturn: (() -> Unit)? = null,
+    /** Runs once the floating session is gone: returned, cancelled before mounting, or disposed. */
+    private val onSessionEnded: (() -> Unit)? = null,
 ) : AutoCloseable {
     private val mutableActive = MutableStateFlow(false)
     val active: StateFlow<Boolean> = mutableActive.asStateFlow()
@@ -76,6 +80,8 @@ class PictureInPictureController(
     private var nextEnabled = false
     private var previousButton: JButton? = null
     private var nextButton: JButton? = null
+    internal var openTransfer: () -> DesktopNativePresentationTransfer? =
+        { player.currentSourceSnapshot()?.let(player::beginPresentationTransfer) }
 
     fun open(owner: Window, title: String = "BiliPai") = onUi {
         this.owner = owner
@@ -83,12 +89,12 @@ class PictureInPictureController(
         mutableError.value = null
         frame?.let { it.title = title; it.toFront(); return@onUi }
         if (handoffTimer != null) return@onUi
-        val source = player.currentSourceSnapshot()
-        val transfer = source?.let(player::beginPresentationTransfer)
+        val transfer = openTransfer()
         if (transfer == null) {
             mutableError.value = "视频尚未就绪，暂时不能打开浮窗"
             return@onUi
         }
+        onOpenAccepted?.invoke()
         beginHandoff(transfer, toMain = false, notify = true)
     }
 
@@ -237,6 +243,7 @@ class PictureInPictureController(
     private fun finishHandoff(restored: Boolean) {
         handoffTimer?.stop(); handoffTimer = null
         handoff = null; nativeRelease = null
+        if (frame == null) onSessionEnded?.invoke()
         if (restored) {
             onRestore()
             owner?.let { it.toFront(); it.requestFocus() }
