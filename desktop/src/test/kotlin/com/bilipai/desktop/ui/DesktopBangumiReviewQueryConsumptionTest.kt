@@ -27,7 +27,7 @@ import kotlin.test.*
  * uncancellable API transport so obsolete replies can deliberately arrive late.
  * ImageComposeScene renders offscreen; no Window, network or user profile is used.
  */
-@OptIn(ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalComposeUiApi::class, ExperimentalCoroutinesApi::class)
 class DesktopBangumiReviewQueryConsumptionTest {
     private class Call(val name: String, val args: List<Any?>, val epoch: Int, val continuation: Continuation<Any?>) {
         @Volatile var taken = false
@@ -44,7 +44,14 @@ class DesktopBangumiReviewQueryConsumptionTest {
         )
     }
 
-    private class Fixture {
+    private class Fixture(sceneContext: CoroutineContext) {
+        private val sceneOwner = Thread.currentThread()
+        private var sceneEffects: Job? = null
+        private var sceneMounted = false
+        private var sceneDisposed = false
+        private fun checkSceneOwner() {
+            check(Thread.currentThread() === sceneOwner) { "Compose scene accessed outside its owner thread" }
+        }
         val failures = Collections.synchronizedList(mutableListOf<Throwable>())
         val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default + CoroutineExceptionHandler { _, e -> failures += e })
         val calls = Collections.synchronizedList(mutableListOf<Call>())
@@ -90,7 +97,23 @@ class DesktopBangumiReviewQueryConsumptionTest {
         val platform = DesktopHomePlatform(false, true, false, false, false, false, background, 0f, false)
         val tabs = DesktopLiquidTabSettings(context.store)
         var now = 0L
-        val scene = ImageComposeScene(1000, 1200, Density(1f)) {
+        val scene = ImageComposeScene(1000, 1200, Density(1f), coroutineContext = sceneContext) {
+            val compositionScope = rememberCoroutineScope()
+            SideEffect {
+                checkSceneOwner()
+                // The scene creates its own job; track its effect parent, not the caller's job.
+                val effects = checkNotNull(compositionScope.coroutineContext[Job]?.parent)
+                check(sceneEffects == null || sceneEffects === effects)
+                sceneEffects = effects
+            }
+            DisposableEffect(Unit) {
+                checkSceneOwner()
+                sceneMounted = true
+                onDispose {
+                    checkSceneOwner()
+                    sceneDisposed = true
+                }
+            }
             MaterialTheme {
                 CompositionLocalProvider(LocalDesktopOriginalBangumiPagesEnvironment provides owner,
                     LocalDesktopUpstreamAndroidContext provides context.asAndroidContext(),
@@ -102,9 +125,15 @@ class DesktopBangumiReviewQueryConsumptionTest {
                 }
             }
         }
-        fun frames() { repeat(8) { Snapshot.sendApplyNotifications(); now += 20_000_000; scene.render(now).close() } }
+        fun frames() {
+            checkSceneOwner()
+            repeat(8) { Snapshot.sendApplyNotifications(); now += 20_000_000; scene.render(now).close() }
+        }
         fun tree(node: SemanticsNode): List<SemanticsNode> = listOf(node) + node.children.flatMap(::tree)
-        fun nodes() = scene.semanticsOwners.flatMap { tree(it.unmergedRootSemanticsNode) }
+        fun nodes(): List<SemanticsNode> {
+            checkSceneOwner()
+            return scene.semanticsOwners.flatMap { tree(it.unmergedRootSemanticsNode) }
+        }
         fun labeled(label: String) = nodes().filter { node ->
             node.config.getOrNull(SemanticsProperties.Text)?.any { it.text == label } == true ||
                 node.config.getOrNull(SemanticsProperties.ContentDescription)?.contains(label) == true
@@ -147,10 +176,14 @@ class DesktopBangumiReviewQueryConsumptionTest {
             frames()
         }
         suspend fun close() {
+            checkSceneOwner()
             scene.close()
+            // Release the deliberately uncancellable transport before joining scene effects.
             snapshot().forEach { it.cancel() }
-            scope.cancel(); scope.coroutineContext[Job]!!.join()
+            scope.cancel()
+            sceneEffects?.join(); scope.coroutineContext[Job]!!.join()
             snapshot().forEach { it.continuation.context[Job]?.join() }
+            assertTrue(!sceneMounted || sceneDisposed, "mounted Compose scene was not disposed")
             assertTrue(listeners.isEmpty())
             assertTrue(failures.isEmpty(), failures.toString())
             dir.toFile().deleteRecursively()
@@ -158,7 +191,7 @@ class DesktopBangumiReviewQueryConsumptionTest {
     }
 
     @Test fun defaultsToLongAndKeepsTheShortComposerAndExistingLongWebRoute() = runBlocking {
-        val f = Fixture()
+        val f = Fixture(coroutineContext)
         try {
             f.until { f.snapshot().isNotEmpty() }
             assertEquals("getBangumiLongReviews", f.snapshot().first().name)
@@ -182,7 +215,7 @@ class DesktopBangumiReviewQueryConsumptionTest {
     }
 
     @Test fun eachTypeRemembersItsSortAndCompletedQueriesAreServedFromCache() = runBlocking {
-        val f = Fixture()
+        val f = Fixture(coroutineContext)
         try {
             f.loaded()
             f.click("短评"); f.text("short default")
@@ -197,7 +230,7 @@ class DesktopBangumiReviewQueryConsumptionTest {
     }
 
     @Test fun rapidTypeAndSortChangesRejectLateInitialAndPrefetchReplies() = runBlocking {
-        val f = Fixture()
+        val f = Fixture(coroutineContext)
         try {
             val oldLong = f.firstLong()
             f.click("短评"); val oldShort = f.request("short")
@@ -217,7 +250,7 @@ class DesktopBangumiReviewQueryConsumptionTest {
     }
 
     @Test fun latePaginationCannotAppendToAnotherSortAndCachedCursorResumesItsOwnQuery() = runBlocking {
-        val f = Fixture()
+        val f = Fixture(coroutineContext)
         try {
             f.firstLong().page("first page", next = "opaque-next", id = 61)
             f.text("first page")
@@ -239,7 +272,7 @@ class DesktopBangumiReviewQueryConsumptionTest {
     }
 
     @Test fun switchingAwayAndBackBeforeRecompositionStillStartsANewQueryGeneration() = runBlocking {
-        val f = Fixture()
+        val f = Fixture(coroutineContext)
         try {
             val obsolete = f.firstLong()
             f.click("短评", render = false)
@@ -255,10 +288,14 @@ class DesktopBangumiReviewQueryConsumptionTest {
     }
 
     @Test fun failedQueriesRetryButSuccessfulEmptyPagesRemainCached() = runBlocking {
-        val f = Fixture()
+        val f = Fixture(coroutineContext)
         try {
             f.firstLong().page(code = -1); f.text("controlled failure")
-            f.request("short").page()
+            val shortPrefetch = f.request("short")
+            shortPrefetch.page()
+            // Retry changes the effect key; first let the successful prefetch commit its empty page.
+            f.until { shortPrefetch.continuation.context[Job]?.isCompleted == true }
+            assertFalse(assertNotNull(shortPrefetch.continuation.context[Job]).isCancelled)
             f.click("重试"); f.request("long").page(code = -1); f.text("controlled failure")
             f.click("短评"); f.text("还没有点评")
             f.click("长评"); f.request("long").page(); f.text("还没有点评")
@@ -270,7 +307,7 @@ class DesktopBangumiReviewQueryConsumptionTest {
     }
 
     @Test fun changingMediaOrAccountOwnerRetiresRequestsAndDropsAllCachedQueries() = runBlocking {
-        val f = Fixture()
+        val f = Fixture(coroutineContext)
         try {
             val oldMedia = f.firstLong()
             f.media = 20; f.frames()
@@ -292,7 +329,7 @@ class DesktopBangumiReviewQueryConsumptionTest {
     }
 
     @Test fun pendingLikeCannotRestoreAnOldCacheAndUnmountCancelsThePageAction() = runBlocking {
-        val f = Fixture()
+        val f = Fixture(coroutineContext)
         try {
             f.loaded()
             f.click("点赞"); val like = f.request("likeBangumiReview")
