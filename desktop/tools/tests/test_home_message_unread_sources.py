@@ -11,6 +11,7 @@ import json
 from pathlib import Path
 import sys
 import tempfile
+import unittest
 
 TOOLS = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(TOOLS))
@@ -61,6 +62,16 @@ def verify(repo):
     return dict(receipt, inverseOriginalSha256LF=producer.sha(recovered), inverseOperations=len(inverse),
                 inverseExact=True, gradleOutputMatchesCli=True,
                 consumedTarget="build/transition-patched/" + adaptations["target"])
+
+
+class HomeMessageUnreadSourcesTest(unittest.TestCase):
+    def test_producer_matches_gradle_and_adaptations_invert_exactly(self):
+        # The generated gate runs in its legacy read point with the live build
+        # linked in; direct discovery uses Gradle's materialized legacy tree.
+        repo = TOOLS.parents[1]
+        if repo.name != ".legacy-root":
+            repo = repo / ".legacy-root"
+        verify(repo)
 
 
 if __name__ == "__main__":
