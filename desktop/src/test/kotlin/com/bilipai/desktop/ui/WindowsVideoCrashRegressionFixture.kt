@@ -221,11 +221,36 @@ object WindowsVideoCrashRegressionFixture {
                             }
                             edt { check(routes.push(detail)) }
                             await("comment detail") { latest.get()?.key == detail }
-                            await("loaded public comment detail") {
+                            try { await("loaded public comment detail") {
                                 refs.find<CommentDetailViewModel>()?.subReplyState?.value?.let {
                                     !it.isLoading && it.error == null && it.rootReply?.rpid == detail.rootId &&
                                         it.rootReply?.content?.message?.isNotBlank() == true
                                 } == true
+                            } } finally {
+                                val diagnostics = edt { buildJsonObject {
+                                    put("routeCurrent", latest.get()?.key == detail)
+                                    put("routeRetained", routes.containsEntry(detail))
+                                    put("rootOwned", routes.root.entry.gate.owns())
+                                    val owners = refs.values().filterIsInstance<DesktopOriginalCommentRootOwner>()
+                                    put("commentOwners", JsonArray(owners.map { JsonPrimitive(it.isOwned()) }))
+                                    put("detailStates", JsonArray(refs.values().filterIsInstance<CommentDetailViewModel>()
+                                        .distinct().map { vm -> buildJsonObject {
+                                            val state = vm.subReplyState.value
+                                            put("loading", state.isLoading)
+                                            put("hasError", state.error != null)
+                                            put("rootMatches", state.rootReply?.rpid == detail.rootId)
+                                            put("rootHasText", state.rootReply?.content?.message?.isNotBlank() == true)
+                                            put("replyCount", state.items.size)
+                                            val fields = vm.javaClass.declaredFields.onEach { it.isAccessible = true }
+                                            val vmScope = fields.firstOrNull { it.name == "scope" }?.get(vm) as? CoroutineScope
+                                            val requests = fields.firstOrNull { it.name == "requests" }?.get(vm) as?
+                                                com.android.purebilibili.feature.video.viewmodel.DesktopVideoCommentRequests
+                                            put("scopeActive", vmScope?.isActive == true)
+                                            put("requestsOwned", requests?.isOwned() == true)
+                                        } }))
+                                } }
+                                Files.writeString(report.resolve("comment-detail-state.json"), diagnostics.toString())
+                                shot(report, "comment-detail-state")
                             }
                             Thread.sleep(2000); shot(report, "comment-detail")
                         }
