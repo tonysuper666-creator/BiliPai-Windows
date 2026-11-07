@@ -219,4 +219,168 @@ class DesktopLiveRoomLayoutUiTest {
         }
         override fun close() { if (!closed) { closed = true; scene.close() } }
     }
+
+    @Test fun actualBrowserRespectsDockBoundaryAndKeepsPlayerAcrossResizes(): Unit = runBlocking {
+        BrowserScene(coroutineContext, 1440).use { s ->
+            s.await { s.tagged(DESKTOP_LIVE_CHAT_TAG) != null }
+            for (window in listOf(800, 810, 820, 831, 832, 851, 852, 853, 871, 872, 1440)) {
+                s.width = window; s.settle()
+                val stage = s.bounds(DESKTOP_LIVE_STAGE_TAG)
+                val chat = s.bounds(DESKTOP_LIVE_CHAT_TAG)
+                if (window < 852) {
+                    assertTrue(chat.top > stage.bottom, "window=$window must stack after page padding")
+                    assertEquals(window - 40f, stage.width)
+                } else {
+                    assertEquals(stage.top, chat.top, "window=$window docks")
+                    assertTrue(stage.width >= 480f, "window=$window stage=${stage.width}")
+                    assertTrue(chat.width in 320f..480f, "window=$window chat=${chat.width}")
+                    assertEquals(12f, chat.left - stage.right)
+                }
+                assertEquals(1, s.mounts); assertEquals(0, s.disposals)
+            }
+            s.click(assertNotNull(s.button(DESKTOP_LIVE_CHAT_HIDE)).boundsInRoot.center); s.settle()
+            assertNull(s.tagged(DESKTOP_LIVE_CHAT_TAG))
+            s.width = 800; s.settle()
+            s.click(assertNotNull(s.button(DESKTOP_LIVE_CHAT_SHOW)).boundsInRoot.center); s.settle()
+            assertTrue(s.bounds(DESKTOP_LIVE_CHAT_TAG).top > s.bounds(DESKTOP_LIVE_STAGE_TAG).bottom)
+            assertEquals(1, s.mounts); assertEquals(0, s.disposals)
+        }
+    }
+
+    @Test fun actualBrowserNarrowEntryChatTypingAndScrollingRemainIndependent(): Unit = runBlocking {
+        BrowserScene(coroutineContext, 800).use { s ->
+            s.settle(); assertNull(s.tagged(DESKTOP_LIVE_CHAT_TAG))
+            s.width = 1440; s.settle(); assertNull(s.tagged(DESKTOP_LIVE_CHAT_TAG))
+            s.click(assertNotNull(s.button(DESKTOP_LIVE_CHAT_SHOW)).boundsInRoot.center)
+            s.await { s.tagged(DESKTOP_LIVE_CHAT_TAG) != null }
+            s.settle()
+            val stage = s.bounds(DESKTOP_LIVE_STAGE_TAG)
+            val before = s.visibleMessages()
+            val messagePoint = assertNotNull(s.text("message 2")).boundsInRoot.center
+            repeat(6) { s.wheel(messagePoint, 12f) }
+            s.settle()
+            assertNotEquals(before, s.visibleMessages(), "wheel must move real chat messages")
+            assertEquals(stage, s.bounds(DESKTOP_LIVE_STAGE_TAG))
+            val player = s.owner.player
+            s.click(s.editor().boundsInRoot.center); s.settle()
+            val serial = player.capturePlaybackIntentSerials().first
+            repeat(3) { s.space(typed = true) }; s.settle()
+            assertEquals("   ", s.editor().config.getOrNull(SemanticsProperties.EditableText)?.text)
+            assertEquals(serial, player.capturePlaybackIntentSerials().first)
+            s.click(stage.center); s.settle(); s.space()
+            assertEquals(serial + 1, player.capturePlaybackIntentSerials().first)
+            assertEquals(1, s.mounts); assertEquals(0, s.disposals)
+        }
+    }
+
+    private class BrowserOwner {
+        private val parent=CoroutineScope(SupervisorJob()+Dispatchers.Unconfined)
+        val player=com.bilipai.desktop.player.MpvPlayer()
+        private val sessions=com.bilipai.desktop.data.DesktopSessionStore.temporary().apply {
+            saveAccount(mapOf("SESSDATA" to "synthetic-qa", "bili_jct" to "synthetic-qa-csrf"),
+                com.bilipai.desktop.data.AccountSummary(42,"Synthetic QA",""))
+        }
+        val repository=com.bilipai.desktop.data.DesktopRepository(sessions)
+        val retained=DesktopRetainedMedia(parent,player,{})
+        private val chat=com.bilipai.desktop.data.DesktopLiveSession(repository,
+            com.bilipai.desktop.data.DesktopMediaRepository(repository),123)
+        init {
+            val closed=repository.httpClient.newBuilder().addInterceptor { error("QA fixture forbids HTTP") }.build()
+            repository.javaClass.getDeclaredField("client").apply { isAccessible=true }.set(repository,closed)
+            val room=com.bilipai.desktop.data.LiveRoomDetails(123,"QA room","","QA","",1,"生活",1)
+            val response=kotlinx.serialization.json.Json { ignoreUnknownKeys=true }.decodeFromString<com.android.purebilibili.data.model.response.LivePlayUrlResponse>(
+                """{"code":0,"data":{"playurl_info":{"playurl":{"g_qn_desc":[{"qn":10000,"desc":"原画"}],"stream":[{"protocol_name":"http_hls","format":[{"format_name":"fmp4","codec":[{"codec_name":"avc","current_qn":10000,"accept_qn":[10000],"base_url":"/live.m3u8","url_info":[{"host":"https://fixture.invalid","extra":"?qa"}]}]}]}]}}}}""")
+            val info=requireNotNull(com.bilipai.desktop.data.DesktopMediaRepository.selectLive(requireNotNull(response.data),room,10000))
+            val ports=desktopLiveRecoveryPorts(repository,com.bilipai.desktop.data.DesktopMediaRepository(repository),repository.sessionEpoch,{false},
+                {_,_->error("No mini window in QA CPU fixture")})
+            check(ports.admit {
+                retained.live.room=room
+                player.loadVersioned(retained.live.nativePlaybackSource(info,room.roomId,ports))
+                retained.live.installLivePlayback(info,checkNotNull(player.currentSourceSnapshot()),ports)
+                retained.live.loaded=true
+            })
+            // Feed synthetic permission/messages to the real session, without starting its socket.
+            @Suppress("UNCHECKED_CAST")
+            val chatState=chat.javaClass.getDeclaredField("mutableState").apply { isAccessible=true }.get(chat)
+                as kotlinx.coroutines.flow.MutableStateFlow<com.bilipai.desktop.data.LiveChatState>
+            chatState.value=com.bilipai.desktop.data.LiveChatState(permission=com.android.purebilibili.data.repository.LiveDanmakuPermission(),
+                messages=(1..80).map { LiveDanmakuItem("message $it", uid=it.toLong(), uname="Fixture", idStr="id-$it") })
+            retained.live.chat=chat
+        }
+        fun close() {
+            chat.close(); retained.close(); player.close(); parent.cancel()
+            repository.httpClient.dispatcher.executorService.shutdownNow(); repository.httpClient.connectionPool.evictAll()
+        }
+    }
+
+
+    private class BrowserScene(sceneContext: CoroutineContext, width: Int) : AutoCloseable {
+        var width by mutableIntStateOf(width)
+        val clipboard = Clipboard()
+        var mounts=0; var disposals=0
+        val owner=BrowserOwner()
+        private var nanos = 0L
+        private var eventMillis = 0L
+        private var closed = false
+        private val scene: ImageComposeScene
+        init {
+            check(GraphicsEnvironment.isHeadless())
+            scene = ImageComposeScene(2600, 860, Density(1f), coroutineContext = sceneContext) {
+                val actualWindow = LocalWindowInfo.current
+                val focused = remember(actualWindow) { object : WindowInfo by actualWindow {
+                    override val isWindowFocused = true
+                } }
+                CompositionLocalProvider(LocalWindowInfo provides focused, LocalClipboardManager provides clipboard,
+                    LocalAppThemeConfig provides AppThemeConfig(nativeMiuixPopupsEnabled = false)) {
+                    MaterialTheme {
+                        Box(Modifier.size(this@BrowserScene.width.dp, 820.dp)) {
+                            LiveBrowserScreen(owner.repository, owner.player, null, {},
+                                playerContent = { p ->
+                                    DisposableEffect(Unit) { mounts++; onDispose { disposals++ } }
+                                    PlayerPanel(p, com.bilipai.desktop.player.PlayerPreferences(), {}, {}, renderSurface=false)
+                                }, retained=owner.retained, isMiniLiveMode={false}, dismissMiniLive={_,_->}, onUserClick={})
+                        }
+                    }
+                }
+            }
+        }
+        private fun nodes(node: SemanticsNode): List<SemanticsNode> = listOf(node) + node.children.flatMap(::nodes)
+        private fun all() = scene.semanticsOwners.flatMap { nodes(it.unmergedRootSemanticsNode) }
+        fun tagged(tag: String) = all().firstOrNull { it.config.getOrNull(SemanticsProperties.TestTag) == tag }
+        fun bounds(tag: String): Rect = assertNotNull(tagged(tag), "missing $tag").boundsInRoot
+        fun text(label: String) = all().firstOrNull { node ->
+            node.config.getOrNull(SemanticsProperties.Text)?.any { it.text == label } == true
+        }
+        fun visibleMessages() = (1..80).filter { text("message $it") != null }.toSet()
+        fun editor() = all().first { it.config.contains(SemanticsActions.SetText) }
+        fun button(label: String) = all().filter { node ->
+            node.config.getOrNull(SemanticsActions.OnClick) != null && nodes(node).any {
+                it.config.getOrNull(SemanticsProperties.Text)?.any { value -> value.text == label } == true
+            }
+        }.minByOrNull { it.boundsInRoot.width * it.boundsInRoot.height }
+        private fun render() { nanos = maxOf(System.nanoTime(), nanos + 1); scene.render(nanos).close() }
+        suspend fun settle() { repeat(8) { render(); delay(12) } }
+        suspend fun await(condition: () -> Boolean) {
+            withTimeout(5_000) { do { render(); if (condition()) return@withTimeout; delay(12) } while (true) }
+        }
+        private fun time() = maxOf(System.nanoTime() / 1_000_000, eventMillis + 1).also { eventMillis = it }
+        fun click(point: Offset) {
+            scene.sendPointerEvent(PointerEventType.Press, point, timeMillis = time(), buttons = PointerButtons(isPrimaryPressed = true))
+            scene.sendPointerEvent(PointerEventType.Release, point, timeMillis = time(), buttons = PointerButtons())
+        }
+        fun wheel(point: Offset, delta: Float) {
+            scene.sendPointerEvent(PointerEventType.Move, point, timeMillis = time())
+            scene.sendPointerEvent(PointerEventType.Scroll, point, timeMillis = time(), scrollDelta = Offset(0f, delta))
+        }
+        /** KeyDown (+ the typed character an editor takes) + KeyUp; returns whether KeyDown was consumed. */
+        fun space(ctrl: Boolean = false, typed: Boolean = false): Boolean {
+            val down = scene.sendKeyEvent(KeyEvent(Key.Spacebar, KeyEventType.KeyDown, isCtrlPressed = ctrl))
+            if (typed) scene.sendKeyEvent(KeyEvent(Key.Spacebar, KeyEventType.Unknown, ' '.code,
+                nativeEvent = AwtKeyEvent(Canvas(), AwtKeyEvent.KEY_TYPED, 0, 0, AwtKeyEvent.VK_UNDEFINED, ' ')))
+            scene.sendKeyEvent(KeyEvent(Key.Spacebar, KeyEventType.KeyUp, isCtrlPressed = ctrl))
+            return down
+        }
+        override fun close() { if (!closed) { closed = true; scene.close(); owner.close() } }
+    }
+
 }

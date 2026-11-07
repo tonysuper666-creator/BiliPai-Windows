@@ -27,6 +27,7 @@ internal const val DESKTOP_LIVE_STAGE_TAG = "desktop-live-stage"
 internal const val DESKTOP_LIVE_CHAT_TAG = "desktop-live-chat"
 internal const val DESKTOP_LIVE_CHAT_SHOW = "展开聊天"
 internal const val DESKTOP_LIVE_CHAT_HIDE = "收起聊天"
+private const val DESKTOP_LIVE_CHAT_GAP_DP = 12
 
 /** Whether the room's own chat editor holds focus. A Compose editor takes the typed
  * character, not KeyDown, so the room shortcut must ask the editor before acting. */
@@ -44,7 +45,7 @@ internal fun ClipboardManager.copyDesktopLiveDanmaku(item: LiveDanmakuItem) =
 /** Panel width of the live chat: spec 6 keeps it 340..480 (22% of the window), then the player
  * policy fits it beside a stage of at least 480 or reports that it cannot dock. */
 internal fun desktopLiveChatLayout(widthDp: Int, heightDp: Int, panelDefaultOpen: Boolean, panel: DesktopWindowsUxDetailsPanel) =
-    resolveDesktopPlayerLayout(widthDp, heightDp, panelDefaultOpen, panel = panel,
+    resolveDesktopPlayerLayout((widthDp - DESKTOP_LIVE_CHAT_GAP_DP).coerceAtLeast(0), heightDp, panelDefaultOpen, panel = panel,
         userPanelWidthDp = (widthDp.toLong() * DESKTOP_PLAYER_PANEL_DEFAULT_PERCENT / 100).toInt()
             .coerceIn(DESKTOP_PLAYER_PANEL_DEFAULT_LOW_DP, DESKTOP_PLAYER_PANEL_DEFAULT_HIGH_DP))
 
@@ -97,15 +98,19 @@ internal fun DesktopLiveRoomStage(
             }, modifier = Modifier.fillMaxWidth().weight(1f)) { measurables, constraints ->
                 val w = constraints.maxWidth
                 val h = constraints.maxHeight
-                val gap = 12.dp.roundToPx()
+                val gap = DESKTOP_LIVE_CHAT_GAP_DP.dp.roundToPx()
                 val chatMeasurable = measurables.getOrNull(1)
+                // Round the actual pixel budget as well: separate dp-to-px rounding must not
+                // steal pixels from either minimum at fractional display densities.
+                val chatWidth = minOf(chatLayout.panelWidthDp.dp.roundToPx(),
+                    w - gap - DESKTOP_PLAYER_MIN_STAGE_DP.dp.roundToPx())
+                val canDock = chatLayout.docked && chatWidth >= DESKTOP_PLAYER_PANEL_MIN_DP.dp.roundToPx()
                 when {
                     chatMeasurable == null -> {
                         val stagePlaceable = measurables[0].measure(Constraints.fixed(w, h))
                         layout(w, h) { stagePlaceable.place(0, 0) }
                     }
-                    chatLayout.docked -> {
-                        val chatWidth = chatLayout.panelWidthDp.dp.roundToPx().coerceAtMost(w)
+                    canDock -> {
                         val stageWidth = (w - chatWidth - gap).coerceAtLeast(0)
                         val stagePlaceable = measurables[0].measure(Constraints.fixed(stageWidth, h))
                         val chatPlaceable = chatMeasurable.measure(Constraints.fixed(chatWidth, h))
