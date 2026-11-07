@@ -193,7 +193,7 @@ internal class DesktopOriginalBangumiPlayerRootOwner(
             val caller = checkNotNull(context[Job])
             val launchCaller = native.captureInitialDetailLaunchCaller()
             if (!isLoadCurrent(launchCaller)) throw CancellationException("PGC readonly load superseded")
-            require(detail.episodes?.getOrNull(episodeIndex) === episode) { "PGC readonly episode must be the original resolved DTO" }
+            require(desktopBangumiPlaybackEpisodes(detail, episode.id).getOrNull(episodeIndex) === episode) { "PGC readonly episode must be the original resolved DTO" }
             val source = synchronized(initialDetailSources) { initialDetailSources[launchCaller] }
             val witness = if (!postBegin) source?.takeIf { it.caller === caller && it.launchCaller === launchCaller }
                 else source?.takeIf { it.launchCaller === launchCaller }

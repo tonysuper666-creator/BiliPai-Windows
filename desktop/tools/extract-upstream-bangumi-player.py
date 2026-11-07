@@ -327,6 +327,68 @@ def bangumi_playback_speed_source_continuity_delta(path,body):
  assert body.count(imported)==1 and body.count('shouldRefreshPremiumAudioForPlaybackSpeedChange')==1,'speed refresh policy has no other bangumi caller'
  return body.replace(imported,'')
 
+
+# TON-1343: original DTO selection groups shared by resume, initial, switch and next.
+# Existing recipes and upstream source pins remain unchanged.
+BANGUMI_PLAYBACK_SELECTION_EDITS = json.loads(r'''{
+  "com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiPlayerViewModel.kt": [
+    {
+      "before": "        val episodes = currentState.seasonDetail.episodes ?: return\n        val currentIndex = currentState.currentEpisodeIndex",
+      "after": "        val episodes = com.bilipai.desktop.ui.desktopBangumiPlaybackEpisodes(currentState.seasonDetail, currentState.currentEpisode.id)\n        val currentIndex = episodes.indexOfFirst { it === currentState.currentEpisode }\n        if (currentIndex < 0) return",
+      "count": 1
+    },
+    {
+      "before": "                val episode = detail.episodes?.find { it.id == targetEpId }\n                    ?: detail.episodes?.firstOrNull()",
+      "after": "                val allEpisodes = com.bilipai.desktop.ui.desktopBangumiAllEpisodes(detail)\n                val episode = allEpisodes.find { it.id == targetEpId }\n                    ?: allEpisodes.firstOrNull()",
+      "count": 1
+    },
+    {
+      "before": "                val episodeIndex = detail.episodes?.indexOfFirst { it.id == episode.id } ?: 0",
+      "after": "                val episodeIndex = com.bilipai.desktop.ui.desktopBangumiPlaybackEpisodes(detail, episode.id).indexOfFirst { it === episode }",
+      "count": 1
+    },
+    {
+      "before": "    fun switchEpisode(episode: BangumiEpisode) {\n        val session = ensureFollowCacheSession()\n        desktopPlaybackIntentRevision++\n        val desktopEpisodeIntent = desktopPlaybackIntentRevision\n        val currentState = _uiState.value as? BangumiPlayerState.Success ?: return\n        \n        if (episode.id == currentState.currentEpisode.id && currentState.playUrl != null) return\n        \n        flushBangumiPlaybackHeartbeat()\n        followVerificationJob?.cancel()\n        playbackLoadJob?.cancel()\n        currentEpId = episode.id\n        val newIndex = currentState.seasonDetail.episodes?.indexOfFirst { it.id == episode.id } ?: 0\n",
+      "after": "    fun switchEpisode(episode: BangumiEpisode) {\n        val currentState = _uiState.value as? BangumiPlayerState.Success ?: return\n        val episodes = com.bilipai.desktop.ui.desktopBangumiPlaybackEpisodes(currentState.seasonDetail, episode.id)\n        val newIndex = episodes.indexOfFirst { it === episode }\n        if (newIndex < 0) return\n        if (episode.id == currentState.currentEpisode.id && currentState.playUrl != null) return\n        val session = ensureFollowCacheSession()\n        desktopPlaybackIntentRevision++\n        val desktopEpisodeIntent = desktopPlaybackIntentRevision\n        flushBangumiPlaybackHeartbeat()\n        followVerificationJob?.cancel()\n        playbackLoadJob?.cancel()\n        currentEpId = episode.id",
+      "count": 1
+    },
+    {
+      "before": "    val episodes = detail.episodes.orEmpty().filter { it.id > 0L }",
+      "after": "    val episodes = com.bilipai.desktop.ui.desktopBangumiPlaybackEpisodes(detail, currentEpisodeId)",
+      "count": 1
+    }
+  ],
+  "com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiResumePolicy.kt": [
+    {
+      "before": "    val episodes = detail.episodes.orEmpty()",
+      "after": "    val episodes = com.bilipai.desktop.ui.desktopBangumiAllEpisodes(detail)",
+      "count": 2
+    }
+  ]
+}''')
+BANGUMI_PLAYBACK_SELECTION_PINS = {'com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiPlayerViewModel.kt': 'e8b33d03eb2e61fd05efc260b334beb6c703d24d349a3a94df16582603aaa572',
+ 'com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiResumePolicy.kt': 'dc28fef104bd5712617b5073a291d7ac4117a81d19bf8b3bf141848ab41efd5b'}
+
+def bangumi_playback_selection_delta(path, body):
+ if path not in BANGUMI_PLAYBACK_SELECTION_EDITS: return body
+ before = body
+ assert sha(before) == BANGUMI_PLAYBACK_SELECTION_PINS[path], ('playback selection input', path)
+ edits = BANGUMI_PLAYBACK_SELECTION_EDITS[path]
+ for edit in edits:
+  assert body.count(edit['before']) == edit['count'], ('playback selection anchor', path, edit['before'])
+  body = body.replace(edit['before'], edit['after'])
+ inverse = body
+ for edit in reversed(edits):
+  assert inverse.count(edit['after']) == edit['count'], ('playback selection inverse', path)
+  inverse = inverse.replace(edit['after'], edit['before'])
+ assert inverse == before
+ proof = {'path': path, 'beforeSha256LF': sha(before), 'afterSha256LF': sha(body),
+          'inverseSha256LF': sha(inverse), 'completeInverse': True, 'edits': edits}
+ receipt = out / (Path(path).stem + '.playback-selection-source.json')
+ receipt.parent.mkdir(parents=True, exist_ok=True)
+ receipt.write_text(json.dumps(proof, ensure_ascii=True, indent=2) + '\n', encoding='utf8')
+ return body
+
 for recipe in RECIPES:
  raw=(_desktop_canonical_source(repo, recipe['originalPath'])).read_text(encoding='utf8').replace('\r\n','\n');assert sha(raw)==recipe['originalSha256LF']
  body=raw
@@ -349,6 +411,7 @@ for recipe in RECIPES:
  body=apply_pgc_audio_download(recipe['output'],body,out)
  body=apply_bangumi_v046_view_model(repo,recipe['output'],body,out)
  body=bangumi_playback_speed_source_continuity_delta(recipe['output'],body)
+ body=bangumi_playback_selection_delta(recipe['output'],body)
  target=out/recipe['output'];target.parent.mkdir(parents=True,exist_ok=True)
  target.write_text('// GENERATED full original body; upstream '+PROTOCOL['upstreamCommit']+'; LF '+recipe['originalSha256LF']+'\n'+body,encoding='utf8',newline='\n')
 spec=importlib.util.spec_from_file_location('parser',repo/'desktop/tools/sync-upstream.py');parser=importlib.util.module_from_spec(spec);spec.loader.exec_module(parser)
