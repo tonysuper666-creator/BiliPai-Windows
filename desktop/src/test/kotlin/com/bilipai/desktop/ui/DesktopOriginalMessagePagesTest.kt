@@ -892,10 +892,15 @@ class DesktopMessageCenterWindowSizeTest {
                 h.height = 479; h.settle(); assertSplit("1200x479 is height-Compact and still 960dp+ wide")
                 h.height = 480; h.settle(); assertSplit("back at 1200x480")
 
-                // Width-Compact: the open chat is the single column in place, not a full-screen route.
-                h.width = 590; h.height = 700; h.settle()
-                assertEquals("给 A 的草稿", h.draft()); assertTrue(h.texts(DESKTOP_MESSAGE_LIST_PANE_TAG).isEmpty())
-                h.width = 1200; h.height = 480; h.settle(); assertSplit("back from 590dp")
+                // Below 960dp, on both sides of the 600dp width-Compact class, the open chat is the single
+                // column in place, not a full-screen route.
+                for ((width, step) in listOf(600 to "600x700", 599 to "599x700 is width-Compact")) {
+                    h.width = width; h.height = 700; h.settle()
+                    assertEquals(width.toFloat(), assertNotNull(h.pane(DESKTOP_MESSAGE_CHAT_PANE_TAG), step).boundsInRoot.width, message = step)
+                    assertEquals("给 A 的草稿", h.draft(), step); assertTrue(h.texts(DESKTOP_MESSAGE_LIST_PANE_TAG).isEmpty(), step)
+                    assertSame(chat, owner.chat(talker, 1), step)
+                }
+                h.width = 1200; h.height = 480; h.settle(); assertSplit("back from 599dp")
                 assertEquals(0, h.fullScreenRoutes)
             }
         } finally { fixture.shutdown() }
