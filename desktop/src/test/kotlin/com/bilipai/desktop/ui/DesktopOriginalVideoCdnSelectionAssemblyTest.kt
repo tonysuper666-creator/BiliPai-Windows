@@ -67,6 +67,36 @@ class DesktopOriginalVideoCdnSelectionAssemblyTest {
         if (::runtimeDirectory.isInitialized) deleteCreatedDirectory(runtimeDirectory, "cdn-actual-runtime-")
     }
 
+    @Test fun sameRequestMediaPreparationUsesCommittedMetadataBeforeUiProjectionCatchesUp(): Unit = runBlocking {
+        Fixture().useSuspending { f ->
+            val committed = CompletableDeferred<Unit>()
+            f.beforeProjectedSuccess = {
+                f.pauseUiDispatch()
+                committed.complete(Unit)
+            }
+            f.ui { f.owner.playback.loadVideo(A, 101, cid = 104, autoPlay = false) }
+            try {
+                withTimeout(8_000) { committed.await() }
+                // Use a separate EDT continuation, after the Store/entry commit
+                // returned, while only this fixture's projection is held back.
+                withContext(Dispatchers.Swing) {
+                    f.assertOutsideAdmission()
+                    val state = assertIs<VideoPlaybackUiState.Success>(f.owner.playback.captureDesktopPlaybackState())
+                    assertIs<VideoPlaybackUiState.Loading>(f.owner.playback.uiState.value)
+                    f.owner.environment.invocations.withInvocation {
+                        val media = f.owner.environment.useCase.media
+                        var source: PlaybackSource? = null
+                        media.withPlaybackIntent(0L, false) {
+                            source = media.prepareLegacyDash(backupVideo(A), null, emptyMap())
+                        }
+                        assertNotNull(source)
+                    }.also { assertEquals(state.info.title, it.title) }
+                }
+            } finally { f.ui { f.resumeUiDispatch() } }
+            f.awaitLoaded(A)
+        }
+    }
+
     @Test fun delayedOriginalCdnJobCannotRetargetClickedAUrlsToLaterActualB(): Unit = runBlocking {
         Fixture().useSuspending { f ->
             f.load(A, 101, 104)
@@ -709,6 +739,8 @@ class DesktopOriginalVideoCdnSelectionAssemblyTest {
         private val lock = Any()
         private var armedThread: Thread? = null
         private var held: HeldDispatch? = null
+        private var paused = false
+        private val pending = mutableListOf<Runnable>()
         override fun isDispatchNeeded(context: CoroutineContext) = true
         override fun dispatch(context: CoroutineContext, block: Runnable) {
             val intercepted = synchronized(lock) {
@@ -719,7 +751,10 @@ class DesktopOriginalVideoCdnSelectionAssemblyTest {
                     check(held == null); armedThread = null; held = HeldDispatch(context, block); true
                 } else false
             }
-            if (!intercepted) EventQueue.invokeLater(block)
+            if (!intercepted) EventQueue.invokeLater {
+                val deferred = synchronized(lock) { if (paused) { pending.add(block); true } else false }
+                if (!deferred) block.run()
+            }
         }
         fun arm() = synchronized(lock) {
             check(EventQueue.isDispatchThread() && armedThread == null && held == null)
@@ -730,7 +765,16 @@ class DesktopOriginalVideoCdnSelectionAssemblyTest {
             synchronized(lock) { check(held === expected); held = null }
             EventQueue.invokeLater(expected.runnable)
         }
-        fun drainOnClose() { val pending = synchronized(lock) { armedThread = null; held.also { held = null } }; pending?.let { EventQueue.invokeLater(it.runnable) } }
+        fun pause() = synchronized(lock) { check(EventQueue.isDispatchThread()); paused = true }
+        fun resume() {
+            val waiting = synchronized(lock) { paused = false; pending.toList().also { pending.clear() } }
+            waiting.forEach { EventQueue.invokeLater(it) }
+        }
+        fun drainOnClose() {
+            resume()
+            val waiting = synchronized(lock) { armedThread = null; held.also { held = null } }
+            waiting?.let { EventQueue.invokeLater(it.runnable) }
+        }
     }
 
     private inline fun <reified T> unused(): T = Proxy.newProxyInstance(T::class.java.classLoader,
@@ -744,6 +788,7 @@ class DesktopOriginalVideoCdnSelectionAssemblyTest {
         val directory = Files.createTempDirectory("cdn-original-owner-")
         val sessions = DesktopSessionStore.temporary()
         val repository = DesktopRepository(sessions)
+        var beforeProjectedSuccess: (() -> Unit)? = null
         private val parentJob = SupervisorJob()
         private val failures = CopyOnWriteArrayList<Throwable>()
         private val dispatcher = OneDispatchHold()
@@ -956,6 +1001,12 @@ class DesktopOriginalVideoCdnSelectionAssemblyTest {
             // the original public combine(...).stateIn projection on Main.
             gate.scope.launch(Dispatchers.Unconfined) {
                 originalState().collect { state ->
+                    if (state is VideoPlaybackUiState.Success) {
+                        beforeProjectedSuccess?.let { probe ->
+                            beforeProjectedSuccess = null
+                            probe()
+                        }
+                    }
                     if (state is VideoPlaybackUiState.Success && state.currentCdnIndex == 1) {
                         owner.native.current()?.let { child -> cdnEmissions.add(CdnEmission(child, state.currentCdnIndex, runtimeBinding.generation(child))) }
                     }
@@ -1153,6 +1204,8 @@ class DesktopOriginalVideoCdnSelectionAssemblyTest {
             dispatcher.arm(); owner.playback.switchCdnTo(1); dispatcher.take()
         }
         fun release(held: HeldDispatch) = dispatcher.release(held)
+        fun pauseUiDispatch() = dispatcher.pause()
+        fun resumeUiDispatch() = dispatcher.resume()
         fun assertOutsideAdmission() {
             fun lock(type: Class<*>, instance: Any) = type.getDeclaredField("lock").apply { isAccessible = true }.get(instance)
             assertFalse(Thread.holdsLock(lock(DesktopSessionStore::class.java, sessions)))

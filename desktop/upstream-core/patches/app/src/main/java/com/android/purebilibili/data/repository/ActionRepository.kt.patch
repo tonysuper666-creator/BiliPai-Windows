@@ -1,0 +1,38 @@
+--- a/app/src/main/java/com/android/purebilibili/data/repository/ActionRepository.kt
++++ b/app/src/main/java/com/android/purebilibili/data/repository/ActionRepository.kt
+@@ -469,7 +469,7 @@
+                         throw IllegalStateException("关注操作结果已过期")
+                     }
+                     _followStateChanges.tryEmit(FollowStateChange(mid = mid, isFollowing = follow))
+-                    if (emitBrandFeedback) com.android.purebilibili.core.events.BrandSuccessEvents.followChanged(follow)
++                    if (emitBrandFeedback) com.bilipai.desktop.ui.DesktopUpstreamBrandSuccess.followChanged(follow) // Desktop: one feedback instance per Root (TON-1071)
+                     follow
+                 }
+             } finally {
+@@ -513,7 +513,7 @@
+                 
+                 if (response.code == 0) {
+                     if (favorite && showSuccessFeedback) {
+-                        com.android.purebilibili.core.events.BrandSuccessEvents.favoriteSaved()
++                        com.bilipai.desktop.ui.DesktopUpstreamBrandSuccess.favoriteSaved() // Desktop: one feedback instance per Root (TON-1071)
+                     }
+                     Result.success(favorite)
+                 } else {
+@@ -638,7 +638,7 @@
+     ): Result<Boolean> {
+         if (addFolderIds.isEmpty() && removeFolderIds.isEmpty()) return Result.success(true)
+         return UserActionRepository.favorite(aid, addFolderIds, removeFolderIds).onSuccess {
+-            if (addFolderIds.isNotEmpty()) com.android.purebilibili.core.events.BrandSuccessEvents.favoriteSaved()
++            if (addFolderIds.isNotEmpty()) com.bilipai.desktop.ui.DesktopUpstreamBrandSuccess.favoriteSaved() // Desktop: one feedback instance per Root (TON-1071)
+         }
+     }
+     
+@@ -266,7 +266,7 @@ object ActionRepository {
+     fun followingStatusRevision(account: Any): Long? = followingGuard.snapshotVersion(account)
+     fun acceptFollowingSnapshot(account: Any, version: Long, publish: () -> Unit): Boolean =
+         followingGuard.accept(account, version, publish)
+-    fun interactionSession(): Any = TokenManager.accountIdentity.value to TokenManager.sessDataCache
++    fun interactionSession(): Any = com.bilipai.desktop.data.DesktopUpstreamCalls.sessionIdentity("ActionRepository.interactionSession") // Desktop: the request owner's account (TON-1082)
+     fun cachedLikeStatus(aid: Long): Boolean? = interactionCache.read(interactionSession(), "like:$aid").first
+     fun cachedFollowStatus(mid: Long): Boolean? = interactionCache.read(interactionSession(), "follow:$mid").first
+     fun likeStatusVersion(aid: Long): Long = interactionCache.read(interactionSession(), "like:$aid").second

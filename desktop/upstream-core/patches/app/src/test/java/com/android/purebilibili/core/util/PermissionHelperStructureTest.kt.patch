@@ -1,0 +1,14 @@
+Upstream-source-sha256: 7ef011411ea5ae6503a6e1b99817b1713927f37b88df4d3c9142bb10e9c9a55c
+Reason: `assertFalse(source.contains("AlertDialog("))` 与上一条 `contains("AppAlertDialog(")` 互相矛盾：AppAlertDialog( 本身就含子串 AlertDialog(，所以无论源码怎样都会失败。禁止裸用 Material AlertDialog 的本意不变，改成只匹配前面不是字母的 AlertDialog(。生产不动，其余断言不变。
+
+--- a/app/src/test/java/com/android/purebilibili/core/util/PermissionHelperStructureTest.kt
++++ b/app/src/test/java/com/android/purebilibili/core/util/PermissionHelperStructureTest.kt
+@@ -17,6 +17,7 @@
+         assertTrue(source.contains("AppTextButton("))
+         assertTrue(source.contains("MaterialTheme.colorScheme.primary"))
+         assertFalse(source.contains("BiliPink"))
+-        assertFalse(source.contains("AlertDialog("))
++        // 子串 "AlertDialog(" 会命中 AppAlertDialog(；只禁止裸用的 Material AlertDialog(。
++        assertFalse(Regex("""(?<![A-Za-z])AlertDialog\(""").containsMatchIn(source))
+     }
+ }

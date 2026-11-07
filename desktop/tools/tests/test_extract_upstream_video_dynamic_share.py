@@ -97,6 +97,10 @@ class VideoDynamicShareSourceTest(unittest.TestCase):
         rows=json.loads((TOOLS.parent/'upstream-sources.json').read_bytes())['sources']
         row=next(row for row in rows if row['path']==source.SOURCE_PATHS['DynamicCreateModels.kt'])
         self.assertEqual('policy-extract',row['mode'])
-        self.assertEqual('e1311bfb5c0999d7d9aecc4399273f30d20af3e394271d2205c31f8f08054d29',row['sha256'])
+        # ad2967bbf re-pinned the manifest to the direct-compile bytes; the catalog keeps the reviewed legacy half of the pair.
+        self.assertEqual('042b18e7c276e9477456e55ca6d64abb5c54dc01d20359654dc47edd3d72e3ee',row['sha256'])
+        pin=json.loads((TOOLS/'v025-canonical-sources.json').read_bytes())['paths'][row['path']]
+        self.assertEqual(('042b18e7c276e9477456e55ca6d64abb5c54dc01d20359654dc47edd3d72e3ee','e1311bfb5c0999d7d9aecc4399273f30d20af3e394271d2205c31f8f08054d29'),
+                         (pin['sha256'],pin['legacySha256']))
 
 if __name__=='__main__':unittest.main()

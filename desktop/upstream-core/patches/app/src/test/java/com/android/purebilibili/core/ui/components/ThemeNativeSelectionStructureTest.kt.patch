@@ -1,0 +1,16 @@
+Upstream-source-sha256: fa1ff95c2275990f7954d2efba2f640d3fede7a539910c1e913409a32b1add5d
+Reason: 个人列表的选中态已由 89068d48b 明确改成 PiliPlus 式选中遮罩（提交说明：drop the old checkbox/tint selection chrome），AppCheckbox( 不再出现在 PersonalMediaCard.kt。正断言改为选中遮罩组件存在且随 selected 显隐；两条“不得回到手绘着色覆盖层”的负断言保留不变。生产不动。
+
+--- a/app/src/test/java/com/android/purebilibili/core/ui/components/ThemeNativeSelectionStructureTest.kt
++++ b/app/src/test/java/com/android/purebilibili/core/ui/components/ThemeNativeSelectionStructureTest.kt
+@@ -11,7 +11,9 @@
+     fun sharedMediaCardsUseNativeCheckboxesInsteadOfPaintedSelectionOverlays() {
+         val source = loadAppSource("feature/personal/PersonalMediaCard.kt")
+ 
+-        assertTrue(source.contains("AppCheckbox("))
++        // 选中态现为 PiliPlus 式遮罩（89068d48b 明确删掉旧 checkbox/着色），随 selected 显隐。
++        assertTrue(source.contains("fun PersonalCardSelectMask("))
++        assertTrue(source.contains("visible = selected"))
+         assertFalse(source.contains("PersonalMediaCardDefaults.selectionOverlayColor"))
+         assertFalse(source.contains("color = MaterialTheme.colorScheme.primary.copy(alpha = 0.10f)"))
+     }

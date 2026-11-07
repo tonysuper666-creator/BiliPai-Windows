@@ -2,7 +2,7 @@ package com.bilipai.desktop.ui
 
 import com.android.purebilibili.core.network.BilibiliApi
 import com.android.purebilibili.core.network.MessageApi
-import com.android.purebilibili.core.store.DesktopFeedSettings
+import com.android.purebilibili.core.store.SettingsManager
 import kotlinx.coroutines.CoroutineScope
 
 /** Required views of Root's existing network/settings/session graph. Services must enforce this
@@ -15,7 +15,7 @@ internal class DesktopHomeProtocolEnvironment(
     val parentScope: CoroutineScope,
     val isCurrent: () -> Boolean,
     val commitIfCurrent: ((() -> Unit) -> Boolean),
-    val feedApiType: () -> DesktopFeedSettings.FeedApiType,
+    val feedApiType: () -> SettingsManager.FeedApiType,
     val refreshCount: () -> Int,
     val wbiKeys: suspend () -> Result<Pair<String, String>>,
     val accessToken: () -> String?,

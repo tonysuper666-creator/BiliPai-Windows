@@ -14,8 +14,6 @@ import org.jetbrains.skia.Bitmap
 import kotlinx.coroutines.*
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import kotlin.math.ceil
-import kotlin.math.sqrt
 
 /** Original AndroidX median-cut quantizer and original swatch selection with real Skia pixels. */
 object VideoCardCoverColorStore {
@@ -65,19 +63,15 @@ object VideoCardCoverColorStore {
             withContext(Dispatchers.Main){onColorExtracted(color)}
         }
     }
+    /** Sampling, quantization and swatch selection now live in the platform layer.
+     * The cover keeps its historic fallback: an achromatic cover still yields its own
+     * dominant colour instead of null. Failures still collapse to null for the cache. */
     internal fun extractRepresentativeColor(bitmap:Bitmap):Color? {
         return runCatching {
         if(bitmap.isClosed || bitmap.width<=0 || bitmap.height<=0)return null
-        // Palette.Builder.resizeBitmapArea(48*48): exact area/ceil dimensions, unfiltered scaling.
-        val area=bitmap.width.toLong()*bitmap.height
-        val ratio=if(area>48*48)sqrt((48.0*48)/area)else 1.0
-        val width=ceil(bitmap.width*ratio).toInt();val height=ceil(bitmap.height*ratio).toInt()
-        val pixels=IntArray(width*height){i ->
-            val x=(((i%width)+0.5)*bitmap.width/width).toInt().coerceAtMost(bitmap.width-1)
-            val y=(((i/width)+0.5)*bitmap.height/height).toInt().coerceAtMost(bitmap.height-1)
-            bitmap.getColor(x,y)
-        }
-        resolveRepresentativeSwatch(DesktopPalette.quantize(pixels,16))?.rgb?.let{Color(it)}
+        val rgb=com.bilipai.desktop.platform.bitmap.extractRepresentativeColor(
+            bitmap,allowUnfilteredFallback=true) ?: return null
+        Color(rgb)
         }.getOrNull()
     }
     internal fun resolveRepresentativeSwatch(swatches:List<DesktopPalette.Swatch>):DesktopPalette.Swatch? {

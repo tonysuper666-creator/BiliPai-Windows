@@ -1,0 +1,11 @@
+--- a/app/src/main/java/com/android/purebilibili/core/network/socket/LiveDanmakuClient.kt
++++ b/app/src/main/java/com/android/purebilibili/core/network/socket/LiveDanmakuClient.kt
+@@ -32,7 +32,7 @@ internal val LIVE_DANMAKU_AUTH_PROTOCOL_VERSION = DanmakuProtocol.PROTO_VER_BROT
+ class LiveDanmakuClient(
+     private val scope: CoroutineScope,
+     private val clockMs: () -> Long = { SystemClock.elapsedRealtime() },
+-    private val webSocketFactory: WebSocket.Factory = NetworkModule.okHttpClient,
++    private val webSocketFactory: WebSocket.Factory = com.bilipai.desktop.data.DesktopUpstreamCalls.webSocket, // Desktop: caller's owner (TON-1082)
+     private val workerDispatcher: CoroutineDispatcher = Dispatchers.IO
+ ) {
+     private val TAG = "LiveDanmakuClient"

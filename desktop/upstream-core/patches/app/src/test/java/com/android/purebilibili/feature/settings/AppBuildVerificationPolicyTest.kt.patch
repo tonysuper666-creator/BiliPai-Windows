@@ -1,0 +1,47 @@
+Upstream-source-sha256: 64b7f7d5559e7b234997c98a4652c01472f0470bc9b2e3385de66aa17941d1fe
+Reason: Current upstream copy compacted Chinese/Latin spacing and says 仍可修改. Preserve verification status, digest, attestation and immutable/mutable meaning; add releaseIsImmutable assertions and compare subtitle without typography whitespace.
+
+--- a/app/src/test/java/com/android/purebilibili/feature/settings/AppBuildVerificationPolicyTest.kt
++++ b/app/src/test/java/com/android/purebilibili/feature/settings/AppBuildVerificationPolicyTest.kt
+@@ -49,7 +49,8 @@
+         assertEquals("已验证", resolveAppBuildVerificationLabel(state.status))
+         assertEquals(true, state.hasAttestation)
+         assertTrue(state.summary.contains("SHA-256"))
+-        assertTrue(state.summary.contains("Release 已锁定"))
++        assertEquals(true, state.releaseIsImmutable)
++        assertTrue(state.summary.contains("发布已锁定"))
+     }
+ 
+     @Test
+@@ -104,7 +105,8 @@
+         )
+ 
+         assertEquals(AppBuildVerificationStatus.UNVERIFIED, state.status)
+-        assertTrue(state.summary.contains("还可被修改"))
++        assertEquals(false, state.releaseIsImmutable)
++        assertTrue(state.summary.contains("仍可修改"))
+     }
+ 
+     @Test
+@@ -189,7 +191,8 @@
+         assertEquals(AppBuildVerificationStatus.LIKELY_VERIFIED, state.status)
+         assertEquals("v7.4.0", state.releaseTag)
+         assertTrue(state.summary.contains("SHA-256"))
+-        assertTrue(state.summary.contains("还可被修改"))
++        assertEquals(false, state.releaseIsImmutable)
++        assertTrue(state.summary.contains("仍可修改"))
+     }
+ 
+     @Test
+@@ -218,7 +221,10 @@
+             hasAttestation = true
+         )
+ 
+-        assertEquals("SHA-256 与 GitHub Release 一致；发布已锁定，并有 provenance。", subtitle)
++        assertEquals(
++            "SHA-256 与 GitHub Release 一致；发布已锁定，并有 provenance。".filterNot(Char::isWhitespace),
++            subtitle.filterNot(Char::isWhitespace)
++        )
+     }
+ 
+     @Test

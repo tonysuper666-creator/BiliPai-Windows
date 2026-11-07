@@ -1,0 +1,67 @@
+--- a/com/android/purebilibili/feature/profile/ProfileAvatarExpansion.kt
++++ b/com/android/purebilibili/feature/profile/ProfileAvatarExpansion.kt
+@@ -10,25 +10,26 @@
+ import androidx.compose.runtime.getValue
+ import androidx.compose.runtime.mutableFloatStateOf
+ import androidx.compose.runtime.mutableIntStateOf
+ import androidx.compose.runtime.mutableStateOf
+ import androidx.compose.runtime.remember
+ import androidx.compose.runtime.rememberCoroutineScope
+ import androidx.compose.runtime.rememberUpdatedState
+ import androidx.compose.runtime.setValue
+ import androidx.compose.ui.geometry.Offset
+ import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+ import androidx.compose.ui.input.nestedscroll.NestedScrollSource
+ import androidx.compose.ui.platform.LocalDensity
+-import androidx.compose.ui.platform.LocalView
++import androidx.compose.ui.hapticfeedback.HapticFeedbackType
++import androidx.compose.ui.platform.LocalHapticFeedback
+ import androidx.compose.ui.unit.Velocity
+ import com.android.purebilibili.core.ui.LocalComponentMotionEnabled
+ import com.android.purebilibili.core.ui.LocalAppThemeConfig
+ import com.android.purebilibili.core.ui.motion.rememberSystemReduceMotion
+ import com.android.purebilibili.core.ui.motion.interactiveSnapSpring
+ import kotlinx.coroutines.CoroutineStart
+ import kotlinx.coroutines.Job
+ import kotlinx.coroutines.coroutineScope
+ import kotlinx.coroutines.launch
+ import kotlin.math.abs
+ 
+ internal const val PROFILE_AVATAR_PULL_THRESHOLD = 0.33f
+@@ -114,33 +115,34 @@
+ }
+ 
+ @Composable
+ internal fun rememberProfileAvatarExpansionConnection(
+     state: ProfileAvatarExpansionState,
+     listState: LazyListState,
+     enabled: Boolean,
+     rangeProvider: () -> Float,
+ ): NestedScrollConnection {
+     val scope = rememberCoroutineScope()
+     val latestRange = rememberUpdatedState(rangeProvider)
+     val density = LocalDensity.current.density
+-    val view = LocalView.current
++    // Desktop: Compose's platform haptic service instead of an Android View.
++    val view = LocalHapticFeedback.current
+     val haptics = LocalAppThemeConfig.current.let { it.hapticFeedbackEnabled && it.hapticSettings.isEnabled(com.android.purebilibili.core.ui.AppHapticScene.NAVIGATION) }
+     val motion = LocalComponentMotionEnabled.current && !rememberSystemReduceMotion() &&
+         !com.android.purebilibili.core.ui.performance.isLowBlurBudgetForced()
+     return remember(state, listState, enabled, density, motion, scope, view, haptics) {
+         object : NestedScrollConnection {
+             private fun settle(expanded: Boolean) {
+                 if (haptics) view.performHapticFeedback(
+-                    if (expanded) android.view.HapticFeedbackConstants.LONG_PRESS else android.view.HapticFeedbackConstants.KEYBOARD_TAP,
++                    if (expanded) HapticFeedbackType.LongPress else HapticFeedbackType.TextHandleMove,
+                 )
+                 scope.launch(start = CoroutineStart.UNDISPATCHED) {
+                     state.settle(expanded, latestRange.value(), 0f, density, motion)
+                 }
+             }
+ 
+             override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
+                 if (!enabled || source != NestedScrollSource.UserInput || available.y >= 0f || state.offsetPx <= 0f) return Offset.Zero
+                 val consumed = state.dragBy(available.y, latestRange.value())
+                 if (state.isPulledDown && state.fraction(latestRange.value()) < PROFILE_AVATAR_PULL_THRESHOLD) settle(false)
+                 return Offset(0f, consumed)
+             }

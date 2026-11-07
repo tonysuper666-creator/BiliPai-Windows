@@ -47,6 +47,9 @@ internal class DesktopOriginalSpaceEnvironment(
     // Named type supplies a member launch: the unchanged original call captures
     // inside its real caller Job, rather than inheriting a parent page token.
     val scope = DesktopOriginalSpaceRequestScope(delegate) { block -> launchOwned(null,false,block) }
+    /** The Root account this entry was opened for (as DesktopFavoriteEnvironment.favoriteAccountIdentity); upstream's
+     * view model compares it where Android reads TokenManager. */
+    fun spaceAccountIdentity() = com.android.purebilibili.core.store.AccountSessionIdentity(accountMid?.takeIf { it > 0L }, epoch)
     fun owns(): Boolean = alive.get() && lifetime.isActive && retained() &&
         repository.sessionEpoch == epoch && repository.account.value?.mid == accountMid
     private fun <T> admit(block: () -> T): T = repository.withProfileAccountAdmission(epoch,accountMid,::owns,commitEntry) {

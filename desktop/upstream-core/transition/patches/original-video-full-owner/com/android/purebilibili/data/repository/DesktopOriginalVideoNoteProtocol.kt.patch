@@ -1,0 +1,41 @@
+--- a/original-video-full-owner/com/android/purebilibili/data/repository/DesktopOriginalVideoNoteProtocol.kt
++++ b/original-video-full-owner/com/android/purebilibili/data/repository/DesktopOriginalVideoNoteProtocol.kt
+@@ -5,38 +5,6 @@
+ import kotlinx.coroutines.Dispatchers
+ import kotlinx.coroutines.withContext
+ import kotlinx.coroutines.ensureActive
+-
+-data class VideoNotePublicNotePage(
+-    val notes: List<PublicVideoNoteItem>,
+-    val total: Int
+-)
+-
+-data class VideoNoteSnapshot(
+-    val forbidNoteEntrance: Boolean,
+-    val privateNote: VideoNoteInfoData?,
+-    val privateNoteId: String?,
+-    val publicNotes: List<PublicVideoNoteItem>,
+-    val publicNoteTotal: Int
+-)
+-
+-data class VideoNoteSavePayload(
+-    val aid: Long,
+-    val noteId: String?,
+-    val title: String,
+-    val summary: String,
+-    val content: String,
+-    val tags: String,
+-    val contentLength: Int,
+-    val publish: Boolean = false
+-)
+-
+-sealed class VideoNoteRepositoryError(message: String) : Exception(message) {
+-    data object NotLoggedIn : VideoNoteRepositoryError("请先登录")
+-    data object MissingCsrf : VideoNoteRepositoryError("登录态缺少 CSRF，请重新登录后再试")
+-    data object Forbidden : VideoNoteRepositoryError("该视频暂不支持笔记")
+-    data class ApiError(val code: Int, val apiMessage: String) :
+-        VideoNoteRepositoryError(apiMessage.ifBlank { "笔记接口返回异常：$code" })
+-}
+ 
+ internal class DesktopOriginalVideoNoteProtocol(private val environment: com.bilipai.desktop.ui.DesktopOriginalVideoNoteEnvironment) {
+     private val api get() = environment.api

@@ -28,6 +28,19 @@
          }
  
      // Windows reads ONE immutable publication: source and original UI values are
+@@ -4000,11 +4002,11 @@
+                 ) {
+                     Logger.d("PlayerVM", "⏭️ Ignore stale timeout: bvid=${playbackRequest.bvid} token=$requestToken")
+                     return@launch
+                 }
+                 Logger.e("PlayerVM", "⚠️ Video load timed out for ${playbackRequest.bvid}")
+-                PlaybackCooldownManager.recordFailure(playbackRequest.bvid, "timeout")
++                com.bilipai.desktop.ui.desktopOriginalRecordPlaybackFailure(playbackRequest.bvid, e)
+                 _uiState.value = VideoPlaybackUiState.Error(VideoLoadError.Timeout)
+                 val desktopFailure = _uiState.value as? VideoPlaybackUiState.Error
+                 if (desktopFailure != null) observeDesktopLoadFailure(requestToken, desktopFailure, checkNotNull(kotlinx.coroutines.currentCoroutineContext()[Job]), kotlinx.coroutines.currentCoroutineContext()[com.bilipai.desktop.ui.DesktopVideoBootstrapInvocationContext]?.source)
+             } catch (e: CancellationException) {
+                 Logger.d("PlayerVM", "loadVideo canceled: bvid=${playbackRequest.bvid} token=$requestToken")
 @@ -9407,11 +9409,11 @@
          publishDesktopSponsorContribution(SponsorContributionUiState(), expected)
          refreshSponsorContributionAvailability()

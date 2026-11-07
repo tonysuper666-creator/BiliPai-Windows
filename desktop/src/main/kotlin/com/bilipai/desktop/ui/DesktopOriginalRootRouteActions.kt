@@ -95,6 +95,7 @@ internal fun desktopOriginalRootProfileNavigation(
     onLogoutSuccess = logoutSucceeded,
     onAccountSwitchSuccess = accountSwitchSucceeded,
     onSettingsClick = { commands.push(BiliPaiNavKey.Settings) },
+    onAccountLedgerClick = { kind -> commands.push(BiliPaiNavKey.AccountLedger(kind)) },
     onSearchClick = { commands.push(BiliPaiNavKey.Search()) },
     onHistoryClick = { commands.push(BiliPaiNavKey.History) },
     onFavoriteClick = { commands.push(BiliPaiNavKey.Favorite) },
@@ -102,6 +103,7 @@ internal fun desktopOriginalRootProfileNavigation(
     onFavoriteFolderClick = { id, mid, title -> commands.push(BiliPaiNavKey.SeasonSeriesDetail(
         type = "favorite", id = id, mid = mid, title = title)) },
     onFollowingClick = { mid -> commands.push(BiliPaiNavKey.Following(mid)) },
+    onFansClick = { mid -> commands.push(BiliPaiNavKey.Following(mid, fans = true)) },
     onDownloadClick = { commands.push(BiliPaiNavKey.DownloadList) },
     onWatchLaterClick = { commands.push(BiliPaiNavKey.WatchLater) },
     onInboxClick = { commands.push(BiliPaiNavKey.Inbox) },

@@ -1,0 +1,134 @@
+--- a/com/android/purebilibili/feature/audio/viewmodel/ListenVideoCollectionViewModel.kt
++++ b/com/android/purebilibili/feature/audio/viewmodel/ListenVideoCollectionViewModel.kt
+@@ -1,15 +1,11 @@
+ package com.android.purebilibili.feature.audio.viewmodel
+ 
+-import androidx.lifecycle.ViewModel
+-import androidx.lifecycle.viewModelScope
+-import com.android.purebilibili.feature.audio.library.BilibiliListenVideoLibraryDataSource
+ import com.android.purebilibili.feature.audio.library.ListenVideoLibraryDataSource
+ import com.android.purebilibili.feature.audio.library.ListenVideoLibraryLoader
+ import com.android.purebilibili.feature.audio.library.ListenVideoTrack
+ import com.android.purebilibili.feature.audio.library.resolveListenVideoPlaybackSelection
+ import com.android.purebilibili.feature.audio.library.toListenVideoTrackOrNull
+ import com.android.purebilibili.feature.video.player.ExternalPlaylistSource
+-import com.android.purebilibili.feature.video.player.PlaylistManager
+ import com.android.purebilibili.feature.video.player.PlaylistSession
+ import kotlinx.coroutines.CancellationException
+ import kotlinx.coroutines.Dispatchers
+@@ -18,6 +14,9 @@
+ import kotlinx.coroutines.flow.asStateFlow
+ import kotlinx.coroutines.flow.update
+ import kotlinx.coroutines.launch
++import kotlinx.coroutines.currentCoroutineContext
++import com.bilipai.desktop.ui.DesktopOriginalListenCollectionOwner
++import com.bilipai.desktop.ui.DesktopOriginalListenCollectionPlaybackTarget
+ import kotlinx.coroutines.withContext
+ 
+ internal data class ListenVideoCollectionState(
+@@ -29,33 +28,41 @@
+ 
+ /** The playback destination owns pagination; opening a collection never waits for its whole queue. */
+ internal class ListenVideoCollectionViewModel(
+-    source: ListenVideoLibraryDataSource = BilibiliListenVideoLibraryDataSource(),
+-) : ViewModel() {
+-    private val loader = ListenVideoLibraryLoader(source)
++    private val environment: DesktopOriginalListenCollectionOwner,
++) {
++    private val viewModelScope get() = environment.scope
++    private val loader = ListenVideoLibraryLoader(environment.dataSource)
+     private val _state = MutableStateFlow(ListenVideoCollectionState())
+     val state = _state.asStateFlow()
+     private var request: Pair<Long, Long>? = null
+     private var loadJob: Job? = null
+-    private var session: PlaylistSession? = null
++    @Volatile private var session: PlaylistSession? = null
+ 
+     fun open(mediaId: Long, seasonId: Long) {
++        environment.assertOwned()
+         val nextRequest = mediaId to seasonId
+         if (request == nextRequest) return
+         loadJob?.cancel()
+-        request = nextRequest
+-        session = null
+-        _state.value = ListenVideoCollectionState()
++        environment.commit {
++            request = nextRequest
++            session = null
++            _state.value = ListenVideoCollectionState()
++        }
+         load()
+     }
+ 
+     fun retry() {
++        environment.assertOwned()
+         if (loadJob?.isActive != true) load()
+     }
+ 
+     private fun load() {
++        environment.assertOwned()
+         val (mediaId, seasonId) = request ?: return
+-        _state.update { it.copy(isLoading = true, error = null) }
++        environment.updateState(_state) { it.copy(isLoading = true, error = null) }
+         loadJob = viewModelScope.launch {
++            val desktopCaller = environment.request(currentCoroutineContext())
++            desktopCaller.check()
+             try {
+                 val publish: suspend (List<com.android.purebilibili.data.model.response.FavoriteData>) -> Unit = { resources ->
+                     val tracks = withContext(Dispatchers.Default) {
+@@ -65,16 +72,17 @@
+                         val selection = withContext(Dispatchers.Default) {
+                             resolveListenVideoPlaybackSelection(tracks, tracks.first().bvid)
+                         }
+-                        val activeSession = session
++                        val activeSession = desktopCaller.read { session }
+                         if (activeSession == null) {
+-                            session = PlaylistManager.setExternalPlaylist(
++                            val admittedSession = desktopCaller.setExternalPlaylist(
+                                 selection.items, selection.startIndex, ExternalPlaylistSource.FAVORITE,
+                             )
+-                        } else if (!PlaylistManager.addAllToPlaylistIfCurrent(selection.items, activeSession)) {
++                            desktopCaller.commit { session = admittedSession }
++                        } else if (!desktopCaller.appendPlaylist(selection.items, activeSession)) {
+                             // Another playback action owns the queue now. Never append this collection to it.
+                             throw CancellationException("Playback queue replaced")
+                         }
+-                        _state.update {
++                        desktopCaller.updateState(_state) {
+                             it.copy(firstTrack = it.firstTrack ?: tracks.first(), loadedTrackCount = maxOf(it.loadedTrackCount, tracks.size))
+                         }
+                     }
+@@ -84,7 +92,7 @@
+                 } else {
+                     loader.loadFolder(mediaId, publish)
+                 }
+-                _state.update {
++                desktopCaller.updateState(_state) {
+                     it.copy(
+                         isLoading = false,
+                         error = if (result.isFailure) {
+@@ -95,8 +103,23 @@
+             } catch (cancellation: CancellationException) {
+                 throw cancellation
+             } catch (error: Exception) {
+-                _state.update { it.copy(isLoading = false, error = error.message ?: "曲目读取失败，请重试") }
++                desktopCaller.updateState(_state) { it.copy(isLoading = false, error = error.message ?: "曲目读取失败，请重试") }
+             }
+         }
+     }
++    /** Read-only port over this original VM's private session and its actual selected item. */
++    internal fun captureDesktopPlaybackTarget(): DesktopOriginalListenCollectionPlaybackTarget? {
++        var target: DesktopOriginalListenCollectionPlaybackTarget? = null
++        environment.commit {
++            val first = _state.value.firstTrack ?: return@commit
++            val capturedSession = session ?: return@commit
++            if (!environment.isSessionCurrent(capturedSession)) return@commit
++            val selected = environment.currentItem() ?: return@commit
++            target = environment.capturePlaybackTarget(capturedSession, selected) {
++                session == capturedSession && _state.value.firstTrack === first
++            }
++        }
++        return target
++    }
++
+ }

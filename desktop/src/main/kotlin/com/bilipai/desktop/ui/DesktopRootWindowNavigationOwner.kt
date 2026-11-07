@@ -49,19 +49,8 @@ internal class DesktopLoginReturnBinding internal constructor(
     val cancel: () -> Unit,
 )
 
-/** One actual main-window owner, retained above every route and account epoch.
- *
- * All lifecycle, saved-state, ViewModel and navigation operations run on Swing's EDT. The
- * original Miuix host owns entry stores below this store. Destroying the window clears them;
- * covering a page, resizing, minimizing or changing accounts does not create another root.
- */
-internal class DesktopRootWindowNavigationOwner(
-    private val window: Window,
-    private val rootAlive: () -> Boolean,
-    private val onBackFallback: () -> Unit,
-) : SavedStateRegistryOwner, ViewModelStoreOwner, HasDefaultViewModelProviderFactory,
-    NavigationEventDispatcherOwner, AutoCloseable {
-    private val closed = AtomicBoolean(false)
+/** Window-owned login intent, independent of AWT lifecycle construction. */
+internal class DesktopLoginReturnCoordinator(private val owns: () -> Boolean) {
     private val loginLock = Any()
     private var loginTicket: DesktopLoginReturnTicket? = null
     private val acceptedLogin = MutableStateFlow<DesktopAcceptedLoginReturn?>(null)
@@ -115,6 +104,31 @@ internal class DesktopRootWindowNavigationOwner(
     internal fun cancelLoginReturnForSource(epoch: Long, mid: Long?) = synchronized(loginLock) {
         if (loginTicket?.let { it.sourceEpoch == epoch && it.sourceMid == mid } == true) loginTicket = null
     }
+    fun close() = synchronized(loginLock) { loginTicket = null; acceptedLogin.value = null }
+}
+
+/** One actual main-window owner, retained above every route and account epoch.
+ *
+ * All lifecycle, saved-state, ViewModel and navigation operations run on Swing's EDT. The
+ * original Miuix host owns entry stores below this store. Destroying the window clears them;
+ * covering a page, resizing, minimizing or changing accounts does not create another root.
+ */
+internal class DesktopRootWindowNavigationOwner(
+    private val window: Window,
+    private val rootAlive: () -> Boolean,
+    private val onBackFallback: () -> Unit,
+) : SavedStateRegistryOwner, ViewModelStoreOwner, HasDefaultViewModelProviderFactory,
+    NavigationEventDispatcherOwner, AutoCloseable {
+    private val closed = AtomicBoolean(false)
+    private val loginReturns = DesktopLoginReturnCoordinator(::owns)
+    internal val installedLoginReturn = loginReturns.installedLoginReturn
+    internal fun beginLoginReturn(epoch: Long, mid: Long?, destination: BiliPaiNavKey,
+        origin: DesktopLoginReturnOrigin) = loginReturns.beginLoginReturn(epoch, mid, destination, origin)
+    internal fun pendingLoginBinding(epoch: Long) = loginReturns.pendingLoginBinding(epoch)
+    internal fun isLoginReturnPending(value: DesktopAcceptedLoginReturn) = loginReturns.isLoginReturnPending(value)
+    internal fun consumeLoginReturn(value: DesktopAcceptedLoginReturn, epoch: Long, mid: Long?) =
+        loginReturns.consumeLoginReturn(value, epoch, mid)
+    internal fun cancelLoginReturnForSource(epoch: Long, mid: Long?) = loginReturns.cancelLoginReturnForSource(epoch, mid)
     private val registry = LifecycleRegistry(this)
     private val savedStateController = SavedStateRegistryController.create(this)
     override val lifecycle: Lifecycle get() = registry
@@ -196,7 +210,7 @@ internal class DesktopRootWindowNavigationOwner(
      */
     override fun close() {
         if (!closed.compareAndSet(false, true)) return
-        synchronized(loginLock) { loginTicket = null; acceptedLogin.value = null }
+        loginReturns.close()
         val dispose = {
             navigationEventDispatcher.isEnabled = false
             window.removeWindowListener(windowListener)

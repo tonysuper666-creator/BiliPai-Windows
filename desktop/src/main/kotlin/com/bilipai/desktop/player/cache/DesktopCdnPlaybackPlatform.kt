@@ -5,6 +5,11 @@ import okhttp3.Response
 import java.net.URI
 import java.util.Collections
 
+/** Monotonic transport time, shared by the retained runtime and deterministic tests. */
+internal object CdnTransferClock {
+    @Volatile var nowMs: () -> Long = { System.nanoTime() / 1_000_000 }
+}
+
 /** Windows byte-span loader boundary. Finite interval values retain the original Media3
  * business contract; no Android namespace/type stub or alternate media engine is present. */
 internal const val CDN_LENGTH_UNSET = -1L

@@ -1,0 +1,22 @@
+// Observe the normal source set; do not replace tasks or source selection.
+gradle.projectsEvaluated {
+    def desktopProject = gradle.rootProject
+    desktopProject.tasks.register('ton1197SourceOwnership') {
+        doLast {
+            def sources = desktopProject.extensions.getByName('kotlin').sourceSets.getByName('main').kotlin.files
+            def expectedOwners = [
+                'DesktopOriginalImagePreviewRenderer.kt': 'build/transition-patched/com/android/purebilibili/feature/dynamic/components/DesktopOriginalImagePreviewRenderer.kt',
+                'DrawGrid.kt': 'build/patched-upstream/app/src/main/java/com/android/purebilibili/feature/dynamic/components/DrawGrid.kt'
+            ]
+            expectedOwners.each { name, relative ->
+                def owners = sources.findAll { it.name == name }
+                def expected = desktopProject.file(relative)
+                println("TON1197_OWNER ${name} count=${owners.size()}")
+                owners.each { println(desktopProject.rootDir.toPath().relativize(it.toPath())) }
+                assert owners.size() == 1 : "Expected exactly one compiled ${name}"
+                assert owners.iterator().next().canonicalFile == expected.canonicalFile : "Unexpected compiled owner for ${name}"
+            }
+            assert sources.findAll { it.name == 'DesktopOriginalDrawGrid.kt' }.empty : 'Retired grid must not compile'
+        }
+    }
+}

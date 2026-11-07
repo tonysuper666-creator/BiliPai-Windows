@@ -122,6 +122,7 @@ internal class DesktopOriginalSpacePageEntry(val environment:DesktopOriginalSpac
         },
         { x,y -> environment.requireVisibleAction();backToTopPreferences.updateBackToTopOffset(x,y) },viewport)
     CompositionLocalProvider(LocalDesktopOriginalSpacePlatform provides platform,
+        LocalDesktopFeedGridColumnSettings provides home.settings,
         LocalDesktopBackToTopBindings provides backToTop) {
         when(key) {
             is BiliPaiNavKey.Space->SpaceScreen(key.mid,key.targetBvid,
@@ -135,7 +136,6 @@ internal class DesktopOriginalSpacePageEntry(val environment:DesktopOriginalSpac
                 onUserClick={mid->navigate {routes.push(BiliPaiNavKey.Space(mid))}},
                 onTopicClick={id->if(id>0)navigate {routes.push(BiliPaiNavKey.TopicDetail(id))}},
                 onTopicKeywordClick={word->navigate {routes.push(BiliPaiNavKey.Search(word))}},
-                onPlayAllAudioClick={bv,progress->navigate {routes.push(BiliPaiNavKey.AudioMode(sourceBvid=bv,sourceResumePositionMs=progress))}},
                 onDynamicDetailClick={id->navigate {routes.push(BiliPaiNavKey.DynamicDetail(id))}},
                 // Existing original typed dispatcher resolves native article/opus
                 // before routing, using its sole captured Root request owner.

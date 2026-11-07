@@ -1,0 +1,60 @@
+--- a/com/android/purebilibili/feature/profile/AccountLedgerViewModel.kt
++++ b/com/android/purebilibili/feature/profile/AccountLedgerViewModel.kt
+@@ -1,10 +1,8 @@
+ package com.android.purebilibili.feature.profile
+ 
+-import androidx.lifecycle.ViewModel
+-import androidx.lifecycle.viewModelScope
+ import com.android.purebilibili.core.coroutines.AccountScopedRequests
+ import com.android.purebilibili.core.store.AccountSessionIdentity
+-import com.android.purebilibili.core.store.TokenManager
++import com.bilipai.desktop.ui.DesktopAccountLedgerEnvironment
+ import com.android.purebilibili.data.model.AccountLedgerKind
+ import com.android.purebilibili.data.model.response.AccountLedgerEntry
+ import com.android.purebilibili.data.repository.AccountLedgerRepository
+@@ -19,32 +17,34 @@
+ )
+ 
+ internal data class AccountLedgerState(
+-    val identity: AccountSessionIdentity = TokenManager.accountIdentity.value,
++    val identity: AccountSessionIdentity = AccountSessionIdentity(),
+     val sections: Map<AccountLedgerKind, AccountLedgerSection> = emptyMap(),
+ ) {
+     fun section(kind: AccountLedgerKind): AccountLedgerSection = sections[kind] ?: AccountLedgerSection()
+     fun withSection(kind: AccountLedgerKind, section: AccountLedgerSection): AccountLedgerState = copy(sections = sections + (kind to section))
+ }
+ 
+-internal class AccountLedgerViewModel : ViewModel() {
+-    private val requests = AccountScopedRequests(viewModelScope)
+-    private val mutableState = MutableStateFlow(AccountLedgerState())
++// Desktop: this model belongs to one ledger visit; an account change retires its Profile parent.
++internal class AccountLedgerViewModel(private val environment: DesktopAccountLedgerEnvironment) {
++    private val requests = AccountScopedRequests(environment.scope, MutableStateFlow(environment.identity))
++    private val mutableState = MutableStateFlow(AccountLedgerState(identity = environment.identity))
+     val state = mutableState.asStateFlow()
+ 
+-    init { requests.observe { mutableState.value = AccountLedgerState(identity = requests.identity) } }
++    private val repository = AccountLedgerRepository(environment)
+ 
+     fun load(kind: AccountLedgerKind, refresh: Boolean = false) {
+         val current = mutableState.value
+         val section = current.section(kind)
+-        if (!requests.isCurrent(current.identity) || (current.identity.mid ?: 0L) <= 0L || section.loading || (!refresh && section.entries != null)) return
+-        mutableState.update { it.withSection(kind, it.section(kind).copy(loading = true, error = null)) }
++        if (!environment.isCurrent() || !requests.isCurrent(current.identity) || (current.identity.mid ?: 0L) <= 0L || section.loading || (!refresh && section.entries != null)) return
++        environment.publish { mutableState.update { it.withSection(kind, it.section(kind).copy(loading = true, error = null)) } }
+         requests.launch {
+-            val result = AccountLedgerRepository.load(current.identity, kind)
+-            if (!requests.isCurrent(current.identity)) return@launch
+-            result.fold(
++            environment.ensureOwned()
++            val result = repository.load(current.identity, kind)
++            if (!environment.isCurrent() || !requests.isCurrent(current.identity)) return@launch
++            environment.publish { result.fold(
+                 onSuccess = { entries -> mutableState.update { it.withSection(kind, AccountLedgerSection(entries = entries)) } },
+                 onFailure = { error -> mutableState.update { it.withSection(kind, it.section(kind).copy(loading = false, error = error.message ?: "加载明细失败，请重试")) } },
+-            )
++            ) }
+         }
+     }
+ }

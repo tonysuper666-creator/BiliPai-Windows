@@ -2,6 +2,7 @@
 No Main/registry/Gradle writes, transport, owner, store, cache or final commit.
 """
 from pathlib import Path
+from desktop_paths import long_path
 import hashlib, json, re, subprocess, textwrap
 
 HERE = Path(__file__).resolve().parent
@@ -12,7 +13,7 @@ ORIGINAL_SHA = '8ab6d642e5085483ffa5fbe684cb962468c6b93daec46c1eb768e98f8b3fe0b0
 
 def safe(p):
     s = str(Path(p).absolute())
-    return Path(s if s.startswith('\\\\?\\') else '\\\\?\\' + s)
+    return long_path(s)
 
 def write(p, content):
     safe(p.parent).mkdir(parents=True, exist_ok=True)

@@ -42,16 +42,14 @@ class OriginalSeedPaletteSourceTest(unittest.TestCase):
             self.assertEqual(46, proof['originalTestCaseCount'])
             self.assertEqual(10, len(proof['wholeOriginalTestProofs']))
             for row in proof['wholeOriginalTestProofs']:
-                expected_imports = {
-                    'SeedColorSchemeTest.kt': (
+                expected_edits = {
+                    'SeedColorSchemeTest.kt': [(
                         'import kotlin.test.assertEquals',
-                        'import com.bilipai.desktop.appearance.assertDesktopPaletteEquals as assertEquals'),
-                    'AppThemeEndpointPolicyTest.kt': (
-                        'import com.android.purebilibili.core.store.AppThemeSettings',
-                        'import com.bilipai.desktop.appearance.DesktopThemeSettings as AppThemeSettings'),
+                        'import com.bilipai.desktop.appearance.assertDesktopPaletteEquals as assertEquals')],
+                    'AppThemeEndpointPolicyTest.kt': list(palette.ENDPOINT_TEST_EDITS),
                 }
-                expected = expected_imports.get(row['filename'])
-                self.assertEqual([] if expected is None else [expected],
+                expected = expected_edits.get(row['filename'], [])
+                self.assertEqual(expected,
                     [(edit['before'], edit['after']) for edit in row['edits']])
                 targets = list(tests.rglob(row['filename']))
                 self.assertEqual(1, len(targets))

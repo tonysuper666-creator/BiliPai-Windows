@@ -1,0 +1,71 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicPublishPickers.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicPublishPickers.kt
+@@ -57,6 +57,7 @@
+     var message by remember { mutableStateOf<String?>(null) }
+     var loading by remember { mutableStateOf(false) }
+     val scope = rememberCoroutineScope()
++    val upstreamSession = com.bilipai.desktop.data.LocalDesktopUpstreamSession.current // Desktop (TON-1071): requests run for the window's current account
+     var searchJob by remember { mutableStateOf<Job?>(null) }
+     fun dismiss() {
+         searchJob?.cancel()
+@@ -67,7 +68,7 @@
+         loading = true
+         message = null
+         val requestedQuery = query
+-        searchJob = scope.launch {
++        searchJob = scope.launch { com.bilipai.desktop.data.DesktopUpstreamSession.require(upstreamSession, "DynamicMentionPickerDialog").withOwner {
+             CommentRepository.searchMentionUsers(requestedQuery).fold(
+                 onSuccess = {
+                     if (query == requestedQuery) {
+@@ -78,7 +79,7 @@
+                 onFailure = { if (query == requestedQuery) { users = emptyList(); message = it.message ?: "搜索失败" } },
+             )
+             loading = false
+-        }
++        } }
+     }
+     LaunchedEffect(Unit) { search() }
+     AppAlertDialog(
+@@ -136,13 +137,14 @@
+     var hasMore by remember { mutableStateOf(false) }
+     var activeQuery by remember { mutableStateOf("") }
+     val scope = rememberCoroutineScope()
++    val upstreamSession = com.bilipai.desktop.data.LocalDesktopUpstreamSession.current // Desktop (TON-1071): requests run for the window's current account
+     fun search(loadMore: Boolean = false) {
+         if (loading) return
+         loading = true
+         message = null
+         val requestedQuery = if (loadMore) activeQuery else query
+         val requestedPage = if (loadMore) page + 1 else 1
+-        scope.launch {
++        scope.launch { com.bilipai.desktop.data.DesktopUpstreamSession.require(upstreamSession, "DynamicTopicPickerDialog").withOwner {
+             DynamicCreateRepository.searchPublishTopics(requestedQuery, requestedPage).fold(
+                 onSuccess = { result ->
+                     if (query == requestedQuery) {
+@@ -156,7 +158,7 @@
+                 onFailure = { if (query == requestedQuery) message = it.message ?: "搜索失败" },
+             )
+             loading = false
+-        }
++        } }
+     }
+     LaunchedEffect(Unit) { search(false) }
+     AppAlertDialog(
+@@ -195,12 +197,14 @@
+     onDismiss: () -> Unit,
+     onSelected: (String) -> Unit,
+ ) {
+-    var emotes by remember { mutableStateOf(DynamicEmoteCatalog.snapshot()) }
++    val upstreamSession = com.bilipai.desktop.data.LocalDesktopUpstreamSession.current // Desktop (TON-1071): requests run for the window's current account
++    val emoteSession = com.bilipai.desktop.data.DesktopUpstreamSession.require(upstreamSession, "DynamicEmotePickerDialog")
++    var emotes by remember { mutableStateOf(emoteSession.read(emptyMap()) { DynamicEmoteCatalog.snapshot() }) }
+     var loading by remember { mutableStateOf(emotes.isEmpty()) }
+-    val emoteCatalogSessionKey = DynamicEmoteCatalog.currentSessionKey()
++    val emoteCatalogSessionKey = emoteSession.read(null) { DynamicEmoteCatalog.currentSessionKey() }
+     LaunchedEffect(emoteCatalogSessionKey) {
+         loading = true
+-        emotes = DynamicEmoteCatalog.ensureLoaded()
++        emoteSession.withOwner { emotes = DynamicEmoteCatalog.ensureLoaded() }
+         loading = false
+     }
+     AppAlertDialog(

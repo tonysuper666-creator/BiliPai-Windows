@@ -1,0 +1,29 @@
+--- a/home-page/com/android/purebilibili/feature/home/HomeCategoryPage.kt
++++ b/home-page/com/android/purebilibili/feature/home/HomeCategoryPage.kt
+@@ -351,7 +351,7 @@
+     val videoGridKeys = remember(visibleGridVideos) {
+         resolveHomeCategoryVideoGridKeys(visibleGridVideos)
+     }
+-    SideEffect { cardReflowState.retainKeys(videoGridKeys.toSet()) }
++    SideEffect { cardReflowState.retainKeys(videoGridKeys) }
+     val oldContentVideoIndex = oldContentAnchorBvid?.let { anchor ->
+         visibleGridVideos.indexOfFirst { it.bvid == anchor }.takeIf { it >= 0 }
+     } ?: oldContentStartIndex
+@@ -883,7 +883,7 @@
+     val subCategories = PopularSubCategory.entries
+     val selectedIndex = subCategories.indexOf(selectedSubCategory).coerceAtLeast(0)
+     val labels = subCategories.map { subCategory ->
+-        stringResource(resolvePopularSubCategoryLabelRes(subCategory))
++        androidx.compose.ui.res.stringResource(resolvePopularSubCategoryLabelRes(subCategory))
+     }
+ 
+     Box(
+@@ -930,7 +930,7 @@
+     val modes = TodayWatchMode.entries
+     val selectedIndex = modes.indexOf(selectedMode).coerceAtLeast(0)
+     val labels = modes.map { mode ->
+-        stringResource(resolveTodayWatchModeLabelRes(mode))
++        androidx.compose.ui.res.stringResource(resolveTodayWatchModeLabelRes(mode))
+     }
+     BottomBarLiquidSegmentedControl(
+         items = labels,

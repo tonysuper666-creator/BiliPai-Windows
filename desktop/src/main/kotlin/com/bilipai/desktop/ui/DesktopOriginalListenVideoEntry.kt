@@ -36,21 +36,34 @@ internal class DesktopOriginalListenVideoEntry(
     override fun close() { if (closed.compareAndSet(false, true)) job.cancel() }
 }
 
+/** What the patched upstream ListenVideoViewModel needs from its owner (the one thing a test can stand in for). */
+internal interface DesktopOriginalListenVideoOwner {
+    val scope: CoroutineScope
+    val dataSource: com.android.purebilibili.feature.audio.library.ListenVideoLibraryDataSource
+    fun currentMid(): Long
+    /** A MutableStateFlow whose every write is admitted by the owner; a retired owner throws CancellationException. */
+    fun <T> ownedState(initial: T): MutableStateFlow<T>
+}
+
 /** The required FavoriteEnvironment is the existing Root factory's same
  * ownedHomeService/epoch graph. Only original read protocols are used here. */
 internal class DesktopOriginalListenVideoEnvironment(
     private val entry: DesktopOriginalListenVideoEntry,
     private val favorites: DesktopFavoriteEnvironment,
-) {
-    val scope get() = entry.scope
-    val dataSource = DesktopOriginalListenVideoLibraryDataSource(favorites)
+) : DesktopOriginalListenVideoOwner {
+    override val scope get() = entry.scope
+    override val dataSource: com.android.purebilibili.feature.audio.library.ListenVideoLibraryDataSource =
+        DesktopOriginalListenVideoLibraryDataSource(favorites)
     fun assertOwned() { entry.assertOwned(); favorites.assertOwned() }
-    fun currentMid(): Long { assertOwned(); return favorites.currentMid() ?: 0L }
+    override fun currentMid(): Long { assertOwned(); return favorites.currentMid() ?: 0L }
     fun commit(block: () -> Unit) {
         assertOwned()
         if (!entry.commit { assertOwned(); block() })
             throw CancellationException("ListenVideo publication retired")
     }
+    /** The patched upstream ListenVideoViewModel keeps its original reducers; each write is admitted here, like the old commit calls. */
+    override fun <T> ownedState(initial: T): MutableStateFlow<T> =
+        DesktopHomeOwnedMutableStateFlow(initial) { block -> entry.commit { assertOwned(); block() } }
     fun <T> setState(state: MutableStateFlow<T>, value: T) = commit { state.value = value }
     fun <T> updateState(state: MutableStateFlow<T>, transform: (T) -> T) = commit { state.update(transform) }
     fun request(context: CoroutineContext): DesktopOriginalListenVideoRequest {

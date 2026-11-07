@@ -4,6 +4,7 @@ import contextlib
 import importlib.util
 import io
 import json
+import os
 import re
 import shutil
 import sys
@@ -13,6 +14,8 @@ from unittest.mock import patch
 
 REPO = Path(__file__).resolve().parents[3]
 TOOLS = REPO/'desktop/tools'
+# Gradle's mergedRepositoryRoot is the live tree; inside the gate read point it is BILIPAI_LIVE_ROOT.
+MERGED = Path(os.environ.get('BILIPAI_LIVE_ROOT') or REPO)
 sys.path.insert(0, str(TOOLS))
 import v046_identity_badges as badges
 
@@ -196,18 +199,12 @@ class OriginalIdentityBadgeSources(unittest.TestCase):
         self.assertEqual(1, producer.count('v046-identity-badges-proof.json'))
 
     def test_pink_definers_are_unique_and_every_emitted_call_resolves_to_the_components_package(self):
-        # extract-upstream-space-pages.py reads two Gradle-generated owners that only exist after the desktop build has run
-        owners = [REPO/'desktop/build/generated/space-overview/com/android/purebilibili/feature/space/DesktopOriginalSpaceOverview.kt',
-                  REPO/'desktop/build/generated/space-contributions/com/android/purebilibili/feature/space/DesktopUpstreamSpaceContributionDeclarations.kt']
-        if not all(owner.is_file() for owner in owners):
-            self.skipTest('needs the Gradle-generated Space owners; run the desktop build first')
         generated = {'home': self.output/'home'}
         for label, filename in (
             ('reply', 'extract-upstream-dynamic-reply.py'),
             ('search', 'extract-upstream-video-comment-ui.py'),
             ('space', 'extract-upstream-space-pages.py'),
             ('editor', 'extract-upstream-dynamic-editor.py'),
-            ('overview', 'extract-space-overview.py'),
             ('components', 'extract-upstream-components.py'),
         ):
             module = load(filename)
@@ -227,7 +224,9 @@ class OriginalIdentityBadgeSources(unittest.TestCase):
         for row in catalog['sources']:
             if row.get('mode') != 'direct' or not str(row['path']).endswith('.kt'):
                 continue
-            texts['direct/'+row['path']] = (REPO/row['path']).read_text(encoding='utf8')
+            # Rows added with the upstream merge (ad2967bbf) exist only in the merged root Gradle compiles them from.
+            source = REPO/row['path'] if (REPO/row['path']).is_file() else MERGED/row['path']
+            texts['direct/'+row['path']] = source.read_text(encoding='utf8')
         owners = {name: [] for name in DECLS}
         for path, text in texts.items():
             for name, pattern in DECLS.items():

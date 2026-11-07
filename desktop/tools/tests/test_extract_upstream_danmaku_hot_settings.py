@@ -46,19 +46,12 @@ class HotDanmakuSettingsExtractionTest(unittest.TestCase):
         self.assertNotIn("expandedHotDanmaku", panel)
         self.assertIn("LocalDesktopDanmakuHotSettingsBindings.current", panel)
         self.assertNotIn("SettingsManager.", panel)
-        # Verify every real panel color call against the emitted native methods,
-        # and preserve each complete original function rather than a color shim.
+        # The panel's real color calls. The generated AppContentColors copy is no longer
+        # compiled: design-system is compiled whole from the merged root (e2528efba), so
+        # compileKotlin resolves these calls against the upstream palette.
         import re
-        from v038_danmaku_merge import fixed_sources
-        originals, _ = fixed_sources(REPO)
-        colors = (output / 'com/android/purebilibili/core/ui/AppContentColors.kt').read_text(encoding='utf-8')
         required = set(re.findall(r'AppContentColors\.(\w+)\(', panel))
         self.assertEqual({'accent', 'error', 'onAccent'}, required)
-        self.assertEqual(required, set(re.findall(r'fun (\w+)\(\): Color', colors)))
-        for name in required:
-            start = originals['AppContentColors.kt'].index('    @Composable\n    @ReadOnlyComposable\n    fun '+name+'(): Color')
-            end = originals['AppContentColors.kt'].index('\n\n', start)
-            self.assertIn(originals['AppContentColors.kt'][start:end], colors)
 
     def test_complete_original_hot_setter_bodies_use_only_same_owned_store(self):
         output = self.root / "fresh-preferences"

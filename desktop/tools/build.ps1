@@ -113,6 +113,15 @@ try {
         $gradleArguments = @('-p', 'desktop', '--console=plain')
         $gradleArguments += @('--init-script', (Join-Path $PSScriptRoot 'original-root-ui-harness.init.gradle'),
             "-PcandidateProductionRuntimeModel=$runtimeModel")
+        $gateAResults = @((Join-Path $desktopRoot 'build/test-results'), (Join-Path $desktopRoot 'upstream-core/build/test-results'))
+        $gateAReport = Join-Path $desktopRoot 'build/reports/gate-a.json'
+        if (-not $SkipTests) {
+            # Gate A: only this run's results are judged, so no earlier XML or report may survive.
+            foreach ($stale in @($gateAResults + $gateAReport)) {
+                if (Test-Path -LiteralPath $stale) { Remove-Item -LiteralPath $stale -Recurse -Force }
+            }
+            $gradleArguments += @('--init-script', (Join-Path $PSScriptRoot 'gate-a.init.gradle'))
+        }
         $gradleArguments += $toolchainArguments
         $gradleArguments += $workspaceReuseArguments
         if (-not $SkipTests) { $gradleArguments += 'test' }
@@ -122,9 +131,15 @@ try {
         & (Join-Path $repoRoot 'gradlew.bat') @gradleArguments
         if ($LASTEXITCODE -ne 0) { throw "Windows Gradle build failed ($LASTEXITCODE)." }
         if (-not $SkipTests) {
+            $pythonExecutable = if ($env:PYTHON_EXECUTABLE) { $env:PYTHON_EXECUTABLE } else { 'python' }
+            # Gate A (TON-1085): test failures no longer fail Gradle; the committed same-upstream baseline decides.
+            # Any new failing test, any missing or newly skipped baseline test, a failing new test or a changed
+            # upstream tree fails the build.
+            & $pythonExecutable (Join-Path $PSScriptRoot 'gate_a.py') check --baseline (Join-Path $PSScriptRoot 'gate-a-baseline.json') `
+                --results $gateAResults[0] --results $gateAResults[1] --report $gateAReport
+            if ($LASTEXITCODE -ne 0) { throw "Gate A failed ($LASTEXITCODE): unit tests regressed against desktop/tools/gate-a-baseline.json; see $gateAReport." }
             # These contracts inspect the actual generated Kotlin and resources.
             # They must run after Gradle generation, before packaging/publication.
-            $pythonExecutable = if ($env:PYTHON_EXECUTABLE) { $env:PYTHON_EXECUTABLE } else { 'python' }
             & $pythonExecutable (Join-Path $PSScriptRoot 'run-tool-tests.py') --stage generated
             if ($LASTEXITCODE -ne 0) { throw "Windows source contract tests failed ($LASTEXITCODE)." }
         }
@@ -318,6 +333,9 @@ try {
             passed = $true
             windowsSourceCommit = $releaseSourceSha
             kotlinUnitTests = 'passed'
+            kotlinUnitTestGate = 'A'
+            gateABaselineSha = (Get-Content -LiteralPath (Join-Path $PSScriptRoot 'gate-a-baseline.json') -Raw | ConvertFrom-Json).baselineSha
+            gateAReport = $gateAReport
             pythonSourceContractTests = 'passed'
             guestNetworkBackendSmoke = 'passed'
             packagedNativePlayerSmoke = 'passed'

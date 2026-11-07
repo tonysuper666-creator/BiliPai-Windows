@@ -47,7 +47,7 @@ internal class DesktopProfileOwnedFiles(
     }
     private fun directory(path:Path):Path {
         val target=path.toAbsolutePath().normalize()
-        require(target.parent==root && target.fileName.toString() in setOf("profile_wallpaper","splash","home_wallpaper","images")) {"壁纸目录不受支持"}
+        require(target.parent==root && target.fileName.toString() in setOf("profile_wallpaper","splash","home_wallpaper","images","subscription_article_wallpaper","cache")) {"壁纸目录不受支持"}
         UpdateStorage.existingPathWithoutLinks(root)
         Files.createDirectories(target);UpdateStorage.existingPathWithoutLinks(target)
         require(Files.isDirectory(target,LinkOption.NOFOLLOW_LINKS));return target

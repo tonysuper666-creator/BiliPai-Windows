@@ -1,0 +1,18 @@
+--- a/upstream/app/src/main/java/com/android/purebilibili/navigation3/BiliPaiNavEntryContentPolicy.kt
++++ b/upstream/app/src/main/java/com/android/purebilibili/navigation3/BiliPaiNavEntryContentPolicy.kt
+@@ -27,6 +27,7 @@
+     WEB_DAV_BACKUP,
+     TIPS_SETTINGS,
+     PROFILE,
++    ACCOUNT_LEDGER,
+     VIDEO_DETAIL,
+     AICU_QUERY,
+     HISTORY,
+@@ -101,6 +102,7 @@
+         BiliPaiNavKey.WebDavBackup -> BiliPaiNavEntryContentRole.WEB_DAV_BACKUP
+         BiliPaiNavKey.TipsSettings -> BiliPaiNavEntryContentRole.TIPS_SETTINGS
+         BiliPaiNavKey.Profile -> BiliPaiNavEntryContentRole.PROFILE
++        is BiliPaiNavKey.AccountLedger -> BiliPaiNavEntryContentRole.ACCOUNT_LEDGER
+         is BiliPaiNavKey.VideoDetail -> BiliPaiNavEntryContentRole.VIDEO_DETAIL
+         is BiliPaiNavKey.AicuQuery -> BiliPaiNavEntryContentRole.AICU_QUERY
+         BiliPaiNavKey.History -> BiliPaiNavEntryContentRole.HISTORY

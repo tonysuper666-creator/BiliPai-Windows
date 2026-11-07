@@ -1,0 +1,21 @@
+Upstream-source-sha256: 2c8bc292bbf3009cb6a5f3db819680c92e83d6dca4776e2bcb48225da674283d
+Reason: 7d7574a7c 把 MATERIAL3 的 insideHorizontalPaddingDp 从 18 改成 16（对齐 Miuix BasicComponentDefaults 与 M3 ListItem 的 16dp），同一笔已把 AdaptiveListComponentPolicyTest 改成 16，本类当时漏改；1c15f1b3f 只动了触控高度。
+期望值改为 16，方法名去掉 roomier；图标 40、触控 44、显式 chevron 三条断言原样保留。生产实现不动。
+
+--- a/design-system/src/test/java/com/android/purebilibili/core/ui/components/AdaptiveListVisualCapabilitiesTest.kt
++++ b/design-system/src/test/java/com/android/purebilibili/core/ui/components/AdaptiveListVisualCapabilitiesTest.kt
+@@ -11,12 +11,12 @@
+ class AdaptiveListVisualCapabilitiesTest {
+ 
+     @Test
+-    fun `material3 capabilities preserve explicit chevron and roomier metrics`() {
++    fun `material3 capabilities keep the chevron and align with md3 list item padding`() {
+         val capabilities = resolveAdaptiveListVisualCapabilities(AppUiStyle.MATERIAL3)
+ 
+         assertTrue(capabilities.showExplicitActionChevron)
+         assertEquals(40, capabilities.componentSpec.iconContainerSizeDp)
+-        assertEquals(18, capabilities.rowSpec.insideHorizontalPaddingDp)
++        assertEquals(16, capabilities.rowSpec.insideHorizontalPaddingDp)
+         assertEquals(44, capabilities.rowSpec.minTouchTargetHeightDp)
+     }
+ 

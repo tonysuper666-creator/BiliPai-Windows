@@ -1,0 +1,1404 @@
+COMMAND: ./gradlew -p desktop --no-daemon --console=plain compileKotlin test --tests com.bilipai.desktop.ui.modal.*
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/9.5.0/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build
+> Task :applyDesktopUpstreamPatches
+> Task :prepareUpstreamSources
+> Task :extractBgmDetail
+
+> Task :verifyGoogleCastSources
+{"passed": true, "originalJavaFiles": 32, "narrowlyModifiedFiles": 3, "pinnedRoots": 2, "physicalDeviceTested": false, "auditedRecords": 95}
+Verified six fixed Google Cast runtime dependency digests.
+
+> Task :extractGoogleCastPlatform
+
+> Task :extractOriginalAicu
+Generated full original Aicu outputs 5
+
+> Task :extractOriginalHomeBangumiPage
+Complete original Home Bangumi Hub emitted
+
+> Task :extractUpstreamMedia
+<baseline>/desktop/build/generated/media/com/android/purebilibili/data/repository/DesktopMediaPgcPolicies.kt
+<baseline>/desktop/build/generated/media/com/android/purebilibili/data/repository/DesktopDownloadDanmakuRepository.kt
+<baseline>/desktop/build/generated/media/com/android/purebilibili/danmaku/parser/DesktopDanmakuMetadataParser.kt
+<baseline>/desktop/build/generated/media/com/android/purebilibili/feature/download/DesktopOfflinePositionPolicy.kt
+<baseline>/desktop/build/generated/media/com/android/purebilibili/data/repository/DesktopLiveHosts.kt
+<baseline>/desktop/build/generated/media/com/android/purebilibili/core/network/socket/LiveDanmakuClient.kt
+<baseline>/desktop/build/generated/media/com/android/purebilibili/core/network/socket/LiveDanmakuConnectionHealthPolicy.kt
+<baseline>/desktop/build/generated/media/com/android/purebilibili/core/network/socket/DanmakuProtocol.kt
+<baseline>/desktop/build/generated/live-stream-original-tests/com/android/purebilibili/core/network/socket/LiveDanmakuClientTest.kt
+<baseline>/desktop/build/generated/live-stream-original-tests/com/android/purebilibili/core/network/socket/LiveDanmakuConnectionHealthPolicyTest.kt
+<baseline>/desktop/build/generated/live-stream-original-tests/com/android/purebilibili/core/network/socket/DanmakuProtocolLimitsTest.kt
+<baseline>/desktop/build/generated/media/com/android/purebilibili/data/repository/DesktopLivePolicies.kt
+<baseline>/desktop/build/generated/media/com/android/purebilibili/data/repository/LiveInteractionModels.kt
+<baseline>/desktop/build/generated/media/com/android/purebilibili/feature/live/LiveRealtimeMessagePolicy.kt
+<baseline>/desktop/build/generated/media/com/android/purebilibili/feature/live/LiveDanmakuFilterPolicy.kt
+<baseline>/desktop/build/generated/media/com/android/purebilibili/feature/live/DesktopLiveDanmakuItem.kt
+<baseline>/desktop/build/generated/media/com/android/purebilibili/data/repository/DesktopLiveModerationRequests.kt
+<baseline>/desktop/build/generated/media/com/android/purebilibili/feature/live/components/DesktopOriginalLiveModerationUi.kt
+<baseline>/desktop/build/generated/media/com/android/purebilibili/feature/bangumi/DesktopFollowPolicies.kt
+<baseline>/desktop/build/generated/media/com/android/purebilibili/data/repository/DesktopOriginalLiveStreamRequest.kt
+<baseline>/desktop/build/generated/media/com/android/purebilibili/feature/live/DesktopOriginalLiveStreamPolicy.kt
+<baseline>/desktop/build/generated/media/com/android/purebilibili/feature/live/components/LiveStreamSourceSheet.kt
+<baseline>/desktop/build/generated/media/com/android/purebilibili/feature/live/DesktopLiveReloadBudget.kt
+<baseline>/desktop/build/generated/media/com/android/purebilibili/feature/live/components/DesktopOriginalLiveChatImage.kt
+<baseline>/desktop/build/generated/media/com/android/purebilibili/data/repository/DesktopLiveVoteSnapshot.kt
+<baseline>/desktop/build/generated/media/com/android/purebilibili/feature/live/components/LiveVotePanel.kt
+
+> Task :extractOriginalBangumiPages
+{"generatedFiles": 12, "fullOriginalFiles": 8, "playerAdaptationStillInProgress": true}
+
+> Task :extractOriginalBangumiPlayer
+Complete original PGC body outputs: 7 ; actual Root/native ports are required
+
+> Task :extractOriginalFavorites
+
+> Task :extractOriginalWatchLater
+[
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/watchlater/WatchLaterPlaybackPolicy.kt",
+    "commit": "79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40",
+    "sha256LfUtf8": "ce20213fc2e0b291be16d6077a02bcd0c23577a5b06472c4c9a1d89048de48b2",
+    "output": {
+      "path": "com/android/purebilibili/feature/watchlater/WatchLaterPlaybackPolicy.kt",
+      "sha256LfUtf8": "ce20213fc2e0b291be16d6077a02bcd0c23577a5b06472c4c9a1d89048de48b2",
+      "mode": "direct"
+    }
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/watchlater/WatchLaterLayoutPolicy.kt",
+    "commit": "79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40",
+    "sha256LfUtf8": "4233cc5aed3d8541f25ae8c1dd095743311de9ecdbd60d59094330b67fec1348",
+    "output": {
+      "path": "com/android/purebilibili/feature/watchlater/WatchLaterLayoutPolicy.kt",
+      "sha256LfUtf8": "4233cc5aed3d8541f25ae8c1dd095743311de9ecdbd60d59094330b67fec1348",
+      "mode": "direct"
+    }
+  },
+  {
+    "path": "core-data/src/main/java/com/android/purebilibili/data/repository/WatchLaterRepository.kt",
+    "commit": "79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40",
+    "sha256LfUtf8": "2475d0ddf99fb57e0c0c0edba851de048b2f111f3bac450d8934f4da03cb3f72",
+    "output": {
+      "path": "com/android/purebilibili/data/repository/DesktopOriginalWatchLaterRepository.kt",
+      "sha256LfUtf8": "e4a3df398e5a7041d6a85eb95702eeafa23d14641b0a4a8a2c6b51e7014f686e",
+      "mode": "selected"
+    }
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/watchlater/WatchLaterScreen.kt",
+    "commit": "79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40",
+    "sha256LfUtf8": "266e5f40e13147e8ffafc06537966174dcf0f492eac8cde455070a45885b6f84",
+    "output": {
+      "path": "com/android/purebilibili/feature/watchlater/WatchLaterScreen.kt",
+      "sha256LfUtf8": "559873b472e78ad2419481ab6c5593d9aaf230c62fa5a46db4f7008861b31c3b",
+      "mode": "selected"
+    }
+  }
+]
+
+> Task :extractOriginalFollowing
+[
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/following/FollowingGroupPolicy.kt",
+    "upstreamCommit": "070ab41608213cd981fd7e51df357295f9a537bf",
+    "sha256LfUtf8": "5cd74fb81b3dde9d36a1ce3bfa0578192768a1b9b352243341772ad3d440be68",
+    "wholeCurrentOriginal": true,
+    "output": {
+      "path": "com/android/purebilibili/feature/following/FollowingGroupPolicy.kt",
+      "mode": "selected",
+      "sha256LfUtf8": "5cd74fb81b3dde9d36a1ce3bfa0578192768a1b9b352243341772ad3d440be68"
+    }
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/following/FollowingLayoutPolicy.kt",
+    "upstreamCommit": "79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40",
+    "sha256LfUtf8": "cffcd31786c81a7798035357b4fde1e46f0e2fa767b819630f49583268dd7b5b",
+    "output": {
+      "path": "com/android/purebilibili/feature/following/FollowingLayoutPolicy.kt",
+      "mode": "direct",
+      "sha256LfUtf8": "cffcd31786c81a7798035357b4fde1e46f0e2fa767b819630f49583268dd7b5b"
+    }
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/following/FollowingUserPresentationPolicy.kt",
+    "upstreamCommit": "79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40",
+    "sha256LfUtf8": "331ab17f76abb19383a5867b489a8b80018bb769b8cef753248dbd7f419f20d9",
+    "output": {
+      "path": "com/android/purebilibili/feature/following/FollowingUserPresentationPolicy.kt",
+      "mode": "direct",
+      "sha256LfUtf8": "331ab17f76abb19383a5867b489a8b80018bb769b8cef753248dbd7f419f20d9"
+    }
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/store/FollowingCacheStore.kt",
+    "upstreamCommit": "79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40",
+    "sha256LfUtf8": "217da212735a1397d9a367343c76b6ed8e2668dccb62a048bdaa8e6def6afa7a",
+    "output": {
+      "path": "com/android/purebilibili/core/store/FollowingCacheStore.kt",
+      "mode": "selected",
+      "sha256LfUtf8": "661222fd4ebfdb29e3aafde94563c6096685cf6ef376529d597e93cb2108160f"
+    }
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/following/FollowingListScreen.kt",
+    "upstreamCommit": "070ab41608213cd981fd7e51df357295f9a537bf",
+    "sha256LfUtf8": "40efc40e9d7844fc25be260bd7afda6e3e4aecdb15423a7be0b2cc24de9a520d",
+    "currentFollowingPlatformBinding": {
+      "upstreamCommit": "070ab41608213cd981fd7e51df357295f9a537bf",
+      "sourceManifestSHA256": "ca4bd93d45e72c42d9d405a8f2aad2ded891c0288a177634c82e30099872fda9",
+      "completeOriginalFollowingVmAndUi": true,
+      "originalGenerationReused": true,
+      "rootCacheRequestAndWriteAdmissionRetained": true,
+      "existingRetainedScopeApiAndActionsUsed": true,
+      "firstPageOnlyAtStartup": true,
+      "explicitOriginalLoadAllForSearch": true,
+      "rootPhysicalForegroundBound": true,
+      "originalToWindows": {
+        "beforeSHA256": "40efc40e9d7844fc25be260bd7afda6e3e4aecdb15423a7be0b2cc24de9a520d",
+        "afterSHA256": "0980dad82ef15c55f6aee84ed6d783fcbd5ceb92a90ea1e1c94f3bb33a3551d5",
+        "wholeInverseExact": true,
+        "hunks": [
+          {
+            "beforeLines": [
+              38,
+              39
+            ],
+            "afterLines": [
+              38,
+              39
+            ],
+            "before": "import androidx.compose.ui.platform.LocalContext\n",
+            "after": "import coil3.compose.LocalPlatformContext as LocalContext\n"
+          },
+          {
+            "beforeLines": [
+              43,
+              46
+            ],
+            "afterLines": [
+              43,
+              43
+            ],
+            "before": "import androidx.lifecycle.ViewModel\nimport androidx.lifecycle.viewModelScope\nimport androidx.lifecycle.viewmodel.compose.viewModel\n",
+            "after": ""
+          },
+          {
+            "beforeLines": [
+              48,
+              49
+            ],
+            "afterLines": [
+              45,
+              45
+            ],
+            "before": "import com.android.purebilibili.core.network.NetworkModule\n",
+            "after": ""
+          },
+          {
+            "beforeLines": [
+              77,
+              78
+            ],
+            "afterLines": [
+              73,
+              73
+            ],
+            "before": "import com.android.purebilibili.data.repository.ActionRepository\n",
+            "after": ""
+          },
+          {
+            "beforeLines": [
+              82,
+              82
+            ],
+            "afterLines": [
+              77,
+              78
+            ],
+            "before": "",
+            "after": "import kotlinx.coroutines.ensureActive\n"
+          },
+          {
+            "beforeLines": [
+              88,
+              89
+            ],
+            "afterLines": [
+              84,
+              85
+            ],
+            "before": "import androidx.lifecycle.compose.collectAsStateWithLifecycle\n",
+            "after": "import androidx.compose.runtime.collectAsState as collectAsStateWithLifecycle\n"
+          },
+          {
+            "beforeLines": [
+              205,
+              206
+            ],
+            "afterLines": [
+              201,
+              202
+            ],
+            "before": "class FollowingListViewModel : ViewModel() {\n",
+            "after": "class FollowingListViewModel(environment: DesktopFollowingEnvironment) : DesktopFollowingScopedOwner(environment) {\n"
+          },
+          {
+            "beforeLines": [
+              224,
+              225
+            ],
+            "afterLines": [
+              220,
+              228
+            ],
+            "before": "    private var followingGeneration = 0L\n",
+            "after": "    @Volatile private var followingGeneration = 0L\n    @Volatile private var cacheWriteGeneration = 0L\n    private var firstPageJob: Job? = null\n    private suspend fun checkRequest(generation: Long) {\n        kotlinx.coroutines.currentCoroutineContext().ensureActive()\n        environment.assertOwned()\n        if (generation != followingGeneration) throw CancellationException(\"Following request retired\")\n    }\n"
+          },
+          {
+            "beforeLines": [
+              231,
+              231
+            ],
+            "afterLines": [
+              234,
+              235
+            ],
+            "before": "",
+            "after": "        environment.assertOwned()\n"
+          },
+          {
+            "beforeLines": [
+              235,
+              235
+            ],
+            "afterLines": [
+              239,
+              240
+            ],
+            "before": "",
+            "after": "        firstPageJob?.cancel()\n"
+          },
+          {
+            "beforeLines": [
+              250,
+              251
+            ],
+            "afterLines": [
+              255,
+              256
+            ],
+            "before": "        viewModelScope.launch {\n",
+            "after": "        firstPageJob = viewModelScope.launch {\n"
+          },
+          {
+            "beforeLines": [
+              257,
+              258
+            ],
+            "afterLines": [
+              262,
+              264
+            ],
+            "before": "                val response = NetworkModule.api.getFollowings(mid, pn = 1, ps = 50)\n",
+            "after": "                val response = environment.getFollowings(mid, pn = 1, ps = 50)\n                checkRequest(generation)\n"
+          },
+          {
+            "beforeLines": [
+              298,
+              299
+            ],
+            "afterLines": [
+              304,
+              305
+            ],
+            "before": "        val context = NetworkModule.appContext ?: return false\n",
+            "after": "        val context = environment.cacheContext\n"
+          },
+          {
+            "beforeLines": [
+              327,
+              327
+            ],
+            "afterLines": [
+              333,
+              334
+            ],
+            "before": "",
+            "after": "        environment.assertOwned()\n"
+          },
+          {
+            "beforeLines": [
+              336,
+              337
+            ],
+            "afterLines": [
+              343,
+              344
+            ],
+            "before": "                if (generation == followingGeneration) loadRemainingPagesJob = null\n",
+            "after": "                if (generation == followingGeneration && loadRemainingPagesJob === kotlinx.coroutines.currentCoroutineContext()[Job]) loadRemainingPagesJob = null\n"
+          },
+          {
+            "beforeLines": [
+              349,
+              350
+            ],
+            "afterLines": [
+              356,
+              358
+            ],
+            "before": "            val response = NetworkModule.api.getFollowings(mid, pn = page, ps = 50)\n",
+            "after": "            val response = environment.getFollowings(mid, pn = page, ps = 50)\n            checkRequest(generation)\n"
+          },
+          {
+            "beforeLines": [
+              357,
+              357
+            ],
+            "afterLines": [
+              365,
+              366
+            ],
+            "before": "",
+            "after": "            checkRequest(generation)\n"
+          },
+          {
+            "beforeLines": [
+              386,
+              386
+            ],
+            "afterLines": [
+              395,
+              396
+            ],
+            "before": "",
+            "after": "        environment.assertOwned()\n"
+          },
+          {
+            "beforeLines": [
+              392,
+              393
+            ],
+            "afterLines": [
+              402,
+              403
+            ],
+            "before": "                if (generation == followingGeneration) loadRemainingPagesJob = null\n",
+            "after": "                if (generation == followingGeneration && loadRemainingPagesJob === kotlinx.coroutines.currentCoroutineContext()[Job]) loadRemainingPagesJob = null\n"
+          },
+          {
+            "beforeLines": [
+              435,
+              435
+            ],
+            "afterLines": [
+              445,
+              446
+            ],
+            "before": "",
+            "after": "        val brandOrigin = environment.favorites.captureBrandFeedback()\n"
+          },
+          {
+            "beforeLines": [
+              453,
+              454
+            ],
+            "afterLines": [
+              464,
+              465
+            ],
+            "before": "                com.android.purebilibili.core.events.BrandSuccessEvents.followChanged(\n",
+            "after": "                environment.favorites.confirmBrandFollow(brandOrigin,\n"
+          },
+          {
+            "beforeLines": [
+              471,
+              472
+            ],
+            "afterLines": [
+              482,
+              483
+            ],
+            "before": "            val result = ActionRepository.followUser(mid, follow = false, emitBrandFeedback = false)\n",
+            "after": "            val result = environment.actions.followUser(mid, follow = false, emitBrandFeedback = false)\n"
+          },
+          {
+            "beforeLines": [
+              502,
+              503
+            ],
+            "afterLines": [
+              513,
+              516
+            ],
+            "before": "        val context = NetworkModule.appContext ?: return\n",
+            "after": "        val generation = followingGeneration\n        val writeGeneration = ++cacheWriteGeneration\n        val context = environment.cacheContext.forRequest { generation == followingGeneration && writeGeneration == cacheWriteGeneration }\n"
+          },
+          {
+            "beforeLines": [
+              526,
+              527
+            ],
+            "afterLines": [
+              539,
+              540
+            ],
+            "before": "                ActionRepository.getFollowGroupTags().onSuccess { tags ->\n",
+            "after": "                environment.actions.getFollowGroupTags().onSuccess { tags ->\n"
+          },
+          {
+            "beforeLines": [
+              548,
+              549
+            ],
+            "afterLines": [
+              561,
+              562
+            ],
+            "before": "                    val result = ActionRepository.getFollowGroupMemberMids(\n",
+            "after": "                    val result = environment.actions.getFollowGroupMemberMids(\n"
+          },
+          {
+            "beforeLines": [
+              565,
+              569
+            ],
+            "afterLines": [
+              578,
+              579
+            ],
+            "before": "                        com.android.purebilibili.core.util.Logger.w(\n                            \"FollowingListVM\",\n                            \"skip tag=$tagId group mapping: ${error.message}\"\n                        )\n",
+            "after": "\n"
+          },
+          {
+            "beforeLines": [
+              608,
+              609
+            ],
+            "afterLines": [
+              618,
+              619
+            ],
+            "before": "            val tags = ActionRepository.getFollowGroupTags().getOrThrow()\n",
+            "after": "            val tags = environment.actions.getFollowGroupTags().getOrThrow()\n"
+          },
+          {
+            "beforeLines": [
+              619,
+              620
+            ],
+            "afterLines": [
+              629,
+              630
+            ],
+            "before": "                    result = ActionRepository.getUserFollowGroupIds(mid)\n",
+            "after": "                    result = environment.actions.getUserFollowGroupIds(mid)\n"
+          },
+          {
+            "beforeLines": [
+              622,
+              626
+            ],
+            "afterLines": [
+              632,
+              633
+            ],
+            "before": "                    com.android.purebilibili.core.util.Logger.w(\n                        \"FollowingListVM\",\n                        \"skip group mapping for batch mid=$mid: ${error.message}\"\n                    )\n",
+            "after": "\n"
+          },
+          {
+            "beforeLines": [
+              646,
+              647
+            ],
+            "afterLines": [
+              653,
+              654
+            ],
+            "before": "        return ActionRepository.overwriteFollowGroupIds(targetMids.toSet(), selectedTagIds)\n",
+            "after": "        return environment.actions.overwriteFollowGroupIds(targetMids.toSet(), selectedTagIds)\n"
+          },
+          {
+            "beforeLines": [
+              657,
+              658
+            ],
+            "afterLines": [
+              664,
+              666
+            ],
+            "before": "    viewModel: FollowingListViewModel = viewModel()\n",
+            "after": "    viewModel: FollowingListViewModel,\n    active: Boolean\n"
+          },
+          {
+            "beforeLines": [
+              669,
+              671
+            ],
+            "afterLines": [
+              677,
+              679
+            ],
+            "before": "    LaunchedEffect(mid) {\n        viewModel.loadFollowingList(mid)\n",
+            "after": "    LaunchedEffect(mid, active) {\n        if (active) viewModel.loadFollowingList(mid)\n"
+          },
+          {
+            "beforeLines": [
+              708,
+              709
+            ],
+            "afterLines": [
+              716,
+              717
+            ],
+            "before": "                            AppTextButton(onClick = { viewModel.loadAllForSearch() }) {\n",
+            "after": "                            AppTextButton(onClick = { if (active) viewModel.loadAllForSearch() }) {\n"
+          },
+          {
+            "beforeLines": [
+              817,
+              818
+            ],
+            "afterLines": [
+              825,
+              826
+            ],
+            "before": "                                if (!isPullRefreshing) {\n",
+            "after": "                                if (active && !isPullRefreshing) {\n"
+          },
+          {
+            "beforeLines": [
+              862,
+              863
+            ],
+            "afterLines": [
+              870,
+              871
+            ],
+            "before": "                                                    AppButton(onClick = { viewModel.loadFollowingList(mid, forceRefresh = true) }) {\n",
+            "after": "                                                    AppButton(onClick = { if (active) viewModel.loadFollowingList(mid, forceRefresh = true) }) {\n"
+          },
+          {
+            "beforeLines": [
+              944,
+              946
+            ],
+            "afterLines": [
+              952,
+              954
+            ],
+            "before": "                                        LaunchedEffect(user.mid, filteredUsers.size) {\n                                            if (user.mid == filteredUsers.lastOrNull()?.mid && searchQuery.isBlank()) {\n",
+            "after": "                                        LaunchedEffect(user.mid, filteredUsers.size, active) {\n                                            if (active && user.mid == filteredUsers.lastOrNull()?.mid && searchQuery.isBlank()) {\n"
+          },
+          {
+            "beforeLines": [
+              983,
+              984
+            ],
+            "afterLines": [
+              991,
+              992
+            ],
+            "before": "                                                        .clickable { viewModel.loadMore() }\n",
+            "after": "                                                        .clickable { if (active) viewModel.loadMore() }\n"
+          }
+        ]
+      },
+      "windowsBrandSuccessAdaptation": {
+        "fixedUpstreamCommit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+        "beforeSha256": "becceba988ade35a4783eb006df06f78a3ec8187438ae0d3f5d13407d959d8c9",
+        "afterSha256": "0980dad82ef15c55f6aee84ed6d783fcbd5ceb92a90ea1e1c94f3bb33a3551d5",
+        "wholeInverseExact": true,
+        "edits": [
+          {
+            "label": "same actual \u6279\u91cf\u53d6\u5173 caller captures Root origin",
+            "count": 1,
+            "before": "        _isBatchUnfollowing.value = true\n",
+            "after": "        val brandOrigin = environment.favorites.captureBrandFeedback()\n        _isBatchUnfollowing.value = true\n"
+          },
+          {
+            "label": "complete current aggregate success through captured Root owner",
+            "count": 1,
+            "before": "com.android.purebilibili.core.events.BrandSuccessEvents.followChanged(\n",
+            "after": "environment.favorites.confirmBrandFollow(brandOrigin,\n"
+          }
+        ]
+      }
+    },
+    "windowsBrandSuccessAdaptation": {
+      "fixedUpstreamCommit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+      "beforeSha256": "becceba988ade35a4783eb006df06f78a3ec8187438ae0d3f5d13407d959d8c9",
+      "afterSha256": "0980dad82ef15c55f6aee84ed6d783fcbd5ceb92a90ea1e1c94f3bb33a3551d5",
+      "wholeInverseExact": true,
+      "edits": [
+        {
+          "label": "same actual \u6279\u91cf\u53d6\u5173 caller captures Root origin",
+          "count": 1,
+          "before": "        _isBatchUnfollowing.value = true\n",
+          "after": "        val brandOrigin = environment.favorites.captureBrandFeedback()\n        _isBatchUnfollowing.value = true\n"
+        },
+        {
+          "label": "complete current aggregate success through captured Root owner",
+          "count": 1,
+          "before": "com.android.purebilibili.core.events.BrandSuccessEvents.followChanged(\n",
+          "after": "environment.favorites.confirmBrandFollow(brandOrigin,\n"
+        }
+      ]
+    },
+    "output": {
+      "path": "com/android/purebilibili/feature/following/FollowingListScreen.kt",
+      "mode": "selected",
+      "sha256LfUtf8": "f4024cf5e0ec0cf2db58bcd8357a7b45951eed307f812f65973e106f9c0de2a7"
+    }
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/following/FansListScreen.kt",
+    "upstreamCommit": "070ab41608213cd981fd7e51df357295f9a537bf",
+    "sha256LfUtf8": "cbea2e0c5d403a55f5d7b4ce9e959026e66684b3ce1bfdc5eebd0401f1e95e4c",
+    "sourceManifestSHA256": "ca4bd93d45e72c42d9d405a8f2aad2ded891c0288a177634c82e30099872fda9",
+    "output": {
+      "path": "com/android/purebilibili/feature/following/FansListScreen.kt",
+      "mode": "selected",
+      "sha256LfUtf8": "f472fc557bac894f1c1f1dea7df8acfc661ce0b8b908c14fc36949de5a482beb"
+    },
+    "nativeFansPlatformBinding": {
+      "upstreamCommit": "070ab41608213cd981fd7e51df357295f9a537bf",
+      "sourceManifestSHA256": "ca4bd93d45e72c42d9d405a8f2aad2ded891c0288a177634c82e30099872fda9",
+      "wholeOriginalStateViewModelAndUiRetained": true,
+      "rootEntryOwnsViewModelAndScope": true,
+      "existingOwnedApiUsed": true,
+      "androidViewModelStoreCreated": false,
+      "followingCacheReusedForFans": false,
+      "originalToWindows": {
+        "beforeSHA256": "cbea2e0c5d403a55f5d7b4ce9e959026e66684b3ce1bfdc5eebd0401f1e95e4c",
+        "afterSHA256": "f472fc557bac894f1c1f1dea7df8acfc661ce0b8b908c14fc36949de5a482beb",
+        "wholeInverseExact": true,
+        "hunks": [
+          {
+            "beforeLines": [
+              14,
+              20
+            ],
+            "afterLines": [
+              14,
+              15
+            ],
+            "before": "import androidx.lifecycle.ViewModel\nimport androidx.lifecycle.viewModelScope\nimport androidx.lifecycle.compose.collectAsStateWithLifecycle\nimport androidx.lifecycle.viewmodel.compose.viewModel\nimport androidx.lifecycle.viewmodel.initializer\nimport androidx.lifecycle.viewmodel.viewModelFactory\n",
+            "after": "import androidx.compose.runtime.collectAsState as collectAsStateWithLifecycle\n"
+          },
+          {
+            "beforeLines": [
+              21,
+              22
+            ],
+            "afterLines": [
+              16,
+              16
+            ],
+            "before": "import com.android.purebilibili.core.network.NetworkModule\n",
+            "after": ""
+          },
+          {
+            "beforeLines": [
+              40,
+              41
+            ],
+            "afterLines": [
+              34,
+              35
+            ],
+            "before": "internal class FansListViewModel(private val mid: Long) : ViewModel() {\n",
+            "after": "internal class FansListViewModel(private val mid: Long, environment: DesktopFollowingEnvironment) : DesktopFollowingScopedOwner(environment) {\n"
+          },
+          {
+            "beforeLines": [
+              46,
+              46
+            ],
+            "afterLines": [
+              40,
+              41
+            ],
+            "before": "",
+            "after": "        environment.assertOwned()\n"
+          },
+          {
+            "beforeLines": [
+              57,
+              58
+            ],
+            "afterLines": [
+              52,
+              53
+            ],
+            "before": "                val response = NetworkModule.api.getFollowers(vmid = mid, pn = requestPage)\n",
+            "after": "                val response = environment.getFollowers(vmid = mid, pn = requestPage)\n"
+          },
+          {
+            "beforeLines": [
+              85,
+              90
+            ],
+            "afterLines": [
+              80,
+              81
+            ],
+            "before": "fun FansListScreen(mid: Long, onBack: () -> Unit, onUserClick: (Long) -> Unit, onFansClick: (Long) -> Unit) {\n    val model: FansListViewModel = viewModel(\n        key = \"fans_$mid\",\n        factory = viewModelFactory { initializer { FansListViewModel(mid) } },\n    )\n",
+            "after": "internal fun FansListScreen(mid: Long, onBack: () -> Unit, onUserClick: (Long) -> Unit, onFansClick: (Long) -> Unit, model: FansListViewModel, active: Boolean) {\n"
+          },
+          {
+            "beforeLines": [
+              91,
+              93
+            ],
+            "afterLines": [
+              82,
+              84
+            ],
+            "before": "    LaunchedEffect(model) { model.load() }\n    FansListContent(state, onBack, onUserClick, onFansClick, onRefresh = { model.load(true) }, onLoadMore = { model.load() })\n",
+            "after": "    LaunchedEffect(model, active) { if (active) model.load() }\n    FansListContent(state, onBack, onUserClick, onFansClick, onRefresh = { if (active) model.load(true) }, onLoadMore = { if (active) model.load() })\n"
+          }
+        ]
+      }
+    }
+  }
+]
+
+> Task :extractOriginalHomePage
+58 source outputs
+original settings keys 84
+original Home outputs 75
+
+> Task :extractOriginalHomeProtocols
+{"productionOutputs": 6, "standaloneOutputs": 7, "declarations": 32, "sourcePins": {"app/src/main/java/com/android/purebilibili/data/repository/VideoRepository.kt": "acf05cba9a89666533378eef35a21609484a02ccd874a460c259c3f3363d1e64", "core-data/src/main/java/com/android/purebilibili/data/repository/HistoryRepository.kt": "1d6b92aab9f4bb63c6241375688619e58c62e358130af3ed761ef208d894c02c", "app/src/main/java/com/android/purebilibili/data/repository/LiveRepository.kt": "2d0007e82c53f1a4af5f4f298699decbc14c0623e88e50a3e7415c2ab3f374ac", "app/src/main/java/com/android/purebilibili/data/repository/MessageRepository.kt": "bb055a1da8a8f7cf4f937c4a2f67a5d3fb2f7ff462274857780b55c4628a1eb9", "app/src/main/java/com/android/purebilibili/data/repository/ActionRepository.kt": "d6a59bbf30b9c2058f352e299399713f9af13fd44262eeae6473e1447769087f", "app/src/main/java/com/android/purebilibili/core/refresh/WatchLaterRefreshBus.kt": "67deacd84bee9f8803b2190e079d5486d2593bf26bc29d1a114ae259273fe87d"}, "directOnly": "app/src/main/java/com/android/purebilibili/core/refresh/WatchLaterRefreshBus.kt"}
+
+> Task :extractOriginalProfileMain
+
+> Task :extractOriginalHomeSettings
+{"generated": 10, "homeWholeBranchLines": 575, "wholeOriginalSettingsMethods": 51, "inverse": "PASS", "runtimeEvidence": false}
+
+> Task :extractOriginalHomeViewModel
+{"pinnedCommit": "79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40", "vmOriginalSha256LF": "acfeb63539acaf710a4070f59220a1585a38fd1e034d6a7a56a82970998d4352", "vmDesiredSha256LF": "6c81696fbdca593809b52222c3adb4a21cb14f1455e745c51215bd7165576ece", "preparedBaseVmDesiredSha256LF": "adf03d661962b98cac1de24c8947b6c92068ac24b7831a2cb2615d2514392d84", "solePlanConverterVisibilityAdaptation": true, "adaptationOperations": 96, "productionOutputs": 3, "standaloneOnlyDirect": ["app/src/main/java/com/android/purebilibili/core/util/EasterEggs.kt", "app/src/main/java/com/android/purebilibili/feature/home/TodayWatchRefreshPolicy.kt", "app/src/main/java/com/android/purebilibili/feature/home/HomeFollowFeedMappingPolicy.kt"]}
+
+> Task :extractOriginalListenVideoPages
+
+> Task :extractUpstreamDynamicFullCard
+Generated 2 image viewer test source files
+
+> Task :extractOriginalMessagePages
+[
+  "<baseline>/desktop/build/generated/original-message-pages/com/android/purebilibili/feature/message/MessageCenterPolicy.kt",
+  "<baseline>/desktop/build/generated/original-message-pages/com/android/purebilibili/data/repository/DesktopOriginalMessageRepository.kt",
+  "<baseline>/desktop/build/generated/original-message-pages/com/android/purebilibili/feature/message/InboxViewModel.kt",
+  "<baseline>/desktop/build/generated/original-message-pages/com/android/purebilibili/feature/message/ChatViewModel.kt",
+  "<baseline>/desktop/build/generated/original-message-pages/com/android/purebilibili/feature/message/ChatTimelinePolicy.kt",
+  "<baseline>/desktop/build/generated/original-message-pages/com/android/purebilibili/feature/common/ListLoadError.kt",
+  "<baseline>/desktop/build/generated/original-message-pages/com/android/purebilibili/feature/message/feed/ReplyMeScreen.kt",
+  "<baseline>/desktop/build/generated/original-message-pages/com/android/purebilibili/feature/message/feed/AtMeScreen.kt",
+  "<baseline>/desktop/build/generated/original-message-pages/com/android/purebilibili/feature/message/feed/LikeMeScreen.kt",
+  "<baseline>/desktop/build/generated/original-message-pages/com/android/purebilibili/feature/message/feed/SystemNoticeScreen.kt",
+  "<baseline>/desktop/build/generated/original-message-pages/com/android/purebilibili/feature/message/feed/DesktopOriginalMessageFeedCommon.kt",
+  "<baseline>/desktop/build/generated/original-message-pages/com/android/purebilibili/feature/message/InboxScreen.kt",
+  "<baseline>/desktop/build/generated/original-message-pages/com/android/purebilibili/feature/message/ChatScreen.kt",
+  "<baseline>/desktop/build/generated/original-message-pages/com/android/purebilibili/feature/message/MessageCenterScreen.kt",
+  "<baseline>/desktop/build/generated/original-message-pages/com/android/purebilibili/feature/message/MessageGlassSurface.kt",
+  "<baseline>/desktop/build/generated/original-message-pages/com/android/purebilibili/feature/message/MessageAppScaffold.kt"
+]
+
+> Task :extractOriginalMessageNotifications
+[
+  "com/android/purebilibili/feature/message/notification/MessageNotificationSettingsStore.kt",
+  "com/android/purebilibili/feature/message/notification/MessageNotificationPolicy.kt",
+  "com/android/purebilibili/feature/message/notification/MessageNotificationChecker.kt",
+  "com/android/purebilibili/feature/message/notification/MessageNotificationStateStore.kt",
+  "com/android/purebilibili/core/network/grpc/DesktopDynamicPersonalFeedApi.kt",
+  "com/android/purebilibili/core/network/DesktopDynamicAuthorUpdatesApi.kt",
+  "com/android/purebilibili/core/network/DesktopDynamicAuthorUpdatesService.kt",
+  "com/android/purebilibili/data/model/response/DesktopDynamicAuthorUpdatesModels.kt"
+]
+
+> Task :extractOriginalOfflinePlayer
+Generated 4 full original offline selected sources
+
+> Task :extractOriginalVideoDetailUnits
+{"sources": 24, "outputs": 34}
+
+> Task :extractOriginalPlayerFullControls
+> Task :extractOriginalRootHomeNavigation
+
+> Task :extractOriginalSearchPages
+Generated complete original Search 7 source bodies; inverse PASS
+
+> Task :extractOriginalVideoFullscreenPager
+> Task :extractOriginalVideoContentFull
+
+> Task :extractOriginalVideoStateCore
+whole original UseCase candidate prepared, platform adaptations 17
+Full original raw playback selected protocol methods 18 lines 1117
+
+> Task :extractOriginalVideoFullOwner
+Full original Video owner source outputs: 20 emitted: 10
+
+> Task :extractOriginalVideoPlayerSectionFull
+> Task :prepareUpstreamVideoCommentUrl
+
+> Task :extractOriginalVideoTabletFull
+{"outputs": 8, "sources": 9, "changes": 61}
+
+> Task :extractOriginalVideoDetailHolderFull
+
+> Task :extractUpstreamSettingsSearch
+Generated 9
+
+> Task :extractUpstreamSettingsCategories
+Generated 3
+
+> Task :extractOriginalStaticSettingsPages
+{"prepared": true, "sources": 4, "additionalVectors": ["ms_cameraswitch_fill_24", "ms_card_giftcard_fill_24", "ms_draw_fill_24", "ms_find_in_page_24", "ms_label_fill_24", "ms_picture_in_picture_fill_24", "ms_skip_next_fill_24"], "registrySourceDelta": 0, "registryResourceDelta": 0, "compileAccepted": false, "contract": "<baseline>/desktop/build/generated/static-settings-pages/static-settings-pages-source-report.json"}
+
+> Task :extractOriginalWholePlaybackSettings
+{"wholeScreens": 2, "managerClosureMembers": 351, "managerLines": 1892, "outputs": 9, "sourcePins": 13, "sourceProofSha256": "4627f3831b119edda17863ed6089e76bd3628e3ce1e798a103c63a38cb5de491", "compileExecuted": false}
+
+> Task :extractSharedLiquidTabs
+> Task :extractStableCollectionSheet
+
+> Task :extractUpstreamApi
+<baseline>/desktop/build/generated/api/com/android/purebilibili/core/network/DesktopUpstreamApi.kt
+
+> Task :extractUpstreamAppearance
+> Task :extractUpstreamCast
+> Task :extractUpstreamDiscovery
+> Task :extractUpstreamDynamicDetailContainer
+> Task :extractUpstreamDynamicDetailProtocol
+> Task :extractUpstreamDynamicEditor
+> Task :extractUpstreamDynamicReply
+
+> Task :extractUpstreamSettingsHome
+Generated 1
+
+> Task :extractUpstreamDynamicSettings
+Generated 9
+
+> Task :extractUpstreamComponents
+Generated 40 original component files
+
+> Task :extractUpstreamDynamicTabs
+Generated 19
+Generated tests 3
+
+> Task :extractUpstreamNavigationInteraction
+> Task :extractUpstreamFullNavigation
+
+> Task :extractUpstreamHomeCards
+Generated 4
+
+> Task :extractUpstreamHomeFullCard
+58 source outputs
+original settings keys 84
+58 source outputs
+original settings keys 84
+
+> Task :extractUpstreamJs
+Generated 9 original JS policy/store files; JS VM not included
+
+> Task :extractUpstreamPlugins
+Generated 36 original plugin source files
+Generated 1 original feed test source files
+Generated 1 RSS public content test source files
+
+> Task :extractUpstreamSearch
+
+> Task :extractUpstreamSettingsPrivacy
+Generated 5
+
+> Task :extractUpstreamStoryTopic
+Generated 8 original Story/Topic files
+
+> Task :applyTransitionPatches
+> Task :checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :extractCommentFraudProtocol
+> Task :extractFrostedAudioRenderer
+
+> Task :extractImageSaveSettingsUi
+Generated 2
+
+> Task :extractLinkedDock
+> Task :extractNativeMusicRoot
+> Task :extractNavigation3Host
+
+> Task :extractOriginalApplicationImageLoader
+Complete original application ImageLoader body and original cache/trim policies generated
+
+> Task :extractOriginalArticleDetail
+
+> Task :extractOriginalMusicPlayerFull
+{"outputs": 25, "sources": 22, "exactWholeBodyInverse": true}
+
+> Task :extractOriginalAuMusicPage
+
+> Task :extractOriginalBackgroundPlaybackPolicy
+{"sourcePins": 5, "mainOutputs": 3, "testOutputs": 2, "originalTestCount": 21, "sourceProofSha256": "4ca1855fa26ce56dfeb508f28149fb5ac4788ff252aee98f70924ef3d046efc8", "compiled": false}
+
+> Task :extractOriginalBangumiPlayerUi
+Produced 5 complete original Player UI bodies and 3 exact policy/settings closures
+
+> Task :extractOriginalBasCore
+<baseline>/desktop/build/generated/original-bas-core/com/android/purebilibili/danmaku/parser/bas/BasEasing.kt
+<baseline>/desktop/build/generated/original-bas-core/com/android/purebilibili/danmaku/parser/bas/BasLexer.kt
+<baseline>/desktop/build/generated/original-bas-core/com/android/purebilibili/danmaku/parser/bas/BasModels.kt
+<baseline>/desktop/build/generated/original-bas-core/com/android/purebilibili/danmaku/parser/bas/BasScriptParser.kt
+<baseline>/desktop/build/generated/original-bas-core/com/android/purebilibili/danmaku/parser/bas/BasTimeline.kt
+<baseline>/desktop/build/generated/original-bas-core-tests/com/android/purebilibili/danmaku/parser/bas/BasDurationTest.kt
+<baseline>/desktop/build/generated/original-bas-core-tests/com/android/purebilibili/danmaku/parser/bas/BasLexerTest.kt
+<baseline>/desktop/build/generated/original-bas-core-tests/com/android/purebilibili/danmaku/parser/bas/BasPathFrameTest.kt
+<baseline>/desktop/build/generated/original-bas-core-tests/com/android/purebilibili/danmaku/parser/bas/BasScriptParserTest.kt
+<baseline>/desktop/build/generated/original-bas-core-tests/com/android/purebilibili/danmaku/parser/bas/BasTimelineTest.kt
+
+> Task :extractOriginalBasRenderer
+<baseline>/desktop/build/generated/original-bas-renderer/com/bilipai/desktop/danmaku/DesktopOriginalBasScenePainter.kt
+<baseline>/desktop/build/generated/original-bas-renderer/com/bilipai/desktop/danmaku/DesktopOriginalBasRetainedScenes.kt
+
+> Task :extractOriginalBrandMotion
+{"blueSnowCountedAdaptations": 21, "catalogSha256Bytes": "15291a833f8e9d90731bdb5c1f8707a63c9958f395fb6938f6b5b49b1910a6c9", "countedAdaptations": 17, "fullSourceInverse": true, "generatedFiles": 33, "originalFiles": 30, "runtimeEnumIdentities": 14, "runtimeUniquePairs": 13, "welcomeRuntimeAllowed": false}
+
+> Task :extractOriginalCdnTransfer
+Generated original CDN transfer 5 families; inverse PASS
+
+> Task :extractOriginalCommentFraudHistory
+{"fullSourceInverseVerified": true, "adaptedLfSha256": "6d23342cfb312f8d12458236aa502edc6c6362a37cd0c4a0c478235e9e9bfe62"}
+
+> Task :extractOriginalDanmakuListMenu
+> Task :extractOriginalDanmakuSettings
+
+> Task :extractOriginalDonateDialog
+{"fullSelectedFunctionInverseVerified": true, "originalAuthorQrSha256": "ebd531d83556e51a92fdd5d4d64946f037730416cff44957a8018d063b5bb610"}
+
+> Task :extractOriginalDownloadList
+Generated 3 original download list sources
+
+> Task :extractOriginalDynamicAccountPolicy
+{"commit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480", "fullInverse": "identity-byte-exact", "mainSources": 1, "originalTests": 2, "platformEdits": [], "rawPins": {"DynamicAccountCachePolicy.kt": "2bb62ce8e2061d17d3ee6d8925e22d1a9053f8198b8832131b7facb0f3a3eea9", "DynamicAccountCachePolicyTest.kt": "8d5e6e8357c81ac289aeb1e361de3d0ce79ca79b3411918730e3f106bdab14bc", "DynamicViewModel.kt": "f53e125cfd9bbfe23e315ae4524b03170a3bfcd0f28454f7220a08d60e360746"}, "testSources": 1}
+
+> Task :extractOriginalFavoriteFolder
+generated original favorite drawer, policy, protocol and session closure
+
+> Task :extractOriginalHomePartition
+Complete original Partition Screen/Content/VM and shared media skeleton produced
+
+> Task :extractOriginalHotDanmaku
+Generated 5
+
+> Task :extractOriginalIconSettings
+{"fullSourceInverseVerified": true, "pngResources": 18, "originalScreenLfSha256": "ea80aa3578bc3af72d1aff852f6bda2ee897404ba7ca68e6936097f928a6388b", "adaptedScreenLfSha256": "ee00f986d5c49bc772e74f1dd1818a673f058ca044c6c6feea5a45f272819671"}
+
+> Task :extractOriginalLiveList
+> Task :extractOriginalLiveNavigation
+> Task :extractOriginalMediaByteCachePolicy
+
+> Task :extractOriginalPersonalLists
+DesktopOriginalHistoryNavigation.kt
+DesktopOriginalHistoryArticlePolicy.kt
+
+> Task :extractOriginalScrollableLists
+{"path": "com/android/purebilibili/core/ui/components/AppScrollableLists.kt", "rawSha256": "af0981b641026f514024d13ecaf572b8c483a4470254277ca1eea4f9ac46d25b", "fullOriginal": true, "compiled": false}
+
+> Task :extractOriginalSpacePages
+[{"source": "app/src/main/java/com/android/purebilibili/feature/space/SpaceViewModel.kt", "sha256LF": "c54a7d24b03ecd5ff177b98c9007756c7f1e87d3629218019dd34b76907212af", "generated": "com/android/purebilibili/feature/space/SpaceViewModel.kt", "generatedSha256LF": "52bcf787cfa836a55d2e80d617533a72b79eb8d71dec8a5bab846608b9df8ee2", "completeOriginalFileReconstructed": true, "transforms": [{"beforeSha256": "c54a7d24b03ecd5ff177b98c9007756c7f1e87d3629218019dd34b76907212af", "afterSha256": "6ef889a3819a9f17f3a672aa0236cc3d5cd58230f74c24f810084c70c4c5ecba", "original": "package com.android.purebilibili.feature.space\n\nimport androidx.lifecycle.ViewModel\nimport androidx.lifecycle.SavedStateHandle\nimport androidx.lifecycle.viewModelScope\nimport com.android.purebilibili.core.network.NetworkModule\nimport com.android.purebilibili.core.network.WbiUtils\nimport com.android.purebilibili.core.network.getSpaceAggregate\nimport com.android.purebilibili.data.model.response.*\nimport com.android.purebilibili.data.repository.BangumiRepository\nimport com.android.purebilibili.data.repository.ActionRepository\nimport com.android.purebilibili.data.repository.FavoriteRepository\nimport com.android.pu
+
+> Task :extractOriginalSpecialDanmaku
+<baseline>/desktop/build/generated/original-special-danmaku/com/android/purebilibili/danmaku/parser/SpecialDanmakuIndexReader.kt
+<baseline>/desktop/build/generated/original-special-danmaku/com/android/purebilibili/danmaku/parser/SpecialDanmakuWindow.kt
+<baseline>/desktop/build/generated/original-special-danmaku/com/android/purebilibili/data/repository/SpecialDanmakuSource.kt
+<baseline>/desktop/build/generated/original-special-danmaku/com/android/purebilibili/feature/download/DownloadDanmakuAssetService.kt
+<baseline>/desktop/build/generated/original-special-danmaku-tests/com/android/purebilibili/danmaku/parser/SpecialDanmakuIndexReaderTest.kt
+<baseline>/desktop/build/generated/original-special-danmaku-tests/com/android/purebilibili/danmaku/parser/SpecialDanmakuWindowTest.kt
+
+> Task :extractOriginalStorageSettings
+Generated exact original storage families 10
+
+> Task :extractOriginalSubscriptionPage
+Full original Subscription UI/notes outputs 2
+
+> Task :extractUpstreamSettingsEntries
+Generated 2
+
+> Task :extractOriginalSystemAbout
+{"inverseCount": 15, "resources": 7, "compiled": false}
+
+> Task :extractUpstreamSpaceOverview
+> Task :extractOriginalTabletOwnerSpace
+
+> Task :extractOriginalTextLyrics
+<baseline>/desktop/build/generated/original-text-lyrics/com/android/purebilibili/data/model/response/DynamicModels.kt
+<baseline>/desktop/build/generated/original-text-lyrics/com/android/purebilibili/feature/audio/lyrics/LyricsParser.kt
+<baseline>/desktop/build/generated/original-text-lyrics/com/android/purebilibili/feature/audio/lyrics/LyricsDisplayPolicy.kt
+
+> Task :extractOriginalVideoAmbientWindows
+Ambient original source outputs 9
+
+> Task :extractOriginalVideoAudioFull
+{"outputs": 2, "exactWholeBodyInverse": true}
+
+> Task :extractOriginalVideoOwnerDanmakuSend
+[{"path": "com/android/purebilibili/data/repository/DesktopOriginalVideoDanmakuSendProtocol.kt", "origin": "app/src/main/java/com/android/purebilibili/data/repository/DanmakuRepository.kt", "originalSha256LF": "b9393e987cfabe627baaf7ac2ed3e54fa8e84d9db0079e7f8b37760422a21d5b", "sha256LF": "ba9a91afb37f07841451eb8eb2c5fee95740b17b3369066255a49b4646047ef4", "mode": "selected", "generated": true}]
+
+> Task :extractOriginalVideoPlaylistFull
+Original playlist source outputs: 1
+
+> Task :extractOriginalVideoRootStoryFeed
+{"output": "com/android/purebilibili/data/repository/DesktopOriginalVideoStoryFeedProtocol.kt", "outputSHA256LF": "d1427882e3d12fa648da1065632ba455742b6b749089631ec092318c32f09295", "bodyInverseByteEqual": true, "outputCount": 1}
+
+> Task :extractOriginalVideoShareConsent
+
+> Task :extractOriginalVideoStatusLabels
+{"commit": "d18fb20e31adb11bbec9fae6dfce7d705d556217", "hooks": 21, "mainSources": 7, "proofSha256": "68d8b892265e0bd7058bca3f5ea498d53f2897f126ed83ed542ca1454caee2b3", "testSources": 7}
+
+> Task :extractOriginalWallpaperPalette
+Generated full original WallpaperPaletteStore with owned Windows services
+
+> Task :extractOriginalWindowLayout
+Three complete original window/hinge source inverses verified; existing hinge model reused
+
+> Task :extractPlaybackSettings
+> Task :extractPlaybackWatchdogs
+> Task :extractStableVideoMetadata
+> Task :extractStableWeeklySeries
+> Task :extractSubtitleLoadPolicy
+
+> Task :extractUpstreamAudio
+<baseline>/desktop/build/generated/audio/com/android/purebilibili/feature/audio/viewmodel/MusicUiState.kt
+<baseline>/desktop/build/generated/audio/com/android/purebilibili/feature/audio/viewmodel/DesktopOriginalMusicLyricsController.kt
+<baseline>/desktop/build/generated/audio/com/android/purebilibili/feature/video/player/DesktopPlaylistPolicies.kt
+<baseline>/desktop/build/generated/audio/com/android/purebilibili/feature/audio/library/DesktopListenVideoLibraryLoader.kt
+<baseline>/desktop/build/generated/audio/com/android/purebilibili/data/repository/DesktopFavoriteRequestException.kt
+<baseline>/desktop/build/generated/audio/com/android/purebilibili/feature/list/DesktopFavoriteRiskPolicy.kt
+
+> Task :extractUpstreamBlockedUp
+Generated 3
+
+> Task :extractUpstreamBlockedListUi
+Generated 4
+
+> Task :extractUpstreamCrashPrompt
+
+> Task :extractUpstreamDanmaku
+<baseline>/desktop/build/generated/danmaku/com/android/purebilibili/danmaku/parser/AdvancedDanmakuData.kt
+<baseline>/desktop/build/generated/danmaku/com/android/purebilibili/danmaku/parser/DanmakuProto.kt
+<baseline>/desktop/build/generated/danmaku/com/android/purebilibili/danmaku/parser/DesktopAdvancedDanmakuParser.kt
+<baseline>/desktop/build/generated/danmaku/com/android/purebilibili/data/repository/DesktopDanmakuSegmentPolicy.kt
+<baseline>/desktop/build/generated/danmaku/com/android/purebilibili/danmaku/parser/DesktopOriginalDanmakuFontScale.kt
+
+> Task :extractUpstreamDiagnostics
+8
+
+> Task :extractUpstreamDownloadTransport
+> Task :extractUpstreamDynamicDetail
+
+> Task :extractUpstreamDynamicFollow
+{"generated": 2, "files": ["<baseline>/desktop/build/generated/dynamic-follow/com/android/purebilibili/data/repository/DesktopOriginalFollowStateChange.kt", "<baseline>/desktop/build/generated/dynamic-follow/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicFollowStatePolicy.kt"]}
+
+> Task :extractUpstreamDynamicReplyProtocol
+
+> Task :extractUpstreamDynamicStaticImageCodec
+{"generated": ["desktopOriginalStaticGalleryKeepBytes", "desktopOriginalStaticGalleryExtension", "desktopOriginalStaticGalleryMimeType", "desktopOriginalStaticGalleryFileName"]}
+
+> Task :extractUpstreamLogin
+
+> Task :extractUpstreamNetworkProxy
+Generated 5
+Generated 1 original proxy policy tests
+
+> Task :extractUpstreamPackages
+Generated 8 original package source files
+
+> Task :extractUpstreamPlayback
+
+> Task :extractUpstreamPreferences
+Generated 6 original preference/navigation files
+
+> Task :extractUpstreamProfileWallpaperImport
+Generated whole original WallpaperImageImport with required owned Windows IO
+
+> Task :extractUpstreamSettings
+
+> Task :extractUpstreamSettingsStorageEntries
+Generated 1
+
+> Task :extractUpstreamSpace
+> Task :extractV032CatalogSlice
+> Task :extractVideoCommentUi
+> Task :convertXmlValueResourcesForMain NO-SOURCE
+> Task :copyNonXmlValueResourcesForMain NO-SOURCE
+> Task :prepareComposeResourcesTaskForMain NO-SOURCE
+> Task :generateResourceAccessorsForMain SKIPPED
+> Task :generateActualResourceCollectorsForMain SKIPPED
+> Task :generateComposeResClass SKIPPED
+> Task :generateUpstreamBuildConfig
+> Task :generateUpstreamColorResources
+> Task :generateUpstreamDrawableResources
+> Task :generateUpstreamPreferenceKeyTypes
+> Task :generateUpstreamStringResources
+
+> Task :prepareJsWorker
+No JS worker image on this host; compile-only placeholder written.
+
+> Task :prepareNativeDiagnosticShare
+No native diagnostic share bridge on this host; compile-only placeholder written.
+
+> Task :prepareOriginalCategoryPage
+Original Category outputs 1
+
+> Task :prepareOriginalHomeReturnNavigation
+
+> Task :verifyAppearanceDependencies
+Verified nine fixed appearance runtime dependencies and four source notices.
+
+> Task :verifyCoilCacheControlSources
+Verified three unchanged Coil3.5.0 cache-control sources and two Apache notices.
+
+> Task :verifyDynamicMediaDependencies
+Verified three approved image metadata runtime dependencies and six Apache notices.
+
+> Task :verifyJsDomParserDependency
+> Task :verifyNoSilentSdkGates
+> Task :verifyOriginalPlayerFullControls
+> Task :verifyOriginalVideoContentFull
+> Task :verifyOriginalVideoDetailMembers
+
+> Task :verifySettingsSearchDependencies
+Verified fixed TinyPinyin and AhoCorasick JVM runtime, source and Apache license inventory.
+
+> Task :extractStableVideoVotes
+
+> Task :verifyUpstreamDynamicDetailReplyProtocol
+PASS five exact original-source request families in the existing Operations class
+
+> Task :verifyUpstreamDynamicEditorProtocol
+PASS original-source editor request members in the existing Operations class
+
+> Task :extractUpstreamDynamicGalleryMotionPhoto
+PASS original packing with approved three-line XMP attribute fix and unchanged gallery policy; generated 2 Kotlin sources
+
+> Task :verifyUpstreamDynamicMedia
+> Task :verifyUpstreamReplacements
+
+> Task :miuix5157:verifyPinnedSource
+Miuix5c91 pinned + Windows numeric patch (exact inverse verified) + whole BiliPai79 navigation patch PASS: 225 pinned files; 196 compiled source files; 4 whole original patch files
+
+> Task :miuix5157:bakeSquircleSdf
+> Task :miuix5157:kmpPartiallyResolvedDependenciesChecker
+> Task :miuix5157:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :miuix5157:compileKotlinJvm FROM-CACHE
+> Task :miuix5157:compileJvmMainJava NO-SOURCE
+> Task :miuix5157:jvmProcessResources NO-SOURCE
+> Task :miuix5157:processJvmMainResources SKIPPED
+> Task :miuix5157:jvmMainClasses UP-TO-DATE
+> Task :miuix5157:jvmJar
+> Task :compileKotlin FROM-CACHE
+> Task :upstream-core:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :upstream-core:compileKotlin FROM-CACHE
+> Task :compileJava FROM-CACHE
+> Task :assembleMainResources
+> Task :prepareOriginalPluginResources
+> Task :prepareVeyraRuntimeVerifier
+> Task :processResources
+> Task :classes
+
+> Task :verifyUniqueClassNames
+Unique class names: 60951 classes in 116 classpath entries, no duplicates.
+
+> Task :jar
+> Task :applyUpstreamTestCorrections
+> Task :convertXmlValueResourcesForTest NO-SOURCE
+> Task :copyNonXmlValueResourcesForTest NO-SOURCE
+> Task :prepareComposeResourcesTaskForTest NO-SOURCE
+> Task :generateResourceAccessorsForTest SKIPPED
+> Task :compileTestKotlin FROM-CACHE
+> Task :compileTestJava FROM-CACHE
+> Task :assembleTestResources
+> Task :processTestResources
+> Task :testClasses
+> Task :test
+> Task :upstreamDesignSourceTests
+
+> Task :upstreamAppCoreSourceTests
+
+LocalNavigationBackHandlerStructureTest > localNavigationBackHandlerRespectsGlobalPredictivePreference() FAILED
+    org.opentest4j.AssertionFailedError at LocalNavigationBackHandlerStructureTest.kt:31
+
+AppPreferenceApiStructureTest > settingsSelectionApi_usesDialogPreferencesWithoutInlineSegments() FAILED
+    org.opentest4j.AssertionFailedError at AppPreferenceApiStructureTest.kt:109
+
+LegacyTabChipMigrationStructureTest > known page selectors cannot regress to filter chips() FAILED
+    org.opentest4j.AssertionFailedError at LegacyTabChipMigrationStructureTest.kt:22
+
+NativeThemeMigrationBoundaryTest > appDirectSliderCallsUseFacade() FAILED
+    org.opentest4j.AssertionFailedError at NativeThemeMigrationBoundaryTest.kt:112
+
+NativeThemeMigrationBoundaryTest > sharedMiuixNavigationExceptionSetCannotExpandOrChangeIdentity() FAILED
+    org.opentest4j.AssertionFailedError at NativeThemeMigrationBoundaryTest.kt:304
+
+NativeThemeMigrationBoundaryTest > featureThemeBranchingOnlyDecreases() FAILED
+    org.opentest4j.AssertionFailedError at NativeThemeMigrationBoundaryTest.kt:368
+
+NativeThemeMigrationBoundaryTest > appIconButtonVisualGeometryDoesNotReuseTouchTargetDimensions() FAILED
+    org.opentest4j.AssertionFailedError at NativeThemeMigrationBoundaryTest.kt:152
+
+NativeThemeMigrationBoundaryTest > appDirectIconButtonCallsAndDefaultsUseFacade() FAILED
+    org.opentest4j.AssertionFailedError at NativeThemeMigrationBoundaryTest.kt:176
+
+NativeThemeMigrationBoundaryTest > featureDirectProgressCallsOnlyDecrease() FAILED
+    org.opentest4j.AssertionFailedError at NativeThemeMigrationBoundaryTest.kt:368
+
+NativeThemeMigrationBoundaryTest > featureVendorImportsOnlyDecrease() FAILED
+    org.opentest4j.AssertionFailedError at NativeThemeMigrationBoundaryTest.kt:368
+
+NativeThemeMigrationBoundaryTest > appDirectButtonCallsUseFacade() FAILED
+    org.opentest4j.AssertionFailedError at NativeThemeMigrationBoundaryTest.kt:132
+
+NativeThemeMigrationBoundaryTest > liquidGlassExceptionSetCannotExpandOrChangeIdentity() FAILED
+    org.opentest4j.AssertionFailedError at NativeThemeMigrationBoundaryTest.kt:292
+
+NativeThemeMigrationBoundaryTest > appNativeCardCallsUseOnlyAppFacades() FAILED
+    org.opentest4j.AssertionFailedError at NativeThemeMigrationBoundaryTest.kt:244
+
+HomeCoverReturnPrefetchStructureTest > appNavigationTriggersPrefetchOnGestureAndCommit() FAILED
+    org.opentest4j.AssertionFailedError at HomeCoverReturnPrefetchStructureTest.kt:24
+
+ProfileShapeStructureTest > profile surfaces use semantic theme shapes() FAILED
+    org.opentest4j.AssertionFailedError at ProfileShapeStructureTest.kt:14
+
+AnimationSettingsScreenStructureTest > animationSettingsScreen_controlsGlobalPredictivePreviewIndependently() FAILED
+    org.opentest4j.AssertionFailedError at AnimationSettingsScreenStructureTest.kt:14
+
+AppSegmentedControlPolicyTest > defaultSettingsIndicatorRenderPolicyMatchesCommentSortIndicator() FAILED
+    org.opentest4j.AssertionFailedError at AppSegmentedControlPolicyTest.kt:32
+
+AppearanceSettingsNavigationPolicyTest > bottomBarSearchBelongsToNavigationSettings() FAILED
+    org.opentest4j.AssertionFailedError at AppearanceSettingsNavigationPolicyTest.kt:27
+
+MiuixV2MigrationStructureTest > featureLayer_avoidsDirectMiuixThemeColorSchemeReads() FAILED
+    org.opentest4j.AssertionFailedError at MiuixV2MigrationStructureTest.kt:84
+
+MiuixV2MigrationStructureTest > homeScreen_usesAdaptivePullToRefreshBox() FAILED
+    org.opentest4j.AssertionFailedError at MiuixV2MigrationStructureTest.kt:133
+
+MiuixV2MigrationStructureTest > buildGradle_includesMiuixShaderArtifact() FAILED
+    org.opentest4j.AssertionFailedError at MiuixV2MigrationStructureTest.kt:60
+
+MiuixV2MigrationStructureTest > buildGradle_includesMiuixIconsArtifact() FAILED
+    org.opentest4j.AssertionFailedError at MiuixV2MigrationStructureTest.kt:100
+
+MiuixV2MigrationStructureTest > buildGradle_includesMiuixSquircleArtifact() FAILED
+    org.opentest4j.AssertionFailedError at MiuixV2MigrationStructureTest.kt:94
+
+MiuixV2MigrationStructureTest > versionCatalog_pinsMiuixToPublishedUpstreamSnapshot() FAILED
+    org.opentest4j.AssertionFailedError at MiuixV2MigrationStructureTest.kt:54
+
+MiuixV2MigrationStructureTest > md3SegmentedControl_routesMiuixVariantToTabRow() FAILED
+    org.opentest4j.AssertionFailedError at MiuixV2MigrationStructureTest.kt:116
+
+OpenSourceLicensesPolicyTest > openSourceLibraries_coverRuntimeDependenciesAndLiquidGlassReferences() FAILED
+    org.opentest4j.AssertionFailedError at OpenSourceLicensesPolicyTest.kt:36
+
+OpenSourceLicensesPolicyTest > openSourceScreen_notesAcknowledgementListMayNotBeExhaustive() FAILED
+    org.opentest4j.AssertionFailedError at OpenSourceLicensesPolicyTest.kt:61
+
+SettingsEntranceMotionStructureTest > settingsSearchUsesSameNavigationGate() FAILED
+    org.opentest4j.AssertionFailedError at SettingsEntranceMotionStructureTest.kt:35
+
+SettingsEntranceMotionStructureTest > settingsRootWaitsForNavigationAndBypassesGroupWhenDisabled() FAILED
+    org.opentest4j.AssertionFailedError at SettingsEntranceMotionStructureTest.kt:23
+
+SettingsInformationArchitecturePolicyTest > appearanceHomeAndInteractionSettingsHaveIndependentOwners() FAILED
+    org.opentest4j.AssertionFailedError at SettingsInformationArchitecturePolicyTest.kt:22
+
+SettingsLocalBackHandlerStructureTest > settingsLocalBackHandler_usesNavigationBackHandler() FAILED
+    org.opentest4j.AssertionFailedError at SettingsLocalBackHandlerStructureTest.kt:18
+
+SettingsMiuixSimplificationStructureTest > appearance settings expose one ui style selection while keeping miuix scaffold() FAILED
+    org.opentest4j.AssertionFailedError at SettingsMiuixSimplificationStructureTest.kt:15
+
+SettingsPageBlurPreferenceStructureTest > settingsPageChromeKeepsFrostedAndProgressivePreferencesSeparate() FAILED
+    org.opentest4j.AssertionFailedError at SettingsPageBlurPreferenceStructureTest.kt:26
+
+SettingsPageBlurPreferenceStructureTest > miuixSettingsPageUsesUpstreamSurfaceIndependentlyFromGlassChrome() FAILED
+    org.opentest4j.AssertionFailedError at SettingsPageBlurPreferenceStructureTest.kt:61
+
+SettingsPrivacyAuthenticationStructureTest > privacyOptionsUseSeparateSwitchesForHistoryAndContentAuthentication() FAILED
+    org.opentest4j.AssertionFailedError at SettingsPrivacyAuthenticationStructureTest.kt:23
+
+SettingsTabletLayoutPolicyTest > tabletLandscape_keepsMasterAndDetailContentScrollable() FAILED
+    org.opentest4j.AssertionFailedError at SettingsTabletLayoutPolicyTest.kt:61
+
+VisualEffectTogglePolicyTest > animation settings no longer exposes per-surface liquid glass entries() FAILED
+    org.opentest4j.AssertionFailedError at VisualEffectTogglePolicyTest.kt:114
+
+SpaceLocatePagingStructureTest > locate paging observes completion and stops after a failed request() FAILED
+    org.opentest4j.AssertionFailedError at SpaceLocatePagingStructureTest.kt:21
+
+SpaceScreenStructureTest > space media library uses card semantic corners() FAILED
+    org.opentest4j.AssertionFailedError at SpaceScreenStructureTest.kt:185
+
+SpaceScreenStructureTest > contribution videos render as grid cards instead of full width rows() FAILED
+    org.opentest4j.AssertionFailedError at SpaceScreenStructureTest.kt:74
+
+SpaceScreenStructureTest > space chrome uses liquid tab rows and piliplus actions() FAILED
+    org.opentest4j.AssertionFailedError at SpaceScreenStructureTest.kt:62
+
+SpaceScreenStructureTest > contribution video actions live in the top overflow menu() FAILED
+    org.opentest4j.AssertionFailedError at SpaceScreenStructureTest.kt:167
+
+SpaceScreenStructureTest > space search action scrolls to focused search bar and dynamic body opens comments() FAILED
+    org.opentest4j.AssertionFailedError at SpaceScreenStructureTest.kt:199
+
+SpaceScreenStructureTest > space official verify follows piliplus multiline badge presentation() FAILED
+    org.opentest4j.AssertionFailedError at SpaceScreenStructureTest.kt:233
+
+SpaceScreenStructureTest > contribution videos switch layout without dual placing lazy grid content() FAILED
+    org.opentest4j.AssertionFailedError at SpaceScreenStructureTest.kt:108
+
+SpaceScreenStructureTest > space video cards freeze native pixels for return morph() FAILED
+    org.opentest4j.AssertionFailedError at SpaceScreenStructureTest.kt:155
+
+441 tests completed, 46 failed
+
+> Task :upstreamAppCoreSourceTests FAILED
+
+> Task :sponsorPresentationTests FAILED
+
+DesktopOriginalSponsorPresentationAssemblyTest > initializationError FAILED
+    java.lang.IllegalArgumentException at DesktopJsWorkerResources.kt:22
+        Caused by: java.lang.IllegalArgumentException at DesktopJsWorkerResources.kt:22
+
+1 test completed, 1 failed
+
+> Task :applicationImageLoaderOwnerTests
+
+FAILURE: Build completed with 2 failures.
+
+1: Task failed with an exception.
+-----------
+* What went wrong:
+Execution failed for task ':upstreamAppCoreSourceTests'.
+> There were failing tests. See the report at: file://<baseline>/desktop/build/reports/tests/upstreamAppCoreSourceTests/index.html
+
+* Try:
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+==============================================================================
+
+2: Task failed with an exception.
+-----------
+* What went wrong:
+Execution failed for task ':sponsorPresentationTests'.
+> There were failing tests. See the report at: file://<baseline>/desktop/build/reports/tests/sponsorPresentationTests/index.html
+
+* Try:
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+==============================================================================
+
+BUILD FAILED in 1m 25s
+187 actionable tasks: 181 executed, 6 from cache
+
+EXIT_CODE: 1

@@ -1,0 +1,30 @@
+--- a/dynamic-tabs/com/android/purebilibili/data/repository/DesktopOriginalDynamicUserRepository.kt
++++ b/dynamic-tabs/com/android/purebilibili/data/repository/DesktopOriginalDynamicUserRepository.kt
+@@ -131,27 +131,3 @@
+      )
+  }
+ }
+-
+-internal class DynamicUserPaginationRegistry {
+-    private val stateByUser = mutableMapOf<Long, DynamicPaginationState>()
+-
+-    fun reset(hostMid: Long) {
+-        stateByUser[hostMid] = DynamicPaginationState()
+-    }
+-
+-    fun resetAll() {
+-        stateByUser.clear()
+-    }
+-
+-    fun update(hostMid: Long, offset: String, hasMore: Boolean) {
+-        stateByUser[hostMid] = DynamicPaginationState(offset = offset, hasMore = hasMore)
+-    }
+-
+-    fun offset(hostMid: Long): String {
+-        return stateByUser[hostMid]?.offset.orEmpty()
+-    }
+-
+-    fun hasMore(hostMid: Long): Boolean {
+-        return stateByUser[hostMid]?.hasMore ?: true
+-    }
+-}

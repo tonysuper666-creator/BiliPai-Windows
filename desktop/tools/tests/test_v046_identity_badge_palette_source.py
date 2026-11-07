@@ -72,15 +72,6 @@ TEST_CLASSES = {
     'UpBadgeNamePolicyTest.kt': 'UpBadgeNamePolicyTest',
     'UserAvatarCornerMarkTest.kt': 'UserAvatarCornerMarkTest',
 }
-# Names the emitted sources and suites call, each with exactly one definer in the compiled universe.
-DEPENDENCIES = {
-    'resolveButtonContentColor': ('com.android.purebilibili.core.ui', 3),
-    'userVipPink': ('com.android.purebilibili.core.ui.components', 0),
-    'resolveUserVipPink': ('com.android.purebilibili.core.ui.components', 1),
-    'resolveContentSizedTabScrollOffsetPx': ('com.android.purebilibili.core.ui.components', 4),
-    'AppMaterial3Badge': ('com.android.purebilibili.core.ui.renderer.material3', 4),
-    'AppMiuixBadge': ('com.android.purebilibili.core.ui.renderer.miuix', 4),
-}
 CALLEES = {
     'AppBadge': 'AppBadge.kt',
     'OfficialVerifyBadge': 'OfficialVerifyBadgePolicy.kt',
@@ -117,9 +108,8 @@ VIDEO_INFO_OWNER = dict(
     upstream='app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoInfoSection.kt',
     output='com/android/purebilibili/feature/video/ui/section/DesktopOriginalVideoInfoSection.kt',
     generated='build/generated/original-video-detail-units/')
-# A finished producer mirror (check_slice_symbol_closure.py --keep-scratch, the directory named r) may be shared with
-# the symbol gate so that the universe class below does not run every producer again.
-SHARED_MIRROR = 'BP_IDENTITY_BADGE_MIRROR'
+# The merged root the direct app sources compile from; run-tool-tests.py points the read point at the live checkout.
+MERGED = Path(os.environ.get('BILIPAI_LIVE_ROOT') or REPO)
 
 
 def sha(raw):
@@ -231,52 +221,6 @@ def parameters(source, name):
                 has_default = True
         rows.append((label, has_default))
     return rows
-
-
-def calls(text, names):
-    """Every call of one of the names: positional count, named arguments, trailing lambda; no declarations."""
-    tokens = sync.kotlin_tokens(text)
-    found = []
-    for index, token in enumerate(tokens):
-        if token[0] not in names or index + 1 >= len(tokens):
-            continue
-        if index and tokens[index - 1][0] in {'fun', '::'}:
-            continue
-        following = tokens[index + 1][0]
-        if following not in ('(', '{'):
-            continue
-        positional, named, end, lambda_only = 0, [], index, following == '{'
-        if following == '(':
-            parts, end = parenthesized(tokens, index + 1)
-            for part in parts:
-                if (len(part) >= 3 and part[1][0] == '=' and part[2][0] != '=' and
-                        re.fullmatch(r'[^\W\d]\w*', part[0][0])):
-                    named.append(part[0][0])
-                else:
-                    positional += 1
-        trailing = lambda_only or (end + 1 < len(tokens) and tokens[end + 1][0] == '{')
-        found.append(dict(name=token[0], positional=positional, named=named, trailing=trailing,
-                          line=text.count('\n', 0, token[1]) + 1))
-    return found
-
-
-def callee_problem(call, params):
-    labels = [label for label, _default in params]
-    unknown = [label for label in call['named'] if label not in labels]
-    if unknown:
-        return 'unknown named argument ' + ','.join(unknown)
-    supplied = call['positional'] + len(call['named']) + (1 if call['trailing'] else 0)
-    if supplied > len(params):
-        return 'too many arguments'
-    covered = set(labels[:call['positional']]) | set(call['named'])
-    if call['trailing']:
-        if labels[-1] in covered:
-            return 'trailing lambda collides with ' + labels[-1]
-        covered.add(labels[-1])
-    if len(covered) != call['positional'] + len(call['named']) + (1 if call['trailing'] else 0):
-        return 'argument given twice'
-    missing = [label for label, default in params if not default and label not in covered]
-    return 'missing ' + ','.join(missing) if missing else ''
 
 
 class V046IdentityBadgePaletteSourceTest(unittest.TestCase):
@@ -843,101 +787,47 @@ class V046IdentityBadgePaletteSourceTest(unittest.TestCase):
         self.assertEqual([], stack)
 
 
-class V046IdentityBadgePaletteUniverseTest(unittest.TestCase):
-    """What only the compiled universe shows: the arity of every caller and the colour each name caller passes.
+class V046IdentityBadgePaletteCompiledCallersTest(unittest.TestCase):
+    """The colour every compiled up-name caller passes, read from the sources compileKotlin is given.
 
-    Cost: without a shared mirror it runs every producer the way Gradle does in a throw-away mirror (141 producers,
-    about three minutes on Windows, one process at a time). The symbol gate (test_symbol_closure.py) already proves one
-    definer per top-level name and resolvable imports, so none of that is repeated here. Point BP_IDENTITY_BADGE_MIRROR
-    at the `r` directory of a mirror the gate kept (check_slice_symbol_closure.py --keep-scratch) to read that universe
-    instead of running the producers again; a mirror built from other bytes of the five producers is refused.
+    The compiled-universe reading of the symbol gate is retired (TON-1205): Gradle's own Kotlin tasks now feed the
+    compile set, so one definer per name, arities, named arguments and reads of removed members are proven by
+    compileKotlin/compileTestKotlin and DesktopIdentityBadgePaletteTest. The annual-VIP colour is a value the compiler
+    cannot judge, so the owners are read here: the direct sources (desktop/src/main and the merged-root app sources,
+    SpaceScreen.kt among them since M4d) and the two producers whose copies are still compiled.
     """
 
     @classmethod
     def setUpClass(cls):
-        shared = os.environ.get(SHARED_MIRROR)
-        if shared:
-            root = Path(shared)
-            for relative in ('desktop/build.gradle.kts', 'desktop/tools/v046_identity_badge_palette.py',
-                             'desktop/tools/extract-upstream-home-page.py',
-                             *('desktop/tools/' + owner['producer'] for owner in UP_NAME_OWNERS.values())):
-                if not (root / relative).is_file() or (root / relative).read_bytes() != (REPO / relative).read_bytes():
-                    raise AssertionError('The shared producer mirror is stale or incomplete: ' + relative)
-            cls.model = gate.parse_gradle((root / 'desktop/build.gradle.kts').read_text(encoding='utf-8'))
-        else:
-            scratch = tempfile.mkdtemp(prefix='bp-ibu-')
-            cls.addClassCleanup(shutil.rmtree, scratch, True)
-            root, env = gate.make_scratch_repo(REPO, scratch)
-            cls.model = gate.parse_gradle((root / 'desktop/build.gradle.kts').read_text(encoding='utf-8'))
-            tasks, _skipped = gate.select_producers(cls.model)
-            results = gate.run_producers(root, tasks, env)
-            failed = [(row['task'], row['returncode'], row['stderrTail']) for row in results if row['returncode']]
-            if failed:
-                raise AssertionError(failed)
-        compiled, _notes = gate.collect_sources(root, cls.model)
-        cls.compiled = [source for source in compiled if source.set in ('main', 'test')]
-        cls.root = root
-        watched = set(DEPENDENCIES)
-        cls.declared = {}
-        cls.call_rows = []
-        cls.up_name_rows = []
-        names = set(CALLEES)
-        for source in cls.compiled:
-            raw = Path(source.real).read_bytes()
-            if not source.logical.endswith('.kt'):
-                continue
-            if any(name.encode('utf-8') in raw for name in watched):
-                text = raw.decode('utf-8')
-                info = gate.parse_kotlin(text, source.logical, source.origin, source.set)
-                for item in info.decls:
-                    if item.name in watched and item.visibility != 'private':
-                        cls.declared.setdefault(item.name, []).append((source.logical, info.package, item.visibility, item.kind, item.sig))
-            if any(name.encode('utf-8') in raw for name in names):
-                text = raw.decode('utf-8')
-                for call in calls(text, names):
-                    call['file'] = source.logical
-                    cls.call_rows.append(call)
-                if source.set == 'main':
-                    lf_text = text.replace('\r\n', '\n')
-                    for arguments in palette.up_name_calls(lf_text):
-                        cls.up_name_rows.append((source.logical, lf_text, dict(arguments)['secondary']))
+        cls.temporary = tempfile.TemporaryDirectory(prefix='bp-ibc-')
+        root = Path(cls.temporary.name)
+        dynamic = UP_NAME_OWNERS['DynamicCard.kt']
+        with contextlib.redirect_stdout(io.StringIO()):
+            load_tool(dynamic['producer']).generate(REPO, root / 'dynamic')
+        environment = dict(os.environ, PYTHONHASHSEED='0', PYTHONIOENCODING='utf-8', PYTHONDONTWRITEBYTECODE='1',
+                           PYTHONUTF8='1')
+        done = subprocess.run([sys.executable, '-X', 'utf8', '-B', str(TOOLS / 'extract-upstream-video-detail-full-units.py'),
+                               str(REPO), str(root / 'units')],
+                              cwd=str(REPO / 'desktop'), env=environment, capture_output=True, check=False)
+        if done.returncode != 0:
+            raise RuntimeError(done.stderr.decode('utf-8', 'replace')[-4000:])
+        cls.units = root / 'units'
+        sources = {}
+        for base, prefix in ((REPO / 'desktop/src/main', 'desktop/src/main/'),
+                             (MERGED / 'app/src/main/java', 'app/src/main/java/'),
+                             (root / 'dynamic', dynamic['generated']),
+                             (cls.units, VIDEO_INFO_OWNER['generated'])):
+            for path in sorted(base.rglob('*.kt')):
+                sources[prefix + path.relative_to(base).as_posix()] = path.read_bytes().decode('utf-8').replace('\r\n', '\n')
+        cls.sources = sources
+        cls.up_name_rows = [(logical, text, dict(arguments)['secondary']) for logical, text in sources.items()
+                            if palette.UP_NAME_CALLEE in text for arguments in palette.up_name_calls(text)]
 
-    def test_every_name_the_palette_and_suites_call_has_one_definer_with_the_right_arity(self):
-        for name, (package, arity) in DEPENDENCIES.items():
-            with self.subTest(name=name):
-                found = self.declared.get(name, [])
-                self.assertEqual(1, len(found), (name, found))
-                self.assertEqual(package, found[0][1], name)
-                self.assertEqual('fun', found[0][3], name)
-        compiled_text = {source.logical: Path(source.real).read_bytes().decode('utf-8') for source in self.compiled
-                         if source.logical.endswith(('ButtonVisualPolicy.kt', 'AppMaterial3Badge.kt', 'AppMiuixBadge.kt',
-                                                     'UserVipBadge.kt', 'AppPrimitiveComponents.kt'))}
-        self.assertEqual(5, len(compiled_text), sorted(compiled_text))
-        for logical, text in compiled_text.items():
-            if logical.endswith('ButtonVisualPolicy.kt'):
-                self.assertEqual(['containerColor', 'contentColor', 'colorScheme'],
-                                 [label for label, _ in parameters(text, 'resolveButtonContentColor')])
-            elif logical.endswith('AppPrimitiveComponents.kt'):
-                self.assertEqual(['tabLeftPx', 'tabWidthPx', 'viewportWidthPx', 'maxScrollPx'],
-                                 [label for label, _ in parameters(text, 'resolveContentSizedTabScrollOffsetPx')])
-            elif logical.endswith('UserVipBadge.kt'):
-                self.assertEqual([], parameters(text, 'userVipPink'))
-                self.assertEqual(['isDark'], [label for label, _ in parameters(text, 'resolveUserVipPink')])
-            else:
-                self.assertEqual(['modifier', 'containerColor', 'contentColor', 'content'],
-                                 [label for label, _ in parameters(text, 'AppMaterial3Badge' if 'Material3' in logical else 'AppMiuixBadge')])
-        self.assertEqual({'build/generated/home-page/com/android/purebilibili/core/ui/components/UserVipBadge.kt'},
-                         {row[0] for row in self.declared['userVipPink']})
-        self.assertEqual(['build/generated/components/com/android/purebilibili/core/ui/ButtonVisualPolicy.kt'],
-                         [row[0] for row in self.declared['resolveButtonContentColor']])
-        corner = palette.main_bodies(REPO)[0]['UserAvatarCornerMark.kt'].decode('utf-8')
-        self.assertEqual(1, corner.count('import com.android.purebilibili.core.ui.components.userVipPink\n'))
-        self.assertEqual(1, corner.count('.background(userVipPink())'))
-        badge = palette.main_bodies(REPO)[0]['AppBadge.kt'].decode('utf-8')
-        self.assertEqual(1, badge.count('com.android.purebilibili.core.ui.resolveButtonContentColor('))
-        self.assertEqual(1, badge.count('androidx.compose.material3.contentColorFor('))
+    @classmethod
+    def tearDownClass(cls):
+        cls.temporary.cleanup()
 
-    def test_every_caller_of_the_five_files_matches_the_new_signatures(self):
+    def test_the_v046_signatures_and_the_pink_the_palette_files_bind(self):
         sources = palette.main_bodies(REPO)[0]
         params = {name: parameters(sources[owner].decode('utf-8'), name) for name, owner in CALLEES.items()}
         self.assertEqual([('vipStatus', False), ('vipType', False), ('onSurface', False), ('secondary', False)],
@@ -945,19 +835,14 @@ class V046IdentityBadgePaletteUniverseTest(unittest.TestCase):
         self.assertEqual([('modifier', True), ('containerColor', True), ('contentColor', True)], params['UserUpBadge'])
         self.assertEqual([('modifier', True), ('containerColor', True), ('contentColor', True), ('content', True)],
                          params['AppBadge'])
-        by_name = {}
-        for call in self.call_rows:
-            by_name.setdefault(call['name'], []).append(call)
-        self.assertGreaterEqual(len(self.call_rows), 30)
-        for name in ('AppBadge', 'UserUpBadge', 'UserAvatarCornerMarkBadge', 'OfficialVerifyBadge',
-                     'OfficialVerifyAvatarBadge', 'resolveUpNameColor'):
-            self.assertTrue(by_name.get(name), name)
-        problems = []
-        for call in self.call_rows:
-            problem = callee_problem(call, params[call['name']])
-            if problem:
-                problems.append((call['file'], call['line'], call['name'], problem))
-        self.assertEqual([], problems)
+        corner = sources['UserAvatarCornerMark.kt'].decode('utf-8')
+        self.assertEqual(1, corner.count('import com.android.purebilibili.core.ui.components.userVipPink\n'))
+        self.assertEqual(1, corner.count('.background(userVipPink())'))
+        badge = sources['AppBadge.kt'].decode('utf-8')
+        self.assertEqual(1, badge.count('com.android.purebilibili.core.ui.resolveButtonContentColor('))
+        self.assertEqual(1, badge.count('androidx.compose.material3.contentColorFor('))
+        self.assertNotIn(b'fontSp', sources['UserUpBadge.kt'])
+        self.assertNotIn(b'Color(0xFFFB7299)', sources['UpBadgeNamePolicy.kt'])
 
     def test_every_compiled_up_name_caller_passes_the_annual_vip_pink(self):
         # v0.4.6 resolveUpNameColor treats `secondary` as the annual-VIP colour; the theme secondary is no longer valid.
@@ -972,22 +857,22 @@ class V046IdentityBadgePaletteUniverseTest(unittest.TestCase):
                 if secondary != palette.USER_VIP_PINK and not local:
                     stale.append((logical, secondary))
         self.assertEqual([], stale)
-        for name, owner in UP_NAME_OWNERS.items():
-            with self.subTest(name=name):
-                row = palette.UP_NAME_MIGRATIONS[name]
-                text, secondaries = by_file[owner['generated'] + owner['output']]
-                self.assertEqual(row['calls'], len(secondaries))
-                self.assertEqual(1, text.count(row['after']))
-                self.assertEqual(0, text.count(row['before']))
-        # The two producers that keep their own receipts record the rewrite and still invert to the original.
-        replay = json.loads((self.root / 'desktop/build/generated/original-space-pages/source-transform-replay.json')
-                            .read_text(encoding='utf-8'))
-        screen = [file for file in replay['files'] if file['source'].endswith('/feature/space/SpaceScreen.kt')]
-        self.assertEqual(1, len(screen))
-        self.assertTrue(screen[0]['completeOriginalFileReconstructed'])
-        space_row = palette.UP_NAME_MIGRATIONS['SpaceScreen.kt']
-        self.assertEqual([space_row['before']], [step['original'] for step in screen[0]['transforms']
-                                                  if step['adapted'] == space_row['after']])
+        # The dynamic card copy is still compiled and passes the pink through its producer's pinned rewrite.
+        dynamic, row = UP_NAME_OWNERS['DynamicCard.kt'], palette.UP_NAME_MIGRATIONS['DynamicCard.kt']
+        text, secondaries = by_file[dynamic['generated'] + dynamic['output']]
+        self.assertEqual(row['calls'], len(secondaries))
+        self.assertEqual(1, text.count(row['after']))
+        self.assertEqual(0, text.count(row['before']))
+        # SpaceScreen.kt compiles from the merged root (M4d) with the desktop patch; the original binds the pink itself
+        # and no hunk of the patch touches the call.
+        space, row = UP_NAME_OWNERS['SpaceScreen.kt'], palette.UP_NAME_MIGRATIONS['SpaceScreen.kt']
+        text, secondaries = by_file[space['upstream']]
+        self.assertEqual([palette.USER_VIP_PINK] * row['calls'], secondaries)
+        self.assertEqual(1, text.count(row['after']))
+        self.assertEqual(0, text.count(row['before']))
+        hunks = (TOOLS.parent / 'upstream-core/patches' / (space['upstream'] + '.patch')).read_text(encoding='utf-8')
+        self.assertEqual([], [line for line in hunks.splitlines() if line[:1] in '+-' and not line.startswith(('+++', '---'))
+                              and (palette.UP_NAME_CALLEE in line or 'secondary =' in line)])
         # The video detail owner row is the whole v0.4.6 text: it binds userVipPink() itself and no hunk of this
         # slice (or any other) rewrites that line any more.
         self.assertNotIn('VideoInfoSection.kt', palette.UP_NAME_MIGRATIONS)
@@ -995,26 +880,8 @@ class V046IdentityBadgePaletteUniverseTest(unittest.TestCase):
         self.assertEqual(['secondaryColor', 'secondaryColor'], info_secondaries)
         self.assertEqual(1, info_text.count('val secondaryColor = ' + palette.USER_VIP_PINK + '\n'))
         self.assertEqual(0, info_text.count('val secondaryColor = ' + palette.THEME_SECONDARY))
-        bindings = json.loads((self.root / 'desktop/build/generated/original-video-detail-units/source-bindings.json')
-                              .read_text(encoding='utf-8'))
+        bindings = json.loads((self.units / 'source-bindings.json').read_text(encoding='utf-8'))
         self.assertEqual([], [edit for edit in bindings['adaptations'] if 'VIP colour' in edit['label']])
-
-    def test_nothing_reads_the_removed_user_up_badge_font_size_or_the_old_vip_names_policy(self):
-        for source in self.compiled:
-            if not source.logical.endswith('.kt'):
-                continue
-            raw = Path(source.real).read_bytes()
-            if b'UserUpBadgeVisualSpec' in raw or b'resolveUserUpBadgeVisualSpec' in raw:
-                self.assertIn(source.logical, {
-                    'build/generated/home-page/' + MAIN_RELATIVE['UserUpBadge.kt'],
-                    'build/generated/original-refresh-policy-tests/' + TEST_RELATIVE['UpBadgeNamePolicyTest.kt'],
-                }, source.logical)
-            if source.logical.startswith('build/generated/home-page/') and source.logical.endswith('UserUpBadge.kt'):
-                self.assertNotIn(b'fontSp', raw)
-        old_pink = [source.logical for source in self.compiled
-                    if source.logical.endswith('.kt') and b'Color(0xFFFB7299)' in Path(source.real).read_bytes()
-                    and 'UpBadgeNamePolicy' in source.logical]
-        self.assertEqual([], old_pink)
 
 
 if __name__ == '__main__':

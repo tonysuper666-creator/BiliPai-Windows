@@ -10,6 +10,7 @@ import com.android.purebilibili.core.ui.components.AppSurface
 import com.android.purebilibili.core.ui.components.AppText
 import com.android.purebilibili.core.ui.components.AppTextButton
 import com.android.purebilibili.feature.audio.screen.ListenVideoCollectionPlayer
+import com.android.purebilibili.feature.audio.viewmodel.ListenVideoCollectionViewModel
 import com.android.purebilibili.navigation3.BiliPaiNavKey
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Job
@@ -19,9 +20,28 @@ private class CollectionKeyReference(private val key: BiliPaiNavKey.AudioMode) {
     override fun hashCode() = System.identityHashCode(key)
 }
 
-/** The original collection UI receives its actual retained destination VM and
- * current composition callbacks. Its player slot always uses the existing full
- * ordinary owner; an empty first page cannot expose the preceding video's UI. */
+/** The collection page is the upstream ListenVideoCollectionPlayer over this destination's retained VM: its own loading page, its own
+ * error page with the retry button, and the player slot only once the first track is there. Opening the collection replaces the Root
+ * queue, so a destination that was never in front must not do it: the page is first composed when the destination first becomes active
+ * and stays composed after that (covering it keeps the loader and the player slot as they were). */
+@Composable internal fun DesktopOriginalListenVideoCollectionSurface(
+    viewModel: ListenVideoCollectionViewModel,
+    mediaId: Long,
+    seasonId: Long,
+    title: String,
+    active: Boolean,
+    onBack: () -> Unit,
+    content: @Composable () -> Unit,
+) {
+    val shown = remember(viewModel) { mutableStateOf(active) }
+    LaunchedEffect(active) { if (active) shown.value = true }
+    if (shown.value) {
+        ListenVideoCollectionPlayer(mediaId = mediaId, seasonId = seasonId, title = title, onBack = onBack,
+            viewModel = viewModel) { _, _ -> content() }
+    }
+}
+
+/** The original collection UI receives its actual retained destination VM and current composition callbacks. */
 @Composable internal fun DesktopOriginalListenVideoCollectionHost(
     key: BiliPaiNavKey.AudioMode,
     root: DesktopPersonalListsRoot,
@@ -47,16 +67,8 @@ private class CollectionKeyReference(private val key: BiliPaiNavKey.AudioMode) {
         try { action() } catch (_: CancellationException) { /* Actual destination/Root retired. */ }
     }
     val back = { runUi(onBack) }
-    ListenVideoCollectionPlayer(mediaId = key.collectionMediaId, seasonId = key.collectionSeasonId,
-        title = key.collectionTitle, onBack = back, onRetry = { runUi(entry.viewModel::retry) },
-        active = active, viewModel = entry.viewModel) { bvid, _ ->
-        if (bvid.isBlank()) {
-            // The original full-page error/retry surface, if any, is composed above this slot.
-            Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                com.android.purebilibili.core.ui.components.AppCircularProgressIndicator()
-            }
-        } else content(entry, back)
-    }
+    DesktopOriginalListenVideoCollectionSurface(entry.viewModel, key.collectionMediaId, key.collectionSeasonId,
+        key.collectionTitle, active, back) { content(entry, back) }
 }
 
 @Composable internal fun DesktopOriginalListenCollectionQueueChanged(onBack: () -> Unit) {

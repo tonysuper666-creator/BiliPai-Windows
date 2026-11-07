@@ -324,10 +324,10 @@ class DesktopWindowsSubtitlePreferenceStateTest {
      * handle or global NetworkModule owner is introduced for the presentation test.
      */
     private class ActualOwner {
-        private val directory = Files.createTempDirectory("subtitle-actual-saveable-")
+        private val directory = Files.createTempDirectory("subtitle-actual-saveable-").toRealPath()
         private val createdAbsoluteDirectory = directory.toAbsolutePath().normalize()
         private val createdRealDirectory = directory.toRealPath()
-        private val systemTempDirectory = Path.of(System.getProperty("java.io.tmpdir")).toAbsolutePath().normalize()
+        private val systemTempDirectory = Path.of(System.getProperty("java.io.tmpdir")).toRealPath()
         private val systemRealTempDirectory = systemTempDirectory.toRealPath()
         private val sessions = DesktopSessionStore.temporary()
         private val repository = DesktopRepository(sessions)

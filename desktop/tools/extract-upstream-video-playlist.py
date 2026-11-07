@@ -1,5 +1,6 @@
 from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
+from desktop_paths import long_path
 import hashlib,json,subprocess
 HERE=Path(__file__).resolve().parent
 MAIN=HERE.parents[2];SOURCE=MAIN.parent/'BiliPai-v023'
@@ -7,7 +8,7 @@ PIN='79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40'
 PATH='app/src/main/java/com/android/purebilibili/feature/video/player/PlaylistManager.kt'
 def sha(s):return hashlib.sha256(s.encode()).hexdigest()
 def wide(p):
- s=str(Path(p).absolute());return Path(s if s.startswith('\\\\?\\') else '\\\\?\\'+s)
+ return long_path(Path(p).absolute())
 def span(s,start):
  at=s.index(start);opening=s.index('{',at);depth=1;i=opening+1;quote=None;escape=False
  while depth:

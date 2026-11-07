@@ -1,13 +1,20 @@
 from v025_source_paths import canonical_source as _desktop_canonical_source, canonical_relative as _desktop_canonical_relative
+from v025_source_paths import _catalog as _v025_catalog
 from pathlib import Path
+from desktop_paths import long_path
 import hashlib,importlib.util,json,re,subprocess,sys
 from types import SimpleNamespace
 from v025_source_paths import canonical_source as _desktop_canonical_source
 sys.dont_write_bytecode=True
 REPO=OUTPUT=None;STANDALONE=False
 COMMIT='79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40';BASE='app/src/main/java/com/android/purebilibili/'
+def _registered_is_pin(path,registered,pin):
+  # Gradle reads the legacy read point's manifest (legacy bytes); the gate view reads the
+  # live manifest, re-pinned to the direct-compile tree. Both must be the one reviewed pair.
+  entry=_v025_catalog()['paths'].get(path)
+  return registered==pin or (entry is not None and registered==entry['sha256'] and entry.get('legacySha256')==pin)
 def wide(p):
- s=str(Path(p).absolute());return Path(s if s.startswith('\\\\?\\')else'\\\\?\\'+s)
+ return long_path(Path(p).absolute())
 def write(p,t):wide(p).parent.mkdir(parents=True,exist_ok=True);wide(p).write_bytes(t.encode()if isinstance(t,str)else t)
 def sha(t):return hashlib.sha256(t.encode()if isinstance(t,str)else t).hexdigest()
 def module(name,p):
@@ -422,7 +429,7 @@ def generate(repo,output,standalone=False,test_output=None):
  manifest=json.loads(wide(REPO/'desktop/upstream-sources.json').read_text(encoding='utf-8'));assert manifest['upstreamCommit']==COMMIT
  registered={r['path']:r['sha256']for r in manifest['sources']}
  for path,pin in SOURCE_PINS.items():
-  if path in registered:assert registered[path]==pin['sha256LF'],path+' registered original identity changed'
+  if path in registered:assert _registered_is_pin(path,registered[path],pin['sha256LF']),path+' registered original identity changed'
  parser=module('section_tokens',REPO/'desktop/tools/sync-upstream.py');selector=module('section_declarations',REPO/'desktop/tools/extract-appearance-platform.py');protocol=module('section_brackets',REPO/'desktop/tools/extract-upstream-dynamic-reply-protocol.py')
  controls=SimpleNamespace(parser=parser);c=SimpleNamespace(parser=parser,selector=selector,member_closure=member_closure)
  render_section();render_settings();render_helpers();render_policy();render_dimension()

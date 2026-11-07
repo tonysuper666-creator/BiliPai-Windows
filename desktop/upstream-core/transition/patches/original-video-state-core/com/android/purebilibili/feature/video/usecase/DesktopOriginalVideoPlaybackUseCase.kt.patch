@@ -1,0 +1,44 @@
+--- a/original-video-state-core/com/android/purebilibili/feature/video/usecase/DesktopOriginalVideoPlaybackUseCase.kt
++++ b/original-video-state-core/com/android/purebilibili/feature/video/usecase/DesktopOriginalVideoPlaybackUseCase.kt
+@@ -358,11 +358,10 @@
+                         isHevcSupported = isHevcSupported,
+                         isAv1Supported = isAv1Supported
+                     )
+ 
+                     if (selection == null) {
+-                        PlaybackCooldownManager.recordFailure(bvid, "播放地址为空")
+                         return@fold VideoLoadResult.Error(
+                             error = VideoLoadError.PlayUrlEmpty,
+                             canRetry = true
+                         )
+                     }
+@@ -456,12 +455,12 @@
+                         curAudioLang = playData.curLanguage,
+                         adaptiveDashSource = selection.adaptiveDashSource
+                     )
+                 },
+                 onFailure = { e ->
+-                    //  [风控冷却] 加载失败，记录失败
+-                    PlaybackCooldownManager.recordFailure(bvid, e.message ?: "unknown")
++                    // Only explicit server restrictions enter the existing cooldown.
++                    com.bilipai.desktop.ui.desktopOriginalRecordPlaybackFailure(bvid, e)
+                     // Check if rate limited
+                     val error = com.bilipai.desktop.ui.desktopOriginalBootstrapVideoLoadError(e, com.bilipai.desktop.ui.desktopOriginalVideoLoadError(e))
+ 
+                     VideoLoadResult.Error(
+                         error = com.bilipai.desktop.ui.desktopOriginalBootstrapVideoLoadError(e, com.bilipai.desktop.ui.desktopOriginalVideoLoadError(e)),
+@@ -472,12 +471,12 @@
+ 
+         } catch (e: kotlinx.coroutines.CancellationException) {
+             Logger.d("VideoPlaybackUseCase", "🚫 加载已取消: $bvid")
+             throw e
+         } catch (e: Exception) {
+-            //  [风控冷却] 异常失败，记录
+-            PlaybackCooldownManager.recordFailure(bvid, e.message ?: "exception")
++            // Preserve transport diagnostics without inventing a server restriction.
++            com.bilipai.desktop.ui.desktopOriginalRecordPlaybackFailure(bvid, e)
+             return VideoLoadResult.Error(
+                 error = com.bilipai.desktop.ui.desktopOriginalBootstrapVideoLoadError(e, com.bilipai.desktop.ui.desktopOriginalVideoLoadError(e)),
+                 canRetry = true
+             )
+         }

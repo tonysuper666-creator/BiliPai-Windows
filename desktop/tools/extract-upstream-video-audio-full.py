@@ -1,5 +1,7 @@
 from v025_source_paths import canonical_source as _desktop_canonical_source
+from v025_source_paths import _catalog as _v025_catalog
 from pathlib import Path
+from desktop_paths import long_path
 import hashlib,importlib.util,json,re,subprocess,sys,difflib
 sys.dont_write_bytecode=True;sys.stdout.reconfigure(encoding='utf-8')
 import argparse
@@ -17,8 +19,18 @@ OUT=LANE;SOURCES={};CHANGES={};OUTPUTS=[]
 # Roadmap lst-episode-selector-collection: the archive is intact and no output lies inside or around it.
 from v046_episode_selector import validate_outputs as validate_episode_selector_outputs
 validate_episode_selector_outputs(REPO,LANE)
+def _registered_is_pin(path,registered,pin):
+ # Gradle reads the legacy read point's manifest (legacy bytes); the gate view reads the
+ # live manifest, re-pinned to the direct-compile tree. Both must be the one reviewed pair.
+ entry=_v025_catalog()['paths'].get(path)
+ return registered==pin or (entry is not None and registered==entry['sha256'] and entry.get('legacySha256')==pin)
 def safe(p):
- s=str(Path(p).absolute());prefix=chr(92)*2+'?'+chr(92);return Path(s if s.startswith(prefix)else prefix+s)
+ return long_path(Path(p).absolute())
+def _registered_is_pin(path,registered,pin):
+ # Gradle reads the legacy read point's manifest (legacy bytes); the gate view reads the
+ # live manifest, re-pinned to the direct-compile tree. Both must be the one reviewed pair.
+ entry=_v025_catalog()['paths'].get(path)
+ return registered==pin or (entry is not None and registered==entry['sha256'] and entry.get('legacySha256')==pin)
 def sha(t):return hashlib.sha256(t.encode()if isinstance(t,str)else t).hexdigest()
 def write(p,t):safe(p).parent.mkdir(parents=True,exist_ok=True);safe(p).write_bytes(t.encode()if isinstance(t,str)else t)
 def module(name,p):
@@ -31,7 +43,7 @@ def read(rel):
  assert SOURCES[p]['sha256LF']==SOURCE_PINS[p]['sha256LF'] and SOURCES[p]['gitBlob']==SOURCE_PINS[p]['gitBlob'],p
  if not args.standalone:
   rows=[r for r in manifest['sources']if r['path']==p]
-  assert len(rows)==1 and rows[0]['sha256']==SOURCE_PINS[p]['sha256LF'] and FEATURE in rows[0]['features'],p
+  assert len(rows)==1 and _registered_is_pin(p,rows[0]['sha256'],SOURCE_PINS[p]['sha256LF']) and FEATURE in rows[0]['features'],p
  write(LANE/'original-retained'/(p+'.txt'),raw);return raw.decode()
 def replace(t,b,a,label,all=False):
  n=t.count(b);assert n>0 and(all or n==1),(CURRENT,label,n)

@@ -124,3 +124,12 @@
      val useSnapshotBlur = shouldUseVideoCardTransitionSnapshotBlur(
          exposure = exposure,
          motionTier = motionTier,
+@@ -279,7 +279,7 @@
+     sourceBounds: Rect?,
+     canvasWidth: Float,
+     canvasHeight: Float,
+-): Offset = Offset(0.5f, 0f)
++): Offset = Offset(0.5f, 0.5f)
+ 
+ internal fun resolveVideoCardTransitionOverlayDepthPivot(
+     sourceBounds: Rect?,

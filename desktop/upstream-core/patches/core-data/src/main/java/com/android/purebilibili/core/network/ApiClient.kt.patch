@@ -1,0 +1,169 @@
+--- a/core-data/src/main/java/com/android/purebilibili/core/network/ApiClient.kt
++++ b/core-data/src/main/java/com/android/purebilibili/core/network/ApiClient.kt
+@@ -3157,13 +3157,19 @@ object NetworkModule {
+      * decides access from the selected account's own server-side session.
+      */
+     fun playbackApi(): BilibiliApi {
+-        val resolved = resolvePlaybackAccountClientKey() ?: return api
+-        return requireNotNull(ensurePlaybackAccountApi(resolved.first, resolved.second))
++        // Desktop (TON-1082): only a Playback owner; never falls back to the main account.
++        com.bilipai.desktop.data.DesktopUpstreamCalls.requirePlayback("NetworkModule.playbackApi()")
++        return desktopPlaybackRetrofit.create(BilibiliApi::class.java)
+     }
+ 
+     fun playbackBangumiApi(): BangumiApi {
+-        val resolved = resolvePlaybackAccountClientKey() ?: return bangumiApi
+-        return requireNotNull(ensurePlaybackAccountBangumiApi(resolved.first, resolved.second))
++        com.bilipai.desktop.data.DesktopUpstreamCalls.requirePlayback("NetworkModule.playbackBangumiApi()")
++        return desktopPlaybackRetrofit.create(BangumiApi::class.java)
++    }
++
++    private val desktopPlaybackRetrofit: Retrofit by lazy {
++        Retrofit.Builder().baseUrl("https://api.bilibili.com/").callFactory(com.bilipai.desktop.data.DesktopUpstreamCalls.playback)
++            .addConverterFactory(json.asConverterFactory("application/json".toMediaType())).build()
+     }
+ 
+     /** 锁内只做键比较与缓存读写；账号解析与 Retrofit 构建都在锁外完成。 */
+@@ -3278,7 +3284,12 @@ object NetworkModule {
+             .build()
+     }
+ 
++    // Desktop (TON-1082): a gate that refuses to send; its 32 MiB cache is the guest partition used by the explicit
++    // guest requests. Requests go through DesktopUpstreamCalls; upstream's own client below is never built.
+     val okHttpClient: OkHttpClient by lazy {
++        com.bilipai.desktop.data.DesktopUpstreamCalls.gateTransport("okHttpClient", com.bilipai.desktop.data.DesktopUpstreamHttpCache.guest)
++    }
++    @Suppress("unused") private val androidOkHttpClient: OkHttpClient by lazy {
+         val builder = OkHttpClient.Builder()
+             .protocols(resolveSharedNetworkProtocols())
+             .proxySelector(buildAppProxySelector())
+@@ -3513,7 +3524,8 @@ object NetworkModule {
+     
+     //  [新增] Guest OkHttpClient - 不带登录凭证，用于风控时的降级
+     // 当登录用户遭遇风控 (-351) 时，可以尝试以游客身份获取视频
+-    val guestOkHttpClient: OkHttpClient by lazy {
++    val guestOkHttpClient: OkHttpClient by lazy { com.bilipai.desktop.data.DesktopUpstreamCalls.gateTransport("guestOkHttpClient", null) } // Desktop (TON-1082)
++    @Suppress("unused") private val androidGuestOkHttpClient: OkHttpClient by lazy {
+         OkHttpClient.Builder()
+             // Guest requests use the same platform ECH support without debug IP fallback.
+             .dns(buildAppDns(allowHardcodedIpFallback = false))
+@@ -3615,18 +3627,18 @@ object NetworkModule {
+     
+     //  [新增] Guest API - 使用 guestOkHttpClient，用于风控降级
+     val guestApi: BilibiliApi by lazy {
+-        Retrofit.Builder().baseUrl("https://api.bilibili.com/").client(guestOkHttpClient)
++        Retrofit.Builder().baseUrl("https://api.bilibili.com/").callFactory(com.bilipai.desktop.data.DesktopUpstreamCalls.guest)
+             .addConverterFactory(json.asConverterFactory("application/json".toMediaType())).build()
+             .create(BilibiliApi::class.java)
+     }
+ 
+     val api: BilibiliApi by lazy {
+-        Retrofit.Builder().baseUrl("https://api.bilibili.com/").client(okHttpClient)
++        Retrofit.Builder().baseUrl("https://api.bilibili.com/").callFactory(com.bilipai.desktop.data.DesktopUpstreamCalls.main)
+             .addConverterFactory(json.asConverterFactory("application/json".toMediaType())).build()
+             .create(BilibiliApi::class.java)
+     }
+     val passportApi: PassportApi by lazy {
+-        Retrofit.Builder().baseUrl("https://passport.bilibili.com/").client(okHttpClient)
++        Retrofit.Builder().baseUrl("https://passport.bilibili.com/").callFactory(com.bilipai.desktop.data.DesktopUpstreamCalls.main)
+             .addConverterFactory(json.asConverterFactory("application/json".toMediaType())).build()
+             .create(PassportApi::class.java)
+     }
+@@ -3638,76 +3650,76 @@ object NetworkModule {
+             .create(PassportApi::class.java)
+     }
+     val searchApi: SearchApi by lazy {
+-        Retrofit.Builder().baseUrl("https://api.bilibili.com/").client(okHttpClient)
++        Retrofit.Builder().baseUrl("https://api.bilibili.com/").callFactory(com.bilipai.desktop.data.DesktopUpstreamCalls.main)
+             .addConverterFactory(json.asConverterFactory("application/json".toMediaType())).build()
+             .create(SearchApi::class.java)
+     }
+ 
+     val articleApi: ArticleApi by lazy {
+-        Retrofit.Builder().baseUrl("https://api.bilibili.com/").client(okHttpClient)
++        Retrofit.Builder().baseUrl("https://api.bilibili.com/").callFactory(com.bilipai.desktop.data.DesktopUpstreamCalls.main)
+             .addConverterFactory(json.asConverterFactory("application/json".toMediaType())).build()
+             .create(ArticleApi::class.java)
+     }
+     
+     //  动态 API
+     val dynamicApi: DynamicApi by lazy {
+-        Retrofit.Builder().baseUrl("https://api.bilibili.com/").client(okHttpClient)
++        Retrofit.Builder().baseUrl("https://api.bilibili.com/").callFactory(com.bilipai.desktop.data.DesktopUpstreamCalls.main)
+             .addConverterFactory(json.asConverterFactory("application/json".toMediaType())).build()
+             .create(DynamicApi::class.java)
+     }
+ 
+     /** Dynamic visibility checks must not inherit the signed-in user's cookies. */
+     val guestDynamicApi: DynamicApi by lazy {
+-        Retrofit.Builder().baseUrl("https://api.bilibili.com/").client(guestOkHttpClient)
++        Retrofit.Builder().baseUrl("https://api.bilibili.com/").callFactory(com.bilipai.desktop.data.DesktopUpstreamCalls.guest)
+             .addConverterFactory(json.asConverterFactory("application/json".toMediaType())).build()
+             .create(DynamicApi::class.java)
+     }
+     
+     //  Buvid API (用于获取设备指纹)
+     val buvidApi: BuvidApi by lazy {
+-        Retrofit.Builder().baseUrl("https://api.bilibili.com/").client(okHttpClient)
++        Retrofit.Builder().baseUrl("https://api.bilibili.com/").callFactory(com.bilipai.desktop.data.DesktopUpstreamCalls.main)
+             .addConverterFactory(json.asConverterFactory("application/json".toMediaType())).build()
+             .create(BuvidApi::class.java)
+     }
+     
+     //  [新增] UP主空间 API
+     val spaceApi: SpaceApi by lazy {
+-        Retrofit.Builder().baseUrl("https://api.bilibili.com/").client(okHttpClient)
++        Retrofit.Builder().baseUrl("https://api.bilibili.com/").callFactory(com.bilipai.desktop.data.DesktopUpstreamCalls.main)
+             .addConverterFactory(json.asConverterFactory("application/json".toMediaType())).build()
+             .create(SpaceApi::class.java)
+     }
+     
+     //  [新增] 番剧/影视 API
+     val bangumiApi: BangumiApi by lazy {
+-        Retrofit.Builder().baseUrl("https://api.bilibili.com/").client(okHttpClient)
++        Retrofit.Builder().baseUrl("https://api.bilibili.com/").callFactory(com.bilipai.desktop.data.DesktopUpstreamCalls.main)
+             .addConverterFactory(json.asConverterFactory("application/json".toMediaType())).build()
+             .create(BangumiApi::class.java)
+     }
+     
+     //  [新增] 故事模式 (竖屏短视频) API - 使用 app.bilibili.com
+     val storyApi: StoryApi by lazy {
+-        Retrofit.Builder().baseUrl("https://app.bilibili.com/").client(okHttpClient)
++        Retrofit.Builder().baseUrl("https://app.bilibili.com/").callFactory(com.bilipai.desktop.data.DesktopUpstreamCalls.main)
+             .addConverterFactory(json.asConverterFactory("application/json".toMediaType())).build()
+             .create(StoryApi::class.java)
+     }
+     
+     //  [新增] 开屏/壁纸 API
+     val splashApi: SplashApi by lazy {
+-        Retrofit.Builder().baseUrl("https://app.bilibili.com/").client(okHttpClient)
++        Retrofit.Builder().baseUrl("https://app.bilibili.com/").callFactory(com.bilipai.desktop.data.DesktopUpstreamCalls.main)
+             .addConverterFactory(json.asConverterFactory("application/json".toMediaType())).build()
+             .create(SplashApi::class.java)
+     }
+     
+     //  [新增] 私信 API - 使用 api.vc.bilibili.com
+     val messageApi: MessageApi by lazy {
+-        Retrofit.Builder().baseUrl("https://api.vc.bilibili.com/").client(okHttpClient)
++        Retrofit.Builder().baseUrl("https://api.vc.bilibili.com/").callFactory(com.bilipai.desktop.data.DesktopUpstreamCalls.main)
+             .addConverterFactory(json.asConverterFactory("application/json".toMediaType())).build()
+             .create(MessageApi::class.java)
+     }
+     
+     //  [新增] 音频 API - 使用 www.bilibili.com
+     val audioApi: AudioApi by lazy {
+-        Retrofit.Builder().baseUrl("https://www.bilibili.com/").client(okHttpClient)
++        Retrofit.Builder().baseUrl("https://www.bilibili.com/").callFactory(com.bilipai.desktop.data.DesktopUpstreamCalls.main)
+             .addConverterFactory(json.asConverterFactory("application/json".toMediaType())).build()
+             .create(AudioApi::class.java)
+     }
+@@ -3114,3 +3114,4 @@ object NetworkModule {
+     fun clearRuntimeCookies() {
++        com.bilipai.desktop.data.DesktopUpstreamCalls.refuseSessionWrite("NetworkModule.clearRuntimeCookies") // Desktop (TON-1084)
+         appSessionCookieJar.clear()
+     }
+@@ -3128,3 +3129,4 @@ object NetworkModule {
+     fun clearPlaybackAccountClient() {
++        com.bilipai.desktop.data.DesktopUpstreamCalls.refuseSessionWrite("NetworkModule.clearPlaybackAccountClient") // Desktop (TON-1084)
+         playbackAccountKey = null
+         playbackAccountApi = null

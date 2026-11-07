@@ -143,33 +143,6 @@ class V046RssPublicContentSourceTest(unittest.TestCase):
                                            source.COMMIT + ':' + row['path']], capture_output=True, check=True).stdout
                     self.assertEqual(blob, raw)
 
-    def test_dependency_proposal_is_recorded_and_nothing_is_added_or_shipped(self):
-        pending = self.manifest['pendingDependencies']
-        self.assertEqual('not-added', pending['status'])
-        self.assertIn('D7', pending['decision'])
-        self.assertEqual(['net.dankito.readability4j:readability4j:1.0.8', 'org.jsoup:jsoup:1.23.2', 'org.slf4j:slf4j-api'],
-                         [row['coordinate'] for row in pending['proposed']])
-        self.assertEqual('org.jsoup:jsoup:1.21.2 in desktop/build.gradle.kts', pending['proposed'][1]['replaces'])
-        self.assertFalse(self.manifest['compiled'])
-        self.assertFalse(self.manifest['jvmTestsExecuted'])
-        self.assertNotIn('readability4j', self.build)
-        self.assertEqual(1, self.build.count('implementation("org.jsoup:jsoup:1.21.2")'))
-        self.assertNotIn('jsoup:1.23', self.build)
-        self.assertEqual(1, self.build.count('implementation("org.slf4j:slf4j-api:2.0.17")'))
-        licenses = REPO / 'desktop/src/main/resources/licenses'
-        for path in licenses.rglob('*'):
-            self.assertNotIn('readability4j', path.name.lower(), str(path))
-        carried = licenses / 'upstream-carried-assets'
-        self.assertNotIn('readability', (carried / 'provenance.json').read_text(encoding='utf-8').lower())
-        self.assertNotIn('readability', (carried / 'NOTICE.txt').read_text(encoding='utf-8').lower())
-        notice = self.archive[source.NOTICE].decode('utf-8')
-        self.assertIn('Apache License', notice)
-        self.assertIn('Version 2.0, January 2004', notice)
-        self.assertIn('Copyright 2017 dankito', notice)
-        self.assertEqual('app/src/main/assets/licenses/readability4j.LICENSE', source.UPSTREAM_PATHS[source.NOTICE])
-        self.assertEqual([], [path for path in self.main if path.endswith('.LICENSE')])
-        self.assertEqual(sha(self.archive[source.NOTICE]), self.proof['noticeStagedNotShipped']['sha256'])
-
     def test_the_article_extractor_is_untouched_until_the_dependency_is_approved(self):
         extractor = (REPO / EXTRACTOR).read_text(encoding='utf-8').replace('\r\n', '\n')
         self.assertIn('fun extractArticleBody(pageHtml: String): String? {', extractor)

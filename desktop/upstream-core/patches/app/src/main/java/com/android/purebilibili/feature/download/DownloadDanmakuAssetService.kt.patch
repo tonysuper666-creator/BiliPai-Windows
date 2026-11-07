@@ -1,0 +1,39 @@
+# 上游 DownloadDanmakuAssetResult 只回传实际写下的分段，桌面下载校验拿不到「应有段数」。
+# 桌面按上游 resolveDanmakuSegmentCount 的规则（dmSge.total 优先、否则按时长）补一个只读字段，
+# 供 DesktopDownloadManager 的完整性校验使用：不改变下载与返回的分段，也不放宽校验。
+--- a/app/src/main/java/com/android/purebilibili/feature/download/DownloadDanmakuAssetService.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/download/DownloadDanmakuAssetService.kt
+@@ -31,7 +31,8 @@
+ 
+ internal data class DownloadDanmakuAssetResult(
+     val segmentPaths: List<String>,
+-    val metadataPath: String?
++    val metadataPath: String?,
++    val expectedStandardSegmentCount: Int = 0
+ )
+ 
+ internal object DownloadDanmakuAssetService {
+@@ -68,10 +69,12 @@
+         } else {
+             null
+         }
++        val metadataSegmentCount = viewReply?.dmSge?.total?.toInt()
++        val expectedStandardSegmentCount = resolveDanmakuSegmentCount(durationMs, metadataSegmentCount)
+         val standardSegments = DanmakuRepository.getDanmakuSegments(
+             cid = task.cid,
+             durationMs = durationMs,
+-            metadataSegmentCount = viewReply?.dmSge?.total?.toInt()
++            metadataSegmentCount = metadataSegmentCount
+         )
+         val danmakuDir = File(taskDir, "danmaku").apply { mkdirs() }
+         val standardSegmentPaths = standardSegments.mapIndexed { index, bytes ->
+@@ -125,7 +128,8 @@
+         )
+         DownloadDanmakuAssetResult(
+             segmentPaths = segmentPaths,
+-            metadataPath = manifestFile.absolutePath
++            metadataPath = manifestFile.absolutePath,
++            expectedStandardSegmentCount = expectedStandardSegmentCount
+         )
+     }
+ 

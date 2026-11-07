@@ -141,7 +141,11 @@ class V029CommandVoteExtractionTest(unittest.TestCase):
             self.assertEqual(1, len(rows)); self.assertEqual("extracted", rows[0]["mode"])
             from v025_source_paths import canonical_source
             original = section.wide(canonical_source(REPO, path)).read_bytes().replace(b"\r\n", b"\n")
-            self.assertEqual(rows[0]["sha256"], hashlib.sha256(original).hexdigest())
+            # ad2967bbf re-pinned the live manifest to the direct-compile bytes; the catalog records
+            # the one reviewed pair (live sha256, legacySha256 = these extracted original bytes).
+            pin = json.loads((REPO / "desktop/tools/v025-canonical-sources.json").read_bytes())["paths"][path]
+            self.assertEqual(hashlib.sha256(original).hexdigest(), pin.get("legacySha256", pin["sha256"]))
+            self.assertEqual(pin["sha256"], rows[0]["sha256"])
 
 
 if __name__ == "__main__":

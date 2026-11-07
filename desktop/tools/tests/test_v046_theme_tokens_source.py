@@ -156,7 +156,6 @@ class V046ThemeTokensSourceTest(unittest.TestCase):
         cls.build = (REPO / 'desktop/build.gradle.kts').read_text(encoding='utf-8')
         cls.catalog = json.loads((TOOLS / 'compatibility-source-inputs.json').read_text(encoding='utf-8'))
         cls.sources = json.loads((REPO / 'desktop/upstream-sources.json').read_text(encoding='utf-8'))
-        cls.universe_cache = None
 
     @classmethod
     def tearDownClass(cls):
@@ -435,82 +434,12 @@ class V046ThemeTokensSourceTest(unittest.TestCase):
                         or 'v046-theme-tokens' in p.read_text(encoding='utf-8'))
         self.assertEqual(['extract-appearance-platform.py', 'v046_theme_tokens.py'], namers)
 
-    # ---- one definer, call chain, decision record ----------------------------------------------
+    # ---- tests, call chain, decision record ----------------------------------------------------
+    # design-tokens/ and design-system/ compile whole from the merged root (e2528efba) and the build excludes the
+    # emitted core/theme copies, so the one-definer reading of the mirror universe is retired (TON-1205):
+    # compileKotlin / compileTestKotlin reject a missing or doubled declaration of the compiled theme files.
 
-    def compiled_declarations(self):
-        """Declarations of the main and test source sets after the appearance producer ran (mirror run)."""
-        if type(self).universe_cache is not None:
-            return type(self).universe_cache
-        scratch = tempfile.mkdtemp(prefix='bp-ttk-')
-        try:
-            root, env = gate.make_scratch_repo(REPO, scratch)
-            model = gate.parse_gradle((root / 'desktop/build.gradle.kts').read_text(encoding='utf-8'))
-            tasks, _skipped = gate.select_producers(model, only={TASK})
-            self.assertEqual([TASK], [task.name for task in tasks])
-            results = gate.run_producers(root, tasks, env)
-            self.assertEqual([0], [row['returncode'] for row in results], results)
-            sources, _notes = gate.collect_sources(root, model)
-            wanted = set()
-            for name in tokens.MAIN_FILES:
-                text = self.archive[name].decode('utf-8')
-                info = gate.parse_kotlin(text, name, 'archive', 'carried')
-                wanted.update(d.name for d in info.decls)
-            wanted |= {'resolveMaterialTypography', 'toMiuixTextStyles', 'Md3Typography', 'BiliMiuixTypography',
-                       'AppTextStyles', 'scaled', 'withFontWeight', 'AppUiStyle'}
-            needles = [name.encode('utf-8') for name in wanted]
-            test_needles = [name.rsplit('.', 1)[-1].encode('utf-8') for name in JVM_TEST_CLASSES]
-            hits = []
-            for source in sources:
-                if source.set not in ('main', 'test'):
-                    continue
-                raw = source.real.read_bytes()
-                if source.set == 'main' and not any(n in raw for n in needles):
-                    continue
-                if source.set == 'test' and not any(n in raw for n in test_needles):
-                    continue
-                info = gate.analyze_source(source)
-                for decl in info.decls:
-                    hits.append((source.set, source.logical, info.package, decl.visibility, decl.kind,
-                                 decl.receiver, decl.name, decl.sig))
-            type(self).universe_cache = hits
-            return hits
-        finally:
-            shutil.rmtree(scratch, ignore_errors=True)
-
-    def test_each_top_level_declaration_of_the_six_files_has_one_definer_and_it_is_the_archive_copy(self):
-        hits = self.compiled_declarations()
-        for name in tokens.MAIN_FILES:
-            text = self.archive[name].decode('utf-8')
-            info = gate.parse_kotlin(text, name, 'archive', 'carried')
-            self.assertEqual(tokens.PACKAGE, info.package)
-            self.assertGreater(len(info.decls), 0)
-            expected_path = 'build/generated/appearance/' + tokens.RELATIVE[name]
-            for decl in info.decls:
-                with self.subTest(file=name, declaration=decl.label()):
-                    found = [h for h in hits if h[0] == 'main' and h[2] == info.package and h[6] == decl.name
-                             and h[4] == decl.kind and h[5] == decl.receiver and h[7] == decl.sig]
-                    self.assertEqual(1, len(found), found)
-                    self.assertEqual(expected_path, found[0][1])
-                    self.assertEqual(decl.visibility, found[0][3])
-        by_name = {}
-        for hit in hits:
-            if hit[0] == 'main':
-                by_name.setdefault(hit[6], []).append(hit[1])
-        for name in ('AppTextStyles', 'Md3Typography', 'BiliMiuixTypography', 'resolveMaterialTypography'):
-            self.assertEqual(['build/generated/appearance/' + tokens.RELATIVE[
-                {'AppTextStyles': 'AppTextStyles.kt', 'Md3Typography': 'Type.kt', 'BiliMiuixTypography': 'Type.kt',
-                 'resolveMaterialTypography': 'AndroidNativeVariantThemePolicy.kt'}[name]]], by_name[name], name)
-        for path in {h[1] for h in hits if h[0] == 'main'}:
-            self.assertNotIn('generated/upstream/', path)
-
-    def test_original_tests_have_one_definer_each(self):
-        hits = self.compiled_declarations()
-        for fqcn in JVM_TEST_CLASSES:
-            package, name = fqcn.rsplit('.', 1)
-            with self.subTest(test=name):
-                found = [h for h in hits if h[0] == 'test' and h[2] == package and h[6] == name]
-                self.assertEqual(1, len(found), found)
-                self.assertEqual('build/generated/original-theme-role-tests/' + tokens.RELATIVE[name + '.kt'], found[0][1])
+    def test_original_tests_keep_their_kotlin_test_counts(self):
         self.assertEqual({tokens.PACKAGE + '.' + n[:-3] for n in tokens.TEST_FILES}, set(JVM_TEST_CLASSES))
         self.assertEqual(33, sum(tokens.TEST_COUNTS.values()))
         for name, count in tokens.TEST_COUNTS.items():
@@ -519,27 +448,14 @@ class V046ThemeTokensSourceTest(unittest.TestCase):
             self.assertIn('import kotlin.test.Test\n', self.archive[name].decode('utf-8'))
             self.assertNotIn('org.junit', self.archive[name].decode('utf-8'))
 
-    def test_theme_call_chain_resolves_to_the_emitted_policy_functions(self):
-        hits = self.compiled_declarations()
-        resolve = [h for h in hits if h[0] == 'main' and h[6] == 'resolveMaterialTypography']
-        self.assertEqual(1, len(resolve))
-        self.assertEqual((tokens.PACKAGE, 'fun', ''), (resolve[0][2], resolve[0][4], resolve[0][5]))
-        convert = [h for h in hits if h[0] == 'main' and h[6] == 'toMiuixTextStyles']
-        self.assertEqual(1, len(convert))
-        self.assertEqual((tokens.PACKAGE, 'fun', 'Typography'), (convert[0][2], convert[0][4], convert[0][5]))
-        self.assertTrue(convert[0][1].endswith('AppDisplayPolicy.kt'))
-        # The two Typography transforms the Windows theme applies between the calls exist once each.
-        for name in ('scaled', 'withFontWeight'):
-            ext = [h for h in hits if h[0] == 'main' and h[6] == name and h[5] == 'Typography' and h[3] == 'public']
-            self.assertEqual(1, len(ext), name)
+    def test_theme_call_chain_keeps_the_conversion_order(self):
         signature = self.archive['AndroidNativeVariantThemePolicy.kt'].decode('utf-8')
         declared = re.search(r'fun resolveMaterialTypography\(\s*uiStyle: AppUiStyle,\s*'
                              r'liquidGlassEnabled: Boolean = true,?\s*\): Typography = Md3Typography', signature)
         self.assertIsNotNone(declared)
         self.assertIn('fun Typography.toMiuixTextStyles(): TextStyles = defaultTextStyles(',
                       self.archive['AppDisplayPolicy.kt'].decode('utf-8'))
-        # Source-version evidence only, NOT compiled: the appearance producer emits no PureBiliBiliTheme, so
-        # this archived v0.4.3 Theme.kt call chain is never part of the compile universe (asserted below).
+        # Source-version evidence only, NOT compiled: the archived v0.4.3 Theme.kt call chain.
         # It documents the order the original theme uses: convert first, then scale and re-weight the TextStyles.
         carried = (REPO / 'desktop/upstream-slices/v043-theme-chrome/Theme.kt').read_text(encoding='utf-8')
         miuix_chain = carried[carried.index('val miuixTextStyles = remember('):]
@@ -547,9 +463,6 @@ class V046ThemeTokensSourceTest(unittest.TestCase):
         order = [miuix_chain.index(token) for token in
                  ('resolveMaterialTypography(', '.toMiuixTextStyles()', '.scaled(', '.withFontWeight(')]
         self.assertEqual(sorted(order), order)
-        self.assertEqual([], [h for h in hits if h[0] == 'main' and h[6] == 'PureBiliBiliTheme'])
-        self.assertTrue(any(h[0] == 'main' and h[1].endswith('/Theme.kt') for h in hits),
-                        'the emitted Theme.kt must be in the analysed universe for the PureBiliBiliTheme check')
         # Windows-owned theme: asserted by meaning, not by formatting. The Miuix text styles come only from
         # the desktop-owned helper (convert first, then scale, then weight); the Material typography keeps its own
         # scaled and weighted chain; nothing else in the Windows tree converts or resolves the typography.
@@ -742,15 +655,6 @@ class V046ThemeTokensSourceTest(unittest.TestCase):
                 'androidx.compose.ui.text.font.FontWeight', 'top.yukonga.miuix.kmp.theme.TextStyles'}, imported)
         for forbidden in ('java.awt', 'Composable', 'File(', 'Http', 'Mpv', 'runBlocking', 'TempDir'):
             self.assertNotIn(forbidden, text)
-        # Every imported theme symbol is declared exactly once in the emitted universe.
-        hits = self.compiled_declarations()
-        for name in ('AppFontSizePreset', 'AppFontWeightPreset', 'AppUiStyle', 'Md3Typography',
-                     'resolveMaterialTypography', 'toMiuixTextStyles'):
-            declared = [h for h in hits if h[0] == 'main' and h[6] == name]
-            self.assertEqual(1, len(declared), name)
-        for receiver in ('Typography', 'TextStyles'):
-            self.assertEqual(1, len([h for h in hits if h[0] == 'main' and h[6] == 'scaled'
-                                     and h[5] == receiver and h[3] == 'public']), receiver)
         # The preset-through-pipeline cases exercise the Windows helper, not the Material typography alone.
         self.assertEqual(3, text.count('resolveDesktopMiuixTextStyles('))
         self.assertIn('AppFontSizePreset.EXTRA_EXTRA_LARGE, AppFontWeightPreset.BOLD', text)
@@ -769,21 +673,12 @@ class V046ThemeTokensSourceTest(unittest.TestCase):
         self.assertEqual(1, text.count('internal fun resolveDesktopMiuixTextStyles('))
         self.assertNotIn('@Composable', text)
         balanced(self, text)
-        hits = self.compiled_declarations()
         imports = re.findall(r'(?m)^import (\S+)$', text)
         self.assertEqual(sorted(imports), imports)
         theme = [name.rsplit('.', 1)[1] for name in imports if name.startswith(tokens.PACKAGE + '.')]
         self.assertEqual(['AppFontSizePreset', 'AppFontWeightPreset', 'AppUiStyle', 'resolveMaterialTypography',
                           'scaled', 'toMiuixTextStyles', 'withFontWeight'], theme)
         self.assertEqual(['top.yukonga.miuix.kmp.theme.TextStyles'], [n for n in imports if not n.startswith(tokens.PACKAGE)])
-        for name in theme:
-            declared = [h for h in hits if h[0] == 'main' and h[2] == tokens.PACKAGE and h[6] == name
-                        and h[3] == 'public']
-            self.assertGreaterEqual(len(declared), 1, name)
-        # Both the Typography and the TextStyles overload exist for the two transforms the helper chains.
-        for name in ('scaled', 'withFontWeight'):
-            self.assertEqual(['TextStyles', 'Typography'], sorted(
-                h[5] for h in hits if h[0] == 'main' and h[2] == tokens.PACKAGE and h[6] == name and h[3] == 'public'), name)
         # No other declaration of the helper name in the whole Windows source set.
         owners = [p.relative_to(REPO).as_posix() for p in sorted((REPO / 'desktop/src').rglob('*.kt'))
                   if 'fun resolveDesktopMiuixTextStyles(' in p.read_text(encoding='utf-8')]

@@ -1,3 +1,4 @@
+from desktop_paths import long_path
 from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
 import argparse, hashlib, json, textwrap
@@ -5,11 +6,10 @@ import argparse, hashlib, json, textwrap
 TARGET = '3d5d19a2f994daccd0e2f8b5f522b6d82f43d589'
 APP = 'app/src/main/java/com/android/purebilibili/navigation/AppNavigation.kt'
 TOP = 'app/src/main/java/com/android/purebilibili/navigation/AppTopLevelNavigationPolicy.kt'
-PREFIX = chr(92) * 2 + '?' + chr(92)
 
 def safe(p):
     s = str(Path(p).absolute())
-    return Path(s if s.startswith(PREFIX) else PREFIX + s)
+    return long_path(s)
 
 def function(raw, name, indent):
     # Selected callers contain no nested strings with unmatched braces. Reject any source drift

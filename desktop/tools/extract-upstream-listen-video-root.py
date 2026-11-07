@@ -5,6 +5,7 @@ checked before writing; platform changes never erase unreviewed source."""
 from __future__ import annotations
 import argparse,hashlib,json
 from pathlib import Path
+from desktop_paths import long_path
 from v025_source_paths import canonical_source
 import v038_listen_viewmodel
 import v038_listen_collection
@@ -22,7 +23,7 @@ def produce(repo,output,test_output=None):
     validate_outputs(repo, output, test_output)
     import v046_audio_listen_closure
     v046_audio_listen_closure.validate_outputs(repo, output, test_output)
-    output=Path(str(output) if str(output).startswith('\\\\?\\') else '\\\\?\\'+str(output.absolute()))
+    output=long_path(output.absolute())
     output.mkdir(parents=True,exist_ok=True)
     receipts=[]
     for row in RECIPES:

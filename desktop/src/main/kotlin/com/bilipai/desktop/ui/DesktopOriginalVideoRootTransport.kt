@@ -36,7 +36,16 @@ internal class DesktopOriginalVideoRootRequestTransport(
         raw.binding.assertCurrent()
         return infos[bvid] ?: throw IllegalStateException("Original resolved video metadata is required before transport publication")
     }
-    fun source(video: String, audio: String?, bvid: String = checkNotNull(stateAtCapture.currentRequest).bvid,
+    private fun resolvedInfo(): ViewInfo {
+        raw.binding.assertCurrent()
+        val request = checkNotNull(stateAtCapture.currentRequest)
+        if (request.bvid.isNotBlank()) return infoFor(request.bvid)
+        // An aid-only original request acquires its canonical BV from its own
+        // metadata response. Never borrow an unrelated response or latest page.
+        return infos.values.singleOrNull { request.aid > 0L && it.aid == request.aid }
+            ?: throw IllegalStateException("Original resolved video metadata is required before transport publication")
+    }
+    fun source(video: String, audio: String?, bvid: String = resolvedInfo().bvid,
         title: String = infoFor(bvid).title): PlaybackSource {
         raw.binding.assertCurrent()
         // Exact original UseCase media headers. Cookie comes from this Binding's
@@ -49,7 +58,7 @@ internal class DesktopOriginalVideoRootRequestTransport(
 
     fun tracks(source: PlaybackSource, keys: Map<String, String>): List<DesktopMediaByteTrack> {
         raw.binding.assertCurrent()
-        val bvid = checkNotNull(stateAtCapture.currentRequest).bvid
+        val bvid = resolvedInfo().bvid
         val plays = data.entries.filter { it.key.first == bvid }.map { it.value }
         fun sameKey(url: String, candidate: String): Boolean = url == candidate ||
             (keys[url] != null && keys[url] == keys[candidate])
@@ -81,8 +90,13 @@ internal class DesktopOriginalVideoRootMediaFactory(
     fun request(raw: DesktopOriginalVideoOwnerRequestRepository, state: PlaybackSessionState,
         nativeBaseline: Long, callerJob: Job, native: DesktopOriginalVideoNativeOwner): DesktopOriginalVideoMediaPort {
         val assembly = currentAssembly()
-        val info = (assembly.playback.uiState.value as? VideoPlaybackUiState.Success)?.info
-            ?.takeIf { it.bvid == state.currentRequest?.bvid }
+        // The public stateIn projection can still be Loading in the same turn
+        // that the original VM commits detail. Capture its backing state once.
+        val info = (assembly.playback.captureDesktopPlaybackState() as? VideoPlaybackUiState.Success)?.info
+            ?.takeIf { detail -> state.currentRequest?.let { request ->
+                if (request.bvid.isNotBlank()) detail.bvid == request.bvid
+                else request.aid > 0L && detail.aid == request.aid
+            } == true }
         val transport = DesktopOriginalVideoRootRequestTransport(raw, state, info, raw::awaitMediaPreparation)
         // Original settings/background invocations may precede the first load.
         // Keep their captured Binding; require a subject only for media publication.

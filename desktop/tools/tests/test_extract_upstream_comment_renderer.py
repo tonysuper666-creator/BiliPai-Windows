@@ -5,6 +5,7 @@ REPO=Path(os.environ.get('BILIPAI_COMMENT_TEST_REPO',Path(__file__).resolve().pa
 TOOLS=Path(os.environ.get('BILIPAI_COMMENT_TEST_TOOLS',REPO/'desktop/tools'))
 sys.path.insert(0,str(TOOLS))
 import v021_comment_renderer as adapter
+from desktop_refresh_adaptation import unbind_refresh_lists
 
 # aad198489 advances these bodies after v021 records outputBodySha256.
 # Outer stage first. Each name is that stage's retainedToCurrent proof.
@@ -45,6 +46,9 @@ class OriginalCommentPresentationTests(unittest.TestCase):
         self.assertEqual(1,len(matches))
         text=matches[0].read_text(encoding='utf8')
         body='\n'.join(text.split('\n')[2:])
+        # 591685d9e binds the shared refresh lists after every reply stage has
+        # recorded its receipt; peel that exact final import binding first.
+        if 'ImagePreview' not in proof['filename']: body=unbind_refresh_lists(body)
         for name in LATER_COMMENT_STAGES.get(proof['filename'],()):
             path=self.outputs['reply']/name
             self.assertTrue(path.is_file())

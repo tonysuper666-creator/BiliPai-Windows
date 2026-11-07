@@ -48,6 +48,14 @@ import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicReference
 import java.util.logging.Logger
 
+/** Root's installation decision, separate from the optional navigation return. */
+internal fun shouldRetireHomeForLoginInstallation(
+    epoch: Long, mid: Long?, loginReturn: DesktopAcceptedLoginReturn?,
+    installation: DesktopLoginInstallationEvent?, mountedSourceCurrent: Boolean,
+): Boolean = loginReturn?.installation?.sourceEpoch == epoch ||
+    (installation?.receipt?.let { it.acceptedEpoch == epoch && it.acceptedMid == mid } == true &&
+        !mountedSourceCurrent)
+
 /** The actual Shell services. No navigation state, copied cookies, list model, cache or player
  * is added. Root passes its current existing actors and primitive UI actions below. */
 internal class DesktopReadyOriginalRootServices(
@@ -252,9 +260,11 @@ internal class DesktopReadyOriginalRootHandle(
             services.feedback, services.openExternalLink, services.authenticationInvalidated,
             rootPublished = { gate -> handle.retainer.current()?.entry?.gate === gate }) }
     }
+    // Installation is Store state; cancelling a navigation intent cannot hide a committed save.
+    val accountInstallation by services.repository.loginInstallation.collectAsState()
     val loginInstalled by navigation.installedLoginReturn.collectAsState()
     var loginRestoreRoot by remember(navigation) { mutableStateOf<Pair<DesktopAcceptedLoginReturn, DesktopHomeRetainedRoot>?>(null) }
-    LaunchedEffect(handle, epoch, account?.mid, factoryBinding, retry, loginInstalled) {
+    LaunchedEffect(handle, epoch, account?.mid, factoryBinding, retry, loginInstalled, accountInstallation) {
         val factory = factoryBinding ?: return@LaunchedEffect
         try {
             loginRestoreRoot = null
@@ -262,7 +272,11 @@ internal class DesktopReadyOriginalRootHandle(
                 it.installation.acceptedEpoch == epoch && it.installation.acceptedMid == account?.mid }
             // Same credentials can leave epoch unchanged. Retire admission before the original actor's install,
             // otherwise its same-epoch active-owner fast path would reuse the failed old read owner.
-            if (loginReturn?.installation?.sourceEpoch == epoch) handle.retainer.current()?.entry?.gate?.close()
+            val currentEntry = handle.retainer.current()?.entry
+            if (shouldRetireHomeForLoginInstallation(epoch, account?.mid, loginReturn,
+                    accountInstallation, currentEntry?.requests?.isMountedSourceCurrent() ?: true)) {
+                currentEntry?.gate?.close()
+            }
             handle.route.getAndSet(null)?.close()
             handle.messagePages.getAndSet(null)?.closeAndJoin()
             handle.spacePages.getAndSet(null)?.closeAndJoin()

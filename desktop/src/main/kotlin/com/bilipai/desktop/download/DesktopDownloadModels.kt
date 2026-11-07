@@ -23,6 +23,10 @@ data class DownloadTask(
     /** Actual selected DASH video ID from an admitted source refresh. item.quality
      * remains the original requested target/ID, keeping the queued worker and directory stable. */
     val resolvedVideoQuality: Int? = null,
+    /** Automatic backoff retries already spent (the upstream DownloadWorker's Result.retry()); saved so a restart keeps the count. */
+    val retryAttempt: Int = 0,
+    /** Wall-clock millis before which the scheduler must not start this QUEUED task again; 0 means it may start now. */
+    val retryNotBeforeMillis: Long = 0L,
 ) {
     override fun toString() = "DownloadTask(id=$id, status=$status, authorization=$authorizationReceipt)"
     internal fun playbackSource() = com.bilipai.desktop.player.PlaybackSource(

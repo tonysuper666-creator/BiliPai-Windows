@@ -157,7 +157,6 @@
         "login",
         "playback",
         "search",
-        "space-contributions",
         "settings-network-proxy-parity",
         "dynamic-detail-reply",
         "stable-bgm-native-detail",
@@ -3379,41 +3378,31 @@
     {
       "path": "app/src/main/java/com/android/purebilibili/feature/space/SpaceSupporterPolicy.kt",
       "mode": "direct",
-      "features": [
-        "space"
-      ],
+      "features": [],
       "sha256": "da5fc386d02ae1a4b7ecb7832857dc5ebecf16b82fa21511f344ff7c771419cc"
     },
     {
       "path": "app/src/main/java/com/android/purebilibili/feature/space/SpaceArticlePresentationPolicy.kt",
       "mode": "direct",
-      "features": [
-        "space"
-      ],
+      "features": [],
       "sha256": "ad316ea87890ab5cf40f44c11533085002db0d257a62c113fb626ce5b034b876"
     },
     {
       "path": "app/src/main/java/com/android/purebilibili/feature/space/SpaceProfileEnhancementPolicy.kt",
       "mode": "policy-extract",
-      "features": [
-        "space",
-        "space-contributions"
-      ],
+      "features": [],
       "sha256": "75e4bf39a45d7cc0596a66ef547c2138bff6e598de6660554602f20737256590"
     },
     {
       "path": "app/src/main/java/com/android/purebilibili/feature/space/SpaceDynamicNavigationPolicy.kt",
       "mode": "policy-extract",
-      "features": [
-        "space"
-      ],
+      "features": [],
       "sha256": "87b1ba33fed13e0284b2af43e3252e9ff08ade19929803618fdbce7b1af09b6b"
     },
     {
       "path": "app/src/main/java/com/android/purebilibili/feature/space/SpaceSupporterScreens.kt",
       "mode": "policy-extract",
       "features": [
-        "space",
         "stable-original-space-pages-root-parity"
       ],
       "sha256": "6857d93985a22c74e31b10ca72280afaa59cb9236cde4d2645cbf8a555e7667c",
@@ -3423,9 +3412,6 @@
       "path": "app/src/main/java/com/android/purebilibili/feature/space/SpaceViewModel.kt",
       "mode": "policy-extract",
       "features": [
-        "space",
-        "space-contributions",
-        "space-overview",
         "stable-video-tablet-original",
         "stable-tablet-owner-space-original",
         "stable-original-space-pages-root-parity",
@@ -3438,7 +3424,6 @@
       "path": "app/src/main/java/com/android/purebilibili/feature/space/SpaceUpowerRankViewModel.kt",
       "mode": "policy-extract",
       "features": [
-        "space",
         "stable-original-space-pages-root-parity"
       ],
       "sha256": "0970836848746c1b9eae833074d3dd6a125e25dc1ee23bb8aec25455cdf45758"
@@ -3447,7 +3432,6 @@
       "path": "app/src/main/java/com/android/purebilibili/feature/space/SpaceMemberGuardViewModel.kt",
       "mode": "policy-extract",
       "features": [
-        "space",
         "stable-original-space-pages-root-parity"
       ],
       "sha256": "ec6c4f47792e8bb318149a8aff355262d693bf63a57456365b26062ab1645937"
@@ -3486,8 +3470,6 @@
       "path": "app/src/main/java/com/android/purebilibili/feature/space/SpaceLoadPolicy.kt",
       "mode": "policy-extract",
       "features": [
-        "space-contributions",
-        "space-overview",
         "stable-favorites",
         "stable-tablet-owner-space-original",
         "stable-original-space-pages-root-parity"
@@ -3499,7 +3481,6 @@
       "path": "app/src/main/java/com/android/purebilibili/data/repository/LikedVideosRepository.kt",
       "mode": "policy-extract",
       "features": [
-        "space-contributions",
         "stable-favorites"
       ],
       "sha256": "4295264225343d4cb82eca9df937c738855dabe48b80d2632106dfb27aa44d2c"
@@ -3508,7 +3489,6 @@
       "path": "app/src/main/java/com/android/purebilibili/feature/list/ListViewModel.kt",
       "mode": "policy-extract",
       "features": [
-        "space-contributions",
         "stable-favorites",
         "history-original-gl-unsupported-delete-branch"
       ],
@@ -3519,8 +3499,6 @@
       "path": "app/src/main/java/com/android/purebilibili/feature/space/SpaceScreen.kt",
       "mode": "policy-extract",
       "features": [
-        "space-overview",
-        "space-image-preview",
         "stable-original-space-pages-root-parity"
       ],
       "sha256": "68886a09fffae6570d70b6038ca34bffda2bc9a921a05521581330a13663775c",
@@ -3529,9 +3507,7 @@
     {
       "path": "app/src/main/java/com/android/purebilibili/feature/space/SpaceHeaderPresentationPolicy.kt",
       "mode": "direct",
-      "features": [
-        "space-overview"
-      ],
+      "features": [],
       "sha256": "bc138c172c47341e04ec16c073c9ad0b00457923ef32ddd939dee7ade9c648d4"
     },
     {
@@ -3546,9 +3522,7 @@
     {
       "path": "app/src/main/java/com/android/purebilibili/feature/space/SpaceChargeBadgePolicy.kt",
       "mode": "direct",
-      "features": [
-        "space-overview"
-      ],
+      "features": [],
       "sha256": "35f011010c3ae5eac7c10457dc47464eb0d28c38c33876d625d373f3d986c3dc"
     },
     {

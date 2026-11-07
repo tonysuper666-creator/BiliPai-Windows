@@ -27,8 +27,10 @@ def main() -> int:
             live_result = subprocess.call([sys.executable, "-B", str(Path(__file__).resolve()),
                                            "--stage", args.stage, "--live-sync-only"], cwd=tools.parents[1])
         with legacy_gate_workspace(tools.parents[1]) as repo:
+            # Suites that judge the merged upstream tree (not the legacy originals) find the live checkout here.
             legacy_result = subprocess.call([sys.executable, "-B", str(repo / "desktop/tools/run-tool-tests.py"),
-                                             "--stage", args.stage, "--in-read-point"], cwd=repo)
+                                             "--stage", args.stage, "--in-read-point"], cwd=repo,
+                                            env={**os.environ, "BILIPAI_LIVE_ROOT": str(tools.parents[1])})
         return legacy_result or live_result
     tests = tools / ("ux" if args.stage == "ux" else "tests")
     # Dynamic extractor imports and their child processes use the same helper

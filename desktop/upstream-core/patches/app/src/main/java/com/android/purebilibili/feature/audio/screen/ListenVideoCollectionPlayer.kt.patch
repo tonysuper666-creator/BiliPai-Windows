@@ -1,0 +1,19 @@
+--- a/com/android/purebilibili/feature/audio/screen/ListenVideoCollectionPlayer.kt
++++ b/com/android/purebilibili/feature/audio/screen/ListenVideoCollectionPlayer.kt
+@@ -14,7 +14,6 @@
+ import androidx.compose.ui.Modifier
+ import androidx.compose.ui.unit.dp
+ import androidx.lifecycle.compose.collectAsStateWithLifecycle
+-import androidx.lifecycle.viewmodel.compose.viewModel
+ import com.android.purebilibili.core.ui.components.AppSurface
+ import com.android.purebilibili.core.ui.components.AppText
+ import com.android.purebilibili.core.ui.components.AppTextButton
+@@ -27,7 +26,7 @@
+     title: String,
+     onBack: () -> Unit,
+     modifier: Modifier = Modifier,
+-    viewModel: ListenVideoCollectionViewModel = viewModel(),
++    viewModel: ListenVideoCollectionViewModel,
+     player: @Composable (bvid: String, cid: Long) -> Unit,
+ ) {
+     val state by viewModel.state.collectAsStateWithLifecycle()

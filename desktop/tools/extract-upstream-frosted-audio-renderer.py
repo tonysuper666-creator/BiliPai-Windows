@@ -1,6 +1,7 @@
 """Complete original stable Frosted navigation and audio bar source closure."""
 from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
+from desktop_paths import long_path
 import argparse,hashlib,importlib.util,json,re,subprocess
 PIN='79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40'
 BASE='app/src/main/java/com/android/purebilibili/'
@@ -10,7 +11,7 @@ SHARED=['iosIndicatorSpecular','AndroidNativeBottomBarTuning','resolveAndroidNat
 LINKED=['BottomNavItem','SharedFloatingBottomBarIconStyle','normalizeBottomBarLabelMode','resolveBiliPaiFloatingBottomBarWidth','resolveMaterialBottomBarIcon','resolveHomeNavigationBarIcon','resolveSharedBottomBarIcon','BiliPaiBottomBarSearchVisualContent','shouldRequestBottomBarSearchIme','resolveBottomNavItemLabel','resolveBottomNavItemContentDescription','resolveBottomNavItemLookupKeys']
 EXISTING=['resolveSharedBottomBarCapsuleShape']
 def safe(p):
- v=str(Path(p).absolute());return Path(v if v.startswith('\\\\?\\') else '\\\\?\\'+v)
+ return long_path(Path(p).absolute())
 def read(p):return safe(p).read_text(encoding='utf-8').replace('\r\n','\n')
 def write(p,t):safe(p.parent).mkdir(parents=True,exist_ok=True);safe(p).write_text(t,encoding='utf-8',newline='\n')
 def sha(t):return hashlib.sha256(t.encode()).hexdigest()

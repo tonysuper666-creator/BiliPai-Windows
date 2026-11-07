@@ -23,11 +23,22 @@ class OriginalVideoBgmPublicationExtractionTest(unittest.TestCase):
         output = Path(cls.temp.name)
         cls.original_path = tool._desktop_canonical_source(REPO, tool.RECIPES[0]["originalPath"])
         cls.original_raw = cls.original_path.read_bytes()
-        tool.generate(REPO, output / "actual")
+        # Since 2ba4ff7d5 the later interactive choice stage edits the BGM request line, so
+        # the producer can no longer run with this stage skipped. Observe the stage's own
+        # input and output inside the one actual producer run instead.
+        cls.stage = []
+        stage = tool.owned_bgm_result_delta
+
+        def observe(path, body, inverse=None):
+            result = stage(path, body, inverse)
+            if path == VM:
+                cls.stage.append((body, result))
+            return result
+
+        with patch.object(tool, "owned_bgm_result_delta", side_effect=observe):
+            tool.generate(REPO, output / "actual")
         cls.actual = (output / "actual" / VM).read_text(encoding="utf-8")
-        with patch.object(tool, "owned_bgm_result_delta", side_effect=lambda path, body: body):
-            tool.generate(REPO, output / "before")
-        cls.before = (output / "before" / VM).read_text(encoding="utf-8")
+        cls.before, cls.stage_output = cls.stage[0]
         cls.inverse = []
         cls.replayed = tool.owned_bgm_result_delta(VM, cls.before, cls.inverse)
 
@@ -36,8 +47,9 @@ class OriginalVideoBgmPublicationExtractionTest(unittest.TestCase):
         cls.temp.cleanup()
 
     def test_actual_generator_replays_and_entire_inverse_restores_previous_whole_vm(self):
-        self.assertEqual(self.actual, self.replayed)
-        restored = self.actual
+        self.assertEqual(1, len(self.stage))
+        self.assertEqual(self.stage_output, self.replayed)
+        restored = self.stage_output
         for before, after in reversed(self.inverse):
             self.assertEqual(1, restored.count(after))
             restored = restored.replace(after, before, 1)
@@ -94,13 +106,16 @@ class OriginalVideoBgmPublicationExtractionTest(unittest.TestCase):
         adapted = original + "            .copy(bgmInfo = null, bgmInfoList = emptyList())\n"
         self.assertEqual(1, self.before.count(original))
         self.assertEqual(1, self.actual.count(adapted))
-        a = self.actual.index("    fun switchPage(")
-        z = self.actual.index("    private fun", a)
-        actual_switch = self.actual[a:z]
+        a = self.stage_output.index("    fun switchPage(")
+        z = self.stage_output.index("    private fun", a)
+        stage_switch = self.stage_output[a:z]
         a = self.before.index("    fun switchPage(")
         z = self.before.index("    private fun", a)
         before_switch = self.before[a:z]
-        self.assertEqual(before_switch, actual_switch.replace(adapted, original, 1))
+        self.assertEqual(before_switch, stage_switch.replace(adapted, original, 1))
+        a = self.actual.index("    fun switchPage(")
+        z = self.actual.index("    private fun", a)
+        actual_switch = self.actual[a:z]
         self.assertIn("val switchedState = subtitleClearedState.copy(", actual_switch)
         self.assertIn("_uiState.value = current.copy(", actual_switch)
 

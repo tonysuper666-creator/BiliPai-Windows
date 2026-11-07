@@ -934,9 +934,9 @@ def _split_args(raw, masked):
     return parts
 
 
-def _eval_arg(raw, variables):
+def _eval_arg(raw, variables, python_names=()):
     a = ' '.join(raw.split())
-    if a.startswith('System.getenv("PYTHON_EXECUTABLE")'):
+    if a.startswith('System.getenv("PYTHON_EXECUTABLE")') or a in python_names:
         return ('python', '')
     m = re.fullmatch(r'"([^"$]*)"', a)
     if m:
@@ -971,6 +971,9 @@ def parse_gradle(text):
     model.upstream_owned_copies = set(string_collection('upstreamOwnedGeneratedCopies', 'setOf'))
     for m in _VARIABLE.finditer(text):
         model.variables[m.group(1)] = m.group(2)
+    # A top-level interpreter value counts as the Python launcher only when it is read from PYTHON_EXECUTABLE
+    # first; the gate runs its own interpreter either way, so any other definition stays unresolved.
+    python_names = set(re.findall(r'(?m)^val (\w+) = System\.getenv\("PYTHON_EXECUTABLE"\)', text))
     for m in _TASK_HEAD.finditer(text):
         name, kind = m.group(1), m.group(2)
         open_index = m.end() - 1
@@ -988,7 +991,7 @@ def parse_gradle(text):
             continue
         a = cl + len('commandLine')
         b = _paren_end(masked_block, a)
-        args = [_eval_arg(x, model.variables) for x in _split_args(raw_block[a + 1:b], masked_block[a + 1:b])]
+        args = [_eval_arg(x, model.variables, python_names) for x in _split_args(raw_block[a + 1:b], masked_block[a + 1:b])]
         deps = []
         for dm in re.finditer(r'dependsOn\(', masked_block):
             e = _paren_end(masked_block, dm.end() - 1)
@@ -1223,8 +1226,17 @@ def repo_state(repo):
     return git_text(repo, 'status', '--porcelain', '--untracked-files=all')
 
 
+def mirror_root(repo, scratch):
+    """scratch/r, or scratch/.legacy-root when the source is the legacy read point.
+
+    The producers tell the legacy read point from the direct-compile tree by its directory name
+    (v025_source_paths._legacy_snapshot) and pick the reviewed pins from it, so the mirror keeps that name.
+    """
+    return Path(scratch) / ('.legacy-root' if Path(repo).name == '.legacy-root' else 'r')
+
+
 def make_scratch_repo(repo, scratch, revision=None):
-    """Mirror the repository into scratch/r (a working-tree copy or `git archive <revision>`).
+    """Mirror the repository into mirror_root(repo, scratch) (a working-tree copy or `git archive <revision>`).
 
     Producers run against this mirror, so nothing they write can reach the real checkout. The
     mirror is a throw-away git repository that borrows the real object store through
@@ -1233,7 +1245,7 @@ def make_scratch_repo(repo, scratch, revision=None):
     Returns (scratch repo root, environment overrides).
     """
     repo = Path(repo)
-    root = Path(scratch) / 'r'
+    root = mirror_root(repo, scratch)
     check_scratch_root(root)
     root.mkdir(parents=True, exist_ok=False)
     common = git_text(repo, 'rev-parse', '--git-common-dir')
@@ -1279,6 +1291,11 @@ def make_scratch_repo(repo, scratch, revision=None):
             status = process.returncode
         if status != 0 or broken:
             raise ToolError('git archive %s failed: %s' % (revision, error or 'unreadable archive stream'))
+        if os.name != 'nt' and (root / 'desktop').is_dir():
+            # Producers older than 67f65de86 prefix every output with the Windows long-path form unconditionally;
+            # off Windows that prefix is a relative directory below their cwd (desktop/). Pointing it at the
+            # filesystem root gives the prefix its Windows meaning, so their writes land where they name.
+            os.symlink('/', str(root / 'desktop' / _LONG_PREFIX), target_is_directory=True)
     git_text(root, 'init', '-q', check=True)
     alternates = root / '.git/objects/info/alternates'
     alternates.parent.mkdir(parents=True, exist_ok=True)
@@ -3028,17 +3045,18 @@ def run_gate(repo, revision=None, scratch=None, keep_scratch=False, mirror=None,
         if mirror is None:
             if scratch:
                 parent = Path(scratch)
-                check_scratch_root(parent / 'r')
-                if os.path.lexists(_long(parent / 'r')):
-                    raise ToolError('%s already contains "r" (a kept mirror?); remove it or pass another --scratch '
-                                    'directory' % parent)
+                check_scratch_root(mirror_root(repo, parent))
+                if os.path.lexists(_long(mirror_root(repo, parent))):
+                    raise ToolError('%s already contains "%s" (a kept mirror?); remove it or pass another --scratch '
+                                    'directory' % (parent, mirror_root(repo, parent).name))
                 existed = os.path.isdir(_long(parent))
                 parent.mkdir(parents=True, exist_ok=True)
             else:
-                parent = Path(tempfile.mkdtemp(prefix='bp-sc-'))
+                # the real path: producers refuse a symlinked ancestor, and the macOS temp roots (/tmp, /var) are links
+                parent = Path(os.path.realpath(tempfile.mkdtemp(prefix='bp-sc-')))
                 existed = False
             # only what this run created is removed: a --scratch directory that already held other things keeps them
-            cleanup = None if keep_scratch else (parent / 'r' if existed else parent)
+            cleanup = None if keep_scratch else (mirror_root(repo, parent) if existed else parent)
             say('mirroring %s into %s' % ('revision ' + revision if revision else 'the working tree', parent))
             root, env = make_scratch_repo(repo, parent, revision)
             model = parse_gradle((root / 'desktop/build.gradle.kts').read_text(encoding='utf8'))

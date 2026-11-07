@@ -3,8 +3,7 @@ package com.bilipai.desktop.danmaku
 import com.android.purebilibili.danmaku.engine.DanmakuRenderConfig
 import com.android.purebilibili.feature.live.LiveDanmakuItem
 import com.android.purebilibili.feature.live.formatLiveSuperChatCountdown
-import com.android.purebilibili.feature.live.resolveLiveSuperChatRemainingSec
-import com.android.purebilibili.feature.live.shouldExpireLiveSuperChat
+import com.android.purebilibili.feature.live.resolveLiveSuperChatDurationSec
 import com.android.purebilibili.feature.live.shouldShowLiveSuperChatFlash
 import com.bilipai.desktop.player.PlaybackSource
 import kotlinx.coroutines.CoroutineScope
@@ -80,8 +79,13 @@ internal class LiveDanmakuRenderer(private val scope: CoroutineScope) {
 
     fun expire(now: Long = System.nanoTime()) {
         while (entries.firstOrNull()?.let { now - it.receivedNanos > 90_000_000_000L } == true) { entries.removeFirst(); dirty = true }
-        superChats.entries.removeAll { shouldExpireLiveSuperChat(it.value.item.superChatDuration, ((now - it.value.receivedNanos) / 1_000_000_000).toInt()) }
+        superChats.entries.removeAll { liveSuperChatRemainingSec(it.value.item.superChatDuration, ((now - it.value.receivedNanos) / 1_000_000_000).toInt()) == 0 }
     }
+
+    // 上游把 SC 期限改成 endTime + 服务器时间；桌面渲染时钟是单调 nanos，没有可信的服务器时间，
+    // 因此按上游的默认时长语义在本地折算剩余秒数（上游 resolveLiveSuperChatDurationSec 的 0 → 60 秒）。
+    private fun liveSuperChatRemainingSec(durationSec: Int, elapsedSec: Int): Int =
+        (resolveLiveSuperChatDurationSec(durationSec) - elapsedSec).coerceAtLeast(0)
 
     fun paint(context: Graphics2D, width: Int, height: Int, danmakuHeight:Int, config:DanmakuRenderConfig, settings: DanmakuSettings) {
         val now = System.nanoTime()
@@ -149,7 +153,7 @@ internal class LiveDanmakuRenderer(private val scope: CoroutineScope) {
                     if(style?.bold==true)it.deriveFont(mapOf(java.awt.font.TextAttribute.WEIGHT to java.awt.font.TextAttribute.WEIGHT_BOLD)) else it
                 }
                 val elapsed = ((now - entry.receivedNanos) / 1_000_000_000).toInt()
-                val remaining = resolveLiveSuperChatRemainingSec(entry.item.superChatDuration, elapsed)
+                val remaining = liveSuperChatRemainingSec(entry.item.superChatDuration, elapsed)
                 val metrics = context.getFontMetrics(cardFont)
                 val body = wrap(rendered.comment.text, cardWidth - 16, metrics::stringWidth).take(4)
                 val cardHeight = (body.size + 1) * metrics.height + 14

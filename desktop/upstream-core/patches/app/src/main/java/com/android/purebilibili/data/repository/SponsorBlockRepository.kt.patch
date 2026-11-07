@@ -1,0 +1,11 @@
+--- a/app/src/main/java/com/android/purebilibili/data/repository/SponsorBlockRepository.kt
++++ b/app/src/main/java/com/android/purebilibili/data/repository/SponsorBlockRepository.kt
+@@ -92,7 +92,7 @@ object SponsorBlockRepository {
+     private const val SEGMENT_CACHE_TTL_MS = 5 * 60 * 1000L
+     private const val EMPTY_SEGMENT_CACHE_TTL_MS = 30 * 1000L
+     
+-    private val client = buildSponsorBlockHttpClient(NetworkModule.okHttpClient)
++    private val client = buildSponsorBlockHttpClient(com.bilipai.desktop.data.DesktopUpstreamCalls.publicTransport) // Desktop: third-party, no account (TON-1082)
+     
+     private val json = Json { 
+         ignoreUnknownKeys = true 
