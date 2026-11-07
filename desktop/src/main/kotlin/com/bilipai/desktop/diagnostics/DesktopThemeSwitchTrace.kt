@@ -14,7 +14,6 @@ import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.StandardOpenOption
 import java.util.concurrent.ArrayBlockingQueue
-import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicLong
 
 /** TON-1210 diagnosis only, opt-in with `-Dbilipai.trace.themeSwitch=<file>`. Call sites check [enabled]
@@ -33,6 +32,11 @@ internal object DesktopThemeSwitchTrace {
     }
     private val queue = if (target != null) ArrayBlockingQueue<String>(CAPACITY) else null
     private val dropped = AtomicLong()
+    /** Orders admission, publication and stop. Never held while formatting or doing file I/O. */
+    private val lifecycle = Any()
+    private var inFlight = 0L
+    /** Published marks not yet covered by a successful flush (headers and END are excluded). */
+    private var unflushed = 0L
     @Volatile private var active = target != null
     /** False when off, after the writer failed, or once closed for exit; it never turns back on. */
     val enabled: Boolean get() = active
@@ -67,31 +71,55 @@ internal object DesktopThemeSwitchTrace {
         Files.newBufferedWriter(file, StandardCharsets.UTF_8, StandardOpenOption.CREATE,
             StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE).use { out ->
             fun line(text: String) { out.write(text); out.newLine() }
+            var batch = 0L
+            fun flush() {
+                out.flush()
+                synchronized(lifecycle) { unflushed -= batch }
+                batch = 0
+            }
             var reported = 0L
             var next = lines.take()
             while (next != END) {
                 line(next)
+                if (!next.startsWith("#")) batch++
                 next = lines.poll() ?: run {
                     // Visible even if the process is later killed before the end line.
                     dropped.get().takeIf { it != reported }?.let { reported = it; line("# dropped total=$it") }
-                    out.flush(); lines.take()
+                    flush()
+                    // A full queue can leave no room for END. Once drained, stop is itself the sentinel.
+                    synchronized(lifecycle) { lines.poll() ?: if (!active) END else null } ?: lines.take()
                 }
             }
             line("# end dropped=${dropped.get()}")
+            flush()
         }
     } catch (error: Exception) {
         // Stop producing instead of filling memory for a writer that is gone.
-        active = false
-        lines.clear()
-        failure = error.toString()
+        synchronized(lifecycle) {
+            stop()
+            dropped.addAndGet(unflushed)
+            unflushed = 0
+            lines.clear()
+            failure = error.toString()
+        }
         warn("writer failed, tracing off", error)
     }
 
     /** Shutdown hook: refuse new marks, let the writer drain and append the end line. */
     private fun close() {
-        if (!active) return
+        synchronized(lifecycle) {
+            if (!active) return
+            stop()
+            queue?.offer(END)
+        }
+        writer?.join(2_000)
+    }
+
+    /** Caller holds lifecycle. Retire paused formatters now, before the writer can publish an end count. */
+    private fun stop() {
         active = false
-        if (queue?.offer(END, 1, TimeUnit.SECONDS) == true) writer?.join(2_000)
+        dropped.addAndGet(inFlight)
+        inFlight = 0
     }
 
     private fun warn(what: String, error: Throwable) = System.err.println("bilipai.trace.themeSwitch $what: $error")
@@ -100,12 +128,26 @@ internal object DesktopThemeSwitchTrace {
 
     fun mark(event: String, vararg fields: Pair<String, Any?>) {
         if (!active) return
-        val now = System.nanoTime()
-        val line = buildString {
-            append(now).append(' ').append(event).append(" thread=").append(clean(Thread.currentThread().name))
-            for ((key, value) in fields) append(' ').append(key).append('=').append(clean(value))
+        synchronized(lifecycle) {
+            if (!active) return
+            inFlight++
         }
-        if (queue?.offer(line) != true) dropped.incrementAndGet()
+        var line: String? = null
+        try {
+            val now = System.nanoTime()
+            line = buildString {
+                append(now).append(' ').append(event).append(" thread=").append(clean(Thread.currentThread().name))
+                for ((key, value) in fields) append(' ').append(key).append('=').append(clean(value))
+            }
+        } finally {
+            synchronized(lifecycle) {
+                // Stop already counted every outstanding formatter. Late completion cannot publish or count twice.
+                if (active) {
+                    inFlight--
+                    if (line?.let { queue?.offer(it) } == true) unflushed++ else dropped.incrementAndGet()
+                }
+            }
+        }
     }
 
     /** Raw AWT press/release before Compose dispatch; onClick fires on release. */
