@@ -124,6 +124,130 @@ def generate(repo,output,standalone=False):
                                             Toast.LENGTH_SHORT
                                         ).show()'''
  s=edit(s,a,'                                        bindings.showFeedback("本地文件不可用，已切换在线播放")',edits)
+ # Desktop interactions are exact patches over the fixed source; every anchor is unique.
+ for a,b in [
+  ('import coil3.compose.LocalPlatformContext as LocalContext', """import coil3.compose.LocalPlatformContext as LocalContext
+import com.bilipai.desktop.ui.DesktopDownloadListSelection
+import com.bilipai.desktop.ui.DesktopDownloadTaskFrame
+import com.bilipai.desktop.ui.downloadSelectionPointer
+import androidx.compose.foundation.focusable
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.input.key.*"""),
+  ('    var pendingDeleteTask by remember { mutableStateOf<com.android.purebilibili.feature.download.DownloadTask?>(null) }', """    val selection = remember { DesktopDownloadListSelection() }
+    val selectionFocus = remember { FocusRequester() }
+    val taskIds = taskList.map { it.id }
+    LaunchedEffect(taskIds) { selection.reconcile(taskIds) }
+    var deleteFiles by remember { mutableStateOf(false) }"""),
+  ('    val columns = resolveVideoListColumns(\n        listLayout.singleColumn,\n        desktopOriginalDownloadListScreenWidthDp(),\n    )', '    val columns = 1'),
+  ("""                    VideoListLayoutToggle(
+                        singleColumn = listLayout.singleColumn,
+                        onClick = listLayout.toggle,
+                    )""", """                    if (selection.selected.isNotEmpty()) {
+                        androidx.compose.material3.TextButton(onClick = {
+                            taskList.filter { it.id in selection.selected && shouldPauseAllInclude(it) }
+                                .forEach { bindings.pauseDownload(it.id) }
+                        }) { AppText("暂停选中") }
+                        androidx.compose.material3.TextButton(onClick = {
+                            taskList.filter { it.id in selection.selected && shouldContinueAllInclude(it) }
+                                .forEach { bindings.startDownload(it.id) }
+                        }) { AppText("继续选中") }
+                        androidx.compose.material3.TextButton(onClick = {
+                            deleteFiles = false
+                            selection.requestDelete(selection.selected)
+                        }) { AppText("删除选中 (${selection.selected.size})") }
+                    }"""),
+  ("""                modifier = Modifier
+                    .fillMaxSize()
+                    ,""", """                modifier = Modifier
+                    .fillMaxSize()
+                    .onPreviewKeyEvent { event ->
+                        if (event.type != KeyEventType.KeyDown) false else when (event.key) {
+                            Key.DirectionUp -> { selection.move(-1); true }
+                            Key.DirectionDown -> { selection.move(1); true }
+                            Key.Spacebar -> { selection.toggleFocused(); true }
+                            else -> false
+                        }
+                    }.focusRequester(selectionFocus).focusable(),"""),
+  ("""                            bindings.removeTask(task.id)
+                            pendingDeleteTask = null""", '                            bindings.removeTask(task.id)'),
+  ('AnimatedVideoListItem(modifier = videoListItemModifier(), enabled = true)', 'AnimatedVideoListItem(modifier = videoListItemModifier().downloadSelectionPointer(task.id, selection, selectionFocus), enabled = true)'),
+  ('                            task = task,\n                            stacked = columns > 1,', '                            task = task,\n                            selected = task.id in selection.selected,\n                            stacked = false,'),
+  ('                                pendingDeleteTask = task', '                                deleteFiles = false\n                                selection.requestDelete(setOf(task.id))'),
+  ("""                            }
+                        )
+                    }
+                    }
+                }
+
+                // [新增] 显示当前存储路径""", """                            }
+                        )
+                        androidx.compose.material3.DropdownMenu(
+                            expanded = selection.contextTarget == task.id,
+                            onDismissRequest = { selection.closeContextMenu() },
+                        ) {
+                            if (task.isDownloading || task.canResume) {
+                                androidx.compose.material3.DropdownMenuItem(
+                                    text = { AppText(if (task.isDownloading) "暂停" else "继续") },
+                                    onClick = {
+                                        if (task.isDownloading) bindings.pauseDownload(task.id)
+                                        else bindings.startDownload(task.id)
+                                        selection.closeContextMenu()
+                                    },
+                                )
+                            }
+                            androidx.compose.material3.DropdownMenuItem(
+                                text = { AppText("删除") },
+                                onClick = {
+                                    deleteFiles = false
+                                    selection.requestDelete(setOf(task.id))
+                                    selection.closeContextMenu()
+                                },
+                            )
+                        }
+                    }
+                    }
+                }
+
+                // [新增] 显示当前存储路径"""),
+  ('    task: DownloadTask,\n    onClick: () -> Unit,', '    task: DownloadTask,\n    selected: Boolean,\n    onClick: () -> Unit,'),
+  ('    HorizontalVideoCardFrame(\n        stacked = stacked,', '    DesktopDownloadTaskFrame(\n        stacked = stacked,'),
+  ('.background(AppSurfaceTokens.cardContainer())', '.background(if (selected) MaterialTheme.colorScheme.secondaryContainer else AppSurfaceTokens.cardContainer())'),
+  ("""            // 状态文字
+            val assetSummary""", """            if (!task.isComplete) {
+                androidx.compose.material3.LinearProgressIndicator(
+                    progress = { resolveDownloadTaskProgress(task) },
+                    modifier = Modifier.fillMaxWidth(),
+                )
+            }
+            // 状态文字
+            val assetSummary"""),
+ ]:s=edit(s,a,b,edits)
+ start='    pendingDeleteTask?.let { taskToDelete ->\n'
+ end='\n}\n\n\n/** 下载占用容量摘要'
+ assert s.count(start)==1 and s.count(end)==1
+ old_dialog=s[s.index(start):s.index(end)]
+ new_dialog="""    if (selection.pendingDelete.isNotEmpty()) {
+        AppAlertDialog(
+            onDismissRequest = { selection.cancelDelete() },
+            title = { AppText("删除缓存") },
+            text = {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    androidx.compose.material3.Checkbox(checked = deleteFiles, onCheckedChange = { deleteFiles = it })
+                    AppText("同时删除本地文件")
+                }
+            },
+            confirmButton = {
+                androidx.compose.material3.TextButton(onClick = {
+                    selection.confirmDelete(deleteFiles) { id, delete -> bindings.removeTask(id, delete) }
+                }) { AppText("删除", color = MaterialTheme.colorScheme.error) }
+            },
+            dismissButton = {
+                androidx.compose.material3.TextButton(onClick = { selection.cancelDelete() }) { AppText("取消") }
+            },
+        )
+    }"""
+ s=edit(s,old_dialog,new_dialog,edits)
  assert 'Toast.' not in s and 'import android.' not in s and 'DownloadManager.' not in s
  emit(path,s,'com/android/purebilibili/feature/download/DownloadListScreen.kt',edits,True)
  path=BASE+'feature/download/DownloadStoragePolicy.kt';s=original[path];edits=[]
