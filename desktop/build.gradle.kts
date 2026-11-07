@@ -3930,6 +3930,9 @@ tasks.withType<Test>().configureEach {
         val testJvmTemp = temporaryDir.resolve("jvm-temp").canonicalFile
         systemProperty("java.io.tmpdir", testJvmTemp.absolutePath)
         doFirst { JvmFiles.createDirectories(testJvmTemp.toPath()) }
+        // A dual-stack JDK socket on macOS does not loop IPv4 multicast back over lo0, so the task-owned
+        // JmDNS fixture on 127.0.0.1 is never seen (bare JmDNS 3.6.3 behaves the same). Windows keeps its stack.
+        systemProperty("java.net.preferIPv4Stack", "true")
     }
     if (!System.getProperty("os.name").startsWith("Windows", ignoreCase = true))
         systemProperty("bilipai.credentialProtection", "test-only")

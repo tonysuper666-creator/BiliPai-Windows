@@ -327,7 +327,7 @@ def publish_staging(stage, output, identity):
     if os.name == 'nt':
         # Windows rename refuses any existing destination, including an empty dir.
         os.rename(stage, output)
-    elif sys.platform == 'linux':
+    elif sys.platform in ('linux', 'darwin'):
         directory_fd = os.open(stage, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
         try:
             current = os.fstat(directory_fd)
@@ -337,14 +337,24 @@ def publish_staging(stage, output, identity):
         finally:
             os.close(directory_fd)
         # Source builder runs Linux. Standard libc renameat2 gives atomic new-only
-        # publication and cannot overwrite a concurrent destination directory.
+        # publication and cannot overwrite a concurrent destination directory;
+        # macOS renamex_np with RENAME_EXCL gives the same guarantee.
         library = ctypes.CDLL(None, use_errno=True)
-        rename = getattr(library, 'renameat2', None)
-        if rename is None:
-            reject('ATOMIC_NEW_ONLY_DIRECTORY_PUBLISH_UNAVAILABLE')
-        rename.argtypes = [ctypes.c_int, ctypes.c_char_p, ctypes.c_int, ctypes.c_char_p, ctypes.c_uint]
-        rename.restype = ctypes.c_int
-        if rename(-100, os.fsencode(stage), -100, os.fsencode(output), 1) != 0:  # AT_FDCWD, RENAME_NOREPLACE
+        if sys.platform == 'linux':
+            rename = getattr(library, 'renameat2', None)
+            if rename is None:
+                reject('ATOMIC_NEW_ONLY_DIRECTORY_PUBLISH_UNAVAILABLE')
+            rename.argtypes = [ctypes.c_int, ctypes.c_char_p, ctypes.c_int, ctypes.c_char_p, ctypes.c_uint]
+            rename.restype = ctypes.c_int
+            result = rename(-100, os.fsencode(stage), -100, os.fsencode(output), 1)  # AT_FDCWD, RENAME_NOREPLACE
+        else:
+            rename = getattr(library, 'renamex_np', None)
+            if rename is None:
+                reject('ATOMIC_NEW_ONLY_DIRECTORY_PUBLISH_UNAVAILABLE')
+            rename.argtypes = [ctypes.c_char_p, ctypes.c_char_p, ctypes.c_uint]
+            rename.restype = ctypes.c_int
+            result = rename(os.fsencode(stage), os.fsencode(output), 0x4)  # RENAME_EXCL
+        if result != 0:
             reject('ATOMIC_NEW_ONLY_DIRECTORY_PUBLISH_REJECTED')
     else:
         reject('ATOMIC_NEW_ONLY_DIRECTORY_PUBLISH_PLATFORM_REJECTED')

@@ -32,7 +32,8 @@ private data class ExecutionAuthority(val id: String, val revision: Long, val ac
 
 /** Original schemas, expressions and storage; Windows owns permissions and the child process. */
 class DesktopJsPluginHost(
-    private val transport: DesktopJsWorkerProcess,
+    // Null only where the build has no worker image; every execution is then refused.
+    private val transport: DesktopJsWorkerProcess?,
     private val root: Path,
     // A fixture may constrain URLs to its own loopback server. Production NETWORK grants allow HTTP(S).
     private val acceptHttpUrl: (String) -> Boolean = { true },
@@ -309,7 +310,7 @@ class DesktopJsPluginHost(
         val execution = synchronized(gate) {
             requireCurrent(authority)
             require(active.values.none { it.id == authority.id }) { "此 JS 插件已有运行任务" }
-            transport.create().also { active[it] = authority }
+            (transport ?: error("此构建没有 JS 插件运行时")).create().also { active[it] = authority }
         }
         val handler = Bridge(authority)
         val running = async(Dispatchers.IO) { execution.execute(request, handler, 15_000) }
@@ -536,7 +537,7 @@ class DesktopJsPluginHost(
             revisionFlow.value = revision
             externalLaunches.forEach(ExternalMediaLaunchStore::remove); externalLaunches.clear()
         }
-        transport.shutdownAndJoin(Duration.ofSeconds(5))
+        transport?.shutdownAndJoin(Duration.ofSeconds(5))
         synchronized(gate) { active.clear() }
         client.dispatcher.executorService.shutdownNow(); client.connectionPool.evictAll()
     }
