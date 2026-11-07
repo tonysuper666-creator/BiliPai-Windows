@@ -22,10 +22,138 @@ def read(repo,path):
 def messages(repo):
  path=Path(__file__).with_name('extract-dynamic-message-share.py');spec=importlib.util.spec_from_file_location('dynamic_message_share',path);m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
 def inventory(repo):return [dict(path=p,mode='platform-adapter-reference' if p in SHARED+[BASE+'core/util/ModifierExt.kt'] else 'direct' if p in DIRECT else 'policy-extract',features=['settings-dynamic-full-card-parity'],sha256=hashlib.sha256(read(repo,p).encode()).hexdigest()) for p in PATHS]+messages(repo).inventory(repo)
+# Strict per-hunk changes preserve the canonical producer's failure behavior.
+# Reverse replay verifies every transformation before a generated file is emitted.
+def adapt_feed_text_layout(source, kind, receipt=None):
+    original = source
+    edits = []
+    def replace_one(old, new):
+        nonlocal source
+        count = source.count(old)
+        if count != 1:
+            raise ValueError("feed text layout anchor count %s (expected 1): %r" % (count, old[:100]))
+        position = source.index(old)
+        source = source[:position] + new + source[position + len(old):]
+        edits.append((position, old, new))
+    if kind == 'card':
+        replace_one('private const val DYNAMIC_FEED_TEXT_FOLD_THRESHOLD = 108\n',
+            '')
+        replace_one('''                // Feed 卡长文折叠：超过 6 行只显示部分正文，用「展开更多」打开详情。
+                // 详情页全文展示，不折叠。
+                val foldBodyText = !isDetail &&
+                    (desc.text.length > DYNAMIC_FEED_TEXT_FOLD_THRESHOLD)
+''',
+            '')
+        replace_one('''                            maxLines = if (foldBodyText) DYNAMIC_FEED_TEXT_MAX_LINES else Int.MAX_VALUE,
+                            overflow = if (foldBodyText) TextOverflow.Ellipsis else TextOverflow.Clip,
+''',
+            '                            foldInFeed = !isDetail,\n')
+        replace_one('''                        if (foldBodyText && openDynamicDetail != null) {
+                            AppText(
+                                text = "展开更多",
+                                fontSize = MaterialTheme.typography.bodySmall.fontSize,
+                                color = MaterialTheme.colorScheme.primary,
+                                modifier = Modifier
+                                    .padding(top = AppSpacingTokens.ExtraSmall)
+                                    .clip(AppShapes.container(ContainerLevel.Chip))
+                                    .clickable(onClick = { openDynamicDetail?.invoke(item.id_str) })
+                                    .padding(vertical = AppSpacingTokens.Micro),
+                            )
+                        }''',
+            '')
+        replace_one('''                collapseWebLinks = isDetail,
+            )
+            Spacer(modifier = Modifier.height(AppSpacingTokens.Medium))''',
+            '''                collapseWebLinks = isDetail,
+                foldBodyText = !isDetail,
+            )
+            Spacer(modifier = Modifier.height(AppSpacingTokens.Medium))''')
+        replace_one('''    extraEmoteUrlMap: Map<String, String> = emptyMap(),
+    collapseWebLinks: Boolean = false,
+) {''',
+            '''    extraEmoteUrlMap: Map<String, String> = emptyMap(),
+    collapseWebLinks: Boolean = false,
+    foldInFeed: Boolean = false,
+) {''')
+        replace_one('    var showTextSelectionSheet by remember(copyText) { mutableStateOf(false) }',
+            '''    var expanded by remember(desc, foldInFeed) { mutableStateOf(false) }
+    var hasOverflow by remember(desc, foldInFeed) { mutableStateOf(false) }
+    var showTextSelectionSheet by remember(copyText) { mutableStateOf(false) }''')
+        replace_one('''    AppText(
+        text = annotatedText,
+        inlineContent = inlineContent,
+        fontSize = fontSize,
+        fontWeight = fontWeight,
+        lineHeight = lineHeight,
+        maxLines = maxLines,
+        overflow = overflow,
+        color = textColor,
+        modifier = modifier.then(textGestureModifier)
+    )''',
+            '''    Column {
+        AppText(
+            text = annotatedText,
+            inlineContent = inlineContent,
+            fontSize = fontSize,
+            fontWeight = fontWeight,
+            lineHeight = lineHeight,
+            maxLines = if (foldInFeed && !expanded) minOf(maxLines, DYNAMIC_FEED_TEXT_MAX_LINES) else maxLines,
+            overflow = if (foldInFeed && !expanded) TextOverflow.Ellipsis else overflow,
+            onTextLayout = { layout ->
+                if (foldInFeed) {
+                    hasOverflow = if (expanded) layout.lineCount > DYNAMIC_FEED_TEXT_MAX_LINES else layout.hasVisualOverflow
+                }
+            },
+            color = textColor,
+            modifier = modifier.then(textGestureModifier)
+        )
+        if (foldInFeed && hasOverflow) {
+            AppText(
+                text = if (expanded) "收起" else "展开更多",
+                fontSize = MaterialTheme.typography.bodySmall.fontSize,
+                color = MaterialTheme.colorScheme.primary,
+                modifier = Modifier
+                    .padding(top = AppSpacingTokens.ExtraSmall)
+                    .clip(AppShapes.container(ContainerLevel.Chip))
+                    .clickable { expanded = !expanded }
+                    .padding(vertical = AppSpacingTokens.Micro),
+            )
+        }
+    }''')
+    elif kind == 'forward':
+        replace_one('''    defaultPreviewTextVisible: Boolean = true,
+    collapseWebLinks: Boolean = false,
+) {''',
+            '''    defaultPreviewTextVisible: Boolean = true,
+    collapseWebLinks: Boolean = false,
+    foldBodyText: Boolean = true,
+) {''')
+        replace_one('''                    collapseWebLinks = collapseWebLinks,
+                    desc = desc,''',
+            '''                    collapseWebLinks = collapseWebLinks,
+                    foldInFeed = foldBodyText,
+                    desc = desc,''')
+    else:
+        raise ValueError('unknown feed text layout input')
+    restored = source
+    for position, old, new in reversed(edits):
+        if restored[position:position + len(new)] != new:
+            raise ValueError("feed text layout inverse mismatch")
+        restored = restored[:position] + old + restored[position + len(new):]
+    if restored != original:
+        raise ValueError("feed text layout inverse did not restore source")
+    if receipt is not None:
+        receipt[kind] = {"inputSha256": hashlib.sha256(original.encode()).hexdigest(),
+                         "outputSha256": hashlib.sha256(source.encode()).hexdigest(),
+                         "inverseSha256": hashlib.sha256(restored.encode()).hexdigest(),
+                         "anchors": len(edits)}
+    return source
+
 def generate(repo,output,standalone=False,shared_closure=False):
  from v046_image_viewer import validate_outputs as validate_image_viewer_outputs
  validate_image_viewer_outputs(repo,output)
  image_viewer_renderer_proof=None
+ layout_receipts={}
  host=module(repo,'full_card_host','desktop/tools/extract-upstream-plugins.py');media=host.media_extractor(repo);parser=media.parser_for(repo)
  appearance=module(repo,'full_card_decl','desktop/tools/extract-appearance-platform.py')
  output.mkdir(parents=True,exist_ok=True);files=[]
@@ -145,6 +273,7 @@ def generate(repo,output,standalone=False,shared_closure=False):
    # v0.4.6 resolveUpNameColor reads `secondary` as the annual-VIP colour; this original still passes the theme colour.
    from v046_identity_badge_palette import up_name_vip_pink
    before,after=up_name_vip_pink('DynamicCard.kt',s);s=replace(s,before,after)
+   s=adapt_feed_text_layout(s,'card',layout_receipts)
   elif p.endswith('VideoCards.kt'):
    # Original static cover/info are preserved. Android's shared-element capture
    # remains an explicit missing platform seam, not an invented transition.
@@ -165,6 +294,7 @@ def generate(repo,output,standalone=False,shared_closure=False):
    s=s.replace('    val scope = rememberCoroutineScope()','    val platform = LocalDesktopDynamicCardBindings.current\n    val scope = rememberCoroutineScope()')
    s=s.replace('DynamicVoteRepository.getVoteInfo','platform.getVoteInfo').replace('DynamicVoteRepository.submitVote','platform.submitVote')
   elif p.endswith('ForwardedContent.kt'):
+   s=adapt_feed_text_layout(s,'forward',layout_receipts)
    s=s.replace('    val context = LocalContext.current','    val platform = com.bilipai.desktop.ui.LocalDesktopDynamicCardBindings.current\n    val context = LocalContext.current')
    s=s.replace('com.android.purebilibili.data.repository.DynamicRepository.rememberDynamicDetailSeed','com.bilipai.desktop.ui.DesktopDynamicCardBindings.rememberDynamicDetailSeed')
    import re
@@ -328,6 +458,7 @@ object DesktopDynamicCardSettings {
   # other slice emitters the receipt and these paths are not part of this producer's own generated list.
   from v046_image_viewer import emit_main as emit_image_viewer_main
   emit_image_viewer_main(repo,output,image_viewer_renderer_proof)
+ (output/'windows-dynamic-feed-layout-proof.json').write_text(json.dumps(layout_receipts,indent=2)+'\n',encoding='utf8')
  return files
 def generate_image_viewer_tests(repo,output):
  from v046_image_viewer import emit_tests as emit_image_viewer_tests
