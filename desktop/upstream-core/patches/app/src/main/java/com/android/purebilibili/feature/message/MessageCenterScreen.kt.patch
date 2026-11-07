@@ -1,6 +1,11 @@
 --- a/com/android/purebilibili/feature/message/MessageCenterScreen.kt
 +++ b/com/android/purebilibili/feature/message/MessageCenterScreen.kt
-@@ -20,6 +20,7 @@
+@@ -16,10 +16,12 @@
+ import androidx.compose.material3.adaptive.layout.SupportingPaneScaffold
+ import androidx.compose.material3.adaptive.layout.ThreePaneScaffoldValue
+ import androidx.compose.material3.adaptive.layout.calculatePaneScaffoldDirective
++import androidx.compose.foundation.layout.fillMaxSize
+ import androidx.compose.runtime.key
  import androidx.lifecycle.compose.collectAsStateWithLifecycle
  import com.android.purebilibili.core.util.LocalWindowSizeClass
  import com.android.purebilibili.core.util.WindowHeightSizeClass
@@ -8,34 +13,60 @@
  
  @OptIn(ExperimentalMaterial3AdaptiveApi::class)
  @Composable
-@@ -30,13 +31,15 @@
+@@ -30,67 +32,50 @@
      onNavigateToVideo: (String) -> Unit,
      onOpenBilibiliLink: (String) -> Unit,
  ) {
 -    val accountIdentity by com.android.purebilibili.core.store.TokenManager.accountIdentity.collectAsStateWithLifecycle()
+-    val useTwoPane =
+-        LocalWindowSizeClass.current.let {
+-            it.widthSizeClass != com.android.purebilibili.core.util.WindowWidthSizeClass.Compact &&
+-                it.heightSizeClass != WindowHeightSizeClass.Compact
+-        }
+-    if (!useTwoPane) {
+-        InboxScreen(
+-            onBack = onBack,
+-            onTopItemClick = onTopItemClick,
+-            onOpenLink = onOpenBilibiliLink,
+-            onSessionClick = onOpenSessionFullScreen,
+-        )
+-        return
+-    }
+-
 +    val accountIdentity = LocalDesktopMessagePageOwner.current.messageAccountIdentity
-     val useTwoPane =
-         LocalWindowSizeClass.current.let {
-             it.widthSizeClass != com.android.purebilibili.core.util.WindowWidthSizeClass.Compact &&
-                 it.heightSizeClass != WindowHeightSizeClass.Compact
-         }
-     if (!useTwoPane) {
-+        val compactPageOwner = LocalDesktopMessagePageOwner.current
-+        androidx.compose.runtime.SideEffect { compactPageOwner.keepPaneChat(0L, 0) }
-         InboxScreen(
-             onBack = onBack,
-             onTopItemClick = onTopItemClick,
-@@ -50,6 +53,9 @@
++    // K7：尺寸只由下面容器的可用宽度决定（960dp 起分栏，以下单列），不再按窗口尺寸类提前分支，
++    // 这样窗口变矮或变窄时选中、列表滚动与草稿都留在同一组合里；窄窗口的会话也在单列内打开。
+     var activeTalkerId by rememberSaveable(accountIdentity) { mutableLongStateOf(0L) }
      var activeSessionType by rememberSaveable(accountIdentity) { mutableIntStateOf(0) }
      var activeUserName by rememberSaveable(accountIdentity) { mutableStateOf("") }
  
+-    val windowAdaptiveInfo = currentWindowAdaptiveInfoV2()
+-    val directive = calculatePaneScaffoldDirective(windowAdaptiveInfo)
+-    val scaffoldValue = ThreePaneScaffoldValue(
+-        primary = PaneAdaptedValue.Expanded,
+-        secondary = if (activeTalkerId != 0L) PaneAdaptedValue.Expanded else PaneAdaptedValue.Hidden,
+-        tertiary = PaneAdaptedValue.Hidden,
+-    )
 +    val pageOwner = LocalDesktopMessagePageOwner.current
 +    val retainedPaneChat = activeTalkerId != 0L && pageOwner.retainPaneChat(activeTalkerId, activeSessionType)
 +    androidx.compose.runtime.SideEffect { pageOwner.keepPaneChat(activeTalkerId, activeSessionType) }
-     val windowAdaptiveInfo = currentWindowAdaptiveInfoV2()
-     val directive = calculatePaneScaffoldDirective(windowAdaptiveInfo)
-     val scaffoldValue = ThreePaneScaffoldValue(
-@@ -72,14 +78,16 @@
+ 
+     // 会话面板先于整个消息路由退出，避免系统返回直接把消息中心关掉。
+     BackHandler(enabled = activeTalkerId != 0L) {
+         activeTalkerId = 0L
+     }
+ 
+-    SupportingPaneScaffold(
+-        directive = directive,
+-        value = scaffoldValue,
+-        mainPane = {
++    // K7：960dp 起会话列表（280–320dp）与会话（≤760dp）并排，以下单列；选中、列表滚动与各会话草稿跨断点保留。
++    com.bilipai.desktop.ui.DesktopMessageListDetail(
++        stateKey = accountIdentity,
++        chatKey = if (activeTalkerId != 0L && retainedPaneChat) "$activeTalkerId:$activeSessionType" else null,
++        list = {
+             InboxScreen(
+                 onBack = onBack,
                  onTopItemClick = onTopItemClick,
                  onOpenLink = onOpenBilibiliLink,
                  onSessionClick = { talkerId, sessionType, userName ->
@@ -50,9 +81,29 @@
                  },
              )
          },
-         supportingPane = {
+-        supportingPane = {
 -            if (activeTalkerId != 0L) {
-+            if (activeTalkerId != 0L && retainedPaneChat) {
-                 key(accountIdentity, activeTalkerId, activeSessionType) {
-                     ChatScreen(
-                         talkerId = activeTalkerId,
+-                key(accountIdentity, activeTalkerId, activeSessionType) {
+-                    ChatScreen(
+-                        talkerId = activeTalkerId,
+-                        sessionType = activeSessionType,
+-                        userName = activeUserName.ifBlank { "用户$activeTalkerId" },
+-                        onBack = { activeTalkerId = 0L },
+-                        onNavigateToVideo = onNavigateToVideo,
+-                        onOpenBilibiliLink = onOpenBilibiliLink,
+-                    )
+-                }
+-            }
++        chat = {
++            ChatScreen(
++                talkerId = activeTalkerId,
++                sessionType = activeSessionType,
++                userName = activeUserName.ifBlank { "用户$activeTalkerId" },
++                onBack = { activeTalkerId = 0L },
++                onNavigateToVideo = onNavigateToVideo,
++                onOpenBilibiliLink = onOpenBilibiliLink,
++            )
+         },
++        modifier = androidx.compose.ui.Modifier.fillMaxSize(),
+     )
+ }

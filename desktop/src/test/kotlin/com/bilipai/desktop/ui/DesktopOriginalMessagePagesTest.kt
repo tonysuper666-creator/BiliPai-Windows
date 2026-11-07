@@ -12,6 +12,15 @@ import com.sun.net.httpserver.HttpServer
 import kotlinx.coroutines.*
 import kotlinx.coroutines.swing.Swing
 import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
+import kotlin.test.assertSame
+import kotlin.test.assertTrue
+import androidx.compose.foundation.layout.size
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.semantics.getOrNull
+import androidx.compose.ui.unit.dp
 import kotlinx.serialization.json.*
 import okhttp3.*
 import java.net.InetSocketAddress
@@ -763,4 +772,139 @@ class DesktopMessageUpdateInstallationHoldTest {
             check(f.hits.count{it.path.endsWith("send_msg")}==count && !child(vm).hasPendingEditorMutations())
         }
     }
+}
+
+/** The window root's upstream Context with the one preference store upstream's InboxScreen reads at composition
+ * ("message_center_preferences", disabled-likes and badge mode). The root's own Context does not hold it yet, which is
+ * tracked outside K7; everything else answers as the root's Context does. */
+private class MessageCenterPreferencesContext(private val root: android.content.Context) : android.content.Context(root.dataDir),
+    androidx.datastore.preferences.DesktopPreferencesDataStoreOwner {
+    private val values = kotlinx.coroutines.flow.MutableStateFlow(androidx.datastore.preferences.core.emptyPreferences())
+    private val messageCenter = object : androidx.datastore.core.DataStore<androidx.datastore.preferences.core.Preferences> {
+        override val data get() = values
+        override suspend fun updateData(transform: suspend (t: androidx.datastore.preferences.core.Preferences) -> androidx.datastore.preferences.core.Preferences) =
+            transform(values.value).also { values.value = it }
+    }
+    override val applicationContext: android.content.Context get() = this
+    override val filesDir get() = root.filesDir
+    override val cacheDir get() = root.cacheDir
+    override val assets get() = root.assets
+    override val resources get() = root.resources
+    override fun getSharedPreferences(name: String, mode: Int) = root.getSharedPreferences(name, mode)
+    override fun desktopPreferencesDataStore(name: String) =
+        if (name == "message_center_preferences") messageCenter
+        else (root.applicationContext as androidx.datastore.preferences.DesktopPreferencesDataStoreOwner).desktopPreferencesDataStore(name)
+}
+
+/** K7: the actual MessageCenterScreen under the actual DesktopDetailWindow size class and page owner.
+ * The 960dp available width is its only size decision, so a short (height-Compact, <480dp) or narrow
+ * (width-Compact) window neither drops the split nor the selected chat, its draft or the list scroll. */
+class DesktopMessageCenterWindowSizeTest {
+    private class Host(owner: DesktopOriginalMessagePageOwner, androidContext: android.content.Context) : AutoCloseable {
+        var width by androidx.compose.runtime.mutableIntStateOf(1200)
+        var height by androidx.compose.runtime.mutableIntStateOf(480)
+        var fullScreenRoutes = 0
+        private var frame = 0L
+        // The window root's renderer capabilities, resumed lifecycle and back dispatcher, as the other page UI tests bind them.
+        private val platform = DesktopHomePlatform(false, false, false, false, false, false, object : DesktopHomeWindowBackgroundPort {
+            override val isInBackground = false
+            override fun addListener(listener: DesktopHomeWindowBackgroundPort.Listener) {}
+            override fun removeListener(listener: DesktopHomeWindowBackgroundPort.Listener) {}
+        }, 0f, false)
+        private val lifecycle = PageTestLifecycleOwner()
+        private val navigation = object : androidx.navigationevent.NavigationEventDispatcherOwner {
+            override val navigationEventDispatcher = androidx.navigationevent.NavigationEventDispatcher()
+        }
+        private val scene = androidx.compose.ui.ImageComposeScene(1400, 800, androidx.compose.ui.unit.Density(1f)) {
+            com.bilipai.desktop.appearance.DesktopAppearanceTheme(
+                com.bilipai.desktop.appearance.DesktopThemeSettings(uiStyle = com.android.purebilibili.core.theme.AppUiStyle.MATERIAL3),
+                systemLanguageTags = listOf("zh-CN"), windowSmallestWidthDp = 480) {
+                androidx.compose.foundation.layout.Box(androidx.compose.ui.Modifier.size(width.dp, height.dp)) {
+                    DesktopDetailWindow {
+                        androidx.compose.runtime.CompositionLocalProvider(
+                            LocalDesktopUpstreamAndroidContext provides androidContext,
+                            LocalDesktopHomePlatform provides platform,
+                            androidx.lifecycle.compose.LocalLifecycleOwner provides lifecycle,
+                            androidx.navigationevent.compose.LocalNavigationEventDispatcherOwner provides navigation,
+                            LocalDesktopMessagePageOwner provides owner,
+                            LocalDesktopChatImeInsets provides androidx.compose.foundation.layout.WindowInsets(0),
+                        ) {
+                            MessageCenterScreen(onBack = {}, onTopItemClick = {}, onOpenSessionFullScreen = { _, _, _ -> fullScreenRoutes++ },
+                                onNavigateToVideo = {}, onOpenBilibiliLink = {})
+                        }
+                    }
+                }
+            }
+        }
+        private fun flatten(n: androidx.compose.ui.semantics.SemanticsNode): List<androidx.compose.ui.semantics.SemanticsNode> =
+            listOf(n) + n.children.flatMap(::flatten)
+        fun nodes() = scene.semanticsOwners.flatMap { flatten(it.unmergedRootSemanticsNode) }
+        fun pane(tag: String) = nodes().singleOrNull { it.config.getOrNull(androidx.compose.ui.semantics.SemanticsProperties.TestTag) == tag }
+        fun under(tag: String) = pane(tag)?.let(::flatten).orEmpty()
+        fun texts(tag: String) = under(tag).flatMap { it.config.getOrNull(androidx.compose.ui.semantics.SemanticsProperties.Text).orEmpty().map { t -> t.text } }
+        fun field() = under(DESKTOP_MESSAGE_CHAT_PANE_TAG).firstOrNull { it.config.contains(androidx.compose.ui.semantics.SemanticsActions.SetText) }
+        fun draft() = field()?.config?.getOrNull(androidx.compose.ui.semantics.SemanticsProperties.EditableText)?.text
+        /** The topmost session row inside the visible list pane, i.e. the list's scroll position. */
+        fun firstVisibleSession(): String? {
+            val list = pane(DESKTOP_MESSAGE_LIST_PANE_TAG) ?: return null
+            return under(DESKTOP_MESSAGE_LIST_PANE_TAG).filter { it.boundsInRoot.top >= list.boundsInRoot.top && it.boundsInRoot.bottom <= list.boundsInRoot.bottom }
+                .mapNotNull { n -> n.config.getOrNull(androidx.compose.ui.semantics.SemanticsProperties.Text)?.firstOrNull { it.text.startsWith("Known") }?.let { n.boundsInRoot.top to it.text } }
+                .minByOrNull { it.first }?.second
+        }
+        suspend fun settle(until: () -> Boolean = { true }) {
+            withTimeout(5000) { do { repeat(3) { frame += 16_000_000L; scene.render(frame).close() }; delay(15) } while (!until()) }
+            repeat(3) { frame += 16_000_000L; scene.render(frame).close() }
+        }
+        override fun close() { scene.close() }
+    }
+
+    @Test fun shortAndNarrowWindowsKeepTheSplitSelectionDraftAndListScroll(): Unit = runBlocking(Dispatchers.Swing) {
+        val fixture = MessagePageTestFixture(Dispatchers.Swing.immediate)
+        try {
+            val sessions = (1L..40L).map { imSession(it, "Known$it", 1000 - it) }
+            fixture.respond = { hit -> if (hit.path.endsWith("/SessionMain")) grpcReply(imPage(sessions, imCursor(1, false))) else fixture.default(hit) }
+            val owner = fixture.pageOwner()
+            Host(owner, MessageCenterPreferencesContext(fixture.pluginContext.asAndroidContext())).use { h ->
+                h.settle { "Known1" in h.texts(DESKTOP_MESSAGE_LIST_PANE_TAG) }
+                val scroll = h.under(DESKTOP_MESSAGE_LIST_PANE_TAG).first { it.config.contains(androidx.compose.ui.semantics.SemanticsActions.ScrollToIndex) }
+                requireNotNull(scroll.config[androidx.compose.ui.semantics.SemanticsActions.ScrollToIndex].action).invoke(20)
+                h.settle { h.firstVisibleSession().let { it != null && it != "Known1" } }
+                val top = assertNotNull(h.firstVisibleSession())
+                // Open the conversation the user scrolled to: the session row holding exactly that one name.
+                val row = h.under(DESKTOP_MESSAGE_LIST_PANE_TAG).filter { it.config.contains(androidx.compose.ui.semantics.SemanticsActions.OnClick) }
+                    .first { n -> flattenTexts(n).filter { it.startsWith("Known") } == listOf(top) }
+                requireNotNull(row.config[androidx.compose.ui.semantics.SemanticsActions.OnClick].action).invoke()
+                val talker = top.removePrefix("Known").toLong()
+                h.settle { h.field() != null }
+                requireNotNull(h.field()!!.config[androidx.compose.ui.semantics.SemanticsActions.SetText].action)
+                    .invoke(androidx.compose.ui.text.AnnotatedString("给 A 的草稿"))
+                h.settle { h.draft() == "给 A 的草稿" }
+                val chat = owner.chat(talker, 1)
+
+                fun assertSplit(step: String) {
+                    assertEquals(320f, assertNotNull(h.pane(DESKTOP_MESSAGE_LIST_PANE_TAG), step).boundsInRoot.width, message = step)
+                    assertEquals(760f, assertNotNull(h.pane(DESKTOP_MESSAGE_CHAT_PANE_TAG), step).boundsInRoot.width, message = step)
+                    assertEquals("给 A 的草稿", h.draft(), step)
+                    assertEquals(top, h.firstVisibleSession(), step)
+                    assertSame(chat, owner.chat(talker, 1), "$step: the selected chat keeps its retained ViewModel")
+                }
+                assertSplit("1200x480")
+                h.height = 479; h.settle(); assertSplit("1200x479 is height-Compact and still 960dp+ wide")
+                h.height = 480; h.settle(); assertSplit("back at 1200x480")
+
+                // Below 960dp, on both sides of the 600dp width-Compact class, the open chat is the single
+                // column in place, not a full-screen route.
+                for ((width, step) in listOf(600 to "600x700", 599 to "599x700 is width-Compact")) {
+                    h.width = width; h.height = 700; h.settle()
+                    assertEquals(width.toFloat(), assertNotNull(h.pane(DESKTOP_MESSAGE_CHAT_PANE_TAG), step).boundsInRoot.width, message = step)
+                    assertEquals("给 A 的草稿", h.draft(), step); assertTrue(h.texts(DESKTOP_MESSAGE_LIST_PANE_TAG).isEmpty(), step)
+                    assertSame(chat, owner.chat(talker, 1), step)
+                }
+                h.width = 1200; h.height = 480; h.settle(); assertSplit("back from 599dp")
+                assertEquals(0, h.fullScreenRoutes)
+            }
+        } finally { fixture.shutdown() }
+    }
+    private fun flattenTexts(n: androidx.compose.ui.semantics.SemanticsNode): List<String> =
+        n.config.getOrNull(androidx.compose.ui.semantics.SemanticsProperties.Text).orEmpty().map { it.text } + n.children.flatMap(::flattenTexts)
 }
