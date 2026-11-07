@@ -29,8 +29,7 @@ internal fun videoCardLandingReleaseSpec(releaseDp: Float): KeyframesSpec<Float>
     durationMillis = 300
     0f at 0
     0f at 100 using AppMotionEasing.M1Standard
-    // Let the slower horizontal spring settle enough for the release to be perceptible.
-    releaseDp at 230 using AppMotionEasing.M1Standard
+    releaseDp at 190 using AppMotionEasing.M1Standard
     0f at 300
 }
 
