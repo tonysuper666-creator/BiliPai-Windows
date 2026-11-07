@@ -30,9 +30,10 @@ data class DesktopJsAuthorizedPlugin(val installed: InstalledBiliPaiJsPlugin, va
 private data class ExecutionAuthority(val id: String, val revision: Long, val accountEpoch: Long,
     val capabilities: Set<PluginCapability>, val plugin: DesktopJsAuthorizedPlugin?)
 
-/** Original schemas, expressions and storage; Windows owns permissions and the child process. */
+/** Original schemas, expressions and storage; Windows owns permissions and the child process.
+ * A null [transport] is a host without a JS worker: authorizations still load, every execution is refused. */
 class DesktopJsPluginHost(
-    private val transport: DesktopJsWorkerProcess,
+    private val transport: DesktopJsWorkerProcess?,
     private val root: Path,
     // A fixture may constrain URLs to its own loopback server. Production NETWORK grants allow HTTP(S).
     private val acceptHttpUrl: (String) -> Boolean = { true },
@@ -309,7 +310,7 @@ class DesktopJsPluginHost(
         val execution = synchronized(gate) {
             requireCurrent(authority)
             require(active.values.none { it.id == authority.id }) { "此 JS 插件已有运行任务" }
-            transport.create().also { active[it] = authority }
+            checkNotNull(transport) { "此电脑没有 JS 插件运行环境" }.create().also { active[it] = authority }
         }
         val handler = Bridge(authority)
         val running = async(Dispatchers.IO) { execution.execute(request, handler, 15_000) }
@@ -536,7 +537,7 @@ class DesktopJsPluginHost(
             revisionFlow.value = revision
             externalLaunches.forEach(ExternalMediaLaunchStore::remove); externalLaunches.clear()
         }
-        transport.shutdownAndJoin(Duration.ofSeconds(5))
+        transport?.shutdownAndJoin(Duration.ofSeconds(5))
         synchronized(gate) { active.clear() }
         client.dispatcher.executorService.shutdownNow(); client.connectionPool.evictAll()
     }
