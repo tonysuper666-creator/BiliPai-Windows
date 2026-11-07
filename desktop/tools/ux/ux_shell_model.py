@@ -664,8 +664,8 @@ class HostKt:
         self.now = 0
         self.request_back_result = True
 
-    def bind_root(self, page, can_go_back=True, accept=True):
-        self.root = {"page": page, "can_go_back": can_go_back, "accept": accept}
+    def bind_root(self, page, can_go_back=True, accept=True, at_navigation_root=False):
+        self.root = {"page": page, "can_go_back": can_go_back, "accept": accept, "at_navigation_root": at_navigation_root}
 
     def bind_frame(self, available, toggleable=True, rail_visible=True, accept=True):
         self.frame = {"available": list(available), "toggleable": toggleable, "rail_visible": rail_visible, "accept": accept}
@@ -739,8 +739,11 @@ class HostKt:
         raise AssertionError("unknown action kind " + kind)
 
     def back(self):
-        """back of the host: at the first page Back does nothing and says it acted; otherwise it is what requestBack answers."""
+        """Home root consumes Back; other single-entry tabs select Home; nested pages dispatch native Back."""
         if self.root["can_go_back"]:
+            if self.root["at_navigation_root"]:
+                self.calls.append(("goTo", "HOME"))
+                return self.root["accept"]
             self.calls.append(("requestBack",))
             return self.request_back_result
         return True

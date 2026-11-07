@@ -24,3 +24,15 @@ internal fun desktopWindowsVideoLoadCanRetry(failure: Throwable): Boolean =
         412, 429 -> true
         else -> VideoLoadError.fromException(failure).isRetryable()
     }
+
+/** Only controlled copy reaches the page. API messages, native errors and exception text stay in diagnostics. */
+internal fun desktopWindowsVideoErrorMessage(error: VideoLoadError?): String = when (error) {
+    VideoLoadError.NetworkError -> "请检查网络连接后重试。"
+    VideoLoadError.Timeout -> "连接超时，请稍后重试。"
+    VideoLoadError.VideoNotFound -> "视频不存在或已被删除，请返回选择其他视频。"
+    VideoLoadError.RegionRestricted -> "该视频在当前地区不可用，请返回选择其他视频。"
+    VideoLoadError.VipRequired -> "该视频需要大会员，请确认账号权限后重试。"
+    is VideoLoadError.RateLimited, is VideoLoadError.GlobalCooldown, VideoLoadError.WbiSignatureError ->
+        "请求暂时受限，请稍后重试。"
+    else -> "请稍后重试，或返回选择其他视频。"
+}
