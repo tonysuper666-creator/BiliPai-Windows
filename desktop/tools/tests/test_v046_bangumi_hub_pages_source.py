@@ -657,10 +657,16 @@ class BangumiHubPagesSliceTests(unittest.TestCase):
         # may build their own environments.
         checked_in, built = gradle_main_kotlin_roots()
         self.assertIn(REPO / 'desktop/upstream-core/transition/src', checked_in)
-        hubs = {REPO / 'desktop/build' / output for output in ['generated/home-bangumi-page', 'generated/independent-bangumi-pages']}
-        self.assertLessEqual(hubs, built)
-        # Every file, not only Kotlin: main roots also hold Java sources the compilation reads.
-        main = {f for root in [*checked_in, *(built - hubs), self.home, self.pages] for f in root.rglob('*') if f.is_file()}
+        hubs = {REPO / 'desktop/build/generated/home-bangumi-page': self.home,
+                REPO / 'desktop/build/generated/independent-bangumi-pages': self.pages}
+        self.assertLessEqual(set(hubs), built)
+        # Every file, not only Kotlin: main roots also hold Java sources the compilation reads. A live hub output file
+        # stands for its fresh copy only when it has the same relative path and bytes; any other file there, extra or
+        # differing, is compiled as it stands and is scanned beside the fresh outputs.
+        def copy(file):
+            fresh = next((hubs[live] / file.relative_to(live) for live in hubs if file.is_relative_to(live)), None)
+            return fresh is not None and fresh.is_file() and fresh.read_bytes() == file.read_bytes()
+        main = {f for root in [*checked_in, *built, self.home, self.pages] for f in root.rglob('*') if f.is_file() and not copy(f)}
         listed = subprocess.run(['git', '-C', str(REPO), 'ls-files', '-z', '--cached', '--others', '--exclude-standard'],
                                 capture_output=True, check=True).stdout.decode('utf8').split('\0')
         files = [REPO / name for name in listed if name and (REPO / name).is_file()]
