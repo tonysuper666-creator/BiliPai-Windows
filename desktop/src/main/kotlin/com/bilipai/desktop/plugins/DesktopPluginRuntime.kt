@@ -83,7 +83,7 @@ class DesktopPluginRuntime(val store: DesktopPluginStore,
     private val cdn = CdnRegionPlugin()
     private val adFilter = AdFilterPlugin()
     val jsPlugins = DesktopJsPluginRepository(context, DesktopJsPluginHost(
-        DesktopJsWorkerResources(desktopJsWorkerResources()).createProcess(context.filesDir.toPath()),
+        desktopJsWorkerProcess(context.filesDir.toPath()),
         context.filesDir.toPath(), ownerEpoch = repository?.let { { it.sessionEpoch } }))
     val subscriptions = DesktopSubscriptionRepository(context,
         extraSources = { jsPlugins.feedSourceSnapshot().let { DesktopSubscriptionExtraSources(it.revision, it.sources) } },
@@ -635,6 +635,15 @@ class DesktopPluginRuntime(val store: DesktopPluginStore,
             CoroutineScope(Dispatchers.Main).launch { shutdownForRestore() }
         }
     }
+}
+
+/** No worker only for the build's explicit non-Windows marker; any other digest is verified here and fails closed. */
+private fun desktopJsWorkerProcess(workingDirectory: Path): DesktopJsWorkerProcess? {
+    if (desktopJsWorkerUnavailableOnThisHost()) {
+        DesktopPluginLog.w("js-plugins", "JS worker image is not built for this host")
+        return null
+    }
+    return DesktopJsWorkerResources(desktopJsWorkerResources()).createProcess(workingDirectory)
 }
 
 private fun desktopJsWorkerResources(): Path {
