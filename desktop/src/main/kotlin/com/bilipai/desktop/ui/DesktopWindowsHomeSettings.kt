@@ -1,6 +1,7 @@
 package com.bilipai.desktop.ui
 
 import com.bilipai.desktop.plugins.asAndroidContext
+import com.bilipai.desktop.settings.DesktopPartitionPreferences
 
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -17,6 +18,8 @@ import java.nio.file.Path
 internal fun DesktopWindowsHomeSettings(state: HomeSettings, viewModel: DesktopOriginalHomeSettingsViewModel,
     context: DesktopOriginalPlayerSettingsContext, actions: DesktopOriginalHomeSettingsActions,
     environment: DesktopProfileEnvironment, onBack: () -> Unit) {
+    val partitionPreferences = remember(context.pluginContext) { DesktopPartitionPreferences(context.pluginContext) }
+    val partitionSideRailOnRight by partitionPreferences.onRight.collectAsState(partitionPreferences.initialSideRailOnRight())
     val wallpaper = desktopWindowsSettingsValue(remember(context) { Preferences.getHomeWallpaperUri(context) })
     val dynamicCommentPreview = desktopWindowsSettingsValue(remember(context) {
         com.android.purebilibili.core.store.home.DynamicSettingsStore.observeCommentPreviewVisible(context.pluginContext.asAndroidContext())
@@ -97,6 +100,12 @@ internal fun DesktopWindowsHomeSettings(state: HomeSettings, viewModel: DesktopO
                 actions.launch {
                     com.android.purebilibili.core.store.home.DynamicSettingsStore.setCommentPreviewVisible(context.androidContext, value)
                 }
+            }
+        }
+        DesktopWindowsSettingsGroup("分区") {
+            DesktopWindowsSettingsChoice("分区侧栏位置", partitionSideRailOnRight,
+                listOf(false to "左侧", true to "右侧")) { value ->
+                actions.launch { partitionPreferences.setSideRailOnRight(value, context) }
             }
         }
         DesktopWindowsSettingsGroup("导航") {

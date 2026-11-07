@@ -1,0 +1,56 @@
+{
+  "base": "235eec58b195b1a16047031a95fbaa9581694f21",
+  "hostTestSha256": "33f931a5ccc1acb10b9ac46352e0ef6d768476228cb38d3304c320ff7f3843a5",
+  "candidateSourceManifestSha256": "c8c3f3344afabb26b167dd4c05e94c265c9ed75caa9f945e9168cd760241b647",
+  "baseCounts": {
+    "applicationImageLoaderOwnerTests": {
+      "passed": 3
+    },
+    "sponsorPresentationTests": {
+      "failed": 1
+    },
+    "test": {
+      "failed": 3
+    },
+    "upstreamAppCoreSourceTests": {
+      "passed": 395,
+      "failed": 46
+    },
+    "upstreamDesignSourceTests": {
+      "passed": 59
+    }
+  },
+  "headCounts": {
+    "applicationImageLoaderOwnerTests": {
+      "passed": 3
+    },
+    "sponsorPresentationTests": {
+      "failed": 1
+    },
+    "test": {
+      "passed": 6
+    },
+    "upstreamAppCoreSourceTests": {
+      "passed": 395,
+      "failed": 46
+    },
+    "upstreamDesignSourceTests": {
+      "passed": 59
+    }
+  },
+  "newFailed": [],
+  "removedFailed": [
+    "test|com.bilipai.desktop.ui.DesktopPartitionSideRailTest|freshBackingRestoresRightInNarrowAndWideLayouts()",
+    "test|com.bilipai.desktop.ui.DesktopPartitionSideRailTest|narrowHostSwitchPreservesSelectionAndBothScrollPositions()",
+    "test|com.bilipai.desktop.ui.DesktopPartitionSideRailTest|wideHostSwitchPreservesSelectionAndBothScrollPositions()"
+  ],
+  "newSkipped": [],
+  "removedSkipped": [],
+  "baseCommandExit": 1,
+  "headCommandExit": 1,
+  "commonFinalizerFailed": 47,
+  "producerCliExit": 0,
+  "producerCompleteInverseExit": 0,
+  "fullIdentityComparisonExit": 0,
+  "nativeWindowsGuiVerified": false
+}

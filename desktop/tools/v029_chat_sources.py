@@ -48,6 +48,8 @@ def adapt_refresh(text):
 
 
 def adapt_screen(text, function):
+    text = replace(text, 'package com.android.purebilibili.feature.message\n',
+        'package com.android.purebilibili.feature.message\nimport com.bilipai.desktop.ui.desktopChatContentInsets\n')
     text = replace(text, '''    val lifecycleOwner = LocalLifecycleOwner.current
     LaunchedEffect(viewModel, lifecycleOwner) {
         lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {''', '''    val refreshOwner = LocalDesktopMessagePageOwner.current
@@ -62,6 +64,17 @@ def adapt_screen(text, function):
     # Keep its existing shell shape/colors; this does not claim the new field styling.
     text = replace(text, '                miuixCornerRadius = CHAT_INPUT_DOCK_HEIGHT / 2,\n', '')
     text = replace(text, '                miuixContainerColor = Color.Transparent,\n', '')
+    text = replace(text, '''                    .fillMaxSize()
+                    // Keep side/navigation-bar insets here, but let messages scroll''', '''                    .fillMaxSize()
+                    .desktopChatContentInsets(paddingValues)
+                    // Keep side/navigation-bar insets here, but let messages scroll''')
+    text = replace(text, '''                    .padding(
+                        start = paddingValues.calculateStartPadding(layoutDirection),
+                        end = paddingValues.calculateEndPadding(layoutDirection),
+                        bottom = paddingValues.calculateBottomPadding(),
+                    )
+                    .consumeWindowInsets(paddingValues)''', '')
+    text = replace(text, "            .fillMaxWidth()\n            .imePadding()\n            .padding(horizontal = 16.dp, vertical = CHAT_INPUT_VERTICAL_PADDING),", "            .fillMaxWidth()\n            .padding(horizontal = 16.dp, vertical = CHAT_INPUT_VERTICAL_PADDING),")
     return text
 
 
