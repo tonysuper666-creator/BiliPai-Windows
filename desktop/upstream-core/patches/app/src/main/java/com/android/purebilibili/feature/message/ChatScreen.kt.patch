@@ -138,7 +138,18 @@
                          )
                      },
                      isSending = uiState.isSending,
-@@ -1418,7 +1403,7 @@
+@@ -780,7 +765,9 @@
+             shape = dockShape,
+             modifier = Modifier
+                 .weight(1f)
+-                .heightIn(min = 40.dp, max = 112.dp),
++                .heightIn(min = 40.dp, max = 112.dp)
++                // K5/K7：Ctrl+Enter 单次发送，IME 合成中与发送中不发，普通 Enter 仍换行。
++                .then(com.bilipai.desktop.ui.rememberDesktopMessageSendShortcut(text, isBusy, onSend)),
+             backdrop = backdrop,
+             reuseEnabled = liquidGlassEnabled,
+             drawShellLens = true,
+@@ -1418,7 +1405,7 @@
      linkColor: Color = AppContentColors.accent(),  // 使用主题色
      onLinkClick: ((String) -> Unit)? = null
  ) {
@@ -147,7 +158,7 @@
  
      // 构建表情映射 (text -> EmoteInfo)
      val emoteMap = remember(emoteInfos) {
-@@ -1542,12 +1527,7 @@
+@@ -1542,12 +1529,7 @@
                              onLinkClick(url)
                          } else {
                              // 默认: 用浏览器打开
