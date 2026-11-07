@@ -99,6 +99,12 @@ internal class DesktopOriginalRootRouteAssembly(
         if (old == BiliPaiNavKey.Login && destination != BiliPaiNavKey.Login)
             loginNavigation?.cancelLoginReturnForSource(root.capturedEpoch, root.entry.gate.mid)
         Snapshot.withMutableSnapshot { stack.clear(); stack.addAll(next) }
+        if (old != BiliPaiNavKey.Inbox && destination == BiliPaiNavKey.Inbox)
+            root.entry.viewModel.cleanMessageUnreadBadge()
+        if (old == BiliPaiNavKey.Inbox && destination != BiliPaiNavKey.Inbox) {
+            // Leave Store/entry admission before any dispatcher can start a network request.
+            EventQueue.invokeLater { if (owns()) root.entry.viewModel.refreshMessageUnreadBadge() }
+        }
         removed.forEach(platform.removeSaveableState)
     }
     private fun pushAdmitted(key: BiliPaiNavKey) {

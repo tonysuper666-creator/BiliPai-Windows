@@ -124,7 +124,27 @@ internal class DesktopHomeRootRequestBinding(
             } },
             checkCurrent={ commitNavPublication(source, callerJob) {} },
             backgroundForCaller={ childJob -> backgroundPublication(source,childJob) })
-    val ports=DesktopHomeRequestPorts(environment, ::beginNavRequest, ::observeNavResult, ::navPublication, ::backgroundPublication)
+    /** The initiating Home/nav receipt remains in the VM; this is the additional per-call
+     * transport receipt. Neither a fresh account client nor a process-wide IM cache is installed. */
+    private suspend fun messageImRequest(path: String, body: ByteArray): ByteArray {
+        val caller = requireNotNull(currentCoroutineContext()[Job])
+        val publication = backgroundPublication(beginNavRequest(caller), caller)
+        val current = {
+            try { publication.assertCurrent(); true } catch (_: CancellationException) { false }
+        }
+        publication.assertCurrent()
+        val factory = repository.ownedHomeCallFactory(capturedEpoch, current)
+        val grpc = com.android.purebilibili.core.network.grpc.DesktopDynamicBiliGrpcClient(factory,
+            { listOf("SESSDATA", "bili_jct", "buvid3").mapNotNull { name ->
+                repository.ownedHomeCookie(name, capturedEpoch, current)?.let { name to it }
+            }.toMap() }, { capturedMid },
+            { repository.ownedHomeAccessToken(capturedEpoch, current) }, current)
+        val value = grpc.request(path, body)
+        publication.assertCurrent()
+        return value
+    }
+    val ports=DesktopHomeRequestPorts(environment, ::beginNavRequest, ::observeNavResult, ::navPublication,
+        ::backgroundPublication, DesktopHomeMessageUnreadProtocol(::messageImRequest))
     private fun setNavIdentity(mid:Long?,isVip:Boolean){
         assertOwned()
         if(!repository.updateHomeNavIdentity(capturedEpoch,capturedMid,mid,isVip))
