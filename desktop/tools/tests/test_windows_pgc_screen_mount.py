@@ -54,7 +54,7 @@ class WindowsPgcScreenMountTests(unittest.TestCase):
             'v046-DesktopOriginalBangumiPlayerScreen-comment-caller-proof.json').read_bytes())
         retry_proof = json.loads((cls.generated / 'v046-bangumi-player-proofs' /
             'ui-retry-DesktopOriginalBangumiPlayerScreen.json').read_bytes())
-        cls.after = restore(restore(cls.current, retry_proof['retainedToCurrent']), cls.comment_proof['retainedToCurrent'])
+        cls.after = restore(restore(cls.producer.restore_buffering_stage(cls.current, cls.generated), retry_proof['retainedToCurrent']), cls.comment_proof['retainedToCurrent'])
 
     @classmethod
     def tearDownClass(cls):

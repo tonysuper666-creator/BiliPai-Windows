@@ -115,6 +115,29 @@ class CommentSelectionConsumerClosureTest(unittest.TestCase):
             with self.subTest(path=path):
                 proof = json.loads((self.output / ("v029-comment-selection-" + Path(path).stem + ".json")).read_text(encoding="utf-8"))
                 current = self.source(path)
+                if path == OWNER:
+                    owner = load_producer("extract-upstream-video-full-owner")
+                    terminal = current
+                    current = owner.restore_playback_speed_stage(terminal, self.output)
+                    # A receipt is bound to the whole final file and each indexed span, not just a matching token.
+                    for changed in (terminal + ' ', current):
+                        with self.assertRaises(AssertionError):
+                            owner.restore_playback_speed_stage(changed, self.output)
+                    receipt_name = 'playback-speed-source-continuity-VideoPlaybackViewModel.json'
+                    receipt = json.loads((self.output / receipt_name).read_text(encoding='utf-8'))
+                    with tempfile.TemporaryDirectory(prefix='bilipai-speed-receipt-') as scratch:
+                        for field in ('beforeSha256LF', 'afterSha256LF', 'offset', 'exactCompleteInverse'):
+                            with self.subTest(corrupted=field):
+                                corrupted = json.loads(json.dumps(receipt))
+                                if field == 'offset':
+                                    corrupted['inverseEdits'][-1]['offset'] += 1
+                                elif field == 'exactCompleteInverse':
+                                    corrupted[field] = False
+                                else:
+                                    corrupted[field] = '0' * 64
+                                (Path(scratch) / receipt_name).write_text(json.dumps(corrupted), encoding='utf-8')
+                                with self.assertRaises(AssertionError):
+                                    owner.restore_playback_speed_stage(terminal, scratch)
                 if path == PORTRAIT:
                     # plr-portrait-story-pager-repin is the newest layer of the pager: peel its counted hunks first.
                     current = portrait_pager.peel_pager(current, json.loads(
