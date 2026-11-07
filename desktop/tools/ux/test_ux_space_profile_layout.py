@@ -7,9 +7,10 @@ merged root files with a port of applyUnifiedPatch (desktop/build.gradle.kts: hu
 
   PatchTest     the whole patch applies; the TON-1060 hunks are the last three of each file and each matches exactly once in the text
                 it receives; a missing or a doubled anchor fails closed; reverse-applying them gives back the received text byte for byte
-  SpaceTest     the page box, the column default, the preference bounds, the pinch bounds and the card layout go through
-                desktopSpaceFeedGrid, the vendored width cap, column function and card layout are not called any more, and the grid
-                value is declared before its first use
+  SpaceTest     the page box, the column default, the preference bounds, the pinch bounds, the card layout and the side padding go
+                through desktopSpaceFeedGrid, it gets the effective stored count for the columns and the raw one for the delegation
+                (as the generated Home screen), the vendored width cap, column function, card layout and 16 dp margin are not
+                called any more, and the grid value is declared before its first use
   ProfileTest   a wide window in the desktop layout gets one full-width feed column with the header band as the leading content of its
                 first item, the vendored split stays as the else branch, both calls of the feed column pass the same arguments apart
                 from the layout ones, and the header band holds no scroll of its own
@@ -183,6 +184,16 @@ class SpaceTest(unittest.TestCase):
         self.assertEqual(1, t.count("delegated = desktopSpaceGrid.delegated,"))
         self.assertEqual(1, t.count("desktopSpaceGrid.dynamicColumns(adaptiveLayoutSpec.dynamicColumns, spaceFeedCardLayout.outerPaddingDp)"))
         self.assertEqual(1, t.count("com.bilipai.desktop.ui.desktopResolveHomeFeedCardLayout("))
+        self.assertEqual(1, t.count("val outerPaddingDp = desktopSpaceGrid.outerPaddingDp(spaceFeedCardLayout.outerPaddingDp).dp"))
+
+    def test_the_columns_take_the_effective_count_and_the_delegation_the_raw_one(self):
+        call = self.text[self.text.index("val desktopSpaceGrid = com.bilipai.desktop.ui.desktopSpaceFeedGrid("):]
+        call = call[:call.index("\n    )\n")]
+        stored = "resolveHomeFeedStoredColumnCount(\n            widthSizeClass = windowSizeClass.widthSizeClass,\n"
+        self.assertIn("fixedColumnCount = " + stored + "            compactColumnCount = homeSettings.effectiveGridColumnCountCompact,\n"
+                      "            defaultColumnCount = homeSettings.effectiveGridColumnCount,\n", call)
+        self.assertIn("delegationColumnCount = " + stored + "            compactColumnCount = homeSettings.gridColumnCountCompact,\n"
+                      "            defaultColumnCount = homeSettings.gridColumnCount,\n", call)
 
     def test_the_vendored_width_columns_and_card_layout_are_not_called(self):
         t = self.text
@@ -190,6 +201,7 @@ class SpaceTest(unittest.TestCase):
         self.assertNotRegex(t, r"(?<![\w.])resolveSpaceContentGridColumnCount\(")
         self.assertNotRegex(t, r"(?<![\w.])resolveHomeFeedPinchColumnBounds\(")
         self.assertNotRegex(t, r"(?<![\w.])resolveHomeFeedCardLayout\(")
+        self.assertNotIn("maxOf(16, spaceFeedCardLayout.outerPaddingDp)", t)
 
     def test_the_grid_value_is_declared_before_its_first_use(self):
         t = self.text

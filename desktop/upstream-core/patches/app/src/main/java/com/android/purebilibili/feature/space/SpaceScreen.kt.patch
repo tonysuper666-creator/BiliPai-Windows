@@ -1033,7 +1033,7 @@
                          .data(skinBackgroundPaths[page])
                          .crossfade(true)
                          .buildForProfileFusion(),
-@@ -1475,10 +1475,23 @@
+@@ -1475,10 +1475,28 @@
 +    // 桌面布局（TON-1060）：投稿网格与首页同一测量宽度、同一列数函数与卡片排版；CLASSIC 即原版。
 +    val desktopSpaceGrid = com.bilipai.desktop.ui.desktopSpaceFeedGrid(
 +        windowWidthDp = windowWidthDp,
@@ -1043,6 +1043,11 @@
 +            widthSizeClass = windowSizeClass.widthSizeClass,
 +            compactColumnCount = homeSettings.effectiveGridColumnCountCompact,
 +            defaultColumnCount = homeSettings.effectiveGridColumnCount,
++        ),
++        delegationColumnCount = resolveHomeFeedStoredColumnCount(
++            widthSizeClass = windowSizeClass.widthSizeClass,
++            compactColumnCount = homeSettings.gridColumnCountCompact,
++            defaultColumnCount = homeSettings.gridColumnCount,
 +        ),
 +        cardWidthPreset = homeSettings.homeFeedCardWidthPreset,
 +        vendoredContentMaxWidthDp = adaptiveLayoutSpec.contentMaxWidthDp,
@@ -1058,7 +1063,7 @@
 +            .responsiveContentWidth(maxWidth = desktopSpaceGrid.maxWidth)
              .then(modifier)
      ) {
-@@ -1567,17 +1567,7 @@
+@@ -1572,17 +1572,7 @@
 -        val preferredGridColumns = resolveSpaceContentGridColumnCount(
 -            widthDp = windowWidthDp,
 -            fixedColumnCount = resolveHomeFeedStoredColumnCount(
@@ -1078,7 +1083,7 @@
 -            bounds = resolveHomeFeedPinchColumnBounds(windowSizeClass.widthSizeClass, windowWidthDp),
 +            bounds = desktopSpaceGrid.bounds,
          )
-@@ -1579,17 +1579,21 @@
+@@ -1584,19 +1584,24 @@
          val effectivePreferredColumns = gridColumnPreference.columns
 +        // 桌面布局下各标签共用投稿网格的侧边距，切换标签时资料区宽度不变。
 +        val spaceFeedCardLayout = com.bilipai.desktop.ui.desktopResolveHomeFeedCardLayout(
@@ -1112,3 +1117,7 @@
 -            widthSizeClass = windowSizeClass.widthSizeClass,
 -        )
 +        val pinchColumnBounds = desktopSpaceGrid.bounds
+         val spaceFeedCoverAspectRatio = spaceFeedCardLayout.coverAspectRatio
+-        val outerPaddingDp = maxOf(16, spaceFeedCardLayout.outerPaddingDp).dp
++        // 桌面布局下侧边距即首页同一卡片排版的侧边距，同列数时卡宽与首页一致；CLASSIC 仍是原版的至少 16dp。
++        val outerPaddingDp = desktopSpaceGrid.outerPaddingDp(spaceFeedCardLayout.outerPaddingDp).dp
