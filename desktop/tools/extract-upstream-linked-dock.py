@@ -20,7 +20,8 @@ def local_callback(parser,source,name):
   depth+=(tokens[k][0]=='{')-(tokens[k][0]=='}')
   if depth==0:return textwrap.dedent(source[begin:tokens[k][2]])
  raise AssertionError(name)
-def generate(repo,output):
+def generate(repo,output,test_output=None):
+ import v076_search_submit_link as submit_link
  identity=mod(read_point_tool(repo,'extract-upstream-dynamic-reply-protocol.py'),'dock_identity');original,ids=identity.load_pinned_sources(repo,SOURCES)
  parser=mod(repo/'desktop/tools/sync-upstream.py','dock_tokens');decl=mod(repo/'desktop/tools/extract-appearance-platform.py','dock_declarations')
  records=[]
@@ -33,7 +34,9 @@ def generate(repo,output):
  for rel in ['feature/home/components/LinkedDockPolicy','feature/home/HomeScrollOffsetPolicy','feature/audio/screen/AudioNowPlayingBarPresenceMotionPolicy','navigation/SearchSubmitPolicy']:
   p=BASE+rel+'.kt'
   registry={r['path']:r for r in json.loads(read(repo/'desktop/upstream-sources.json'))['sources']}
-  if registry[p].get('mode')!='direct':emit(rel+'.kt',original[p],p)
+  if registry[p].get('mode')!='direct':
+   if rel=='navigation/SearchSubmitPolicy':emit(rel+'.kt',submit_link.original_policy(),submit_link.ARCHIVE+'/SearchSubmitPolicy.kt',adaptations=['v0.7.6 original short-link/share-text policy replaces the legacy read point copy byte-for-byte'])
+   else:emit(rel+'.kt',original[p],p)
  p=BASE+'feature/home/HomeScreen.kt';names=['LocalHomeScrollOffset','LocalHomeFeedScrollInProgress']
  if 'stable-favorites' not in registry[p].get('features',[]):
   emit('feature/home/DesktopOriginalLinkedDockScrollLocals.kt','package com.android.purebilibili.feature.home\nimport androidx.compose.runtime.*\n\n'+decl.declarations(parser,original[p],names),p,names)
@@ -91,9 +94,10 @@ import kotlinx.coroutines.flow.map
 /** Original read policies; Root provides its same global preference context. */
 internal object DesktopOriginalLinkedDockSettings {
 '''+body+'\n}\n',p,names)
- p=BASE+'navigation/AppNavigation.kt';names=['submitSearchKeywordInNavigation3','submitBottomBarSearchKeyword'];body='\n\n'.join(local_callback(parser,original[p],name) for name in names)
- for before,after in [('effectiveHomeSettings.isBottomBarSearchEnabled','bottomBarSearchEnabled'),('effectiveHomeSettings.listScopedSearchEnabled','listScopedSearchEnabled'),('currentNavigation3Key == BiliPaiNavKey.MainHost','isMainHost'),('pushSearchRouteInNavigation3(action.keyword)','onOpenSearch(action.keyword)'),('openBilibiliNativeTargetInNavigation3(action.target)','onOpenNativeTarget(action.target)')]:
+ p=BASE+'navigation/AppNavigation.kt';names=['submitSearchKeywordInNavigation3','submitBottomBarSearchKeyword'];body='\n\n'.join(local_callback(parser,submit_link.original_navigation(),name) for name in names)
+ for before,after in [('effectiveHomeSettings.isBottomBarSearchEnabled','bottomBarSearchEnabled'),('effectiveHomeSettings.listScopedSearchEnabled','listScopedSearchEnabled'),('currentNavigation3Key == BiliPaiNavKey.MainHost','isMainHost'),('pushSearchRouteInNavigation3(action.keyword)','onOpenSearch(action.keyword)'),('openBilibiliNativeTargetInNavigation3(action.target)','onOpenNativeTarget(action.target)'),('openBilibiliLinkInNavigation3(action.url)','onOpenLink(action.url)')]:
   assert before in body,before;body=body.replace(before,after)
+ assert body.count('resolveSearchSubmitAction(keyword)')==2;body=body.replace('resolveSearchSubmitAction(keyword)','resolveDesktopSearchSubmitAction(keyword)')
  emit('navigation/DesktopOriginalBottomSearchSubmit.kt','''package com.android.purebilibili.navigation
 import com.android.purebilibili.core.util.BilibiliNavigationTarget
 import com.android.purebilibili.feature.home.components.BottomNavItem
@@ -110,12 +114,15 @@ internal fun submitDesktopOriginalBottomBarSearchKeyword(
     watchLaterListScopedSearchChannel: SendChannel<String>?,
     onOpenSearch: (String) -> Unit,
     onOpenNativeTarget: (BilibiliNavigationTarget) -> Unit,
+    onOpenLink: (String) -> Unit,
     isOwned: () -> Boolean,
 ) {
     if (!isOwned()) return
-'''+body+'\n    submitBottomBarSearchKeyword(keyword)\n}\n',p,names,['Root existing navigation callbacks and owned same-list channels replace Navigation3 captures only; no new nav store/channel','Retired page/account refuses callback before original submit closure'])
+'''+body+'\n    submitBottomBarSearchKeyword(keyword)\n}\n',submit_link.ARCHIVE+'/AppNavigation.kt',names,['Callbacks come from the v0.7.6 original AppNavigation; its link opener becomes Root existing original content-link opener','Root existing navigation callbacks and owned same-list channels replace Navigation3 captures only; no new nav store/channel','Retired page/account refuses callback before original submit closure','Both original policy calls go through the desktop complete-short-link guard; an empty or cut-short b23.tv token searches the submitted text'])
  for p,raw in original.items():write(output/'original-retained'/(p+'.txt'),raw)
- write(output/'source-identities.json',json.dumps(dict(commit=PIN,sources=ids,outputs=records,actualOriginalReuse=['resolveSharedBottomBarCapsuleShape','biliPaiFloatingDockShell','LiquidGlassTuning','FloatingBottomBar','ScreenRoutes','BilibiliNavigationTargetParser'],wholeFrostedBottomBarNotClaimed=True,wholeAudioNowPlayingBarNotClaimed=True),ensure_ascii=False,indent=2)+'\n')
+ if test_output is not None:
+  for path,raw in submit_link.original_tests().items():safe((test_output/path).parent).mkdir(parents=True,exist_ok=True);safe(test_output/path).write_bytes(raw)
+ write(output/'source-identities.json',json.dumps(dict(commit=PIN,sources=ids,outputs=records,actualOriginalReuse=['resolveSharedBottomBarCapsuleShape','biliPaiFloatingDockShell','LiquidGlassTuning','FloatingBottomBar','ScreenRoutes','BilibiliNavigationTargetParser'],wholeFrostedBottomBarNotClaimed=True,searchSubmitLink=submit_link.identity(),wholeAudioNowPlayingBarNotClaimed=True),ensure_ascii=False,indent=2)+'\n')
 
 def vector_geometry(repo):
  ns='{http://schemas.android.com/apk/res/android}';branches=[]
@@ -150,4 +157,4 @@ internal object DesktopLinkedDockVectors {
  fun load(name:String):ImageVector=when(name) {
 '''+ '\n'.join(branches)+'\nelse->error("Unregistered original dock vector: $name")\n}\n}\n'
 if __name__=='__main__':
- p=argparse.ArgumentParser();p.add_argument('--repo',type=Path,required=True);p.add_argument('--output',type=Path,required=True);a=p.parse_args();generate(a.repo,a.output)
+ p=argparse.ArgumentParser();p.add_argument('--repo',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--test-output',type=Path);a=p.parse_args();generate(a.repo,a.output,a.test_output)
