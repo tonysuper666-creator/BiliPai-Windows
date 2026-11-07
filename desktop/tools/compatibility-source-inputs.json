@@ -172,7 +172,8 @@
     "desktop/upstream-slices/v046-space-content-pager",
     "desktop/upstream-slices/v046-wallpaper-foundation",
     "desktop/upstream-slices/v046-control-center-motion",
-    "desktop/upstream-slices/v046-detail-holder-collapse"
+    "desktop/upstream-slices/v046-detail-holder-collapse",
+    "desktop/upstream-slices/v076-search-submit-link"
   ],
   "archives": [
     {

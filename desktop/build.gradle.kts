@@ -54,14 +54,15 @@ val revisionNeutralSourceRecipePins = mapOf(
     "tools/extract-upstream-dynamic-reply-protocol.py" to "01070c8206336d1efa88ac4bee93cb6f64326511945ee2ec3db100a8df0673fc",
     "tools/v036_comment_route.py" to "3edce0c4518b1b6aa25c1be68a4db186af7fb33c563db5d6194a257277e48b60",
     "tools/extract-upstream-frosted-audio-renderer.py" to "01a66bee41799ee9ab300116c8bae067e2be30bd84298ed188d6343238599db3",
-    "tools/extract-upstream-linked-dock.py" to "964f92380e96ccd4f19b7b7a2516a4f35058884dc0f5136cd7b63f4125ecb5fd",
+    "tools/v076_search_submit_link.py" to "1289b6f79ef0484a0182b10dcdaa19507c455a68df2eb79815a5badaacc79ce2",
+    "tools/extract-upstream-linked-dock.py" to "d3e7e39ae057a8f9b82c8664bf228257be177b1d7df6c4be4f7a43d36b598b4e",
     "tools/extract-upstream-media.py" to "2f159e26fb5bb61bb305e6dfbcf82f7b6647ee048029560a6b4d6fb1f842464f",
     "tools/extract-upstream-plugins.py" to "b31780efa1cf86b3910c6e4fa978da5662d104bf6edb12fa24f05e885f80a3e2",
     "tools/extract-upstream-special-danmaku.py" to "979060ce22a625c76651b24fee264268385ccb96de8956fb1447defca1dedc56",
     "tools/extract-upstream-video-comment-ui.py" to "5cfb2e35b5e558c3a1911d04fd04ffed88ddc0d17571687901ed591b4e9dbf03",
     "tools/extract-video-enhancement.py" to "0046195e1914059a841aacf69ed704c86a85e5a9e3a432fbcce3d3628f2d9195",
     "tools/run-tool-tests.py" to "0114c7c7ecea5c45e26843ed025eae4a7fd991b6d50edf09bf9185ed7f20cd44",
-    "tools/sync-upstream.py" to "08b93c146012f15502f7b9cbb59935b55599ea420948d6761abc8da6576ead16",
+    "tools/sync-upstream.py" to "cec44bb69b1b6e8187acb98194ef2903ee5436ab0e4c60672f103f4fef6d7a91",
     "tools/v025-canonical-sources.json" to "d3f979a7ce657e358a4362ca801ce91fbf39be5fc51277691dfec43bda131356",
     "tools/v025_source_paths.py" to "56ac2f8e0ec536bae7e3280087add2a12b092256090aaafb7c49ea978ae818da",
     "tools/v029_brand_consumers.py" to "89648e569d074aaeaa456a12220efb4de3e8ecfcefbbe05f74ea55ef47c3742e",
@@ -78,7 +79,7 @@ val revisionNeutralSourceRecipePins = mapOf(
 )
 // These import names come from the same reviewed closure. New local module,
 // package or extension forms must restore the full manifest input.
-val revisionNeutralSourceLocalImportRoots = setOf("desktop_paths", "v025_source_paths", "v029_brand_consumers", "v029_comment_composer", "v029_comment_search", "v029_history_recap", "v030_live_danmaku", "v030_live_recovery", "v030_live_stream", "v030_video_dynamic_share", "v033_comment_refresh", "v034_live_moderation", "v034_live_moderation_ui")
+val revisionNeutralSourceLocalImportRoots = setOf("v076_search_submit_link", "desktop_paths", "v025_source_paths", "v029_brand_consumers", "v029_comment_composer", "v029_comment_search", "v029_history_recap", "v030_live_danmaku", "v030_live_recovery", "v030_live_stream", "v030_video_dynamic_share", "v033_comment_refresh", "v034_live_moderation", "v034_live_moderation_ui")
 val revisionNeutralSourceExternalImportRoots = setOf("__future__", "argparse", "datetime", "decimal", "difflib", "functools", "hashlib", "importlib", "json", "os", "pathlib", "re", "shutil", "subprocess", "sys", "textwrap", "unittest", "urllib", "xml")
 val revisionNeutralSourceImportRoots = revisionNeutralSourceLocalImportRoots + revisionNeutralSourceExternalImportRoots
 val revisionNeutralSourceImportShadowFiles = fileTree("tools") {
@@ -96,7 +97,7 @@ val revisionNeutralSourceImportContextMatches =
     revisionNeutralSourceImportRoots.none { file("tools/$it").exists() } && revisionNeutralSourceImportShadowFiles.isEmpty
 // Pin the whole Gradle recipe, including canonical helpers and later wiring.
 // Mask exactly this self-digest assignment; raw build bytes remain task inputs.
-val revisionNeutralSourceGradleRecipeSha256 = "09026d78807dab825926c537ff7ecca26574b2db3268b531e65f5c5d1825eac5"
+val revisionNeutralSourceGradleRecipeSha256 = "a886335641b4e9900089e95442ab0750fde329163ec7263e4570331928a385e6"
 val revisionNeutralSourceGradleRecipeMatches = runCatching {
     val recipe = file("build.gradle.kts").readText(Charsets.UTF_8).replace("\r\n", "\n")
     val ownPin = "val revisionNeutralSourceGradleRecipeSha256 = \"$revisionNeutralSourceGradleRecipeSha256\""
@@ -2066,9 +2067,12 @@ val extractLinkedDock by tasks.registering(Exec::class) {
     workingDir(projectDir)
     commandLine(pythonExecutable, "tools/extract-upstream-linked-dock.py",
         "--repo", repositoryRoot.absolutePath,
-        "--output", layout.buildDirectory.dir("generated/linked-dock").get().asFile.absolutePath)
+        "--output", layout.buildDirectory.dir("generated/linked-dock").get().asFile.absolutePath,
+        "--test-output", layout.buildDirectory.dir("generated/linked-dock-tests").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-linked-dock.py", "tools/sync-upstream.py",
         "tools/extract-appearance-platform.py", "tools/extract-upstream-dynamic-reply-protocol.py")
+    inputs.file("tools/v076_search_submit_link.py")
+    inputs.dir("upstream-slices/v076-search-submit-link")
     inputs.property("upstreamSourceManifest", revisionNeutralSourceManifestInput)
     inputs.files(revisionNeutralSourceRecipePins.keys.map { file(it) })
     inputs.file("build.gradle.kts")
@@ -2079,8 +2083,12 @@ val extractLinkedDock by tasks.registering(Exec::class) {
     inputs.files(originalResources.filter { "stable-linked-dock-search" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/linked-dock"))
+    outputs.dir(layout.buildDirectory.dir("generated/linked-dock-tests"))
 }
 tasks.named("compileKotlin") { dependsOn(extractLinkedDock) }
+
+kotlin.sourceSets.named("test") { kotlin.srcDir(layout.buildDirectory.dir("generated/linked-dock-tests")) }
+tasks.named("compileTestKotlin") { dependsOn(extractLinkedDock) }
 
 val extractFrostedAudioRenderer by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
@@ -4682,6 +4690,8 @@ val extractOriginalSearchPages by tasks.registering(Exec::class) {
     inputs.dir("upstream-slices/v042-search-dependencies")
     inputs.dir("upstream-slices/v042-search-layout")
     inputs.file("tools/extract-upstream-search-pages.py")
+    inputs.file("tools/v076_search_submit_link.py")
+    inputs.dir("upstream-slices/v076-search-submit-link")
     inputs.file("tools/v041_search_all.py")
     inputs.dir("upstream-slices/v041-search-all")
     inputs.file("tools/v046_search_state.py")

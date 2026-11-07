@@ -981,7 +981,7 @@ class AdaptedCompatibilityInventoryTests(unittest.TestCase):
         self.assertEqual(entries, self.inventory["inputs"])
         self.assertEqual(len(entries), 921)
         self.assertEqual(len({(item["upstreamCommit"], item["path"]) for item in entries}), 907)
-        self.assertEqual(len(self.inventory["buildInputRoots"]), 170)
+        self.assertEqual(len(self.inventory["buildInputRoots"]), 171)
         self.assertEqual(len(self.inventory["archives"]), 175)
         for root, names in {
             "desktop/upstream-slices/v042-network-proxy/": {
