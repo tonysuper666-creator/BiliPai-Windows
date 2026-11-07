@@ -147,7 +147,7 @@ internal fun CommunityMessages(mid: Long, community: DesktopCommunityRepository,
 }
 
 @Composable
-private fun CommunityPrivateComposer(session: SessionItem, community: DesktopCommunityRepository,
+internal fun CommunityPrivateComposer(session: SessionItem, community: DesktopCommunityRepository,
     navigation: CommunityNavigation, onSent: () -> Unit) {
     val scope = rememberCoroutineScope()
     var text by remember(session.talker_id, session.session_type) { mutableStateOf("") }

@@ -37,6 +37,7 @@ import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.graphics.rememberGraphicsLayer
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.boundsInWindow
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.input.key.*
 import androidx.compose.ui.text.font.FontWeight
@@ -135,6 +136,33 @@ private fun DesktopSection.localizedLabel(strings: DesktopStrings): String = whe
     DesktopSection.SEARCH -> strings["common_search"]
     DesktopSection.APPEARANCE -> strings["appearance_settings_title"]
     else -> label
+}
+
+/** What the Root does with Esc (spec 8: the topmost layer first, then back). */
+internal enum class DesktopShellEscape { NONE, RELEASE_EDITOR, LEAVE_FULLSCREEN, BACK }
+
+/** Esc at the Root: with the caret in a text field Esc only ends the input (the field drops the caret and keeps its draft) and never
+ *  turns the page, so the next Esc leaves fullscreen, else goes back. Any other key is none of Esc's business (spec 8, A3). */
+internal fun desktopShellEscape(event: KeyEvent, textEditorFocused: Boolean, fullscreen: Boolean): DesktopShellEscape =
+    when {
+        event.type != KeyEventType.KeyDown || event.key != Key.Escape -> DesktopShellEscape.NONE
+        textEditorFocused -> DesktopShellEscape.RELEASE_EDITOR
+        fullscreen -> DesktopShellEscape.LEAVE_FULLSCREEN
+        else -> DesktopShellEscape.BACK
+    }
+
+/** The F11/Esc branch of the Root key handler, in the order the shortcuts are claimed: F11 toggles fullscreen, Esc in a text field
+ *  releases the field (the Compose text field does not handle Esc itself, so without this the key would do nothing at all), Esc leaves
+ *  fullscreen, then Esc goes back. */
+internal fun desktopShellRootEsc(event: KeyEvent, textEditorFocused: Boolean, fullscreen: Boolean,
+    toggleFullscreen: () -> Unit, leaveFullscreen: () -> Unit, requestBack: () -> Unit, releaseEditor: () -> Unit): Boolean {
+    if (event.type == KeyEventType.KeyDown && event.key == Key.F11) { toggleFullscreen(); return true }
+    return when (desktopShellEscape(event, textEditorFocused, fullscreen)) {
+        DesktopShellEscape.RELEASE_EDITOR -> { releaseEditor(); true }
+        DesktopShellEscape.LEAVE_FULLSCREEN -> { leaveFullscreen(); true }
+        DesktopShellEscape.BACK -> { requestBack(); true }
+        DesktopShellEscape.NONE -> false
+    }
 }
 
 @Composable
@@ -1769,12 +1797,12 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         liquidHomeSettings?.liquidGlassReadabilityMode == com.android.purebilibili.core.store.LiquidGlassReadabilityMode.ADAPTIVE
     // UX S2 (hunk RH1, part S2): one shell shortcut host. Back goes through the window navigation owner, as Esc does.
     val shellShortcutHost = remember(homeRootRef) { com.bilipai.desktop.ui.DesktopShellShortcutHost({ homeRootRef.get()?.navigation?.requestBack() == true }) }
+    val rootFocusManager = LocalFocusManager.current
     val rootKeyHandler: (KeyEvent) -> Boolean = { event ->
-            if (event.type == KeyEventType.KeyDown && event.key == Key.F11) { toggleOriginalFullscreen(); true }
-            else if (event.type == KeyEventType.KeyDown && event.key == Key.Escape && !searchFocused) {
-                if (isFullscreen()) setOriginalFullscreen(false) else homeRootRef.get()?.navigation?.requestBack()
-                true
-            }
+            val escapeHandled = desktopShellRootEsc(event, desktopShellTextEditorFocused(), isFullscreen(),
+                ::toggleOriginalFullscreen, { setOriginalFullscreen(false) }, { homeRootRef.get()?.navigation?.requestBack() },
+                { rootFocusManager.clearFocus(force = true) })
+            if (escapeHandled) true
             // UX S2 (hunk RH1, part S2): the shell shortcuts of spec 6.1 (Ctrl+K, Alt+Left, F5, Ctrl+1 to 9, F6, F1, Alt+Enter ...).
             else if (shellShortcutHost.onKey(event) { toggleOriginalFullscreen() }) true
             else if ((showVideo || section == DesktopSection.STORY) && playing.details != null && playerFocused && !searchFocused && player != null) {

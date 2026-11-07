@@ -9,9 +9,12 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.graphics.toComposeImageBitmap
+import androidx.compose.ui.input.key.*
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.android.purebilibili.data.model.response.CaptchaData
@@ -168,28 +171,73 @@ private fun LoginQrForm(login: DesktopLoginRepository, tv: Boolean, onComplete: 
 @Composable
 private fun LoginPasswordForm(login: DesktopLoginRepository, bridge: DesktopCaptchaBridge, onComplete: (AccountSummary) -> Unit) {
     val work = rememberLoginWork()
-    var username by remember { mutableStateOf("") }; var password by remember { mutableStateOf("") }
+    var username by remember { mutableStateOf(TextFieldValue("")) }; var password by remember { mutableStateOf(TextFieldValue("")) }
     var captcha by remember { mutableStateOf<CaptchaData?>(null) }
     var risk by remember { mutableStateOf<DesktopLoginResult.RiskRequired?>(null) }
     fun accept(result: DesktopLoginResult) { when (result) {
-        is DesktopLoginResult.Complete -> { password = ""; onComplete(result.account) }
+        is DesktopLoginResult.Complete -> { password = TextFieldValue(""); onComplete(result.account) }
         is DesktopLoginResult.CaptchaRequired -> { captcha = result.captcha; risk = null; work.notice = "请完成安全验证后继续登录" }
         is DesktopLoginResult.RiskRequired -> { risk = result; captcha = null }
     } }
     if (risk != null) LoginRiskForm(risk!!, login, bridge, ::accept) { risk = null }
     else {
-        OutlinedTextField(username, { username = it; captcha = null }, label = { Text("手机号 / 邮箱 / 用户名") }, singleLine = true, enabled = !work.busy, modifier = Modifier.fillMaxWidth())
-        OutlinedTextField(password, { password = it; captcha = null }, label = { Text("密码") }, visualTransformation = PasswordVisualTransformation(),
-            singleLine = true, enabled = !work.busy, modifier = Modifier.fillMaxWidth())
-        Button(enabled = !work.busy && username.isNotBlank() && password.isNotBlank(), onClick = {
-            work.run {
-                val challenge = captcha
-                val result = challenge?.let { bridge.verify(it) }
-                accept(login.loginPassword(username, password, challenge, result))
-            }
-        }) { Text(if (captcha == null) "登录" else "在浏览器验证并登录") }
+        LoginPasswordFields(username, password, busy = work.busy,
+            submitLabel = if (captcha == null) "登录" else "在浏览器验证并登录",
+            onUsername = { username = it; captcha = null }, onPassword = { password = it; captcha = null },
+            onSubmit = {
+                work.run {
+                    val challenge = captcha
+                    val result = challenge?.let { bridge.verify(it) }
+                    accept(login.loginPassword(username.text, password.text, challenge, result))
+                }
+            })
         LoginWorkState(work)
     }
+}
+
+/**
+ * The two credential rows and the submit button of password login. Enter in either row and the button are one submit path with one
+ * readiness rule: a blank row asks for the row it is missing instead of doing nothing, and one key press logs in once — the press
+ * submits, the release re-arms, and a row that is disabled by the running login forgets the press so the next Enter still works.
+ * An IME composition and a modified Enter belong to the input method and the shortcut system, never to this form.
+ */
+@Composable
+internal fun LoginPasswordFields(username: TextFieldValue, password: TextFieldValue, busy: Boolean, submitLabel: String,
+    onUsername: (TextFieldValue) -> Unit, onPassword: (TextFieldValue) -> Unit, onSubmit: () -> Unit) {
+    var entered by remember { mutableStateOf(false) }
+    var prompt by remember { mutableStateOf<String?>(null) }
+    // The running login disables both rows, so their KeyUp never arrives; forget the press the moment the row is disabled.
+    SideEffect { if (busy) entered = false }
+    fun submit() {
+        prompt = when {
+            username.text.isBlank() && password.text.isBlank() -> "请输入手机号 / 邮箱 / 用户名和密码"
+            username.text.isBlank() -> "请输入手机号 / 邮箱 / 用户名"
+            password.text.isBlank() -> "请输入密码"
+            else -> null
+        }
+        if (prompt == null) onSubmit()
+    }
+    fun submitOnEnter(composing: Boolean) = Modifier.onPreviewKeyEvent { event ->
+        if (event.key != Key.Enter && event.key != Key.NumPadEnter) false
+        // Ctrl/Alt/Shift/Meta+Enter are shortcuts of other layers; the input method owns Enter while it composes.
+        else if (event.isCtrlPressed || event.isAltPressed || event.isShiftPressed || event.isMetaPressed || composing) false
+        else when (event.type) {
+            KeyEventType.KeyUp -> { entered = false; false }
+            KeyEventType.KeyDown -> if (entered) true else {
+                entered = true
+                if (busy) false else { submit(); true }
+            }
+            else -> false
+        }
+    }
+    val forgetOnBlur = Modifier.onFocusChanged { if (!it.isFocused) entered = false }
+    OutlinedTextField(username, { onUsername(it); prompt = null }, label = { Text("手机号 / 邮箱 / 用户名") }, singleLine = true,
+        enabled = !busy, modifier = Modifier.fillMaxWidth().then(forgetOnBlur).then(submitOnEnter(username.composition != null)))
+    OutlinedTextField(password, { onPassword(it); prompt = null }, label = { Text("密码") }, visualTransformation = PasswordVisualTransformation(),
+        singleLine = true, enabled = !busy,
+        modifier = Modifier.fillMaxWidth().then(forgetOnBlur).then(submitOnEnter(password.composition != null)))
+    Button(enabled = !busy, onClick = ::submit) { Text(submitLabel) }
+    prompt?.let { Text(it, color = MaterialTheme.colorScheme.error) }
 }
 
 @Composable
