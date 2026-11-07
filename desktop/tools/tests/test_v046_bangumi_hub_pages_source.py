@@ -497,8 +497,10 @@ class BangumiHubPagesSliceTests(unittest.TestCase):
         for method in sorted(set(re.findall(r'desktopEnvironment\.requests\.(\w+)\(', self.vm))):
             self.assertRegex(requests, r'suspend fun ' + method + r'\(', method)
         self.assertIn('val followSession: () -> BangumiFollowSession,', environment)
+        # Production is the Gradle main source set: desktop/src/main plus both hub producers' generated
+        # main outputs. JVM test fixtures under desktop/src/test may build their own environments.
         callers = 0
-        for file in (REPO / 'desktop/src').rglob('*.kt'):
+        for file in [*(REPO / 'desktop/src/main').rglob('*.kt'), *self.home.rglob('*.kt'), *self.pages.rglob('*.kt')]:
             body = file.read_text(encoding='utf8')
             callers += body.count('DesktopOriginalBangumiPagesEnvironment(') - body.count('class DesktopOriginalBangumiPagesEnvironment(')
         self.assertEqual(1, callers)
