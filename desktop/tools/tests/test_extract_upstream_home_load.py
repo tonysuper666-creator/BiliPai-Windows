@@ -12,7 +12,7 @@ from unittest import mock
 REPO = Path(__file__).resolve().parents[3]
 TOOLS = REPO / "desktop/tools"
 sys.path.insert(0, str(TOOLS))
-from v029_home_load import COMMIT, PINS, sources, wide
+from v029_home_load import COMMIT, PINS, home_vm_delta, sources, wide
 import desktop_refresh_adaptation as refresh
 
 # Later Home page layers write into the same v029 receipt, in the producer's own order:
@@ -109,6 +109,19 @@ class HomeLoadSourceTests(unittest.TestCase):
                     self.assertEqual(body[i:i+len(edit["after"])], edit["after"])
                     body = body[:i] + edit["before"] + body[i+len(edit["after"]):]
                 self.assertEqual(hashlib.sha256(body.encode()).hexdigest(), audit["beforeSha256LF"])
+
+    def test_real_vm_input_with_broken_request_anchor_fails_closed(self):
+        receipt = json.loads((self.output / "vm/home-load-v029-adaptations.json").read_text(encoding="utf8"))
+        body = self.vm_stage()
+        for edit in reversed(receipt["audits"][0]["edits"]):
+            i = edit["offset"]
+            self.assertEqual(body[i:i + len(edit["after"])], edit["after"])
+            body = body[:i] + edit["before"] + body[i + len(edit["after"]):]
+        anchor = "        val category = _uiState.value.currentCategory\n        categoryInitialLoadJob = viewModelScope.launch {"
+        self.assertEqual(body.count(anchor), 1)
+        broken = body.replace(anchor, anchor.replace("categoryInitialLoadJob", "brokenInitialLoadJob"))
+        with self.assertRaisesRegex(ValueError, "Home counted edit mismatch"):
+            home_vm_delta(REPO, broken)
 
     def test_actual_page_is_exactly_the_later_layers_over_the_v029_stage(self):
         metadata = "home-page-v029-load-adaptations.json"
