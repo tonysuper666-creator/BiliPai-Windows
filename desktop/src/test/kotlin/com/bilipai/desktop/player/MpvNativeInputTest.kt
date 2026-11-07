@@ -48,7 +48,13 @@ class MpvNativeInputTest {
         assertNotEquals(first.token,replay.token)
         Message(first.token,"toggle").use {assertNotNull(first.decode(it.data));assertNull(replay.decode(it.data))}
         assertTrue(replay.bindings.lines().all {"nonrepeatable script-message ${replay.token} " in it})
-        assertEquals(setOf("MBTN_LEFT","MOUSE_MOVE","SPACE"),replay.bindings.lines().map {it.substringBefore(' ')}.toSet())
+        assertEquals(setOf("MBTN_LEFT","MOUSE_MOVE","SPACE","WHEEL_UP","WHEEL_DOWN","LEFT","RIGHT","UP","DOWN","f","F11","ESC","m"),replay.bindings.lines().map {it.substringBefore(' ')}.toSet())
+    }
+    @Test fun everyNativePointerAndFocusedKeyActionSurvivesTheBorrowedMessageCopy() = source { snapshot ->
+        val lease = MpvNativeWindowInputLease(snapshot, 1)
+        for (kind in MpvNativeWindowInputKind.entries) Message(lease.token, kind.action).use {
+            assertEquals(kind, assertNotNull(lease.decode(it.data)).kind)
+        }
     }
     @Test fun disposingARecipientRejectsAlreadyQueuedEventsAndCannotRetireItsSuccessor() = source { snapshot ->
         val pending=mutableListOf<()->Unit>();val delivery=MpvNativeWindowInputDelivery {pending+=it}

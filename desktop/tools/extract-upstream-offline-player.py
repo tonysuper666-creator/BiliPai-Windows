@@ -166,7 +166,12 @@ def offline_desktop_pointer_ui(source):
  phone=s[start:end]
  assert sha(phone)=='e320b9088f1659905c00893d6b331c2891c21180d936bed539b14dcf2a4260c9','Phone drag recipe drift'
  replace(phone,'            // Windows uses mouse controls; phone edge/brightness/volume drags do not own this viewport.\n','remove phone background drag recognizer from Windows viewport')
- replace('    // 返回键处理\n', '    DesktopOfflineNativeInput(player,\n        enabled = LocalDesktopDetailForeground.current && playbackFailure == null,\n        onRevealControls = { showControls = true },\n        onTogglePlayback = { player.playWhenReady = !player.playWhenReady },\n    )\n\n    // 返回键处理\n', 'existing native host mouse and focused keyboard input drives the same original controls')
+ replace('    // 返回键处理\n', '    val desktopPointerInput = DesktopOfflineNativeInput(player,\n        enabled = LocalDesktopDetailForeground.current && playbackFailure == null,\n        onRevealControls = { showControls = true },\n        onTogglePlayback = { player.playWhenReady = !player.playWhenReady },\n    )\n\n    // 返回键处理\n', 'existing native host mouse and focused keyboard input drives the same original controls')
+ start=s.index('            .pointerInput(player, playbackFailure, longPressSpeed) {')
+ end=s.index('\n    ) {',start)
+ phone_taps=s[start:end]
+ assert sha(phone_taps)=='51a250ecbcbed5a5884493bf7a692341014c85ef7d64935d6c8ef2f054123ff3','Phone tap recipe drift'
+ replace(phone_taps,'            .then(desktopPointerInput)','same Windows click arbiter on native and transparent original foreground')
  replace('                OfflineProgressBar(\n','                val seekSource = player.nativePlayer.currentSourceSnapshot()\n                OfflineProgressBar(\n','capture exact native seek source')
  replace('                    onSeek = { seekToPosition(it) }','                    sourceIdentity = seekSource,\n                    isCurrent = { player.isOwned() && seekSource != null && player.nativePlayer.ownsSourceSnapshot(seekSource) },\n                    onSeek = { seekToPosition(it) }','retain exact source admission at timeline release')
  replace('    bufferedPosition: Long,\n    onSeek: (Long) -> Unit','    bufferedPosition: Long,\n    sourceIdentity: com.bilipai.desktop.player.OwnedPlaybackSourceSnapshot?,\n    isCurrent: () -> Boolean,\n    onSeek: (Long) -> Unit','source-keyed original progress UI')

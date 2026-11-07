@@ -5,8 +5,23 @@ import java.awt.EventQueue
 import java.util.UUID
 import java.util.concurrent.atomic.AtomicReference
 
-internal enum class MpvNativeWindowInputKind { REVEAL, MOTION, TOGGLE }
-internal data class MpvNativeWindowInputEvent(val lease: MpvNativeWindowInputLease, val kind: MpvNativeWindowInputKind)
+internal enum class MpvNativeWindowInputKind(val binding: String, val action: String, val keyCode: Int = 0) {
+    REVEAL("MBTN_LEFT", "reveal"), MOTION("MOUSE_MOVE", "motion"), TOGGLE("SPACE", "toggle"),
+    WHEEL_UP("WHEEL_UP", "wheel-up"), WHEEL_DOWN("WHEEL_DOWN", "wheel-down"),
+    LEFT("LEFT", "left", java.awt.event.KeyEvent.VK_LEFT),
+    RIGHT("RIGHT", "right", java.awt.event.KeyEvent.VK_RIGHT),
+    UP("UP", "up", java.awt.event.KeyEvent.VK_UP), DOWN("DOWN", "down", java.awt.event.KeyEvent.VK_DOWN),
+    FULLSCREEN("f", "fullscreen", java.awt.event.KeyEvent.VK_F),
+    F11("F11", "f11", java.awt.event.KeyEvent.VK_F11),
+    ESCAPE("ESC", "escape", java.awt.event.KeyEvent.VK_ESCAPE),
+    MUTE("m", "mute", java.awt.event.KeyEvent.VK_M),
+}
+internal data class MpvNativeWindowInputEvent(
+    val lease: MpvNativeWindowInputLease,
+    val kind: MpvNativeWindowInputKind,
+    val point: java.awt.Point? = runCatching { java.awt.MouseInfo.getPointerInfo()?.location }.getOrNull(),
+    val timeMs: Long = System.nanoTime() / 1_000_000,
+)
 
 /** A new opaque binding for each actual native load, including same-file replay.
  * A queued input from a predecessor cannot acquire its successor's source.
@@ -14,8 +29,8 @@ internal data class MpvNativeWindowInputEvent(val lease: MpvNativeWindowInputLea
  */
 internal class MpvNativeWindowInputLease(val source: OwnedPlaybackSourceSnapshot, val playbackRevision: Long) {
     val token: String = "bilipai-input-" + UUID.randomUUID().toString()
-    val bindings: String = listOf("MBTN_LEFT" to "reveal", "MOUSE_MOVE" to "motion", "SPACE" to "toggle")
-        .joinToString("\n") { (key, action) -> "$key nonrepeatable script-message $token $action" }
+    val bindings: String = MpvNativeWindowInputKind.entries
+        .joinToString("\n") { "${it.binding} nonrepeatable script-message $token ${it.action}" }
 
     /** Borrowed x64 mpv_event_client_message: int argc at 0, char** argv at 8.
      * Copy only our two bounded ASCII fields before the next mpv_wait_event.
@@ -24,12 +39,8 @@ internal class MpvNativeWindowInputLease(val source: OwnedPlaybackSourceSnapshot
         if (data == null || data.getInt(0) != 2) return null
         val args = data.getPointer(8) ?: return null
         if (ascii(args.getPointer(0), 64) != token) return null
-        val kind = when (ascii(args.getPointer(8), 16)) {
-            "reveal" -> MpvNativeWindowInputKind.REVEAL
-            "motion" -> MpvNativeWindowInputKind.MOTION
-            "toggle" -> MpvNativeWindowInputKind.TOGGLE
-            else -> return null
-        }
+        val action = ascii(args.getPointer(8), 16) ?: return null
+        val kind = MpvNativeWindowInputKind.entries.firstOrNull { it.action == action } ?: return null
         return MpvNativeWindowInputEvent(this, kind)
     }
 
