@@ -123,6 +123,96 @@ def gradle_braces_balanced(body):
     return depth == 0
 
 
+def gradle_code(body):
+    """The build script with its comments blanked; code positions, line breaks and string literals stay in place."""
+    out, i, n = [], 0, len(body)
+    backslash = chr(92)
+    while i < n:
+        if body.startswith('//', i) or body.startswith('/*', i):
+            j = body.find('\n', i) if body.startswith('//', i) else body.find('*/', i) + 2
+            j = n if j == -1 else j
+            out.append(''.join(c if c == '\n' else ' ' for c in body[i:j]))
+        elif body.startswith('"""', i):
+            j = body.find('"""', i + 3) + 3
+            out.append(body[i:j])
+        elif body[i] in '"\'':
+            j = i + 1
+            while j < n and body[j] != body[i]:
+                j += 2 if body[j] == backslash else 1
+            j += 1
+            out.append(body[i:j])
+        else:
+            j = i + 1
+            out.append(body[i])
+        i = j
+    return ''.join(out)
+
+
+def gradle_close(code, start):
+    """Index just past the bracket that closes the one at code[start], string literals skipped."""
+    pairs, stack, i = {'(': ')', '{': '}'}, [], start
+    backslash = chr(92)
+    while True:
+        if code.startswith('"""', i):
+            i = code.find('"""', i + 3) + 3
+            continue
+        if code[i] == '"':
+            i += 1
+            while code[i] != '"':
+                i += 2 if code[i] == backslash else 1
+        elif code[i] == "'":
+            i = code.find("'", i + 1)
+        elif code[i] in pairs:
+            stack.append(pairs[code[i]])
+        elif code[i] in ')}':
+            assert stack.pop() == code[i], ('unbalanced build script', i)
+            if not stack:
+                return i + 1
+        i += 1
+
+
+def gradle_main_kotlin_roots():
+    """(checked-in roots, build-time srcDir arguments) of the Gradle main Kotlin source set, read from the build script.
+
+    Every kotlin.srcDir of a main block is placed or the read fails, so a new main root cannot drop out of a scan."""
+    code = gradle_code((REPO / 'desktop/build.gradle.kts').read_text(encoding='utf8'))
+    values = dict(re.findall(r'(?m)^val (\w+)(?:: [^=\n]+)? (?:= |by )(.*)$', code))
+
+    def listed(name):
+        return [module for part in values[name].split(' + ')
+                for module in (re.findall(r'"([^"]+)"', part) if part.startswith('listOf(') else listed(part))]
+    blocks = [(match.start(), gradle_close(code, match.end() - 1), match.group(1))
+              for match in re.finditer(r'(?m)^(?:kotlin\.)?sourceSets\.named\("(\w+)"\) \{', code)]
+    # Source roots are only ever added through kotlin.srcDir or resources.srcDir, so the walk below sees each Kotlin one.
+    assert set(re.findall(r'[\w.]*[sS]rcDirs?\b', code)) <= {'kotlin.srcDir', 'resources.srcDir'}, 'unknown source root API'
+    # The Kotlin JVM plugin's own main roots.
+    checked_in, built = {REPO / 'desktop/src/main/kotlin', REPO / 'desktop/src/main/java'}, set()
+    for match in re.finditer(r'kotlin\.srcDir\(', code):
+        owners = [name for start, end, name in blocks if start < match.start() < end]
+        assert owners, ('kotlin.srcDir outside a named source set block', code.count('\n', 0, match.start()) + 1)
+        if owners != ['main']:
+            continue
+        argument = code[match.end():gradle_close(code, match.end() - 1) - 1].strip()
+        each = re.fullmatch(r'\s*(\w+)\.forEach \{ ', code[code.rfind('\n', 0, match.start()) + 1:match.start()])
+        if each and argument == 'mergedRepositoryRoot.resolve(it + "src/main/java")':
+            checked_in |= {REPO / (module + 'src/main/java') for module in listed(each.group(1))}
+            continue
+        name = re.fullmatch(r'(\w+)(?:\.map \{ it\.dir\("[^"$]+"\) \})?', argument)
+        value = values.get(name.group(1), '') if name else argument
+        literal = re.fullmatch(r'"([^"$]+)"', argument)
+        desktop_file = re.fullmatch(r'file\("([^"$]+)"\)', value)
+        merged_file = re.fullmatch(r'mergedRepositoryRoot\.resolve\("([^"$]+)"\)', value)
+        if literal or desktop_file:
+            checked_in.add(REPO / 'desktop' / (literal or desktop_file).group(1))
+        elif merged_file:
+            checked_in.add(REPO / merged_file.group(1))
+        elif 'layout.buildDirectory' in value or value.startswith('tasks.registering'):
+            built.add(argument)
+        else:
+            raise AssertionError('Main Kotlin source root this scan cannot place: ' + argument)
+    return checked_in, built
+
+
 def audit_tables():
     """OWNERS and VIEW_MODEL_SITES of the account-scoped audit, read without importing (and so running) that test module."""
     path = TOOLS / 'tests/test_v046_account_scoped_requests_source.py'
@@ -497,13 +587,27 @@ class BangumiHubPagesSliceTests(unittest.TestCase):
         for method in sorted(set(re.findall(r'desktopEnvironment\.requests\.(\w+)\(', self.vm))):
             self.assertRegex(requests, r'suspend fun ' + method + r'\(', method)
         self.assertIn('val followSession: () -> BangumiFollowSession,', environment)
-        # Production is the Gradle main source set: desktop/src/main plus both hub producers' generated
-        # main outputs. JVM test fixtures under desktop/src/test may build their own environments.
-        callers = 0
-        for file in [*(REPO / 'desktop/src/main').rglob('*.kt'), *self.home.rglob('*.kt'), *self.pages.rglob('*.kt')]:
-            body = file.read_text(encoding='utf8')
-            callers += body.count('DesktopOriginalBangumiPagesEnvironment(') - body.count('class DesktopOriginalBangumiPagesEnvironment(')
-        self.assertEqual(1, callers)
+        # Production is every input of the Gradle main Kotlin source set, whose roots are read from the build script:
+        # its checked-in roots and both hub producers' outputs hold the one call; the other build roots are made from
+        # desktop files (producers, slices, patches), so no other desktop file may hold one. Only test sources and
+        # verification snapshots, which feed no main root, may build their own environments.
+        checked_in, built = gradle_main_kotlin_roots()
+        self.assertIn(REPO / 'desktop/upstream-core/transition/src', checked_in)
+        for output in ['generated/home-bangumi-page', 'generated/independent-bangumi-pages']:
+            self.assertIn('layout.buildDirectory.dir("' + output + '")', built)
+        # Every file, not only Kotlin: main roots also hold Java sources the compilation reads.
+        main = {f for root in [*checked_in, self.home, self.pages] for f in root.rglob('*') if f.is_file()}
+        listed = subprocess.run(['git', '-C', str(REPO), 'ls-files', '-z', '--cached', '--others', '--exclude-standard'],
+                                capture_output=True, check=True).stdout.decode('utf8').split('\0')
+        files = [REPO / name for name in listed if name and (REPO / name).is_file()]
+        inputs = [f for f in files if f.is_relative_to(REPO / 'desktop') and f not in main and not any(
+            f.is_relative_to(REPO / 'desktop' / part) for part in ['src/test', 'tools/tests', 'verification'])]
+
+        def calls(file):
+            body = file.read_bytes()
+            return body.count(b'DesktopOriginalBangumiPagesEnvironment(') - body.count(b'class DesktopOriginalBangumiPagesEnvironment(')
+        self.assertEqual(1, sum(calls(f) for f in main))
+        self.assertEqual([], [f.relative_to(REPO).as_posix() for f in inputs if calls(f)])
         self.assertEqual(1, root.count('followSession = { desktopOriginalBangumiPagesFollowSession(gate.mid != null, gate.epoch) })'))
 
     def test_detail_screen_collects_the_single_state_with_the_upstream_lines_of_3b37b7a2(self):
