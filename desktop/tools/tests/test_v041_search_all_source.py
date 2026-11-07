@@ -13,6 +13,7 @@ sys.path.insert(0, str(REPO / 'desktop/tools'))
 import v041_search_all as source
 import v042_search_layout as current
 import v046_search_state as state_layer
+import v076_search_submit_link as submit_link
 
 # Independently read from the fixed upstream Git commit; verification stays offline.
 UPSTREAM_BLOBS = {'core-data/src/main/java/com/android/purebilibili/data/repository/SearchRepository.kt': {'blob': '4d9ab28aaae5d6b344841f5969f602cccf333183', 'sha256': '9a669b0f7ccd36a5d9a0e878f8c8330e3b46138ab49192035d16ffd306c8fe10', 'bytes': 33438}, 'app/src/main/java/com/android/purebilibili/feature/search/SearchViewModel.kt': {'blob': 'f0ba713c6087b00e287f637456e23c6ff275b4fc', 'sha256': 'dd8e048d666c547cf26be83c0502fb109d369853b2d85c814b6dfd78a5806ef8', 'bytes': 77392}, 'app/src/main/java/com/android/purebilibili/feature/search/SearchScreen.kt': {'blob': 'aaf2b036d6b1eadc21bc387e0b90fa18e73348c9', 'sha256': 'c742e3cbc6b6902e056c17b27874a5240b0aa9ca3d535c60f53369016ebb5a0d', 'bytes': 251347}, 'core-data/src/main/java/com/android/purebilibili/data/repository/SearchLoadPolicy.kt': {'blob': '0d24d3abe2c905ebce16dc15050573c97d1304c9', 'sha256': '680976b2c41780defcebef4b1c1078e0e626f2fd6071c874e837508324e50119', 'bytes': 4111}, 'app/src/main/java/com/android/purebilibili/feature/search/SearchEmptyStatePolicy.kt': {'blob': '72fb8aa3935310c48bcf9d7b8f283864de388a1a', 'sha256': '3f42b89a3c3d1512b483ff980d3e29edbb6b2bf7c1a39e4261ae2518a2d53a0b', 'bytes': 1562}, 'core-data/src/main/java/com/android/purebilibili/core/network/ApiClient.kt': {'blob': '3e901a8fbd3991e376047d67a22decbd3a174099', 'sha256': '4beacddf7ee3b2394ce61e6e75de882df76ad5b12019ec0e27f4c9413c8543c4', 'bytes': 154196}, 'app/src/main/java/com/android/purebilibili/feature/search/SearchVideoFilterSheet.kt': {'blob': 'a53ec028ebe0ce48cd1824ec10203046175203ea', 'sha256': '490338fa9c133f7ce197a9ba3edb2f20b99ccf8cec18c92e0efe7096050f4b1e', 'bytes': 19558}}
@@ -75,6 +76,8 @@ class ComprehensiveSearchSourceTest(unittest.TestCase):
     def test_actual_screen_restores_all_adoption_and_platform_stages(self):
         row = next(row for row in self.rows if row['source'] == source.SCREEN)
         body = Path(row['target']).read_text(encoding='utf-8')
+        # The v0.7.6 submit-link stage is the last one on the screen: peel it first.
+        body = submit_link.restore_search_screen(body, row['v076SearchSubmitLink'])
         body = inverse(body, row['windowsTabAbiAdaptation'])
         # Brand adaptation already has its own indexed whole-body source proof.
         brand = row['windowsBrandConsumerAdaptation']

@@ -15,6 +15,7 @@ sys.path.insert(0, str(REPO / 'desktop/tools'))
 import v041_search_all as v41
 import v042_search_layout as v42
 import v046_search_state as layer
+import v076_search_submit_link as submit_link
 from v025_source_paths import canonical_source
 from v042_search_dependencies import SEARCH_MOTION, fixed_sources as v042_dependency_sources
 
@@ -92,8 +93,10 @@ class SearchStateSourceTest(unittest.TestCase):
         cls.rows = cls.producer.generate(REPO, cls.root / 'main', cls.root / 'tests')
         cls.main, cls.tests = cls.root / 'main', cls.root / 'tests'
         # The same producer with exactly this layer patched out: the previous stage, for before/after checks.
+        # The v0.7.6 submit-link stage edits the v0.4.6 submit body, so it cannot run on the previous stage either.
         with mock.patch.object(layer, 'advance_page', lambda repo, item, before: (before, None)), \
-                mock.patch.object(layer, 'emit_policies', lambda repo, output, test_output: None):
+                mock.patch.object(layer, 'emit_policies', lambda repo, output, test_output: None), \
+                mock.patch.object(submit_link, 'advance_search_screen', lambda source: (source, None)):
             cls.base_rows = cls.producer.generate(REPO, cls.root / 'base-main', cls.root / 'base-tests')
 
     @classmethod
@@ -205,9 +208,11 @@ class SearchStateSourceTest(unittest.TestCase):
     # -- inverse proofs --------------------------------------------------------------------------
 
     def final_layer_body(self, path):
-        """The producer output with the later tab ABI step peeled (VM and landing have no later step)."""
+        """The producer output with the later v0.7.6 submit-link and tab ABI steps peeled (VM and landing have neither)."""
         row = self.row(path)
         body = Path(row['target']).read_text(encoding='utf8')
+        if row['v076SearchSubmitLink'] is not None:
+            body = submit_link.restore_search_screen(body, row['v076SearchSubmitLink'])
         if row['windowsTabAbiAdaptation'] is not None:
             body = whole_inverse(body, row['windowsTabAbiAdaptation'])
         return row, body

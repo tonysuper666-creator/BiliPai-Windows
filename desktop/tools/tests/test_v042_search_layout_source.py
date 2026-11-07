@@ -11,6 +11,7 @@ REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(REPO / 'desktop/tools'))
 import v042_search_layout as current
 import v046_search_state as state_layer
+import v076_search_submit_link as submit_link
 
 
 def load(filename):
@@ -47,6 +48,9 @@ class CurrentSearchLayoutSourceTest(unittest.TestCase):
         for path in (current.SCREEN, current.FILTER_SHEET):
             row = next(row for row in self.pages if row['source'] == path)
             body = Path(row['target']).read_text(encoding='utf-8')
+            # The v0.7.6 submit-link stage is the last one on the screen: peel it first.
+            if row['v076SearchSubmitLink'] is not None:
+                body = submit_link.restore_search_screen(body, row['v076SearchSubmitLink'])
             body = inverse(body, row['windowsTabAbiAdaptation'])
             if path == current.SCREEN:
                 brand = row['windowsBrandConsumerAdaptation']

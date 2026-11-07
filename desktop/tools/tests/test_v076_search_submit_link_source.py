@@ -39,7 +39,7 @@ class V076SearchSubmitLinkSourceTest(unittest.TestCase):
 
     def test_policy_and_test_are_the_complete_v076_originals(self):
         files=source.verified_raw(REPO)
-        self.assertEqual('8a44e0e4092f5a7a705217d154c1fc1c856471e9c745ee7e86118bd2bc64c4fe',source.MANIFEST_SHA256)
+        self.assertEqual('a0816de0e4377abe75571d60c68f058712cc17a2a33b3da354742f59cb54e564',source.MANIFEST_SHA256)
         self.assertEqual('39ad3afe2628322aa9d3bf16ecb4a6b0f7c753fa',source.INTRODUCED_BY)
         for pin in source.PINS:
             raw=files[pin['archiveFile']]
@@ -86,6 +86,47 @@ class V076SearchSubmitLinkSourceTest(unittest.TestCase):
         self.assertIn('                onOpenLink = onOpenLink,\n',dock)
         shell=(REPO/'desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt').read_text(encoding='utf-8')
         self.assertIn('{error=it}, ::openOriginalContentLink,',shell)
+
+    def test_search_screen_edits_reproduce_the_original_v076_submit_body(self):
+        original=source.verified_raw(REPO)['SearchScreen.kt'].decode('utf-8')
+        previous=original
+        for old,after in reversed(source.SEARCH_SCREEN_EDITS):previous=previous.replace(after,old,1)
+        self.assertNotIn('onOpenSearchLink',previous)
+        advanced,audit=source.advance_search_screen(previous,REPO)
+        self.assertEqual(original,advanced)
+        self.assertEqual((3,False,True),(audit['edits'],audit['alreadyPresent'],audit['inverseExact']))
+        again,audit=source.advance_search_screen(original,REPO)
+        self.assertEqual((original,0,True),(again,audit['edits'],audit['alreadyPresent']))
+
+    def test_search_screen_receipt_peels_back_to_the_exact_predecessor(self):
+        original=source.verified_raw(REPO)['SearchScreen.kt'].decode('utf-8')
+        previous=original
+        for old,after in reversed(source.SEARCH_SCREEN_EDITS):previous=previous.replace(after,old,1)
+        advanced,audit=source.advance_search_screen(previous,REPO)
+        self.assertEqual(previous,source.restore_search_screen(advanced,audit))
+        with self.assertRaisesRegex(ValueError,'differs from its receipt'):
+            source.restore_search_screen(advanced.replace('onOpenSearchLink(action.url)','onOpenSearchLink(keyword)',1),audit)
+
+    def test_search_screen_without_the_known_submit_body_is_rejected(self):
+        original=source.verified_raw(REPO)['SearchScreen.kt'].decode('utf-8')
+        previous=original
+        for old,after in reversed(source.SEARCH_SCREEN_EDITS):previous=previous.replace(after,old,1)
+        with self.assertRaisesRegex(ValueError,'Unknown SearchScreen submit body'):
+            source.advance_search_screen(previous.replace('SearchSubmitAction.Ignore -> return@submitSearch','SearchSubmitAction.Ignore -> Unit',1),REPO)
+        root=self.temporary_repo();p=root/source.ARCHIVE/'SearchScreen.kt';p.write_bytes(p.read_bytes().replace(b'onOpenSearchLink(action.url)',b'onOpenSearchLink(keyword)',1))
+        with self.assertRaisesRegex(ValueError,'original bytes changed'):source.advance_search_screen(previous,root)
+
+    def test_search_page_routes_submitted_links_to_the_root_content_link_opener(self):
+        producer=(REPO/'desktop/tools/extract-upstream-search-pages.py').read_text(encoding='utf-8')
+        self.assertEqual(1,producer.count('source,searchSubmitLinkAudit=advance_search_screen(source)'))
+        ui=REPO/'desktop/src/main/kotlin/com/bilipai/desktop/ui'
+        search=(ui/'DesktopOriginalSearchRoot.kt').read_text(encoding='utf-8')
+        self.assertIn('    val openLink: (String) -> Unit,\n',search)
+        self.assertEqual(1,search.count('onOpenSearchLink={ url -> select { root.openLink(url) } },'))
+        binding=(ui/'DesktopReadyHomeFactoryBinding.kt').read_text(encoding='utf-8')
+        self.assertIn('DesktopOriginalSearchRoot(routes, ::published, repository.account, openLink)',binding)
+        mount=(ui/'DesktopReadyOriginalRootMount.kt').read_text(encoding='utf-8')
+        self.assertIn('windowBinding.searchRoot(root,routes,personalLists.preferences,services.openExternalLink)',mount)
 
 
 if __name__=='__main__':

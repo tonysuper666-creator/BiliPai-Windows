@@ -7825,9 +7825,9 @@
       "files": [
         {
           "path": "desktop/upstream-slices/v076-search-submit-link/manifest.json",
-          "sha256": "8a44e0e4092f5a7a705217d154c1fc1c856471e9c745ee7e86118bd2bc64c4fe",
+          "sha256": "a0816de0e4377abe75571d60c68f058712cc17a2a33b3da354742f59cb54e564",
           "hashNormalization": "raw",
-          "blob": "5c7d926ae8e1ea29ecd220b3ab24235f6d39c589"
+          "blob": "ec1442c5a2265e6ef5e85266f0d6bece314693fb"
         },
         {
           "path": "desktop/upstream-slices/v076-search-submit-link/SearchSubmitPolicy.kt",
@@ -7846,6 +7846,12 @@
           "sha256": "5ab389e0ee91533b36f3d838b4330a78a3f0fe252268448c4bb9a45b8eca1c32",
           "hashNormalization": "raw",
           "blob": "bf3ea46112be1adf6aa740611faa2ac5cf74e31f"
+        },
+        {
+          "path": "desktop/upstream-slices/v076-search-submit-link/SearchScreen.kt",
+          "sha256": "4a79f841e79eff90156f7c3ea3fc5ac80139222af6d6420fa850a5fcfd9b0845",
+          "hashNormalization": "raw",
+          "blob": "e2813d765e0fba99c6ec0a903a2a086fce7a0d92"
         }
       ]
     }
@@ -20712,6 +20718,21 @@
       "referenceOnly": true,
       "partialReuse": true,
       "usedScope": "Complete original submitSearchKeywordInNavigation3/submitBottomBarSearchKeyword callbacks; other destination implementations retain their accepted originals"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchScreen.kt",
+      "localPath": "desktop/upstream-slices/v076-search-submit-link/SearchScreen.kt",
+      "upstreamCommit": "0ec9c4dd25ad8f364dcc32dc7a3309bba9b30f1c",
+      "blob": "e2813d765e0fba99c6ec0a903a2a086fce7a0d92",
+      "sha256": "4a79f841e79eff90156f7c3ea3fc5ac80139222af6d6420fa850a5fcfd9b0845",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v076-search-submit-link-original-search-screen"
+      ],
+      "referenceOnly": true,
+      "partialReuse": true,
+      "usedScope": "Three counted 39ad3afe SearchScreen submit edits (onOpenSearchLink parameter, OpenLink branch, initial keyword through submitSearch) applied by the existing complete-Search producer; the rest of the page keeps its accepted original"
     }
   ],
   "buildStandaloneInputs": [

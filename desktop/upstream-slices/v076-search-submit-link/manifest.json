@@ -28,6 +28,14 @@
       "sha256": "5ab389e0ee91533b36f3d838b4330a78a3f0fe252268448c4bb9a45b8eca1c32",
       "gitBlob": "bf3ea46112be1adf6aa740611faa2ac5cf74e31f",
       "referenceOnly": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchScreen.kt",
+      "archiveFile": "SearchScreen.kt",
+      "bytes": 269269,
+      "sha256": "4a79f841e79eff90156f7c3ea3fc5ac80139222af6d6420fa850a5fcfd9b0845",
+      "gitBlob": "e2813d765e0fba99c6ec0a903a2a086fce7a0d92",
+      "referenceOnly": true
     }
   ]
 }

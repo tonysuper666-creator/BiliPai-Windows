@@ -58,8 +58,13 @@ def generate(repo,out,test_output=None):
   tabAbiAudit=None
   if item['target'] in ['feature/search/SearchScreen.kt','feature/search/SearchVideoFilterSheet.kt']:
    source,tabAbiAudit=current_tab_abi(source,already_current=searchAllAudit is not None and searchAllAudit.get('upstreamCommit')=='5c34a82418b33bf88acea01784bb3c6b179d6491')
+  searchSubmitLinkAudit=None
+  if item['target']=='feature/search/SearchScreen.kt':
+   # v0.7.6 short-link / content-link submit opens the link instead of searching it (merged-checkout archive).
+   from v076_search_submit_link import advance_search_screen
+   source,searchSubmitLinkAudit=advance_search_screen(source)
   target=out/'com/android/purebilibili'/item['target'];wide(target.parent).mkdir(parents=True,exist_ok=True);wide(target).write_text(source,encoding='utf8',newline='\n')
-  rows.append(dict(source=item['path'],target=str(target),originalSha256LF=item['inputSha256LF'],generatedSha256LF=hashlib.sha256(source.encode()).hexdigest(),inverseOriginalBodyExact=True,windowsBrandConsumerAdaptation=brandCallerAudit,windowsTabAbiAdaptation=tabAbiAudit,comprehensiveSearchAdaptation=searchAllAudit,v046SearchStateAdvance=v046StateAudit))
+  rows.append(dict(source=item['path'],target=str(target),originalSha256LF=item['inputSha256LF'],generatedSha256LF=hashlib.sha256(source.encode()).hexdigest(),inverseOriginalBodyExact=True,windowsBrandConsumerAdaptation=brandCallerAudit,windowsTabAbiAdaptation=tabAbiAudit,comprehensiveSearchAdaptation=searchAllAudit,v046SearchStateAdvance=v046StateAudit,v076SearchSubmitLink=searchSubmitLinkAudit))
  from v041_search_all import emit_policies
  emit_policies(repo,out)
  from v042_search_layout import emit_foundations
