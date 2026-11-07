@@ -1,12 +1,24 @@
 package com.bilipai.desktop.data
 
 import com.android.purebilibili.data.repository.DesktopDynamicCommentGrpc
+import com.android.purebilibili.data.model.response.ReplyResponse
 import kotlinx.coroutines.*
 import org.junit.jupiter.api.Test
 import java.io.IOException
 import kotlin.test.*
 
 class DesktopCommentRequestDiagnosticsTest {
+    @Test fun restFailureKeepsTheOriginalResponseAndNeverLogsItsMessage(): Unit = runBlocking {
+        val lines = mutableListOf<String>()
+        val response = ReplyResponse(code = -404, message = "SESSDATA=private; oid=170001")
+        assertSame(response, desktopCommentRestRequest("/x/v2/reply/reply", {}, { it: ReplyResponse -> it.code }, lines::add) { response })
+        assertEquals(listOf("api=/x/v2/reply/reply code=-404 message=comment API rejected request"), lines)
+        lines.clear()
+        val success = ReplyResponse(code = 0)
+        assertSame(success, desktopCommentRestRequest("/x/v2/reply/reply", {}, { it: ReplyResponse -> it.code }, lines::add) { success })
+        assertTrue(lines.isEmpty())
+    }
+
     @Test fun actualDetailProtocolReportsFailureWithoutRequestOrServerSecrets(): Unit = runBlocking {
         val failure = IllegalStateException("请求失败：HTTP 412，gRPC -352，SESSDATA=private; oid=170001")
         val lines = mutableListOf<String>()

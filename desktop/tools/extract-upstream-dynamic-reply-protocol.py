@@ -248,13 +248,18 @@ def generate(repo: Path, output: Path):
         return text
 
     def owned_api_calls(text):
-        pattern = re.compile('(?:apiClient|guestApi|api|resolveReadApi\\([^)]*\\))\\.(?:getReplyList(?:Main|Legacy)?|getReplyReply|getReplyCount)\\s*\\(')
+        pattern = re.compile('(?:apiClient|guestApi|api|resolveReadApi\\([^)]*\\))\\.(getReplyList(?:Main|Legacy)?|getReplyReply|getReplyCount)\\s*\\(')
+        paths = {'getReplyList': '/x/v2/reply/wbi/main', 'getReplyListMain': '/x/v2/reply/main',
+                 'getReplyListLegacy': '/x/v2/reply', 'getReplyReply': '/x/v2/reply/reply',
+                 'getReplyCount': '/x/v2/reply/count'}
         matches = list(pattern.finditer(masked(text)))
         for m in reversed(matches):
             mask = masked(text)
             open_at = mask.index('(', m.end() - 1)
             end = balanced(mask, open_at)
-            text = text[:m.start()] + 'ownedCall { ' + text[m.start():end] + ' }' + text[end:]
+            text = text[:m.start()] + ('ownedCall { com.bilipai.desktop.data.desktopCommentRestRequest("' +
+                paths[m.group(1)] + '", assertOwner = assertOwner, code = { it.code }) { ' +
+                text[m.start():end] + ' } }') + text[end:]
         return text
 
     def adapt_read(text):

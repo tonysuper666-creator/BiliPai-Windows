@@ -6,6 +6,34 @@ import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.ensureActive
 import java.io.IOException
 import java.net.SocketTimeoutException
+import retrofit2.HttpException
+
+private fun commentApiName(path: String): String = when (path) {
+    "/bilibili.main.community.reply.v1.Reply/MainList" -> "Reply/MainList"
+    "/bilibili.main.community.reply.v1.Reply/DetailList" -> "Reply/DetailList"
+    "/bilibili.main.community.reply.v1.Reply/DialogList" -> "Reply/DialogList"
+    "/x/v2/reply/wbi/main", "/x/v2/reply/main", "/x/v2/reply",
+    "/x/v2/reply/reply", "/x/v2/reply/count" -> path
+    else -> "Reply/Other"
+}
+
+internal suspend fun <T> desktopCommentRestRequest(
+    path: String,
+    assertOwner: () -> Unit,
+    code: (T) -> Int,
+    log: (String) -> Unit = { Logger.w("CommentRequest", it) },
+    request: suspend () -> T,
+): T {
+    val response = desktopCommentGrpcRequest(path, log, assertOwner, request)
+    currentCoroutineContext().ensureActive()
+    assertOwner()
+    val responseCode = code(response)
+    if (responseCode != 0) {
+        log("api=${commentApiName(path)} code=$responseCode message=comment API rejected request")
+    }
+    // Keep the original response, including its fallback/paging behavior.
+    return response
+}
 
 /** No request/body/header or raw exception text enters the diagnostic sink. */
 internal suspend fun <T> desktopCommentGrpcRequest(
@@ -22,12 +50,7 @@ internal suspend fun <T> desktopCommentGrpcRequest(
     assertOwner()
     // Paths are constants in the retained original protocol. Never echo an
     // arbitrary path (which could contain query parameters).
-    val api = when (path) {
-        "/bilibili.main.community.reply.v1.Reply/MainList" -> "Reply/MainList"
-        "/bilibili.main.community.reply.v1.Reply/DetailList" -> "Reply/DetailList"
-        "/bilibili.main.community.reply.v1.Reply/DialogList" -> "Reply/DialogList"
-        else -> "Reply/Other"
-    }
+    val api = commentApiName(path)
     val status = Regex("^请求失败：HTTP ([0-9]{3})，gRPC (-?[0-9]{1,10}|null)(?:，|$)")
         .find(failure.message.orEmpty())
     // Use stable messages rather than the server's untrusted free text, which
@@ -42,6 +65,10 @@ internal suspend fun <T> desktopCommentGrpcRequest(
         failure is BiliApiException -> {
             code = failure.apiCode.toString()
             message = "comment API rejected request"
+        }
+        failure is HttpException -> {
+            code = "http=${failure.code()}"
+            message = "server rejected comment request"
         }
         failure is SocketTimeoutException -> {
             code = "unavailable"
