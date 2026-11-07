@@ -1,0 +1,156 @@
+from pathlib import Path
+import hashlib
+import importlib.util
+import shutil
+import sys
+import tempfile
+import unittest
+
+REPO=Path(__file__).resolve().parents[3]
+sys.path.insert(0,str(REPO/'desktop/tools'))
+import v076_search_submit_link as source
+
+NAV='com/android/purebilibili/navigation/'
+
+
+def producer():
+    spec=importlib.util.spec_from_file_location('search_submit_existing_linked_dock_producer',REPO/'desktop/tools/extract-upstream-linked-dock.py')
+    module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+    return module
+
+
+class V076SearchSubmitLinkSourceTest(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.temporary=tempfile.TemporaryDirectory(prefix='bp-search-submit-output-')
+        root=Path(cls.temporary.name);cls.out=root/'main';cls.tests=root/'tests'
+        producer().generate(REPO,cls.out,cls.tests)
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.temporary.cleanup()
+
+    def temporary_repo(self):
+        temporary=tempfile.TemporaryDirectory(prefix='bp-search-submit-input-')
+        self.addCleanup(temporary.cleanup)
+        root=Path(temporary.name)
+        shutil.copytree(REPO/source.ARCHIVE,root/source.ARCHIVE)
+        return root
+
+    def test_policy_and_test_are_the_complete_v076_originals(self):
+        files=source.verified_raw(REPO)
+        self.assertEqual('a0816de0e4377abe75571d60c68f058712cc17a2a33b3da354742f59cb54e564',source.MANIFEST_SHA256)
+        self.assertEqual('39ad3afe2628322aa9d3bf16ecb4a6b0f7c753fa',source.INTRODUCED_BY)
+        for pin in source.PINS:
+            raw=files[pin['archiveFile']]
+            self.assertEqual(pin['gitBlob'],hashlib.sha1(b'blob '+str(len(raw)).encode()+b'\0'+raw).hexdigest())
+        self.assertEqual(7,sum(raw.count(b'    @Test\n')for raw in source.original_tests(REPO).values()))
+
+    def test_mutated_original_policy_cannot_be_emitted(self):
+        root=self.temporary_repo();p=root/source.ARCHIVE/'SearchSubmitPolicy.kt';p.write_bytes(p.read_bytes()+b'\n')
+        with self.assertRaisesRegex(ValueError,'original bytes changed'):source.original_policy(root)
+
+    def test_mutated_original_test_cannot_be_emitted(self):
+        root=self.temporary_repo();p=root/source.ARCHIVE/'SearchSubmitPolicyTest.kt';p.write_bytes(p.read_bytes()+b'\n')
+        with self.assertRaisesRegex(ValueError,'original bytes changed'):source.original_tests(root)
+
+    def test_mutated_manifest_and_unlisted_leaf_are_rejected(self):
+        root=self.temporary_repo();p=root/source.ARCHIVE/'manifest.json';p.write_bytes(p.read_bytes()+b' ')
+        with self.assertRaisesRegex(ValueError,'manifest pin'):source.original_policy(root)
+        root=self.temporary_repo();(root/source.ARCHIVE/'extra.kt').write_bytes(b'')
+        with self.assertRaisesRegex(ValueError,'archive leaves'):source.original_policy(root)
+
+    def test_existing_producer_emits_the_original_policy_and_its_original_tests(self):
+        self.assertEqual(source.original_policy(REPO).encode('utf-8'),(self.out/NAV/'SearchSubmitPolicy.kt').read_bytes())
+        for path,raw in source.original_tests(REPO).items():self.assertEqual(raw,(self.tests/path).read_bytes())
+
+    def test_desktop_submit_consumer_handles_every_original_branch(self):
+        text=(self.out/NAV/'DesktopOriginalBottomSearchSubmit.kt').read_text(encoding='utf-8')
+        self.assertIn('    onOpenLink: (String) -> Unit,\n',text)
+        self.assertEqual(1,text.count('is SearchSubmitAction.OpenLink -> onOpenLink(action.url)'))
+        self.assertEqual(1,text.count('is SearchSubmitAction.OpenSearch -> onOpenSearch(action.keyword)'))
+        self.assertEqual(1,text.count('is SearchSubmitAction.OpenNativeTarget -> onOpenNativeTarget(action.target)'))
+        self.assertEqual(1,text.count('SearchSubmitAction.Ignore -> Unit'))
+        # Links never leak into the same-list channel; only plain searches do.
+        self.assertIn('if (scopedChannel != null && resolveDesktopSearchSubmitAction(keyword) is SearchSubmitAction.OpenSearch) {',text)
+        self.assertNotIn('openBilibiliLinkInNavigation3',text)
+
+    def test_bottom_bar_submits_only_through_the_desktop_short_link_guard(self):
+        text=(self.out/NAV/'DesktopOriginalBottomSearchSubmit.kt').read_text(encoding='utf-8')
+        self.assertEqual(1,text.count('when (val action = resolveDesktopSearchSubmitAction(keyword)) {'))
+        self.assertEqual(2,text.count('resolveDesktopSearchSubmitAction(keyword)'))
+        self.assertNotIn('resolveSearchSubmitAction(',text)
+
+    def test_search_screen_submits_only_through_the_desktop_short_link_guard(self):
+        original=source.verified_raw(REPO)['SearchScreen.kt'].decode('utf-8')
+        guarded,audit=source.guard_search_screen_submit(original)
+        self.assertEqual(1,guarded.count('        when (val action = resolveDesktopSearchSubmitAction(keyword)) {\n            SearchSubmitAction.Ignore -> return@submitSearch\n            is SearchSubmitAction.OpenLink -> {\n'))
+        self.assertEqual(1,guarded.count('import com.android.purebilibili.navigation.resolveDesktopSearchSubmitAction\n'))
+        self.assertNotIn('resolveSearchSubmitAction(',guarded)
+        self.assertEqual((2,True,'desktop'),(audit['edits'],audit['inverseExact'],audit['owner']))
+        self.assertEqual(original,source.unguard_search_screen_submit(guarded,audit))
+        with self.assertRaisesRegex(ValueError,'differs from its receipt'):
+            source.unguard_search_screen_submit(guarded.replace('onOpenSearchLink(action.url)','onOpenSearchLink(keyword)',1),audit)
+        with self.assertRaisesRegex(ValueError,'Unknown SearchScreen submit policy call'):source.guard_search_screen_submit(guarded)
+        producer=(REPO/'desktop/tools/extract-upstream-search-pages.py').read_text(encoding='utf-8')
+        self.assertEqual(1,producer.count('   source,searchSubmitLinkAudit=advance_search_screen(source)\n'))
+        advance=producer.index('   source,searchSubmitLinkAudit=advance_search_screen(source)\n')
+        self.assertEqual(1,producer.count('   source,searchSubmitGuardAudit=guard_search_screen_submit(source)\n'))
+        self.assertLess(advance,producer.index('   source,searchSubmitGuardAudit=guard_search_screen_submit(source)\n'))
+
+    def test_root_routes_submitted_links_to_its_existing_content_link_opener(self):
+        ui=REPO/'desktop/src/main/kotlin/com/bilipai/desktop/ui'
+        mount=(ui/'DesktopReadyOriginalRootMount.kt').read_text(encoding='utf-8')
+        self.assertIn('{ target -> dispatchDesktopReadyNativeTarget(root, routes, target) },\n            services.openExternalLink,\n',mount)
+        frosted=(ui/'DesktopOriginalFrostedAudioRoot.kt').read_text(encoding='utf-8')
+        self.assertIn('    val openLink: (String) -> Unit,\n',frosted)
+        self.assertIn('actions.openSearch, actions.openNativeTarget, actions.openLink, owner.isOwned)',frosted)
+        dock=(ui/'DesktopOriginalLinkedDockRoot.kt').read_text(encoding='utf-8')
+        self.assertIn('                onOpenLink = onOpenLink,\n',dock)
+        shell=(REPO/'desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt').read_text(encoding='utf-8')
+        self.assertIn('{error=it}, ::openOriginalContentLink,',shell)
+
+    def test_search_screen_edits_reproduce_the_original_v076_submit_body(self):
+        original=source.verified_raw(REPO)['SearchScreen.kt'].decode('utf-8')
+        previous=original
+        for old,after in reversed(source.SEARCH_SCREEN_EDITS):previous=previous.replace(after,old,1)
+        self.assertNotIn('onOpenSearchLink',previous)
+        advanced,audit=source.advance_search_screen(previous,REPO)
+        self.assertEqual(original,advanced)
+        self.assertEqual((3,False,True),(audit['edits'],audit['alreadyPresent'],audit['inverseExact']))
+        again,audit=source.advance_search_screen(original,REPO)
+        self.assertEqual((original,0,True),(again,audit['edits'],audit['alreadyPresent']))
+
+    def test_search_screen_receipt_peels_back_to_the_exact_predecessor(self):
+        original=source.verified_raw(REPO)['SearchScreen.kt'].decode('utf-8')
+        previous=original
+        for old,after in reversed(source.SEARCH_SCREEN_EDITS):previous=previous.replace(after,old,1)
+        advanced,audit=source.advance_search_screen(previous,REPO)
+        self.assertEqual(previous,source.restore_search_screen(advanced,audit))
+        with self.assertRaisesRegex(ValueError,'differs from its receipt'):
+            source.restore_search_screen(advanced.replace('onOpenSearchLink(action.url)','onOpenSearchLink(keyword)',1),audit)
+
+    def test_search_screen_without_the_known_submit_body_is_rejected(self):
+        original=source.verified_raw(REPO)['SearchScreen.kt'].decode('utf-8')
+        previous=original
+        for old,after in reversed(source.SEARCH_SCREEN_EDITS):previous=previous.replace(after,old,1)
+        with self.assertRaisesRegex(ValueError,'Unknown SearchScreen submit body'):
+            source.advance_search_screen(previous.replace('SearchSubmitAction.Ignore -> return@submitSearch','SearchSubmitAction.Ignore -> Unit',1),REPO)
+        root=self.temporary_repo();p=root/source.ARCHIVE/'SearchScreen.kt';p.write_bytes(p.read_bytes().replace(b'onOpenSearchLink(action.url)',b'onOpenSearchLink(keyword)',1))
+        with self.assertRaisesRegex(ValueError,'original bytes changed'):source.advance_search_screen(previous,root)
+
+    def test_search_page_routes_submitted_links_to_the_root_content_link_opener(self):
+        producer=(REPO/'desktop/tools/extract-upstream-search-pages.py').read_text(encoding='utf-8')
+        self.assertEqual(1,producer.count('source,searchSubmitLinkAudit=advance_search_screen(source)'))
+        ui=REPO/'desktop/src/main/kotlin/com/bilipai/desktop/ui'
+        search=(ui/'DesktopOriginalSearchRoot.kt').read_text(encoding='utf-8')
+        self.assertIn('    val openLink: (String) -> Unit,\n',search)
+        self.assertEqual(1,search.count('onOpenSearchLink={ url -> select { root.openLink(url) } },'))
+        binding=(ui/'DesktopReadyHomeFactoryBinding.kt').read_text(encoding='utf-8')
+        self.assertIn('DesktopOriginalSearchRoot(routes, ::published, repository.account, openLink)',binding)
+        mount=(ui/'DesktopReadyOriginalRootMount.kt').read_text(encoding='utf-8')
+        self.assertIn('windowBinding.searchRoot(root,routes,personalLists.preferences,services.openExternalLink)',mount)
+
+
+if __name__=='__main__':
+    unittest.main()
