@@ -21,6 +21,13 @@ baseline, from a complete Windows run of the baseline commit:
   python desktop/tools/gate_a.py check --baseline desktop/tools/gate-a-baseline.json \
       --results desktop/build/test-results --results desktop/upstream-core/build/test-results --report <json>
 
+A development card's targeted run (`:test --tests ...` plus the finalizers it triggers; TON-1340) executes only part
+of the baseline, so `check --targeted` waives exactly one rule: a baseline identity absent from the results is not
+judged. Every other rule stays: any failure outside the baseline's `failing`, a present baseline identity newly
+skipped, an added identity failing or skipped, an identity that moved to another scope, worst status over duplicates,
+and the same upstream trees. A test renamed or removed is indistinguishable from one not run, so a targeted verdict
+is never evidence that gate A passed; its report says `"mode": "targeted"`, `"fullGateEvidence": false`.
+
 Exit status: 0 gate passed, 1 gate failed, 2 invalid input.
 """
 from __future__ import annotations
@@ -194,16 +201,26 @@ def check(args) -> int:
     changed = sorted(name for name, oid in trees.items() if head.get(name) != oid)
 
     results = read_results([Path(r) for r in args.results])
+    targeted = args.targeted
     new_failures = sorted(key for key, status in results.items() if status == "failed" and key not in base_failing)
-    missing = sorted(key for key in identities - base_skipped if results.get(key, "skipped") == "skipped")
+    absent = sorted(key for key in identities - base_skipped if key not in results)
+    skipped_now = sorted(key for key in identities - base_skipped if results.get(key) == "skipped")
+    # The only rule a targeted run waives: a baseline identity that was not run.
+    missing = skipped_now if targeted else sorted(absent + skipped_now)
     fixed = sorted(key for key in base_failing if results.get(key) == "passed")
     still = sorted(key for key in base_failing if results.get(key) == "failed")
     added = sorted(key for key in results if key not in identities)
     added_skipped = [key for key in added if results[key] == "skipped"]
-    passed = not (new_failures or missing or changed or added_skipped)
+    # A baseline identity reported only under another scope did not run where the baseline ran it. A full run also
+    # counts it missing; a targeted run, which does not judge absence, needs this to keep the scopes apart.
+    absent_names = {(cls, name) for _, cls, name in absent}
+    scope_changed = [key for key in added if key[1:] in absent_names]
+    passed = not (new_failures or missing or changed or added_skipped or scope_changed)
     report = {
         "gate": "A",
+        "mode": "targeted" if targeted else "full",
         "passed": passed,
+        "fullGateEvidence": passed and not targeted,
         "candidateSha": git(repo, "rev-parse", "HEAD").strip(),
         "baselineSha": document["baselineSha"],
         "upstream": {"tag": document["upstream"].get("tag"), "commit": document["upstream"].get("commit"),
@@ -214,7 +231,10 @@ def check(args) -> int:
                    "baselineTests": len(identities), "baselineFailed": len(base_failing),
                    "newFailures": len(new_failures), "missingOrSkipped": len(missing),
                    "fixedSinceBaseline": len(fixed), "stillFailingFromBaseline": len(still),
-                   "addedSinceBaseline": len(added), "addedSkipped": len(added_skipped)},
+                   "addedSinceBaseline": len(added), "addedSkipped": len(added_skipped),
+                   "scopeChanged": len(scope_changed),
+                   "absentBaselineNotJudged": len(absent) if targeted else 0},
+        "scopeChanged": [{"scope": s, "class": c, "name": n} for s, c, n in scope_changed],
         "addedSkipped": [{"scope": s, "class": c, "name": n} for s, c, n in added_skipped],
         "newFailures": [{"scope": s, "class": c, "name": n} for s, c, n in new_failures],
         "missingOrSkipped": [{"scope": s, "class": c, "name": n} for s, c, n in missing],
@@ -225,18 +245,24 @@ def check(args) -> int:
         Path(args.report).parent.mkdir(parents=True, exist_ok=True)
         Path(args.report).write_text(json.dumps(report, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
     c = report["counts"]
-    print(f"Gate A against baseline {document['baselineSha'][:12]}: {c['tests']} tests, {c['failed']} failed; "
-          f"new failures {c['newFailures']}, missing/skipped baseline tests {c['missingOrSkipped']}, "
-          f"fixed since baseline {c['fixedSinceBaseline']}, added {c['addedSinceBaseline']} "
-          f"(skipped {c['addedSkipped']}), "
+    print(f"Gate A{' (targeted)' if targeted else ''} against baseline {document['baselineSha'][:12]}: "
+          f"{c['tests']} tests, {c['failed']} failed; "
+          f"new failures {c['newFailures']}, {'skipped' if targeted else 'missing/skipped'} baseline tests "
+          f"{c['missingOrSkipped']}, fixed since baseline {c['fixedSinceBaseline']}, added {c['addedSinceBaseline']} "
+          f"(skipped {c['addedSkipped']}), scope changed {c['scopeChanged']}, "
           f"changed upstream trees {len(changed)}")
-    for title, rows in (("NEW FAILURE", new_failures), ("MISSING OR SKIPPED", missing),
-                        ("ADDED SKIPPED", added_skipped)):
+    for title, rows in (("NEW FAILURE", new_failures), ("SKIPPED" if targeted else "MISSING OR SKIPPED", missing),
+                        ("ADDED SKIPPED", added_skipped), ("SCOPE CHANGED", scope_changed)):
         for scope, cls, name in rows[:50]:
             print(f"  {title}: [{scope}] {cls} > {name}")
     for name in changed:
         print(f"  UPSTREAM CHANGED: {name} differs from the baseline's upstream; Root must replace the baseline")
-    print("Gate A " + ("PASSED" if passed else "FAILED"))
+    if targeted:
+        print(f"  TARGETED: {c['absentBaselineNotJudged']} baseline tests were not run and not judged; "
+              "this verdict is not evidence that gate A passed")
+        print("Gate A targeted " + ("PASSED (not a full gate A pass)" if passed else "FAILED"))
+    else:
+        print("Gate A " + ("PASSED" if passed else "FAILED"))
     return 0 if passed else 1
 
 
@@ -256,6 +282,8 @@ def main(argv=None) -> int:
     c.add_argument("--baseline", required=True)
     c.add_argument("--results", action="append", required=True)
     c.add_argument("--report")
+    c.add_argument("--targeted", action="store_true",
+                   help="judge a partial run: do not require absent baseline identities (not a full gate A pass)")
     args = parser.parse_args(argv)
     try:
         return make_baseline(args) if args.mode == "baseline" else check(args)
