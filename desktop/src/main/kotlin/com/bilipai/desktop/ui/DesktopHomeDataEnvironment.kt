@@ -5,6 +5,8 @@ import com.android.purebilibili.data.model.response.*
 import com.android.purebilibili.data.repository.*
 import com.bilipai.desktop.plugins.DesktopPluginContext
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.*
 
@@ -87,6 +89,7 @@ internal class DesktopHomeDataEnvironment(
  val blockedUps:DesktopHomeBlockedRequests,
  val following:DesktopHomeFollowingRequests,
  val feedback:(String)->Unit,
+ val todayWatchComputeDispatcher:CoroutineDispatcher = Dispatchers.Default,
 ) {
  val todayWatchFeedback = DesktopTodayWatchFeedbackWriteBinding(recommendationContext, isCurrent, commitIfCurrent)
 }
