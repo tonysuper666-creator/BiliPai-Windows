@@ -233,6 +233,10 @@ object WindowsVideoCrashRegressionFixture {
                                 } == true
                             } } finally {
                                 val diagnostics = edt { buildJsonObject {
+                                    val repository = checkNotNull(refs.find<DesktopRepository>())
+                                    val guestAccountEmpty = repository.account.value == null && repository.savedAccounts.value.isEmpty()
+                                    put("guestAccountEmpty", guestAccountEmpty)
+                                    check(guestAccountEmpty) { "Comment detail must remain a guest with no saved account" }
                                     put("routeCurrent", latest.get()?.key == detail)
                                     put("requestedOidValid", detail.oid > 0L)
                                     put("requestedRootValid", detail.rootId > 0L)
