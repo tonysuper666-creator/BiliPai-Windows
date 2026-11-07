@@ -317,6 +317,41 @@ def advance_command_overlay(repo, before):
     original = sources['CommandDanmakuOverlay.kt']
     edits = []
     adapted = vote.adapt_overlay(original, edits)
+    # U 6f0696eb: AttentionCommandCard has one unconditional outside close,
+    # including attentionType 1/2. Keep this v046 card's action dispatch intact;
+    # the existing outside button already has the required desktop hit target.
+    start = adapted.index('private fun AttentionCommandCard(')
+    end = adapted.index('\n@Composable\nprivate fun CommandDanmakuCloseButton(', start)
+    before_card = adapted[start:end]
+    before_surface = '    AppSurface(\n        modifier = Modifier.fillMaxWidth(),'
+    after_surface = ('    Box(modifier = Modifier.fillMaxWidth()) {\n'
+                     '    AppSurface(\n        modifier = Modifier.fillMaxWidth()\n'
+                     '            .padding(top = VOTE_CLOSE_OVERHANG_DP.dp, end = VOTE_CLOSE_OVERHANG_DP.dp),')
+    card = _once(before_card, before_surface, after_surface, 'attention outside close container')
+    inside_close = '''            if (!showTriple) {
+                CommandDanmakuCloseButton(
+                    onDismiss = onDismiss,
+                    containerColor = Color.Transparent,
+                )
+            }
+'''
+    card = _once(card, inside_close, '', 'attention obsolete inside close')
+    need(card.endswith('    }\n}\n'), 'Attention card boundary changed')
+    # Indent the complete retained surface; no action or status code is replaced.
+    surface_start = card.index('    AppSurface(')
+    card = (card[:surface_start] + ''.join('    ' + line if line.strip() else line
+            for line in card[surface_start:-2].splitlines(keepends=True)) +
+            '        OutsideCommandDanmakuCloseButton(\n'
+            '            onDismiss = onDismiss,\n'
+            '            modifier = Modifier.align(Alignment.TopEnd),\n'
+            '        )\n    }\n}\n')
+    adapted = vote.replace(adapted, before_card, card, edits)
+    adapted = vote.replace(adapted,
+        'CommandDanmakuType.ATTENTION -> resolveAttentionCommandCardWidthDp(item.attentionType, visualDensity.fontScale)',
+        'CommandDanmakuType.ATTENTION -> resolveAttentionCommandCardWidthDp(item.attentionType, visualDensity.fontScale) + VOTE_CLOSE_OVERHANG_DP', edits)
+    # A pressed pointer belongs to this video session, even if the next video
+    # reuses the same command ID. Retire its input node with its state owner.
+    adapted = vote.replace(adapted, '            key(item.id) {', '            key(state, item.id) {', edits)
     need(vote.inverse(adapted, edits) == original, 'Whole v0.4.6 command overlay inverse failed')
     for token in ('canSubmitVideoFollowAction(', 'canSubmitVideoTripleAction(', 'isTripleSubmitting: Boolean'):
         need(token in adapted, 'The v0.4.6 command overlay lost ' + token)
