@@ -25,6 +25,7 @@ import com.android.purebilibili.core.ui.components.AppCard
 import com.android.purebilibili.core.ui.components.AppCircularProgressIndicator
 import com.android.purebilibili.core.ui.components.AppText
 import com.android.purebilibili.feature.settings.resolveThemePreferenceState
+import com.bilipai.desktop.diagnostics.DesktopThemeSwitchTrace
 import top.yukonga.miuix.kmp.theme.Colors
 import top.yukonga.miuix.kmp.theme.MiuixTheme
 import top.yukonga.miuix.kmp.theme.ThemeController
@@ -96,7 +97,10 @@ fun DesktopAppearanceTheme(
     val systemDark = rememberDesktopSystemDarkTheme()
     val scheduledDark = rememberDesktopScheduledDarkTheme(settings.darkThemeSchedule)
     val palette = remember(settings, systemDark, scheduledDark) {
-        buildDesktopAppearancePalette(settings, systemDark, scheduledDark)
+        val start = if (DesktopThemeSwitchTrace.enabled) System.nanoTime() else 0L
+        buildDesktopAppearancePalette(settings, systemDark, scheduledDark).also {
+            if (DesktopThemeSwitchTrace.enabled) DesktopThemeSwitchTrace.mark("theme.palette_built", "dark" to it.dark, "dur_ns" to System.nanoTime() - start)
+        }
     }
     val languages = systemLanguageTags ?: remember { WindowsUiLanguage.preferredTags() }
     val strings = remember(settings.appLanguage, languages) { DesktopStrings.forLanguage(settings.appLanguage, languages) }
@@ -128,6 +132,16 @@ fun DesktopAppearanceTheme(
     }
     // coil Int models (upstream R.mipmap launcher icons) resolve -night outside composition.
     SideEffect { androidx.compose.ui.res.DesktopDrawableTable.nightForImageRequests = palette.dark }
+    if (DesktopThemeSwitchTrace.enabled) {
+        val tracedDark = remember { arrayOfNulls<Boolean>(1) }
+        SideEffect {
+            if (tracedDark[0] != palette.dark) {
+                tracedDark[0] = palette.dark; DesktopThemeSwitchTrace.mark("theme.applied", "dark" to palette.dark)
+                DesktopThemeSwitchTrace.drawEpoch.intValue++
+            }
+        }
+        LaunchedEffect(palette.dark) { withFrameNanos { DesktopThemeSwitchTrace.mark("frame.next", "frame_nanos" to it) } }
+    }
     CompositionLocalProvider(
         LocalDesktopDarkTheme provides palette.dark,
         LocalMaidLottieAnimationEnabled provides settings.maidLottieAnimationEnabled,

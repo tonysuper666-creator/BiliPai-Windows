@@ -14,6 +14,7 @@ import com.android.purebilibili.core.ui.AppListItemStyle
 import com.android.purebilibili.core.ui.resolveAppIconStylePreference
 import com.android.purebilibili.core.ui.resolveAppListItemStylePreference
 import com.android.purebilibili.feature.settings.*
+import com.bilipai.desktop.diagnostics.DesktopThemeSwitchTrace
 import com.bilipai.desktop.plugins.DesktopPluginStore
 import com.materialkolor.PaletteStyle
 import com.materialkolor.Contrast
@@ -67,11 +68,15 @@ class DesktopThemePrefs(
     private val legacyWindowsDark: Boolean? = null,
 ) {
     val settings: Flow<DesktopThemeSettings> = store.snapshot(NAMESPACE)
-        .map { initialSettings() }.distinctUntilChanged()
+        .map { initialSettings().also { if (DesktopThemeSwitchTrace.enabled) DesktopThemeSwitchTrace.mark("prefs.settings_emit", "mode" to it.themeMode.name) } }
+        .distinctUntilChanged()
 
-    fun initialSettings(): DesktopThemeSettings = decodeDesktopThemeSettings(
-        store.preferences(NAMESPACE), store.preferences("theme_cache"), legacyWindowsDark,
-    )
+    fun initialSettings(): DesktopThemeSettings {
+        val start = if (DesktopThemeSwitchTrace.enabled) System.nanoTime() else 0L
+        return decodeDesktopThemeSettings(
+            store.preferences(NAMESPACE), store.preferences("theme_cache"), legacyWindowsDark,
+        ).also { if (DesktopThemeSwitchTrace.enabled) DesktopThemeSwitchTrace.mark("prefs.decode", "dur_ns" to System.nanoTime() - start) }
+    }
 
     /** Same atomic new-key + old-key removal semantics as ThemeSelectionStore. */
     suspend fun ensureMigrated() = withContext(Dispatchers.IO) {
@@ -105,20 +110,27 @@ class DesktopThemePrefs(
         "theme_selection_v1" to JsonPrimitive(style.name), "ui_preset" to null, "android_native_variant_v1" to null,
     ))
 
-    suspend fun setThemeMode(mode: AppThemeMode) = withContext(Dispatchers.IO) {
+    suspend fun setThemeMode(mode: AppThemeMode) {
+        if (DesktopThemeSwitchTrace.enabled) DesktopThemeSwitchTrace.mark("pref.request", "mode" to mode.name, "entry" to "settings")
+        withContext(Dispatchers.IO) {
+        if (DesktopThemeSwitchTrace.enabled) DesktopThemeSwitchTrace.mark("pref.io_start", "entry" to "settings")
         val caller = kotlinx.coroutines.currentCoroutineContext()
         caller.ensureActive()
         writeOriginalThemeMode(mode) { caller.ensureActive() }
-    }
+    } }
 
     suspend fun setThemeModeOwned(mode: AppThemeMode, owns: () -> Boolean,
-        withOwnedAdmission: ((() -> Unit) -> Boolean)) = withContext(Dispatchers.IO) {
+        withOwnedAdmission: ((() -> Unit) -> Boolean)) {
+        if (DesktopThemeSwitchTrace.enabled) DesktopThemeSwitchTrace.mark("pref.request", "mode" to mode.name, "entry" to "profile")
+        withContext(Dispatchers.IO) {
+        if (DesktopThemeSwitchTrace.enabled) DesktopThemeSwitchTrace.mark("pref.io_start", "entry" to "profile")
         val caller = kotlinx.coroutines.currentCoroutineContext()
         caller.ensureActive()
         if (!owns()) throw kotlinx.coroutines.CancellationException("Profile theme entry retired")
-        if (!withOwnedAdmission { caller.ensureActive();writeOriginalThemeMode(mode) { caller.ensureActive();if(!owns())throw kotlinx.coroutines.CancellationException("Profile theme entry retired") } })
+        if (DesktopThemeSwitchTrace.enabled) DesktopThemeSwitchTrace.mark("pref.admission_wait")
+        if (!withOwnedAdmission { if (DesktopThemeSwitchTrace.enabled) DesktopThemeSwitchTrace.mark("pref.admission_acquired");caller.ensureActive();writeOriginalThemeMode(mode) { caller.ensureActive();if(!owns())throw kotlinx.coroutines.CancellationException("Profile theme entry retired") } })
             throw kotlinx.coroutines.CancellationException("Profile theme entry retired")
-    }
+    } }
 
     private fun writeOriginalThemeMode(mode: AppThemeMode, checkPublication: () -> Unit) {
         store.updateThemeFromSnapshot(checkPublication) { current, _ ->
