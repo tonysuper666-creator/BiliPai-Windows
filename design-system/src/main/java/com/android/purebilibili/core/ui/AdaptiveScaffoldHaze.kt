@@ -46,12 +46,21 @@ internal fun rememberAdaptiveScaffoldHaze(userEnabled: Boolean): AdaptiveScaffol
 @Composable
 internal fun Modifier.adaptiveTopBarHazeBlur(handle: AdaptiveScaffoldHazeHandle): Modifier {
     val gate = handle.blurEnabled.value
-    val baseStyle = BlurStyles.getBlurStyle(LocalAppThemeConfig.current.blurIntensity)
+    val config = LocalAppThemeConfig.current
+    val baseStyle = BlurStyles.getBlurStyle(config.blurIntensity)
     val style = remember(baseStyle, gate) {
         HazeBlurStyle { blurEnabled(gate) }.then(baseStyle)
     }
+    // 脚手架先绘制正文、再绘制顶栏，背景与消费节点属于同一窗口。
+    // 官方背景渲染与玻璃材质开关独立，不改变各主题的布局与材质参数。
+    // 渲染器负责版本及硬件检查，失败时回退同一份正文录制。
+    val useWindowBackdrop = gate
+    val input = remember(handle.state, useWindowBackdrop) {
+        val source = HazeInput.Sources(handle.state)
+        if (useWindowBackdrop) HazeInput.Backdrop(fallback = source) else source
+    }
     return hazeBlur(
-        input = HazeInput.Sources(handle.state),
+        input = input,
         style = style,
         performanceMode = HazePerformanceMode.Quality,
     )

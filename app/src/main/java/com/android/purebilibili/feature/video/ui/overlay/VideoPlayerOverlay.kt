@@ -18,7 +18,6 @@ import android.content.ClipData
 import android.content.Context
 import android.os.Build
 import androidx.compose.animation.*
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -45,6 +44,7 @@ import com.android.purebilibili.feature.video.subtitle.rememberPiliSubtitleTools
 import com.android.purebilibili.feature.video.subtitle.PiliExternalSubtitleOverlay
 import com.android.purebilibili.feature.video.player.rememberPiliVideoContentActions
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.onVisibilityChanged
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -56,10 +56,9 @@ import androidx.compose.ui.unit.offset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.IntSize
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntRect
 import kotlin.math.roundToInt
-import com.android.purebilibili.core.ui.motion.AppMotionEasing
+import com.android.purebilibili.core.ui.motion.continuityTween
 import androidx.media3.common.Player
 import com.android.purebilibili.core.store.DanmakuSettingsScope
 import com.android.purebilibili.core.store.DanmakuPanelWidthMode
@@ -174,7 +173,6 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.lifecycle.compose.currentStateAsState
 import com.android.purebilibili.feature.video.playback.session.PendingPlaybackUserAction
 import dev.chrisbanes.haze.HazeState
 import com.android.purebilibili.core.store.ChapterDisplayMode
@@ -304,13 +302,6 @@ internal suspend fun resolveCastPlayUrl(
     }.getOrNull()
 }
 
-internal fun shouldPollInlineVideoOverlayProgress(
-    playerExists: Boolean,
-    hostLifecycleStarted: Boolean
-): Boolean {
-    return playerExists && hostLifecycleStarted
-}
-
 internal fun resolveInlineVideoOverlayProgressPollingIntervalMs(
     controlsVisible: Boolean,
     isPlaying: Boolean,
@@ -329,6 +320,7 @@ internal fun resolveOverlayPlaybackButtonPlayingState(
     playbackState: Int,
     hasPendingSeekResume: Boolean = false
 ): Boolean {
+    if (playbackState == Player.STATE_ENDED) return false
     return isPlaying || (playWhenReady && (playbackState == Player.STATE_BUFFERING || hasPendingSeekResume))
 }
 
@@ -446,17 +438,6 @@ internal fun resolveDisplayedOnlineCount(
 
 private const val SEEK_RESUME_TRANSITION_GRACE_MS = 350L
 
-// 播放器 overlay 色层动效 token：遮罩/控制栏/锁屏按钮/加载指示共用同一节奏与曲线。
-// 曲线取全局 alpha 主曲线 Continuity（AppMotionTokens 体系），时长保持既有节奏。
-private const val OVERLAY_CHROME_FADE_DURATION_MILLIS = PLAYER_GLASS_VISIBILITY_DURATION_MS
-private const val OVERLAY_CONTROL_FADE_DURATION_MILLIS = 200
-private val OverlayChromeFadeSpec =
-    tween<Float>(OVERLAY_CHROME_FADE_DURATION_MILLIS, easing = AppMotionEasing.Continuity)
-private val OverlayControlFadeSpec =
-    tween<Float>(OVERLAY_CONTROL_FADE_DURATION_MILLIS, easing = AppMotionEasing.Continuity)
-private val OverlayControlSlideSpec =
-    tween<IntOffset>(OVERLAY_CONTROL_FADE_DURATION_MILLIS, easing = AppMotionEasing.Continuity)
-
 @Composable
 fun VideoPlayerOverlay(
     state: VideoPlayerOverlayState,
@@ -479,6 +460,7 @@ private fun VideoPlayerOverlayContent(
     state: VideoPlayerOverlayState,
     actions: VideoPlayerOverlayActions,
 ) {
+    val autoHide = com.android.purebilibili.feature.video.ui.overlay.rememberPlayerControlsAutoHide(4_000L)
     val levelGestureActive = LocalPlayerLevelGestureActive.current
     val player = state.player
     val title = state.title
@@ -604,6 +586,8 @@ private fun VideoPlayerOverlayContent(
         bvid, cid, player, state.subtitleControlState, actions.subtitleControlCallbacks,
         nativeTracks = state.subtitleTracks, isFullscreen = isFullscreen,
         acquireNativeSubtitles = state.acquireNativeSubtitles,
+        nativeTracksKnown = state.nativeSubtitleTracksKnown,
+        acquisitionActive = state.nativeSubtitleAcquisitionActive,
     )
     val subtitleControlState = subtitleTools.controls
     val subtitleControlCallbacks = subtitleTools.callbacks
@@ -729,6 +713,8 @@ private fun VideoPlayerOverlayContent(
     var showRatioMenu by remember { mutableStateOf(false) }
     var showDanmakuSettings by remember { mutableStateOf(false) }
     var showVideoSettings by remember { mutableStateOf(false) }  //  新增
+    val localShareMenuSource = com.android.purebilibili.core.ui.components.rememberAppGlassMenuSource()
+    val shareMenuSource = actions.shareMenuSource ?: localShareMenuSource
     var pendingVideoShare by remember { mutableStateOf<VideoSharePayload?>(null) }
     fun openVideoShareSheet() {
         if (bvid.isEmpty()) return
@@ -852,12 +838,24 @@ private fun VideoPlayerOverlayContent(
         )
         sort == com.android.purebilibili.feature.video.ui.components.CollectionSortMode.DESCENDING
     } else collectionSession.isReversed
-    val inlineDanmakuFontScale by remember(context) {
-        SettingsManager.getDanmakuFontScale(context, DanmakuSettingsScope.PORTRAIT)
-    }.collectAsStateWithLifecycle(initialValue = 1f)
-    val fullscreenDanmakuFontScale by remember(context) {
-        SettingsManager.getDanmakuFontScale(context, DanmakuSettingsScope.LANDSCAPE)
-    }.collectAsStateWithLifecycle(initialValue = 1.2f)
+    val useTabletDanmakuStyle =
+        com.android.purebilibili.feature.video.ui.section.LocalUseTabletDanmakuStyle.current
+    val inlineDanmakuFontScale = if (useTabletDanmakuStyle) {
+        danmakuFontScale
+    } else {
+        val value by remember(context) {
+            SettingsManager.getDanmakuFontScale(context, DanmakuSettingsScope.PORTRAIT)
+        }.collectAsStateWithLifecycle(initialValue = 1f)
+        value
+    }
+    val fullscreenDanmakuFontScale = if (useTabletDanmakuStyle) {
+        danmakuFontScale
+    } else {
+        val value by remember(context) {
+            SettingsManager.getDanmakuFontScale(context, DanmakuSettingsScope.LANDSCAPE)
+        }.collectAsStateWithLifecycle(initialValue = 1.2f)
+        value
+    }
     val fullscreenLockButtonState = remember(isScreenLocked) {
         resolveFullscreenLockButtonVisualState(isScreenLocked = isScreenLocked)
     }
@@ -867,14 +865,14 @@ private fun VideoPlayerOverlayContent(
             selectedAudioQuality = selectedAudioQuality
         )
     }
-    val lifecycleOwner = androidx.lifecycle.compose.LocalLifecycleOwner.current
-    val lifecycleState by lifecycleOwner.lifecycle.currentStateAsState()
-    val hostLifecycleStarted = lifecycleState.isAtLeast(androidx.lifecycle.Lifecycle.State.STARTED)
     val configuration = LocalConfiguration.current
     val viewportIsLandscape = playerBoundsInWindow?.let { it.width > it.height }
         ?: (configuration.screenWidthDp > configuration.screenHeightDp)
     var showInsightDetails by remember(player, bvid, cid) { mutableStateOf(false) }
     val visualWorkActive = com.android.purebilibili.core.ui.rememberVisualWorkActive()
+    // 可见性属于当前布局节点；媒体身份变化不会重新触发仍在视口内的可见性回调。
+    // 进度快照与采样会话仍在 rememberVideoPlayerOverlayProgress 内按媒体身份重建。
+    var progressInViewport by remember { mutableStateOf(false) }
     // The HUD needs only the existing decoder/error summary to decide whether it is visible.
     // Network/display queries and formatted detail rows belong to the visible diagnostics.
     val insightLevel = remember(debugInfo) {
@@ -1094,29 +1092,29 @@ private fun VideoPlayerOverlayContent(
             delay(1000)
         }
     }
-    val showFullscreenLockButton by SettingsManager
-        .getShowFullscreenLockButton(context)
-        .collectAsStateWithLifecycle(initialValue = true
+    val showFullscreenLockButton by remember(context) {
+        SettingsManager.getShowFullscreenLockButton(context)
+    }.collectAsStateWithLifecycle(initialValue = true
         )
-    val showFullscreenScreenshotButton by SettingsManager
-        .getShowFullscreenScreenshotButton(context)
-        .collectAsStateWithLifecycle(initialValue = true
+    val showFullscreenScreenshotButton by remember(context) {
+        SettingsManager.getShowFullscreenScreenshotButton(context)
+    }.collectAsStateWithLifecycle(initialValue = true
         )
-    val showFullscreenBatteryLevel by SettingsManager
-        .getShowFullscreenBatteryLevel(context)
-        .collectAsStateWithLifecycle(initialValue = true
+    val showFullscreenBatteryLevel by remember(context) {
+        SettingsManager.getShowFullscreenBatteryLevel(context)
+    }.collectAsStateWithLifecycle(initialValue = true
         )
-    val showFullscreenTime by SettingsManager
-        .getShowFullscreenTime(context)
-        .collectAsStateWithLifecycle(initialValue = true
+    val showFullscreenTime by remember(context) {
+        SettingsManager.getShowFullscreenTime(context)
+    }.collectAsStateWithLifecycle(initialValue = true
         )
-    val showFullscreenActionItems by SettingsManager
-        .getShowFullscreenActionItems(context)
-        .collectAsStateWithLifecycle(initialValue = true
+    val showFullscreenActionItems by remember(context) {
+        SettingsManager.getShowFullscreenActionItems(context)
+    }.collectAsStateWithLifecycle(initialValue = true
         )
-    val showOnlineCount by SettingsManager
-        .getShowOnlineCount(context)
-        .collectAsStateWithLifecycle(initialValue = false
+    val showOnlineCount by remember(context) {
+        SettingsManager.getShowOnlineCount(context)
+    }.collectAsStateWithLifecycle(initialValue = false
         )
     val chapterDisplayMode by remember(context) { SettingsManager.getChapterDisplayMode(context) }
         .collectAsStateWithLifecycle(initialValue = ChapterDisplayMode.WITH_CONTROLS)
@@ -1131,13 +1129,13 @@ private fun VideoPlayerOverlayContent(
             )
         }
     }
-    val bottomProgressBehavior by SettingsManager
-        .getBottomProgressBehavior(context)
-        .collectAsStateWithLifecycle(initialValue = BottomProgressBehavior.ALWAYS_HIDE
+    val bottomProgressBehavior by remember(context) {
+        SettingsManager.getBottomProgressBehavior(context)
+    }.collectAsStateWithLifecycle(initialValue = BottomProgressBehavior.ALWAYS_HIDE
         )
-    val playerControlVisibility by SettingsManager
-        .getPlayerControlVisibilitySettings(context)
-        .collectAsStateWithLifecycle(
+    val playerControlVisibility by remember(context) {
+        SettingsManager.getPlayerControlVisibilitySettings(context)
+    }.collectAsStateWithLifecycle(
             initialValue = com.android.purebilibili.core.store.PlayerControlVisibilitySettings()
         )
     val displayedOnlineCount = remember(onlineCount, showOnlineCount) {
@@ -1160,9 +1158,9 @@ private fun VideoPlayerOverlayContent(
             hasExternalPlaylist = hasExternalPlaylist
         )
     }
-    val playbackCompletionBehavior by SettingsManager
-        .getPlaybackCompletionBehavior(context)
-        .collectAsStateWithLifecycle(initialValue = PlaybackCompletionBehavior.CONTINUE_CURRENT_LOGIC
+    val playbackCompletionBehavior by remember(context) {
+        SettingsManager.getPlaybackCompletionBehavior(context)
+    }.collectAsStateWithLifecycle(initialValue = PlaybackCompletionBehavior.CONTINUE_CURRENT_LOGIC
         )
     val completionOptions = remember {
         listOf(PlaybackCompletionBehavior.STOP_AFTER_CURRENT, PlaybackCompletionBehavior.PLAY_IN_ORDER,
@@ -1171,9 +1169,9 @@ private fun VideoPlayerOverlayContent(
     }
     val completionLabels = remember { completionOptions.map { it.label } }
     // The legacy preference key now enables the inline-player Haze status-bar backdrop.
-    val immersiveVideoPageStatusBar by SettingsManager
-        .getHideVideoPageStatusBar(context)
-        .collectAsStateWithLifecycle(
+    val immersiveVideoPageStatusBar by remember(context) {
+        SettingsManager.getHideVideoPageStatusBar(context)
+    }.collectAsStateWithLifecycle(
             initialValue = SettingsManager.getHideVideoPageStatusBarSync(context),
         )
     val playerChromeStatusBarVisible = !resolveVideoDetailSystemBarsVisibilityPolicy(
@@ -1184,15 +1182,28 @@ private fun VideoPlayerOverlayContent(
         isPortraitFullscreen = false,
     ).hideStatusBars
 
-    DisposableEffect(player) {
+    DisposableEffect(player, hasPendingSeekResume) {
         currentSpeed = player.playbackParameters.speed
-        val speedListener = object : Player.Listener {
+        fun updatePlayingState() {
+            isPlaying = resolveOverlayPlaybackButtonPlayingState(
+                isPlaying = player.isPlaying,
+                playWhenReady = player.playWhenReady,
+                playbackState = player.playbackState,
+                hasPendingSeekResume = hasPendingSeekResume,
+            )
+        }
+        updatePlayingState()
+        val playbackListener = object : Player.Listener {
+            override fun onEvents(player: Player, events: Player.Events) {
+                updatePlayingState()
+            }
+
             override fun onPlaybackParametersChanged(playbackParameters: androidx.media3.common.PlaybackParameters) {
                 currentSpeed = playbackParameters.speed
             }
         }
-        player.addListener(speedListener)
-        onDispose { player.removeListener(speedListener) }
+        player.addListener(playbackListener)
+        onDispose { player.removeListener(playbackListener) }
     }
 
 
@@ -1229,16 +1240,17 @@ private fun VideoPlayerOverlayContent(
     // 先打开设备面板；只有用户选择搜索 DLNA 时才请求原始局域网权限。
     val onCastClickAction = { showCastDialog = true }
 
-    val progressState = rememberVideoPlayerOverlayProgress(
+    val progressSamplingActive = com.android.purebilibili.feature.video.ui.overlay
+        .rememberPlayerProgressSamplingActive()
+    val progressState = state.progressSource ?: rememberVideoPlayerOverlayProgress(
         player = player,
         bvid = bvid,
         cid = cid,
         videoDuration = videoDuration,
         controlsVisible = isVisible,
-        hostLifecycleStarted = hostLifecycleStarted,
+        samplingActive = progressSamplingActive && progressInViewport && state.progressSamplingActive,
         hasPendingSeekResume = hasPendingSeekResume,
         highFrequencyProgressActive = highFrequencyProgressActive,
-        onPlayingChanged = { isPlaying = it },
     )
     val effectiveProgressState = remember(progressState, pluginPlaybackState) {
         derivedStateOf {
@@ -1265,6 +1277,7 @@ private fun VideoPlayerOverlayContent(
         seekResumeTransitionGraceActive,
         isPlaybackTransitionPending,
         hasPendingSeekResume,
+        player.playbackState,
         player.playWhenReady,
         player.isPlaying,
         debugInfo.bandwidthEstimate
@@ -1277,6 +1290,7 @@ private fun VideoPlayerOverlayContent(
                 hasPendingSeekResume,
             playWhenReady = player.playWhenReady,
             isPlaying = player.isPlaying,
+            playbackState = player.playbackState,
             bandwidthEstimate = debugInfo.bandwidthEstimate
         )
     }
@@ -1287,13 +1301,14 @@ private fun VideoPlayerOverlayContent(
         )
     }
 
-    val playerMenuVisible = bottomControlFloatingPanelVisible || showQualityMenu ||
+    val playerMenuVisible = pendingVideoShare != null || bottomControlFloatingPanelVisible || showQualityMenu ||
         showSpeedMenu || showRatioMenu || showEpisodeMenu || showEpisodeSourceMenu ||
         showChapterList || showDanmakuSettings || showVideoSettings || showCastDialog ||
-        showSponsorSegments || showEnableSponsorPlugin || showPlayerInformation || danmakuComposerVisible ||
-        endDrawerVisible || landscapeCommentPanelVisible
+        showSponsorSegments || showEnableSponsorPlugin || showPlayerInformation || danmakuComposerVisible
+    // 侧栏仍参与面板交互状态，但不阻止播放器控件超时隐藏。
+    val floatingPanelVisible = playerMenuVisible || endDrawerVisible || landscapeCommentPanelVisible
     val latestPanelVisibility by rememberUpdatedState(actions.onFloatingPanelVisibilityChange)
-    LaunchedEffect(playerMenuVisible) { latestPanelVisibility(playerMenuVisible) }
+    LaunchedEffect(floatingPanelVisible) { latestPanelVisibility(floatingPanelVisible) }
     DisposableEffect(Unit) { onDispose { latestPanelVisibility(false) } }
 
     LaunchedEffect(
@@ -1304,7 +1319,9 @@ private fun VideoPlayerOverlayContent(
         showCdnDiagnostics,
         danmakuComposerVisible,
         levelGestureActive,
+        autoHide.timeoutMillis,
     ) {
+        val timeout = autoHide.timeoutMillis ?: return@LaunchedEffect
         if (!danmakuComposerVisible && !levelGestureActive && !showCdnDiagnostics &&
             shouldAutoHideInlineControlsAfterDelay(
                 controlsVisible = isVisible,
@@ -1313,8 +1330,8 @@ private fun VideoPlayerOverlayContent(
                 floatingPanelVisible = playerMenuVisible
             )
         ) {
-            delay(4000)
-            if (!danmakuComposerVisible && !levelGestureActive && !showCdnDiagnostics &&
+            delay(timeout)
+            if (autoHide.canHide() && !danmakuComposerVisible && !levelGestureActive && !showCdnDiagnostics &&
                 shouldAutoHideInlineControlsAfterDelay(
                     controlsVisible = isVisible,
                     isPlaying = effectiveIsPlaying,
@@ -1398,7 +1415,12 @@ private fun VideoPlayerOverlayContent(
                 player = player,
                 isShowingPauseIcon = isPlaying
             )
-            isPlaying = !isPlaying
+            isPlaying = resolveOverlayPlaybackButtonPlayingState(
+                isPlaying = player.isPlaying,
+                playWhenReady = player.playWhenReady,
+                playbackState = player.playbackState,
+                hasPendingSeekResume = hasPendingSeekResume,
+            )
         }
     }
 
@@ -1436,7 +1458,13 @@ private fun VideoPlayerOverlayContent(
         }
     }
 
-    Box(modifier = Modifier.fillMaxSize().playerActionBounds { playerBoundsInWindow = it }) {
+    Box(
+        modifier = Modifier
+            .then(autoHide.focusModifier)
+            .fillMaxSize()
+            .onVisibilityChanged(minFractionVisible = 0f) { progressInViewport = it }
+            .playerActionBounds { playerBoundsInWindow = it },
+    ) {
         val subtitleChromeHeightSeed = with(androidx.compose.ui.platform.LocalDensity.current) {
             piliPlayerBottomControlsHeightDp(showViewPointMarkers && viewPoints.isNotEmpty()).dp.roundToPx()
         }
@@ -1617,6 +1645,7 @@ private fun VideoPlayerOverlayContent(
                     onLikeLongClick = actions.onTripleAction,
                     onDislikeClick = onDislike,
                     onCoinClick = onCoin,
+                    shareMenuSource = shareMenuSource,
                     onShareClick = { onShare?.invoke() ?: openVideoShareSheet() },
                     onCastClick = onCastClickAction,
                     showCastButton = playerControlVisibility.showCastButton,
@@ -1956,15 +1985,19 @@ private fun VideoPlayerOverlayContent(
             }
         }
 
+        val showCenterPlaybackControl = showPlayerChrome &&
+            (pluginPlaybackStatus.first || player.playbackState == Player.STATE_READY ||
+                player.playbackState == Player.STATE_BUFFERING || player.playbackState == Player.STATE_ENDED) &&
+            !isSeekScrubbing && !endDrawerVisible && !landscapeCommentPanelVisible && !showInsightDetails
+
         CenterPlaybackControl(
-            visible = showPlayerChrome &&
-                (pluginPlaybackStatus.first || player.playbackState == Player.STATE_READY || player.playbackState == Player.STATE_ENDED) &&
-                centerLoadingUiState == null && !isSeekScrubbing &&
-                !endDrawerVisible && !landscapeCommentPanelVisible && !showInsightDetails,
+            visible = showCenterPlaybackControl,
             isPlaying = effectiveIsPlaying,
             onPlayPause = { togglePlayPause() },
             diameter = if (isFullscreen) 72.dp else 56.dp,
             viewportTopInset = if (isFullscreen) 0.dp else statusBarBackdropHeight,
+            isBuffering = hasRenderedFirstFrame && !pluginPlaybackStatus.first && player.playWhenReady &&
+                (player.playbackState == Player.STATE_BUFFERING || centerLoadingUiState != null),
         )
 
         // --- 5.4  缓冲加载指示器 ---
@@ -1975,7 +2008,7 @@ private fun VideoPlayerOverlayContent(
                 playWhenReady = player.playWhenReady,
                 hasRenderedFirstFrame = hasRenderedFirstFrame,
                 suppressTransientOverlays = suppressTransientOverlaysForTransition,
-            ) && centerLoadingUiState == null,
+            ) && centerLoadingUiState == null && !showCenterPlaybackControl,
             modifier = Modifier.align(Alignment.Center),
             // 首帧前整段不参与合成，出现时也硬切：淡入会让「已有画面后的再缓冲」
             // 看起来像又一次进场闪烁。
@@ -1989,7 +2022,7 @@ private fun VideoPlayerOverlayContent(
         }
 
         AnimatedVisibility(
-            visible = centerLoadingUiState != null,
+            visible = hasRenderedFirstFrame && centerLoadingUiState != null && !showCenterPlaybackControl,
             modifier = Modifier.align(Alignment.Center),
             enter = fadeIn(OverlayControlFadeSpec),
             exit = fadeOut(OverlayControlFadeSpec)
@@ -2026,7 +2059,7 @@ private fun VideoPlayerOverlayContent(
 
         // --- 5.5  清晰度切换中 Loading 指示器 ---
         AnimatedVisibility(
-            visible = isQualitySwitching && centerLoadingUiState == null,
+            visible = isQualitySwitching && centerLoadingUiState == null && !showCenterPlaybackControl,
             modifier = Modifier.align(Alignment.Center),
             enter = fadeIn(OverlayControlFadeSpec),
             exit = fadeOut(OverlayControlFadeSpec)
@@ -2055,6 +2088,7 @@ private fun VideoPlayerOverlayContent(
         com.android.purebilibili.feature.video.ui.components.PlayerNativeMenuTheme {
         VideoShareSheetHost(
             payload = pendingVideoShare,
+            glassSource = shareMenuSource,
             onDismiss = { pendingVideoShare = null },
         )
 
@@ -2127,10 +2161,10 @@ private fun VideoPlayerOverlayContent(
                     fontScale = danmakuFontScale,
                     inlineFontScale = inlineDanmakuFontScale,
                     fullscreenFontScale = fullscreenDanmakuFontScale,
-                    onInlineFontScaleChange = { value ->
+                    onInlineFontScaleChange = if (useTabletDanmakuStyle) null else { value ->
                         scope.launch { SettingsManager.setDanmakuFontScale(context, value, DanmakuSettingsScope.PORTRAIT) }
                     },
-                    onFullscreenFontScaleChange = { value ->
+                    onFullscreenFontScaleChange = if (useTabletDanmakuStyle) null else { value ->
                         scope.launch { SettingsManager.setDanmakuFontScale(context, value, DanmakuSettingsScope.LANDSCAPE) }
                     },
                     showAdvancedSection = true,
@@ -2238,6 +2272,16 @@ private fun VideoPlayerOverlayContent(
         if (showVideoSettings) {
             CompositionLocalProvider(com.android.purebilibili.core.ui.components.LocalAppGlassMenuSource provides moreSource) {
                 VideoSettingsPanel(
+                    playerDiagnosticsEnabled = insightMode != PlayerSettingsStore.PlayerInsightMode.OFF,
+                    onPlayerDiagnosticsChange = { enabled ->
+                        if (!enabled) showInsightDetails = false
+                        scope.launch {
+                            SettingsManager.setPlayerInsightMode(
+                                context,
+                                if (enabled) PlayerSettingsStore.PlayerInsightMode.ALWAYS else PlayerSettingsStore.PlayerInsightMode.OFF,
+                            )
+                        }
+                    },
                     chapterDisplayMode = chapterDisplayMode,
                     onChapterDisplayModeChange = { mode ->
                         scope.launch { SettingsManager.setChapterDisplayMode(context, mode) }
@@ -2799,9 +2843,9 @@ fun LandscapeEndDrawer(
             foldPosture = foldPosture,
         )
     }
-    val cardAnimationEnabled by SettingsManager
-        .getCardAnimationEnabled(context)
-        .collectAsStateWithLifecycle(initialValue = true
+    val cardAnimationEnabled by remember(context) {
+        SettingsManager.getCardAnimationEnabled(context)
+    }.collectAsStateWithLifecycle(initialValue = true
         )
     val overlayMotionTier = resolveEffectiveMotionTier(
         baseTier = deviceUiProfile.motionTier,
@@ -2920,7 +2964,6 @@ fun LandscapeEndDrawer(
                                     isFollowing = isFollowed,
                                     onFollowClick = onToggleFollow,
                                 ),
-                                enabled = followStatusKnown,
                                 colors = ButtonDefaults.buttonColors(
                                     containerColor = if (isFollowed) AppContentColors.primaryText().copy(0.2f) else AppContentColors.accent(),
                                     contentColor = if (isFollowed) AppContentColors.primaryText() else AppContentColors.onAccent(),
@@ -2930,10 +2973,10 @@ fun LandscapeEndDrawer(
                                     vertical = 0.dp
                                 ),
                                 modifier = Modifier.heightIn(min = layoutPolicy.followButtonHeightDp.dp),
-                                shape = AppShapes.container(ContainerLevel.Card)
+                                shape = com.android.purebilibili.feature.video.ui.VideoDetailShapes.action()
                             ) {
                                 AppText(
-                                    if (!followStatusKnown) "—" else if (isFollowed) "已关注" else "+ 关注",
+                                    if (!followStatusKnown) "待确认" else if (isFollowed) "已关注" else "+ 关注",
                                     fontSize = layoutPolicy.followButtonFontSp.sp,
                                     maxLines = 1,
                                     softWrap = false,
@@ -3142,7 +3185,7 @@ private fun TripleLikeInteractionButton(
         animationSpec = if (isLongPressing) {
             androidx.compose.animation.core.tween(durationMillis = progressDuration, easing = LinearEasing)
         } else {
-            androidx.compose.animation.core.tween(durationMillis = 200, easing = AppMotionEasing.Continuity)
+            continuityTween(200)
         },
         label = "tripleLikeProgress",
         finishedListener = { progress ->

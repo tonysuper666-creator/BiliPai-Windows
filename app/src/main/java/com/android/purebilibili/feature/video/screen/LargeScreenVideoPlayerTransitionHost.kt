@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.graphicsLayer
+
 import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.layout
@@ -105,7 +106,7 @@ internal fun LargeScreenVideoPlayerTransitionHost(
     }
     val isNowPlayingBar = transition.sourceChromeSnapshot?.isNowPlayingBar == true
     val nativeBarBitmap = if (transition.enabled && isNowPlayingBar) {
-        CardPositionManager.lastClickedNativeCardBitmap
+        CardPositionManager.nativeVideoCardBitmapFor(transition.sourceChromeSnapshot)
     } else null
     val isReturning = { isReturningProvider() }
     val sourceChromeAlpha: () -> Float = {
@@ -166,7 +167,8 @@ internal fun LargeScreenVideoPlayerTransitionHost(
             local.copy(offsetYPx = local.offsetYPx + origin().y.roundToInt())
         }
     }
-    val corner = AppShapes.mediaCoverCornerDp()
+    val corner = transition.sourceChromeSnapshot?.coverPresentation?.cornerRadiusDp?.dp
+        ?: AppShapes.mediaCoverCornerDp()
     val followsRelatedSidebarDrag = transition.enabled &&
         transition.sourceLayout == com.android.purebilibili.core.ui.transition.VideoCardSourceLayout.SIDE_BY_SIDE
     val playerViewportModifier = modifier
@@ -229,22 +231,28 @@ internal fun LargeScreenVideoPlayerTransitionHost(
                 clipCornerDp = corner,
                 modifier = Modifier.fillMaxSize().zIndex(1f),
                 alphaProvider = {
-                    if (shouldHideLargeScreenVideoAfterReturn(
+                    val hideAfterReturn = shouldHideLargeScreenVideoAfterReturn(
                         isCommittedReturn, phaseProvider(),
-                    )) 0f else if (nativeBarBitmap != null) {
-                        1f - sourceChromeAlpha()
+                    )
+                    val result = if (hideAfterReturn) 0f else if (nativeBarBitmap != null) {
+                        // 源卡片顶栏截图的显现度。进入时 sourceChrome 从 1 淡到 0，
+                        // 封面要跟着一起淡出，所以是正相关；写成 1 - sourceChrome
+                        // 会在源 chrome 消失后把封面画成全不透明，一直盖住播放器。
+                        sourceChromeAlpha()
                     } else if (!hasRenderedFirstFrame) {
                         1f
                     } else {
                         // Use the same handoff as the source information band; geometry
                         // completion alone must not expose the cover ahead of its chrome.
                         // Seek/return owns the pixels immediately if it interrupts entry.
-                        if (isCommittedReturn || isReturning() ||
-                            phaseProvider() == VideoCardTransitionBackgroundPhase.RETURNING
-                        ) sourceChromeAlpha() else {
+                        // 只有真正在返回时才用源卡片 chrome。
+                        // phase 状态机在「从底部正在播放条进入」时也会报 RETURNING，
+                        // 那时用 sourceChromeAlpha（恒为 1）会把封面画成不透明、盖住播放器。
+                        if (isCommittedReturn || isReturning()) sourceChromeAlpha() else {
                             maxOf(sourceChromeAlpha(), entryCoverAlphaProvider())
                         }
                     }
+                    result
                 },
             )
         }

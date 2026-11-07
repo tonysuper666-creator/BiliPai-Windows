@@ -6,6 +6,9 @@ import java.nio.file.LinkOption.NOFOLLOW_LINKS
 import java.nio.file.Path
 import java.security.MessageDigest
 
+/** A non-Windows build writes a named placeholder instead of a worker image; only that build has no JS lane. */
+internal val DESKTOP_JS_WORKER_BUILT: Boolean get() = !DESKTOP_JS_WORKER_CATALOG_SHA256.startsWith("unavailable:")
+
 /** Only the build's fixed, individually verified worker resources can form a guest classpath. */
 class DesktopJsWorkerResources(private val resources: Path,
     private val expectedCatalogSha256: String = DESKTOP_JS_WORKER_CATALOG_SHA256) {

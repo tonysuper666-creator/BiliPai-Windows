@@ -398,6 +398,13 @@ fun DanmakuSettingsPanel(
                     onBack = if (glass && showExtraSettings) ({ showExtraSettings = false }) else null,
                 ) {
                     if (!showExtraSettings) {
+                        if (com.android.purebilibili.feature.video.ui.section.LocalUseTabletDanmakuStyle.current) {
+                            AppText(
+                                "平板非全屏与全屏共用以下弹幕样式",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = panelColors.supportingColor,
+                            )
+                        }
                         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                             AppText("屏蔽规则", modifier = Modifier.weight(1f), style = MaterialTheme.typography.labelLarge)
                             if (showBlockRuleEditor) AppTextButton(onClick = { showBlockManager = true }) { AppText("屏蔽管理($totalBlockRuleCount)") }
@@ -492,7 +499,7 @@ fun DanmakuSettingsPanel(
                                 })
                             }
                             if (showSmartOcclusionSection) {
-                                DanmakuSettingsToggle("智能避脸遮挡", smartOcclusion, onSmartOcclusionChange)
+                                DanmakuSettingsToggle("智能弹幕遮罩", smartOcclusion, onSmartOcclusionChange)
                             }
                         }
                         if (configuration.orientation == android.content.res.Configuration.ORIENTATION_PORTRAIT) {
@@ -1035,15 +1042,15 @@ fun DanmakuSettingsPanel(
                                 horizontalArrangement = Arrangement.SpaceBetween,
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Column {
+                                Column(Modifier.weight(1f).padding(end = 16.dp)) {
                                     AppText(
-                                        text = "智能避脸遮挡",
+                                        text = "智能弹幕遮罩",
                                         color = panelColors.titleColor,
                                         style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Medium)
                                     )
                                     Spacer(modifier = Modifier.height(2.dp))
                                     AppText(
-                                        text = "实时识别人脸并避让弹幕轨道",
+                                        text = "使用视频提供的遮罩避让人物，不改变显示区域；无可用遮罩时不生效",
                                         color = panelColors.supportingColor,
                                         style = MaterialTheme.typography.bodySmall
                                     )

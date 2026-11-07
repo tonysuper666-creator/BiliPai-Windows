@@ -493,22 +493,33 @@ private fun PluginContent(
         val activeItems = if (inDetailView) detailItems else mediaItems
         val flattenedItems = flattenMediaItems(activeItems)
         if (isGridLayout && !inDetailView) {
-            items(
-                count = flattenedItems.size,
-                key = { index -> "js_grid_${index}_${flattenedItems[index].id}" },
-            ) { index ->
-                val rowItem = flattenedItems[index]
-                BiliPaiJsPosterCard(
-                    item = rowItem,
-                    onPlay = { onPlayItem(rowItem) },
-                    onOpen = {
-                        rowItem.link?.takeIf { it.isNotBlank() }?.let { link ->
-                            onOpenLink(BiliPaiJsDetailEntry(link = link, title = rowItem.title))
+            val posterKeys = flattenedItems.mapIndexed { index, item -> "js_grid_${index}_${item.id}" }
+            val columns = gridColumns.coerceAtLeast(1)
+            com.android.purebilibili.feature.home.resolveHomeFeedAlignedRows(flattenedItems.size, columns)
+                .forEach { row ->
+                    item(key = "js_poster_row_${posterKeys[row.first]}", span = StaggeredGridItemSpan.FullLine) {
+                        com.android.purebilibili.feature.home.HomeAlignedVideoRow(
+                            indices = row,
+                            itemKeys = posterKeys,
+                            columns = columns,
+                            horizontalArrangement = Arrangement.spacedBy(12.dp),
+                            modifier = Modifier.fillMaxWidth(),
+                        ) { index, cardModifier ->
+                            val rowItem = flattenedItems[index]
+                            BiliPaiJsPosterCard(
+                                item = rowItem,
+                                modifier = cardModifier,
+                                onPlay = { onPlayItem(rowItem) },
+                                onOpen = {
+                                    rowItem.link?.takeIf { it.isNotBlank() }?.let { link ->
+                                        onOpenLink(BiliPaiJsDetailEntry(link = link, title = rowItem.title))
+                                    }
+                                },
+                                onPreviewImage = onPreviewImage,
+                            )
                         }
-                    },
-                    onPreviewImage = onPreviewImage,
-                )
-            }
+                    }
+                }
         } else {
             items(
                 count = flattenedItems.size,
@@ -577,6 +588,7 @@ private fun resolveBiliPaiJsImagePreviewRequest(
 @Composable
 private fun BiliPaiJsPosterCard(
     item: BiliPaiJsMediaItem,
+    modifier: Modifier = Modifier,
     onPlay: () -> Unit,
     onOpen: () -> Unit,
     onPreviewImage: (List<String>, Int, Rect?) -> Unit
@@ -592,7 +604,7 @@ private fun BiliPaiJsPosterCard(
     val canOpenDetail = !item.isPlayable && !item.link.isNullOrBlank()
     val sourceRectState = rememberImagePreviewSourceRect()
     AppSurface(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .clip(AppShapes.container(ContainerLevel.Card))
             .combinedClickable(

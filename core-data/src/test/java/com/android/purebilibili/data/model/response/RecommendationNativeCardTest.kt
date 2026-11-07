@@ -8,6 +8,16 @@ import org.junit.Test
 
 class RecommendationNativeCardTest {
     @Test
+    fun mobileRecommendationPreservesPublishTimeWithoutInventingMissingDates() {
+        val published = json.decodeFromString<MobileFeedItem>(
+            """{"goto":"av","param":"123","pubdate":1793188800}"""
+        ).toVideoItem()
+        assertEquals(1793188800L, published.pubdate)
+        assertEquals(0L, json.decodeFromString<MobileFeedItem>("""{"goto":"av","param":"123"}""").toVideoItem().pubdate)
+        assertEquals(0L, MobileFeedItem(pubdate = -1L).toVideoItem().pubdate)
+    }
+
+    @Test
     fun endpointStatusFlagsSurviveBothRecommendationConversions() {
         val payload = """{"is_steins":1,"is_lesson_video":true,"is_charging_arc":1,"is_union_video":1}"""
         val expected = listOf("充电专属", "课堂", "合作", "互动")

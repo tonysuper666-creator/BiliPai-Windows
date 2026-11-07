@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.graphics.layer.drawLayer
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.rememberGraphicsLayer
 import kotlinx.coroutines.CompletableDeferred
 import top.yukonga.miuix.kmp.blur.Backdrop
@@ -21,10 +22,13 @@ import top.yukonga.miuix.kmp.blur.rememberLayerBackdrop
 @Stable
 class ChromeBackdropSource internal constructor(
     val backdrop: Backdrop,
-    val modifier: Modifier,
+    private val recordingModifier: Modifier,
+    private val pausedModifier: Modifier,
+    private val recordingEnabled: State<Boolean>,
     private val recorded: State<Boolean>,
 ) {
-    val isReady: Boolean get() = recorded.value
+    val modifier: Modifier get() = if (recordingEnabled.value) recordingModifier else pausedModifier
+    val isReady: Boolean get() = recordingEnabled.value && recorded.value
 }
 
 /**
@@ -38,17 +42,23 @@ class ChromeBackdropSource internal constructor(
  * another offscreen raster pass. Miuix still owns coordinates and backdrop lifecycle.
  * Set [drawContentToScreen] to false for hidden captures: record without an alpha-zero layer
  * that can cause the renderer to skip drawing the source content.
+ * [isolateContentDrawing] explicitly isolates live child commands for navigation/home sources;
+ * other callers retain their existing drawing structure by default.
+ * [recordingEnabled] 暂停时移除录制节点而保留源身份；普通内容照常显示，隐藏采样仍不显示。
  */
 @Composable
 fun rememberChromeBackdropSource(
     drawContentToScreen: Boolean = true,
     recordingBackground: Color = Color.Unspecified,
+    isolateContentDrawing: Boolean = false,
+    recordingEnabled: Boolean = LocalChromeBackdropRecordingAllowed.current,
 ): ChromeBackdropSource {
     val contentLayer = rememberGraphicsLayer()
     // Theme frames update the recording in draw, without replacing the source passed
     // to consumers or rebuilding its modifier chain. Child-layer invalidations still
     // record fresh content; this is not a frozen backdrop cache.
     val recordingBackgroundState = rememberUpdatedState(recordingBackground)
+    val recordingEnabledState = rememberUpdatedState(recordingEnabled)
     val recorded = remember(contentLayer) { mutableStateOf(false) }
     val firstRecording = remember(contentLayer) { CompletableDeferred<Unit>() }
     LaunchedEffect(firstRecording) {
@@ -60,11 +70,13 @@ fun rememberChromeBackdropSource(
         // Publish once, after the source has actually recorded; never guess using a delay.
         firstRecording.complete(Unit)
     })
-    return remember(backdrop, contentLayer, drawContentToScreen) {
+    return remember(backdrop, contentLayer, drawContentToScreen, isolateContentDrawing) {
         ChromeBackdropSource(
             backdrop = ContinuousBackdrop(backdrop),
+            recordingEnabled = recordingEnabledState,
             recorded = recorded,
-            modifier = Modifier
+            pausedModifier = if (drawContentToScreen) Modifier else Modifier.drawWithContent { },
+            recordingModifier = Modifier
                 .layerBackdrop(backdrop)
                 .drawWithContent {
                     contentLayer.record {
@@ -78,7 +90,10 @@ fun rememberChromeBackdropSource(
                         this@drawWithContent.drawContent()
                     }
                     if (drawContentToScreen) drawLayer(contentLayer)
-                },
+                }
+                // 显式用于首页/导航的采样壳：背景色或外层录制失效时只引用内层指令。
+                // Auto 图层不强制离屏纹理；子内容自行失效仍刷新，不冻结图片或视频。
+                .then(if (isolateContentDrawing) Modifier.graphicsLayer() else Modifier),
         )
     }
 }

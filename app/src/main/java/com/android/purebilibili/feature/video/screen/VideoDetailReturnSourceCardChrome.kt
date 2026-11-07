@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Alarm
+import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material.icons.outlined.PlayCircle
 import androidx.compose.material.icons.outlined.Subtitles
 import androidx.compose.material.icons.outlined.Visibility
@@ -175,6 +176,18 @@ internal fun resolveVideoDetailReturnInfoSurfaceSpec(
     )
 }
 
+/** 封面与真实播放器共用的媒体透明度；普通详情保持可见，底部入口与源快照互补交接。 */
+internal fun resolveVideoDetailNowPlayingMediaAlpha(
+    ownsNowPlayingTransition: Boolean,
+    isCommittedCardReturn: Boolean,
+    phase: VideoCardTransitionBackgroundPhase,
+    sourceChromeAlpha: Float,
+): Float {
+    if (!ownsNowPlayingTransition) return 1f
+    if (isCommittedCardReturn && phase == VideoCardTransitionBackgroundPhase.IDLE) return 0f
+    return 1f - sourceChromeAlpha
+}
+
 @Suppress("UNUSED_PARAMETER")
 internal fun resolveVideoDetailFlyingSourceChromeAlpha(
     morphDepthProgress: Float,
@@ -293,7 +306,7 @@ internal fun BoxScope.VideoDetailReturnSourceCardChrome(
     val isNowPlayingBar = sourceChromeSnapshot?.isNowPlayingBar == true
     // The complete bar (including buttons and material) is rendered by the media overlay.
     // Rebuilding an info band here would double-paint it over the frozen native pixels.
-    if (isNowPlayingBar && CardPositionManager.lastClickedNativeCardBitmap != null) return
+    if (isNowPlayingBar && CardPositionManager.nativeVideoCardBitmapFor(sourceChromeSnapshot) != null) return
 
     val density = LocalDensity.current
     val configuration = LocalConfiguration.current
@@ -323,6 +336,7 @@ internal fun BoxScope.VideoDetailReturnSourceCardChrome(
     val frozenInfoAnchorYPx = layout.infoAnchorYInViewportPx * layout.sourceScale
     val frozenCardAnchorXPx = layout.cardAnchorXInViewportPx * layout.sourceScale
     val frozenCardAnchorYPx = layout.cardAnchorYInViewportPx * layout.sourceScale
+    val preserveNativeViewport = miuixHost.enabled && miuixHost.motionSpec?.reducedMotion != true
 
     // FillWidthTop compensation cancels the outer scale on both axes. Source-pixel
     // reconstruction is therefore constant (1 / sourceScale), even while depth changes.
@@ -345,7 +359,7 @@ internal fun BoxScope.VideoDetailReturnSourceCardChrome(
             detailContentLoading = detailContentLoading,
             followProgressEnabled = followProgressEnabledProvider(),
             isCommittedCardReturn = isCommittedCardReturn,
-            preserveNativeViewport = miuixHost.enabled && miuixHost.motionSpec?.reducedMotion != true,
+            preserveNativeViewport = preserveNativeViewport,
         )
         return resolveVideoDetailHorizontalInfoClipLeftPx(
             viewportWidthPx = viewportWidthPx,
@@ -403,11 +417,11 @@ internal fun BoxScope.VideoDetailReturnSourceCardChrome(
             isNowPlayingBar = isNowPlayingBar,
             followProgressEnabled = followProgressEnabledProvider(),
             isCommittedCardReturn = isCommittedCardReturn,
-            preserveNativeViewport = miuixHost.enabled && miuixHost.motionSpec?.reducedMotion != true,
+            preserveNativeViewport = preserveNativeViewport,
         )
     }
 
-    val nativeCardLayer = CardPositionManager.lastClickedNativeCardLayer
+    val nativeCardLayer = CardPositionManager.nativeVideoCardLayerFor(sourceChromeSnapshot)
     if (nativeCardLayer != null) {
         val infoCropXPx = layout.coverOffsetXPx + layout.coverWidthPx
         val infoCropYPx = frozenInfoAnchorYPx
@@ -440,8 +454,12 @@ internal fun BoxScope.VideoDetailReturnSourceCardChrome(
                 isNowPlayingBar = isNowPlayingBar,
                 followProgressEnabled = followProgressEnabledProvider(),
                 isCommittedCardReturn = isCommittedCardReturn,
+                preserveNativeViewport = preserveNativeViewport,
             )
         }.drawWithContent {
+            if (CardPositionManager.nativeVideoCardLayerFor(sourceChromeSnapshot) !== nativeCardLayer) {
+                return@drawWithContent
+            }
             val inverse = sourcePixelInverseScale
             clipRect(left = horizontalInfoClipLeftPx().coerceAtMost(size.width)) {
                 scale(
@@ -620,7 +638,7 @@ internal fun BoxScope.VideoDetailReturnSourceCardChrome(
                 .landingLayer()
                 .infoSurface(AppShapes.bottomRounded(AppSpacingTokens.Small))
                 .padding(
-                    horizontal = AppSpacingTokens.Small + AppSpacingTokens.Micro,
+                    horizontal = 6.dp,
                     vertical = AppSpacingTokens.Small,
                 ),
         ) {
@@ -656,7 +674,7 @@ internal fun VideoDetailReturnCoverChrome(
     },
     inverseScaleYProvider: () -> Float = inverseScaleXProvider,
 ) {
-    val nativeBarBitmap = CardPositionManager.lastClickedNativeCardBitmap
+    val nativeBarBitmap = CardPositionManager.nativeVideoCardBitmapFor(sourceChromeSnapshot)
     if (
         nativeBarBitmap != null &&
         shouldDrawNativeCoverOverlay(
@@ -666,6 +684,9 @@ internal fun VideoDetailReturnCoverChrome(
     ) {
         Box(
             modifier = modifier.drawWithContent {
+                if (CardPositionManager.nativeVideoCardBitmapFor(sourceChromeSnapshot) !== nativeBarBitmap) {
+                    return@drawWithContent
+                }
                 scale(
                     // The media layout already compensates the measured capsule bounds.
                     // Fit its pixels once; another inverse here doubles the transformation.
@@ -679,7 +700,7 @@ internal fun VideoDetailReturnCoverChrome(
         )
         return
     }
-    val overlayLayer = CardPositionManager.lastClickedNativeCoverOverlayLayer
+    val overlayLayer = CardPositionManager.nativeVideoCoverOverlayLayerFor(sourceChromeSnapshot)
     if (
         overlayLayer != null &&
         shouldDrawNativeCoverOverlay(
@@ -689,6 +710,9 @@ internal fun VideoDetailReturnCoverChrome(
     ) {
         Box(
             modifier = modifier.drawWithContent {
+                if (CardPositionManager.nativeVideoCoverOverlayLayerFor(sourceChromeSnapshot) !== overlayLayer) {
+                    return@drawWithContent
+                }
                 scale(
                     scaleX = size.width / overlayLayer.size.width.toFloat(),
                     scaleY = size.height / overlayLayer.size.height.toFloat(),
@@ -947,7 +971,7 @@ private fun BoxScope.LandingInfoContent(
             modifier.fillMaxWidth().height(constrainedHeight)
         }).padding(
             end = if (model.infoPresentation.showOverflowMenu) {
-                AppSpacingTokens.Large
+                if (sourceLayout == VideoCardSourceLayout.STACKED) 10.dp else AppSpacingTokens.Large
             } else {
                 AppSpacingTokens.None
             },
@@ -957,17 +981,13 @@ private fun BoxScope.LandingInfoContent(
         LandingInfoTexts(model = model, sourceLayout = sourceLayout)
     }
     if (model.infoPresentation.showOverflowMenu) {
-        AppText(
-            text = "⋮",
-            color = AppContentColors.secondaryText(),
-            style = MaterialTheme.typography.labelMedium,
-            fontWeight = FontWeight.Bold,
+        AppIcon(
+            imageVector = Icons.Outlined.MoreVert,
+            contentDescription = null,
+            tint = AppContentColors.secondaryText(),
             modifier = Modifier
                 .align(Alignment.BottomEnd)
-                .padding(
-                    end = AppSpacingTokens.ExtraSmall,
-                    bottom = AppSpacingTokens.ExtraSmall,
-                ),
+                .size(AppSpacingTokens.Medium + AppSpacingTokens.Micro),
         )
     }
 }
@@ -984,13 +1004,13 @@ private fun LandingInfoTexts(
         style = contentTypography.title,
         color = AppContentColors.primaryText(),
         fontWeight = FontWeight.Medium,
-        maxLines = if (sourceLayout == VideoCardSourceLayout.SIDE_BY_SIDE) {
+        maxLines = if (model.infoPresentation.singleLineMetadata || sourceLayout == VideoCardSourceLayout.SIDE_BY_SIDE) {
             2
         } else {
             videoCardTitleMaxLines()
         },
-        minLines = 1,
-        overflow = if (sourceLayout == VideoCardSourceLayout.SIDE_BY_SIDE) {
+        minLines = if (model.infoPresentation.singleLineMetadata) 2 else 1,
+        overflow = if (model.infoPresentation.singleLineMetadata || sourceLayout == VideoCardSourceLayout.SIDE_BY_SIDE) {
             TextOverflow.Ellipsis
         } else {
             videoCardTitleOverflow()
@@ -1015,23 +1035,52 @@ private fun LandingInfoTexts(
         LandingOwnerMetadata(model, Modifier.fillMaxWidth())
     }
     if (model.infoPresentation.showStatsInInfo) {
-        VideoStatRow(
-            playText = model.viewText,
-            danmakuText = model.danmakuText,
-            modifier = Modifier.fillMaxWidth(),
-        )
+        if (model.infoPresentation.singleLineMetadata) {
+            HorizontalVideoStatRow(
+                playText = model.viewText,
+                danmakuText = model.danmakuText,
+                modifier = Modifier.fillMaxWidth(),
+                singleLine = true,
+            )
+        } else {
+            VideoStatRow(
+                playText = model.viewText,
+                danmakuText = model.danmakuText,
+                modifier = Modifier.fillMaxWidth(),
+            )
+        }
     }
     if (!model.infoPresentation.ownerBeforeStats) {
         LandingOwnerMetadata(model, Modifier.fillMaxWidth())
     }
+    if (model.infoPresentation.onlineCountText.isNotBlank()) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            AppIcon(
+                imageVector = Icons.Outlined.Visibility,
+                contentDescription = null,
+                modifier = Modifier.size(AppSpacingTokens.Medium),
+                tint = AppContentColors.secondaryText(),
+            )
+            AppText(
+                text = model.infoPresentation.onlineCountText,
+                style = contentTypography.statistic.copy(fontWeight = FontWeight.Medium),
+                color = AppContentColors.secondaryText(),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
+        }
+    }
     val footer = buildList {
+        if (model.infoPresentation.singleLineMetadata && model.infoPresentation.publishTimeText.isNotBlank()) {
+            add(model.infoPresentation.publishTimeText)
+        }
         if (model.infoPresentation.showDurationInInfo && model.durationText.isNotBlank()) {
             add(model.durationText)
         }
-        if (model.infoPresentation.publishTimeText.isNotBlank()) {
+        if (!model.infoPresentation.singleLineMetadata && model.infoPresentation.publishTimeText.isNotBlank()) {
             add(model.infoPresentation.publishTimeText)
         }
-    }.joinToString("  ·  ")
+    }.joinToString(if (model.infoPresentation.singleLineMetadata) " · " else "  ·  ")
     if (footer.isNotBlank()) {
         LandingPublishMetadata(footer, Modifier.fillMaxWidth())
     }

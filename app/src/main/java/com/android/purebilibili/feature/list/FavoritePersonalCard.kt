@@ -142,6 +142,7 @@ internal fun FavoritePersonalCard(
 
     PersonalMediaCardFrame(
         stacked = stacked,
+        horizontalCoverMaxWidthDp = com.android.purebilibili.feature.home.components.cards.WIDE_LIST_COVER_MAX_WIDTH_DP,
         coverModifier = Modifier.onGloballyPositioned {
             transition.bounds.coverBounds = it.videoCardSourceBoundsInRoot()
         },
@@ -220,11 +221,25 @@ internal fun FavoritePersonalCard(
                 AppIconButton(
                     onClick = onRemove,
                 ) {
-                    AppIcon(
-                        imageVector = Icons.Rounded.Close,
-                        contentDescription = "移出收藏夹",
-                        tint = AppContentColors.secondaryText(),
-                    )
+                    if (stacked) {
+                        // 堆叠卡：字形对齐锚点右下，落在日期行上；48dp 触控区不变。
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.BottomEnd,
+                        ) {
+                            AppIcon(
+                                imageVector = Icons.Rounded.Close,
+                                contentDescription = "移出收藏夹",
+                                tint = AppContentColors.secondaryText(),
+                            )
+                        }
+                    } else {
+                        AppIcon(
+                            imageVector = Icons.Rounded.Close,
+                            contentDescription = "移出收藏夹",
+                            tint = AppContentColors.secondaryText(),
+                        )
+                    }
                 }
             }
         } else null,

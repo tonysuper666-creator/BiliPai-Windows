@@ -14,6 +14,23 @@ import top.yukonga.miuix.kmp.nav.transition.NavRole
 
 class LiveNavTransitionScopeTest {
     @Test
+    fun removingSignalIsAvailableBeforeReturnAnimationStarts() {
+        val presentation = NavPresentation(1f)
+        val scope = LiveNavTransitionScope(
+            presentation = presentation,
+            entryIndex = 1,
+            isRemoving = true,
+            change = NavChange.Pop,
+            layoutSize = IntSize(1080, 2400),
+            layoutDirection = LayoutDirection.Ltr,
+            density = Density(3f),
+        )
+        assertEquals(NavRole.Top, scope.role)
+        assertEquals(false, scope.isRunning)
+        assertEquals(true, scope.isRemoving)
+    }
+
+    @Test
     fun roleReadersObserveBoundariesWhileDepthRemainsLive() = runTest {
         val presentation = NavPresentation(.2f)
         val scope = LiveNavTransitionScope(

@@ -97,6 +97,7 @@ fun LiveChatSection(
     onBlockUser: (LiveDanmakuItem) -> Unit = {},
     onReportDanmaku: (LiveDanmakuItem) -> Unit = {},
     listState: androidx.compose.foundation.lazy.LazyListState = rememberLazyListState(),
+    compact: Boolean = false,
     followingLatest: Boolean = true,
     onFollowingLatestChange: (Boolean) -> Unit = {},
     active: Boolean = true,
@@ -138,17 +139,18 @@ fun LiveChatSection(
                 state = listState,
                 modifier = Modifier.fillMaxSize(),
                 contentPadding = PaddingValues(
-                    horizontal = 12.dp,
+                    horizontal = if (compact) 4.dp else 12.dp,
                     vertical = 0.dp
                 ),
                 verticalArrangement = Arrangement.spacedBy(
-                    space = 8.dp,
+                    space = if (compact) 3.dp else 8.dp,
                     alignment = Alignment.Top
                 )
             ) {
                 items(messages, key = { it.sequence }, contentType = { "live_chat" }) { entry ->
                     ChatMessageItem(
                         item = entry.item,
+                        compact = compact,
                         canInteract = canInteract,
                         isAnchor = anchorUid > 0L && entry.item.uid == anchorUid,
                         isOverlay = isOverlay,
@@ -210,6 +212,7 @@ fun LiveChatSection(
 @Composable
 private fun ChatMessageItem(
     item: LiveDanmakuItem,
+    compact: Boolean = false,
     canInteract: Boolean,
     isAnchor: Boolean,
     isOverlay: Boolean,
@@ -273,7 +276,7 @@ private fun ChatMessageItem(
             .clip(bubbleShape)
             .liveSecondaryClick(if (item.uid > 0L) ({ showMenu = true }) else null)
             .background(bubbleBackground)
-            .padding(horizontal = tokens.horizontalPaddingDp.dp, vertical = tokens.verticalPaddingDp.dp)
+            .padding(horizontal = if (compact) 6.dp else tokens.horizontalPaddingDp.dp, vertical = if (compact) 2.dp else tokens.verticalPaddingDp.dp)
 
         Box(modifier = bubbleModifier) {
             val density = LocalDensity.current
@@ -322,16 +325,18 @@ private fun ChatMessageItem(
                     }
                 }
             }
-            val inlineContentMap = remember(resources, direct, density.density, density.fontScale, medal, medalSize) {
+            val inlineContentMap = remember(resources, direct, density.density, density.fontScale, medal, medalSize, compact) {
                 buildMap<String, androidx.compose.foundation.text.InlineTextContent> {
                     fun addEmote(key: String, emote: LiveMessageEmote, standalone: Boolean) {
                         // 独立房间表情使用像素尺寸，混排表情使用消息提供的逻辑尺寸。
                         val width = if (standalone) (if (emote.official) emote.width else 162) / density.density else emote.width.toFloat()
                         val height = if (standalone) (if (emote.official) emote.height else 162) / density.density else emote.height.toFloat()
+                        // 紧凑互动窗限制表情高度并保持比例，避免单个表情占满消息视口。
+                        val scale = if (compact) minOf(1f, (if (standalone) 28f else 18f) / height.coerceAtLeast(1f)) else 1f
                         put(key, androidx.compose.foundation.text.InlineTextContent(
                             androidx.compose.ui.text.Placeholder(
-                                width = (width / density.fontScale).sp,
-                                height = (height / density.fontScale).sp,
+                                width = (width * scale / density.fontScale).sp,
+                                height = (height * scale / density.fontScale).sp,
                                 placeholderVerticalAlign = androidx.compose.ui.text.PlaceholderVerticalAlign.Center,
                             )
                         ) { AsyncImage(model = emote.url, contentDescription = null, modifier = Modifier.fillMaxSize()) })
@@ -350,7 +355,9 @@ private fun ChatMessageItem(
             androidx.compose.foundation.text.BasicText(
                 text = annotatedText,
                 style = MaterialTheme.typography.bodyMedium.copy(
-                    fontSize = tokens.fontSizeSp.sp, color = bodyColor, fontWeight = FontWeight.Normal,
+                    fontSize = if (compact) 12.sp else tokens.fontSizeSp.sp,
+                    lineHeight = if (compact) 16.sp else MaterialTheme.typography.bodyMedium.lineHeight,
+                    color = bodyColor, fontWeight = FontWeight.Normal,
                 ),
                 inlineContent = inlineContentMap,
             )
@@ -488,6 +495,7 @@ internal fun LiveChatInputBar(
     onLike: (Int) -> Unit,
     onOpenEmote: () -> Unit,
     onOpenSend: () -> Unit,
+    compact: Boolean = false,
     selectedPage: Int = 0,
     showPageIndicator: Boolean = false,
     canLike: Boolean = true,
@@ -498,12 +506,12 @@ internal fun LiveChatInputBar(
     val foreground = if (isOverlay) LiveStatusPalette.MediaContent else palette.primaryText
     AppSurface(
         modifier = modifier,
-        color = if (isOverlay) foreground.copy(alpha = 0.10f) else palette.surfaceElevated,
-        shape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
+        color = if (compact) Color.Transparent else if (isOverlay) foreground.copy(alpha = 0.10f) else palette.surfaceElevated,
+        shape = if (compact) RectangleShape else RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
         border = null,
     ) {
         Box {
-        androidx.compose.foundation.Canvas(Modifier.fillMaxWidth().height(20.dp)) {
+        if (!compact) androidx.compose.foundation.Canvas(Modifier.fillMaxWidth().height(20.dp)) {
             val radius = 20.dp.toPx()
             val outline = androidx.compose.ui.graphics.Path().apply {
                 moveTo(0f, radius)
@@ -528,10 +536,12 @@ internal fun LiveChatInputBar(
             }
         }
         Row(
-            modifier = Modifier.fillMaxWidth().navigationBarsPadding().height(LIVE_INPUT_HEIGHT_DP.dp)
+            // 悬浮窗内部不再消费系统栏，也不重复铺设圆角底板。
+            modifier = Modifier.fillMaxWidth()
+                .then(if (compact) Modifier.height(44.dp) else Modifier.navigationBarsPadding().height(LIVE_INPUT_HEIGHT_DP.dp))
                 .clickable(onClick = onOpenSend)
-                .padding(start = 10.dp, end = 10.dp, top = 10.dp, bottom = 25.dp),
-            verticalAlignment = Alignment.Top,
+                .padding(if (compact) PaddingValues(horizontal = 4.dp) else PaddingValues(start = 10.dp, end = 10.dp, top = 10.dp, bottom = 25.dp)),
+            verticalAlignment = if (compact) Alignment.CenterVertically else Alignment.Top,
             horizontalArrangement = Arrangement.spacedBy(6.dp),
         ) {
             AppIconButton(onClick = onToggleDanmaku, modifier = Modifier.size(34.dp)) {
@@ -543,7 +553,7 @@ internal fun LiveChatInputBar(
                     modifier = Modifier.size(22.dp),
                 )
             }
-            AppText("发送弹幕", modifier = Modifier.weight(1f).padding(top = 6.dp), color = foreground.copy(alpha = 0.8f), style = MaterialTheme.typography.bodyMedium)
+            AppText("发送弹幕", modifier = Modifier.weight(1f).padding(top = if (compact) 0.dp else 6.dp), maxLines = 1, overflow = TextOverflow.Ellipsis, color = foreground.copy(alpha = 0.8f), style = MaterialTheme.typography.bodyMedium)
             LiveLikeButton(tint = foreground, onLike = onLike, modifier = Modifier.size(34.dp), canLike = canLike, onUnavailable = onLikeUnavailable)
             AppIconButton(onClick = onOpenEmote, modifier = Modifier.size(34.dp)) {
                 AppIcon(Icons.Outlined.EmojiEmotions, "表情", tint = foreground)

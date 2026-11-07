@@ -1,0 +1,11 @@
+--- a/home-page/com/android/purebilibili/feature/home/components/HomeHeroCarousel.kt
++++ b/home-page/com/android/purebilibili/feature/home/components/HomeHeroCarousel.kt
+@@ -439,7 +439,7 @@
+         shape = cardShape,
+         color = MaterialTheme.colorScheme.surfaceVariant,
+         tonalElevation = AppSpacingTokens.None,
+-        shadowElevation = (transform.shadowElevationFraction * 10f).dp,
++        shadowElevation = AppSpacingTokens.None,
+         modifier = Modifier
+             .fillMaxWidth()
+             .aspectRatio(aspectRatio)

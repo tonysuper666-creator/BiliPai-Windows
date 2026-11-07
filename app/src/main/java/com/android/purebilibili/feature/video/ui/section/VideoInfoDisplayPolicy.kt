@@ -141,7 +141,15 @@ internal fun resolvePublishTimeRowText(
             locale = locale,
             timeZone = timeZone
         )
-        "发布时间 $relativeText  ·  $preciseText"
+        // 相对值是日期形态（如 10-09 / 2026-10-09）时与精确时间重复，
+        // 仅保留精确时间；真正的相对描述（3小时前/昨天 等）才双段拼接。
+        val relativeIsDateForm = Regex("^\\d{4}-\\d{1,2}-\\d{1,2}$").containsMatchIn(relativeText) ||
+            Regex("^\\d{1,2}-\\d{1,2}$").containsMatchIn(relativeText)
+        if (relativeIsDateForm) {
+            "发布时间 $preciseText"
+        } else {
+            "发布时间 $relativeText  ·  $preciseText"
+        }
     } else {
         // PiliPlus 直接展示格式化时间，不加“发布于”前缀
         relativeText

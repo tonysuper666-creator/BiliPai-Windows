@@ -602,16 +602,18 @@ private fun BottomInputBarActionButtons(
             iconSize = iconSize,
             showLabel = false
         )
-        IconActionButton(
-            icon = shareIcon,
-            label = "分享",
-            tint = AppContentColors.primaryText(),
-            onClick = onShareClick,
-            itemSize = itemSize,
-            elasticFeedbackEnabled = elasticFeedbackEnabled,
-            iconSize = iconSize,
-            showLabel = false
-        )
+        com.android.purebilibili.feature.video.share.VideoShareActionAnchor(onShareClick) { anchoredShare ->
+            IconActionButton(
+                icon = shareIcon,
+                label = "分享",
+                tint = AppContentColors.primaryText(),
+                onClick = anchoredShare,
+                itemSize = itemSize,
+                elasticFeedbackEnabled = elasticFeedbackEnabled,
+                iconSize = iconSize,
+                showLabel = false
+            )
+        }
     }
 }
 

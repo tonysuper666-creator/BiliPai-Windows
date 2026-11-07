@@ -8,6 +8,12 @@ import com.android.purebilibili.core.ui.blur.rememberChromeBackdropSource
 import com.android.purebilibili.feature.home.LocalHomeWallpaperBackdrop
 
 import android.os.Build
+import android.os.SystemClock
+import androidx.compose.ui.platform.LocalViewConfiguration
+import com.android.purebilibili.core.ui.AppActionHaptics
+import com.android.purebilibili.core.util.HapticType
+import com.android.purebilibili.core.util.rememberHapticFeedback
+import com.android.purebilibili.feature.home.components.LiquidDockHapticPolicy
 import com.android.purebilibili.core.util.animateScrollToTop
 import com.android.purebilibili.core.ui.components.AppIcon
 import com.android.purebilibili.core.ui.components.AppText
@@ -81,6 +87,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
@@ -96,6 +103,7 @@ import androidx.compose.ui.util.fastRoundToInt
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.LayoutDirection
+import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -573,12 +581,14 @@ fun PartitionContent(
         }
     }
     val layoutDirection = LocalLayoutDirection.current
-    val startPadding = contentPadding.calculateStartPadding(layoutDirection)
-    val endPadding = contentPadding.calculateEndPadding(layoutDirection)
+    val sideRailOnRight = homeSettings.partitionSideRailOnRight
+    val leftPadding = contentPadding.calculateLeftPadding(layoutDirection)
+    val rightPadding = contentPadding.calculateRightPadding(layoutDirection)
+    val railOuterPadding = if (sideRailOnRight) rightPadding else leftPadding
     val topPadding = contentPadding.calculateTopPadding()
     val bottomPadding = contentPadding.calculateBottomPadding()
     // 给标签保留文字缩放空间，侧栏和内容间距在所有材质下使用同一布局。
-    val sideRailWidth = 56.dp * LocalDensity.current.fontScale.coerceIn(1f, 1.35f) + startPadding
+    val sideRailWidth = 56.dp * LocalDensity.current.fontScale.coerceIn(1f, 1.35f) + railOuterPadding
     var sideRailVideoPushTargetPx by remember { mutableFloatStateOf(0f) }
     val sideRailVideoPushPx = animateFloatAsState(
         targetValue = sideRailVideoPushTargetPx,
@@ -607,74 +617,93 @@ fun PartitionContent(
             .globalWallpaperAwareBackground()
             .responsiveContentWidth(maxWidth = 1000.dp)
     ) {
-        Row(
+        Layout(
             modifier = Modifier
                 .fillMaxSize()
                 .then(
-                    if (hazeState != null) {
+                    if (hazeState != null &&
+                        com.android.purebilibili.core.ui.blur.LocalChromeBackdropRecordingAllowed.current
+                    ) {
                         Modifier.hazeSource(state = hazeState)
                     } else {
                         Modifier
                     }
-                )
-        ) {
-            PartitionSideRail(
-                partitions = partitionTabs,
-                selectedId = state.selectedPartition.id,
-                labelMode = homeSettings.topTabLabelMode,
-                iconFamily = topChromeIconFamily,
-                modifier = Modifier
-                    .width(sideRailWidth)
-                    // 纵向 dock 的外边距仅用于玻璃；关闭时保留原生侧栏的视口和内边距。
-                    .then(
-                        if (liquidGlassIndicatorEnabled) {
-                            Modifier.padding(start = 4.dp, end = 4.dp, top = topPadding, bottom = bottomPadding)
-                        } else Modifier
-                    )
-                    .zIndex(if (liquidGlassIndicatorEnabled) 1f else 0f),
-                contentPadding = if (liquidGlassIndicatorEnabled) {
-                    PaddingValues(
-                        horizontal = ((startPadding + 4.dp) / 2 - 4.dp).coerceAtLeast(4.dp),
-                        vertical = 8.dp,
-                    )
-                } else PaddingValues(
-                    start = startPadding,
-                    top = topPadding + 8.dp,
-                    bottom = bottomPadding,
-                    end = 4.dp
                 ),
-                liquidGlassIndicatorEnabled = liquidGlassIndicatorEnabled,
-                liquidGlassPreset = homeSettings.bottomBarLiquidGlassPreset,
-                liquidGlassTuning = liquidGlassTuning,
-                onVideoListPushChanged = { sideRailVideoPushTargetPx = it },
-                onPartitionSelected = viewModel::selectPartition
-            )
-
-            // Match list content top (status/insets + 8dp) so indicator sits above first row.
-            val partitionRefreshIndicatorTopInset = topPadding + 8.dp
-            AdaptivePullToRefreshBox(
-                isRefreshing = state.isRefreshing,
-                onRefresh = viewModel::refresh,
-                indicatorTopInset = partitionRefreshIndicatorTopInset,
-                modifier = Modifier
-                    .weight(1f)
-                    .graphicsLayer { translationX = sideRailVideoPushPx.value }
-            ) {
-                PartitionVideoList(
-                    state = state,
-                    listState = activeListState,
-                    modifier = Modifier.fillMaxSize(),
-                    contentPadding = PaddingValues(
-                        start = 4.dp,
-                        top = partitionRefreshIndicatorTopInset,
-                        end = endPadding,
-                        bottom = bottomPadding
+            content = {
+                PartitionSideRail(
+                    partitions = partitionTabs,
+                    selectedId = state.selectedPartition.id,
+                    labelMode = homeSettings.topTabLabelMode,
+                    iconFamily = topChromeIconFamily,
+                    modifier = Modifier
+                        .width(sideRailWidth)
+                        // 纵向 dock 的外边距仅用于玻璃；关闭时保留原生侧栏的视口和内边距。
+                        .then(
+                            if (liquidGlassIndicatorEnabled) {
+                                Modifier.padding(start = 4.dp, end = 4.dp, top = topPadding, bottom = bottomPadding)
+                            } else Modifier
+                        )
+                        .zIndex(if (liquidGlassIndicatorEnabled) 1f else 0f),
+                    contentPadding = if (liquidGlassIndicatorEnabled) {
+                        PaddingValues(
+                            horizontal = ((railOuterPadding + 4.dp) / 2 - 4.dp).coerceAtLeast(4.dp),
+                            // 竖向首末项与左右边沿共用 dock 的比例内缩，避免固定 8dp 多留一层空白。
+                            vertical = com.android.purebilibili.feature.home.components
+                                .resolveFloatingDockRestIndicatorVerticalInsetDp(
+                                    (sideRailWidth - 8.dp).value,
+                                ).dp,
+                        )
+                    } else PaddingValues(
+                        start = if (sideRailOnRight) 4.dp else railOuterPadding,
+                        top = topPadding + 8.dp,
+                        bottom = bottomPadding,
+                        end = if (sideRailOnRight) railOuterPadding else 4.dp
                     ),
-                    onVideoClick = { video ->
-                        if (video.contentType == "pgc_rank") onBangumiSeasonClick(video.id)
-                        else onVideoClick(video)
-                    }
+                    liquidGlassIndicatorEnabled = liquidGlassIndicatorEnabled,
+                    liquidGlassPreset = homeSettings.bottomBarLiquidGlassPreset,
+                    liquidGlassTuning = liquidGlassTuning,
+                    onVideoListPushChanged = { sideRailVideoPushTargetPx = it },
+                    onPartitionSelected = viewModel::selectPartition
                 )
+
+                // Match list content top (status/insets + 8dp) so indicator sits above first row.
+                val partitionRefreshIndicatorTopInset = topPadding + 8.dp
+                AdaptivePullToRefreshBox(
+                    isRefreshing = state.isRefreshing,
+                    onRefresh = viewModel::refresh,
+                    indicatorTopInset = partitionRefreshIndicatorTopInset,
+                    modifier = Modifier
+                        .graphicsLayer {
+                            translationX = sideRailVideoPushPx.value * if (sideRailOnRight) -1f else 1f
+                        }
+                ) {
+                    PartitionVideoList(
+                        state = state,
+                        listState = activeListState,
+                        modifier = Modifier.fillMaxSize(),
+                        contentPadding = PaddingValues.Absolute(
+                            left = if (sideRailOnRight) leftPadding else 4.dp,
+                            top = partitionRefreshIndicatorTopInset,
+                            right = if (sideRailOnRight) 4.dp else rightPadding,
+                            bottom = bottomPadding
+                        ),
+                        onVideoClick = { video ->
+                            if (video.contentType == "pgc_rank") onBangumiSeasonClick(video.id)
+                            else onVideoClick(video)
+                        }
+                    )
+                }
+            },
+        ) { measurables, constraints ->
+            // 两种位置只改变摆放，保持侧栏与列表的组合身份及滚动状态。
+            // 所有材质共用正常测量，不查询内部懒列表的固有尺寸。
+            val rail = measurables[0].measure(constraints.copy(minWidth = 0))
+            val list = measurables[1].measure(
+                Constraints.fixed(constraints.maxWidth - rail.width, constraints.maxHeight)
+            )
+            layout(constraints.maxWidth, constraints.maxHeight) {
+                rail.place(if (sideRailOnRight) list.width else 0, 0)
+                list.place(if (sideRailOnRight) 0 else rail.width, 0)
             }
         }
     }
@@ -701,6 +730,10 @@ private fun PartitionSideRail(
     }
     val selectedIndex = partitions.indexOfFirst { it.id == selectedId }.coerceAtLeast(0)
     val density = LocalDensity.current
+    // 玻璃侧栏使用纵向槽位；随文字缩放保留胶囊比例，原生 MD3/Miuix 沿用 48dp。
+    val railItemHeight = if (liquidGlassIndicatorEnabled) {
+        64.dp * density.fontScale.coerceIn(1f, 1.35f)
+    } else PartitionSideRailItemHeight
     val animationScope = rememberCoroutineScope()
     val motionSpec = remember { resolveSegmentedControlMotionSpec() }
     val resolvedLabelMode = resolvePartitionSideRailLabelMode(labelMode)
@@ -731,6 +764,14 @@ private fun PartitionSideRail(
     val partitionsLatest by rememberUpdatedState(partitions)
     val offsetAnimation = remember { Animatable(0f) }
     val holder = remember { PartitionSideRailDragHolder() }
+    val haptic = rememberHapticFeedback(com.android.purebilibili.core.ui.AppHapticScene.NAVIGATION)
+    val latestHaptic by rememberUpdatedState(haptic)
+    val hapticsEnabled by rememberUpdatedState(
+        liquidGlassIndicatorEnabled && com.android.purebilibili.core.ui.LocalAppThemeConfig.current.hapticFeedbackEnabled
+    )
+    val touchSlopPx by rememberUpdatedState(LocalViewConfiguration.current.touchSlop)
+    // 与底栏复用起步阈值、跨槽滞回和节流；只接收真实拖动及其边缘滚动位置。
+    val gestureHaptics = remember(itemCount, liquidGlassIndicatorEnabled) { LiquidDockHapticPolicy() }
 
     // LazyList offsets include the real measured slot sizes and dynamic header padding.
     // Use the same anchor for the visible indicator, its hit test, and the glyph recording.
@@ -746,7 +787,7 @@ private fun PartitionSideRail(
         )
     }
 
-    val dampedDragAnimation = remember(animationScope, itemCount, density, liquidGlassIndicatorEnabled) {
+    val dampedDragAnimation = remember(animationScope, itemCount, density, liquidGlassIndicatorEnabled, gestureHaptics) {
         DampedDragAnimation(
             animationScope = animationScope,
             initialValue = selectedIndex.toFloat(),
@@ -765,6 +806,9 @@ private fun PartitionSideRail(
                     shouldStartPartitionSideRailIndicatorDrag(offset.y, 0f, holder.itemHeightPx)
             },
             onDragStarted = {
+                if (liquidGlassIndicatorEnabled) {
+                    gestureHaptics.start(targetValue, itemCount, touchSlopPx / holder.itemSlotHeightPx.coerceAtLeast(1f))
+                }
                 holder.dragCenterY = railOffset(value) + holder.itemHeightPx / 2f
             },
             onDragStopped = {
@@ -772,7 +816,12 @@ private fun PartitionSideRail(
                 val targetIndex = targetValue.fastRoundToInt().fastCoerceIn(0, maxTabIndex)
                 if (liquidGlassIndicatorEnabled) updateValue(targetIndex.toFloat())
                 else animateToValue(targetIndex.toFloat(), animatePress = false)
-                partitionsLatest.getOrNull(targetIndex)?.let(onSelectedLatest)
+                val hadGestureFeedback = gestureHaptics.finish()
+                partitionsLatest.getOrNull(targetIndex)?.let { partition ->
+                    if (liquidGlassIndicatorEnabled && hadGestureFeedback) {
+                        AppActionHaptics.runWithoutAdditionalFeedback { onSelectedLatest(partition) }
+                    } else onSelectedLatest(partition)
+                }
                 holder.offsetJob?.cancel()
                 holder.offsetJob = animationScope.launch(start = CoroutineStart.UNDISPATCHED) {
                     offsetAnimation.animateTo(0f, spring(1f, 300f, 0.5f))
@@ -796,6 +845,9 @@ private fun PartitionSideRail(
                             (targetValue + dragAmount.y / holder.itemSlotHeightPx)
                                 .fastCoerceIn(0f, maxTabIndex.toFloat()),
                         )
+                    }
+                    if (liquidGlassIndicatorEnabled && gestureHaptics.update(targetValue, SystemClock.uptimeMillis()) && hapticsEnabled) {
+                        latestHaptic(HapticType.GESTURE_STEP)
                     }
                     holder.offsetJob?.cancel()
                     holder.offsetJob = animationScope.launch(start = CoroutineStart.UNDISPATCHED) {
@@ -834,6 +886,9 @@ private fun PartitionSideRail(
                         (dampedDragAnimation.targetValue + consumed / holder.itemSlotHeightPx)
                             .fastCoerceIn(0f, maxTabIndex.toFloat()),
                     )
+                    if (gestureHaptics.update(dampedDragAnimation.targetValue, SystemClock.uptimeMillis()) && hapticsEnabled) {
+                        latestHaptic(HapticType.GESTURE_STEP)
+                    }
                 }
             }
         }
@@ -897,8 +952,8 @@ private fun PartitionSideRail(
         // 在约束作用域内读取宽度，内层 Box 仅使用计算结果。
         val railDockWidth = maxWidth
         val dockShellLensIntensity = (railDockWidth / 64.dp).coerceIn(0f, 1f)
-        val itemHeightPx = with(density) { PartitionSideRailItemHeight.toPx() }
-        val itemSlotHeightPx = with(density) { (PartitionSideRailItemHeight + PartitionSideRailItemSpacing).toPx() }
+        val itemHeightPx = with(density) { railItemHeight.toPx() }
+        val itemSlotHeightPx = with(density) { (railItemHeight + PartitionSideRailItemSpacing).toPx() }
         val contentTopPaddingPx = with(density) { contentPadding.calculateTopPadding().toPx() }
         holder.itemSlotHeightPx = itemSlotHeightPx
         holder.itemHeightPx = itemHeightPx
@@ -912,12 +967,12 @@ private fun PartitionSideRail(
         val indicatorWidth = if (liquidGlassIndicatorEnabled) {
             resolveFloatingDockIndicatorHeightDp(
                 requestedHeightDp = resolveMatchedLiquidIndicatorHeightDp(railDockWidth.value),
-                tabWidthDp = PartitionSideRailItemHeight.value,
+                tabWidthDp = railItemHeight.value,
                 geometryMode = FloatingBottomBarGeometryMode.TopNavigation,
                 shellHeightDp = railDockWidth.value,
             ).dp
         } else (railDockWidth - nativeIndicatorPadding.start - nativeIndicatorPadding.end).coerceAtLeast(0.dp)
-        val indicatorHeight = if (liquidGlassIndicatorEnabled) PartitionSideRailItemHeight
+        val indicatorHeight = if (liquidGlassIndicatorEnabled) railItemHeight
             else PartitionSideRailIndicatorHeight
         val indicatorHorizontalPadding = if (liquidGlassIndicatorEnabled) {
             val inset = ((railDockWidth - indicatorWidth) / 2).coerceAtLeast(0.dp)
@@ -1004,7 +1059,11 @@ private fun PartitionSideRail(
                     .matchParentSize()
                     .bottomBarMatchedCaptureOverflow(captureSafeInset)
                     .then(
-                        glassPageSource?.modifier ?: Modifier.alpha(0f).layerBackdrop(railPageBackdrop)
+                        glassPageSource?.modifier ?: Modifier.alpha(0f).then(
+                            if (com.android.purebilibili.core.ui.blur.LocalChromeBackdropRecordingAllowed.current) {
+                                Modifier.layerBackdrop(railPageBackdrop)
+                            } else Modifier
+                        )
                     )
                     .background(AppSurfaceTokens.background())
                     .then(railHighlight?.modifier ?: Modifier)
@@ -1062,7 +1121,7 @@ private fun PartitionSideRail(
                 ) {
                     partitions.forEach { partition ->
                         Box(
-                            Modifier.fillMaxWidth().height(PartitionSideRailItemHeight),
+                            Modifier.fillMaxWidth().height(railItemHeight),
                             contentAlignment = Alignment.Center,
                         ) {
                             PartitionSideRailItem(
@@ -1103,6 +1162,7 @@ private fun PartitionSideRail(
                 ) { index, partition ->
                     PartitionSideRailItem(
                         partition = partition,
+                        itemHeight = railItemHeight,
                         selected = partition.id == selectedId,
                         selectionProgress = resolvePartitionSideRailItemSelectionProgress(
                             itemIndex = index,
@@ -1497,13 +1557,17 @@ private fun PartitionVideoList(
         ?: "partition"
     when {
         state.videos.isEmpty() && state.isLoading -> {
-            ContentMediaListSkeleton(
-                modifier = modifier.fillMaxHeight(),
-                itemCount = 8,
-                mediaRowCoverWidth = 140.dp,
-                mediaRowContentPadding = PaddingValues(8.dp),
-                mediaRowContentGap = 10.dp,
-            )
+            BoxWithConstraints(modifier = modifier.fillMaxHeight().padding(contentPadding)) {
+                ContentMediaListSkeleton(
+                    modifier = Modifier.fillMaxSize(),
+                    itemCount = 8,
+                    contentPadding = PaddingValues(0.dp),
+                    mediaRowCoverWidth = com.android.purebilibili.feature.home.components.cards
+                        .resolvePlainHorizontalVideoCoverWidthDp(maxWidth.value, 16f / 10f).dp,
+                    mediaRowContentPadding = PaddingValues(vertical = 6.dp),
+                    mediaRowContentGap = 10.dp,
+                )
+            }
         }
         state.videos.isEmpty() && state.error != null -> {
             Box(modifier = modifier.fillMaxHeight()) {
@@ -1519,7 +1583,11 @@ private fun PartitionVideoList(
                 state = listState,
                 modifier = modifier.fillMaxHeight(),
                 contentPadding = contentPadding,
-                verticalArrangement = Arrangement.spacedBy(12.dp)
+                // 剧集卡片带完整背景，需要独立卡片间距；普通透明视频行保留紧凑间距。
+                // 这是内容类型差异，玻璃、MD3、Miuix 共用，不修改各材质的卡片内部尺寸。
+                verticalArrangement = Arrangement.spacedBy(
+                    if (resolvePartitionBangumiType(state.selectedPartition.id) != null) 12.dp else 2.dp
+                )
             ) {
                 itemsIndexed(
                     items = state.videos,
@@ -1544,7 +1612,6 @@ private fun PartitionVideoList(
                         durationStyle = homeDurationStyle,
                         showPublishTime = showHomePublishTime,
                         transparentCardBackground = true,
-                        compactPartition = true,
                         modifier = Modifier.fillMaxWidth(),
                         onClick = { onVideoClick(video) },
                     )
@@ -1574,6 +1641,9 @@ private fun PartitionSeasonRankCard(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    // AppText 按主题读取自身默认样式，不能仅依赖父级 Material ProvideTextStyle。
+    // 在入口显式分配标题、更新信息和统计字阶，两种材质及原生主题共用。
+    val typography = com.android.purebilibili.feature.home.components.cards.horizontalVideoCardTypography()
     com.android.purebilibili.feature.personal.PersonalMediaCardFrame(
         modifier = modifier,
         coverAspectRatio = 3f / 4f,
@@ -1582,15 +1652,24 @@ private fun PartitionSeasonRankCard(
         headlineContent = {
             AppText(
                 text = video.title,
+                style = typography.title,
+                color = AppContentColors.primaryText(),
                 maxLines = com.android.purebilibili.core.ui.videoCardTitleMaxLines(),
                 overflow = com.android.purebilibili.core.ui.videoCardTitleOverflow(),
             )
         },
         supportingContent = {
-            if (video.owner.name.isNotBlank()) AppText(video.owner.name)
+            if (video.owner.name.isNotBlank()) {
+                AppText(
+                    text = video.owner.name,
+                    style = typography.author,
+                    color = AppContentColors.secondaryText(),
+                )
+            }
             AppText(
                 text = "${com.android.purebilibili.core.util.FormatUtils.formatStat(video.stat.view.toLong())} 播放 · " +
                     "${com.android.purebilibili.core.util.FormatUtils.formatStat(video.stat.favorite.toLong())} 追剧",
+                style = typography.statistic,
                 color = AppContentColors.secondaryText(),
             )
         },

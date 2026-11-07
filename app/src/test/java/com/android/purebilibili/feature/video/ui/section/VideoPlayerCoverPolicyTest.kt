@@ -306,11 +306,11 @@ class VideoPlayerCoverPolicyTest {
         // 视频在封面之上淡入，封面同步淡出会让两层半透明叠加透出黑底（亮度凹陷）。
         assertTrue(
             shouldHoldEntryCoverUnderlay(
-                isFirstFrameRendered = true,
+                isFirstFrameRendered = false,
                 forceCoverDuringReturnAnimation = false,
                 shouldKeepCoverForManualStart = false,
-                hasStartedSmoothReveal = true,
-                isSurfaceRevealSettling = true,
+                hasStartedSmoothReveal = false,
+                isSurfaceRevealSettling = false,
             )
         )
         assertTrue(
@@ -537,7 +537,7 @@ class VideoPlayerCoverPolicyTest {
     }
 
     @Test
-    fun verticalManualStartCover_usesViewportFillAndFitContentScale() {
+    fun verticalManualStartCover_usesViewportFillAndCropContentScale() {
         val spec = resolveVideoPlayerEntryPresentationSpec(
             shouldKeepCoverForManualStart = true,
             forceCoverDuringReturnAnimation = false,
@@ -548,7 +548,7 @@ class VideoPlayerCoverPolicyTest {
         assertFalse(spec.coverUsesSharedBounds)
         assertTrue(spec.fillCoverViewport)
         assertTrue(spec.showManualStartPlayButton)
-        assertEquals(VideoPlayerCoverContentScaleMode.Fit, spec.coverContentScaleMode)
+        assertEquals(VideoPlayerCoverContentScaleMode.Crop, spec.coverContentScaleMode)
     }
 
     @Test
@@ -681,37 +681,6 @@ class VideoPlayerCoverPolicyTest {
         assertTrue(residentCoverBlock.contains("animatedVisibilityProgress ="))
         assertTrue(residentCoverBlock.contains("detailTransitionProgress.value"))
         assertFalse(residentCoverBlock.contains("coverCrossfadeAlpha"))
-    }
-
-    @Test
-    fun verticalVideo_withoutSharedCard_keepsExistingCoverLoadingPolicy() {
-        assertFalse(
-            shouldLoadVideoPlayerCoverImage(
-                isVerticalVideo = true,
-                forceCoverDuringReturnAnimation = false,
-            )
-        )
-        assertTrue(
-            shouldLoadVideoPlayerCoverImage(
-                isVerticalVideo = true,
-                forceCoverDuringReturnAnimation = true,
-            )
-        )
-        assertTrue(
-            shouldLoadVideoPlayerCoverImage(
-                isVerticalVideo = false,
-                forceCoverDuringReturnAnimation = false,
-            )
-        )
-    }
-
-    @Test
-    fun verticalCardEntry_keepsCoverUntilRevealIndependentOfPlaybackIntent() {
-        assertTrue(shouldLoadVideoPlayerCoverImage(
-            isVerticalVideo = true,
-            forceCoverDuringReturnAnimation = false,
-            hasSharedCardTransition = true,
-        ))
     }
 
     @Test

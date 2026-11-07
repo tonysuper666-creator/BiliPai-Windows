@@ -1,6 +1,7 @@
 package com.android.purebilibili.feature.audio.screen
 
 import com.android.purebilibili.core.ui.AppContentColors
+import com.android.purebilibili.core.ui.AppAlertDialog
 import com.android.purebilibili.core.ui.components.appElasticPress
 
 
@@ -112,6 +113,9 @@ fun ExternalPlaylistImportDialog(
         mutableStateOf<List<ExternalPlaylistRepository.MatchOutcome>>(emptyList())
     }
     var matchJob by remember { mutableStateOf<Job?>(null) }
+    // 未勾选的曲目序号；默认全选，因此只需记录被取消勾选的那些。
+    var excludedIndices by remember { mutableStateOf<Set<Int>>(emptySet()) }
+    var showCancelMatchConfirm by remember { mutableStateOf(false) }
 
     // 收藏到 B 站收藏夹
     var showFavoritePicker by remember { mutableStateOf(false) }
@@ -157,6 +161,7 @@ fun ExternalPlaylistImportDialog(
             matchCompleted = 0
             matchResults = meta.tracks.map { ExternalPlaylistRepository.MatchOutcome(it, null) }
         }
+        if (!resume) excludedIndices = emptySet()
         scope.launch {
             ExternalPlaylistRepository.saveImportCheckpoint(
                 context,
@@ -181,14 +186,17 @@ fun ExternalPlaylistImportDialog(
 
     fun savePlaylist() {
         val meta = playlist ?: return
-        val items = matchResults.mapNotNull { it.video }.map { video ->
-            LocalPlaylistItem(
-                bvid = video.bvid,
-                title = video.title,
-                cover = video.cover,
-                owner = video.author,
-                durationSec = video.durationSec,
-            )
+        val items = matchResults.mapIndexedNotNull { index, outcome ->
+            if (index in excludedIndices) return@mapIndexedNotNull null
+            outcome.video?.let { video ->
+                LocalPlaylistItem(
+                    bvid = video.bvid,
+                    title = video.title,
+                    cover = video.cover,
+                    owner = video.author,
+                    durationSec = video.durationSec,
+                )
+            }
         }
         if (items.isEmpty()) return
         scope.launch {
@@ -217,6 +225,22 @@ fun ExternalPlaylistImportDialog(
         matchJob?.cancel()
         matchJob = null
         matching = false
+    }
+
+    /** 取消匹配：清空当前歌单与匹配结果，回到填写歌单链接的页面。 */
+    fun cancelMatchAndReset() {
+        showCancelMatchConfirm = false
+        matchJob?.cancel()
+        matchJob = null
+        matching = false
+        playlist = null
+        matchResults = emptyList()
+        matchCompleted = 0
+        matchTotal = 0
+        matchingTrackTitle = ""
+        excludedIndices = emptySet()
+        dismissEditing()
+        scope.launch { ExternalPlaylistRepository.clearImportCheckpoint(context) }
     }
 
     fun loadFavoriteFolders() {
@@ -258,7 +282,10 @@ fun ExternalPlaylistImportDialog(
 
     fun startFavoriting() {
         if (favoriting) return
-        val videos = matchResults.mapNotNull { it.video }
+        val videos = matchResults.mapIndexedNotNull { index, outcome ->
+            if (index in excludedIndices) return@mapIndexedNotNull null
+            outcome.video
+        }
         if (videos.isEmpty()) return
         val folderIds = selectedFolderIds
         if (folderIds.isEmpty()) {
@@ -407,6 +434,7 @@ fun ExternalPlaylistImportDialog(
                                                 }
                                                 matchCompleted = 0
                                                 matchTotal = fetched.tracks.size
+                                                excludedIndices = emptySet()
                                                 ExternalPlaylistRepository.saveImportCheckpoint(
                                                     context,
                                                     ExternalPlaylistRepository.ImportCheckpoint(
@@ -430,6 +458,9 @@ fun ExternalPlaylistImportDialog(
                 } else {
                     val completed = !matching && matchResults.isNotEmpty() && matchCompleted >= matchTotal
                     val matchedCount = matchResults.count { it.video != null }
+                    val matchedIndices = matchResults.indices.filter { matchResults[it].video != null }
+                    val selectedCount = matchedIndices.count { it !in excludedIndices }
+                    val allSelected = matchedIndices.isNotEmpty() && selectedCount == matchedIndices.size
                     val outcomes = matchResults.ifEmpty {
                         meta.tracks.map { ExternalPlaylistRepository.MatchOutcome(it, null) }
                     }
@@ -478,7 +509,7 @@ fun ExternalPlaylistImportDialog(
                                 text = if (matchedCount == 0) {
                                     "没有匹配到可用视频，可点击单曲手动修正，或重新匹配"
                                 } else {
-                                    "已匹配 $matchedCount/${matchResults.size} 首"
+                                    "已匹配 $matchedCount/${matchResults.size} 首，已选 $selectedCount 首"
                                 },
                                 style = MaterialTheme.typography.bodySmall,
                                 color = if (matchedCount == 0) AppContentColors.error() else AppContentColors.secondaryText(),
@@ -487,8 +518,8 @@ fun ExternalPlaylistImportDialog(
                             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                                 OutlinedButton(
                                     onClick = { openFavoritePicker() },
-                                    enabled = matchedCount > 0 && !favoriting,
-                                    modifier = Modifier.weight(1f).appElasticPress(enabled = matchedCount > 0 && !favoriting),
+                                    enabled = selectedCount > 0 && !favoriting,
+                                    modifier = Modifier.weight(1f).appElasticPress(enabled = selectedCount > 0 && !favoriting),
                                 ) {
                                     Text("收藏到收藏夹")
                                 }
@@ -503,10 +534,10 @@ fun ExternalPlaylistImportDialog(
                             Spacer(Modifier.height(8.dp))
                             Button(
                                 onClick = { savePlaylist() },
-                                enabled = matchedCount > 0 && !favoriting,
-                                modifier = Modifier.fillMaxWidth().appElasticPress(enabled = matchedCount > 0 && !favoriting),
+                                enabled = selectedCount > 0 && !favoriting,
+                                modifier = Modifier.fillMaxWidth().appElasticPress(enabled = selectedCount > 0 && !favoriting),
                             ) {
-                                Text("保存并播放")
+                                Text(if (selectedCount > 0) "保存并播放（$selectedCount 首）" else "保存并播放")
                             }
                         }
 
@@ -536,10 +567,10 @@ fun ExternalPlaylistImportDialog(
                                         Text("继续匹配")
                                     }
                                     OutlinedButton(
-                                        onClick = { startMatching(resume = false) },
+                                        onClick = { showCancelMatchConfirm = true },
                                         modifier = Modifier.weight(1f).appElasticPress(),
                                     ) {
-                                        Text("重新匹配")
+                                        Text("取消匹配")
                                     }
                                 }
                             } else {
@@ -553,6 +584,33 @@ fun ExternalPlaylistImportDialog(
                         }
                     }
                     Spacer(Modifier.height(8.dp))
+
+                    if (!matching && matchedIndices.isNotEmpty()) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable(enabled = !favoriting) {
+                                    if (!favoriting) {
+                                        excludedIndices = if (allSelected) matchedIndices.toSet() else emptySet()
+                                    }
+                                }
+                                .padding(vertical = 2.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                        ) {
+                            Checkbox(
+                                checked = allSelected,
+                                onCheckedChange = { checked ->
+                                    excludedIndices = if (checked) emptySet() else matchedIndices.toSet()
+                                },
+                                enabled = !favoriting,
+                            )
+                            Text(
+                                text = "全选 · 已选 $selectedCount/${matchedIndices.size} 首",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = AppContentColors.secondaryText(),
+                            )
+                        }
+                    }
 
                     LazyColumn(
                         modifier = Modifier.weight(1f),
@@ -583,6 +641,17 @@ fun ExternalPlaylistImportDialog(
                                         modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 10.dp),
                                         verticalAlignment = Alignment.CenterVertically,
                                     ) {
+                                        Checkbox(
+                                            checked = outcome.video != null && index !in excludedIndices,
+                                            onCheckedChange = { checked ->
+                                                excludedIndices = if (checked) {
+                                                    excludedIndices - index
+                                                } else {
+                                                    excludedIndices + index
+                                                }
+                                            },
+                                            enabled = outcome.video != null && !matching && !favoriting,
+                                        )
                                         Column(modifier = Modifier.weight(1f)) {
                                             Text(
                                                 text = "${index + 1}. ${outcome.track.title}",
@@ -671,6 +740,8 @@ fun ExternalPlaylistImportDialog(
                                                 matchResults = matchResults.toMutableList().also { list ->
                                                     list[index] = ExternalPlaylistRepository.MatchOutcome(list[index].track, video)
                                                 }
+                                                // 手动修正后默认勾选，避免被之前的“全不选”遗漏。
+                                                excludedIndices = excludedIndices - index
                                                 scope.launch {
                                                     ExternalPlaylistRepository.saveImportCheckpoint(
                                                         context,
@@ -715,7 +786,7 @@ fun ExternalPlaylistImportDialog(
                     }
                     if (completed) {
                         Text(
-                            text = "未匹配的曲目将被跳过。点击任意一行可搜索 B 站视频手动修正。",
+                            text = "未匹配或未勾选的曲目不会被保存或收藏。点击任意一行可搜索 B 站视频手动修正。",
                             style = MaterialTheme.typography.labelSmall,
                             color = AppContentColors.secondaryText(),
                             modifier = Modifier.padding(top = 8.dp),
@@ -724,6 +795,24 @@ fun ExternalPlaylistImportDialog(
                 }
             }
         }
+    }
+
+    if (showCancelMatchConfirm) {
+        AppAlertDialog(
+            onDismissRequest = { showCancelMatchConfirm = false },
+            title = { Text("取消匹配？") },
+            text = { Text("将丢弃当前歌单的匹配结果，并返回填写歌单链接的页面。") },
+            confirmButton = {
+                TextButton(onClick = { cancelMatchAndReset() }) {
+                    Text("取消匹配")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showCancelMatchConfirm = false }) {
+                    Text("继续匹配")
+                }
+            },
+        )
     }
 
     if (showFavoritePicker) {
@@ -745,7 +834,9 @@ fun ExternalPlaylistImportDialog(
             ) {
                 FavoriteFolderPickerContent(
                     playlistName = playlist?.name.orEmpty(),
-                    matchedCount = matchResults.count { it.video != null },
+                    matchedCount = matchResults.withIndex().count { (index, outcome) ->
+                        outcome.video != null && index !in excludedIndices
+                    },
                     folders = favoriteFolders,
                     loading = favoriteFoldersLoading,
                     error = favoriteFoldersError,

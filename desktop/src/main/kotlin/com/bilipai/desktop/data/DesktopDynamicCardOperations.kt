@@ -222,7 +222,7 @@ internal class DesktopDynamicCardOperations(
                 action.dynamicId, action.reserveTotal)
             checked(response.code, response.message)
             val data = response.data ?: error("预约操作失败")
-            DynamicReserveResult(data.desc_update, data.reserve_update, data.final_btn_status)
+            DynamicReserveResult(data.desc_update, data.reserve_update ?: action.reserveTotal, data.final_btn_status)
         }
     }
     suspend fun delete(action: DynamicDeleteAction) = mutate { csrf ->

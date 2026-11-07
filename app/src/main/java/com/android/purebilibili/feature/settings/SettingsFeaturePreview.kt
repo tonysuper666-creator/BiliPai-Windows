@@ -346,7 +346,7 @@ private fun FeaturePreviewScene(
 }
 
 @Composable
-private fun PreviewScrollingCards(progress: () -> Float, accent: Color, modifier: Modifier = Modifier) {
+internal fun PreviewScrollingCards(progress: () -> Float, accent: Color, modifier: Modifier = Modifier) {
     val background = MaterialTheme.colorScheme.surfaceVariant
     Canvas(modifier) {
         drawRect(background)

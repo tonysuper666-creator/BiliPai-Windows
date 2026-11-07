@@ -1,0 +1,58 @@
+--- a/core-player/src/main/java/com/android/purebilibili/core/player/dash/LocalDashManifestBuilder.kt
++++ b/core-player/src/main/java/com/android/purebilibili/core/player/dash/LocalDashManifestBuilder.kt
+@@ -9,7 +9,9 @@
+     durationMs: Long,
+     minBufferTimeMs: Long,
+     videoTracks: List<DashVideo>,
+-    audioTracks: List<DashAudio>
++    audioTracks: List<DashAudio>,
++    // Desktop casting supplies final relay URLs; CDN selection has already happened before registration.
++    useResolvedBaseUrls: Boolean = false,
+ ): String {
+     return buildString {
+         append("""<?xml version="1.0" encoding="UTF-8"?>""")
+@@ -26,7 +28,7 @@
+             append("""    <AdaptationSet contentType="video" mimeType="${mimeType.escapeXml()}">""")
+             append('\n')
+             videoTracks.forEach { track ->
+-                appendRepresentation(track)
++                appendRepresentation(track, useResolvedBaseUrls)
+             }
+             append("    </AdaptationSet>\n")
+         }
+@@ -35,7 +37,7 @@
+             append("""    <AdaptationSet contentType="audio" mimeType="${mimeType.escapeXml()}">""")
+             append('\n')
+             audioTracks.forEach { track ->
+-                appendRepresentation(track)
++                appendRepresentation(track, useResolvedBaseUrls)
+             }
+             append("    </AdaptationSet>\n")
+         }
+@@ -44,22 +46,22 @@
+     }
+ }
+ 
+-private fun StringBuilder.appendRepresentation(track: DashVideo) {
++private fun StringBuilder.appendRepresentation(track: DashVideo, useResolvedBaseUrls: Boolean) {
+     append(
+         """      <Representation id="${track.id}" bandwidth="${track.bandwidth}" codecs="${track.codecs.escapeXml()}" width="${track.width}" height="${track.height}" frameRate="${track.frameRate.escapeXml()}">"""
+     )
+     append('\n')
+-    append("        <BaseURL>${track.getValidUrl().escapeXml()}</BaseURL>\n")
++    append("        <BaseURL>${(if (useResolvedBaseUrls) track.baseUrl else track.getValidUrl()).escapeXml()}</BaseURL>\n")
+     appendSegmentBase(track.segmentBase)
+     append("      </Representation>\n")
+ }
+ 
+-private fun StringBuilder.appendRepresentation(track: DashAudio) {
++private fun StringBuilder.appendRepresentation(track: DashAudio, useResolvedBaseUrls: Boolean) {
+     append(
+         """      <Representation id="${track.id}" bandwidth="${track.bandwidth}" codecs="${track.codecs.escapeXml()}">"""
+     )
+     append('\n')
+-    append("        <BaseURL>${track.getValidUrl().escapeXml()}</BaseURL>\n")
++    append("        <BaseURL>${(if (useResolvedBaseUrls) track.baseUrl else track.getValidUrl()).escapeXml()}</BaseURL>\n")
+     appendSegmentBase(track.segmentBase)
+     append("      </Representation>\n")
+ }

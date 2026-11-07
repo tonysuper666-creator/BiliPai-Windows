@@ -7,8 +7,66 @@ import com.android.purebilibili.data.model.response.UgcSeason
 import com.android.purebilibili.data.model.response.UgcSection
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
+import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.IntRect
+import androidx.compose.ui.unit.IntSize
 
 class PlayerEpisodeMenuPolicyTest {
+    @Test
+    fun `portrait panel stays attached to safe bottom when measured shorter`() {
+        assertEquals(
+            IntOffset(0, 500),
+            resolvePlayerPanelPopupPosition(
+                IntRect(0, 400, 400, 1000), IntSize(400, 1020), IntSize(400, 500),
+                bottomAligned = true,
+            ),
+        )
+        assertEquals(
+            IntOffset(0, 450),
+            resolvePlayerPanelPopupPosition(
+                IntRect(0, 400, 400, 1000), IntSize(400, 950), IntSize(400, 500),
+                bottomAligned = true,
+            ),
+        )
+    }
+
+    @Test
+    fun `panel popup retains its safe right edge in the normal window`() {
+        assertEquals(
+            IntOffset(680, 10),
+            resolvePlayerPanelPopupPosition(
+                IntRect(680, 10, 1180, 590), IntSize(1200, 600), IntSize(500, 580),
+            ),
+        )
+    }
+
+    @Test
+    fun `smaller popup window keeps trailing controls inside its actual right edge`() {
+        val size = IntSize(500, 560)
+        val window = IntSize(1120, 580)
+        val position = resolvePlayerPanelPopupPosition(IntRect(680, 10, 1180, 590), window, size)
+        assertEquals(IntOffset(620, 10), position)
+        assertTrue(position.x + size.width <= window.width)
+        assertTrue(position.y + size.height <= window.height)
+    }
+
+    @Test
+    fun `constrained content stays right aligned and above the popup bottom`() {
+        assertEquals(
+            IntOffset(880, 0),
+            resolvePlayerPanelPopupPosition(
+                IntRect(680, 20, 1180, 600), IntSize(1200, 400), IntSize(300, 400),
+            ),
+        )
+        assertEquals(
+            IntOffset.Zero,
+            resolvePlayerPanelPopupPosition(
+                IntRect(0, 0, 500, 500), IntSize.Zero, IntSize.Zero,
+            ),
+        )
+    }
+
     @Test
     fun `parts take priority and callbacks retain zero based source index rather than page number`() {
         val pages = listOf(

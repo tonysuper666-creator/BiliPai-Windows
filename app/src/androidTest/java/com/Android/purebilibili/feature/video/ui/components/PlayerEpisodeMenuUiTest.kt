@@ -8,12 +8,16 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsSelected
 import androidx.compose.ui.test.click
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.isDialog
+import androidx.compose.ui.test.isPopup
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.unit.Density
@@ -26,6 +30,9 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.purebilibili.core.theme.AppUiStyle
 import com.android.purebilibili.core.theme.LocalAppUiStyle
 import com.android.purebilibili.core.ui.AppThemeConfig
+import com.android.purebilibili.core.ui.AppPopupWindowHostRenderer
+import com.android.purebilibili.core.ui.LocalAppPopupWindowHostRenderer
+import com.android.purebilibili.core.ui.LocalComponentMotionEnabled
 import com.android.purebilibili.core.ui.LocalAppThemeConfig
 import com.android.purebilibili.data.model.response.Page
 import com.android.purebilibili.data.model.response.UgcEpisode
@@ -33,6 +40,7 @@ import com.android.purebilibili.data.model.response.UgcSeason
 import com.android.purebilibili.data.model.response.UgcSection
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -42,6 +50,118 @@ import top.yukonga.miuix.kmp.theme.MiuixTheme
 class PlayerEpisodeMenuUiTest {
     @get:Rule
     val composeTestRule = createComposeRule()
+
+    @Test
+    fun currentPartIsFullyVisibleWhenThemeSheetOpens() {
+        val pages = List(60) { index ->
+            Page(cid = index + 1L, page = index + 1, part = "第${index + 1}段", duration = 65)
+        }
+        composeTestRule.setContent {
+            CompositionLocalProvider(
+                LocalComponentMotionEnabled provides false,
+                LocalAppThemeConfig provides AppThemeConfig(liquidGlassEnabled = false),
+            ) {
+                MaterialTheme {
+                    Box(Modifier.fillMaxSize()) {
+                        PlayerEpisodeMenu(
+                            pages = pages, currentPageIndex = 30,
+                            onDismiss = {}, onPageSelect = {},
+                        )
+                    }
+                }
+            }
+        }
+        val current = composeTestRule.onNodeWithText(pages[30].part)
+            .assertIsSelected().assertIsDisplayed().fetchSemanticsNode().boundsInRoot
+        val close = composeTestRule.onNodeWithContentDescription("关闭")
+            .fetchSemanticsNode().boundsInRoot
+        assertTrue(current.top >= close.bottom)
+        assertEquals(with(composeTestRule.density) { 110.dp.toPx() }, current.height, 1f)
+    }
+
+    @Test
+    fun partsUseThemeSheetInsteadOfPopupAndCloseExactlyOnceAcrossMaterials() {
+        val visible = mutableStateOf(false)
+        val glass = mutableStateOf(false)
+        val style = mutableStateOf(AppUiStyle.MATERIAL3)
+        var dismissed = 0
+        val pages = listOf(
+            Page(cid = 1L, page = 1, part = "第一段", duration = 60),
+            Page(cid = 2L, page = 2, part = "第二段", duration = 60),
+        )
+        composeTestRule.setContent {
+            CompositionLocalProvider(
+                LocalAppThemeConfig provides AppThemeConfig(liquidGlassEnabled = glass.value),
+                LocalAppUiStyle provides style.value,
+            ) {
+                MaterialTheme { MiuixTheme {
+                    Box(Modifier.fillMaxSize()) {
+                        if (visible.value) PlayerEpisodeMenu(
+                            pages = pages, currentPageIndex = 1,
+                            onPageSelect = {},
+                            onDismiss = { dismissed++; visible.value = false },
+                        )
+                    }
+                } }
+            }
+        }
+        var expectedDismissals = 0
+        for (uiStyle in AppUiStyle.entries) {
+            for (useGlass in listOf(false, true)) {
+                composeTestRule.runOnIdle {
+                    style.value = uiStyle; glass.value = useGlass; visible.value = true
+                }
+                composeTestRule.onNode(isDialog()).assertExists()
+                composeTestRule.onNode(isPopup()).assertDoesNotExist()
+                composeTestRule.onNodeWithText("第二段").assertIsSelected().assertIsDisplayed()
+                composeTestRule.onNodeWithContentDescription("关闭").performClick()
+                composeTestRule.onNode(isDialog()).assertDoesNotExist()
+                expectedDismissals++
+                composeTestRule.runOnIdle { assertEquals(expectedDismissals, dismissed) }
+            }
+        }
+    }
+
+    @Test
+    fun glassWindowHostStaysWithinCompactPanelInsteadOfExpandingToWindow() {
+        val glass = mutableStateOf(false)
+        val renderer = object : AppPopupWindowHostRenderer {
+            @Composable
+            override fun Render(content: @Composable () -> Unit) {
+                // 模拟真实玻璃菜单宿主的填满约束行为。
+                Box(Modifier.fillMaxSize().testTag("panel_window_host")) { content() }
+            }
+        }
+        composeTestRule.setContent {
+            CompositionLocalProvider(
+                LocalAppThemeConfig provides AppThemeConfig(liquidGlassEnabled = glass.value),
+                LocalAppPopupWindowHostRenderer provides renderer,
+                LocalComponentMotionEnabled provides false,
+            ) {
+                MaterialTheme {
+                    Box(Modifier.fillMaxSize()) {
+                        PlayerDetailPanel(
+                            title = "分P", isFullscreen = false, playerBounds = null,
+                            compactHeight = true, onDismiss = {},
+                            modifier = Modifier.testTag("compact_panel"),
+                        ) { _ -> Box(Modifier.fillMaxSize()) }
+                    }
+                }
+            }
+        }
+        val nativePanel = composeTestRule.onNodeWithTag("compact_panel")
+            .fetchSemanticsNode().boundsInRoot
+        composeTestRule.runOnIdle { glass.value = true }
+        val glassPanel = composeTestRule.onNodeWithTag("compact_panel")
+            .fetchSemanticsNode().boundsInRoot
+        val host = composeTestRule.onNodeWithTag("panel_window_host")
+            .fetchSemanticsNode().boundsInRoot
+        assertTrue(glassPanel.height > 0f)
+        assertEquals(nativePanel.width, glassPanel.width, 1f)
+        assertEquals(nativePanel.height, glassPanel.height, 1f)
+        assertEquals(glassPanel.width, host.width, 1f)
+        assertEquals(glassPanel.height, host.height, 1f)
+    }
 
     @Test
     fun longPartsMenu_initiallyRevealsCurrentAndCanSelectLastThenFirstAcrossPopupHosts() {

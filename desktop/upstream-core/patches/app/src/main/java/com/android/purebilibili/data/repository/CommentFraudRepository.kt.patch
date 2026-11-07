@@ -10,7 +10,7 @@
  import com.android.purebilibili.core.database.entity.CommentFraudRecord
  import com.android.purebilibili.core.util.Logger
  import com.android.purebilibili.data.model.CommentFraudStatus
-@@ -21,8 +20,8 @@
+@@ -25,8 +24,8 @@ object CommentFraudRepository {
          encodeDefaults = true
      }
  
@@ -21,7 +21,7 @@
  
      /**
       * 保存或更新评论反诈记录 (支持完整元数据)
-@@ -41,11 +40,12 @@
+@@ -45,12 +44,13 @@ object CommentFraudRepository {
          postTime: Long = 0L,
          originUrl: String? = null,
          timestamp: Long = System.currentTimeMillis(),
@@ -30,22 +30,23 @@
      ) = withContext(Dispatchers.IO) {
 +        val dao = getDao(context)
          if (rpid <= 0L) return@withContext
-         try {
--            val existing = getDao(context).getRecordByRpid(rpid)
-+            val existing = dao.getRecordByRpid(rpid)
-             val record = CommentFraudRecord(
-                 rpid = rpid,
-                 oid = oid,
-@@ -61,14 +61,15 @@
-                 post_time = if (postTime > 0L) postTime else (existing?.post_time ?: 0L),
-                 timestamp = timestamp
-             )
--            getDao(context).insertOrUpdate(record)
-+            dao.insertOrUpdate(record)
-             Logger.d("CommentFraudRepo", "✅ 反诈记录已入库: rpid=$rpid, status=$status")
-         } catch (e: Exception) {
-+            if (e is kotlinx.coroutines.CancellationException) throw e
-             Logger.e("CommentFraudRepo", "反诈记录入库失败", e)
+         recordMutex.withLock {
+             try {
+-                val existing = getDao(context).getRecordByRpid(rpid)
++                val existing = dao.getRecordByRpid(rpid)
+                 val record = CommentFraudRecord(
+                     rpid = rpid,
+                     oid = existing?.oid ?: oid,
+@@ -68,7 +68,7 @@ object CommentFraudRepository {
+                     post_time = if (postTime > 0L) postTime else (existing?.post_time ?: 0L),
+                     timestamp = timestamp
+                 )
+-                getDao(context).insertOrUpdate(record)
++                dao.insertOrUpdate(record)
+                 Logger.d("CommentFraudRepo", "✅ 反诈记录已入库: rpid=$rpid, status=$status")
+             } catch (e: CancellationException) {
+                 throw e
+@@ -78,7 +78,7 @@ object CommentFraudRepository {
          }
      }
  
@@ -54,7 +55,7 @@
          return getDao(context).getAllRecordsFlow()
      }
  
-@@ -77,8 +78,9 @@
+@@ -87,8 +87,9 @@ object CommentFraudRepository {
       */
      suspend fun recheckRecord(
          record: CommentFraudRecord,
@@ -63,9 +64,9 @@
      ): Result<CommentFraudStatus> = withContext(Dispatchers.IO) {
 +        val dao = getDao(context)
          try {
-             Logger.d("CommentFraudRepo", "🔄 开始复检历史评论: rpid=${record.rpid}, oid=${record.oid}")
-             val result = CommentRepository.checkCommentStatus(
-@@ -93,10 +95,11 @@
+             require(record.type == 1) { "当前仅支持视频评论可见性检查" }
+             require(com.android.purebilibili.core.store.TokenManager.accountIdentity.value.mid == record.uid && record.uid > 0L) { "请切换到发布评论的账号" }
+@@ -105,7 +106,7 @@ object CommentFraudRepository {
                  status = newStatus.name,
                  timestamp = System.currentTimeMillis()
              )
@@ -73,12 +74,8 @@
 +            dao.insertOrUpdate(updatedRecord)
              Logger.d("CommentFraudRepo", "✅ 历史评论复检完成: rpid=${record.rpid}, 新状态=$newStatus")
              Result.success(newStatus)
-         } catch (e: Exception) {
-+            if (e is kotlinx.coroutines.CancellationException) throw e
-             Logger.e("CommentFraudRepo", "历史评论复检异常", e)
-             Result.failure(e)
-         }
-@@ -104,8 +107,9 @@
+         } catch (e: CancellationException) {
+@@ -118,8 +119,9 @@ object CommentFraudRepository {
  
      suspend fun deleteBiliComment(
          record: CommentFraudRecord,
@@ -87,9 +84,9 @@
      ): Result<Unit> = withContext(Dispatchers.IO) {
 +        val dao = getDao(context)
          try {
+             require(com.android.purebilibili.core.store.TokenManager.accountIdentity.value.mid == record.uid && record.uid > 0L) { "请切换到发布评论的账号" }
              Logger.d("CommentFraudRepo", "🗑️ 正在调用B站接口删除评论: rpid=${record.rpid}")
-             val deleteResult = CommentRepository.deleteComment(
-@@ -113,7 +117,7 @@
+@@ -129,7 +131,7 @@ object CommentFraudRepository {
                  rpid = record.rpid
              )
              if (deleteResult.isSuccess) {
@@ -98,12 +95,7 @@
                  Logger.d("CommentFraudRepo", "✅ 删评成功并移除本地记录")
                  Result.success(Unit)
              } else {
-@@ -121,31 +125,37 @@
-                 Result.failure(error)
-             }
-         } catch (e: Exception) {
-+            if (e is kotlinx.coroutines.CancellationException) throw e
-             Result.failure(e)
+@@ -143,26 +145,30 @@ object CommentFraudRepository {
          }
      }
  
@@ -121,26 +113,24 @@
 +        dao.clearAll()
      }
  
--    suspend fun exportToJson(context: Context = PureApplication.instance): String = withContext(Dispatchers.IO) {
+-    suspend fun exportToJson(context: Context = PureApplication.instance, ownerMid: Long? = null, compatibleFormat: Boolean = false): String = withContext(Dispatchers.IO) {
 -        val records = getDao(context).getAllRecords()
-+    suspend fun exportToJson(context: Context): String = withContext(Dispatchers.IO) {
++    suspend fun exportToJson(context: Context, ownerMid: Long? = null, compatibleFormat: Boolean = false): String = withContext(Dispatchers.IO) {
 +        val dao = getDao(context)
 +        val records = dao.getAllRecords()
-         json.encodeToString(records)
+         val selected = records.filter { ownerMid == null || (ownerMid > 0L && it.uid == ownerMid) }
+         if (compatibleFormat) encodeProto3CommentBackup(selected) else json.encodeToString(selected)
      }
  
 -    suspend fun importFromJson(jsonContent: String, context: Context = PureApplication.instance): Result<Int> = withContext(Dispatchers.IO) {
 +    suspend fun importFromJson(jsonContent: String, context: Context): Result<Int> = withContext(Dispatchers.IO) {
 +        val dao = getDao(context)
          try {
-             val importedList = json.decodeFromString<List<CommentFraudRecord>>(jsonContent)
-             if (importedList.isNotEmpty()) {
--                getDao(context).insertAll(importedList)
-+                dao.insertAll(importedList)
-             }
-             Result.success(importedList.size)
-         } catch (e: Exception) {
-+            if (e is kotlinx.coroutines.CancellationException) throw e
-             Logger.e("CommentFraudRepo", "导入 JSON 备份失败", e)
-             Result.failure(e)
-         }
+             require(jsonContent.toByteArray(Charsets.UTF_8).size <= 8 * 1024 * 1024) { "备份文件不能超过 8 MB" }
+             val importedList = decodeCommentBackup(jsonContent)
+             // 已有记录保留本地最新的检查状态与元数据，重复导入不会覆盖。
+-            val inserted = getDao(context).importMissing(importedList.distinctBy { it.rpid })
++            val inserted = dao.importMissing(importedList.distinctBy { it.rpid })
+             Result.success(inserted.count { it != -1L })
+         } catch (e: CancellationException) {
+             throw e

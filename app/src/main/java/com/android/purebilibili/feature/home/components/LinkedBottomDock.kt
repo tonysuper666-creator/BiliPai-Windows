@@ -101,20 +101,23 @@ internal fun LinkedBottomDock(
             com.android.purebilibili.core.ui.AppHapticScene.NAVIGATION,
         )
         val hasAudio = nowPlayingContent != null
+        val searchMergeEnabled = searchEnabled && mergeOnScrollDownEnabled
         var keepSlotComposed by remember { mutableStateOf(hasAudio) }
         val useNavigationCompact = shouldUseScrollCompactNavigation(
             enabled = compactOnScrollEnabled,
             hasAudio = hasAudio,
             retainingAudio = keepSlotComposed,
+            searchMergeEnabled = searchMergeEnabled,
         )
         var compactNavigation by remember(currentItem, useNavigationCompact) { mutableStateOf(false) }
         var internalPhase by remember(currentItem, searchEnabled) {
             mutableStateOf(
                 resolveLinkedDockInitialPhase(
                     currentItem = currentItem,
-                    collapseRequested = collapseRequested,
+                    collapseRequested = collapseRequested && mergeOnScrollDownEnabled,
                     hasAudio = hasAudio,
                     savedPhase = dockPhase,
+                    searchMergeEnabled = searchMergeEnabled,
                 )
             )
         }
@@ -134,10 +137,9 @@ internal fun LinkedBottomDock(
         LaunchedEffect(phase) {
             if (phase == LinkedDockPhase.Search) compactNavigation = false
         }
-        LaunchedEffect(hasAudio, dockPhase) {
-            if (dockPhase == null) {
-                internalPhase = resolveLinkedDockPhaseOnAudioChange(internalPhase, hasAudio)
-            }
+        LaunchedEffect(hasAudio, searchMergeEnabled) {
+            val reconciled = resolveLinkedDockPhaseOnAudioChange(phase, hasAudio, searchMergeEnabled)
+            if (reconciled != phase) updatePhase(reconciled)
         }
         var query by remember { mutableStateOf("") }
         LaunchedEffect(phase) {
@@ -150,6 +152,7 @@ internal fun LinkedBottomDock(
         val keyboardController = LocalSoftwareKeyboardController.current
         val scroll = LocalHomeScrollOffset.current
         val currentPhase by rememberUpdatedState(phase)
+        val latestUpdatePhase by rememberUpdatedState(updatePhase)
         val scrolling by rememberUpdatedState(isFeedScrollInProgress)
         val threshold = with(LocalDensity.current) { 24.dp.toPx() }
         LaunchedEffect(currentItem, hasAudio, searchEnabled, scroll, threshold, isTopLevelDestination, mergeOnScrollDownEnabled, glassEnabled, useNavigationCompact) {
@@ -167,24 +170,20 @@ internal fun LinkedBottomDock(
                         compactNavigation = compact
                         accumulated = 0f
                     }
-                } else if (!mergeOnScrollDownEnabled) {
-                    // 用户选择下滑不合体：只保留向上滚动回到展开（分体）的能力。
-                    accumulated = accumulateDockScroll(accumulated, delta)
-                    // The shared offset is a relative accumulator, not distance from the top.
-                    // Glass requires the full direction threshold even when it becomes negative.
-                    if ((!glassEnabled && offset <= 0f && delta < 0f) || accumulated <= -threshold) {
-                        updatePhase(LinkedDockPhase.Expanded)
-                        accumulated = 0f
-                    }
                 } else {
                     accumulated = accumulateDockScroll(accumulated, delta)
-                    // The shared offset is a relative accumulator, not distance from the top.
-                    // Glass requires the full direction threshold even when it becomes negative.
-                    if ((!glassEnabled && offset <= 0f && delta < 0f) || accumulated <= -threshold) {
-                        updatePhase(LinkedDockPhase.Expanded)
-                        accumulated = 0f
-                    } else if (hasAudio && accumulated >= threshold) {
-                        updatePhase(LinkedDockPhase.Playback)
+                    // 原生路径仍支持回到顶部立即展开；玻璃按完整反向阈值恢复。
+                    val target = if (!glassEnabled && offset <= 0f && delta < 0f) {
+                        LinkedDockPhase.Expanded
+                    } else resolveLinkedDockScrollPhase(
+                        accumulatedPx = accumulated,
+                        thresholdPx = threshold,
+                        hasAudio = hasAudio,
+                        searchEnabled = searchEnabled,
+                        mergeOnScrollDownEnabled = mergeOnScrollDownEnabled,
+                    )
+                    if (target != null) {
+                        latestUpdatePhase(target)
                         accumulated = 0f
                     }
                 }
@@ -194,14 +193,16 @@ internal fun LinkedBottomDock(
         // by isTopLevelDestination made the returning page re-expand/re-collapse the playback strip,
         // which also shifted the predictive-back target after the gesture had started.
         // Skip while the list is scrolling so resting phase does not fight scroll-driven search size.
-        LaunchedEffect(currentItem, collapseRequested, hasAudio, useNavigationCompact) {
+        LaunchedEffect(currentItem, collapseRequested, hasAudio, useNavigationCompact, searchMergeEnabled, mergeOnScrollDownEnabled) {
             if (
                 isTopLevelDestination && !useNavigationCompact &&
                 currentItem != BottomNavItem.HOME &&
                 currentPhase != LinkedDockPhase.Search &&
                 !isFeedScrollInProgress
             ) {
-                updatePhase(resolveLinkedDockRestingPhase(collapseRequested, hasAudio))
+                updatePhase(resolveLinkedDockRestingPhase(
+                    collapseRequested && mergeOnScrollDownEnabled, hasAudio, searchMergeEnabled,
+                ))
             }
         }
         fun expand() {
@@ -217,10 +218,13 @@ internal fun LinkedBottomDock(
         BackHandler(enabled = backEnabled) {
             focusManager.clearFocus()
             keyboardController?.hide()
-            updatePhase(resolveLinkedDockPhaseOnSearchDismiss(hasAudio, phaseBeforeSearch))
+            updatePhase(resolveLinkedDockPhaseOnSearchDismiss(hasAudio, phaseBeforeSearch, searchMergeEnabled))
         }
         val reduceMotion = rememberSystemReduceMotion() ||
             !com.android.purebilibili.core.ui.LocalComponentMotionEnabled.current
+        val dockMotionStyle = rememberGlassDockMotionStyle(
+            enabled = glassEnabled && !hasUiSkinDecoration,
+        )
         val transition = updateTransition(targetState = phase, label = "linkedBottomDock")
         // 共用弹簧保持合体、解体和中途反向时的速度连续。
         val merge = transition.animateFloat(
@@ -228,20 +232,20 @@ internal fun LinkedBottomDock(
                 if (reduceMotion) {
                     snap()
                 } else {
-                    bottomBarSearchMorphSpring()
+                    glassDockMorphSpring(dockMotionStyle, expanding = linkedDockMotionExpanding(initialState, targetState))
                 }
             },
             label = "dockMerge",
         ) { if (it == LinkedDockPhase.Expanded) 0f else 1f }
         val search = transition.animateFloat(
             transitionSpec = {
-                if (reduceMotion) snap() else bottomBarSearchMorphSpring()
+                if (reduceMotion) snap() else glassDockMorphSpring(dockMotionStyle,
+                    expanding = linkedDockMotionExpanding(initialState, targetState))
             },
             label = "dockSearch",
         ) { if (it == LinkedDockPhase.Search || it == LinkedDockPhase.Compact) 1f else 0f }
         val imeSettled = WindowInsets.ime
             .getBottom(LocalDensity.current) == 0
-        val nowPlayingLayoutStable = !transition.isRunning && imeSettled
         val mergeProgressProvider = remember(merge) {
             { merge.value.coerceIn(0f, 1f) }
         }
@@ -255,6 +259,7 @@ internal fun LinkedBottomDock(
         // handoff alpha hides it; replaying an entrance spring causes a second landing.
         val presence = remember { Animatable(if (hasAudio) 1f else 0f) }
         val slotEntering = remember { mutableStateOf(false) }
+        val nowPlayingLayoutStable = !transition.isRunning && !presence.isRunning && imeSettled
         LaunchedEffect(hasAudio, animateNowPlayingPresence, reduceMotion) {
             val target = if (hasAudio) 1f else 0f
             when {
@@ -348,12 +353,23 @@ internal fun LinkedBottomDock(
                 gap = 8.dp.roundToPx()
                 verticalGap = 4.dp.roundToPx()
             }
-            val searchHeight = button
+            fun compactControlSize(): Int {
+                val compact = with(density) {
+                    com.android.purebilibili.feature.audio.screen.resolveAudioNowPlayingBarHeightDp(
+                        merge.value, search.value,
+                    ).dp.roundToPx()
+                }
+                val progress = if (hasAudio) merge.value.coerceIn(0f, 1f) else 0f
+                return (button + (compact - button) * progress).roundToInt()
+            }
             val expandedGlassSearchHeight = with(density) { 48.dp.roundToPx() }
-            // 玻璃合体搜索从圆按钮过渡到 48dp 输入框；原生路径保持原有高度。
-            fun searchVisualHeight(): Int = if (glassEnabled) {
-                (searchHeight + (expandedGlassSearchHeight - searchHeight) * search.value.coerceIn(0f, 1f)).roundToInt()
-            } else searchHeight
+            fun searchVisualHeight(): Int {
+                val restingHeight = compactControlSize()
+                return if (glassEnabled) {
+                    (restingHeight + (expandedGlassSearchHeight - restingHeight) *
+                        search.value.coerceIn(0f, 1f)).roundToInt()
+                } else restingHeight
+            }
             // 两行宿主与导航行高度固定；搜索框仅在自身测量、放置阶段读取展开进度，
             // 不把搜索框高度变化传回页面组合或整条底栏的测量。
             val containerHeight = barHeight + verticalGap + barHeight
@@ -475,11 +491,15 @@ internal fun LinkedBottomDock(
                 var homeDragActive by remember { mutableStateOf(false) }
                 Box(
                     modifier = Modifier
-                        .offset { IntOffset(0, controlRowY) }
-                        .size(
-                            with(density) { button.toDp() },
-                            with(density) { controlHeight.toDp() },
-                        ),
+                        .offset {
+                            val size = compactControlSize()
+                            IntOffset((button - size) / 2, controlRowY + (controlHeight - size) / 2)
+                        }
+                        .layout { measurable, _ ->
+                            val size = compactControlSize()
+                            val child = measurable.measure(Constraints.fixed(size, size))
+                            layout(size, size) { child.placeRelative(0, 0) }
+                        },
                     contentAlignment = Alignment.Center,
                 ) {
                     // Keep placement outside the elastic observer: its gesture geometry must
@@ -590,13 +610,19 @@ internal fun LinkedBottomDock(
                                     expandedAudioWidth = bottomBarClusterWidth,
                                     expandedAudioX = navigationX,
                                 )
-                                // 槽高与导航行同为 barHeight：两行胶囊圆角（percent=50）
-                                // 严格一致，不会因槽更矮而出现更小的圆角。
+                                // 高度跟随封面与内容留白，合体时继续收紧，不拉伸到导航行高。
+                                val audioHeight = with(density) {
+                                    com.android.purebilibili.feature.audio.screen.resolveAudioNowPlayingBarHeightDp(
+                                        merge.value, search.value,
+                                    ).dp.roundToPx()
+                                }
                                 val placeable = measurable.measure(
-                                    Constraints.fixed(geometry.audioWidth, barHeight)
+                                    Constraints.fixed(geometry.audioWidth, audioHeight)
                                 )
                                 layout(geometry.audioWidth, barHeight) {
-                                    placeable.placeRelative(0, 0)
+                                    val top = ((barHeight - audioHeight) *
+                                        (1f - 0.5f * merge.value.coerceIn(0f, 1f))).roundToInt()
+                                    placeable.placeRelative(0, top)
                                 }
                             }
                             .offset {
@@ -614,7 +640,7 @@ internal fun LinkedBottomDock(
                                     expandedAudioWidth = bottomBarClusterWidth,
                                     expandedAudioX = navigationX,
                                 )
-                                // 槽高已与导航行同为 barHeight：展开时槽底贴导航行上方
+                                // 外层槽位保留导航行高，紧凑横条在槽内贴底，展开时底边贴导航行上方。
                                 // verticalGap 处；收合时槽与导航行完全重合（圆心同中心）。
                                 IntOffset(
                                     geometry.audioX,
@@ -623,24 +649,29 @@ internal fun LinkedBottomDock(
                                 )
                             },
                     ) {
-                        nowPlayingSlot.invoke(
-                            Modifier.fillMaxSize(),
-                            mergeProgressProvider,
-                            searchProgressProvider,
-                            zeroProgressProvider,
-                            if (shouldExpandPlaybackFromSearch(phase, hasAudio)) {
-                                {
-                                    if (!transition.isRunning) {
-                                        focusManager.clearFocus()
-                                        keyboardController?.hide()
-                                        updatePhase(LinkedDockPhase.Playback)
+                        androidx.compose.runtime.CompositionLocalProvider(
+                            com.android.purebilibili.core.ui.LocalVisualWorkAllowed provides
+                                (com.android.purebilibili.core.ui.LocalVisualWorkAllowed.current && hasAudio),
+                        ) {
+                            nowPlayingSlot.invoke(
+                                Modifier.fillMaxSize(),
+                                mergeProgressProvider,
+                                searchProgressProvider,
+                                zeroProgressProvider,
+                                if (shouldExpandPlaybackFromSearch(phase, hasAudio)) {
+                                    {
+                                        if (!transition.isRunning) {
+                                            focusManager.clearFocus()
+                                            keyboardController?.hide()
+                                            updatePhase(LinkedDockPhase.Playback)
+                                        }
                                     }
-                                }
-                            } else {
-                                null
-                            },
-                            nowPlayingLayoutStable,
-                        )
+                                } else {
+                                    null
+                                },
+                                nowPlayingLayoutStable,
+                            )
+                        }
                     }
                 }
                 Box(
@@ -687,11 +718,14 @@ internal fun LinkedBottomDock(
                                 searchProgress = search.value,
                                 verticalGap = verticalGap,
                             )
+                            val width = (compactControlSize() +
+                                (geometry.searchWidth - compactControlSize()) *
+                                search.value.coerceIn(0f, 1f)).roundToInt().coerceAtMost(geometry.searchWidth)
                             val placeable = measurable.measure(
-                                Constraints.fixed(geometry.searchWidth, searchVisualHeight())
+                                Constraints.fixed(width, searchVisualHeight())
                             )
                             layout(geometry.searchWidth, searchVisualHeight()) {
-                                placeable.placeRelative(0, 0)
+                                placeable.placeRelative((geometry.searchWidth - width) / 2, 0)
                             }
                         },
                 ) {
@@ -762,6 +796,7 @@ internal fun LinkedBottomDock(
                                                 resolveLinkedDockPhaseOnSearchDismiss(
                                                     hasAudio = hasAudio,
                                                     previousPhase = phaseBeforeSearch,
+                                                    searchMergeEnabled = searchMergeEnabled,
                                                 )
                                             )
                                         }
