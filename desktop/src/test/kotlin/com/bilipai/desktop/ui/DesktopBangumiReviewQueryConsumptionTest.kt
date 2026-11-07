@@ -123,7 +123,11 @@ class DesktopBangumiReviewQueryConsumptionTest {
         fun snapshot(): List<Call> = synchronized(calls) { calls.toList() }
         suspend fun request(type: String, sort: Int = 0, cursor: String = "", mediaId: Long = media, account: Int = epoch): Call {
             val name = when (type) { "long" -> "getBangumiLongReviews"; "short" -> "getBangumiShortReviews"; else -> type }
-            fun find() = snapshot().firstOrNull { !it.taken && it.name == name && it.epoch == account &&
+            // A canceled prefetch may still be held by the hostile transport.
+            // Capture it before switching when testing late delivery; a new
+            // selected query must receive the currently active continuation.
+            fun find() = snapshot().firstOrNull { !it.taken && it.continuation.context[Job]?.isCancelled != true &&
+                it.name == name && it.epoch == account &&
                 (type !in listOf("long", "short") || (it.args[0] == mediaId && it.args[2] == sort && it.args[3] == cursor)) }
             until { find() != null }
             return assertNotNull(find()).also { it.taken = true }
@@ -225,7 +229,7 @@ class DesktopBangumiReviewQueryConsumptionTest {
             assertTrue(f.labeled("latest page").isNotEmpty())
             f.click("默认"); f.text("first page")
             val resumed = f.request("long", cursor = "opaque-next")
-            assertEquals(listOf<Any?>(19L, 20, 0, "opaque-next"), resumed.args)
+            assertEquals(listOf<Any?>(19L, 20, 0, "opaque-next", "666.19"), resumed.args)
             resumed.page("second page", id = 63); f.text("second page")
             assertTrue(f.labeled("first page").isNotEmpty())
             f.click("最新"); f.text("latest page")
@@ -258,9 +262,10 @@ class DesktopBangumiReviewQueryConsumptionTest {
             f.click("重试"); f.request("long").page(code = -1); f.text("controlled failure")
             f.click("短评"); f.text("还没有点评")
             f.click("长评"); f.request("long").page(); f.text("还没有点评")
+            val callsAfterSuccessfulEmptyPages = f.snapshot().size
             f.click("短评"); f.text("还没有点评")
             f.click("长评"); f.text("还没有点评")
-            assertEquals(4, f.snapshot().size)
+            assertEquals(callsAfterSuccessfulEmptyPages, f.snapshot().size, "successful empty queries must remain cached")
         } finally { f.close() }
     }
 
