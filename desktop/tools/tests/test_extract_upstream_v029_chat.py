@@ -62,8 +62,13 @@ class V029ChatSourceTest(unittest.TestCase):
                 restored[row['adaptedStart']:row['adaptedEnd']] = row['before'].splitlines(True)
             self.assertEqual(original, ''.join(restored))
 
-            self.assertEqual(screen.count('.desktopChatImePadding()'), 1)
-            self.assertIn('import com.bilipai.desktop.ui.desktopChatImePadding', screen)
+            self.assertEqual(screen.count('.desktopChatContentInsets(paddingValues)'), 1)
+            self.assertIn('import com.bilipai.desktop.ui.desktopChatContentInsets', screen)
+            chain = screen.index('.desktopChatContentInsets(paddingValues)')
+            self.assertLess(chain, screen.index('ChatInputBar('))
+            self.assertNotIn('.desktopChatImePadding()', screen)
+            helper = (REPO / 'desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopChatImeLayout.kt').read_text('utf8')
+            self.assertLess(helper.index('consumeWindowInsets(paddingValues)'), helper.index('.desktopChatImePadding()', helper.index('internal fun Modifier.desktopChatContentInsets')))
             self.assertNotIn('.imePadding()', screen)
             self.assertNotIn('.desktopChatImePadding()', screen[screen.index('fun ChatInputBar('):])
 
