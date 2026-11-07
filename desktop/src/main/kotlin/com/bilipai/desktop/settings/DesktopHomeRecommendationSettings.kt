@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 
-/** The same discovery instance read by the real recommendation screen owns both fields. */
+/** The same discovery instance read by the real recommendation screen owns the source selection. */
 @Composable
 internal fun DesktopHomeRecommendationSettings(
     discovery: DesktopDiscoveryRepository,
@@ -18,7 +18,6 @@ internal fun DesktopHomeRecommendationSettings(
     modifier: Modifier = Modifier,
 ) {
     val feedMode by discovery.feedMode.collectAsState()
-    val refreshCount by discovery.refreshCount.collectAsState()
     val scope=rememberCoroutineScope()
     val writer=remember(discovery){Mutex()}
     val latestFailure by rememberUpdatedState(onFailure)
@@ -33,8 +32,6 @@ internal fun DesktopHomeRecommendationSettings(
         DesktopHomeRecommendationFields(
             feedApiType=feedMode,
             onFeedApiTypeChange={value->update{discovery.setFeedMode(value)}},
-            homeRefreshCount=refreshCount,
-            onHomeRefreshCountChange={value->update{discovery.setRefreshCount(value)}},
         )
         LocalDesktopDynamicTimelinePreferences.current?.let {preferences->
             DesktopDynamicTimelineSettings(preferences,onFailure)

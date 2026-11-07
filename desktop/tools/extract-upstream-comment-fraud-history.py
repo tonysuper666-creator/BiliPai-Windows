@@ -5,7 +5,7 @@ import argparse, hashlib, importlib.util, json, os, re, sys
 from pathlib import Path
 sys.dont_write_bytecode = True
 UPSTREAM = "79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40"
-CATALOG_SHA = "2600739eef5521cfef71d6af16762ccc3b9df076dad7ccb79902944f1634130f"
+CATALOG_SHA = "d3f979a7ce657e358a4362ca801ce91fbf39be5fc51277691dfec43bda131356"
 LEGACY_CATALOG_SHA = "2fa53aa78cc27c76a3923cc44750128b3657c340dbcfe44ec13810cbc48becbc"
 FEATURE = "desktop-whole-comment-fraud-history"
 SCREEN = "app/src/main/java/com/android/purebilibili/feature/settings/screen/CommentFraudHistoryScreen.kt"

@@ -129,4 +129,18 @@
     <string name="shortcut_favorite_long">我的收藏</string>
     <string name="shortcut_history_short">歷史</string>
     <string name="shortcut_history_long">觀看歷史</string>
+
+    <!-- Progressive top blur renderer -->
+    <string name="animation_progressive_renderer_title">漸進模糊方案</string>
+    <string name="animation_progressive_renderer_summary">兩種方案共用模糊強度、覆蓋範圍與過渡設定。</string>
+    <string name="animation_progressive_renderer_fallback_summary">目前系統不支援官方方案，選擇後仍使用 Miuix。</string>
+    <string name="animation_progressive_renderer_miuix_description">現有方案，預設使用。</string>
+    <string name="animation_progressive_renderer_android">Android 官方</string>
+    <string name="animation_progressive_renderer_android_description">使用系統背景模糊；不支援時自動使用 Miuix。</string>
+    <string name="preview_blur_compare_button">對照預覽</string>
+    <string name="preview_blur_compare_title">漸進模糊對照</string>
+    <string name="preview_blur_compare_summary">使用相同畫面和目前模糊參數。拖動下方滑桿可同步移動背景，預覽不會修改已儲存的設定。</string>
+    <string name="preview_blur_compare_scroll">移動預覽背景</string>
+    <string name="preview_blur_compare_unavailable">%1$s 暫時無法使用，目前裝置無法顯示該方案的實際效果。</string>
+    <string name="preview_blur_compare_api_requirement">官方方案需要平台 API 37.2 或更新版本；目前為 API %1$s，暫時使用 Miuix。</string>
 </resources>

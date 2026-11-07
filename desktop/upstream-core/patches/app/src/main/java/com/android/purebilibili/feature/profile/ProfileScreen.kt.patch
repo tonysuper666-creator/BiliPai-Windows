@@ -1,19 +1,20 @@
 --- a/com/android/purebilibili/feature/profile/ProfileScreen.kt
 +++ b/com/android/purebilibili/feature/profile/ProfileScreen.kt
-@@ -1,41 +1,37 @@
+@@ -1,10 +1,11 @@
  package com.android.purebilibili.feature.profile
 +import com.bilipai.desktop.ui.LocalDesktopProfileEnvironment
 +import com.bilipai.desktop.ui.rememberDesktopProfileMediaPicker
 +import com.bilipai.desktop.ui.rememberDesktopProfileAvatarPicker
  
+ import com.android.purebilibili.core.util.responsiveContentWidth
+-
 -import com.android.purebilibili.navigation.tabIndicatorPosition
  import com.android.purebilibili.data.model.AccountLedgerKind
  import com.android.purebilibili.core.ui.motion.AppMotionEasing
  import com.android.purebilibili.core.ui.AppContentColors
  
  import com.android.purebilibili.feature.personal.PersonalMediaCardFrame
- import com.android.purebilibili.core.ui.components.VideoListLayoutToggle
- import com.android.purebilibili.core.ui.components.resolveVideoListColumns
+@@ -13,24 +14,18 @@ import com.android.purebilibili.core.ui.components.resolveVideoListColumns
  import com.android.purebilibili.core.ui.components.rememberVideoListLayoutControl
  import com.android.purebilibili.core.ui.components.videoListBoundsAnimation
  import androidx.compose.ui.layout.LookaheadScope
@@ -38,21 +39,7 @@
  import androidx.compose.foundation.clickable
  import androidx.compose.foundation.horizontalScroll
  import androidx.compose.foundation.rememberScrollState
- import androidx.compose.foundation.layout.*
- import com.android.purebilibili.core.ui.components.AppLazyColumn as LazyColumn
- import androidx.compose.foundation.lazy.LazyListState
- import androidx.compose.foundation.lazy.rememberLazyListState
- import androidx.compose.foundation.shape.CircleShape
- import androidx.compose.foundation.verticalScroll
- import androidx.compose.material3.*
-@@ -74,54 +70,45 @@
- import androidx.compose.ui.graphics.toArgb
- import androidx.compose.ui.geometry.Rect
- import androidx.compose.foundation.border
- import androidx.compose.foundation.BorderStroke
- import androidx.compose.ui.draw.blur
- import androidx.compose.ui.graphics.vector.ImageVector
- import androidx.compose.ui.layout.ContentScale
+@@ -83,40 +78,31 @@ import androidx.compose.ui.layout.ContentScale
  import androidx.compose.ui.layout.layout
  import androidx.compose.ui.layout.boundsInWindow
  import androidx.compose.ui.layout.onGloballyPositioned
@@ -95,21 +82,7 @@
  import com.android.purebilibili.feature.dynamic.components.isImagePreviewSourceHidden
  import com.android.purebilibili.feature.dynamic.components.prepareImagePreviewSourceTransition
  import com.android.purebilibili.feature.dynamic.components.rememberImagePreviewSourceRect
- import com.android.purebilibili.feature.dynamic.components.imagePreviewSourceBounds
- import com.android.purebilibili.feature.dynamic.components.resolveImagePreviewPlaceholderCacheKey
- import com.android.purebilibili.feature.dynamic.components.ImagePreviewTextContent
- import com.android.purebilibili.core.ui.AppAlertDialog
- import com.android.purebilibili.core.ui.resolveAppContentDialogLayoutPolicy
- import com.android.purebilibili.core.ui.AppModalBottomSheet
- import com.android.purebilibili.core.ui.components.AppPrimaryButton
-@@ -175,51 +162,46 @@
- import com.android.purebilibili.core.ui.AppSemanticAccentRole
- import com.android.purebilibili.core.ui.components.UserLevelBadge
- import com.android.purebilibili.core.ui.rememberAppWarningIcon
- import com.android.purebilibili.core.ui.rememberAppWatchLaterIcon
- import com.android.purebilibili.core.ui.wallpaper.ProfileWallpaperTransform
- import com.android.purebilibili.core.util.LocalWindowSizeClass
- import com.android.purebilibili.core.util.WindowWidthSizeClass
+@@ -186,11 +172,10 @@ import com.android.purebilibili.core.util.WindowWidthSizeClass
  import com.android.purebilibili.core.ui.components.AppPreference
  import com.android.purebilibili.core.ui.components.AppPreferenceGridItem
  import com.android.purebilibili.core.ui.components.AppSegmentOption
@@ -121,13 +94,7 @@
  import com.android.purebilibili.data.model.response.SpaceAggregateArchiveItem
  import com.android.purebilibili.data.model.response.SpaceDynamicItem
  import com.android.purebilibili.data.model.response.SpaceVideoItem
- import com.android.purebilibili.feature.dynamic.DynamicDeleteAction
- import com.android.purebilibili.feature.space.resolveSpaceAggregateVideoId
- import com.android.purebilibili.core.ui.common.contentTabPagerGestures
- import com.android.purebilibili.core.ui.common.rememberContentTabPager
- import com.android.purebilibili.core.ui.common.stationaryPagerHeader
- import com.android.purebilibili.core.ui.components.AppHorizontalPager
- import androidx.compose.foundation.pager.PagerState
+@@ -204,19 +189,15 @@ import androidx.compose.foundation.pager.PagerState
  import com.android.purebilibili.feature.settings.AppThemeMode
  import androidx.compose.ui.input.nestedscroll.nestedScroll
  
@@ -147,21 +114,7 @@
  import androidx.compose.animation.fadeIn
  import androidx.compose.animation.fadeOut
  import androidx.compose.animation.shrinkVertically
- import androidx.compose.foundation.lazy.grid.items
- import androidx.compose.runtime.mutableFloatStateOf
- import androidx.compose.ui.input.pointer.pointerInput
- import androidx.compose.foundation.gestures.detectTapGestures
- import androidx.compose.foundation.layout.Arrangement
- import androidx.compose.ui.unit.times
- import kotlinx.coroutines.flow.receiveAsFlow
-@@ -326,26 +308,26 @@
- internal fun resolveProfileSkinBackgroundImagePath(
-     useSplitLayout: Boolean,
-     wideImagePath: String?,
-     squaredImagePath: String?,
- ): String? {
-     val preferred = if (useSplitLayout) squaredImagePath else wideImagePath
-     val fallback = if (useSplitLayout) wideImagePath else squaredImagePath
+@@ -337,12 +318,12 @@ internal fun resolveProfileSkinBackgroundImagePath(
      return preferred?.takeIf { it.isNotBlank() } ?: fallback?.takeIf { it.isNotBlank() }
  }
  
@@ -173,24 +126,35 @@
 +    viewModel: ProfileViewModel,
      isCurrentPage: Boolean = true,
      accountSessionRefreshGeneration: Int = 0,
+     initialEditAccount: Boolean = false,
      onBack: () -> Unit,
      onGoToLogin: () -> Unit,
-     onLogoutSuccess: () -> Unit,
-     onAccountSwitchSuccess: () -> Unit = {},
-     onSettingsClick: () -> Unit,
-     onAccountLedgerClick: ((AccountLedgerKind) -> Unit)? = null,
-     onSearchClick: () -> Unit = {},
-     onHistoryClick: () -> Unit,
-     showHistoryService: Boolean = true,
-     onFavoriteClick: () -> Unit,
-@@ -395,25 +377,25 @@
-             skinSquaredBackgroundImagePath = skinSquaredBackgroundImagePath,
-             skinVideoBackgroundPath = skinVideoBackgroundPath,
-             skinVideoPlayMode = skinVideoPlayMode,
-             deferImmersiveRenderBudget = deferImmersiveRenderBudget,
-             scrollToTopChannel = scrollToTopChannel,
-         )
-     }
+@@ -371,23 +352,13 @@ fun ProfileScreen(
+     skinVideoPlayMode: String? = null,
+     deferImmersiveRenderBudget: Boolean = false,
+     scrollToTopChannel: kotlinx.coroutines.channels.Channel<Unit>? = null
+     // [注意] 移除了 globalHazeState - 双 hazeSource 模式与 Haze 库冲突
+ ) {
+-    var showMyComments by androidx.compose.runtime.saveable.rememberSaveable { mutableStateOf(false) }
+-    androidx.activity.compose.BackHandler(enabled = showMyComments && isCurrentPage) { showMyComments = false }
+-    if (showMyComments) {
+-        com.android.purebilibili.feature.settings.screen.CommentFraudHistoryScreen(
+-            onBack = { showMyComments = false },
+-            archiveMode = true,
+-            onOpenSource = onCommentSourceClick,
+-        )
+-        return
+-    }
++    // The desktop comment history screen has no archive mode yet; without the provider below the "my comments" menu entry stays hidden.
+     CompositionLocalProvider(
+         LocalProfileLedgerNavigation provides onAccountLedgerClick,
+-        LocalProfileCommentsNavigation provides { showMyComments = true },
+     ) {
+         ProfileScreenContent(
+             viewModel = viewModel,
+             isCurrentPage = isCurrentPage,
+             accountSessionRefreshGeneration = accountSessionRefreshGeneration,
+@@ -422,11 +393,11 @@ fun ProfileScreen(
  }
  
  @OptIn(ExperimentalMaterial3Api::class)
@@ -200,24 +164,10 @@
 +    viewModel: ProfileViewModel,
      isCurrentPage: Boolean = true,
      accountSessionRefreshGeneration: Int = 0,
+     initialEditAccount: Boolean = false,
      onBack: () -> Unit,
      onGoToLogin: () -> Unit,
-     onLogoutSuccess: () -> Unit,
-     onAccountSwitchSuccess: () -> Unit = {},
-     onSettingsClick: () -> Unit,
-     onSearchClick: () -> Unit = {},
-     onHistoryClick: () -> Unit,
-     showHistoryService: Boolean = true,
-     onFavoriteClick: () -> Unit,
-     onSubscriptionClick: () -> Unit = {},
-@@ -426,199 +408,165 @@
-     onVideoClick: (String) -> Unit = {},  // [新增] 视频点击（三连彩蛋跳转用）
-     onBangumiClick: (Long, Long) -> Unit = { _, _ -> },
-     onBangumiMoreClick: () -> Unit = {},
-     skinBackgroundImagePath: String? = null,
-     skinSquaredBackgroundImagePath: String? = null,
-     skinVideoBackgroundPath: String? = null,
-     skinVideoPlayMode: String? = null,
+@@ -454,18 +425,17 @@ private fun ProfileScreenContent(
      deferImmersiveRenderBudget: Boolean = false,
      scrollToTopChannel: kotlinx.coroutines.channels.Channel<Unit>? = null
      // [注意] 移除了 globalHazeState - 双 hazeSource 模式与 Haze 库冲突
@@ -231,17 +181,14 @@
      val accounts by viewModel.accounts.collectAsStateWithLifecycle()
      val activeAccountMid by viewModel.activeAccountMid.collectAsStateWithLifecycle()
      val playbackAccountMid by viewModel.playbackAccountMid.collectAsStateWithLifecycle()
+-    val purposeAccountMids by viewModel.purposeAccountMids.collectAsStateWithLifecycle()
 -    val view = LocalView.current
      var showAccountSwitchDialog by remember { mutableStateOf(false) }
      val windowSizeClass = LocalWindowSizeClass.current
      val skinProfileBackgroundPath = remember(
          windowSizeClass.shouldUseSplitLayout,
          skinBackgroundImagePath,
-         skinSquaredBackgroundImagePath,
-     ) {
-         resolveProfileSkinBackgroundImagePath(
-             useSplitLayout = windowSizeClass.shouldUseSplitLayout,
-             wideImagePath = skinBackgroundImagePath,
+@@ -477,29 +447,25 @@ private fun ProfileScreenContent(
              squaredImagePath = skinSquaredBackgroundImagePath,
          )
      }
@@ -277,16 +224,7 @@
          }
      }
      val isImmersiveMobileProfile = !windowSizeClass.shouldUseSplitLayout &&
-         (skinProfileBackgroundPath != null || !skinVideoBackgroundPath.isNullOrBlank() ||
-             (state as? ProfileUiState.Success)?.user?.topPhoto?.isNotEmpty() == true)
-     val shouldControlSystemBars = isLoggedOut || isImmersiveMobileProfile
-     var handledAccountSessionRefreshGeneration by remember(viewModel) {
-         mutableIntStateOf(0)
-     }
-     val lightStatusBars = resolveProfileLightStatusBars(
-         isImmersive = shouldControlSystemBars,
-         useSplitLayout = windowSizeClass.shouldUseSplitLayout,
-         isDarkTheme = isDarkTheme
+@@ -516,11 +482,11 @@ private fun ProfileScreenContent(
      )
  
      // [Blur] Haze State: only expose a source when the platform and runtime guard
@@ -299,9 +237,7 @@
          rememberRecoverableHazeState()
      } else {
          null
-     }
-     var profileScrollToTopRequestId by remember { mutableIntStateOf(0) }
-     LaunchedEffect(scrollToTopChannel) {
+@@ -530,44 +496,14 @@ private fun ProfileScreenContent(
          scrollToTopChannel?.receiveAsFlow()?.collect {
              profileScrollToTopRequestId += 1
          }
@@ -349,19 +285,7 @@
      DisposableEffect(viewModel, isCurrentPage) {
          viewModel.setProfilePageActive(isCurrentPage)
          onDispose { viewModel.setProfilePageActive(false) }
-     }
- 
-     LaunchedEffect(viewModel, isCurrentPage, accountSessionRefreshGeneration) {
-         if (isCurrentPage) {
-             val force = shouldForceProfileLoadForAccountSessionRefresh(
-                 isCurrentPage = isCurrentPage,
-                 accountSessionRefreshGeneration = accountSessionRefreshGeneration,
-                 handledAccountSessionRefreshGeneration = handledAccountSessionRefreshGeneration
-             )
-             viewModel.loadProfile(force = force)
-             if (force) {
-                 handledAccountSessionRefreshGeneration = accountSessionRefreshGeneration
-             }
+@@ -587,28 +523,20 @@ private fun ProfileScreenContent(
          }
      }
  
@@ -376,12 +300,24 @@
              accounts = accounts,
              activeAccountMid = activeAccountMid,
              playbackAccountMid = playbackAccountMid,
+-            purposeAccountMids = purposeAccountMids,
+-            onSetPurpose = { purpose, mid ->
+-                viewModel.setPurposeAccount(purpose, mid,
+-                    onSuccess = {
+-                        onAccountSwitchSuccess()
+-                        Toast.makeText(context, "账号用途已更新，下次请求生效", Toast.LENGTH_SHORT).show()
+-                    },
+-                    onFailure = { Toast.makeText(context, it, Toast.LENGTH_SHORT).show() },
+-                )
+-            },
++            // Desktop: per-purpose accounts are not routed by DesktopUpstreamCalls; without onSetPurpose the dialog
++            // keeps its playback-account picker.
              onDismiss = { showAccountSwitchDialog = false },
              onAddAccount = {
                  showAccountSwitchDialog = false
                  onGoToLogin()
              },
-             onSwitch = { mid ->
+@@ -616,34 +544,34 @@ private fun ProfileScreenContent(
                  showAccountSwitchDialog = false
                  viewModel.switchAccount(
                      mid = mid,
@@ -422,21 +358,7 @@
              }
          )
      }
- 
-     //  未登录状态使用沉浸式全屏布局，已登录使用正常 Scaffold
-     val currentUiState = state
-     val profileProgressiveChrome = rememberProfileProgressiveTopChrome()
-     val profileHeaderBlurActive = false
-     when (currentUiState) {
-         is ProfileUiState.Loading -> {
-@@ -637,24 +585,25 @@
-                 isVip = false,
-                 vipLabel = "",
-                 following = 0,
-                 follower = 0,
- 
-                 dynamic = 0,
-                 topPhoto = skinProfileBackgroundPath ?: currentUiState.topPhoto
+@@ -676,10 +604,11 @@ private fun ProfileScreenContent(
              )
  
  
@@ -448,21 +370,7 @@
                              user = guestUser,
                              viewModel = viewModel,
                              deferImmersiveRenderBudget = deferImmersiveRenderBudget,
-                             skinVideoBackgroundPath = skinVideoBackgroundPath,
-                             skinVideoPlayMode = skinVideoPlayMode,
-                             playSkinVideo = isCurrentPage,
-                         )
-                     },
-                     progressiveTopChrome = profileProgressiveChrome,
-                     user = guestUser,
-@@ -788,25 +737,25 @@
-                 TopAppBarDefaults.pinnedScrollBehavior()
-             } else {
-                 TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
-             }
-             val favoriteFolderShortcuts = remember(currentUiState.favoriteFolders, currentUiState.user.mid) {
-                 resolveProfileFavoriteFolderShortcuts(
-                     folders = currentUiState.favoriteFolders,
+@@ -827,11 +756,11 @@ private fun ProfileScreenContent(
                      ownerMid = currentUiState.user.mid
                  )
              }
@@ -475,21 +383,7 @@
              }
  
              AppScaffold(
-                 topBarIconBackdropSource = profileProgressiveChrome.source,
-                 modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-                 containerColor = MaterialTheme.colorScheme.background,
-                 // [Immersive] Mobile hides default TopBar, Tablet keeps it
-                 topBar = {
-                     if (windowSizeClass.shouldUseSplitLayout) {
-                         BiliPaiImmersiveTopBar(
-@@ -901,25 +850,25 @@
-                         onFavoriteClick = onFavoriteClick,
-                         onSubscriptionClick = onSubscriptionClick,
-                         onFavoriteFolderClick = onFavoriteFolderClick,
-                         onFollowingClick = { onFollowingClick(currentUiState.user.mid) },
-                         onFansClick = { onFansClick(currentUiState.user.mid) },
-                         onDownloadClick = onDownloadClick,
-                         onWatchLaterClick = onWatchLaterClick,
+@@ -941,11 +870,11 @@ private fun ProfileScreenContent(
                          onInboxClick = onInboxClick,
                          onVideoClick = onVideoClick,
                          onContributionRetry = viewModel::retryProfileContributions,
@@ -502,21 +396,7 @@
                          onBangumiClick = onBangumiClick,
                          onBangumiMoreClick = onBangumiMoreClick,
                          scrollBehavior = scrollBehavior,
-                         onBack = onBack,
-                         onSettingsClick = onSettingsClick,
-                         onSearchClick = onSearchClick,
-                         privacyModeEnabled = privacyModeEnabled,
-                         onPrivacyClick = togglePrivacyMode,
-                         onThemeClick = toggleThemeMode,
-                         hazeState = hazeState,
-@@ -952,26 +901,27 @@
-     viewModel: ProfileViewModel,
-     deferImmersiveRenderBudget: Boolean,
-     skinVideoBackgroundPath: String? = null,
-     skinVideoPlayMode: String? = null,
-     playSkinVideo: Boolean = true,
- ) {
-     val windowSizeClass = LocalWindowSizeClass.current
+@@ -992,12 +921,13 @@ private fun BoxScope.ProfileBackground(
      val isTablet = windowSizeClass.shouldUseSplitLayout
      val hasSkinVideo = !skinVideoBackgroundPath.isNullOrBlank()
      val hasWallpaper = user.topPhoto.isNotEmpty() || hasSkinVideo
@@ -532,21 +412,7 @@
      val isDarkTheme = colorScheme.surface.luminance() < 0.5f
      val heroHeight = resolveProfileHeroHeightDp(
          screenHeightDp = configuration.screenHeightDp,
-         widthSizeClass = windowSizeClass.widthSizeClass
-     ).dp
-     val backgroundVisible by remember(headerMotion, heroHeight, density) {
-         derivedStateOf {
-             // Expanded photos leave the statistics background visible. Pause media
-             // only when scrolling has actually removed the whole header.
-             headerMotion == null || headerMotion.scrollOffsetPx() <
-@@ -1063,90 +1013,34 @@
-                         Brush.verticalGradient(
-                             colors = listOf(
-                                 Color.Black.copy(alpha = heroChrome.scrimTopAlpha),
-                                 Color.Black.copy(alpha = heroChrome.scrimBottomAlpha)
-                             )
-                         )
-                     )
+@@ -1103,76 +1033,20 @@ private fun BoxScope.ProfileBackground(
              )
          }
      }
@@ -559,8 +425,8 @@
 -        Player.REPEAT_MODE_ONE
 -    }
 -}
- 
 +
+ 
  @Composable
 -@android.annotation.SuppressLint("UnsafeOptInUsageError")
  private fun ProfileSkinVideoBackground(
@@ -625,21 +491,7 @@
  @OptIn(ExperimentalMaterial3Api::class)
  @Composable
  private fun ProfileSpaceContent(
-     viewModel: ProfileViewModel,
-     user: UserState,
-     accountFace: String,
-     space: ProfileSpaceUiState,
-     editableAccount: ProfileEditableAccountState,
-     favoriteFolderShortcuts: List<ProfileFavoriteFolderShortcut>,
-     onTabSelected: (ProfileSpaceMainTab) -> Unit,
-@@ -1189,86 +1083,80 @@
-         if (user.face.isNotBlank()) {
-             prepareImagePreviewSourceTransition(avatarSourceRect.value)
-             avatarPreview = user.face
-         }
-     }
-     var accountAvatarPickerMid by rememberSaveable { mutableStateOf<Long?>(null) }
-     var accountAvatarCrop by rememberSaveable(user.mid) { mutableStateOf<String?>(null) }
+@@ -1230,32 +1104,36 @@ private fun ProfileSpaceContent(
      var accountAvatarConfirmation by rememberSaveable(user.mid) { mutableStateOf<String?>(null) }
      var editingAccountField by remember(user.mid) { mutableStateOf<ProfileAccountField?>(null) }
      var showAccountSignDialog by remember(user.mid) { mutableStateOf(false) }
@@ -686,16 +538,7 @@
      }
      var showWallpaperSheet by remember { mutableStateOf(false) }
      var showPhotoPickerDialog by remember { mutableStateOf(false) }
-     var showWallpaperActionSheet by remember { mutableStateOf(false) }
- 
-     if (showEditDialog) {
-         ProfileEditAccountDialog(
-             state = editableAccount,
-             mid = user.mid,
-             accountFace = accountFace,
-             isSaving = space.isSavingSign,
-             onDismiss = { showEditDialog = false },
-             onEditSign = { showEditDialog = false; showAccountSignDialog = true },
+@@ -1272,30 +1150,20 @@ private fun ProfileSpaceContent(
              // 子编辑流程（昵称/生日、性别、头像）叠加在编辑资料之上，返回时回到编辑资料。
              onEditField = { field -> editingAccountField = field },
              onEditSex = { showAccountSexDialog = true },
@@ -725,23 +568,9 @@
      if (showAccountSignDialog) {
          ProfileAccountSignDialog(
              initialValue = editableAccount.sign,
-             onDismiss = { showAccountSignDialog = false },
-             onSave = { sign -> showAccountSignDialog = false; onSignSave(sign) },
-         )
-     }
-     editingAccountField?.let { field ->
-         ProfileAccountFieldDialog(
-             field = field,
-             initialValue = if (field == ProfileAccountField.NAME) editableAccount.name else editableAccount.birthday,
-             onDismiss = { editingAccountField = null },
-@@ -1290,25 +1178,25 @@
-                             viewModel.updateAccountField(ProfileAccountField.SEX, value)
-                         }) { AppText(label) }
-                     }
-                 }
-             },
-             confirmButton = { AppTextButton(onClick = { showAccountSexDialog = false }) { AppText("取消") } }
-         )
+             onDismiss = { showAccountSignDialog = false; if (initialEditAccount) showEditDialog = true },
+             onSave = { sign ->
+@@ -1335,11 +1203,11 @@ private fun ProfileSpaceContent(
      }
      accountAvatarConfirmation?.let { image ->
          ProfileAvatarConfirmDialog(
@@ -754,21 +583,7 @@
      if (showAdjustmentSheet && tempSelectedUri != null) {
          ProfileWallpaperAdjustmentSheet(
              imageUri = tempSelectedUri.toString(),
-             initialMobileTransform = ProfileWallpaperTransform(),
-             initialTabletTransform = ProfileWallpaperTransform(),
-             onDismiss = { showAdjustmentSheet = false },
-             onSave = { mobileTransform, tabletTransform ->
-                 showAdjustmentSheet = false
-                 tempSelectedUri?.let { uri ->
-                     viewModel.updateCustomBackground(uri, mobileTransform, tabletTransform)
-@@ -1337,27 +1225,25 @@
-             isResetEnabled = !customBackgroundUri.isNullOrEmpty()
-         )
-     }
-     if (showPhotoPickerDialog) {
-         AppAlertDialog(
-             onDismissRequest = { showPhotoPickerDialog = false },
-             title = { AppText("选择照片", fontWeight = FontWeight.Bold) },
+@@ -1382,13 +1250,11 @@ private fun ProfileSpaceContent(
              text = { AppText("将打开系统相册选择一张照片作为背景。\n\n仅获取选中照片的访问权限，不会访问其他照片。") },
              confirmButton = {
                  AppButton(
@@ -783,21 +598,7 @@
                      AppText("选择照片")
                  }
              },
-             dismissButton = {
-                 AppTextButton(onClick = { showPhotoPickerDialog = false }) {
-                     AppText("取消")
-                 }
-             }
-         )
-     }
-@@ -1427,29 +1313,29 @@
-     // Finish identity collapse before the statistics enter the toolbar.
-     val profileCollapseRangeProvider: () -> Float = {
-         with(density) {
-             (profileStatsTopProvider() - (statusBarTopPadding + 56.dp + 24.dp).toPx())
-                 .coerceAtLeast(1f)
-         }
-     }
+@@ -1472,15 +1338,15 @@ private fun ProfileSpaceContent(
      val profileExpandedFractionProvider: () -> Float = {
          if (mobileListState.firstVisibleItemIndex > 0) 0f else resolveProfileHeaderExpandedFraction(
              mobileListState.firstVisibleItemScrollOffset.toFloat(), profileCollapseRangeProvider(),
@@ -815,21 +616,7 @@
      }
      val photoRangeProvider: () -> Float = {
          (photoState.viewportWidthPx - profileStatsTopProvider()).coerceAtLeast(0f)
-     }
-     val photoFractionProvider: () -> Float = { photoState.fraction(photoRangeProvider()) }
-     val photoBottomProvider: () -> Float = { profileStatsTopProvider() + photoState.visualOffsetPx }
-     val backgroundMotion = ProfileBackgroundMotion(
-         scrollOffsetPx = {
-             if (mobileListState.firstVisibleItemIndex > 0) Float.POSITIVE_INFINITY
-             else mobileListState.firstVisibleItemScrollOffset.toFloat()
-@@ -2154,25 +2040,25 @@
-     layoutTokens: ProfileLayoutTokens,
-     showWallpaperAction: Boolean,
-     showEditProfileButton: Boolean = false,
-     onEditClick: () -> Unit,
-     onWallpaperActionClick: () -> Unit,
-     onFollowingClick: () -> Unit,
-     onFansClick: () -> Unit,
+@@ -2201,11 +2067,11 @@ private fun ProfileSpaceHeroHeader(
      onDynamicsClick: () -> Unit,
      showIdentity: Boolean = true,
      topClipProvider: () -> Float = { 0f },
@@ -842,21 +629,7 @@
      // The separate phone identity overlay owns wallpaper/photo colors. Statistics
      // use an opaque page surface in both native themes and both glass states.
      val statisticsChrome = if (!showIdentity) resolveProfileHeroChrome(
-         hasWallpaper = false,
-         isDarkTheme = colorScheme.surface.luminance() < 0.5f,
-         onSurfaceColor = colorScheme.onSurface,
-         onSurfaceVariantColor = colorScheme.onSurfaceVariant,
-     ) else heroChrome
-     val heroHeight = resolveProfileHeroHeightDp(
-         screenHeightDp = configuration.screenHeightDp,
-@@ -2512,25 +2398,25 @@
-         )
-     }
- }
- 
- @Composable
- private fun ProfileSpaceStat(
-     label: String,
+@@ -2559,11 +2425,11 @@ private fun ProfileSpaceStat(
      value: Int,
      color: Color,
      onClick: (() -> Unit)? = null,
@@ -869,21 +642,7 @@
              .width(width)
              .heightIn(min = 48.dp)
              .then(
-                 if (onClick != null) Modifier.appGentleActionClickable(
-                     shape = AppShapes.container(ContainerLevel.Card),
-                     onClick = onClick,
-                 ) else Modifier,
-             ),
-         horizontalAlignment = Alignment.CenterHorizontally
-     ) {
-@@ -2547,30 +2433,32 @@
- @Composable
- private fun ProfileSpaceTabs(
-     selectedTab: ProfileSpaceMainTab,
-     onTabSelected: (ProfileSpaceMainTab) -> Unit,
-     modifier: Modifier = Modifier,
-     pagerState: PagerState,
- ) {
+@@ -2594,16 +2460,18 @@ private fun ProfileSpaceTabs(
      val tabs = remember { defaultProfileSpaceTabs() }
      val chromeSpec = remember { resolveProfileSpaceTabChromeSpec() }
      val selectedIndex = tabs.indexOfFirst { it.tab == selectedTab }.coerceAtLeast(0)
@@ -904,21 +663,7 @@
          dragSelectionEnabled = tabs.size > 1,
          tapPressRefractionEnabled = true,
          modifier = modifier
-             .fillMaxWidth()
-             .padding(horizontal = chromeSpec.rowHorizontalInsetDp.dp, vertical = 6.dp),
-     )
- }
- 
- @Composable
- private fun ProfileSpaceTabBody(
-@@ -3074,25 +2962,25 @@
-                 horizontalAlignment = Alignment.CenterHorizontally,
-                 verticalArrangement = Arrangement.spacedBy(12.dp)
-             ) {
-                 AppText("投稿加载失败", color = AppContentColors.secondaryText())
-                 AppOutlinedButton(onClick = onRetry) { AppText("重试") }
-             }
-             return
+@@ -3121,11 +2989,11 @@ private fun ProfileVideoList(
          }
          ProfileContributionContentState.CONTENT -> Unit
      }
@@ -931,21 +676,19 @@
          Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
              VideoListLayoutToggle(
                  singleColumn = listLayout.singleColumn,
-                 onClick = listLayout.toggle,
-             )
-         }
-         BoxWithConstraints(modifier = Modifier.fillMaxWidth()) {
-             val cardWidth = (maxWidth - 10.dp * (columns - 1)) / columns
-             LookaheadScope {
-                 FlowRow(
-@@ -3201,25 +3089,26 @@
-     item: SpaceDynamicItem,
-     onVideoClick: (String) -> Unit,
-     onDeleteClick: (DynamicDeleteAction) -> Unit
- ) {
-     val author = item.modules.module_author
-     val authorName = resolveProfileDynamicAuthorName(item)
-     val publishText = resolveProfileDynamicPublishText(item)
+@@ -3150,11 +3018,10 @@ private fun ProfileVideoList(
+                                 scope = this@LookaheadScope,
+                                 targetModifier = Modifier.width(cardWidth),
+                             )) {
+                                 if (columns == 1) {
+                                     PersonalMediaCardFrame(
+-                                        horizontalCoverMaxWidthDp = com.android.purebilibili.feature.home.components.cards.WIDE_LIST_COVER_MAX_WIDTH_DP,
+                                         headlineContent = {
+                                             AppText(
+                                                 video.title,
+                                                 style = com.android.purebilibili.feature.home.components.cards.horizontalVideoCardTypography().title,
+                                                 maxLines = com.android.purebilibili.core.ui.videoCardTitleMaxLines(),
+@@ -3253,11 +3120,12 @@ private fun ProfileDynamicCard(
      val bodyText = resolveProfileDynamicText(item)
      val orig = item.orig
      val moreIcon = rememberAppMoreIcon()
@@ -959,21 +702,7 @@
      var pendingDeleteAction by remember(item.id_str) { mutableStateOf<DynamicDeleteAction?>(null) }
  
      pendingDeleteAction?.let { action ->
-         AppAlertDialog(
-             onDismissRequest = { pendingDeleteAction = null },
-             icon = { AppIcon(deleteIcon, contentDescription = null) },
-             title = { AppText(action.title) },
-             text = { AppText(action.content) },
-             confirmButton = {
-                 AppTextButton(
-@@ -3291,30 +3180,26 @@
-                     AppDropdownMenuItem(
-                         text = { AppText("复制链接") },
-                         leadingIcon = {
-                             AppIcon(
-                                 linkIcon,
-                                 contentDescription = null,
-                                 modifier = Modifier.size(20.dp)
+@@ -3343,16 +3211,12 @@ private fun ProfileDynamicCard(
                              )
                          },
                          onClick = {
@@ -992,21 +721,7 @@
                      if (deleteAction != null) {
                          AppDropdownMenuItem(
                              text = { AppText(deleteAction.label) },
-                             leadingIcon = {
-                                 AppIcon(
-                                     deleteIcon,
-                                     contentDescription = null,
-                                     tint = AppContentColors.error(),
-                                     modifier = Modifier.size(20.dp)
-                                 )
-@@ -3394,25 +3279,26 @@
- private fun ProfileDynamicMajorContent(item: SpaceDynamicItem, onVideoClick: (String) -> Unit) {
-     val dynamic = item.modules.module_dynamic
-     val major = dynamic?.major
-     val cover = resolveProfileDynamicCover(item)
-     val imageUrls = remember(item) { resolveProfileDynamicImageUrls(item) }
-     val title = major?.archive?.title
-         ?.takeIf { it.isNotBlank() }
+@@ -3446,11 +3310,12 @@ private fun ProfileDynamicMajorContent(item: SpaceDynamicItem, onVideoClick: (St
          ?: major?.opus?.title?.takeIf { it.isNotBlank() }
          ?: major?.article?.title?.takeIf { it.isNotBlank() }
      val clickableBvid = major?.archive?.bvid?.takeIf { it.isNotBlank() }
@@ -1020,21 +735,7 @@
          ImagePreviewTextContent(
              headline = resolveProfileDynamicAuthorName(item),
              body = resolveProfileDynamicText(item).ifBlank { title.orEmpty() }
-         )
-     }
- 
-     if (cover.isBlank() && title.isNullOrBlank()) return
- 
-     Column(
-         modifier = Modifier.then(
-@@ -3605,55 +3491,51 @@
- @Composable
- private fun ProfileEditAccountDialog(
-     state: ProfileEditableAccountState,
-     mid: Long,
-     accountFace: String,
-     isSaving: Boolean,
-     onDismiss: () -> Unit,
+@@ -3657,11 +3522,12 @@ private fun ProfileEditAccountDialog(
      onEditSign: () -> Unit,
      onEditField: (ProfileAccountField) -> Unit,
      onEditSex: () -> Unit,
@@ -1048,12 +749,7 @@
          title = { AppText("编辑资料") },
          text = {
              Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
-                 AppText("B 站账号资料", color = AppContentColors.secondaryText(), style = MaterialTheme.typography.labelMedium, modifier = Modifier.padding(start = 12.dp, bottom = 4.dp))
-                 ProfileAccountEditRow("头像", "", avatar = accountFace, enabled = !isSaving, onClick = onEditAvatar)
-                 ProfileAccountEditRow("昵称", state.name.ifBlank { "未展示" }, enabled = !isSaving) {
-                     onEditField(ProfileAccountField.NAME)
-                 }
-                 ProfileAccountEditRow("性别", state.sex.ifBlank { "未展示" }, enabled = !isSaving, onClick = onEditSex)
+@@ -3674,24 +3540,19 @@ private fun ProfileEditAccountDialog(
                  ProfileAccountEditRow("生日", state.birthday.ifBlank { "未展示" }, enabled = !isSaving) {
                      onEditField(ProfileAccountField.BIRTHDAY)
                  }
@@ -1081,21 +777,7 @@
              }
          },
          confirmButton = { AppTextButton(onClick = onDismiss) { AppText("关闭") } },
-     )
- }
- 
- @Composable
- private fun ProfileAccountEditRow(
-     title: String,
-     value: String,
-@@ -3939,25 +3821,25 @@
-                     }
-                 }
-             }
-         }
-     )
- }
- 
+@@ -3991,11 +3852,11 @@ fun TabletProfileContent(
  // Imports moved to top
  
  @OptIn(ExperimentalMaterial3Api::class)
@@ -1108,21 +790,7 @@
      onAccountManageClick: () -> Unit = {},
      onHistoryClick: () -> Unit,
      showHistoryService: Boolean = true,
-     onFavoriteClick: () -> Unit,
-     favoriteFolderShortcuts: List<ProfileFavoriteFolderShortcut> = emptyList(),
-     onFavoriteFolderClick: (Long, Long, String) -> Unit = { _, _, _ -> },
-     onFollowingClick: () -> Unit,
-     onDownloadClick: () -> Unit,
-     onWatchLaterClick: () -> Unit,
-     onInboxClick: () -> Unit = {},  //  [新增] 私信入口
-@@ -3969,31 +3851,29 @@
-     hazeState: HazeState? = null,
-     onHeaderClick: () -> Unit = {}, // [New] Support header click for guest login
-     paddingValues: PaddingValues = PaddingValues(0.dp),
-     scrollToTopRequestId: Int = 0,
-     progressiveTopChrome: ProfileProgressiveTopChrome = ProfileProgressiveTopChrome(null, false),
-     captureBackground: @Composable BoxScope.() -> Unit = {},
- ) {
+@@ -4021,17 +3882,15 @@ private fun MobileProfileContent(
      val windowSizeClass = LocalWindowSizeClass.current
  
      // 📸 图片选择器
@@ -1142,21 +810,7 @@
              tempSelectedUri = uri
              showAdjustmentSheet = true
          }
-     }
- 
-     // [New] Adjustment Sheet
-     if (showAdjustmentSheet && tempSelectedUri != null) {
-         ProfileWallpaperAdjustmentSheet(
-             imageUri = tempSelectedUri.toString(),
-             initialMobileTransform = ProfileWallpaperTransform(),
-@@ -4053,27 +3933,25 @@
-             text = {
-                 AppText(
-                     "将打开系统相册选择一张照片作为背景。\n\n" +
-                         "📸 仅获取您选中照片的访问权限\n" +
-                         "🔒 不会访问您的其他照片",
-                     style = MaterialTheme.typography.bodyMedium
-                 )
+@@ -4105,13 +3964,11 @@ private fun MobileProfileContent(
              },
              confirmButton = {
                  AppButton(
@@ -1171,21 +825,7 @@
                      AppText("选择照片")
                  }
              },
-             dismissButton = {
-                 AppTextButton(onClick = { showPhotoPickerDialog = false }) {
-                     AppText("取消")
-                 }
-             }
-         )
-     }
-@@ -4296,26 +4174,26 @@
-                 .padding(horizontal = 32.dp)
-                 .navigationBarsPadding(),
-             horizontalAlignment = Alignment.CenterHorizontally,
-             verticalArrangement = Arrangement.Center
-         ) {
-             // Logo - 使用 3D 蓝色图标
-             AppSurface(
+@@ -4348,12 +4205,12 @@ fun GuestProfileContent(
                  shape = AppShapes.container(ContainerLevel.Floating),
                  shadowElevation = 16.dp,
                  modifier = Modifier.size(100.dp)
@@ -1200,48 +840,20 @@
                      contentDescription = "BiliPai",
                      contentScale = ContentScale.Crop,
                      modifier = Modifier.fillMaxSize()
-                 )
-             }
- 
-             Spacer(modifier = Modifier.height(AppSpacingTokens.DoubleExtraLarge))
- 
-             AppText(
-                 text = "欢迎使用 BiliPai",
-@@ -4376,25 +4254,25 @@
- ) {
-     Row(
-         modifier = Modifier
-             .fillMaxWidth()
-             //  修复：背景色 (支持透明)
-             .background(if (transparent) Color.Transparent else MaterialTheme.colorScheme.surface)
-             .clickable(onClick = onClick) // [New] Make it clickable
-             .padding(horizontal = 24.dp, vertical = 16.dp),
-         verticalAlignment = Alignment.CenterVertically,
+@@ -4430,11 +4287,11 @@ fun UserInfoSection(
          horizontalArrangement = if (centered) Arrangement.Center else Arrangement.Start
      ) {
-         AsyncImage(
--            model = ImageRequest.Builder(LocalContext.current).data(FormatUtils.fixImageUrl(user.face)).crossfade(true).placeholder(android.R.color.darker_gray).build(),
-+            model = ImageRequest.Builder(LocalPlatformContext.current).data(FormatUtils.fixImageUrl(user.face)).crossfade(true).build(),
-             contentDescription = null,
-             modifier = Modifier
-                 .size(72.dp)
-                 .clip(CircleShape)
-                 .background(MaterialTheme.colorScheme.surfaceVariant),
-             contentScale = ContentScale.Crop
-         )
-         if (!centered) {
-             Spacer(modifier = Modifier.width(16.dp))
-             Column {
-                 UserInfoText(user, forceWhite = transparent)
-             }
-@@ -4544,26 +4422,27 @@
-     }
- }
- 
- @Composable
- private fun ProfileWallpaperActionCard(
-     isImmersive: Boolean,
-     hazeState: HazeState? = null,
+         // 自身头像与评论区头像对齐：右下角叠加认证/大会员角标（对齐 PiliPlus 我的页）。
+         Box {
+             AsyncImage(
+-                model = ImageRequest.Builder(LocalContext.current).data(FormatUtils.fixImageUrl(user.face)).crossfade(true).placeholder(android.R.color.darker_gray).build(),
++                model = ImageRequest.Builder(LocalPlatformContext.current).data(FormatUtils.fixImageUrl(user.face)).crossfade(true).build(),
+                 contentDescription = null,
+                 modifier = Modifier
+                     .size(72.dp)
+                     .clip(CircleShape)
+                     .background(MaterialTheme.colorScheme.surfaceVariant),
+@@ -4607,12 +4464,13 @@ private fun ProfileWallpaperActionCard(
      onOfficialWallpaperClick: () -> Unit,
      onLocalAlbumClick: () -> Unit,
      onResetWallpaperClick: () -> Unit,
@@ -1257,10 +869,3 @@
      }
      val labelMode = remember(configuration.screenWidthDp, columnCount) {
          resolveProfileWallpaperActionLabelMode(
-             screenWidthDp = configuration.screenWidthDp,
-             columnCount = columnCount
-         )
-     }
-     val appThemeConfig = com.android.purebilibili.core.ui.LocalAppThemeConfig.current
-     val headerBlurEnabled = appThemeConfig.headerBlurEnabled
-     val bottomBarBlurEnabled = appThemeConfig.bottomBarBlurEnabled

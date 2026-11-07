@@ -83,7 +83,7 @@ class DesktopPluginRuntime(val store: DesktopPluginStore,
     private val cdn = CdnRegionPlugin()
     private val adFilter = AdFilterPlugin()
     val jsPlugins = DesktopJsPluginRepository(context, DesktopJsPluginHost(
-        DesktopJsWorkerResources(desktopJsWorkerResources()).createProcess(context.filesDir.toPath()),
+        if (DESKTOP_JS_WORKER_BUILT) DesktopJsWorkerResources(desktopJsWorkerResources()).createProcess(context.filesDir.toPath()) else null,
         context.filesDir.toPath(), ownerEpoch = repository?.let { { it.sessionEpoch } }))
     val subscriptions = DesktopSubscriptionRepository(context,
         extraSources = { jsPlugins.feedSourceSnapshot().let { DesktopSubscriptionExtraSources(it.revision, it.sources) } },

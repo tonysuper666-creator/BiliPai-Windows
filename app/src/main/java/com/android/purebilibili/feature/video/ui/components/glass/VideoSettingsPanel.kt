@@ -347,6 +347,9 @@ fun VideoSettingsPanel(
 
     chapterDisplayMode: ChapterDisplayMode = ChapterDisplayMode.WITH_CONTROLS,
     onChapterDisplayModeChange: ((ChapterDisplayMode) -> Unit)? = null,
+    // 两种方向与材质共用已有的诊断显示设置；未接入的调用方不显示此入口。
+    playerDiagnosticsEnabled: Boolean = false,
+    onPlayerDiagnosticsChange: ((Boolean) -> Unit)? = null,
     // 关闭面板
     onDismiss: () -> Unit
 ) {
@@ -470,6 +473,20 @@ fun VideoSettingsPanel(
             )
         ) {
             val groups = VideoControlCenterGroups(this, controlCenterMotion)
+            onPlayerDiagnosticsChange?.let { change ->
+                groups.item {
+                    VideoSettingsSwitchRow(
+                        icon = com.android.purebilibili.feature.settings.rememberSettingsSemanticIcon(
+                            com.android.purebilibili.feature.settings.SettingsIconRole.PLAYER_DIAGNOSTICS
+                        ),
+                        title = "播放器诊断",
+                        subtitle = "显示解码方式、码率、掉帧等播放信息，点击可查看详情",
+                        checked = playerDiagnosticsEnabled,
+                        onCheckedChange = change,
+                    )
+                    SettingsDivider()
+                }
+            }
 
             if (onChapterDisplayModeChange != null) {
                 groups.item {

@@ -169,10 +169,10 @@ internal class DesktopReadyHomeFactoryBinding(
     }
 
     fun searchRoot(root: DesktopHomeRetainedRoot, routes: DesktopOriginalRootRouteAssembly,
-        backToTop: DesktopFavoritePreferences): DesktopOriginalSearchRoot {
+        backToTop: DesktopFavoritePreferences, openLink: (String) -> Unit): DesktopOriginalSearchRoot {
         val gate = root.entry.gate
         fun published() = gate.owns() && rootPublished(gate) && routes.owns()
-        return DesktopOriginalSearchRoot(routes, ::published, repository.account) { owned, commit ->
+        return DesktopOriginalSearchRoot(routes, ::published, repository.account, openLink) { owned, commit ->
             check(published()) { "Search may not start before actual Root publication" }
             fun mounted(current: () -> Boolean) = current() && root.entry.requests.isMountedSourceCurrent()
             fun commitMounted(action: () -> Unit): Boolean {

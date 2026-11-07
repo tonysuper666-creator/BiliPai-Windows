@@ -77,6 +77,7 @@ internal fun SettingsSearchBarSection(
         placeholder = placeholder,
         presentation = AppSearchFieldPresentation.TOP_BAR,
         backdrop = settingsSearchWallpaperBackdrop(),
+        captureShellForContent = false,
         autoFocusEnabled = autoFocusEnabled,
         modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp),
     )
@@ -107,6 +108,7 @@ internal fun SettingsHomeSearchEntry(
         elasticFeedbackEnabled = true,
         elasticFeedbackStrength = com.android.purebilibili.core.ui.components.APP_SEARCH_ELASTIC_FEEDBACK_STRENGTH,
         useNeutralLiquidContainer = true,
+        captureShellForContent = false,
     ) {
         // Glass entry is a compact click target, independent of native input-field metrics.
         Row(

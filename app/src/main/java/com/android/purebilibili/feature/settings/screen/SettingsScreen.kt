@@ -15,7 +15,6 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
-import androidx.compose.foundation.clickable // [New]
 import androidx.compose.foundation.layout.*
 import com.android.purebilibili.core.ui.components.AppLazyColumn as LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -32,13 +31,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.foundation.Image
-import androidx.compose.ui.draw.clip
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.background
-import androidx.compose.ui.graphics.Color
 import com.android.purebilibili.R
 import com.android.purebilibili.core.ui.blur.rememberRecoverableHazeState
 import com.android.purebilibili.core.util.CacheClearTarget
@@ -153,8 +147,6 @@ fun SettingsScreen(
         .collectAsStateWithLifecycle(initialValue = SettingsManager.AppUpdateChannel.STABLE)
     val incrementalTimelineRefreshEnabled by remember(context) { SettingsManager.getIncrementalTimelineRefresh(context) }
         .collectAsStateWithLifecycle(initialValue = false)
-    val homeRefreshCount by remember(context) { SettingsManager.getHomeRefreshCount(context) }
-        .collectAsStateWithLifecycle(initialValue = com.android.purebilibili.core.store.DEFAULT_HOME_REFRESH_COUNT)
     val dynamicVisibleTabIds by remember(context) { SettingsManager.getDynamicTabVisibleTabs(context) }
         .collectAsStateWithLifecycle(initialValue = defaultDynamicTabVisibleIds)
     val dynamicTabOrder by remember(context) { SettingsManager.getDynamicTabOrder(context) }
@@ -174,6 +166,8 @@ fun SettingsScreen(
     var showCacheDialog by remember { mutableStateOf(false) }
     var showCacheAnimation by remember { mutableStateOf(false) }
     var cacheProgress by remember { mutableStateOf<CacheClearProgress?>(null) }
+    var cacheClearSucceeded by remember { mutableStateOf(false) }
+    var cacheReleasedSize by remember { mutableStateOf("") }
     val cacheClearOptions = remember { resolveCacheClearOptions() }
     var selectedCacheClearTargets by remember {
         mutableStateOf(resolveDefaultCacheClearTargets())
@@ -277,7 +271,7 @@ fun SettingsScreen(
     } else {
         localOverlayHazeState
     }
-    val capturePageForHaze = isSettingsHome || (showCacheAnimation && cacheProgress != null)
+    val capturePageForHaze = isSettingsHome
 
     // Directory Picker - 使用文件系统 API
     val defaultPath = remember { SettingsManager.getDefaultDownloadPath(context) }
@@ -316,6 +310,9 @@ fun SettingsScreen(
     // Callbacks
     val onClearCacheAction = {
         selectedCacheClearTargets = resolveDefaultCacheClearTargets()
+        cacheClearSucceeded = false
+        cacheReleasedSize = ""
+        viewModel.refreshCacheSize()
         showCacheDialog = true
     }
     val onDownloadPathAction = { showPathDialog = true }
@@ -476,34 +473,47 @@ fun SettingsScreen(
 
     // Effects
     LaunchedEffect(showCacheAnimation) {
-        if (showCacheAnimation) {
+        if (!showCacheAnimation) return@LaunchedEffect
+        val startedAt = android.os.SystemClock.elapsedRealtime()
+        cacheClearSucceeded = false
+        cacheProgress = CacheClearProgress(0L, pendingCacheClearTargets.size.toLong())
+        try {
             val before = CacheUtils.getCacheBreakdown(context)
-            val selectedBytesBefore = resolveSelectedCacheBytes(before, pendingCacheClearTargets)
-            cacheProgress = CacheClearProgress(
-                current = 0L,
-                total = selectedBytesBefore,
-                isComplete = false
-            )
-            val clearResult = viewModel.clearCache(pendingCacheClearTargets)
+            val clearResult = viewModel.clearCache(pendingCacheClearTargets) { step ->
+                kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Main.immediate) {
+                    cacheProgress = CacheClearProgress(
+                        current = step.completedTargets.toLong(), total = step.totalTargets.toLong(),
+                        message = resolveCacheClearStageMessage(step.target)
+                    )
+                }
+            }
             if (shouldMarkCacheClearAnimationComplete(clearResult.isSuccess)) {
                 val after = clearResult.getOrThrow()
-                val selectedBytesAfter = resolveSelectedCacheBytes(after, pendingCacheClearTargets)
-                val actuallyClearedBytes = (selectedBytesBefore - selectedBytesAfter).coerceAtLeast(0L)
+                // 磁盘释放量不混入内存估算；任务进度与容量统计采用不同的单位。
+                cacheReleasedSize = formatCacheClearBytes((before.reclaimableDiskSize - after.reclaimableDiskSize).coerceAtLeast(0L))
+                cacheClearSucceeded = true
                 cacheProgress = CacheClearProgress(
-                    current = actuallyClearedBytes,
-                    total = selectedBytesBefore,
-                    isComplete = true,
-                    clearedSize = formatCacheClearBytes(actuallyClearedBytes)
+                    current = pendingCacheClearTargets.size.toLong(), total = pendingCacheClearTargets.size.toLong(),
+                    isComplete = true, clearedSize = cacheReleasedSize
                 )
+                if (android.os.SystemClock.elapsedRealtime() - startedAt < 150L) {
+                    showCacheAnimation = false
+                    cacheProgress = null
+                }
             } else {
-                Toast.makeText(
-                    context,
-                    resolveCacheClearFailureMessage(clearResult.exceptionOrNull(), context.getString(R.string.settings_cache_clear_failed)),
-                    Toast.LENGTH_SHORT
-                ).show()
+                Toast.makeText(context, resolveCacheClearFailureMessage(clearResult.exceptionOrNull(),
+                    context.getString(R.string.settings_cache_clear_failed)), Toast.LENGTH_SHORT).show()
+                viewModel.refreshCacheSize()
                 showCacheAnimation = false
                 cacheProgress = null
             }
+        } catch (cancelled: kotlinx.coroutines.CancellationException) {
+            throw cancelled
+        } catch (error: Exception) {
+            Toast.makeText(context, resolveCacheClearFailureMessage(error), Toast.LENGTH_SHORT).show()
+            viewModel.refreshCacheSize()
+            showCacheAnimation = false
+            cacheProgress = null
         }
     }
 
@@ -569,11 +579,16 @@ fun SettingsScreen(
                     Toast.makeText(context, context.getString(R.string.settings_cache_select_at_least_one), Toast.LENGTH_SHORT).show()
                 } else {
                     pendingCacheClearTargets = selectedCacheClearTargets
-                    showCacheDialog = false
+                    cacheProgress = CacheClearProgress(0L, selectedCacheClearTargets.size.toLong())
                     showCacheAnimation = true
                 }
             },
-            onDismiss = { showCacheDialog = false }
+            onDismiss = { if (!showCacheAnimation) showCacheDialog = false },
+            clearing = showCacheAnimation,
+            progress = cacheProgress,
+            clearSucceeded = cacheClearSucceeded,
+            releasedSize = cacheReleasedSize,
+            onProgressDismiss = { showCacheAnimation = false; cacheProgress = null }
         )
     }
 
@@ -732,8 +747,10 @@ fun SettingsScreen(
         when (settingsBackTarget) {
             SettingsBackTarget.NONE -> Unit
             SettingsBackTarget.CACHE_ANIMATION -> {
-                showCacheAnimation = false
-                cacheProgress = null
+                if (cacheProgress?.isComplete == true) {
+                    showCacheAnimation = false
+                    cacheProgress = null
+                }
             }
             SettingsBackTarget.CACHE_DIALOG -> showCacheDialog = false
             SettingsBackTarget.PATH_DIALOG -> showPathDialog = false
@@ -924,27 +941,13 @@ fun SettingsScreen(
                             SettingsManager.setDynamicTabOrder(context, order)
                         }
                     },
-                    homeRefreshCount = homeRefreshCount,
-                    onHomeRefreshCountChange = { count ->
-                        scope.launch {
-                            SettingsManager.setHomeRefreshCount(context, count)
-                        }
-                    },
                 )
             }
         }
         }
     }
 
-    // 窗口内底部覆盖层需在内容之后组合才能盖在上面；
-    // 播放清理动画时通过 activeHazeState 模糊压暗背后内容。
-    if (showCacheAnimation && cacheProgress != null) {
-        CacheClearAnimationDialog(
-            progress = cacheProgress!!,
-            onDismiss = { showCacheAnimation = false; cacheProgress = null },
-            hazeState = activeHazeState,
-        )
-    }
+
 }
 
 internal fun shouldMarkCacheClearAnimationComplete(clearSucceeded: Boolean): Boolean = clearSucceeded
@@ -1082,8 +1085,6 @@ private fun MobileSettingsNavLayout(
     onDynamicTabVisibilityChange: (String) -> Unit,
     dynamicTabOrder: List<String>,
     onDynamicTabOrderChange: (List<String>) -> Unit,
-    homeRefreshCount: Int,
-    onHomeRefreshCountChange: (Int) -> Unit,
 ) {
     val windowSizeClass = LocalWindowSizeClass.current
     val sectionOrder = remember { resolveSettingsRootCategoryOrder() }
@@ -1152,7 +1153,6 @@ private fun MobileSettingsNavLayout(
         onDynamicFeedLayoutModeChange = onDynamicFeedLayoutModeChange,
         onDynamicTabVisibilityChange = onDynamicTabVisibilityChange,
         onDynamicTabOrderChange = onDynamicTabOrderChange,
-        onHomeRefreshCountChange = onHomeRefreshCountChange,
     )
     val rootCategoryState = SettingsRootCategoryState(
         privacyModeEnabled = privacyModeEnabled,
@@ -1192,7 +1192,6 @@ private fun MobileSettingsNavLayout(
         dynamicFeedLayoutMode = dynamicFeedLayoutMode,
         dynamicVisibleTabIds = dynamicVisibleTabIds,
         dynamicTabOrder = dynamicTabOrder,
-        homeRefreshCount = homeRefreshCount,
     )
 
     @Composable
@@ -1252,75 +1251,6 @@ private fun MobileSettingsNavLayout(
             }
         } else {
             SettingsRootContent()
-        }
-    }
-}
-
-@Composable
-fun DonateDialog(onDismiss: () -> Unit) {
-    androidx.compose.ui.window.Dialog(
-        onDismissRequest = onDismiss,
-        properties = androidx.compose.ui.window.DialogProperties(
-            usePlatformDefaultWidth = false, // Full screen
-            decorFitsSystemWindows = false
-        )
-    ) {
-        com.android.purebilibili.core.ui.ModalWindowBlurBehindEffect()
-        Box(
-            modifier = Modifier.fillMaxSize().background(Color.Black.copy(alpha = 0.9f)),
-            contentAlignment = Alignment.Center
-        ) {
-            // QR Code Container
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
-            ) {
-                Box(contentAlignment = Alignment.TopStart) {
-                    Image(
-                        painter = painterResource(id = com.android.purebilibili.R.drawable.author_qr),
-                        contentDescription = stringResource(R.string.settings_donate_qr_description),
-                        modifier = Modifier
-                            .fillMaxWidth(0.85f)
-                            .aspectRatio(1f)
-                            // QR code preview: ~16dp → Dialog level (14dp scaled per preset).
-                            .clip(AppShapes.container(ContainerLevel.Dialog))
-                            .clickable { onDismiss() }, // [New] Click to dismiss
-                        contentScale = ContentScale.Fit
-                    )
-
-                    // Close Button (Top Left of Image)
-                    AppIconButton(
-                        onClick = onDismiss,
-                        modifier = Modifier
-                            .padding(8.dp)
-                            .background(Color.Black.copy(alpha = 0.3f), androidx.compose.foundation.shape.CircleShape)
-                            .size(32.dp)
-                    ) {
-                        AppIcon(
-                            imageVector = com.android.purebilibili.feature.settings.rememberMaterialSymbol(com.android.purebilibili.R.drawable.ms_close_24), // Fixed: Filled.Xmark -> Default.Xmark or correct path
-                            contentDescription = stringResource(R.string.common_close),
-                            tint = Color.White,
-                            modifier = Modifier.size(20.dp)
-                        )
-                    }
-                }
-
-                Spacer(modifier = Modifier.height(24.dp))
-
-                AppText(
-                    stringResource(R.string.settings_donate_thanks),
-                    color = Color.White.copy(alpha = 0.9f),
-                    style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
-                )
-
-                Spacer(modifier = Modifier.height(8.dp))
-
-                AppText(
-                    stringResource(R.string.settings_donate_dismiss_hint),
-                    color = Color.White.copy(alpha = 0.6f),
-                    style = MaterialTheme.typography.bodySmall
-                )
-            }
         }
     }
 }

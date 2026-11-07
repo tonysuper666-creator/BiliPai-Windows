@@ -225,6 +225,8 @@ fun BottomControlBar(
     val widthDp = viewportWidthDpOverride ?: LocalConfiguration.current.screenWidthDp
     val slotWidth = if (viewportIsLandscape && isFullscreen) 42.dp else 35.dp
     val showExtendedOptions = isFullscreen || widthDp >= 500
+    // 画面宽高描述视频视口，不代表页面方向；竖屏页面播放横向视频也属于内嵌控制栏。
+    val showInlineQuality = !isFullscreen
     val displayPosition = { (seekPositionProvider?.invoke() ?: seekPositionMs).coerceAtLeast(0L) }
     val progressLayout = remember(widthDp) {
         resolveVideoProgressBarLayoutPolicy(widthDp).copy(
@@ -281,7 +283,12 @@ fun BottomControlBar(
                     pbpRidgeSamples = if (heatmapEnabled) pbpRidgeSamples else emptyList(),
                     currentChapterProvider = { null },
                     onChapterClick = onChapterClick,
-                    modifier = Modifier.align(androidx.compose.ui.Alignment.BottomCenter).testTag("player_progress"),
+                    // 进度条槽位固定为 14dp；预览按完整高度向上展开，不能被槽位压缩到按钮区。
+                    // 横竖屏与玻璃开关共用该槽位，控件行的位置不随拖动改变。
+                    modifier = Modifier
+                        .align(androidx.compose.ui.Alignment.BottomCenter)
+                        .testTag("player_progress")
+                        .wrapContentHeight(androidx.compose.ui.Alignment.Bottom, unbounded = isSeekScrubbing),
                 )
                 PlayerControlViewPointSegments(
                     progressProvider = progressProvider,
@@ -294,6 +301,7 @@ fun BottomControlBar(
             }
             PiliPlayerBar(
                 groupGlassControls = false,
+                distributeActions = !isFullscreen,
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp).height(PILI_PLAYER_BOTTOM_ROW_HEIGHT_DP.dp)
                     .testTag("player_control_row"),
                 left = {
@@ -318,7 +326,15 @@ fun BottomControlBar(
                     }
                 },
                 right = {
-                    if (pbpRidgeSamples.isNotEmpty()) {
+                    // 竖屏内嵌控制栏优先提供画质入口，热度曲线仍按原设置绘制。
+                    if (showInlineQuality) {
+                        PlayerControlTextAction(
+                            text = currentQualityLabel.ifBlank { "画质" },
+                            description = "画质",
+                            onClick = onQualityClick,
+                            modifier = anchor(PlayerControlAnchor.QUALITY, "player_quality_action"),
+                        )
+                    } else if (pbpRidgeSamples.isNotEmpty()) {
                         PlayerControlIconAction(
                             icon = Icons.Filled.ShowChart, description = "高能进度条",
                             width = slotWidth, height = 30.dp, onClick = onHeatmapToggle,
@@ -387,7 +403,7 @@ fun BottomControlBar(
                             )
                         }
                     }
-                    if (showExtendedOptions && currentQualityLabel.isNotEmpty()) {
+                    if (!showInlineQuality && showExtendedOptions && currentQualityLabel.isNotEmpty()) {
                         PlayerControlTextAction(
                             text = currentQualityLabel, description = "画质", onClick = onQualityClick,
                             modifier = anchor(PlayerControlAnchor.QUALITY, "player_quality_action"),

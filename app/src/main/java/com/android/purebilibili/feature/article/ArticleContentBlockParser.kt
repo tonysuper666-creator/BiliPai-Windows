@@ -32,6 +32,10 @@ sealed interface ArticleContentBlock {
         val language: String,
         val content: String
     ) : ArticleContentBlock
+    data class MediaCard(
+        val card: com.android.purebilibili.data.model.response.OpusLinkCard,
+        val preview: Image? = null,
+    ) : ArticleContentBlock
     data class Image(
         val url: String,
         val width: Int = 0,
@@ -49,7 +53,8 @@ data class ArticleTextSpan(
     val colorArgb: Long? = null,
     val bold: Boolean = false,
     val italic: Boolean = false,
-    val strikethrough: Boolean = false
+    val strikethrough: Boolean = false,
+    val link: String? = null,
 )
 
 private const val ARTICLE_HEADING_FONT_SIZE = 22
@@ -170,11 +175,16 @@ private fun extractCode(paragraph: JsonObject): List<ArticleContentBlock> {
 }
 
 private fun extractLinkCardText(paragraph: JsonObject): List<ArticleContentBlock> {
+    val cards = com.android.purebilibili.data.model.response.DynamicModulesFlexibleSerializer
+        .extractParagraphLinkCards(paragraph)
+    if (cards.isNotEmpty()) return cards.map { ArticleContentBlock.MediaCard(it) }
     val card = paragraph["link_card"]
         ?.let { runCatching { it.jsonObject }.getOrNull() }
         ?.get("card")
         ?.let { runCatching { it.jsonObject }.getOrNull() }
         ?: return emptyList()
+    // 空商品组不生成占位商品或仅包含组编号的正文。
+    if (card["type"]?.jsonPrimitive?.contentOrNull == "LINK_CARD_TYPE_GOODS") return emptyList()
     val nested = listOf("ugc", "common", "opus", "live", "music", "goods", "vote")
         .firstNotNullOfOrNull { key ->
             card[key]?.let { runCatching { it.jsonObject }.getOrNull() }
@@ -235,14 +245,16 @@ private fun extractInlineRich(element: JsonElement?): InlineRichText {
         val bold = styleFlag("bold")
         val italic = styleFlag("italic")
         val strike = styleFlag("strikethrough") || styleFlag("strike")
-        spans += if (fontSize != null || color != null || bold || italic || strike) {
+        val link = normalizeArticleLink(richObject?.get("jump_url")?.jsonPrimitive?.contentOrNull)
+        spans += if (fontSize != null || color != null || bold || italic || strike || link != null) {
             ArticleTextSpan(
                 text = text,
                 fontSizeSp = fontSize,
                 colorArgb = color,
                 bold = bold,
                 italic = italic,
-                strikethrough = strike
+                strikethrough = strike,
+                link = link,
             )
         } else {
             ArticleTextSpan(text = text)
@@ -369,7 +381,7 @@ private fun parseHtmlBlocks(htmlContent: String?): List<ArticleContentBlock> {
         val content = if (tag.isBlank()) match.value else match.groupValues[2]
         when {
             tag.startsWith("h") -> cleanupHtmlText(content).takeIf { it.isNotBlank() }?.let {
-                blocks += ArticleContentBlock.Heading(it)
+                blocks += ArticleContentBlock.Heading(it, parseHtmlSpans(content))
             }
 
             tag == "p" -> blocks += parseHtmlInlineBlocks(content, kind = HtmlInlineKind.Paragraph)
@@ -385,7 +397,7 @@ private fun parseHtmlBlocks(htmlContent: String?): List<ArticleContentBlock> {
             tag == "figure" -> blocks += parseHtmlInlineBlocks(content, kind = HtmlInlineKind.Paragraph)
 
             match.value.startsWith("<img", ignoreCase = true) -> {
-                parseHtmlImage(match.value)?.let { blocks += it }
+                (parseArticleHtmlMediaCard(match.value) ?: parseHtmlImage(match.value))?.let { blocks += it }
             }
         }
     }
@@ -408,15 +420,15 @@ private fun parseHtmlInlineBlocks(
     imgRegex.findAll(content).forEach { match ->
         appendHtmlTextBlock(
             target = result,
-            text = cleanupHtmlText(content.substring(lastIndex, match.range.first)),
+            text = content.substring(lastIndex, match.range.first),
             kind = kind
         )
-        parseHtmlImage(match.value)?.let(result::add)
+        (parseArticleHtmlMediaCard(match.value) ?: parseHtmlImage(match.value))?.let(result::add)
         lastIndex = match.range.last + 1
     }
     appendHtmlTextBlock(
         target = result,
-        text = cleanupHtmlText(content.substring(lastIndex)),
+        text = content.substring(lastIndex),
         kind = kind
     )
     return result
@@ -429,10 +441,12 @@ private fun appendHtmlTextBlock(
 ) {
     if (text.isBlank()) return
     val spans = parseHtmlSpans(text)
+    val plainText = cleanupHtmlText(text)
+    if (plainText.isBlank()) return
     target += when (kind) {
-        HtmlInlineKind.Paragraph -> ArticleContentBlock.Paragraph(text, spans)
-        HtmlInlineKind.Quote -> ArticleContentBlock.Quote(text, spans)
-        HtmlInlineKind.ListItem -> ArticleContentBlock.ListBlock(ordered = false, items = listOf(text))
+        HtmlInlineKind.Paragraph -> ArticleContentBlock.Paragraph(plainText, spans)
+        HtmlInlineKind.Quote -> ArticleContentBlock.Quote(plainText, spans)
+        HtmlInlineKind.ListItem -> ArticleContentBlock.ListBlock(ordered = false, items = listOf(plainText))
     }
 }
 
@@ -441,7 +455,8 @@ private data class HtmlSpanStyle(
     val colorArgb: Long?,
     val bold: Boolean,
     val italic: Boolean,
-    val strikethrough: Boolean
+    val strikethrough: Boolean,
+    val link: String? = null,
 ) {
     companion object {
         val Default = HtmlSpanStyle(null, null, false, false, false)
@@ -471,7 +486,8 @@ internal fun parseHtmlSpans(raw: String): List<ArticleTextSpan> {
                 colorArgb = style.colorArgb,
                 bold = style.bold,
                 italic = style.italic,
-                strikethrough = style.strikethrough
+                strikethrough = style.strikethrough,
+                link = style.link,
             )
         } else {
             ArticleTextSpan(text = text)
@@ -536,6 +552,16 @@ internal fun parseHtmlSpans(raw: String): List<ArticleTextSpan> {
                     }
                 }
             }
+            "a" -> {
+                flush()
+                if (closing) {
+                    unwindHtmlStyle(styleStack) { it.link != null }
+                } else {
+                    normalizeArticleLink(extractHtmlAttribute(token, "href"))?.let { url ->
+                        styleStack.addLast(styleStack.last().copy(link = url))
+                    }
+                }
+            }
             "br" -> currentText.append('\n')
             else -> Unit
         }
@@ -578,26 +604,30 @@ private fun parseOpsBlocks(ops: List<JsonObject>): List<ArticleContentBlock> {
 
         fun flushText() {
             val text = pendingSegments.joinToString("") { it.first }.trim()
-            val spans = pendingSegments.flatMap { (segment, attrs) ->
-                parseOpsSpanStyle(attrs)?.let { style ->
-                    listOf(
-                        ArticleTextSpan(
-                            text = segment,
-                            colorArgb = style.first,
-                            bold = style.second,
-                            italic = style.third,
-                            strikethrough = style.fourth
-                        )
-                    )
-                }.orEmpty()
+            val allSpans = pendingSegments.map { (segment, attrs) ->
+                val style = parseOpsSpanStyle(attrs)
+                ArticleTextSpan(
+                    text = segment,
+                    colorArgb = style?.first,
+                    bold = style?.second == true,
+                    italic = style?.third == true,
+                    strikethrough = style?.fourth == true,
+                    link = normalizeArticleLink(attrs?.get("link")?.jsonPrimitive?.contentOrNull),
+                )
             }
+            val spans = allSpans.takeIf { values -> values.any {
+                it.colorArgb != null || it.bold || it.italic || it.strikethrough || it.link != null
+            } }.orEmpty()
             pendingSegments.clear()
-            pendingLineAttributes = null
-            if (text.isBlank()) return
+            if (text.isBlank()) {
+                pendingLineAttributes = null
+                return
+            }
 
             val header = headerLevel()
             val listStyleValue = listStyle()
             val isQuote = blockquoteActive()
+            pendingLineAttributes = null
             add(
                 when {
                     header != null -> ArticleContentBlock.Heading(text, spans)
@@ -622,16 +652,16 @@ private fun parseOpsBlocks(ops: List<JsonObject>): List<ArticleContentBlock> {
                             pendingSegments += segment to attributes
                         }
                         if (index < segments.lastIndex) {
-                            flushText()
-                            // 换行后行属性重置为该换行操作携带的 attributes。
+                            // 块级格式属于当前行的终止换行，必须先读取再清空。
                             pendingLineAttributes = attributes
+                            flushText()
                         }
                     }
                 }
 
                 is JsonObject -> {
                     flushText()
-                    parseOpsImage(insert)?.let(::add)
+                    (parseArticleOpsMediaCard(insert) ?: parseOpsImage(insert))?.let(::add)
                 }
 
                 else -> Unit
@@ -731,5 +761,15 @@ private fun normalizeImageUrl(rawUrl: String): String {
         rawUrl.startsWith("//") -> "https:$rawUrl"
         rawUrl.startsWith("http://") -> rawUrl.replaceFirst("http://", "https://")
         else -> rawUrl
+    }
+}
+
+internal fun normalizeArticleLink(raw: String?): String? {
+    val value = raw?.let(::decodeHtmlEntities)?.trim()?.takeIf { it.isNotEmpty() } ?: return null
+    return when {
+        value.startsWith("//") -> "https:$value"
+        value.startsWith("/") -> "https://www.bilibili.com$value"
+        value.startsWith("https://", ignoreCase = true) || value.startsWith("http://", ignoreCase = true) -> value
+        else -> null
     }
 }

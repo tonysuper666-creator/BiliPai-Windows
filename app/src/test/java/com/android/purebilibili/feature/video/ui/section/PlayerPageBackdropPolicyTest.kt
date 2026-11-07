@@ -6,6 +6,23 @@ import kotlin.test.assertTrue
 
 class PlayerPageBackdropPolicyTest {
     @Test
+    fun morphHidesGlassCaptureWithoutChangingTheRetainedVideoSurface() {
+        assertFalse(shouldCapturePlayerPageBackdrop(true, true, true, true, false, true))
+        assertTrue(shouldUsePlayerPageTexture(true, true, false, true))
+        // 取消返回，控制层可见时立刻恢复；普通淡出尾段仍允许采样。
+        assertTrue(shouldCapturePlayerPageBackdrop(true, true, false, true, false, false))
+        assertTrue(shouldCapturePlayerPageBackdrop(true, false, true, true, false, false))
+        assertFalse(shouldCapturePlayerPageBackdrop(true, false, false, true, false, false))
+    }
+
+    @Test
+    fun backgroundAndMiniPlayerCannotResumePageSampling() {
+        assertFalse(shouldCapturePlayerPageBackdrop(true, true, true, false, false, false))
+        assertFalse(shouldCapturePlayerPageBackdrop(true, true, true, true, true, false))
+        assertFalse(shouldCapturePlayerPageBackdrop(false, true, true, true, false, false))
+    }
+
+    @Test
     fun onlySupportedPlayerSurfacesUsePageGlass() {
         fun supported(
             enabled: Boolean = true,

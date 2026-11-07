@@ -62,6 +62,7 @@ internal fun NavEntryBuilder.biliPaiNavEntries(
     settingsEntry<BiliPaiNavKey.TipsSettings>(settingsBackStack, settingsPersistentPanes, activeMainHostRoute, settingsContainerTransitions, settingsMorphFallback, swipeDismiss = swipeBackDirection, content = content)
     entry<BiliPaiNavKey.Login>(swipeDismiss = swipeBackDirection, content = content)
     entry<BiliPaiNavKey.Profile>(swipeDismiss = swipeBackDirection, content = content)
+    entry<BiliPaiNavKey.ProfileAccountEdit>(swipeDismiss = swipeBackDirection, content = content)
     entry<BiliPaiNavKey.AccountLedger>(swipeDismiss = swipeBackDirection, content = content)
     entry<BiliPaiNavKey.AicuQuery>(swipeDismiss = swipeBackDirection, content = content)
     entry<BiliPaiNavKey.History>(swipeDismiss = swipeBackDirection, content = content)
@@ -117,7 +118,8 @@ internal fun NavEntryBuilder.biliPaiNavEntries(
     entry<BiliPaiNavKey.SeasonSeriesDetail>(swipeDismiss = NavSwipeDirection.None, content = content)
     entry<BiliPaiNavKey.Bangumi>(swipeDismiss = NavSwipeDirection.None, content = content)
     entry<BiliPaiNavKey.BangumiPlayer>(
-        transition = predictiveBackExcludedTransition,
+        transition = settingsBackStack.lastOrNull { it is BiliPaiNavKey.BangumiPlayer }
+            ?.let(liveContainerTransitions::get) ?: predictiveBackExcludedTransition,
         swipeDismiss = NavSwipeDirection.None,
         content = content,
     )
@@ -138,10 +140,15 @@ internal fun NavEntryBuilder.biliPaiNavEntries(
         swipeDismiss = NavSwipeDirection.None,
         content = content,
     )
+    entry<BiliPaiNavKey.ArticleCollection>(swipeDismiss = NavSwipeDirection.None, content = content)
     entry<BiliPaiNavKey.ArticleDetail>(swipeDismiss = NavSwipeDirection.None, content = content)
     entry<BiliPaiNavKey.DynamicDetail>(swipeDismiss = NavSwipeDirection.None, content = content)
     entry<BiliPaiNavKey.CommentDetail>(swipeDismiss = swipeBackDirection, content = content)
-    entry<BiliPaiNavKey.Space>(swipeDismiss = swipeBackDirection, content = content)
+    entry<BiliPaiNavKey.SpaceWebVideos>(swipeDismiss = NavSwipeDirection.None, content = content)
+    entry<BiliPaiNavKey.Space>(
+        transition = settingsBackStack.lastOrNull { it is BiliPaiNavKey.Space }?.let(liveContainerTransitions::get) ?: pageTransition,
+        swipeDismiss = swipeBackDirection, content = content,
+    )
     entry<BiliPaiNavKey.Category>(swipeDismiss = NavSwipeDirection.None, content = content)
     entry<BiliPaiNavKey.Live>(
         // 卡片来源优先；深链等普通入口与卡片动效关闭时完整继承页面切换设置。
@@ -150,11 +157,18 @@ internal fun NavEntryBuilder.biliPaiNavEntries(
         swipeDismiss = NavSwipeDirection.None,
         content = content,
     )
-    entry<BiliPaiNavKey.BangumiDetail>(swipeDismiss = NavSwipeDirection.None, content = content)
+    val bangumiContainer = settingsBackStack.lastOrNull { it is BiliPaiNavKey.BangumiDetail }?.let(liveContainerTransitions::get)
+    entry<BiliPaiNavKey.BangumiDetail>(
+        transition = bangumiContainer ?: pageTransition,
+        swipeDismiss = if (bangumiContainer != null) swipeBackDirection else NavSwipeDirection.None,
+        content = content,
+    )
     entry<BiliPaiNavKey.BangumiReview>(swipeDismiss = NavSwipeDirection.None, content = content)
+    val webContainerTransition = settingsBackStack.lastOrNull { it is BiliPaiNavKey.Web }
+        ?.let(liveContainerTransitions::get)
     entry<BiliPaiNavKey.Web>(
-        transition = predictiveBackExcludedTransition,
-        swipeDismiss = NavSwipeDirection.None,
+        transition = webContainerTransition ?: predictiveBackExcludedTransition,
+        swipeDismiss = if (webContainerTransition != null) swipeBackDirection else NavSwipeDirection.None,
         content = content,
     )
     entry<BiliPaiNavKey.Unknown>(swipeDismiss = NavSwipeDirection.None, content = content)

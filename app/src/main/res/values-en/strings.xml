@@ -283,7 +283,7 @@
     <string name="icon_bilipai_white">BiliPai White</string>
     <string name="icon_bilipai_white_description">Frost white colorway</string>
     <string name="icon_bilipai_monet">BiliPai Monet</string>
-    <string name="icon_bilipai_monet_description">Icon colors follow the system theme</string>
+    <string name="icon_bilipai_monet_description">Follows system colors on Android 12 and later; blue on older versions</string>
     <string name="icon_settings_apply_notice">Changing the icon may take a few seconds. The system may briefly become unresponsive.</string>
     <string name="icon_appearance_title">Maid icon appearance</string>
     <string name="icon_appearance_summary">Follow the system theme or keep the icon light or dark in any system theme</string>
@@ -438,7 +438,7 @@
     <string name="preview_hold_speed">Hold · %1$s</string>
     <string name="preview_release_speed">Release · Restore 1x</string>
     <string name="preview_normal_speed">Normal playback · 1x</string>
-    <string name="animation_section_card">Card animations</string>
+    <string name="animation_section_card">Transition animations</string>
     <string name="preview_caption_card_entrance_on">Home cards fade in one at a time</string>
     <string name="preview_caption_card_entrance_off">Home cards appear immediately</string>
     <string name="preview_caption_live_on">The current frame keeps playing through the transition</string>
@@ -494,20 +494,19 @@
     <string name="settings_feed_api_changed">Switched to %1$s. Pull to refresh to apply.</string>
     <string name="settings_donate_qr_description">Donation QR code</string>
     <string name="settings_donate_thanks">Thank you for your support!</string>
-    <string name="settings_donate_dismiss_hint">Tap the QR code or close button to dismiss</string>
     <string name="settings_update_tap_to_check">Tap to check</string>
     <string name="settings_search_history_title">Search history</string>
     <string name="settings_search_history_clear_all">Clear all</string>
     <string name="settings_search_history_empty">No search history yet. Search for a setting to see it here.</string>
     <string name="settings_search_history_delete">Delete search history: %1$s</string>
-    <string name="settings_search_legacy_001_title">Interface and theme</string>
-    <string name="settings_search_legacy_001_summary">Interface style, colors, fonts, and launch screen</string>
+    <string name="settings_search_legacy_001_title">Appearance and animation</string>
+    <string name="settings_search_legacy_001_summary">Theme, text size, icons, animation, and vibration</string>
     <string name="settings_search_legacy_002_title">Home and recommendations</string>
     <string name="settings_search_legacy_002_summary">Home cards, recommendations, dynamic posts, and release schedules</string>
-    <string name="settings_search_legacy_003_title">Navigation and tabs</string>
-    <string name="settings_search_legacy_003_summary">Adjust the bottom bar, category tabs, and sidebar</string>
-    <string name="settings_search_legacy_004_title">Playback and quality</string>
-    <string name="settings_search_legacy_004_summary">Video quality, playback speed, subtitles, and continuous playback</string>
+    <string name="settings_search_legacy_003_title">Navigation layout</string>
+    <string name="settings_search_legacy_003_summary">Bottom bar, home tabs, search categories, and tablet sidebar</string>
+    <string name="settings_search_legacy_004_title">Playback</string>
+    <string name="settings_search_legacy_004_summary">Quality, speed, subtitles, autoplay, mini-window, and background play</string>
     <string name="settings_search_legacy_005_title">Full screen and gestures</string>
     <string name="settings_search_legacy_005_summary">Screen orientation, screenshots, lock button, brightness, volume, and seek gestures</string>
     <string name="settings_search_legacy_006_title">Interactions and comments</string>
@@ -516,14 +515,14 @@
     <string name="settings_search_legacy_007_summary">Shown automatically when data is available. It cannot be forced when Bilibili does not provide it.</string>
     <string name="settings_search_legacy_008_title">Full comment timestamps</string>
     <string name="settings_search_legacy_008_summary">Show the full date and time instead of a relative time such as “2 hours ago”</string>
-    <string name="settings_search_legacy_009_title">Storage and backup</string>
-    <string name="settings_search_legacy_009_summary">Save locations, cache, settings sharing, and cloud backup</string>
+    <string name="settings_search_legacy_009_title">Downloads and backup</string>
+    <string name="settings_search_legacy_009_summary">Save locations, cache, settings sharing, and WebDAV backup</string>
     <string name="settings_search_legacy_010_title">Privacy and permissions</string>
     <string name="settings_search_legacy_010_summary">History, system permissions, and blocked users</string>
-    <string name="settings_search_legacy_011_title">Troubleshooting</string>
+    <string name="settings_search_legacy_011_title">Diagnostics and logs</string>
     <string name="settings_search_legacy_011_summary">Record and export information to help diagnose issues</string>
-    <string name="settings_search_legacy_012_title">About and support</string>
-    <string name="settings_search_legacy_012_summary">Updates, help, and official channels</string>
+    <string name="settings_search_legacy_012_title">Help and about</string>
+    <string name="settings_search_legacy_012_summary">Help, troubleshooting, updates, and app info</string>
 
     <!-- Search filters -->
     <string name="search_filter">Filter</string>
@@ -625,7 +624,7 @@
     <string name="notify_live">Notify me when a followed streamer goes live.</string>
     <string name="notify_section_resident">Background activity</string>
     <string name="notify_resident_enabled_desc">Keep the app running in the background for faster notifications. This uses more battery, and the system may still stop it.</string>
-    <string name="notify_resident_requires_desc">Turn on Background notifications and grant notification permission first. This uses more battery, and the system may still stop it.</string>
+    <string name="notify_resident_requires_desc">Turn on Background notifications and grant notification permission first.</string>
     <string name="notify_resident_first_status">Turn on Background notifications before enabling persistent background activity.</string>
     <string name="notify_permission_setup_status">Enable notification permission and make sure system notification channels are not turned off.</string>
     <string name="notify_section_send">Post notifications</string>
@@ -826,13 +825,13 @@
     <string name="appearance_home_compact_stats_off">Shown below the uploader</string>
     <string name="appearance_home_duration_subtitle">Choose how video duration is displayed</string>
     <string name="appearance_home_publish_on">Show publish time on home video cards</string>
-    <string name="appearance_home_publish_off">Hide publish time on home video cards</string>
+    <string name="appearance_home_publish_off">Hides the publish time for a more compact card</string>
     <string name="appearance_home_avatars_on">Show uploader avatars on home video cards</string>
     <string name="appearance_home_avatars_off">Hide avatars to make more room for uploader names</string>
     <string name="appearance_home_badges_on">Show uploader badges on Home and related videos</string>
     <string name="appearance_home_badges_off">Hide uploader badges on Home and related videos</string>
-    <string name="appearance_home_refresh_tip_on">Keep existing recommendations after refresh and show a notice at the refresh point</string>
-    <string name="appearance_home_refresh_tip_off">When off, refresh replaces recommendations without a notice</string>
+    <string name="appearance_home_refresh_tip_on">Show the previous refresh position when older recommendations are kept</string>
+    <string name="appearance_home_refresh_tip_off">Hide the position notice without changing whether older recommendations are kept</string>
     <string name="appearance_home_refresh_undo">Show an undo button after refreshing recommendations to restore previous content</string>
     <string name="appearance_home_online_on">Show “xx watching” on video cards; video pages are controlled separately</string>
     <string name="appearance_home_online_off">Hide viewer counts on cards; video pages are controlled separately</string>
@@ -939,4 +938,36 @@
     <string name="animation_page_zoom">Zoom with fade</string>
     <string name="animation_page_circular_reveal">Circular reveal (from center)</string>
     <string name="animation_page_ios">iOS style (slide and parallax)</string>
+    <string name="settings_donate_title">Help BiliPai keep getting better</string>
+    <string name="settings_donate_intro">If BiliPai makes watching videos more enjoyable, you can support its ongoing development and maintenance.</string>
+    <string name="settings_donate_voluntary">Support is optional. Choose any amount.</string>
+    <string name="settings_donate_steps">1. Save the appreciation code to your gallery\n2. Open WeChat → Scan → Album\n3. Select the image and complete your contribution in WeChat</string>
+    <string name="settings_donate_enlarge">Tap to view full image</string>
+    <string name="settings_donate_save">Save appreciation code</string>
+    <string name="settings_donate_saving">Saving…</string>
+    <string name="settings_donate_save_again">Save appreciation code again</string>
+    <string name="settings_donate_saved">Saved to your gallery. Open WeChat, then choose the image from Scan → Album.</string>
+    <string name="settings_donate_open_wechat">Open WeChat</string>
+    <string name="settings_donate_save_failed">Could not save. Check available storage and try again, or open the full image and take a screenshot.</string>
+    <string name="settings_donate_permission_denied">Storage permission is needed to save to your gallery. You can also open the full image and take a screenshot.</string>
+    <string name="settings_donate_wechat_unavailable">Could not open WeChat. Open it manually and choose the code from Scan → Album.</string>
+    <string name="settings_donate_preview_hint">Original image · Touch and hold to save to your gallery</string>
+    <string name="settings_donate_save_confirm_title">Save appreciation code?</string>
+    <string name="settings_donate_save_confirm_message">Save the original appreciation code image to your gallery?</string>
+
+    <!-- Progressive top blur renderer -->
+    <string name="animation_progressive_renderer_title">Progressive blur renderer</string>
+    <string name="animation_progressive_renderer_summary">Both renderers share the same strength, coverage and falloff settings.</string>
+    <string name="animation_progressive_renderer_fallback_summary">This system does not support the platform renderer. Miuix is used even when it is selected.</string>
+    <string name="animation_progressive_renderer_miuix_description">The existing renderer, used by default.</string>
+    <string name="animation_progressive_renderer_android">Android platform</string>
+    <string name="animation_progressive_renderer_android_description">Uses system backdrop blur, with Miuix as a fallback when unavailable.</string>
+    <string name="preview_blur_compare_button">Compare previews</string>
+    <string name="preview_blur_compare_title">Compare progressive blur</string>
+    <string name="preview_blur_compare_summary">Both previews use the same scene and your current blur settings. Drag the slider to move both backgrounds. Saved settings remain unchanged.</string>
+    <string name="preview_blur_compare_scroll">Move preview background</string>
+    <string name="preview_blur_compare_unavailable">%1$s is unavailable. This device cannot display an actual preview of this renderer.</string>
+    <string name="preview_blur_compare_api_requirement">The platform renderer requires API 37.2 or later. This device runs API %1$s, so Miuix is used.</string>
+    <string name="animation_indicator_dynamic_length_title">Dynamic glass indicator length</string>
+    <string name="animation_indicator_dynamic_length_summary">Fit the selected indicator to its label; turn off to fill the slot. Applies only to liquid glass.</string>
 </resources>

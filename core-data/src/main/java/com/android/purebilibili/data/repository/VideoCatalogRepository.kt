@@ -246,30 +246,30 @@ object VideoCatalogRepository {
 
     suspend fun getCachedRelatedVideosResult(bvid: String): Result<List<RelatedVideo>>? {
         TokenManager.awaitRestore()
-        val accountScope = videoMetadataAccountScope()
+        val accountScope = recommendationAccountScope()
         val result = relatedCache.peek(RelatedKey(accountScope, bvid))
-        return if (accountScope == videoMetadataAccountScope()) result else null
+        return if (accountScope == recommendationAccountScope()) result else null
     }
 
     suspend fun getRelatedVideosResult(bvid: String): Result<List<RelatedVideo>> = withContext(Dispatchers.IO) {
         TokenManager.awaitRestore()
-        val accountScope = videoMetadataAccountScope()
+        val accountScope = recommendationAccountScope()
         val result = relatedCache.getOrLoad(RelatedKey(accountScope, bvid)) {
             dataRequest {
                 val response = api.getRelatedVideos(bvid)
                 if (response.code != 0 || response.data == null) {
                     error("相关推荐加载失败 (${response.code})")
                 }
-                check(accountScope == videoMetadataAccountScope()) { "账号已切换，请重新加载" }
+                check(accountScope == recommendationAccountScope()) { "账号已切换，请重新加载" }
                 requireNotNull(response.data)
             }
         }
-        if (accountScope == videoMetadataAccountScope()) result
+        if (accountScope == recommendationAccountScope()) result
         else Result.failure(IllegalStateException("账号已切换，请重新加载"))
     }
 
     fun invalidateRelatedVideos(bvid: String) {
-        relatedCache.invalidate(RelatedKey(videoMetadataAccountScope(), bvid))
+        relatedCache.invalidate(RelatedKey(recommendationAccountScope(), bvid))
     }
 
     fun clearRelatedVideosCache() {
@@ -303,6 +303,8 @@ object VideoCatalogRepository {
             }
         }
     }
+
+    fun getCachedCreatorCardStats(mid: Long): CreatorCardStats? = creatorCardStatsCache[mid]
 
     suspend fun getCreatorCardStats(mid: Long): Result<CreatorCardStats> = withContext(Dispatchers.IO) {
         if (mid <= 0L) return@withContext Result.failure(IllegalArgumentException("Invalid mid"))

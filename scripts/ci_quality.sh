@@ -50,4 +50,9 @@ case "$MODE" in
 esac
 
 # Keep independent reports without hiding compilation, checker or behavior failures.
-bash ./gradlew "${GRADLE_TASKS[@]}" --continue --no-daemon --console=plain "$@"
+# CI 可通过 CI_GRADLE_MAX_WORKERS 覆盖 worker 数（默认沿用 gradle.properties）。
+MAX_WORKERS_ARGS=()
+if [[ -n "${CI_GRADLE_MAX_WORKERS:-}" ]]; then
+  MAX_WORKERS_ARGS=(--max-workers "$CI_GRADLE_MAX_WORKERS")
+fi
+bash ./gradlew ${MAX_WORKERS_ARGS[@]+"${MAX_WORKERS_ARGS[@]}"} "${GRADLE_TASKS[@]}" --continue --no-daemon --console=plain "$@"

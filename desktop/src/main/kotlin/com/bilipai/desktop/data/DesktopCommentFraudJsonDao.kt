@@ -106,6 +106,11 @@ internal class DesktopCommentFraudJsonDao(
     }
     override suspend fun insertOrUpdate(record:CommentFraudRecord)=mutateRecords { it.apply{put(record.rpid,record)} }
     override suspend fun insertAll(records:List<CommentFraudRecord>)=mutateRecords { next->next.apply{records.forEach{put(it.rpid,it)}} }
+    override suspend fun importMissing(records:List<CommentFraudRecord>):List<Long> {
+        var inserted=emptyList<Long>()
+        mutateRecords { next -> next.apply { inserted=records.map { if(putIfAbsent(it.rpid,it)==null)it.rpid else -1L } } }
+        return inserted
+    }
     override fun getAllRecordsFlow():Flow<List<CommentFraudRecord>> = owned { flow.asStateFlow() }
     override suspend fun getAllRecords():List<CommentFraudRecord> = operation { sorted() }
     override suspend fun getRecordByRpid(rpid:Long):CommentFraudRecord? = operation { records[rpid] }

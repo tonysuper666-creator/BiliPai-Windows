@@ -22,6 +22,7 @@ internal fun loadErrorCategory(error: VideoLoadError): String = when (error) {
     VideoLoadError.WbiSignatureError -> "request_verification"
     VideoLoadError.VideoNotFound -> "unavailable"
     VideoLoadError.RegionRestricted -> "region_restricted"
+    is VideoLoadError.BangumiRedirect -> "content_redirect"
     VideoLoadError.VipRequired -> "vip_required"
     VideoLoadError.CidNotFound -> "missing_media_info"
     VideoLoadError.PlayUrlEmpty -> "empty_play_url"
@@ -47,6 +48,7 @@ internal class QualitySwitchTelemetryAttempt(
     val source: String,
     private val startedAtMs: Long
 ) {
+    val timeoutAtMs: Long = startedAtMs + 30_000L
     private var actualQuality: Int? = null
     private var fallback = false
     private var finished = false
@@ -61,7 +63,7 @@ internal class QualitySwitchTelemetryAttempt(
         if (actualQuality != null && ready) {
             return finish(if (fallback) "fallback" else "success", "ready", nowMs)
         }
-        if (nowMs - startedAtMs >= 30_000L) return finish("timeout", "not_ready", nowMs)
+        if (nowMs >= timeoutAtMs) return finish("timeout", "not_ready", nowMs)
         return null
     }
 

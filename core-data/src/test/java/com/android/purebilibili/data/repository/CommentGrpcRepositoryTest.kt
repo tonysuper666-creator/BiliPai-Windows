@@ -8,6 +8,21 @@ import org.junit.Assert.assertFalse
 class CommentGrpcRepositoryTest {
 
     @Test
+    fun `main list keeps curated title and empty guidance without triggering fallback`() {
+        val subject = ProtoWire.message(
+            ProtoWire.string(17, "精选评论"),
+            ProtoWire.string(7, "评论经筛选后公开"),
+            ProtoWire.string(21, "还没有精选评论"),
+            ProtoWire.int64(16, 20L),
+        )
+        val data = CommentGrpcRepository.parseMainListReply(ProtoWire.message(ProtoWire.bytes(3, subject)))
+        assertEquals("精选评论", data.control?.sectionNotice())
+        assertEquals("还没有精选评论", data.control?.emptyMessage())
+        assertFalse(shouldFallbackHotCommentReadOnEmptySuccess(1, 3, 0, data))
+        assertFalse(shouldFallbackCommentReadOnEmptyRenderableSuccess(0, data))
+    }
+
+    @Test
     fun `parseMainListReply keeps the vote card above comments`() {
         val firstOption = ProtoWire.message(
             ProtoWire.int64(1, 0L),

@@ -163,6 +163,8 @@ internal object DesktopDrawableTable {
 
     fun unsupported(variant: Variant): Nothing = when (variant.kind) {
         "unavailable" -> throw UnsupportedDesktopCapability("Drawable ${variant.name}", variant.path)
+        "shape" -> throw UnsupportedDesktopCapability("<shape> drawable ${variant.name}",
+            "Android home-screen widget backgrounds are not drawn by the desktop")
         else -> throw UnsupportedDesktopCapability("<${variant.kind}> drawable ${variant.name}",
             "Android splash-screen compositions are not drawn by the desktop")
     }

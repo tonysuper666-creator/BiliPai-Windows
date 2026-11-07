@@ -34,6 +34,8 @@ import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -52,6 +54,7 @@ import com.android.purebilibili.core.ui.components.AppHorizontalDivider
 import com.android.purebilibili.core.ui.components.AppIcon
 import com.android.purebilibili.core.ui.components.AppIconButton
 import com.android.purebilibili.core.ui.components.AppLazyColumn as LazyColumn
+import com.android.purebilibili.core.ui.components.AppTextButton
 import com.android.purebilibili.core.ui.components.AppText
 import com.android.purebilibili.data.model.response.ReplyItem
 import com.android.purebilibili.feature.dynamic.components.ImagePreviewSourceAnchor
@@ -93,6 +96,7 @@ internal data class SubReplyDetailSavedScrollPosition(
 )
 
 internal enum class SubReplyDetailScrollRestoreAction {
+    KEEP_POSITION,
     SCROLL_TO_TOP,
     RESTORE_SAVED,
 }
@@ -101,7 +105,12 @@ internal fun resolveSubReplyDetailScrollRestoreAction(
     previousConversationMode: Boolean?,
     currentConversationMode: Boolean,
     hasSavedPosition: Boolean,
+    sortChanged: Boolean = false,
 ): SubReplyDetailScrollRestoreAction {
+    if (sortChanged) return SubReplyDetailScrollRestoreAction.SCROLL_TO_TOP
+    if (previousConversationMode == null || previousConversationMode == currentConversationMode) {
+        return SubReplyDetailScrollRestoreAction.KEEP_POSITION
+    }
     if (previousConversationMode == true && !currentConversationMode && hasSavedPosition) {
         return SubReplyDetailScrollRestoreAction.RESTORE_SAVED
     }
@@ -258,6 +267,50 @@ internal fun resolveSubReplyTargetListIndex(
 
 
 @Composable
+internal fun SubReplyInitialContent(
+    isLoading: Boolean,
+    error: String?,
+    onRetry: () -> Unit,
+    onDismiss: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val appearance = rememberVideoCommentAppearance()
+    Column(modifier.fillMaxSize().background(appearance.panelColor)) {
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(start = 16.dp, end = 8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            AppText(
+                text = "评论详情",
+                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                modifier = Modifier.weight(1f),
+            )
+            AppIconButton(onClick = onDismiss, modifier = Modifier.testTag(SUB_REPLY_DETAIL_CLOSE_TAG)) {
+                AppIcon(Icons.Outlined.Close, contentDescription = "关闭评论详情")
+            }
+        }
+        AppHorizontalDivider(thickness = 0.5.dp, color = appearance.dividerColor)
+        Box(Modifier.fillMaxWidth().weight(1f), contentAlignment = Alignment.Center) {
+            if (isLoading) {
+                AdaptiveLoadingIndicator()
+            } else {
+                Column(
+                    modifier = Modifier.padding(24.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ) {
+                    AppText(
+                        text = error ?: "回复加载失败",
+                        textAlign = TextAlign.Center,
+                        color = appearance.secondaryTextColor,
+                    )
+                    AppTextButton(onClick = onRetry) { AppText("重试") }
+                }
+            }
+        }
+    }
+}
+
+@Composable
 internal fun VideoInlineSubReplyDetailContent(
     state: SubReplyUiState,
     commentState: CommentUiState,
@@ -285,7 +338,20 @@ internal fun VideoInlineSubReplyDetailContent(
     modifier: Modifier = Modifier,
 ) {
     val rootReply = state.rootReply
-    if (!state.visible || rootReply == null) return
+    if (!state.visible) return
+    com.android.purebilibili.core.ui.LocalNavigationBackHandler(enabled = true) {
+        onDismiss()
+    }
+    if (rootReply == null) {
+        SubReplyInitialContent(
+            isLoading = state.isLoading,
+            error = state.error,
+            onRetry = onLoadMore,
+            onDismiss = onDismiss,
+            modifier = modifier,
+        )
+        return
+    }
 
     // Inline hosts replace the main list directly, unlike window sheets and the
     // portrait overlay host. Give this panel its own full-height bottom-up entry.
@@ -303,9 +369,6 @@ internal fun VideoInlineSubReplyDetailContent(
         }
     }
 
-    com.android.purebilibili.core.ui.LocalNavigationBackHandler(enabled = true) {
-        onDismiss()
-    }
 
     SubReplyDetailContent(
         rootReply = rootReply,
@@ -437,17 +500,22 @@ internal fun SubReplyDetailContent(
         wasRefreshing = isRefreshing
     }
     var highlightedTargetId by remember(rootReply.rpid) { mutableLongStateOf(0L) }
-    var targetReplyHandled by remember(rootReply.rpid, targetReplyId) { mutableStateOf(false) }
+    var targetReplyHandled by rememberSaveable(rootReply.rpid, targetReplyId) { mutableStateOf(false) }
+    var targetReplyMissing by rememberSaveable(rootReply.rpid, targetReplyId) { mutableStateOf(false) }
     LaunchedEffect(highlightedTargetId) {
         if (highlightedTargetId <= 0L) return@LaunchedEffect
         delay(1_400)
         highlightedTargetId = 0L
     }
     var conversationAnchor by remember(rootReply.rpid) { mutableStateOf<ReplyItem?>(null) }
-    var previousConversationMode by remember(rootReply.rpid) { mutableStateOf<Boolean?>(null) }
-    var savedListScroll by remember(rootReply.rpid) {
-        mutableStateOf<SubReplyDetailSavedScrollPosition?>(null)
-    }
+    // 与 LazyListState 一起恢复，避免重建后用首次进场逻辑覆盖已保存的位置。
+    var previousConversationMode by rememberSaveable(rootReply.rpid) { mutableStateOf<Boolean?>(null) }
+    var previousSortMode by rememberSaveable(rootReply.rpid) { mutableIntStateOf(sortMode.apiMode) }
+    var savedListIndex by rememberSaveable(rootReply.rpid) { mutableIntStateOf(-1) }
+    var savedListOffset by rememberSaveable(rootReply.rpid) { mutableIntStateOf(0) }
+    val savedListScroll = if (savedListIndex >= 0) {
+        SubReplyDetailSavedScrollPosition(savedListIndex, savedListOffset)
+    } else null
     val visibleReplies = remember(subReplies, conversationAnchor, isConversationMode) {
         val anchor = conversationAnchor
         if (anchor == null || isConversationMode) {
@@ -485,10 +553,8 @@ internal fun SubReplyDetailContent(
         )
     }
     val captureListScrollForConversation: () -> Unit = {
-        savedListScroll = SubReplyDetailSavedScrollPosition(
-            index = allRepliesListState.firstVisibleItemIndex,
-            scrollOffset = allRepliesListState.firstVisibleItemScrollOffset,
-        )
+        savedListIndex = allRepliesListState.firstVisibleItemIndex
+        savedListOffset = allRepliesListState.firstVisibleItemScrollOffset
     }
     val canScrollForwardState = remember(listState) {
         derivedStateOf {
@@ -545,7 +611,7 @@ internal fun SubReplyDetailContent(
     LaunchedEffect(shouldPrefetchShortList, visibleReplies.size, detailReplyDisplayCount, paginationPage) {
         if (shouldPrefetchShortList) onLoadMore()
     }
-    LaunchedEffect(listScrollResetKey, sortMode) {
+    LaunchedEffect(rootReply.rpid, effectiveConversationMode, activeConversationId, sortMode) {
         val previousMode = previousConversationMode
         val currentMode = listScrollResetKey.conversationMode
         when (
@@ -553,8 +619,10 @@ internal fun SubReplyDetailContent(
                 previousConversationMode = previousMode,
                 currentConversationMode = currentMode,
                 hasSavedPosition = savedListScroll != null,
+                sortChanged = previousSortMode != sortMode.apiMode,
             )
         ) {
+            SubReplyDetailScrollRestoreAction.KEEP_POSITION -> Unit
             SubReplyDetailScrollRestoreAction.RESTORE_SAVED -> {
                 val saved = savedListScroll
                 if (saved != null) {
@@ -579,6 +647,7 @@ internal fun SubReplyDetailContent(
             }
         }
         previousConversationMode = currentMode
+        previousSortMode = sortMode.apiMode
     }
     LaunchedEffect(rootReply.rpid, targetReplyId, visibleReplies, isLoading, isEnd, effectiveConversationMode, error, paginationPage) {
         if (targetReplyId <= 0L) {
@@ -587,7 +656,7 @@ internal fun SubReplyDetailContent(
         }
         // This is an entry-time navigation request, not a persistent scroll anchor.
         // Loading/refreshing changes the effect keys but must not replay the jump.
-        if (targetReplyHandled) return@LaunchedEffect
+        if (targetReplyHandled || effectiveConversationMode) return@LaunchedEffect
         val targetIndex = resolveSubReplyTargetListIndex(
             rootReplyId = rootReply.rpid,
             visibleReplies = visibleReplies,
@@ -595,13 +664,17 @@ internal fun SubReplyDetailContent(
         )
         when {
             targetIndex != null -> {
-                // Consume before suspending: a page update or user scroll may cancel
-                // the animation, and must not cause a later update to restart it.
+                // Commit the entry jump without a long animation that a page update
+                // could cancel after the navigation request has already been consumed.
+                listState.scrollToItem(targetIndex)
                 targetReplyHandled = true
                 highlightedTargetId = targetReplyId
-                listState.animateScrollToItem(targetIndex)
             }
-            targetReplyId > 0L && error == null && !isLoading && !isEnd && !effectiveConversationMode -> onLoadMore()
+            error == null && !isLoading && !isEnd -> onLoadMore()
+            error == null && !isLoading && isEnd -> {
+                targetReplyHandled = true
+                targetReplyMissing = true
+            }
         }
     }
 
@@ -652,6 +725,15 @@ internal fun SubReplyDetailContent(
             }
         }
         AppHorizontalDivider(thickness = 0.5.dp, color = appearance.dividerColor)
+        if (targetReplyMissing && !effectiveConversationMode) {
+            AppText(
+                text = "未找到目标回复，可能已删除或不可见",
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
+                color = appearance.secondaryTextColor,
+                style = MaterialTheme.typography.bodySmall,
+                textAlign = TextAlign.Center,
+            )
+        }
 
         CommentCascadingContent(
             targetState = SubReplyDetailPage(
@@ -722,8 +804,8 @@ internal fun SubReplyDetailContent(
                                 } else null,
                                 onLikeClick = { onCommentLike?.invoke(rootReply.rpid) },
                                 onHateClick = { onCommentHate?.invoke(rootReply.rpid) },
-                                isLiked = rootReply.action == 1 || rootReply.rpid in likedComments,
-                                isHated = rootReply.action == 2 || rootReply.rpid in hatedComments,
+                                isLiked = rootReply.rpid in likedComments,
+                                isHated = rootReply.rpid in hatedComments,
                                 onUrlClick = onUrlClick,
                                 maxTimestampMs = maxTimestampMs,
                                 onReportClick = onReportComment?.let { report -> { reason -> report(rootReply.rpid, reason) } },
@@ -847,8 +929,8 @@ internal fun SubReplyDetailContent(
                                 } else null,
                                 onLikeClick = { onCommentLike?.invoke(item.rpid) },
                                 onHateClick = { onCommentHate?.invoke(item.rpid) },
-                                isLiked = item.action == 1 || item.rpid in likedComments,
-                                isHated = item.action == 2 || item.rpid in hatedComments,
+                                isLiked = item.rpid in likedComments,
+                                isHated = item.rpid in hatedComments,
                                 onUrlClick = onUrlClick,
                                 maxTimestampMs = maxTimestampMs,
                                 onReportClick = onReportComment?.let { report -> { reason -> report(item.rpid, reason) } },
@@ -883,7 +965,7 @@ internal fun SubReplyDetailContent(
                                     text = "$error，点击重试",
                                     modifier = Modifier
                                         .fillMaxWidth()
-                                        .clickable(onClick = onRefresh)
+                                        .clickable(onClick = onLoadMore)
                                         .sizeIn(minHeight = 48.dp)
                                         .padding(16.dp),
                                     textAlign = TextAlign.Center,

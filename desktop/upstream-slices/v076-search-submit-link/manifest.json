@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "repository": "jay3-yy/BiliPai",
+  "tag": "v0.7.6",
+  "commit": "0ec9c4dd25ad8f364dcc32dc7a3309bba9b30f1c",
+  "introducedBy": "39ad3afe2628322aa9d3bf16ecb4a6b0f7c753fa",
+  "files": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation/SearchSubmitPolicy.kt",
+      "archiveFile": "SearchSubmitPolicy.kt",
+      "bytes": 1911,
+      "sha256": "8b19bb72f2fddddbe3a7cacdb62b54dbeebec5c687493fd4e355b4a4acf60061",
+      "gitBlob": "d3f116cbbe436c9a20f4a5ea2a5eea8096c150e1",
+      "referenceOnly": false
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/navigation/SearchSubmitPolicyTest.kt",
+      "archiveFile": "SearchSubmitPolicyTest.kt",
+      "bytes": 2551,
+      "sha256": "18fb6d672552fec58693c0b2235909347d41a3abd80610954e21c789760f1385",
+      "gitBlob": "81500704bf37669010dc1b9a63d11dd5ee5fdddc",
+      "referenceOnly": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation/AppNavigation.kt",
+      "archiveFile": "AppNavigation.kt",
+      "bytes": 348441,
+      "sha256": "5ab389e0ee91533b36f3d838b4330a78a3f0fe252268448c4bb9a45b8eca1c32",
+      "gitBlob": "bf3ea46112be1adf6aa740611faa2ac5cf74e31f",
+      "referenceOnly": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchScreen.kt",
+      "archiveFile": "SearchScreen.kt",
+      "bytes": 269269,
+      "sha256": "4a79f841e79eff90156f7c3ea3fc5ac80139222af6d6420fa850a5fcfd9b0845",
+      "gitBlob": "e2813d765e0fba99c6ec0a903a2a086fce7a0d92",
+      "referenceOnly": true
+    }
+  ]
+}

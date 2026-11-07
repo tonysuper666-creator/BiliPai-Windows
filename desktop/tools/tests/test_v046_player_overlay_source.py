@@ -136,10 +136,13 @@ class PlayerOverlaySourceTests(unittest.TestCase):
         # the same producer with the layers of this slice patched out: the retained v0.3.7 behaviour. The NVIDIA edits of
         # the bar are anchored on the v0.4.6 text, so the v0.3.7 bar runs without them; every other file is untouched.
         baseline = load('po_controls_baseline', 'extract-upstream-video-player-full-controls.py')
+        baseline_buffering = baseline.buffering_center_playback_ui
         with mock.patch.object(overlay, 'chain_source', lambda repo, path, previous: previous), \
                 mock.patch.object(overlay, 'render_source', lambda repo, path, previous, row, commit: (previous, row, commit)), \
                 mock.patch.object(overlay, 'write_proofs', lambda repo, output: []), \
-                mock.patch.object(baseline, 'windows_nvidia_control_bar_ui', lambda source, record=False: source):
+                mock.patch.object(baseline, 'windows_nvidia_control_bar_ui', lambda source, record=False: source), \
+                mock.patch.object(baseline, 'buffering_center_playback_ui', lambda rel, text:
+                                  text if rel == overlay.OVERLAY_RELATIVE.removeprefix(OUT_ROOT) else baseline_buffering(rel, text)):
             baseline.generate(REPO, cls.root / 'without', False, cls.root / 'without-tests')
         cls.before = tree(cls.root / 'without')
 

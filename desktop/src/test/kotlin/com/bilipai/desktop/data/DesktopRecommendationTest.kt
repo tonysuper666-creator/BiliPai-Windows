@@ -38,11 +38,13 @@ class DesktopRecommendationTest {
     private val webVideo = VideoItem(aid = 1, bvid = "BV-web", title = "web", owner = Owner(mid = 10))
     private val appVideo = VideoItem(aid = 2, bvid = "BV-app", title = "app", owner = Owner(mid = 20))
 
-    @Test fun originalModeDefaultsAndRefreshNormalizationArePreserved() {
+    @Test fun originalModeDefaultsAndUpstreamRequestSizeArePreserved() {
         assertEquals(DesktopRecommendationMode.WEB, DesktopRecommendationMode.fromValue(99))
-        assertEquals(20, DEFAULT_HOME_REFRESH_COUNT)
-        assertEquals(10, normalizeHomeRefreshCount(0)); assertEquals(30, normalizeHomeRefreshCount(999))
-        assertEquals("20", discoveryRecommendParams(1)["ps"])
+        assertEquals(12, DEFAULT_HOME_REFRESH_COUNT)
+        for (columns in listOf(1, 2, 7, 12)) {
+            assertEquals(23, com.android.purebilibili.feature.home.resolveHomeFeedPageSize(columns))
+        }
+        assertEquals("23", discoveryRecommendParams(1)["ps"])
         assertEquals("0", discoveryRecommendParams(1)["fresh_idx"])
     }
 
@@ -176,11 +178,11 @@ class DesktopRecommendationTest {
     @Test fun localNegativeFeedbackIsPersistedPerAccountAndCreatorBlocksSurviveFeedbackClear(): Unit = runBlocking {
         val root = Files.createTempDirectory("bp-feed-")
         val preferences = DesktopDiscoveryPreferences(root)
-        preferences.setFeedMode(DesktopRecommendationMode.MERGED); preferences.setRefreshCount(99)
+        preferences.setFeedMode(DesktopRecommendationMode.MERGED)
         preferences.record(101, TodayWatchDislikedVideoSnapshot(" BV-app ", "中文 😀", "UP", 20, 123), setOf(" 游戏 "), true)
         assertTrue(preferences.feedback(102).value.dislikedBvids.isEmpty()); assertTrue(preferences.feedback(null).value.dislikedBvids.isEmpty())
         val restored = DesktopDiscoveryPreferences(root)
-        assertEquals(DesktopRecommendationMode.MERGED, restored.feedMode.value); assertEquals(30, restored.refreshCount.value)
+        assertEquals(DesktopRecommendationMode.MERGED, restored.feedMode.value)
         assertEquals("中文 😀", restored.feedback(101).value.recentDislikedVideos.single().title)
         assertEquals(setOf("游戏"), restored.feedback(101).value.dislikedKeywords); assertEquals(setOf(20L), restored.blockedCreators(101).value)
         restored.clearFeedback(101)

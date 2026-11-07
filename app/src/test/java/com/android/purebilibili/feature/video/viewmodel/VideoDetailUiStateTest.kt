@@ -75,4 +75,40 @@ class VideoDetailUiStateTest {
         assertEquals(info, content?.info)
         assertEquals(VideoPlaybackUiState.RelatedLoadState.FAILED, content?.relatedLoadState)
     }
+
+    @Test
+    fun resolvingAnUnspecifiedCidDoesNotHideLoadedMetadata() {
+        val unresolved = details.copy(requestCid = 0L)
+        assertEquals(info, unresolved.contentSnapshot(VideoPlaybackUiState.Loading.Initial, info.bvid, 0L)?.info)
+        assertEquals(info, unresolved.contentSnapshot(VideoPlaybackUiState.Loading.Initial, info.bvid, info.cid)?.info)
+        assertNull(unresolved.contentSnapshot(VideoPlaybackUiState.Loading.Initial, info.bvid, 456L))
+    }
+
+    @Test
+    fun restartingPlaybackKeepsMetadataThroughLoadingAndFailure() {
+        val restarted = details.forNewRequest(info.bvid, info.cid, 2L, VideoPlaybackUiState.Loading.Initial)
+        assertEquals(2L, restarted.requestToken)
+        assertEquals(info, restarted.contentSnapshot(VideoPlaybackUiState.Loading.Initial, info.bvid, info.cid)?.info)
+        val error = VideoPlaybackUiState.Error(VideoLoadError.PlayUrlEmpty)
+        assertEquals(info, restarted.contentSnapshot(error, info.bvid, info.cid)?.info)
+    }
+
+    @Test
+    fun restartingCachedPlaybackSeedsDetailsBeforePlaybackReturnsToLoading() {
+        val playback = VideoPlaybackUiState.Success(info, "stream", isLoggedIn = true, isVip = true)
+        val restarted = VideoDetailUiState().forNewRequest(info.bvid, info.cid, 2L, playback)
+        val content = restarted.contentSnapshot(VideoPlaybackUiState.Loading.Initial, info.bvid, info.cid)
+        assertEquals(info, content?.info)
+        assertEquals(true, content?.isLoggedIn)
+        assertEquals(true, content?.isVip)
+    }
+
+    @Test
+    fun changingVideoOrPageClearsPreviousMetadata() {
+        val playback = VideoPlaybackUiState.Success(info, "stream")
+        val otherVideo = details.forNewRequest("BV1other", info.cid, 2L, playback)
+        val otherPage = details.forNewRequest(info.bvid, 456L, 3L, playback)
+        assertNull(otherVideo.info)
+        assertNull(otherPage.info)
+    }
 }

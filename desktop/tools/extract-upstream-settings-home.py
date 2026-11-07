@@ -31,7 +31,7 @@ def call(source,name,parser):
     begin=source.rfind('\n',0,tokens[start][1])+1
     return textwrap.dedent(source[begin:tokens[end][2]])
 
-def generate(repo,output,standalone=False):
+def generate(repo,output,standalone=False,current_repo=None):
     host=helper(repo);media=host.media_extractor(repo);parser=media.parser_for(repo)
     output.mkdir(parents=True,exist_ok=True);files=[]
     path=BASE+'SettingsSelectionComponents.kt';original=read(repo,path)
@@ -43,8 +43,7 @@ def generate(repo,output,standalone=False):
     # using its reviewed exact source-title boundary, then token-delimit the call.
     first=section[section.index('        SettingsSingleChoicePreference('):section.index('        SettingsAdaptiveDivider()',section.index('        SettingsSingleChoicePreference('))]
     choice=call(first,'SettingsSingleChoicePreference',parser)
-    slider=call(section,'SettingSliderItem',parser)
-    if 'title = "首页推荐来源"' not in choice or 'title = "首页刷新数量"' not in slider:
+    if 'title = "首页推荐来源"' not in choice:
         raise ValueError('Original home controls changed identity')
     # Keep the exact original palette declaration and these two icon declarations;
     # the rest of the original body is neither copied nor silently enabled.
@@ -54,22 +53,21 @@ def generate(repo,output,standalone=False):
     imports='''package com.android.purebilibili.feature.settings
 import androidx.compose.runtime.*
 import com.android.purebilibili.core.store.SettingsManager
-import com.android.purebilibili.core.store.MIN_HOME_REFRESH_COUNT
-import com.android.purebilibili.core.store.MAX_HOME_REFRESH_COUNT
-import com.android.purebilibili.core.ui.components.AppSliderDialogPreference as SettingSliderItem
-import kotlin.math.roundToInt
 '''
     body=imports+'''\n/** Partial original FeedApiSection: only controls backed by the actual shared recommendation store. */
 @Composable
 internal fun DesktopHomeRecommendationFields(
     feedApiType: SettingsManager.FeedApiType,
     onFeedApiTypeChange: (SettingsManager.FeedApiType) -> Unit,
-    homeRefreshCount: Int,
-    onHomeRefreshCountChange: (Int) -> Unit,
 ) {
-'''+prelude+'\n    SettingsCardGroup {\n'+textwrap.indent(choice,'        ')+'\n        SettingsAdaptiveDivider()\n'+textwrap.indent(slider,'        ')+'\n    }\n}\n\n'
-    body+='\n\n'.join(media.function(original,name,parser) for name in ['resolveHomeRefreshCountSummary','resolveHomeRefreshSliderRange','resolveHomeRefreshSliderSteps'])
+'''+prelude+'\n    SettingsCardGroup {\n'+textwrap.indent(choice,'        ')+'\n    }\n}\n\n'
     files.append(host.write(output,path,original,body,'DesktopHomeRecommendationFields.kt'))
+    # v0.7.8 removes the preference. Both desktop request paths use the actual
+    # current upstream page-size policy, independent of legacy stored values.
+    path='app/src/main/java/com/android/purebilibili/feature/home/HomeViewModel.kt'
+    original=((current_repo or repo)/path).read_text(encoding='utf-8')
+    body='package com.android.purebilibili.feature.home\n\n'+media.function(original,'resolveHomeFeedPageSize',parser)+'\n'
+    files.append(host.write(output,path,original,body,'DesktopHomeFeedPageSizePolicy.kt'))
     path=BASE+'PlaybackSettingsSelectionPolicy.kt';original=read(repo,path)
     function=media.function(original,'resolveFeedApiSegmentOptions',parser)
     body='package com.android.purebilibili.feature.settings\nimport com.android.purebilibili.core.store.SettingsManager\nimport com.android.purebilibili.core.ui.components.AppSegmentOption\n\n'+function
@@ -87,7 +85,7 @@ def inventory(repo):return [dict(path=path,mode=mode,features=['settings-home-se
 
 if __name__=='__main__':
     cli=argparse.ArgumentParser(description=__doc__);cli.add_argument('--repo',type=Path,required=True)
-    cli.add_argument('--output',type=Path);cli.add_argument('--standalone',action='store_true');cli.add_argument('--inventory',action='store_true')
+    cli.add_argument('--output',type=Path);cli.add_argument('--standalone',action='store_true');cli.add_argument('--current-repo',type=Path);cli.add_argument('--inventory',action='store_true')
     args=cli.parse_args()
     if args.inventory:print(json.dumps(inventory(args.repo.resolve()),indent=2))
-    if args.output:print('Generated',len(generate(args.repo.resolve(),args.output.resolve(),args.standalone)))
+    if args.output:print('Generated',len(generate(args.repo.resolve(),args.output.resolve(),args.standalone,args.current_repo)))

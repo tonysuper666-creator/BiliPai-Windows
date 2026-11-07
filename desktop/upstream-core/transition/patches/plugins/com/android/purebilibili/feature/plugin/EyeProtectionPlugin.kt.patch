@@ -26,3 +26,28 @@
      override val name = "夜间护眼"
      override val description = "柔和降蓝光、定时护眼与休息提醒"
      override val version = "2.2.0"
+@@ -174,10 +174,12 @@
+ 
+     fun getSnoozeMinutes(): Int = config.reminderSnoozeMinutes
+ 
+     fun snoozeUntilMinute(): Int? = snoozeUntilMinute
+ 
++    fun lastReminderMinute(): Int? = lastReminderMinute
++
+     fun snapshotConfig(): EyeProtectionConfig = config
+ 
+     fun setSettingsPreviewEnabled(enabled: Boolean) {
+         _settingsPreviewEnabled.value = enabled
+         applyVisualState()
+@@ -229,10 +231,11 @@
+                         snoozeUntilMinute = snoozeUntilMinute,
+                         lastReminderMinute = lastReminderMinute
+                     )
+                 ) {
+                     lastReminderMinute = usageMinutes
++                    snoozeUntilMinute = null
+                     _careReminder.value = EyeCareReminder(
+                         usageMinutes = usageMinutes,
+                         title = "给眼睛一个小休息",
+                         message = buildCareReminderMessage(usageMinutes),
+                         suggestion = "试试 20-20-20：看向 6 米外，保持 20 秒"

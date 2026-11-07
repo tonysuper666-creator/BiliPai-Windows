@@ -37,9 +37,10 @@ internal fun VideoOwnerLiveBadge(
     val scope = rememberCoroutineScope()
     LifecycleResumeEffect(ownerMid) {
         val request = scope.launch {
-            liveRoom = if (ownerMid > 0L) {
-                VideoCatalogRepository.getCreatorLiveRoom(ownerMid).getOrNull()
-            } else null
+            if (ownerMid > 0L) {
+                // 恢复查询失败保留同一作者已知状态，成功返回未开播时才移除徽章。
+                VideoCatalogRepository.getCreatorLiveRoom(ownerMid).onSuccess { liveRoom = it }
+            }
         }
         onPauseOrDispose { request.cancel() }
     }

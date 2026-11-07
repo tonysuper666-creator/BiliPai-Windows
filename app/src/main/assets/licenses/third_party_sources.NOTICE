@@ -199,3 +199,68 @@ lib/utils/page_utils.dart and lib/grpc/bilibili/im/type.pbenum.dart.
 PiliPlus contributors; GPL-3.0. The Android implementation uses the existing
 rendering, account, networking and theme components. Distributed under GPLv3.
 License copy: artwork/third-party/piliplus/LICENSE in the source distribution.
+
+Coin selection interaction and content display/filter behavior referenced against
+PiliPlus (GPL-3.0): lib/pages/video/pay_coins/view.dart,
+lib/pages/setting/models/extra_settings.dart, lib/models/dynamics/result.dart,
+and lib/grpc/reply.dart. https://github.com/bggRGjQaUbCoE/PiliPlus
+When Blue Snow Maid animation is enabled, the Android implementation retains
+BiliPai's character artwork. The disabled path adapts the coin-selection layout,
+gestures and finite animation timeline from lib/pages/video/pay_coins/view.dart
+at revision 3d0aed958b3b7e59c39c121196f189f429719904, and includes its raster
+assets from assets/images/paycoins/ as drawable-nodpi/coin_toss_*.png:
+ic_22_mario.png, ic_22_gun_sister.png, ic_22_not_enough_pay.png,
+ic_pay_coins_box.png, ic_coins_one.png, ic_coins_two.png, ic_thunder_1.png,
+ic_thunder_2.png, ic_thunder_3.png, ic_left.png, ic_left_disable.png,
+ic_right.png, ic_right_disable.png and ic_panel_close.png.
+PiliPlus contributors; repository license GPL-3.0. Distributed as part of
+BiliPai under GPLv3.
+License copy: artwork/third-party/piliplus/LICENSE in the source distribution.
+
+UP small-shop behavior and API fields referenced against PiliPlus (GPL-3.0):
+lib/pages/member_shop/, lib/models_new/space/space_shop/, lib/http/member.dart.
+https://github.com/bggRGjQaUbCoE/PiliPlus
+License copy: artwork/third-party/piliplus/LICENSE in the source distribution.
+
+Followed-live pagination behavior referenced against PiliPlus (GPL-3.0):
+lib/http/live.dart, lib/models_new/live/live_follow/data.dart,
+lib/pages/live_follow/controller.dart. https://github.com/bggRGjQaUbCoE/PiliPlus
+License copy: artwork/third-party/piliplus/LICENSE in the source distribution.
+
+Subtitle synchronization design reference:
+PiliPlus, revision 3d0aed958b3b7e59c39c121196f189f429719904 (GPL-3.0).
+https://github.com/bggRGjQaUbCoE/PiliPlus
+Reviewed lib/pages/video/controller.dart (setSubtitle) and
+lib/utils/subtitle_utils.dart for player-clock subtitle timing and track caching.
+BiliPai retains its Android text renderers and implements event-driven position
+updates and cue-boundary scheduling with Media3 Player events and Kotlin coroutines.
+
+Glass menu spring parameter and phase reference:
+Glasmio, Copyright 2026 NEORUAA, Apache-2.0.
+https://github.com/NEORUAA/Glasmio
+https://github.com/NEORUAA/Glasmio/blob/main/glasmio-glass/src/main/java/io/github/neoruaa/glasmio/glass/LiquidMenuMorphMotion.kt
+Referenced damping/response pairs and staged release timings; the local finite
+menu renderer, frame adapter and presentation lifecycle are implemented for BiliPai.
+No Glasmio runtime dependency or bundled Apple assets are included.
+Apache-2.0 license text: design-system/src/main/assets/licenses/AndroidLiquidGlass.LICENSE.
+
+Adjacent navigation/search glass contact reference:
+Glasmio, Copyright 2026 NEORUAA, Apache-2.0.
+https://github.com/NEORUAA/Glasmio/blob/main/glasmio-glass/src/main/java/io/github/neoruaa/glasmio/glass/NavigationNativeUnion.kt
+Angle-weighted smooth union of capsule fields, adapted to local press geometry,
+shared material rendering and the existing Miuix backdrop infrastructure.
+Apache-2.0 license text: design-system/src/main/assets/licenses/AndroidLiquidGlass.LICENSE.
+
+Bangumi VIP icon and interaction reference:
+PiliPlus (GNU GPL v3), https://github.com/bggRGjQaUbCoE/PiliPlus
+assets/images/big-vip.svg converted to app/src/main/res/drawable/ic_bangumi_vip.xml.
+Details and episode badge behavior reference: lib/pages/video/introduction/pgc/widgets/
+intro_detail.dart, episode.dart, section.dart; lib/models_new/video/video_detail/episode.dart.
+The upstream license is retained in artwork/third-party/piliplus/LICENSE.
+
+Bangumi review UI behavior reference (PiliPlus, GNU GPL v3):
+lib/pages/pgc_review/view.dart, child/view.dart, child/controller.dart, post/view.dart;
+lib/models_new/pgc/pgc_review/; lib/common/widgets/sliver/sliver_floating_header.dart.
+Compose layout and gesture integration are implemented locally.
+Source: https://github.com/bggRGjQaUbCoE/PiliPlus
+License retained in artwork/third-party/piliplus/LICENSE.

@@ -43,6 +43,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.delay
 import kotlin.math.abs
 import kotlin.math.roundToInt
+import kotlin.math.roundToLong
 
 /** A native, independently implemented focus-lyrics renderer. */
 @Composable
@@ -51,6 +52,7 @@ internal fun AppleMusicLyricsView(
     currentIndex: Int,
     currentPositionMs: Long,
     isPlaying: Boolean,
+    playbackSpeed: Float = 1f,
     isPaused: Boolean = !isPlaying,
     brightenAllLinesWhenPaused: Boolean? = null,
     pageVisible: Boolean = true,
@@ -218,6 +220,7 @@ internal fun AppleMusicLyricsView(
     var smoothPositionMs by remember { mutableLongStateOf(currentPositionMs) }
     val latestCurrentPositionMs by rememberUpdatedState(currentPositionMs)
     val latestPlaying by rememberUpdatedState(renderIsPlaying)
+    val latestPlaybackSpeed by rememberUpdatedState(playbackSpeed)
 
     LaunchedEffect(currentPositionMs, pageVisible, renderIsPlaying) {
         if (!pageVisible || !renderIsPlaying) {
@@ -266,7 +269,8 @@ internal fun AppleMusicLyricsView(
                 displayMs = smoothPositionMs,
                 sampledMs = sampled,
                 frameDeltaMs = dtMs,
-                playing = playing
+                playing = playing,
+                playbackSpeed = latestPlaybackSpeed,
             )
         }
     }
@@ -579,14 +583,17 @@ internal fun nextSmoothLyricPositionMs(
     frameDeltaMs: Long,
     playing: Boolean,
     seekThresholdMs: Long = 1_500L,
-    backwardToleranceMs: Long = PLAYER_POSITION_BACKWARD_DRIFT_TOLERANCE_MS
+    backwardToleranceMs: Long = PLAYER_POSITION_BACKWARD_DRIFT_TOLERANCE_MS,
+    playbackSpeed: Float = 1f,
 ): Long {
     if (!playing) return sampledMs
     if (frameDeltaMs > seekThresholdMs) return sampledMs
-    val predicted = displayMs + frameDeltaMs.coerceAtLeast(0L)
+    val speed = playbackSpeed.takeIf { it.isFinite() && it > 0f } ?: 1f
+    val predicted = displayMs + (frameDeltaMs.coerceAtLeast(0L) * speed.toDouble()).roundToLong()
     val delta = sampledMs - predicted
     return when {
         abs(delta) > seekThresholdMs -> sampledMs
+        delta < -backwardToleranceMs -> sampledMs
         delta < 0L && -delta <= backwardToleranceMs -> predicted
         delta > 80L -> predicted + (delta / 4L)
         else -> predicted

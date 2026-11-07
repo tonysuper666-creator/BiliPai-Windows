@@ -371,7 +371,9 @@ private fun rememberPiliVideoContentActionsForIdentity(
                 scope.launch {
                     try {
                         targetInfo()
-                        val data = VideoRepository.getPlayUrlData(bvid, cid, 127)
+                        // 用下载专用查询：允许服务端降级（请求 8K 只有 4K 时就按 4K 列画质），
+                        // 否则绝大多数视频都会因为「没有 8K」被判成无法获取下载画质。
+                        val data = VideoRepository.getPlayUrlDataForDownload(bvid, cid, 127)
                             ?: error("无法获取视频下载画质，请检查网络或视频权限")
                         val ids = (data.acceptQuality + data.dash?.video.orEmpty().map { it.id }).distinct().sortedDescending()
                         qualityOptions = ids.map { id ->

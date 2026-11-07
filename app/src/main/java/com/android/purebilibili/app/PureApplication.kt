@@ -162,13 +162,24 @@ class PureApplication : Application(), SingletonImageLoader.Factory, ComponentCa
             isLowRamDevice = activityManager.isLowRamDevice
         )
         val diskCacheBytes = 100L * 1024 * 1024
+        // 图片请求集中在 i0/i1/i2.hdslb.com，默认每 host 只允许 5 个并发，
+        // 一屏几十张封面会排成几十批。这里不限制 per-host 并发，
+        // 交给 HTTP/2 多路复用自己调度（和 PiliPlus 的表现对齐）。
+        val imageCallFactory = NetworkModule.okHttpClient.newBuilder()
+            .dispatcher(
+                okhttp3.Dispatcher().apply {
+                    maxRequests = 128
+                    maxRequestsPerHost = 128
+                }
+            )
+            .build()
         return ImageLoader.Builder(this)
             .components {
                 add(com.android.purebilibili.core.util.BiliImageQualityInterceptor())
                 // 共享网络客户端及 DNS 策略，保留 HTTP 缓存头语义。
                 add(
                     OkHttpNetworkFetcherFactory(
-                        callFactory = { NetworkModule.okHttpClient },
+                        callFactory = { imageCallFactory },
                         cacheStrategy = { CacheControlCacheStrategy() },
                     )
                 )
@@ -204,14 +215,22 @@ class PureApplication : Application(), SingletonImageLoader.Factory, ComponentCa
             .also { _imageLoader = it }  // 保存引用
     }
     
-    @OptIn(ExperimentalFoundationApi::class)
+    @OptIn(ExperimentalFoundationApi::class, dev.chrisbanes.haze.ExperimentalHazeApi::class)
     override fun onCreate() {
         instance = this
+        // 让 core-data 等下层模块的日志也进同一份日志文件（它们不能反向依赖 Logger）。
+        com.android.purebilibili.core.util.CoreLogger.sink = { tag, message ->
+            com.android.purebilibili.core.util.Logger.d(tag, message)
+        }
         if (com.android.purebilibili.feature.message.notification.isLightweightServiceProcess(this)) {
             super.onCreate()
             com.android.purebilibili.feature.message.notification.initializeMessageNotificationProcess(this)
             return
         }
+
+        // 在效果节点挂载前开放官方窗口背景渲染；只有显式选择窗口背景的
+        // 同窗口入口参与，指定源采样和 Miuix 渐进模糊继续使用各自路径。
+        dev.chrisbanes.haze.HazeFeatureFlags.isPlatformBackdropEnabled = true
 
         // Compose 1.13's staggered-grid cache-window prefetch can assign an invalid lane
         // after rapid scroll-to-top and subsequent scrolling. Keep the established prefetcher
@@ -301,6 +320,9 @@ class PureApplication : Application(), SingletonImageLoader.Factory, ComponentCa
     }
 
     private fun initializeNormalRuntime() {
+        AppScope.ioScope.launch {
+            com.android.purebilibili.feature.audio.player.SystemMediaPreferences.observe(this@PureApplication)
+        }
         launcherIconUiModeSnapshot = resources.configuration.uiMode
         AppScope.ioScope.launch {
             CacheUtils.clearCacheAutomaticallyIfDue(this@PureApplication)

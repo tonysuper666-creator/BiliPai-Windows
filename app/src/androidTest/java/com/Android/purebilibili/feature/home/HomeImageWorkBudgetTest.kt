@@ -14,6 +14,32 @@ class HomeImageWorkBudgetTest {
     val rule = createComposeRule()
 
     @Test
+    fun losingVisualWorkPermissionCancelsTheWindowEvenWhenPageRemainsActive() {
+        rule.mainClock.autoAdvance = false
+        var visualWorkActive by mutableStateOf(true)
+        rule.setContent {
+            val allowed = rememberHomeCardAuxiliaryWorkAllowed(
+                pageActive = true,
+                isScrolling = false,
+                visualWorkActive = visualWorkActive,
+            )
+            BasicText(if (allowed) "ready" else "waiting")
+        }
+        rule.mainClock.advanceTimeBy(64)
+        rule.runOnIdle { visualWorkActive = false }
+        rule.mainClock.advanceTimeBy(400)
+        rule.onNodeWithText("waiting").assertExists()
+        rule.runOnIdle { visualWorkActive = true }
+        rule.mainClock.advanceTimeBy(64)
+        rule.onNodeWithText("waiting").assertExists()
+        rule.mainClock.advanceTimeBy(240)
+        rule.onNodeWithText("ready").assertExists()
+        rule.runOnIdle { visualWorkActive = false }
+        rule.mainClock.advanceTimeByFrame()
+        rule.onNodeWithText("waiting").assertExists()
+    }
+
+    @Test
     fun scrollingCancelsSettlingAndEachStopRequiresANewQuietWindow() {
         rule.mainClock.autoAdvance = false
         var scrolling by mutableStateOf(false)

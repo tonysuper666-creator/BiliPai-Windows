@@ -68,9 +68,11 @@ internal enum class BiliPaiNavEntryContentRole {
     MUSIC_DETAIL,
     NATIVE_MUSIC,
     SPACE,
+    SPACE_WEB_VIDEOS,
     WEB,
     DYNAMIC_DETAIL,
     ARTICLE_DETAIL,
+    ARTICLE_COLLECTION,
     LIVE,
     BANGUMI_DETAIL,
     BANGUMI_REVIEW,
@@ -108,6 +110,7 @@ internal fun resolveBiliPaiNavEntryContentRole(key: BiliPaiNavKey): BiliPaiNavEn
         BiliPaiNavKey.WebDavBackup -> BiliPaiNavEntryContentRole.WEB_DAV_BACKUP
         BiliPaiNavKey.TipsSettings -> BiliPaiNavEntryContentRole.TIPS_SETTINGS
         BiliPaiNavKey.Profile -> BiliPaiNavEntryContentRole.PROFILE
+        BiliPaiNavKey.ProfileAccountEdit -> BiliPaiNavEntryContentRole.PROFILE
         is BiliPaiNavKey.AccountLedger -> BiliPaiNavEntryContentRole.ACCOUNT_LEDGER
         is BiliPaiNavKey.VideoDetail -> BiliPaiNavEntryContentRole.VIDEO_DETAIL
         is BiliPaiNavKey.AicuQuery -> BiliPaiNavEntryContentRole.AICU_QUERY
@@ -153,10 +156,12 @@ internal fun resolveBiliPaiNavEntryContentRole(key: BiliPaiNavKey): BiliPaiNavEn
         is BiliPaiNavKey.BgmDetail -> BiliPaiNavEntryContentRole.BGM_DETAIL
         is BiliPaiNavKey.MusicDetail -> BiliPaiNavEntryContentRole.MUSIC_DETAIL
         is BiliPaiNavKey.NativeMusic -> BiliPaiNavEntryContentRole.NATIVE_MUSIC
+        is BiliPaiNavKey.SpaceWebVideos -> BiliPaiNavEntryContentRole.SPACE_WEB_VIDEOS
         is BiliPaiNavKey.Space -> BiliPaiNavEntryContentRole.SPACE
         is BiliPaiNavKey.Web -> BiliPaiNavEntryContentRole.WEB
         is BiliPaiNavKey.DynamicDetail -> BiliPaiNavEntryContentRole.DYNAMIC_DETAIL
         is BiliPaiNavKey.CommentDetail -> BiliPaiNavEntryContentRole.COMMENT_DETAIL
+        is BiliPaiNavKey.ArticleCollection -> BiliPaiNavEntryContentRole.ARTICLE_COLLECTION
         is BiliPaiNavKey.ArticleDetail -> BiliPaiNavEntryContentRole.ARTICLE_DETAIL
         is BiliPaiNavKey.Live -> BiliPaiNavEntryContentRole.LIVE
         is BiliPaiNavKey.BangumiDetail -> BiliPaiNavEntryContentRole.BANGUMI_DETAIL

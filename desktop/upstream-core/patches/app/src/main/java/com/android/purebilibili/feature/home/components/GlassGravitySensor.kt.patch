@@ -1,0 +1,76 @@
+--- a/com/android/purebilibili/feature/home/components/GlassGravitySensor.kt
++++ b/com/android/purebilibili/feature/home/components/GlassGravitySensor.kt
+@@ -1,17 +1,11 @@
+ package com.android.purebilibili.feature.home.components
+ 
+-import android.content.Context
+-import android.hardware.Sensor
+-import android.hardware.SensorEvent
+-import android.hardware.SensorEventListener
+-import android.hardware.SensorManager
+ import androidx.compose.runtime.Composable
+ import androidx.compose.runtime.DisposableEffect
+ import androidx.compose.runtime.State
+ import androidx.compose.runtime.mutableStateOf
+ import androidx.compose.runtime.remember
+ import androidx.compose.runtime.snapshots.Snapshot
+-import androidx.compose.ui.platform.LocalContext
+ 
+ internal data class GlassGravity(val gravityX: Float = 0f, val gravityY: Float = 0f)
+ 
+@@ -59,50 +53,15 @@
+     }
+ }
+ 
+-private class AndroidGlassGravitySensorBackend(context: Context) : GlassGravitySensorBackend {
+-    private val manager = context.getSystemService(Context.SENSOR_SERVICE) as? SensorManager
+-    private val sensor = manager?.getDefaultSensor(Sensor.TYPE_GAME_ROTATION_VECTOR)
+-        ?: manager?.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR)
+-    private var listener: SensorEventListener? = null
+-
+-    override fun start(onSample: (Float, Float) -> Unit): Boolean {
+-        val manager = manager ?: return false
+-        val sensor = sensor ?: return false
+-        val matrix = FloatArray(9)
+-        val next = object : SensorEventListener {
+-            override fun onSensorChanged(event: SensorEvent) {
+-                SensorManager.getRotationMatrixFromVector(matrix, event.values)
+-                onSample(-matrix[6], -matrix[7])
+-            }
+-
+-            override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) = Unit
+-        }
+-        listener = next
+-        return try {
+-            manager.registerListener(next, sensor, SensorManager.SENSOR_DELAY_GAME)
+-        } catch (_: SecurityException) {
+-            listener = null
+-            false
+-        }
+-    }
+-
+-    override fun stop() {
+-        listener?.let { manager?.unregisterListener(it) }
+-        listener = null
+-    }
++// Desktop has no Android rotation sensor; retain the neutral direction.
++private object DesktopGlassGravitySensorBackend : GlassGravitySensorBackend {
++    override fun start(onSample: (Float, Float) -> Unit): Boolean = false
++    override fun stop() = Unit
+ }
+-
+-// 仅保存 Application 的服务句柄，不持有 Activity、窗口或组件。
+-private val glassGravitySensors = mutableMapOf<Context, SharedGlassGravitySensor>()
+ 
+ @Composable
+ internal fun rememberSharedGlassGravity(active: Boolean): State<GlassGravity> {
+-    val context = LocalContext.current.applicationContext
+-    val sensor = remember(context) {
+-        glassGravitySensors.getOrPut(context) {
+-            SharedGlassGravitySensor(AndroidGlassGravitySensorBackend(context))
+-        }
+-    }
++    val sensor = remember { SharedGlassGravitySensor(DesktopGlassGravitySensorBackend) }
+     val token = remember { Any() }
+     if (active) {
+         DisposableEffect(sensor, token) {

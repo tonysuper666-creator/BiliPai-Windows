@@ -142,7 +142,7 @@ fun DynamicCommentOverlayHost(
             onRefresh = viewModel::refreshComments,
             onSortModeChange = { viewModel.setDynamicCommentSortMode(it) },
             onOpenComposer = viewModel::openCommentComposer,
-            onViewReplies = { reply -> viewModel.openSubReply(reply) },
+            onViewReplies = viewModel::openSubReply,
             onReply = { reply -> viewModel.startCommentReply(reply) },
             onLike = { reply -> viewModel.likeComment(reply.rpid) },
             onHate = { reply ->
@@ -226,7 +226,7 @@ fun DynamicCommentSheet(
     onRefresh: () -> Unit,
     onSortModeChange: (CommentSortMode) -> Unit = {},
     onOpenComposer: () -> Unit,
-    onViewReplies: (ReplyItem) -> Unit = {},
+    onViewReplies: (ReplyItem, Long) -> Unit = { _, _ -> },
     onReply: (ReplyItem) -> Unit = {},
     onLike: (ReplyItem) -> Unit = {},
     onHate: (ReplyItem) -> Unit = {},
@@ -541,8 +541,8 @@ fun DynamicCommentSheet(
                                             avatarListState = listState.takeIf { avatarPushEnabled },
                                             item = reply,
                                             upMid = dynamicAuthorMid,
-                                            onClick = { onViewReplies(reply) },
-                                            onSubClick = { root, _ -> onViewReplies(root) },
+                                            onClick = { onViewReplies(reply, 0L) },
+                                            onSubClick = onViewReplies,
                                             onReplyClick = { onReply(reply) },
                                             onLikeClick = { onLike(reply) },
                                             isLiked = isDynamicCommentLiked(reply),
@@ -581,8 +581,7 @@ fun DynamicCommentSheet(
                 }
                 }
                 androidx.compose.animation.AnimatedVisibility(
-                    visible = hostContent == DynamicCommentSheetHostContent.THREAD_DETAIL &&
-                        subReplyState.rootReply != null,
+                    visible = hostContent == DynamicCommentSheetHostContent.THREAD_DETAIL,
                     enter = threadSheetMotion.contentEnter,
                     exit = if (threadBackCompleted) androidx.compose.animation.ExitTransition.None else threadSheetMotion.contentExit,
                 ) {
@@ -638,6 +637,13 @@ fun DynamicCommentSheet(
                                 modifier = Modifier.fillMaxSize(),
                             )
                         }
+                    } else {
+                        com.android.purebilibili.feature.video.ui.components.SubReplyInitialContent(
+                            isLoading = subReplyState.isLoading,
+                            error = subReplyState.error,
+                            onRetry = onLoadMoreSubReplies,
+                            onDismiss = onCloseSubReply,
+                        )
                     }
                 }
                 }
@@ -825,7 +831,7 @@ fun LazyListScope.dynamicInlineCommentItems(
     comments: List<ReplyItem>,
     isLoading: Boolean,
     isLoadingMore: Boolean,
-    onViewReplies: (ReplyItem) -> Unit,
+    onViewReplies: (ReplyItem, Long) -> Unit,
     onReply: (ReplyItem) -> Unit = {},
     onLike: (ReplyItem) -> Unit = {},
     onHate: (ReplyItem) -> Unit = {},
@@ -872,8 +878,8 @@ fun LazyListScope.dynamicInlineCommentItems(
                 avatarListState = avatarListState,
                 item = reply,
                 upMid = dynamicAuthorMid,
-                onClick = { onViewReplies(reply) },
-                onSubClick = { root, _ -> onViewReplies(root) },
+                onClick = { onViewReplies(reply, 0L) },
+                onSubClick = onViewReplies,
                 onReplyClick = { onReply(reply) },
                 onLikeClick = { onLike(reply) },
                 isLiked = isDynamicCommentLiked(reply),

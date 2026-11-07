@@ -87,6 +87,7 @@ import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.constrainHeight
 import kotlin.math.roundToInt
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
@@ -507,6 +508,24 @@ fun RowScope.FloatingBottomBarItem(
     }
 }
 
+/** 隐藏采样可包含溢出徽标，外部仍以原槽位高度参与布局。 */
+internal fun Modifier.floatingDockCaptureOverflow(
+    contentHeight: Dp,
+    verticalOverflow: Dp,
+): Modifier = layout { measurable, constraints ->
+    val baseHeight = contentHeight.roundToPx()
+    val overflow = verticalOverflow.roundToPx().coerceAtLeast(0)
+    val captureHeight = baseHeight + overflow * 2
+    val placeable = measurable.measure(constraints.copy(
+        minHeight = captureHeight,
+        maxHeight = captureHeight,
+    ))
+    val height = constraints.constrainHeight(baseHeight)
+    layout(placeable.width, height) {
+        placeable.placeRelative(0, (height - captureHeight) / 2)
+    }
+}
+
 @Composable
 fun FloatingBottomBar(
     selectedIndex: () -> Int,
@@ -550,6 +569,9 @@ fun FloatingBottomBar(
     // Do not use the system night flag here: BiliPai supports an app-only dark theme.
     val isInDark = resolveBottomBarDarkTheme(AppSurfaceTokens.background())
     val isLiquidGlassMode = mode == FloatingBottomBarMode.LiquidGlass
+    val gravityGate = if (isLiquidGlassMode) {
+        com.android.purebilibili.core.ui.rememberDecorativeAnimationGate()
+    } else null
     val parentGlass = com.android.purebilibili.core.ui.blur.LocalAppGlassContainer.current
         .takeIf { isLiquidGlassMode && com.android.purebilibili.core.ui.LocalAppThemeConfig.current.liquidGlassEnabled }
     val materialBackdrop = if (parentGlass != null) parentGlass.backdrop else backdrop
@@ -565,6 +587,7 @@ fun FloatingBottomBar(
         liquidGlassTuning.readabilityMode == LiquidGlassReadabilityMode.ADAPTIVE
     val adaptiveReadabilityState = rememberLiquidGlassAdaptiveReadabilityState(
         enabled = adaptiveReadabilityEnabled,
+        samplingAllowed = enabled,
     )
     val resolvedContentColor = rememberLiquidGlassAdaptiveContentColor(
         stableColor = colors.contentColor,
@@ -953,7 +976,10 @@ fun FloatingBottomBar(
         // field keeps press bloom in sync without recreating the pointerInput owner.
         dampedDragAnimation.pressedScale = pressedScale
     }
-    LaunchedEffect(dampedDragAnimation, dragScrollState, density) {
+    // 玻璃拖拽的逐帧任务跟随可见性；原生菜单仍保留原有边缘滚动行为。
+    val dragEdgeScrollActive = !isLiquidGlassMode || (enabled && gravityGate?.active == true)
+    LaunchedEffect(dampedDragAnimation, dragScrollState, density, dragEdgeScrollActive) {
+        if (!dragEdgeScrollActive) return@LaunchedEffect
         val scroll = dragScrollState ?: return@LaunchedEffect
         snapshotFlow { dampedDragAnimation.isDragging }.collectLatest { dragging ->
             if (!dragging) return@collectLatest
@@ -1303,13 +1329,22 @@ fun FloatingBottomBar(
     }
     SideEffect { onDockTranslationProviderChanged?.invoke(dockDragTranslationY) }
 
-    val baseHighlight = if (isLiquidGlassMode) rememberBiliPaiGravityHighlight(extraDegrees = -45f) else null
+    val indicatorHighlightVisible = if (isLiquidGlassMode) {
+        remember(dampedDragAnimation) {
+            derivedStateOf { dampedDragAnimation.pressProgress > 0.001f }
+        }.value
+    } else false
+    val baseHighlight = if (isLiquidGlassMode) rememberBiliPaiGravityHighlight(
+        extraDegrees = -45f,
+        active = enabled && drawShell && parentGlass == null && materialBackdrop != null && gravityGate?.active == true,
+    ) else null
     val pillHighlight = if (isLiquidGlassMode) rememberBiliPaiGravityHighlight(
         extraDegrees = 90f,
         width = resolveDockPillHighlightWidthDp(
             indicatorWidthDp = fittedIndicatorWidth.value,
             indicatorHeightDp = fittedIndicatorHeight.value,
         ).dp,
+        active = enabled && materialBackdrop != null && indicatorHighlightVisible && gravityGate?.active == true,
     ) else null
 
     val combinedBackdrop = if (materialBackdrop != null && tabsBackdrop != null) {
@@ -1320,6 +1355,7 @@ fun FloatingBottomBar(
 
     Box(
         modifier = modifier
+            .then(gravityGate?.modifier ?: Modifier)
             .trackLiquidGlassAdaptiveReadability(
                 state = adaptiveReadabilityState,
                 enabled = adaptiveReadabilityEnabled,
@@ -1448,8 +1484,8 @@ fun FloatingBottomBar(
             } else {
                 Modifier
             }
-            // 原生背景与文字分层，让指示器处于背景之上、前景文字之下。
-            if (drawShell && (!isLiquidGlassMode || contentIndicatorWidthsPx.isNotEmpty())) {
+            // 背景与文字分层；玻璃材质只裁剪背景，前景徽标可越过外壳上沿。
+            if (drawShell) {
                 Box(
                     Modifier
                         .matchParentSize()
@@ -1493,7 +1529,6 @@ fun FloatingBottomBar(
                             clip = false
                         }
                     }
-                    .then(if (isLiquidGlassMode && contentIndicatorWidthsPx.isEmpty()) shellModifier else Modifier)
                     .drawWithContent {
                         val scroll = dragScrollState
                         val viewportWidth = dragScrollViewportWidthLatest.value()
@@ -1535,58 +1570,71 @@ fun FloatingBottomBar(
                 LocalFloatingBottomBarItemAlignmentOffset provides itemAlignmentOffsetProvider,
                 LocalFloatingBottomBarIndicatorStretchX provides indicatorStretchXProvider,
             ) {
-                Row(
+                // 背景材质的轮廓只裁剪背景，不裁剪越过图标上沿的提醒徽标。
+                // 扩大隐藏纹理的上下采样范围，但保持槽位高度、文字基线和命中区域不变。
+                val captureOverflow = 16.dp
+                Box(
                     Modifier
                         .clearAndSetSemantics {}
                         .graphicsLayer {
                             translationX = panelOffset
                             translationY = dockDragTranslationY()
-                            if (allowOverflow) {
-                                clip = false
-                            }
+                            clip = false
                         }
-                        // Record local, unshifted material; source coordinates carry the
-                        // same dock translation as the consuming capsule. Recording the
-                        // transform inside the texture offsets its top/bottom sampling.
+                        .floatingDockCaptureOverflow(capturedContentHeight, captureOverflow)
                         .then(tabsBackdropSource?.modifier ?: Modifier)
-                        .drawBackdrop(
-                            backdrop = materialBackdrop,
-                            shape = { indicatorShape },
-                            effects = {
-                                // 捕获层与可见子外壳使用相同材质，不能在隐藏捕获中再做一次折射。
-                                if (parentGlass == null) {
-                                    vibrancy(liquidGlassTuning.saturation)
-                                    blur(
-                                        liquidGlassTuning.backdropBlurRadius.dp.toPx(),
-                                        liquidGlassTuning.backdropBlurRadius.dp.toPx()
-                                    )
-                                    lens(
-                                        refractionHeight = shellRefractionHeightPx,
-                                        refractionAmount = shellRefractionAmountPx,
-                                        chromaticAberration =
-                                            liquidGlassTuning.shellChromaticAberrationAmount,
-                                    )
-                                }
-                            },
-                            onDrawSurface = {
-                                drawRect(containerColor)
-                                if (liquidGlassTuning.contentReadabilityScrimAlpha > 0f) {
-                                    drawRect(
-                                        readabilityScrimColor.copy(
-                                            alpha = liquidGlassTuning.contentReadabilityScrimAlpha
-                                        )
-                                    )
-                                }
-                            },
-                        )
-                        // 捕获按压与滑动高光，供指示器折射和上下缝隙色散采样。
-                        .then(interactiveHighlight?.modifier ?: Modifier)
+                        .padding(vertical = captureOverflow)
                         .height(capturedContentHeight)
-                        .align(Alignment.CenterStart)
-                        .padding(horizontal = horizontalPadding),
-                    verticalAlignment = Alignment.CenterVertically,
+                        .align(Alignment.CenterStart),
                 ) {
-                    content(this)
+                    Box(
+                        Modifier.matchParentSize()
+                            .drawBackdrop(
+                                backdrop = materialBackdrop,
+                                shape = { indicatorShape },
+                                effects = {
+                                    // 捕获层与可见子外壳使用相同材质，不能在隐藏捕获中再做一次折射。
+                                    if (parentGlass == null) {
+                                        // 先声明折射所需边距，避免模糊构建后再扩边导致整条效果重新求值。
+                                        if (top.yukonga.miuix.kmp.blur.isRuntimeShaderSupported() &&
+                                            shellRefractionHeightPx > 0f && shellRefractionAmountPx > 0f
+                                        ) {
+                                            padding = maxOf(padding, shellRefractionAmountPx)
+                                        }
+                                        vibrancy(liquidGlassTuning.saturation)
+                                        blur(
+                                            liquidGlassTuning.backdropBlurRadius.dp.toPx(),
+                                            liquidGlassTuning.backdropBlurRadius.dp.toPx()
+                                        )
+                                        lens(
+                                            refractionHeight = shellRefractionHeightPx,
+                                            refractionAmount = shellRefractionAmountPx,
+                                            chromaticAberration =
+                                                liquidGlassTuning.shellChromaticAberrationAmount,
+                                        )
+                                    }
+                                },
+                                onDrawSurface = {
+                                    drawRect(containerColor)
+                                    if (liquidGlassTuning.contentReadabilityScrimAlpha > 0f) {
+                                        drawRect(
+                                            readabilityScrimColor.copy(
+                                                alpha = liquidGlassTuning.contentReadabilityScrimAlpha
+                                            )
+                                        )
+                                    }
+                                },
+                            ),
+                    )
+                    Row(
+                        Modifier
+                            .fillMaxSize()
+                            .then(interactiveHighlight?.modifier ?: Modifier)
+                            .padding(horizontal = horizontalPadding),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        content(this)
+                    }
                 }
             }
         }
