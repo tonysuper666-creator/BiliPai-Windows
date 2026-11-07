@@ -10,6 +10,24 @@ import kotlin.test.assertTrue
 
 class PlayerPopupGeometryTest {
     @Test
+    fun staleAnchorAfterResizeKeepsMenuInsideCurrentSafeWindowInBothDirections() {
+        val oldAnchor = IntRect(850, 650, 900, 690)
+        for (direction in listOf(LayoutDirection.Ltr, LayoutDirection.Rtl)) {
+            for (safe in listOf(IntRect(0, 24, 960, 720), IntRect(12, 20, 220, 180), IntRect(0, 24, 960, 720))) {
+                val anchor = resolvePlayerPopupAnchorBounds(oldAnchor, safe)
+                val viewport = resolvePlayerPopupViewport(safe, 440, 4, 4, anchor, 4)
+                val size = IntSize(minOf(180, viewport.bounds.width), viewport.maxHeight)
+                val offset = resolvePlayerPopupOffset(
+                    viewport.bounds, size, PlayerListPopupPlacement.ANCHOR_END, anchor, direction, 4,
+                )
+                assertTrue(viewport.maxHeight > 0)
+                assertTrue(offset.x >= safe.left && offset.x + size.width <= safe.right)
+                assertTrue(offset.y >= safe.top && offset.y + size.height <= safe.bottom)
+            }
+        }
+    }
+
+    @Test
     fun requested440_isClampedToShortSafeWindowBeforeNativeMeasurement() {
         val viewport = resolvePlayerPopupViewport(
             safeWindowBounds = IntRect(30, 24, 710, 240),

@@ -8,11 +8,11 @@
 
 [简体中文](README.md) · [English](README_EN.md)
 
-<img src="https://img.shields.io/badge/Source-0.6.4-007AFF?style=flat-square" alt="Source 0.6.4" />
+<img src="https://img.shields.io/badge/Source-0.7.8%20%28551%29-007AFF?style=flat-square" alt="Source 0.7.8 (551)" />
 <img src="https://img.shields.io/badge/Android-8.0%2B-34C759?style=flat-square" alt="Android 8.0+" />
 <img src="https://img.shields.io/badge/License-GPLv3-FF3B30?style=flat-square" alt="GPLv3" />
 
-[Download](#download) · [Telegram channel](https://t.me/bilipai666) · [Telegram group](https://t.me/bilipai888/1)
+[Download](#download) · [Wiki](https://github.com/jay3-yy/BiliPai/wiki) · [Telegram channel](https://t.me/bilipai666) · [Telegram group](https://t.me/bilipai888/1)
 
 </div>
 
@@ -23,15 +23,16 @@ Built with Kotlin and Jetpack Compose, BiliPai supports videos, bangumi, live st
 | Feature | Details |
 | --- | --- |
 | Playback | DASH, HD quality, danmaku, gestures, speed controls, resume, background play and picture-in-picture |
-| Audio mode | Immersive and vinyl layouts, lyrics, queues, sleep timer and system media controls |
+| Audio mode | Immersive and vinyl layouts, lyrics, queues, sleep timer, system media controls and Android Auto |
+| Home screen widget | Current title, playback controls, audio resumption, and Watch later / Search shortcuts |
 | Subtitles and notes | Local subtitle import/export, styling and timing; private notes, timestamps and AI-summary drafts |
-| Bangumi and live | Following, episode selection, seek previews, live categories and danmaku |
+| Bangumi and live | Following, adaptive episode grids, large-screen panes and landscape layouts; live categories and danmaku |
 | Feeds and messages | Followed creators, comments, replies, image previews and direct messages |
 | Search and downloads | Video, creator and bangumi search; resumable downloads and local playback |
-| Appearance | Google Material 3, Miuix, optional Liquid Glass, dynamic colors and large-screen layouts |
+| Appearance | Google Material 3, Miuix, optional Liquid Glass with elastic motion, dynamic colors, regular home grids and large-screen layouts |
 | Extensions | Plugins, DLNA / Google Cast and WebDAV settings backup |
 
-Some quality tiers require login or account privileges. Appearance, playback, danmaku and background behavior are configurable in Settings.
+Some quality tiers require login or account privileges. Appearance, playback, danmaku and background behavior are configurable in Settings. See the [widget and Android Auto guide (Chinese)](docs/wiki/SYSTEM_MEDIA.md) for system media entry points.
 
 ## Preview
 
@@ -39,7 +40,7 @@ Some quality tiers require login or account privileges. Appearance, playback, da
 
 **Liquid Glass, throughout the app**
 
-Live-sampled liquid glass across top bars, docks, menus and player controls — refracting with content, springing on touch, switching back to native Google Material 3 / Miuix anytime. Screenshots show a few scenes only.
+Screenshots show Liquid Glass in a few parts of the app.
 
 <img src="docs/images/screenshot-glass-1.png" height="400" alt="BiliPai home" />
 <img src="docs/images/screenshot-glass-2.png" height="400" alt="BiliPai appearance settings" />
@@ -62,15 +63,25 @@ Get APKs and release notes from the [Telegram channel](https://t.me/bilipai666).
 
 ## Plugins
 
-The 12 built-in plugins cover sponsor skipping, ad filtering, Anime4K, danmaku, eye care, recommendations and casting. Import JSON / `.bp` rules by URL.
+Built-in plugins cover sponsor skipping, ad filtering, Anime4K, danmaku, eye care, recommendations and casting. Additional extension formats include:
 
-Review the source and declared permissions before importing third-party plugins. For plugin development, see [plugin-sdk](plugin-sdk).
+- JSON / `.bp` rules: import by URL for content filtering, danmaku processing and more.
+- `.bilipai.js` plugins: add content sources such as live streams, video catalogs and scraped web content.
+- `.bpskin` skin packs: import backgrounds, colors and selected motion assets without executing code.
+- `.bpplugin` Kotlin packages: package previews and capability authorization are supported; external Dex execution is not yet available.
+
+Enable **去广告增强** (ad filtering) in the plugin center and edit **视频标签屏蔽词** to block keywords in actual video tags across home recommendations, search results and related videos. Refresh the list after changing rules. With no tag keywords, no extra tag requests are made; failed or timed-out lookups keep videos whose tags could not be checked.
+
+Review the source and declared permissions before importing third-party plugins. See the [plugin development guide](docs/PLUGIN_DEVELOPMENT.md), [Kotlin plugin SDK](plugins/sdk/README.md) and [JS plugin examples](examples/plugins/README.md).
 
 ## Recent updates
 
-- Swipe up in portrait playback for fullscreen with dynamic ambient light; tap a danmaku to like, copy or report it.
-- New advanced live danmaku options for typography and spacing, with rich-text input and emoji in the editor.
-- Audio mode now remembers playback progress more reliably; the profile page adds coin/XP details and more privacy settings.
+- Ad filtering supports blocked video-tag keywords; video cards show a "竖屏" (vertical) badge by playback size; the dynamic page can hide its top uploader avatar bar.
+- Tablet embedded and fullscreen players share landscape danmaku styling; the player gains standalone loading and buffering indicators.
+- Returning to the story feed resumes unseen content; history is only written after real playback, and returning to details no longer sticks to the cover.
+- Comment translation handles Chinese reply prefixes and mixed-language text, while Chinese-dominant comments no longer show the translate action; sub-reply details keep scroll position and like states no longer revert.
+- Search input syncs one-way into the query, fixing cursors, selections and IME composition being reset by async writes.
+- Fullscreen-to-mini-player transitions release the orientation lock; watch-later cards gain a remove action and the Miuix floating dock uses frosted backgrounds in both materials.
 
 See [CHANGELOG.md](CHANGELOG.md) for details.
 
@@ -120,6 +131,6 @@ This is an unofficial client and is not affiliated with BiliBili. Content belong
 
 <div align="center">
 
-<sub>Source version 0.6.4 (518) · Updated 2026-10-27 · Made by [YangY](https://x.com/YangY_0x00)</sub>
+<sub>Source version 0.7.8 (551) · Updated 2026-11-05 · Made by [YangY](https://x.com/YangY_0x00)</sub>
 
 </div>

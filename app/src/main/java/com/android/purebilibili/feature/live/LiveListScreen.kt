@@ -28,6 +28,10 @@ import com.android.purebilibili.core.ui.components.AppFilledIconButton
 import com.android.purebilibili.core.ui.components.AppIconButtonDefaults
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.snapshotFlow
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import kotlinx.coroutines.flow.distinctUntilChanged
 import android.widget.Toast
 import com.android.purebilibili.core.ui.components.AppBadge
 import com.android.purebilibili.core.ui.components.AppIcon
@@ -397,7 +401,7 @@ class LiveListViewModel(application: Application) : AndroidViewModel(application
                     livingCount = if (!append) snapshot.totalCount else current.livingCount,
                     followError = if (!append) null else current.followError,
                     page = page,
-                    hasMore = snapshot.hasMore,
+                    hasMore = snapshot.hasMore && (!append || mapped.isEmpty() || mergedRooms.size > current.contentItems.size),
                     isLoading = false,
                     isLoadingMore = false,
                     // 空关注列表是正常内容状态，仍需保留顶部分类，方便切回推荐直播。
@@ -503,6 +507,7 @@ fun LiveListScreen(
     onAvatarClick: () -> Unit = {},
     /** 嵌入首页时共用首页顶栏和采样层，顶部避让通过列表内容内边距提供。 */
     embeddedInHome: Boolean = false,
+    isCurrentPage: Boolean = true,
     contentTopPadding: androidx.compose.ui.unit.Dp = AppSpacingTokens.None,
     scrollToTopRequestId: Int = 0,
     scrollToTopChannel: Channel<Unit>? = null,
@@ -537,6 +542,40 @@ fun LiveListScreen(
     val gridBottomPadding = LocalBottomBarContentPadding.current
     val liveGridState = rememberLazyGridState()
     val followRowState = androidx.compose.foundation.lazy.rememberLazyListState()
+    // 与动态列表共用底栏滚动增量，未激活的 Pager 页面不写入全局状态。
+    val navigationSettings by remember(context) {
+        com.android.purebilibili.core.store.SettingsManager.getAppNavigationSettings(context)
+    }.collectAsStateWithLifecycle(initialValue = com.android.purebilibili.core.store.AppNavigationSettings())
+    val chromeScrollOffset = com.android.purebilibili.feature.home.LocalHomeScrollOffset.current
+    val feedScrolling = com.android.purebilibili.feature.home.LocalHomeFeedScrollInProgress.current
+    val setBottomBarVisible = com.android.purebilibili.core.ui.LocalSetBottomBarVisible.current
+    val scrollWorkActive = isCurrentPage && com.android.purebilibili.core.ui.rememberVisualWorkActive()
+    val bottomBarScrollConnection = com.android.purebilibili.core.ui.rememberBottomBarScrollHideConnection(
+        chromeScrollOffset = chromeScrollOffset,
+        autoHideEnabled = com.android.purebilibili.core.ui.shouldAutoHideBottomBarOnScroll(navigationSettings.bottomBarVisibilityMode),
+        isAtTop = { liveGridState.firstVisibleItemIndex == 0 &&
+            liveGridState.firstVisibleItemScrollOffset < com.android.purebilibili.core.ui.BottomBarScrollHideTopRevealPx },
+        isActivePage = scrollWorkActive,
+        onVisibilityIntent = { intent ->
+            setBottomBarVisible(intent == com.android.purebilibili.core.ui.BottomBarScrollHideIntent.SHOW)
+        },
+    )
+    LaunchedEffect(scrollWorkActive, liveGridState) {
+        if (!scrollWorkActive) return@LaunchedEffect
+        snapshotFlow { liveGridState.isScrollInProgress }
+            .distinctUntilChanged().collect { feedScrolling.value = it }
+    }
+    DisposableEffect(scrollWorkActive) {
+        onDispose { if (scrollWorkActive) feedScrolling.value = false }
+    }
+    LaunchedEffect(scrollWorkActive) {
+        if (scrollWorkActive) {
+            chromeScrollOffset.floatValue = com.android.purebilibili.feature.home.policy.resolveBottomBarChromeScrollOffset(
+                liveGridState.firstVisibleItemIndex, liveGridState.firstVisibleItemScrollOffset,
+            )
+        }
+    }
+
     LaunchedEffect(state.refreshCompletion) {
         if (state.refreshCompletion > 0L) followRowState.scrollToItem(0)
     }
@@ -566,7 +605,7 @@ fun LiveListScreen(
         AdaptivePullToRefreshBox(
             isRefreshing = state.isLoading,
             onRefresh = viewModel::refresh,
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxSize().then(if (embeddedInHome) Modifier else Modifier.nestedScroll(bottomBarScrollConnection)),
             indicatorTopInset = topInset,
         ) {
             LiveHomeContent(
@@ -1008,21 +1047,12 @@ private fun LiveFollowAvatarRow(
     val palette = rememberLiveChromePalette()
     LazyRow(state = listState) {
         items(items, key = { it.roomId }) { item ->
-            val avatarTransition = rememberLiveCardContainerTransition(
-                roomId = item.roomId,
-                title = item.title,
-                hostName = item.uname,
-                color = palette.surface,
-                cornerRadius = ((metrics.followAvatarSizeDp + 4) / 2f).dp,
-                onClick = { onLiveClick(item.roomId, item.title, item.uname) },
-                includeAvatarCompanions = true,
-            )
             Column(
                 modifier = Modifier
                     .width(metrics.followItemExtentDp.dp)
                     .liveSecondaryClick { if (item.uid > 0) onUserClick(item.uid) }
                     .combinedClickable(
-                        onClick = avatarTransition.onClick,
+                        onClick = { onLiveClick(item.roomId, item.title, item.uname) },
                         onLongClick = { if (item.uid > 0) onUserClick(item.uid) },
                     ),
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -1031,7 +1061,6 @@ private fun LiveFollowAvatarRow(
                     Box(
                         modifier = Modifier
                             .size((metrics.followAvatarSizeDp + 4).dp)
-                            .then(avatarTransition.modifier)
                             .then(if (item.liveStatus == 1) Modifier.border(1.5.dp, palette.accentStrong, CircleShape) else Modifier)
                             .padding(2.dp)
                     ) {
@@ -1050,7 +1079,6 @@ private fun LiveFollowAvatarRow(
                             modifier = Modifier
                                 .align(Alignment.BottomEnd)
                                 .size(22.dp)
-                                .then(avatarTransition.badgeModifier)
                                 .background(palette.accentStrong, CircleShape)
                                 .border(1.5.dp, palette.backgroundTop, CircleShape)
                                 .padding(5.dp),
@@ -1073,7 +1101,6 @@ private fun LiveFollowAvatarRow(
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     textAlign = TextAlign.Center,
-                    modifier = avatarTransition.companionModifier,
                 )
             }
         }
@@ -1246,11 +1273,12 @@ internal fun LiveHomeLoadMoreFooter(
     contentCount: Int,
     hasMore: Boolean,
     error: String?,
+    autoLoad: Boolean = true,
     onLoadMore: () -> Unit,
 ) {
-    // 列表末项进入可见区域时自动请求下一页。
-    LaunchedEffect(contentCount, isLoadingMore, hasMore, error) {
-        if (hasMore && !isLoadingMore && error == null) {
+    // 自行观察视口的列表关闭 autoLoad，避免预组合页脚时提前触发请求。
+    LaunchedEffect(contentCount, isLoadingMore, hasMore, error, autoLoad) {
+        if (autoLoad && hasMore && !isLoadingMore && error == null) {
             onLoadMore()
         }
     }
@@ -1265,8 +1293,9 @@ internal fun LiveHomeLoadMoreFooter(
                 AppText("$error · 重试")
             }
         } else {
+            // 空闲时保留单行占位，加载状态切换不改变列表底部高度。
             AppText(
-                text = if (isLoadingMore) "加载更多…" else "",
+                text = if (isLoadingMore) "加载更多…" else " ",
                 style = MaterialTheme.typography.bodySmall,
                 color = AppContentColors.secondaryText(),
             )

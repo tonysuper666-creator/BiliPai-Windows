@@ -613,26 +613,20 @@ internal fun shouldUseVideoDetailRootTransitionProgress(
 /**
  * 详情正文是否挂载。
  *
- * 进场（Miuix 飞行 entry）时正文的可见度已由父层 `graphicsLayer` 按 morph 进度驱动
- * （OPENING 段 alpha 走 `SECONDARY_CONTENT_ENTER_START..END`，并叠加自上而下的
- * `clipRect` 揭示），因此**不必**等整个 morph settle 才挂载：
- *
- * 数据一旦到达就应挂载正文，否则正文会被 `AnimatedVisibility` 整块隐藏，
- * 屏幕上只剩近白的容器背景 —— 这就是「进详情页时一片白遮罩」。
- * 挂载后由父层 alpha/clip 控制可见度，表现为随 morph 进度渐进揭示，而不是硬切。
- *
- * 退场（[isLeaving]）语义保持不变：仍要求 [isTransitionFinished]，
- * 否则会把「已让位」的正文重新算成可见。
+ * 首次入场显式延后重正文时，以静态骨架承接数据先到、导航未落位的区间，
+ * 不在 morph 中触发简介列表的子组合与测量。已加载的返回预览不重新关闭门控。
+ * 未启用首次挂载门控的入口仍允许根过渡控制提前挂载正文的 alpha。
+ * 退场仍要求入场已完成，避免已让位的正文再次出现。
  */
 internal fun shouldShowVideoDetailContent(
     isTransitionFinished: Boolean,
     isLeaving: Boolean,
     rootTransitionOwnsContentAlpha: Boolean,
     keepContentVisibleAfterBackPreview: Boolean = false,
+    deferFreshEntryContent: Boolean = false,
 ): Boolean {
     if (keepContentVisibleAfterBackPreview && !isLeaving) return true
-    // 进场：根过渡已接管 alpha，正文随 morph 提前挂载（可见度由父层 alpha/clip 决定）。
-    if (!isLeaving && rootTransitionOwnsContentAlpha) return true
+    if (!isLeaving && rootTransitionOwnsContentAlpha && !deferFreshEntryContent) return true
     return isTransitionFinished && (!isLeaving || rootTransitionOwnsContentAlpha)
 }
 

@@ -70,7 +70,7 @@ def body_of(relative, text):
     return text
 
 
-def without_cover_edit(relative, text):
+def without_cover_edit(relative, text, output):
     """lst-episode-selector-collection appends the v0.4.6 cover argument of the player overlay's part selector call as the
     LAST layer of that output, after the follow confirmation, so the receipt of this module describes the text without it.
     Peel exactly that one edit (and prove it is there once) before the receipt is checked; every other output is unchanged.
@@ -78,6 +78,8 @@ def without_cover_edit(relative, text):
     so they are peeled first, each proven present exactly once."""
     if relative != follow.OVERLAY:
         return text
+    controls = load('extract-upstream-video-player-full-controls.py', 'engagement_terminal_controls')
+    text = controls.restore_buffering_stage(text, output, relative)
     import v046_control_center_motion as control_center
     for hunk in reversed(control_center.OVERLAY_HUNKS):
         assert text.count(hunk['after']) == 1
@@ -238,7 +240,7 @@ class GeneratedOutputTests(unittest.TestCase):
                 continue
             with self.subTest(output=relative):
                 base = self.root / self.roots[relative]
-                generated = without_cover_edit(relative, body_of(relative, text_of(base / relative)))
+                generated = without_cover_edit(relative, body_of(relative, text_of(base / relative)), base)
                 proof = json.loads((base / follow.PROOF_DIRECTORY / (Path(relative).name + '.json')).read_bytes())
                 self.assertEqual(len(sites), generated.count(follow.FUNCTION + '('))
                 self.assertEqual(1, generated.count(follow.IMPORT_LINE))
@@ -401,7 +403,7 @@ class GeneratedOutputTests(unittest.TestCase):
                 continue
             base = self.root / self.roots[relative]
             proof = json.loads((base / follow.PROOF_DIRECTORY / (Path(relative).name + '.json')).read_bytes())
-            original = peel(without_cover_edit(relative, body_of(relative, text_of(base / relative))), proof)
+            original = peel(without_cover_edit(relative, body_of(relative, text_of(base / relative)), base), proof)
             for site in sites:
                 with self.subTest(output=relative, site=site['label']):
                     moved = original.replace(site['before'], site['before'][:-3] + 'Z' + site['before'][-2:], 1)
@@ -411,7 +413,7 @@ class GeneratedOutputTests(unittest.TestCase):
                         follow.apply_and_record(REPO, relative, original + site['before'], out)
             with self.subTest(output=relative, case='applied'):
                 with self.assertRaises(ValueError):
-                    follow.apply_and_record(REPO, relative, without_cover_edit(relative, body_of(relative, text_of(base / relative))), out)
+                    follow.apply_and_record(REPO, relative, without_cover_edit(relative, body_of(relative, text_of(base / relative)), base), out)
             self.assertEqual(original, follow.apply_and_record(REPO, relative + '.other', original, out))
         self.assertFalse(out.exists())
 

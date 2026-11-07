@@ -69,18 +69,26 @@ import com.android.purebilibili.feature.home.components.BottomBarLiquidSegmented
 import com.android.purebilibili.core.ui.common.copyPlainTextToClipboard
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlin.coroutines.resume
+import com.android.purebilibili.core.ui.components.AppGlassMenu
+import com.android.purebilibili.core.ui.components.AppGlassMenuSource
+import com.android.purebilibili.core.ui.components.LocalAppGlassPanelDismissAction
+import com.android.purebilibili.core.ui.components.appGlassMenuAvailable
 
 @Composable
 internal fun VideoShareSheetHost(
     payload: VideoSharePayload?,
     onDismiss: () -> Unit,
     modifier: Modifier = Modifier,
+    glassSource: AppGlassMenuSource? = null,
 ) {
     payload?.let { sharePayload ->
         VideoShareSheet(
             payload = sharePayload,
             onDismiss = onDismiss,
             modifier = modifier,
+            glassSource = glassSource,
         )
     }
 }
@@ -90,7 +98,8 @@ internal fun VideoShareSheetHost(
 internal fun VideoShareSheet(
     payload: VideoSharePayload,
     onDismiss: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    glassSource: AppGlassMenuSource? = null,
 ) {
     val sourcePayload = payload
     var preciseShare by remember(sourcePayload.bvid, sourcePayload.page) { mutableStateOf(false) }
@@ -202,17 +211,24 @@ internal fun VideoShareSheet(
         return
     }
 
-    AppModalBottomSheet(
-        onDismissRequest = { if (!switchingSheet && sharingTarget == null) onDismiss() },
-        modifier = modifier,
-        presentationOverride = videoSharePresentation(isLandscape),
-        sheetState = sheetState,
-        dragHandle = null
-    ) {
+    // 锚点形变仅用于玻璃路径；原生底部面板与横屏侧栏保留原有尺寸和行为。
+    val anchoredGlass = glassSource?.isAvailable == true && appGlassMenuAvailable()
+    val panelScrollState = rememberScrollState()
+    val shareContent: @Composable () -> Unit = {
+        val finishPanel = LocalAppGlassPanelDismissAction.current.takeIf { anchoredGlass }
+        suspend fun hideSharePanel() {
+            if (finishPanel == null) {
+                hideVideoShareSheet(sheetState)
+            } else {
+                suspendCancellableCoroutine<Unit> { continuation ->
+                    finishPanel { if (continuation.isActive) continuation.resume(Unit) }
+                }
+            }
+        }
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .then(if (isLandscape) Modifier.fillMaxHeight() else Modifier.heightIn(
+                .then(if (isLandscape && !anchoredGlass) Modifier.fillMaxHeight() else Modifier.heightIn(
                     max = (LocalConfiguration.current.screenHeightDp * 0.9f).dp,
                 ))
         ) {
@@ -228,7 +244,10 @@ internal fun VideoShareSheet(
                         modifier = Modifier.weight(1f),
                     )
                     com.android.purebilibili.core.ui.components.AppTextButton(
-                        onClick = onDismiss,
+                        onClick = {
+                            if (anchoredGlass) shareScope.launch { hideSharePanel(); onDismiss() }
+                            else onDismiss()
+                        },
                         enabled = !switchingSheet && sharingTarget == null,
                     ) { AppText("关闭") }
                 }
@@ -242,9 +261,9 @@ internal fun VideoShareSheet(
             }
             Column(
                 Modifier
-                    .weight(1f, fill = isLandscape)
-                    .verticalScroll(rememberScrollState())
-                    .then(if (isLandscape) Modifier.navigationBarsPadding() else Modifier)
+                    .weight(1f, fill = isLandscape && !anchoredGlass)
+                    .verticalScroll(panelScrollState)
+                    .then(if (isLandscape && !anchoredGlass) Modifier.navigationBarsPadding() else Modifier)
             ) {
                 val segmentModifier = Modifier.padding(horizontal = 20.dp).fillMaxWidth()
                 if (LocalAppThemeConfig.current.liquidGlassEnabled) {
@@ -292,7 +311,7 @@ internal fun VideoShareSheet(
                                         }
                                         switchingSheet = true
                                         shareScope.launch {
-                                            hideVideoShareSheet(sheetState)
+                                            hideSharePanel()
                                             showDynamicComposer = true
                                         }
                                     }
@@ -300,7 +319,7 @@ internal fun VideoShareSheet(
                                         if (sharingTarget != null) return@VideoShareSheetItemView
                                         switchingSheet = true
                                         shareScope.launch {
-                                            hideVideoShareSheet(sheetState)
+                                            hideSharePanel()
                                             showFollowingPicker = true
                                         }
                                     }
@@ -317,7 +336,7 @@ internal fun VideoShareSheet(
                                                     style = shareStyle,
                                                     progressMessage = "正在生成分享卡片",
                                                 )
-                                                hideVideoShareSheet(sheetState)
+                                                hideSharePanel()
                                                 context.startTargetedVideoShare(
                                                     payload = effectivePayload,
                                                     packageName = packageName,
@@ -335,7 +354,7 @@ internal fun VideoShareSheet(
                                         VideoShareFeedbackEvents.prepared(payload.bvid)
                                         Toast.makeText(context, "已复制链接", Toast.LENGTH_SHORT).show()
                                         shareScope.launch {
-                                            hideVideoShareSheet(sheetState)
+                                            hideSharePanel()
                                             onDismiss()
                                         }
                                     }
@@ -351,7 +370,7 @@ internal fun VideoShareSheet(
                                                     style = shareStyle,
                                                     progressMessage = "正在生成分享卡片",
                                                 )
-                                                hideVideoShareSheet(sheetState)
+                                                hideSharePanel()
                                                 if (isLandscape) {
                                                     moreShareMedia = shareMedia
                                                     showMoreTargets = true
@@ -380,11 +399,15 @@ internal fun VideoShareSheet(
                     }
                 }
                 com.android.purebilibili.core.ui.components.AppTextButton(onClick = {
-                    try {
-                        context.startActivity(Intent(Intent.ACTION_VIEW, android.net.Uri.parse(effectivePayload.url)))
-                        onDismiss()
-                    } catch (_: ActivityNotFoundException) {
-                        Toast.makeText(context, "没有可打开此链接的应用", Toast.LENGTH_SHORT).show()
+                    shareScope.launch {
+                        if (anchoredGlass) hideSharePanel()
+                        try {
+                            context.startActivity(Intent(Intent.ACTION_VIEW, android.net.Uri.parse(effectivePayload.url)))
+                            onDismiss()
+                        } catch (_: ActivityNotFoundException) {
+                            Toast.makeText(context, "没有可打开此链接的应用", Toast.LENGTH_SHORT).show()
+                            if (anchoredGlass) onDismiss()
+                        }
                     }
                 }) { AppText("其他应用打开") }
             }
@@ -393,11 +416,11 @@ internal fun VideoShareSheet(
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .navigationBarsPadding()
+                        .then(if (anchoredGlass) Modifier else Modifier.navigationBarsPadding())
                         .height(56.dp)
                         .clickable(enabled = !switchingSheet && sharingTarget == null) {
                             shareScope.launch {
-                                hideVideoShareSheet(sheetState)
+                                hideSharePanel()
                                 onDismiss()
                             }
                         },
@@ -412,6 +435,25 @@ internal fun VideoShareSheet(
             }
         }
     }
+    if (anchoredGlass && AppGlassMenu(
+            expanded = true,
+            onDismissRequest = { if (!switchingSheet && sharingTarget == null) onDismiss() },
+            modifier = modifier,
+            source = glassSource,
+            minWidth = 280.dp,
+            maxWidth = 360.dp,
+            maxHeight = (LocalConfiguration.current.screenHeightDp * 0.9f).dp,
+            scrollState = panelScrollState,
+            interactiveContent = true,
+            content = shareContent,
+        )) return
+    AppModalBottomSheet(
+        onDismissRequest = { if (!switchingSheet && sharingTarget == null) onDismiss() },
+        modifier = modifier,
+        presentationOverride = videoSharePresentation(isLandscape),
+        sheetState = sheetState,
+        dragHandle = null,
+    ) { shareContent() }
 }
 
 @OptIn(ExperimentalLayoutApi::class)

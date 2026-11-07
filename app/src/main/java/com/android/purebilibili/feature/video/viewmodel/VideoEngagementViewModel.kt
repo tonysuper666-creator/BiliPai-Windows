@@ -122,6 +122,10 @@ data class VideoEngagementUiState(
 
 sealed interface VideoEngagementEvent {
     data class Message(val text: String) : VideoEngagementEvent
+    data class CoinSucceeded(
+        val subject: VideoSubjectSnapshot,
+        val accountSession: Any,
+    ) : VideoEngagementEvent
     data class OpenFollowGroups(val mid: Long) : VideoEngagementEvent
     data class LoadVideo(val bvid: String) : VideoEngagementEvent
     data object InvalidateFavoriteFolders : VideoEngagementEvent
@@ -307,18 +311,25 @@ class VideoEngagementViewModel(
             current.copy(
                 isLoggedIn = seed.isLoggedIn,
                 isVip = seed.isVip,
-                isFollowing = if (VideoEngagementField.FOLLOWING in locallyModifiedFields) current.isFollowing else seed.isFollowing,
-                isFavorited = if (VideoEngagementField.FAVORITE in locallyModifiedFields) current.isFavorited else seed.isFavorited,
+                isFollowing = if (VideoEngagementField.FOLLOWING in locallyModifiedFields ||
+                    (current.followStatusKnown && !seed.followStatusKnown)) current.isFollowing else seed.isFollowing,
+                isFavorited = if (VideoEngagementField.FAVORITE in locallyModifiedFields ||
+                    (current.relationshipStatusKnown && !seed.relationshipStatusKnown)) current.isFavorited else seed.isFavorited,
                 favoriteCount = if (VideoEngagementField.FAVORITE in locallyModifiedFields) current.favoriteCount else seed.favoriteCount,
-                isLiked = if (VideoEngagementField.LIKE in locallyModifiedFields) current.isLiked else seed.isLiked,
-                likeStatusKnown = if (VideoEngagementField.LIKE in locallyModifiedFields) current.likeStatusKnown else seed.likeStatusKnown,
-                followStatusKnown = if (VideoEngagementField.FOLLOWING in locallyModifiedFields) current.followStatusKnown else seed.followStatusKnown,
-                isDisliked = if (VideoEngagementField.DISLIKE in locallyModifiedFields) current.isDisliked else seed.isDisliked,
+                isLiked = if (VideoEngagementField.LIKE in locallyModifiedFields ||
+                    (current.likeStatusKnown && !seed.likeStatusKnown)) current.isLiked else seed.isLiked,
+                likeStatusKnown = current.likeStatusKnown || seed.likeStatusKnown,
+                followStatusKnown = current.followStatusKnown || seed.followStatusKnown,
+                isDisliked = if (VideoEngagementField.DISLIKE in locallyModifiedFields ||
+                    (current.relationshipStatusKnown && !seed.relationshipStatusKnown)) current.isDisliked else seed.isDisliked,
                 relationshipStatusKnown = current.relationshipStatusKnown || seed.relationshipStatusKnown,
                 likeCount = if (VideoEngagementField.LIKE in locallyModifiedFields) current.likeCount else seed.likeCount,
-                coinCount = if (VideoEngagementField.COIN in locallyModifiedFields) current.coinCount else seed.coinCount,
+                coinCount = if (VideoEngagementField.COIN in locallyModifiedFields ||
+                    (current.relationshipStatusKnown && !seed.relationshipStatusKnown)) current.coinCount else seed.coinCount,
+                isInWatchLater = if (VideoEngagementField.WATCH_LATER in locallyModifiedFields) current.isInWatchLater else seed.isInWatchLater,
                 isRepost = seed.isRepost,
-                followingMids = if (VideoEngagementField.FOLLOWING_MIDS in locallyModifiedFields) current.followingMids else seed.followingMids
+                followingMids = if (VideoEngagementField.FOLLOWING_MIDS in locallyModifiedFields ||
+                    (current.followStatusKnown && !seed.followStatusKnown)) current.followingMids else seed.followingMids
             )
         }
     }
@@ -492,7 +503,6 @@ class VideoEngagementViewModel(
                                     }
                                 )
                             }
-                            emitMessage(if (following) "关注成功" else "已取消关注")
                             if (following) _events.send(VideoEngagementEvent.OpenFollowGroups(targetMid))
                         }
                         .onFailure {
@@ -707,6 +717,7 @@ class VideoEngagementViewModel(
                             isDisliked = if (alsoLike) false else current.isDisliked
                         )
                     }
+                    _events.trySend(VideoEngagementEvent.CoinSucceeded(subject, state.accountSession))
                     val easterEggEnabled = appContext?.let(SettingsManager::isEasterEggEnabledSync) == true
                     emitMessage(if (easterEggEnabled) EasterEggs.getCoinMessage() else "投币成功")
                 }

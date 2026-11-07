@@ -31,6 +31,39 @@ class PageAwareAsyncImageTest {
     @get:Rule val composeRule = createComposeRule()
 
     @Test
+    fun decodedHomeBitmapSurvivesTransitionPauseWithoutRestartingRequest() {
+        val allowed = mutableStateOf(true)
+        val image = mutableStateOf(solidBitmap(android.graphics.Color.RED))
+        val successes = AtomicInteger()
+        composeRule.setContent {
+            CompositionLocalProvider(LocalHomeCardCoverLoadingAllowed provides allowed.value) {
+                PageAwareAsyncImage(
+                    model = image.value,
+                    loadingAllowed = allowed.value,
+                    contentDescription = null,
+                    modifier = Modifier.size(64.dp).background(Color.Gray).testTag("page-image"),
+                    onSuccess = { successes.incrementAndGet() },
+                )
+            }
+        }
+        composeRule.waitUntil(5_000) { successes.get() == 1 }
+        for (loadAllowed in listOf(false, true, false, true, false)) {
+            composeRule.runOnIdle { allowed.value = loadAllowed }
+            composeRule.waitForIdle()
+            assertPixel(Color.Red)
+            assertEquals("Returning home must reuse the loaded node", 1, successes.get())
+        }
+        // 暂停中换成另一张图片，既不能借用旧像素，也不能因保留节点而发出新请求。
+        composeRule.runOnIdle { image.value = solidBitmap(android.graphics.Color.BLUE) }
+        composeRule.waitForIdle()
+        assertPixel(Color.Gray)
+        assertEquals(1, successes.get())
+        composeRule.runOnIdle { allowed.value = true }
+        composeRule.waitUntil(5_000) { successes.get() == 2 }
+        assertPixel(Color.Blue)
+    }
+
+    @Test
     fun homeImageHasNoFadeAndDoesNotRestartWhenLoadWindowChanges() {
         val loadWindow = mutableStateOf(true)
         val successes = AtomicInteger()

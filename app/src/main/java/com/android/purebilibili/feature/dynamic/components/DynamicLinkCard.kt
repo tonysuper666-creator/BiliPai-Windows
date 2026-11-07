@@ -57,15 +57,15 @@ internal fun DynamicLinkCard(
     matchUi: DynamicMatchUi? = null,
     reserveSubmitting: Boolean = false,
     onReserveAction: (() -> Unit)? = null,
+    clickEnabled: Boolean = card.jumpUrl.isNotBlank() || resolveDynamicLinkCardVoteId(card) != null,
     onClick: () -> Unit = {},
 ) {
-    val enabled = card.jumpUrl.isNotBlank() || resolveDynamicLinkCardVoteId(card) != null
     Column(modifier = modifier) {
         AppSurface(
             modifier = Modifier
                 .fillMaxWidth()
                 .clip(AppShapes.container(ContainerLevel.Card))
-                .appActionClickable(enabled = enabled, onClick = onClick),
+                .then(if (clickEnabled) Modifier.appActionClickable(onClick = onClick) else Modifier),
             color = MaterialTheme.colorScheme.surfaceContainer,
             tonalElevation = AppSpacingTokens.None,
             shape = AppShapes.container(ContainerLevel.Card)
@@ -97,9 +97,9 @@ internal fun DynamicLinkCard(
                         maxLines = 2,
                         overflow = TextOverflow.Ellipsis
                     )
-                    if (card.description.isNotBlank()) {
+                    resolveDynamicLinkCardDescriptions(card).forEach { description ->
                         AppText(
-                            text = card.description,
+                            text = description,
                             style = MaterialTheme.typography.bodySmall,
                             color = AppContentColors.secondaryText(),
                             maxLines = 2,

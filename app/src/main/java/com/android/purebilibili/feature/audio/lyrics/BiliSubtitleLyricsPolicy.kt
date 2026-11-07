@@ -85,7 +85,7 @@ internal object BiliSubtitleLyricsPolicy {
     }
 
     /**
-     * 带质量评估的取舍：两边都有时，用两条时间轴的对齐度判断搜索歌词是否可信。
+     * 带质量评估的取舍：手动选择保持原轴；自动歌词同时检查内容与时间的一一对应。
      * 搜索歌词若整体漂移大或行覆盖低（常见于串歌、Live 版、时长不符），
      * 则回退到与播放时间轴天然一致的 B 站字幕，避免高亮错位。
      */
@@ -94,6 +94,7 @@ internal object BiliSubtitleLyricsPolicy {
         subtitleLyrics: LyricDocument?
     ): LyricDocument? {
         val music = musicLyrics?.takeIf { it.lines.isNotEmpty() } ?: return resolveEffectiveLyrics(null, subtitleLyrics)
+        if (music.manuallySelected || music.source == LyricSource.MANUAL) return music
         val subtitle = subtitleLyrics?.takeIf { it.lines.isNotEmpty() }
             ?: return resolveEffectiveLyrics(music, null)
 
@@ -132,18 +133,25 @@ internal object BiliSubtitleLyricsPolicy {
         reference: LyricDocument,
         candidate: LyricDocument
     ): Double {
-        val referenceStarts = reference.lines.map { it.startTimeMs }.sorted()
-        if (referenceStarts.isEmpty() || candidate.lines.isEmpty()) return 0.0
-        val candidateStarts = candidate.lines.map { it.startTimeMs }.sorted()
+        if (reference.lines.isEmpty() || candidate.lines.isEmpty()) return 0.0
         val toleranceMs = 1_500L
         val offsets = mutableListOf<Long>()
-        referenceStarts.forEach { start ->
-            val nearest = candidateStarts.minByOrNull { kotlin.math.abs(it - start) } ?: return@forEach
-            val offset = nearest - start
-            if (kotlin.math.abs(offset) <= toleranceMs) offsets += offset
+        val usedCandidateIndices = mutableSetOf<Int>()
+        reference.lines.forEach { line ->
+            val nearest = candidate.lines.indices
+                .filter { index ->
+                    index !in usedCandidateIndices &&
+                        kotlin.math.abs(candidate.lines[index].startTimeMs - line.startTimeMs) <= toleranceMs &&
+                        lyricLinesMatch(line.text, candidate.lines[index].text)
+                }
+                .minByOrNull { kotlin.math.abs(candidate.lines[it].startTimeMs - line.startTimeMs) }
+                ?: return@forEach
+            offsets += candidate.lines[nearest].startTimeMs - line.startTimeMs
+            usedCandidateIndices += nearest
         }
         if (offsets.isEmpty()) return 0.0
-        val coverage = offsets.size.toDouble() / referenceStarts.size.toDouble()
+        val coverage = offsets.size.toDouble() / maxOf(reference.lines.size, candidate.lines.size).toDouble()
+        if (coverage < 0.5) return 0.0
         // 覆盖率为主（行是否对得上），紧密度为辅（整体漂移是否小）
         val compactness = 1.0 - (
             offsets.map { kotlin.math.abs(it) }.average() / toleranceMs.toDouble()

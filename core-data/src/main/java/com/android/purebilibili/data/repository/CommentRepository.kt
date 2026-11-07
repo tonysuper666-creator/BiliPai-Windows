@@ -597,11 +597,11 @@ object CommentRepository {
             android.util.Log.e("CommentRepo", " getComments exception: oid=$oid, type=$type, ${e.message}", e)
             Result.failure(e)
         }
-    }
+    }.map { filterGoodsRepliesIfEnabled(it) }
 
     /**
-     * 手机主评论沿用 PiliPlus 的 CursorReq。分页来源随缓存保存；中途失败保留原游标重试，
-     * 不将 gRPC 游标交给 REST。旧共享入口及 TV 的默认行为保持不变。
+     * 手机主评论通过独立排序字段与服务端 offset 分页。分页来源随缓存保存，
+     * 中途失败保留原 offset 重试，不将 gRPC 游标交给 REST。
      */
     suspend fun getMobileCommentsForSubject(
         oid: Long,
@@ -611,6 +611,19 @@ object CommentRepository {
         mode: Int = 3,
         continuation: CommentMainListContinuation? = null,
         fallbackOnMissingLocation: Boolean = false,
+        expectedCount: Int = 0,
+    ): Result<ReplyData> = recoverEmptyCommentFirstPage(page, expectedCount) {
+        readMobileCommentsForSubject(oid, type, page, ps, mode, continuation, fallbackOnMissingLocation)
+    }.map { filterGoodsRepliesIfEnabled(it) }
+
+    private suspend fun readMobileCommentsForSubject(
+        oid: Long,
+        type: Int,
+        page: Int,
+        ps: Int,
+        mode: Int,
+        continuation: CommentMainListContinuation?,
+        fallbackOnMissingLocation: Boolean,
     ): Result<ReplyData> = withContext(Dispatchers.IO) {
         try {
             require(page <= 1 || continuation != null) { "评论缺少分页游标，请刷新后重试" }
@@ -620,13 +633,12 @@ object CommentRepository {
                 (page <= 1 && supportsGrpc && !commentReadRouteMemo.shouldSkipGrpcAttempt())
             if (useGrpc) {
                 val result = CommentGrpcRepository.getMainList(
-                    oid = oid, type = type, mode = mode, nextOffset = null,
-                    useCursorPaging = true, cursorNext = continuation?.next,
+                    oid = oid, type = type, mode = mode, nextOffset = continuation?.offset,
                 )
                 currentCoroutineContext().ensureActive()
                 val data = result.getOrNull()
                 val missingCursor = data != null && !data.cursor.isEnd &&
-                    (data.mainListContinuation?.next ?: 0L) <= 0L
+                    data.mainListContinuation?.offset.isNullOrBlank()
                 val needsFirstPageFallback = page <= 1 && (missingCursor ||
                     shouldFallbackHotCommentReadOnEmptySuccess(page, mode, 0, data) ||
                     shouldFallbackCommentReadOnEmptyRenderableSuccess(0, data))
@@ -759,7 +771,7 @@ object CommentRepository {
         } catch (e: Exception) {
             Result.failure(e)
         }
-    }
+    }.map { filterGoodsRepliesIfEnabled(it) }
 
     /** 手机详情校验分页完整性；TV 沿用原入口及默认行为。 */
     suspend fun getMobileSortedSubCommentsForSubject(
@@ -785,7 +797,7 @@ object CommentRepository {
         } catch (e: Exception) {
             Result.failure(e)
         }
-    }
+    }.map { filterGoodsRepliesIfEnabled(it) }
 
     private suspend fun supplementSortedSubReplyLocations(
         oid: Long,
@@ -925,7 +937,7 @@ object CommentRepository {
             android.util.Log.e("CommentRepo", " getSubComments exception: oid=$oid, type=$type, ${e.message}", e)
             Result.failure(e)
         }
-    }
+    }.map { filterGoodsRepliesIfEnabled(it) }
 
     suspend fun getDialogCommentsForSubject(
         oid: Long,
@@ -958,7 +970,7 @@ object CommentRepository {
         } catch (e: Exception) {
             Result.failure(e)
         }
-    }
+    }.map { filterGoodsRepliesIfEnabled(it) }
 
     /**
      * 获取表情包映射

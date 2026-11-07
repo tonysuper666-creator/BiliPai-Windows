@@ -50,6 +50,27 @@ class FeedGridColumnPreferencePolicyTest {
     }
 
     @Test
+    fun resizingTemporarilyLimitsBothDefaultAndCustomColumnsWithoutChangingPreference() {
+        val widths = listOf(412, 340, 220, 340, 412)
+        for (customized in listOf(false, true)) {
+            val columns = widths.map { width ->
+                resolveFeedGridColumnPreference(
+                    customizationEnabled = customized,
+                    defaultColumns = if (customized) 4 else 2,
+                    pageColumns = if (customized) 4 else null,
+                    bounds = resolveHomeFeedPinchColumnBounds(WindowWidthSizeClass.Compact, width),
+                )
+            }
+            assertEquals(if (customized) listOf(4, 2, 1, 2, 4) else listOf(2, 2, 1, 2, 2), columns)
+        }
+    }
+
+    @Test
+    fun narrowWindowMaximumOverridesMinimumWithoutInvalidClampRange() {
+        assertEquals(1, resolveFeedGridColumnPreference(true, 4, null, 1..1, minimumColumns = 2))
+    }
+
+    @Test
     fun singleColumnPresentationIgnoresEarlierGridGesture() {
         assertEquals(1, resolveFeedGridColumnPreference(false, 1, 4, 1..2))
         assertEquals(2, resolveFeedGridColumnPreference(false, 2, 4, 1..2))

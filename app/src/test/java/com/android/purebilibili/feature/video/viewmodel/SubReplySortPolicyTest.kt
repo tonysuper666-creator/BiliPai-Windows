@@ -66,7 +66,7 @@ class SubReplySortPolicyTest {
     }
 
     @Test
-    fun `sent reply follows its loaded parent without reordering server replies`() {
+    fun `sent reply stays after all loaded replies even when its parent is earlier`() {
         val first = ReplyItem(rpid = 30L, root = 10L)
         val parent = ReplyItem(rpid = 20L, root = 10L)
         val last = ReplyItem(rpid = 40L, root = 10L)
@@ -79,12 +79,12 @@ class SubReplySortPolicyTest {
             totalCount = 3
         ).withSentSubReply(sent)
 
-        assertEquals(listOf(30L, 20L, 50L, 40L), state.items.map { it.rpid })
+        assertEquals(listOf(30L, 20L, 40L, 50L), state.items.map { it.rpid })
         assertEquals(state.items, state.baseItems)
         assertEquals(4, state.totalCount)
-        assertEquals(10L, state.items[2].root)
-        assertEquals(20L, state.items[2].parent)
-        assertEquals(20L, state.items[2].dialog)
+        assertEquals(10L, state.items.last().root)
+        assertEquals(20L, state.items.last().parent)
+        assertEquals(20L, state.items.last().dialog)
     }
 
     @Test
@@ -150,7 +150,7 @@ class SubReplySortPolicyTest {
         ).withSentSubReply(sent)
 
         assertEquals(listOf(anchor), state.items)
-        assertEquals(listOf(20L, 50L, 30L), state.baseItems.map { it.rpid })
+        assertEquals(listOf(20L, 30L, 50L), state.baseItems.map { it.rpid })
         assertEquals(3, state.totalCount)
     }
 
@@ -167,8 +167,24 @@ class SubReplySortPolicyTest {
             conversationAnchor = anchor,
         ).withSentSubReply(sent, conversationItemsAreFiltered = false)
 
-        assertEquals(listOf(20L, 50L, 30L), state.items.map { it.rpid })
+        assertEquals(listOf(20L, 30L, 50L), state.items.map { it.rpid })
         assertEquals(state.items, state.baseItems)
+    }
+
+    @Test
+    fun `remote pages precede pending sends and acknowledgement keeps the server rank and payload`() {
+        val first = ReplyItem(rpid = 20L)
+        val second = ReplyItem(rpid = 30L)
+        val pending = ReplyItem(rpid = 50L)
+        assertEquals(listOf(20L, 50L), mergeSentSubReplies(listOf(first), listOf(pending)).map { it.rpid })
+        assertEquals(
+            listOf(20L, 30L, 50L),
+            mergeSentSubReplies(listOf(first, second), listOf(pending)).map { it.rpid }
+        )
+        val acknowledged = pending.copy(like = 7)
+        val ranked = mergeSentSubReplies(listOf(acknowledged, first, second), listOf(pending))
+        assertEquals(listOf(50L, 20L, 30L), ranked.map { it.rpid })
+        assertEquals(7, ranked.first().like)
     }
 
     @Test

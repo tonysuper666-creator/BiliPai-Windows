@@ -50,4 +50,30 @@ class DesktopListenLyricsDisplayDocumentTest {
         assertEquals("kokoro", document.lines[0].romanization)
         assertSame(document, resolveLyricsDisplayDocument(document, true))
     }
+
+    @Test fun decoratedLyricsStillCleanNotesAndPreserveTimingInBothTranslationModes() {
+        val decorated = document.copy(lines = listOf(document.lines.first().copy(
+            text = "♪ こころ ♫",
+            spans = listOf(LyricSpan("♪ ", 0L, 100L), LyricSpan("こころ ♫", 100L, 900L)),
+        ), document.lines.last()))
+        for (showTranslations in listOf(true, false)) {
+            val projected = checkNotNull(resolveLyricsDisplayDocument(decorated, showTranslations))
+            assertNotSame(decorated, projected)
+            assertEquals(decorated.lines.first().copy(text = "こころ",
+                spans = listOf(LyricSpan("こころ", 100L, 900L)),
+                translations = if (showTranslations) listOf("heart") else emptyList(),
+                romanization = if (showTranslations) "kokoro" else null), projected.lines.first())
+            assertEquals(decorated.copy(lines = emptyList()), projected.copy(lines = emptyList()))
+            assertSame(projected, resolveLyricsDisplayDocument(projected, showTranslations))
+            if (showTranslations) assertSame(decorated.lines.last(), projected.lines.last())
+        }
+        assertEquals("♪ こころ ♫", decorated.lines.first().text)
+        assertEquals(listOf("♪ ", "こころ ♫"), decorated.lines.first().spans.map { it.text })
+        assertEquals(listOf("heart"), decorated.lines.first().translations)
+    }
+
+    @Test fun hidingAlreadyAbsentTranslationsDoesNotRecreateTheDocument() {
+        val hidden = checkNotNull(resolveLyricsDisplayDocument(document, false))
+        assertSame(hidden, resolveLyricsDisplayDocument(hidden, false))
+    }
 }

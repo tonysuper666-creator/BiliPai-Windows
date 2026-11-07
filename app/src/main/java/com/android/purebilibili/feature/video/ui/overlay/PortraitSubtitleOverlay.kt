@@ -29,7 +29,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
@@ -79,8 +78,6 @@ import com.android.purebilibili.feature.video.subtitle.shouldRenderSecondarySubt
 import com.android.purebilibili.feature.video.subtitle.SubtitleAutoPreference
 import com.android.purebilibili.feature.video.ui.section.resolveSubtitleLanguageLabel
 import com.android.purebilibili.feature.video.viewmodel.VideoPlaybackUiState
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 
 
@@ -232,17 +229,18 @@ fun PortraitSubtitleHost(
         bvid = pageBvid,
         cid = pageCid
     )
-    val positionMs by produceState(
-        initialValue = player.currentPosition.coerceAtLeast(0L),
-        key1 = player,
-        key2 = pollingIdentity
-    ) {
-        value = player.currentPosition.coerceAtLeast(0L)
-        while (isActive) {
-            value = player.currentPosition.coerceAtLeast(0L)
-            delay(if (player.isPlaying) 120L else 260L)
-        }
+    val subtitleTimeline = remember(success.subtitlePrimaryCues, success.subtitleSecondaryCues, subtitleSession.timeOffsetMs) {
+        com.android.purebilibili.feature.video.subtitle.subtitlePositionTimeline(
+            success.subtitlePrimaryCues, success.subtitleSecondaryCues, subtitleSession.timeOffsetMs,
+        )
     }
+    val positionMs by com.android.purebilibili.core.player.rememberPlaybackPosition(
+        player = player,
+        identity = pollingIdentity,
+        enabled = overlayEnabled && subtitleSession.selectedTrackKey == null &&
+            (primaryCueAvailable || secondaryCueAvailable),
+        timeline = subtitleTimeline,
+    )
 
     val primaryRaw = if (shouldRenderPrimarySubtitle(displayMode)) {
         resolveSubtitleTextAt(success.subtitlePrimaryCues, subtitlePositionForOffset(positionMs, subtitleSession.timeOffsetMs))

@@ -16,12 +16,13 @@ internal fun VideoDetailCommentFraudOverlayAdapter(
     fraudDetectionEnabled: Boolean,
 ) {
     LaunchedEffect(playbackViewModel, commentViewModel, aid, fraudDetectionEnabled) {
-        val activeAid = aid ?: return@LaunchedEffect
-        playbackViewModel.commentSentEvent.collect { reply ->
+        if (aid == null) return@LaunchedEffect
+        playbackViewModel.commentSentEvent.collect { event ->
             commentViewModel.onExternalCommentSent(
-                aid = activeAid,
-                newReply = reply,
+                aid = event.aid,
+                newReply = event.reply,
                 fraudDetectionEnabled = fraudDetectionEnabled,
+                senderAccount = event.account,
             )
         }
     }

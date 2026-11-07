@@ -10,6 +10,28 @@ class SpaceScrollPolicyTest {
     fun `progressive blur retains flowing tabs while disabled mode pins them`() {
         assertFalse(shouldPinSpaceContentTabs(progressiveTopBlurEnabled = true))
         assertTrue(shouldPinSpaceContentTabs(progressiveTopBlurEnabled = false))
+        assertFalse(shouldPinSpaceContentTabs(progressiveTopBlurEnabled = false, headerBlurEnabled = true))
+        assertFalse(shouldPinSpaceContentTabs(progressiveTopBlurEnabled = true, headerBlurEnabled = true))
+        assertTrue(shouldPinSpaceContentTabs(progressiveTopBlurEnabled = false, headerBlurEnabled = false))
+    }
+
+    @Test
+    fun `solid top fade shares flowing layout with either blur and pins only when all are off`() {
+        for (progressiveBlur in listOf(false, true)) {
+            for (headerBlur in listOf(false, true)) {
+                for (solidFade in listOf(false, true)) {
+                    assertEquals(
+                        !progressiveBlur && !headerBlur && !solidFade,
+                        shouldPinSpaceContentTabs(
+                            progressiveTopBlurEnabled = progressiveBlur,
+                            headerBlurEnabled = headerBlur,
+                            progressiveTopFadeEnabled = solidFade,
+                        ),
+                        "progressive=$progressiveBlur, header=$headerBlur, fade=$solidFade",
+                    )
+                }
+            }
+        }
     }
 
     @Test

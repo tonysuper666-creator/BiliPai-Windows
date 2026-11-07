@@ -27,7 +27,9 @@ internal fun DesktopFavoriteWallpaperBackdrop(environment: DesktopFavoriteEnviro
         material.owns() && layer != null
     val recorded = rememberUpdatedState(ready)
     val source = remember(layer, window) {
-        if (layer != null && window != null) ChromeBackdropSource(layer, Modifier, recorded) else null
+        // Root's layer is never paused here, so both modifiers are empty and recording stays enabled.
+        if (layer != null && window != null) ChromeBackdropSource(layer, Modifier, Modifier, mutableStateOf(true), recorded)
+        else null
     }
     CompositionLocalProvider(
         LocalGlobalWallpaperBackdropVisible provides ready,
