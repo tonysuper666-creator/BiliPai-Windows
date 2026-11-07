@@ -6,6 +6,24 @@ import java.awt.EventQueue
 import kotlin.test.*
 
 class DesktopWindowsVideoEscapeInputTest {
+    @Test fun rejectedBackCanBeRetriedByANewEscapeAfterKeyUp() = edt {
+        val f = Fixture(); f.backAccepted = false
+        assertTrue(f.input.onKey(key()))
+        repeat(3) { assertTrue(f.input.onKey(key())) }
+        assertEquals(listOf("back"), f.effects)
+        assertTrue(f.input.onKey(key(KeyEventType.KeyUp)))
+        assertTrue(f.input.onKey(key()))
+        assertEquals(listOf("back", "back"), f.effects)
+    }
+
+    @Test fun focusLossAllowsAnotherBackAttemptWhenThePageRemainsCurrent() = edt {
+        val f = Fixture(); f.backAccepted = false
+        assertTrue(f.input.onKey(key()))
+        f.input.releaseHeldInput()
+        assertTrue(f.input.onKey(key()))
+        assertEquals(listOf("back", "back"), f.effects)
+    }
+
     @Test fun windowedEscapeUsesTheExistingBackRouteOnceAcrossPreviewAndDispatch() = edt {
         val f = Fixture()
         val fallback = DesktopWindowKeyFallback()
@@ -13,9 +31,10 @@ class DesktopWindowsVideoEscapeInputTest {
         fallback.registerLeaf(f.input::onKey)
         assertTrue(fallback.preview(key()))
         repeat(5) { assertTrue(fallback.dispatch(key())) }
+        assertEquals(listOf("back"), f.effects)
         assertTrue(fallback.dispatch(key(KeyEventType.KeyUp)))
         assertTrue(fallback.dispatch(key()))
-        assertEquals(listOf("back"), f.effects)
+        assertEquals(listOf("back", "back"), f.effects)
         f.input.close(); fallback.close()
     }
 
@@ -54,12 +73,13 @@ class DesktopWindowsVideoEscapeInputTest {
     private class Fixture {
         var current = true; var window = true; var editor = false
         var overlay = false; var fullscreen = false
+        var backAccepted = true
         val effects = mutableListOf<String>()
         val input = DesktopWindowsVideoEscapeInput(
             current = { current }, windowCurrent = { window }, textEditorFocused = { editor },
             closeTopOverlay = { if (overlay) { overlay = false; effects += "overlay"; true } else false },
             fullscreen = { fullscreen }, leaveFullscreen = { fullscreen = false; effects += "fullscreen" },
-            requestBack = { effects += "back"; true }, admitNative = { error("AWT called native admission") },
+            requestBack = { effects += "back"; backAccepted }, admitNative = { error("AWT called native admission") },
         )
     }
 

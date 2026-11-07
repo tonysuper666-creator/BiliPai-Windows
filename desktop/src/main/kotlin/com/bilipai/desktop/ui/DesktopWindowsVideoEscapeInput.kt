@@ -22,7 +22,7 @@ internal class DesktopWindowsVideoEscapeInput(
 ) : AutoCloseable {
     private var closed = false
     private var held = false
-    private var backRequested = false
+    private var routing = false
     private var nativeTransition = false
     private var transitionAt = Long.MIN_VALUE
 
@@ -36,7 +36,7 @@ internal class DesktopWindowsVideoEscapeInput(
         }
         if (event.type != KeyEventType.KeyDown || event.isCtrlPressed || event.isAltPressed ||
             event.isMetaPressed || event.isShiftPressed || !owns()) return false
-        if (held || backRequested) return true
+        if (held || routing) return true
         held = true
         if (nativeTransition && recent(nanoTime())) return true
         return route("awt/compose")
@@ -48,7 +48,7 @@ internal class DesktopWindowsVideoEscapeInput(
         if (!admitNative(event) || !owns()) { trace("native rejected lease/window"); return false }
         // nonrepeatable bindings suppress OS key repeats. Also retire events
         // already queued before an overlay/fullscreen transition or a back.
-        if (held || backRequested || event.receivedAtNanos <= transitionAt || recent(event.receivedAtNanos)) {
+        if (held || routing || event.receivedAtNanos <= transitionAt || recent(event.receivedAtNanos)) {
             trace("native retired duplicate/queued transition")
             return true
         }
@@ -62,19 +62,25 @@ internal class DesktopWindowsVideoEscapeInput(
     private fun owns() = !closed && current() && windowCurrent()
 
     private fun route(origin: String): Boolean {
-        when {
-            textEditorFocused() -> trace("$origin editor retained")
-            closeTopOverlay() -> trace("$origin overlay closed")
-            fullscreen() -> { leaveFullscreen(); trace("$origin fullscreen exited") }
-            else -> {
-                // Reserve before invoking Root; it can synchronously re-enter.
-                backRequested = true
-                requestBack()
-                trace("$origin windowed back")
+        // Root can synchronously re-enter without retiring the page, even when
+        // it accepts the request. Reserve only while routing; subsequent presses
+        // must be able to retry after KeyUp or the native duplicate window.
+        routing = true
+        try {
+            when {
+                textEditorFocused() -> trace("$origin editor retained")
+                closeTopOverlay() -> trace("$origin overlay closed")
+                fullscreen() -> { leaveFullscreen(); trace("$origin fullscreen exited") }
+                else -> {
+                    val accepted = requestBack()
+                    trace("$origin windowed back accepted=$accepted")
+                }
             }
+        } finally {
+            nativeTransition = origin == "mpv"
+            transitionAt = nanoTime()
+            routing = false
         }
-        nativeTransition = origin == "mpv"
-        transitionAt = nanoTime()
         return true
     }
 

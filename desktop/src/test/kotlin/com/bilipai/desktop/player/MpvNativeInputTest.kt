@@ -12,6 +12,32 @@ import kotlin.test.*
  * These tests create no Window, native runtime, decoder or audio device.
  */
 class MpvNativeInputTest {
+    @Test fun decodedNativeEscapeCanRetryAnUnchangedPageAfterTheDuplicateWindow() = source { snapshot ->
+        val lease = MpvNativeWindowInputLease(snapshot, 7, 42)
+        val decoded = Message(lease.token, "escape").use { assertNotNull(lease.decode(it.data)) }
+        EventQueue.invokeAndWait {
+            for (accepted in listOf(false, true)) {
+                var clock = 1_000_000_000L; var backs = 0
+                val input = DesktopWindowsVideoEscapeInput(
+                    current = { true }, windowCurrent = { true }, textEditorFocused = { false },
+                    closeTopOverlay = { false }, fullscreen = { false }, leaveFullscreen = {},
+                    requestBack = { backs++; accepted }, admitNative = { true }, nanoTime = { clock },
+                )
+                val first = decoded.copy(receivedAtNanos = clock)
+                assertTrue(input.onNative(first))
+                clock += 250_000_000L
+                assertTrue(input.onNative(decoded.copy(receivedAtNanos = clock)))
+                assertEquals(1, backs)
+                clock++
+                assertTrue(input.onNative(decoded.copy(receivedAtNanos = clock)))
+                assertEquals(2, backs, "a still-current page must permit another press, accepted=$accepted")
+                assertTrue(input.onNative(first))
+                assertEquals(2, backs, "the old queued event must remain retired")
+                input.close()
+            }
+        }
+    }
+
     @Test fun nativeEscapeCrossesTheProductionClientMessageBoundary() = source { snapshot ->
         val lease = MpvNativeWindowInputLease(snapshot, 7)
         val event = Message(lease.token, "escape").use { assertNotNull(lease.decode(it.data)) }
