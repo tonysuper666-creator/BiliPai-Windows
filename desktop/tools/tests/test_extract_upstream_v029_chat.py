@@ -2,6 +2,7 @@ import hashlib
 import importlib.util
 import json
 from pathlib import Path
+import re
 import shutil
 import tempfile
 import unittest
@@ -41,6 +42,30 @@ class V029ChatSourceTest(unittest.TestCase):
             self.assertIn('if (inputText == sentText) inputText = ""', screen)
             self.assertIn('reverseLayout = true', screen)
             self.assertIn('uiState.loadMoreError', screen)
+
+    def test_real_desktop_chat_consumer_applies_ime_once_to_shared_list_and_composer_parent(self):
+        with tempfile.TemporaryDirectory(prefix='bp-chat-ime-') as temporary:
+            out = Path(temporary)
+            original = source.read(REPO, 'ChatScreen.kt')
+            def function(text, name):
+                match = re.search(r'(?m)^private fun ' + re.escape(name) + r'\(\): Dp \{\n.*?^\}', text, re.S)
+                if match is None:
+                    raise AssertionError(f'missing producer function: {name}')
+                return match.group(0)
+            screen = source.adapt_screen(original, function)
+            source.record_adaptation(REPO, out, 'ChatScreen.kt', screen)
+            proof = json.loads((out / 'ChatScreen.kt.v029-adaptation.json').read_text('utf8'))
+            self.assertEqual(hashlib.sha256(screen.encode()).hexdigest(), proof['adaptedSha256LF'])
+            restored = screen.splitlines(True)
+            for row in reversed(proof['edits']):
+                self.assertEqual(''.join(restored[row['adaptedStart']:row['adaptedEnd']]), row['after'])
+                restored[row['adaptedStart']:row['adaptedEnd']] = row['before'].splitlines(True)
+            self.assertEqual(original, ''.join(restored))
+
+            self.assertEqual(screen.count('.desktopChatImePadding()'), 1)
+            self.assertIn('import com.bilipai.desktop.ui.desktopChatImePadding', screen)
+            self.assertNotIn('.imePadding()', screen)
+            self.assertNotIn('.desktopChatImePadding()', screen[screen.index('fun ChatInputBar('):])
 
     # The desktop copy of the three original ChatTimelinePolicyTest cases was retired in 1c5558950 (M4d): the
     # upstream app/src/test feature/message/ChatTimelinePolicyTest.kt superset runs in the desktop test set.
