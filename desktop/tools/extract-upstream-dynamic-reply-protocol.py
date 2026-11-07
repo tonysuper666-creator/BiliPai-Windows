@@ -314,6 +314,9 @@ def generate(repo: Path, output: Path):
     grpc = original_grpc.replace('import com.android.purebilibili.core.network.grpc.BiliGrpcClient\n', '')
     grpc = grpc.replace('internal object CommentGrpcRepository {', 'internal class DesktopDynamicCommentGrpc(\n    private val requestTransport: suspend (String, ByteArray) -> ByteArray,\n    private val assertOwner: () -> Unit,\n) {\n    private suspend fun request(path: String, message: ByteArray): ByteArray {\n        kotlinx.coroutines.currentCoroutineContext().ensureActive(); assertOwner()\n        return requestTransport(path, message).also { kotlinx.coroutines.currentCoroutineContext().ensureActive(); assertOwner() }\n    }\n    private inline fun <T> ownedCatching(block: () -> T): Result<T> = try {\n        assertOwner(); Result.success(block().also { assertOwner() })\n    } catch (cancelled: kotlinx.coroutines.CancellationException) { throw cancelled\n    } catch (failure: Exception) { assertOwner(); Result.failure(failure) }\n')
     grpc = grpc.replace('private const val PATH_', 'private val PATH_')
+    assert grpc.count('return requestTransport(path, message).also {') == 1, 'Comment transport seam changed'
+    grpc = grpc.replace('return requestTransport(path, message).also {',
+        'return com.bilipai.desktop.data.desktopCommentGrpcRequest(path, assertOwner = assertOwner) { requestTransport(path, message) }.also {')
     grpc = grpc.replace('    internal const val MODE_TIME = 2\n    internal const val MODE_HOT = 3', '    internal companion object {\n        internal const val MODE_TIME = 2\n        internal const val MODE_HOT = 3\n    }')
     grpc = grpc.replace('BiliGrpcClient.request(', 'request(').replace('return runCatching {', 'return ownedCatching {').replace('        runCatching {', '        ownedCatching {')
     for name in ('getMainList', 'getDetailList', 'getDialogList'):

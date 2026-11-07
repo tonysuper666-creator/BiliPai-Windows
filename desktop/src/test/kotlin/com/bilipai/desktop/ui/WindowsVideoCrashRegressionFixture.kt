@@ -5,6 +5,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.tooling.*
 import com.android.purebilibili.navigation3.BiliPaiNavKey
 import com.android.purebilibili.feature.comment.CommentDetailViewModel
+import com.android.purebilibili.feature.video.viewmodel.VideoPlaybackUiState
 import com.bilipai.desktop.data.DesktopRepository
 import com.bilipai.desktop.player.MpvPlayer
 import com.bilipai.desktop.player.PlayerPreferences
@@ -216,7 +217,11 @@ object WindowsVideoCrashRegressionFixture {
                             }
                             val detail = edt {
                                 val owner = checkNotNull(refs.find<DesktopOriginalVideoShellOwner>()?.slot?.currentAssembly())
-                                BiliPaiNavKey.CommentDetail(checkNotNull(owner.native.current()).request.aid,
+                                // BV-only playback requests retain aid=0. Comment routes
+                                // use the committed video's resolved subject, like the UI.
+                                val info = (owner.playback.captureDesktopPlaybackState() as VideoPlaybackUiState.Success).info
+                                check(info.aid > 0)
+                                BiliPaiNavKey.CommentDetail(info.aid,
                                     owner.domains.comments.commentState.value.replies.first().rpid)
                             }
                             edt { check(routes.push(detail)) }
