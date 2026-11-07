@@ -73,3 +73,28 @@ def restore_search_screen(source,audit):
         source=source.replace(after,old,1)
     need(hashlib.sha256(source.encode()).hexdigest()==audit['beforeSha256LfUtf8'],'SearchScreen submit predecessor inverse failed')
     return source
+# Desktop-owned, applied after the v0.7.6 edits: the search page submits through the same
+# complete-short-link guard as the bottom bar (desktop/src/main/kotlin/.../DesktopSearchSubmitCandidate.kt).
+SEARCH_SCREEN_CANDIDATE_EDITS=[
+    ('import com.android.purebilibili.navigation.resolveSearchSubmitAction\n','import com.android.purebilibili.navigation.resolveDesktopSearchSubmitAction\n'),
+    ('        when (val action = resolveSearchSubmitAction(keyword)) {\n','        when (val action = resolveDesktopSearchSubmitAction(keyword)) {\n'),
+]
+def guard_search_screen_submit(source):
+    """Route the v0.7.6 submit body through the desktop guard; each span must occur exactly once."""
+    before=source;digest=hashlib.sha256(source.encode()).hexdigest()
+    for old,after in SEARCH_SCREEN_CANDIDATE_EDITS:
+        need(source.count(old)==1 and source.count(after)==0,'Unknown SearchScreen submit policy call')
+        source=source.replace(old,after,1)
+    need('resolveSearchSubmitAction('not in source,'SearchScreen still submits through the unguarded policy')
+    inverse=source
+    for old,after in reversed(SEARCH_SCREEN_CANDIDATE_EDITS):inverse=inverse.replace(after,old,1)
+    need(inverse==before,'SearchScreen submit guard is not exactly invertible')
+    return source,dict(owner='desktop',beforeSha256LfUtf8=digest,afterSha256LfUtf8=hashlib.sha256(source.encode()).hexdigest(),edits=len(SEARCH_SCREEN_CANDIDATE_EDITS),inverseExact=True)
+def unguard_search_screen_submit(source,audit):
+    """Peel the desktop submit guard back to the v0.7.6 submit body; every span must match exactly once."""
+    need(hashlib.sha256(source.encode()).hexdigest()==audit['afterSha256LfUtf8'],'SearchScreen submit guard output differs from its receipt')
+    for old,after in reversed(SEARCH_SCREEN_CANDIDATE_EDITS):
+        need(source.count(after)==1,'SearchScreen submit guard inverse span changed')
+        source=source.replace(after,old,1)
+    need(hashlib.sha256(source.encode()).hexdigest()==audit['beforeSha256LfUtf8'],'SearchScreen submit guard inverse failed')
+    return source

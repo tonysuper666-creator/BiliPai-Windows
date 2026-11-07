@@ -72,8 +72,31 @@ class V076SearchSubmitLinkSourceTest(unittest.TestCase):
         self.assertEqual(1,text.count('is SearchSubmitAction.OpenNativeTarget -> onOpenNativeTarget(action.target)'))
         self.assertEqual(1,text.count('SearchSubmitAction.Ignore -> Unit'))
         # Links never leak into the same-list channel; only plain searches do.
-        self.assertIn('if (scopedChannel != null && resolveSearchSubmitAction(keyword) is SearchSubmitAction.OpenSearch) {',text)
+        self.assertIn('if (scopedChannel != null && resolveDesktopSearchSubmitAction(keyword) is SearchSubmitAction.OpenSearch) {',text)
         self.assertNotIn('openBilibiliLinkInNavigation3',text)
+
+    def test_bottom_bar_submits_only_through_the_desktop_short_link_guard(self):
+        text=(self.out/NAV/'DesktopOriginalBottomSearchSubmit.kt').read_text(encoding='utf-8')
+        self.assertEqual(1,text.count('when (val action = resolveDesktopSearchSubmitAction(keyword)) {'))
+        self.assertEqual(2,text.count('resolveDesktopSearchSubmitAction(keyword)'))
+        self.assertNotIn('resolveSearchSubmitAction(',text)
+
+    def test_search_screen_submits_only_through_the_desktop_short_link_guard(self):
+        original=source.verified_raw(REPO)['SearchScreen.kt'].decode('utf-8')
+        guarded,audit=source.guard_search_screen_submit(original)
+        self.assertEqual(1,guarded.count('        when (val action = resolveDesktopSearchSubmitAction(keyword)) {\n            SearchSubmitAction.Ignore -> return@submitSearch\n            is SearchSubmitAction.OpenLink -> {\n'))
+        self.assertEqual(1,guarded.count('import com.android.purebilibili.navigation.resolveDesktopSearchSubmitAction\n'))
+        self.assertNotIn('resolveSearchSubmitAction(',guarded)
+        self.assertEqual((2,True,'desktop'),(audit['edits'],audit['inverseExact'],audit['owner']))
+        self.assertEqual(original,source.unguard_search_screen_submit(guarded,audit))
+        with self.assertRaisesRegex(ValueError,'differs from its receipt'):
+            source.unguard_search_screen_submit(guarded.replace('onOpenSearchLink(action.url)','onOpenSearchLink(keyword)',1),audit)
+        with self.assertRaisesRegex(ValueError,'Unknown SearchScreen submit policy call'):source.guard_search_screen_submit(guarded)
+        producer=(REPO/'desktop/tools/extract-upstream-search-pages.py').read_text(encoding='utf-8')
+        self.assertEqual(1,producer.count('   source,searchSubmitLinkAudit=advance_search_screen(source)\n'))
+        advance=producer.index('   source,searchSubmitLinkAudit=advance_search_screen(source)\n')
+        self.assertEqual(1,producer.count('   source,searchSubmitGuardAudit=guard_search_screen_submit(source)\n'))
+        self.assertLess(advance,producer.index('   source,searchSubmitGuardAudit=guard_search_screen_submit(source)\n'))
 
     def test_root_routes_submitted_links_to_its_existing_content_link_opener(self):
         ui=REPO/'desktop/src/main/kotlin/com/bilipai/desktop/ui'

@@ -48,7 +48,9 @@ class CurrentSearchLayoutSourceTest(unittest.TestCase):
         for path in (current.SCREEN, current.FILTER_SHEET):
             row = next(row for row in self.pages if row['source'] == path)
             body = Path(row['target']).read_text(encoding='utf-8')
-            # The v0.7.6 submit-link stage is the last one on the screen: peel it first.
+            # The desktop submit guard, then the v0.7.6 submit-link stage, are the last ones on the screen: peel them first.
+            if row['desktopSearchSubmitGuard'] is not None:
+                body = submit_link.unguard_search_screen_submit(body, row['desktopSearchSubmitGuard'])
             if row['v076SearchSubmitLink'] is not None:
                 body = submit_link.restore_search_screen(body, row['v076SearchSubmitLink'])
             body = inverse(body, row['windowsTabAbiAdaptation'])

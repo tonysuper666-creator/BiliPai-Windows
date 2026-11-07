@@ -93,10 +93,11 @@ class SearchStateSourceTest(unittest.TestCase):
         cls.rows = cls.producer.generate(REPO, cls.root / 'main', cls.root / 'tests')
         cls.main, cls.tests = cls.root / 'main', cls.root / 'tests'
         # The same producer with exactly this layer patched out: the previous stage, for before/after checks.
-        # The v0.7.6 submit-link stage edits the v0.4.6 submit body, so it cannot run on the previous stage either.
+        # The v0.7.6 submit-link stage and the desktop guard after it edit the v0.4.6 submit body, so neither runs on the previous stage.
         with mock.patch.object(layer, 'advance_page', lambda repo, item, before: (before, None)), \
                 mock.patch.object(layer, 'emit_policies', lambda repo, output, test_output: None), \
-                mock.patch.object(submit_link, 'advance_search_screen', lambda source: (source, None)):
+                mock.patch.object(submit_link, 'advance_search_screen', lambda source: (source, None)), \
+                mock.patch.object(submit_link, 'guard_search_screen_submit', lambda source: (source, None)):
             cls.base_rows = cls.producer.generate(REPO, cls.root / 'base-main', cls.root / 'base-tests')
 
     @classmethod
@@ -211,6 +212,8 @@ class SearchStateSourceTest(unittest.TestCase):
         """The producer output with the later v0.7.6 submit-link and tab ABI steps peeled (VM and landing have neither)."""
         row = self.row(path)
         body = Path(row['target']).read_text(encoding='utf8')
+        if row['desktopSearchSubmitGuard'] is not None:
+            body = submit_link.unguard_search_screen_submit(body, row['desktopSearchSubmitGuard'])
         if row['v076SearchSubmitLink'] is not None:
             body = submit_link.restore_search_screen(body, row['v076SearchSubmitLink'])
         if row['windowsTabAbiAdaptation'] is not None:

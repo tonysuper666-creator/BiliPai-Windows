@@ -76,7 +76,8 @@ class ComprehensiveSearchSourceTest(unittest.TestCase):
     def test_actual_screen_restores_all_adoption_and_platform_stages(self):
         row = next(row for row in self.rows if row['source'] == source.SCREEN)
         body = Path(row['target']).read_text(encoding='utf-8')
-        # The v0.7.6 submit-link stage is the last one on the screen: peel it first.
+        # The desktop submit guard, then the v0.7.6 submit-link stage, are the last ones on the screen: peel them first.
+        body = submit_link.unguard_search_screen_submit(body, row['desktopSearchSubmitGuard'])
         body = submit_link.restore_search_screen(body, row['v076SearchSubmitLink'])
         body = inverse(body, row['windowsTabAbiAdaptation'])
         # Brand adaptation already has its own indexed whole-body source proof.

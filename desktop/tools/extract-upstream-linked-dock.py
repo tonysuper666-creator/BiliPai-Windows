@@ -97,6 +97,7 @@ internal object DesktopOriginalLinkedDockSettings {
  p=BASE+'navigation/AppNavigation.kt';names=['submitSearchKeywordInNavigation3','submitBottomBarSearchKeyword'];body='\n\n'.join(local_callback(parser,submit_link.original_navigation(),name) for name in names)
  for before,after in [('effectiveHomeSettings.isBottomBarSearchEnabled','bottomBarSearchEnabled'),('effectiveHomeSettings.listScopedSearchEnabled','listScopedSearchEnabled'),('currentNavigation3Key == BiliPaiNavKey.MainHost','isMainHost'),('pushSearchRouteInNavigation3(action.keyword)','onOpenSearch(action.keyword)'),('openBilibiliNativeTargetInNavigation3(action.target)','onOpenNativeTarget(action.target)'),('openBilibiliLinkInNavigation3(action.url)','onOpenLink(action.url)')]:
   assert before in body,before;body=body.replace(before,after)
+ assert body.count('resolveSearchSubmitAction(keyword)')==2;body=body.replace('resolveSearchSubmitAction(keyword)','resolveDesktopSearchSubmitAction(keyword)')
  emit('navigation/DesktopOriginalBottomSearchSubmit.kt','''package com.android.purebilibili.navigation
 import com.android.purebilibili.core.util.BilibiliNavigationTarget
 import com.android.purebilibili.feature.home.components.BottomNavItem
@@ -117,7 +118,7 @@ internal fun submitDesktopOriginalBottomBarSearchKeyword(
     isOwned: () -> Boolean,
 ) {
     if (!isOwned()) return
-'''+body+'\n    submitBottomBarSearchKeyword(keyword)\n}\n',submit_link.ARCHIVE+'/AppNavigation.kt',names,['Callbacks come from the v0.7.6 original AppNavigation; its link opener becomes Root existing original content-link opener','Root existing navigation callbacks and owned same-list channels replace Navigation3 captures only; no new nav store/channel','Retired page/account refuses callback before original submit closure'])
+'''+body+'\n    submitBottomBarSearchKeyword(keyword)\n}\n',submit_link.ARCHIVE+'/AppNavigation.kt',names,['Callbacks come from the v0.7.6 original AppNavigation; its link opener becomes Root existing original content-link opener','Root existing navigation callbacks and owned same-list channels replace Navigation3 captures only; no new nav store/channel','Retired page/account refuses callback before original submit closure','Both original policy calls go through the desktop complete-short-link guard; an empty or cut-short b23.tv token searches the submitted text'])
  for p,raw in original.items():write(output/'original-retained'/(p+'.txt'),raw)
  if test_output is not None:
   for path,raw in submit_link.original_tests().items():safe((test_output/path).parent).mkdir(parents=True,exist_ok=True);safe(test_output/path).write_bytes(raw)
