@@ -118,6 +118,31 @@ class DesktopWindowsVideoFeedbackOriginTest {
         }
     }
 
+    @Test fun transitioningNativeSourceAndEngagementSubjectDisableCommandsAndFeedbackWithoutCrashing(): Unit = runBlocking {
+        Harness().use { h ->
+            for (subject in listOf(h.subject.copy(bvid = "BVnext"), h.subject.copy(cid = h.subject.cid + 1))) {
+                val presentation = DesktopOriginalVideoEngagementPresentation(h.source, subject, { true }, { it(); true })
+                assertFalse(presentation.isOwned())
+                assertFalse(presentation.isFeedbackOwned())
+                assertNull(presentation.feedbackSource)
+                assertFalse(presentation.admit { fail("Mismatched source admitted a command") })
+                assertFalse(presentation.admitFeedback { fail("Mismatched source admitted feedback") })
+                DesktopWindowsCommandAttentionBinding(h.source, h.vm, subject, { true }, { it(); true }).use { command ->
+                    assertFalse(command.isOwned())
+                    assertFalse(command.follow())
+                    assertFalse(command.triple())
+                }
+                DesktopWindowsVideoEngagementBinding(h.source, h.vm, subject, { true }, { it(); true }).use { ordinary ->
+                    assertFalse(ordinary.isOwned())
+                    assertFalse(ordinary.like())
+                    assertNull(ordinary.feedback(DesktopWindowsVideoFeedbackKind.LIKE))
+                }
+            }
+            assertTrue(h.ordinary.like()); h.drain()
+            assertNotNull(h.ordinary.feedback(DesktopWindowsVideoFeedbackKind.LIKE))
+        }
+    }
+
     @Test fun accountAdmissionRejectsReadingAndFinishingAnAlreadyConfirmedReceipt(): Unit = runBlocking {
         Harness().use { h ->
             assertTrue(h.ordinary.like()); h.drain()
