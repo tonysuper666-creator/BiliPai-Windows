@@ -47,7 +47,9 @@ class OriginalCommentListSources(unittest.TestCase):
              patch.object(comments, 'advance_settings', side_effect=lambda repo, before, output, owner: before), \
              patch.object(comments, 'emit_shared', return_value={}), \
              patch('v046_comment_thread.advance', side_effect=lambda repo, before, output: before), \
-             patch('v046_comment_polish.advance_inline_entrance', side_effect=lambda repo, before, output: before):
+             patch('v046_comment_polish.advance_inline_entrance', side_effect=lambda repo, before, output: before), \
+             patch('v046_comment_thread.advance_split_item_states', side_effect=lambda repo, before, output: before), \
+             patch('v046_comment_thread.advance_root_text_layout', side_effect=lambda repo, before, output: before):
             cls.owner.generate(REPO, cls.output/'before')
 
     @classmethod
@@ -59,7 +61,8 @@ class OriginalCommentListSources(unittest.TestCase):
 
     def test_actual_whole_renderer_inverse_preserves_every_other_current_declaration(self):
         path = comments.PACKAGE+'DesktopOriginalReplyComponents.kt'
-        current = body(self.output/'actual'/path)
+        # The comment-detail root text hook follows the list renderer; peel it first.
+        current = restore(body(self.output/'actual'/path), self.proof('v046-comment-detail-root-text-proof')['retainedToCurrent'])
         previous = body(self.output/'before'/path)
         proof = self.proof('v046-reply-list-renderer-proof')
         self.assertEqual(previous, restore(current, proof['retainedToCurrent']))
@@ -145,9 +148,13 @@ class OriginalCommentListSources(unittest.TestCase):
         thread_proof = self.proof('v046-comment-thread-host-proof')
         # The v046 comment polish inline entrance stage follows the nested page stage; peel it first.
         entrance_proof = self.proof('v046-inline-subreply-entrance-proof')
-        previous_stage = restore(restore(actual, entrance_proof['retainedToCurrent']), thread_proof['retainedToCurrent'])
+        # The comment-detail split item states are the last stage of all; peel them before the entrance.
+        split_proof = self.proof('v046-comment-detail-split-item-states-proof')
+        unsplit = restore(actual, split_proof['retainedToCurrent'])
+        previous_stage = restore(restore(unsplit, entrance_proof['retainedToCurrent']),
+                                 thread_proof['retainedToCurrent'])
         self.assertEqual(before, restore(previous_stage, proof['retainedToCurrent']))
-        item = comments.declaration(self.syntax, actual, 'SubReplyDetailItem')
+        item = comments.declaration(self.syntax, unsplit, 'SubReplyDetailItem')
         old_item = comments.declaration(self.syntax, before, 'SubReplyDetailItem')
         self.assertEqual(comments.declaration(self.syntax, self.sources['SubReplyDetailComponents.kt'], 'SubReplyDetailItem'),
                          restore(item, proof['originalToWindows']))
