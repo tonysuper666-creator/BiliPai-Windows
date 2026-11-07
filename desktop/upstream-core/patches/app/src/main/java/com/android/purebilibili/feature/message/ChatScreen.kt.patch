@@ -1,6 +1,6 @@
 --- a/com/android/purebilibili/feature/message/ChatScreen.kt
 +++ b/com/android/purebilibili/feature/message/ChatScreen.kt
-@@ -7,11 +7,8 @@
+@@ -7,15 +7,11 @@
  import com.android.purebilibili.core.ui.components.AppIcon
  import com.android.purebilibili.core.ui.components.AppText
  
@@ -14,6 +14,32 @@
  import androidx.compose.foundation.background
  import androidx.compose.foundation.clickable
  import androidx.compose.foundation.combinedClickable
+-import androidx.compose.foundation.gestures.detectTapGestures
+ import androidx.compose.foundation.layout.*
+ import com.android.purebilibili.core.ui.components.AppLazyColumn as LazyColumn
+ import androidx.compose.foundation.lazy.items
+@@ -29,6 +25,7 @@
+ import androidx.compose.ui.text.input.TextFieldValue
+ import androidx.compose.ui.focus.FocusRequester
+ import androidx.compose.ui.focus.focusRequester
++import androidx.compose.ui.focus.focusProperties
+ import androidx.compose.ui.focus.onFocusChanged
+ import androidx.compose.material.icons.outlined.Keyboard
+ import androidx.compose.material.icons.outlined.EmojiEmotions
+@@ -56,12 +53,12 @@
+ import androidx.compose.ui.text.Placeholder
+ import androidx.compose.ui.text.PlaceholderVerticalAlign
+ import androidx.compose.ui.text.SpanStyle
+-import androidx.compose.ui.text.TextLayoutResult
+ import androidx.compose.ui.text.buildAnnotatedString
+ import androidx.compose.ui.text.input.ImeAction
+ import androidx.compose.ui.text.style.TextAlign
+ import androidx.compose.ui.text.style.TextDecoration
+ import androidx.compose.ui.text.style.TextOverflow
++import androidx.compose.ui.text.withLink
+ import androidx.compose.ui.text.withStyle
+ import androidx.compose.ui.text.TextStyle
+ import androidx.compose.ui.unit.Dp
 @@ -71,7 +68,6 @@
  import com.android.purebilibili.core.store.HomeWallpaperEffectMode
  import com.android.purebilibili.core.store.SettingsManager
@@ -138,7 +164,48 @@
                          )
                      },
                      isSending = uiState.isSending,
-@@ -1418,7 +1403,7 @@
+@@ -990,14 +975,27 @@
+                 modifier = Modifier.fillMaxWidth(),
+                 contentAlignment = if (message.msg_type in setOf(10, 13, 16, 18)) Alignment.TopCenter else if (isOwnMessage) Alignment.TopEnd else Alignment.TopStart,
+             ) {
++                // Windows：鼠标按住停顿后再拖是选字，不弹操作框（鼠标用右键打开）；触屏长按照旧。
++                var pressedByMouse by remember { mutableStateOf(false) }
+                 AppSurface(
+                     modifier = Modifier
+                         .widthIn(max = resolveMessageBubbleMaxWidth(maxWidth))
+                         .then(
+                             if (message.msg_status != 1 && onLongPress != null) {
+-                                Modifier.combinedClickable(
++                                Modifier.pointerInput(Unit) {
++                                    awaitPointerEventScope {
++                                        while (true) {
++                                            awaitPointerEvent(androidx.compose.ui.input.pointer.PointerEventPass.Initial)
++                                                .changes.firstOrNull { it.pressed && !it.previousPressed }
++                                                ?.let { pressedByMouse = it.type == androidx.compose.ui.input.pointer.PointerType.Mouse }
++                                        }
++                                    }
++                                }
++                                    // 这层只接鼠标和触屏手势（onClick 为空），不做 Tab 停靠点；正文里的链接仍可聚焦。
++                                    .focusProperties { canFocus = false }
++                                    .combinedClickable(
+                                     onClick = {},
+-                                    onLongClick = onLongPress
++                                    onLongClick = { if (!pressedByMouse) onLongPress() }
+                                 ).messageSecondaryClick { onLongPress() }
+                             } else {
+                                 Modifier
+@@ -1025,7 +1023,9 @@
+                         message.msg_type == 1 -> {
+                             // 文字消息 - 支持表情渲染
+                             val content = parseTextContent(message.content)
+-                            androidx.compose.foundation.text.selection.SelectionContainer {
++                            // 选择由 RichMessageText 里的 DesktopSelectionContainer 提供，只留这一层：Tab 不停在正文上。
++                            // 右键选中的文字只弹「复制」；没选中时右键仍打开这条消息的操作。
++                            com.bilipai.desktop.ui.DesktopTextSecondaryClick(onWithoutSelection = onLongPress) {
+                             EmoteText(
+                                 text = content,
+                                 emoteInfos = emoteInfos,
+@@ -1418,7 +1418,7 @@
      linkColor: Color = AppContentColors.accent(),  // 使用主题色
      onLinkClick: ((String) -> Unit)? = null
  ) {
@@ -147,17 +214,100 @@
  
      // 构建表情映射 (text -> EmoteInfo)
      val emoteMap = remember(emoteInfos) {
-@@ -1542,12 +1527,7 @@
-                             onLinkClick(url)
-                         } else {
-                             // 默认: 用浏览器打开
+@@ -1453,7 +1453,9 @@
+ 
+     // 如果没有特殊内容，直接显示文本
+     if (allMatches.isEmpty()) {
+-        AppText(text = text, color = color, style = style, fontSize = fontSize)
++        com.bilipai.desktop.ui.DesktopSelectionContainer {
++            AppText(text = text, color = color, style = style, fontSize = fontSize)
++        }
+         return
+     }
+ 
+@@ -1477,15 +1479,26 @@
+                     }
+                 }
+                 "url" -> {
+-                    // 添加链接样式和注解
+-                    pushStringAnnotation(tag = "URL", annotation = match.value)
+-                    withStyle(SpanStyle(
+-                        color = linkColor,
+-                        textDecoration = TextDecoration.Underline
++                    // Windows：链接用 LinkAnnotation，由 BasicText 处理点击和手形光标，
++                    // 气泡文字因此能放进 SelectionContainer 直接拖选复制。
++                    val url = match.value
++                    withLink(androidx.compose.ui.text.LinkAnnotation.Clickable(
++                        tag = url,
++                        styles = androidx.compose.ui.text.TextLinkStyles(SpanStyle(
++                            color = linkColor,
++                            textDecoration = TextDecoration.Underline
++                        )),
++                        linkInteractionListener = {
++                            if (onLinkClick != null) {
++                                onLinkClick(url)
++                            } else {
++                                // 默认: 用浏览器打开
++                                pageOwner.openLink(url)
++                            }
++                        }
+                     )) {
+-                        append(match.value)
++                        append(url)
+                     }
+-                    pop()
+                 }
+             }
+ 
+@@ -1518,42 +1531,15 @@
+         }
+     }
+ 
+-    // 用于检测点击位置
+-    var layoutResult by remember { mutableStateOf<TextLayoutResult?>(null) }
+-
+-    AppText(
+-        text = annotatedString,
+-        color = color,
+-        style = style,
+-        fontSize = fontSize,
+-        inlineContent = inlineContentMap,
+-        onTextLayout = { layoutResult = it },
+-        modifier = Modifier.pointerInput(Unit) {
+-            detectTapGestures { offset ->
+-                layoutResult?.let { layout ->
+-                    val position = layout.getOffsetForPosition(offset)
+-                    annotatedString.getStringAnnotations(
+-                        tag = "URL",
+-                        start = position,
+-                        end = position
+-                    ).firstOrNull()?.let { annotation ->
+-                        val url = annotation.item
+-                        if (onLinkClick != null) {
+-                            onLinkClick(url)
+-                        } else {
+-                            // 默认: 用浏览器打开
 -                            try {
 -                                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
 -                                context.startActivity(intent)
 -                            } catch (e: Exception) {
 -                                android.util.Log.e("RichMessageText", "Failed to open URL: $url", e)
 -                            }
-+                            pageOwner.openLink(url)
-                         }
-                     }
-                 }
+-                        }
+-                    }
+-                }
+-            }
+-        }
+-    )
++    com.bilipai.desktop.ui.DesktopSelectionContainer {
++        AppText(
++            text = annotatedString,
++            color = color,
++            style = style,
++            fontSize = fontSize,
++            inlineContent = inlineContentMap
++        )
++    }
+ }
+ 
+ // 保留旧函数名的兼容性别名
