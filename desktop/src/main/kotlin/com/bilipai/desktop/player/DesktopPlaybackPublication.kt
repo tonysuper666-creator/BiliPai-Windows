@@ -168,7 +168,19 @@ private class PlaybackCallTimeout : Timeout() {
 @OptIn(InternalCoroutinesApi::class)
 internal fun admittedPlaybackCalls(delegate: Call.Factory, publication: DesktopPlaybackPublication,
     source: PlaybackSource, stillOwned: () -> Boolean, callerJob: Job? = null): Call.Factory = Call.Factory { request ->
-    val call = deferredPlaybackCalls(delegate).newCall(request)
+    val call = deferredPlaybackCalls(Call.Factory { deferredRequest ->
+        val raw = delegate.newCall(deferredRequest)
+        object : Call by raw {
+            override fun enqueue(callback: Callback) = publication.admit(source, stillOwned) {
+                // newCall invokes application hooks (including EventListener)
+                // that can retire the owner reentrantly. Recheck AFTER creation,
+                // under the same authority locks, immediately before queueing.
+                callerJob?.ensureActive()
+                if (raw.isCanceled()) throw IOException("Canceled")
+                raw.enqueue(callback)
+            }
+        }
+    }).newCall(request)
     object : Call by call {
         override fun request(): Request = call.request()
         override fun cancel() = call.cancel()

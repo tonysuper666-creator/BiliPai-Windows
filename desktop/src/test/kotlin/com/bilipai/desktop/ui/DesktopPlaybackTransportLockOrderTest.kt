@@ -127,6 +127,58 @@ class DesktopPlaybackTransportLockOrderTest {
     @Test fun relatedDeferredQueueRejectsLogout() = rejectedRelatedQueue { it.sessions.logout() }
     @Test fun relatedDeferredQueueRejectsEntryRetirement() = rejectedRelatedQueue { it.entryCurrent = false }
 
+    @Test fun relatedCreationRechecksNativeOwnerBeforeQueue() = rejectedDuringRelatedCreation { f, _, _ -> f.owner.close() }
+    @Test fun relatedCreationRechecksPrimaryAccountAbaBeforeQueue() = rejectedDuringRelatedCreation { f, _, _ ->
+        f.sessions.activateAccount(42); f.sessions.activateAccount(41)
+    }
+    @Test fun relatedCreationRechecksPlaybackAccountAbaBeforeQueue() = rejectedDuringRelatedCreation { f, _, _ ->
+        f.sessions.setPlaybackAccountMid(42, f.repository.sessionEpoch) { true }
+        f.sessions.setPlaybackAccountMid(41, f.repository.sessionEpoch) { true }
+    }
+    @Test fun relatedCreationRechecksPlaybackAccountClearBeforeQueue() = rejectedDuringRelatedCreation { f, _, _ ->
+        f.sessions.setPlaybackAccountMid(null, f.repository.sessionEpoch) { true }
+    }
+    @Test fun relatedCreationRechecksLogoutBeforeQueue() = rejectedDuringRelatedCreation { f, _, _ -> f.sessions.logout() }
+    @Test fun relatedCreationRechecksEntryBeforeQueue() = rejectedDuringRelatedCreation { f, _, _ -> f.entryCurrent = false }
+    @Test fun relatedCreationRechecksCallerCancellationBeforeQueue() = rejectedDuringRelatedCreation { f, _, _ -> f.caller.cancel() }
+    @Test fun relatedCreationRechecksExplicitCancellationBeforeQueue() = rejectedDuringRelatedCreation { _, call, _ -> call.cancel() }
+    @Test fun relatedCreationRechecksRawCancellationBeforeQueue() = rejectedDuringRelatedCreation { _, _, raw -> raw.cancel() }
+
+    private fun rejectedDuringRelatedCreation(retire: (TransportAuthority, Call, Call) -> Unit) {
+        // Both APIs share the production queue gate. Real newCall can invoke
+        // reentrant application hooks even while Store/native admission is held.
+        for (execute in listOf(false, true)) TransportAuthority().use { f ->
+            val started = AtomicInteger()
+            val created = AtomicInteger()
+            val rawCall = AtomicReference<Call>()
+            val client = f.repository.httpClient.newBuilder()
+                .eventListener(object : EventListener() {
+                    override fun callStart(call: Call) { started.incrementAndGet() }
+                })
+                .addInterceptor { throw IOException("No external HTTP in creation regression") }.build()
+            lateinit var call: Call
+            DesktopRepository::class.java.getDeclaredField("client").apply { isAccessible = true }.set(f.repository, client)
+            val realFactory = f.repository.ownedPlaybackCallFactory(f.authorization) { true }
+            val related = DesktopOriginalVideoRelatedRequestSource(f.accepted) { true }
+            val calls = related.calls(Call.Factory { request ->
+                realFactory.newCall(request).also { raw ->
+                    rawCall.set(raw); created.incrementAndGet()
+                    retire(f, call, raw) // Strictly after creation, before actual enqueue.
+                }
+            }, f.owner, f.caller)
+            try {
+                call = calls.newCall(Request.Builder().url("https://api.bilibili.com/x/web-interface/archive/related").build())
+                assertEquals(0, created.get())
+                val result = runCatching { if (execute) call.execute().close() else call.enqueue(failureOnly) }
+                assertEquals(1, created.get())
+                assertEquals(0, started.get(), "Retired/cancelled call was enqueued (execute=$execute)")
+                assertTrue(result.exceptionOrNull() is CancellationException || result.exceptionOrNull() is IOException,
+                    "Retirement must be observable to the caller: $result")
+                assertTrue(call.isCanceled()); assertTrue(rawCall.get().isCanceled())
+            } finally { client.dispatcher.executorService.shutdownNow(); client.connectionPool.evictAll() }
+        }
+    }
+
     private fun rejectedRelatedQueue(retire: (TransportAuthority) -> Unit) {
         TransportAuthority().use { f ->
             val related = DesktopOriginalVideoRelatedRequestSource(f.accepted) { true }
@@ -150,6 +202,39 @@ class DesktopPlaybackTransportLockOrderTest {
     }
     @Test fun downloadDeferredPolicyRejectsEntryRetirementBeforeTransportQueue(): Unit = runBlocking {
         rejectedDownloadQueue { it.entryCurrent = false }
+    }
+
+    @Test fun downloadCreationRechecksAccountAbaBeforeQueue(): Unit = runBlocking {
+        rejectedDuringDownloadCreation { it.sessions.activateAccount(42); it.sessions.activateAccount(41) }
+    }
+    @Test fun downloadCreationRechecksEntryBeforeQueue(): Unit = runBlocking {
+        rejectedDuringDownloadCreation { it.entryCurrent = false }
+    }
+
+    private suspend fun rejectedDuringDownloadCreation(retire: (TransportAuthority) -> Unit) {
+        TransportAuthority().use { f ->
+            val created = AtomicInteger()
+            val started = AtomicInteger()
+            val transport = f.repository.httpClient.newBuilder().eventListenerFactory {
+                created.incrementAndGet(); retire(f) // Real OkHttp factory callback, as in the Gate A failure.
+                object : EventListener() {
+                    override fun callStart(call: Call) { started.incrementAndGet() }
+                }
+            }.addInterceptor { throw IOException("No external HTTP in download regression") }.build()
+            DesktopRepository::class.java.getDeclaredField("client").apply { isAccessible = true }.set(f.repository, transport)
+            try {
+                DownloadDanmakuTransport.withTask(f.accepted.nativeSource.source, f.publication, f.caller,
+                    { f.entryCurrent }, { action -> if (f.entryCurrent) { action(); true } else false }) {
+                    DownloadDanmakuTransport.withApi(f.repository) {
+                        val api = DownloadDanmakuTransport.currentBinding().api()
+                        val result = runCatching { api.getDanmakuXml(17).close() }
+                        assertEquals(1, created.get())
+                        assertEquals(0, started.get(), "Download enqueued after its factory retired the owner")
+                        assertTrue(result.exceptionOrNull() is CancellationException || result.exceptionOrNull() is IOException)
+                    }
+                }
+            } finally { transport.dispatcher.executorService.shutdownNow(); transport.connectionPool.evictAll() }
+        }
     }
 
     private suspend fun rejectedDownloadQueue(retire: (TransportAuthority) -> Unit) {
