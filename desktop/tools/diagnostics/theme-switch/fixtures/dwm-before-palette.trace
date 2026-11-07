@@ -1,0 +1,26 @@
+# ton1210-trace v1 pid=4242 os=Windows_11 source=synthetic
+# clock_sync jvm_nano_before=1000000000 qpc_ticks=30000000 jvm_nano_after=1000002000 qpc_freq=10000000
+1500000000 theme.palette_built thread=AWT-EventQueue-0 dark=true dur_ns=30000000
+1520000000 theme.applied thread=AWT-EventQueue-0 dark=true
+1560000000 frame.draw thread=AWT-EventQueue-0
+2000000000 input.press thread=AWT-EventQueue-0 button=1 when_ms=1793000000000 now_ms=1793000000001
+2080000000 input.release thread=AWT-EventQueue-0 button=1 when_ms=1793000000080 now_ms=1793000000080
+2084000000 pref.request thread=AWT-EventQueue-0 mode=LIGHT entry=profile
+2084500000 pref.io_start thread=DefaultDispatcher-worker-3 entry=profile
+2084600000 pref.admission_wait thread=DefaultDispatcher-worker-3
+2085000000 pref.admission_acquired thread=DefaultDispatcher-worker-3
+2085100000 store.lock_request thread=DefaultDispatcher-worker-3
+2085200000 store.lock_acquired thread=DefaultDispatcher-worker-3
+2090200000 store.written thread=DefaultDispatcher-worker-3 bytes=48211
+2270200000 store.forced thread=DefaultDispatcher-worker-3
+2272200000 store.moved thread=DefaultDispatcher-worker-3 atomic=true
+2272300000 store.published thread=DefaultDispatcher-worker-3
+2275000000 prefs.decode thread=AWT-EventQueue-0 dur_ns=2500000
+2275300000 prefs.settings_emit thread=AWT-EventQueue-0
+2275400000 dwm.set_start thread=AWT-EventQueue-0 light=true
+2275500000 dwm.set_end thread=AWT-EventQueue-0 light=true hr=0
+2301300000 theme.palette_built thread=AWT-EventQueue-0 dark=false dur_ns=24000000
+2700300000 theme.applied thread=AWT-EventQueue-0 dark=false
+2701500000 awt.window_background thread=AWT-EventQueue-0 rgb=fafafe
+2760300000 frame.draw thread=AWT-EventQueue-0
+2766000000 frame.next thread=AWT-EventQueue-0 frame_nanos=2765900000

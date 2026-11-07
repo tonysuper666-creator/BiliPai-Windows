@@ -30,6 +30,7 @@ import java.awt.Dimension
 fun main(args: Array<String>) {
     // Upstream code compiled from the merged tree must fail loudly, not drop sessions, if it reaches Android Keystore.
     android.security.keystore.DesktopAndroidKeyStoreGuard.install()
+    DesktopThemeSwitchTrace.installInputProbe()
     if (args.firstOrNull() == "--backend-smoke") {
         val smokeResult = runCatching {
             runBlocking {
