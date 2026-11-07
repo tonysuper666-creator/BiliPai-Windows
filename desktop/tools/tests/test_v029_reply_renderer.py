@@ -71,8 +71,10 @@ class V029ReplyRendererTest(unittest.TestCase):
             proof = json.loads((root / 'reply/v046-subreply-list-renderer-proof.json').read_bytes())
             thread_proof = json.loads((root / 'reply/v046-comment-thread-host-proof.json').read_bytes())
             entrance_proof = json.loads((root / 'reply/v046-inline-subreply-entrance-proof.json').read_bytes())
+            split_proof = json.loads((root / 'reply/v046-comment-detail-split-item-states-proof.json').read_bytes())
             # 591685d9e binds the shared refresh lists after that stage's receipt.
             thread = unbind_refresh_lists(thread.split('\n', 2)[2])
+            thread = restore(thread, split_proof['retainedToCurrent'])
             thread = restore(thread, entrance_proof['retainedToCurrent'])
             thread = restore(thread, thread_proof['retainedToCurrent'])
             thread = restore(thread, proof['retainedToCurrent'])

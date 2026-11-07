@@ -187,6 +187,8 @@ def generate(repo, output):
             body = advance_comment_thread(repo, body, output)
             from v046_comment_polish import advance_inline_entrance
             body = advance_inline_entrance(repo, body, output)
+            from v046_comment_thread import advance_split_item_states
+            body = advance_split_item_states(repo, body, output)
         elif filename == 'DesktopOriginalDynamicInlineReplyUi.kt':
             body = advance_dynamic_items(repo, body, output)
         elif filename == 'DesktopOriginalReplySettings.kt':

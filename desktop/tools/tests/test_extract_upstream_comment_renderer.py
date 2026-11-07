@@ -12,7 +12,7 @@ from desktop_refresh_adaptation import unbind_refresh_lists
 LATER_COMMENT_STAGES={
     'DesktopOriginalReplyComponents.kt':('v046-reply-list-renderer-proof.json',),
     'DesktopOriginalSubReplyDetailComponents.kt':(
-        'v046-inline-subreply-entrance-proof.json',
+        'v046-comment-detail-split-item-states-proof.json','v046-inline-subreply-entrance-proof.json',
         'v046-comment-thread-host-proof.json','v046-subreply-list-renderer-proof.json'),
 }
 def restore_hunks(text, hunks):

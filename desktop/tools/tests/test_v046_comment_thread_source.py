@@ -3,6 +3,7 @@ from pathlib import Path
 import importlib.util
 import json
 import shutil
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -30,13 +31,17 @@ class OriginalNestedPageSources(unittest.TestCase):
         cls.owner = comments.load(REPO, 'thread259_tests_owner', 'extract-upstream-dynamic-reply.py')
         cls.owner.generate(REPO, cls.output/'actual')
         with patch.object(thread, 'advance', side_effect=lambda repo, before, output: before), \
-             patch('v046_comment_polish.advance_inline_entrance', side_effect=lambda repo, before, output: before):
+             patch('v046_comment_polish.advance_inline_entrance', side_effect=lambda repo, before, output: before), \
+             patch.object(thread, 'advance_split_item_states', side_effect=lambda repo, before, output: before):
             cls.owner.generate(REPO, cls.output/'previous')
         relative = comments.PACKAGE+'DesktopOriginalSubReplyDetailComponents.kt'
         # The v046 comment polish inline entrance stage follows the nested page stage; recover this stage's own output.
         entrance = json.loads((cls.output/'actual/v046-inline-subreply-entrance-proof.json').read_bytes())
+        # The comment-detail split item states follow the entrance; peel that receipt first.
+        cls.split = json.loads((cls.output/'actual/v046-comment-detail-split-item-states-proof.json').read_bytes())
+        cls.final = unbind_refresh_lists(body(cls.output/'actual'/relative))
         # 591685d9e binds the shared refresh lists after every stage receipt; peel that exact binding first.
-        cls.actual = restore(unbind_refresh_lists(body(cls.output/'actual'/relative)), entrance['retainedToCurrent'])
+        cls.actual = restore(restore(cls.final, cls.split['retainedToCurrent']), entrance['retainedToCurrent'])
         cls.previous = unbind_refresh_lists(body(cls.output/'previous'/relative))
         cls.original = comments.fixed(REPO)[0]['SubReplyDetailComponents.kt']
         cls.proof = json.loads((cls.output/'actual/v046-comment-thread-host-proof.json').read_bytes())
@@ -119,6 +124,53 @@ class OriginalNestedPageSources(unittest.TestCase):
             thread.advance(REPO, self.previous+'\n'+thread.page_type(self.original), self.output/'bad')
         with self.assertRaises((AssertionError, ValueError)):
             restore(self.actual+'\n// unexpected', self.proof['retainedToCurrent'])
+
+    def test_wide_comment_detail_moves_only_the_original_comment_beside_the_same_list(self):
+        self.assertEqual(1, self.host.count('com.bilipai.desktop.ui.DesktopCommentDetailSplitPanes('))
+        self.assertEqual(1, self.host.count('com.bilipai.desktop.ui.DesktopCommentDetailRootSlot(desktopSplit, listState) {'))
+        self.assertEqual(1, self.host.count('if (!desktopSplitActive) desktopRootReply(listState)\n'))
+        self.assertEqual(1, self.host.count('context = { desktopRootReply(null) },'))
+        self.assertEqual(1, self.host.count('item = rootReply,'))
+        self.assertEqual(1, self.host.count(thread.SPLIT_TARGET_LINE))
+        self.assertIn('LocalDesktopCommentDetailSplitPanes.current', self.host)
+        self.assertTrue(self.proof['desktopCommentDetailSplitOptIn'])
+
+    def test_split_item_states_stage_replaces_each_original_state_once_and_inverts(self):
+        stage = restore(self.final, self.split['retainedToCurrent'])
+        self.assertEqual(self.final, thread.desktop_split_item_states(stage))
+        item = comments.declaration(self.parser, self.final, 'SubReplyDetailItem')
+        for line, name, _, _ in thread.SPLIT_ITEM_STATES:
+            with self.subTest(name=name):
+                self.assertEqual(1, stage.count(line))
+                self.assertNotIn(line, self.final)
+                self.assertEqual(1, item.count('("'+name+'", '))
+        self.assertEqual(len(thread.SPLIT_ITEM_STATES), item.count('com.bilipai.desktop.ui.rememberDesktopCommentDetailItemState'))
+        # Its coroutine dies with the composition, so the in-flight flag stays local.
+        self.assertIn('var isTranslating by remember(item.rpid) { mutableStateOf(false) }', item)
+        self.assertEqual([name for _, name, _, _ in thread.SPLIT_ITEM_STATES], self.split['itemStates'])
+
+    def test_missing_or_duplicate_split_anchor_raises_instead_of_skipping(self):
+        stage = restore(self.final, self.split['retainedToCurrent'])
+        for line, name, _, _ in thread.SPLIT_ITEM_STATES:
+            for broken in (stage.replace(line, '', 1), stage.replace(line, line+line, 1)):
+                with self.subTest(name=name), self.assertRaisesRegex(ValueError, 'Comment detail split anchor changed'):
+                    thread.desktop_split_item_states(broken)
+        for anchor in (thread.SPLIT_STATE_ANCHOR, thread.SPLIT_REFRESH, thread.SPLIT_ROOT_ITEM):
+            with self.subTest(anchor=anchor[:40]), self.assertRaisesRegex(ValueError, 'Comment detail split anchor changed'):
+                thread.desktop_split_panes(self.host.replace(anchor, '', 1))
+
+    def test_missing_split_anchor_exits_non_zero_even_with_optimized_asserts(self):
+        script = ('import sys; sys.path.insert(0, sys.argv[1]); import v046_comment_thread as t; '
+                  't.desktop_split_item_states(sys.stdin.read())')
+        stage = restore(self.final, self.split['retainedToCurrent'])
+        broken = stage.replace(thread.SPLIT_ITEM_STATES[0][0], '', 1)
+        run = subprocess.run([sys.executable, '-O', '-B', '-c', script, str(REPO/'desktop/tools')],
+                             input=broken, capture_output=True, text=True)
+        self.assertNotEqual(0, run.returncode)
+        self.assertIn('Comment detail split anchor changed', run.stderr)
+        ok = subprocess.run([sys.executable, '-O', '-B', '-c', script, str(REPO/'desktop/tools')],
+                            input=stage, capture_output=True, text=True)
+        self.assertEqual(0, ok.returncode, ok.stderr)
 
     def test_all32_original_cases_use_the_actual_generated_production_source(self):
         original = thread.fixed_tests(REPO)

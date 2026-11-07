@@ -52,6 +52,100 @@ def page_type(original):
     return original[first:last]
 
 
+SPLIT_STATE_ANCHOR = '    val listState = if (effectiveConversationMode) conversationListState else allRepliesListState\n'
+SPLIT_STATE_LINE = ('    val desktopSplit = if (com.bilipai.desktop.ui.LocalDesktopCommentDetailSplitPanes.current) {\n'
+                    '        remember(rootReply.rpid) { com.bilipai.desktop.ui.DesktopCommentDetailSplitState() }\n'
+                    '    } else null\n')
+SPLIT_TARGET_ANCHOR = '                highlightedTargetId = targetReplyId\n                listState.animateScrollToItem(targetIndex)\n'
+SPLIT_TARGET_LINE = '                if (targetIndex == 0) desktopSplit?.contextScroll?.scrollTo(0)\n'
+SPLIT_REFRESH = ('            AdaptivePullToRefreshBox(\n'
+                 '                isRefreshing = isRefreshing,\n'
+                 '                onRefresh = onRefresh,\n'
+                 '                modifier = Modifier.fillMaxSize(),\n'
+                 '            ) {\n')
+SPLIT_ROOT_ITEM = ('                    item(key = "root_reply") {\n'
+                   '                        // The page transition owns reveal; avoid resizing the lazy-list anchor again.\n')
+SPLIT_ROOT_BOX = '                        Box(modifier = Modifier.testTag(SUB_REPLY_DETAIL_ROOT_TAG)) {\n'
+SPLIT_SECTION = ('                        Column {\n'
+                 '                            AppHorizontalDivider(\n'
+                 '                                thickness = layoutPolicy.sectionDividerThicknessDp.dp,\n')
+SPLIT_END = '                }\n            }\n        }\n    }\n}'
+
+
+def exact(text, before, after):
+    # Not an assert: a missing anchor must fail under any interpreter flags.
+    if text.count(before) != 1:
+        raise ValueError('Comment detail split anchor changed: '+before[:90].replace('\n', ' '))
+    return text.replace(before, after, 1)
+
+
+# The original comment's own item states. Its renderer is recomposed (not moved) when it leaves
+# lazy item 0 for the context pane, so these reads go through the split owner; every other reply,
+# and every host without the opt-in, keeps the original `remember`.
+SPLIT_ITEM_STATES = [
+    ('    var showActionSheet by remember(item.rpid) { mutableStateOf(false) }\n', 'actionSheet', '', 'false'),
+    ('    var showFreeCopyDialog by remember(item.rpid) { mutableStateOf(false) }\n', 'freeCopy', '', 'false'),
+    ('    var showReportDialog by remember(item.rpid) { mutableStateOf(false) }\n', 'report', '', 'false'),
+    ('    var translatedMessage by remember(item.rpid) { mutableStateOf<String?>(null) }\n', 'translation', '<String?>', 'null'),
+    ('    var hatedBodyExpanded by remember(item.rpid, isHated) { mutableStateOf(false) }\n', 'hatedBody', '', 'false'),
+    ('    var hatePromptHandled by remember(item.rpid) { mutableStateOf(false) }\n', 'hatePrompt', '', 'false'),
+    ('    var confirmBlockUser by remember(item.rpid) { mutableStateOf(false) }\n', 'blockUser', '', 'false'),
+]
+
+
+def desktop_split_item_states(text):
+    for line, name, kind, initial in SPLIT_ITEM_STATES:
+        keys = line[line.index('remember(')+len('remember('):line.index(') {')]
+        text = exact(text, line, line[:line.index('remember(')]+
+                     'com.bilipai.desktop.ui.rememberDesktopCommentDetailItemState'+kind+
+                     '("'+name+'", '+keys+') { '+initial+' }\n')
+    return text
+
+
+def advance_split_item_states(repo, before, output):
+    """Last comment-detail stage: route the item states through the split owner (after the inline entrance)."""
+    after = desktop_split_item_states(before)
+    save(repo, output, 'v046-comment-detail-split-item-states-proof', dict(upstreamCommit=COMMIT,
+        sourceManifestSHA256=MANIFEST_SHA256, itemStates=[name for _, name, _, _ in SPLIT_ITEM_STATES],
+        isTranslatingStaysLocal=True, retainedToCurrent=inverse_proof(before, after)))
+    return after
+
+
+def desktop_split_panes(body):
+    """Standalone comment detail on a wide window: original comment | replies.
+
+    One page, one list state, one VM. The root renderer moves out of lazy item 0
+    into the context pane only when the desktop host opts in and the width is
+    split; every reply keeps its key and index, so jump/restore stay valid."""
+    body = exact(body, SPLIT_STATE_ANCHOR, SPLIT_STATE_ANCHOR+SPLIT_STATE_LINE)
+    body = exact(body, SPLIT_TARGET_ANCHOR, SPLIT_TARGET_ANCHOR.replace(
+        '                listState.animateScrollToItem', SPLIT_TARGET_LINE+'                listState.animateScrollToItem'))
+    first = body.find(SPLIT_ROOT_ITEM)
+    if first < 0 or body.count(SPLIT_ROOT_ITEM) != 1 or not body.endswith(SPLIT_END):
+        raise ValueError('Comment detail split anchor changed: root item or page end')
+    start = first+len(SPLIT_ROOT_ITEM)
+    stop = body.find(SPLIT_SECTION, start)
+    root = body[start:stop]
+    if stop < 0 or not root.startswith(SPLIT_ROOT_BOX) or not root.endswith('                        }\n') \
+            or root.count('item = rootReply,') != 1:
+        raise ValueError('Comment detail split anchor changed: root renderer')
+    body = body[:start]+'                        if (!desktopSplitActive) desktopRootReply(listState)\n'+body[stop:]
+    body = exact(body, SPLIT_REFRESH,
+        '            // The parameter shadows the page list: narrow keeps the original avatar push,\n'
+        '            // the wide context pane passes null because it is not a lazy item.\n'
+        '            val desktopRootReply: @Composable (androidx.compose.foundation.lazy.LazyListState?) -> Unit = { listState ->\n'
+        '                com.bilipai.desktop.ui.DesktopCommentDetailRootSlot(desktopSplit, listState) {\n'+root+'                }\n'
+        '            }\n'
+        '            com.bilipai.desktop.ui.DesktopCommentDetailSplitPanes(\n'
+        '                state = desktopSplit,\n'
+        '                listState = listState,\n'
+        '                active = pageActive,\n'
+        '                dividerColor = appearance.dividerColor,\n'
+        '                context = { desktopRootReply(null) },\n'
+        '            ) { desktopSplitActive ->\n'+SPLIT_REFRESH)
+    return body[:-len(SPLIT_END)]+'                }\n            }\n            }\n        }\n    }\n}'
+
+
 def advance(repo, before, output):
     sources, _ = fixed(repo)
     raw = sources['SubReplyDetailComponents.kt']
@@ -86,6 +180,7 @@ def advance(repo, before, output):
                 '                                avatarItemKey = item.rpid,\n'
                 '                                layoutPolicy = layoutPolicy,\n'
                 '                                item = item,')
+    body = desktop_split_panes(body)
     # The actual inline callers already carry the current SubReplyUiState; pass
     # the original anchor identity rather than sharing the zero/default key.
     forwarded = once(inline, '        isConversationMode = state.conversationAnchor != null,\n',
@@ -112,6 +207,6 @@ def advance(repo, before, output):
         originalIndependentListStates=True, realConversationAnchorForwarded=True,
         originalViewportSlotSkeletons=True, consumedEntryTargetAndHighlightTimeoutRetained=True,
         sameExistingVideoAndDynamicStateOwners=True, sameOwnedSettingsAndFeedbackPorts=True,
-        broaderInlineEntranceMotionNotClaimed=True))
+        broaderInlineEntranceMotionNotClaimed=True, desktopCommentDetailSplitOptIn=True))
     emit_original_tests(repo, output)
     return after
