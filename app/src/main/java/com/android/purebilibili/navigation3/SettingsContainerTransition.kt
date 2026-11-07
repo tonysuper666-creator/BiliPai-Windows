@@ -39,16 +39,15 @@ import top.yukonga.miuix.kmp.nav.transition.NavTransitionScope
 /** 设置与直播共用的来源容器过渡；页面始终按最终尺寸布局。 */
 internal class SettingsContainerTransition(
     private val source: SettingsContainerSource,
-    private val pageColor: androidx.compose.ui.graphics.Color,
+    private val pageColor: () -> Color,
     private val realtimeBlurEnabled: Boolean = false,
     private val blurMotionTierProvider: () -> MotionTier = { MotionTier.Normal },
     private val durationMillis: Int = SETTINGS_CONTAINER_DURATION_MILLIS,
     // 仅直播卡片边界启用首页卡片景深；设置容器保留原有模糊与布局行为。
     private val cardBackgroundEffectsEnabled: Boolean = false,
-    private val isLightBackground: Boolean = pageColor.luminance() > 0.5f,
+    private val isLightBackground: () -> Boolean = { pageColor().luminance() > 0.5f },
+    private val videoCardMotionEnabled: Boolean = false,
 ) : NavTransition {
-    // 绘制阶段锁存完成状态；入场未完成就返回时沿原曲线折返，不切换几何路径。
-    private var hasOpened = false
     private val blurCache = BlurRenderEffectCache()
     private val cardFrameCache = VideoCardTransitionBackgroundFrameCache()
     private val coveredShapeCache = MiuixVideoCardCoveredShapeCache()
@@ -62,14 +61,14 @@ internal class SettingsContainerTransition(
             else -> VideoCardTransitionBackgroundPhase.OPENING
         },
         motionTier = blurMotionTierProvider(),
-        isLightBackground = isLightBackground,
+        isLightBackground = isLightBackground(),
         isGestureRestoreInProgress = scope.settle?.phase == NavSettlePhase.Cancel,
         density = scope.density.density,
         deviceCornerRadiusPx = 0f,
         scaleReduction = 0f, // 整页只在导航图层缩放一次。
     )
     override val handlesOwnClipping = true
-    override val retainsSpringOvershoot = true
+    override val retainsSpringOvershoot = !videoCardMotionEnabled
     private val enterMotion = NavMotion(
         programmatic = NavSettleSpec.Tween(durationMillis, LinearEasing),
         commit = NavSettleSpec.Spring(dampingRatio = 0.82f, stiffness = 500f, clampOvershoot = false),
@@ -85,7 +84,17 @@ internal class SettingsContainerTransition(
         cancel = NavSettleSpec.Spring(dampingRatio = 1f, stiffness = 700f),
     )
 
-    override val motion: NavMotion get() = if (hasOpened) returnMotion else enterMotion
+    private val videoMotionSpec = com.android.purebilibili.core.ui.transition.resolveVideoHeroMotionSpec(durationMillis)
+    private val videoEnterMotion = com.android.purebilibili.navigation3.predictiveback.resolveVideoHeroNavMotion(
+        videoMotionSpec, returning = false,
+    )
+    private val videoReturnMotion = com.android.purebilibili.navigation3.predictiveback.resolveVideoHeroNavMotion(
+        videoMotionSpec, returning = true,
+    )
+
+    override val motion: NavMotion get() = if (videoCardMotionEnabled) {
+        if (source.hasOpened) videoReturnMotion else videoEnterMotion
+    } else if (source.hasOpened) returnMotion else enterMotion
 
     override fun scrimFraction(scope: NavTransitionScope): Float = 0f
 
@@ -117,7 +126,7 @@ internal class SettingsContainerTransition(
                 val frame = resolvePredictiveBackBlurFrame(
                     progress = progress,
                     motionTier = blurMotionTierProvider(),
-                    isLightBackground = pageColor.luminance() > 0.5f,
+                    isLightBackground = pageColor().luminance() > 0.5f,
                 )
                 renderEffect = blurCache.resolve(frame.blurRadiusPx)
             } else Modifier)
@@ -128,14 +137,14 @@ internal class SettingsContainerTransition(
                     if (cardBackgroundEffectsEnabled) {
                         val background = cardBackgroundFrame(scope)
                         if (background.scrimAlpha > 0f) {
-                            drawRect((if (isLightBackground) VIDEO_CARD_TRANSITION_LIGHT_SCRIM_TINT else Color.Black)
+                            drawRect((if (isLightBackground()) VIDEO_CARD_TRANSITION_LIGHT_SCRIM_TINT else Color.Black)
                                 .copy(alpha = background.scrimAlpha))
                         }
                     }
                     return@drawWithContent
                 }
                 if (scope.relativeDepth == 0f) {
-                    hasOpened = true
+                    source.hasOpened = true
                     drawContent()
                     return@drawWithContent
                 }
@@ -152,12 +161,18 @@ internal class SettingsContainerTransition(
                     drawContext.canvas.restore()
                     return@drawWithContent
                 }
-                val frame = resolveSettingsContainerFrame(
+                val frame = if (videoCardMotionEnabled) {
+                    // 视频导航驱动已经缓动；几何直接读取同一深度，禁止再套设置页曲线。
+                    resolveSettingsContainerFrame(
+                        source.bounds, destination, scope.relativeDepth,
+                        returning = false, springDriven = true,
+                    )
+                } else resolveSettingsContainerFrame(
                     source.bounds, destination, scope.relativeDepth,
-                    returning = hasOpened && (scope.change == NavChange.Pop || scope.gesture != null ||
+                    returning = source.hasOpened && (scope.change == NavChange.Pop || scope.gesture != null ||
                         scope.change is NavChange.MultiPop || scope.settle?.phase == NavSettlePhase.Cancel ||
                         scope.settle?.phase == NavSettlePhase.Commit),
-                    springDriven = hasOpened && scope.settle?.phase != NavSettlePhase.Cancel,
+                    springDriven = source.hasOpened && scope.settle?.phase != NavSettlePhase.Cancel,
                 )
                 // 头像入口按自身尺寸提前交接，不能沿用设置行的整页内容放大。
                 // 两种材质共用此入口；直播封面卡片与设置容器保留原有时机和缩放。
@@ -173,7 +188,7 @@ internal class SettingsContainerTransition(
                     addRoundRect(RoundRect(frame.bounds, top, top, bottom, bottom))
                 }
                 clipPath(path) {
-                    drawRect(lerp(source.color, pageColor, contentAlpha), frame.bounds.topLeft, frame.bounds.size)
+                    drawRect(lerp(source.color, pageColor(), contentAlpha), frame.bounds.topLeft, frame.bounds.size)
                     // 源行与目标页共用一个透明度时钟；目标页出现后不残留源文字和图标。
                     if (sourceAlpha > 0f) {
                         if (sourceAlpha < 1f) {

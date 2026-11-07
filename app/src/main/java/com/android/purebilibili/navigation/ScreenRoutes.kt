@@ -97,10 +97,18 @@ sealed class ScreenRoutes(val route: String) {
         }
     }
 
-    object ArticleDetail : ScreenRoutes("article/{articleId}?title={title}") {
-        fun createRoute(articleId: Long, title: String? = null): String {
+    object ArticleCollection : ScreenRoutes("article_collection/{collectionId}?title={title}&currentArticleId={currentArticleId}") {
+        fun createRoute(collectionId: Long, title: String = "", currentArticleId: Long = 0L): String =
+            "article_collection/$collectionId?title=${encodeUrlComponentCompat(title)}&currentArticleId=$currentArticleId"
+    }
+
+    object ArticleDetail : ScreenRoutes("article/{articleId}?title={title}&commentRootRpid={commentRootRpid}&commentTargetRpid={commentTargetRpid}") {
+        fun createRoute(articleId: Long, title: String? = null, commentRootRpid: Long = 0L, commentTargetRpid: Long = 0L): String {
             val encodedTitle = title?.let(::encodeUrlComponentCompat).orEmpty()
-            return "article/$articleId?title=$encodedTitle"
+            val base = "article/$articleId?title=$encodedTitle"
+            if (commentRootRpid <= 0L && commentTargetRpid <= 0L) return base
+            return base + "&commentRootRpid=${commentRootRpid.coerceAtLeast(0L)}" +
+                "&commentTargetRpid=${commentTargetRpid.coerceAtLeast(0L)}"
         }
     }
     

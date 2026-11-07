@@ -33,8 +33,6 @@ import com.android.purebilibili.feature.video.ui.section.resolveSubtitleBottomOf
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlin.math.roundToInt
@@ -361,12 +359,19 @@ fun PiliExternalSubtitleOverlay(
     var verticalOffset by remember(session.identity, isPortrait) { mutableFloatStateOf(storedOffset) }
     var dragging by remember(session.identity, isPortrait) { mutableStateOf(false) }
     LaunchedEffect(storedOffset) { if (!dragging) verticalOffset = storedOffset }
-    val position by produceState(player.currentPosition, player, session.identity) {
-        while (isActive) { value = player.currentPosition; delay(if (player.isPlaying) 100L else 250L) }
-    }
-    val effectivePosition = subtitlePositionForOffset(position, session.timeOffsetMs)
     val mode = if (track != null) SubtitleDisplayMode.PRIMARY_ONLY else session.acquiredDisplayMode
     val primaryCues = track?.cues ?: session.acquiredCues[session.selectedTrackKey].orEmpty()
+    val secondaryCues = session.acquiredCues[session.acquiredSecondaryTrackKey].orEmpty()
+    val subtitleTimeline = remember(primaryCues, secondaryCues, session.timeOffsetMs) {
+        subtitlePositionTimeline(primaryCues, secondaryCues, session.timeOffsetMs)
+    }
+    val position by com.android.purebilibili.core.player.rememberPlaybackPosition(
+        player = player,
+        identity = session.identity,
+        enabled = primaryCues.isNotEmpty() || secondaryCues.isNotEmpty(),
+        timeline = subtitleTimeline,
+    )
+    val effectivePosition = subtitlePositionForOffset(position, session.timeOffsetMs)
     val text = if (shouldRenderPrimarySubtitle(mode)) resolveSubtitleTextAt(primaryCues, effectivePosition) else null
     val secondaryText = if (shouldRenderSecondarySubtitle(mode))
         resolveSubtitleTextAt(session.acquiredCues[session.acquiredSecondaryTrackKey].orEmpty(), effectivePosition) else null

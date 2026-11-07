@@ -1,5 +1,6 @@
 package com.android.purebilibili.feature.home
 
+import android.os.Build
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -22,19 +23,93 @@ import com.android.purebilibili.core.ui.transition.LocalVideoCardTransitionBackg
 import com.android.purebilibili.core.ui.transition.VideoCardTransitionBackgroundPhase
 import com.android.purebilibili.core.ui.transition.VideoCardTransitionBackgroundState
 import com.android.purebilibili.core.ui.transition.VideoCardTransitionExposure
+import com.android.purebilibili.core.ui.transition.VideoCardTransitionSnapshotHandle
 import com.android.purebilibili.core.ui.transition.captureNativeVideoCardImage
 import com.android.purebilibili.core.ui.transition.recordNativeVideoCardLayer
 import com.android.purebilibili.core.ui.transition.rememberNativeVideoCardLayer
+import com.android.purebilibili.core.ui.transition.rememberVideoCardTransitionSnapshotHandle
 import com.android.purebilibili.core.ui.transition.videoCardTransitionBackgroundEffect
 import com.android.purebilibili.core.util.CardPositionManager
 import java.util.concurrent.atomic.AtomicInteger
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
+import org.junit.Assume.assumeTrue
 import org.junit.Rule
 import org.junit.Test
 
 class HomeCardTransitionDrawCacheUiTest {
     @get:Rule val rule = createComposeRule()
+
+    @Test
+    fun blurredSnapshotSurvivesLiveHandoffCancellationAndNextSession() {
+        assumeTrue(Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
+        val progress = mutableFloatStateOf(0f)
+        val exposure = mutableStateOf(VideoCardTransitionExposure.Idle)
+        val color = mutableStateOf(Color.Blue)
+        val draws = AtomicInteger()
+        lateinit var snapshot: VideoCardTransitionSnapshotHandle
+        fun phase() = when (exposure.value) {
+            VideoCardTransitionExposure.Idle -> VideoCardTransitionBackgroundPhase.IDLE
+            VideoCardTransitionExposure.Opening -> VideoCardTransitionBackgroundPhase.OPENING
+            VideoCardTransitionExposure.Returning -> VideoCardTransitionBackgroundPhase.RETURNING
+            else -> VideoCardTransitionBackgroundPhase.HELD
+        }
+        rule.setContent {
+            snapshot = rememberVideoCardTransitionSnapshotHandle()
+            Box(Modifier.size(120.dp)
+                .videoCardTransitionBackgroundEffect(
+                    progressProvider = { progress.floatValue },
+                    phaseProvider = { phase() },
+                    exposureProvider = { exposure.value },
+                    realtimeBlurEnabledProvider = { true },
+                    snapshotHandle = snapshot,
+                )
+                .drawWithContent {
+                    draws.incrementAndGet()
+                    drawRect(color.value)
+                }
+                .testTag("blurred-home"))
+        }
+        fun pixel(): Color {
+            val pixels = rule.onNodeWithTag("blurred-home").captureToImage().toPixelMap()
+            return pixels[pixels.width / 2, pixels.height / 2]
+        }
+        rule.runOnIdle {
+            exposure.value = VideoCardTransitionExposure.Opening
+            progress.floatValue = 0.5f
+        }
+        assertTrue(pixel().blue > 0.5f)
+        val capturedDraws = draws.get()
+        for (depth in listOf(0.65f, 0.8f, 1f)) {
+            rule.runOnIdle { progress.floatValue = depth }
+            assertTrue(pixel().blue > 0.5f)
+            assertEquals("Blur updates must reuse captured source commands", capturedDraws, draws.get())
+        }
+        rule.runOnIdle {
+            color.value = Color.Green
+            exposure.value = VideoCardTransitionExposure.BackPreview
+            progress.floatValue = 0f
+        }
+        assertTrue("Live source must take over near landing", pixel().green > 0.9f)
+        rule.runOnIdle {
+            exposure.value = VideoCardTransitionExposure.Restoring
+            progress.floatValue = 1f
+        }
+        val restored = pixel()
+        assertTrue("Cancel must retain the original frozen scene", restored.blue > 0.5f && restored.green < 0.1f)
+        rule.runOnIdle {
+            exposure.value = VideoCardTransitionExposure.Idle
+            progress.floatValue = 0f
+            snapshot.releaseSession()
+        }
+        assertTrue(pixel().green > 0.9f)
+        rule.runOnIdle {
+            exposure.value = VideoCardTransitionExposure.Opening
+            progress.floatValue = 0.8f
+        }
+        val next = pixel()
+        assertTrue("Next session must capture current content", next.green > 0.5f && next.blue < 0.1f)
+    }
 
     @Test
     fun scrimProgressReusesSourceDrawingAndContentChangesStillAppear() {

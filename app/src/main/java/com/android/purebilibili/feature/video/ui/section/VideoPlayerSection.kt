@@ -179,6 +179,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.activity.compose.LocalActivity
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.compose.currentStateAsState
 import androidx.lifecycle.Lifecycle
@@ -186,6 +187,8 @@ import androidx.lifecycle.repeatOnLifecycle
 import coil3.compose.AsyncImage
 import androidx.compose.ui.layout.ContentScale
 import com.android.purebilibili.feature.video.screen.videoInputDiagnostics
+import com.android.purebilibili.core.ui.LocalVideoDetailNavigationTransitionScope
+import com.android.purebilibili.core.ui.transition.LocalMiuixVideoCardTransitionState
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.media3.common.Player
 import androidx.media3.common.PlaybackParameters
@@ -484,32 +487,20 @@ private fun BoxScope.VideoSubtitleOverlayHost(
             cid = success?.info?.cid ?: 0L,
         )
     }
-    val hasSubtitleCues = remember(uiState) {
-        val success = uiState as? VideoPlaybackUiState.Success ?: return@remember false
-        success.subtitlePrimaryCues.isNotEmpty() || success.subtitleSecondaryCues.isNotEmpty()
-    }
-    val subtitleLifecycle = LocalLifecycleOwner.current.lifecycle
-    // Keep the fast playback-position read inside this restart scope so the player, video
-    // surface and danmaku hosts are not recomposed on every subtitle tick.
-    val subtitlePositionMs by produceState(
-        player.currentPosition.coerceAtLeast(0L),
-        player,
-        subtitlePollingIdentity,
-        subtitleFeatureEnabled,
-        hasSubtitleCues,
-        subtitleLifecycle,
+    val subtitleTimeline = remember(
+        subtitleOwner.subtitlePrimaryCues, subtitleOwner.subtitleSecondaryCues, timingOffsetMs,
     ) {
-        value = player.currentPosition.coerceAtLeast(0L)
-        if (!subtitleFeatureEnabled || !hasSubtitleCues) {
-            return@produceState
-        }
-        subtitleLifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-            while (isActive) {
-                value = player.currentPosition.coerceAtLeast(0L)
-                delay(if (player.isPlaying) 120L else 1500L)
-            }
-        }
+        com.android.purebilibili.feature.video.subtitle.subtitlePositionTimeline(
+            subtitleOwner.subtitlePrimaryCues, subtitleOwner.subtitleSecondaryCues, timingOffsetMs,
+        )
     }
+    val subtitlePositionMs by com.android.purebilibili.core.player.rememberPlaybackPosition(
+        player = player,
+        identity = subtitlePollingIdentity,
+        enabled = subtitleFeatureEnabled &&
+            (subtitleOwner.subtitlePrimaryCues.isNotEmpty() || subtitleOwner.subtitleSecondaryCues.isNotEmpty()),
+        timeline = subtitleTimeline,
+    )
     val subtitlePrimaryRawText = remember(
         uiState,
         subtitleFeatureEnabled,
@@ -893,6 +884,12 @@ private fun VideoPlayerSectionContent(
     val lifecycleOwner = LocalLifecycleOwner.current
     val lifecycleState by lifecycleOwner.lifecycle.currentStateAsState()
     val hostLifecycleStarted = lifecycleState.isAtLeast(androidx.lifecycle.Lifecycle.State.STARTED)
+    // 退场 entry 会提前降到 CREATED；输出保留必须单独受真实窗口生命周期约束。
+    val windowLifecycle = (LocalActivity.current as? androidx.lifecycle.LifecycleOwner)?.lifecycle
+        ?: lifecycleOwner.lifecycle
+    val windowLifecycleState by windowLifecycle.currentStateAsState()
+    val navigationTransitionScope = LocalVideoDetailNavigationTransitionScope.current
+    val cardMorphEnabled = LocalMiuixVideoCardTransitionState.current.enabled
     val registeredPlugins by PluginManager.pluginsFlow.collectAsStateWithLifecycle()
     val anime4kPluginInfo = registeredPlugins.firstOrNull { it.plugin.id == BuiltinPluginIds.VIDEO_ENHANCEMENT }
     val anime4kPlugin = PluginManager.getPlugin(VideoEnhancementPluginApi::class)
@@ -1489,17 +1486,25 @@ private fun VideoPlayerSectionContent(
             hasUsedLiveBackPreviewTexture = true
         }
     }
+    val retainBoundSurfaceForReturn = shouldRetainInlineSurfaceForCardReturn(
+        cardMorphEnabled = cardMorphEnabled,
+        entryRemoving = navigationTransitionScope?.isRemoving == true,
+        windowStarted = windowLifecycleState.isAtLeast(Lifecycle.State.STARTED),
+        hasBoundPlayer = playerViewRef?.player === playerState.player,
+    )
     val shouldBindInlinePlayerView = remember(
         isPortraitFullscreen,
         hostLifecycleStarted,
         isInPipMode,
-        liveBackPreview
+        liveBackPreview,
+        retainBoundSurfaceForReturn,
     ) {
         shouldBindInlinePlayerViewToPlayer(
             isPortraitFullscreen = isPortraitFullscreen,
             hostLifecycleStarted = hostLifecycleStarted,
             isInPipMode = isInPipMode,
-            liveBackPreview = liveBackPreview
+            liveBackPreview = liveBackPreview,
+            retainBoundSurfaceForReturn = retainBoundSurfaceForReturn,
         )
     }
     val anime4kSurfaceReady = shouldUseAnime4kPipeline && anime4kInputSurface != null
@@ -4379,17 +4384,7 @@ private fun VideoPlayerSectionContent(
     val manualStartPlayButtonLayoutSpec = remember {
         resolveManualStartPlayButtonLayoutSpec()
     }
-    val loadCoverImage = !isPlayerSurfaceReady || shouldLoadVideoPlayerCoverImage(
-        isVerticalVideo = isVerticalVideo,
-        forceCoverDuringReturnAnimation = forceCoverDuringReturnAnimation,
-        // Large-screen layouts own the shared shell outside this section and publish the
-        // source through the local; phone layouts also provide it explicitly in state.
-        hasSharedCardTransition = transitionEnabled &&
-            com.android.purebilibili.core.ui.LocalSharedTransitionEnabled.current &&
-            !(sourceRouteForSharedElement
-                ?: com.android.purebilibili.core.ui.transition.LocalVideoCardSharedElementSourceRoute.current)
-                .isNullOrBlank(),
-    )
+
 
     LaunchedEffect(
         showControls,
@@ -4594,7 +4589,9 @@ private fun VideoPlayerSectionContent(
                         playFromManualStartCover()
                     }
             ) {
-                if (loadCoverImage && currentCoverUrl.isNotEmpty()) {
+                // 封面层存续期间始终复用当前封面，包括播放面就绪到首帧揭开的间隙及退场淡出。
+                // 竖屏、横屏与各材质共用此规则，避免已有图片被黑底替换。
+                if (currentCoverUrl.isNotEmpty()) {
                     val sharedCoverCacheKey = if (useStationaryListCover) {
                         stationaryListKey
                     } else {

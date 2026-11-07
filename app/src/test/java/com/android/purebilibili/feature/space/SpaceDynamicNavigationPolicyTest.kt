@@ -181,4 +181,15 @@ class SpaceDynamicNavigationPolicyTest {
         assertEquals(123456L, action.articleId)
         assertEquals("旧专栏", action.title)
     }
+    @Test
+    fun knownCvIdIsNotOverwrittenByMigratedOpusLink() {
+        assertEquals(
+            SpaceDynamicClickAction.OpenArticle(123456, "专栏标题"),
+            resolveSpaceArticleClickAction(SpaceArticleItem(
+                id = 123456, title = "专栏标题",
+                jump_url = "https://www.bilibili.com/opus/1201902028962398230",
+            )),
+        )
+    }
+
 }

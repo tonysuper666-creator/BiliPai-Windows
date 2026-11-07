@@ -538,7 +538,7 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
 
     private suspend fun loadProfileDynamics(generation: Long, mid: Long) {
         val items = profileRequestOrNull {
-            NetworkModule.spaceApi.getSpaceDynamic(mid).data?.items
+            NetworkModule.spaceApi.getSpaceDynamic(mid).data?.items?.let { com.android.purebilibili.data.repository.filterGoodsSpaceDynamics(it) }
         } ?: return
         updateProfileSuccess(generation, mid) { current ->
             current.copy(space = mergeProfileDynamicState(current.space, items))

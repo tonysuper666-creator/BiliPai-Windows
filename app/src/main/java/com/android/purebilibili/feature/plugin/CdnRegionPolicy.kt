@@ -71,19 +71,69 @@ enum class PlaybackCdnPreference(
 internal fun applyPlaybackCdnPreference(
     candidates: List<PlaybackCdnCandidate>,
     preference: PlaybackCdnPreference,
+    pluginApplied: Boolean = false,
 ): List<PlaybackCdnCandidate> {
-    if (candidates.isEmpty() || preference == PlaybackCdnPreference.BASE_URL) return candidates
-    if (preference == PlaybackCdnPreference.BACKUP_URL) {
-        return candidates.drop(1) + candidates.take(1)
+    if (candidates.isEmpty()) return candidates
+
+    // ① 设置里选了具体线路：最高优先，无条件排到最前。
+    val host = preference.host
+    if (host != null) {
+        // 不管原候选是 PCDN 还是常规 CDN，改 host 后就是设置里的线路
+        // （upgcxcode 路径与签名在 host 之间通用）。
+        val base = candidates.first()
+        val preferred = base.copy(
+            videoUrl = rewriteBilivideoHost(base.videoUrl, host) ?: base.videoUrl,
+            audioUrl = base.audioUrl?.let { rewriteBilivideoHost(it, host) ?: it },
+        )
+        val rest = excludePcdnCandidates(candidates)
+        return (listOf(preferred) + rest).distinctBy { it.videoUrl to it.audioUrl }
     }
-    val host = preference.host ?: return candidates
-    val source = candidates.first()
-    val preferred = source.copy(
-        videoUrl = rewriteBilivideoHost(source.videoUrl, host) ?: return candidates,
-        audioUrl = source.audioUrl?.let { rewriteBilivideoHost(it, host) ?: it },
-    )
-    return (listOf(preferred) + candidates).distinctBy { it.videoUrl to it.audioUrl }
+
+    // ② 插件（CDN 智能选线）已开启：尊重插件给出的顺序，不再额外过滤。
+    //    插件内部已用 risky 标记把 PCDN 排到最后，再过滤等于推翻它的判断。
+    if (pluginApplied) {
+        return if (preference == PlaybackCdnPreference.BACKUP_URL) {
+            candidates.drop(1) + candidates.take(1)
+        } else {
+            candidates
+        }
+    }
+
+    // ③ 插件没开：排除 PCDN，整批都是 PCDN 时换 host 兜底。
+    val usable = excludePcdnCandidates(candidates)
+    if (preference == PlaybackCdnPreference.BACKUP_URL) {
+        return usable.drop(1) + usable.take(1)
+    }
+    return usable
 }
+
+/**
+ * 排除 PCDN 候选。
+ *
+ * 整批都是 PCDN 时不直接返回空，而是把 host 换成常规线路——upgcxcode 路径与签名
+ * 在不同 host 之间通用，这样屏蔽 PCDN 之后仍然能播放/下载。
+ */
+private fun excludePcdnCandidates(
+    candidates: List<PlaybackCdnCandidate>
+): List<PlaybackCdnCandidate> {
+    val safe = candidates.filter { !isRiskyCdnHost(hostOf(it.videoUrl)) }
+    if (safe.isNotEmpty()) return safe
+    return candidates.map { candidate ->
+        candidate.copy(
+            videoUrl = rewriteBilivideoHost(candidate.videoUrl, FALLBACK_CDN_HOST)
+                ?: candidate.videoUrl,
+            audioUrl = candidate.audioUrl?.let {
+                rewriteBilivideoHost(it, FALLBACK_CDN_HOST) ?: it
+            },
+        )
+    }
+}
+
+private fun hostOf(url: String): String =
+    runCatching { java.net.URI(url).host.orEmpty() }.getOrDefault("")
+
+/** 整批候选都是 PCDN 时改写的目标线路。 */
+private const val FALLBACK_CDN_HOST = "upos-sz-mirrorali.bilivideo.com"
 
 data class CdnCustomRuleValidation(
     val rule: CdnCustomRule,
@@ -689,10 +739,17 @@ private fun normalizeRegionName(value: String): String {
         .removeSuffix("市")
 }
 
-private fun rewriteBilivideoHost(url: String, newHost: String): String? {
+internal fun rewriteBilivideoHost(url: String, newHost: String): String? {
     val uri = runCatching { URI(url) }.getOrNull() ?: return null
     val originalHost = uri.host ?: return null
-    if (originalHost != "bilivideo.com" && !originalHost.endsWith(".bilivideo.com")) return null
+    // 允许 PCDN 域名一起参与改写：mcdn.bilivideo.cn / .net 的 upgcxcode 路径与签名
+    // 和常规 CDN 通用，用户屏蔽 mcdn 后正是靠换 host 才能继续下载/播放。
+    val isBiliHost = originalHost == "bilivideo.com" ||
+        originalHost.endsWith(".bilivideo.com") ||
+        originalHost == "bilivideo.cn" ||
+        originalHost.endsWith(".bilivideo.cn") ||
+        originalHost.endsWith(".bilivideo.net")
+    if (!isBiliHost) return null
     if (newHost.isBlank()) return null
 
     val scheme = uri.scheme ?: return null

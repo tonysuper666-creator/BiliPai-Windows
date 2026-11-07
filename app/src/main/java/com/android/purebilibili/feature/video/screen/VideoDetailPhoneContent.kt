@@ -133,19 +133,28 @@ internal fun VideoDetailPhoneSuccessContentLayer(
     commentThreadCoveredBlurProgressProvider: () -> Float = { 0f },
     commentPullToRefreshEnabled: Boolean = true,
     animateLateEntryContent: Boolean = false,
+    deferFreshEntryContent: Boolean = false,
+    navigationOwnsEntryMotion: Boolean = false,
 ) {
     val commentState by commentStateHandle
     val engagementSuccess = success.withEngagementUiState(engagementState)
     var pendingVideoShare by remember { mutableStateOf<VideoSharePayload?>(null) }
+    val shareAnchorState = remember(success.info.bvid) { com.android.purebilibili.feature.video.share.VideoShareAnchorState() }
     val coveredBlurEffectCache = remember { BlurRenderEffectCache() }
     // Android 16 ART 曾拒绝校验 VideoDetailScreen 中捕获过多状态的匿名 Compose lambda。
     // 保持这个成功态为命名边界，避免 R8/Compose 再生成单个超大内容块。
+    androidx.compose.runtime.CompositionLocalProvider(
+        com.android.purebilibili.feature.video.share.LocalVideoShareAnchorState provides shareAnchorState,
+    ) {
     key(success.info.bvid) {
+        // 页面导航与卡片形变均持有正文的离场生命周期，避免正文先于页面淡空。
+        val navigationOwnsContentVisibility = rootTransitionOwnsContentAlpha || navigationOwnsEntryMotion
         val detailContentVisible = shouldShowVideoDetailContent(
             isTransitionFinished = isTransitionFinished,
             isLeaving = isLeaving,
-            rootTransitionOwnsContentAlpha = rootTransitionOwnsContentAlpha,
+            rootTransitionOwnsContentAlpha = navigationOwnsContentVisibility,
             keepContentVisibleAfterBackPreview = keepContentVisibleAfterBackPreview,
+            deferFreshEntryContent = deferFreshEntryContent,
         )
         // 正文被入场门控拦住时骨架垫底必须撑住（Loading 骨架此刻已卸载），
         // 否则骨架结束到正文放行之间是一段纯黑空窗。
@@ -193,12 +202,13 @@ internal fun VideoDetailPhoneSuccessContentLayer(
                 AnimatedVisibility(
                     modifier = Modifier.graphicsLayer { alpha = lateContentReveal.value },
                     visible = detailContentVisible,
-                    enter = if (rootTransitionOwnsContentAlpha) {
+                    // 普通导航已负责整页入场，正文只保留一次骨架交接淡入。
+                    enter = if (navigationOwnsContentVisibility) {
                         EnterTransition.None
                     } else {
                         detailContentRevealEnter
                     },
-                    exit = if (rootTransitionOwnsContentAlpha) {
+                    exit = if (navigationOwnsContentVisibility) {
                         ExitTransition.None
                     } else {
                         detailContentExitFade
@@ -531,10 +541,12 @@ internal fun VideoDetailPhoneSuccessContentLayer(
             pendingVideoShare?.let { sharePayload ->
                 VideoShareSheet(
                     payload = sharePayload,
+                    glassSource = shareAnchorState.source,
                     onDismiss = { pendingVideoShare = null },
                 )
             }
         }
+    }
     }
 }
 

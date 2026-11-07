@@ -536,19 +536,6 @@ internal fun resolveVideoDetailFullscreenMode(
     return isLandscape
 }
 
-internal fun shouldApplyStartFullscreenOrientationRequest(
-    startInFullscreen: Boolean,
-    isOrientationDrivenFullscreen: Boolean,
-    isLandscape: Boolean
-): Boolean {
-    if (!startInFullscreen) return false
-    if (!isOrientationDrivenFullscreen) return false
-    if (isLandscape) return false
-    // 系统小窗和分屏也应像普通手机全屏一样请求横屏；可调整窗口的实际边界
-    // 由 Android/ROM 根据 Activity 的方向请求处理。
-    return true
-}
-
 internal fun resolvePhoneFullscreenEnterOrientation(
     fullscreenMode: com.android.purebilibili.core.store.FullscreenMode,
     isVerticalVideo: Boolean,

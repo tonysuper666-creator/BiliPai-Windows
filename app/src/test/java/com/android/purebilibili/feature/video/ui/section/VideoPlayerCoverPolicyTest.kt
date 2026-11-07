@@ -537,7 +537,7 @@ class VideoPlayerCoverPolicyTest {
     }
 
     @Test
-    fun verticalManualStartCover_usesViewportFillAndFitContentScale() {
+    fun verticalManualStartCover_usesViewportFillAndCropContentScale() {
         val spec = resolveVideoPlayerEntryPresentationSpec(
             shouldKeepCoverForManualStart = true,
             forceCoverDuringReturnAnimation = false,
@@ -548,7 +548,7 @@ class VideoPlayerCoverPolicyTest {
         assertFalse(spec.coverUsesSharedBounds)
         assertTrue(spec.fillCoverViewport)
         assertTrue(spec.showManualStartPlayButton)
-        assertEquals(VideoPlayerCoverContentScaleMode.Fit, spec.coverContentScaleMode)
+        assertEquals(VideoPlayerCoverContentScaleMode.Crop, spec.coverContentScaleMode)
     }
 
     @Test
@@ -681,37 +681,6 @@ class VideoPlayerCoverPolicyTest {
         assertTrue(residentCoverBlock.contains("animatedVisibilityProgress ="))
         assertTrue(residentCoverBlock.contains("detailTransitionProgress.value"))
         assertFalse(residentCoverBlock.contains("coverCrossfadeAlpha"))
-    }
-
-    @Test
-    fun verticalVideo_withoutSharedCard_keepsExistingCoverLoadingPolicy() {
-        assertFalse(
-            shouldLoadVideoPlayerCoverImage(
-                isVerticalVideo = true,
-                forceCoverDuringReturnAnimation = false,
-            )
-        )
-        assertTrue(
-            shouldLoadVideoPlayerCoverImage(
-                isVerticalVideo = true,
-                forceCoverDuringReturnAnimation = true,
-            )
-        )
-        assertTrue(
-            shouldLoadVideoPlayerCoverImage(
-                isVerticalVideo = false,
-                forceCoverDuringReturnAnimation = false,
-            )
-        )
-    }
-
-    @Test
-    fun verticalCardEntry_keepsCoverUntilRevealIndependentOfPlaybackIntent() {
-        assertTrue(shouldLoadVideoPlayerCoverImage(
-            isVerticalVideo = true,
-            forceCoverDuringReturnAnimation = false,
-            hasSharedCardTransition = true,
-        ))
     }
 
     @Test

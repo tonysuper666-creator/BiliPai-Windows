@@ -383,6 +383,17 @@ fun BangumiPlayerScreen(
         )
     }
 
+    val coinSuccessHaptic = rememberUpdatedState(
+        com.android.purebilibili.feature.video.ui.components.rememberVideoActionSuccessHaptic()
+    )
+    LaunchedEffect(viewModel) {
+        viewModel.coinSuccessEvents.collect { (episodeId, account) ->
+            val current = viewModel.uiState.value as? BangumiPlayerState.Success
+            if (current?.currentEpisode?.id == episodeId &&
+                com.android.purebilibili.core.store.TokenManager.accountIdentity.value == account
+            ) coinSuccessHaptic.value()
+        }
+    }
     LaunchedEffect(viewModel, context) {
         viewModel.toastEvent.collect { message ->
             Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
@@ -1427,6 +1438,7 @@ fun BangumiPlayerScreen(
     }
     CoinDialog(
         visible = coinDialogVisible,
+        contentKey = successState?.currentEpisode,
         currentCoinCount = successState?.coinCount ?: 0,
         userBalance = userCoinBalance,
         onDismiss = { viewModel.closeCoinDialog() },

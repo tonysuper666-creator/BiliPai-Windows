@@ -1,6 +1,8 @@
 package com.android.purebilibili.feature.video.ui.components
 
 import androidx.compose.foundation.ScrollState
+import androidx.compose.foundation.clickable
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.relocation.BringIntoViewRequester
@@ -11,6 +13,20 @@ import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.ui.window.Popup
+import com.android.purebilibili.core.ui.AppShapes
+import com.android.purebilibili.core.ui.ContainerLevel
+import com.android.purebilibili.core.ui.components.AppSurface
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.Alignment
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.scaleOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.ui.graphics.TransformOrigin
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.ui.window.PopupProperties
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
@@ -21,8 +37,8 @@ import androidx.compose.ui.AbsoluteAlignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.layout.positionInWindow
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.semantics.paneTitle
@@ -34,8 +50,6 @@ import com.android.purebilibili.core.theme.LocalAppUiStyle
 import top.yukonga.miuix.kmp.basic.DropdownImpl
 import top.yukonga.miuix.kmp.basic.DropdownItem
 import top.yukonga.miuix.kmp.basic.SmallTitle
-import top.yukonga.miuix.kmp.basic.PopupPositionProvider as MiuixPopupPositionProvider
-import top.yukonga.miuix.kmp.window.WindowListPopup
 import kotlin.math.roundToInt
 
 enum class PlayerListPopupPlacement { CENTER, START, END, END_BOTTOM, ANCHOR_END }
@@ -131,59 +145,116 @@ fun PlayerSelectionPopup(
         .semantics { paneTitle = title }
 
     if (LocalAppUiStyle.current == AppUiStyle.MIUIX) {
-        val provider = remember(placement, anchorBounds, gap, requestedMaxHeight) {
-            val measuredAnchor = anchorBounds
-            object : MiuixPopupPositionProvider {
-                override fun calculatePosition(
-                    anchorBounds: IntRect,
-                    windowBounds: IntRect,
-                    layoutDirection: LayoutDirection,
-                    popupContentSize: IntSize,
-                    popupMargin: IntRect,
-                    alignment: MiuixPopupPositionProvider.Align,
-                ): IntOffset {
-                    val nativeViewport = resolvePlayerPopupViewport(
-                        safeWindowBounds = windowBounds,
-                        requestedMaxHeight = requestedMaxHeight,
-                        horizontalMargin = gap,
-                        verticalMargin = gap,
-                        anchorBounds = measuredAnchor.takeIf {
-                            placement == PlayerListPopupPlacement.ANCHOR_END
-                        },
-                        anchorGap = gap,
-                    )
-                    return resolvePlayerPopupOffset(
-                        viewport = nativeViewport.bounds,
-                        popupSize = popupContentSize,
-                        placement = placement,
-                        anchorBounds = measuredAnchor ?: anchorBounds,
-                        layoutDirection = layoutDirection,
-                        anchorGap = gap,
-                    )
-                }
-
-                override fun getMargins(): PaddingValues = PaddingValues(4.dp)
-            }
+        // 和倍速 / 画面比例菜单一致的行为：点菜单外收起菜单，且这一下点击被遮罩吃掉、
+        // 不穿透给下层按钮（否则会出现"关闭又被同一个点击重新打开"的闪烁）。
+        // 做法：Popup 内容铺满全屏 —— 一层透明遮罩负责消费点击并关闭，菜单本身叠在其上。
+        val miuixAnchor = anchorBounds ?: when (placement) {
+            PlayerListPopupPlacement.CENTER -> IntRect(safe.center, IntSize.Zero)
+            PlayerListPopupPlacement.START -> IntRect(safe.left, safe.center.y, safe.left, safe.center.y)
+            PlayerListPopupPlacement.END -> IntRect(safe.right, safe.center.y, safe.right, safe.center.y)
+            PlayerListPopupPlacement.END_BOTTOM -> IntRect(safe.right, safe.bottom, safe.right, safe.bottom)
+            PlayerListPopupPlacement.ANCHOR_END -> return
         }
-        WindowListPopup(
-            show = true,
-            popupModifier = menuModifier,
-            popupPositionProvider = provider,
+        var menuVisible by remember { mutableStateOf(false) }
+        LaunchedEffect(Unit) { menuVisible = true }
+        val menuDensity = LocalDensity.current
+        // height 只是约束上限（接近屏幕尺寸），拿它算偏移会算偏，
+        // 必须用测量到的真实高度才能贴着锚点展开。
+        val menuHeightPx = with(menuDensity) { height.roundToPx() }
+        var menuMeasuredSize by remember { mutableStateOf(IntSize.Zero) }
+        Popup(
             onDismissRequest = onDismissRequest,
-            enableWindowDim = placement == PlayerListPopupPlacement.CENTER,
-            maxHeight = height,
-            minWidth = minWidth.coerceAtMost(width),
+            properties = PopupProperties(
+                focusable = false,
+                dismissOnBackPress = true,
+                // 关闭由遮罩自己处理：这里必须为 false，否则 Compose 会先吃掉这次点击
+                // 但事件仍可能继续传递，表现为点按钮时"闪一下又出现"。
+                dismissOnClickOutside = false,
+                clippingEnabled = true,
+            ),
         ) {
-            Box(Modifier.heightIn(max = height).widthIn(min = 200.dp.coerceAtMost(width), max = width)) {
-                Column(Modifier.verticalScroll(scrollState).padding(end = 12.dp)) {
-                    if (showTitle) SmallTitle(text = title)
-                    content()
+            Box(Modifier.fillMaxSize()) {
+                // 遮罩：消费点击并收起菜单，不穿透
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .clickable(
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = null,
+                        ) { onDismissRequest() }
+                )
+                // 缩放原点必须跟着实际展开方向：向上展开钉底边，向下展开钉顶边，
+                // 否则往下展开时动画会围着底边往上收，看起来像反了。
+                val menuHeightForDirection = menuMeasuredSize.height.takeIf { it > 0 }
+                    ?: menuHeightPx
+                val aboveSpaceForDirection = miuixAnchor.top - viewport.bounds.top
+                val scaleOrigin = if (menuHeightForDirection <= aboveSpaceForDirection) {
+                    TransformOrigin(0.5f, 1f)
+                } else {
+                    TransformOrigin(0.5f, 0f)
                 }
-                Box(Modifier.matchParentSize()) {
-                    com.android.purebilibili.core.ui.components.AppMenuScrollbar(
-                        scrollState = scrollState,
-                        modifier = Modifier.align(androidx.compose.ui.Alignment.CenterEnd),
-                    )
+                AnimatedVisibility(
+                    visible = menuVisible,
+                    // 倍速菜单的观感是「整块从小变大」：用 scaleIn/scaleOut，
+                    // 宽度和高度同时变化。
+                    enter = fadeIn(tween(120)) + scaleIn(
+                        animationSpec = tween(160),
+                        initialScale = 0.85f,
+                        transformOrigin = scaleOrigin,
+                    ),
+                    exit = fadeOut(tween(90)) + scaleOut(
+                        animationSpec = tween(90),
+                        targetScale = 0.85f,
+                        transformOrigin = scaleOrigin,
+                    ),
+                    modifier = Modifier
+                        .align(Alignment.TopStart)
+                        .onSizeChanged { menuMeasuredSize = it }
+                        .absoluteOffset {
+                            val h = if (menuMeasuredSize.height > 0) {
+                                menuMeasuredSize.height
+                            } else {
+                                menuHeightPx
+                            }
+                            // 共用定位策略保留居中、两侧及锚点入口，并限制在安全区内。
+                            resolvePlayerPopupOffset(
+                                viewport = viewport.bounds,
+                                popupSize = IntSize(
+                                    menuMeasuredSize.width.takeIf { it > 0 }
+                                        ?: with(menuDensity) { minWidth.coerceAtMost(width).roundToPx() },
+                                    h,
+                                ),
+                                placement = placement,
+                                anchorBounds = miuixAnchor,
+                                layoutDirection = direction,
+                                anchorGap = gap,
+                            )
+                        },
+                ) {
+                    AppSurface(
+                        // MIUIX 的 DropdownImpl 每行自带一层更浅的背景（宽度只到内容末尾），
+                        // 容器若用 surfaceContainerHigh 就会露出来变成阶梯状色块；
+                        // 这里跟行背景取同一档色，视觉上才是一整块。
+                        color = MaterialTheme.colorScheme.surfaceContainer,
+                        // 用设计系统的语义档位而不是硬编码：MiuixAlignedShapes.extraSmall
+                        // 正是 8dp，Material3 下跟随它自己的 extraSmall，改规范时会一起变。
+                        shape = MaterialTheme.shapes.extraSmall,
+                        border = BorderStroke(
+                            width = 0.5.dp,
+                            color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f),
+                        ),
+                    ) {
+                        Column(
+                            Modifier
+                                .widthIn(min = minWidth.coerceAtMost(width), max = width)
+                                .heightIn(max = height)
+                                .verticalScroll(scrollState)
+                                .padding(horizontal = 4.dp, vertical = 6.dp)
+                        ) {
+                            if (showTitle) SmallTitle(text = title)
+                            content()
+                        }
+                    }
                 }
             }
         }

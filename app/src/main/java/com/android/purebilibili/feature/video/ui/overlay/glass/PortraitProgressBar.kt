@@ -33,6 +33,11 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import android.os.SystemClock
+import com.android.purebilibili.core.player.SeekTickHapticPolicy
+import com.android.purebilibili.core.ui.AppHapticScene
+import com.android.purebilibili.core.util.HapticType
+import com.android.purebilibili.core.util.rememberHapticFeedback
 import com.android.purebilibili.data.model.response.VideoshotData
 import com.android.purebilibili.feature.video.ui.components.CompactSeekPreview
 import com.android.purebilibili.feature.video.ui.components.SeekPreviewBubblePlacement
@@ -131,6 +136,9 @@ fun ThinWigglyProgressBar(
     val currentOnSeekDragStart by rememberUpdatedState(onSeekDragStart)
     val currentOnSeekDragUpdate by rememberUpdatedState(onSeekDragUpdate)
     val currentOnSeekDragCancel by rememberUpdatedState(onSeekDragCancel)
+    // 拖动进度条刻度触感：拖起轻振，跨过整秒时短振，快速滑动按 60ms 限频。
+    val seekHaptic = rememberHapticFeedback(AppHapticScene.PLAYER_SEEK)
+    val seekHapticPolicy = remember { SeekTickHapticPolicy() }
     val activePositionMs = resolveSeekPreviewTargetPositionMs(
         displayPositionMs = seekPositionMs,
         dragTargetPositionMs = dragTargetPositionMs,
@@ -182,9 +190,13 @@ fun ThinWigglyProgressBar(
                             dragTargetPositionMs = targetPositionMs
                             currentOnSeekStart()
                             currentOnSeekDragStart(targetPositionMs)
+                            if (seekHapticPolicy.start(targetPositionMs, duration, SystemClock.uptimeMillis())) {
+                                seekHaptic(HapticType.LIGHT)
+                            }
                         },
                         onDragEnd = {
                             dragInProgress = false
+                            seekHapticPolicy.finish()
                             val committedProgress = if (duration > 0L) {
                                 dragTargetPositionMs.toFloat() / duration.toFloat()
                             } else {
@@ -196,6 +208,7 @@ fun ThinWigglyProgressBar(
                             if (dragInProgress) {
                                 dragInProgress = false
                                 currentOnSeekDragCancel()
+                                seekHapticPolicy.finish()
                             }
                         },
                         onHorizontalDrag = { change, _ ->
@@ -207,10 +220,16 @@ fun ThinWigglyProgressBar(
                             )
                             dragTargetPositionMs = targetPositionMs
                             currentOnSeekDragUpdate(targetPositionMs)
+                            if (seekHapticPolicy.update(targetPositionMs, SystemClock.uptimeMillis())) {
+                                seekHaptic(HapticType.GESTURE_STEP)
+                            }
                         }
                     )
                 } finally {
-                    if (dragInProgress) currentOnSeekDragCancel()
+                    if (dragInProgress) {
+                        currentOnSeekDragCancel()
+                        seekHapticPolicy.finish()
+                    }
                 }
             }
             // 也支持点击跳转
@@ -226,6 +245,10 @@ fun ThinWigglyProgressBar(
                         currentOnSeekStart()
                         currentOnSeekDragStart(targetPositionMs)
                         currentOnSeekDragUpdate(targetPositionMs)
+                        if (seekHapticPolicy.start(targetPositionMs, duration, SystemClock.uptimeMillis())) {
+                            seekHaptic(HapticType.LIGHT)
+                        }
+                        seekHapticPolicy.finish()
                         val committedProgress = if (duration > 0L) {
                             targetPositionMs.toFloat() / duration.toFloat()
                         } else {

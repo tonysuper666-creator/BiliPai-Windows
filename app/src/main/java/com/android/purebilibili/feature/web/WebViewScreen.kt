@@ -1,5 +1,10 @@
 package com.android.purebilibili.feature.web
 
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.background
+import androidx.compose.ui.graphics.graphicsLayer
+
 import com.android.purebilibili.core.ui.components.AppTextButton as TextButton
 
 import com.android.purebilibili.core.ui.AppContentColors
@@ -68,7 +73,8 @@ fun WebViewScreen(
     onDynamicClick: ((dynamicId: String) -> Unit)? = null,
     onBangumiClick: ((seasonId: Long, epId: Long, mediaId: Long) -> Unit)? = null,
     onMusicClick: ((musicId: String) -> Unit)? = null,
-    onMatchClick: ((contestId: Long) -> Unit)? = null
+    onMatchClick: ((contestId: Long) -> Unit)? = null,
+    onArticleCollectionClick: ((collectionId: Long) -> Unit)? = null,
 ) {
     val context = LocalContext.current
     val uriHandler = LocalUriHandler.current
@@ -99,6 +105,17 @@ fun WebViewScreen(
         pendingFileWebView?.finishReportFileSelection(uris)
         pendingFileWebView = null
     }
+    val containerSources = com.android.purebilibili.feature.live.LocalLiveCardContainerSources.current
+    val cardSource = remember(url, title) {
+        containerSources?.sources?.get(com.android.purebilibili.navigation3.BiliPaiNavKey.Web(url, title.orEmpty()))
+    }
+    var cardPageReady by remember(url) { mutableStateOf(false) }
+    val reduceCardMotion = com.android.purebilibili.core.ui.LocalSystemReduceMotion.current
+    val webContentAlpha = androidx.compose.animation.core.animateFloatAsState(
+        targetValue = if (cardSource == null || cardPageReady) 1f else 0f,
+        animationSpec = androidx.compose.animation.core.tween(if (reduceCardMotion) 0 else 150),
+        label = "shopWebContent",
+    )
     var rendererFailed by remember(url) { mutableStateOf(false) }
     var externalUrl by remember(url) { mutableStateOf<String?>(null) }
     val externalOpenGate = remember(url) { LinkOpenGate() }
@@ -150,6 +167,7 @@ fun WebViewScreen(
                 )
             } else {
                 key(url) {
+                    androidx.compose.foundation.layout.Box(Modifier.fillMaxSize()) {
                     AndroidView(
                         factory = { context ->
                             syncBilibiliLoginCookies()
@@ -195,9 +213,22 @@ fun WebViewScreen(
 
                                 // [核心] 自定义 WebViewClient 拦截 Bilibili 链接
                                 webViewClient = object : WebViewClient() {
+                                    override fun onReceivedError(
+                                        view: WebView,
+                                        request: WebResourceRequest,
+                                        error: android.webkit.WebResourceError,
+                                    ) {
+                                        super.onReceivedError(view, request, error)
+                                        if (request.isForMainFrame) cardPageReady = true
+                                    }
+                                    override fun onPageCommitVisible(view: WebView, loadedUrl: String?) {
+                                        super.onPageCommitVisible(view, loadedUrl)
+                                        cardPageReady = true
+                                    }
                                     override fun onPageFinished(view: WebView, loadedUrl: String?) {
                                         super.onPageFinished(view, loadedUrl)
                                         (view as? BrowserWebView)?.applyShortReviewReportTheme(loadedUrl)
+                                        cardPageReady = true
                                     }
                                     override fun shouldOverrideUrlLoading(
                                         view: WebView?,
@@ -294,6 +325,10 @@ fun WebViewScreen(
                                                         onMatchClick != null
                                                     }
 
+                                                    is BilibiliNavigationTarget.ArticleCollection -> {
+                                                        onArticleCollectionClick?.invoke(target.collectionId)
+                                                        onArticleCollectionClick != null
+                                                    }
                                                     is BilibiliNavigationTarget.Search -> false
                                                     is BilibiliNavigationTarget.Article -> false
                                                     is BilibiliNavigationTarget.PopularFeed -> false
@@ -350,8 +385,30 @@ fun WebViewScreen(
                             webView.loadRequestedUrl(url)
                         },
                         onRelease = { it.release() },
-                        modifier = Modifier.fillMaxSize()
+                        modifier = Modifier.fillMaxSize().then(
+                            if (cardSource != null) Modifier.graphicsLayer { alpha = webContentAlpha.value }
+                            else Modifier
+                        )
                     )
+                    if (cardSource != null && webContentAlpha.value < 1f) {
+                        androidx.compose.foundation.layout.Column(
+                            modifier = Modifier.fillMaxSize()
+                                .background(MaterialTheme.colorScheme.surface)
+                                .graphicsLayer { alpha = 1f - webContentAlpha.value }
+                                .padding(24.dp),
+                            horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally,
+                            verticalArrangement = androidx.compose.foundation.layout.Arrangement.Center,
+                        ) {
+                            coil3.compose.AsyncImage(
+                                model = cardSource.previewImageUrl,
+                                contentDescription = null,
+                                contentScale = androidx.compose.ui.layout.ContentScale.Fit,
+                                modifier = Modifier.fillMaxWidth().heightIn(max = 280.dp),
+                            )
+                            Text("正在加载商品…", modifier = Modifier.padding(top = 16.dp))
+                        }
+                    }
+                    }
                 }
             }
         }

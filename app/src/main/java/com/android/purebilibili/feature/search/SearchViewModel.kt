@@ -686,6 +686,11 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
                     pubBegin = filters.pubBegin, pubEnd = filters.pubEnd).getOrThrow()
                 // 综合搜索里的视频卡片同样要预热，否则点击仍会先铺横屏。
                 VideoRepository.prefetchVerticalFlagsForVideos(result.videos)
+                // UP 主卡片里嵌着「最近投稿」，这些视频也要预热：
+                // 它们藏在 ups[].res 里，很容易漏掉。
+                VideoRepository.prefetchVerticalFlagsForVideos(
+                    result.ups.flatMap { up -> up.res.orEmpty().map { it.toVideoItem() } }
+                )
                 chunk(empty.copy(searchResults = videos(result.videos),
                     upResults = result.ups.filter { it.mid !in blockedMids }.map { up ->
                         up.copy(res = up.res?.filterNot { it.mid in blockedMids }) },
@@ -701,7 +706,13 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
             }
             SearchType.UP -> {
                 val (items, info) = SearchRepository.searchUp(keyword = keyword, page = number, order = filters.upOrder, orderSort = filters.upOrderSort, userType = filters.upUserType).getOrThrow()
-                chunk(empty.copy(upResults = items.filter { it.mid !in blockedMids }), info, items.size)
+                val filteredUps = items.filter { it.mid !in blockedMids }
+                // UP 主卡片里嵌着「最近投稿」，这些视频同样要预热，
+                // 否则点卡片里的竖屏视频仍会先铺横屏。
+                VideoRepository.prefetchVerticalFlagsForVideos(
+                    filteredUps.flatMap { up -> up.res.orEmpty().map { it.toVideoItem() } }
+                )
+                chunk(empty.copy(upResults = filteredUps), info, items.size)
             }
             SearchType.BANGUMI -> {
                 val (items, info) = SearchRepository.searchBangumi(keyword, page = number).getOrThrow()

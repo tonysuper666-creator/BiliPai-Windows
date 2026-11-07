@@ -232,11 +232,14 @@ class MiuixVideoCardNavTransitionTest {
         val returning = resolveVideoHeroNavMotion(spec, true)
         assertEquals(360, (entering.programmatic as NavSettleSpec.Tween).durationMillis)
         assertEquals(299, (returning.programmatic as NavSettleSpec.Tween).durationMillis)
+        assertEquals(spec.returnSpatialSpec, (returning.programmatic as NavSettleSpec.Tween).easing)
+        assertEquals(spec.enterSpatialSpec, (entering.programmatic as NavSettleSpec.Tween).easing)
         assertEquals(spec.returnDurationMillis, (returning.commit as NavSettleSpec.Tween).durationMillis)
         assertTrue((returning.commit as NavSettleSpec.Tween).matchReleaseVelocity)
         assertEquals(spec.cancelStiffness, (returning.cancel as NavSettleSpec.Spring).stiffness)
         val follow = resolveVideoHeroNavMotion(spec, true, gestureTranslationEnabled = true)
         assertTrue((follow.cancel as NavSettleSpec.Tween).matchReleaseVelocity)
+        assertEquals(spec.cancelSpatialSpec, (follow.cancel as NavSettleSpec.Tween).easing)
         val reduced = resolveVideoHeroNavMotion(resolveVideoHeroMotionSpec(360, reducedMotion = true), true)
         assertTrue(!(reduced.commit as NavSettleSpec.Tween).matchReleaseVelocity)
         assertTrue(!(returning.programmatic as NavSettleSpec.Tween).matchReleaseVelocity)
@@ -495,7 +498,7 @@ class MiuixVideoCardNavTransitionTest {
         assertEquals(true, transform.contains("resolveMiuixVideoCardGestureVisualOrigin("))
         assertEquals(true, transform.contains("cameraDistance = transform.cameraDistance"))
         assertEquals(true, transform.contains("shadowElevation = MIUIX_VIDEO_CARD_GESTURE_SHADOW_DP.dp.toPx() * poseWeight"))
-        assertEquals(true, transform.contains("floatingCornerPx = MIUIX_VIDEO_CARD_FLOATING_CORNER_DP.dp.toPx()"))
+        assertEquals(true, transform.contains("floatingCornerPx = if (devicePx > 0f) devicePx"))
         assertEquals(true, transform.contains("progress.followPose("))
     }
 
@@ -582,10 +585,9 @@ class MiuixVideoCardNavTransitionTest {
     }
 
     @Test
-    fun horizontalCardCornersStayWithinTheirSourceRadiusAndReverseWithoutBloom() {
+    fun horizontalCardCornersReachDeviceRadiusAndReverseToTheirSourceRadius() {
         for (source in listOf(8f, 12f, 48f)) {
-            // 极大的设备圆角不能影响横向来源，手机与大屏只按各自来源像素计算。
-            for (deviceCorner in listOf(28f, 96f, 240f)) {
+            for (deviceCorner in listOf(12f, 28f, 96f, 240f)) {
                 val samples = (0..100).map { step ->
                     resolveMiuixVideoCardGestureCornerPx(
                         sourceCornerPx = source,
@@ -597,9 +599,9 @@ class MiuixVideoCardNavTransitionTest {
                 }
                 assertEquals(source, samples.first(), .0001f)
                 assertEquals(0f, samples.last(), .0001f)
-                assertEquals(source / 2f, samples[50], .0001f)
-                assertTrue(samples.all { it in 0f..source })
-                assertTrue(samples.zipWithNext().all { (a, b) -> b <= a })
+                assertEquals(minOf(deviceCorner, source * 5f), samples[50], .0001f)
+                assertTrue(samples.all { it in 0f..source * 5f })
+                assertTrue(samples.drop(50).zipWithNext().all { (a, b) -> b <= a })
                 val reversed = (100 downTo 0).map { step ->
                     resolveMiuixVideoCardGestureCornerPx(
                         source, step / 100f, deviceCorner,
@@ -610,6 +612,41 @@ class MiuixVideoCardNavTransitionTest {
                 assertEquals(samples, reversed.reversed())
             }
         }
+    }
+
+    @Test
+    fun stackedCardCornersMatchHorizontalCardsForEveryDepthAndWindowSize() {
+        for (source in listOf(8f, 16f, 48f)) {
+            for (shortSide in listOf(20f, 120f, 1080f)) {
+                for (deviceCorner in listOf(12f, 28f, 96f, 240f)) {
+                    val samples = (0..100).map { step ->
+                        val depth = step / 100f
+                        val stacked = resolveMiuixVideoCardGestureCornerPx(
+                            source, depth, deviceCorner, sourceLayout = VideoCardSourceLayout.STACKED,
+                            currentShortSidePx = shortSide,
+                        )
+                        assertEquals(resolveMiuixVideoCardGestureCornerPx(
+                            source, depth, deviceCorner, sourceLayout = VideoCardSourceLayout.SIDE_BY_SIDE,
+                            currentShortSidePx = shortSide,
+                        ), stacked, .0001f)
+                        assertEquals(resolveMiuixVideoCardGestureCornerPx(
+                            source, depth, deviceCorner, sourceLayout = VideoCardSourceLayout.COVER_ONLY,
+                            currentShortSidePx = shortSide,
+                        ), stacked, .0001f)
+                        assertTrue(stacked in 0f..shortSide / 2f)
+                        stacked
+                    }
+                    assertEquals(minOf(source, shortSide / 2f), samples.first(), .0001f)
+                    assertEquals(0f, samples.last(), .0001f)
+                    assertEquals(minOf(deviceCorner, shortSide / 2f), samples[50], .0001f)
+                    assertTrue(samples.drop(50).zipWithNext().all { (a, b) -> b <= a })
+                }
+            }
+        }
+        // 仅封面的悬浮圆角也受实际窗口短边约束。
+        assertEquals(10f, resolveMiuixVideoCardGestureCornerPx(
+            16f, .5f, 240f, currentShortSidePx = 20f,
+        ), .0001f)
     }
 
     @Test
@@ -630,8 +667,8 @@ class MiuixVideoCardNavTransitionTest {
             sourceLayout = VideoCardSourceLayout.SIDE_BY_SIDE,
             currentShortSidePx = 120f,
         )
-        assertEquals(8f, radii.radiusX * .8f, .0001f)
-        assertEquals(8f, radii.radiusY * .2f, .0001f)
+        assertEquals(60f, radii.radiusX * .8f, .0001f)
+        assertEquals(60f, radii.radiusY * .2f, .0001f)
     }
 
     @Test

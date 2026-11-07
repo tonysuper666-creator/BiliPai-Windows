@@ -597,7 +597,7 @@ object CommentRepository {
             android.util.Log.e("CommentRepo", " getComments exception: oid=$oid, type=$type, ${e.message}", e)
             Result.failure(e)
         }
-    }
+    }.map { filterGoodsRepliesIfEnabled(it) }
 
     /**
      * 手机主评论沿用 PiliPlus 的 CursorReq。分页来源随缓存保存；中途失败保留原游标重试，
@@ -656,7 +656,7 @@ object CommentRepository {
         } catch (e: Exception) {
             Result.failure(e)
         }
-    }
+    }.map { filterGoodsRepliesIfEnabled(it) }
 
     private suspend fun fetchMobileRestCommentPage(
         oid: Long, type: Int, page: Int, ps: Int, mode: Int,
@@ -759,7 +759,7 @@ object CommentRepository {
         } catch (e: Exception) {
             Result.failure(e)
         }
-    }
+    }.map { filterGoodsRepliesIfEnabled(it) }
 
     /** 手机详情校验分页完整性；TV 沿用原入口及默认行为。 */
     suspend fun getMobileSortedSubCommentsForSubject(
@@ -785,7 +785,7 @@ object CommentRepository {
         } catch (e: Exception) {
             Result.failure(e)
         }
-    }
+    }.map { filterGoodsRepliesIfEnabled(it) }
 
     private suspend fun supplementSortedSubReplyLocations(
         oid: Long,
@@ -925,7 +925,7 @@ object CommentRepository {
             android.util.Log.e("CommentRepo", " getSubComments exception: oid=$oid, type=$type, ${e.message}", e)
             Result.failure(e)
         }
-    }
+    }.map { filterGoodsRepliesIfEnabled(it) }
 
     suspend fun getDialogCommentsForSubject(
         oid: Long,
@@ -958,7 +958,7 @@ object CommentRepository {
         } catch (e: Exception) {
             Result.failure(e)
         }
-    }
+    }.map { filterGoodsRepliesIfEnabled(it) }
 
     /**
      * 获取表情包映射

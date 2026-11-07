@@ -2588,7 +2588,7 @@ class DynamicViewModel(application: Application) : AndroidViewModel(application)
                 val data = requireNotNull(response.data)
                 val result = DynamicReserveResult(
                     description = data.desc_update,
-                    reserveTotal = data.reserve_update,
+                    reserveTotal = data.reserve_update ?: action.reserveTotal,
                     buttonStatus = data.final_btn_status,
                 )
                 if (action.buttonType > 0 && result.buttonStatus == action.buttonType) {

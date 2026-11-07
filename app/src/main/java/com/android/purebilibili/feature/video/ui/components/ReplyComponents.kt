@@ -507,12 +507,12 @@ internal fun resolveSubReplyPreviewSummaryLabel(
 }
 
 /**
- * 楼中楼预览已经列出全部回复时不再显示“共x条回复”，避免同一层里重复的计数入口。
+ * 已缓存全部回复时只使用本地展开/收起；折叠隐藏的预览不代表还有回复需要加载。
  */
 internal fun shouldShowSubReplyPreviewSummary(
     replyCount: Int,
-    visiblePreviewCount: Int
-): Boolean = replyCount > 0 && visiblePreviewCount < replyCount
+    previewReplyCount: Int
+): Boolean = replyCount > 0 && previewReplyCount < replyCount
 
 internal fun resolveSubReplyOpenTargetId(rootReplyId: Long, clickedReplyId: Long): Long {
     return clickedReplyId.takeIf { it > 0L && it != rootReplyId } ?: 0L
@@ -1453,15 +1453,17 @@ fun ReplyItemView(
             collapsedLimit = collapsedSubReplyPreviewLimit
         )
     }
-    val showInlineSubReplyToggle = remember(previewReplies, collapsedSubReplyPreviewLimit) {
-        shouldShowInlineSubReplyToggle(
-            previewReplyCount = previewReplies.size,
-            collapsedLimit = collapsedSubReplyPreviewLimit
-        )
-    }
     val threadReplyCount = remember(item.count, item.rcount, item.replies, previewReplies) {
         maxOf(resolveReplyThreadCount(item), previewReplies.size)
     }
+    val showSubReplySummary = shouldShowSubReplyPreviewSummary(
+        replyCount = threadReplyCount,
+        previewReplyCount = previewReplies.size,
+    )
+    val showInlineSubReplyToggle = !showSubReplySummary && shouldShowInlineSubReplyToggle(
+        previewReplyCount = previewReplies.size,
+        collapsedLimit = collapsedSubReplyPreviewLimit,
+    )
     val hasUpSubReply = remember(item.replyControl?.upReply, previewReplies, upMid) {
         item.replyControl?.upReply == true || (upMid > 0 && previewReplies.any { it.mid == upMid })
     }
@@ -2183,9 +2185,7 @@ fun ReplyItemView(
                                     .appActionClickable { isSubPreviewExpanded = !isSubPreviewExpanded }
                                     .padding(vertical = 4.dp)
                             )
-                        }
-
-                        if (shouldShowSubReplyPreviewSummary(threadReplyCount, visibleSubReplies.size)) {
+                        } else if (showSubReplySummary) {
                             Box(
                                 modifier = Modifier
                                     .fillMaxWidth()

@@ -7,6 +7,28 @@ import kotlin.test.assertIs
 class MessageLinkNavigationPolicyTest {
 
     @Test
+    fun articleLinksPreserveRootAndTargetAcrossEntryForms() {
+        val links = listOf(
+            "https://www.bilibili.com/read/cv123?comment_root_id=456#reply789",
+            "bilibili://read/cv123?root_reply_id=456&comment_secondary_id=789",
+            "https://www.bilibili.com/h5/comment/sub?oid=123&pageType=12&root=456&comment_secondary_id=789",
+            "bilibili://comment/msg_fold/12/123/456/789?enterUri=https%3A%2F%2Fwww.bilibili.com%2Fopus%2F999",
+            "bilibili://browser/?url=https%3A%2F%2Fwww.bilibili.com%2Fread%2Fcv123%3Froot_id%3D456%26comment_id%3D789",
+        )
+        links.forEach { link ->
+            assertEquals(MessageLinkNavigationAction.Article(123L, 456L, 789L), resolveMessageLinkNavigationAction(link), link)
+        }
+    }
+
+    @Test
+    fun articleFragmentAloneUsesReplyAsRoot() {
+        assertEquals(
+            MessageLinkNavigationAction.Article(123L, 456L, 0L),
+            resolveMessageLinkNavigationAction("https://www.bilibili.com/read/cv123#reply456"),
+        )
+    }
+
+    @Test
     fun resolveMessageLinkNavigationAction_routesAidDeepLinkWithCommentRootToCommentDetail() {
         val action = resolveMessageLinkNavigationAction(
             "bilibili://video/115391124741470?page=0&comment_root_id=279569905408"
@@ -87,17 +109,15 @@ class MessageLinkNavigationPolicyTest {
     }
 
     @Test
-    fun resolveMessageLinkNavigationAction_routesArticleCommentBusinessToCommentDetail() {
+    fun resolveMessageLinkNavigationAction_routesArticleCommentBusinessToArticle() {
         val action = resolveMessageLinkNavigationAction(
             "bilibili://comment/detail/12/34646640/265141324256"
         )
 
-        val commentAction = assertIs<MessageLinkNavigationAction.CommentDetail>(action)
-        assertEquals(34646640L, commentAction.oid)
+        val commentAction = assertIs<MessageLinkNavigationAction.Article>(action)
+        assertEquals(34646640L, commentAction.articleId)
         assertEquals(265141324256L, commentAction.rootReplyId)
         assertEquals(0L, commentAction.targetReplyId)
-        assertEquals(12, commentAction.businessId)
-        assertEquals("bilibili://read/cv34646640", commentAction.enterUri)
     }
 
     @Test

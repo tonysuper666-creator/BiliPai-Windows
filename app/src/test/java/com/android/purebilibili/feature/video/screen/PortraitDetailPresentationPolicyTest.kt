@@ -7,6 +7,16 @@ import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 class PortraitDetailPresentationPolicyTest {
+    @Test
+    fun collapsedPlayToolbarDoesNotCoverPlayingOrCompactPortraitMedia() {
+        assertFalse(shouldShowCollapsedPlayerPlayToolbar(false, 1f, 56f, false))
+        assertFalse(shouldShowCollapsedPlayerPlayToolbar(false, 1f, 231.75f, false))
+        assertFalse(shouldShowCollapsedPlayerPlayToolbar(true, 1f, 231.75f, false))
+        assertFalse(shouldShowCollapsedPlayerPlayToolbar(true, 0.7f, 56f, false))
+        assertTrue(shouldShowCollapsedPlayerPlayToolbar(true, 1f, 56f, false))
+        assertFalse(shouldShowCollapsedPlayerPlayToolbar(true, 1f, 56f, true))
+    }
+
 
     @Test
     fun switchingToCommentsNeverForcesCompactPlayerForAnyModeOrPauseState() {
@@ -230,6 +240,19 @@ class PortraitDetailPresentationPolicyTest {
 
     @Test
     fun pausedCommentViewport_hidesMediaWithoutChangingOtherCompactSizes() {
+        assertEquals(56f, resolveInlinePlayerCollapsedViewportHeightDp(
+            standardCollapsedHeightDp = 231.75f,
+            hidePausedPlayerForComments = true,
+            retainPlayToolbar = true,
+        ))
+        for (vertical in listOf(true, false)) {
+            assertTrue(shouldEnableInlinePortraitScrollTransform(
+                collapseMode = PortraitPlayerCollapseMode.OFF,
+                selectedTabIndex = 0,
+                isVerticalVideo = vertical,
+                isPlaybackPaused = true,
+            ))
+        }
         assertEquals(
             56f,
             resolveInlinePlayerCollapsedViewportHeightDp(
@@ -289,7 +312,7 @@ class PortraitDetailPresentationPolicyTest {
                 isPlaybackPaused = false,
             )
         )
-        assertFalse(
+        assertTrue(
             shouldEnableInlinePortraitScrollTransform(
                 collapseMode = PortraitPlayerCollapseMode.OFF,
                 selectedTabIndex = 0,
@@ -308,7 +331,7 @@ class PortraitDetailPresentationPolicyTest {
                 isCommentThreadVisible = true,
             )
         )
-        assertFalse(shouldHidePausedInlinePlayerForComments(0, true))
+        assertTrue(shouldHidePausedInlinePlayerForComments(0, true))
         assertFalse(shouldHidePausedInlinePlayerForComments(1, false))
         assertTrue(shouldHidePausedInlinePlayerForComments(1, true))
         assertTrue(shouldHidePausedInlinePlayerForComments(0, true, isCommentThreadVisible = true))

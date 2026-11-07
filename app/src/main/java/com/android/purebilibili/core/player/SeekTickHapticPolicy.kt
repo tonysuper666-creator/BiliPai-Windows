@@ -1,7 +1,10 @@
-package com.android.purebilibili.feature.bangumi.ui.player
+package com.android.purebilibili.core.player
 
-/** 每次用户拖动独立计数；播放进度回填不能启动触感会话。 */
-internal class BangumiSeekHapticPolicy {
+/**
+ * 拖动进度条的刻度触感节流：目标位置跨过整秒时触发一次，最短间隔 60ms，
+ * 快速长距离滑动时按间隔限频，同一秒内按住不重复触发。
+ */
+internal class SeekTickHapticPolicy {
     private var durationMs = 0L
     private var previousSecond = 0L
     private var lastFeedbackMs = 0L

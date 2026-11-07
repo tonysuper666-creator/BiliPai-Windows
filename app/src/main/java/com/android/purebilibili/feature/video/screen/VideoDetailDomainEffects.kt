@@ -34,10 +34,18 @@ internal fun VideoDetailDomainEffects(
     LaunchedEffect(context) {
         engagementViewModel.initWithContext(context)
     }
+    val coinSuccessHaptic = androidx.compose.runtime.rememberUpdatedState(
+        com.android.purebilibili.feature.video.ui.components.rememberVideoActionSuccessHaptic(isVisible)
+    )
     LaunchedEffect(engagementViewModel) {
         engagementViewModel.events.collect { event ->
             when (event) {
                 is VideoEngagementEvent.Message -> playbackViewModel.toast(event.text)
+                is VideoEngagementEvent.CoinSucceeded -> {
+                    if (subjectSnapshotState.value == event.subject &&
+                        com.android.purebilibili.feature.video.viewmodel.matchesVideoEngagementAccount(event.accountSession)
+                    ) coinSuccessHaptic.value()
+                }
                 is VideoEngagementEvent.OpenFollowGroups ->
                     playbackViewModel.showFollowGroupDialogForUser(event.mid)
                 is VideoEngagementEvent.LoadVideo ->
