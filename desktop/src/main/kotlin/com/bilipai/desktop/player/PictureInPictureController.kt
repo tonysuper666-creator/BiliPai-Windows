@@ -48,6 +48,8 @@ class PictureInPictureController(
     private val onSeekTo: ((Double) -> Unit)? = null,
     /** Direct Swing hosts remove their slot here; Compose hosts observe active. */
     private val onDetachSurface: (() -> Unit)? = null,
+    /** Runs on a user close/return while a floating session exists, before the surface goes back. */
+    private val onUserReturn: (() -> Unit)? = null,
 ) : AutoCloseable {
     private val mutableActive = MutableStateFlow(false)
     val active: StateFlow<Boolean> = mutableActive.asStateFlow()
@@ -103,12 +105,13 @@ class PictureInPictureController(
     override fun close() = onUi { requestReturn(notify = false) }
 
     private fun requestReturn(notify: Boolean) {
+        if (handoffTimer == null && frame == null) return
+        if (notify) onUserReturn?.invoke()
         if (handoffTimer != null) {
             restoreRequested = true
             notifyRestore = notify
             return
         }
-        if (frame == null) return
         val transfer = player.currentSourceSnapshot()?.let(player::beginPresentationTransfer)
         if (transfer != null) beginHandoff(transfer, toMain = true, notify = notify)
         else {

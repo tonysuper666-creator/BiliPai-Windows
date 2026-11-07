@@ -620,11 +620,13 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
     val pipPrevious = remember(playback) { java.util.concurrent.atomic.AtomicReference<() -> Unit>({ navigateOrdinaryFromEvent(false) }) }
     val pipNext = remember(playback) { java.util.concurrent.atomic.AtomicReference<() -> Unit>({ navigateOrdinaryFromEvent(true) }) }
     val pipSeek = remember(player, playback) { java.util.concurrent.atomic.AtomicReference<(Double) -> Unit>({ playback.seekTo(it) }) }
+    val pipReturn = remember(player, playback) { DesktopPictureInPictureReturn() }
+    val pipUserReturn = remember(player, playback) { java.util.concurrent.atomic.AtomicReference<() -> Unit>({}) }
     val pip = remember(player, playback) { player?.let { PictureInPictureController(it, onRestore = {
         showVideo = playback.state.value.details != null
         if (!showVideo) lastMediaSection?.let { section = it }
     }, onPrevious = { pipPrevious.get().invoke() }, onNext = { pipNext.get().invoke() },
-        onSeekTo = { pipSeek.get().invoke(it) }) } }
+        onSeekTo = { pipSeek.get().invoke(it) }, onUserReturn = { pipUserReturn.get().invoke() }) } }
     val emptyPipState = remember { MutableStateFlow(false) }
     val pipActive by (pip?.active ?: emptyPipState).collectAsState()
     val enhancementHostStarted = remember { MutableStateFlow(false) }
@@ -1570,6 +1572,12 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
     }
     LaunchedEffect(backup) { backup.automaticBackupIfDue() }
     LaunchedEffect(playback, hostVisible, pipActive) { playback.setInBackground(!hostVisible && !pipActive) }
+    SideEffect {
+        pipReturn.observe(pipActive, physicalDestination.takeIf { hostVisible && hostDisplayable })
+        pipUserReturn.set { pipReturn.userReturn(physicalDestination.takeIf { hostVisible && hostDisplayable }) {
+            if (retainedMedia.current?.ownsNativeSource == true) player?.setPaused(true) else playback.pause()
+        } }
+    }
     DesktopOriginalBackgroundPlaybackEffects(storageSettingsContext, player,
         hidden = !hostVisible, isPip = pipActive, isInAudioMode = physicalDestination is BiliPaiNavKey.AudioMode || physicalDestination is BiliPaiNavKey.NativeMusic,
         live = { imageSaveLifetime.isActive() && hostDisplayable && !isClosing() && !activatingUpdate && scope.isActive })
