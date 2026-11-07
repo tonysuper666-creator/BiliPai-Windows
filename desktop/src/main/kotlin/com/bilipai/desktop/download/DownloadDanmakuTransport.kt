@@ -8,6 +8,7 @@ import com.bilipai.desktop.danmaku.BoundedDanmakuBody
 import com.bilipai.desktop.danmaku.DesktopSpecialSourceLimits
 import com.bilipai.desktop.player.DesktopPlaybackPublication
 import com.bilipai.desktop.player.PlaybackSource
+import com.bilipai.desktop.player.deferredPlaybackCalls
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.currentCoroutineContext
@@ -116,7 +117,9 @@ internal object DownloadDanmakuTransport {
             policy.validate(request)
             calls.newCall(request.newBuilder().tag(DesktopDownloadDanmakuRequestPolicy::class.java, policy).build())
         }
-        return Retrofit.Builder().baseUrl("https://api.bilibili.com/").callFactory(bounded)
+        // Policy validation also enters Store admission. Defer the WHOLE factory,
+        // including validation, until Retrofit has released its call monitor.
+        return Retrofit.Builder().baseUrl("https://api.bilibili.com/").callFactory(deferredPlaybackCalls(bounded))
             .addConverterFactory(Json { ignoreUnknownKeys = true }.asConverterFactory("application/json".toMediaType()))
             .build().create(BilibiliApi::class.java)
     }

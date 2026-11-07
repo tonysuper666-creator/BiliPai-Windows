@@ -45,8 +45,17 @@ internal class DesktopSessionStore(private val path: Path = defaultPath(), priva
     internal val loginInstallation = mutableLoginInstallation.asStateFlow()
     private val mutableGeneration = MutableStateFlow(0L)
     val generationState = mutableGeneration.asStateFlow()
+    // Advisory owner checks run inside Retrofit's call monitor. Publish the pair
+    // atomically so those checks never take Store (cancel takes Store -> call).
+    // Only Store-locked writers replace it; credentials/publication still require
+    // withPlaybackAuthorizationAdmission, not a successful snapshot preflight.
+    @Volatile private var playbackAuthorizationSnapshot = DesktopPlaybackAuthorizationReceipt(0L, 0L)
     @Volatile var generation: Long = 0
-        private set(value) { field = value; mutableGeneration.value = value }
+        private set(value) {
+            field = value
+            playbackAuthorizationSnapshot = playbackAuthorizationSnapshot.copy(accountEpoch = value)
+            mutableGeneration.value = value
+        }
     internal val requestGeneration = ThreadLocal<Long>()
     // The same synchronous OkHttp interceptor scope as requestGeneration, cleared in finally.
     internal val requestAdmission = ThreadLocal<() -> Boolean>()
@@ -73,7 +82,9 @@ internal class DesktopSessionStore(private val path: Path = defaultPath(), priva
         if (force || next != playbackIdentity) {
             playbackIdentity = next
             playbackCookieJar = null
-            mutablePlaybackAuthorizationRevision.value++
+            val revision = mutablePlaybackAuthorizationRevision.value + 1
+            playbackAuthorizationSnapshot = DesktopPlaybackAuthorizationReceipt(generation, revision)
+            mutablePlaybackAuthorizationRevision.value = revision
         }
     }
     internal fun storedAccountSessions(): List<StoredAccountSession> = synchronized(lock) { accountRecords(saved).map { it.session } }
@@ -97,15 +108,16 @@ internal class DesktopSessionStore(private val path: Path = defaultPath(), priva
         // Original NetworkModule uses the main transport when selected MID is the active MID.
         val dedicated = selected?.takeIf { it.mid != saved.account?.mid }
         if (dedicated != null && playbackCookieJar == null) playbackCookieJar = DesktopOriginalPlaybackAccountCookieJar(dedicated)
-        DesktopPlaybackAuthorization(DesktopPlaybackAuthorizationReceipt(generation, mutablePlaybackAuthorizationRevision.value), selected,
+        DesktopPlaybackAuthorization(playbackAuthorizationSnapshot, selected,
             playbackCookieJar.takeIf { dedicated != null })
     }
-    internal fun isPlaybackAuthorizationCurrent(receipt: DesktopPlaybackAuthorizationReceipt): Boolean = synchronized(lock) {
-        refreshPlaybackAuthorizationLocked()
-        generation == receipt.accountEpoch && mutablePlaybackAuthorizationRevision.value == receipt.revision
-    }
+    internal fun isPlaybackAuthorizationCurrent(receipt: DesktopPlaybackAuthorizationReceipt): Boolean =
+        playbackAuthorizationSnapshot == receipt
     internal fun <T> withPlaybackAuthorizationAdmission(receipt: DesktopPlaybackAuthorizationReceipt,
         stillOwned: () -> Boolean, block: () -> T): T = synchronized(lock) {
+        // Final authorization and its action remain one Store-locked admission:
+        // a mutation after any lock-free preflight must win here or wait for it.
+        refreshPlaybackAuthorizationLocked()
         if (!isPlaybackAuthorizationCurrent(receipt) || !stillOwned()) throw kotlinx.coroutines.CancellationException("Playback authorization retired")
         block()
     }
