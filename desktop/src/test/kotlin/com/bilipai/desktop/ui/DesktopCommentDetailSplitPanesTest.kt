@@ -176,6 +176,14 @@ internal abstract class DesktopCommentDetailSplitScenes {
             scene.sendPointerEvent(PointerEventType.Move, point)
             scene.sendPointerEvent(PointerEventType.Scroll, point, scrollDelta = Offset(0f, delta)); settle()
         }
+        /** Moves [tag]'s own scroller [px] down. A wheel delta is not a distance: Compose turns one
+         * unit into 10dp on macOS but 1/20 of the scrolled viewport on Windows, so a reading position
+         * set up with the wheel would be a different position on each OS. */
+        fun scrollBy(tag: String, px: Float) {
+            val node = flatten(tagged(tag)).first { it.config.contains(SemanticsActions.ScrollBy) }
+            assertTrue(assertNotNull(node.config[SemanticsActions.ScrollBy].action)(0f, px))
+            advance(40)
+        }
         /** The topmost reply whose header is inside the list viewport, with its y relative to the list. */
         fun firstReply(): Pair<Long, Float> {
             val list = bounds(SUB_REPLY_DETAIL_LIST_TAG)
@@ -268,7 +276,7 @@ internal class DesktopCommentDetailSplitPanesTest : DesktopCommentDetailSplitSce
             val rootArea = { s.bounds(SUB_REPLY_DETAIL_ROOT_TAG) }
             s.click(s.texts(HATED_PROMPT).single { rootArea().contains(it.boundsInWindow.center) })
             assertEquals(0, s.collapsedIn(rootArea()), "The original comment's hated body is expanded")
-            s.scroll(s.bounds(SUB_REPLY_DETAIL_LIST_TAG).center, delta = 20f)
+            s.scrollBy(SUB_REPLY_DETAIL_LIST_TAG, 200f)
             val narrowOffset = s.bounds(SUB_REPLY_DETAIL_LIST_TAG).top - s.top(SUB_REPLY_DETAIL_ROOT_TAG)
             assertTrue(narrowOffset > 0f && narrowOffset < rootArea().height, "Reading inside the original comment: $narrowOffset")
 
@@ -291,7 +299,7 @@ internal class DesktopCommentDetailSplitPanesTest : DesktopCommentDetailSplitSce
         Scene(959, rootLines = 120, longLines = true).use { s ->
             s.settle()
             s.click(s.texts(HATED_PROMPT).single { s.bounds(SUB_REPLY_DETAIL_ROOT_TAG).contains(it.boundsInWindow.center) })
-            s.scroll(s.bounds(SUB_REPLY_DETAIL_LIST_TAG).center, delta = 20f)
+            s.scrollBy(SUB_REPLY_DETAIL_LIST_TAG, 200f)
             val narrow = s.lineAtTop(SUB_REPLY_DETAIL_LIST_TAG)
             assertTrue(narrow.paragraph > 0, "Reading below the first paragraph: $narrow")
 
@@ -343,7 +351,7 @@ internal class DesktopCommentDetailSplitPanesTest : DesktopCommentDetailSplitSce
     @Test fun replyPositionSurvivesNarrowWideNarrow() {
         Scene(959).use { s ->
             s.settle()
-            repeat(4) { s.scroll(s.bounds(SUB_REPLY_DETAIL_LIST_TAG).center, delta = 5f) }
+            s.scrollBy(SUB_REPLY_DETAIL_LIST_TAG, 200f)
             assertFalse(s.bounds(SUB_REPLY_DETAIL_LIST_TAG).overlaps(s.bounds(SUB_REPLY_DETAIL_ROOT_TAG)), "Reading replies below the original")
             val narrow = s.firstReply()
             s.resize(960)
