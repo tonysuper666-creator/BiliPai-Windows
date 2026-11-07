@@ -114,6 +114,7 @@ fun androidx.compose.ui.Modifier.downloadSelectionPointer(
     androidx.compose.ui.Modifier.pointerInput(id, selection, focus) {
         awaitPointerEventScope {
             var captured: PointerId? = null
+            var lastPlainClick = -1L
             while (true) {
                 val event = awaitPointerEvent(PointerEventPass.Initial)
                 if (event.type == PointerEventType.Press) {
@@ -122,11 +123,19 @@ fun androidx.compose.ui.Modifier.downloadSelectionPointer(
                     val primary = event.buttons.isPrimaryPressed
                     val ctrl = event.keyboardModifiers.isCtrlPressed
                     val shift = event.keyboardModifiers.isShiftPressed
-                    if (secondary || primary) {
+                    // The task frame reserves the trailing 48 dp for its own action buttons.
+                    // Keep those buttons independent from selection and card playback.
+                    val inBody = down.position.x < size.width - 48.dp.toPx()
+                    val doubleClick = primary && !ctrl && !shift && inBody &&
+                        lastPlainClick >= 0 && down.uptimeMillis - lastPlainClick in 0..viewConfiguration.doubleTapTimeoutMillis
+                    if (secondary || (primary && inBody)) {
                         focus.requestFocus()
                         if (secondary) selection.openContextMenu(id) else selection.click(id, ctrl, shift)
                     }
-                    if (secondary || (primary && (ctrl || shift))) captured = down.id
+                    if (primary && inBody) {
+                        lastPlainClick = if (!ctrl && !shift && !doubleClick) down.uptimeMillis else -1L
+                    }
+                    if (secondary || (primary && inBody && !doubleClick)) captured = down.id
                 }
                 captured?.let { id ->
                     val change = event.changes.firstOrNull { it.id == id }
