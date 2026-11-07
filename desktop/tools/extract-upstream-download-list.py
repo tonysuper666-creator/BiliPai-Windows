@@ -129,11 +129,9 @@ def generate(repo,output,standalone=False):
   ('import coil3.compose.LocalPlatformContext as LocalContext', """import coil3.compose.LocalPlatformContext as LocalContext
 import com.bilipai.desktop.ui.DesktopDownloadListSelection
 import com.bilipai.desktop.ui.DesktopDownloadTaskFrame
+import com.bilipai.desktop.ui.downloadSelectionKeyboard
 import com.bilipai.desktop.ui.downloadSelectionPointer
-import androidx.compose.foundation.focusable
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.input.key.*"""),
+import androidx.compose.ui.focus.FocusRequester"""),
   ('    var pendingDeleteTask by remember { mutableStateOf<com.android.purebilibili.feature.download.DownloadTask?>(null) }', """    val selection = remember { DesktopDownloadListSelection() }
     val selectionFocus = remember { FocusRequester() }
     val taskIds = taskList.map { it.id }
@@ -161,14 +159,7 @@ import androidx.compose.ui.input.key.*"""),
                     .fillMaxSize()
                     ,""", """                modifier = Modifier
                     .fillMaxSize()
-                    .onPreviewKeyEvent { event ->
-                        if (event.type != KeyEventType.KeyDown) false else when (event.key) {
-                            Key.DirectionUp -> { selection.move(-1); true }
-                            Key.DirectionDown -> { selection.move(1); true }
-                            Key.Spacebar -> { selection.toggleFocused(); true }
-                            else -> false
-                        }
-                    }.focusRequester(selectionFocus).focusable(),"""),
+                    .downloadSelectionKeyboard(selection, selectionFocus),"""),
   ("""                            bindings.removeTask(task.id)
                             pendingDeleteTask = null""", '                            bindings.removeTask(task.id)'),
   ('AnimatedVideoListItem(modifier = videoListItemModifier(), enabled = true)', 'AnimatedVideoListItem(modifier = videoListItemModifier().downloadSelectionPointer(task.id, selection, selectionFocus), enabled = true)'),
