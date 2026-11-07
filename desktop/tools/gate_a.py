@@ -199,7 +199,8 @@ def check(args) -> int:
     fixed = sorted(key for key in base_failing if results.get(key) == "passed")
     still = sorted(key for key in base_failing if results.get(key) == "failed")
     added = sorted(key for key in results if key not in identities)
-    passed = not (new_failures or missing or changed)
+    added_skipped = [key for key in added if results[key] == "skipped"]
+    passed = not (new_failures or missing or changed or added_skipped)
     report = {
         "gate": "A",
         "passed": passed,
@@ -213,7 +214,8 @@ def check(args) -> int:
                    "baselineTests": len(identities), "baselineFailed": len(base_failing),
                    "newFailures": len(new_failures), "missingOrSkipped": len(missing),
                    "fixedSinceBaseline": len(fixed), "stillFailingFromBaseline": len(still),
-                   "addedSinceBaseline": len(added)},
+                   "addedSinceBaseline": len(added), "addedSkipped": len(added_skipped)},
+        "addedSkipped": [{"scope": s, "class": c, "name": n} for s, c, n in added_skipped],
         "newFailures": [{"scope": s, "class": c, "name": n} for s, c, n in new_failures],
         "missingOrSkipped": [{"scope": s, "class": c, "name": n} for s, c, n in missing],
         "fixedSinceBaseline": [{"scope": s, "class": c, "name": n} for s, c, n in fixed],
@@ -225,9 +227,11 @@ def check(args) -> int:
     c = report["counts"]
     print(f"Gate A against baseline {document['baselineSha'][:12]}: {c['tests']} tests, {c['failed']} failed; "
           f"new failures {c['newFailures']}, missing/skipped baseline tests {c['missingOrSkipped']}, "
-          f"fixed since baseline {c['fixedSinceBaseline']}, added {c['addedSinceBaseline']}, "
+          f"fixed since baseline {c['fixedSinceBaseline']}, added {c['addedSinceBaseline']} "
+          f"(skipped {c['addedSkipped']}), "
           f"changed upstream trees {len(changed)}")
-    for title, rows in (("NEW FAILURE", new_failures), ("MISSING OR SKIPPED", missing)):
+    for title, rows in (("NEW FAILURE", new_failures), ("MISSING OR SKIPPED", missing),
+                        ("ADDED SKIPPED", added_skipped)):
         for scope, cls, name in rows[:50]:
             print(f"  {title}: [{scope}] {cls} > {name}")
     for name in changed:

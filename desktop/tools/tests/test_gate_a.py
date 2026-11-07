@@ -101,6 +101,124 @@ class GateATest(unittest.TestCase):
         self.results(extra={"pkg.Added": {"added": "failed"}})
         self.assertEqual(self.check()[0], 1)
 
+    def test_new_skipped_tests_fail_in_either_scope(self):
+        self.results()
+        for root, scope in ((self.desktop, "desktop"), (self.core, "upstream-core")):
+            with self.subTest(scope=scope), contextlib.ExitStack() as cleanup:
+                path = root / "test/TEST-pkg.Added.xml"
+                write_suite(path.parent, "pkg.Added", {"added": "skipped"})
+                cleanup.callback(path.unlink)
+                code, report = self.check()
+                self.assertEqual(code, 1)
+                self.assertFalse(report["passed"])
+                self.assertEqual(report["counts"]["addedSkipped"], 1)
+                self.assertEqual(report["addedSkipped"], [
+                    {"scope": scope, "class": "pkg.Added", "name": "added"}])
+                self.assertEqual(report["newFailures"], [])
+                self.assertEqual(report["missingOrSkipped"], [])
+
+    def test_new_pass_and_failure_are_judged_in_either_scope(self):
+        self.results()
+        for root, scope in ((self.desktop, "desktop"), (self.core, "upstream-core")):
+            for status, expected in (("passed", 0), ("failed", 1)):
+                with self.subTest(scope=scope, status=status), contextlib.ExitStack() as cleanup:
+                    path = root / "test/TEST-pkg.Added.xml"
+                    write_suite(path.parent, "pkg.Added", {"added": status})
+                    cleanup.callback(path.unlink)
+                    code, report = self.check()
+                    self.assertEqual(code, expected)
+                    self.assertEqual(report["counts"]["addedSinceBaseline"], 1)
+                    self.assertEqual(report["counts"]["newFailures"], int(status == "failed"))
+                    self.assertEqual(report["addedSkipped"], [])
+
+    def test_duplicate_new_identity_uses_worst_status_in_either_order(self):
+        self.results()
+        for root, scope in ((self.desktop, "desktop"), (self.core, "upstream-core")):
+            for statuses, worst in ((("passed", "skipped"), "skipped"),
+                                    (("skipped", "passed"), "skipped"),
+                                    (("passed", "failed"), "failed"),
+                                    (("failed", "passed"), "failed"),
+                                    (("skipped", "failed"), "failed"),
+                                    (("failed", "skipped"), "failed")):
+                with self.subTest(scope=scope, statuses=statuses), contextlib.ExitStack() as cleanup:
+                    for task, status in zip(("test", "other-task"), statuses):
+                        write_suite(root / task, "pkg.Added", {"added": status})
+                        cleanup.callback((root / task / "TEST-pkg.Added.xml").unlink)
+                    code, report = self.check()
+                    self.assertEqual(code, 1)
+                    self.assertEqual(report["counts"]["addedSinceBaseline"], 1)
+                    self.assertEqual(report["counts"]["newFailures"], int(worst == "failed"))
+                    self.assertEqual(report["counts"]["addedSkipped"], int(worst == "skipped"))
+
+    def test_duplicate_baseline_identity_cannot_hide_a_failure_or_skip(self):
+        self.results()
+        for statuses in (("passed", "failed"), ("failed", "passed"),
+                         ("passed", "skipped"), ("skipped", "passed")):
+            with self.subTest(statuses=statuses):
+                for task, status in zip(("test", "other-task"), statuses):
+                    write_suite(self.desktop / task, "pkg.Desktop", {"works": status})
+                code, report = self.check()
+                self.assertEqual(code, 1)
+                key = "newFailures" if "failed" in statuses else "missingOrSkipped"
+                self.assertIn({"scope": "desktop", "class": "pkg.Desktop", "name": "works"}, report[key])
+
+    def test_scope_change_cannot_replace_a_baseline_identity(self):
+        self.results()
+        (self.desktop / "test/TEST-pkg.Desktop.xml").unlink()
+        write_suite(self.core / "test", "pkg.Desktop", {"works": "passed"})
+        code, report = self.check()
+        self.assertEqual(code, 1)
+        self.assertIn({"scope": "desktop", "class": "pkg.Desktop", "name": "works"}, report["missingOrSkipped"])
+
+    def test_new_class_cannot_replace_a_baseline_identity(self):
+        self.results()
+        (self.desktop / "test/TEST-pkg.Desktop.xml").unlink()
+        write_suite(self.desktop / "test", "pkg.Renamed", {"works": "passed"})
+        self.assertEqual(self.check()[0], 1)
+
+    def test_baseline_skip_remains_allowed_including_when_absent(self):
+        document = json.loads(self.baseline.read_text(encoding="utf-8"))
+        document["identities"]["desktop:pkg.Skipped"] = ["optional"]
+        document["skipped"]["desktop:pkg.Skipped"] = ["optional"]
+        self.baseline.write_text(json.dumps(document), encoding="utf-8")
+        self.results()
+        self.assertEqual(self.check()[0], 0)
+        for status, expected in (("skipped", 0), ("passed", 0), ("failed", 1)):
+            with self.subTest(status=status):
+                write_suite(self.desktop / "test", "pkg.Skipped", {"optional": status})
+                self.assertEqual(self.check()[0], expected)
+
+    def test_skip_permission_does_not_cross_scopes(self):
+        document = json.loads(self.baseline.read_text(encoding="utf-8"))
+        document["identities"]["desktop:pkg.Skipped"] = ["optional"]
+        document["skipped"]["desktop:pkg.Skipped"] = ["optional"]
+        self.baseline.write_text(json.dumps(document), encoding="utf-8")
+        self.results()
+        write_suite(self.core / "test", "pkg.Skipped", {"optional": "skipped"})
+        code, report = self.check()
+        self.assertEqual(code, 1)
+        self.assertEqual(report["addedSkipped"], [
+            {"scope": "upstream-core", "class": "pkg.Skipped", "name": "optional"}])
+
+    def test_no_added_identities_preserves_empty_added_sets(self):
+        self.results()
+        code, report = self.check()
+        self.assertEqual(code, 0)
+        self.assertEqual(report["counts"]["addedSinceBaseline"], 0)
+        self.assertEqual(report["counts"]["addedSkipped"], 0)
+        self.assertEqual(report["addedSkipped"], [])
+
+    def test_empty_suite_is_an_input_error(self):
+        write_suite(self.desktop / "test", "pkg.Empty", {})
+        self.assertEqual(self.check()[0], 2)
+
+    def test_empty_baseline_is_an_input_error(self):
+        document = json.loads(self.baseline.read_text(encoding="utf-8"))
+        document.update(identities={}, failing={}, skipped={})
+        self.baseline.write_text(json.dumps(document), encoding="utf-8")
+        self.results()
+        self.assertEqual(self.check()[0], 2)
+
     def test_upstream_core_and_desktop_copies_are_judged_separately(self):
         # pkg.Core > red is a baseline failure only in the upstream-core project.
         self.results(extra={"pkg.Core": {"red": "failed"}})
