@@ -9,8 +9,12 @@ import okio.ForwardingSource
 import okio.Timeout
 import okio.buffer
 import java.io.IOException
+import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.CountDownLatch
+import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicBoolean
+import java.util.concurrent.atomic.AtomicReference
+import kotlin.reflect.KClass
 
 /** Final, short publication only. Never perform native joins, close, or network waits in admit. */
 internal interface DesktopPlaybackPublication {
@@ -78,11 +82,93 @@ internal class DesktopLocalPlaybackPublication(private val isOwned: () -> Boolea
         admittedPlaybackCalls(delegate, this, source, stillOwned, callerJob)
 }
 
-/** Enqueue is the HTTP publication point. execute waits OUTSIDE the Store monitor. */
+/** Retrofit creates, inspects and cancels raw calls under its own monitor. None
+ * of those operations may enter Store/entry/native admission. Resolve the real
+ * factory only when Retrofit invokes enqueue/execute outside that monitor. */
+internal fun deferredPlaybackCalls(delegate: Call.Factory): Call.Factory = Call.Factory { request ->
+    object : Call {
+        private val executed = AtomicBoolean(false)
+        private val cancelled = AtomicBoolean(false)
+        private val raw = AtomicReference<Call?>()
+        private val timeout = PlaybackCallTimeout()
+        private val tags = ConcurrentHashMap<Class<*>, Any>()
+        override fun <T : Any> tag(type: KClass<T>): T? = tag(type.java)
+        override fun <T> tag(type: Class<out T>): T? = raw.get()?.tag(type) ?: type.cast(tags[type]) ?: request.tag(type)
+        override fun <T : Any> tag(type: KClass<T>, computeIfAbsent: () -> T): T = tag(type.java, computeIfAbsent)
+        override fun <T : Any> tag(type: Class<T>, computeIfAbsent: () -> T): T {
+            tag(type)?.let { return it }
+            val computed = computeIfAbsent()
+            val value = type.cast(tags.putIfAbsent(type, computed) ?: computed)
+            return raw.get()?.tag(type) { value } ?: value
+        }
+        override fun request(): Request = request
+        override fun isExecuted(): Boolean = executed.get()
+        override fun isCanceled(): Boolean = cancelled.get() || raw.get()?.isCanceled() == true
+        override fun timeout(): Timeout = timeout
+        override fun clone(): Call = deferredPlaybackCalls(delegate).newCall(request)
+        override fun cancel() {
+            cancelled.set(true)
+            // Never wait for creation/admission: cancel may be called while the
+            // cancelling thread itself holds the Store and native monitors.
+            raw.get()?.cancel()
+        }
+        private fun create(): Call {
+            check(executed.compareAndSet(false, true)) { "Already Executed" }
+            val call = delegate.newCall(request)
+            timeout.attach(call.timeout())
+            raw.set(call)
+            // Tags set before handoff also belong to the real interceptor Call.
+            tags.forEach { (type, value) ->
+                @Suppress("UNCHECKED_CAST")
+                call.tag(type as Class<Any>) { value }
+            }
+            // A cancellation before/during newCall cannot be lost at handoff.
+            if (cancelled.get()) call.cancel()
+            return call
+        }
+        override fun enqueue(responseCallback: Callback) {
+            val call = try { create() }
+            catch (failure: IOException) { responseCallback.onFailure(this, failure); return }
+            call.enqueue(responseCallback)
+        }
+        override fun execute(): Response = create().execute()
+    }
+}
+
+/** Configuration only: this tiny monitor never calls a factory or admission.
+ * Preserve the client's default timeout unless explicitly changed by the caller,
+ * and keep an already returned Timeout live after the deferred call is attached. */
+private class PlaybackCallTimeout : Timeout() {
+    private var current = Timeout()
+    private var timeoutChanged = false
+    private var deadlineChanged = false
+    @Synchronized fun attach(target: Timeout) {
+        if (timeoutChanged) target.timeout(current.timeoutNanos(), TimeUnit.NANOSECONDS)
+        if (deadlineChanged) {
+            if (current.hasDeadline()) target.deadlineNanoTime(current.deadlineNanoTime()) else target.clearDeadline()
+        }
+        current = target
+    }
+    @Synchronized override fun timeout(timeout: Long, unit: TimeUnit): Timeout {
+        current.timeout(timeout, unit); timeoutChanged = true; return this
+    }
+    @Synchronized override fun timeoutNanos(): Long = current.timeoutNanos()
+    @Synchronized override fun hasDeadline(): Boolean = current.hasDeadline()
+    @Synchronized override fun deadlineNanoTime(): Long = current.deadlineNanoTime()
+    @Synchronized override fun deadlineNanoTime(deadlineNanoTime: Long): Timeout {
+        current.deadlineNanoTime(deadlineNanoTime); deadlineChanged = true; return this
+    }
+    @Synchronized override fun clearTimeout(): Timeout { current.clearTimeout(); timeoutChanged = true; return this }
+    @Synchronized override fun clearDeadline(): Timeout { current.clearDeadline(); deadlineChanged = true; return this }
+    @Synchronized override fun throwIfReached() = current.throwIfReached()
+}
+
+/** Enqueue is the HTTP publication point. Creation and queue admission are both
+ * outside Retrofit's monitor; execute waits OUTSIDE the Store monitor. */
 @OptIn(InternalCoroutinesApi::class)
 internal fun admittedPlaybackCalls(delegate: Call.Factory, publication: DesktopPlaybackPublication,
     source: PlaybackSource, stillOwned: () -> Boolean, callerJob: Job? = null): Call.Factory = Call.Factory { request ->
-    val call = publication.admit(source, stillOwned) { delegate.newCall(request) }
+    val call = deferredPlaybackCalls(delegate).newCall(request)
     object : Call by call {
         override fun request(): Request = call.request()
         override fun cancel() = call.cancel()
