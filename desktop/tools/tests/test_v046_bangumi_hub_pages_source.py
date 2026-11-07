@@ -81,6 +81,45 @@ def text(path):
     return Path(path).read_bytes().decode('utf8').replace('\r\n', '\n')
 
 
+def apply_unified_patch(original, patch, label):
+    """The build rule: every hunk matches the producer output exactly once, or the build fails."""
+    lines = original.replace('\r\n', '\n').split('\n')
+    body = patch.replace('\r\n', '\n').split('\n')
+    body = body[next(i for i, line in enumerate(body) if line.startswith('--- ')):]
+    body = body[2:]
+    index = 0
+    while index < len(body):
+        header = body[index]
+        index += 1
+        if header == '' and index == len(body):
+            break
+        if not header.startswith('@@ '):
+            raise ValueError('%s: malformed hunk header: %s' % (label, header))
+        before, after = [], []
+        while index < len(body) and not body[index].startswith('@@ '):
+            line = body[index]
+            index += 1
+            if line == '' and index == len(body):
+                break
+            if not line:
+                raise ValueError('%s: empty patch line' % label)
+            kind, rest = line[0], line[1:]
+            if kind == ' ':
+                before.append(rest)
+                after.append(rest)
+            elif kind == '-':
+                before.append(rest)
+            elif kind == '+':
+                after.append(rest)
+            else:
+                raise ValueError('%s: unexpected patch line: %s' % (label, line))
+        matches = [start for start in range(len(lines) - len(before) + 1) if lines[start:start + len(before)] == before]
+        if len(matches) != 1:
+            raise ValueError('%s: hunk %s matches %d times' % (label, header, len(matches)))
+        lines = lines[:matches[0]] + after + lines[matches[0] + len(before):]
+    return '\n'.join(lines)
+
+
 def balanced(testcase, name, body, syntax):
     stack = []
     for token, first, _ in syntax.kotlin_tokens(body):
@@ -706,12 +745,40 @@ class BangumiHubPagesSliceTests(unittest.TestCase):
         self.assertNotIn('.copy(selectedType', body)
         self.assertNotIn('oneCopyChangesOnlyTheNamedField', body)
 
+    def test_desktop_width_patches_use_the_home_feed_and_fail_when_the_anchor_moves(self):
+        screen_patch = REPO / ('desktop/upstream-core/transition/patches/independent-bangumi-pages/'
+                               'com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiScreen.kt.patch')
+        hub_patch = REPO / ('desktop/upstream-core/transition/patches/home-bangumi-page/'
+                            'com/android/purebilibili/feature/bangumi/BangumiHubContent.kt.patch')
+        screen = apply_unified_patch(self.screen, screen_patch.read_text(encoding='utf8'), 'screen')
+        content = apply_unified_patch(text(self.home / hub.OUT_HUB_CONTENT), hub_patch.read_text(encoding='utf8'), 'hub')
+        self.assertEqual(1, screen.count('val desktopBangumiHubWidth = com.bilipai.desktop.ui.desktopHomeFeedContentWidth('))
+        self.assertEqual(3, screen.count('maxWidth = desktopBangumiHubWidth'))
+        self.assertNotIn('.responsiveContentWidth()', screen)
+        self.assertEqual(1, content.count('columns = com.bilipai.desktop.ui.desktopBangumiPosterGridCells()'))
+        self.assertNotIn('desktopResolveHomeFeedGridColumns(', content)
+        self.assertIn('key = "follow_header"', content)
+        self.assertEqual(2, content.count('columns = GridCells.Adaptive(112.dp)'))
+        self.assertEqual(1, content.count('columns = GridCells.Adaptive(310.dp)'))
+        self.assertNotIn('columns = GridCells.Fixed(', content)
+        poster_policy = text(UI / 'DesktopBangumiPosterLayout.kt')
+        self.assertIn('desktopBangumiPosterGridCells(): GridCells = GridCells.Adaptive(112.dp)', poster_policy)
+        balanced(self, 'patched-screen', screen, self.syntax)
+        balanced(self, 'patched-hub', content, self.syntax)
+        moved = self.screen.replace('.responsiveContentWidth()', '.responsiveContentWidth(maxWidth = 800.dp)', 1)
+        with self.assertRaises(ValueError):
+            apply_unified_patch(moved, screen_patch.read_text(encoding='utf8'), 'screen')
+
     def test_touched_text_files_are_lf_only(self):
         paths = [TOOLS / 'v046_bangumi_hub_pages.py', TOOLS / 'tests/test_v046_bangumi_hub_pages_source.py', TOOLS / HOME_PRODUCER,
                  TOOLS / PAGES_PRODUCER, TOOLS / 'compatibility-source-inputs.json', TOOLS / 'sync-upstream.py',
                  TOOLS / 'tests/test_sync_upstream.py', TOOLS / 'tests/test_v046_bangumi_player_source.py',
                  REPO / 'desktop/build.gradle.kts', UI / 'DesktopOriginalBangumiPagesRoot.kt',
-                 UI / 'DesktopOriginalBangumiCardDetail.kt', JVM_TEST, *(REPO / hub.ARCHIVE).iterdir()]
+                 UI / 'DesktopOriginalBangumiCardDetail.kt', JVM_TEST,
+                 REPO / 'desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopBangumiHubLayoutTest.kt',
+                 REPO / 'desktop/upstream-core/transition/patches/independent-bangumi-pages/com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiScreen.kt.patch',
+                 REPO / 'desktop/upstream-core/transition/patches/home-bangumi-page/com/android/purebilibili/feature/bangumi/BangumiHubContent.kt.patch',
+                 *(REPO / hub.ARCHIVE).iterdir()]
         for path in paths:
             self.assertNotIn(b'\r', path.read_bytes(), path.name)
 

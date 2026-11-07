@@ -1,0 +1,40 @@
+--- a/independent-bangumi-pages/com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiScreen.kt
++++ b/independent-bangumi-pages/com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiScreen.kt
+@@ -115,6 +115,10 @@
+     val snackbarHostState = remember { SnackbarHostState() }
+     val context = LocalContext.current
++    // Home feed width: window minus the rail in the desktop layout, the vendored cap in classic.
++    // The phone 800 dp default stays off this page.
++    val desktopBangumiHubWidth = com.bilipai.desktop.ui.desktopHomeFeedContentWidth(
++        com.android.purebilibili.core.util.LocalWindowSizeClass.current.widthDp,
++    )
+     val scope = rememberCoroutineScope()
+     val keyboard = LocalSoftwareKeyboardController.current
+     val focusRequester = remember { FocusRequester() }
+@@ -281,7 +285,7 @@
+                                 com.android.purebilibili.core.ui.AppChromeSizeTokens.BottomBarMatchedSegmentedIndicatorHeightDp.dp,
+                             modifier = Modifier
+                                 .fillMaxWidth()
+-                                .responsiveContentWidth()
++                                .responsiveContentWidth(maxWidth = desktopBangumiHubWidth)
+                                 .padding(horizontal = 16.dp, vertical = if (themeConfig.liquidGlassEnabled) 6.dp else 8.dp),
+                             miuixBackdrop = chromeBackdrop,
+                         )
+@@ -297,7 +301,7 @@
+                             tapPressRefractionEnabled = true,
+                             modifier = Modifier
+                                 .fillMaxWidth()
+-                                .responsiveContentWidth()
++                                .responsiveContentWidth(maxWidth = desktopBangumiHubWidth)
+                                 .padding(horizontal = 12.dp, vertical = 8.dp),
+                             miuixBackdrop = chromeBackdrop,
+                         )
+@@ -325,7 +329,7 @@
+                     .then(if (hazeState != null) Modifier.hazeSourceCompat(hazeState) else Modifier)
+                     .globalWallpaperAwareBackground(MaterialTheme.colorScheme.background),
+             ) {
+-                Box(modifier = Modifier.fillMaxSize().responsiveContentWidth()) {
++                Box(modifier = Modifier.fillMaxSize().responsiveContentWidth(maxWidth = desktopBangumiHubWidth)) {
+                     BangumiHubContent(
+                         state = state,
+                         onBangumiClick = onBangumiClick,

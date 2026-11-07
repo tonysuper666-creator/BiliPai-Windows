@@ -1,0 +1,15 @@
+--- a/home-bangumi-page/com/android/purebilibili/feature/bangumi/BangumiHubContent.kt
++++ b/home-bangumi-page/com/android/purebilibili/feature/bangumi/BangumiHubContent.kt
+@@ -295,11 +295,11 @@
+         modifier = Modifier.fillMaxSize(),
+     ) {
+         LazyVerticalGrid(
+-            columns = GridCells.Adaptive(112.dp),
++            columns = com.bilipai.desktop.ui.desktopBangumiPosterGridCells(),
+             state = gridState,
+             contentPadding = PaddingValues(start = 12.dp, top = listTopPadding + 8.dp, end = 12.dp, bottom = listBottomPadding),
+             horizontalArrangement = Arrangement.spacedBy(10.dp),
+             verticalArrangement = Arrangement.spacedBy(14.dp),
+         ) {
+             item(span = { GridItemSpan(maxLineSpan) }, key = "follow_header") {
+                 val followLabel = if (channel == BangumiChannel.BANGUMI) "追番" else "追剧"
