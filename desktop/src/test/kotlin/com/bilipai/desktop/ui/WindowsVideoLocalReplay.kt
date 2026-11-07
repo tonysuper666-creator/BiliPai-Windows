@@ -57,6 +57,9 @@ internal class WindowsVideoLocalReplay private constructor(private val report: P
     val commentComposerReplay: WindowsCommentComposerReplay get() = requireNotNull(composerScript)
     private val commentScript = if (commentSearchInput) WindowsCommentSearchReplay() else null
     val commentSearchReplay: WindowsCommentSearchReplay get() = requireNotNull(commentScript)
+    private val searchLinkInput = System.getProperty("bilipai.validation.searchLinkInput") == "true"
+    private val searchLinkScript = if (searchLinkInput) WindowsSearchLinkReplay() else null
+    val searchLinkReplay: WindowsSearchLinkReplay? get() = searchLinkScript
     private val mediaSeconds = if (System.getProperty("bilipai.validation.pipInput") == "true") 300 else if (bgmInput) 180 else SECONDS
     private val secondCid = 7008L
     private val base: String get() = "http://127.0.0.1:${server.address.port}"
@@ -76,6 +79,10 @@ internal class WindowsVideoLocalReplay private constructor(private val report: P
             "Brand feedback needs the unchanged isolated composer synthetic Store/session precondition"
         }
         require(!videoDynamicShareInput || (composerInput && !brandFeedbackPlacementInput && !commentSearchInput))
+        require(!searchLinkInput || (!commentSearchInput && !composerInput && !bgmInput && !originalInteractionInput &&
+            !collectionInput && !metadataInput && System.getProperty("bilipai.validation.pipInput") != "true")) {
+            "Search links are a separate guest GET-only branch"
+        }
         require(!Files.exists(media, NOFOLLOW_LINKS)); Files.createDirectory(media)
         createVideo(media.resolve("video.avi").toFile(), mediaSeconds); createAudio(media.resolve("audio.wav").toFile(), mediaSeconds)
         server.executor = executor
@@ -210,6 +217,20 @@ internal class WindowsVideoLocalReplay private constructor(private val report: P
                     WindowsCommentSearchReplay.isReadRpc(path))) { "Comment search guest replay forbids account mutation POST" }
                 commentScript?.intercept(chain, ::requireOwnerBoolean)?.let { response ->
                     try { requireOwner(); return@addInterceptor response } catch (failure: Throwable) { response.close(); throw failure }
+                }
+            }
+            if (searchLinkInput) {
+                // Only the original gRPC comment read may POST; it stays unmapped so the
+                // original repository uses its REST fallback with the observed JSON shape.
+                require(request.method == "GET" || (request.method == "POST" && url.host == "app.bilibili.com" &&
+                    WindowsCommentSearchReplay.isReadRpc(path))) { "Search-link guest replay forbids account mutation POST" }
+                searchLinkScript?.intercept(chain, ::requireOwnerBoolean)?.let { response ->
+                    try {
+                        requireOwner()
+                        requests.add(buildJsonObject { put("path", path); put("method", request.method); put("localReplay", true)
+                            put("mapped", true); put("searchLinkReplay", true) })
+                        return@addInterceptor response
+                    } catch (failure: Throwable) { response.close(); throw failure }
                 }
             }
             if (collectionInput) require(path !in setOf("/x/v3/fav/season/fav", "/x/v3/fav/season/unfav")) {
@@ -379,6 +400,10 @@ internal class WindowsVideoLocalReplay private constructor(private val report: P
         val brandFeedbackReceipt = brandFeedbackScript?.receipt()
         val composerReceipt = composerScript?.receipt(requireComplete = !videoDynamicShareInput)
         val commentReceipt = commentScript?.receipt()
+        val searchLinkReceipt = searchLinkScript?.receipt()
+        if (searchLinkInput) require(requests.none { it["method"]?.jsonPrimitive?.content == "POST" &&
+            (it["host"]?.jsonPrimitive?.content != "app.bilibili.com" ||
+                !WindowsCommentSearchReplay.isReadRpc(it["path"]?.jsonPrimitive?.content.orEmpty())) })
         if (commentSearchInput) require(requests.none { it["method"]?.jsonPrimitive?.content == "POST" &&
             (it["host"]?.jsonPrimitive?.content != "app.bilibili.com" ||
                 !WindowsCommentSearchReplay.isReadRpc(it["path"]?.jsonPrimitive?.content.orEmpty())) })
@@ -397,6 +422,8 @@ internal class WindowsVideoLocalReplay private constructor(private val report: P
             put("singleBgmDetailOnlyScope", bgmInput)
             put("commentSearchResponsesAreSynthetic", commentSearchInput)
             put("commentSearch", commentReceipt ?: JsonNull)
+            put("searchLinkResponsesAreSynthetic", searchLinkInput)
+            put("searchLink", searchLinkReceipt ?: JsonNull)
             put("composerInputResponsesAreSynthetic", composerInput)
             put("composerInput", composerReceipt ?: JsonNull)
             put("videoDynamicShareInput", videoDynamicShareInput)
