@@ -433,8 +433,30 @@ class WiringTest(unittest.TestCase):
         block = self.task_block("extractOriginalHomePage")
         self.assertIn('"tools/extract-upstream-home-core-refresh.py"', block)
         self.assertIn("tools/extract-upstream-home-page.py", block)
-        core = source.read(TOOLS / "extract-upstream-home-core-refresh.py")
-        self.assertIn("desktop/tools/extract-upstream-home-page.py", core)
+        self.assert_core_runs_hooked_producer(self.load_core())
+
+    @staticmethod
+    def load_core():
+        spec = importlib.util.spec_from_file_location("ux_home_core_refresh", TOOLS / "extract-upstream-home-core-refresh.py")
+        core = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(core)
+        return core
+
+    def assert_core_runs_hooked_producer(self, core):
+        with tempfile.TemporaryDirectory(prefix="bp-ux-home-wiring-") as output:
+            argv = ["core", "--repo", str(REPO), "--output", output, "--test-output", output + "-tests"]
+            with (mock.patch.object(sys, "argv", argv),
+                  mock.patch("v046_identity_badge_palette.validate_outputs"),
+                  mock.patch("v046_wallpaper_foundation.validate_outputs"),
+                  mock.patch.object(core.subprocess, "run", return_value=subprocess.CompletedProcess([], 23)) as run):
+                self.assertEqual(23, core.main(), "producer failure must propagate")
+                run.assert_called_once_with([sys.executable, str(PRODUCER), "--repo", str(REPO), "--output", output])
+
+    def test_the_wiring_check_rejects_a_different_producer(self):
+        core = self.load_core()
+        with mock.patch.object(core, "read_point_tool", return_value=TOOLS / "wrong-producer.py"):
+            with self.assertRaises(AssertionError):
+                self.assert_core_runs_hooked_producer(core)
 
     def test_only_the_hook_and_the_tests_name_the_module(self):
         names = sorted(path.name for path in TOOLS.glob("*.py") if path.name != "ux_home_layout.py" and "ux_home_layout" in source.read(path))
@@ -451,9 +473,11 @@ class WiringTest(unittest.TestCase):
 
 def declaring_packages(name):
     """Packages of the Kotlin files in the repository that declare a top-level name (git grep, read only)."""
-    pattern = r"(^|[ \t])(fun|class|object|interface|typealias|val|var)[ \t]+(<[^>]*>[ \t]+)?([A-Za-z0-9_<>?, ]+\.)?%s\b" % re.escape(name)
+    pattern = r"(^|[[:space:]])(fun|class|object|interface|typealias|val|var)[[:space:]]+(<[^>]*>[[:space:]]+)?([A-Za-z0-9_<>?, ]+\.)?%s([^[:alnum:]_]|$)" % re.escape(name)
     result = subprocess.run(["git", "-c", "core.autocrlf=false", "grep", "--untracked", "-l", "-E", pattern, "--", "app", "design-system", "desktop/src/main"],
                             cwd=str(REPO), stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False)
+    if result.returncode not in (0, 1):
+        raise RuntimeError("git grep failed: " + result.stderr.decode("utf-8", "replace"))
     packages = set()
     for line in result.stdout.decode("utf-8", "replace").splitlines():
         if not line.endswith(".kt"):

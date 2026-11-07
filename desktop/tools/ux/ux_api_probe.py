@@ -245,13 +245,17 @@ def candidate_roots():
         sibling = checkout.parent / "BiliPai-v025/desktop"
         roots += [sibling / "third-party/miuix5157/build/libs"]
         roots += sorted((sibling / "build/compose/binaries/main/app").glob("*/app"))
-        roots += [checkout / ".local/fsr/base-runtime", checkout / "desktop/.local/stable-product-snapshot-32"]
+        roots += [checkout / ".local/fsr/base-runtime", checkout.parent / "BiliPai/.local/fsr/base-runtime",
+                  checkout / "desktop/.local/stable-product-snapshot-32"]
     gradle_homes = [Path(os.environ.get("GRADLE_USER_HOME", Path.home() / ".gradle"))]
     if common:
         gradle_homes.append(Path(common).resolve().parent.parent / "toolchain/gradle-home")
     for gradle_home in gradle_homes:
         cache = gradle_home / "caches/modules-2/files-2.1"
         if cache.is_dir():
+            # Compose 1.12's JetBrains runtime artifact is a metadata-only bridge
+            # to androidx.compose.runtime; search the actual classes first.
+            roots += sorted(path.parent for path in cache.glob("androidx.compose.runtime/runtime-desktop/*/*/*.jar"))
             roots += sorted(path.parent for path in cache.glob("org.jetbrains.compose.*/*-desktop/*/*/*.jar"))
     return roots
 

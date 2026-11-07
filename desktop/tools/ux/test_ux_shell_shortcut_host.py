@@ -56,6 +56,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import ux_model as model  # noqa: E402
+import ux_api_probe as api_probe  # noqa: E402
 import ux_player_keys_model as pk  # noqa: E402
 import ux_shell_model as shell  # noqa: E402
 import ux_source as source  # noqa: E402
@@ -317,18 +318,9 @@ class PageTest(unittest.TestCase):
     def test_the_compose_scene_answers_with_a_request_only_while_a_text_field_is_in_session(self):
         # The proof of the premise of the text editor test, read from the pinned ui-desktop jar: the layer component returns the mediator's
         # currentInputMethodRequests, enableInput sets it and disableInput clears it. Skipped where the jars are not present.
-        import os
-        import subprocess
         import zipfile
-        roots = [Path(item) for item in os.environ.get("BILIPAI_UX_JAR_DIRS", "").split(os.pathsep) if item]
-        try:
-            common = subprocess.run(["git", "-C", str(source.REPO), "rev-parse", "--git-common-dir"], capture_output=True, text=True,
-                                    timeout=30).stdout.strip()
-        except (OSError, subprocess.SubprocessError):
-            common = ""
-        if common:
-            roots.append(Path(common).resolve().parent / ".local/fsr/base-runtime")
-        jars = [jar for root in roots if root.is_dir() for jar in sorted(root.glob("ui-desktop-1.12.1-*.jar"))]
+        found, _ = api_probe.find_jars()
+        jars = found.get("ui-desktop", [])
         if not jars:
             self.skipTest("the pinned ui-desktop jar is not on this machine")
         with zipfile.ZipFile(jars[0]) as jar:

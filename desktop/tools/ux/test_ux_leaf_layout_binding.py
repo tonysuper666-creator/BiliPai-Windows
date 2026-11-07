@@ -339,9 +339,44 @@ TON1028_HUNKS = (
 )
 
 
+# 9c7ba8923 added this load to the physical leaf after TON-1028. Keep its exact
+# inverse ahead of the older hunks; the original V2 and V6 identities stay pinned.
+DANMAKU_HUNKS = (
+    ("danmaku load", (
+        "    val progressDurationMs = state.durationSeconds.takeIf { it.isFinite() && it > 0.0 }?.let { (it * 1000.0).toLong() } ?: 0L",
+        "    val progressSamples = remember(pbpProgressData, progressDurationMs) {",
+    ), (
+        "    val progressDurationMs = state.durationSeconds.takeIf { it.isFinite() && it > 0.0 }?.let { (it * 1000.0).toLong() } ?: 0L",
+        "    val danmakuDetail = success?.info",
+        "    val danmakuPageDurationSeconds = danmakuDetail?.pages?.firstOrNull { it.cid == danmakuDetail.cid }?.duration ?: 0L",
+        "    val danmakuLoad = desktopWindowsDanmakuLoadRequest(",
+        "        enabled = preferences.danmaku.enabled,",
+        "        pageActive = active && current(),",
+        "        accepted = viewportSource?.let { DesktopWindowsDanmakuLoadIdentity(it.request.bvid, it.request.cid) },",
+        "        detailBvid = danmakuDetail?.bvid.orEmpty(),",
+        "        detailCid = danmakuDetail?.cid ?: 0L,",
+        "        detailAid = danmakuDetail?.aid ?: 0L,",
+        "        pageDurationSeconds = danmakuPageDurationSeconds,",
+        "        playerDurationMs = progressDurationMs,",
+        "    )",
+        "    LaunchedEffect(platforms.holder.section, viewportSource?.sourceVersion, danmakuLoad, state.ready) {",
+        "        runDesktopWindowsDanmakuLoad(danmakuLoad, stillCurrent = { current() }) { request ->",
+        "            platforms.holder.section.danmaku.loadDanmaku(",
+        "                request.cid, request.aid, request.durationHintMs, request.bvid)",
+        "        }",
+        "    }",
+        "    val progressSamples = remember(pbpProgressData, progressDurationMs) {",
+    )),
+)
+
+
+def reverse_after_v6(leaf):
+    return reverse_chain(reverse_chain(leaf, DANMAKU_HUNKS), TON1028_HUNKS)
+
+
 def reverse_v6(leaf):
-    """The V2 state of the leaf: the hunks of the later slices (TON-1028, then V6) undone."""
-    return reverse_chain(reverse_chain(leaf, TON1028_HUNKS), V6_HUNKS)
+    """The V2 state of the leaf, with each later slice undone in reverse order."""
+    return reverse_chain(reverse_after_v6(leaf), V6_HUNKS)
 
 
 def reverse_apply(leaf):
@@ -495,6 +530,17 @@ def check_construction(leaf):
 
 
 class LeafIdentityTest(unittest.TestCase):
+    def test_later_danmaku_hunk_round_trips_and_rejects_mutation(self):
+        before = reverse_chain(LEAF_TEXT, DANMAKU_HUNKS)
+        label, old, new = DANMAKU_HUNKS[0]
+        old, new = "\n".join(old), "\n".join(new)
+        self.assertEqual(1, before.count(old), label)
+        self.assertEqual(LEAF_TEXT, before.replace(old, new, 1))
+        edited = LEAF_TEXT.replace("        detailAid = danmakuDetail?.aid ?: 0L,", "        detailAid = 1L,", 1)
+        self.assertNotEqual(edited, LEAF_TEXT)
+        with self.assertRaisesRegex(AssertionError, "danmaku load"):
+            reverse_chain(edited, DANMAKU_HUNKS)
+
     def test_the_hunks_are_anchored_and_each_block_occurs_once(self):
         self.assertEqual(10, len(HUNKS))
         text = LEAF_TEXT
