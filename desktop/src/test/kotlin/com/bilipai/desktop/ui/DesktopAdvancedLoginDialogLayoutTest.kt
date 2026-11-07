@@ -269,7 +269,13 @@ class DesktopAdvancedLoginDialogLayoutTest {
                 s.assertVisible(bounds)
                 assertTrue(bounds.height <= 408, "Keep vertical clearance in a short viewport")
                 s.assertVisible(assertNotNull(s.text("关闭")).boundsInWindow)
-                s.scrollBody()
+                // Wheel deltas are small in ImageComposeScene; keep sending real input until
+                // the footer enters the clipped body viewport, without invoking a semantics action.
+                repeat(24) {
+                    val refresh = assertNotNull(s.text("刷新二维码")).boundsInWindow
+                    if (refresh.width <= 0 || refresh.height <= 0) s.scrollBody()
+                }
+                s.capture("short-scrolled-$dark")
                 s.assertVisible(assertNotNull(s.text("刷新二维码")).boundsInWindow)
                 val before = s.transport.generated.get()
                 s.click("刷新二维码")
