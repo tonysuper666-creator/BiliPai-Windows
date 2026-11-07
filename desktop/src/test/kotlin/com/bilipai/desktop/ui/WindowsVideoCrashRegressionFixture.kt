@@ -229,6 +229,8 @@ object WindowsVideoCrashRegressionFixture {
                             } } finally {
                                 val diagnostics = edt { buildJsonObject {
                                     put("routeCurrent", latest.get()?.key == detail)
+                                    put("requestedOidValid", detail.oid > 0L)
+                                    put("requestedRootValid", detail.rootId > 0L)
                                     put("routeRetained", routes.containsEntry(detail))
                                     put("rootOwned", routes.root.entry.gate.owns())
                                     val owners = refs.values().filterIsInstance<DesktopOriginalCommentRootOwner>()
@@ -236,6 +238,7 @@ object WindowsVideoCrashRegressionFixture {
                                     put("detailStates", JsonArray(refs.values().filterIsInstance<CommentDetailViewModel>()
                                         .distinct().map { vm -> buildJsonObject {
                                             val state = vm.subReplyState.value
+                                            put("visible", state.visible)
                                             put("loading", state.isLoading)
                                             put("hasError", state.error != null)
                                             put("rootMatches", state.rootReply?.rpid == detail.rootId)
