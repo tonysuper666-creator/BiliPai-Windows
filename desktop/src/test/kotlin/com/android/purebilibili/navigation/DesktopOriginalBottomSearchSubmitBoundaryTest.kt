@@ -5,8 +5,22 @@ import com.android.purebilibili.feature.home.components.BottomNavItem
 import kotlinx.coroutines.channels.Channel
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import org.junit.jupiter.api.DynamicTest
+import org.junit.jupiter.api.TestFactory
 
 class DesktopOriginalBottomSearchSubmitBoundaryTest {
+    @TestFactory
+    fun `compiled bottom submit checks complete candidates and ownership`() = DesktopSearchSubmitCases.cases.flatMap { case ->
+        listOf(true, false).map { owned ->
+            DynamicTest.dynamicTest("${case.name}-owned-$owned") {
+                val calls = submit(case.input, owned = owned)
+                val actual = (calls.searches.map { "search:$it" } + calls.links.map { "link:$it" } +
+                    calls.targets.map { "native:$it" } + calls.scoped.map { "scoped:$it" }).joinToString(";")
+                assertEquals(if (owned) case.expected else "", actual, case.input)
+            }
+        }
+    }
+
     private data class Calls(
         val searches: List<String> = emptyList(),
         val links: List<String> = emptyList(),
