@@ -1264,3 +1264,103 @@
      val appThemeConfig = com.android.purebilibili.core.ui.LocalAppThemeConfig.current
      val headerBlurEnabled = appThemeConfig.headerBlurEnabled
      val bottomBarBlurEnabled = appThemeConfig.bottomBarBlurEnabled
+@@ -1385,2 +1385,79 @@
+-        if (isTablet) {
++        if (com.bilipai.desktop.ui.desktopProfileHeaderOnTop(splitLayout = isTablet)) {
++            // 桌面布局（TON-1060）：资料区与快捷入口在内容上方横排，内容全宽，不再左右分栏。
++            val bottomDockClearance = LocalBottomBarContentPadding.current
++            ProfileSpaceFeedColumn(
++                    user = user,
++                    space = space,
++                    showServicesInHome = false,
++                    favoriteFolderShortcuts = favoriteFolderShortcuts,
++                    onTabSelected = onTabSelected,
++                    onFavoriteClick = onFavoriteClick,
++                    onFavoriteFolderClick = onFavoriteFolderClick,
++                    onBangumiClick = onBangumiClick,
++                    onBangumiMoreClick = onBangumiMoreClick,
++                    onVideoClick = onVideoClick,
++                    onContributionRetry = onContributionRetry,
++                    onHistoryClick = onHistoryClick,
++                    showHistoryService = showHistoryService,
++                    onDownloadClick = onDownloadClick,
++                    onWatchLaterClick = onWatchLaterClick,
++                    onInboxClick = onInboxClick,
++                    onAccountManageClick = onAccountManageClick,
++                    onLogout = onLogout,
++                    onDynamicDeleteClick = onDynamicDeleteClick,
++                    contentChrome = contentChrome,
++                modifier = Modifier
++                    .fillMaxSize()
++                    .then(if (hazeState != null) Modifier.hazeSourceCompat(hazeState) else Modifier)
++                    .padding(paddingValues)
++                    .padding(horizontal = 24.dp),
++                contentPadding = PaddingValues(
++                    top = 16.dp,
++                    bottom = maxOf(48.dp, bottomDockClearance)
++                ),
++                listState = tabletFeedListState,
++                pageListStates = tabletPageListStates,
++                pagerState = pagerState,
++                leadingContent = { page ->
++                    Row(
++                        modifier = Modifier
++                            .fillMaxWidth()
++                            .stationaryPagerHeader(pagerState, page)
++                            .heightIn(min = tabletWallpaperRevealHeight)
++                            .padding(bottom = 16.dp),
++                        horizontalArrangement = Arrangement.spacedBy(20.dp),
++                        verticalAlignment = Alignment.Top,
++                    ) {
++                        ProfileSpaceHeader(
++                            user = user,
++                            editableAccount = editableAccount,
++                            onAvatarClick = openAvatarPreview,
++                            avatarSourceRect = avatarSourceRect,
++                            compact = true,
++                            heroChrome = heroChrome,
++                            showWallpaperAction = true,
++                            showEditProfileButton = showProfileEditButton,
++                            onEditClick = { showEditDialog = true },
++                            onWallpaperActionClick = { showWallpaperActionSheet = true },
++                            onFollowingClick = onFollowingClick,
++                            onFansClick = onFansClick,
++                            onDynamicsClick = { onTabSelected(ProfileSpaceMainTab.DYNAMIC) },
++                            modifier = Modifier.widthIn(min = 300.dp, max = 420.dp)
++                        )
++                        Box(Modifier.weight(1f)) {
++                            ProfileQuickAccessDashboard(
++                                favoriteFolderShortcuts = favoriteFolderShortcuts,
++                                onDownloadClick = onDownloadClick,
++                                onHistoryClick = onHistoryClick,
++                                onSubscriptionClick = onSubscriptionClick,
++                                onWatchLaterClick = onWatchLaterClick,
++                                onFavoriteClick = onFavoriteClick,
++                                onFavoriteFolderClick = onFavoriteFolderClick,
++                                contentColor = contentChrome.onSurfaceColor,
++                            )
++                        }
++                    }
++                },
++            )
++        } else if (isTablet) {
+             // 悬浮底栏会盖在双栏内容上，列表尾部需要与手机分支同等的让位。
+@@ -1883,4 +1883,5 @@
+     pageListStates: Map<ProfileSpaceMainTab, LazyListState>,
+     pagerState: PagerState,
++    leadingContent: (@Composable (Int) -> Unit)? = null,
+ ) {
+     var feedRootTopPx by remember { mutableStateOf(0f) }
+@@ -1926,8 +1926,12 @@
+         item {
++            // 资料区与标签同属首项：标签可见判据（首项可见）与分页手势上沿不变。
++            Column(Modifier.fillMaxWidth()) {
++            leadingContent?.invoke(page)
+             tabSlot(
+                 page,
+                 Modifier.stationaryPagerHeader(pagerState, page).onGloballyPositioned {
+                     if (isPageActive) tabsRootBottomPx = it.boundsInRoot().bottom
+                 },
+             )
++            }
+         }
