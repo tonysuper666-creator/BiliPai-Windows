@@ -23,6 +23,7 @@ internal class DesktopMediaByteSpanStore(root: Path, val limit: Long = resolvePl
         var used: Long = System.nanoTime())
     private val spans = mutableListOf<Span>()
     private val garbage = mutableMapOf<Path, Long>()
+    private val deletingGarbage = mutableSetOf<Path>()
     private var diskBytes = 0L
     private var closed = false
     private var clearing = false
@@ -192,6 +193,9 @@ internal class DesktopMediaByteSpanStore(root: Path, val limit: Long = resolvePl
         paths.forEach(::deleteGarbage)
     }
     private fun deleteGarbage(path: Path) {
+        // Eviction and cleanup snapshots can select the same path. Keep its charge
+        // until the sole deletion owner succeeds; never hold the index lock for IO.
+        if (!synchronized(monitor) { path in garbage && deletingGarbage.add(path) }) return
         try {
             require(path.toAbsolutePath().normalize().parent==directory)
             if(Files.exists(path,java.nio.file.LinkOption.NOFOLLOW_LINKS)) {
@@ -201,6 +205,7 @@ internal class DesktopMediaByteSpanStore(root: Path, val limit: Long = resolvePl
             Files.deleteIfExists(path)
             synchronized(monitor) { garbage.remove(path)?.let { diskBytes -= it } }
         } catch (_: IOException) { /* remains charged; do not exceed budget */ }
+        finally { synchronized(monitor) { deletingGarbage.remove(path) } }
     }
 
     /** Same index exclusion; refuses pending reservations/readers even after their outer lease retired. */

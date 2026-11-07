@@ -11,18 +11,26 @@ import com.android.purebilibili.data.repository.CommentFraudRepository
 import com.android.purebilibili.data.repository.MessageRepository
 import com.bilipai.desktop.compat.UnsupportedDesktopCapability
 import com.bilipai.desktop.plugins.*
+import com.bilipai.desktop.update.UpdateStorage
 import java.lang.reflect.Proxy
 import java.nio.file.Files
 import java.nio.file.Path
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 import kotlin.test.*
 
 class DesktopRepositoryStorageTest {
     @TempDir lateinit var directory: Path
+
+    @BeforeEach fun canonicalTemporaryDirectory() {
+        directory = directory.toRealPath()
+        assertEquals(directory, UpdateStorage.existingPathWithoutLinks(directory))
+    }
+
     private fun plugin(name: String) = DesktopPluginContext(DesktopPluginStore(directory.resolve(name)))
     private fun noNetwork() = Proxy.newProxyInstance(BilibiliApi::class.java.classLoader,
         arrayOf(BilibiliApi::class.java)) { _, method, _ -> error("Unexpected network call: ${method.name}") } as BilibiliApi
