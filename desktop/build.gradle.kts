@@ -4029,6 +4029,18 @@ tasks.register<JavaExec>("originalAicuRootUiSmoke") {
     }
 }
 
+tasks.register<JavaExec>("desktopWindowExceptionUiSmoke") {
+    group = "verification"
+    description = "Throw from a composed effect and verify the desktop window exception handler."
+    dependsOn("testClasses", "classes")
+    classpath = sourceSets["test"].runtimeClasspath
+    mainClass.set("com.bilipai.desktop.diagnostics.DesktopWindowExceptionHandlerUiFixture")
+    systemProperty("file.encoding", "UTF-8")
+    // Deterministic frames in a remote session without D3D access.
+    systemProperty("skiko.renderApi", "SOFTWARE")
+    doFirst { args(requireNotNull(providers.gradleProperty("windowExceptionReport").orNull)) }
+}
+
 // Both Windows-only products above are placeholders on another host, so nothing may be packaged here:
 // every Compose distribution, installer, uber-jar and release-shrink task refuses to run off Windows.
 val windowsOnlyPackagingTask = Regex(
