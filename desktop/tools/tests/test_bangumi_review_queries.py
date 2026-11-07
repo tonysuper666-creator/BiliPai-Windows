@@ -23,7 +23,7 @@ def sha(text):
 class BangumiReviewProducerTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.source = REPO / ".legacy-root"
+        cls.source = REPO if REPO.name == ".legacy-root" else REPO / ".legacy-root"
         if not (cls.source / ORIGINAL).is_file():
             raise RuntimeError("Materialize the pinned .legacy-root using the desktop Gradle settings first")
         build = REPO / "desktop/build"
