@@ -18,6 +18,8 @@ class DesktopOriginalVideoRootRequestTransportTest {
         val repository = DesktopRepository(DesktopSessionStore.temporary())
         val entry = SupervisorJob()
         var current = true
+        /** What the page has committed; the transport reads it again when it needs a title. */
+        var committed: ViewInfo? = null
 
         suspend fun transport(request: PlaybackRequest, initialInfo: ViewInfo? = null): DesktopOriginalVideoRootRequestTransport {
             val binding = DesktopOriginalVideoRepositoryBinding.capture(repository, repository.sessionEpoch, entry,
@@ -28,7 +30,7 @@ class DesktopOriginalVideoRootRequestTransportTest {
                 DesktopSubtitleAssets(repository.httpClient), DesktopSearchPreferences(directory.resolve("search")),
                 { _, _ -> false })
             return DesktopOriginalVideoRootRequestTransport(raw,
-                PlaybackSessionState(currentRequest = request, currentLoadRequestToken = 1L), initialInfo, {})
+                PlaybackSessionState(currentRequest = request, currentLoadRequestToken = 1L), initialInfo, { committed }, {})
         }
 
         override fun close() {
@@ -55,7 +57,11 @@ class DesktopOriginalVideoRootRequestTransportTest {
         Fixture().use { fixture ->
             val transport = fixture.transport(PlaybackRequest(bvid = "BV1GJ411x7h7", aid = 170001L, cid = 22L))
             transport.info(ViewInfo(bvid = "BV17x411w7KC", aid = 170001L, cid = 22L, title = "Another video"))
-            assertFailsWith<IllegalStateException> { transport.source("https://fixture.invalid/video", null) }
+            fixture.committed = ViewInfo(bvid = "BV17x411w7KC", aid = 170001L, cid = 22L, title = "Another video")
+            // Missing metadata degrades instead of throwing (TON-1020), but never to another video's.
+            val source = transport.source("https://fixture.invalid/video", null)
+            assertEquals("", source.title)
+            assertNotNull(source.authorizationReceipt)
         }
     }
 
@@ -63,7 +69,11 @@ class DesktopOriginalVideoRootRequestTransportTest {
         Fixture().use { fixture ->
             val transport = fixture.transport(PlaybackRequest(bvid = "", aid = 170001L, cid = 22L))
             transport.info(ViewInfo(bvid = "BV1GJ411x7h7", aid = 7L, cid = 22L, title = "Another aid"))
-            assertFailsWith<IllegalStateException> { transport.source("https://fixture.invalid/video", null) }
+            fixture.committed = ViewInfo(bvid = "BV1GJ411x7h7", aid = 7L, cid = 22L, title = "Another aid")
+            // Missing metadata degrades instead of throwing (TON-1020), but never to another aid's.
+            val source = transport.source("https://fixture.invalid/video", null)
+            assertEquals("", source.title)
+            assertNotNull(source.authorizationReceipt)
         }
     }
 
@@ -72,6 +82,29 @@ class DesktopOriginalVideoRootRequestTransportTest {
             val info = ViewInfo(bvid = "BV17x411w7KC", aid = 170001L, cid = 22L, title = "Committed title")
             val transport = fixture.transport(PlaybackRequest(bvid = "", aid = info.aid, cid = info.cid), info)
             assertEquals(info.title, transport.source("https://fixture.invalid/video", null).title)
+        }
+    }
+
+    @Test fun aidOnlyRequestWithoutAnyMetadataPublishesWithoutThrowing() = runBlocking<Unit> {
+        Fixture().use { fixture ->
+            val transport = fixture.transport(PlaybackRequest(bvid = "", aid = 170001L, cid = 22L))
+            val source = transport.source("https://fixture.invalid/video", "https://fixture.invalid/audio")
+            assertEquals("", source.title)
+            assertEquals("https://fixture.invalid/video", source.videoUrl)
+            assertNotNull(source.authorizationReceipt)
+            // Track matching has no play data to match either; the source URLs still carry it.
+            val urls = transport.tracks(source, emptyMap()).flatMap { it.urls }
+            assertTrue("https://fixture.invalid/video" in urls)
+            assertTrue("https://fixture.invalid/audio" in urls)
+        }
+    }
+
+    @Test fun aidOnlyRequestPicksUpTheSameAidCommittedAfterItBegan() = runBlocking<Unit> {
+        Fixture().use { fixture ->
+            val transport = fixture.transport(PlaybackRequest(bvid = "", aid = 170001L, cid = 22L))
+            assertEquals("", transport.source("https://fixture.invalid/video", null).title)
+            fixture.committed = ViewInfo(bvid = "BV17x411w7KC", aid = 170001L, cid = 22L, title = "Late title")
+            assertEquals("Late title", transport.source("https://fixture.invalid/video", null).title)
         }
     }
 
