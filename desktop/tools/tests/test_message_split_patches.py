@@ -79,11 +79,14 @@ class MessageSplitPatchesTest(unittest.TestCase):
         body = function_body(screen, "MessageCenterScreen")
         self.assertEqual(body.count("com.bilipai.desktop.ui.DesktopMessageListDetail("), 1)
         self.assertNotIn("SupportingPaneScaffold(", body)
-        compact, wide = body.split("        return\n    }\n", 1)
-        # Below the window-size breakpoint the original single column and its typed full-screen route stay.
-        self.assertIn("compactPageOwner.keepPaneChat(0L, 0)", compact)
-        self.assertIn("onSessionClick = onOpenSessionFullScreen", compact)
-        # The wide host keeps the real owner admission and retention, and mounts each page exactly once.
+        # The container's available width is the only size decision: no window-size-class branch returns
+        # early (a 1200x479dp window still splits) and the selection is remembered on the single path.
+        for gone in ("useTwoPane", "LocalWindowSizeClass.current", "return\n", "keepPaneChat(0L, 0)", "= onOpenSessionFullScreen"):
+            self.assertNotIn(gone, body.split(") {\n", 1)[1])
+        wide = body
+        self.assertLess(wide.index("rememberSaveable(accountIdentity) { mutableLongStateOf(0L) }"),
+                        wide.index("com.bilipai.desktop.ui.DesktopMessageListDetail("))
+        # The host keeps the real owner admission and retention, and mounts each page exactly once.
         self.assertEqual(wide.count("pageOwner.selectPaneChat(talkerId, sessionType) {"), 1)
         self.assertEqual(wide.count("pageOwner.retainPaneChat(activeTalkerId, activeSessionType)"), 1)
         self.assertEqual(wide.count("pageOwner.keepPaneChat(activeTalkerId, activeSessionType)"), 1)

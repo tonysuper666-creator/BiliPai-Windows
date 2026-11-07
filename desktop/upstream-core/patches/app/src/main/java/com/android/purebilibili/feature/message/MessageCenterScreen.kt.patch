@@ -13,24 +13,30 @@
  
  @OptIn(ExperimentalMaterial3AdaptiveApi::class)
  @Composable
-@@ -30,13 +32,15 @@
+@@ -30,67 +32,50 @@
      onNavigateToVideo: (String) -> Unit,
      onOpenBilibiliLink: (String) -> Unit,
  ) {
 -    val accountIdentity by com.android.purebilibili.core.store.TokenManager.accountIdentity.collectAsStateWithLifecycle()
+-    val useTwoPane =
+-        LocalWindowSizeClass.current.let {
+-            it.widthSizeClass != com.android.purebilibili.core.util.WindowWidthSizeClass.Compact &&
+-                it.heightSizeClass != WindowHeightSizeClass.Compact
+-        }
+-    if (!useTwoPane) {
+-        InboxScreen(
+-            onBack = onBack,
+-            onTopItemClick = onTopItemClick,
+-            onOpenLink = onOpenBilibiliLink,
+-            onSessionClick = onOpenSessionFullScreen,
+-        )
+-        return
+-    }
+-
 +    val accountIdentity = LocalDesktopMessagePageOwner.current.messageAccountIdentity
-     val useTwoPane =
-         LocalWindowSizeClass.current.let {
-             it.widthSizeClass != com.android.purebilibili.core.util.WindowWidthSizeClass.Compact &&
-                 it.heightSizeClass != WindowHeightSizeClass.Compact
-         }
-     if (!useTwoPane) {
-+        val compactPageOwner = LocalDesktopMessagePageOwner.current
-+        androidx.compose.runtime.SideEffect { compactPageOwner.keepPaneChat(0L, 0) }
-         InboxScreen(
-             onBack = onBack,
-             onTopItemClick = onTopItemClick,
-@@ -50,47 +54,43 @@
++    // K7：尺寸只由下面容器的可用宽度决定（960dp 起分栏，以下单列），不再按窗口尺寸类提前分支，
++    // 这样窗口变矮或变窄时选中、列表滚动与草稿都留在同一组合里；窄窗口的会话也在单列内打开。
+     var activeTalkerId by rememberSaveable(accountIdentity) { mutableLongStateOf(0L) }
      var activeSessionType by rememberSaveable(accountIdentity) { mutableIntStateOf(0) }
      var activeUserName by rememberSaveable(accountIdentity) { mutableStateOf("") }
  
