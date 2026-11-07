@@ -1,5 +1,6 @@
 package com.bilipai.desktop.ui
 
+import com.bilipai.desktop.diagnostics.DesktopThemeSwitchTrace
 import com.sun.jna.*
 import com.sun.jna.win32.StdCallLibrary
 import java.awt.Window
@@ -33,7 +34,10 @@ internal class DesktopWindowsProfileChrome(
         Memory(4).use {value->
             check(dwm.DwmGetWindowAttribute(hwnd,1,value,4)>=0){"当前 Windows 不支持窗口框架接口"}
             value.setInt(0,if(light)0 else 1)
-            check(dwm.DwmSetWindowAttribute(hwnd,20,value,4)>=0){"窗口标题主题更新失败"}
+            if (DesktopThemeSwitchTrace.enabled) DesktopThemeSwitchTrace.mark("dwm.set_start","light" to light)
+            val result=dwm.DwmSetWindowAttribute(hwnd,20,value,4)
+            if (DesktopThemeSwitchTrace.enabled) DesktopThemeSwitchTrace.mark("dwm.set_end","light" to light,"hr" to result)
+            check(result>=0){"窗口标题主题更新失败"}
         }
         // Existing Home actor reads current Root theme color when its queued EDT action executes.
         clientPolicy.applyHomeSystemBars(light,light)
