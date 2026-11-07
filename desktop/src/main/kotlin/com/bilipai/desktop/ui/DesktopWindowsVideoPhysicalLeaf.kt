@@ -202,6 +202,36 @@ internal class DesktopWindowsVideoActions(
     // V6 (spec 6.5 and 6.6): the layout, the flyout flag and the effects of the shortcut router arrive here from a SideEffect below,
     // once the page state they read exists. The router itself is built with the key input, because that is where it is registered.
     val shortcutBinding = remember(assembly) { DesktopWindowsVideoShortcutBinding() }
+    val escapeOverlay = remember(assembly) { DesktopWindowsVideoEscapeOverlay() }
+    val escapeInput = remember(chromeWindow, assembly, native.surface, windowKeyFallback,
+        rootEnvironment, route, active, presentationAlive, pipActive) {
+        DesktopWindowsVideoEscapeInput(
+            current = ::chromeCurrent,
+            windowCurrent = {
+                native.surface.isShowing && chromeWindow != null &&
+                    javax.swing.SwingUtilities.getWindowAncestor(native.surface) === chromeWindow &&
+                    java.awt.KeyboardFocusManager.getCurrentKeyboardFocusManager().activeWindow === chromeWindow
+            },
+            textEditorFocused = ::desktopShellTextEditorFocused,
+            closeTopOverlay = { escapeOverlay.closeTop() },
+            fullscreen = { latestFullscreen }, leaveFullscreen = { latestActions.fullscreen() },
+            requestBack = {
+                latestActions.nativeKey(desktopWindowsNativeVideoKey(java.awt.event.KeyEvent(
+                    native.surface, java.awt.event.KeyEvent.KEY_PRESSED, System.currentTimeMillis(),
+                    0, java.awt.event.KeyEvent.VK_ESCAPE, 27.toChar())))
+            },
+            // This callback must finish before any UI/navigation callback runs.
+            admitNative = { event -> native.admitNativeWindowInput(event) {} },
+            trace = { message ->
+                if (java.lang.Boolean.getBoolean("bilipai.native.escape.trace")) {
+                    val focus = java.awt.KeyboardFocusManager.getCurrentKeyboardFocusManager()
+                    System.err.println("[native-escape] $message window=${System.identityHashCode(chromeWindow)} " +
+                        "active=${focus.activeWindow === chromeWindow} focus=${focus.focusOwner?.javaClass?.simpleName}")
+                }
+            },
+        )
+    }
+    val latestEscapeInput by rememberUpdatedState(escapeInput)
     val latestKeyInputFocus by rememberUpdatedState(
         topFocused || barInteraction.focused || viewportKeyboardFocused || nativeKeyboardOnVideo)
     // Only the exact existing Main window; no global input/window observer.
@@ -239,13 +269,20 @@ internal class DesktopWindowsVideoActions(
         // Clicking a Compose control retains its focus. Offer Space/Escape before
         // that button can consume them, using this exact page/source admission.
         val keyRegistration = if (active && presentationAlive && !pipActive)
-            windowKeyFallback?.registerLeaf { event -> input.onKey(event) || shortcuts.onKey(event) } else null
+            windowKeyFallback?.registerLeaf { event -> escapeInput.onKey(event) || input.onKey(event) || shortcuts.onKey(event) } else null
+        val escapeRegistration = if (active && presentationAlive && !pipActive)
+            native.observeNativeWindowEscape { event ->
+                if (java.lang.Boolean.getBoolean("bilipai.native.escape.trace"))
+                    System.err.println("[native-escape] received source=${event.lease.source.sourceVersion} hwnd=${event.lease.windowId}")
+                escapeInput.onNative(event)
+            } else null
         val listener = object : java.awt.event.WindowFocusListener {
             override fun windowGainedFocus(event: java.awt.event.WindowEvent) {
                 chromeWindowFocused = true
                 chromeActivity(DesktopWindowsFullscreenChromeActivity.WINDOW_FOCUS_GAINED)
             }
             override fun windowLostFocus(event: java.awt.event.WindowEvent) {
+                escapeInput.releaseHeldInput()
                 input.releaseHeldInput()
                 shortcuts.releaseHeldInput()
                 chromeWindowFocused = false
@@ -258,6 +295,8 @@ internal class DesktopWindowsVideoActions(
         chromeWindowFocused = chromeWindow?.isFocused == true
         onDispose {
             chromeWindow?.removeWindowFocusListener(listener)
+            escapeRegistration?.close()
+            escapeInput.close()
             keyRegistration?.close()
             input.close()
             shortcuts.close()
@@ -313,10 +352,14 @@ internal class DesktopWindowsVideoActions(
             }
         }
         val key = object : java.awt.event.KeyAdapter() {
+            override fun keyReleased(event: java.awt.event.KeyEvent) {
+                if (latestEscapeInput.onKey(desktopWindowsNativeVideoKey(event))) event.consume()
+            }
             override fun keyPressed(event: java.awt.event.KeyEvent) {
                 if(!event.isConsumed && current() && !latestPip && surface.isFocusOwner && surface.isShowing) {
                     chromeActivity(DesktopWindowsFullscreenChromeActivity.NATIVE_KEY)
-                    if (latestActions.nativeKey(desktopWindowsNativeVideoKey(event))) event.consume()
+                    if (latestEscapeInput.onKey(desktopWindowsNativeVideoKey(event)) ||
+                        latestActions.nativeKey(desktopWindowsNativeVideoKey(event))) event.consume()
                 }
             }
         }
@@ -1660,6 +1703,24 @@ internal class DesktopWindowsVideoActions(
     // V6 (spec 6.5 and 6.6): bind the shortcut router to this composition. Each effect is an admitted lambda of the leaf: the controls binding,
     // current(), shell.playback.* and actions.*; the router reaches neither the player nor the assembly.
     SideEffect {
+        escapeOverlay.closeTop = {
+            // Reverse the visible overlay stacking order. A busy modal still consumes Escape.
+            when {
+                resumeSuggestion != null -> { assembly.playback.dismissResumePlaybackSuggestion(); true }
+                savedScreenshot != null -> { if (!screenshotBusy) savedScreenshot = null; true }
+                batchDownloadSelection != null -> { batchDownloadSelection?.dismiss(); batchDownloadSelection = null; true }
+                downloadSelection != null -> { downloadSelection?.dismiss(); downloadSelection = null; true }
+                showPlaybackQueue -> { showPlaybackQueue = false; true }
+                showCollection -> { showCollection = false; true }
+                showRetainedShare -> { showRetainedShare = false; true }
+                interactionMode != null -> { interactionMode = null; true }
+                audioTrackMenu != null -> { audioTrackMenu = null; true }
+                audioLanguageMenu != null -> { audioLanguageMenu = null; true }
+                detailsOpen -> { detailsOpen = false; true }
+                showSponsorSegment -> { showSponsorSegment = false; true }
+                else -> false
+            }
+        }
         shortcutBinding.legacyLayout = legacyChrome
         shortcutBinding.flyoutOpen = showCollection || showPlaybackQueue || audioLanguageMenu != null || audioTrackMenu != null ||
             interactionMode != null
@@ -1857,7 +1918,8 @@ private fun desktopWindowsNativeVideoKey(event:java.awt.event.KeyEvent):androidx
         androidx.compose.ui.input.key.Key(event.keyCode, event.keyLocation.takeUnless {
             it == java.awt.event.KeyEvent.KEY_LOCATION_UNKNOWN
         } ?: java.awt.event.KeyEvent.KEY_LOCATION_STANDARD),
-        androidx.compose.ui.input.key.KeyEventType.KeyDown, event.keyChar.code,
+        if (event.id == java.awt.event.KeyEvent.KEY_RELEASED) androidx.compose.ui.input.key.KeyEventType.KeyUp
+        else androidx.compose.ui.input.key.KeyEventType.KeyDown, event.keyChar.code,
         isAltPressed = event.isAltDown, isCtrlPressed = event.isControlDown,
         isMetaPressed = event.isMetaDown, isShiftPressed = event.isShiftDown, nativeEvent = event,
     )

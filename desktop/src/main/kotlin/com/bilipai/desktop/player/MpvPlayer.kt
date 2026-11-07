@@ -54,6 +54,8 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
     private val nativeWindowInput = MpvNativeWindowInputDelivery()
     internal fun observeNativeWindowInput(listener: (MpvNativeWindowInputEvent) -> Unit): AutoCloseable =
         nativeWindowInput.register(listener)
+    internal fun observeNativeWindowEscape(listener: (MpvNativeWindowInputEvent) -> Unit): AutoCloseable =
+        nativeWindowInput.registerEscape(listener)
     /** Enter the same publication before the MPV lock, just like native controls.
      * UI delivery can never turn a queued old click into a write to a new source.
      */
@@ -1365,6 +1367,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
         private var nativeWindowInputLease: MpvNativeWindowInputLease? = null
         fun acceptsNativeWindowInput(event: MpvNativeWindowInputEvent): Boolean =
             session === this && !closing.get() && fileLoaded && activeEntry != null &&
+                windowId != 0L && event.lease.windowId == windowId &&
                 nativeWindowInputLease === event.lease && activeSourceVersion == event.lease.source.sourceVersion &&
                 activeRevision == event.lease.playbackRevision
         private var pendingPresentationCapture: DesktopNativePresentationTransfer? = null
@@ -2392,7 +2395,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                         expectedEntry = property(native, handle, "playlist/0/id")?.toLongOrNull()
                         if (expectedEntry != null) {
                             if (softwareTarget == null) {
-                                val lease = MpvNativeWindowInputLease(OwnedPlaybackSourceSnapshot(action.version, action.source), action.revision)
+                                val lease = MpvNativeWindowInputLease(OwnedPlaybackSourceSnapshot(action.version, action.source), action.revision, windowId)
                                 checkResult(native, native.mpv_command(handle, StringArray(arrayOf("define-section", "bilipai-window", lease.bindings, "force"), "UTF-8")), "native-input-bindings")
                                 checkResult(native, native.mpv_command(handle, StringArray(arrayOf("enable-section", "bilipai-window"), "UTF-8")), "native-input-enable")
                                 nativeWindowInputLease = lease
