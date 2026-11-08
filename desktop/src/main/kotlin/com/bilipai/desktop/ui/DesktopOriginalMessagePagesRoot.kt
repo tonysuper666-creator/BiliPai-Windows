@@ -217,13 +217,16 @@ internal class DesktopOriginalMessagePageOwner(private val repository: DesktopRe
 
 @Composable internal fun DesktopOriginalMessagePageRootHost(key:BiliPaiNavKey,
     owner:DesktopOriginalMessagePagesRoot,routes:DesktopOriginalRootRouteAssembly,active:Boolean) {
-    if (!owner.isOwned()) return
+    // A popped or replaced entry is still composed for its exit frame; it has no page to show.
+    if (!owner.isOwned() || !routes.containsEntry(key)) return
     CommunityLoginGate(owner.repository, { if(active) routes.callbackFor(key) { routes.push(BiliPaiNavKey.Login) } }) {
         DesktopOriginalAuthenticatedMessagePageRootHost(key,owner,routes,active)
     }
 }
 @Composable private fun DesktopOriginalAuthenticatedMessagePageRootHost(key:BiliPaiNavKey,
     owner:DesktopOriginalMessagePagesRoot,routes:DesktopOriginalRootRouteAssembly,active:Boolean) {
+    // The gate's content recomposes on its own, so the entry is checked again here.
+    if (!owner.isOwned() || !routes.containsEntry(key)) return
     val page=owner.entry(key)
     fun back() { if(active) routes.callbackFor(key) { routes.back() } }
     fun push(next:BiliPaiNavKey) { if(active) routes.callbackFor(key) { routes.push(next) } }
