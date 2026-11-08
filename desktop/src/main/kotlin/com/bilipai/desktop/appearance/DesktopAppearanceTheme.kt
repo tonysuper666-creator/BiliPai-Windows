@@ -48,6 +48,8 @@ internal data class DesktopAppearancePalette(
 /** The Android-free branches of the original PureBiliBiliTheme, with Windows wallpaper fallback. */
 internal fun buildDesktopAppearancePalette(settings: DesktopThemeSettings, systemDark: Boolean,
     scheduledDark: Boolean? = null): DesktopAppearancePalette {
+    // Time construction itself; the UI only calls this on a remember cache miss.
+    val start = if (DesktopThemeSwitchTrace.enabled) System.nanoTime() else 0L
     // An active dark theme schedule (non-null) decides light or dark over the manual mode and the system setting.
     val state = resolveThemePreferenceState(settings.themeMode, settings.darkThemeStyle, systemDark,
         scheduledDarkTheme = scheduledDark)
@@ -84,7 +86,9 @@ internal fun buildDesktopAppearancePalette(settings: DesktopThemeSettings, syste
     return DesktopAppearancePalette(
         if (state.useDarkTheme) dark.material else light.material,
         light.miuix, dark.miuix, themeRoleOverridesFromSchemes(lightBase, darkBase), state.useDarkTheme, state.useAmoledDarkTheme,
-    )
+    ).also {
+        if (DesktopThemeSwitchTrace.enabled) DesktopThemeSwitchTrace.mark("theme.palette_built", "dark" to it.dark, "dur_ns" to System.nanoTime() - start)
+    }
 }
 
 @Composable
@@ -96,12 +100,7 @@ fun DesktopAppearanceTheme(
 ) {
     val systemDark = rememberDesktopSystemDarkTheme()
     val scheduledDark = rememberDesktopScheduledDarkTheme(settings.darkThemeSchedule)
-    val palette = remember(settings, systemDark, scheduledDark) {
-        val start = if (DesktopThemeSwitchTrace.enabled) System.nanoTime() else 0L
-        buildDesktopAppearancePalette(settings, systemDark, scheduledDark).also {
-            if (DesktopThemeSwitchTrace.enabled) DesktopThemeSwitchTrace.mark("theme.palette_built", "dark" to it.dark, "dur_ns" to System.nanoTime() - start)
-        }
-    }
+    val palette = remember(settings, systemDark, scheduledDark) { buildDesktopAppearancePalette(settings, systemDark, scheduledDark) }
     val languages = systemLanguageTags ?: remember { WindowsUiLanguage.preferredTags() }
     val strings = remember(settings.appLanguage, languages) { DesktopStrings.forLanguage(settings.appLanguage, languages) }
     val density = LocalDensity.current
