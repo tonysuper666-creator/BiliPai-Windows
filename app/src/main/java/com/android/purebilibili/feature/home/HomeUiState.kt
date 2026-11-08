@@ -37,6 +37,8 @@ data class UserState(
     val vipLabel: String = "",
     /** vip.type: 1 monthly, 2 annual — used when [vipLabel] is empty */
     val vipType: Int = 0,
+    /** nav.officialVerify.type: -1 无认证，0 个人认证，1 机构认证 — 头像角标用 */
+    val officialVerifyType: Int = -1,
     //  [New] 顶部背景图
     val topPhoto: String = ""
 )

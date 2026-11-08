@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -19,9 +20,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.Paint
+import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
+import androidx.compose.ui.graphics.drawscope.scale
 import androidx.compose.ui.graphics.layer.drawLayer
 import androidx.compose.ui.graphics.rememberGraphicsLayer
 import androidx.compose.ui.graphics.toPixelMap
@@ -42,15 +47,111 @@ import com.android.purebilibili.core.util.CardPositionManager
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 import org.junit.Assert.assertTrue
+import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import kotlinx.coroutines.launch
+import java.util.concurrent.atomic.AtomicInteger
 
 @RunWith(AndroidJUnit4::class)
 class VideoDetailWholeCardReturnUiRegressionTest {
     @get:Rule
     val rule = createComposeRule()
+
+    @Test
+    fun liveDetailDrawingIsReusedDuringBlendAndRefreshesAfterCancellation() {
+        val alpha = mutableFloatStateOf(0f)
+        val color = mutableStateOf(Color.Red)
+        val draws = AtomicInteger()
+        val snapshot = solidBitmap(android.graphics.Color.GREEN)
+        rule.setContent {
+            Box(Modifier.size(120.dp).background(Color.Black)
+                .videoDetailWholeCardReturnLayer(snapshot) { alpha.floatValue }
+                .drawWithContent {
+                    draws.incrementAndGet()
+                    drawRect(color.value)
+                }.testTag("cached-live-detail"))
+        }
+        fun pixel(): Color {
+            val pixels = rule.onNodeWithTag("cached-live-detail").captureToImage().toPixelMap()
+            return pixels[pixels.width / 2, pixels.height / 4]
+        }
+        assertTrue(pixel().red > 0.9f)
+        val initialDraws = draws.get()
+        for (opacity in listOf(0.2f, 0.5f, 0.8f, 1f, 0.5f, 0f)) {
+            rule.runOnIdle { alpha.floatValue = opacity }
+            val sample = pixel()
+            assertEquals(1f - opacity, sample.red, 0.03f)
+            assertEquals(opacity, sample.green, 0.03f)
+            assertEquals("Blend ticks must reuse live drawing", initialDraws, draws.get())
+        }
+        rule.runOnIdle {
+            color.value = Color.Blue
+            alpha.floatValue = 0.5f
+        }
+        val changed = pixel()
+        assertTrue(changed.blue > 0.45f && changed.green > 0.45f && changed.red < 0.05f)
+        assertTrue("Real content changes must still redraw", draws.get() > initialDraws)
+        rule.runOnIdle { alpha.floatValue = 0f }
+        assertTrue("Cancel must show the latest live content", pixel().blue > 0.9f)
+    }
+
+    @Test
+    fun directSnapshotAlphaMatchesGroupBlendWithTransparentEdgesAndOverlappingContent() {
+        val alpha = mutableFloatStateOf(0f)
+        val bitmap = Bitmap.createBitmap(40, 40, Bitmap.Config.ARGB_8888).apply {
+            eraseColor(android.graphics.Color.TRANSPARENT)
+            for (y in 0 until 40) for (x in 0 until 20) {
+                setPixel(x, y, android.graphics.Color.argb(128, 0, 255, 0))
+            }
+        }.asImageBitmap()
+        rule.setContent {
+            Row {
+                for (reference in listOf(false, true)) {
+                    val blend = if (!reference) {
+                        Modifier.videoDetailWholeCardReturnLayer(bitmap) { alpha.floatValue }
+                    } else Modifier.drawWithContent {
+                        val opacity = alpha.floatValue
+                        if (opacity <= 0f) {
+                            drawContent()
+                        } else {
+                            val paint = Paint()
+                            drawIntoCanvas { canvas ->
+                                if (opacity < 1f) {
+                                    paint.alpha = 1f - opacity
+                                    canvas.saveLayer(Rect(Offset.Zero, size), paint)
+                                    try { this@drawWithContent.drawContent() } finally { canvas.restore() }
+                                }
+                                paint.alpha = opacity
+                                canvas.saveLayer(Rect(Offset.Zero, size), paint)
+                                try {
+                                    scale(size.width / bitmap.width, pivot = Offset.Zero) { drawImage(bitmap) }
+                                } finally { canvas.restore() }
+                            }
+                        }
+                    }
+                    Box(Modifier.size(80.dp).background(Color.Black).then(blend)
+                        .drawWithContent {
+                            drawRect(Color.Red)
+                            drawRect(Color.Blue, topLeft = Offset(size.width / 4f, 0f))
+                        }.testTag(if (reference) "group-reference" else "direct-bitmap"))
+                }
+            }
+        }
+        for (opacity in listOf(0f, 0.25f, 0.5f, 1f, 0.5f, 0f)) {
+            rule.runOnIdle { alpha.floatValue = opacity }
+            val actual = rule.onNodeWithTag("direct-bitmap").captureToImage().toPixelMap()
+            val expected = rule.onNodeWithTag("group-reference").captureToImage().toPixelMap()
+            for (fraction in listOf(0.1f, 0.35f, 0.75f)) {
+                val a = actual[(actual.width * fraction).toInt(), actual.height / 2]
+                val e = expected[(expected.width * fraction).toInt(), expected.height / 2]
+                assertEquals("red at opacity=$opacity x=$fraction", e.red, a.red, 0.02f)
+                assertEquals("green at opacity=$opacity x=$fraction", e.green, a.green, 0.02f)
+                assertEquals("blue at opacity=$opacity x=$fraction", e.blue, a.blue, 0.02f)
+            }
+        }
+    }
 
 
     @Test
@@ -162,6 +263,40 @@ class VideoDetailWholeCardReturnUiRegressionTest {
         Bitmap.createBitmap(240, 180, Bitmap.Config.ARGB_8888).apply {
             eraseColor(color)
         }.asImageBitmap()
+
+    @Test
+    fun restoringParentRevokesChildPublicationWithoutRelabellingRetainedPixels() {
+        try {
+            rule.runOnIdle {
+                CardPositionManager.clear()
+                recordCard("BVparent", "home", instanceId = 20L)
+                val parent = CardPositionManager.videoCardPixelOwnerFor("home:BVparent")
+                assertTrue(CardPositionManager.isActiveVideoCardPixelOwner(parent))
+                recordCard("BVchild", "video/BVparent", instanceId = 21L)
+                val child = CardPositionManager.videoCardPixelOwnerFor("video/BVparent:BVchild")
+                assertTrue(CardPositionManager.isActiveVideoCardPixelOwner(child))
+                val original = solidBitmap(android.graphics.Color.GREEN)
+                CardPositionManager.recordWholeCardReturnBitmap(original, child)
+                CardPositionManager.restoreVideoSource("home:BVparent", parent)
+                assertEquals(false, CardPositionManager.isActiveVideoCardPixelOwner(child))
+                // 恢复父元数据不能把旧父点击变成一次新的合法捕获。
+                assertEquals(false, CardPositionManager.isActiveVideoCardPixelOwner(parent))
+                CardPositionManager.recordWholeCardReturnBitmap(solidBitmap(android.graphics.Color.RED), child)
+                CardPositionManager.recordNativeCardBitmap(solidBitmap(android.graphics.Color.RED), child)
+                assertTrue(CardPositionManager.lastClickedWholeCardReturnSnapshot?.bitmap === original)
+                assertTrue(CardPositionManager.lastClickedWholeCardReturnSnapshot?.owner === child)
+                assertTrue(CardPositionManager.lastClickedNativeCardBitmap == null)
+                // 再次点击相同来源会创建新身份，只有新身份可以发布。
+                recordCard("BVparent", "home", instanceId = 20L)
+                val next = CardPositionManager.videoCardPixelOwnerFor("home:BVparent")
+                assertTrue(next !== parent)
+                assertTrue(CardPositionManager.isActiveVideoCardPixelOwner(next))
+                assertEquals(false, CardPositionManager.isActiveVideoCardPixelOwner(parent))
+            }
+        } finally {
+            rule.runOnIdle { CardPositionManager.clear() }
+        }
+    }
 
     @Test
     fun nestedReturnCannotRelabelChildPixelsOrOverwriteParentRetainedPixels() {

@@ -244,12 +244,12 @@ fun CategoryScreen(
     val shouldLoadMore = remember {
         derivedStateOf {
             val lastVisibleItem = gridState.layoutInfo.visibleItemsInfo.lastOrNull()
-            lastVisibleItem != null && lastVisibleItem.index >= videos.size - 4
+            lastVisibleItem != null && lastVisibleItem.index >= gridState.layoutInfo.totalItemsCount - 4
         }
     }
 
-    LaunchedEffect(shouldLoadMore.value) {
-        if (shouldLoadMore.value && !isLoading) {
+    LaunchedEffect(shouldLoadMore.value, isLoading, isRefreshing, videos.size, error) {
+        if (shouldLoadMore.value && !isLoading && !isRefreshing && error == null && videos.isNotEmpty()) {
             viewModel.loadMore()
         }
     }
@@ -302,6 +302,7 @@ fun CategoryScreen(
                         .layerBackdrop(categoryBackdrop)
                 ) {
                     // 视频网格
+                    val alignRows = gridColumns > 1 && !homeSettings.showFullVideoCardContent
                     LazyVerticalGrid(
                         columns = GridCells.Fixed(gridColumns),
                         state = gridState,
@@ -312,25 +313,21 @@ fun CategoryScreen(
                             .fillMaxSize()
                             .responsiveContentWidth(maxWidth = 1000.dp)
                     ) {
-                        itemsIndexed(
-                            items = videos,
-                            key = { index, video ->
-                                resolveIndexedVideoLazyKey(
-                                    namespace = "category_video",
-                                    index = index,
-                                    bvid = video.bvid,
-                                    id = video.id,
-                                    aid = video.aid,
-                                    cid = video.cid
-                                )
-                            }
-                        ) { index, video ->
+                        val videoKeys = videos.mapIndexed { index, video ->
+                            resolveIndexedVideoLazyKey(
+                                namespace = "category_video", index = index, bvid = video.bvid,
+                                id = video.id, aid = video.aid, cid = video.cid,
+                            )
+                        }
+                        val renderCard: @Composable (Int, Modifier) -> Unit = { index, cardModifier ->
+                            val video = videos[index]
                             //  [修复] 根据首页设置选择卡片样式（与 HomeScreen 一致）
                             when (displayMode) {
                                 1 -> {
                                     //  故事卡片（影院海报风格）
                                     StoryVideoCard(
                                         video = video,
+                                        modifier = cardModifier,
                                         index = index,  //  动画索引
                                         animationEnabled = homeSettings.cardAnimationEnabled,
                                         motionTier = cardMotionTier,
@@ -339,7 +336,6 @@ fun CategoryScreen(
                                         cardHorizontalPadding = cardLayout.storyCardHorizontalPaddingDp.dp,
                                         compactMetadata = cardLayout.compactMetadata,
                                         homeDurationStyle = homeSettings.homeDurationStyle,
-                                        showOnlineCount = showOnlineCount,
                                         isReturningFromVideoDetail = isReturningFromVideoDetail,
                                         isQuickReturningFromVideoDetail = isQuickReturningFromVideoDetail,
                                         onClick = { bvid, _ ->
@@ -351,6 +347,7 @@ fun CategoryScreen(
                                     //  默认网格卡片
                                     ElegantVideoCard(
                                         video = video,
+                                        modifier = cardModifier,
                                         index = index,
                                         animationEnabled = homeSettings.cardAnimationEnabled,
                                         motionTier = cardMotionTier,
@@ -369,6 +366,23 @@ fun CategoryScreen(
                                     )
                                 }
                             }
+                        }
+                        if (!alignRows) {
+                            itemsIndexed(videos, key = { index, _ -> videoKeys[index] }) { index, _ -> renderCard(index, Modifier) }
+                        } else {
+                            com.android.purebilibili.feature.home.resolveHomeFeedAlignedRows(videos.size, gridColumns)
+                                .forEach { row ->
+                                    item(key = "category_row_${videoKeys[row.first]}", span = { androidx.compose.foundation.lazy.grid.GridItemSpan(maxLineSpan) }) {
+                                        com.android.purebilibili.feature.home.HomeAlignedVideoRow(
+                                            indices = row,
+                                            itemKeys = videoKeys,
+                                            columns = gridColumns,
+                                            horizontalArrangement = Arrangement.spacedBy(cardLayout.itemSpacingDp.dp),
+                                            modifier = Modifier.fillMaxWidth(),
+                                            content = renderCard,
+                                        )
+                                    }
+                                }
                         }
 
                         // 加载更多指示器

@@ -116,7 +116,11 @@ class ContentTabPagerUiRegressionTest {
                     state = pager,
                     userScrollEnabled = false,
                     modifier = Modifier.size(300.dp, 400.dp).testTag("pager")
-                        .contentTabPagerGestures(pager, enabled = true) { headerHeightPx },
+                        .contentTabPagerGestures(
+                            pager,
+                            enabled = true,
+                            contentTopPx = { headerHeightPx },
+                        ),
                 ) { page ->
                     Box(Modifier.fillMaxSize().testTag("page_$page"))
                 }

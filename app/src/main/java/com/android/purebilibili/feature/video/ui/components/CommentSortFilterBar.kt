@@ -9,7 +9,6 @@ import com.android.purebilibili.core.ui.components.AppText
 import com.android.purebilibili.core.ui.components.AppTextButton
 import com.android.purebilibili.core.ui.components.AppThemeAdaptiveTabRow
 
-import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.material.icons.Icons
@@ -20,7 +19,6 @@ import androidx.compose.runtime.*
 import com.android.purebilibili.core.ui.components.AppIconButton
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.layout
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -73,27 +71,6 @@ internal fun resolveCommentSortDockViewportOverflowDp(
     ).toInt()
 }
 
-/** 保持完整高度（包括窄屏换行），玻璃隐藏时不放置子树，避免重排、残留点击区域。 */
-private fun Modifier.commentHeaderScrollVisibility(
-    liquidGlassEnabled: Boolean,
-    scrollState: LazyListState?,
-): Modifier = if (liquidGlassEnabled && scrollState != null) {
-    layout { measurable, constraints ->
-        val placeable = measurable.measure(constraints)
-        layout(placeable.width, placeable.height) {
-            // 在放置阶段观察当前列表，不缓存旧视频状态，也不逐帧触发重组。
-            if (scrollState.firstVisibleItemIndex == 0 &&
-                scrollState.firstVisibleItemScrollOffset == 0
-            ) {
-                placeable.placeRelative(0, 0)
-            }
-        }
-    }
-} else {
-    // 非玻璃和未接入滚动的宿主保留原生测量、放置与交互。
-    this
-}
-
 /**
  * 评论列表标题。
  */
@@ -104,13 +81,11 @@ fun CommentListHeader(
     modifier: Modifier = Modifier,
     liquidGlassEffectsEnabled: Boolean = true,
     compactTypography: Boolean = false,
-    scrollState: LazyListState? = null,
 ) {
     val liquidGlassEnabled = com.android.purebilibili.core.ui.LocalAppThemeConfig.current.liquidGlassEnabled &&
         liquidGlassEffectsEnabled
     Row(
         modifier = modifier
-            .commentHeaderScrollVisibility(liquidGlassEnabled, scrollState)
             .fillMaxWidth()
             .heightIn(min = 46.dp)
             .padding(horizontal = 16.dp)
@@ -171,8 +146,6 @@ fun CommentSortHeader(
     modifier: Modifier = Modifier,
     onSearchClick: (() -> Unit)? = null,
     compactTypography: Boolean = false,
-    /** 详情页固定栏显式接入当前列表；未传入的宿主和非玻璃路径保留原生行为。 */
-    scrollState: LazyListState? = null,
 ) {
     val uiStyle = LocalAppUiStyle.current
     val sortModes = remember { listOf(CommentSortMode.HOT, CommentSortMode.NEWEST) }
@@ -182,7 +155,6 @@ fun CommentSortHeader(
     }
     FlowRow(
         modifier = modifier
-            .commentHeaderScrollVisibility(liquidGlassEnabled, scrollState)
             .fillMaxWidth()
             .padding(horizontal = 16.dp)
             .padding(top = 6.dp),
@@ -266,7 +238,6 @@ fun CommentSortFilterBar(
     miuixBackdrop: MiuixBackdrop? = null,
     liquidGlassEffectsEnabled: Boolean = true,
     onSearchClick: (() -> Unit)? = null,
-    scrollState: LazyListState? = null,
 ) {
     val sortModes = remember { listOf(CommentSortMode.HOT, CommentSortMode.NEWEST) }
     val liquidGlassEnabled = com.android.purebilibili.core.ui.LocalAppThemeConfig.current.liquidGlassEnabled &&
@@ -275,7 +246,7 @@ fun CommentSortFilterBar(
         resolveCommentSortSegmentedControlSpec(sortModes.size, liquidGlassEnabled)
     }
     Row(
-        modifier = modifier.commentHeaderScrollVisibility(liquidGlassEnabled, scrollState),
+        modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(4.dp),
     ) {

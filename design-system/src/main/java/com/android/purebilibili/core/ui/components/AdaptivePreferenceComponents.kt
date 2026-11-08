@@ -644,6 +644,8 @@ private fun AdaptiveSwitchPreferenceBody(
         // MD3 原生:ListItem + M3 Switch
         val haptic = LocalHapticFeedback.current
         val hapticsEnabled = LocalAppThemeConfig.current.hapticFeedbackEnabled
+        // 与 AppSingleChoicePreference 的禁用态保持一致：整行 alpha 0.6。
+        // 只给文字降透明度会和开关的禁用态不同步。
         ListItem(
             headlineContent = {
                 if (titleTrailingContent == null) {
@@ -703,6 +705,7 @@ private fun AdaptiveSwitchPreferenceBody(
             colors = ListItemDefaults.colors(containerColor = Color.Transparent),
             modifier = Modifier
                 .fillMaxWidth()
+                .alpha(if (enabled) 1f else 0.6f)
                 .heightIn(min = rowSpec.minTouchTargetHeightDp.dp)
                 .clickable(enabled = enabled) {
                     if (hapticsEnabled) {

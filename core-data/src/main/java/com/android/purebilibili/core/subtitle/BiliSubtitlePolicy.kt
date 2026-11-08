@@ -5,6 +5,7 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.doubleOrNull
 import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
@@ -253,8 +254,10 @@ fun parseBiliSubtitleBody(rawJson: String): List<SubtitleCue> {
             val obj = item.asJsonObjectOrNull() ?: return@mapNotNull null
             val fromSeconds = obj["from"].asDoubleOrNull() ?: return@mapNotNull null
             val toSeconds = obj["to"].asDoubleOrNull() ?: return@mapNotNull null
-            val content = obj["content"]?.jsonPrimitive?.content?.trim().orEmpty()
-            if (content.isBlank()) return@mapNotNull null
+            val content = (obj["content"] as? JsonPrimitive)?.content?.trim().orEmpty()
+            if (content.isBlank() || !fromSeconds.isFinite() || !toSeconds.isFinite() || toSeconds <= fromSeconds) {
+                return@mapNotNull null
+            }
             val startMs = (fromSeconds * 1000.0).toLong().coerceAtLeast(0L)
             val endMs = (toSeconds * 1000.0).toLong().coerceAtLeast(startMs)
             SubtitleCue(
@@ -265,7 +268,7 @@ fun parseBiliSubtitleBody(rawJson: String): List<SubtitleCue> {
                     val wordObject = wordElement.asJsonObjectOrNull() ?: return@mapNotNull null
                     val wordText = listOf("word", "text", "content")
                         .firstNotNullOfOrNull { key ->
-                            wordObject[key]?.jsonPrimitive?.content?.trim()?.takeIf { it.isNotBlank() }
+                            (wordObject[key] as? JsonPrimitive)?.content?.trim()?.takeIf { it.isNotBlank() }
                         }
                         ?: return@mapNotNull null
                     val startSeconds = wordObject["start"].asDoubleOrNull()
@@ -274,13 +277,12 @@ fun parseBiliSubtitleBody(rawJson: String): List<SubtitleCue> {
                     val endSeconds = wordObject["end"].asDoubleOrNull()
                         ?: wordObject["end_time"].asDoubleOrNull()
                         ?: return@mapNotNull null
-                    // 不同接口时间单位混用：大于 100000 视作毫秒，否则按秒
-                    val wordStartMs = if (startSeconds > 100_000.0) startSeconds.toLong() else (startSeconds * 1000.0).toLong()
-                    val wordEndMs = if (endSeconds > 100_000.0) endSeconds.toLong() else (endSeconds * 1000.0).toLong()
+                    val timing = resolveSubtitleWordTiming(startSeconds, endSeconds, startMs, endMs)
+                        ?: return@mapNotNull null
                     SubtitleWordSpan(
                         text = wordText,
-                        startMs = wordStartMs.coerceAtLeast(0L),
-                        endMs = wordEndMs.coerceAtLeast(wordStartMs)
+                        startMs = timing.first,
+                        endMs = timing.second,
                     )
                 }
             )
@@ -288,6 +290,24 @@ fun parseBiliSubtitleBody(rawJson: String): List<SubtitleCue> {
     } catch (_: Throwable) {
         emptyList()
     }
+}
+
+/** 秒与毫秒候选必须落在所属句内；异常词时间不参与高亮，轻微越界截到句边界。 */
+private fun resolveSubtitleWordTiming(
+    start: Double,
+    end: Double,
+    cueStartMs: Long,
+    cueEndMs: Long,
+): Pair<Long, Long>? {
+    if (!start.isFinite() || !end.isFinite() || end <= start || cueEndMs <= cueStartMs) return null
+    val candidates = listOf(
+        (start * 1000.0).toLong() to (end * 1000.0).toLong(),
+        start.toLong() to end.toLong(),
+    ).filter { (from, to) -> to > from }
+    val timing = candidates.firstOrNull { (from, to) -> from >= cueStartMs && to <= cueEndMs }
+        ?: candidates.firstOrNull { (from, to) -> from < cueEndMs && to > cueStartMs }
+        ?: return null
+    return maxOf(timing.first, cueStartMs) to minOf(timing.second, cueEndMs)
 }
 
 /**
@@ -615,8 +635,5 @@ private fun JsonElement?.asJsonArrayOrNull(): JsonArray? {
 }
 
 private fun JsonElement?.asDoubleOrNull(): Double? {
-    return when (this) {
-        null -> null
-        else -> this.jsonPrimitive.doubleOrNull
-    }
+    return (this as? JsonPrimitive)?.doubleOrNull
 }

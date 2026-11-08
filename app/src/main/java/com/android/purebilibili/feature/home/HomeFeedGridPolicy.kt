@@ -36,7 +36,9 @@ internal fun resolveHomeFeedGridColumns(
 ): Int {
     val isSingleColumnMode = displayMode == 1
     if (!isSingleColumnMode && fixedColumnCount > 0) {
-        return fixedColumnCount
+        return if (contentWidthDp < 380) {
+            fixedColumnCount.coerceIn(1, resolveHomeFeedPinchColumnBounds(widthSizeClass, contentWidthDp).last)
+        } else fixedColumnCount
     }
 
     val minColumnWidthDp = if (isSingleColumnMode) {

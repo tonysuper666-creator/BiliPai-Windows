@@ -83,7 +83,6 @@ import com.android.purebilibili.core.ui.adaptive.resolveDeviceUiProfile
 import com.android.purebilibili.core.ui.adaptive.resolveEffectiveMotionTier
 import com.android.purebilibili.core.ui.blur.BlurIntensity
 import com.android.purebilibili.core.ui.blur.resolveHomeChromeLiquidGlassEnabled
-import com.android.purebilibili.core.ui.blur.shouldAllowHomeChromeLiquidGlass
 import com.android.purebilibili.core.ui.performance.SYSTEM_AUTO_DISPLAY_MODE_ID
 import com.android.purebilibili.core.ui.performance.applyPreferredDisplayMode
 import com.android.purebilibili.core.ui.performance.displayModePreferenceLabel
@@ -249,8 +248,6 @@ fun AppearanceSettingsContent(
 ) {
     val homeConfiguration = rememberSettingsHomeConfiguration()
     val themeConfiguration = rememberSettingsThemeConfiguration()
-    val liquidControlsUseThemeColor by remember(context) { SettingsManager.getLiquidControlsUseThemeColor(context) }
-        .collectAsStateWithLifecycle(initialValue = false)
     val activity = context as? android.app.Activity
     val supportedDisplayModes = remember(activity) {
         activity?.supportedAppDisplayModes().orEmpty()
@@ -310,7 +307,7 @@ fun AppearanceSettingsContent(
     val windowSizeClass = LocalWindowSizeClass.current
     val isTablet = windowSizeClass.isTablet
     val sectionKeys = when (contentMode) {
-        AppearanceSettingsContentMode.APPEARANCE -> listOf("appearance_display_mode", "appearance_theme_color", "appearance_text_size", "appearance_splash_icon", "appearance_language")
+        AppearanceSettingsContentMode.APPEARANCE -> listOf("appearance_display_mode", "appearance_theme_color", "appearance_text_size", "appearance_splash_icon", "content_image_display", "appearance_language")
         AppearanceSettingsContentMode.HOME -> listOf("home_list", "home_wallpaper", "home_recommendation", "home_browsing")
     }.flatMap { listOf(it + "_title", it) }
     SettingsSectionFocusEffect(
@@ -495,7 +492,6 @@ fun AppearanceSettingsContent(
     val fullVideoCardContentVisible = homeConfiguration.showFullVideoCardContent
     val videoCardLongPressActionEnabled = homeConfiguration.videoCardLongPressActionEnabled
     val homeCardDynamicTintEnabled = homeConfiguration.homeCardDynamicTintEnabled
-    val homeCardFrostedGlassEnabled = homeConfiguration.homeCardFrostedGlassEnabled
     val homeDurationStyle = homeConfiguration.homeDurationStyle
     val homeFeedCardStyle = homeConfiguration.homeFeedCardStyle
     val homeHeroCarouselEnabled = homeConfiguration.homeHeroCarouselEnabled
@@ -513,7 +509,6 @@ fun AppearanceSettingsContent(
         .collectAsStateWithLifecycle(initialValue = false)
     val showProfileEditButton by remember(context) { SettingsManager.getShowProfileEditButton(context) }
         .collectAsStateWithLifecycle(initialValue = false)
-    val isLiquidGlassAvailable = shouldAllowHomeChromeLiquidGlass(Build.VERSION.SDK_INT)
     val effectiveLiquidGlassEnabled = resolveHomeChromeLiquidGlassEnabled(
         userEnabled = homeConfiguration.androidNativeLiquidGlassEnabled,
         sdkInt = Build.VERSION.SDK_INT,
@@ -647,39 +642,8 @@ fun AppearanceSettingsContent(
                             )
                         }
 
-                        Column {
-                            AppPreferenceDivider()
-                            SettingsItemAnchor("appearance.effective_liquid_glass_enabled") {
-                                AppSwitchPreference(
-                                    icon = rememberSettingsSemanticIcon(SettingsIconRole.ANDROID_LIQUID_GLASS),
-                                    title = settingItemTitle("appearance.effective_liquid_glass_enabled"),
-                                    subtitle = if (isLiquidGlassAvailable) {
-                                        context.getString(R.string.appearance_liquid_glass_summary)
-                                    } else {
-                                        context.getString(R.string.appearance_liquid_glass_unsupported)
-                                    },
-                                    checked = effectiveLiquidGlassEnabled,
-                                    onCheckedChange = { viewModel.toggleAndroidNativeLiquidGlass(it) },
-                                    enabled = isLiquidGlassAvailable,
-                                    iconTint = AppContentColors.secondaryText()
-                                )
-                            }
-                        }
-
-                        AppPreferenceDivider()
-
-                        SettingsItemAnchor("appearance.liquid_controls_use_theme_color") {
-                            AppSwitchPreference(
-                                title = context.getString(R.string.appearance_liquid_controls_theme_title),
-                                subtitle = context.getString(R.string.appearance_liquid_controls_theme_summary),
-                                checked = liquidControlsUseThemeColor,
-                                enabled = effectiveLiquidGlassEnabled && isLiquidGlassAvailable,
-                                onCheckedChange = { enabled ->
-                                    scope.launch { SettingsManager.setLiquidControlsUseThemeColor(context, enabled) }
-                                },
-                            )
-                        }
-                        AppPreferenceDivider()
+                        // 液态玻璃总开关与玻璃材质条目已集中在「动画与触感」页的玻璃分组,
+                        // 这里只保留与玻璃无关的显示样式条目。
 
                         SettingsItemAnchor("appearance.app_list_item_style") {
                             SettingsSingleChoicePreference(
@@ -1266,9 +1230,7 @@ fun AppearanceSettingsContent(
             Box(modifier = Modifier.padding(top = 16.dp).entrance()) {
                 // 交给设置页分组承载：圆角、水平边距与容器色由 AppPreferenceGroup 统一决定。
                 AppPreferenceGroup {
-                    ThemeHomePreview(
-                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)
-                    )
+                    ExpandableThemeHomePreview()
                 }
             }
         }
@@ -1687,6 +1649,12 @@ fun AppearanceSettingsContent(
             }
         }
 
+        item(key = "content_image_display_title") {
+            AppPreferenceSectionTitle("图片显示")
+        }
+        item(key = "content_image_display") {
+            com.android.purebilibili.feature.settings.ContentImagePreferences()
+        }
         //  语言
         item(key = "appearance_language_title") {
             Box(modifier = Modifier.entrance()) {
@@ -1984,6 +1952,8 @@ fun AppearanceSettingsContent(
                         }
 
                         AppPreferenceDivider(modifier = Modifier.padding(start = 16.dp))
+                        com.android.purebilibili.feature.settings.RecommendRetentionPreference()
+                        AppPreferenceDivider(modifier = Modifier.padding(start = 16.dp))
                         SettingsItemAnchor("appearance.home_refresh_tip_visible") {
                             AppSwitchPreference(
                                 icon = rememberSettingsSemanticIcon(SettingsIconRole.HOME_REFRESH_TIP),
@@ -2229,25 +2199,7 @@ fun AppearanceSettingsContent(
                             }
                         }
 
-                        AppPreferenceDivider(modifier = Modifier.padding(start = 16.dp))
-                        SettingsItemAnchor("appearance.home_card_frosted_glass_enabled") {
-                            AppSwitchPreference(
-                                icon = rememberSettingsSemanticIcon(SettingsIconRole.HOME_INFO_GLASS),
-                                title = settingItemTitle("appearance.home_card_frosted_glass_enabled"),
-                                subtitle = if (homeCardFrostedGlassEnabled) {
-                                    context.getString(R.string.appearance_wallpaper_card_blur_on)
-                                } else {
-                                    context.getString(R.string.appearance_wallpaper_card_blur_off)
-                                },
-                                checked = homeCardFrostedGlassEnabled,
-                                onCheckedChange = {
-                                    scope.launch {
-                                        SettingsManager.setHomeCardFrostedGlassEnabled(context, it)
-                                    }
-                                },
-                                iconTint = AppContentColors.secondaryText()
-                            )
-                        }
+                        // 「卡片背景模糊」已并入「动画与触感」页的液态玻璃与磨砂分组。
                         AppPreferenceDivider(modifier = Modifier.padding(start = 16.dp))
                         SettingsItemAnchor("appearance.home_card_dynamic_tint_enabled") {
                             AppSwitchPreference(

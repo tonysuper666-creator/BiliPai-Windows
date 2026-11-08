@@ -79,12 +79,20 @@ enum class SearchBackAction {
     LEAVE_SEARCH
 }
 
-/** Result Back restores the search landing context; landing Back leaves the destination. */
+/**
+ * Only a session opened on the empty search landing has a landing destination to return to.
+ * Focus and suggestions are editing state, not evidence that this destination was entered there.
+ */
 internal fun resolveSearchBackAction(
     showResults: Boolean,
     @Suppress("UNUSED_PARAMETER") suggestionsVisible: Boolean,
-    @Suppress("UNUSED_PARAMETER") searchFieldFocused: Boolean
-): SearchBackAction = if (showResults) SearchBackAction.RETURN_TO_LANDING else SearchBackAction.LEAVE_SEARCH
+    @Suppress("UNUSED_PARAMETER") searchFieldFocused: Boolean,
+    openedWithKeyword: Boolean,
+): SearchBackAction = if (showResults && !openedWithKeyword) {
+    SearchBackAction.RETURN_TO_LANDING
+} else {
+    SearchBackAction.LEAVE_SEARCH
+}
 
 internal fun shouldClearSearchFocusWhenShowingResults(
     showResults: Boolean,

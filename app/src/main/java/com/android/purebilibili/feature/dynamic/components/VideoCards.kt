@@ -125,7 +125,11 @@ fun VideoCardLarge(
             .diskCacheKey(coverUrl)
             .build()
     }
-    val triggerClick = {
+    val triggerClick = dynamicCardClick@{
+        if (CardPositionManager.isVideoNavigationDebounceActive()) {
+            // 防抖窗口内的点击注定被导航层拒绝；不得覆写在飞转场的全局记录与冻结像素。
+            return@dynamicCardClick
+        }
         cardBoundsRef.value?.takeIf { it.isAttached }?.videoCardSourceBoundsInRoot()?.let { bounds ->
             val sourceCoverBounds = coverBoundsRef.value
                 ?.takeIf { it.isAttached }?.videoCardSourceBoundsInRoot()

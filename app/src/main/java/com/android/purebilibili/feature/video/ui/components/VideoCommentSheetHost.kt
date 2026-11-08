@@ -55,6 +55,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Rect
@@ -327,6 +328,8 @@ internal fun resolveVideoCommentSheetHostOverlayVisual(
 @Composable
 fun VideoCommentSheetHost(
     mainSheetVisible: Boolean,
+    /** 从横屏恢复时跳过进场动画，避免重新播放滑入和模糊渐入。 */
+    instantRestore: Boolean = false,
     onDismiss: () -> Unit,
     /**
      * 覆盖全屏 scrim 的峰值透明度。
@@ -378,16 +381,29 @@ fun VideoCommentSheetHost(
         mainSheetVisible = mainSheetVisible,
         subReplyVisible = subReplyState.visible
     )
-    val mainCommentListState = rememberLazyListState()
-    LaunchedEffect(aid) {
-        if (mainCommentListState.firstVisibleItemIndex != 0 || mainCommentListState.firstVisibleItemScrollOffset != 0) {
-            mainCommentListState.scrollToItem(0)
+    val scrollMemory = commentViewModel.fullscreenCommentScrollMemory
+    val scrollSession = remember(scrollMemory, aid, commentState.sortMode) {
+        scrollMemory.open(aid, commentState.sortMode)
+    }
+    val mainCommentListState = remember(scrollSession) {
+        androidx.compose.foundation.lazy.LazyListState(scrollSession.index, scrollSession.offset)
+    }
+    LaunchedEffect(scrollSession, mainCommentListState, commentState.replies.isNotEmpty()) {
+        // 空列表和加载骨架不能把尚未恢复的阅读位置写成顶部。
+        if (commentState.replies.isEmpty()) return@LaunchedEffect
+        snapshotFlow {
+            if (mainCommentListState.layoutInfo.totalItemsCount > 0) {
+                mainCommentListState.firstVisibleItemIndex to mainCommentListState.firstVisibleItemScrollOffset
+            } else null
+        }.collect { position ->
+            if (position != null) scrollMemory.save(scrollSession, position.first, position.second)
         }
     }
     val hostVisible = hostContent != VideoCommentSheetHostContent.HIDDEN
     // A host can be mounted already visible when opened from the inline list.
     // Start the sheet transition hidden so that first mount also slides upward.
-    val sheetVisibility = remember { MutableTransitionState(false) }
+    // 从横屏恢复时例外：直接以可见状态挂载，不跑进场动画。
+    val sheetVisibility = remember { MutableTransitionState(instantRestore && hostVisible) }
     LaunchedEffect(hostVisible) {
         sheetVisibility.targetState = hostVisible
     }
@@ -410,10 +426,10 @@ fun VideoCommentSheetHost(
     val hostVisibilityProgress by animateFloatAsState(
         targetValue = if (hostVisible) 1f else 0f,
         animationSpec = tween(
-            durationMillis = if (hostVisible) {
-                motionSpec.contentEnterFadeDurationMillis
-            } else {
-                motionSpec.contentExitFadeDurationMillis
+            durationMillis = when {
+                instantRestore -> 0
+                hostVisible -> motionSpec.contentEnterFadeDurationMillis
+                else -> motionSpec.contentExitFadeDurationMillis
             }
         ),
         label = "video_comment_host_visibility_progress"
@@ -779,8 +795,7 @@ fun VideoCommentSheetHost(
                             }
                         }
                         AnimatedVisibility(
-                            visible = hostContent == VideoCommentSheetHostContent.THREAD_DETAIL &&
-                                subReplyState.rootReply != null,
+                            visible = hostContent == VideoCommentSheetHostContent.THREAD_DETAIL,
                             enter = motionSpec.contentEnter,
                             exit = if (threadBackCompleted) androidx.compose.animation.ExitTransition.None else motionSpec.contentExit,
                         ) {
@@ -845,6 +860,13 @@ fun VideoCommentSheetHost(
                                         targetReplyId = subReplyState.targetReplyId
                                     )
                                 }
+                            } else {
+                                SubReplyInitialContent(
+                                    isLoading = subReplyState.isLoading,
+                                    error = subReplyState.error,
+                                    onRetry = commentViewModel::loadMoreSubReplies,
+                                    onDismiss = commentViewModel::closeSubReply,
+                                )
                             }
                         }
                     }
@@ -908,12 +930,15 @@ internal fun VideoCommentMainList(
             count = state.replyCount,
             sortMode = state.sortMode,
             onSortModeChange = { mode ->
-                viewModel.setSortMode(mode)
-                scope.launch { SettingsManager.setCommentDefaultSortMode(context, mode.apiMode) }
+                if (mode != state.sortMode) {
+                    // 排序切换与列表回顶一起生效，不保留旧排序的滚动锚点。
+                    listState.requestScrollToItem(0)
+                    viewModel.setSortMode(mode)
+                    scope.launch { SettingsManager.setCommentDefaultSortMode(context, mode.apiMode) }
+                }
             },
             onSearchClick = { showCommentSearchSheet = true },
             compactTypography = true,
-            scrollState = listState,
             modifier = Modifier
                 .fillMaxWidth()
                 .then(headerDragModifier),
@@ -935,6 +960,19 @@ internal fun VideoCommentMainList(
                             .layerBackdrop(commentChromeBackdrop),
                         contentPadding = WindowInsets.navigationBars.asPaddingValues()
                     ) {
+                    commentSectionNotice(state.pageControl)
+                    if (state.replies.isEmpty() && !state.isRepliesLoading &&
+                        !state.isRepliesRefreshing && repliesError == null) {
+                        state.pageControl?.emptyMessage()?.takeIf { it.isNotBlank() }?.let { message ->
+                            item(key = "comment_server_empty", contentType = "comment_server_empty") {
+                                AppText(
+                                    text = message,
+                                    color = AppContentColors.secondaryText(),
+                                    modifier = Modifier.fillMaxWidth().padding(24.dp),
+                                )
+                            }
+                        }
+                    }
                     state.voteCard?.let { card ->
                         item(key = "comment_vote_${card.voteId}") {
                             VideoCommentVoteCard(
@@ -1008,9 +1046,10 @@ internal fun VideoCommentMainList(
                             onTimestampClick = onTimestampClick,
                             maxTimestampMs = maxTimestampMs,
                             onImagePreview = onImagePreview,
+                            isLiked = reply.rpid in state.likedComments,
                             onLikeClick = { viewModel.likeComment(reply.rpid) },
                             onHateClick = { viewModel.hateComment(reply.rpid) },
-                            isHated = reply.action == 2 || reply.rpid in state.hatedComments,
+                            isHated = reply.rpid in state.hatedComments,
                             onReplyClick = {
                                 if (shouldOpenPortraitCommentReplyComposer()) {
                                     onReplyClick(reply)

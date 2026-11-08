@@ -25,6 +25,7 @@ import com.android.purebilibili.core.ui.transition.VIDEO_SHARED_TRANSITION_CUSTO
 import com.android.purebilibili.core.ui.transition.VideoSharedTransitionSpeed
 import com.android.purebilibili.core.ui.transition.normalizeVideoSharedTransitionCustomDurationMillis
 import com.android.purebilibili.core.store.home.HomeSettingsStore
+import com.android.purebilibili.core.store.home.dynamicUpListVisiblePreferencesKey
 import com.android.purebilibili.core.store.home.dynamicCommentPreviewVisiblePreferencesKey
 import com.android.purebilibili.core.store.home.glassPopupPalettePreferencesKey
 import com.android.purebilibili.core.store.home.liquidGlassReadabilityModePreferencesKey
@@ -402,7 +403,7 @@ enum class PlaybackCompletionBehavior(val value: Int, val label: String) {
 }
 
 enum class PortraitPlayerCollapseMode(val value: Int, val label: String, val description: String) {
-    OFF(0, "关闭", "关闭滚动缩小；暂停后仍可上滑评论隐藏视频"),
+    OFF(0, "关闭", "关闭播放时滚动缩小；暂停后仍可上滑简介或评论收起画面"),
     INTRO_ONLY(1, "竖屏", "竖屏视频评论区或简介上滑时缩小播放器"),
     COMMENT_ONLY(2, "横屏", "仅横屏视频详情页滚动时缩小播放器"),
     BOTH(3, "全部", "横屏和竖屏视频均可随浏览缩小"),
@@ -528,13 +529,8 @@ internal fun normalizeDanmakuDisplayArea(value: Float): Float {
 internal fun normalizeDanmakuFontScale(value: Float): Float =
     if (value.isFinite()) value.coerceIn(0.5f, 2.5f) else 1f
 
-internal const val DEFAULT_HOME_REFRESH_COUNT = 20
-internal const val MIN_HOME_REFRESH_COUNT = 10
-internal const val MAX_HOME_REFRESH_COUNT = 30
-
-internal fun normalizeHomeRefreshCount(count: Int): Int {
-    return count.coerceIn(MIN_HOME_REFRESH_COUNT, MAX_HOME_REFRESH_COUNT)
-}
+/** 推荐流兜底条数；实际值由 HomeViewModel 按网格列数换算。 */
+internal const val DEFAULT_HOME_REFRESH_COUNT = 12
 
 enum class HomeFeedCardWidthPreset(
     val value: Int,
@@ -654,6 +650,7 @@ data class HomeSettings(
     val navigationIconCrossScaleEnabled: Boolean = true,
     val bottomBarLabelMode: Int = 0,       // (0=图标+文字, 1=仅图标, 2=仅文字)
     val topTabLabelMode: Int = 2,          // (0=图标+文字, 1=仅图标, 2=仅文字)
+    val partitionSideRailOnRight: Boolean = false,
     val hideTopTabs: Boolean = false,
     val homeTopRightAction: HomeTopRightAction = HomeTopRightAction.SETTINGS,
     val homeTopLayoutOrder: HomeTopLayoutOrder = HomeTopLayoutOrder.SEARCH_THEN_TABS,
@@ -1068,6 +1065,7 @@ data class AppNavigationSettings(
     val settingsContainerMorphEnabled: Boolean = true,
     val settingsContainerRealtimeBlurEnabled: Boolean = false,
     val liquidIndicatorWobbleEnabled: Boolean = true,
+    val liquidIndicatorDynamicLengthEnabled: Boolean = true,
     // 编辑器保留原始配置，不能用运行时过滤后的可见项或生效策略反写用户选择。
     val bottomBarOrder: List<String> = listOf("HOME", "DYNAMIC", "HISTORY", "LISTEN_VIDEO", "PROFILE"),
     val bottomBarVisibleTabs: Set<String> = setOf("HOME", "DYNAMIC", "HISTORY", "LISTEN_VIDEO", "PROFILE"),
@@ -1148,10 +1146,6 @@ data class PlayerInteractionSettings(
     val pipNoDanmakuEnabled: Boolean = false,
     val seekForwardSeconds: Int = 10,
     val seekBackwardSeconds: Int = 10,
-    val inlineSwipeSeekSeconds: Int = 30,
-    val fullscreenSwipeSeekSeconds: Int = 15,
-    val swipeSeekUseRelativeDuration: Boolean = false,
-    val swipeSeekRelativePercent: Int = 90,
     val fullscreenSwipeSeekEnabled: Boolean = true,
     val fullscreenGestureReverse: Boolean = false,
     val hideVideoPageStatusBar: Boolean = false,
@@ -1506,6 +1500,7 @@ private val KEY_APP_FONT_WEIGHT = intPreferencesKey("app_font_weight")
     private val KEY_BOTTOM_BAR_LABEL_MODE = intPreferencesKey("bottom_bar_label_mode")
     //  [新增] 顶部标签显示模式 (0=图标+文字, 1=仅图标, 2=仅文字)
     private val KEY_TOP_TAB_LABEL_MODE = intPreferencesKey("top_tab_label_mode")
+    private val KEY_PARTITION_SIDE_RAIL_ON_RIGHT = booleanPreferencesKey("partition_side_rail_on_right")
     private val KEY_HIDE_TOP_TABS = booleanPreferencesKey("hide_top_tabs")
     private val KEY_HOME_TOP_RIGHT_ACTION = intPreferencesKey("home_top_right_action")
     //  [新增] 顶部标签自定义 - 顺序和可见性
@@ -1602,6 +1597,7 @@ private val KEY_APP_FONT_WEIGHT = intPreferencesKey("app_font_weight")
     private val KEY_ANDROID_NATIVE_LIQUID_GLASS_ENABLED =
         booleanPreferencesKey("android_native_liquid_glass_enabled")
     private val KEY_LIQUID_CONTROLS_USE_THEME_COLOR = booleanPreferencesKey("liquid_controls_use_theme_color")
+    private val KEY_LIQUID_SWITCH_THUMB_MODE = stringPreferencesKey("liquid_switch_thumb_mode")
     private val KEY_LEGACY_ANDROID_NATIVE_TOP_TAB_LIQUID_GLASS_ENABLED =
         booleanPreferencesKey("android_native_top_tab_liquid_glass_enabled")
     //  Legacy shared Liquid Glass toggle, kept as migration fallback.
@@ -1770,6 +1766,7 @@ private val KEY_APP_FONT_WEIGHT = intPreferencesKey("app_font_weight")
     private val KEY_AUDIO_FOCUS_ENABLED = booleanPreferencesKey("audio_focus_enabled")
     private val KEY_AUDIO_MODE_AUTO_PIP_ENABLED = booleanPreferencesKey("audio_mode_auto_pip_enabled")
     private val KEY_AUDIO_NOW_PLAYING_BAR_ENABLED = booleanPreferencesKey("audio_now_playing_bar_enabled")
+    private val KEY_AUDIO_NOW_PLAYING_BAR_DELETE_BUTTON = booleanPreferencesKey("audio_now_playing_bar_delete_button")
     private val KEY_AUDIO_NOW_PLAYING_BAR_IMMERSIVE_ENABLED =
         booleanPreferencesKey("audio_now_playing_bar_immersive_enabled")
     private val KEY_AUDIO_NOW_PLAYING_BAR_OPENS_AUDIO_MODE =
@@ -1841,6 +1838,7 @@ private val KEY_APP_FONT_WEIGHT = intPreferencesKey("app_font_weight")
                 preferences[KEY_NAVIGATION_ICON_CROSS_SCALE_ENABLED] ?: true,
             bottomBarLabelMode = preferences[KEY_BOTTOM_BAR_LABEL_MODE] ?: BottomBarLabelMode.ICON_AND_TEXT,
             topTabLabelMode = preferences[KEY_TOP_TAB_LABEL_MODE] ?: TopTabLabelMode.TEXT_ONLY,
+            partitionSideRailOnRight = preferences[KEY_PARTITION_SIDE_RAIL_ON_RIGHT] ?: false,
             hideTopTabs = preferences[KEY_HIDE_TOP_TABS] ?: false,
             homeTopRightAction = HomeTopRightAction.fromValue(
                 preferences[KEY_HOME_TOP_RIGHT_ACTION] ?: HomeTopRightAction.SETTINGS.value
@@ -2001,16 +1999,6 @@ private val KEY_APP_FONT_WEIGHT = intPreferencesKey("app_font_weight")
             pipNoDanmakuEnabled = preferences[KEY_PIP_NO_DANMAKU] ?: false,
             seekForwardSeconds = (preferences[KEY_SEEK_FORWARD_SECONDS] ?: 10).coerceIn(1, 60),
             seekBackwardSeconds = (preferences[KEY_SEEK_BACKWARD_SECONDS] ?: 10).coerceIn(1, 60),
-            inlineSwipeSeekSeconds = normalizeInlineSwipeSeekSeconds(
-                preferences[KEY_INLINE_SWIPE_SEEK_SECONDS] ?: 30
-            ),
-            fullscreenSwipeSeekSeconds = normalizeFullscreenSwipeSeekSeconds(
-                preferences[KEY_FULLSCREEN_SWIPE_SEEK_SECONDS] ?: 15
-            ),
-            swipeSeekUseRelativeDuration = preferences[KEY_SWIPE_SEEK_USE_RELATIVE_DURATION] ?: false,
-            swipeSeekRelativePercent = normalizeSwipeSeekRelativePercent(
-                preferences[KEY_SWIPE_SEEK_RELATIVE_PERCENT] ?: 90
-            ),
             fullscreenSwipeSeekEnabled = preferences[KEY_FULLSCREEN_SWIPE_SEEK_ENABLED] ?: true,
             fullscreenGestureReverse = preferences[KEY_FULLSCREEN_GESTURE_REVERSE] ?: false,
             hideVideoPageStatusBar = preferences[KEY_HIDE_VIDEO_PAGE_STATUS_BAR] ?: false,
@@ -3317,6 +3305,7 @@ private val KEY_APP_FONT_WEIGHT = intPreferencesKey("app_font_weight")
         PlayerSettingsStore.getLastPlaybackSpeed(context)
 
     suspend fun setLastPlaybackSpeed(context: Context, speed: Float) {
+        if (!ContentDisplayPreferences.rememberPlayerAdjustments(context).first()) return
         PlayerSettingsStore.setLastPlaybackSpeed(context, speed)
     }
 
@@ -4170,6 +4159,19 @@ private val KEY_APP_FONT_WEIGHT = intPreferencesKey("app_font_weight")
         }
     }
 
+    private val searchLandingSectionKeys = listOf(
+        booleanPreferencesKey("search_hot_control_visible"),
+        booleanPreferencesKey("search_history_control_visible"),
+        booleanPreferencesKey("search_discover_control_visible"),
+    )
+
+    fun getSearchLandingSectionVisible(context: Context, index: Int): Flow<Boolean> =
+        context.settingsDataStore.data.map { it[searchLandingSectionKeys[index]] ?: true }
+
+    suspend fun setSearchLandingSectionVisible(context: Context, index: Int, visible: Boolean) {
+        context.settingsDataStore.edit { it[searchLandingSectionKeys[index]] = visible }
+    }
+
     fun getSearchHotSectionEnabled(context: Context): Flow<Boolean> = context.settingsDataStore.data
         .map { preferences -> preferences[KEY_SEARCH_HOT_SECTION_ENABLED] ?: true }
 
@@ -4212,6 +4214,13 @@ private val KEY_APP_FONT_WEIGHT = intPreferencesKey("app_font_weight")
     //  [新增] --- 顶部标签显示模式 (0=图标+文字, 1=仅图标, 2=仅文字) ---
     fun getTopTabLabelMode(context: Context): Flow<Int> = context.settingsDataStore.data
         .map { preferences -> preferences[KEY_TOP_TAB_LABEL_MODE] ?: TopTabLabelMode.TEXT_ONLY }
+
+    fun getPartitionSideRailOnRight(context: Context): Flow<Boolean> = context.settingsDataStore.data
+        .map { preferences -> preferences[KEY_PARTITION_SIDE_RAIL_ON_RIGHT] ?: false }
+
+    suspend fun setPartitionSideRailOnRight(context: Context, onRight: Boolean) {
+        context.settingsDataStore.edit { preferences -> preferences[KEY_PARTITION_SIDE_RAIL_ON_RIGHT] = onRight }
+    }
 
     suspend fun setTopTabLabelMode(context: Context, value: Int) {
         context.settingsDataStore.edit { preferences -> preferences[KEY_TOP_TAB_LABEL_MODE] = value }
@@ -4745,6 +4754,17 @@ private val KEY_APP_FONT_WEIGHT = intPreferencesKey("app_font_weight")
 
     fun getLiquidControlsUseThemeColor(context: Context): Flow<Boolean> =
         context.settingsDataStore.data.map { it[KEY_LIQUID_CONTROLS_USE_THEME_COLOR] ?: false }
+
+    fun getLiquidSwitchThumbMode(context: Context): Flow<com.android.purebilibili.core.ui.LiquidSwitchThumbMode> =
+        context.settingsDataStore.data.map { preferences ->
+            com.android.purebilibili.core.ui.LiquidSwitchThumbMode.entries.firstOrNull {
+                it.name == preferences[KEY_LIQUID_SWITCH_THUMB_MODE]
+            } ?: com.android.purebilibili.core.ui.LiquidSwitchThumbMode.THEME
+        }
+
+    suspend fun setLiquidSwitchThumbMode(context: Context, value: com.android.purebilibili.core.ui.LiquidSwitchThumbMode) {
+        context.settingsDataStore.edit { it[KEY_LIQUID_SWITCH_THUMB_MODE] = value.name }
+    }
 
     suspend fun setLiquidControlsUseThemeColor(context: Context, value: Boolean) {
         context.settingsDataStore.edit { it[KEY_LIQUID_CONTROLS_USE_THEME_COLOR] = value }
@@ -6098,7 +6118,6 @@ private val KEY_APP_FONT_WEIGHT = intPreferencesKey("app_font_weight")
     
     private val KEY_FEED_API_TYPE = intPreferencesKey("feed_api_type")
     private val KEY_INCREMENTAL_TIMELINE_REFRESH = booleanPreferencesKey("incremental_timeline_refresh")
-    private val KEY_HOME_REFRESH_COUNT = intPreferencesKey("home_refresh_count")
     
     /**
      *  推荐流 API 类型
@@ -6147,28 +6166,6 @@ private val KEY_APP_FONT_WEIGHT = intPreferencesKey("app_font_weight")
         }
     }
 
-    fun getHomeRefreshCount(context: Context): Flow<Int> = context.settingsDataStore.data
-        .map { preferences ->
-            normalizeHomeRefreshCount(preferences[KEY_HOME_REFRESH_COUNT] ?: DEFAULT_HOME_REFRESH_COUNT)
-        }
-
-    suspend fun setHomeRefreshCount(context: Context, count: Int) {
-        val normalized = normalizeHomeRefreshCount(count)
-        context.settingsDataStore.edit { preferences ->
-            preferences[KEY_HOME_REFRESH_COUNT] = normalized
-        }
-        context.getSharedPreferences("feed_api", Context.MODE_PRIVATE)
-            .edit()
-            .putInt("home_refresh_count", normalized)
-            .apply()
-    }
-
-    fun getHomeRefreshCountSync(context: Context): Int {
-        val value = context.getSharedPreferences("feed_api", Context.MODE_PRIVATE)
-            .getInt("home_refresh_count", DEFAULT_HOME_REFRESH_COUNT)
-        return normalizeHomeRefreshCount(value)
-    }
-    
     // ==========  实验性功能 ==========
     
     private val KEY_AUTO_1080P = booleanPreferencesKey("exp_auto_1080p")
@@ -6371,6 +6368,16 @@ private val KEY_APP_FONT_WEIGHT = intPreferencesKey("app_font_weight")
         context.getSharedPreferences("auto_rotate_cache", Context.MODE_PRIVATE)
             .edit().putBoolean("enabled", value).apply()
     }
+
+    // --- 横屏保持 (自动横竖屏进入横屏后不随倾斜回竖屏，仅手动退出，默认关闭) ---
+    private val KEY_LANDSCAPE_HOLD_ENABLED = booleanPreferencesKey("landscape_hold_enabled")
+
+    fun getLandscapeHoldEnabled(context: Context): Flow<Boolean> = context.settingsDataStore.data
+        .map { preferences -> preferences[KEY_LANDSCAPE_HOLD_ENABLED] ?: false }
+
+    suspend fun setLandscapeHoldEnabled(context: Context, value: Boolean) {
+        context.settingsDataStore.edit { preferences -> preferences[KEY_LANDSCAPE_HOLD_ENABLED] = value }
+    }
     
     fun isAutoRotateEnabledSync(context: Context): Boolean {
         val prefs = context.getSharedPreferences("auto_rotate_cache", Context.MODE_PRIVATE)
@@ -6387,6 +6394,7 @@ private val KEY_APP_FONT_WEIGHT = intPreferencesKey("app_font_weight")
     private val KEY_VIDEO_SECOND_CODEC = stringPreferencesKey("video_second_codec_preference")
     private val KEY_AUDIO_QUALITY = intPreferencesKey("audio_quality_preference")
     private val KEY_SUBSCRIBED_COLLECTION_IDS = stringPreferencesKey("subscribed_collection_ids")
+    private val KEY_KNOWN_COLLECTION_SUBSCRIPTION_IDS = stringPreferencesKey("known_collection_subscription_ids")
     private val KEY_COLLECTION_SORT_PREFERENCES = stringPreferencesKey("collection_sort_preferences")
     
     // --- WiFi 默认画质 (默认 80 = 1080P) ---
@@ -6438,6 +6446,17 @@ private val KEY_APP_FONT_WEIGHT = intPreferencesKey("app_font_weight")
             .distinctUntilChanged()
     }
 
+    /** 缓存缺失为未知；已订阅集合也可作为旧版本的肯定记录。 */
+    fun getCollectionSubscriptionState(context: Context, collectionId: Long): Flow<Boolean?> =
+        context.settingsDataStore.data.map { preferences ->
+            val id = collectionId.toString()
+            when {
+                id in decodeCollectionSubscriptionIds(preferences[KEY_SUBSCRIBED_COLLECTION_IDS]) -> true
+                id in decodeCollectionSubscriptionIds(preferences[KEY_KNOWN_COLLECTION_SUBSCRIPTION_IDS]) -> false
+                else -> null
+            }
+        }.distinctUntilChanged()
+
     suspend fun toggleCollectionSubscription(context: Context, collectionId: Long) {
         if (collectionId <= 0L) return
         context.settingsDataStore.edit { preferences ->
@@ -6451,6 +6470,9 @@ private val KEY_APP_FONT_WEIGHT = intPreferencesKey("app_font_weight")
     suspend fun setCollectionSubscription(context: Context, collectionId: Long, subscribed: Boolean) {
         if (collectionId <= 0L) return
         context.settingsDataStore.edit { preferences ->
+            preferences[KEY_KNOWN_COLLECTION_SUBSCRIPTION_IDS] = encodeCollectionSubscriptionIds(
+                decodeCollectionSubscriptionIds(preferences[KEY_KNOWN_COLLECTION_SUBSCRIPTION_IDS]) + collectionId.toString()
+            )
             val current = decodeCollectionSubscriptionIds(preferences[KEY_SUBSCRIBED_COLLECTION_IDS])
             preferences[KEY_SUBSCRIBED_COLLECTION_IDS] = encodeCollectionSubscriptionIds(
                 setCollectionSubscription(current, collectionId, subscribed)
@@ -7152,6 +7174,13 @@ private val KEY_APP_FONT_WEIGHT = intPreferencesKey("app_font_weight")
             .getBoolean("audio_now_playing_bar_enabled", true)
     }
 
+    fun getAudioNowPlayingBarDeleteButton(context: Context): Flow<Boolean> =
+        context.settingsDataStore.data.map { it[KEY_AUDIO_NOW_PLAYING_BAR_DELETE_BUTTON] ?: true }
+
+    suspend fun setAudioNowPlayingBarDeleteButton(context: Context, value: Boolean) {
+        context.settingsDataStore.edit { it[KEY_AUDIO_NOW_PLAYING_BAR_DELETE_BUTTON] = value }
+    }
+
     fun getAudioNowPlayingBarOpensAudioMode(context: Context): Flow<Boolean> =
         context.settingsDataStore.data.map { preferences ->
             preferences[KEY_AUDIO_NOW_PLAYING_BAR_OPENS_AUDIO_MODE] ?: false
@@ -7576,12 +7605,7 @@ private val KEY_APP_FONT_WEIGHT = intPreferencesKey("app_font_weight")
     private val KEY_PAUSE_ON_PLAYER_COLLAPSE = booleanPreferencesKey("pause_on_player_collapse")
     private val KEY_PORTRAIT_SWIPE_TO_FULLSCREEN = booleanPreferencesKey("portrait_swipe_to_fullscreen")
     private val KEY_CENTER_SWIPE_TO_FULLSCREEN = booleanPreferencesKey("center_swipe_to_fullscreen")
-    private val KEY_INLINE_SWIPE_SEEK_SECONDS = intPreferencesKey("inline_swipe_seek_seconds")
     private val KEY_FULLSCREEN_SWIPE_SEEK_ENABLED = booleanPreferencesKey("fullscreen_swipe_seek_enabled")
-    private val KEY_FULLSCREEN_SWIPE_SEEK_SECONDS = intPreferencesKey("fullscreen_swipe_seek_seconds")
-    private val KEY_SWIPE_SEEK_USE_RELATIVE_DURATION =
-        booleanPreferencesKey("swipe_seek_use_relative_duration")
-    private val KEY_SWIPE_SEEK_RELATIVE_PERCENT = intPreferencesKey("swipe_seek_relative_percent")
     private val KEY_FULLSCREEN_GESTURE_REVERSE = booleanPreferencesKey("fullscreen_gesture_reverse")
     private val KEY_HIDE_VIDEO_PAGE_STATUS_BAR = booleanPreferencesKey("hide_video_page_status_bar")
     private val KEY_PORTRAIT_LETTERBOX_AMBIENT_HAZE =
@@ -7631,9 +7655,6 @@ private val KEY_APP_FONT_WEIGHT = intPreferencesKey("app_font_weight")
     private val KEY_HORIZONTAL_ADAPTATION = booleanPreferencesKey("horizontal_adaptation_enabled")
     private val KEY_FULLSCREEN_MODE = intPreferencesKey("fullscreen_mode")
     private val KEY_FULLSCREEN_ASPECT_RATIO = intPreferencesKey("fullscreen_aspect_ratio")
-    private val INLINE_SWIPE_SEEK_OPTIONS = listOf(5, 10, 15, 30, 60)
-    private val FULLSCREEN_SWIPE_SEEK_OPTIONS = listOf(10, 15, 20, 30)
-    private val SWIPE_SEEK_RELATIVE_PERCENT_OPTIONS = listOf(25, 50, 90, 100)
     const val DEFAULT_COMMENT_COLLAPSED_REPLY_PREVIEW_LIMIT = 3
 
     fun normalizeCommentCollapsedReplyPreviewLimit(value: Int): Int = value.coerceIn(1, 10)
@@ -7718,24 +7739,6 @@ private val KEY_APP_FONT_WEIGHT = intPreferencesKey("app_font_weight")
         context.settingsDataStore.edit { preferences -> preferences[KEY_CENTER_SWIPE_TO_FULLSCREEN] = value }
     }
 
-    // --- 非全屏左右滑动调进度范围（秒，默认 30） ---
-    fun getInlineSwipeSeekSeconds(context: Context): Flow<Int> = context.settingsDataStore.data
-        .map { preferences ->
-            val raw = preferences[KEY_INLINE_SWIPE_SEEK_SECONDS] ?: 30
-            normalizeInlineSwipeSeekSeconds(raw)
-        }
-
-    suspend fun setInlineSwipeSeekSeconds(context: Context, seconds: Int) {
-        context.settingsDataStore.edit { preferences ->
-            preferences[KEY_INLINE_SWIPE_SEEK_SECONDS] = normalizeInlineSwipeSeekSeconds(seconds)
-        }
-    }
-
-    private fun normalizeInlineSwipeSeekSeconds(seconds: Int): Int {
-        if (seconds == 0) return 0
-        return INLINE_SWIPE_SEEK_OPTIONS.minByOrNull { option -> abs(option - seconds) } ?: 30
-    }
-
     // --- 横屏左右滑动精细调进度开关（默认开启） ---
     fun getFullscreenSwipeSeekEnabled(context: Context): Flow<Boolean> = context.settingsDataStore.data
         .map { preferences -> preferences[KEY_FULLSCREEN_SWIPE_SEEK_ENABLED] ?: true }
@@ -7745,51 +7748,6 @@ private val KEY_APP_FONT_WEIGHT = intPreferencesKey("app_font_weight")
             preferences[KEY_FULLSCREEN_SWIPE_SEEK_ENABLED] = enabled
         }
     }
-
-    // --- 横屏左右滑动调进度范围（秒，默认 15） ---
-    fun getFullscreenSwipeSeekSeconds(context: Context): Flow<Int> = context.settingsDataStore.data
-        .map { preferences ->
-            val raw = preferences[KEY_FULLSCREEN_SWIPE_SEEK_SECONDS] ?: 15
-            normalizeFullscreenSwipeSeekSeconds(raw)
-        }
-
-    suspend fun setFullscreenSwipeSeekSeconds(context: Context, seconds: Int) {
-        context.settingsDataStore.edit { preferences ->
-            preferences[KEY_FULLSCREEN_SWIPE_SEEK_SECONDS] = normalizeFullscreenSwipeSeekSeconds(seconds)
-        }
-    }
-
-    private fun normalizeFullscreenSwipeSeekSeconds(seconds: Int): Int {
-        if (seconds == 0) return 0
-        return FULLSCREEN_SWIPE_SEEK_OPTIONS.minByOrNull { option -> abs(option - seconds) } ?: 15
-    }
-
-    fun getSwipeSeekUseRelativeDuration(context: Context): Flow<Boolean> =
-        context.settingsDataStore.data.map { preferences ->
-            preferences[KEY_SWIPE_SEEK_USE_RELATIVE_DURATION] ?: false
-        }
-
-    suspend fun setSwipeSeekUseRelativeDuration(context: Context, enabled: Boolean) {
-        context.settingsDataStore.edit { preferences ->
-            preferences[KEY_SWIPE_SEEK_USE_RELATIVE_DURATION] = enabled
-        }
-    }
-
-    fun getSwipeSeekRelativePercent(context: Context): Flow<Int> =
-        context.settingsDataStore.data.map { preferences ->
-            normalizeSwipeSeekRelativePercent(preferences[KEY_SWIPE_SEEK_RELATIVE_PERCENT] ?: 90)
-        }
-
-    suspend fun setSwipeSeekRelativePercent(context: Context, percent: Int) {
-        context.settingsDataStore.edit { preferences ->
-            preferences[KEY_SWIPE_SEEK_RELATIVE_PERCENT] = normalizeSwipeSeekRelativePercent(percent)
-        }
-    }
-
-    private fun normalizeSwipeSeekRelativePercent(percent: Int): Int =
-        SWIPE_SEEK_RELATIVE_PERCENT_OPTIONS.minByOrNull { option ->
-            abs(option.toLong() - percent.toLong())
-        } ?: 90
 
     private fun isLargeScreenOrFoldableConfiguration(context: Context): Boolean {
         return context.isLargeScreenOrFoldableConfiguration()
@@ -8254,6 +8212,12 @@ private val KEY_APP_FONT_WEIGHT = intPreferencesKey("app_font_weight")
             )
         }
 
+    suspend fun savePlayerFullscreenAspectRatio(context: Context, ratio: FullscreenAspectRatio): Boolean {
+        if (!ContentDisplayPreferences.rememberPlayerAdjustments(context).first()) return false
+        setFullscreenAspectRatio(context, ratio)
+        return true
+    }
+
     suspend fun setFullscreenAspectRatio(context: Context, ratio: FullscreenAspectRatio) {
         context.settingsDataStore.edit { preferences ->
             preferences[KEY_FULLSCREEN_ASPECT_RATIO] = ratio.value
@@ -8314,6 +8278,8 @@ private val KEY_APP_FONT_WEIGHT = intPreferencesKey("app_font_weight")
         )
         // 用户选择的整栏显隐策略优先；Dock 收缩不能将下滑隐藏改成始终显示。
         return AppNavigationSettings(
+            liquidIndicatorDynamicLengthEnabled =
+                preferences[com.android.purebilibili.core.store.navigation.liquidIndicatorDynamicLengthPreferencesKey] ?: true,
             liquidIndicatorWobbleEnabled =
                 preferences[com.android.purebilibili.core.store.navigation.liquidIndicatorWobblePreferencesKey] ?: true,
             bottomBarVisibilityMode = savedVisibility,
@@ -8378,6 +8344,10 @@ private val KEY_APP_FONT_WEIGHT = intPreferencesKey("app_font_weight")
 
     suspend fun setPredictiveBackEnabled(context: Context, enabled: Boolean) {
         NavigationSettingsStore.setPredictiveBackEnabled(context, enabled)
+    }
+
+    suspend fun setLiquidIndicatorDynamicLengthEnabled(context: Context, enabled: Boolean) {
+        NavigationSettingsStore.setLiquidIndicatorDynamicLengthEnabled(context, enabled)
     }
 
     suspend fun setLiquidIndicatorWobbleEnabled(context: Context, enabled: Boolean) {
@@ -8673,6 +8643,7 @@ private val KEY_APP_FONT_WEIGHT = intPreferencesKey("app_font_weight")
             ),
             IntShareablePreferenceDefinition(KEY_BOTTOM_BAR_LABEL_MODE, SettingsShareSection.APPEARANCE),
             IntShareablePreferenceDefinition(KEY_TOP_TAB_LABEL_MODE, SettingsShareSection.APPEARANCE),
+            BooleanShareablePreferenceDefinition(KEY_PARTITION_SIDE_RAIL_ON_RIGHT, SettingsShareSection.APPEARANCE),
             BooleanShareablePreferenceDefinition(KEY_HIDE_TOP_TABS, SettingsShareSection.APPEARANCE),
             IntShareablePreferenceDefinition(KEY_HOME_TOP_RIGHT_ACTION, SettingsShareSection.APPEARANCE),
             StringShareablePreferenceDefinition(KEY_TOP_TAB_ORDER, SettingsShareSection.APPEARANCE),
@@ -8761,6 +8732,10 @@ private val KEY_APP_FONT_WEIGHT = intPreferencesKey("app_font_weight")
             BooleanShareablePreferenceDefinition(KEY_UI_ENTRANCE_ANIMATION_ENABLED, SettingsShareSection.APPEARANCE),
             BooleanShareablePreferenceDefinition(KEY_GLOBAL_DRAG_FEEDBACK_ENABLED, SettingsShareSection.APPEARANCE),
             BooleanShareablePreferenceDefinition(
+                com.android.purebilibili.core.store.navigation.liquidIndicatorDynamicLengthPreferencesKey,
+                SettingsShareSection.APPEARANCE,
+            ),
+            BooleanShareablePreferenceDefinition(
                 com.android.purebilibili.core.store.navigation.liquidIndicatorWobblePreferencesKey,
                 SettingsShareSection.APPEARANCE,
             ),
@@ -8813,6 +8788,15 @@ private val KEY_APP_FONT_WEIGHT = intPreferencesKey("app_font_weight")
             IntShareablePreferenceDefinition(KEY_HOME_WALLPAPER_EFFECT_MODE, SettingsShareSection.APPEARANCE),
             IntShareablePreferenceDefinition(KEY_HOME_WALLPAPER_EFFECT_SCOPE, SettingsShareSection.APPEARANCE),
             BooleanShareablePreferenceDefinition(KEY_HOME_UP_BADGES_VISIBLE, SettingsShareSection.APPEARANCE),
+            BooleanShareablePreferenceDefinition(ContentDisplayPreferences.rememberPlayerAdjustmentsKey, SettingsShareSection.PLAYBACK),
+            IntShareablePreferenceDefinition(ContentDisplayPreferences.rotationSensitivityKey, SettingsShareSection.PLAYBACK),
+            IntShareablePreferenceDefinition(ContentDisplayPreferences.playerControlsTimeoutKey, SettingsShareSection.PLAYBACK),
+            BooleanShareablePreferenceDefinition(ContentDisplayPreferences.dynamicVisibilityCheckKey, SettingsShareSection.NAVIGATION),
+            IntShareablePreferenceDefinition(ContentDisplayPreferences.listQualityKey, SettingsShareSection.APPEARANCE),
+            IntShareablePreferenceDefinition(ContentDisplayPreferences.previewQualityKey, SettingsShareSection.APPEARANCE),
+            IntShareablePreferenceDefinition(ContentDisplayPreferences.darkDimKey, SettingsShareSection.APPEARANCE),
+            IntShareablePreferenceDefinition(ContentDisplayPreferences.springKey, SettingsShareSection.APPEARANCE),
+            BooleanShareablePreferenceDefinition(ContentDisplayPreferences.keepRecommendKey, SettingsShareSection.NAVIGATION),
             BooleanShareablePreferenceDefinition(KEY_HOME_REFRESH_TIP_VISIBLE, SettingsShareSection.APPEARANCE),
             BooleanShareablePreferenceDefinition(KEY_HOME_REFRESH_UNDO_VISIBLE, SettingsShareSection.APPEARANCE),
             BooleanShareablePreferenceDefinition(KEY_HOME_UP_AVATARS_VISIBLE, SettingsShareSection.APPEARANCE),
@@ -8847,6 +8831,7 @@ private val KEY_APP_FONT_WEIGHT = intPreferencesKey("app_font_weight")
             BooleanShareablePreferenceDefinition(KEY_STOP_PLAYBACK_ON_EXIT, SettingsShareSection.PLAYBACK),
             BooleanShareablePreferenceDefinition(KEY_BACKGROUND_PLAYBACK_ENABLED, SettingsShareSection.PLAYBACK),
             BooleanShareablePreferenceDefinition(KEY_AUDIO_FOCUS_ENABLED, SettingsShareSection.PLAYBACK),
+            BooleanShareablePreferenceDefinition(KEY_AUDIO_NOW_PLAYING_BAR_DELETE_BUTTON, SettingsShareSection.PLAYBACK),
             BooleanShareablePreferenceDefinition(
                 KEY_AUDIO_NOW_PLAYING_BAR_OPENS_AUDIO_MODE,
                 SettingsShareSection.PLAYBACK,
@@ -8937,9 +8922,7 @@ private val KEY_APP_FONT_WEIGHT = intPreferencesKey("app_font_weight")
             BooleanShareablePreferenceDefinition(KEY_PAUSE_ON_PLAYER_COLLAPSE, SettingsShareSection.GESTURE),
             BooleanShareablePreferenceDefinition(KEY_PORTRAIT_SWIPE_TO_FULLSCREEN, SettingsShareSection.GESTURE),
             BooleanShareablePreferenceDefinition(KEY_CENTER_SWIPE_TO_FULLSCREEN, SettingsShareSection.GESTURE),
-            IntShareablePreferenceDefinition(KEY_INLINE_SWIPE_SEEK_SECONDS, SettingsShareSection.GESTURE),
             BooleanShareablePreferenceDefinition(KEY_FULLSCREEN_SWIPE_SEEK_ENABLED, SettingsShareSection.GESTURE),
-            IntShareablePreferenceDefinition(KEY_FULLSCREEN_SWIPE_SEEK_SECONDS, SettingsShareSection.GESTURE),
             BooleanShareablePreferenceDefinition(KEY_FULLSCREEN_GESTURE_REVERSE, SettingsShareSection.GESTURE),
             BooleanShareablePreferenceDefinition(KEY_AUTO_ENTER_FULLSCREEN, SettingsShareSection.GESTURE),
             BooleanShareablePreferenceDefinition(KEY_AUTO_EXIT_FULLSCREEN, SettingsShareSection.GESTURE),
@@ -9015,6 +8998,7 @@ private val KEY_APP_FONT_WEIGHT = intPreferencesKey("app_font_weight")
                 KEY_DYNAMIC_IMAGE_PREVIEW_TEXT_VISIBLE,
                 SettingsShareSection.NAVIGATION
             ),
+            BooleanShareablePreferenceDefinition(dynamicUpListVisiblePreferencesKey, SettingsShareSection.NAVIGATION),
             BooleanShareablePreferenceDefinition(
                 dynamicCommentPreviewVisiblePreferencesKey,
                 SettingsShareSection.NAVIGATION
@@ -9023,7 +9007,6 @@ private val KEY_APP_FONT_WEIGHT = intPreferencesKey("app_font_weight")
                 KEY_DYNAMIC_TOP_BAR_COLLAPSE_ON_SCROLL,
                 SettingsShareSection.NAVIGATION
             ),
-            IntShareablePreferenceDefinition(KEY_HOME_REFRESH_COUNT, SettingsShareSection.NAVIGATION)
         )
     }
 
@@ -9178,6 +9161,7 @@ private val KEY_APP_FONT_WEIGHT = intPreferencesKey("app_font_weight")
                 PlayerSettingsStore.reconcilePlaybackSpeedSelections(preferences)
             }
         }
+        ContentDisplayPreferences.syncRememberPlayerAdjustments(updated)
         if (playbackSpeedChanged) {
             PlayerSettingsStore.syncPlaybackSpeedCache(context, updated)
         }

@@ -13,6 +13,7 @@ import okhttp3.Request
 import org.junit.jupiter.api.Test
 import java.net.InetAddress
 import java.net.InetSocketAddress
+import java.net.URI
 import java.nio.file.Files
 import java.util.concurrent.CopyOnWriteArrayList
 import java.util.concurrent.Executors
@@ -167,14 +168,25 @@ class DesktopCastStreamHeaderTest {
 
     @Test fun bothDashTracksCarryRegisteredHeadersButTheManifestContainsNoCredentials() {
         HeaderFixture().use { fixture ->
-            val dash = Dash(60, 1.5f, listOf(DashVideo(80, fixture.url("/media?kind=video"), bandwidth = 900, mimeType = "video/mp4", codecs = "avc1.640028")),
-                listOf(DashAudio(30280, fixture.url("/media?kind=audio"), bandwidth = 200, mimeType = "audio/mp4", codecs = "mp4a.40.2")))
+            // v0.7.8 treats numeric IPv4 media URLs as PCDN and replaces their host. Use a loopback
+            // hostname for the source; the registered relay must retain its real numeric LAN address.
+            val dash = Dash(60, 1.5f, listOf(DashVideo(80, fixture.url("/media?kind=video", "localhost"), bandwidth = 900, mimeType = "video/mp4", codecs = "avc1.640028")),
+                listOf(DashAudio(30280, fixture.url("/media?kind=audio", "localhost"), bandwidth = 200, mimeType = "audio/mp4", codecs = "mp4a.40.2")))
             LocalProxyServer.ensureStarted()
             val manifestUrl = buildDesktopCastDash(fixture.context, dash, 80, 60_000, mapOf("Authorization" to "Bearer fixture", "X-Plugin-Key" to "secret-fixture"))
             val xml = fixture.client.newCall(Request.Builder().url(manifestUrl).build()).execute().use { assertEquals(200, it.code); it.body.string() }
             listOf("Bearer", "secret-fixture", "Authorization", "kind=video", "kind=audio").forEach { assertFalse(xml.contains(it)) }
             val urls = Regex("<BaseURL>(.*?)</BaseURL>").findAll(xml).map { it.groupValues[1].replace("&amp;", "&") }.toList()
-            assertEquals(2, urls.size); urls.forEach { fixture.get(it) }
+            assertEquals(2, urls.size)
+            // Check before I/O so a future CDN rewrite cannot send even fixture credentials off loopback.
+            urls.forEach {
+                val relay = URI(it)
+                assertEquals(URI(manifestUrl).authority, relay.authority)
+                assertEquals("http", relay.scheme)
+                assertEquals("/proxy", relay.path)
+                assertTrue(relay.query.startsWith("target="))
+            }
+            urls.forEach { fixture.get(it) }
             assertEquals(setOf("kind=video", "kind=audio"), fixture.requests.map { it.query }.toSet())
             assertTrue(fixture.requests.all { it.headers["authorization"] == listOf("Bearer fixture") && it.headers["x-plugin-key"] == listOf("secret-fixture") })
         }
@@ -220,7 +232,7 @@ private class HeaderFixture : AutoCloseable {
     private val server = HttpServer.create(InetSocketAddress("127.0.0.1", 0), 0).apply { executor = threads }
     private val foreign = HttpServer.create(InetSocketAddress("127.0.0.1", 0), 0).apply { executor = threads }
     val requests = CopyOnWriteArrayList<HeaderRequest>()
-    fun url(path: String): String = "http://127.0.0.1:${server.address.port}$path"
+    fun url(path: String, host: String = "127.0.0.1"): String = "http://$host:${server.address.port}$path"
     init {
         server.createContext("/") { handle(it, false) }; foreign.createContext("/") { handle(it, true) }
         server.start(); foreign.start()

@@ -333,6 +333,9 @@ internal class DesktopUpstreamTransports(private val storeRoot: () -> Path?) {
 /** A window's way to capture owners for upstream code it runs: the repository and the window lifetime. The epoch is
  * read when [owner] is called, i.e. when the operation starts. */
 internal class DesktopUpstreamSession(private val repository: DesktopRepository, private val stillOwned: () -> Boolean) {
+    /** Window consumers use this to discard account-specific UI state when the active account changes. */
+    val accountEpoch get() = repository.sessionEpochFlow
+
     fun owner(purpose: DesktopUpstreamPurpose = DesktopUpstreamPurpose.Main): DesktopUpstreamOwner =
         repository.upstreamOwner(purpose, stillOwned)
 

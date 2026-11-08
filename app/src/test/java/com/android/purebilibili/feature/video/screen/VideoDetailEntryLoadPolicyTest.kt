@@ -7,6 +7,21 @@ import org.junit.Test
 
 class VideoDetailEntryLoadPolicyTest {
     @Test
+    fun ordinaryNavigationStaggersEntryWorkEvenWhenCardAnimationIsOff() {
+        val defer = shouldDeferVideoDetailLoadUntilEntryTransitionFinished(
+            transitionEnabled = false,
+            detailShellSharedBoundsEnabled = false,
+            reuseFromMiniPlayerAtEntry = false,
+            hasNavigationTransitionScope = true,
+        )
+        assertTrue(defer)
+        assertTrue(shouldStaggerVideoDetailEntryWork(defer, false))
+        // 已有播放器复用不新增等待；无导航许可的直接入口仍直接放行。
+        assertFalse(shouldStaggerVideoDetailEntryWork(defer, true))
+        assertFalse(shouldStaggerVideoDetailEntryWork(false, false))
+    }
+
+    @Test
     fun playerHostWaitsOnlyForFreshCoveredCardEntry() {
         assertFalse(shouldMountVideoDetailPlayerHost(
             alreadyMounted = false, deferEntryLoad = true, entryPlaybackReady = false,

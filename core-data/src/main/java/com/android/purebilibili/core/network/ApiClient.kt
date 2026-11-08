@@ -439,6 +439,15 @@ interface BilibiliApi {
         @Query("ps") ps: Int = 20
     ): FavoriteResourceResponse
 
+    @retrofit2.http.FormUrlEncoded
+    @retrofit2.http.POST("x/v3/fav/resource/sort")
+    suspend fun sortFavResources(
+        @retrofit2.http.Field("media_id") mediaId: Long,
+        @retrofit2.http.Field("sort") sort: String,
+        @retrofit2.http.Field("csrf") csrf: String,
+        @retrofit2.http.Tag accountSession: AccountCookieSession,
+    ): SimpleApiResponse
+
     // [新增] 批量删除收藏资源 (取消收藏)
     @retrofit2.http.FormUrlEncoded
     @retrofit2.http.POST("x/v3/fav/resource/batch-del")
@@ -512,6 +521,12 @@ interface BilibiliApi {
         @Query("web_location") webLocation: String = "333.1387",
     ): com.android.purebilibili.data.model.response.FavoriteCourseResponse
 
+    @retrofit2.http.POST("x/community/cosmo/interface/simple_action")
+    suspend fun favoriteOpusAction(
+        @Query("csrf") csrf: String,
+        @retrofit2.http.Body body: kotlinx.serialization.json.JsonObject,
+    ): SimpleApiResponse
+
     @retrofit2.http.FormUrlEncoded
     @retrofit2.http.POST("x/article/favorites/del")
     suspend fun deleteFavoriteArticle(
@@ -553,18 +568,20 @@ interface BilibiliApi {
     
     //  移动端推荐流 API (需要 access_token + appkey 签名)
     @GET("https://app.bilibili.com/x/v2/feed/index")
-    suspend fun getMobileFeed(@QueryMap params: Map<String, String>): MobileFeedResponse
+    suspend fun getMobileFeed(@QueryMap params: Map<String, String>, @retrofit2.http.Tag accountSession: AccountCookieSession? = null): MobileFeedResponse
 
     //  合并模式 App 半边专用: 参数已按 BiliPai/BiliPai 规范 percent-encode 后签名,
     //  用 encoded=true 原样发送, 避免 Retrofit 二次编码导致签名不一致(-403/-400)
     @GET("https://app.bilibili.com/x/v2/feed/index")
     suspend fun getMobileFeedEncoded(
-        @QueryMap(encoded = true) params: @JvmSuppressWildcards Map<String, String>
+        @QueryMap(encoded = true) params: @JvmSuppressWildcards Map<String, String>,
+        @retrofit2.http.Tag accountSession: AccountCookieSession? = null
     ): MobileFeedResponse
 
     @GET("https://app.bilibili.com/x/feed/dislike")
     suspend fun submitMobileFeedDislike(
-        @QueryMap params: Map<String, String>
+        @QueryMap params: Map<String, String>,
+        @retrofit2.http.Tag accountSession: AccountCookieSession? = null
     ): SimpleApiResponse
     
     @GET("x/web-interface/popular")
@@ -634,7 +651,7 @@ interface BilibiliApi {
     @GET("https://api.live.bilibili.com/xlive/web-ucenter/user/following")
     suspend fun getFollowedLive(
         @Query("page") page: Int = 1,
-        @Query("page_size") pageSize: Int = 30,
+        @Query("page_size") pageSize: Int = 9,
         @Query("ignoreRecord") ignoreRecord: Int = 1,
         @Query("hit_ab") hitAb: Boolean = true
     ): FollowedLiveResponse
@@ -985,6 +1002,13 @@ interface BilibiliApi {
     @GET("x/player/wbi/v2")
     suspend fun getPlayerInfo(
         @QueryMap params: Map<String, String>
+    ): PlayerInfoResponse
+
+    @retrofit2.http.Headers("Cache-Control: no-cache")
+    @GET("x/player/wbi/v2")
+    suspend fun getPlaybackHistory(
+        @QueryMap params: Map<String, String>,
+        @retrofit2.http.Tag session: AccountCookieSession,
     ): PlayerInfoResponse
 
     //  [新增] 获取视频的完整 BGM 列表
@@ -1350,6 +1374,35 @@ interface BilibiliApi {
         @Query("fid") fid: Long  // UP 主 mid
     ): RelationResponse
 
+    @GET("x/relation/followings/followed_upper")
+    suspend fun getSpaceFollowedUsers(
+        @Query("vmid") mid: Long, @Query("pn") page: Int,
+        @Query("csrf") csrf: String, @Query("web_location") location: String = "333.789",
+        @Query("x-bili-device-req-json") device: String = "{\"platform\":\"web\",\"device\":\"pc\",\"spmid\":\"333.789\"}",
+    ): FollowingsResponse
+
+    @retrofit2.http.FormUrlEncoded
+    @POST("x/space/reserve")
+    suspend fun reserveSpace(@retrofit2.http.Field("sid") sid: Long, @retrofit2.http.Field("csrf") csrf: String): SimpleApiResponse
+
+    @retrofit2.http.FormUrlEncoded
+    @POST("x/space/reserve/cancel")
+    suspend fun cancelSpaceReserve(@retrofit2.http.Field("sid") sid: Long, @retrofit2.http.Field("csrf") csrf: String): SimpleApiResponse
+
+    @POST("x/vip/experience/add")
+    suspend fun claimVipExperience(@Query("mid") mid: Long, @Query("csrf") csrf: String): SimpleApiResponse
+
+    @GET("https://api.live.bilibili.com/xlive/web-ucenter/user/MedalWall")
+    suspend fun getSpaceMedalWall(@Query("target_id") mid: Long): SpaceMedalWallResponse
+
+    @retrofit2.http.FormUrlEncoded
+    @POST("x/relation/tag/special/add")
+    suspend fun addSpaceSpecialFollow(@retrofit2.http.Field("fid") mid: Long, @retrofit2.http.Field("csrf") csrf: String): SimpleApiResponse
+
+    @retrofit2.http.FormUrlEncoded
+    @POST("x/relation/tag/special/del")
+    suspend fun removeSpaceSpecialFollow(@retrofit2.http.Field("fid") mid: Long, @retrofit2.http.Field("csrf") csrf: String): SimpleApiResponse
+
     @GET("x/relation/tags")
     suspend fun getRelationTags(): RelationTagsResponse
 
@@ -1712,6 +1765,39 @@ interface SearchApi {
 }
 
 interface ArticleApi {
+    @GET("x/article/list/web/articles")
+    suspend fun getCollection(
+        @Query("id") id: Long,
+        @Query("web_location") webLocation: String = "333.1400",
+    ): com.android.purebilibili.data.model.response.ArticleCollectionResponse
+
+    @GET("x/article/viewinfo")
+    suspend fun getArticleInfo(
+        @QueryMap params: Map<String, String>
+    ): com.android.purebilibili.data.model.response.ArticleInfoResponse
+
+    @retrofit2.http.FormUrlEncoded
+    @retrofit2.http.POST("x/article/favorites/add")
+    suspend fun addFavorite(
+        @retrofit2.http.Field("id") id: Long,
+        @retrofit2.http.Field("csrf") csrf: String,
+    ): SimpleApiResponse
+
+    @retrofit2.http.FormUrlEncoded
+    @retrofit2.http.POST("x/article/favorites/del")
+    suspend fun removeFavorite(
+        @retrofit2.http.Field("id") id: Long,
+        @retrofit2.http.Field("csrf") csrf: String,
+    ): SimpleApiResponse
+
+    @retrofit2.http.FormUrlEncoded
+    @retrofit2.http.POST("x/article/like")
+    suspend fun likeArticle(
+        @retrofit2.http.Field("id") id: Long,
+        @retrofit2.http.Field("type") type: Int,
+        @retrofit2.http.Field("csrf") csrf: String,
+    ): SimpleApiResponse
+
     @GET("x/article/view")
     suspend fun getArticleView(
         @QueryMap params: Map<String, String>
@@ -1969,7 +2055,7 @@ interface DynamicApi {
         @Query("x-bili-device-req-json") deviceRequestJson: String = "{\"platform\":\"web\",\"device\":\"pc\"}",
         @Query("x-bili-web-req-json") webRequestJson: String = "{\"spm_id\":\"333.1330\"}",
         @retrofit2.http.Body body: DynamicRepostRequest
-    ): SimpleApiResponse
+    ): DynamicCreateFeedResponse
 
     @retrofit2.http.POST("x/dynamic/feed/create/dyn")
     suspend fun createFeedDynamic(
@@ -2149,6 +2235,10 @@ interface SpaceApi {
         @QueryMap params: Map<String, String>
     ): com.android.purebilibili.data.model.response.SpaceAggregateResponse
 
+    @retrofit2.http.Headers("User-Agent: Mozilla/5.0 BiliDroid/8.43.0 mobi_app/android build/8430300", "bili-http-engine: cronet")
+    @GET("https://app.bilibili.com/x/v2/space/comic")
+    suspend fun getSpaceComics(@QueryMap params: Map<String, String>): com.android.purebilibili.data.model.response.SpaceArchiveSectionResponse
+
     @retrofit2.http.Headers(
         "User-Agent: Mozilla/5.0 BiliDroid/8.43.0 (bbcallen@gmail.com) os/android model/android mobi_app/android build/8430300 channel/master innerVer/8430300 osVer/15 network/2",
         "bili-http-engine: cronet",
@@ -2196,6 +2286,13 @@ interface SpaceApi {
     @GET("x/space/wbi/arc/search")
     suspend fun getSpaceVideos(@QueryMap params: Map<String, String>): com.android.purebilibili.data.model.response.SpaceVideoResponse
     
+    @Headers("User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36", "Origin: https://space.bilibili.com")
+    @GET("x/space/wbi/arc/search")
+    suspend fun getSpaceWebVideos(
+        @QueryMap params: Map<String, String>,
+        @Header("Referer") referer: String,
+    ): com.android.purebilibili.data.model.response.SpaceVideoResponse
+
     // 获取关注/粉丝数
     @GET("x/relation/stat")
     suspend fun getRelationStat(@Query("vmid") mid: Long): com.android.purebilibili.data.model.response.RelationStatResponse
@@ -2219,7 +2316,10 @@ interface SpaceApi {
         @Query("season_id") seasonId: Long,
         @Query("page_num") pageNum: Int = 1,
         @Query("page_size") pageSize: Int = 30,
-        @Query("sort_reverse") sortReverse: Boolean = false
+        @Query("sort_reverse") sortReverse: Boolean = false,
+        @Query("web_location") webLocation: String? = null,
+        @Header("Referer") referer: String? = null,
+        @Header("Origin") origin: String? = null,
     ): com.android.purebilibili.data.model.response.SeasonArchivesResponse
     
     //  获取系列内的视频列表
@@ -2229,7 +2329,10 @@ interface SpaceApi {
         @Query("series_id") seriesId: Long,
         @Query("pn") pn: Int = 1,
         @Query("ps") ps: Int = 30,
-        @Query("sort") sort: String = "desc"
+        @Query("sort") sort: String = "desc",
+        @Query("web_location") webLocation: String? = null,
+        @Header("Referer") referer: String? = null,
+        @Header("Origin") origin: String? = null,
     ): com.android.purebilibili.data.model.response.SeriesArchivesResponse
     
     //  置顶视频
@@ -2244,6 +2347,12 @@ interface SpaceApi {
         @Query("mid") mid: Long
     ): com.android.purebilibili.data.model.response.SpaceNoticeResponse
     
+    @retrofit2.http.POST("https://mall.bilibili.com/community-hub/small_shop/feed/tab/item")
+    suspend fun getSpaceShop(
+        @retrofit2.http.QueryMap params: Map<String, String>,
+        @retrofit2.http.Body body: kotlinx.serialization.json.JsonObject,
+    ): kotlinx.serialization.json.JsonObject
+
     //  用户动态 (需要登录 Cookie)
     @GET("x/polymer/web-dynamic/v1/feed/space")
     suspend fun getSpaceDynamic(
@@ -2385,6 +2494,11 @@ fun buildSpaceLikedArchiveParams(
 
 //  [新增] 番剧/影视 API
 interface BangumiApi {
+    @GET("pgc/season/episode/community")
+    suspend fun getBangumiEpisodeCommunity(
+        @Query("ep_id") episodeId: Long,
+    ): BangumiEpisodeCommunityResponse
+
     @FormUrlEncoded
     @POST("pgc/season/episode/like/triple")
     @Headers("Origin: https://www.bilibili.com")
@@ -3278,6 +3392,12 @@ object NetworkModule {
             .build()
     }
 
+    // HTTP 缓存目录必须落在应用私有 cacheDir；context 未就绪时不挂磁盘缓存，
+    // 不能回退到 /tmp —— Android 上该路径不可写，okhttp3.Cache 重建目录会抛
+    // "failed to create directory: /tmp/okhttp_cache" 并阻断清理缓存流程。
+    private fun resolveHttpCacheDirectory(name: String): java.io.File? =
+        appContext?.let { java.io.File(it.cacheDir, name) }
+
     val okHttpClient: OkHttpClient by lazy {
         val builder = OkHttpClient.Builder()
             .protocols(resolveSharedNetworkProtocols())
@@ -3286,11 +3406,15 @@ object NetworkModule {
             .connectTimeout(15, java.util.concurrent.TimeUnit.SECONDS)
             .readTimeout(20, java.util.concurrent.TimeUnit.SECONDS)
             .writeTimeout(15, java.util.concurrent.TimeUnit.SECONDS)
-            //  [性能优化] HTTP 磁盘缓存 - 32MB，减少重复请求
-            .cache(okhttp3.Cache(
-                directory = java.io.File(appContext?.cacheDir ?: java.io.File("/tmp"), "okhttp_cache"),
-                maxSize = resolveApiHttpCacheBudgetBytes()
-            ))
+            //  [性能优化] HTTP 磁盘缓存 - 32MB，减少重复请求；context 未就绪时跳过
+            .apply {
+                resolveHttpCacheDirectory("okhttp_cache")?.let { dir ->
+                    cache(okhttp3.Cache(
+                        directory = dir,
+                        maxSize = resolveApiHttpCacheBudgetBytes()
+                    ))
+                }
+            }
             //  [性能优化] 连接池优化 - 保持更多空闲连接
             .connectionPool(okhttp3.ConnectionPool(
                 maxIdleConnections = 10,
@@ -3321,9 +3445,10 @@ object NetworkModule {
             // 普通第三方响应 Cookie 使用独立临时 jar；账号 Cookie 在网络入口绑定。
             .cookieJar(appSessionCookieJar)
             .addInterceptor { chain ->
-                val request = chain.request()
-                val session = AccountCookieSession.main().copy(
-                    explicitCookie = request.header("Cookie") != null || request.header(FORCE_COOKIE_HEADER) != null
+                val request = bindRequestAccountPurpose(chain.request())
+                val selectedSession = request.tag(AccountCookieSession::class.java) ?: AccountCookieSession.main()
+                val session = selectedSession.copy(
+                    explicitCookie = selectedSession.explicitCookie || request.header("Cookie") != null || request.header(FORCE_COOKIE_HEADER) != null
                 )
                 chain.proceed(request.newBuilder().tag(AccountCookieSession::class.java, session).build())
             }
@@ -3527,10 +3652,14 @@ object NetworkModule {
             .followSslRedirects(true)
             //  风控降级流量与主客户端访问同一批 B 站 API，装一份独立 HTTP 缓存
             //  （目录独立，okhttp3.Cache 不能被两个客户端共享同一实例）
-            .cache(okhttp3.Cache(
-                directory = java.io.File(appContext?.cacheDir ?: java.io.File("/tmp"), "okhttp_cache_guest"),
-                maxSize = resolveApiHttpCacheBudgetBytes() / 2
-            ))
+            .apply {
+                resolveHttpCacheDirectory("okhttp_cache_guest")?.let { dir ->
+                    cache(okhttp3.Cache(
+                        directory = dir,
+                        maxSize = resolveApiHttpCacheBudgetBytes() / 2
+                    ))
+                }
+            }
             //  CookieJar 使用全新的 buvid3，不复用可能被污染的 buvid3Cache
             .cookieJar(object : okhttp3.CookieJar {
                 // 为 guest 模式生成独立的 buvid3，避免复用被风控的 buvid3

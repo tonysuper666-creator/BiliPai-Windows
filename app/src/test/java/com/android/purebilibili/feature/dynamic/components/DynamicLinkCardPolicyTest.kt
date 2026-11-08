@@ -156,6 +156,7 @@ class DynamicLinkCardPolicyTest {
         assertEquals(detail.badgeText, feed.badgeText)
         assertEquals(detail.cover, feed.cover)
         assertEquals(detail.jumpUrl, feed.jumpUrl)
+        assertEquals(detail.goodsItem, feed.goodsItem)
         assertEquals("UP主的推荐", feed.label)
         assertEquals("去看看", feed.badgeText)
         assertEquals("https://uland.taobao.com/item", feed.jumpUrl)

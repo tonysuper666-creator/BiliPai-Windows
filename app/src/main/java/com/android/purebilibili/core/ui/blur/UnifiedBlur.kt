@@ -76,6 +76,7 @@ fun currentUnifiedBlurIntensity(): BlurIntensity {
  * @param hazeState Haze状态
  * @param enabled 是否启用模糊
  * @param blurStyleOverride 不使用主题材质时的定制 Haze 样式
+ * @param preferWindowBackdrop 仅限背景已在同一窗口先绘制的入口；指定内容源和跨窗口入口保持 false
  * @return 应用了用户偏好模糊的Modifier
  */
 @Composable
@@ -89,6 +90,7 @@ fun Modifier.unifiedBlur(
     isTransitionRunning: Boolean = false,
     forceLowBudget: Boolean = false,
     blurStyleOverride: HazeBlurStyle? = null,
+    preferWindowBackdrop: Boolean = false,
 ): Modifier {
     val appThemeConfig = LocalAppThemeConfig.current
     if (
@@ -151,7 +153,14 @@ fun Modifier.unifiedBlur(
             HazePerformanceMode.Fixed(inputScaleFactor)
         }
     }
-    val input = remember(hazeState) { HazeInput.Sources(hazeState) }
+    // 官方背景效果消费窗口内已经绘制的像素，不等价于指定源采样。
+    // 仅支持同窗口背景语义的入口显式启用，不依赖玻璃材质开关。
+    // 版本、硬件画布和效果兼容性由渲染器检查，失败时继续使用原有源。
+    val useWindowBackdrop = preferWindowBackdrop && !effectiveForceLowBudget && recoverableEnabled
+    val input = remember(hazeState, useWindowBackdrop) {
+        val source = HazeInput.Sources(hazeState)
+        if (useWindowBackdrop) HazeInput.Backdrop(fallback = source) else source
+    }
     val effectiveStyle = remember(recoverableEnabled, edgeTreatment, blurStyle) {
         HazeBlurStyle {
             blurEnabled(recoverableEnabled)

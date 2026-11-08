@@ -48,6 +48,9 @@ internal fun relatedVideoLoadDecision(
     if (snapshot.hasCachedRelated || snapshot.playbackFailed || snapshot.playbackEnded) {
         return RelatedVideoLoadDecision.START
     }
+    if (!snapshot.playbackPrepared ||
+        (!snapshot.firstFrameRendered && (snapshot.playWhenReady || !snapshot.playbackReady))
+    ) return RelatedVideoLoadDecision.DEFER
     val rebuffering = snapshot.playbackPrepared && snapshot.firstFrameRendered && snapshot.buffering
     if (!snapshot.constrainedNetwork && !rebuffering) return RelatedVideoLoadDecision.START
     val playbackHasHeadroom = snapshot.playbackPrepared && snapshot.playbackReady &&

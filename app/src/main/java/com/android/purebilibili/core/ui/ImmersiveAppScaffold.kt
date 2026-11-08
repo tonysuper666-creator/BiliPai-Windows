@@ -108,6 +108,8 @@ internal fun ImmersiveAppScaffold(
                                 .unifiedBlur(
                                     hazeState = hazeState,
                                     surfaceType = BlurSurfaceType.HEADER,
+                                    // 仅本框架的完整页面源允许采样当前窗口，外部壁纸源保持原语义。
+                                    preferWindowBackdrop = externalHazeState == null && chromeBackdropSource == null,
                                 )
                                 .background(
                                     globalWallpaperAwareChromeColor(topBarSurfaceColor)
@@ -134,7 +136,9 @@ internal fun ImmersiveAppScaffold(
                     if (chromeBackdropSource == null) source?.modifier ?: Modifier else Modifier
                 )
                 .then(
-                    if (externalHazeState == null && hazeState != null) {
+                    if (externalHazeState == null && hazeState != null &&
+                        com.android.purebilibili.core.ui.blur.LocalChromeBackdropRecordingAllowed.current
+                    ) {
                         Modifier.hazeSourceCompat(hazeState)
                     } else {
                         Modifier

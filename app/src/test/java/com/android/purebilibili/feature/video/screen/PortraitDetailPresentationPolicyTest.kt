@@ -7,6 +7,30 @@ import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 class PortraitDetailPresentationPolicyTest {
+    @Test
+    fun collapsedPlayToolbarJoinsTheScrollTransitionBeforeTheViewportReachesItsEndpoint() {
+        // 横、竖视频都收向工具栏时，途中就必须绘制渐显层，不能等收起到位才突然出现。
+        listOf(0.25f, 0.7f, 1f).forEach { progress ->
+            assertTrue(shouldShowCollapsedPlayerPlayToolbar(true, progress, 56f, false))
+        }
+        assertFalse(shouldShowCollapsedPlayerPlayToolbar(true, 0f, 56f, false))
+    }
+
+    @Test
+    fun collapsedPlayToolbarDoesNotReplacePlayingOrCompactPortraitMedia() {
+        assertFalse(shouldShowCollapsedPlayerPlayToolbar(false, 1f, 56f, false))
+        assertFalse(shouldShowCollapsedPlayerPlayToolbar(false, 1f, 231.75f, false))
+        assertFalse(shouldShowCollapsedPlayerPlayToolbar(true, 1f, 231.75f, false))
+        assertFalse(shouldShowCollapsedPlayerPlayToolbar(true, 1f, 56f, true))
+    }
+
+    @Test
+    fun fadingToolbarOnlyTakesInputAtTheCollapsedEndpoint() {
+        assertFalse(canInteractWithCollapsedPlayerPlayToolbar(0f))
+        assertFalse(canInteractWithCollapsedPlayerPlayToolbar(0.7f))
+        assertTrue(canInteractWithCollapsedPlayerPlayToolbar(1f))
+    }
+
 
     @Test
     fun switchingToCommentsNeverForcesCompactPlayerForAnyModeOrPauseState() {
@@ -230,6 +254,19 @@ class PortraitDetailPresentationPolicyTest {
 
     @Test
     fun pausedCommentViewport_hidesMediaWithoutChangingOtherCompactSizes() {
+        assertEquals(56f, resolveInlinePlayerCollapsedViewportHeightDp(
+            standardCollapsedHeightDp = 231.75f,
+            hidePausedPlayerForComments = true,
+            retainPlayToolbar = true,
+        ))
+        for (vertical in listOf(true, false)) {
+            assertTrue(shouldEnableInlinePortraitScrollTransform(
+                collapseMode = PortraitPlayerCollapseMode.OFF,
+                selectedTabIndex = 0,
+                isVerticalVideo = vertical,
+                isPlaybackPaused = true,
+            ))
+        }
         assertEquals(
             56f,
             resolveInlinePlayerCollapsedViewportHeightDp(
@@ -289,7 +326,7 @@ class PortraitDetailPresentationPolicyTest {
                 isPlaybackPaused = false,
             )
         )
-        assertFalse(
+        assertTrue(
             shouldEnableInlinePortraitScrollTransform(
                 collapseMode = PortraitPlayerCollapseMode.OFF,
                 selectedTabIndex = 0,
@@ -308,7 +345,7 @@ class PortraitDetailPresentationPolicyTest {
                 isCommentThreadVisible = true,
             )
         )
-        assertFalse(shouldHidePausedInlinePlayerForComments(0, true))
+        assertTrue(shouldHidePausedInlinePlayerForComments(0, true))
         assertFalse(shouldHidePausedInlinePlayerForComments(1, false))
         assertTrue(shouldHidePausedInlinePlayerForComments(1, true))
         assertTrue(shouldHidePausedInlinePlayerForComments(0, true, isCommentThreadVisible = true))

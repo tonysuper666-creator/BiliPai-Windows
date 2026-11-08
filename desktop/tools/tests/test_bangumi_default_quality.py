@@ -42,6 +42,18 @@ class BangumiDefaultQualityGeneratorTest(unittest.TestCase):
         # Reconstruct both the current pre-quality stage and the fixed historical
         # whole producer; the later current-quality recipe is a separate change.
         script = AFTER.read_text(encoding="utf8")
+        # The speed-only render stage was added after the fixed quality producer.
+        node = next(node for node in ast.parse(script).body
+                    if isinstance(node, ast.FunctionDef) and node.name == 'bangumi_playback_speed_source_continuity_delta')
+        definition = ast.get_source_segment(script, node) + "\n\n"
+        self_contained = script.count(definition) == 1
+        if not self_contained:
+            raise AssertionError('PGC speed stage definition changed')
+        script = script.replace(definition, '')
+        hook = " body=bangumi_playback_speed_source_continuity_delta(recipe['output'],body)\n"
+        if script.count(hook) != 1:
+            raise AssertionError('PGC speed stage hook changed')
+        script = script.replace(hook, '')
         for hook in LATER_STAGE_HOOKS:
             if script.count(hook) != 1:
                 raise AssertionError("Later PGC producer layer hook changed: " + hook)

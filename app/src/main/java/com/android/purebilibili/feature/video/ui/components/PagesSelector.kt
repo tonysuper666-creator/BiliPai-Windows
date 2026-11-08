@@ -85,6 +85,7 @@ fun PagesSelector(
     coverUrl: String = "",
     isPlaying: Boolean = false,
     modifier: Modifier = Modifier,
+    onOpenExpanded: (() -> Unit)? = null,
 ) {
     if (pages.isEmpty()) return
     val selectionHaptic = rememberHapticFeedback(com.android.purebilibili.core.ui.AppHapticScene.MENUS)
@@ -125,7 +126,7 @@ fun PagesSelector(
                 color = AppContentColors.accent(),
                 modifier = Modifier
                     .clip(AppShapes.container(ContainerLevel.Pill))
-                    .clickable { showEpisodeMenu = true }
+                    .clickable { if (onOpenExpanded != null) onOpenExpanded() else showEpisodeMenu = true }
                     .padding(horizontal = 8.dp, vertical = 4.dp)
             )
         }

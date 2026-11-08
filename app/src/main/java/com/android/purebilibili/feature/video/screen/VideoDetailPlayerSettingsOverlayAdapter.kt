@@ -12,6 +12,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.android.purebilibili.core.store.SettingsManager
 import com.android.purebilibili.feature.video.danmaku.DanmakuManager
 import com.android.purebilibili.feature.video.ui.section.resolveVideoPlayerDanmakuSettingsScope
+import com.android.purebilibili.feature.video.ui.section.LocalUseTabletDanmakuStyle
 import com.android.purebilibili.feature.video.viewmodel.VideoPlaybackViewModel
 
 @Composable
@@ -24,18 +25,18 @@ internal fun VideoDetailPlayerSettingsOverlayAdapter(
 ) {
     val lifecycle = LocalLifecycleOwner.current.lifecycle
     val qualitySwitchFailureDialog by viewModel.qualitySwitchFailureDialog.collectAsStateWithLifecycle()
-    val playerDiagnosticLoggingEnabled by SettingsManager
-        .getPlayerDiagnosticLoggingEnabled(context)
-        .collectAsStateWithLifecycle(initialValue = true, lifecycle = lifecycle)
-    val qualitySwitchFailureDialogEnabled by SettingsManager
-        .getQualitySwitchFailureDialogEnabled(context)
-        .collectAsStateWithLifecycle(initialValue = true, lifecycle = lifecycle)
-    val qualitySwitchFailureDialogOnceEnabled by SettingsManager
-        .getQualitySwitchFailureDialogOnceEnabled(context)
-        .collectAsStateWithLifecycle(initialValue = false, lifecycle = lifecycle)
-    val qualitySwitchFailureDialogShown by SettingsManager
-        .getQualitySwitchFailureDialogShown(context)
-        .collectAsStateWithLifecycle(initialValue = false, lifecycle = lifecycle)
+    val playerDiagnosticLoggingEnabled by remember(context) {
+        SettingsManager.getPlayerDiagnosticLoggingEnabled(context)
+    }.collectAsStateWithLifecycle(initialValue = true, lifecycle = lifecycle)
+    val qualitySwitchFailureDialogEnabled by remember(context) {
+        SettingsManager.getQualitySwitchFailureDialogEnabled(context)
+    }.collectAsStateWithLifecycle(initialValue = true, lifecycle = lifecycle)
+    val qualitySwitchFailureDialogOnceEnabled by remember(context) {
+        SettingsManager.getQualitySwitchFailureDialogOnceEnabled(context)
+    }.collectAsStateWithLifecycle(initialValue = false, lifecycle = lifecycle)
+    val qualitySwitchFailureDialogShown by remember(context) {
+        SettingsManager.getQualitySwitchFailureDialogShown(context)
+    }.collectAsStateWithLifecycle(initialValue = false, lifecycle = lifecycle)
     val qualitySwitchDialogScope = rememberCoroutineScope()
 
     VideoDetailQualitySwitchFailureDialog(
@@ -49,15 +50,17 @@ internal fun VideoDetailPlayerSettingsOverlayAdapter(
         qualitySwitchDialogScope = qualitySwitchDialogScope,
     )
 
-    val activeDanmakuScope = remember(isFullscreenMode, isPortraitFullscreen) {
+    val useTabletDanmakuStyle = LocalUseTabletDanmakuStyle.current
+    val activeDanmakuScope = remember(isFullscreenMode, isPortraitFullscreen, useTabletDanmakuStyle) {
         resolveVideoPlayerDanmakuSettingsScope(
             isFullscreen = isFullscreenMode,
-            isPortraitFullscreen = isPortraitFullscreen
+            isPortraitFullscreen = isPortraitFullscreen,
+            useTabletLayout = useTabletDanmakuStyle,
         )
     }
-    val activeDanmakuBlockRulesRaw by SettingsManager
-        .getDanmakuBlockRulesRaw(context, activeDanmakuScope)
-        .collectAsStateWithLifecycle(initialValue = "", lifecycle = lifecycle)
+    val activeDanmakuBlockRulesRaw by remember(context, activeDanmakuScope) {
+        SettingsManager.getDanmakuBlockRulesRaw(context, activeDanmakuScope)
+    }.collectAsStateWithLifecycle(initialValue = "", lifecycle = lifecycle)
     val danmakuPreferenceScope = rememberCoroutineScope()
 
     VideoDetailDanmakuContextMenu(

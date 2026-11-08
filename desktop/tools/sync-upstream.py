@@ -27,7 +27,7 @@ MAX_MANIFEST_BYTES = 4 * 1024 * 1024
 # A full final page is not proof of completion: exhausting this finite scan fails.
 RELEASE_PAGE_SIZE = 100
 MAX_RELEASE_PAGES = 100
-CANONICAL_CATALOG_SHA256 = "2600739eef5521cfef71d6af16762ccc3b9df076dad7ccb79902944f1634130f"
+CANONICAL_CATALOG_SHA256 = "d3f979a7ce657e358a4362ca801ce91fbf39be5fc51277691dfec43bda131356"
 CANONICAL_BASELINE_COMMIT = "79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40"
 CANONICAL_CATALOG_PATH = "desktop/tools/v025-canonical-sources.json"
 COMPATIBILITY_CATALOG_PATH = "desktop/tools/compatibility-source-inputs.json"

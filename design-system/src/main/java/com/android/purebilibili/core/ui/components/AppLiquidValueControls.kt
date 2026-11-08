@@ -50,7 +50,8 @@ import androidx.compose.ui.state.ToggleableState
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.DpSize
-import androidx.compose.material3.MaterialTheme
+import com.android.purebilibili.core.theme.calculateContrastRatio
+import com.android.purebilibili.core.theme.opaqueCompositeOver
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -400,6 +401,18 @@ internal fun AppLiquidSwitch(
     } else colorResource(R.color.liquid_switch_active)
     val inactive = colorResource(R.color.liquid_value_inactive)
     val background = AppSurfaceTokens.background()
+    // 仅液态开关按实际开启轨道选择圆钮前景，避免混用原生主题的 onPrimary。
+    val activeTrackColor = opaqueCompositeOver(active, background)
+    val activeThumbColor = if (
+        calculateContrastRatio(Color.Black, activeTrackColor) >=
+        calculateContrastRatio(Color.White, activeTrackColor)
+    ) Color.Black else Color.White
+    val switchThumbColor = when (com.android.purebilibili.core.ui.LocalAppThemeConfig.current.liquidSwitchThumbMode) {
+        com.android.purebilibili.core.ui.LiquidSwitchThumbMode.THEME ->
+            if (checked) activeThumbColor else appControlThumbColor()
+        com.android.purebilibili.core.ui.LiquidSwitchThumbMode.DARK -> Color(0xFF202124)
+        com.android.purebilibili.core.ui.LiquidSwitchThumbMode.LIGHT -> Color.White
+    }
     val switchBackdrop = remember(track, background, motion) {
         LiquidValueBackdrop(track, background, { motion.press.value }, compressTrack = true)
     }
@@ -454,7 +467,7 @@ internal fun AppLiquidSwitch(
                 val fraction = if (isLtr) motion.position else 1f - motion.position
                 val inset = geometry.switchInset.toPx().coerceAtMost((trackWidthPx - size.width).coerceAtLeast(0f) / 2f)
                 translationX = inset + (trackWidthPx - size.width - inset * 2f).coerceAtLeast(0f) * fraction
-            }, geometry.thumb, content = thumbContent)
+            }, geometry.thumb, thumbColor = switchThumbColor, content = thumbContent)
         }
     }
 }

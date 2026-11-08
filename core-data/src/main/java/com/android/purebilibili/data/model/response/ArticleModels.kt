@@ -35,7 +35,9 @@ data class ArticleViewData(
     val type: Int = 0,
     val content: String = "",
     val opus: ArticleOpus? = null,
-    val ops: List<JsonObject> = emptyList()
+    val ops: List<JsonObject> = emptyList(),
+    val list: ArticleCollectionInfo? = null,
+    val stats: ArticleStats? = null,
 )
 
 @Serializable
@@ -56,3 +58,62 @@ data class ArticleOpus(
         return paragraphs.mapNotNull { runCatching { it.jsonObject }.getOrNull() }
     }
 }
+
+@Serializable
+data class ArticleInfoResponse(
+    val code: Int = 0,
+    val message: String = "",
+    val data: ArticleInfoData? = null,
+)
+
+@Serializable
+data class ArticleInfoData(
+    @Serializable(with = FlexibleBooleanSerializer::class)
+    val like: Boolean = false,
+    val favorite: Boolean = false,
+    val stats: ArticleStats? = null,
+)
+
+@Serializable
+data class ArticleStats(
+    val view: Long? = null,
+    val like: Long? = null,
+    val favorite: Long? = null,
+    val reply: Long? = null,
+    val share: Long? = null,
+)
+
+@Serializable
+data class ArticleCollectionInfo(
+    val id: Long = 0,
+    val name: String = "",
+    @SerialName("image_url") val imageUrl: String = "",
+    val summary: String = "",
+    @SerialName("articles_count") val articlesCount: Int? = null,
+    val words: Long? = null,
+    val read: Long? = null,
+    @SerialName("update_time") val updateTime: Long? = null,
+)
+
+@Serializable
+data class ArticleCollectionResponse(
+    val code: Int = 0,
+    val message: String = "",
+    val data: ArticleCollectionData? = null,
+)
+
+@Serializable
+data class ArticleCollectionData(
+    val list: ArticleCollectionInfo? = null,
+    val author: ArticleAuthor? = null,
+    val articles: List<ArticleCollectionItem> = emptyList(),
+)
+
+@Serializable
+data class ArticleCollectionItem(
+    val id: Long = 0,
+    val title: String = "",
+    val summary: String = "",
+    @SerialName("image_urls") val imageUrls: List<String> = emptyList(),
+    val stats: ArticleStats? = null,
+)

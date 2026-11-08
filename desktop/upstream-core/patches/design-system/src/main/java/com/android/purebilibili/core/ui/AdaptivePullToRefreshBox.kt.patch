@@ -1,6 +1,6 @@
 --- a/com/android/purebilibili/core/ui/AdaptivePullToRefreshBox.kt
 +++ b/com/android/purebilibili/core/ui/AdaptivePullToRefreshBox.kt
-@@ -21,6 +21,8 @@
+@@ -21,6 +21,8 @@ import androidx.compose.ui.Modifier
  import androidx.compose.ui.platform.LocalLayoutDirection
  import androidx.compose.ui.unit.Dp
  import androidx.compose.ui.unit.dp
@@ -9,7 +9,7 @@
  import top.yukonga.miuix.kmp.basic.PullToRefresh as MiuixPullToRefresh
  import top.yukonga.miuix.kmp.basic.rememberPullToRefreshState as rememberMiuixPullToRefreshState
  
-@@ -57,6 +59,13 @@
+@@ -59,6 +61,13 @@ fun AdaptivePullToRefreshBox(
      val contentHaptic = LocalHapticFeedback.current
      val refreshHaptic = rememberAppHapticFeedback(AppHapticScene.REFRESH)
      val layoutDirection = LocalLayoutDirection.current
@@ -23,16 +23,16 @@
      val mergedContentPadding = remember(contentPadding, indicatorTopInset, layoutDirection) {
          PaddingValues(
              start = contentPadding.calculateStartPadding(layoutDirection),
-@@ -79,7 +88,7 @@
+@@ -81,7 +90,7 @@ fun AdaptivePullToRefreshBox(
                      )
                  }
              }
--            if (enabled) {
-+            if (com.bilipai.desktop.ui.desktopPullGestureEnabled(enabled)) {
+-            if (enabled && !(allowContentScrollWhileRefreshing && isRefreshing)) {
++            if (com.bilipai.desktop.ui.desktopPullGestureEnabled(enabled) && !(allowContentScrollWhileRefreshing && isRefreshing)) {
                  // The native container owns its drag/refresh animation scope. Discard that
                  // state with the container when player expansion temporarily disables refresh;
                  // otherwise a cancelled Pulling/RefreshComplete session can consume later
-@@ -96,14 +105,17 @@
+@@ -98,14 +107,17 @@ fun AdaptivePullToRefreshBox(
                          refreshTexts = resolveMiuixPullToRefreshTexts(),
                          content = {
                              CompositionLocalProvider(LocalHapticFeedback provides contentHaptic) {
@@ -50,10 +50,10 @@
 +                    contentAlignment = contentAlignment,
 +                ) {
 +                    stableContent(contentAlignment, desktopContent)
-                 }
-             }
-         }
-@@ -115,10 +127,10 @@
+                     // 仅显式选择此策略的入口拆开加载提示和列表，避免原生刷新容器吞掉滚动。
+                     if (allowContentScrollWhileRefreshing && isRefreshing) {
+                         com.android.purebilibili.core.ui.components.AppText(
+@@ -129,10 +141,10 @@ fun AdaptivePullToRefreshBox(
                      modifier = modifier,
                      state = state,
                      contentAlignment = contentAlignment,

@@ -1,4 +1,4 @@
-Upstream-source-sha256: 87e61eca10d476ce07565d5b975865a9fdfe6aa6cb2954d5b0f926f03e6dde25
+Upstream-source-sha256: 53c416f8af3d710a9dbc3f7d949b3c8164a5d3b377c4ccb710114f504d0e98d8
 Reason: 桌面把整页景深缩放交给 Miuix 导航 entry，本策略 scaleReduction 默认已是 0；四个用例仍按旧默认断言 4% 缩放与 24dp 圆角。给五处调用显式传 scaleReduction = 0.04f，断言逐字不变，另加一条断言生产默认值（contentScale 1、无圆角、仍有模糊）。
 
 --- a/app/src/test/java/com/android/purebilibili/core/ui/transition/VideoCardTransitionBackgroundPolicyTest.kt
@@ -27,7 +27,7 @@ Reason: 桌面把整页景深缩放交给 Miuix 导航 entry，本策略 scaleRe
          )
  
          // 12dp × 2.75 ≈ 33px；12dp × 1.5 = 18px
-@@ -1014,6 +1017,7 @@
+@@ -1008,6 +1011,7 @@
              phase = VideoCardTransitionBackgroundPhase.OPENING,
              motionTier = MotionTier.Normal,
              sdkInt = 35,
@@ -35,7 +35,7 @@ Reason: 桌面把整页景深缩放交给 Miuix 导航 entry，本策略 scaleRe
          )
          // 清晰附近采用 0.5px 步长，2.4px → 2.5px。
          assertEquals(2.5f, early.blurRadiusPx, 0.01f)
-@@ -1262,7 +1266,8 @@
+@@ -1252,7 +1256,8 @@
          val frame = resolveVideoCardTransitionBackgroundFrame(
              progress = 0.25f,
              phase = VideoCardTransitionBackgroundPhase.RETURNING,
@@ -45,7 +45,7 @@ Reason: 桌面把整页景深缩放交给 Miuix 导航 entry，本策略 scaleRe
          )
  
          assertTrue(frame.blurRadiusPx > 0f)
-@@ -1706,4 +1711,20 @@
+@@ -1654,4 +1659,20 @@
          state.markDisplayListFresh()
          assertFalse(state.needsSourceRefresh)
      }

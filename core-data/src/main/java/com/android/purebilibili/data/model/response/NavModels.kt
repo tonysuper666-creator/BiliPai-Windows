@@ -27,10 +27,17 @@ data class NavData(
     val money: Double = 0.0, // 硬币
     val wallet: Wallet = Wallet(),
     val vip: VipInfo = VipInfo(),
-    //  核心修复：补回 wbi_img 字段 
+    //  核心修复：补回 wbi_img 字段
     val wbi_img: WbiImg? = null,
     //  [New] 顶部背景图 (API 返回)
-    val top_photo: String = ""
+    val top_photo: String = "",
+    // 认证信息：-1 无认证，0 个人认证（黄V），1 机构认证（蓝V）
+    val officialVerify: NavOfficialVerify = NavOfficialVerify()
+)
+
+@Serializable
+data class NavOfficialVerify(
+    val type: Int = -1
 )
 
 @Serializable

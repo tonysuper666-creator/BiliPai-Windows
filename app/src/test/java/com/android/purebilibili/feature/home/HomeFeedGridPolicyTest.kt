@@ -50,6 +50,20 @@ class HomeFeedGridPolicyTest {
     }
 
     @Test
+    fun savedDenseGridTemporarilyShrinksInNarrowWindows() {
+        val columns = listOf(412, 340, 220, 412).map { width ->
+            resolveHomeFeedGridColumns(
+                contentWidthDp = width,
+                displayMode = 0,
+                fixedColumnCount = 4,
+                cardWidthPreset = HomeFeedCardWidthPreset.AUTO,
+                widthSizeClass = WindowWidthSizeClass.Compact,
+            )
+        }
+        assertEquals(listOf(4, 2, 1, 4), columns)
+    }
+
+    @Test
     fun doubleGridKeepsTwoColumnsOnCompactPhones() {
         assertEquals(
             2,
