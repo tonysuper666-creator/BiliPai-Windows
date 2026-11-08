@@ -46,3 +46,44 @@
                                      else onTopItemClick(destination)
                                  }
                              )
+@@ -411,38 +412,8 @@
+     items: List<MessageCenterTopItem>,
+     onItemClick: (MessageCenterDestination) -> Unit
+ ) {
+-    BoxWithConstraints(
+-        modifier = Modifier
+-            .fillMaxWidth()
+-            .padding(horizontal = 16.dp, vertical = 8.dp)
+-    ) {
+-        val columns = 4
+-
+-        Column {
+-            items.chunked(columns).forEachIndexed { rowIndex, rowItems ->
+-                Row(
+-                    modifier = Modifier.fillMaxWidth(),
+-                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+-                ) {
+-                    rowItems.forEach { item ->
+-                        MessageCenterShortcutCard(
+-                            item = item,
+-                            modifier = Modifier.weight(1f),
+-                            onClick = { onItemClick(item.destination) }
+-                        )
+-                    }
+-
+-                    repeat(columns - rowItems.size) {
+-                        Spacer(modifier = Modifier.weight(1f))
+-                    }
+-                }
+-
+-                if (rowIndex != items.chunked(columns).lastIndex) {
+-                    Spacer(modifier = Modifier.height(10.dp))
+-                }
+-            }
+-        }
+-    }
++    // K7：四个通知入口为一行胶囊 Tab，未读用主题主色；点击仍是原入口回调。
++    com.bilipai.desktop.ui.DesktopMessageNotificationTabs(items = items, onItemClick = onItemClick)
+ }
+ 
+ @Composable

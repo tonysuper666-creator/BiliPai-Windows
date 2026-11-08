@@ -1744,7 +1744,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         }
     }
 
-    BoxWithConstraints(Modifier.fillMaxSize()) {
+    BoxWithConstraints(Modifier.fillMaxSize().themeSwitchDrawProbe()) {
     val measuredRootConstraints = constraints
     DesktopAppearanceTheme(themeSettings, windowSmallestWidthDp = minOf(maxWidth.value, maxHeight.value).toInt()) {
     val scheme = MaterialTheme.colorScheme

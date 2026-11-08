@@ -18,6 +18,7 @@ import java.nio.file.Path
 import java.nio.file.StandardCopyOption
 import java.nio.file.StandardOpenOption
 import java.lang.ref.WeakReference
+import com.bilipai.desktop.diagnostics.DesktopThemeSwitchTrace
 
 /** Real Windows persistence for the original plugin keys and preference namespaces. */
 class DesktopPluginStore(val root: Path) {
@@ -240,7 +241,10 @@ class DesktopPluginStore(val root: Path) {
     }
 
     /** Same backing, one atomic document publication for original canonical theme + startup cache. */
-    internal fun updateThemeFromSnapshot(checkPublication: () -> Unit, edit: (JsonObject, JsonObject) -> Map<String, Map<String, JsonElement?>>) = synchronized(backing) {
+    internal fun updateThemeFromSnapshot(checkPublication: () -> Unit, edit: (JsonObject, JsonObject) -> Map<String, Map<String, JsonElement?>>) {
+        if (DesktopThemeSwitchTrace.enabled) DesktopThemeSwitchTrace.mark("store.lock_request")
+        synchronized(backing) {
+        if (DesktopThemeSwitchTrace.enabled) DesktopThemeSwitchTrace.mark("store.lock_acquired")
         check(!backing.writesFrozen) { "插件已停止，不能写入旧设置实例" }
         requireObjectNamespace("settings"); requireObjectNamespace("theme_cache")
         val updates = edit(preferences("settings"), preferences("theme_cache"))
@@ -256,15 +260,18 @@ class DesktopPluginStore(val root: Path) {
         val temporary = Files.createTempFile(backing.root, "plugin-settings-", ".tmp")
         try {
             Files.writeString(temporary, json.encodeToString(next))
+            if (DesktopThemeSwitchTrace.enabled) DesktopThemeSwitchTrace.mark("store.written", "bytes" to Files.size(temporary))
             FileChannel.open(temporary, StandardOpenOption.WRITE).use { it.force(true) }
+            if (DesktopThemeSwitchTrace.enabled) DesktopThemeSwitchTrace.mark("store.forced")
             DesktopSubscriptionWriteAdmission.checkCurrentRequestOrOriginal()
             checkPublication()
-            try { Files.move(temporary, backing.file, StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING) }
-            catch (_: java.nio.file.AtomicMoveNotSupportedException) { Files.move(temporary, backing.file, StandardCopyOption.REPLACE_EXISTING) }
+            try { Files.move(temporary, backing.file, StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING); if (DesktopThemeSwitchTrace.enabled) DesktopThemeSwitchTrace.mark("store.moved", "atomic" to true) }
+            catch (_: java.nio.file.AtomicMoveNotSupportedException) { Files.move(temporary, backing.file, StandardCopyOption.REPLACE_EXISTING); if (DesktopThemeSwitchTrace.enabled) DesktopThemeSwitchTrace.mark("store.moved", "atomic" to false) }
         } finally { Files.deleteIfExists(temporary) }
         backing.document = next
         for (name in updates.keys) backing.snapshots[name]?.value = DesktopPreferenceSnapshot(preferences(name))
-    }
+        if (DesktopThemeSwitchTrace.enabled) DesktopThemeSwitchTrace.mark("store.published")
+    } }
 
     /** All facades for this old file generation become read-only before restoration. */
     internal fun freezeWrites() = synchronized(backing) { backing.writesFrozen = true }

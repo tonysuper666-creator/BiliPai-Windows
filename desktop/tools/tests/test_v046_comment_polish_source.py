@@ -36,6 +36,7 @@ BGM = load('extract-upstream-bgm-detail.py', 'extract_bgm_comment_polish')
 
 COMPONENTS = 'com/android/purebilibili/feature/video/ui/components/'
 SUBREPLY = COMPONENTS + 'DesktopOriginalSubReplyDetailComponents.kt'
+SPLIT_ITEM_STATES_PROOF = 'v046-comment-detail-split-item-states-proof.json'
 HOST = COMPONENTS + 'VideoCommentSheetHost.kt'
 FRAUD_HOST = 'com/android/purebilibili/' + polish.FRAUD_HOST_RELATIVE
 ADAPTER = 'com/android/purebilibili/' + polish.ADAPTER_RELATIVE
@@ -212,7 +213,9 @@ class V046CommentPolishSourceTest(unittest.TestCase):
         self.assertFalse(proof['jvmTestsExecuted'])
         # Every other emitted file of the reply producer is untouched by the font file.
         self.assertEqual({polish.APPEARANCE_RELATIVE, polish.APPEARANCE_TEST_RELATIVE,
-                          'v046-comment-appearance-proof.json', 'v046-inline-subreply-entrance-proof.json', SUBREPLY},
+                          'v046-comment-appearance-proof.json', 'v046-inline-subreply-entrance-proof.json',
+                          # The comment-detail split item states follow the entrance; their receipt records its body.
+                          SPLIT_ITEM_STATES_PROOF, SUBREPLY},
                          self.changed('reply'))
 
     def test_comment_font_policy_suite_is_the_original_with_one_class_rename(self):
@@ -319,8 +322,10 @@ class V046CommentPolishSourceTest(unittest.TestCase):
     # ---------------------------------------------------------------- inline nested reply entrance
 
     def test_inline_nested_reply_entrance_is_the_whole_original_declaration(self):
-        final = staged(body(self.real['reply'], SUBREPLY))
-        before = staged(body(self.base['reply'], SUBREPLY))
+        # The comment-detail split item states run after the entrance in both outputs; peel each receipt.
+        final = restore(staged(body(self.real['reply'], SUBREPLY)), self.proof('reply', SPLIT_ITEM_STATES_PROOF)['retainedToCurrent'])
+        before = restore(staged(body(self.base['reply'], SUBREPLY)),
+                         json.loads(self.base['reply'][SPLIT_ITEM_STATES_PROOF])['retainedToCurrent'])
         proof = self.proof('reply', 'v046-inline-subreply-entrance-proof.json')
         self.assertEqual(before, restore(final, proof['retainedToCurrent']))
         name = 'VideoInlineSubReplyDetailContent'
