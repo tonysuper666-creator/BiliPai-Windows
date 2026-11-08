@@ -20,8 +20,6 @@ without a sync point. When several apply, the most severe wins: 1 > 4 > 2 > 3.
 A pixel change is only ever reported as the interval (previous sample, changing sample]:
 the sampler reads the DWM-composed desktop, not the panel scan-out.
 """
-from __future__ import annotations
-
 import argparse
 import csv
 import json
