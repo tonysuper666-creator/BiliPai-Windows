@@ -85,10 +85,13 @@ class DesktopHomeNativeCardProtocolTest {
             {"card_goto":"bangumi","param":"bad"}
         ]}}""")
         private val api: BilibiliApi = Proxy.newProxyInstance(BilibiliApi::class.java.classLoader,
-            arrayOf(BilibiliApi::class.java)) { _, method, _ ->
+            arrayOf(BilibiliApi::class.java)) { _, method, args ->
             requests += method.name
             when (method.name) {
-                "getRecommendParams" -> web
+                "getRecommendParams" -> {
+                    assertEquals("23", (args!![0] as Map<*, *>)["ps"])
+                    web
+                }
                 "getMobileFeed", "getMobileFeedEncoded" -> app
                 else -> error("Unexpected Home API: ${method.name}")
             }
@@ -98,7 +101,7 @@ class DesktopHomeNativeCardProtocolTest {
         val protocol = DesktopOriginalHomeVideoProtocol(DesktopHomeProtocolEnvironment(
             api = api, guestApi = api, messageApi = messages, parentScope = scope,
             isCurrent = { true }, commitIfCurrent = { action -> action(); true },
-            feedApiType = { type }, refreshCount = { 10 },
+            feedApiType = { type }, refreshCount = { com.android.purebilibili.feature.home.resolveHomeFeedPageSize(7) },
             wbiKeys = { Result.success("0123456789abcdef0123456789abcdef" to "fedcba9876543210fedcba9876543210") },
             accessToken = { "fixture-access" }, csrf = { "fixture-csrf" }, buvid3 = { "fixture-buvid" },
             awaitSessionRestored = {}, ensureBuvid3FromSpi = { error("Unexpected SPI request") },

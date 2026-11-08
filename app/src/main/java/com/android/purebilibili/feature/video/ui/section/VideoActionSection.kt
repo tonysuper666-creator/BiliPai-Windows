@@ -327,14 +327,16 @@ fun ActionButtonsRow(
                     .heightIn(min = 48.dp),
                 contentAlignment = Alignment.Center
             ) {
-                BiliActionButton(
-                    icon = shareIcon,
-                    text = resolveVideoDetailShareActionText(info.stat.share),
-                    isActive = false,
-                    activeColor = activeColors.primaryAction,
-                    onClick = onShareClick,
-                    horizontalPadding = buttonHorizontalPadding
-                )
+                com.android.purebilibili.feature.video.share.VideoShareActionAnchor(onShareClick) { anchoredShare ->
+                    BiliActionButton(
+                        icon = shareIcon,
+                        text = resolveVideoDetailShareActionText(info.stat.share),
+                        isActive = false,
+                        activeColor = activeColors.primaryAction,
+                        onClick = anchoredShare,
+                        horizontalPadding = buttonHorizontalPadding
+                    )
+                }
             }
 
             //  稍后再看

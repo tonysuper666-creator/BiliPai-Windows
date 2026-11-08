@@ -29,9 +29,9 @@ class DesktopWindowsPlaybackSettingsQualityLabelTest {
     }
 
     @Test fun `off-list ids reuse the labels of the original quality tables`() {
-        // The original settings table wins (125 is "4K HDR" there, "HDR 真彩" in QualityManager); the
+        // The original settings table wins (125 is "HDR" there, "HDR 真彩" in QualityManager); the
         // original QualityManager table covers what the settings table lacks, including its own fallback.
-        val expected = mapOf(126 to "杜比视界", 125 to "4K HDR", 116 to "1080P60", 74 to "720P60", 127 to "8K", 6 to "其他画质")
+        val expected = mapOf(126 to "杜比视界", 125 to "HDR", 116 to "1080P60", 74 to "720P60", 127 to "8K", 6 to "其他画质")
         for ((id, label) in expected) {
             val caption = assertNotNull(desktopWindowsOffListQualityCaption(id), "no caption for $id")
             assertTrue(caption.contains("${label}（${id}）"), caption)

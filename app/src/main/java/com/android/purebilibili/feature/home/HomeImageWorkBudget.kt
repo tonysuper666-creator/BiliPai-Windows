@@ -19,17 +19,19 @@ internal const val HOME_COVER_PRELOAD_SETTLE_MS = 360L
 internal fun rememberHomeCardAuxiliaryWorkAllowed(
     pageActive: Boolean,
     isScrolling: Boolean,
+    visualWorkActive: Boolean = true,
 ): Boolean {
+    val workActive = pageActive && visualWorkActive
     // New motion invalidates readiness synchronously, before effects are cancelled.
     // A subsequent idle period always gets its own cancellable settling window.
-    var ready by remember(pageActive, isScrolling) { mutableStateOf(false) }
-    LaunchedEffect(pageActive, isScrolling) {
-        if (pageActive && !isScrolling) {
+    var ready by remember(workActive, isScrolling) { mutableStateOf(false) }
+    LaunchedEffect(workActive, isScrolling) {
+        if (workActive && !isScrolling) {
             delay(HOME_CARD_AUXILIARY_WORK_SETTLE_MS)
             ready = true
         }
     }
-    return pageActive && !isScrolling && ready
+    return workActive && !isScrolling && ready
 }
 
 /** Only already-composed neighbours may load, at most one card row on either side. */

@@ -194,6 +194,7 @@ internal fun LiveRoomCard(
                     text = model.hostName,
                     color = AppContentColors.secondaryText(),
                     style = MaterialTheme.typography.bodySmall,
+                    minLines = 1,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )

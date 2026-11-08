@@ -62,6 +62,8 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalContext
+import kotlinx.coroutines.launch
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.platform.testTag
@@ -81,6 +83,11 @@ import com.android.purebilibili.core.ui.components.AppSwitch
 import com.android.purebilibili.core.ui.components.AppWindowAction
 import com.android.purebilibili.core.ui.components.AppWindowActionMenu
 import com.android.purebilibili.core.player.resolveProgressFraction as resolveSharedProgressFraction
+import android.os.SystemClock
+import com.android.purebilibili.core.player.SeekTickHapticPolicy
+import com.android.purebilibili.core.ui.AppHapticScene
+import com.android.purebilibili.core.util.HapticType
+import com.android.purebilibili.core.util.rememberHapticFeedback
 import com.android.purebilibili.core.ui.drawMediaProgressTrack
 import com.android.purebilibili.data.model.response.SponsorProgressMarker
 import com.android.purebilibili.feature.video.progress.PbpRidgeDensity
@@ -520,6 +527,15 @@ fun BottomControlBar(
     val onSubtitlePositionLockedChange = subtitleControlCallbacks.onPositionLockedChange
 
     val nearbyHandoff = com.android.purebilibili.feature.nearby.LocalNearbyHandoff.current
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+    val hideCenterPlayback = rememberHideGlassCenterPlayback()
+    val toggleCenterPlayback: () -> Unit = {
+        scope.launch {
+            com.android.purebilibili.core.store.player.PlayerSettingsStore
+                .setHideGlassCenterPlayback(context, !hideCenterPlayback)
+        }
+    }
     val configuration = LocalConfiguration.current
     val uiLayoutWidthDp = remember(configuration.screenWidthDp, viewportWidthDpOverride) {
         (viewportWidthDpOverride ?: configuration.screenWidthDp).coerceAtLeast(1)
@@ -891,8 +907,8 @@ fun BottomControlBar(
         ) {
             // 横屏保留两侧功能分组，玻璃材质在各入口独立提供。
             if (isFullscreen) {
-                // 玻璃使用中央播放入口，原生横屏保留左下角播放按钮。
-                if (!liquidGlassEnabled) {
+                // 隐藏玻璃中央按钮时，在控制栏保留播放入口。
+                if (!liquidGlassEnabled || hideCenterPlayback) {
                     PlayerPlayPauseButton(
                         isPlaying = isPlaying,
                         onClick = onPlayPauseClick,
@@ -1310,6 +1326,11 @@ fun BottomControlBar(
                                                     onPipClick()
                                                 },
                                             ) else null,
+                                            if (liquidGlassEnabled) AppWindowAction(
+                                                label = "隐藏中央播放按钮",
+                                                selected = hideCenterPlayback,
+                                                onClick = toggleCenterPlayback,
+                                            ) else null,
                                             if (sponsorContributionAvailable) {
                                                 AppWindowAction(
                                                     label = if (sponsorContributionMarking) "结束标记片段" else "标记片段起点",
@@ -1461,8 +1482,8 @@ fun BottomControlBar(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = if (compactInlineGlassControls) Arrangement.SpaceBetween else Arrangement.Start,
                 ) {
-                    // 原生保留原有播放槽位与间距，玻璃内嵌播放器统一由中央入口控制播放。
-                    if (!liquidGlassEnabled) {
+                    // 原生保留播放槽位；玻璃仅在隐藏中央按钮时使用该槽位。
+                    if (!liquidGlassEnabled || hideCenterPlayback) {
                         PlayerPlayPauseButton(
                             isPlaying = isPlaying,
                             onClick = onPlayPauseClick,
@@ -1807,6 +1828,11 @@ fun BottomControlBar(
                                                         onClick = { controller.openDevices() },
                                                     )
                                                 },
+                                                if (liquidGlassEnabled) AppWindowAction(
+                                                    label = "隐藏中央播放按钮",
+                                                    selected = hideCenterPlayback,
+                                                    onClick = toggleCenterPlayback,
+                                                ) else null,
                                                 if (sponsorContributionAvailable) {
                                                     AppWindowAction(
                                                         label = if (sponsorContributionMarking) "结束标记片段" else "标记片段起点",
@@ -2597,6 +2623,9 @@ fun VideoProgressBar(
     val currentOnSeekDragStart by rememberUpdatedState(onSeekDragStart)
     val currentOnSeekDragUpdate by rememberUpdatedState(onSeekDragUpdate)
     val currentOnSeekDragCancel by rememberUpdatedState(onSeekDragCancel)
+    // 拖动进度条刻度触感：拖起轻振，跨过整秒时短振，快速滑动按 60ms 限频。
+    val seekHaptic = rememberHapticFeedback(AppHapticScene.PLAYER_SEEK)
+    val seekHapticPolicy = remember { SeekTickHapticPolicy() }
     LaunchedEffect(displayPositionMs, isSeekScrubbing) {
         if (!isSeekScrubbing) {
             dragTargetPositionMs = displayPositionMs.coerceAtLeast(0L)
@@ -2652,7 +2681,9 @@ fun VideoProgressBar(
         layoutPolicy.baseHeightWithoutChapterDp.dp
     }
     val previewImageHeightDp = if (videoshotData?.isValid == true) {
-        resolveSeekPreviewBubbleHeightDp(LocalConfiguration.current.screenWidthDp)
+        resolveSeekPreviewBubbleHeightDp(
+            LocalConfiguration.current.screenWidthDp, LocalConfiguration.current.screenHeightDp,
+        ).takeIf { it > 0 }
     } else null
     val previewAreaHeightDp = if (isSeekScrubbing) {
         resolveVideoProgressPreviewAreaHeightDp(
@@ -2721,6 +2752,10 @@ fun VideoProgressBar(
                                     currentOnSeekStart()
                                     currentOnSeekDragStart(targetPositionMs)
                                     currentOnSeekDragUpdate(targetPositionMs)
+                                    if (seekHapticPolicy.start(targetPositionMs, duration, SystemClock.uptimeMillis())) {
+                                        seekHaptic(HapticType.LIGHT)
+                                    }
+                                    seekHapticPolicy.finish()
                                     currentOnSeek(targetPositionMs)
                                 }
                             }
@@ -2742,6 +2777,9 @@ fun VideoProgressBar(
                                             dragTargetPositionMs = targetPositionMs
                                             currentOnSeekStart()
                                             currentOnSeekDragStart(targetPositionMs)
+                                            if (seekHapticPolicy.start(targetPositionMs, duration, SystemClock.uptimeMillis())) {
+                                                seekHaptic(HapticType.LIGHT)
+                                            }
                                         },
                                         onDrag = { change, _ ->
                                             change.consume()
@@ -2753,6 +2791,9 @@ fun VideoProgressBar(
                                             latestDragPositionMs = targetPositionMs
                                             dragTargetPositionMs = targetPositionMs
                                             currentOnSeekDragUpdate(targetPositionMs)
+                                            if (seekHapticPolicy.update(targetPositionMs, SystemClock.uptimeMillis())) {
+                                                seekHaptic(HapticType.GESTURE_STEP)
+                                            }
                                         },
                                         onDragEnd = {
                                             val commitPositionMs = resolveSeekDragCommitPositionMs(
@@ -2761,15 +2802,18 @@ fun VideoProgressBar(
                                             )
                                             dragInProgress = false
                                             currentOnSeek(commitPositionMs)
+                                            seekHapticPolicy.finish()
                                         },
                                         onDragCancel = {
                                             dragInProgress = false
                                             currentOnSeekDragCancel()
+                                            seekHapticPolicy.finish()
                                         }
                                     )
                                 } finally {
                                     if (shouldCancelSeekDragOnPointerInputCompletion(dragInProgress)) {
                                         currentOnSeekDragCancel()
+                                        seekHapticPolicy.finish()
                                     }
                                 }
                             }

@@ -98,6 +98,9 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
     val activeAccountMid = _activeAccountMid.asStateFlow()
     private val _playbackAccountMid = MutableStateFlow<Long?>(null)
     val playbackAccountMid = _playbackAccountMid.asStateFlow()
+    private val _purposeAccountMids = MutableStateFlow<Map<com.android.purebilibili.core.store.AccountPurpose, Long?>?>(null)
+    val purposeAccountMids = _purposeAccountMids.asStateFlow()
+    private val accountSnapshotGeneration = java.util.concurrent.atomic.AtomicLong()
     private var hasLoadedProfileOnce = false
     private var isProfileLoadInFlight = false
     private var profileLoadGeneration = 0L
@@ -155,15 +158,21 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
     }
 
     fun refreshSavedAccounts() {
+        val generation = accountSnapshotGeneration.incrementAndGet()
         val context = getApplication<Application>()
         viewModelScope.launch(Dispatchers.IO) {
             val accounts = AccountSessionStore.getAccounts(context)
             val activeAccountMid = AccountSessionStore.getActiveAccountMid(context)
             val playbackAccountMid = AccountSessionStore.getPlaybackAccountMid(context)
+            val purposes = com.android.purebilibili.core.store.AccountPurpose.entries.associateWith {
+                AccountSessionStore.getPurposeAccountMid(context, it)
+            }
             withContext(Dispatchers.Main.immediate) {
+                if (generation != accountSnapshotGeneration.get()) return@withContext
                 _accounts.value = accounts
                 _activeAccountMid.value = activeAccountMid
                 _playbackAccountMid.value = playbackAccountMid
+                _purposeAccountMids.value = purposes
             }
         }
     }
@@ -179,6 +188,22 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
                 } else {
                     onFailure("播放账号不可用，请重新登录后再试")
                 }
+            }
+        }
+    }
+
+    fun setPurposeAccount(
+        purpose: com.android.purebilibili.core.store.AccountPurpose,
+        mid: Long?, onSuccess: () -> Unit, onFailure: (String) -> Unit,
+    ) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val updated = AccountSessionStore.setPurposeAccountMid(getApplication(), purpose, mid)
+            withContext(Dispatchers.Main.immediate) {
+                if (updated) {
+                    refreshSavedAccounts()
+                    com.android.purebilibili.data.repository.VideoRepository.clearVideoDetailCaches()
+                    onSuccess()
+                } else onFailure("账号不可用，请重新登录后再试")
             }
         }
     }
@@ -538,7 +563,7 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
 
     private suspend fun loadProfileDynamics(generation: Long, mid: Long) {
         val items = profileRequestOrNull {
-            NetworkModule.spaceApi.getSpaceDynamic(mid).data?.items
+            NetworkModule.spaceApi.getSpaceDynamic(mid).data?.items?.let { com.android.purebilibili.data.repository.filterGoodsSpaceDynamics(it) }
         } ?: return
         updateProfileSuccess(generation, mid) { current ->
             current.copy(space = mergeProfileDynamicState(current.space, items))

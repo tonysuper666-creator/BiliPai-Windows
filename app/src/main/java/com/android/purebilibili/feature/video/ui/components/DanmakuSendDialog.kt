@@ -151,7 +151,7 @@ fun DanmakuSendDialog(
 }
 
 @Composable
-private fun DanmakuSendDialogContent(
+internal fun DanmakuSendDialogContent(
     visible: Boolean,
     onDismiss: () -> Unit,
     onSend: (message: String, color: Int, mode: Int, fontSize: Int, attentionCommand: Boolean) -> Unit,
@@ -239,196 +239,205 @@ private fun DanmakuSendDialogContent(
         modifier = modifier
             .heightIn(max = (LocalConfiguration.current.screenHeightDp.dp - topReservedSpace).coerceAtLeast(1.dp))
             .padding(20.dp)
-            .navigationBarsPadding()
-            .verticalScroll(rememberScrollState()),
+            .navigationBarsPadding(),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        // 标题栏
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            AppText(
-                text = "发送弹幕",
-                style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
-                color = AppContentColors.primaryText()
-            )
-
-            AppIconButton(
-                onClick = onDismiss,
-                modifier = Modifier.size(32.dp)
-            ) {
-                AppIcon(
-                    imageVector = Icons.Outlined.Close,
-                    contentDescription = "关闭",
-                    tint = AppContentColors.secondaryText(),
-                    modifier = Modifier.size(20.dp)
-                )
-            }
-        }
-
-        // 输入框
-        com.android.purebilibili.core.ui.components.AppOutlinedTextField(
-            value = text,
-            onValueChange = {
-                if (it.length <= 100) {
-                    text = it
-                    onDraftChange(it, attentionCommandChecked)
-                }
-            },
-            modifier = Modifier.fillMaxWidth().testTag("danmaku_compact_input"),
-            focusRequester = focusRequester,
-            enabled = visible && !isSending,
-            placeholderText = "发个友善的弹幕见证当下",
-            singleLine = true,
-            trailingIcon = {
-                if (text.isNotBlank() && !isSending) {
-                    AppIconButton(onClick = {
-                        text = ""
-                        onDraftChange("", attentionCommandChecked)
-                    }) { AppIcon(Icons.Outlined.Close, contentDescription = "清空") }
-                }
-            },
-            keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(imeAction = androidx.compose.ui.text.input.ImeAction.Send),
-            keyboardActions = androidx.compose.foundation.text.KeyboardActions(onSend = {
-                if (visible && text.isNotBlank() && !isSending) {
-                    onSend(text.trim(), selectedColor, selectedMode, selectedFontSize, attentionCommandChecked)
-                }
-            }),
-        )
-
-        // 字数统计
-        AppText(
-            text = "${text.length}/100",
-            style = MaterialTheme.typography.labelSmall,
-            color = if (text.length > 90) {
-                AppContentColors.error()
-            } else {
-                AppContentColors.secondaryText()
-            },
-            modifier = Modifier.fillMaxWidth(),
-            textAlign = TextAlign.End
-        )
-
-        AppTextButton(
-            onClick = { showSettings = !showSettings },
-            modifier = Modifier.align(Alignment.End)
-        ) {
-            AppText(if (showSettings) "收起弹幕设置" else "颜色、位置与大小")
-        }
-
-        if (showSettings) {
-        // 颜色选择
-        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            AppText(
-                text = "颜色",
-                style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Medium),
-                color = AppContentColors.primaryText()
-            )
-
-            DanmakuColorOptions(
-                selectedColor = selectedColor,
-                onColorSelected = { selectedColor = it },
-                onCustomColor = { showCustomColorPicker = true },
-            )
-        }
-
-        if (attentionCommandAvailable) Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .clip(AppShapes.container(ContainerLevel.Card))
-                .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.38f))
-                .clickable {
-                    attentionCommandChecked = !attentionCommandChecked
-                    onDraftChange(text, attentionCommandChecked)
-                }
-                .padding(horizontal = 12.dp, vertical = 8.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            AppCheckbox(
-                checked = attentionCommandChecked,
-                onCheckedChange = {
-                    attentionCommandChecked = it
-                    onDraftChange(text, it)
-                }
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-            Column(modifier = Modifier.weight(1f)) {
-                AppText(
-                    text = "内嵌关注按钮",
-                    style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Medium),
-                    color = AppContentColors.primaryText()
-                )
-                AppText(
-                    text = "发送一个视频内嵌关注按钮",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = AppContentColors.secondaryText()
-                )
-            }
-        }
-
-        // 位置和大小选择 - 垂直布局避免拥挤
+        // 输入和选项按剩余高度滚动；发送按钮独立固定，键盘展开后仍可操作。
         Column(
-            modifier = Modifier.fillMaxWidth(),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
+            modifier = Modifier
+                .weight(1f, fill = false)
+                .fillMaxWidth()
+                .verticalScroll(rememberScrollState()),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            // 位置选择
-            Column(
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+            // 标题栏
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 AppText(
-                    text = "位置",
+                    text = "发送弹幕",
+                    style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
+                    color = AppContentColors.primaryText()
+                )
+
+                AppIconButton(
+                    onClick = onDismiss,
+                    modifier = Modifier.size(32.dp)
+                ) {
+                    AppIcon(
+                        imageVector = Icons.Outlined.Close,
+                        contentDescription = "关闭",
+                        tint = AppContentColors.secondaryText(),
+                        modifier = Modifier.size(20.dp)
+                    )
+                }
+            }
+
+            // 输入框
+            com.android.purebilibili.core.ui.components.AppOutlinedTextField(
+                value = text,
+                onValueChange = {
+                    if (it.length <= 100) {
+                        text = it
+                        onDraftChange(it, attentionCommandChecked)
+                    }
+                },
+                modifier = Modifier.fillMaxWidth().testTag("danmaku_compact_input"),
+                focusRequester = focusRequester,
+                enabled = visible && !isSending,
+                placeholderText = "发个友善的弹幕见证当下",
+                singleLine = true,
+                trailingIcon = {
+                    if (text.isNotBlank() && !isSending) {
+                        AppIconButton(onClick = {
+                            text = ""
+                            onDraftChange("", attentionCommandChecked)
+                        }) { AppIcon(Icons.Outlined.Close, contentDescription = "清空") }
+                    }
+                },
+                keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(imeAction = androidx.compose.ui.text.input.ImeAction.Send),
+                keyboardActions = androidx.compose.foundation.text.KeyboardActions(onSend = {
+                    if (visible && text.isNotBlank() && !isSending) {
+                        onSend(text.trim(), selectedColor, selectedMode, selectedFontSize, attentionCommandChecked)
+                    }
+                }),
+            )
+
+            // 字数统计
+            AppText(
+                text = "${text.length}/100",
+                style = MaterialTheme.typography.labelSmall,
+                color = if (text.length > 90) {
+                    AppContentColors.error()
+                } else {
+                    AppContentColors.secondaryText()
+                },
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = TextAlign.End
+            )
+
+            AppTextButton(
+                onClick = { showSettings = !showSettings },
+                modifier = Modifier.align(Alignment.End)
+            ) {
+                AppText(if (showSettings) "收起弹幕设置" else "颜色、位置与大小")
+            }
+
+            if (showSettings) {
+            // 颜色选择
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                AppText(
+                    text = "颜色",
                     style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Medium),
                     color = AppContentColors.primaryText()
                 )
 
-                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    modeOptions.forEach { (modeValue, label) ->
-                        val isSelected = selectedMode == modeValue
-                        AppFilterChip(
-                            selected = isSelected,
-                            onClick = { selectedMode = modeValue },
-                            label = {
-                                AppText(
-                                    text = label,
-                                    style = MaterialTheme.typography.labelMedium,
-                                    maxLines = 1
-                                )
-                            }
-                        )
-                    }
-                }
-            }
-
-            // 大小选择
-            Column(
-                verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                AppText(
-                    text = "大小",
-                    style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Medium),
-                    color = AppContentColors.primaryText()
+                DanmakuColorOptions(
+                    selectedColor = selectedColor,
+                    onColorSelected = { selectedColor = it },
+                    onCustomColor = { showCustomColorPicker = true },
                 )
+            }
 
-                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    fontSizeOptions.forEach { (sizeValue, label) ->
-                        val isSelected = selectedFontSize == sizeValue
-                        AppFilterChip(
-                            selected = isSelected,
-                            onClick = { selectedFontSize = sizeValue },
-                            label = {
-                                AppText(
-                                    text = label,
-                                    style = MaterialTheme.typography.labelMedium,
-                                    maxLines = 1
-                                )
-                            }
-                        )
+            if (attentionCommandAvailable) Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(AppShapes.container(ContainerLevel.Card))
+                    .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.38f))
+                    .clickable {
+                        attentionCommandChecked = !attentionCommandChecked
+                        onDraftChange(text, attentionCommandChecked)
+                    }
+                    .padding(horizontal = 12.dp, vertical = 8.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                AppCheckbox(
+                    checked = attentionCommandChecked,
+                    onCheckedChange = {
+                        attentionCommandChecked = it
+                        onDraftChange(text, it)
+                    }
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Column(modifier = Modifier.weight(1f)) {
+                    AppText(
+                        text = "内嵌关注按钮",
+                        style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Medium),
+                        color = AppContentColors.primaryText()
+                    )
+                    AppText(
+                        text = "发送一个视频内嵌关注按钮",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = AppContentColors.secondaryText()
+                    )
+                }
+            }
+
+            // 位置和大小选择 - 垂直布局避免拥挤
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                // 位置选择
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    AppText(
+                        text = "位置",
+                        style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Medium),
+                        color = AppContentColors.primaryText()
+                    )
+
+                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        modeOptions.forEach { (modeValue, label) ->
+                            val isSelected = selectedMode == modeValue
+                            AppFilterChip(
+                                selected = isSelected,
+                                onClick = { selectedMode = modeValue },
+                                label = {
+                                    AppText(
+                                        text = label,
+                                        style = MaterialTheme.typography.labelMedium,
+                                        maxLines = 1
+                                    )
+                                }
+                            )
+                        }
+                    }
+                }
+
+                // 大小选择
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    AppText(
+                        text = "大小",
+                        style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Medium),
+                        color = AppContentColors.primaryText()
+                    )
+
+                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        fontSizeOptions.forEach { (sizeValue, label) ->
+                            val isSelected = selectedFontSize == sizeValue
+                            AppFilterChip(
+                                selected = isSelected,
+                                onClick = { selectedFontSize = sizeValue },
+                                label = {
+                                    AppText(
+                                        text = label,
+                                        style = MaterialTheme.typography.labelMedium,
+                                        maxLines = 1
+                                    )
+                                }
+                            )
+                        }
                     }
                 }
             }
-        }
+            }
+
         }
 
         // 发送按钮
@@ -446,7 +455,8 @@ private fun DanmakuSendDialogContent(
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .height(48.dp),
+                .height(48.dp)
+                .testTag("danmaku_compact_send"),
             enabled = visible && text.isNotBlank() && !isSending,
             // 玻璃面板的主操作读取语义主题色，禁用态保持中性；原生按钮继续使用各自默认色板。
             colors = if (com.android.purebilibili.core.ui.LocalAppThemeConfig.current.liquidGlassEnabled) {

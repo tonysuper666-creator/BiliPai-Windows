@@ -536,19 +536,6 @@ internal fun resolveVideoDetailFullscreenMode(
     return isLandscape
 }
 
-internal fun shouldApplyStartFullscreenOrientationRequest(
-    startInFullscreen: Boolean,
-    isOrientationDrivenFullscreen: Boolean,
-    isLandscape: Boolean
-): Boolean {
-    if (!startInFullscreen) return false
-    if (!isOrientationDrivenFullscreen) return false
-    if (isLandscape) return false
-    // 系统小窗和分屏也应像普通手机全屏一样请求横屏；可调整窗口的实际边界
-    // 由 Android/ROM 根据 Activity 的方向请求处理。
-    return true
-}
-
 internal fun resolvePhoneFullscreenEnterOrientation(
     fullscreenMode: com.android.purebilibili.core.store.FullscreenMode,
     isVerticalVideo: Boolean,
@@ -771,6 +758,7 @@ internal fun resolvePhoneAutoRotateRequestedOrientation(
     isCurrentlyLandscape: Boolean,
     useExactLandscapeSide: Boolean = true,
     allowPortraitTransitions: Boolean = true,
+    landscapeHoldEnabled: Boolean = false,
     portraitSnapDegrees: Int = 25,
     landscapeEnterMinDegrees: Int = 60,
     landscapeEnterMaxDegrees: Int = 120,
@@ -792,15 +780,15 @@ internal fun resolvePhoneAutoRotateRequestedOrientation(
         orientationDegrees = normalized,
         minLeftSideTopDegrees = landscapeEnterMinDegrees,
         maxLeftSideTopDegrees = landscapeEnterMaxDegrees,
-        minRightSideTopDegrees = 240,
-        maxRightSideTopDegrees = 300
+        minRightSideTopDegrees = landscapeEnterMinDegrees + 180,
+        maxRightSideTopDegrees = landscapeEnterMaxDegrees + 180
     )
     val exactLandscapeKeep = resolveExactLandscapeOrientation(
         orientationDegrees = normalized,
         minLeftSideTopDegrees = landscapeKeepMinDegrees,
         maxLeftSideTopDegrees = landscapeKeepMaxDegrees,
-        minRightSideTopDegrees = 220,
-        maxRightSideTopDegrees = 320
+        minRightSideTopDegrees = landscapeKeepMinDegrees + 180,
+        maxRightSideTopDegrees = landscapeKeepMaxDegrees + 180
     )
 
     return when {
@@ -814,7 +802,8 @@ internal fun resolvePhoneAutoRotateRequestedOrientation(
         // Already landscape: only 0° exits to portrait. 180° is the midpoint of a
         // landscape-to-landscape flip; treating it as portrait makes cover screens
         // recognize the other side, then snap back to the original 90° landscape.
-        isCurrentlyLandscape && uprightPortraitStable && allowPortraitTransitions ->
+        // 横屏保持开启时不因倾回竖屏退出横屏，仅手动退出（manualPortraitHold）返回竖屏。
+        isCurrentlyLandscape && uprightPortraitStable && allowPortraitTransitions && !landscapeHoldEnabled ->
             ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         !isCurrentlyLandscape && portraitStable && allowPortraitTransitions ->
             ActivityInfo.SCREEN_ORIENTATION_PORTRAIT

@@ -43,7 +43,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.pager.PagerState
-import androidx.compose.foundation.pager.HorizontalPager
+import com.android.purebilibili.core.ui.components.AppHorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -223,7 +223,8 @@ internal fun BangumiHubContent(
         BangumiHubPage.HOME -> {
             val channels = BangumiChannel.entries
             val pager = channelPagerState
-            HorizontalPager(
+            // 频道滑动复用主题手势策略；各频道的列表状态仍按频道身份独立保存。
+            AppHorizontalPager(
                 state = pager,
                 modifier = Modifier.fillMaxSize(),
                 key = { channels[it].name },
@@ -840,49 +841,81 @@ private fun BangumiFollowContent(
                         message = "长按条目可进入多选管理",
                     )
                 } else {
-                    LazyVerticalGrid(
-                        columns = GridCells.Adaptive(310.dp),
-                        state = gridState,
-                        contentPadding = PaddingValues(
-                            start = 12.dp,
-                            top = if (showStatusTabs) 4.dp else listTopPadding + 4.dp,
-                            end = 12.dp,
-                            bottom = if (selectionMode) {
-                                listBottomPadding + 88.dp
-                            } else {
-                                listBottomPadding
-                            },
-                        ),
-                        horizontalArrangement = Arrangement.spacedBy(12.dp),
-                        verticalArrangement = Arrangement.spacedBy(12.dp),
-                    ) {
-                        itemsIndexed(
-                            state.content.items,
-                            key = { index, item -> resolveMyFollowItemLazyKey(index, item) },
-                        ) { index, item ->
-                            FollowInfoCard(
-                                item = item,
-                                selected = item.seasonId in state.selectedIds,
-                                selectionMode = selectionMode,
-                                currentStatus = status,
-                                channel = channel,
-                                onClick = {
-                                    if (selectionMode) onToggleSelection(item.seasonId)
-                                    else onBangumiClick(item.seasonId)
-                                },
-                                onLongClick = { onToggleSelection(item.seasonId) },
-                                onPlay = { onPlayFollow(item.seasonId) },
-                                onMove = { onMoveSingle(item.seasonId, it) },
-                                onUnfollow = { onUnfollowSingle(item.seasonId) },
-                            )
-                            if (index == state.content.items.lastIndex && state.content.hasMore) {
-                                LaunchedEffect(item.seasonId, state.content.page) { onLoadMore() }
-                            }
+                    BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
+                        val density = androidx.compose.ui.platform.LocalDensity.current
+                        val (columns, posterWidth) = with(density) {
+                            val contentWidthPx = (maxWidth.roundToPx() - 24.dp.roundToPx()).coerceAtLeast(0)
+                            val spacingPx = 12.dp.roundToPx()
+                            val count = ((contentWidthPx + spacingPx) / (310.dp.roundToPx() + spacingPx)).coerceAtLeast(1)
+                            val cardWidth = ((contentWidthPx - spacingPx * (count - 1)).coerceAtLeast(0) / count).toDp()
+                            count to (cardWidth * 0.30f).coerceIn(88.dp, 112.dp)
                         }
-                        if (state.content.isLoadingMore) item(span = { GridItemSpan(maxLineSpan) }) { InlineLoading() }
-                        if (state.content.error != null && state.content.items.isNotEmpty()) item(
-                            span = { GridItemSpan(maxLineSpan) },
-                        ) { InlineError(state.content.error, onLoadMore) }
+                        val alignRows = columns > 1 && !com.android.purebilibili.core.ui.LocalFullVideoCardContentVisible.current
+                        LazyVerticalGrid(
+                            columns = GridCells.Fixed(columns),
+                            state = gridState,
+                            contentPadding = PaddingValues(
+                                start = 12.dp,
+                                top = if (showStatusTabs) 4.dp else listTopPadding + 4.dp,
+                                end = 12.dp,
+                                bottom = if (selectionMode) {
+                                    listBottomPadding + 88.dp
+                                } else {
+                                    listBottomPadding
+                                },
+                            ),
+                            horizontalArrangement = Arrangement.spacedBy(12.dp),
+                            verticalArrangement = Arrangement.spacedBy(12.dp),
+                        ) {
+                            val followKeys = state.content.items.mapIndexed { index, item -> resolveMyFollowItemLazyKey(index, item) }
+                            val renderFollow: @Composable (Int, Modifier) -> Unit = { index, cardModifier ->
+                                val item = state.content.items[index]
+                                FollowInfoCard(
+                                    item = item,
+                                    modifier = cardModifier,
+                                    posterWidth = posterWidth,
+                                    matchRowHeight = alignRows,
+                                    selected = item.seasonId in state.selectedIds,
+                                    selectionMode = selectionMode,
+                                    currentStatus = status,
+                                    channel = channel,
+                                    onClick = {
+                                        if (selectionMode) onToggleSelection(item.seasonId)
+                                        else onBangumiClick(item.seasonId)
+                                    },
+                                    onLongClick = { onToggleSelection(item.seasonId) },
+                                    onPlay = { onPlayFollow(item.seasonId) },
+                                    onMove = { onMoveSingle(item.seasonId, it) },
+                                    onUnfollow = { onUnfollowSingle(item.seasonId) },
+                                )
+                                if (index == state.content.items.lastIndex && state.content.hasMore) {
+                                    LaunchedEffect(item.seasonId, state.content.page) { onLoadMore() }
+                                }
+                            }
+                            if (!alignRows) {
+                                itemsIndexed(state.content.items, key = { index, _ -> followKeys[index] }) { index, _ ->
+                                    renderFollow(index, Modifier)
+                                }
+                            } else {
+                                com.android.purebilibili.feature.home.resolveHomeFeedAlignedRows(state.content.items.size, columns)
+                                    .forEach { row ->
+                                        item(key = "follow_row_${followKeys[row.first]}", span = { GridItemSpan(maxLineSpan) }) {
+                                            com.android.purebilibili.feature.home.HomeAlignedVideoRow(
+                                                indices = row,
+                                                itemKeys = followKeys,
+                                                columns = columns,
+                                                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                                                modifier = Modifier.fillMaxWidth(),
+                                                content = renderFollow,
+                                            )
+                                        }
+                                    }
+                            }
+                            if (state.content.isLoadingMore) item(span = { GridItemSpan(maxLineSpan) }) { InlineLoading() }
+                            if (state.content.error != null && state.content.items.isNotEmpty()) item(
+                                span = { GridItemSpan(maxLineSpan) },
+                            ) { InlineError(state.content.error, onLoadMore) }
+                        }
                     }
                 }
             }
@@ -1052,7 +1085,7 @@ private fun PosterGridCard(
     onClick: () -> Unit,
     onLongClick: () -> Unit,
 ) {
-    val transition = rememberBangumiCardTransition(onClick)
+    val transition = rememberBangumiCardTransition(item.seasonId, onClick = onClick)
     // Only the poster is rounded; keep the title block square for cleaner media rows.
     Column(
         modifier = transition.modifier.combinedClickable(
@@ -1074,15 +1107,14 @@ private fun PosterGridCard(
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
         )
-        item.newEp?.indexShow?.ifBlank { item.indexShow }?.takeIf { it.isNotBlank() }?.let { subtitle ->
-            AppText(
-                text = subtitle,
-                style = MaterialTheme.typography.bodySmall,
-                color = AppContentColors.secondaryText(),
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-            )
-        }
+        AppText(
+            text = item.newEp?.indexShow?.ifBlank { item.indexShow }.orEmpty(),
+            style = MaterialTheme.typography.bodySmall,
+            color = AppContentColors.secondaryText(),
+            minLines = 1,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+        )
     }
 }
 
@@ -1093,7 +1125,7 @@ private fun SearchPosterCard(
     onClick: () -> Unit,
     onLongClick: () -> Unit,
 ) {
-    val transition = rememberBangumiCardTransition(onClick)
+    val transition = rememberBangumiCardTransition(item.seasonId, onClick = onClick)
     Column(
         modifier = transition.modifier.combinedClickable(
             interactionSource = remember { MutableInteractionSource() },
@@ -1114,15 +1146,14 @@ private fun SearchPosterCard(
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
         )
-        if (item.indexShow.isNotBlank()) {
-            AppText(
-                text = item.indexShow,
-                style = MaterialTheme.typography.bodySmall,
-                color = AppContentColors.secondaryText(),
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-            )
-        }
+        AppText(
+            text = item.indexShow,
+            style = MaterialTheme.typography.bodySmall,
+            color = AppContentColors.secondaryText(),
+            minLines = 1,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+        )
     }
 }
 
@@ -1170,7 +1201,7 @@ private fun FollowPosterCard(
     onPlay: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val transition = rememberBangumiCardTransition(onClick)
+    val transition = rememberBangumiCardTransition(item.seasonId, onClick = onClick)
     Column(
         modifier = modifier.then(transition.modifier).combinedClickable(
             interactionSource = remember { MutableInteractionSource() },
@@ -1211,7 +1242,7 @@ private fun FollowPosterCard(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun TimelineEpisodeCard(episode: TimelineEpisode, onClick: () -> Unit) {
-    val transition = rememberBangumiCardTransition(onClick)
+    val transition = rememberBangumiCardTransition(episode.seasonId, episode.episodeId, onClick)
     Column(
         modifier = Modifier
             .then(transition.modifier)
@@ -1251,6 +1282,9 @@ private fun TimelineEpisodeCard(episode: TimelineEpisode, onClick: () -> Unit) {
 @Composable
 private fun FollowInfoCard(
     item: FollowBangumiItem,
+    posterWidth: Dp,
+    modifier: Modifier = Modifier,
+    matchRowHeight: Boolean = false,
     selected: Boolean,
     selectionMode: Boolean,
     currentStatus: BangumiFollowStatus,
@@ -1261,7 +1295,7 @@ private fun FollowInfoCard(
     onMove: (BangumiFollowStatus) -> Unit,
     onUnfollow: () -> Unit,
 ) {
-    val transition = rememberBangumiCardTransition(onClick)
+    val transition = rememberBangumiCardTransition(item.seasonId, onClick = onClick)
     val cardSurface = wallpaperMediaCardSurface(
         containerColor = if (selected) AppSurfaceTokens.secondaryContainer() else AppSurfaceTokens.cardContainer(),
         shape = AppShapes.container(ContainerLevel.Card),
@@ -1270,7 +1304,7 @@ private fun FollowInfoCard(
     AppSurface(
         color = cardSurface.containerColor,
         shape = AppShapes.container(ContainerLevel.Card),
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .heightIn(min = 150.dp)
             .then(transition.modifier)
@@ -1278,14 +1312,21 @@ private fun FollowInfoCard(
             .combinedClickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = if (transition.enabled) null else LocalIndication.current,
-                onClick = transition.onClick,
+                onClick = if (selectionMode) onClick else transition.onClick,
                 onLongClick = onLongClick,
             ),
     ) {
-        BoxWithConstraints(Modifier.fillMaxWidth().clip(AppShapes.container(ContainerLevel.Card))) {
-            val posterWidth = (maxWidth * 0.30f).coerceIn(88.dp, 112.dp)
+        Box(
+            Modifier
+                .fillMaxWidth()
+                .then(if (matchRowHeight) Modifier.fillMaxHeight() else Modifier)
+                .clip(AppShapes.container(ContainerLevel.Card))
+        ) {
             Row(
-                modifier = Modifier.fillMaxWidth().height(IntrinsicSize.Min),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .then(if (matchRowHeight) Modifier.fillMaxHeight() else Modifier)
+                    .height(IntrinsicSize.Min),
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
             ) {
                 Box(modifier = Modifier.width(posterWidth).fillMaxHeight()) {

@@ -115,6 +115,7 @@ fun BangumiCard(
         AppText(
             text = item.title,
             modifier = Modifier.padding(top = 6.dp),
+            minLines = 2,
             maxLines = 2,
             overflow = TextOverflow.Ellipsis,
             style = MaterialTheme.typography.bodySmall
@@ -333,7 +334,11 @@ fun BangumiBadge(
     modifier: Modifier = Modifier,
     containerColor: Color = AppContentColors.accent()
 ) {
-    val brandColors = com.android.purebilibili.feature.bangumi.bangumiBrandBadgeColors(text)
+    val brandColors = when (text.trim()) {
+        "限免", "免费" -> com.android.purebilibili.feature.bangumi.bangumiBrandBadgeColors(text)
+        "预告" -> com.android.purebilibili.core.theme.AdaptiveAccentColors(Color.Black.copy(alpha = 0.54f), Color.White)
+        else -> null
+    }
     val colorScheme = MaterialTheme.colorScheme
     val badgeColors = remember(
         containerColor,

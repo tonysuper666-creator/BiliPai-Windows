@@ -5,9 +5,29 @@ internal fun resolveLyricsDisplayDocument(
     document: LyricDocument?,
     showTranslations: Boolean,
 ): LyricDocument? {
-    if (document == null || showTranslations) return document
-    return document.copy(lines = document.lines.map {
-        it.copy(translations = emptyList(), romanization = null)
+    if (document == null) return null
+    return document.copy(lines = document.lines.map { line ->
+        // 字幕来源可能用音符包裹歌词；只处理首尾装饰，保留正文和原始数据。
+        val trimmedText = line.text.trim()
+        val startDecorated = trimmedText.startsWith('♪') || trimmedText.startsWith('♫')
+        val endDecorated = trimmedText.endsWith('♪') || trimmedText.endsWith('♫')
+        val text = trimmedText.trim('♪', '♫', ' ', '\t')
+        val spans = if (text.isNotEmpty() && (startDecorated || endDecorated)) {
+            val first = line.spans.indexOfFirst { it.text.isNotBlank() }
+            val last = line.spans.indexOfLast { it.text.isNotBlank() }
+            line.spans.mapIndexedNotNull { index, span ->
+                var spanText = span.text
+                if (index == first && startDecorated) spanText = spanText.trimStart('♪', '♫', ' ', '\t')
+                if (index == last && endDecorated) spanText = spanText.trimEnd('♪', '♫', ' ', '\t')
+                span.copy(text = spanText).takeIf { it.text.isNotEmpty() }
+            }
+        } else line.spans
+        line.copy(
+            text = if (text.isNotEmpty() && (startDecorated || endDecorated)) text else line.text,
+            spans = spans,
+            translations = if (showTranslations) line.translations else emptyList(),
+            romanization = if (showTranslations) line.romanization else null,
+        )
     })
 }
 

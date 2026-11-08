@@ -232,7 +232,16 @@ import com.bilipai.desktop.ui.DesktopLiquidSampleBitmap as Bitmap
 import com.bilipai.desktop.ui.DesktopLiquidSampleRect as Rect
 import com.bilipai.desktop.ui.LocalDesktopLiquidReadabilityEnvironment
 import com.bilipai.desktop.ui.DesktopLiquidReadabilityEnvironment
-''',transforms=[('val context = LocalContext.current','val context = LocalDesktopLiquidReadabilityEnvironment.current'),('val activity = remember(context) { context.findLiquidGlassHostActivity() }','val activity = context'),('Build.VERSION.SDK_INT < Build.VERSION_CODES.O','!activity.isSupported'),('val decorView = activity.window.decorView','val decorView = activity')])
+''',transforms=[('val context = LocalContext.current','val context = LocalDesktopLiquidReadabilityEnvironment.current'),('val activity = remember(context) { context.findLiquidGlassHostActivity() }','val activity = context'),('Build.VERSION.SDK_INT < Build.VERSION_CODES.O','!activity.isSupported'),('val decorView = activity.window.decorView','val decorView = activity'),
+  # Keep the desktop coroutine sampler and its cached tone while visual work is paused.
+  ('    enabled: Boolean,\n): LiquidGlassAdaptiveReadabilityState',
+   '    enabled: Boolean,\n    samplingAllowed: Boolean = true,\n): LiquidGlassAdaptiveReadabilityState'),
+  ('    androidx.compose.runtime.LaunchedEffect(enabled, activity, lifecycle, state) {',
+   '    val visualActive = com.android.purebilibili.core.ui.rememberVisualWorkActive() && samplingAllowed\n    androidx.compose.runtime.LaunchedEffect(enabled, activity, lifecycle, state, visualActive) {'),
+  ('        lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {',
+   '        if (!visualActive) return@LaunchedEffect\n        lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {'),
+  ('                    }?.let(state::updateLuminance)',
+   '                    }.also { currentCoroutineContext().ensureActive() }?.let(state::updateLuminance)')])
  adaptive_path=HERE/'generated/com/android/purebilibili/feature/home/components/LiquidGlassAdaptiveReadability.kt'
  write(adaptive_path,read(adaptive_path)+'''\n/** Windows capture only; averaging/hysteresis above are the original bodies. */
 private suspend fun sampleWindowLuminance(activity: DesktopLiquidReadabilityEnvironment, sourceBounds: Rect): Float? =

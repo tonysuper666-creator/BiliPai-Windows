@@ -5,6 +5,8 @@ import com.android.purebilibili.core.network.NetworkModule
 import com.android.purebilibili.core.network.WbiKeyManager
 import com.android.purebilibili.core.network.socket.LiveDanmakuClient
 import com.android.purebilibili.data.repository.SubtitleContentRepository
+import com.android.purebilibili.feature.search.ArticleNavigationTarget
+import com.android.purebilibili.feature.search.ARTICLE_OPUS_ID_MIN_VALUE
 import com.android.purebilibili.feature.search.resolveArticleNavigationTarget
 import com.android.purebilibili.feature.search.resolveArticleWebUrl
 import com.bilipai.desktop.compat.UnsupportedDesktopCapability
@@ -77,8 +79,15 @@ class DesktopUpstreamOwnerTest {
         for (client in listOf(NetworkModule.okHttpClient, NetworkModule.guestOkHttpClient, NetworkModule.playbackOkHttpClient,
             NetworkModule.okHttpClient.newBuilder().followRedirects(false).build()))
             assertFailsWith<UnsupportedDesktopCapability> { client.newCall(request).execute() }
-        // The runCatching of the article redirect resolver no longer turns a missing owner into a fallback.
-        assertFailsWith<UnsupportedDesktopCapability> { runBlocking { resolveArticleNavigationTarget(42) } }
+        // v0.7.8 native navigation resolves IDs locally, without a request or an owner.
+        assertEquals(ArticleNavigationTarget.NativeArticle(42), resolveArticleNavigationTarget(42))
+        assertEquals(ArticleNavigationTarget.NativeArticle(ARTICLE_OPUS_ID_MIN_VALUE - 1),
+            resolveArticleNavigationTarget(ARTICLE_OPUS_ID_MIN_VALUE - 1))
+        assertEquals(ArticleNavigationTarget.NativeDynamic(ARTICLE_OPUS_ID_MIN_VALUE.toString()),
+            resolveArticleNavigationTarget(ARTICLE_OPUS_ID_MIN_VALUE))
+        assertNull(resolveArticleNavigationTarget(0))
+        assertTrue(fixture.seen.isEmpty(), "local navigation must not send a request")
+        // The real redirect request still fails before I/O; runCatching cannot turn a missing owner into a fallback.
         assertFailsWith<UnsupportedDesktopCapability> { runBlocking { resolveArticleWebUrl(42) } }
         assertFailsWith<UnsupportedDesktopCapability> {
             DesktopUpstreamCalls.webSocket.newWebSocket(Request.Builder().url("https://broadcast.chat.bilibili.com/sub").build(), object : WebSocketListener() {})

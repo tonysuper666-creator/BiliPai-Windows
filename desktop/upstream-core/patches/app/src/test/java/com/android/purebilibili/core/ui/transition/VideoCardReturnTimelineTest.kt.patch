@@ -1,11 +1,9 @@
-Upstream-source-sha256: 2f7d242f08b9ba07fe567a03f98c0c1509b182fdf12789740e43feaee8c9e71a
+Upstream-source-sha256: bf63cd560886c58a9be27d82d80a6198178297392df549f413a38f80afce0ba6
 Reason: 两条上游契约测试的输入落后于生产，生产不动。
-(1) Reduced 档 alpha 就是 depth（motionTier == Reduced -> depth，自 7a6c881ac 起如此），期望 0.5 需要 0.5 的输入；0.1f 是后来改 returnTransform 时漏改的残留，恢复为 0.5f，alpha/平移/scale/140ms 断言不变。
-(2) fafb6d26f 把 VIDEO_CARD_RETURN_LIVE_CONTENT_YIELD 窗口移到 0.82–0.98，旧输入 0.6/0.45 的 settle=0.4/0.55 都在窗口前，两边 alpha 都是 1。改为由 YIELD_START/END 派生窗口内 1/4、3/4 两点，保留 withDepth < withoutDepth 与前面 0.7/0.2 的 settle 断言，另加 withoutDepth < 1 防止再次落到窗口外。容差不变，不跳测试。
 
 --- a/app/src/test/java/com/android/purebilibili/core/ui/transition/VideoCardReturnTimelineTest.kt
 +++ b/app/src/test/java/com/android/purebilibili/core/ui/transition/VideoCardReturnTimelineTest.kt
-@@ -720,8 +720,9 @@ class VideoCardReturnTimelineTest {
+@@ -740,8 +740,9 @@
          // Mid-handoff: secondary has started shrinking toward card-info size.
          assertTrue(returnTransform.scale in VIDEO_CARD_SECONDARY_YIELD_MIN_SCALE..0.999f)
  
@@ -16,7 +14,7 @@ Reason: 两条上游契约测试的输入落后于生产，生产不动。
              phase = VideoCardTransitionBackgroundPhase.OPENING,
              isReturnGestureInProgress = false,
              motionTier = MotionTier.Reduced,
-@@ -1024,13 +1025,21 @@ class VideoCardReturnTimelineTest {
+@@ -1044,13 +1045,21 @@
              0.001f,
          )
          // 两路 settle 都进入整卡 chrome 窗口时，景深更靠后应更早让位。

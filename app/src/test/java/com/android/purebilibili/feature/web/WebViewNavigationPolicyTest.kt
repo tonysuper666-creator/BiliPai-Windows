@@ -1,11 +1,78 @@
 package com.android.purebilibili.feature.web
 
 import com.android.purebilibili.core.util.BilibiliNavigationTarget
+import com.android.purebilibili.core.util.hasCommentLocation
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
+import kotlin.test.assertTrue
 
 class WebViewNavigationPolicyTest {
+    @Test
+    fun spaceSubpagesKeepTheirWebPathWhileRootProfilesStillOpenNatively() {
+        listOf("upload/video", "upower/rank", "favlist").forEach { path ->
+            listOf(false, true).forEach { gesture ->
+                assertEquals(WebViewNavigationAction.AllowWebLoad,
+                    resolveWebViewNavigationAction("https://space.bilibili.com/42/$path", gesture))
+            }
+        }
+        assertEquals(WebViewNavigationAction.DispatchTarget(BilibiliNavigationTarget.Space(42L)),
+            resolveWebViewNavigationAction("https://space.bilibili.com/42", true))
+        assertIs<WebViewNavigationAction.OpenExternal>(resolveWebViewNavigationAction("https://space.bilibili.com.example.org/42/upload/video", true))
+    }
+
+    @Test
+    fun dynamicPreviewLinksRetainCommentIntentForHostDispatchInsteadOfIdOnlyCallback() {
+        listOf(
+            "bilibili://following/detail/123?tab=comment" to
+                BilibiliNavigationTarget.Dynamic("123", openComments = true),
+            "https://t.bilibili.com/123?tab=comment" to
+                BilibiliNavigationTarget.Dynamic("123", openComments = true),
+            "bilibili://following/detail/123?tab=comment&root=456&comment_id=789" to
+                BilibiliNavigationTarget.Dynamic("123", 456L, 789L, openComments = true),
+        ).forEach { (link, expected) ->
+            val action = assertIs<WebViewNavigationAction.DispatchTarget>(
+                resolveWebViewNavigationAction(link, hasUserGesture = true),
+            )
+            assertEquals(expected, action.target, link)
+            assertTrue(action.target.hasCommentLocation, link)
+        }
+    }
+
+    @Test
+    fun gestureCommentDeepLinksDispatchWithoutDroppingLocationInWebConversion() {
+        listOf(
+            "bilibili://video/123?root=456&comment_id=789" to
+                BilibiliNavigationTarget.Video("av123", 456L, 789L),
+            "bilibili://article/123?root=456#reply789" to
+                BilibiliNavigationTarget.Article(123L, 456L, 789L),
+            "bilibili://comment/detail/47/999/456/789" to
+                BilibiliNavigationTarget.CommentDetail(999L, 456L, 789L, 47, ""),
+        ).forEach { (link, target) ->
+            assertEquals(
+                WebViewNavigationAction.DispatchTarget(target),
+                resolveWebViewNavigationAction(link, hasUserGesture = true),
+                link,
+            )
+            assertEquals(
+                WebViewNavigationAction.Block,
+                resolveWebViewNavigationAction(link, hasUserGesture = false),
+                link,
+            )
+        }
+    }
+
+    @Test
+    fun webCommentLinksKeepLocationForHostCommentLinkDispatch() {
+        assertEquals(
+            WebViewNavigationAction.DispatchTarget(BilibiliNavigationTarget.Video("BV1xx411c7mD", 456L, 789L)),
+            resolveWebViewNavigationAction(
+                "https://www.bilibili.com/video/BV1xx411c7mD?root=456#reply789",
+                hasUserGesture = true,
+            ),
+        )
+    }
+
 
     @Test
     fun shoppingRedirectOpensExternallyWithoutUserGesture() {

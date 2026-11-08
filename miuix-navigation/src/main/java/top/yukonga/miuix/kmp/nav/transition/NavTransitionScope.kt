@@ -108,6 +108,9 @@ interface NavTransitionScope {
     /** Classification of the stack change that produced this transition. */
     val change: NavChange
 
+    /** 栈已移除此 entry，包括退场补间尚未启动的准备帧。 */
+    val isRemoving: Boolean get() = false
+
     /** Predictive-back gesture context, or `null` when the transition is not driven by a gesture. */
     val gesture: NavGesture?
 

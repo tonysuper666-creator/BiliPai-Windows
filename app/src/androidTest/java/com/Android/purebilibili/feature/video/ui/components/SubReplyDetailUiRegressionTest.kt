@@ -9,6 +9,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.hasAnyAncestor
 import androidx.compose.ui.test.assertIsDisplayed
@@ -24,6 +25,7 @@ import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.hasScrollToIndexAction
+import androidx.compose.ui.test.performScrollToIndex
 import androidx.compose.ui.unit.dp
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.purebilibili.data.model.response.ReplyContent
@@ -75,7 +77,7 @@ class SubReplyDetailUiRegressionTest {
                         isLoadingMore = false,
                         dynamicAuthorMid = 99L,
                         currentUserMid = currentMid.value,
-                        onViewReplies = {},
+                        onViewReplies = { _, _ -> },
                         onDelete = { deleteCount++ },
                         onUserClick = {},
                         onImagePreview = { _, _, _, _ -> },
@@ -213,7 +215,7 @@ class SubReplyDetailUiRegressionTest {
             .performClick()
         composeTestRule.onNodeWithText("对话详情").assertIsDisplayed()
         composeTestRule.onNodeWithText("返回全部回复").performClick()
-        composeTestRule.onNodeWithText("相关回复共3条").assertIsDisplayed()
+        composeTestRule.onNodeWithTag("${SUB_REPLY_DETAIL_CONVERSATION_TAG_PREFIX}203").assertIsDisplayed()
     }
 
     @Test
@@ -445,6 +447,110 @@ class SubReplyDetailUiRegressionTest {
         composeTestRule.runOnIdle { assertEquals(null, replyTarget) }
         composeTestRule.onNodeWithText("回复").performClick()
         composeTestRule.runOnIdle { assertEquals(100L, replyTarget) }
+    }
+
+    @Test
+    fun missingNavigationTarget_isReportedOnlyAfterSuccessfulFinalPage() {
+        val state = mutableStateOf(
+            buildSubReplyState().copy(targetReplyId = 999L, error = "网络连接失败")
+        )
+        var loadMoreCount = 0
+        composeTestRule.setContent {
+            MaterialTheme {
+                SubReplySheet(
+                    state = state.value,
+                    emoteMap = emptyMap(),
+                    onDismiss = {},
+                    onSortModeChange = {},
+                    onRefresh = {},
+                    onLoadMore = { loadMoreCount++ },
+                )
+            }
+        }
+        composeTestRule.onNodeWithText("未找到目标回复，可能已删除或不可见").assertDoesNotExist()
+        composeTestRule.runOnIdle {
+            assertEquals(0, loadMoreCount)
+            state.value = state.value.copy(error = null, isEnd = true)
+        }
+        composeTestRule.onNodeWithText("未找到目标回复，可能已删除或不可见").assertIsDisplayed()
+    }
+
+    @Test
+    fun laterPageTarget_isLocatedOnceAndDoesNotOverrideSubsequentReading() {
+        val initial = buildSubReplyState()
+        val firstPage = (1L..20L).map { id ->
+            initial.items.first().copy(
+                rpid = id + 1000L,
+                content = ReplyContent(message = "分页回复 $id"),
+            )
+        }
+        val target = firstPage.last().copy(
+            rpid = 2000L,
+            content = ReplyContent(message = "需要定位的回复"),
+        )
+        val state = mutableStateOf(initial.copy(items = firstPage.toImmutableList(), targetReplyId = target.rpid))
+        composeTestRule.setContent {
+            MaterialTheme {
+                SubReplySheet(
+                    state = state.value,
+                    emoteMap = emptyMap(),
+                    onDismiss = {},
+                    onSortModeChange = {},
+                    onRefresh = {},
+                    onLoadMore = {
+                        state.value = state.value.copy(
+                            items = (firstPage + target).toImmutableList(),
+                            page = 2,
+                            isEnd = true,
+                        )
+                    },
+                )
+            }
+        }
+        composeTestRule.onNodeWithText("需要定位的回复").assertIsDisplayed()
+        composeTestRule.onNode(
+            hasScrollToIndexAction() and hasAnyAncestor(hasTestTag(SUB_REPLY_DETAIL_LIST_TAG))
+        ).performScrollToIndex(0)
+        composeTestRule.onNodeWithText("root comment with picture").assertIsDisplayed()
+        composeTestRule.runOnIdle {
+            state.value = state.value.copy(isRefreshing = true, isLoading = true)
+        }
+        composeTestRule.runOnIdle {
+            state.value = state.value.copy(isRefreshing = false, isLoading = false)
+        }
+        composeTestRule.onNodeWithText("root comment with picture").assertIsDisplayed()
+        composeTestRule.onNodeWithText("需要定位的回复").assertIsNotDisplayed()
+    }
+
+    @Test
+    fun failedTargetPage_retryLocatesReplyWithoutResettingTheNavigationRequest() {
+        val initial = buildSubReplyState()
+        val replies = (1L..20L).map { id ->
+            initial.items.first().copy(rpid = 1000L + id, content = ReplyContent(message = "已加载回复 $id"))
+        }
+        val target = replies.last().copy(rpid = 2000L, content = ReplyContent(message = "重试后定位的回复"))
+        val state = mutableStateOf(
+            initial.copy(items = replies.toImmutableList(), targetReplyId = target.rpid, error = "目标页读取失败")
+        )
+        composeTestRule.setContent {
+            MaterialTheme {
+                SubReplySheet(
+                    state = state.value,
+                    emoteMap = emptyMap(),
+                    onDismiss = {},
+                    onSortModeChange = {},
+                    onRefresh = { state.value = state.value.copy(targetReplyId = 0L, error = null, isEnd = true) },
+                    onLoadMore = {
+                        state.value = state.value.copy(items = (replies + target).toImmutableList(), error = null, isEnd = true, page = 2)
+                    },
+                )
+            }
+        }
+        composeTestRule.onNode(
+            hasScrollToIndexAction() and hasAnyAncestor(hasTestTag(SUB_REPLY_DETAIL_LIST_TAG))
+        ).performScrollToNode(androidx.compose.ui.test.hasText("目标页读取失败，点击重试"))
+        composeTestRule.onNodeWithText("目标页读取失败，点击重试").performClick()
+        composeTestRule.onNodeWithText("重试后定位的回复").assertIsDisplayed()
     }
 
     private fun buildSubReplyState(): SubReplyUiState {

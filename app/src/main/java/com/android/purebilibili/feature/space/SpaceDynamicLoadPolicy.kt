@@ -370,6 +370,8 @@ internal fun resolveSpaceDynamicCardItem(item: SpaceDynamicItem): DynamicItem {
         // Forward cards render nested content via DynamicCard(ForwardedContent) when orig is set.
         orig = item.orig?.let(::resolveSpaceDynamicCardItem),
         modules = DynamicModules(
+            module_dispute = item.modules.module_dispute,
+            module_interaction = item.modules.module_interaction,
             module_author = item.modules.module_author?.let { author ->
                 DynamicAuthorModule(
                     mid = author.mid,
@@ -385,6 +387,7 @@ internal fun resolveSpaceDynamicCardItem(item: SpaceDynamicItem): DynamicItem {
                 DynamicContentModule(
                     desc = resolveSpaceDynamicContentDesc(content),
                     topic = content.topic,
+                    additional = content.additional,
                     major = content.major?.let { major ->
                         DynamicMajor(
                             type = major.type,

@@ -471,6 +471,7 @@ internal fun PortraitVideoEngagementUi(
         PlayerNativeMenuTheme {
             CoinDialog(
                 visible = state.coinDialogVisible,
+                contentKey = state.subject to state.accountSession,
                 currentCoinCount = state.coinCount,
                 userBalance = state.userCoinBalance,
                 maxCoins = state.coinLimit,

@@ -54,7 +54,7 @@ class BottomBarLayoutPolicyTest {
             labelMode = 0
         )
 
-        assertEquals(312.dp, width)
+        assertEquals(328.dp, width)
     }
 
     @Test
@@ -90,9 +90,9 @@ class BottomBarLayoutPolicyTest {
             labelMode = 2
         )
 
-        assertEquals(328.dp, iconOnlyWidth)
+        assertEquals(344.dp, iconOnlyWidth)
         assertEquals(353.dp, iconAndTextWidth)
-        assertEquals(348.dp, textOnlyWidth)
+        assertEquals(353.dp, textOnlyWidth)
     }
 
     @Test
@@ -112,8 +112,8 @@ class BottomBarLayoutPolicyTest {
             cornerRadius = 36.dp
         )
 
-        assertEquals(232.dp, compactCorners)
-        assertEquals(296.dp, rounderCorners)
+        assertEquals(248.dp, compactCorners)
+        assertEquals(312.dp, rounderCorners)
     }
 
     @Test
@@ -145,7 +145,7 @@ class BottomBarLayoutPolicyTest {
             searchExpanded = false
         )
 
-        assertEquals(312.dp, layout.dockWidth)
+        assertEquals(328.dp, layout.dockWidth)
         assertEquals(56.dp, layout.searchWidth)
         assertEquals(8.dp, layout.gap)
         assertEquals(0.dp, layout.minimumIndicatorWidth)
@@ -164,11 +164,11 @@ class BottomBarLayoutPolicyTest {
 
         assertEquals(329.dp, layout.dockWidth)
         assertEquals(0.dp, layout.minimumIndicatorWidth)
-        assertEquals(69.dp, layout.indicatorReferenceWidth)
+        assertEquals(65.8.dp, layout.indicatorReferenceWidth)
         assertTrue(
             resolveBiliPaiBottomBarItemSlotWidth(
                 dockWidth = layout.dockWidth,
-                horizontalPadding = 4.dp,
+                horizontalPadding = 12.dp,
                 itemCount = 5,
             ) >= 48.dp
         )
@@ -187,7 +187,7 @@ class BottomBarLayoutPolicyTest {
         assertTrue(
             resolveBiliPaiBottomBarItemSlotWidth(
                 dockWidth = layout.dockWidth,
-                horizontalPadding = 4.dp,
+                horizontalPadding = 12.dp,
                 itemCount = 5,
             ) >= 48.dp
         )
@@ -217,7 +217,7 @@ class BottomBarLayoutPolicyTest {
             searchLayoutMode = BottomBarSearchLayoutMode.FULL_DOCK
         )
 
-        assertEquals(312.dp, layout.dockWidth)
+        assertEquals(328.dp, layout.dockWidth)
         assertEquals(56.dp, layout.searchWidth)
         assertEquals(8.dp, layout.gap)
     }
@@ -239,7 +239,7 @@ class BottomBarLayoutPolicyTest {
         )
 
         assertEquals(withoutSearch, withSearch.dockWidth)
-        assertEquals(312.dp, withSearch.dockWidth)
+        assertEquals(328.dp, withSearch.dockWidth)
     }
 
     @Test

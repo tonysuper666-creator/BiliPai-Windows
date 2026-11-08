@@ -561,12 +561,12 @@ internal fun Music3DCoverFlow(
             val pillContainerColor = AppSurfaceTokens.surfaceContainer()
             val pillBorderColor = MaterialTheme.colorScheme.outlineVariant
             val pillContentColor = AppContentColors.primaryText()
-            // 队列浮层专用玻璃材质；其他唱片架与关闭玻璃时保留原生控制条。
-            val useQueueGlass = queueShelfControls && glassEnabled && miuixBackdrop != null
+            // 玻璃开启时各唱片架共用背景采样；关闭时保留原生控制条。
+            val useControlGlass = glassEnabled && miuixBackdrop != null
 
             AppSurface(
                 shape = CircleShape,
-                color = if (useQueueGlass) Color.Transparent else pillContainerColor,
+                color = if (useControlGlass) Color.Transparent else pillContainerColor,
                 border = BorderStroke(
                     width = 0.8.dp,
                     color = pillBorderColor
@@ -584,7 +584,7 @@ internal fun Music3DCoverFlow(
                         alpha = chromeEntrance
                         translationY = if (reduceMotion) 0f else (1f - chromeEntrance) * 12.dp.toPx()
                     }
-                    .then(if (useQueueGlass) Modifier.biliPaiFloatingDockShell(
+                    .then(if (useControlGlass) Modifier.biliPaiFloatingDockShell(
                         backdrop = miuixBackdrop,
                         containerColor = pillContainerColor,
                         pressProgress = 0f,

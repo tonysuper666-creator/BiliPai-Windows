@@ -221,6 +221,23 @@ class VideoInfoDisplayPolicyTest {
     }
 
     @Test
+    fun publishTimeRow_dropsDuplicatedDateRelativeForCurrentAffairsVideos() {
+        // 发布超过一周后相对值退化为日期形态（如 02-20），与精确时间重复：
+        // 时政强调行仅保留精确时间，不再双段拼接。
+        assertEquals(
+            "发布时间 2024-02-20 04:00",
+            resolvePublishTimeRowText(
+                pubdate = 1_708_401_600L,
+                partitionName = "资讯",
+                title = "例行发布会速报",
+                nowMs = 1_709_265_600_000L,
+                locale = Locale.US,
+                timeZone = TimeZone.getTimeZone("UTC")
+            )
+        )
+    }
+
+    @Test
     fun publishTimeRow_usesRelativeOnlyTextForOrdinaryVideos() {
         assertEquals(
             "发布于 2小时前",

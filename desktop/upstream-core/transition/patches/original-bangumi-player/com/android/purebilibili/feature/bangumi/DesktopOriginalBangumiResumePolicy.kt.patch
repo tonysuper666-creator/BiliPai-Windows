@@ -1,0 +1,12 @@
+--- a/com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiResumePolicy.kt
++++ b/com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiResumePolicy.kt
+@@ -58,2 +58,2 @@
+-    val episodes = detail.episodes.orEmpty()
+-    if (episodes.isEmpty()) return null
++    val episodes = com.bilipai.desktop.ui.desktopBangumiAllEpisodes(detail)
++    if (episodes.isEmpty()) return null
+@@ -38,2 +38,2 @@
+-    val episodes = detail.episodes.orEmpty()
+-    if (episodes.isNotEmpty() && episodes.none { it.id == lastEpId }) return null
++    val episodes = com.bilipai.desktop.ui.desktopBangumiAllEpisodes(detail)
++    if (episodes.isNotEmpty() && episodes.none { it.id == lastEpId }) return null

@@ -97,7 +97,8 @@ class StartupRecoveryActivity : Activity() {
         }
         button("重试正常启动") {
             (application as PureApplication).retryStartupFromRecovery()
-            startActivity(Intent(this, MainActivity::class.java).apply {
+            startActivity(Intent(intent).apply {
+                setClass(this@StartupRecoveryActivity, MainActivity::class.java)
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
             })
             finish()

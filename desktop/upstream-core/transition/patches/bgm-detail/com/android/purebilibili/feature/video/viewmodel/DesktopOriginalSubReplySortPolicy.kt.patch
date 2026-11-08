@@ -1,0 +1,34 @@
+--- a/bgm-detail/com/android/purebilibili/feature/video/viewmodel/DesktopOriginalSubReplySortPolicy.kt
++++ b/bgm-detail/com/android/purebilibili/feature/video/viewmodel/DesktopOriginalSubReplySortPolicy.kt
+@@ -1,5 +1,6 @@
+ package com.android.purebilibili.feature.video.viewmodel
+ 
++import com.android.purebilibili.data.model.response.ReplyItem
+ import kotlinx.collections.immutable.persistentListOf
+ 
+ // 排序档位与楼中楼末页判定已下沉 core-data；原包入口保留，手机各调用方不感知迁移。
+@@ -24,3 +25,24 @@
+ 
+ internal fun isSortedSubReplyPageEnd(cursorIsEnd: Boolean, nextOffset: String?): Boolean =
+     com.android.purebilibili.data.repository.isSortedSubReplyPageEnd(cursorIsEnd, nextOffset)
++
++// Upstream v0.7.8 SubReplySortPolicy.kt; the original DynamicCommentReplyPolicy calls it.
++/** Add responses can omit threading fields; the captured composer target is authoritative. */
++internal fun resolveSentSubReply(
++    reply: ReplyItem,
++    rootId: Long,
++    parentId: Long,
++    target: ReplyItem?,
++    oid: Long = reply.oid,
++    replyType: Int = reply.replyType
++): ReplyItem = reply.copy(
++    oid = oid,
++    replyType = replyType,
++    root = rootId,
++    parent = parentId,
++    dialog = reply.dialog.takeIf { it > 0L } ?: target?.takeIf { it.rpid != rootId }?.let {
++        it.dialog.takeIf { id -> id > 0L }
++            ?: it.parent.takeIf { id -> id > 0L && id != rootId }
++            ?: it.rpid
++    } ?: 0L
++)

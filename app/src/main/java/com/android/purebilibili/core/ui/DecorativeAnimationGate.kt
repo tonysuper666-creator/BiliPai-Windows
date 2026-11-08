@@ -7,9 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.boundsInWindow
-import androidx.compose.ui.layout.findRootCoordinates
-import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.onVisibilityChanged
 import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
@@ -22,20 +20,22 @@ internal class DecorativeAnimationGate {
     var allowed by mutableStateOf(false)
     val active: Boolean get() = inViewport && resumed && allowed
 
-    val modifier = Modifier.onGloballyPositioned { coordinates ->
-        inViewport = coordinates.isAttached && run {
-            val bounds = coordinates.boundsInWindow()
-            val viewport = coordinates.findRootCoordinates().boundsInWindow()
-            bounds.width > 0f && bounds.height > 0f && bounds.overlaps(viewport)
-        }
+    val modifier = Modifier.onVisibilityChanged(minFractionVisible = 0f) { visible ->
+        inViewport = visible
     }
 }
 
 @Composable
-internal fun rememberDecorativeAnimationGate(): DecorativeAnimationGate {
+internal fun rememberDecorativeAnimationGate(
+    // 用户触发的有限动作可独立于卡片进场设置，仍遵守系统减弱动效与可见性。
+    respectComponentMotion: Boolean = true,
+    // 有限反馈由播放器显示静态完成姿态并计时，减少动态时仍需传递可见性。
+    respectSystemReduceMotion: Boolean = true,
+): DecorativeAnimationGate {
     val lifecycle = LocalLifecycleOwner.current.lifecycle
     val gate = remember(lifecycle) { DecorativeAnimationGate() }
-    val allowed = LocalComponentMotionEnabled.current && !LocalSystemReduceMotion.current &&
+    val allowed = (!respectComponentMotion || LocalComponentMotionEnabled.current) &&
+        (!respectSystemReduceMotion || !LocalSystemReduceMotion.current) &&
         LocalWindowInfo.current.isWindowFocused && rememberVisualWorkActive()
     androidx.compose.runtime.SideEffect { gate.allowed = allowed }
     DisposableEffect(lifecycle, gate) {

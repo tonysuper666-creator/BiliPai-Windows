@@ -15,7 +15,8 @@ internal data class PlaybackLoadConfig(
     val isDolbyVisionSupported: Boolean,
     val onVideoInfo: (ViewInfo) -> Unit = {},
     val videoInfoLoader: (suspend () -> Result<ViewInfo>)? = null,
-    val playbackSpeed: Float? = null
+    val playbackSpeed: Float? = null,
+    val onPlaybackDataReady: suspend (Long, com.android.purebilibili.data.model.response.PlayUrlData) -> Unit = { _, _ -> },
 )
 
 internal class PlaybackLoader(
@@ -53,6 +54,7 @@ internal class PlaybackLoader(
                     isDolbyVisionSupportedOverride = config.isDolbyVisionSupported,
                     onVideoInfo = config.onVideoInfo,
                     videoInfoLoader = config.videoInfoLoader,
+                    onPlaybackDataReady = config.onPlaybackDataReady,
                     playbackSpeedOverride = config.playbackSpeed
                 )
             }

@@ -2018,7 +2018,7 @@
     {
       "path": "desktop/tools/native/download-host-llvm-source-snapshot.py",
       "normalization": "lf",
-      "sha256": "a0c84b9021183ddd7c6b611e6933acc80d3279b3eee762f7273dfb5868ca92c3"
+      "sha256": "374db2010d525f99227548d817fd5a0af2852e5d119e64417f0721ec21c3157a"
     },
     {
       "path": "desktop/tools/native/export-host-llvm-source-snapshot.py",

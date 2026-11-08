@@ -1,0 +1,23 @@
+--- a/com/android/purebilibili/core/ui/transition/VideoCardDeferredPixelCapture.kt
++++ b/com/android/purebilibili/core/ui/transition/VideoCardDeferredPixelCapture.kt
+@@ -6,10 +6,8 @@
+ import androidx.compose.runtime.State
+ import androidx.compose.runtime.derivedStateOf
+ import androidx.compose.runtime.remember
+-import androidx.activity.compose.LocalActivity
+ import androidx.compose.ui.platform.LocalWindowInfo
+ import androidx.lifecycle.Lifecycle
+-import androidx.lifecycle.LifecycleOwner
+ import androidx.lifecycle.compose.LocalLifecycleOwner
+ import androidx.lifecycle.compose.currentStateAsState
+ import kotlinx.coroutines.flow.first
+@@ -21,8 +19,7 @@
+ /** 来源 entry 可被详情覆盖，但补充读回只允许真实窗口仍在前台且持有焦点。 */
+ @Composable
+ internal fun rememberVideoCardPixelCaptureAllowed(): State<Boolean> {
+-    val lifecycle = (LocalActivity.current as? LifecycleOwner)?.lifecycle
+-        ?: LocalLifecycleOwner.current.lifecycle
++    val lifecycle = LocalLifecycleOwner.current.lifecycle
+     val lifecycleState = lifecycle.currentStateAsState()
+     val window = LocalWindowInfo.current
+     return remember(lifecycleState, window) {
