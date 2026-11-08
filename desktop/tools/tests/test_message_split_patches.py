@@ -7,7 +7,9 @@ from pathlib import Path
 TOOLS = Path(__file__).resolve().parents[1]
 REPO = Path(os.environ.get("BILIPAI_SOURCE_REPO", str(TOOLS.parents[1])))
 MESSAGE = "com/android/purebilibili/feature/message"
-UPSTREAM = REPO / "app/src/main/java" / MESSAGE
+# Gradle applies these patches to mergedRepositoryRoot (the live tree); inside the gate read point, whose app/ tree
+# is the older legacy commit, that tree is BILIPAI_LIVE_ROOT.
+UPSTREAM = Path(os.environ.get("BILIPAI_LIVE_ROOT") or REPO) / "app/src/main/java" / MESSAGE
 PATCHES = REPO / "desktop/upstream-core/patches/app/src/main/java" / MESSAGE
 
 
