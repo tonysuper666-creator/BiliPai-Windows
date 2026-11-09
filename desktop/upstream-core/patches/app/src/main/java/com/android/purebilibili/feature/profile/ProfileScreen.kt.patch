@@ -1264,3 +1264,332 @@
      val appThemeConfig = com.android.purebilibili.core.ui.LocalAppThemeConfig.current
      val headerBlurEnabled = appThemeConfig.headerBlurEnabled
      val bottomBarBlurEnabled = appThemeConfig.bottomBarBlurEnabled
+@@ -1,14 +1,16 @@
+ package com.android.purebilibili.feature.profile
+ import com.bilipai.desktop.ui.LocalDesktopProfileEnvironment
++import com.bilipai.desktop.ui.DesktopProfileFeedback
++import com.bilipai.desktop.ui.DesktopProfileFeedbackHost
+ import com.bilipai.desktop.ui.rememberDesktopProfileMediaPicker
+ import com.bilipai.desktop.ui.rememberDesktopProfileAvatarPicker
+ 
+ import com.android.purebilibili.data.model.AccountLedgerKind
+ import com.android.purebilibili.core.ui.motion.AppMotionEasing
+ import com.android.purebilibili.core.ui.AppContentColors
+ 
+ import com.android.purebilibili.feature.personal.PersonalMediaCardFrame
+ import com.android.purebilibili.core.ui.components.VideoListLayoutToggle
+ import com.android.purebilibili.core.ui.components.resolveVideoListColumns
+ import com.android.purebilibili.core.ui.components.rememberVideoListLayoutControl
+ import com.android.purebilibili.core.ui.components.videoListBoundsAnimation
+@@ -414,24 +416,25 @@
+     skinVideoPlayMode: String? = null,
+     deferImmersiveRenderBudget: Boolean = false,
+     scrollToTopChannel: kotlinx.coroutines.channels.Channel<Unit>? = null
+     // [注意] 移除了 globalHazeState - 双 hazeSource 模式与 Haze 库冲突
+ ) {
+     val state by viewModel.uiState.collectAsStateWithLifecycle()
+     val platform = LocalDesktopProfileEnvironment.current
+     val context = LocalPlatformContext.current
+     val headerBlurEnabled =
+         com.android.purebilibili.core.ui.LocalAppThemeConfig.current.headerBlurEnabled
+     val accounts by viewModel.accounts.collectAsStateWithLifecycle()
+     val activeAccountMid by viewModel.activeAccountMid.collectAsStateWithLifecycle()
++    val avatarFeedback = remember(platform, activeAccountMid) { DesktopProfileFeedback { platform.feedback(it) } }
+     val playbackAccountMid by viewModel.playbackAccountMid.collectAsStateWithLifecycle()
+     var showAccountSwitchDialog by remember { mutableStateOf(false) }
+     val windowSizeClass = LocalWindowSizeClass.current
+     val skinProfileBackgroundPath = remember(
+         windowSizeClass.shouldUseSplitLayout,
+         skinBackgroundImagePath,
+         skinSquaredBackgroundImagePath,
+     ) {
+         resolveProfileSkinBackgroundImagePath(
+             useSplitLayout = windowSizeClass.shouldUseSplitLayout,
+             wideImagePath = skinBackgroundImagePath,
+             squaredImagePath = skinSquaredBackgroundImagePath,
+@@ -735,27 +738,32 @@
+             }
+             val scrollBehavior = if (shouldPinProfileTopBarOnScroll(windowSizeClass.shouldUseSplitLayout)) {
+                 TopAppBarDefaults.pinnedScrollBehavior()
+             } else {
+                 TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
+             }
+             val favoriteFolderShortcuts = remember(currentUiState.favoriteFolders, currentUiState.user.mid) {
+                 resolveProfileFavoriteFolderShortcuts(
+                     folders = currentUiState.favoriteFolders,
+                     ownerMid = currentUiState.user.mid
+                 )
+             }
+-            LaunchedEffect(currentUiState.space.signSaveMessage) {
++            LaunchedEffect(currentUiState.space.signSaveMessage, currentUiState.space.signSaveMessageOrigin, isCurrentPage) {
+                 currentUiState.space.signSaveMessage?.let { message ->
+-                    platform.feedback( message)
++                    val origin = currentUiState.space.signSaveMessageOrigin
++                    if (origin is DesktopProfileFeedback.Operation) {
++                        if (isCurrentPage) platform.commit { avatarFeedback.route(origin, message) }
++                    } else {
++                        avatarFeedback.route(origin, message)
++                    }
+                     viewModel.clearProfileSpaceMessage()
+                 }
+             }
+ 
+             AppScaffold(
+                 topBarIconBackdropSource = profileProgressiveChrome.source,
+                 modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+                 containerColor = MaterialTheme.colorScheme.background,
+                 // [Immersive] Mobile hides default TopBar, Tablet keeps it
+                 topBar = {
+                     if (windowSizeClass.shouldUseSplitLayout) {
+                         BiliPaiImmersiveTopBar(
+@@ -824,24 +832,26 @@
+                         ProfileBackground(
+                             user = decoratedUser,
+                             viewModel = viewModel,
+                             deferImmersiveRenderBudget = deferImmersiveRenderBudget,
+                             skinVideoBackgroundPath = skinVideoBackgroundPath,
+                             skinVideoPlayMode = skinVideoPlayMode,
+                             playSkinVideo = isCurrentPage,
+                         )
+                     }
+ 
+                     ProfileSpaceContent(
+                         viewModel = viewModel,
++                        isCurrentPage = isCurrentPage,
++                        avatarFeedback = avatarFeedback,
+                         user = decoratedUser,
+                         accountFace = currentUiState.user.face,
+                         space = currentUiState.space,
+                         editableAccount = currentUiState.editableAccount,
+                         favoriteFolderShortcuts = favoriteFolderShortcuts,
+                         onTabSelected = viewModel::selectProfileSpaceTab,
+                         onSignSave = viewModel::updateProfileSign,
+                         onLogout = {
+                             viewModel.logout()
+                             onLogoutSuccess()
+                         },
+                         onAccountManageClick = { showAccountSwitchDialog = true },
+@@ -1029,24 +1039,26 @@
+     videoPath: String,
+     playMode: String?,
+     playbackEnabled: Boolean,
+     modifier: Modifier = Modifier,
+ ) {
+     LocalDesktopProfileEnvironment.current.media.skinVideo(videoPath, playMode, playbackEnabled, modifier)
+ }
+ 
+ @OptIn(ExperimentalMaterial3Api::class)
+ @Composable
+ private fun ProfileSpaceContent(
+     viewModel: ProfileViewModel,
++    isCurrentPage: Boolean,
++    avatarFeedback: DesktopProfileFeedback,
+     user: UserState,
+     accountFace: String,
+     space: ProfileSpaceUiState,
+     editableAccount: ProfileEditableAccountState,
+     favoriteFolderShortcuts: List<ProfileFavoriteFolderShortcut>,
+     onTabSelected: (ProfileSpaceMainTab) -> Unit,
+     onSignSave: (String) -> Unit,
+     onLogout: () -> Unit,
+     onAccountManageClick: () -> Unit,
+     onHistoryClick: () -> Unit,
+     showHistoryService: Boolean,
+     onFavoriteClick: () -> Unit,
+@@ -1068,85 +1080,97 @@
+     onSearchClick: () -> Unit,
+     privacyModeEnabled: Boolean,
+     onPrivacyClick: () -> Unit,
+     onThemeClick: () -> Unit,
+     hazeState: HazeState?,
+     paddingValues: PaddingValues,
+     isTablet: Boolean,
+     scrollToTopRequestId: Int = 0,
+     progressiveTopChrome: ProfileProgressiveTopChrome = ProfileProgressiveTopChrome(null, false),
+     captureBackground: @Composable BoxScope.() -> Unit = {},
+ ) {
+     var showEditDialog by remember { mutableStateOf(false) }
++    val feedbackWindow = if (showEditDialog && isCurrentPage) remember(user.mid, avatarFeedback) { avatarFeedback.open() } else null
++    DisposableEffect(feedbackWindow, avatarFeedback) {
++        onDispose { feedbackWindow?.let(avatarFeedback::close) }
++    }
+     var avatarPreview by remember(user.mid) { mutableStateOf<String?>(null) }
+     val avatarSourceRect = rememberImagePreviewSourceRect()
+     val openAvatarPreview: () -> Unit = {
+         if (user.face.isNotBlank()) {
+             prepareImagePreviewSourceTransition(avatarSourceRect.value)
+             avatarPreview = user.face
+         }
+     }
+     var accountAvatarPickerMid by rememberSaveable { mutableStateOf<Long?>(null) }
++    var accountAvatarPickerWindow by remember { mutableStateOf<DesktopProfileFeedback.Window?>(null) }
++    var accountAvatarConfirmationWindow by remember { mutableStateOf<DesktopProfileFeedback.Window?>(null) }
+     var accountAvatarCrop by rememberSaveable(user.mid) { mutableStateOf<String?>(null) }
+     var accountAvatarConfirmation by rememberSaveable(user.mid) { mutableStateOf<String?>(null) }
+     var editingAccountField by remember(user.mid) { mutableStateOf<ProfileAccountField?>(null) }
+     var showAccountSignDialog by remember(user.mid) { mutableStateOf(false) }
+     var showAccountSexDialog by remember(user.mid) { mutableStateOf(false) }
+     var showAdjustmentSheet by remember { mutableStateOf(false) }
+     var tempSelectedUri by remember { mutableStateOf<String?>(null) }
+     val customBackgroundUri by viewModel.getProfileBgUri().collectAsStateWithLifecycle(initialValue = null
+         )
+     val platform = LocalDesktopProfileEnvironment.current
+     val context = LocalPlatformContext.current
+     val showProfileEditButton by platform.preferences.getShowProfileEditButton()
+         .collectAsStateWithLifecycle(initialValue = false)
+     val photoPickerLauncher = rememberDesktopProfileMediaPicker() { uri: String? ->
+         if (uri != null) {
+             tempSelectedUri = uri
+             showAdjustmentSheet = true
+         }
+     }
+     val accountAvatarPicker = rememberDesktopProfileAvatarPicker() { uri: String? ->
+         val mid = accountAvatarPickerMid
++        val origin = accountAvatarPickerWindow
+         accountAvatarPickerMid = null
+-        // Desktop: closing the file dialog says so rather than leaving the edit silently unchanged.
+-        if (uri == null) platform.feedback("没有选择图片，头像未更改")
++        accountAvatarPickerWindow = null
++        if (uri == null && origin != null && isCurrentPage && mid == user.mid) {
++            platform.commit { avatarFeedback.show(origin, "没有选择图片，头像未更改") }
++        }
+         if (uri != null && mid == user.mid) {
+             if (platform.platform.mimeType(uri)?.equals("image/gif", ignoreCase = true) == true) {
+                 platform.feedback( "不能选择 GIF 头像")
+             } else {
+                 // Desktop: upstream's crop step (DynamicImageCropDialog) selects over an Android Bitmap through
+                 // feature/screenshot, which the desktop does not have; the chosen file goes to the confirmation and
+                 // ProfileAccountRepository crops the centre square, as upstream does after the crop.
++                accountAvatarConfirmationWindow = origin
+                 accountAvatarConfirmation = uri
+             }
+         }
+     }
+     var showWallpaperSheet by remember { mutableStateOf(false) }
+     var showPhotoPickerDialog by remember { mutableStateOf(false) }
+     var showWallpaperActionSheet by remember { mutableStateOf(false) }
+ 
+     if (showEditDialog) {
+         ProfileEditAccountDialog(
+             state = editableAccount,
+             mid = user.mid,
+             accountFace = accountFace,
+             isSaving = space.isSavingSign,
+-            onDismiss = { showEditDialog = false },
+-            onEditSign = { showEditDialog = false; showAccountSignDialog = true },
++            avatarFeedback = avatarFeedback,
++            onDismiss = { feedbackWindow?.let(avatarFeedback::close); showEditDialog = false },
++            onEditSign = { feedbackWindow?.let(avatarFeedback::close); showEditDialog = false; showAccountSignDialog = true },
+             // 子编辑流程（昵称/生日、性别、头像）叠加在编辑资料之上，返回时回到编辑资料。
+             onEditField = { field -> editingAccountField = field },
+             onEditSex = { showAccountSexDialog = true },
+             onEditAvatar = {
+                 accountAvatarPickerMid = user.mid
++                accountAvatarPickerWindow = feedbackWindow
+                 accountAvatarPicker.launch()
+             }
+         )
+     }
+     avatarPreview?.let { image ->
+         val density = LocalDensity.current
+         val radius = avatarSourceRect.value?.let { with(density) { (minOf(it.width, it.height) / 2f).toDp().value } } ?: 0f
+         ImagePreviewDialog(images = listOf(image), initialIndex = 0, sourceRect = avatarSourceRect.value,
+             sourceCornerRadiusDp = radius, onDismiss = { avatarPreview = null })
+     }
+     if (showAccountSignDialog) {
+         ProfileAccountSignDialog(
+@@ -1178,25 +1202,30 @@
+                             viewModel.updateAccountField(ProfileAccountField.SEX, value)
+                         }) { AppText(label) }
+                     }
+                 }
+             },
+             confirmButton = { AppTextButton(onClick = { showAccountSexDialog = false }) { AppText("取消") } }
+         )
+     }
+     accountAvatarConfirmation?.let { image ->
+         ProfileAvatarConfirmDialog(
+             image = image,
+             onDismiss = { accountAvatarConfirmation = null },
+-            onConfirm = { accountAvatarConfirmation = null; viewModel.updateAccountAvatar(image) },
++            onConfirm = {
++                accountAvatarConfirmation = null
++                val origin = accountAvatarConfirmationWindow ?: DesktopProfileFeedback.Window()
++                accountAvatarConfirmationWindow = null
++                viewModel.updateAccountAvatar(image) { avatarFeedback.begin(origin) }
++            },
+         )
+     }
+     if (showAdjustmentSheet && tempSelectedUri != null) {
+         ProfileWallpaperAdjustmentSheet(
+             imageUri = tempSelectedUri.toString(),
+             initialMobileTransform = ProfileWallpaperTransform(),
+             initialTabletTransform = ProfileWallpaperTransform(),
+             onDismiss = { showAdjustmentSheet = false },
+             onSave = { mobileTransform, tabletTransform ->
+                 showAdjustmentSheet = false
+                 tempSelectedUri?.let { uri ->
+                     viewModel.updateCustomBackground(uri, mobileTransform, tabletTransform)
+@@ -3485,59 +3514,62 @@
+         contentAlignment = Alignment.Center
+     ) {
+         AppText(text = text, style = MaterialTheme.typography.bodyMedium, color = AppContentColors.secondaryText())
+     }
+ }
+ 
+ @Composable
+ private fun ProfileEditAccountDialog(
+     state: ProfileEditableAccountState,
+     mid: Long,
+     accountFace: String,
+     isSaving: Boolean,
++    avatarFeedback: DesktopProfileFeedback,
+     onDismiss: () -> Unit,
+     onEditSign: () -> Unit,
+     onEditField: (ProfileAccountField) -> Unit,
+     onEditSex: () -> Unit,
+     onEditAvatar: () -> Unit
+ ) {
+     val platform = LocalDesktopProfileEnvironment.current
+     val context = LocalPlatformContext.current
+     AppAlertDialog(
+         onDismissRequest = onDismiss,
+         title = { AppText("编辑资料") },
+         text = {
++            DesktopProfileFeedbackHost(avatarFeedback) {
+             Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
+                 AppText("B 站账号资料", color = AppContentColors.secondaryText(), style = MaterialTheme.typography.labelMedium, modifier = Modifier.padding(start = 12.dp, bottom = 4.dp))
+                 ProfileAccountEditRow("头像", "", avatar = accountFace, enabled = !isSaving, onClick = onEditAvatar)
+                 ProfileAccountEditRow("昵称", state.name.ifBlank { "未展示" }, enabled = !isSaving) {
+                     onEditField(ProfileAccountField.NAME)
+                 }
+                 ProfileAccountEditRow("性别", state.sex.ifBlank { "未展示" }, enabled = !isSaving, onClick = onEditSex)
+                 ProfileAccountEditRow("生日", state.birthday.ifBlank { "未展示" }, enabled = !isSaving) {
+                     onEditField(ProfileAccountField.BIRTHDAY)
+                 }
+                 ProfileAccountEditRow("签名", state.sign.ifBlank { "未设置" }, enabled = !isSaving, onClick = onEditSign)
+                 ProfileAccountEditRow("UID", mid.toString(), onClick = {
+                     platform.copyText("UID", mid.toString())
+                     platform.feedback( "UID 已复制")
+                 })
+                 listOf(
+                     "头像挂件" to "https://www.bilibili.com/h5/mall/pendant/home",
+                     "哔哩哔哩认证" to "https://account.bilibili.com/official/mobile/home"
+                 ).forEach { (label, url) ->
+                     ProfileAccountEditRow(label, "", onClick = {
+                         if (!platform.platform.openExternalUrl(url)) platform.feedback("无法打开链接")
+                     })
+                 }
++            }
+             }
+         },
+         confirmButton = { AppTextButton(onClick = onDismiss) { AppText("关闭") } },
+     )
+ }
+ 
+ @Composable
+ private fun ProfileAccountEditRow(
+     title: String,
+     value: String,
+     modifier: Modifier = Modifier,
+     enabled: Boolean = true,

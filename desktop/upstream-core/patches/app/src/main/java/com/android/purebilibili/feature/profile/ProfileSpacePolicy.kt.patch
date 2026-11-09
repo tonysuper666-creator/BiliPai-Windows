@@ -1,0 +1,28 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/profile/ProfileSpacePolicy.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/profile/ProfileSpacePolicy.kt
+@@ -93,24 +93,25 @@
+     val contributionVideos: List<SpaceVideoItem> = emptyList(),
+     val contributionLoadState: ProfileContributionLoadState = ProfileContributionLoadState.IDLE,
+     val coinVideos: List<SpaceAggregateArchiveItem> = emptyList(),
+     val likeVideos: List<SpaceAggregateArchiveItem> = emptyList(),
+     val dynamicItems: List<SpaceDynamicItem> = emptyList(),
+     val favoriteFolderCount: Int = 0,
+     val bangumiCount: Int = 0,
+     val contributionVideoCount: Int = 0,
+     val coinVideoCount: Int = 0,
+     val likeVideoCount: Int = 0,
+     val message: String? = null,
+     val signSaveMessage: String? = null,
++    val signSaveMessageOrigin: Any? = null,
+     val isSavingSign: Boolean = false
+ )
+ 
+ data class ProfileFavoritePreviewCoverTarget(
+     val mediaId: Long,
+     val folderId: Long
+ )
+ 
+ data class ProfileEditableAccountState(
+     val name: String = "",
+     val birthday: String = "",
+     val sex: String = "",
