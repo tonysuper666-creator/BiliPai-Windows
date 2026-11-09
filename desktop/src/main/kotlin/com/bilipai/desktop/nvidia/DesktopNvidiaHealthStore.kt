@@ -246,6 +246,22 @@ internal class DesktopNvidiaHealthStore private constructor(
     /** Writes the pending snapshot now, on the calling thread, whatever the interval. True when nothing is left to write. */
     fun flushNow(): Boolean = persistNow()
 
+    /**
+     * Stops the writer thread: a write that is due or running finishes, a write that waits for its interval is
+     * dropped, and nothing is scheduled afterwards. True once the thread has ended. A test stops it before its
+     * temporary directory is removed, because on Windows a write that is still running keeps that directory busy.
+     */
+    internal fun stopWriter(timeoutMillis: Long = 5_000L): Boolean {
+        val pool = executor ?: return true
+        return try {
+            pool.executeExistingDelayedTasksAfterShutdownPolicy = false
+            pool.shutdown()
+            pool.awaitTermination(timeoutMillis, TimeUnit.MILLISECONDS)
+        } catch (_: Throwable) {
+            false
+        }
+    }
+
     private fun mutate(key: String, transform: (NvidiaHealthEntry?, Long) -> NvidiaHealthEntry?) {
         if (!nvidiaHealthKeyValid(key)) return
         try {
