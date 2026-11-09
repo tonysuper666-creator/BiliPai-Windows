@@ -1257,7 +1257,30 @@ def sponsor_original_ui_source_delta(path, body, audit=None):
  if audit is not None:audit.extend(edits)
  return body
 
-def playback_speed_source_continuity_delta(path, body):
+
+def restore_terminal_stage(body, output, name):
+ proof=json.loads((Path(output)/name).read_text(encoding='utf-8'))
+ assert proof['exactCompleteInverse'] and sha(body)==proof['afterSha256LF'],name+' whole after'
+ for edit in reversed(proof['inverseEdits']):
+  at=edit['offset'];assert body[at:at+len(edit['after'])]==edit['after'],name+' exact inverse span'
+  body=body[:at]+edit['before']+body[at+len(edit['after']):]
+ assert sha(body)==proof['beforeSha256LF'],name+' whole inverse'
+ return body
+
+def record_terminal_stage(before, after, edits, output, name):
+ proof=dict(beforeSha256LF=sha(before),afterSha256LF=sha(after),inverseEdits=edits,exactCompleteInverse=True)
+ inverse=after
+ for edit in reversed(edits):
+  at=edit['offset'];assert inverse[at:at+len(edit['after'])]==edit['after'],name+' exact inverse span'
+  inverse=inverse[:at]+edit['before']+inverse[at+len(edit['after']):]
+ assert inverse==before,name+' complete inverse'
+ target=Path(output)/name;target.parent.mkdir(parents=True,exist_ok=True)
+ target.write_text(json.dumps(proof,indent=2)+'\n',encoding='utf-8')
+
+def restore_playback_speed_stage(body, output):
+ return restore_terminal_stage(body,output,'playback-speed-source-continuity-VideoPlaybackViewModel.json')
+
+def playback_speed_source_continuity_delta(path, body, output=None):
  # Upstream 540d86f92: speed only updates render parameters. Rebuilding the
  # audio/video source drops buffer and first frame, so the cover covers video again.
  if path != 'com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt': return body
@@ -1298,10 +1321,14 @@ def playback_speed_source_continuity_delta(path, body):
 '''
  anchor='    fun applyPlaybackSpeedFromUi(speed: Float): Boolean {\n        if (hasDesktopBangumiPlayback()) return false\n        val player = exoPlayer ?: return false\n'
  assert body.count(anchor)==1 and body.count(anchor+before)==1,'applyPlaybackSpeedFromUi source continuity'
+ original=body;edits=[dict(offset=body.index(anchor+before),before=anchor+before,after=anchor+after)]
  body=body.replace(anchor+before,anchor+after)
  imported='import com.android.purebilibili.feature.video.playback.policy.shouldRefreshPremiumAudioForPlaybackSpeedChange\n'
  assert body.count(imported)==1 and body.count('shouldRefreshPremiumAudioForPlaybackSpeedChange')==1,'speed refresh policy has no other owner caller'
- return body.replace(imported,'')
+ edits.append(dict(offset=body.index(imported),before=imported,after=''))
+ body=body.replace(imported,'')
+ if output is not None:record_terminal_stage(original,body,edits,output,'playback-speed-source-continuity-VideoPlaybackViewModel.json')
+ return body
 
 def generate(repo,output,standalone=False):
  outputs=[];follow_group_audits=[]
@@ -1384,7 +1411,7 @@ def generate(repo,output,standalone=False):
   body,knownStateProof=apply_known_state(recipe['output'],body,repo,output)
   from v029_comment_composer import legacy_comment_selection_delta
   body=legacy_comment_selection_delta(recipe['output'],body,output)
-  body=playback_speed_source_continuity_delta(recipe['output'],body)
+  body=playback_speed_source_continuity_delta(recipe['output'],body,output)
   emitted=standalone or recipe['mode']!='direct'
   if emitted:
    target=wide(Path(output)/recipe['output']);target.parent.mkdir(parents=True,exist_ok=True)

@@ -4,6 +4,7 @@ import com.android.purebilibili.core.store.SettingsManager.DynamicDetailImageLay
 import com.android.purebilibili.core.util.BilibiliUrlParser
 import com.android.purebilibili.core.util.BilibiliNavigationTarget
 import com.android.purebilibili.core.util.BilibiliNavigationTargetParser
+import com.android.purebilibili.core.util.hasCommentLocation
 import com.android.purebilibili.data.model.response.ArchiveMajor
 import com.android.purebilibili.data.model.response.ArticleMajor
 import com.android.purebilibili.data.model.response.DrawItem
@@ -321,7 +322,9 @@ internal fun shouldShowDynamicDetailImageLayoutToggle(
 internal fun resolveDynamicOpusLinkCardAction(card: OpusLinkCard): DynamicOpusLinkCardAction {
     val url = card.jumpUrl.trim()
     if (url.isBlank()) return DynamicOpusLinkCardAction.None
-    return when (val target = BilibiliNavigationTargetParser.parse(url)) {
+    val target = BilibiliNavigationTargetParser.parse(url)
+    if (target?.hasCommentLocation == true) return DynamicOpusLinkCardAction.OpenExternalUrl(url)
+    return when (target) {
         is BilibiliNavigationTarget.Video -> DynamicOpusLinkCardAction.OpenVideo(target.videoId)
         is BilibiliNavigationTarget.Dynamic -> DynamicOpusLinkCardAction.OpenDynamicDetail(target.dynamicId)
         is BilibiliNavigationTarget.Article -> DynamicOpusLinkCardAction.OpenArticle(
@@ -339,6 +342,8 @@ internal fun resolveDynamicOpusLinkCardAction(card: OpusLinkCard): DynamicOpusLi
             epId = target.epId
         )
         is BilibiliNavigationTarget.Match -> DynamicOpusLinkCardAction.OpenMatch(target.contestId)
+        is BilibiliNavigationTarget.ArticleCollection,
+        is BilibiliNavigationTarget.CommentDetail,
         is BilibiliNavigationTarget.Music,
         is BilibiliNavigationTarget.Search,
         is BilibiliNavigationTarget.PopularFeed,

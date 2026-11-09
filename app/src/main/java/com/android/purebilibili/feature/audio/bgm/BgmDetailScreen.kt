@@ -358,16 +358,48 @@ private fun BgmVideos(detail: BgmDetailData, videos: List<BgmRecommendVideo>, on
     Column(modifier) {
         AppText("${detail.musicTitle} · 共${videos.size}条视频", style = MaterialTheme.typography.titleSmall, modifier = Modifier.padding(16.dp))
         if (videos.isEmpty()) AppText("暂无使用这首音乐的视频", modifier = Modifier.padding(24.dp))
-        else LazyVerticalGrid(columns = GridCells.Adaptive(160.dp), contentPadding = PaddingValues(12.dp), horizontalArrangement = Arrangement.spacedBy(12.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-            itemsIndexed(videos, key = { _, video -> "${video.bvid}:${video.cid}" }) { index, video ->
-                Column {
-                    ElegantVideoCard(video = VideoItem(id = video.aid.takeIf { it > 0 } ?: video.cid,
-                        aid = video.aid, bvid = video.bvid, cid = video.cid, title = video.title, pic = video.cover,
-                        owner = Owner(mid = video.mid, name = video.upNickName), stat = Stat(view = video.play, danmaku = video.danmu), duration = video.duration),
-                        index = index, animationEnabled = false, glassEnabled = false, blurEnabled = false,
-                        onClick = { _, _ -> onVideoClick(video.bvid, video.cid, video.cover) })
-                    val labels = (video.labelList.map { it.name } + video.label).filter { it.isNotBlank() }
-                    if (labels.isNotEmpty()) AppText(labels.joinToString(" · "), style = MaterialTheme.typography.labelSmall)
+        else BoxWithConstraints(modifier = Modifier.weight(1f)) {
+            val density = androidx.compose.ui.platform.LocalDensity.current
+            val columns = with(density) {
+                val contentWidth = (maxWidth.roundToPx() - 24.dp.roundToPx()).coerceAtLeast(0)
+                val spacing = 12.dp.roundToPx()
+                ((contentWidth + spacing) / (160.dp.roundToPx() + spacing)).coerceAtLeast(1)
+            }
+            val alignRows = columns > 1 && !LocalFullVideoCardContentVisible.current
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(columns),
+                contentPadding = PaddingValues(12.dp),
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+            ) {
+                val videoKeys = videos.map { "${it.bvid}:${it.cid}" }
+                val renderVideo: @Composable (Int, Modifier) -> Unit = { index, cardModifier ->
+                    val video = videos[index]
+                    Column(modifier = cardModifier) {
+                        ElegantVideoCard(video = VideoItem(id = video.aid.takeIf { it > 0 } ?: video.cid,
+                            aid = video.aid, bvid = video.bvid, cid = video.cid, title = video.title, pic = video.cover,
+                            owner = Owner(mid = video.mid, name = video.upNickName), stat = Stat(view = video.play, danmaku = video.danmu), duration = video.duration),
+                            index = index, animationEnabled = false, glassEnabled = false, blurEnabled = false,
+                            onClick = { _, _ -> onVideoClick(video.bvid, video.cid, video.cover) })
+                        val labels = (video.labelList.map { it.name } + video.label).filter { it.isNotBlank() }
+                        if (labels.isNotEmpty()) AppText(labels.joinToString(" · "), style = MaterialTheme.typography.labelSmall)
+                    }
+                }
+                if (!alignRows) {
+                    itemsIndexed(videos, key = { index, _ -> videoKeys[index] }) { index, _ -> renderVideo(index, Modifier) }
+                } else {
+                    com.android.purebilibili.feature.home.resolveHomeFeedAlignedRows(videos.size, columns).forEach { row ->
+                        item(key = "bgm_video_row_${videoKeys[row.first]}", span = { androidx.compose.foundation.lazy.grid.GridItemSpan(maxLineSpan) }) {
+                            com.android.purebilibili.feature.home.HomeAlignedVideoRow(
+                                indices = row,
+                                itemKeys = videoKeys,
+                                columns = columns,
+                                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                                modifier = Modifier.fillMaxWidth(),
+                                content = renderVideo,
+                            )
+                        }
+                    }
                 }
             }
         }

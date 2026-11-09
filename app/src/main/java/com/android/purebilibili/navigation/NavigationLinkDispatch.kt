@@ -13,9 +13,33 @@ internal fun dispatchNativeLinkNavigation(
     onPopularFeed: (BilibiliNavigationTarget.PopularFeed) -> Unit,
 ): Boolean {
     when (target) {
-        is BilibiliNavigationTarget.Video -> onVideo(target.videoId)
+        is BilibiliNavigationTarget.Video -> {
+            if (target.commentRootRpid > 0L || target.commentTargetRpid > 0L) {
+                onKey(BiliPaiNavKey.VideoDetail(
+                    bvid = target.videoId,
+                    commentRootRpid = target.commentRootRpid,
+                    commentTargetRpid = target.commentTargetRpid,
+                ))
+            } else {
+                onVideo(target.videoId)
+            }
+        }
         is BilibiliNavigationTarget.Dynamic -> {
-            onKey(BiliPaiNavKey.DynamicDetail(target.dynamicId))
+            onKey(BiliPaiNavKey.DynamicDetail(
+                target.dynamicId,
+                commentRootRpid = target.commentRootRpid,
+                commentTargetRpid = target.commentTargetRpid,
+                openComments = target.openComments,
+            ))
+        }
+        is BilibiliNavigationTarget.CommentDetail -> {
+            onKey(BiliPaiNavKey.CommentDetail(
+                oid = target.oid,
+                rootId = target.rootReplyId,
+                targetId = target.targetReplyId,
+                type = target.businessId,
+                enterUri = target.enterUri,
+            ))
         }
         is BilibiliNavigationTarget.Search -> onSearch(target.keyword)
         is BilibiliNavigationTarget.Space -> {
@@ -39,8 +63,11 @@ internal fun dispatchNativeLinkNavigation(
         is BilibiliNavigationTarget.Music -> {
             onRoute(ScreenRoutes.createMusicRoute(target.musicId) ?: return false)
         }
+        is BilibiliNavigationTarget.ArticleCollection -> {
+            onKey(BiliPaiNavKey.ArticleCollection(target.collectionId))
+        }
         is BilibiliNavigationTarget.Article -> {
-            onKey(BiliPaiNavKey.ArticleDetail(target.articleId))
+            onKey(BiliPaiNavKey.ArticleDetail(target.articleId, commentRootRpid = target.commentRootRpid, commentTargetRpid = target.commentTargetRpid))
         }
         is BilibiliNavigationTarget.Match -> {
             if (target.contestId <= 0L) return false
@@ -100,7 +127,8 @@ internal fun dispatchMessageLinkNavigation(
                 BiliPaiNavKey.DynamicDetail(
                     dynamicId = action.dynamicId,
                     commentRootRpid = action.rootReplyId,
-                    commentTargetRpid = action.targetReplyId
+                    commentTargetRpid = action.targetReplyId,
+                    openComments = action.openComments,
                 )
             )
         }
@@ -125,8 +153,11 @@ internal fun dispatchMessageLinkNavigation(
             ScreenRoutes.createMusicRoute(action.musicId)?.let { onRoute(it) }
                 ?: onKey(BiliPaiNavKey.Web(rawLink))
         }
+        is MessageLinkNavigationAction.ArticleCollection -> {
+            onKey(BiliPaiNavKey.ArticleCollection(action.collectionId))
+        }
         is MessageLinkNavigationAction.Article -> {
-            onKey(BiliPaiNavKey.ArticleDetail(action.articleId))
+            onKey(BiliPaiNavKey.ArticleDetail(action.articleId, commentRootRpid = action.rootReplyId, commentTargetRpid = action.targetReplyId))
         }
         is MessageLinkNavigationAction.Web -> {
             val url = action.url.trim()

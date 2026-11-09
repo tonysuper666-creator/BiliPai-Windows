@@ -5,6 +5,10 @@ import android.net.Uri
 import androidx.lifecycle.viewModelScope
 import com.android.purebilibili.core.store.SettingsManager
 import com.android.purebilibili.data.model.response.ReplyItem
+import com.android.purebilibili.data.model.response.ReplyContent
+import com.android.purebilibili.data.model.response.ReplyCursor
+import com.android.purebilibili.data.model.response.ReplyData
+import com.android.purebilibili.feature.comment.SentCommentReplyStores
 import com.android.purebilibili.data.model.response.ViewInfo
 import com.android.purebilibili.data.repository.CommentRepository
 import io.mockk.coEvery
@@ -17,6 +21,7 @@ import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.update
@@ -336,6 +341,95 @@ class VideoComposerDraftStateTest {
             assertTrue(viewModel.showCommentDialog.value)
             coVerify(exactly = 1) {
                 CommentRepository.addComment(101L, "reply A", 11L, 11L, emptyList(), false)
+            }
+        }
+    }
+
+    @Test
+    fun `ordinary player reply flows through its success event into the original root preview and detail tail`() = runTest(dispatcher) {
+        withVideoViewModel { playback ->
+            sharedVideoCommentCache.clear()
+            SentCommentReplyStores.clear()
+            val root = ReplyItem(
+                rpid = 10L, oid = 101L, count = 5, rcount = 5,
+                replies = (20L..24L).map { ReplyItem(rpid = it, root = 10L, parent = 10L) }
+            )
+            coEvery {
+                CommentRepository.getMobileCommentsForSubject(any(), any(), any(), any(), any(), any(), any())
+            } returns Result.success(ReplyData(replies = listOf(root), cursor = ReplyCursor(allCount = 6, isEnd = true)))
+            coEvery {
+                CommentRepository.getMobileSortedSubCommentsForSubject(any(), any(), any(), any(), any(), any(), any())
+            } returns Result.success(ReplyData(root = root, replies = root.replies, cursor = ReplyCursor(isEnd = true)))
+            coEvery { CommentRepository.addComment(any(), any(), any(), any(), any(), any()) } returns
+                Result.success(ReplyItem(rpid = 50L, content = ReplyContent(message = "my reply")))
+            val comments = VideoCommentViewModel()
+            try {
+                comments.init(101L)
+                backgroundScope.launch(dispatcher) {
+                    playback.commentSentEvent.collect { event ->
+                        comments.onExternalCommentSent(event.aid, event.reply, false, event.account)
+                    }
+                }
+                runCurrent()
+                playback.setReplyingTo(root)
+                playback.showCommentInputDialog()
+                playback.sendComment("my reply")
+                // The real input overlay may dismiss immediately; the captured target must survive.
+                playback.hideCommentInputDialog()
+                runCurrent()
+                val updatedRoot = comments.commentState.value.replies.single()
+                assertEquals(10L, updatedRoot.rpid)
+                val preview = updatedRoot.replies.orEmpty().first()
+                assertEquals(50L, preview.rpid)
+                assertEquals(10L, preview.root)
+                assertEquals(10L, preview.parent)
+                assertEquals(101L, preview.oid)
+                comments.openSubReply(updatedRoot)
+                runCurrent()
+                assertEquals(listOf(20L, 21L, 22L, 23L, 24L, 50L), comments.subReplyState.value.items.map { it.rpid })
+            } finally {
+                comments.viewModelScope.cancel()
+                sharedVideoCommentCache.clear()
+                SentCommentReplyStores.clear()
+            }
+        }
+    }
+
+    @Test
+    fun `player send event cannot insert its reply into a newly selected video`() = runTest(dispatcher) {
+        withVideoViewModel { playback ->
+            sharedVideoCommentCache.clear()
+            SentCommentReplyStores.clear()
+            val root = ReplyItem(rpid = 10L, oid = 101L)
+            coEvery {
+                CommentRepository.getMobileCommentsForSubject(any(), any(), any(), any(), any(), any(), any())
+            } coAnswers {
+                Result.success(ReplyData(replies = listOf(root.copy(oid = firstArg())), cursor = ReplyCursor(isEnd = true)))
+            }
+            val response = CompletableDeferred<Result<ReplyItem?>>()
+            coEvery { CommentRepository.addComment(any(), any(), any(), any(), any(), any()) } coAnswers { response.await() }
+            val comments = VideoCommentViewModel()
+            try {
+                comments.init(101L)
+                backgroundScope.launch(dispatcher) {
+                    playback.commentSentEvent.collect { event ->
+                        comments.onExternalCommentSent(event.aid, event.reply, false, event.account)
+                    }
+                }
+                runCurrent()
+                playback.setReplyingTo(root)
+                playback.sendComment("old video reply")
+                runCurrent()
+                comments.init(202L)
+                runCurrent()
+                response.complete(Result.success(ReplyItem(rpid = 50L)))
+                runCurrent()
+                assertEquals(202L, comments.commentState.value.replies.single().oid)
+                assertTrue(comments.commentState.value.replies.single().replies.isNullOrEmpty())
+            } finally {
+                comments.viewModelScope.cancel()
+                sharedVideoCommentCache.clear()
+                SentCommentReplyStores.clear()
             }
         }
     }

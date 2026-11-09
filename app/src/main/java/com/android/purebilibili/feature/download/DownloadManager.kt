@@ -1,6 +1,10 @@
 package com.android.purebilibili.feature.download
 
 import com.android.purebilibili.core.network.buildAppDns
+import com.android.purebilibili.core.store.SettingsManager
+import com.android.purebilibili.feature.plugin.PlaybackCdnPreference
+import com.android.purebilibili.feature.plugin.rewriteBilivideoHost
+import kotlinx.coroutines.flow.first
 import android.util.AtomicFile
 import android.content.Context
 import android.net.Uri
@@ -525,6 +529,27 @@ object DownloadManager {
         )
     }
 
+    /**
+     * 应用设置里的「播放 CDN 偏好」。
+     *
+     * 这个设置原先只作用于播放器，下载链路完全没读：用户选了 ali / cos 之类线路，
+     * 下载仍然落在 mcdn（PCDN）上，屏蔽 mcdn 就直接失败。这里按设置把 host 改写过去；
+     * PCDN 域名同样参与改写（upgcxcode 路径与签名在 host 之间通用）。
+     */
+    private suspend fun applyCdnPreference(url: String): String {
+        if (url.isBlank()) return url
+        val ctx = appContext ?: return url
+        return try {
+            val stored = SettingsManager.getPlaybackCdnPreference(ctx).first()
+            val host = PlaybackCdnPreference.fromStorageValue(stored).host ?: return url
+            rewriteBilivideoHost(url, host) ?: url
+        } catch (cancelled: kotlinx.coroutines.CancellationException) {
+            throw cancelled
+        } catch (_: Exception) {
+            url
+        }
+    }
+
     private suspend fun downloadFileWithUrlRefresh(
         task: DownloadTask,
         isVideoStream: Boolean,
@@ -540,6 +565,8 @@ object DownloadManager {
         if (initialUrl.isBlank()) {
             throw IllegalStateException(if (isVideoStream) "视频地址为空" else "音频地址为空")
         }
+        // 优先使用设置里选的线路（未选具体线路时保持原地址）
+        initialUrl = applyCdnPreference(initialUrl)
 
         try {
             return downloadFile(initialUrl, file, task.id, onProgress)
@@ -547,7 +574,8 @@ object DownloadManager {
             if (!shouldRefreshDownloadUrlAfterFailure(error)) throw error
 
             val refreshedTask = refreshTaskDownloadUrls(activeTask)
-            val refreshedUrl = if (isVideoStream) refreshedTask.videoUrl else refreshedTask.audioUrl
+            var refreshedUrl = if (isVideoStream) refreshedTask.videoUrl else refreshedTask.audioUrl
+            if (refreshedUrl.isNotBlank()) refreshedUrl = applyCdnPreference(refreshedUrl)
             if (refreshedUrl.isBlank() || refreshedUrl == initialUrl) {
                 throw error
             }

@@ -333,6 +333,9 @@ fun VideoSettingsPanel(
     onCdnServiceSelected: ((Int) -> Unit)? = null,
     chapterDisplayMode: ChapterDisplayMode = ChapterDisplayMode.WITH_CONTROLS,
     onChapterDisplayModeChange: ((ChapterDisplayMode) -> Unit)? = null,
+    // 两种方向与材质共用已有的诊断显示设置；未接入的调用方不显示此入口。
+    playerDiagnosticsEnabled: Boolean = false,
+    onPlayerDiagnosticsChange: ((Boolean) -> Unit)? = null,
     // 关闭面板
     onDismiss: () -> Unit
 ) {
@@ -504,6 +507,13 @@ fun VideoSettingsPanel(
                             onLoadSubtitle?.let { action -> PlayerSettingsRow("加载字幕") { onDismiss(); action() } }
                             onSaveSubtitle?.let { action -> PlayerSettingsRow("保存字幕") { onDismiss(); action() } }
                             onShowPlaybackInfo?.let { action -> PlayerSettingsRow("播放信息") { onDismiss(); action() } }
+                            onPlayerDiagnosticsChange?.let { change ->
+                                PlayerSettingsToggleRow(
+                                    title = "播放器诊断",
+                                    checked = playerDiagnosticsEnabled,
+                                    onCheckedChange = change,
+                                )
+                            }
                             onReport?.let { action -> PlayerSettingsRow("举报") { onDismiss(); action() } }
                             if (isFullscreen) {
                                 PlayerSettingsRow(FullscreenActionCountSettings.TITLE) { page = "actionCounts" }

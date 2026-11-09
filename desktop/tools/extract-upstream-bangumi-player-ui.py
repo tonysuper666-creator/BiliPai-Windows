@@ -87,6 +87,29 @@ def windows_bangumi_buffering_playback_toggle_ui(source, output):
  assert inverse==source,'complete PGC buffering playback toggle inverse'
  return s,edits
 
+
+def restore_terminal_stage(body, output, name):
+ proof=json.loads((Path(output)/name).read_text(encoding='utf-8'))
+ assert proof['exactCompleteInverse'] and sha(body)==proof['afterSha256LF'],name+' whole after'
+ for edit in reversed(proof['inverseEdits']):
+  at=edit['offset'];assert body[at:at+len(edit['after'])]==edit['after'],name+' exact inverse span'
+  body=body[:at]+edit['before']+body[at+len(edit['after']):]
+ assert sha(body)==proof['beforeSha256LF'],name+' whole inverse'
+ return body
+
+def record_terminal_stage(before, after, edits, output, name):
+ proof=dict(beforeSha256LF=sha(before),afterSha256LF=sha(after),inverseEdits=edits,exactCompleteInverse=True)
+ inverse=after
+ for edit in reversed(edits):
+  at=edit['offset'];assert inverse[at:at+len(edit['after'])]==edit['after'],name+' exact inverse span'
+  inverse=inverse[:at]+edit['before']+inverse[at+len(edit['after']):]
+ assert inverse==before,name+' complete inverse'
+ target=Path(output)/name;target.parent.mkdir(parents=True,exist_ok=True)
+ target.write_text(json.dumps(proof,indent=2)+'\n',encoding='utf-8')
+
+def restore_buffering_stage(body, output):
+ return restore_terminal_stage(body,output,'buffering-playback-DesktopOriginalBangumiPlayerScreen.json')
+
 def main():
  parser=argparse.ArgumentParser();parser.add_argument('--repo',type=Path,required=True);parser.add_argument('--output',type=Path,required=True);a=parser.parse_args()
  records=[]
@@ -121,6 +144,18 @@ def main():
   body=apply_retry_ui(a.repo,r['output'],body,a.output)
   body,buffering_edits=windows_bangumi_buffering_playback_toggle_ui(body,r['output'])
   windows_edits.extend(buffering_edits)
+  if buffering_edits:
+   previous=body
+   for edit in reversed(buffering_edits):
+    assert previous.count(edit['after'])==1,edit['label']+' terminal inverse'
+    previous=previous.replace(edit['after'],edit['before'],1)
+   replay=previous;indexed=[]
+   for edit in buffering_edits:
+    assert replay.count(edit['before'])==1,edit['label']+' terminal replay'
+    indexed.append(dict(offset=replay.index(edit['before']),before=edit['before'],after=edit['after']))
+    replay=replay.replace(edit['before'],edit['after'],1)
+   assert replay==body,'PGC buffering terminal replay'
+   record_terminal_stage(previous,body,indexed,a.output,'buffering-playback-DesktopOriginalBangumiPlayerScreen.json')
   write(a.output,r['output'],body);records.append(dict(source=r['originalPath'],output=r['output'],wholeBody=True,edits=len(r['edits']),originalSha256LF=sha(raw),generatedSha256LF=sha(body),windowsAdaptations=windows_edits))
  from v046_comment_list import emit_bangumi_panel
  emit_bangumi_panel(a.repo,a.output)

@@ -27,6 +27,10 @@ def restore(body, rows, key="offset"):
 
 def restore_final_send_stage(body, row, output):
     assert hashlib.sha256(body.encode()).hexdigest() == row["sha256LF"]
+    spec = importlib.util.spec_from_file_location('follow_group_terminal_owner', TOOLS / 'extract-upstream-video-full-owner.py')
+    owner = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(owner)
+    body = owner.restore_playback_speed_stage(body, output)
     # Outer stages added after this contract (detail 38daac558, metadata related aed5c58b1, next watch f373ab762,
     # autoplay continuation 4cd3b844f, known state 75522724c, comment selection 38512320c) are unwound first,
     # each through its own recorded proof, in the producer's reverse order.

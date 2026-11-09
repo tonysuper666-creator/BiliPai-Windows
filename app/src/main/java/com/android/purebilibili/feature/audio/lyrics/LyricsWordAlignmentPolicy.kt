@@ -27,6 +27,8 @@ internal object LyricsWordAlignmentPolicy {
         val pairs = matchLinePairs(musicLyrics.lines, subtitleLyrics.lines)
         val mapping = buildTimeMapper(pairs, musicLyrics.lines, subtitleLyrics.lines)
         return musicLyrics.copy(
+            // 原轴匹配与显示校正分开；继承参考字幕偏移，同时保留歌词自己的手动微调。
+            offsetMs = musicLyrics.offsetMs + subtitleLyrics.offsetMs,
             lines = musicLyrics.lines.map { line ->
                 val mappedLine = LyricLine(
                     startTimeMs = mapping(line.startTimeMs),
@@ -62,7 +64,7 @@ internal object LyricsWordAlignmentPolicy {
             var bestDelta = LINE_MATCH_TOLERANCE_MS
             for (index in subtitleCursor until subtitleLines.size) {
                 val delta = abs(subtitleLines[index].startTimeMs - musicLine.startTimeMs)
-                if (delta <= bestDelta) {
+                if (delta <= bestDelta && lyricLinesMatch(musicLine.text, subtitleLines[index].text)) {
                     bestDelta = delta
                     bestIndex = index
                 }
@@ -136,33 +138,37 @@ internal object LyricsWordAlignmentPolicy {
         if (text.isBlank()) return emptyList()
         // 找与音乐行（已映射后）重叠最长的字幕行
         val mappedStart = mapping(musicLine.startTimeMs)
+        val mappedEnd = maxOf(mapping(musicLine.endTimeMs), mappedStart + 1L)
         val target = subtitleLines
-            .filter { it.spans.isNotEmpty() }
-            .maxByOrNull { line ->
-                val overlap = minOf(mapping(musicLine.endTimeMs), line.endTimeMs) -
-                    maxOf(mappedStart, line.startTimeMs)
-                if (overlap > 0) overlap else -1L
-            } ?: return emptyList()
-        val wordSpans = target.spans
+            .filter { line ->
+                line.spans.isNotEmpty() && minOf(mappedEnd, line.endTimeMs) > maxOf(mappedStart, line.startTimeMs)
+            }
+            .maxByOrNull { line -> minOf(mappedEnd, line.endTimeMs) - maxOf(mappedStart, line.startTimeMs) }
+            ?: return emptyList()
+        val wordSpans = target.spans.mapNotNull { span ->
+            val start = maxOf(span.startTimeMs, mappedStart)
+            val end = minOf(span.endTimeMs, mappedEnd)
+            span.copy(startTimeMs = start, endTimeMs = end).takeIf { end > start && span.text.isNotBlank() }
+        }.sortedBy(LyricSpan::startTimeMs)
         if (wordSpans.isEmpty()) return emptyList()
         val totalChars = wordSpans.sumOf { it.text.length }.coerceAtLeast(1)
-        val spans = mutableListOf<LyricSpan>()
-        var charCursor = 0
-        wordSpans.forEach { wordSpan ->
-            val share = (wordSpan.text.length.toDouble() / totalChars * text.length).toInt()
-                .coerceAtLeast(if (spans.size < text.length) 1 else 0)
-            if (share <= 0) return@forEach
-            val segment = text.substring(charCursor, (charCursor + share).coerceAtMost(text.length))
-            spans += LyricSpan(
-                text = segment,
-                startTimeMs = wordSpan.startTimeMs,
-                endTimeMs = wordSpan.endTimeMs
-            )
-            charCursor += share
+        fun timeAtCharacter(position: Double): Long {
+            var consumed = 0
+            wordSpans.forEach { span ->
+                val next = consumed + span.text.length
+                if (position <= next) {
+                    val fraction = ((position - consumed) / span.text.length).coerceIn(0.0, 1.0)
+                    return (span.startTimeMs + (span.endTimeMs - span.startTimeMs) * fraction).toLong()
+                }
+                consumed = next
+            }
+            return wordSpans.last().endTimeMs
         }
-        if (charCursor < text.length && spans.isNotEmpty()) {
-            spans[spans.size - 1] = spans.last().copy(text = spans.last().text + text.substring(charCursor))
+        // 短文本也覆盖整段词时间，不为每个来源词强塞一个字符而越界或提前唱完。
+        return text.mapIndexed { index, character ->
+            val start = timeAtCharacter(index.toDouble() * totalChars / text.length)
+            val end = timeAtCharacter((index + 1).toDouble() * totalChars / text.length)
+            LyricSpan(character.toString(), start, maxOf(start, end))
         }
-        return spans
     }
 }

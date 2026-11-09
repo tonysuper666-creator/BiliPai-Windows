@@ -411,6 +411,7 @@ internal fun articleContentBlocksToOpusBlocks(
                 text = block.content,
                 language = block.language,
             )
+            is ArticleContentBlock.MediaCard -> OpusContentBlock.LinkCard(block.card)
             is ArticleContentBlock.Image -> OpusContentBlock.Image(
                 OpusPic(url = block.url, width = block.width, height = block.height)
             )

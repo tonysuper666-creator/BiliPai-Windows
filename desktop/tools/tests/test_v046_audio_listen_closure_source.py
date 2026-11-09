@@ -560,7 +560,9 @@ class HostTests(unittest.TestCase):
 class LyricsJvmTestTests(unittest.TestCase):
     def test_the_display_projection_regression_test_pins_the_original_function_without_a_platform(self):
         text = text_of(UI_TESTS / 'DesktopListenLyricsDisplayDocumentTest.kt')
-        self.assertEqual(4, len(re.findall(r'@Test fun ', text)))
+        self.assertEqual(6, len(re.findall(r'@Test fun ', text)))
+        self.assertIn('@Test fun decoratedLyricsStillCleanNotesAndPreserveTimingInBothTranslationModes()', text)
+        self.assertIn('@Test fun hidingAlreadyAbsentTranslationsDoesNotRecreateTheDocument()', text)
         self.assertIn('import com.android.purebilibili.feature.audio.lyrics.resolveLyricsDisplayDocument\n', text)
         self.assertEqual(0, len(re.findall(r'Thread\.sleep|Dispatchers|java\.awt|MpvPlayer|HttpClient|URL\(|Files\.', text)))
         sync = load('al_sync4', 'sync-upstream.py')

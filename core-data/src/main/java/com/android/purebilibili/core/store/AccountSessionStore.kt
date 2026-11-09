@@ -27,6 +27,7 @@ data class AccountSessionSnapshot(
     val accounts: List<StoredAccountSession> = emptyList(),
     val activeAccountMid: Long? = null,
     val playbackAccountMid: Long? = null,
+    val purposeAccountMids: Map<AccountPurpose, Long?> = emptyMap(),
 )
 
 object AccountSessionStore {
@@ -110,6 +111,7 @@ object AccountSessionStore {
         accounts = getAccounts(context),
         activeAccountMid = getActiveAccountMid(context),
         playbackAccountMid = getPlaybackAccountMid(context),
+        purposeAccountMids = AccountPurpose.entries.associateWith { getPurposeAccountMid(context, it) },
     )
 
     fun getActiveAccountMid(context: Context): Long? {
@@ -180,6 +182,25 @@ object AccountSessionStore {
         return true
     }
 
+    fun getPurposeAccountMid(context: Context, purpose: AccountPurpose): Long? =
+        context.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE)
+            .getLong(purpose.storageKey, 0L).takeIf { it > 0L }
+
+    fun getPurposeAccount(context: Context, purpose: AccountPurpose): StoredAccountSession? {
+        if (purpose == AccountPurpose.PLAYBACK) return getPlaybackAccount(context)
+        val mid = getPurposeAccountMid(context, purpose) ?: return null
+        return getAccounts(context).firstOrNull { it.mid == mid && it.sessData.isNotBlank() }
+    }
+
+    fun setPurposeAccountMid(context: Context, purpose: AccountPurpose, mid: Long?): Boolean {
+        if (purpose == AccountPurpose.PLAYBACK) return setPlaybackAccountMid(context, mid)
+        if (mid != null && getAccounts(context).none { it.mid == mid && it.sessData.isNotBlank() }) return false
+        context.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE).edit().apply {
+            if (mid == null) remove(purpose.storageKey) else putLong(purpose.storageKey, mid)
+        }.apply()
+        return true
+    }
+
     fun clearActiveAccount(context: Context) {
         context.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE)
             .edit()
@@ -207,6 +228,9 @@ object AccountSessionStore {
         if (getPlaybackAccountMid(context) == mid) {
             editor.remove(KEY_PLAYBACK_MID)
             NetworkModule.clearPlaybackAccountClient()
+        }
+        AccountPurpose.entries.forEach { purpose ->
+            if (getPurposeAccountMid(context, purpose) == mid) editor.remove(purpose.storageKey)
         }
         editor.apply()
         return true

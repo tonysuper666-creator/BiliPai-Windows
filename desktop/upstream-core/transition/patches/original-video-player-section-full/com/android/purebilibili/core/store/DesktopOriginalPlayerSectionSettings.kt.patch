@@ -1,0 +1,72 @@
+--- a/original-video-player-section-full/com/android/purebilibili/core/store/DesktopOriginalPlayerSectionSettings.kt
++++ b/original-video-player-section-full/com/android/purebilibili/core/store/DesktopOriginalPlayerSectionSettings.kt
+@@ -92,16 +92,10 @@
+             slideVolumeBrightnessEnabled = preferences[KEY_SLIDE_VOLUME_BRIGHTNESS_ENABLED] ?: true,
+             setSystemBrightnessEnabled = preferences[KEY_SET_SYSTEM_BRIGHTNESS] ?: false,
+             pipNoDanmakuEnabled = preferences[KEY_PIP_NO_DANMAKU] ?: false,
+             seekForwardSeconds = (preferences[KEY_SEEK_FORWARD_SECONDS] ?: 10).coerceIn(1, 60),
+             seekBackwardSeconds = (preferences[KEY_SEEK_BACKWARD_SECONDS] ?: 10).coerceIn(1, 60),
+-            inlineSwipeSeekSeconds = normalizeInlineSwipeSeekSeconds(
+-                preferences[KEY_INLINE_SWIPE_SEEK_SECONDS] ?: 30
+-            ),
+-            fullscreenSwipeSeekSeconds = normalizeFullscreenSwipeSeekSeconds(
+-                preferences[KEY_FULLSCREEN_SWIPE_SEEK_SECONDS] ?: 15
+-            ),
+             fullscreenSwipeSeekEnabled = preferences[KEY_FULLSCREEN_SWIPE_SEEK_ENABLED] ?: true,
+             fullscreenGestureReverse = preferences[KEY_FULLSCREEN_GESTURE_REVERSE] ?: false,
+             hideVideoPageStatusBar = preferences[KEY_HIDE_VIDEO_PAGE_STATUS_BAR] ?: false,
+             portraitLetterboxAmbientHaze =
+                 preferences[KEY_PORTRAIT_LETTERBOX_AMBIENT_HAZE] ?: true,
+@@ -350,15 +344,13 @@
+ 
+     private val KEY_PORTRAIT_SWIPE_TO_FULLSCREEN = booleanPreferencesKey("portrait_swipe_to_fullscreen")
+ 
+     private val KEY_CENTER_SWIPE_TO_FULLSCREEN = booleanPreferencesKey("center_swipe_to_fullscreen")
+ 
+-    private val KEY_INLINE_SWIPE_SEEK_SECONDS = intPreferencesKey("inline_swipe_seek_seconds")
+ 
+     private val KEY_FULLSCREEN_SWIPE_SEEK_ENABLED = booleanPreferencesKey("fullscreen_swipe_seek_enabled")
+ 
+-    private val KEY_FULLSCREEN_SWIPE_SEEK_SECONDS = intPreferencesKey("fullscreen_swipe_seek_seconds")
+ 
+     private val KEY_FULLSCREEN_GESTURE_REVERSE = booleanPreferencesKey("fullscreen_gesture_reverse")
+ 
+     private val KEY_HIDE_VIDEO_PAGE_STATUS_BAR = booleanPreferencesKey("hide_video_page_status_bar")
+ 
+@@ -383,13 +375,11 @@
+ 
+     private val KEY_FULLSCREEN_MODE = intPreferencesKey("fullscreen_mode")
+ 
+     private val KEY_FULLSCREEN_ASPECT_RATIO = intPreferencesKey("fullscreen_aspect_ratio")
+ 
+-    private val INLINE_SWIPE_SEEK_OPTIONS = listOf(5, 10, 15, 30, 60)
+-
+-    private val FULLSCREEN_SWIPE_SEEK_OPTIONS = listOf(10, 15, 20, 30)
++
+ 
+     internal fun resolvePortraitPlayerCollapseModePreference(
+         rawMode: Int?,
+         legacySwipeHide: Boolean?
+     ): PortraitPlayerCollapseMode {
+@@ -410,21 +400,10 @@
+ 
+     fun getPauseOnPlayerCollapseEnabled(context: Context): Flow<Boolean> =
+         context.settingsDataStore.data.map { preferences ->
+             preferences[KEY_PAUSE_ON_PLAYER_COLLAPSE] ?: true
+         }
+-
+-
+-    private fun normalizeInlineSwipeSeekSeconds(seconds: Int): Int {
+-        return INLINE_SWIPE_SEEK_OPTIONS.minByOrNull { option -> abs(option - seconds) } ?: 30
+-    }
+-
+-    // --- 横屏左右滑动精细调进度开关（默认开启） ---
+-
+-    private fun normalizeFullscreenSwipeSeekSeconds(seconds: Int): Int {
+-        return FULLSCREEN_SWIPE_SEEK_OPTIONS.minByOrNull { option -> abs(option - seconds) } ?: 15
+-    }
+ 
+ 
+     private fun isLargeScreenOrFoldableConfiguration(context: Context): Boolean {
+         return context.isLargeScreenOrFoldableConfiguration()
+     }

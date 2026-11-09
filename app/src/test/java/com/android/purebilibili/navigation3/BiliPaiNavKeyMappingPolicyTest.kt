@@ -8,6 +8,58 @@ import kotlin.test.assertNotEquals
 
 class BiliPaiNavKeyMappingPolicyTest {
     @Test
+    fun webUploadsRestoreOwnerAndCurrentCollectionWithoutBecomingAWebPage() {
+        listOf(
+            BiliPaiNavKey.SpaceWebVideos(42L, "UP + 空间 & 100%"),
+            BiliPaiNavKey.SpaceWebVideos(42L, "UP", "season", 123L),
+            BiliPaiNavKey.SpaceWebVideos(42L, "UP", "series", 456L),
+        ).forEach { key ->
+            assertEquals(key, legacyRouteToBiliPaiNavKey(key.toLegacyRoute()))
+            assertEquals(BiliPaiNavEntryContentRole.SPACE_WEB_VIDEOS, resolveBiliPaiNavEntryContentRole(key))
+        }
+    }
+
+    @Test
+    fun profileAccountEditorHasItsOwnRestorableDestination() {
+        assertEquals(BiliPaiNavKey.ProfileAccountEdit, legacyRouteToBiliPaiNavKey(BiliPaiNavKey.ProfileAccountEdit.toLegacyRoute()))
+        assertNotEquals(BiliPaiNavKey.Profile.toLegacyRoute(), BiliPaiNavKey.ProfileAccountEdit.toLegacyRoute())
+        assertEquals(BiliPaiNavEntryContentRole.PROFILE, resolveBiliPaiNavEntryContentRole(BiliPaiNavKey.ProfileAccountEdit))
+    }
+
+    @Test
+    fun dynamicCommentEntryAndReplyLocationSurviveRouteRestoration() {
+        listOf(
+            BiliPaiNavKey.DynamicDetail("123"),
+            BiliPaiNavKey.DynamicDetail("123", openComments = true),
+            BiliPaiNavKey.DynamicDetail("123", 456L, 789L, openComments = true),
+            BiliPaiNavKey.DynamicDetail("123", 456L, 789L),
+        ).forEach { key ->
+            assertEquals(key, legacyRouteToBiliPaiNavKey(key.toLegacyRoute()))
+            assertEquals(
+                key,
+                legacyRouteToBiliPaiNavKey(ScreenRoutes.DynamicDetail.createRoute(
+                    dynamicId = key.dynamicId,
+                    commentRootRpid = key.commentRootRpid,
+                    commentTargetRpid = key.commentTargetRpid,
+                    openComments = key.openComments,
+                )),
+            )
+        }
+        assertEquals(BiliPaiNavKey.DynamicDetail("123"), legacyRouteToBiliPaiNavKey("dynamic_detail/123"))
+        assertEquals(
+            BiliPaiNavKey.DynamicDetail("123"),
+            legacyRouteToBiliPaiNavKey("dynamic_detail/123?openComments=false"),
+        )
+    }
+
+    @Test
+    fun articleCommentLocationSurvivesRouteRestoration() {
+        val key = BiliPaiNavKey.ArticleDetail(123L, "专栏 & 评论", 456L, 789L)
+        assertEquals(key, legacyRouteToBiliPaiNavKey(key.toLegacyRoute()))
+        assertEquals(BiliPaiNavKey.ArticleDetail(123L), legacyRouteToBiliPaiNavKey("article/123?title="))
+    }
+
+    @Test
     fun liveMatchesRestoreIntoNativeScheduleDestination() {
         assertEquals(ScreenRoutes.LiveMatch.route, BiliPaiNavKey.LiveMatch.toLegacyRoute())
         assertEquals(BiliPaiNavKey.LiveMatch, legacyRouteToBiliPaiNavKey("live_match"))

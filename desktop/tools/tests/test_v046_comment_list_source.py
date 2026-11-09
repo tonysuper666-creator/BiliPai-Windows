@@ -439,6 +439,8 @@ class ConnectedCommentPanelSources(unittest.TestCase):
         current = self.generated('bangumi', 'DesktopOriginalBangumiPlayerScreen.kt')
         # The v0.4.6 like-status threading (bgm-player-viewmodel-and-features) is appended after this comment layer.
         retry = self.proof('bangumi', 'v046-bangumi-player-proofs/ui-retry-DesktopOriginalBangumiPlayerScreen')
+        producer = module('extract-upstream-bangumi-player-ui.py')
+        current = producer.restore_buffering_stage(current, self.output / 'bangumi')
         actual = restore(current, retry['retainedToCurrent'])
         proof = self.proof('bangumi', 'v046-DesktopOriginalBangumiPlayerScreen-comment-caller-proof')
         previous = restore(actual, proof['retainedToCurrent'])

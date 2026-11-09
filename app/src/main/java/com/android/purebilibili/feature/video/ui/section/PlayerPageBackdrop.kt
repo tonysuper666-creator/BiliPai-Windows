@@ -54,3 +54,14 @@ internal fun shouldUsePlayerPageTexture(
     hdr: Boolean,
     existingTextureRequest: Boolean,
 ): Boolean = !hdr && (glassSupported || retainedGlassTexture || existingTextureRequest)
+
+/** 采样只服务可见控制层；转场隐藏控制层时，保留播放器输出而停止附属背景录制。 */
+internal fun shouldCapturePlayerPageBackdrop(
+    glassSupported: Boolean,
+    controlsRequestCapture: Boolean,
+    controlsExitVisible: Boolean,
+    hostStarted: Boolean,
+    miniMode: Boolean,
+    overlaysSuppressed: Boolean,
+): Boolean = glassSupported && hostStarted && !miniMode && !overlaysSuppressed &&
+    (controlsRequestCapture || controlsExitVisible)

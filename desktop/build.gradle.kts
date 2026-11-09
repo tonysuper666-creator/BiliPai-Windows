@@ -61,9 +61,9 @@ val revisionNeutralSourceRecipePins = mapOf(
     "tools/extract-upstream-video-comment-ui.py" to "5cfb2e35b5e558c3a1911d04fd04ffed88ddc0d17571687901ed591b4e9dbf03",
     "tools/extract-video-enhancement.py" to "0046195e1914059a841aacf69ed704c86a85e5a9e3a432fbcce3d3628f2d9195",
     "tools/run-tool-tests.py" to "0114c7c7ecea5c45e26843ed025eae4a7fd991b6d50edf09bf9185ed7f20cd44",
-    "tools/sync-upstream.py" to "62e1bab0f3101a76f80d1ec2aa16c0b2f2aacba194df67c291324638adce1fa0",
-    "tools/v025-canonical-sources.json" to "2600739eef5521cfef71d6af16762ccc3b9df076dad7ccb79902944f1634130f",
-    "tools/v025_source_paths.py" to "3b84ba1b1b0907cfb3cb610bd6f713c37521a79f6a0d78ce185f764547ebc460",
+    "tools/sync-upstream.py" to "08b93c146012f15502f7b9cbb59935b55599ea420948d6761abc8da6576ead16",
+    "tools/v025-canonical-sources.json" to "d3f979a7ce657e358a4362ca801ce91fbf39be5fc51277691dfec43bda131356",
+    "tools/v025_source_paths.py" to "56ac2f8e0ec536bae7e3280087add2a12b092256090aaafb7c49ea978ae818da",
     "tools/v029_brand_consumers.py" to "89648e569d074aaeaa456a12220efb4de3e8ecfcefbbe05f74ea55ef47c3742e",
     "tools/v029_comment_composer.py" to "49321836c7e0b49dbdbd226872f85df8cb391feb8ac7dadd27b56e345bbbca52",
     "tools/v029_comment_search.py" to "b80189f64014e373c136bc38e0fbb4171933203ba0cf2a2e76bf0053e17c1a9d",
@@ -96,7 +96,7 @@ val revisionNeutralSourceImportContextMatches =
     revisionNeutralSourceImportRoots.none { file("tools/$it").exists() } && revisionNeutralSourceImportShadowFiles.isEmpty
 // Pin the whole Gradle recipe, including canonical helpers and later wiring.
 // Mask exactly this self-digest assignment; raw build bytes remain task inputs.
-val revisionNeutralSourceGradleRecipeSha256 = "b943e53a7474a41bcdcf313c616378abae4b4402999f322e4ba3ee02b75346f3"
+val revisionNeutralSourceGradleRecipeSha256 = "09026d78807dab825926c537ff7ecca26574b2db3268b531e65f5c5d1825eac5"
 val revisionNeutralSourceGradleRecipeMatches = runCatching {
     val recipe = file("build.gradle.kts").readText(Charsets.UTF_8).replace("\r\n", "\n")
     val ownPin = "val revisionNeutralSourceGradleRecipeSha256 = \"$revisionNeutralSourceGradleRecipeSha256\""
@@ -121,7 +121,7 @@ val canonicalOriginalCatalogFile = file("tools/v025-canonical-sources.json")
 val canonicalOriginalHelperFile = file("tools/v025_source_paths.py")
 val canonicalOriginalCatalogBytes = canonicalOriginalCatalogFile.readBytes().also { bytes ->
     require(MessageDigest.getInstance("SHA-256").digest(bytes)
-        .joinToString("") { "%02x".format(it) } == "2600739eef5521cfef71d6af16762ccc3b9df076dad7ccb79902944f1634130f") {
+        .joinToString("") { "%02x".format(it) } == "d3f979a7ce657e358a4362ca801ce91fbf39be5fc51277691dfec43bda131356") {
         "The v025 canonical original source catalog changed without review."
     }
 }
@@ -244,11 +244,14 @@ val appCoreDesktopOwned: Map<String, String> = mapOf(
     "core/database/dao/BlockedUpDao.kt" to "Room 数据库；桌面用 JSON 存储（DesktopBlockedUpStore、DesktopCommentFraudJsonDao 等）",
     "core/database/dao/CommentFraudDao.kt" to "Room 数据库；桌面用 JSON 存储（DesktopBlockedUpStore、DesktopCommentFraudJsonDao 等）",
     "core/lifecycle/BackgroundManager.kt" to "Android 进程前后台与内存回收回调",
+    "core/lifecycle/BackgroundStateFlow.kt" to "依赖 Android BackgroundManager 的进程生命周期流；桌面窗口前后台由 DesktopHomeActualWindowBackground 提供，仅 Android VideoPlaybackViewModel 使用此流",
     "core/lifecycle/BackgroundMemoryTrimPolicy.kt" to "Android 进程前后台与内存回收回调",
     "core/performance/Android17Diagnostics.kt" to "Android 进程退出与 Android 17 诊断；桌面诊断走 DesktopDiagnostics",
     "core/performance/NativeExitTrace.kt" to "Android 进程退出与 Android 17 诊断；桌面诊断走 DesktopDiagnostics",
     "core/performance/ProcessExitContext.kt" to "Android 进程退出与 Android 17 诊断；桌面诊断走 DesktopDiagnostics",
     "core/player/BasePlayerViewModel.kt" to "Media3/ExoPlayer 播放栈；桌面播放走 mpv（com.bilipai.desktop.player）",
+    "core/player/AppVideoDecoderPreference.kt" to "Media3 DefaultRenderersFactory/ExoPlayer 解码器偏好与诊断；桌面解码器选择走 com.bilipai.desktop.player 的 mpv 配置",
+    "core/player/PlaybackPositionState.kt" to "Media3 Player 事件与播放时钟；桌面播放位置由 com.bilipai.desktop.player 的 mpv 状态提供",
     "core/player/HiResCompatibleRenderersFactory.kt" to "Media3/ExoPlayer 播放栈；桌面播放走 mpv（com.bilipai.desktop.player）",
     "core/player/LoudnessAwareRenderersFactory.kt" to "Media3/ExoPlayer 播放栈；桌面播放走 mpv（com.bilipai.desktop.player）",
     "core/player/LoudnessNormalizationAudioProcessor.kt" to "Media3/ExoPlayer 播放栈；桌面播放走 mpv（com.bilipai.desktop.player）",
@@ -294,6 +297,7 @@ val appCoreDesktopOwned: Map<String, String> = mapOf(
     "core/util/PipAspectRatioPolicy.kt" to "Android 系统栏、折叠屏、挖孔与画中画窗口",
     "core/util/ShareUtils.kt" to "Android 权限、相册、分享面板、ConnectivityManager 与应用缓存目录",
     "core/util/VideoSurfaceCompatibility.kt" to "Android 系统栏、折叠屏、挖孔与画中画窗口",
+    "core/util/VideoTrackCapabilities.kt" to "Media3 Format/MediaCodecSelector 的 Android 视频轨解码能力查询；桌面轨道与硬解能力由 mpv 播放栈处理",
     "core/util/WindowSizeUtils.kt" to "Android 系统栏、折叠屏、挖孔与画中画窗口",
     "core/plugin/js/BiliPaiJsRuntime.kt" to "Android WebView 执行 JS 插件；桌面 JS 插件走隔离的 JS worker（com.bilipai.desktop.plugins.js）",
     "core/plugin/feed/PublicContentImageLoader.kt" to "Android Coil ImageLoader（GIF/动画解码器与 Android 磁盘缓存）；桌面公共内容图片走 DesktopPublicContentImageRouting，同一无凭据图片客户端",
@@ -383,6 +387,9 @@ val appM4cLaterSteps: Map<String, String> = mapOf(
     "com/android/purebilibili/feature/audio/lyrics/halcyon/PlayerBlurBackground.kt" to "Bitmap 模糊取样；桌面音乐页还没有模糊底图，先保留旧副本",
     "com/android/purebilibili/feature/audio/lyrics/halcyon/PlayerLyricPerspective.kt" to "依赖 Android Configuration.smallestScreenWidthDp",
     "com/android/purebilibili/feature/audio/lyrics/halcyon/PlayerPalette.kt" to "Bitmap 取色；桌面音乐页还没有从封面取色，先保留旧副本",
+    "com/android/purebilibili/feature/audio/player/AudioLibraryPolicy.kt" to "编译不过（19 处）：未解析 BackgroundAudioSnapshot×3；未解析 accountMid/current/bvid/cid/positionMs×5；Cannot infer type for type parameter×5；具名参数 queue/index/audioUrl/playing/positionMs 不存在×5；需 opt-in ExperimentalStdlibApi×1；等桌面系统媒体库替身（BackgroundAudioSnapshot 在桌面按进程内会话处理的 BackgroundAudioProtocol.kt 里，桌面不编译该协议）",
+    "com/android/purebilibili/feature/audio/player/AudioMediaLibrary.kt" to "编译不过（27 处）：未解析 media3×2；未解析 MediaItem×4；未解析 MediaMetadata×3；未解析 BackgroundAudioSnapshot×3；未解析 backgroundAudioJson×1；未解析 audio_library_*×5；Cannot infer type for type parameter×4；未解析 accountMid×2；等桌面系统媒体库替身（Android MediaLibraryService 浏览树；桌面系统媒体出口是 SMTC，见 player/WindowsMediaSession.kt，只有传输没有浏览树）",
+    "com/android/purebilibili/feature/audio/player/SystemMediaPreferences.kt" to "编译不过（1 处）：未解析 widget×1（feature/widget/PlaybackWidgetProvider 是 Android AppWidget，桌面没有）；桌面单进程也不需要把锁屏/隐私设置镜像给音频进程，设置由 audio/ListenAudioSession.kt 直接读",
     "com/android/purebilibili/feature/audio/screen/AudioNowPlayingBar.kt" to "依赖 Android GL 音浪渲染（gl/dispose）",
     "com/android/purebilibili/feature/audio/screen/AudioNowPlayingBarPresenceMotionPolicy.kt" to "上游删除了 LINKED_DOCK_* 合并动效常量，桌面硬底栏切片（linked-dock）还在用；等 M4b 底部栏改造",
     "com/android/purebilibili/feature/audio/screen/AudioNowPlayingWindowSnapshot.kt" to "Android Canvas/Bitmap 窗口快照；桌面音乐页没有这个快照，先保留旧副本",
@@ -435,6 +442,8 @@ val migratedAppM4cPaths: Set<String> = migratedAppM4cRoots.flatMap { root ->
 }.toSortedSet()
 val migratedAppPaths: Set<String> = migratedAppCorePaths + migratedAppM4dPaths + migratedAppSingleFiles + migratedAppM4cPaths
 val migratedUpstreamRelativePaths = migratedWholeModulePaths + migratedAppPaths + setOf(
+    // TON-1316: the desktop DASH patch replaces the legacy generated copy too.
+    "com/android/purebilibili/core/player/dash/LocalDashManifestBuilder.kt",
     "com/android/purebilibili/core/network/AppSignUtils.kt",
     "com/android/purebilibili/core/network/WbiUtils.kt",
     "com/android/purebilibili/core/network/grpc/ProtoWire.kt",
@@ -1092,8 +1101,10 @@ val extractUpstreamSettingsHome by tasks.registering(Exec::class) {
     workingDir(projectDir)
     commandLine(pythonExecutable, "tools/extract-upstream-settings-home.py",
         "--repo", repositoryRoot.absolutePath,
+        "--current-repo", mergedRepositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/settings-home").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-settings-home.py", "tools/extract-upstream-plugins.py", "tools/extract-upstream-media.py", "tools/sync-upstream.py")
+    inputs.file(mergedRepositoryRoot.resolve("app/src/main/java/com/android/purebilibili/feature/home/HomeViewModel.kt"))
     inputs.files(sources.filter { "settings-home-section-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/settings-home"))
@@ -2755,6 +2766,7 @@ val transitionPatchProducers = mapOf(
     "frosted-audio-renderer" to "extractFrostedAudioRenderer",
     "original-bangumi-player-ui" to "extractOriginalBangumiPlayerUi",
     "original-video-fullscreen-pager" to "extractOriginalVideoFullscreenPager",
+    "original-video-player-section-full" to "extractOriginalVideoPlayerSectionFull",
     "original-video-full-owner" to "extractOriginalVideoFullOwner",
     "original-aicu" to "extractOriginalAicu",
     "home-viewmodel" to "extractOriginalHomeViewModel",
@@ -3227,8 +3239,9 @@ val generateUpstreamDrawableResources by tasks.registering {
                         val kind = when (val tag = javax.xml.parsers.DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(file).documentElement.tagName) {
                             "vector" -> "vector"
                             "adaptive-icon" -> "adaptive"
-                            // Splash-screen compositions; the desktop has no Android splash screen. Their ids load loudly.
-                            "layer-list", "bitmap" -> tag
+                            // Splash-screen compositions and home-screen widget backgrounds (v0.7.8 widget_playback_background);
+                            // the desktop has no Android splash screen or app widgets. Their ids load loudly.
+                            "layer-list", "bitmap", "shape" -> tag
                             else -> throw GradleException("$where: <$tag> drawables are not implemented on the desktop")
                         }
                         // A colour without a base value would crash on Android below that qualifier too; the id stays and
@@ -3407,9 +3420,12 @@ val verifyUpstreamReplacements by tasks.registering {
 // Upstream's own unit tests of the migrated design modules run in the desktop test set; the pinned older copies of the
 // same test classes that the generators extract are skipped, since both cannot exist under one class name.
 val migratedWholeModuleTestRoots = migratedWholeModules.map { mergedRepositoryRoot.resolve(it + "src/test/java") }.filter { it.isDirectory }
+// TON-1315: select this current core-data test, replacing the v046 generated copy
+// without importing the rest of core-data's Android test graph.
+val currentVideoProgressTest = mergedRepositoryRoot.resolve("core-data/src/test/java/com/android/purebilibili/data/model/VideoProgressDisplayPolicyTest.kt")
 val migratedWholeModuleTestPaths: Set<String> = migratedWholeModuleTestRoots.flatMap { root ->
     root.walkTopDown().filter { it.isFile && it.extension == "kt" }.map { it.relativeTo(root).invariantSeparatorsPath }.toList()
-}.toSet()
+}.toSet() + "com/android/purebilibili/data/model/VideoProgressDisplayPolicyTest.kt"
 // Upstream tests that read upstream source files relative to their Gradle module (design-system/) run in their own task
 // with that working directory; the other desktop tests keep theirs.
 val migratedSourceReadingTestClasses: List<String> = migratedWholeModuleTestRoots.flatMap { root ->
@@ -3452,6 +3468,7 @@ val appCoreUpstreamTestsNotRun: Map<String, String> = mapOf(
     "core/theme/AppThemeEndpointPolicyTest.kt" to "it calls feature/video resolvePlaybackNotificationAccentColor, which moves with M4a",
     "core/plugin/js/BiliPaiJsNativeExampleTest.kt" to "it reads examples/plugins/tv-live.bilipai.js, which the merge leaves out; the desktop copy runs the byte-identical script from desktop/src/test/fixtures",
     "core/ui/adaptive/DeviceUiProfilePolicyTest.kt" to "the same test class (same package and name) as design-system DeviceUiProfilePolicyTest, which runs",
+    "core/util/ArticleCollectionNavigationTest.kt" to "its subject is not on the desktop yet: the v0.7.8 article collection page (navigation3 ArticleCollection key, MainActivity and WebView dispatch), TON-1314 item 4",
 )
 // Approved upstream test corrections are isolated from production patch outputs.
 // The complete LF-normalized source is pinned: even an edit outside a hunk needs review.
@@ -3463,7 +3480,6 @@ val correctedUpstreamTestPaths = setOf(
     "design-system/src/test/java/com/android/purebilibili/core/ui/adaptive/DeviceUiProfilePolicyTest.kt",
     "app/src/test/java/com/android/purebilibili/core/ui/adaptive/DeviceUiProfileTest.kt",
     "app/src/test/java/com/android/purebilibili/core/ui/components/AppLiquidAwareSearchFieldStructureTest.kt",
-    "app/src/test/java/com/android/purebilibili/core/ui/components/LegacyTabChipMigrationStructureTest.kt",
     "app/src/test/java/com/android/purebilibili/core/theme/ThemeDynamicColorPolicyTest.kt",
 
     "app/src/test/java/com/android/purebilibili/core/ui/AdaptiveNativeControlAdoptionStructureTest.kt",
@@ -3487,8 +3503,6 @@ val correctedUpstreamTestPaths = setOf(
     "app/src/test/java/com/android/purebilibili/core/ui/AdaptiveLoadingIndicatorIntegrationTest.kt",
     "app/src/test/java/com/android/purebilibili/core/ui/AdaptiveTooltipIntegrationTest.kt",
     "app/src/test/java/com/android/purebilibili/core/ui/AppChromeNavigationApiStructureTest.kt",
-    "app/src/test/java/com/android/purebilibili/core/ui/CommentOverlayNavigationBackHandlerStructureTest.kt",
-    "app/src/test/java/com/android/purebilibili/core/ui/components/ThemeNativeSelectionStructureTest.kt",
     "app/src/test/java/com/android/purebilibili/core/util/PermissionHelperStructureTest.kt",
     "app/src/test/java/com/android/purebilibili/core/ui/animation/DampedDragAnimationIntegrationTest.kt",
     "app/src/test/java/com/android/purebilibili/core/ui/common/VerticalPriorityPagerGestureTest.kt",
@@ -3500,12 +3514,10 @@ val correctedUpstreamTestPaths = setOf(
     "app/src/test/java/com/android/purebilibili/feature/settings/AppBuildVerificationPolicyTest.kt",
     "app/src/test/java/com/android/purebilibili/feature/settings/AnimationSettingsScreenStructureTest.kt",
     "app/src/test/java/com/android/purebilibili/feature/settings/SettingsCoreCombineOrderTest.kt",
-    "app/src/test/java/com/android/purebilibili/feature/settings/SettingsMiuixSimplificationStructureTest.kt",
     "app/src/test/java/com/android/purebilibili/feature/settings/SettingsRootCategoryContentStructureTest.kt",
     "app/src/test/java/com/android/purebilibili/feature/space/SpaceTabChromePolicyTest.kt",
     "app/src/test/java/com/android/purebilibili/feature/space/SpaceLoadPolicyTest.kt",
     "app/src/test/java/com/android/purebilibili/feature/space/SpaceAggregatedModelMappingTest.kt",
-    "app/src/test/java/com/android/purebilibili/feature/space/SpaceDynamicNavigationPolicyTest.kt",
 )
 val correctedUpstreamTestOutput = layout.buildDirectory.dir("patched-upstream-tests")
 val applyUpstreamTestCorrections by tasks.registering {
@@ -3542,7 +3554,10 @@ val appM4dTestsNotRun: Map<String, String> = m4dTable("tests-not-run.tsv").toMap
 val appCoreUpstreamTestPaths: Set<String> = (appTestRoot.resolve("com/android/purebilibili/core").walkTopDown() +
         migratedAppM4dAreas.asSequence().flatMap { appTestRoot.resolve("com/android/purebilibili/$it").walkTopDown() } +
         // TON-1120: upstream's IM wire tests run against the directly compiled MessageImRepository.
-        sequenceOf(appTestRoot.resolve("com/android/purebilibili/data/repository/MessageImRepositoryTest.kt")))
+        sequenceOf(appTestRoot.resolve("com/android/purebilibili/data/repository/MessageImRepositoryTest.kt")) +
+        // TON-1297: the migrated v0.7.8 SearchMotionBudgetPolicy is the only compiled one; its own test replaces the v0.4.6 producer copy.
+        sequenceOf(appTestRoot.resolve("com/android/purebilibili/feature/search/SearchMotionBudgetPolicyTest.kt"),
+            appTestRoot.resolve("com/android/purebilibili/feature/settings/CacheClearUiPolicyTest.kt")))
     .filter { it.isFile && it.extension == "kt" }
     // JUnit 4, Robolectric, mockk and androidx.test are not on the desktop test classpath; JUnit 5 (org.junit.jupiter) is.
     .filter { file -> !Regex("""^import (org\.junit\.(?!jupiter)|org\.robolectric|io\.mockk|androidx\.test)""", RegexOption.MULTILINE).containsMatchIn(file.readText()) }
@@ -3559,6 +3574,10 @@ val appCoreSourceReadingTestClasses: List<String> = appCoreUpstreamTestPaths.map
     .sorted()
 kotlin.sourceSets.named("test") {
     migratedWholeModuleTestRoots.forEach { kotlin.srcDir(it) }
+    kotlin.srcDir(currentVideoProgressTest.parentFile)
+    kotlin.exclude { element -> !element.isDirectory &&
+        element.file.toPath().startsWith(currentVideoProgressTest.parentFile.toPath()) &&
+        element.file != currentVideoProgressTest }
     kotlin.exclude { element -> !element.isDirectory &&
         element.file.toPath().startsWith(mergedRepositoryRoot.toPath()) &&
         element.file.relativeTo(mergedRepositoryRoot).invariantSeparatorsPath in correctedUpstreamTestPaths }
@@ -3573,7 +3592,10 @@ kotlin.sourceSets.named("test") {
         val index = path.lastIndexOf("/com/android/purebilibili/")
         element.file.toPath().startsWith(buildDirectoryPath) &&
             !element.file.toPath().startsWith(correctedUpstreamTestOutput.get().asFile.toPath()) && index >= 0 &&
-            path.substring(index + 1).let { it in migratedWholeModuleTestPaths || it in appCoreUpstreamTestPaths }
+            path.substring(index + 1).let { it in migratedWholeModuleTestPaths || it in appCoreUpstreamTestPaths ||
+                // The pinned v029 class was renamed by its producer. All policy
+                // cases now run from the newer root CacheClearUiPolicyTest.
+                it == "com/android/purebilibili/feature/settings/DesktopV029CacheClearUiPolicyTest.kt" }
     }
 }
 
@@ -3908,6 +3930,9 @@ tasks.withType<Test>().configureEach {
         val testJvmTemp = temporaryDir.resolve("jvm-temp").canonicalFile
         systemProperty("java.io.tmpdir", testJvmTemp.absolutePath)
         doFirst { JvmFiles.createDirectories(testJvmTemp.toPath()) }
+        // A dual-stack JDK socket on macOS does not loop IPv4 multicast back over lo0, so the task-owned
+        // JmDNS fixture on 127.0.0.1 is never seen (bare JmDNS 3.6.3 behaves the same). Windows keeps its stack.
+        systemProperty("java.net.preferIPv4Stack", "true")
     }
     if (!System.getProperty("os.name").startsWith("Windows", ignoreCase = true))
         systemProperty("bilipai.credentialProtection", "test-only")
@@ -4634,6 +4659,7 @@ val extractOriginalStorageSettings by tasks.registering(Exec::class) {
     workingDir(projectDir)
     commandLine(pythonExecutable, "tools/extract-upstream-storage-settings.py",
         "--repo", repositoryRoot.absolutePath,
+        "--current-repo", mergedRepositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/original-storage-settings").get().asFile.absolutePath,
         "--tests-output", layout.buildDirectory.dir("generated/original-storage-settings-tests").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-storage-settings.py", "tools/extract-upstream-media.py",
@@ -4644,6 +4670,7 @@ val extractOriginalStorageSettings by tasks.registering(Exec::class) {
     inputs.files(originalResources.filter { "desktop-storage-cache-settings-owner-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })
     inputs.file("tools/v029_brand_cache_clear.py")
+    inputs.file(mergedRepositoryRoot.resolve("app/src/main/java/com/android/purebilibili/feature/settings/screen/SettingsScreen.kt"))
     inputs.dir("upstream-slices/v029-brand-cache-clear")
     outputs.dir(layout.buildDirectory.dir("generated/original-storage-settings"))
     outputs.dir(layout.buildDirectory.dir("generated/original-storage-settings-tests"))

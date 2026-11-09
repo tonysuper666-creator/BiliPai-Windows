@@ -4,8 +4,152 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
 import kotlin.test.assertNull
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 
 class BilibiliNavigationTargetParserTest {
+    @Test
+    fun dynamicCommentTabRequestsCommentsWithoutInventingReplyIds() {
+        listOf(
+            "bilibili://following/detail/123?tab=comment",
+            "bili://following/detail/123?tab=%63omment",
+            "https://t.bilibili.com/123?tab=comment",
+            "t.bilibili.com/123?tab=comment",
+            "//t.bilibili.com/123?tab=comment",
+            "https://www.bilibili.com/opus/123?tab=COMMENT",
+            "bilibili://browser/?url=bilibili%3A%2F%2Ffollowing%2Fdetail%2F123%3Ftab%3Dcomment",
+        ).forEach { link ->
+            val target = assertIs<BilibiliNavigationTarget.Dynamic>(BilibiliNavigationTargetParser.parse(link), link)
+            assertEquals(BilibiliNavigationTarget.Dynamic("123", openComments = true), target, link)
+            assertTrue(target.hasCommentLocation, link)
+        }
+    }
+
+    @Test
+    fun dynamicCommentTabAndActualReplyLocationArePreservedTogether() {
+        listOf(
+            "bilibili://following/detail/123?tab=comment&root=456&comment_id=789",
+            "https://t.bilibili.com/123?tab=comment&root=456#reply789",
+            "bilibili://browser/?url=bilibili%3A%2F%2Ffollowing%2Fdetail%2F123%3Ftab%3Dcomment%26root%3D456%26comment_id%3D789",
+            "bilibili://browser/?url=bilibili%3A%2F%2Ffollowing%2Fdetail%2F123%3Ftab%3Dcomment&root=456&comment_id=789",
+        ).forEach { link ->
+            assertEquals(
+                BilibiliNavigationTarget.Dynamic("123", 456L, 789L, openComments = true),
+                BilibiliNavigationTargetParser.parse(link),
+                link,
+            )
+        }
+    }
+
+    @Test
+    fun normalDynamicLinksAndOtherContentDoNotAcquireCommentTabIntent() {
+        listOf(
+            "bilibili://following/detail/123",
+            "https://t.bilibili.com/123",
+            "bilibili://following/detail/123?tab=all",
+        ).forEach { link ->
+            val target = assertIs<BilibiliNavigationTarget.Dynamic>(BilibiliNavigationTargetParser.parse(link), link)
+            assertFalse(target.openComments, link)
+            assertFalse(target.hasCommentLocation, link)
+        }
+        assertEquals(
+            BilibiliNavigationTarget.Video("av123"),
+            BilibiliNavigationTargetParser.parse("bilibili://video/123?tab=comment"),
+        )
+        assertEquals(
+            BilibiliNavigationTarget.Article(123L),
+            BilibiliNavigationTargetParser.parse("bilibili://article/123?tab=comment"),
+        )
+    }
+
+    @Test
+    fun contentLinksKeepCommentLocationAcrossVideoAndDynamicIdentities() {
+        listOf(
+            "https://www.bilibili.com/video/BV1xx411c7mD?comment_root_id=456#reply789" to
+                BilibiliNavigationTarget.Video("BV1xx411c7mD", 456L, 789L),
+            "bilibili://video/123?root=456&comment_id=789" to
+                BilibiliNavigationTarget.Video("av123", 456L, 789L),
+            "https://t.bilibili.com/123?root_id=456&reply_id=789" to
+                BilibiliNavigationTarget.Dynamic("123", 456L, 789L),
+            "bilibili://following/detail/123?root_reply_id=456&target_id=789" to
+                BilibiliNavigationTarget.Dynamic("123", 456L, 789L),
+            "bilibili://browser/?url=https%3A%2F%2Fwww.bilibili.com%2Fvideo%2FBV1xx411c7mD%3Froot%3D456%23reply789" to
+                BilibiliNavigationTarget.Video("BV1xx411c7mD", 456L, 789L),
+        ).forEach { (link, expected) ->
+            assertEquals(expected, BilibiliNavigationTargetParser.parse(link), link)
+        }
+    }
+
+    @Test
+    fun officialComment3RoutesKeepBusinessRootAndSecondaryReply() {
+        listOf(
+            "bilibili://comment3/main/123/1?rp_id=456&sub_rp_id=789" to
+                BilibiliNavigationTarget.CommentDetail(123L, 456L, 789L, 1, "bilibili://video/123"),
+            "bili://comment3/main/888/11?rp_id=456&sub_rp_id=789" to
+                BilibiliNavigationTarget.CommentDetail(888L, 456L, 789L, 11),
+            "bilibili://comment3/main/123/17?rp_id=456&sub_rp_id=789" to
+                BilibiliNavigationTarget.CommentDetail(123L, 456L, 789L, 17, "bilibili://following/detail/123"),
+        ).forEach { (link, expected) ->
+            assertEquals(expected, BilibiliNavigationTargetParser.parse(link), link)
+        }
+    }
+
+    @Test
+    fun officialReplyAliasesAlsoWorkOnContentLinksWithoutInventingARoot() {
+        assertEquals(
+            BilibiliNavigationTarget.Dynamic("123", 456L, 789L),
+            BilibiliNavigationTargetParser.parse("bilibili://following/detail/123?rp_id=456&sub_rp_id=789"),
+        )
+        assertEquals(
+            BilibiliNavigationTarget.Video("av123", 0L, 789L),
+            BilibiliNavigationTargetParser.parse("bilibili://comment3/main/123/1?rp_id=0&sub_rp_id=789"),
+        )
+        assertEquals(
+            BilibiliNavigationTarget.CommentDetail(123L, 456L, 0L, 17, "bilibili://following/detail/123"),
+            BilibiliNavigationTargetParser.parse("bilibili://comment3/main/123/17?rp_id=456&sub_rp_id=456"),
+        )
+    }
+
+    @Test
+    fun officialComment3RejectsInvalidSubjectsAndMissingRealLocation() {
+        listOf(
+            "bilibili://comment3/main/0/17?rp_id=456",
+            "bilibili://comment3/main/123/0?rp_id=456",
+            "bilibili://comment3/main/123/11?rp_id=-1&sub_rp_id=0",
+            "bilibili://comment3/main/123/11?rp_id=9223372036854775808",
+            "bilibili://comment3/main/123/11?sub_rp_id=789",
+        ).forEach { assertNull(BilibiliNavigationTargetParser.parse(it), it) }
+    }
+
+    @Test
+    fun nativePathRootWinsWhileQueryTargetOverridesPathAndFragment() {
+        assertEquals(
+            BilibiliNavigationTarget.CommentDetail(123L, 456L, 789L, 1, "bilibili://video/123"),
+            BilibiliNavigationTargetParser.parse("bilibili://comment/detail/1/123/456/111?root=999&comment_id=789#reply222"),
+        )
+    }
+
+    @Test
+    fun legacyPictureAndMusicCommentBusinessesDoNotBecomeVideoIdentities() {
+        listOf(11, 16, 47).forEach { type ->
+            assertEquals(
+                BilibiliNavigationTarget.CommentDetail(123L, 456L, 789L, type, ""),
+                BilibiliNavigationTargetParser.parse("bilibili://comment/detail/$type/123/456/789"),
+                type.toString(),
+            )
+        }
+    }
+
+    @Test
+    fun nonPositiveOrOverflowingSubjectIdsCannotProduceCommentTargets() {
+        listOf("0", "-1", "9223372036854775808").forEach { oid ->
+            assertNull(BilibiliNavigationTargetParser.parse("bilibili://comment/detail/1/$oid/456"), oid)
+            assertNull(BilibiliNavigationTargetParser.parse("https://www.bilibili.com/h5/comment/sub?oid=$oid&root=456"), oid)
+        }
+        assertNull(BilibiliNavigationTargetParser.parse("https://www.bilibili.com/video/av0?root=456"))
+        assertNull(BilibiliNavigationTargetParser.parse("bilibili://following/detail/0?root=456"))
+    }
+
     @Test
     fun sourceVideoParametersDoNotOverrideLinkDestination() {
         listOf(

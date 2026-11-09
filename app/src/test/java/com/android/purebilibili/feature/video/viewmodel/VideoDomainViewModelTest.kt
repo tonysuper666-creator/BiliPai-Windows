@@ -37,6 +37,48 @@ class VideoDomainViewModelTest {
     }
 
     @Test
+    fun `watch later status arriving after binding updates the action`() = runTest(dispatcher) {
+        val viewModel = VideoEngagementViewModel(actions = FakeEngagementActions())
+        val video = subject("BV1", generation = 1L)
+        viewModel.bindSubject(video, VideoEngagementSeed())
+        viewModel.bindSubject(video, VideoEngagementSeed(isInWatchLater = true))
+        assertTrue(viewModel.uiState.value.isInWatchLater)
+        viewModel.toggleWatchLater()
+        runCurrent()
+        assertFalse(viewModel.uiState.value.isInWatchLater)
+        viewModel.sync(VideoEngagementSeed(isInWatchLater = true))
+        assertFalse(viewModel.uiState.value.isInWatchLater)
+    }
+
+    @Test
+    fun `unknown playback seed preserves confirmed relations but confirmed changes still apply`() {
+        val viewModel = VideoEngagementViewModel()
+        viewModel.bindSubject(subject("BV1", generation = 1L), VideoEngagementSeed(
+            isLiked = true, isFollowing = true, isFavorited = true, isDisliked = true,
+            coinCount = 2, likeStatusKnown = true, followStatusKnown = true,
+            relationshipStatusKnown = true,
+        ))
+
+        viewModel.sync(VideoEngagementSeed())
+        val retained = viewModel.uiState.value
+        assertTrue(retained.isLiked)
+        assertTrue(retained.isFollowing)
+        assertTrue(retained.isFavorited)
+        assertTrue(retained.isDisliked)
+        assertEquals(2, retained.coinCount)
+        assertTrue(retained.likeStatusKnown)
+        assertTrue(retained.followStatusKnown)
+
+        viewModel.sync(VideoEngagementSeed(
+            likeStatusKnown = true, followStatusKnown = true, relationshipStatusKnown = true,
+        ))
+        assertFalse(viewModel.uiState.value.isLiked)
+        assertFalse(viewModel.uiState.value.isFollowing)
+        assertFalse(viewModel.uiState.value.isFavorited)
+        assertEquals(0, viewModel.uiState.value.coinCount)
+    }
+
+    @Test
     fun `engagement keeps transient state for same generation and resets for next video`() {
         val viewModel = VideoEngagementViewModel()
         val first = subject("BV1", generation = 1L)
@@ -373,6 +415,8 @@ class VideoDomainViewModelTest {
     @Test
     fun `cancel dislike and failed coin do not show completion feedback`() = runTest(dispatcher) {
         val viewModel = VideoEngagementViewModel(actions = FakeEngagementActions(failCoin = true))
+        val events = mutableListOf<VideoEngagementEvent>()
+        val eventJob = launch { viewModel.events.collect { events += it } }
         viewModel.bindSubject(subject("BV1", 1L), VideoEngagementSeed(likeStatusKnown = true, followStatusKnown = true, isDisliked = true))
         viewModel.toggleDislike()
         runCurrent()
@@ -382,11 +426,15 @@ class VideoDomainViewModelTest {
         runCurrent()
         assertEquals(null, viewModel.uiState.value.maidAction)
         assertEquals(0, viewModel.uiState.value.coinCount)
+        assertTrue(events.none { it is VideoEngagementEvent.CoinSucceeded })
+        eventJob.cancel()
     }
 
     @Test
     fun `coin with also like replaces like feedback with one coin animation`() = runTest(dispatcher) {
         val viewModel = VideoEngagementViewModel(actions = FakeEngagementActions())
+        val events = mutableListOf<VideoEngagementEvent>()
+        val eventJob = launch { viewModel.events.collect { events += it } }
         viewModel.bindSubject(subject("BV1", 1L), VideoEngagementSeed(likeStatusKnown = true, followStatusKnown = true))
         viewModel.toggleLike()
         runCurrent()
@@ -396,6 +444,13 @@ class VideoDomainViewModelTest {
         assertFalse(viewModel.uiState.value.likeBurstVisible)
         assertEquals(VideoMaidAction.COIN, viewModel.uiState.value.maidAction)
         assertTrue(viewModel.uiState.value.isLiked)
+        val coinEvents = events.filterIsInstance<VideoEngagementEvent.CoinSucceeded>()
+        assertEquals(1, coinEvents.size)
+        assertEquals(viewModel.uiState.value.subject, coinEvents.single().subject)
+        viewModel.bindSubject(subject("BV1", 1L), VideoEngagementSeed(likeStatusKnown = true, followStatusKnown = true))
+        runCurrent()
+        assertEquals(1, events.filterIsInstance<VideoEngagementEvent.CoinSucceeded>().size)
+        eventJob.cancel()
     }
 
     @Test

@@ -1,9 +1,6 @@
 --- a/whole-playback-settings/generated/com/android/purebilibili/core/store/DesktopOriginalPlaybackSettingsPreferences.kt
 +++ b/whole-playback-settings/generated/com/android/purebilibili/core/store/DesktopOriginalPlaybackSettingsPreferences.kt
-@@ -674,19 +674,19 @@
- 
- 
-     fun getLaunchToPortraitFeedOnStartup(context: Context): Flow<Boolean> = context.settingsDataStore.data
+@@ -677,13 +677,13 @@
          .map { preferences -> preferences[KEY_LAUNCH_TO_PORTRAIT_FEED_ON_STARTUP] ?: false }
  
  
@@ -19,13 +16,7 @@
      }
  
      /**
-      * 冷启动快速路径。返回 null 表示缓存缺失，调用方必须挂起读取 DataStore 后再决定
-      * 初始导航，不能把 null 当成默认 false；自动备份只恢复 DataStore、不恢复这个缓存。
-      */
-@@ -718,33 +718,33 @@
-     private val KEY_VIDEO_SECOND_CODEC = stringPreferencesKey("video_second_codec_preference")
- 
-     fun getWifiQuality(context: Context): Flow<Int> = context.settingsDataStore.data
+@@ -721,12 +721,12 @@
          .map { preferences -> preferences[KEY_WIFI_QUALITY] ?: 80 }
  
  
@@ -40,9 +31,7 @@
          com.android.purebilibili.core.util.Logger.d("SettingsManager", " WiFi 画质已设置: $value (写入成功: $success)")
      }
      
-     // --- 流量默认画质 (默认 64 = 720P) ---
- 
-     fun getMobileQuality(context: Context): Flow<Int> = context.settingsDataStore.data
+@@ -736,12 +736,12 @@
          .map { preferences -> preferences[KEY_MOBILE_QUALITY] ?: 64 }
  
  
@@ -57,13 +46,7 @@
          com.android.purebilibili.core.util.Logger.d("SettingsManager", " 流量画质已设置: $value (写入成功: $success)")
      }
      
-     //  同步读取画质设置（用于 VideoPlaybackViewModel）
- 
-     private val KEY_AUTO_HIGHEST_QUALITY = booleanPreferencesKey("auto_highest_quality")
-@@ -753,32 +753,32 @@
-     
- 
-     fun getAutoHighestQuality(context: Context): Flow<Boolean> = context.settingsDataStore.data
+@@ -756,12 +756,12 @@
          .map { preferences -> preferences[KEY_AUTO_HIGHEST_QUALITY] ?: false }  // 默认关闭
      
  
@@ -78,8 +61,7 @@
          com.android.purebilibili.core.util.Logger.d("SettingsManager", "🚀 自动最高画质: $value")
      }
      
- 
-     fun getBiliDirectedTrafficEnabled(context: Context): Flow<Boolean> = context.settingsDataStore.data
+@@ -770,12 +770,12 @@
          .map { preferences -> preferences[KEY_BILI_DIRECTED_TRAFFIC] ?: false }
  
  
@@ -94,6 +76,97 @@
          com.android.purebilibili.core.util.Logger.d("SettingsManager", "📶 B站定向流量支持: $value")
      }
  
+@@ -1245,15 +1245,13 @@
  
-     fun getVideoCodec(context: Context): Flow<String> = context.settingsDataStore.data
-         .map { preferences -> preferences[KEY_VIDEO_CODEC] ?: "hev1" }
+     private val KEY_PORTRAIT_SWIPE_TO_FULLSCREEN = booleanPreferencesKey("portrait_swipe_to_fullscreen")
+ 
+     private val KEY_CENTER_SWIPE_TO_FULLSCREEN = booleanPreferencesKey("center_swipe_to_fullscreen")
+ 
+-    private val KEY_INLINE_SWIPE_SEEK_SECONDS = intPreferencesKey("inline_swipe_seek_seconds")
+ 
+     private val KEY_FULLSCREEN_SWIPE_SEEK_ENABLED = booleanPreferencesKey("fullscreen_swipe_seek_enabled")
+ 
+-    private val KEY_FULLSCREEN_SWIPE_SEEK_SECONDS = intPreferencesKey("fullscreen_swipe_seek_seconds")
+ 
+     private val KEY_FULLSCREEN_GESTURE_REVERSE = booleanPreferencesKey("fullscreen_gesture_reverse")
+ 
+     private val KEY_HIDE_VIDEO_PAGE_STATUS_BAR = booleanPreferencesKey("hide_video_page_status_bar")
+ 
+@@ -1326,13 +1324,11 @@
+ 
+     private val KEY_FULLSCREEN_MODE = intPreferencesKey("fullscreen_mode")
+ 
+     private val KEY_FULLSCREEN_ASPECT_RATIO = intPreferencesKey("fullscreen_aspect_ratio")
+ 
+-    private val INLINE_SWIPE_SEEK_OPTIONS = listOf(5, 10, 15, 30, 60)
+-
+-    private val FULLSCREEN_SWIPE_SEEK_OPTIONS = listOf(10, 15, 20, 30)
++
+ 
+     const val DEFAULT_COMMENT_COLLAPSED_REPLY_PREVIEW_LIMIT = 3
+ 
+     private const val COMMENT_PREVIEW_CACHE_PREFS = "comment_preview_cache"
+ 
+@@ -1403,30 +1399,10 @@
+ 
+     suspend fun setCenterSwipeToFullscreenEnabled(context: Context, value: Boolean) {
+         context.settingsDataStore.edit { preferences -> preferences[KEY_CENTER_SWIPE_TO_FULLSCREEN] = value }
+     }
+ 
+-    // --- 非全屏左右滑动调进度范围（秒，默认 30） ---
+-
+-    fun getInlineSwipeSeekSeconds(context: Context): Flow<Int> = context.settingsDataStore.data
+-        .map { preferences ->
+-            val raw = preferences[KEY_INLINE_SWIPE_SEEK_SECONDS] ?: 30
+-            normalizeInlineSwipeSeekSeconds(raw)
+-        }
+-
+-
+-    suspend fun setInlineSwipeSeekSeconds(context: Context, seconds: Int) {
+-        context.settingsDataStore.edit { preferences ->
+-            preferences[KEY_INLINE_SWIPE_SEEK_SECONDS] = normalizeInlineSwipeSeekSeconds(seconds)
+-        }
+-    }
+-
+-
+-    private fun normalizeInlineSwipeSeekSeconds(seconds: Int): Int {
+-        return INLINE_SWIPE_SEEK_OPTIONS.minByOrNull { option -> abs(option - seconds) } ?: 30
+-    }
+-
+     // --- 横屏左右滑动精细调进度开关（默认开启） ---
+ 
+     fun getFullscreenSwipeSeekEnabled(context: Context): Flow<Boolean> = context.settingsDataStore.data
+         .map { preferences -> preferences[KEY_FULLSCREEN_SWIPE_SEEK_ENABLED] ?: true }
+ 
+@@ -1434,31 +1410,10 @@
+     suspend fun setFullscreenSwipeSeekEnabled(context: Context, enabled: Boolean) {
+         context.settingsDataStore.edit { preferences ->
+             preferences[KEY_FULLSCREEN_SWIPE_SEEK_ENABLED] = enabled
+         }
+     }
+-
+-    // --- 横屏左右滑动调进度范围（秒，默认 15） ---
+-
+-    fun getFullscreenSwipeSeekSeconds(context: Context): Flow<Int> = context.settingsDataStore.data
+-        .map { preferences ->
+-            val raw = preferences[KEY_FULLSCREEN_SWIPE_SEEK_SECONDS] ?: 15
+-            normalizeFullscreenSwipeSeekSeconds(raw)
+-        }
+-
+-
+-    suspend fun setFullscreenSwipeSeekSeconds(context: Context, seconds: Int) {
+-        context.settingsDataStore.edit { preferences ->
+-            preferences[KEY_FULLSCREEN_SWIPE_SEEK_SECONDS] = normalizeFullscreenSwipeSeekSeconds(seconds)
+-        }
+-    }
+-
+-
+-    private fun normalizeFullscreenSwipeSeekSeconds(seconds: Int): Int {
+-        return FULLSCREEN_SWIPE_SEEK_OPTIONS.minByOrNull { option -> abs(option - seconds) } ?: 15
+-    }
+-
+ 
+     private fun isLargeScreenOrFoldableConfiguration(context: Context): Boolean {
+         return context.isLargeScreenOrFoldableConfiguration()
+     }
+ 

@@ -344,10 +344,10 @@ class VideoLoadRequestPolicyTest {
     }
 
     @Test
-    fun `initial playback quality mode defaults to auto`() {
+    fun `initial playback quality mode locks the selected quality`() {
         assertEquals(
-            PlaybackQualityMode.AUTO,
-            resolveInitialPlaybackQualityMode()
+            PlaybackQualityMode.LOCKED(120),
+            resolveInitialPlaybackQualityMode(120)
         )
     }
 

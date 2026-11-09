@@ -109,6 +109,57 @@ class LikedVideosViewModel(
             "我的${if (isCoinArchive) "投币" else "点赞"}"
         },
 ) {
+    val isOwnLikedVideos: Boolean = targetMid == null && !isCoinArchive
+    private val _isManagingLikes = MutableStateFlow(false)
+    val isManagingLikes = _isManagingLikes.asStateFlow()
+    private val _likedFavoriteFolders = MutableStateFlow<List<FavFolder>>(emptyList())
+    val likedFavoriteFolders = _likedFavoriteFolders.asStateFlow()
+    private val _isLoadingLikedFolders = MutableStateFlow(false)
+    val isLoadingLikedFolders = _isLoadingLikedFolders.asStateFlow()
+
+    fun loadLikedFavoriteFolders() {
+        if (_isLoadingLikedFolders.value) return
+        _likedFavoriteFolders.value = emptyList()
+        _isLoadingLikedFolders.value = true
+        accountRequests.launch {
+            try {
+                val mid = accountRequests.identity.mid
+                if (mid == null) {
+                    android.widget.Toast.makeText(getApplication(), "请先登录", android.widget.Toast.LENGTH_SHORT).show()
+                    return@launch
+                }
+                com.android.purebilibili.data.repository.FavoriteRepository.getFavFolders(mid).fold(
+                    onSuccess = { _likedFavoriteFolders.value = it },
+                    onFailure = { android.widget.Toast.makeText(getApplication(), it.message ?: "加载收藏夹失败", android.widget.Toast.LENGTH_SHORT).show() },
+                )
+            } finally {
+                _isLoadingLikedFolders.value = false
+            }
+        }
+    }
+
+    fun manageLikedVideos(aids: List<Long>, removeLike: Boolean, folderId: Long? = null, onFinished: () -> Unit) {
+        if (_isManagingLikes.value || aids.isEmpty()) return
+        _isManagingLikes.value = true
+        accountRequests.launch {
+            try {
+                var succeeded = 0
+                for (aid in aids.distinct()) {
+                    val result = if (removeLike) {
+                        com.android.purebilibili.data.repository.ActionRepository.likeVideo(aid, false)
+                    } else {
+                        com.android.purebilibili.data.repository.ActionRepository.favoriteVideo(aid, true, folderId = requireNotNull(folderId), showSuccessFeedback = false)
+                    }
+                    if (result.isSuccess) succeeded++
+                }
+                android.widget.Toast.makeText(getApplication(), "成功 $succeeded / ${aids.distinct().size}", android.widget.Toast.LENGTH_SHORT).show()
+                onFinished()
+                if (removeLike && succeeded > 0) loadData()
+            } finally {
+                _isManagingLikes.value = false
+            }
+        }
+    }
     private val pageSize = 20
     private var pagingSession: ForwardPagingSession<Int, VideoItem>? = null
     private var pagingJob: Job? = null
@@ -118,6 +169,9 @@ class LikedVideosViewModel(
     val hasMoreState = _hasMoreState.asStateFlow()
 
     override fun onAccountChanged() {
+        _isManagingLikes.value = false
+        _isLoadingLikedFolders.value = false
+        _likedFavoriteFolders.value = emptyList()
         loadData()
     }
 

@@ -848,14 +848,20 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
     }
 
     suspend fun clearCache(
-        targets: Set<CacheClearTarget> = CacheClearTarget.entries.toSet()
+        targets: Set<CacheClearTarget> = CacheClearTarget.entries.toSet(),
+        onProgress: suspend (CacheUtils.CleanupProgress) -> Unit = {}
     ): Result<CacheUtils.CacheBreakdown> {
-        return CacheUtils.clearCache(context, targets).mapCatching {
-            // 清理后立即刷新
+        val cleared = CacheUtils.clearCache(context, targets, onProgress)
+        if (cleared.isFailure) return Result.failure(requireNotNull(cleared.exceptionOrNull()))
+        return try {
             val breakdown = CacheUtils.getCacheBreakdown(context)
             _cacheSize.value = breakdown.format()
             _cacheBreakdown.value = breakdown
-            breakdown
+            Result.success(breakdown)
+        } catch (cancelled: kotlinx.coroutines.CancellationException) {
+            throw cancelled
+        } catch (error: Exception) {
+            Result.failure(error)
         }
     }
 

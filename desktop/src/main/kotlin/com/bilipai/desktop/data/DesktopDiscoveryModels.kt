@@ -4,8 +4,7 @@ import com.android.purebilibili.data.model.response.*
 import com.android.purebilibili.feature.video.ui.components.*
 import com.android.purebilibili.core.util.IdUtils
 import com.android.purebilibili.data.repository.buildDesktopWebRecommendParams
-import com.android.purebilibili.core.store.DEFAULT_HOME_REFRESH_COUNT
-import com.android.purebilibili.core.store.normalizeHomeRefreshCount
+import com.android.purebilibili.feature.home.resolveHomeFeedPageSize
 import com.android.purebilibili.data.repository.BlockedUpWriteResult
 
 enum class DiscoverySection(val label: String) {
@@ -42,9 +41,9 @@ internal fun discoveryEpisodeBvid(episode: UgcEpisode): String = episode.bvid.if
     (episode.aid.takeIf { it > 0 } ?: episode.arc?.aid?.takeIf { it > 0 })?.let(IdUtils::av2bv).orEmpty()
 }
 
-internal fun discoveryRecommendParams(page: Int, pageSize: Int = DEFAULT_HOME_REFRESH_COUNT): Map<String, String> {
+internal fun discoveryRecommendParams(page: Int, pageSize: Int = resolveHomeFeedPageSize(7)): Map<String, String> {
     require(page > 0)
-    return buildDesktopWebRecommendParams(page - 1, normalizeHomeRefreshCount(pageSize))
+    return buildDesktopWebRecommendParams(page - 1, pageSize)
 }
 
 data class DesktopRecommendationFeedbackResult(val message: String, val creator: BlockedUpWriteResult? = null,

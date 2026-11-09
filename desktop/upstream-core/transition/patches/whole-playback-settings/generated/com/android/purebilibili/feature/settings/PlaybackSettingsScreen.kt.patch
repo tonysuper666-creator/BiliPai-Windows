@@ -1,9 +1,6 @@
 --- a/whole-playback-settings/generated/com/android/purebilibili/feature/settings/PlaybackSettingsScreen.kt
 +++ b/whole-playback-settings/generated/com/android/purebilibili/feature/settings/PlaybackSettingsScreen.kt
-@@ -1354,16 +1354,17 @@
-         .collectAsStateWithLifecycle(initialValue = com.android.purebilibili.core.store.DesktopOriginalPlaybackSettingsPreferences
-                 .DEFAULT_COMMENT_COLLAPSED_REPLY_PREVIEW_LIMIT
-         )
+@@ -1357,10 +1357,11 @@
      val subtitlePreferenceDescription = when (subtitleAutoPreference) {
          SubtitleAutoPreference.OFF -> "默认关闭字幕"
          SubtitleAutoPreference.ON -> "默认开启（优先当前可用轨道）"
@@ -15,13 +12,7 @@
      AppPreferenceGroup {
          // --- Click to Play ---
          val clickToPlayEnabled by com.android.purebilibili.core.store.DesktopOriginalPlaybackSettingsPreferences
-             .getClickToPlay(context).collectAsStateWithLifecycle(initialValue = true)
- 
- 	        AppSwitchPreference(
-@@ -1472,16 +1473,17 @@
-             AppPreferenceDivider()
-             SettingsSingleChoicePreference(
-                 title = "自动启用字幕：${
+@@ -1475,10 +1476,11 @@
                      when (subtitleAutoPreference) {
                          SubtitleAutoPreference.OFF -> "关闭"
                          SubtitleAutoPreference.ON -> "开启"
@@ -33,13 +24,7 @@
                  subtitle = subtitlePreferenceDescription,
                  options = listOf(
                      AppSegmentOption(SubtitleAutoPreference.OFF, "关闭"),
-                     AppSegmentOption(SubtitleAutoPreference.ON, "开启"),
-                     AppSegmentOption(SubtitleAutoPreference.WITHOUT_AI, "无 AI"),
-                     AppSegmentOption(SubtitleAutoPreference.AUTO, "自动")
-@@ -1693,31 +1695,31 @@
-                 viewModel.toggleDoubleTapLike(it)
-                 //  [埋点] 设置变更追踪
-                 viewModel.logSettingChange("double_tap_like", it.toString())
+@@ -1696,11 +1698,11 @@
              },
              iconTint = com.android.purebilibili.core.theme.iOSPink
          )
@@ -52,9 +37,7 @@
              icon = rememberSettingsSemanticIcon(SettingsIconRole.FAVORITE_TAP_MODE),
              title = "点按收藏进默认收藏夹",
              subtitle = if (favoriteQuickSaveDefaultFolder) {
-                 "点按直接收藏到默认收藏夹，长按可选择收藏夹"
-             } else {
-                 "点按打开收藏夹选择"
+@@ -1710,11 +1712,11 @@
              },
              checked = favoriteQuickSaveDefaultFolder,
              onCheckedChange = {
@@ -67,6 +50,86 @@
              iconTint = com.android.purebilibili.core.theme.iOSYellow
          )
          AppPreferenceDivider()
+@@ -1866,16 +1868,12 @@
+         .getSetSystemBrightnessEnabled(context).collectAsStateWithLifecycle(initialValue = false)
+     // Actual Windows adapter supports source-owned viewport dimming only.
+     // Preserve an imported preference; opening this page never silently rewrites it.
+     val canWriteSystemSettings = false
+ 
+-    val inlineSwipeSeekSeconds by com.android.purebilibili.core.store.DesktopOriginalPlaybackSettingsPreferences
+-        .getInlineSwipeSeekSeconds(context).collectAsStateWithLifecycle(initialValue = 30)
+     val fullscreenSwipeSeekEnabled by com.android.purebilibili.core.store.DesktopOriginalPlaybackSettingsPreferences
+         .getFullscreenSwipeSeekEnabled(context).collectAsStateWithLifecycle(initialValue = true)
+-    val fullscreenSwipeSeekSeconds by com.android.purebilibili.core.store.DesktopOriginalPlaybackSettingsPreferences
+-        .getFullscreenSwipeSeekSeconds(context).collectAsStateWithLifecycle(initialValue = 15)
+     val doubleTapSeekEnabled by com.android.purebilibili.core.store.DesktopOriginalPlaybackSettingsPreferences
+         .getDoubleTapSeekEnabled(context).collectAsStateWithLifecycle(initialValue = false)
+     val seekForwardSeconds by com.android.purebilibili.core.store.DesktopOriginalPlaybackSettingsPreferences
+         .getSeekForwardSeconds(context).collectAsStateWithLifecycle(initialValue = 10)
+     val seekBackwardSeconds by com.android.purebilibili.core.store.DesktopOriginalPlaybackSettingsPreferences
+@@ -2143,63 +2141,22 @@
+             onCheckedChange = { viewModel.showSystemBrightnessUnavailable() },
+             iconTint = iOSOrange
+         )
+ 
+         AppPreferenceDivider()
+-        SettingsSingleChoicePreference(
+-            title = "非全屏滑动调进度范围",
+-            subtitle = "左右拖动约半屏达到 ${inlineSwipeSeekSeconds} 秒上限，数值越小越精确",
+-            options = listOf(
+-                AppSegmentOption(5, "5秒"),
+-                AppSegmentOption(10, "10秒"),
+-                AppSegmentOption(15, "15秒"),
+-                AppSegmentOption(30, "30秒"),
+-                AppSegmentOption(60, "60秒"),
+-            ),
+-            selectedValue = inlineSwipeSeekSeconds,
+-            onSelectionChange = { seconds ->
+-                scope.launch {
+-                    com.android.purebilibili.core.store.DesktopOriginalPlaybackSettingsPreferences
+-                        .setInlineSwipeSeekSeconds(context, seconds)
+-                }
+-            },
+-        )
+-
+-        AppPreferenceDivider()
          AppSwitchPreference(
-             icon = rememberSettingsSemanticIcon(SettingsIconRole.AUTO_SKIP_OP_ED),
-             title = "自动跳过片头片尾",
+             title = "横屏滑动调进度",
+             subtitle = if (fullscreenSwipeSeekEnabled) {
+-                "已开启，当前范围 ${fullscreenSwipeSeekSeconds} 秒"
++                "已开启，跳转范围由视频时长自动决定"
+             } else {
+-                "已关闭，重新开启后继续使用 ${fullscreenSwipeSeekSeconds} 秒范围"
++                "已关闭横屏滑动调进度"
+             },
+             checked = fullscreenSwipeSeekEnabled,
+             onCheckedChange = {
+                 scope.launch {
+                     com.android.purebilibili.core.store.DesktopOriginalPlaybackSettingsPreferences
+                         .setFullscreenSwipeSeekEnabled(context, it)
+-                }
+-            },
+-        )
+-        AppPreferenceDivider()
+-        SettingsSingleChoicePreference(
+-            title = "横屏滑动调进度范围",
+-            subtitle = "左右拖动约半屏达到的秒数上限，数值越小越精确",
+-            options = listOf(
+-                AppSegmentOption(10, "10秒"),
+-                AppSegmentOption(15, "15秒"),
+-                AppSegmentOption(20, "20秒"),
+-                AppSegmentOption(30, "30秒"),
+-            ),
+-            selectedValue = fullscreenSwipeSeekSeconds,
+-            enabled = fullscreenSwipeSeekEnabled,
+-            onSelectionChange = { seconds ->
+-                if (fullscreenSwipeSeekEnabled) {
+-                    scope.launch {
+-                        com.android.purebilibili.core.store.DesktopOriginalPlaybackSettingsPreferences
+-                            .setFullscreenSwipeSeekSeconds(context, seconds)
+-                    }
+                 }
+             },
+         )
+         AppPreferenceDivider()
+         val autoRotateEnabled by com.android.purebilibili.core.store.DesktopOriginalPlaybackSettingsPreferences

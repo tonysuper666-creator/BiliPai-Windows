@@ -1,0 +1,11 @@
+--- a/app/src/main/java/com/android/purebilibili/data/repository/DynamicDetailFallbackPolicy.kt
++++ b/app/src/main/java/com/android/purebilibili/data/repository/DynamicDetailFallbackPolicy.kt
+@@ -411,7 +411,7 @@
+                 text = block.content,
+                 language = block.language,
+             )
+-            is ArticleContentBlock.MediaCard -> OpusContentBlock.LinkCard(block.card)
++            // The desktop article parser has no MediaCard block yet, so this branch would never run.
+             is ArticleContentBlock.Image -> OpusContentBlock.Image(
+                 OpusPic(url = block.url, width = block.width, height = block.height)
+             )

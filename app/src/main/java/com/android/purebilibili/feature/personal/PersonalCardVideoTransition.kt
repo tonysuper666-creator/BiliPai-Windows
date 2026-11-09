@@ -58,6 +58,10 @@ internal class PersonalCardVideoTransition(
         sourceCornerDp: Int,
         chrome: VideoCardSourceChromeSnapshot,
     ) {
+        if (CardPositionManager.isVideoNavigationDebounceActive()) {
+            // 防抖窗口内的点击注定被导航层拒绝；不得覆写在飞转场的全局记录与冻结像素。
+            return
+        }
         val cardBounds = bounds.cardBounds ?: return
         val sourceCoverBounds = bounds.coverBounds
         CardPositionManager.recordVideoCardPosition(

@@ -1,5 +1,8 @@
 package com.android.purebilibili.feature.settings
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.geometry.Offset
@@ -39,12 +42,17 @@ internal class SettingsContainerSource(
     val bounds: Rect,
     val hostSize: IntSize,
     val originInRoot: Offset,
-    val color: Color,
+    color: Color,
     val topRadius: Float,
     val bottomRadius: Float,
     // 头像只作短程内容交接，容器仍展开到页面；设置行与直播封面保留整块缩放。
     val avatarSource: Boolean = false,
 ) {
+    // 来源图层随主题重录，底色也必须同步，不能保留点击时的配色。
+    var color by mutableStateOf(color)
+    // 当次捕获拥有开合状态，主题或嵌套入口更新转场对象时不能重置。
+    var previewImageUrl: String? = null
+    var hasOpened = false
     var companions: List<SettingsContainerCompanion> = emptyList()
     var returnInFlight: () -> Boolean = { false }
 

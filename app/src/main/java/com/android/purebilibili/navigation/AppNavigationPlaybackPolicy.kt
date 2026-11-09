@@ -5,9 +5,10 @@ import com.android.purebilibili.navigation3.BiliPaiNavKey
 
 internal fun shouldStopPlaybackEagerlyOnVideoRouteExit(
     fromRoute: String?,
-    toRoute: String?
+    toRoute: String?,
+    isVideoEntryRetained: Boolean,
 ): Boolean {
-    if (toRoute.isNullOrBlank()) return false
+    if (isVideoEntryRetained || toRoute.isNullOrBlank()) return false
     val toRouteBase = toRoute.substringBefore("?")
     return isVideoDetailRoute(fromRoute) &&
         !isVideoDetailRoute(toRouteBase) &&

@@ -62,6 +62,7 @@ internal data class VideoCommentCacheSnapshot(
     val subject: CommentSubjectKey,
     val cachedAtMs: Long,
     val mainListContinuation: CommentMainListContinuation? = null,
+    val pageControl: com.android.purebilibili.data.model.response.ReplyPageControl? = null,
 )
 
 /**
