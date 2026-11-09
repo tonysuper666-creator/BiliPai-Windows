@@ -1,6 +1,7 @@
 package com.bilipai.desktop.player
 
 import com.sun.jna.Memory
+import com.bilipai.desktop.ui.DesktopWindowsVideoEscapeInput
 import java.awt.EventQueue
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
@@ -11,6 +12,156 @@ import kotlin.test.*
  * These tests create no Window, native runtime, decoder or audio device.
  */
 class MpvNativeInputTest {
+    @Test fun decodedNativeEscapeCanRetryAnUnchangedPageAfterTheDuplicateWindow() = source { snapshot ->
+        val lease = MpvNativeWindowInputLease(snapshot, 7, 42)
+        val decoded = Message(lease.token, "escape").use { assertNotNull(lease.decode(it.data)) }
+        EventQueue.invokeAndWait {
+            for (accepted in listOf(false, true)) {
+                var clock = 1_000_000_000L; var backs = 0
+                val input = DesktopWindowsVideoEscapeInput(
+                    current = { true }, windowCurrent = { true }, textEditorFocused = { false },
+                    closeTopOverlay = { false }, fullscreen = { false }, leaveFullscreen = {},
+                    requestBack = { backs++; accepted }, admitNative = { true }, nanoTime = { clock },
+                )
+                val first = decoded.copy(receivedAtNanos = clock)
+                assertTrue(input.onNative(first))
+                clock += 250_000_000L
+                assertTrue(input.onNative(decoded.copy(receivedAtNanos = clock)))
+                assertEquals(1, backs)
+                clock++
+                assertTrue(input.onNative(decoded.copy(receivedAtNanos = clock)))
+                assertEquals(2, backs, "a still-current page must permit another press, accepted=$accepted")
+                assertTrue(input.onNative(first))
+                assertEquals(2, backs, "the old queued event must remain retired")
+                input.close()
+            }
+        }
+    }
+
+    @Test fun nativeEscapeCrossesTheProductionClientMessageBoundary() = source { snapshot ->
+        val lease = MpvNativeWindowInputLease(snapshot, 7)
+        val event = Message(lease.token, "escape").use { assertNotNull(lease.decode(it.data)) }
+        assertSame(snapshot, event.lease.source)
+        assertEquals("ESCAPE", event.kind.name)
+        assertTrue(lease.bindings.lines().any { it == "ESC nonrepeatable script-message ${lease.token} escape" })
+    }
+    @Test fun decodedNativeEscapeReachesWindowedBackOutsideAdmissionAndOnlyOnce() = source { snapshot ->
+        val lease = MpvNativeWindowInputLease(snapshot, 7, 42)
+        val event = Message(lease.token, "escape").use { assertNotNull(lease.decode(it.data)) }
+        var insideAdmission = false; var backs = 0
+        val delivery = MpvNativeWindowInputDelivery()
+        EventQueue.invokeAndWait {
+            val input = DesktopWindowsVideoEscapeInput(
+                current = { true }, windowCurrent = { true }, textEditorFocused = { false },
+                closeTopOverlay = { false }, fullscreen = { false }, leaveFullscreen = { error("windowed") },
+                requestBack = { assertFalse(insideAdmission); backs++; true },
+                admitNative = { assertSame(lease, it.lease); insideAdmission = true; insideAdmission = false; true },
+            )
+            delivery.registerEscape(input::onNative)
+            repeat(3) { delivery.emit(event) }
+        }
+        EventQueue.invokeAndWait { assertEquals(1, backs) }
+    }
+
+    @Test fun decodedNativeEscapeClosesOverlayThenFullscreenAndRejectsAlreadyQueuedInputs() = source { snapshot ->
+        val lease = MpvNativeWindowInputLease(snapshot, 7, 42)
+        val decoded = Message(lease.token, "escape").use { assertNotNull(lease.decode(it.data)) }
+        EventQueue.invokeAndWait {
+            var clock = 1_000_000_000L; var overlay = true; var fullscreen = true
+            val effects = mutableListOf<String>()
+            val input = DesktopWindowsVideoEscapeInput(
+                current = { true }, windowCurrent = { true }, textEditorFocused = { false },
+                closeTopOverlay = { if (overlay) { overlay = false; effects += "overlay"; true } else false },
+                fullscreen = { fullscreen }, leaveFullscreen = { fullscreen = false; effects += "fullscreen" },
+                requestBack = { effects += "back"; true }, admitNative = { true }, nanoTime = { clock },
+            )
+            fun press() = decoded.copy(receivedAtNanos = clock)
+            val first = press(); assertTrue(input.onNative(first)); clock += 1_000_000_000L
+            assertTrue(input.onNative(first)); assertEquals(listOf("overlay"), effects)
+            assertTrue(input.onNative(press())); clock += 1_000_000_000L
+            assertTrue(input.onNative(press())); repeat(3) { input.onNative(press()) }
+            assertEquals(listOf("overlay", "fullscreen", "back"), effects)
+            input.close()
+        }
+    }
+
+    @Test fun nativeEscapeRequiresCurrentSourceWindowAndLeaseAndNeverNavigatesFromAnEditor() = source { snapshot ->
+        val lease = MpvNativeWindowInputLease(snapshot, 7, 42)
+        val event = Message(lease.token, "escape").use { assertNotNull(lease.decode(it.data)) }
+        EventQueue.invokeAndWait {
+            var current = false; var window = true; var admitted = true; var editor = true
+            var admissions = 0; var effects = 0
+            val input = DesktopWindowsVideoEscapeInput(
+                current = { current }, windowCurrent = { window }, textEditorFocused = { editor },
+                closeTopOverlay = { effects++; true }, fullscreen = { true }, leaveFullscreen = { effects++ },
+                requestBack = { effects++; true }, admitNative = { admissions++; admitted },
+            )
+            assertFalse(input.onNative(event)); current = true; window = false
+            assertFalse(input.onNative(event)); window = true
+            assertFalse(input.onNative(event.copy(lease = MpvNativeWindowInputLease(snapshot, 7))))
+            assertEquals(0, admissions); admitted = false
+            assertFalse(input.onNative(event)); admitted = true
+            assertTrue(input.onNative(event)); assertEquals(0, effects)
+            editor = false; input.close(); assertFalse(input.onNative(event))
+        }
+    }
+
+    @Test fun escapeRecipientCoexistsWithPointerAndQueuedEventsNeverFallThroughOrRetireItsSuccessor() = source { snapshot ->
+        val lease = MpvNativeWindowInputLease(snapshot, 7, 42)
+        val event = Message(lease.token, "escape").use { assertNotNull(lease.decode(it.data)) }
+        val pending = mutableListOf<() -> Unit>(); val delivery = MpvNativeWindowInputDelivery { pending += it }
+        val seen = mutableListOf<String>()
+        delivery.register { seen += "pointer:${it.kind}" }
+        val old = delivery.registerEscape { seen += "old" }
+        assertFailsWith<IllegalStateException> { delivery.registerEscape { error("second Escape owner") } }
+        delivery.emit(event); old.close()
+        val next = delivery.registerEscape { seen += "next" }; old.close()
+        delivery.emit(event); delivery.emit(event.copy(kind = MpvNativeWindowInputKind.TOGGLE))
+        pending.toList().forEach { it() }
+        assertEquals(listOf("next", "pointer:TOGGLE"), seen)
+        next.close(); pending.clear(); delivery.emit(event); pending.forEach { it() }
+        assertEquals("pointer:ESCAPE", seen.last())
+    }
+
+    @OptIn(androidx.compose.ui.InternalComposeUiApi::class)
+    @Test fun nativeAndAwtReportsOfTheSameEscapeCannotCascadeFromFullscreenToBack() = source { snapshot ->
+        val lease = MpvNativeWindowInputLease(snapshot, 7, 42)
+        val decoded = Message(lease.token, "escape").use { assertNotNull(lease.decode(it.data)) }
+        EventQueue.invokeAndWait {
+            var clock = 1_000_000_000L; var fullscreen = true; var backs = 0
+            val input = DesktopWindowsVideoEscapeInput(
+                current = { true }, windowCurrent = { true }, textEditorFocused = { false },
+                closeTopOverlay = { false }, fullscreen = { fullscreen }, leaveFullscreen = { fullscreen = false },
+                requestBack = { backs++; true }, admitNative = { true }, nanoTime = { clock },
+            )
+            fun awt(type: androidx.compose.ui.input.key.KeyEventType) = androidx.compose.ui.input.key.KeyEvent(
+                androidx.compose.ui.input.key.Key.Escape, type, 27)
+            assertTrue(input.onNative(decoded.copy(receivedAtNanos = clock)))
+            assertFalse(fullscreen)
+            assertTrue(input.onKey(awt(androidx.compose.ui.input.key.KeyEventType.KeyDown)))
+            assertTrue(input.onNative(decoded.copy(receivedAtNanos = clock + 1)))
+            assertEquals(0, backs)
+            input.onKey(awt(androidx.compose.ui.input.key.KeyEventType.KeyUp))
+            clock += 1_000_000_000L
+            assertTrue(input.onNative(decoded.copy(receivedAtNanos = clock)))
+            assertEquals(1, backs)
+        }
+    }
+
+    @Test fun sourceRetiredDuringNativeAdmissionCannotNavigateAfterTheLockIsReleased() = source { snapshot ->
+        val lease = MpvNativeWindowInputLease(snapshot, 7, 42)
+        val event = Message(lease.token, "escape").use { assertNotNull(lease.decode(it.data)) }
+        EventQueue.invokeAndWait {
+            var current = true
+            val input = DesktopWindowsVideoEscapeInput(
+                current = { current }, windowCurrent = { true }, textEditorFocused = { false },
+                closeTopOverlay = { error("retired overlay") }, fullscreen = { false }, leaveFullscreen = {},
+                requestBack = { error("retired back") }, admitNative = { current = false; true },
+            )
+            assertFalse(input.onNative(event))
+        }
+    }
+
     @Test fun copiesTheNativeChildClickBeforeItsBorrowedBuffersAreReleased() = source { snapshot ->
         val lease=MpvNativeWindowInputLease(snapshot,7)
         val event=Message(lease.token,"reveal").use { assertNotNull(lease.decode(it.data)) }
@@ -48,7 +199,7 @@ class MpvNativeInputTest {
         assertNotEquals(first.token,replay.token)
         Message(first.token,"toggle").use {assertNotNull(first.decode(it.data));assertNull(replay.decode(it.data))}
         assertTrue(replay.bindings.lines().all {"nonrepeatable script-message ${replay.token} " in it})
-        assertEquals(setOf("MBTN_LEFT","MOUSE_MOVE","SPACE"),replay.bindings.lines().map {it.substringBefore(' ')}.toSet())
+        assertEquals(setOf("MBTN_LEFT","MOUSE_MOVE","SPACE","ESC"),replay.bindings.lines().map {it.substringBefore(' ')}.toSet())
     }
     @Test fun disposingARecipientRejectsAlreadyQueuedEventsAndCannotRetireItsSuccessor() = source { snapshot ->
         val pending=mutableListOf<()->Unit>();val delivery=MpvNativeWindowInputDelivery {pending+=it}
