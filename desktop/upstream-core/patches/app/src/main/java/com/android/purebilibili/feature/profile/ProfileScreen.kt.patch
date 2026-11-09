@@ -1396,7 +1396,7 @@
      onHistoryClick: () -> Unit,
      showHistoryService: Boolean,
      onFavoriteClick: () -> Unit,
-@@ -1068,85 +1080,97 @@
+@@ -1068,85 +1080,101 @@
      onSearchClick: () -> Unit,
      privacyModeEnabled: Boolean,
      onPrivacyClick: () -> Unit,
@@ -1455,7 +1455,12 @@
 +        }
          if (uri != null && mid == user.mid) {
              if (platform.platform.mimeType(uri)?.equals("image/gif", ignoreCase = true) == true) {
-                 platform.feedback( "不能选择 GIF 头像")
+-                platform.feedback( "不能选择 GIF 头像")
++                if (origin != null && isCurrentPage && mid == user.mid) {
++                    platform.commit { avatarFeedback.show(origin, "不能选择 GIF 头像") }
++                } else {
++                    platform.feedback( "不能选择 GIF 头像")
++                }
              } else {
                  // Desktop: upstream's crop step (DynamicImageCropDialog) selects over an Android Bitmap through
                  // feature/screenshot, which the desktop does not have; the chosen file goes to the confirmation and

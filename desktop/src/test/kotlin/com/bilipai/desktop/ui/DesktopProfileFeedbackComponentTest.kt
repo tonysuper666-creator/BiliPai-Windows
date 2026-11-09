@@ -54,7 +54,7 @@ class DesktopProfileFeedbackComponentTest {
             settle()
             val dialogOwner = ownerWith("编辑资料")
             assertTrue(dialogOwner >= 0, "actual dialog must be rendered")
-            for (message in listOf("没有选择图片，头像未更改", "头像上传失败", "头像已提交")) {
+            for (message in listOf("没有选择图片，头像未更改", "不能选择 GIF 头像", "头像上传失败", "头像已提交")) {
                 feedback.show(window, message)
                 settle()
                 assertEquals(dialogOwner, ownerWith(message), "avatar result must be in the actual dialog layer: $message")
