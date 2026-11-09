@@ -152,6 +152,9 @@ fun SearchLandingContent(
     recordSearchHistory: Boolean,
     globalPrivacyMode: Boolean,
     onToggleHistoryRecording: () -> Unit,
+    showHotSection: Boolean,
+    showHistorySection: Boolean,
+    showDiscoverSection: Boolean,
     hotSearchEnabled: Boolean,
     discoverSectionEnabled: Boolean,
     onToggleHotSearch: () -> Unit,
@@ -219,7 +222,7 @@ fun SearchLandingContent(
                 .responsiveContentWidth(maxWidth = resolveSearchMaxContentWidth())
                 .fillMaxSize()
         ) {
-            LazyColumn(
+            if (showHotSection || showDiscoverSection) LazyColumn(
                 modifier = Modifier
                     .weight(layoutPolicy.leftPaneWeight)
                     .fillMaxSize(),
@@ -231,10 +234,10 @@ fun SearchLandingContent(
                 ),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                item { TrendingSection() }
-                item { DiscoverSection() }
+                if (showHotSection) item { TrendingSection() }
+                if (showDiscoverSection) item { DiscoverSection() }
             }
-            LazyColumn(
+            if (showHistorySection) LazyColumn(
                 state = historyListState,
                 modifier = Modifier
                     .weight(layoutPolicy.rightPaneWeight)
@@ -264,7 +267,12 @@ fun SearchLandingContent(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             sectionOrder.forEach { section ->
-                item(key = section.name) {
+                val visible = when (section) {
+                    SearchLandingSection.TRENDING -> showHotSection
+                    SearchLandingSection.HISTORY -> showHistorySection
+                    SearchLandingSection.DISCOVER -> showDiscoverSection
+                }
+                if (visible) item(key = section.name) {
                     when (section) {
                         SearchLandingSection.TRENDING -> TrendingSection()
                         SearchLandingSection.HISTORY -> HistorySection()

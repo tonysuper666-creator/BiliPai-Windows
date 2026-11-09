@@ -23,6 +23,7 @@ internal fun settingItemTitle(settingId: String): String =
     settingsItemDirectory.first { it.settingId == settingId }.title
 
 internal fun settingItemTitle(settingId: String, context: Context): String = when (settingId) {
+    PROGRESSIVE_BLUR_RENDERER_SETTING_ID -> context.getString(com.android.purebilibili.R.string.animation_progressive_renderer_title)
     GRID_CUSTOMIZATION_SETTING_ID -> context.getString(com.android.purebilibili.R.string.home_settings_grid_customization_title)
     GRID_SHARE_SETTING_ID -> context.getString(com.android.purebilibili.R.string.home_settings_grid_share_title)
     GRID_COMPACT_SETTING_ID -> context.getString(com.android.purebilibili.R.string.home_settings_grid_compact_title)
@@ -33,7 +34,7 @@ internal fun settingItemTitle(settingId: String, context: Context): String = whe
 
 internal val playbackSettingDirectory = listOf(
     PlaybackSettingItem("playback.native_miuix_player_popups", "使用小米风格弹窗", SettingsRootCategory.VIDEO_DECODER, SettingsSearchFocusIds.PLAYBACK_DECODER, { context -> com.android.purebilibili.core.store.player.PlayerSettingsStore .getNativeMiuixPlayerPopups(context).map { if (it) "开启" else "关闭" } }),
-    PlaybackSettingItem("playback.hw_decode", "启用硬件解码", SettingsRootCategory.VIDEO_DECODER, SettingsSearchFocusIds.PLAYBACK_DECODER, null),
+    PlaybackSettingItem("playback.hw_decode", "优先硬件解码", SettingsRootCategory.VIDEO_DECODER, SettingsSearchFocusIds.PLAYBACK_DECODER, null, aliases = listOf("启用硬件解码", "软解", "软件解码", "硬解")),
     PlaybackSettingItem("playback.remember_last_playback_speed", "记住上次倍速", SettingsRootCategory.PLAYBACK_QUALITY, SettingsSearchFocusIds.PLAYBACK_SPEED, { context -> com.android.purebilibili.core.store.SettingsManager .getRememberLastPlaybackSpeed(context).map { if (it) "开启" else "关闭" } }),
     PlaybackSettingItem("playback.long_press_speed_hint_hidden", "隐藏长按倍速提示", SettingsRootCategory.PLAYBACK_QUALITY, SettingsSearchFocusIds.PLAYBACK_SPEED, { context -> com.android.purebilibili.core.store.SettingsManager .getLongPressSpeedHintHidden(context).map { if (it) "开启" else "关闭" } }),
     PlaybackSettingItem("playback.stop_playback_on_exit", "离开播放页后停止", SettingsRootCategory.PLAYBACK_QUALITY, SettingsSearchFocusIds.PLAYBACK_MINI_PLAYER, { context -> com.android.purebilibili.core.store.SettingsManager .getStopPlaybackOnExit(context).map { if (it) "开启" else "关闭" } }),
@@ -41,6 +42,7 @@ internal val playbackSettingDirectory = listOf(
     PlaybackSettingItem("playback.audio_focus_enabled", "播放时暂停其他应用的声音", SettingsRootCategory.PLAYBACK_QUALITY, SettingsSearchFocusIds.PLAYBACK_MINI_PLAYER, { context -> com.android.purebilibili.core.store.SettingsManager .getAudioFocusEnabled(context).map { if (it) "开启" else "关闭" } }),
     PlaybackSettingItem("playback.audio_now_playing_bar_enabled", "底部视频入口", SettingsRootCategory.PLAYBACK_QUALITY, SettingsSearchFocusIds.PLAYBACK_MINI_PLAYER, { context -> com.android.purebilibili.core.store.SettingsManager .getAudioNowPlayingBarEnabled(context).map { if (it) "开启" else "关闭" } }),
     PlaybackSettingItem("playback.audio_now_playing_bar_opens_audio_mode", "点底部视频入口听视频", SettingsRootCategory.PLAYBACK_QUALITY, SettingsSearchFocusIds.PLAYBACK_MINI_PLAYER, { context -> com.android.purebilibili.core.store.SettingsManager .getAudioNowPlayingBarOpensAudioMode(context).map { if (it) "开启" else "关闭" } }),
+    PlaybackSettingItem("playback.audio_now_playing_bar_delete_button", "小横条删除按钮", SettingsRootCategory.PLAYBACK_QUALITY, SettingsSearchFocusIds.PLAYBACK_MINI_PLAYER, { context -> com.android.purebilibili.core.store.SettingsManager.getAudioNowPlayingBarDeleteButton(context).map { if (it) "显示" else "隐藏" } }, aliases = listOf("听视频删除", "关闭小横条")),
     PlaybackSettingItem("playback.audio_now_playing_bar_immersive_enabled", "听视频时自动隐藏标题", SettingsRootCategory.PLAYBACK_QUALITY, SettingsSearchFocusIds.PLAYBACK_MINI_PLAYER, { context -> com.android.purebilibili.core.store.SettingsManager .getAudioNowPlayingBarImmersiveEnabled(context).map { if (it) "开启" else "关闭" } }),
     PlaybackSettingItem("playback.loudness_normalization_enabled", "响度均衡", SettingsRootCategory.PLAYBACK_QUALITY, SettingsSearchFocusIds.PLAYBACK_MINI_PLAYER, { context -> com.android.purebilibili.core.store.SettingsManager .getLoudnessNormalizationEnabled(context).map { if (it) "开启" else "关闭" } }),
     PlaybackSettingItem("playback.audio_spectrum_enabled", "封面律动", SettingsRootCategory.PLAYBACK_QUALITY, SettingsSearchFocusIds.PLAYBACK_MINI_PLAYER, { context -> com.android.purebilibili.core.store.SettingsManager .getAudioSpectrumEnabled(context).map { if (it) "开启" else "关闭" } }, aliases = listOf("音乐氛围", "音乐律动", "声音律动")),
@@ -65,7 +67,7 @@ internal val playbackSettingDirectory = listOf(
     PlaybackSettingItem("playback.hide_interactive_command_danmaku", "隐藏视频内互动提示", SettingsRootCategory.COMMENTS_CONTENT, SettingsSearchFocusIds.PLAYBACK_COMMENTS, { context -> com.android.purebilibili.core.store.SettingsManager .getDanmakuHideInteractiveCommands(context).map { if (it) "开启" else "关闭" } }),
     PlaybackSettingItem("playback.danmaku_cloud_sync_enabled", "同步弹幕设置到账号", SettingsRootCategory.COMMENTS_CONTENT, SettingsSearchFocusIds.PLAYBACK_COMMENTS, { context -> com.android.purebilibili.core.store.SettingsManager .getDanmakuCloudSyncEnabled(context).map { if (it) "开启" else "关闭" } }),
     PlaybackSettingItem("playback.video_info_default_expanded", "默认展开视频简介", SettingsRootCategory.COMMENTS_CONTENT, SettingsSearchFocusIds.PLAYBACK_COMMENTS, { context -> com.android.purebilibili.core.store.SettingsManager .getVideoInfoDefaultExpanded(context).map { if (it) "开启" else "关闭" } }),
-    PlaybackSettingItem("playback.video_argue_msg_shown", "显示 UP 主视频声明", SettingsRootCategory.COMMENTS_CONTENT, SettingsSearchFocusIds.PLAYBACK_COMMENTS, { context -> com.android.purebilibili.core.store.SettingsManager .getVideoArgueMsgShown(context).map { if (it) "开启" else "关闭" } }),
+    PlaybackSettingItem("playback.video_argue_msg_shown", "显示视频警告/争议信息", SettingsRootCategory.COMMENTS_CONTENT, SettingsSearchFocusIds.PLAYBACK_COMMENTS, { context -> com.android.purebilibili.core.store.SettingsManager .getVideoArgueMsgShown(context).map { if (it) "开启" else "关闭" } }),
     PlaybackSettingItem("playback.detailed_comment_time_enabled", "完整评论时间", SettingsRootCategory.COMMENTS_CONTENT, SettingsSearchFocusIds.PLAYBACK_COMMENTS, { context -> com.android.purebilibili.core.store.SettingsManager .getDetailedCommentTimeEnabled(context).map { if (it) "开启" else "关闭" } }),
     PlaybackSettingItem("playback.show_video_detail_comment_count", "视频详情显示评论数", SettingsRootCategory.COMMENTS_CONTENT, SettingsSearchFocusIds.PLAYBACK_COMMENTS, { context -> com.android.purebilibili.core.store.SettingsManager .getShowVideoDetailCommentCount(context).map { if (it) "开启" else "关闭" } }),
     PlaybackSettingItem("playback.video_ai_summary_entry_enabled", "显示 AI 总结入口", SettingsRootCategory.COMMENTS_CONTENT, SettingsSearchFocusIds.PLAYBACK_COMMENTS, { context -> com.android.purebilibili.core.store.SettingsManager .getVideoAiSummaryEntryEnabled(context).map { if (it) "开启" else "关闭" } }),
@@ -90,23 +92,8 @@ internal val playbackSettingDirectory = listOf(
     PlaybackSettingItem("playback.slide_volume_brightness_enabled", "滑动调亮度和音量", SettingsRootCategory.FULLSCREEN_GESTURE, SettingsSearchFocusIds.PLAYBACK_FULLSCREEN, { context -> com.android.purebilibili.core.store.SettingsManager .getSlideVolumeBrightnessEnabled(context).map { if (it) "开启" else "关闭" } }),
     PlaybackSettingItem("playback.set_system_brightness_enabled", "调节系统亮度", SettingsRootCategory.FULLSCREEN_GESTURE, SettingsSearchFocusIds.PLAYBACK_FULLSCREEN, { context -> com.android.purebilibili.core.store.SettingsManager .getSetSystemBrightnessEnabled(context).map { if (it) "开启" else "关闭" } }),
     PlaybackSettingItem("playback.fullscreen_swipe_seek_enabled", "横屏精细调进度", SettingsRootCategory.FULLSCREEN_GESTURE, SettingsSearchFocusIds.PLAYBACK_FULLSCREEN, { context -> com.android.purebilibili.core.store.SettingsManager .getFullscreenSwipeSeekEnabled(context).map { if (it) "开启" else "关闭" } }, aliases = listOf("横屏滑动调进度")),
-    PlaybackSettingItem(
-        "playback.swipe_seek_use_relative_duration",
-        "按视频时长比例调进度",
-        SettingsRootCategory.FULLSCREEN_GESTURE,
-        SettingsSearchFocusIds.PLAYBACK_FULLSCREEN,
-        { context -> com.android.purebilibili.core.store.SettingsManager.getSwipeSeekUseRelativeDuration(context).map { if (it) "开启" else "关闭" } },
-        aliases = listOf("相对时长", "相对进度", "固定秒数", "快进快退", "横向拖动", "滑动进度模式", "视频长度", "精准调节")
-    ),
-    PlaybackSettingItem(
-        "playback.swipe_seek_relative_percent",
-        "滑动调进度时长比例",
-        SettingsRootCategory.FULLSCREEN_GESTURE,
-        SettingsSearchFocusIds.PLAYBACK_FULLSCREEN,
-        { context -> com.android.purebilibili.core.store.SettingsManager.getSwipeSeekRelativePercent(context).map { "$it%" } },
-        aliases = listOf("进度百分比", "快进比例", "快退比例", "滑动范围", "总时长比例", "25%", "50%", "90%", "100%")
-    ),
     PlaybackSettingItem("playback.auto_rotate_enabled", "自动横竖屏切换", SettingsRootCategory.FULLSCREEN_GESTURE, SettingsSearchFocusIds.PLAYBACK_FULLSCREEN, { context -> com.android.purebilibili.core.store.SettingsManager .getAutoRotateEnabled(context).map { if (it) "开启" else "关闭" } }),
+    PlaybackSettingItem("playback.landscape_hold_enabled", "横屏保持", SettingsRootCategory.FULLSCREEN_GESTURE, SettingsSearchFocusIds.PLAYBACK_FULLSCREEN, { context -> com.android.purebilibili.core.store.SettingsManager .getLandscapeHoldEnabled(context).map { if (it) "开启" else "关闭" } }),
     PlaybackSettingItem("playback.horizontal_adaptation_enabled", "横屏适配", SettingsRootCategory.FULLSCREEN_GESTURE, SettingsSearchFocusIds.PLAYBACK_FULLSCREEN, { context -> com.android.purebilibili.core.store.SettingsManager .getHorizontalAdaptationEnabled(context).map { if (it) "开启" else "关闭" } }),
     PlaybackSettingItem("playback.player_control_visibility.show_cast_button", "显示投屏按钮", SettingsRootCategory.FULLSCREEN_GESTURE, SettingsSearchFocusIds.PLAYBACK_FULLSCREEN, { context -> com.android.purebilibili.core.store.SettingsManager.getPlayerControlVisibilitySettings(context).map { if (it.showCastButton) "开启" else "关闭" } }),
     PlaybackSettingItem("playback.player_control_visibility.show_follow_button", "显示关注按钮", SettingsRootCategory.FULLSCREEN_GESTURE, SettingsSearchFocusIds.PLAYBACK_FULLSCREEN, { context -> com.android.purebilibili.core.store.SettingsManager.getPlayerControlVisibilitySettings(context).map { if (it.showFollowButton) "开启" else "关闭" } }),
@@ -133,7 +120,7 @@ internal fun playbackSettingTitle(settingId: String): String =
     playbackSettingDirectory.first { it.settingId == settingId }.title
 
 internal fun playbackSettingStateValue(settingId: String, state: SettingsUiState): String = when (settingId) {
-    "playback.hw_decode" -> if (state.hwDecode) "开启" else "关闭"
+    "playback.hw_decode" -> if (state.hwDecode) "硬件优先" else "软件优先"
     "playback.double_tap_like" -> if (state.doubleTapLike) "开启" else "关闭"
     "playback.auto_skip_op_ed" -> if (state.autoSkipOpEd) "开启" else "关闭"
     else -> ""

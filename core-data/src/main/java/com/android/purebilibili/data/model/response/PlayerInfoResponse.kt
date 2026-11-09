@@ -28,17 +28,23 @@ data class PlayerInfoData(
     val cid: Long = 0,
     @SerialName("last_play_cid")
     val lastPlayCid: Long? = null,
+    @SerialName("last_play_time")
+    val lastPlayTime: Long? = null,
     @SerialName("view_points")
     val viewPoints: List<ViewPoint> = emptyList(),
     @SerialName("online_count")
-    val onlineCount: Int = 0,
+    val onlineCount: Int? = null,
     val subtitle: SubtitleInfo? = null,
     @SerialName("dm_mask")
     val dmMask: DanmakuMaskInfo? = null,
     val interaction: PlayerInteractionInfo? = null,
     @SerialName("bgm_info")
     val bgmInfo: BgmInfo? = null
-)
+) {
+    /** 上次观看属于其他分 P 或字段缺失时，当前分 P 的进度仍未知。 */
+    fun resumePositionMs(cid: Long): Long? =
+        lastPlayTime?.takeIf { lastPlayCid == cid }?.coerceAtLeast(0L)
+}
 
 @Serializable
 data class DanmakuMaskInfo(

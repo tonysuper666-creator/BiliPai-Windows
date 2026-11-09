@@ -129,11 +129,11 @@ class DesktopDiscoveryRestoreLifecycleTest {
         assertEquals(beforeLate, files(root))
         val fresh = DesktopDiscoveryPreferences(root)
         assertEquals(setOf("peer"), fresh.feedback(44).value.dislikedBvids)
-        fresh.setRefreshCount(30)
+        fresh.setFeedMode(DesktopRecommendationMode.MOBILE)
         first.freezeWritesForRestore() // An idempotent old callback must not freeze the fresh generation.
         peer.freezeWritesForRestore()
         fresh.record(99, video("fresh"), emptySet(), false)
-        assertEquals(30, fresh.refreshCount.value)
+        assertEquals(DesktopRecommendationMode.MOBILE, fresh.feedMode.value)
         assertEquals(setOf("fresh"), fresh.feedback(99).value.dislikedBvids)
     }
 
@@ -144,7 +144,6 @@ class DesktopDiscoveryRestoreLifecycleTest {
         preferences.freezeWritesForRestore()
         val beforeLate = files(root)
         assertFailsWith<IllegalStateException> { preferences.setFeedMode(DesktopRecommendationMode.MOBILE) }
-        assertFailsWith<IllegalStateException> { preferences.setRefreshCount(30) }
         assertFailsWith<IllegalStateException> { preferences.clearFeedback(null) }
         assertFailsWith<IllegalStateException> { preferences.changeBlocked(null, 7, false) }
         assertFailsWith<IllegalStateException> { preferences.blockedUps.upsert(BlockedUp(9, "late", "")) }

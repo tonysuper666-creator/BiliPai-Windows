@@ -7,7 +7,7 @@ from functools import lru_cache
 def _catalog():
     file=Path(__file__).with_name("v025-canonical-sources.json")
     raw=file.read_bytes()
-    if hashlib.sha256(raw).hexdigest()!="2600739eef5521cfef71d6af16762ccc3b9df076dad7ccb79902944f1634130f":
+    if hashlib.sha256(raw).hexdigest()!="d3f979a7ce657e358a4362ca801ce91fbf39be5fc51277691dfec43bda131356":
         raise ValueError("v025 canonical source catalog digest mismatch")
     return json.loads(raw)
 

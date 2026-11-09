@@ -9,6 +9,8 @@ plugins {
     id("org.jetbrains.kotlin.plugin.serialization")
     // Compose 预组合兼容补丁：guard LayoutNodeSubcompositionsState 的 detached-root owner 查找
     id("com.android.bilipai.compose-detached-owner-guard")
+    // 弹窗退出后可能仍收到锚点布局回调，不再更新已移除的窗口。
+    id("com.android.bilipai.compose-popup-window-guard")
     // Foundation 拖拽兼容补丁：在进入拖拽状态前过滤不受支持的输入类型。
     id("com.android.bilipai.compose-drag-start-guard")
     // 导航分发器被父级级联释放后，容忍子页面重复清理及延后的启用状态更新。
@@ -140,8 +142,8 @@ android {
         targetSdk = 37
         // 版本名按发行计划确定；versionCode 每次发布单调 +1
         // 规范：docs/wiki/VERSIONING.md · 更新日志：CHANGELOG.md
-        versionCode = 529
-        versionName = "0.6.7"
+        versionCode = 551
+        versionName = "0.7.8"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -168,8 +170,22 @@ android {
         }
     }
 
+    val releaseStoreFile = providers.environmentVariable("BILI_RELEASE_STORE_FILE").orNull
+    val releaseStorePassword = providers.environmentVariable("BILI_RELEASE_STORE_PASSWORD").orNull
+    val releaseKeyAlias = providers.environmentVariable("BILI_RELEASE_KEY_ALIAS").orNull
+    val releaseKeyPassword = providers.environmentVariable("BILI_RELEASE_KEY_PASSWORD").orNull
+    if (listOf(releaseStoreFile, releaseStorePassword, releaseKeyAlias, releaseKeyPassword).all { !it.isNullOrBlank() }) {
+        signingConfigs.create("officialRelease") {
+            storeFile = file(requireNotNull(releaseStoreFile))
+            storePassword = releaseStorePassword
+            keyAlias = releaseKeyAlias
+            keyPassword = releaseKeyPassword
+        }
+    }
+
     buildTypes {
         release {
+            signingConfig = signingConfigs.findByName("officialRelease")
             // Disable PNG crunching to avoid AAPT errors
             isCrunchPngs = false
             buildConfigField("boolean", "ALLOW_HARDCODED_DNS_FALLBACK", "false")
@@ -428,6 +444,7 @@ dependencies {
     implementation(platform(libs.androidx.compose.bom))
     implementation("androidx.activity:activity-compose:1.13.0")
     implementation("androidx.appcompat:appcompat:1.7.1")  // 🚀 For AppCompatDelegate night mode
+    implementation("androidx.webkit:webkit:1.18.0")
     implementation("androidx.biometric:biometric:1.1.0")
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")

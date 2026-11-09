@@ -90,6 +90,7 @@ fun TopControlBar(
     onLikeClick: (() -> Unit)? = null,
     onDislikeClick: (() -> Unit)? = null,
     onCoinClick: (() -> Unit)? = null,
+    shareMenuSource: com.android.purebilibili.core.ui.components.AppGlassMenuSource? = null,
     onShareClick: (() -> Unit)? = null,
     onCastClick: (() -> Unit)? = null,
     showCastButton: Boolean = true,
@@ -181,6 +182,7 @@ fun TopControlBar(
         ) {
             PiliHeaderSlots(
                 hasTitle = hasTitle,
+                allowSeparateTitleRow = isFullscreen && !isPortrait,
                 left = {
                     Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(buttonSpacing)) {
                         HeaderIcon(Icons.AutoMirrored.Outlined.ArrowBack, "返回", onBack, iconSize = if (glass) 15 else 20)
@@ -301,7 +303,9 @@ fun TopControlBar(
                         .fillMaxWidth()
                         // 两排玻璃轮廓留出独立呼吸空间；原生控件保持原有间距。
                         .then(if (glass) Modifier.padding(top = 6.dp) else Modifier)
-                        .horizontalScroll(rememberScrollState()),
+                        .horizontalScroll(rememberScrollState())
+                        // 角标伸出按钮的部分也必须位于滚动视口内；两种材质共用此边界。
+                        .padding(top = PlayerActionCountTopOverflow, end = PlayerActionCountEndOverflow),
                     horizontalArrangement = if (glass) Arrangement.spacedBy(buttonSpacing, Alignment.End) else Arrangement.End,
                 ) {
                     if (onCommentClick != null) {
@@ -344,7 +348,7 @@ fun TopControlBar(
                                 count = visibleCount(com.android.purebilibili.core.store.FullscreenActionCount.FAVORITE, favoriteCount),
                             )
                         }
-                        if (onShareClick != null) HeaderIcon(Icons.Outlined.Share, "分享", onShareClick, iconSize = 18)
+                        if (onShareClick != null) HeaderIcon(Icons.Outlined.Share, "分享", onShareClick, iconSize = 18, modifier = shareMenuSource?.let { Modifier.appGlassMenuSource(it, onOpen = onShareClick) } ?: Modifier)
                     }
                 }
             }
@@ -352,13 +356,15 @@ fun TopControlBar(
     }
 }
 
-/** Natural-size edge groups leave exactly the remaining width to the scrolling title.
- * When an inline window cannot fit both edge groups, scale them together as PlayerBar does;
- * transformed placement keeps pointer hit testing in the same coordinates as the drawing.
+/**
+ * 左右操作先按自然尺寸测量；横屏全屏的标题空间不足时独占下一行。
+ * 由实际播放器宽度判断，因此左右侧栏、窄窗口和大字体共用同一条布局路径。
+ * 材质只由各控件负责，不改变玻璃、MD3、Miuix 的字号、按钮尺寸或默认间距。
  */
 @Composable
 private fun PiliHeaderSlots(
     hasTitle: Boolean,
+    allowSeparateTitleRow: Boolean,
     left: @Composable () -> Unit,
     right: @Composable () -> Unit,
     title: @Composable () -> Unit,
@@ -377,27 +383,40 @@ private fun PiliHeaderSlots(
         val edgeWidth = leftPlaceable.width + rightPlaceable.width
         val width = constraints.maxWidth
         val scale = if (edgeWidth > width) width.toFloat() / edgeWidth else 1f
+        // 至少为八个标题字及材质内边距留出空间，避免标题退化成竖长窄条。
+        val minimumTitleWidth = 128.sp.roundToPx() + 34.dp.roundToPx()
+        val separateTitleRow = hasTitle && allowSeparateTitleRow &&
+            width - edgeWidth < minimumTitleWidth
+        val edgeHeight = maxOf(leftPlaceable.height, rightPlaceable.height)
+        val titleRowGap = if (separateTitleRow) 4.dp.roundToPx() else 0
         val titlePlaceable = if (hasTitle) measurables[2].measure(
-            Constraints(maxWidth = (width - edgeWidth).coerceAtLeast(0), maxHeight = constraints.maxHeight),
+            Constraints(
+                maxWidth = if (separateTitleRow) width else (width - edgeWidth).coerceAtLeast(0),
+                maxHeight = constraints.maxHeight,
+            ),
         ) else null
-        val height = constraints.constrainHeight(maxOf(
-            leftPlaceable.height, rightPlaceable.height, titlePlaceable?.height ?: 0,
-        ))
+        val rowHeight = if (separateTitleRow) edgeHeight else maxOf(edgeHeight, titlePlaceable?.height ?: 0)
+        val height = constraints.constrainHeight(
+            rowHeight + if (separateTitleRow) titleRowGap + (titlePlaceable?.height ?: 0) else 0,
+        )
         layout(width, height) {
             if (scale < 1f) {
-                leftPlaceable.placeRelativeWithLayer(0, ((height - leftPlaceable.height * scale) / 2).toInt()) {
+                leftPlaceable.placeRelativeWithLayer(0, ((rowHeight - leftPlaceable.height * scale) / 2).toInt()) {
                     scaleX = scale; scaleY = scale; transformOrigin = TransformOrigin(0f, 0f)
                 }
                 rightPlaceable.placeRelativeWithLayer(
-                    (leftPlaceable.width * scale).toInt(), ((height - rightPlaceable.height * scale) / 2).toInt(),
+                    (leftPlaceable.width * scale).toInt(), ((rowHeight - rightPlaceable.height * scale) / 2).toInt(),
                 ) {
                     scaleX = scale; scaleY = scale; transformOrigin = TransformOrigin(0f, 0f)
                 }
             } else {
-                leftPlaceable.placeRelative(0, (height - leftPlaceable.height) / 2)
-                rightPlaceable.placeRelative(width - rightPlaceable.width, (height - rightPlaceable.height) / 2)
+                leftPlaceable.placeRelative(0, (rowHeight - leftPlaceable.height) / 2)
+                rightPlaceable.placeRelative(width - rightPlaceable.width, (rowHeight - rightPlaceable.height) / 2)
             }
-            titlePlaceable?.placeRelative(leftPlaceable.width, (height - titlePlaceable.height) / 2)
+            titlePlaceable?.placeRelative(
+                if (separateTitleRow) 0 else leftPlaceable.width,
+                if (separateTitleRow) rowHeight + titleRowGap else (rowHeight - titlePlaceable.height) / 2,
+            )
         }
     }
 }
@@ -441,7 +460,7 @@ private fun HeaderIcon(
     modifier: Modifier = Modifier,
 ) {
     val progressColor = AppContentColors.accent()
-    CountedPlayerAction(count = count, modifier = modifier) {
+    CountedPlayerAction(count = count, iconSize = iconSize.dp, modifier = modifier) {
         HeaderButton(description, onClick, active, onLongClick, gestureModifier) {
             if (progress > 0f) Canvas(Modifier.size(28.dp)) {
                 drawArc(progressColor, -90f, -360f * progress, useCenter = false, style = Stroke(2.dp.toPx()))

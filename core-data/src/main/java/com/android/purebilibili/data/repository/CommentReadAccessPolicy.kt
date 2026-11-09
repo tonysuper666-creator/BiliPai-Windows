@@ -37,7 +37,9 @@ internal fun hasRenderableCommentPayload(data: ReplyData?): Boolean {
     return data.replies.orEmpty().isNotEmpty() ||
         data.hots.orEmpty().isNotEmpty() ||
         data.collectTopReplies().isNotEmpty() ||
-        data.voteCard != null
+        data.voteCard != null ||
+        !data.control?.sectionNotice().isNullOrBlank() ||
+        !data.control?.emptyMessage().isNullOrBlank()
 }
 
 private fun collectRenderableComments(data: ReplyData): Sequence<ReplyItem> {

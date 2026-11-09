@@ -1,4 +1,4 @@
-Upstream-source-sha256: cd933af7c3ae8edfa99bb0c17d674e03965c44f88514a494c74a714e98d998e2
+Upstream-source-sha256: d048087cf5afd15340d943a240945126bef5cbf0dd54f7b60be4bb9173555fad
 Reason: Preserve settings copy and navigation-focus contracts across upstream changes.
 
 --- a/app/src/test/java/com/android/purebilibili/feature/settings/SettingsRootCategoryContentStructureTest.kt
@@ -155,13 +155,13 @@ Reason: Preserve settings copy and navigation-focus contracts across upstream ch
          assertTrue(itemBlock.contains("Box("))
          assertTrue(itemBlock.contains("AsyncImage("))
          assertTrue(itemBlock.contains("model = avatarUrl"))
-@@ -398,17 +473,41 @@
-         assertTrue(settingsSections.contains("SettingsDetailGroup(title = \"显示与交互\")"))
+@@ -399,17 +474,41 @@
          assertTrue(settingsSections.contains("SettingsDetailGroup(title = \"画质与播放\")"))
          assertTrue(settingsSections.contains("SettingsDetailGroup(title = \"隐私与安全\")"))
--        assertTrue(appearance.contains("AppPreferenceSectionTitle(\"显示模式\")"))
--        assertTrue(appearance.contains("AppPreferenceSectionTitle(\"文字与大小\")"))
--        assertTrue(appearance.contains("AppPreferenceSectionTitle(\"开屏与图标\")"))
+         // 外观与动画页的分组标题已走字符串资源,断言标题资源接线而非字面量
+-        assertTrue(appearance.contains("R.string.appearance_section_interface_effects"))
+-        assertTrue(appearance.contains("R.string.appearance_section_text_size"))
+-        assertTrue(appearance.contains("R.string.appearance_section_splash_icon"))
 +        val strings = listOf(
 +            File("app/src/main/res/values/strings.xml"),
 +            File("src/main/res/values/strings.xml")
@@ -183,8 +183,8 @@ Reason: Preserve settings copy and navigation-focus contracts across upstream ch
 -            playback.indexOf("AppPreferenceSectionTitle(\"网络与画质\")") <
 -                playback.indexOf("AppPreferenceSectionTitle(\"互动与评论\")")
 -        )
--        assertTrue(animation.contains("AppPreferenceSectionTitle(\"液态玻璃与磨砂\")"))
--        assertTrue(animation.contains("title = \"触感反馈\""))
+-        assertTrue(animation.contains("R.string.animation_glass_section_title"))
+-        assertTrue(animation.contains("R.string.animation_title_haptic"))
 +        val networkHeading = playback.indexOf("AppPreferenceSectionTitle(\"网络与画质\")")
 +        val interactionHeading = playback.indexOf("AppPreferenceSectionTitle(\"互动与评论\")")
 +        assertTrue(networkHeading >= 0 && interactionHeading >= 0 && networkHeading < interactionHeading)
@@ -206,7 +206,7 @@ Reason: Preserve settings copy and navigation-focus contracts across upstream ch
          assertFalse(animation.contains("AppPreferenceSectionTitle(\"底栏入口\")"))
      }
  
-@@ -423,8 +522,18 @@
+@@ -424,8 +523,18 @@
              .substringAfter("private fun AboutProjectOverviewCard(")
              .substringBefore("@Composable\nprivate fun ContributorAvatarRow(")
  
@@ -226,7 +226,7 @@ Reason: Preserve settings copy and navigation-focus contracts across upstream ch
      }
  
      @Test
-@@ -449,7 +558,30 @@
+@@ -450,7 +559,30 @@
              File("src/main/java/com/android/purebilibili/feature/settings/screen/SettingsTabletShell.kt")
          ).first { it.exists() }.readText().replace("\r\n", "\n")
  

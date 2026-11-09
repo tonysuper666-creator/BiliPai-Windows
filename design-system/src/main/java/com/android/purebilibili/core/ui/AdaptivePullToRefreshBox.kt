@@ -52,6 +52,8 @@ fun AdaptivePullToRefreshBox(
             indicatorTopInset = indicatorTopInset,
         )
     },
+    /** Miuix 加载期间让列表继续滚动；完成后直接恢复下拉，不播放原生阻塞式完成动画。 */
+    allowContentScrollWhileRefreshing: Boolean = false,
     content: @Composable BoxScope.() -> Unit,
 ) {
     val contentHaptic = LocalHapticFeedback.current
@@ -79,7 +81,7 @@ fun AdaptivePullToRefreshBox(
                     )
                 }
             }
-            if (enabled) {
+            if (enabled && !(allowContentScrollWhileRefreshing && isRefreshing)) {
                 // The native container owns its drag/refresh animation scope. Discard that
                 // state with the container when player expansion temporarily disables refresh;
                 // otherwise a cancelled Pulling/RefreshComplete session can consume later
@@ -104,6 +106,18 @@ fun AdaptivePullToRefreshBox(
             } else {
                 Box(modifier = modifier, contentAlignment = contentAlignment) {
                     stableContent(contentAlignment, content)
+                    // 仅显式选择此策略的入口拆开加载提示和列表，避免原生刷新容器吞掉滚动。
+                    if (allowContentScrollWhileRefreshing && isRefreshing) {
+                        com.android.purebilibili.core.ui.components.AppText(
+                            text = "正在刷新…",
+                            color = AppSurfaceTokens.primary(),
+                            style = androidx.compose.material3.MaterialTheme.typography.labelMedium,
+                            tapToCopyEnabled = false,
+                            modifier = Modifier
+                                .align(Alignment.TopCenter)
+                                .padding(top = indicatorTopInset + 8.dp),
+                        )
+                    }
                 }
             }
         }

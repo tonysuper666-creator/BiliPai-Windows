@@ -10,6 +10,10 @@ permissions:
   contents: read
   packages: read
 
+env:
+  # GitHub runner 有 4 核；本地仍走 gradle.properties 的既有调优。
+  CI_GRADLE_MAX_WORKERS: "4"
+
 concurrency:
   group: quality-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -26,7 +30,12 @@ jobs:
         with:
           distribution: temurin
           java-version: '21'
-          cache: gradle
+      # 与 Build 的 build job 对齐：复用依赖缓存 + Gradle 构建缓存 + configuration cache，
+      # 让三个 Quality job 在跨 push 时不必从零编译 app 模块。
+      - name: Set up Gradle cache
+        uses: gradle/actions/setup-gradle@v6
+        with:
+          cache-read-only: ${{ github.ref != 'refs/heads/main' }}
       - name: Run performance contracts and degradation behavior
         env:
           GITHUB_TOKEN: ${{ github.token }}
@@ -54,7 +63,12 @@ jobs:
         with:
           distribution: temurin
           java-version: '21'
-          cache: gradle
+      # 与 Build 的 build job 对齐：复用依赖缓存 + Gradle 构建缓存 + configuration cache，
+      # 让三个 Quality job 在跨 push 时不必从零编译 app 模块。
+      - name: Set up Gradle cache
+        uses: gradle/actions/setup-gradle@v6
+        with:
+          cache-read-only: ${{ github.ref != 'refs/heads/main' }}
       - name: Run preferences cache and version behavior
         env:
           GITHUB_TOKEN: ${{ github.token }}
@@ -78,7 +92,12 @@ jobs:
         with:
           distribution: temurin
           java-version: '21'
-          cache: gradle
+      # 与 Build 的 build job 对齐：复用依赖缓存 + Gradle 构建缓存 + configuration cache，
+      # 让三个 Quality job 在跨 push 时不必从零编译 app 模块。
+      - name: Set up Gradle cache
+        uses: gradle/actions/setup-gradle@v6
+        with:
+          cache-read-only: ${{ github.ref != 'refs/heads/main' }}
       - name: Run style checker regressions and report style warnings
         env:
           GITHUB_TOKEN: ${{ github.token }}

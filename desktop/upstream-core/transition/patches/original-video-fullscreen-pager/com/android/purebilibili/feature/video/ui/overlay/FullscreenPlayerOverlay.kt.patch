@@ -1,0 +1,72 @@
+--- a/original-video-fullscreen-pager/com/android/purebilibili/feature/video/ui/overlay/FullscreenPlayerOverlay.kt
++++ b/original-video-fullscreen-pager/com/android/purebilibili/feature/video/ui/overlay/FullscreenPlayerOverlay.kt
+@@ -315,15 +315,14 @@
+     var lastSeekHapticTargetMs by remember { mutableLongStateOf(0L) }
+     // 拖动 seek 时手指进入顶部角落逃生口时置真，松手即取消本次 seek
+     var seekCancelPending by remember { mutableStateOf(false) }
+     var swipeExitAccumulatedY by remember { mutableFloatStateOf(0f) }
+     val haptic = androidx.compose.ui.platform.LocalHapticFeedback.current
+-    // Default to 15s so seek UI/haptics work immediately before prefs load (null blocked delta).
+-    val fullscreenSwipeSeekSeconds by produceState(initialValue = 15, context) {
+-        com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.getPlayerInteractionSettings(context).map { it.fullscreenSwipeSeekSeconds }
+-            .collectLatest { value = it }
+-    }
++    val fullscreenSwipeSeekEnabled by com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.getPlayerInteractionSettings(context).map { it.fullscreenSwipeSeekEnabled }
++        .collectAsState(initial = true)
++    val gestureSensitivity by com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.getPlayerInteractionSettings(context).map { it.gestureSensitivity }
++        .collectAsState(initial = 1f)
+     val doubleTapSeekEnabled by com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.getPlayerInteractionSettings(context).map { it.doubleTapSeekEnabled }
+         .collectAsStateWithLifecycle(initialValue = false
+         )
+     val seekForwardSeconds by com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.getPlayerInteractionSettings(context).map { it.seekForwardSeconds }
+         .collectAsStateWithLifecycle(initialValue = 10
+@@ -683,11 +682,11 @@
+                             }
+                         }
+                     }
+                 )
+             }
+-            .pointerInput(gesturesEnabled, fullscreenSwipeSeekSeconds, showControls) {
++            .pointerInput(gesturesEnabled, fullscreenSwipeSeekEnabled, gestureSensitivity, showControls) {
+                 if (!gesturesEnabled) {
+                     return@pointerInput
+                 }
+                 
+                 val screenWidth = size.width.toFloat()
+@@ -772,14 +771,16 @@
+                         change.consume()
+                         if (gestureMode == FullscreenGestureMode.None) {
+                             dragDelta += dragAmount.x
+                             dragVerticalDelta += dragAmount.y
+                             if (shouldEngageHorizontalPlayerSeek(dragDelta, dragVerticalDelta)) {
++                                if (fullscreenSwipeSeekEnabled) {
+                                 gestureMode = FullscreenGestureMode.Seek
+                                 haptic.performHapticFeedback(
+                                     androidx.compose.ui.hapticfeedback.HapticFeedbackType.TextHandleMove
+                                 )
++                                }
+                             } else if (
+                                 abs(dragVerticalDelta) >= 1f &&
+                                 abs(dragVerticalDelta) > abs(dragDelta) * 1.2f
+                             ) {
+                                 // 中央区域竖直滑动：下滑退出全屏（上滑不响应，避免与系统手势冲突）
+@@ -801,17 +802,14 @@
+                                 gestureValue = (gestureValue - dragAmount.y / screenHeight).coerceIn(0f, 1f)
+                                 audioManager.setStep((gestureValue * maxVolume).toInt())
+                             }
+                             FullscreenGestureMode.Seek -> {
+                                 val seekDelta = resolveHorizontalSeekDeltaMs(
+-                                    isFullscreen = true,
+-                                    fullscreenSwipeSeekEnabled = true,
+                                     totalDragDistanceX = dragDelta,
+                                     containerWidthPx = screenWidth,
+-                                    fullscreenSwipeSeekSeconds = fullscreenSwipeSeekSeconds,
+-                                    inlineSwipeSeekSeconds = 30,
+-                                    gestureSensitivity = 1f
++                                    gestureSensitivity = gestureSensitivity,
++                                    durationMs = duration,
+                                 )
+                                 if (seekDelta != null) {
+                                     seekPreviewPosition = (gestureSeekStartPosition + seekDelta).coerceIn(0L, duration)
+                                     seekCancelPending = isInSeekCancelEscapeZone(
+                                         positionX = change.position.x,

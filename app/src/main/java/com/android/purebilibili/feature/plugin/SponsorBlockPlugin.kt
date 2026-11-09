@@ -31,6 +31,10 @@ import com.android.purebilibili.core.ui.components.AppOutlinedTextField
 import com.android.purebilibili.core.ui.components.AppText
 import com.android.purebilibili.core.ui.components.AppTextButton
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -595,13 +599,48 @@ class SponsorBlockPlugin : BuiltinPlugin, PlayerPluginApi {
         }
 
         colorDialogCategory?.let { setting ->
+            val normalizedDraft = colorDraft.trim().uppercase()
+            val validDraft = normalizedDraft.isBlank() || Regex("^#[0-9A-F]{6}$").matches(normalizedDraft)
+            val initialColor = remember(setting.category) {
+                Color(AndroidColor.parseColor(config.categoryColorHex[setting.category] ?: setting.defaultColorHex))
+            }
+            var previewColor by remember(setting.category) { mutableStateOf(initialColor) }
             AppAlertDialog(
                 onDismissRequest = { colorDialogCategory = null },
                 title = { AppText("${setting.title}进度条颜色") },
                 text = {
-                    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                        AppText("输入 #RRGGBB；留空可恢复默认颜色。")
-                        AppTextField(value = colorDraft, onValueChange = { colorDraft = it }, label = "颜色", singleLine = true)
+                    Column(
+                        modifier = Modifier.verticalScroll(rememberScrollState()),
+                        verticalArrangement = Arrangement.spacedBy(10.dp),
+                    ) {
+                        AppText("拖动选择颜色，或输入 #RRGGBB。保存后应用于此类片段。")
+                        AppColorPicker(
+                            color = previewColor,
+                            onColorChanged = {
+                                previewColor = it
+                                colorDraft = "#%06X".format(it.toArgb() and 0xFFFFFF)
+                            },
+                            modifier = Modifier.fillMaxWidth(),
+                        )
+                        AppTextField(
+                            value = colorDraft,
+                            onValueChange = {
+                                colorDraft = it
+                                val hex = it.trim()
+                                if (Regex("^#[0-9a-fA-F]{6}$").matches(hex)) {
+                                    previewColor = Color(AndroidColor.parseColor(hex))
+                                } else if (hex.isBlank()) {
+                                    previewColor = Color(AndroidColor.parseColor(setting.defaultColorHex))
+                                }
+                            },
+                            label = "颜色（#RRGGBB）",
+                            singleLine = true,
+                        )
+                        if (!validDraft) AppText("颜色格式应为 #RRGGBB", color = MaterialTheme.colorScheme.error)
+                        AppTextButton(onClick = {
+                            colorDraft = ""
+                            previewColor = Color(AndroidColor.parseColor(setting.defaultColorHex))
+                        }) { AppText("恢复默认颜色") }
                     }
                 },
                 confirmButton = {
@@ -610,10 +649,12 @@ class SponsorBlockPlugin : BuiltinPlugin, PlayerPluginApi {
                         if (normalized.isNotBlank() && !Regex("^#[0-9A-F]{6}$").matches(normalized)) {
                             showNotificationToast("颜色格式应为 #RRGGBB")
                         } else {
-                            persistConfig(config.copy(categoryColorHex = config.categoryColorHex + (setting.category to normalized)))
+                            val colors = if (normalized.isBlank()) config.categoryColorHex - setting.category
+                                else config.categoryColorHex + (setting.category to normalized)
+                            persistConfig(config.copy(categoryColorHex = colors))
                             colorDialogCategory = null
                         }
-                    }) { AppText("保存") }
+                    }, enabled = validDraft) { AppText("保存") }
                 },
                 dismissButton = { AppTextButton(onClick = { colorDialogCategory = null }) { AppText("取消") } },
             )
@@ -949,25 +990,38 @@ private fun SponsorBlockFavoriteRow(title: String, value: String) {
 }
 
 @Composable
-private fun SponsorBlockRecentSection(
+internal fun SponsorBlockRecentSection(
     summary: SponsorBlockInsightSummary,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
+    var expanded by rememberSaveable { mutableStateOf(false) }
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(10.dp)
+        verticalArrangement = Arrangement.spacedBy(10.dp),
     ) {
         if (summary.recentRecords.isEmpty()) {
             SponsorBlockEmptyInsight()
         } else {
-            AppText(
-                text = "最近跳过",
-                style = MaterialTheme.typography.labelLarge,
-                color = AppContentColors.secondaryText(),
-                fontWeight = FontWeight.Medium
-            )
-            summary.recentRecords.forEach { record ->
-                SponsorBlockRecordRow(record = record)
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                AppText(
+                    text = "最近跳过 · ${summary.recentRecords.size} 条",
+                    style = MaterialTheme.typography.labelLarge,
+                    color = AppContentColors.secondaryText(),
+                    fontWeight = FontWeight.Medium,
+                    modifier = Modifier.weight(1f),
+                )
+                AppTextButton(onClick = { expanded = !expanded }) {
+                    AppText(if (expanded) "一键收起" else "一键展开")
+                }
+            }
+            if (expanded) {
+                summary.recentRecords.forEach { record ->
+                    SponsorBlockRecordRow(record = record)
+                }
             }
         }
     }

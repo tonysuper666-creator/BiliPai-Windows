@@ -50,15 +50,8 @@ class DesktopDiscoveryPreferences(private val root: Path = DesktopLibrary.direct
     private val settings = state(null).context.getSharedPreferences("feed_api", 0)
     val feedMode: StateFlow<DesktopRecommendationMode> = DiscoveryPreferenceState(state(null).context, "feed_api") {
         DesktopRecommendationMode.fromValue(settings.getInt("type", DesktopRecommendationMode.WEB.value)) }
-    val refreshCount: StateFlow<Int> = DiscoveryPreferenceState(state(null).context, "feed_api") {
-        normalizeHomeRefreshCount(settings.getInt("home_refresh_count", DEFAULT_HOME_REFRESH_COUNT)) }
-
     suspend fun setFeedMode(value: DesktopRecommendationMode) = withContext(Dispatchers.IO) {
         synchronized(lock) { checkWritesOpen(); settings.edit().putInt("type", value.value).apply() }
-    }
-    suspend fun setRefreshCount(value: Int) = withContext(Dispatchers.IO) {
-        val normalized = normalizeHomeRefreshCount(value)
-        synchronized(lock) { checkWritesOpen(); settings.edit().putInt("home_refresh_count", normalized).apply() }
     }
     fun feedback(mid: Long?): StateFlow<TodayWatchFeedbackSnapshot> = state(mid).feedback
     fun blockedCreators(mid: Long?): StateFlow<Set<Long>> { require(mid == null || mid > 0); return blockedUps.mids }

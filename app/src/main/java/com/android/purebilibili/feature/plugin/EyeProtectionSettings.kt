@@ -88,13 +88,15 @@ internal fun EyeProtectionSettings(
         usageMinutes,
         uiConfig.usageDurationMinutes,
         uiConfig.usageReminderEnabled,
-        plugin.snoozeUntilMinute()
+        plugin.snoozeUntilMinute(),
+        plugin.lastReminderMinute()
     ) {
         resolveMinutesUntilReminder(
             usageMinutes = usageMinutes,
             intervalMinutes = uiConfig.usageDurationMinutes,
             snoozeUntilMinute = plugin.snoozeUntilMinute(),
-            reminderEnabled = uiConfig.usageReminderEnabled
+            reminderEnabled = uiConfig.usageReminderEnabled,
+            lastReminderMinute = plugin.lastReminderMinute(),
         )
     }
     val status = remember(
@@ -241,7 +243,7 @@ internal fun EyeProtectionSettings(
         AppSwitchPreference(
             icon = Icons.Outlined.Schedule,
             title = "关怀提醒",
-            subtitle = "定时提醒休息、看远处、放松肩颈",
+            subtitle = "按应用前台使用时长提醒休息；离开应用时暂停计时",
             checked = uiConfig.usageReminderEnabled,
             onCheckedChange = { enabled ->
                 updateConfig(uiConfig.copy(usageReminderEnabled = enabled), refreshVisual = false)
@@ -296,6 +298,12 @@ internal fun EyeProtectionSettings(
             style = MaterialTheme.typography.bodySmall,
             color = AppSurfaceTokens.onSurfaceVariantSummary(),
             modifier = Modifier.padding(top = 4.dp, bottom = 8.dp)
+        )
+        AppText(
+            text = "切换预设会同时调整亮度、暖色、提醒频率和稍后提醒时间。",
+            style = MaterialTheme.typography.bodySmall,
+            color = AppSurfaceTokens.onSurfaceVariantSummary(),
+            modifier = Modifier.padding(bottom = 8.dp)
         )
         FlowRow(
             modifier = Modifier.fillMaxWidth(),
@@ -362,7 +370,7 @@ internal fun EyeProtectionSettings(
         )
 
         AppText(
-            text = "护眼滤镜不影响触摸。建议搭配系统深色模式一起用。",
+            text = "滤镜通过画面叠层调暗并增加暖色，不影响触摸；可搭配系统深色模式使用。",
             style = MaterialTheme.typography.bodySmall,
             color = AppSurfaceTokens.onSurfaceVariantSummary(),
             modifier = Modifier.padding(top = 8.dp)

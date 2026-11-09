@@ -154,6 +154,29 @@ def buffering_center_playback_ui(rel,t):
 ''','''            visible = isQualitySwitching && centerLoadingUiState == null && !showCenterPlaybackControl,
 ''','Quality switching card yields to the clickable centre key')
 
+
+def restore_terminal_stage(body, output, name):
+ proof=json.loads((Path(output)/name).read_text(encoding='utf-8'))
+ assert proof['exactCompleteInverse'] and sha(body)==proof['afterSha256LF'],name+' whole after'
+ for edit in reversed(proof['inverseEdits']):
+  at=edit['offset'];assert body[at:at+len(edit['after'])]==edit['after'],name+' exact inverse span'
+  body=body[:at]+edit['before']+body[at+len(edit['after']):]
+ assert sha(body)==proof['beforeSha256LF'],name+' whole inverse'
+ return body
+
+def record_terminal_stage(before, after, edits, output, name):
+ proof=dict(beforeSha256LF=sha(before),afterSha256LF=sha(after),inverseEdits=edits,exactCompleteInverse=True)
+ inverse=after
+ for edit in reversed(edits):
+  at=edit['offset'];assert inverse[at:at+len(edit['after'])]==edit['after'],name+' exact inverse span'
+  inverse=inverse[:at]+edit['before']+inverse[at+len(edit['after']):]
+ assert inverse==before,name+' complete inverse'
+ target=Path(output)/name;target.parent.mkdir(parents=True,exist_ok=True)
+ target.write_text(json.dumps(proof,indent=2)+'\n',encoding='utf-8')
+
+def restore_buffering_stage(body, output, rel):
+ return restore_terminal_stage(body,output,'buffering-playback-'+Path(rel).stem+'.json')
+
 def emit(rel,t,origin,mode):
  from v046_follow_confirmation import apply_and_record as apply_follow_confirmation
  t=apply_follow_confirmation(REPO,'com/android/purebilibili/'+rel,t,OUTPUT)
@@ -166,7 +189,16 @@ def emit(rel,t,origin,mode):
  # blobs: the end drawer width sync and motion groups, the glass sheet header and its motion groups).
  from v046_control_center_motion import advance_emitted as advance_control_center
  t,control_center_rows=advance_control_center(rel,t);ADAPT.extend(control_center_rows)
+ buffering_before=t;buffering_start=len(ADAPT)
  t=buffering_center_playback_ui(rel,t)
+ if t!=buffering_before:
+  replay=buffering_before;indexed=[]
+  for edit in ADAPT[buffering_start:]:
+   assert replay.count(edit['before'])==1,edit['label']+' terminal replay'
+   indexed.append(dict(offset=replay.index(edit['before']),before=edit['before'],after=edit['after']))
+   replay=replay.replace(edit['before'],edit['after'],1)
+  assert replay==t,'buffering terminal replay'
+  record_terminal_stage(buffering_before,t,indexed,OUTPUT,'buffering-playback-'+Path(rel).stem+'.json')
  canonical=SOURCES.get(BASE+origin,{}).get('text')
  direct=mode=='direct-complete-original' and canonical==t
  if STANDALONE or not direct:write(OUTPUT/'com/android/purebilibili'/rel,t)

@@ -1,6 +1,8 @@
 package com.android.purebilibili.feature.dynamic
 
+import com.android.purebilibili.core.util.FormatUtils
 import com.android.purebilibili.data.model.response.ReplyItem
+import com.android.purebilibili.feature.video.viewmodel.resolveSentSubReply
 
 internal fun canOpenDynamicSubReplies(reply: ReplyItem): Boolean {
     return resolveDynamicSubReplyCount(reply) > 0
@@ -60,6 +62,45 @@ internal fun resolveDynamicCommentReplyTarget(reply: ReplyItem): DynamicCommentC
         parentRpid = reply.rpid,
         uname = reply.member.uname
     )
+}
+
+internal fun resolveDynamicSentComment(
+    reply: ReplyItem,
+    subject: DynamicCommentTarget,
+    target: DynamicCommentComposerTarget?,
+    parentReply: ReplyItem?,
+): ReplyItem = resolveSentSubReply(
+    reply = reply,
+    rootId = target?.rootRpid ?: 0L,
+    parentId = target?.parentRpid ?: 0L,
+    target = parentReply,
+    oid = subject.oid,
+    replyType = subject.type,
+)
+
+internal fun shouldApplyDynamicSentComment(
+    expectedDynamicId: String,
+    expectedTarget: DynamicCommentTarget,
+    expectedSession: Long,
+    currentDynamicId: String?,
+    currentTarget: DynamicCommentTarget?,
+    currentSession: Long,
+): Boolean = expectedSession == currentSession && expectedDynamicId == currentDynamicId &&
+    expectedTarget == currentTarget
+
+internal fun removeDynamicCommentFromList(
+    comments: List<ReplyItem>,
+    rpid: Long,
+    rootId: Long,
+): List<ReplyItem> = comments.mapNotNull { reply ->
+    if (reply.rpid == rpid) null else {
+        val removedChild = reply.rpid == rootId || reply.replies.orEmpty().any { it.rpid == rpid }
+        reply.copy(
+            replies = reply.replies?.filterNot { it.rpid == rpid },
+            rcount = (reply.rcount - if (removedChild) 1 else 0).coerceAtLeast(0),
+            count = (reply.count - if (removedChild) 1 else 0).coerceAtLeast(0),
+        )
+    }
 }
 
 internal fun isDynamicCommentLiked(reply: ReplyItem): Boolean = reply.action == 1
@@ -138,16 +179,4 @@ internal fun replaceDynamicCommentInList(
     else reply.copy(replies = reply.replies?.let { replaceDynamicCommentInList(it, replacement) })
 }
 
-private fun formatDynamicCommentCount(count: Int): String {
-    return when {
-        count >= 100_000_000 -> formatScaledCount(count, 100_000_000, "亿")
-        count >= 10_000 -> formatScaledCount(count, 10_000, "万")
-        else -> count.toString()
-    }
-}
-
-private fun formatScaledCount(count: Int, unit: Int, suffix: String): String {
-    val whole = count / unit
-    val tenths = (count % unit) / (unit / 10)
-    return if (tenths == 0) "$whole$suffix" else "$whole.$tenths$suffix"
-}
+private fun formatDynamicCommentCount(count: Int): String = FormatUtils.formatStat(count.toLong())

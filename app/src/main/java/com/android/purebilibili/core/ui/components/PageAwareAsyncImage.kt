@@ -9,7 +9,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.FilterQuality
@@ -18,6 +18,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import coil3.DrawableImage
+import coil3.BitmapImage
 import coil3.ImageLoader
 import coil3.compose.AsyncImage
 import coil3.compose.AsyncImagePainter
@@ -30,8 +31,8 @@ import com.android.purebilibili.core.store.DataSaverState
 import com.android.purebilibili.core.util.withBiliImageQuality
 import com.android.purebilibili.feature.home.LocalHomeCardCoverLoadingAllowed
 
-/** Defaults to normal loading outside the retained bottom-tab page scope. */
-internal val LocalPageImageLoadingAllowed = staticCompositionLocalOf { true }
+/** 页面覆盖、滚动及返回时频繁切换，只使实际读取加载许可的组件失效。 */
+internal val LocalPageImageLoadingAllowed = compositionLocalOf { true }
 
 /**
  * Removing AsyncImage cancels its request and forgets its animated painter. Keep only the
@@ -46,20 +47,26 @@ internal fun PageAwareAsyncImage(
     contentScale: ContentScale = ContentScale.Fit,
     alignment: Alignment = Alignment.Center,
     loadingAllowed: Boolean = LocalPageImageLoadingAllowed.current,
+    dimInDarkTheme: Boolean = false,
     onError: ((AsyncImagePainter.State.Error) -> Unit)? = null,
     onSuccess: ((AsyncImagePainter.State.Success) -> Unit)? = null,
 ) {
     val context = LocalContext.current
     val resolvedImageLoader = imageLoader ?: context.imageLoader
+    val imageSettings = LocalContentImageSettings.current
+    val darkTheme = LocalContentImageDarkTheme.current
+    val imageFilter = remember(dimInDarkTheme, darkTheme, imageSettings.darkDimPercent) {
+        contentImageDimFilter(dimInDarkTheme && darkTheme, imageSettings.darkDimPercent)
+    }
     // 请求和暂停时的缓存回放使用同一质量身份，避免返回列表时丢失封面占位。
     val dataSaver by remember(context) { DataSaverState.get(context).active }
     // 首页封面、头像直接显示。只按是否属于首页选择策略，不把滚动/加载许可作为请求 key，
     // 避免滚动启停重建请求；其他列表继续使用各自的淡入配置。
     val homeFeedImage = LocalHomeCardCoverLoadingAllowed.current != null
-    val request = remember(model, dataSaver, homeFeedImage, context) {
+    val request = remember(model, dataSaver, imageSettings.listQuality, homeFeedImage, context) {
         val source = model as? ImageRequest
-            ?: if (homeFeedImage && model != null) ImageRequest.Builder(context).data(model).build() else null
-        source?.withBiliImageQuality(dataSaver)?.let {
+            ?: if (model != null) ImageRequest.Builder(context).data(model).build() else null
+        source?.withBiliImageQuality(dataSaver, imageSettings.listQuality)?.let {
             if (homeFeedImage) it.newBuilder().crossfade(false).build() else it
         }
     }
@@ -84,7 +91,11 @@ internal fun PageAwareAsyncImage(
     val retainedPainter = remember(replayImage, context) {
         replayImage?.asPainter(context, FilterQuality.Low)
     }
-    if (loadingAllowed) {
+    // 首页静态位图已成功加载且关闭淡入，不再有加载或动画工作。保留同一个
+    // AsyncImage，避免开合详情时把所有封面/头像拆成 Image 再重新挂载请求。
+    // 未完成的请求仍立即取消；动图仍走静态回放，不能保活其逐帧回调。
+    val keepDecodedHomeImageMounted = homeFeedImage && retainedImage is BitmapImage
+    if (loadingAllowed || keepDecodedHomeImageMounted) {
         AsyncImage(
             model = request ?: model,
             imageLoader = resolvedImageLoader,
@@ -92,6 +103,7 @@ internal fun PageAwareAsyncImage(
             modifier = modifier,
             placeholder = retainedPainter,
             contentScale = contentScale,
+            colorFilter = imageFilter,
             alignment = alignment,
             onSuccess = {
                 retainedImage = it.result.image
@@ -114,6 +126,7 @@ internal fun PageAwareAsyncImage(
                 contentDescription = contentDescription,
                 modifier = modifier,
                 contentScale = contentScale,
+                colorFilter = imageFilter,
                 alignment = alignment,
             )
         } else {

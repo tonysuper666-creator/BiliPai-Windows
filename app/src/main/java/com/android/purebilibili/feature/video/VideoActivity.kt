@@ -194,8 +194,11 @@ class VideoActivity : ComponentActivity() {
                 .collectAsStateWithLifecycle(initialValue = true)
             val liquidGlassEnabled by SettingsManager.getAndroidNativeLiquidGlassEnabled(this@VideoActivity)
                 .collectAsStateWithLifecycle(initialValue = true)
+            val liquidSwitchThumbMode by SettingsManager.getLiquidSwitchThumbMode(this@VideoActivity)
+                .collectAsStateWithLifecycle(initialValue = com.android.purebilibili.core.ui.LiquidSwitchThumbMode.THEME)
             val appThemeConfig = remember(
                 liquidGlassEnabled,
+                liquidSwitchThumbMode,
                 blurIntensity,
                 headerBlurEnabled,
                 bottomBarBlurEnabled,
@@ -210,6 +213,7 @@ class VideoActivity : ComponentActivity() {
             ) {
                 AppThemeConfig(
                     liquidGlassEnabled = liquidGlassEnabled,
+                    liquidSwitchThumbMode = liquidSwitchThumbMode,
                     blurIntensity = blurIntensity,
                     headerBlurEnabled = headerBlurEnabled,
                     bottomBarBlurEnabled = bottomBarBlurEnabled,

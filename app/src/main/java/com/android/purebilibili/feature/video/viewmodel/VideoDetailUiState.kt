@@ -14,6 +14,26 @@ data class VideoDetailUiState(
     val isLoggedIn: Boolean = false,
     val isVip: Boolean = false
 ) {
+    /** 同一内容重建播放请求时保留已到达的正文；换视频或分 P 时清空。 */
+    fun forNewRequest(
+        bvid: String,
+        cid: Long,
+        token: Long,
+        playbackState: VideoPlaybackUiState
+    ): VideoDetailUiState {
+        val content = contentSnapshot(playbackState, bvid, cid)
+        return VideoDetailUiState(
+            requestBvid = bvid,
+            requestCid = cid,
+            requestToken = token,
+            info = content?.info,
+            related = content?.related.orEmpty(),
+            relatedLoadState = content?.relatedLoadState ?: VideoPlaybackUiState.RelatedLoadState.LOADING,
+            isLoggedIn = content?.isLoggedIn ?: false,
+            isVip = content?.isVip ?: false
+        )
+    }
+
     fun contentSnapshot(
         playbackState: VideoPlaybackUiState,
         bvid: String,
@@ -25,8 +45,10 @@ data class VideoDetailUiState(
             matchesVideo && (cid <= 0L || it.info.cid == cid)
         }
         if (playback != null) return playback
-        if (requestBvid != bvid || requestCid != cid) return null
+        if (requestBvid != bvid) return null
         val detail = info ?: return null
+        // 未指定分 P 的请求解析出 CID 后仍属于同一次详情，不能退回骨架。
+        if (cid > 0L && requestCid != cid && detail.cid != cid) return null
         return VideoPlaybackUiState.Success(
             info = detail,
             playUrl = "",

@@ -46,6 +46,9 @@ internal object VideoCardTransitionVisualTimeline {
     // Live player → cover. Keep the live frame dominant until the card is very close to landing.
     const val MEDIA_RETURN_START = 0.82f
     const val MEDIA_RETURN_END = 0.98f
+    // 整卡位图比单独封面更早接管，完整像素与媒体在同一几何端点完成交接。
+    const val WHOLE_CARD_RETURN_START = WHOLE_SOURCE_CARD_RETURN_START
+    const val WHOLE_CARD_RETURN_END = MEDIA_RETURN_END
     // Cover pixels and the info band under the cover must hand off together. Opening still
     // uses [DETAIL_CHROME_ENTER_*] for the detail body; return chrome shares the live → cover
     // window so title/stats never appear on an empty cover slot.
@@ -134,6 +137,15 @@ internal fun resolveVideoCardLiveReturnVisualHandoffAlpha(
     progress = resolveVideoCardReturnSettleFromMorphDepth(morphDepthProgress),
     start = VideoCardTransitionVisualTimeline.MEDIA_RETURN_START,
     end = VideoCardTransitionVisualTimeline.MEDIA_RETURN_END,
+)
+
+/** 整卡快照的交接与媒体共用深度、平滑端点和完成边界，反向 seek 可直接恢复。 */
+internal fun resolveVideoCardWholeCardReturnHandoffAlpha(
+    morphDepthProgress: Float,
+): Float = resolveVideoCardSmoothHandoffProgress(
+    progress = resolveVideoCardReturnSettleFromMorphDepth(morphDepthProgress),
+    start = VideoCardTransitionVisualTimeline.WHOLE_CARD_RETURN_START,
+    end = VideoCardTransitionVisualTimeline.WHOLE_CARD_RETURN_END,
 )
 
 /**
