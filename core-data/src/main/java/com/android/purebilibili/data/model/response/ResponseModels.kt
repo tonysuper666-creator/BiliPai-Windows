@@ -118,6 +118,12 @@ data class ReplyVoteCardOption(
 
 @Serializable
 data class ReplyPageControl(
+    val title: String = "",
+    @SerialName("show_text") val showText: String = "",
+    @SerialName("web_selection") val webSelection: Boolean = false,
+    @SerialName("bg_text") val backgroundText: String = "",
+    @SerialName("empty_background_text_plain") val emptyText: String = "",
+    @SerialName("empty_background_text_highlight") val emptyHighlightText: String = "",
     @SerialName("input_disable")
     val inputDisable: Boolean = false,
     @SerialName("root_input_text")
@@ -126,7 +132,20 @@ data class ReplyPageControl(
     val childInputText: String = "",
     @SerialName("upload_picture_icon_state")
     val uploadPictureIconState: Int = 0
-)
+) {
+    fun sectionNotice(): String {
+        // 普通排序已由列表标题展示；这里只保留精选、限制等额外说明。
+        fun specialNotice(text: String): String = text.trim().takeUnless {
+            it == "热门评论" || it == "最热评论" || it == "最新评论"
+        }.orEmpty()
+        return listOf(
+            specialNotice(title).ifBlank { if (webSelection) "精选评论" else "" },
+            specialNotice(showText),
+        ).filter { it.isNotBlank() }.distinct().joinToString(" · ")
+    }
+
+    fun emptyMessage(): String = (emptyText + emptyHighlightText).trim().ifBlank { backgroundText.trim() }
+}
 
 @Serializable
 data class ReplyConfig(
@@ -618,7 +637,9 @@ data class ReplyContentUrl(
     val appUrlSchema: String = "",
     @Serializable(with = FlexibleStringSerializer::class)
     @JsonNames("prefixIcon", "prefix_icon")
-    val prefixIcon: String = ""
+    val prefixIcon: String = "",
+    val extra: kotlinx.serialization.json.JsonObject? = null,
+    val isGoods: Boolean = false,
 )
 
 //  评论图片

@@ -3,6 +3,12 @@ package com.android.purebilibili.feature.video.screen
 /** 共享元素 morph 标准时长之外的超时 buffer，防止极端设备上过渡信号丢失。 */
 internal const val VIDEO_DETAIL_ENTRY_TRANSITION_FINISH_TIMEOUT_BUFFER_MS = 80
 
+/** 首次入场的工作错峰跟随 entry 加载许可，与卡片动画和页面材质开关无关。 */
+internal fun shouldStaggerVideoDetailEntryWork(
+    deferEntryLoad: Boolean,
+    reuseFromMiniPlayerAtEntry: Boolean,
+): Boolean = deferEntryLoad && !reuseFromMiniPlayerAtEntry
+
 internal fun shouldDeferVideoDetailLoadUntilEntryTransitionFinished(
     transitionEnabled: Boolean,
     detailShellSharedBoundsEnabled: Boolean,

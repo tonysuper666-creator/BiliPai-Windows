@@ -181,7 +181,7 @@ private fun RestReminderDialog(
                     .verticalScroll(rememberScrollState())
             ) {
                 AppText(
-                    text = "已连续观看 ${reminder.usageMinutes} 分钟",
+                    text = "已使用 BiliPai 约 ${reminder.usageMinutes} 分钟",
                     style = MaterialTheme.typography.bodyMedium,
                     color = AppSurfaceTokens.onSurfaceVariantSummary(),
                     textAlign = TextAlign.Center
@@ -209,7 +209,7 @@ private fun RestReminderDialog(
                 shape = AppShapes.container(ContainerLevel.Card),
                 modifier = Modifier.fillMaxWidth()
             ) {
-                AppText("看向远处 20 秒", fontWeight = FontWeight.Medium)
+                AppText("我已休息", fontWeight = FontWeight.Medium)
             }
         },
         dismissButton = {

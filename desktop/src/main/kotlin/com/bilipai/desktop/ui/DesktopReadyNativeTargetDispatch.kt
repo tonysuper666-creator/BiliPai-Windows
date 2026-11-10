@@ -37,6 +37,12 @@ internal fun dispatchDesktopReadyNativeTarget(root: DesktopHomeRetainedRoot,
         is BilibiliNavigationTarget.Music -> return push(legacyRouteToBiliPaiNavKey(
             ScreenRoutes.createMusicRoute(target.musicId) ?: return false))
         is BilibiliNavigationTarget.Article -> return push(BiliPaiNavKey.ArticleDetail(target.articleId))
+        // Upstream v0.7.8 NavigationLinkDispatch: a comment link opens the comment detail page.
+        is BilibiliNavigationTarget.CommentDetail -> return push(BiliPaiNavKey.CommentDetail(
+            oid = target.oid, rootId = target.rootReplyId, targetId = target.targetReplyId,
+            type = target.businessId, enterUri = target.enterUri))
+        // The desktop has no article collection page yet, so the link stays unhandled.
+        is BilibiliNavigationTarget.ArticleCollection -> return false
         is BilibiliNavigationTarget.PopularFeed -> {
             if (target.subCategoryKey == "weekly") {
                 return push(BiliPaiNavKey.WeeklySeries(target.weeklyNumber))

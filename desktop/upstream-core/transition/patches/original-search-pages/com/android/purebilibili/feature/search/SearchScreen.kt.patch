@@ -1,6 +1,34 @@
 --- a/original-search-pages/com/android/purebilibili/feature/search/SearchScreen.kt
 +++ b/original-search-pages/com/android/purebilibili/feature/search/SearchScreen.kt
-@@ -1442,8 +1442,6 @@
+@@ -691,6 +691,7 @@
+     val windowSizeClass = LocalWindowSizeClass.current
+     var startupSettled by remember { mutableStateOf(false) }
+     var searchFieldFocused by remember { mutableStateOf(false) }
++    val openedWithKeyword = rememberSaveable { initialKeyword.isNotBlank() }
+     var retainSearchImeAfterClear by remember { mutableStateOf(false) }
+     var searchQueryClearedAtElapsedMs by remember { mutableLongStateOf(-1L) }
+     // Startup autofocus is one-shot; returning from results owns its explicit edit-context restore.
+@@ -808,6 +809,9 @@
+         .collectAsState(initial = false)
+     val hotSearchEnabled by SettingsManager.getSearchHotSectionEnabled(context).collectAsState(initial = true)
+     val discoverSectionEnabled by SettingsManager.getSearchDiscoverSectionEnabled(context).collectAsState(initial = true)
++    val showHotSection by SettingsManager.getSearchLandingSectionVisible(context, 0).collectAsState(initial = true)
++    val showHistorySection by SettingsManager.getSearchLandingSectionVisible(context, 1).collectAsState(initial = true)
++    val showDiscoverSection by SettingsManager.getSearchLandingSectionVisible(context, 2).collectAsState(initial = true)
+     val appThemeConfig = com.android.purebilibili.core.ui.LocalAppThemeConfig.current
+     val androidNativeLiquidGlassEnabled = appThemeConfig.liquidGlassEnabled
+     val effectiveLiquidGlassEnabled = rememberAppChromeLiquidGlassEnabled(
+@@ -1150,7 +1154,8 @@
+             resolveSearchBackAction(
+                 showResults = state.showResults,
+                 suggestionsVisible = state.suggestions.isNotEmpty(),
+-                searchFieldFocused = searchFieldFocused
++                searchFieldFocused = searchFieldFocused,
++                openedWithKeyword = openedWithKeyword,
+             )
+         ) {
+             SearchBackAction.RETURN_TO_LANDING -> {
+@@ -1442,8 +1447,6 @@
                                                  if (state.searchType == SearchType.VIDEO || state.searchType == SearchType.ALL) {
                                                      val videoFilters: @Composable RowScope.() -> Unit = {
                                                          SearchVideoFilterActions(
@@ -9,3 +37,13 @@
                                                              currentDurations = state.searchDurations,
                                                              currentVideoTid = state.videoTid,
                                                              currentPubTimeType = state.pubTimeType,
+@@ -2598,6 +2601,9 @@
+                     recordSearchHistory = state.recordSearchHistory,
+                     globalPrivacyMode = state.globalPrivacyMode,
+                     onToggleHistoryRecording = viewModel::toggleSearchHistoryRecording,
++                    showHotSection = showHotSection,
++                    showHistorySection = showHistorySection,
++                    showDiscoverSection = showDiscoverSection,
+                     hotSearchEnabled = hotSearchEnabled,
+                     discoverSectionEnabled = discoverSectionEnabled,
+                     onToggleHotSearch = {

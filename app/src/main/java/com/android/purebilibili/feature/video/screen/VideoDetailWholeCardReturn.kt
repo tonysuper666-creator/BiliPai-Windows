@@ -10,13 +10,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
-import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.graphics.drawscope.scale
 import com.android.purebilibili.core.ui.transition.VideoCardSourceLayout
 import com.android.purebilibili.core.ui.transition.VideoCardTransitionBackgroundPhase
 import com.android.purebilibili.core.ui.transition.normalizeSharedElementSourceRoute
+import com.android.purebilibili.core.ui.transition.resolveVideoCardWholeCardReturnHandoffAlpha
 import com.android.purebilibili.core.util.CardPositionManager
 
 internal fun resolveVideoDetailWholeCardReturnAlpha(
@@ -29,9 +30,7 @@ internal fun resolveVideoDetailWholeCardReturnAlpha(
     if (!returning) return 0f
     val progress = 1f - depth.coerceIn(0f, 1f)
     if (!followProgress) return if (progress >= 1f) 1f else 0f
-    // 前段保留实时画面；整卡在末段统一接管，最后一小段已经是原卡片的完整像素。
-    val fraction = ((progress - 0.55f) / (0.98f - 0.55f)).coerceIn(0f, 1f)
-    return fraction * fraction * (3f - 2f * fraction)
+    return resolveVideoCardWholeCardReturnHandoffAlpha(depth)
 }
 
 internal class VideoDetailWholeCardReturn(
@@ -97,31 +96,29 @@ internal fun Modifier.videoDetailWholeCardReturnLayer(
     bitmap: ImageBitmap?,
     alphaProvider: () -> Float,
 ): Modifier {
-    val paint = Paint()
+    // 无有效快照的正常播放入口不额外建立全屏合成层。
+    if (bitmap == null || bitmap.width <= 1 || bitmap.height <= 1) return this
     return drawWithContent {
         val alpha = alphaProvider().coerceIn(0f, 1f)
-        if (alpha <= 0f || bitmap == null || bitmap.width <= 1 || bitmap.height <= 1) {
+        if (alpha <= 0f) {
             drawContent()
         } else {
-            // 原封面、播放器和来源文字继续正常交接，不能在快照尚透明时提前隐藏。
-            // 两个完整内容组统一叠化；快照完全不透明后才停止绘制原内容。
-            drawIntoCanvas { canvas ->
-                if (alpha < 1f) {
-                    paint.alpha = 1f - alpha
-                    canvas.saveLayer(Rect(Offset.Zero, size), paint)
-                    try { this@drawWithContent.drawContent() } finally { canvas.restore() }
+            // 内层持有实时内容的绘制指令，只有实际内容失效才重新录制。
+            // 叠化只改整组图层属性，快照完全不透明时才跳过实时内容。
+            if (alpha < 1f) drawContent()
+            // 快照本身已是单张合成位图，直接调制透明度与整组叠化等价。
+            // 无需再创建全屏 saveLayer；实时内容由内层整组透明度承接，避免重叠组件变色。
+            // FillWidthTop 的导航补偿已统一两轴比例，整卡只按宽度缩放一次。
+            val sourcePixelScale = size.width / bitmap.width
+            clipRect {
+                scale(sourcePixelScale, sourcePixelScale, pivot = Offset.Zero) {
+                    drawImage(bitmap, alpha = alpha)
                 }
-                paint.alpha = alpha
-                canvas.saveLayer(Rect(Offset.Zero, size), paint)
-                try {
-                    // FillWidthTop 的导航补偿已统一两轴比例，整卡只按宽度缩放一次。
-                    val viewportWidth = size.width
-                    val sourcePixelScale = viewportWidth / bitmap.width
-                    scale(sourcePixelScale, sourcePixelScale, pivot = Offset.Zero) {
-                        drawImage(bitmap)
-                    }
-                } finally { canvas.restore() }
             }
         }
+    }.graphicsLayer {
+        // 只在图层阶段读进度，不让进度每帧驱动详情正文重新执行 drawContent。
+        // Auto 保留重叠内容的整组混合语义，不能改成逐绘制指令调制 alpha。
+        alpha = 1f - alphaProvider().coerceIn(0f, 1f)
     }
 }

@@ -217,8 +217,6 @@ class DanmakuManager private constructor(
     private var currentVideoSpeed: Float = 1.0f
     private var pluginObserverJob: Job? = null
     private var lastDanmakuPluginUpdateToken: Long = 0L
-    private var currentFaceAwareBand: DanmakuDisplayBand? = null
-    private val faceBandStabilizer = FaceOcclusionBandStabilizer()
     private var wasBufferingWhilePlaying = false
     
     // 配置
@@ -275,11 +273,12 @@ class DanmakuManager private constructor(
             applyConfigToController("opacity")
         }
     
-    var isFullscreenSurface: Boolean = false
+    /** Chooses only the 18dp text baseline; never changes host geometry or visibility. */
+    var useFullscreenTextSize: Boolean = false
         set(value) {
             if (field == value) return
             field = value
-            applyConfigToController("fullscreen")
+            applyConfigToController("textSizeBaseline")
         }
 
     var fontScale: Float
@@ -400,25 +399,6 @@ class DanmakuManager private constructor(
             config.weightFilterLevel = value.coerceIn(0, 11)
             applyConfigToController("filter_changed")
         }
-
-    internal fun updateFaceOcclusion(faceRegions: List<FaceOcclusionRegion>) {
-        if (!config.smartOcclusionEnabled) return
-
-        val targetBand = resolveFaceAwareDisplayBand(
-            faceRegions = faceRegions,
-            defaultBand = DanmakuDisplayBand(0f, config.displayAreaRatio)
-        )
-        val nextBand = faceBandStabilizer.step(
-            detectedBand = targetBand,
-            hasFace = faceRegions.isNotEmpty(),
-            nowRealtimeMs = SystemClock.elapsedRealtime()
-        ) ?: return
-
-        currentFaceAwareBand = nextBand
-        config.safeBandTopRatio = nextBand.topRatio
-        config.safeBandBottomRatio = nextBand.bottomRatio
-        applyConfigToController("face_occlusion")
-    }
 
     private fun startDanmakuPluginObserver() {
         pluginObserverJob?.cancel()
@@ -995,7 +975,8 @@ class DanmakuManager private constructor(
                 textSizeScale = (textSizeScale * style.scale).coerceIn(0.3f, 4f)
             }
         }
-        typeface = if (style?.bold == true) Typeface.DEFAULT_BOLD else Typeface.DEFAULT
+        // 未要求加粗时继承渲染配置的字重，不能用默认字体覆盖用户的粗细设置。
+        typeface = if (style?.bold == true) Typeface.DEFAULT_BOLD else null
     }
 
     private fun runDanmakuFilters(
@@ -1190,13 +1171,6 @@ class DanmakuManager private constructor(
 
         if (occlusionChanged) {
             if (smartOcclusion) {
-                currentFaceAwareBand = DanmakuDisplayBand(0f, config.displayAreaRatio)
-                config.safeBandTopRatio = currentFaceAwareBand?.topRatio ?: 0f
-                config.safeBandBottomRatio = currentFaceAwareBand?.bottomRatio ?: config.displayAreaRatio
-                faceBandStabilizer.reset(
-                    defaultBand = currentFaceAwareBand,
-                    nowRealtimeMs = SystemClock.elapsedRealtime()
-                )
                 if (webMaskBytes == null && cachedCid > 0L && cachedBvid.isNotBlank()) {
                     val expectedCid = cachedCid
                     val expectedGeneration = loadGeneration
@@ -1221,10 +1195,6 @@ class DanmakuManager private constructor(
                 maskFetchJob?.cancel()
                 webMaskWindowStartMs = Long.MIN_VALUE
                 webMaskWindowEndMs = Long.MIN_VALUE
-                currentFaceAwareBand = null
-                config.safeBandTopRatio = 0f
-                config.safeBandBottomRatio = 1f
-                faceBandStabilizer.reset()
                 controller?.replaceMaskFrames(emptyList(), player?.currentPosition ?: 0L)
             }
         }
@@ -1287,7 +1257,7 @@ class DanmakuManager private constructor(
     private fun applyConfigToController(reason: String) {
         controller?.let { ctrl ->
             val currentViewport = viewport ?: danmakuView?.let(::resolveEffectiveViewport) ?: return
-            baseRenderConfig = config.resolveRenderConfig(currentViewport, isFullscreenSurface)
+            baseRenderConfig = config.resolveRenderConfig(currentViewport, useFullscreenTextSize)
 
             // 记录设置后的基准时间，供倍速同步使用
             originalMoveTime = baseRenderConfig.scrollDurationMs
@@ -1344,7 +1314,7 @@ class DanmakuManager private constructor(
                     "area=${config.displayAreaRatio}, strokeWidth=${config.strokeWidth}, lineHeight=${config.lineHeight}, " +
                     "staticSeconds=${config.staticDurationSeconds}, fixedVelocity=${config.scrollFixedVelocity}, " +
                     "massiveMode=${config.massiveMode}, staticToScroll=${config.staticDanmakuToScroll}, " +
-                    "smartOcclusion=${config.smartOcclusionEnabled}, band=${config.safeBandTopRatio}-${config.safeBandBottomRatio}, " +
+                    "smartOcclusion=${config.smartOcclusionEnabled}, " +
                     "allowScroll=${config.allowScroll}, allowTop=${config.allowTop}, allowBottom=${config.allowBottom}, " +
                     "allowColorful=${config.allowColorful}, allowSpecial=${config.allowSpecial}, " +
                     "baseMoveTime=$originalMoveTime, videoSpeed=$currentVideoSpeed, " +

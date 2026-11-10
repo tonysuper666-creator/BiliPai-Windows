@@ -23,13 +23,11 @@ class RelatedVideoLoadSchedulerTest {
     )
 
     @Test
-    fun normalNetworkHasNoSchedulingDelay() = runTest {
-        var deferrals = 0
-        assertTrue(RelatedVideoLoadScheduler().awaitPermit(
-            token, { RelatedVideoLoadSnapshot(token) }, { deferrals += 1 }
+    fun normalNetworkWaitsForFirstFrame() {
+        assertEquals(RelatedVideoLoadDecision.DEFER, relatedVideoLoadDecision(token, RelatedVideoLoadSnapshot(token)))
+        assertEquals(RelatedVideoLoadDecision.START, relatedVideoLoadDecision(
+            token, RelatedVideoLoadSnapshot(token, playbackPrepared = true, firstFrameRendered = true)
         ))
-        assertEquals(0L, testScheduler.currentTime)
-        assertEquals(0, deferrals)
     }
 
     @Test

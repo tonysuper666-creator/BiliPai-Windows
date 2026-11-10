@@ -39,9 +39,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -83,6 +85,7 @@ fun LiveFollowingScreen(
     val gridState = rememberLazyGridState()
     var totalCount by remember { mutableStateOf<Int?>(null) }
     var hasMore by remember { mutableStateOf(false) }
+    var nextPage by remember { mutableIntStateOf(1) }
     var error by remember { mutableStateOf<String?>(null) }
     var loadMoreError by remember { mutableStateOf<String?>(null) }
     var items by remember { mutableStateOf<List<LiveRoom>>(emptyList()) }
@@ -108,9 +111,14 @@ fun LiveFollowingScreen(
             LiveRepository.getFollowedLivePage(page = request.page)
                 .onSuccess { page ->
                     if (!requests.succeed(request, page.nextPage)) return@onSuccess
-                    items = mergeRooms(items, page.items, refresh)
+                    val merged = mergeRooms(items, page.items, refresh)
+                    val advanced = refresh || page.items.isEmpty() || merged.size > items.size
+                    items = merged
                     totalCount = page.totalCount
-                    hasMore = page.hasMore
+                    // 分页包含未开播主播；已收齐直播房间后不再遍历后面的未开播页。
+                    val reachedLiveTotal = page.totalCount?.let { it > 0 && merged.size >= it } == true
+                    hasMore = page.hasMore && advanced && !reachedLiveTotal
+                    nextPage = page.nextPage
                     isLoading = false
                     isRefreshing = false
                     isLoadingMore = false
@@ -132,8 +140,30 @@ fun LiveFollowingScreen(
         items = emptyList()
         totalCount = null
         hasMore = false
+        nextPage = 1
         isLoading = true
         loadPage(refresh = true)
+    }
+
+    // 在列表层观察实际视口，避免页脚预组合或加载文字变化触发分页。
+    // 页码也是观察依据：过滤未开播主播后的空页仍可继续，失败则等待手动重试。
+    LaunchedEffect(gridState, accountIdentity) {
+        snapshotFlow {
+            val layout = gridState.layoutInfo
+            val footerVisible = layout.visibleItemsInfo.any {
+                it.key == "following_load_more" &&
+                    it.offset.y < layout.viewportEndOffset &&
+                    it.offset.y + it.size.height > layout.viewportStartOffset
+            }
+            Triple(
+                nextPage,
+                footerVisible || items.isEmpty(),
+                hasMore && !isLoading && !isRefreshing && !isLoadingMore &&
+                    error == null && loadMoreError == null,
+            )
+        }.collect { (_, visible, canLoad) ->
+            if (visible && canLoad) loadPage(refresh = false)
+        }
     }
 
     AppScaffold(
@@ -159,22 +189,25 @@ fun LiveFollowingScreen(
         AdaptivePullToRefreshBox(
             isRefreshing = isRefreshing,
             onRefresh = { loadPage(refresh = true) },
-            modifier = Modifier.fillMaxSize().padding(innerPadding),
+            indicatorTopInset = innerPadding.calculateTopPadding(),
+            modifier = Modifier.fillMaxSize(),
         ) {
         when {
             isLoading -> ContentVideoGridSkeletonFixedColumns(
                 columns = gridColumns,
                 modifier = Modifier
-                    .fillMaxSize(),
+                    .fillMaxSize()
+                    .padding(innerPadding),
             )
             error != null && items.isEmpty() && !hasMore -> Box(
                 modifier = Modifier
-                    .fillMaxSize(),
+                    .fillMaxSize()
+                    .padding(innerPadding),
                 contentAlignment = Alignment.Center,
             ) {
                 AppText(text = error ?: "", color = colorScheme.onSurfaceVariant)
             }
-            items.isEmpty() && !hasMore -> Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            items.isEmpty() && !hasMore -> Box(Modifier.fillMaxSize().padding(innerPadding), contentAlignment = Alignment.Center) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     AppText("关注的主播暂时都未开播", color = colorScheme.onSurfaceVariant)
                     AppButton(onClick = { loadPage(refresh = true) }) { AppText("重新加载") }
@@ -188,7 +221,7 @@ fun LiveFollowingScreen(
                     contentPadding = PaddingValues(
                         start = metrics.safeSpaceDp.dp,
                         end = metrics.safeSpaceDp.dp,
-                        top = AppSpacingTokens.Small,
+                        top = innerPadding.calculateTopPadding() + AppSpacingTokens.Small,
                         bottom = maxOf(innerPadding.calculateBottomPadding(), LocalBottomBarContentPadding.current, 100.dp),
                     ),
                     horizontalArrangement = Arrangement.spacedBy(metrics.cardSpaceDp.dp),
@@ -214,10 +247,15 @@ fun LiveFollowingScreen(
                             onLongPress = { coverToSave = LiveRoomCardUiModel(item.roomid, item.title, item.displayCover(), item.uname, item.online, item.areaName) },
                         )
                     }
-                    item(span = { GridItemSpan(maxLineSpan) }) {
-                        LiveHomeLoadMoreFooter(isLoadingMore, items.size, hasMore, loadMoreError) {
-                            loadPage(refresh = false)
-                        }
+                    item(key = "following_load_more", span = { GridItemSpan(maxLineSpan) }) {
+                        LiveHomeLoadMoreFooter(
+                            isLoadingMore = isLoadingMore,
+                            contentCount = items.size,
+                            hasMore = hasMore,
+                            error = loadMoreError,
+                            autoLoad = false,
+                            onLoadMore = { loadPage(refresh = false) },
+                        )
                     }
                 }
             }

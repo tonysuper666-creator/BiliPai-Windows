@@ -101,7 +101,9 @@ internal fun shouldKeepLiveSecondListRoom(room: LiveRoom): Boolean {
 
 /** 无模块与明确空模块不同；已有零值不触发补取。 */
 internal fun needsLiveFollowSupplement(snapshot: LiveFeedHomeSnapshot): Boolean =
-    !snapshot.hasFollowModule || (snapshot.totalCount != 0 && snapshot.followRooms.isEmpty())
+    !snapshot.hasFollowModule || (snapshot.totalCount != 0 && snapshot.followRooms.isEmpty()) ||
+        (snapshot.totalCount?.let { it > snapshot.followRooms.size } == true) ||
+        (snapshot.totalCount == null && snapshot.followRooms.size >= 10)
 
 internal fun supplementLiveFollowSnapshot(
     snapshot: LiveFeedHomeSnapshot, rooms: List<LiveRoom>, totalCount: Int?,

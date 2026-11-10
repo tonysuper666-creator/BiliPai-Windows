@@ -97,14 +97,15 @@ internal data class PreparedHomeFeedMerge(
     val addedCount: Int,
 )
 
-/** CPU-only: callers run selection, full-list deduplication and copying on Default. */
-internal fun prepareHomeFeedMerge(
+/** 在后台过滤增量刷新保留的旧卡片，再合并新内容；调用方负责发布前的列表身份检查。 */
+internal suspend fun prepareHomeFeedMerge(
     currentVideos: List<VideoItem>,
     responseVideos: List<VideoItem>,
     isLoadMore: Boolean,
     isIncrementalRefresh: Boolean,
     keySelector: (VideoItem) -> String,
     requestVideos: List<VideoItem> = currentVideos,
+    filterRetainedVideos: suspend (List<VideoItem>) -> List<VideoItem> = { it },
 ): PreparedHomeFeedMerge {
     val removedKeys = if (requestVideos === currentVideos) emptySet() else {
         val currentKeys = currentVideos.mapTo(HashSet(), keySelector)
@@ -115,17 +116,18 @@ internal fun prepareHomeFeedMerge(
     val eligibleResponse = if (removedKeys.isEmpty()) responseVideos else {
         responseVideos.filterNot { keySelector(it) in removedKeys }
     }
+    val retainedVideos = if (isIncrementalRefresh) filterRetainedVideos(currentVideos) else currentVideos
     val incoming = selectHomeFeedIncomingVideos(
-        eligibleResponse, currentVideos, isLoadMore, isIncrementalRefresh,
+        eligibleResponse, retainedVideos, isLoadMore, isIncrementalRefresh,
     )
     var addedCount = 0
     val merged = when {
         isLoadMore -> appendDistinctByKey(currentVideos, incoming, keySelector)
         isIncrementalRefresh -> {
-            val prepended = prependDistinctByKey(currentVideos, incoming, keySelector)
-            addedCount = (prepended.size - currentVideos.size).coerceAtLeast(0)
-            val keptOldCount = resolveHomeRefreshKeptOldItemCount(currentVideos.size)
-            if (keptOldCount < currentVideos.size) prepended.take(addedCount + keptOldCount)
+            val prepended = prependDistinctByKey(retainedVideos, incoming, keySelector)
+            addedCount = (prepended.size - retainedVideos.size).coerceAtLeast(0)
+            val keptOldCount = resolveHomeRefreshKeptOldItemCount(retainedVideos.size)
+            if (keptOldCount < retainedVideos.size) prepended.take(addedCount + keptOldCount)
             else prepended
         }
         else -> incoming
@@ -138,7 +140,7 @@ private data class PreparedHomeFeedVideos(
     val filteredVideos: List<VideoItem>,
 )
 
-private fun prepareHomeFeedVideos(
+private suspend fun prepareHomeFeedVideos(
     videos: List<VideoItem>,
     blockedMids: Set<Long>,
     feedKind: FeedKind,
@@ -148,8 +150,11 @@ private fun prepareHomeFeedVideos(
     val blockedFiltered = validVideos.filter { video -> video.owner.mid !in blockedMids }
     val feedbackFiltered = feedbackFilter(blockedFiltered)
     val builtinFiltered = PluginManager.filterFeedItems(feedbackFiltered, feedKind = feedKind)
-    val filteredVideos = com.android.purebilibili.core.plugin.json.JsonPluginManager
-        .filterVideos(builtinFiltered)
+    val filteredVideos = com.android.purebilibili.feature.plugin.filterVideoTagMatches(
+        com.android.purebilibili.core.plugin.json.JsonPluginManager.filterVideos(builtinFiltered),
+        bvid = { it.bvid },
+        asVideoItem = { it },
+    )
     return PreparedHomeFeedVideos(
         validVideoCount = validVideos.size,
         filteredVideos = filteredVideos,
@@ -260,6 +265,34 @@ internal fun applyHomeRefreshUndoSnapshot(
 
 private const val HISTORY_SAMPLE_CACHE_TTL_MS = 10 * 60 * 1000L
 private const val HOME_REFRESH_UNDO_TIMEOUT_MS = 5_000L
+
+/**
+ * 每次请求向服务端要多少条。
+ *
+ * 官方客户端不传条数，服务端按 window_size_type（2/3/4 列）决定下发量；
+ * 这里的 web 接口有 ps，按列数换算一个接近的值。
+ */
+/**
+ * 请求场景码，对齐官方 feed/index 的 flush 参数。
+ *
+ * 5 = 首次进入 / 冷启动，6 = 下拉刷新，8 = 上滑加载更多。
+ * 原先写死 5，连续翻页时也一直告诉服务端「首次进入」。
+ */
+internal fun resolveHomeFeedFlush(isLoadMore: Boolean, isManualRefresh: Boolean): Int = when {
+    isLoadMore -> com.android.purebilibili.data.repository.HOME_FEED_FLUSH_PULL_UP
+    isManualRefresh -> com.android.purebilibili.data.repository.HOME_FEED_FLUSH_PULL_DOWN
+    else -> com.android.purebilibili.data.repository.HOME_FEED_FLUSH_DEFAULT
+}
+
+internal fun resolveHomeFeedPageSize(columns: Int): Int {
+    // 和请求里的 column 保持一致：统一按 7 列要量。
+    // 7 × 3 + 2 = 23，服务端 ps 上限在 30 左右（实测 ps=50 返回 -400）。
+    val requestColumns = com.android.purebilibili.data.repository.HOME_FEED_REQUEST_COLUMN
+    return (requestColumns * 3 + 2).coerceIn(10, 30)
+}
+
+/** 本地列表上限，到顶后停止加载。与官方 pegasus.max_card_count 默认值一致。 */
+private const val HOME_FEED_MAX_CARDS = 500
 
 private fun TodayWatchPluginMode.toUiMode(): TodayWatchMode {
     return when (this) {
@@ -381,18 +414,6 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
     fun getPopularCategoryState(subCategory: PopularSubCategory): StateFlow<CategoryContent> =
         popularCategoryStateFlows.getValue(subCategory)
 
-    fun getPreloadVideosSnapshot(
-        category: HomeCategory,
-        popularSubCategory: PopularSubCategory
-    ): List<VideoItem> {
-        val state = _uiState.value
-        return if (category == HomeCategory.POPULAR) {
-            state.popularCategoryStates[popularSubCategory]?.videos ?: state.videos
-        } else {
-            state.categoryStates[category]?.videos ?: state.videos
-        }
-    }
-
     private val _isRefreshing = MutableStateFlow(false)
     val isRefreshing = _isRefreshing.asStateFlow()
 
@@ -408,12 +429,18 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     private var refreshIdx = 0
+    /** loadMore 的原子占位，防止快速滑到底时并发发起多次请求。 */
+    private val loadMoreInFlight = java.util.concurrent.atomic.AtomicBoolean(false)
+    /** refresh 的原子占位。刷新与加载更多互斥，避免两批数据交叉。 */
+    private val refreshInFlight = java.util.concurrent.atomic.AtomicBoolean(false)
+    /** 当前网格列数，由 UI 同步过来，用来决定每次请求多少条。 */
+    private var feedGridColumns: Int = 2
     private var livePage = 1     //  直播分页
     private var hasMoreLiveData = true  //  是否还有更多直播数据
     private var incrementalTimelineRefreshEnabled = false
 
-    // 「上次刷新提示」开启时推荐流刷新也保留旧内容（独立于增量时间线开关）。
-    private var homeRefreshTipVisible = true
+    // 推荐保留与位置提示独立；动态流仍使用自己的增量刷新配置。
+    private var keepRecommendOldContent = true
     
     //  [新增] 刷新撤销快照
     private var _undoSnapshot: HomeRefreshUndoSnapshot? = null
@@ -493,8 +520,8 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
             }
         }
         viewModelScope.launch {
-            SettingsManager.getHomeRefreshTipVisible(getApplication()).collect { visible ->
-                homeRefreshTipVisible = visible
+            com.android.purebilibili.core.store.ContentDisplayPreferences.keepRecommend(getApplication()).collect { keep ->
+                keepRecommendOldContent = keep
             }
         }
         // Monitor blocked list
@@ -826,7 +853,9 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
         val nowMillis = System.currentTimeMillis()
         val cached = expandedCandidateCache
         if (canReuseTodayWatchExpandedCache(cached, baseSignature, nowMillis)) {
-            val mergedCandidates = mergeTodayWatchCandidates(recommendVideos, cached?.candidates.orEmpty())
+            val currentCandidates = filterTodayWatchExpandedCandidates(cached?.candidates.orEmpty())
+            ensureAccountCurrent(identity)
+            val mergedCandidates = mergeTodayWatchCandidates(recommendVideos, currentCandidates)
             if (mergedCandidates.size > recommendVideos.size &&
                 shouldApplyTodayWatchBuildResult(generation, todayWatchBuildGeneration)
             ) {
@@ -846,7 +875,7 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
             val expandedCandidates = filterTodayWatchExpandedCandidates(rawCandidates)
             expandedCandidateCache = TodayWatchExpandedCandidateCache(
                 baseSignature = baseSignature,
-                candidates = expandedCandidates,
+                candidates = rawCandidates,
                 loadedAtMillis = System.currentTimeMillis()
             )
             val mergedCandidates = mergeTodayWatchCandidates(recommendVideos, expandedCandidates)
@@ -868,7 +897,7 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    private fun filterTodayWatchExpandedCandidates(videos: List<VideoItem>): List<VideoItem> {
+    private suspend fun filterTodayWatchExpandedCandidates(videos: List<VideoItem>): List<VideoItem> {
         val validVideos = videos.filter {
             it.bvid.isNotBlank() && it.title.isNotBlank() && it.contentType !in setOf("bangumi", "picture")
         }
@@ -878,9 +907,12 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
             feedbackFiltered,
             feedKind = FeedKind.HOME_RECOMMEND
         )
-        return com.android.purebilibili.core.plugin.json.JsonPluginManager
-            .filterVideos(builtinFiltered)
-            .distinctBy { it.bvid }
+        return com.android.purebilibili.feature.plugin.filterVideoTagMatches(
+            com.android.purebilibili.core.plugin.json.JsonPluginManager.filterVideos(builtinFiltered)
+                .distinctBy { it.bvid },
+            bvid = { it.bvid },
+            asVideoItem = { it },
+        )
     }
 
     private suspend fun loadHistorySample(forceReload: Boolean, sampleLimit: Int): List<VideoItem> {
@@ -1322,6 +1354,21 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
         popularSubCategory: PopularSubCategory = _uiState.value.popularSubCategory,
     ) {
         if (_isRefreshing.value) return
+        // 与 loadMore 互斥：加载更多在飞时丢弃刷新，反之亦然。
+        if (!refreshInFlight.compareAndSet(false, true)) {
+            com.android.purebilibili.core.util.Logger.d("HomeFeed", "drop refresh: 已有刷新在飞")
+            return
+        }
+        if (loadMoreInFlight.get()) {
+            com.android.purebilibili.core.util.Logger.d("HomeFeed", "drop refresh: 加载更多进行中")
+            refreshInFlight.set(false)
+            return
+        }
+        com.android.purebilibili.core.util.Logger.d(
+            "HomeFeed",
+            "refresh 触发 category=$category 实际列=$feedGridColumns " +
+                "请求column=${com.android.purebilibili.data.repository.HOME_FEED_REQUEST_COLUMN}",
+        )
         accountRequests.launch {
             _isRefreshing.value = true
             try {
@@ -1408,7 +1455,7 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
             } finally {
                 _isRefreshing.value = false
             }
-        }
+        }.invokeOnCompletion { refreshInFlight.set(false) }
     }
 
     private fun syncCurrentCategoryForRefresh(category: HomeCategory) {
@@ -1482,6 +1529,24 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
         undoDismissJob = null
     }
 
+    /**
+     * UI 把当前网格列数同步过来。
+     *
+     * 官方客户端不传每页条数，由服务端按屏幕形态（2/3/4 列）决定下发多少；
+     * 这里用同样的思路，按列数换算请求条数。
+     */
+    fun updateFeedGridColumns(columns: Int) {
+        val next = columns.coerceIn(1, 8)
+        if (next != feedGridColumns) {
+            com.android.purebilibili.core.util.Logger.d(
+                "HomeFeed",
+                "列数变化 $feedGridColumns → $next（实际列只影响本地排版，" +
+                    "请求固定 column=${com.android.purebilibili.data.repository.HOME_FEED_REQUEST_COLUMN}）",
+            )
+        }
+        feedGridColumns = next
+    }
+
     fun loadMore(
         category: HomeCategory = _uiState.value.currentCategory,
         popularSubCategory: PopularSubCategory = _uiState.value.popularSubCategory,
@@ -1493,24 +1558,60 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
         } else {
             _uiState.value.categoryStates[currentCategory] ?: return
         }
-        
-        if (categoryState.isLoading || _isRefreshing.value || !categoryState.hasMore) return
+
+        if (categoryState.isLoading || _isRefreshing.value || !categoryState.hasMore) {
+            com.android.purebilibili.core.util.Logger.d(
+                "HomeFeed",
+                "skip loadMore: isLoading=${categoryState.isLoading} refreshing=${_isRefreshing.value} " +
+                    "hasMore=${categoryState.hasMore} category=$currentCategory",
+            )
+            return
+        }
         if (!retry && categoryState.loadMoreError != null) return
         if (currentCategory == HomeCategory.POPULAR &&
             !supportsPopularLoadMore(popularSubCategory)
         ) {
             return
         }
-        
+
         //  修复：如果是直播分类且没有更多数据，不再加载
         if (currentCategory == HomeCategory.LIVE && !hasMoreLiveData) {
             com.android.purebilibili.core.util.Logger.d("HomeVM", "🔴 No more live data, skipping loadMore")
             return
         }
-        
+
+        // 列表到上限后停止加载，避免无限翻页把内存吃满。
+        if (categoryState.videos.size >= HOME_FEED_MAX_CARDS) {
+            com.android.purebilibili.core.util.Logger.d(
+                "HomeFeed",
+                "stop loadMore: 已到上限 size=${categoryState.videos.size} max=$HOME_FEED_MAX_CARDS",
+            )
+            updateCategoryState(currentCategory) { it.copy(hasMore = false) }
+            return
+        }
+
+        // 上面的 isLoading 检查到真正发起请求之间隔了一次协程调度，
+        // 快速滑到底会连续触发十几次，都在这个窗口里通过检查。
+        // 用 compareAndSet 把「检查 + 占位」做成原子操作，重复的直接丢弃。
+        if (refreshInFlight.get()) {
+            com.android.purebilibili.core.util.Logger.d("HomeFeed", "drop loadMore: 刷新进行中")
+            return
+        }
+        if (!loadMoreInFlight.compareAndSet(false, true)) {
+            com.android.purebilibili.core.util.Logger.d("HomeFeed", "drop loadMore: 上一次加载还在飞")
+            return
+        }
+        com.android.purebilibili.core.util.Logger.d(
+            "HomeFeed",
+            "loadMore 触发 category=$currentCategory 实际列=$feedGridColumns " +
+                "请求column=${com.android.purebilibili.data.repository.HOME_FEED_REQUEST_COLUMN} " +
+                "current=${categoryState.videos.size}",
+        )
+
+        // 账号切换可能在协程进入请求块前取消；完成回调仍须释放请求占位。
         accountRequests.launch {
             fetchData(isLoadMore = true, category = category, popularSubCategory = popularSubCategory)
-        }
+        }.invokeOnCompletion { loadMoreInFlight.set(false) }
     }
 
     private fun refreshUserInfoInBackground() {
@@ -1613,7 +1714,12 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
         //  视频类分类处理
         var homeFeedNotice: String? = null
         val videoResult = when (currentCategory) {
-            HomeCategory.RECOMMEND -> VideoRepository.getHomeFeed(recommendRequestIndex).map { page ->
+            HomeCategory.RECOMMEND -> VideoRepository.getHomeFeed(
+                idx = recommendRequestIndex,
+                refreshCount = resolveHomeFeedPageSize(feedGridColumns),
+                columns = feedGridColumns,
+                flush = resolveHomeFeedFlush(isLoadMore = isLoadMore, isManualRefresh = isManualRefresh),
+            ).map { page ->
                 homeFeedNotice = page.notice
                 page.videos
             }
@@ -1650,10 +1756,7 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
             refreshUserInfoInBackground()
         }
 
-        if (isLoadMore) delay(100)
-
-        // Feed filtering and de-duplication are CPU-only work. Keep it off the UI dispatcher so
-        // the list can continue drawing while plugin and feedback rules process the response.
+        // Keep local rules off the UI dispatcher; opt-in tag rules additionally await archive metadata.
         val preparedHomeFeed = videoResult.getOrNull()?.let { videos ->
             withContext(Dispatchers.Default) {
                 prepareHomeFeedVideos(
@@ -1668,6 +1771,11 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
 
         videoResult.onSuccess { videos ->
             val prepared = preparedHomeFeed ?: return@onSuccess
+            com.android.purebilibili.core.util.Logger.d(
+                "HomeFeed",
+                "响应 category=$currentCategory isLoadMore=$isLoadMore " +
+                    "原始=${videos.size} 过滤后=${prepared.validVideoCount}",
+            )
             if (shouldAdvanceRecommendFeedRequestIndex(
                     category = currentCategory,
                     isLoadMore = isLoadMore,
@@ -1684,7 +1792,7 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
             
             val useIncrementalRecommendRefresh = !isLoadMore &&
                 currentCategory == HomeCategory.RECOMMEND &&
-                (incrementalTimelineRefreshEnabled || homeRefreshTipVisible)
+                keepRecommendOldContent
 
             // The list may change while CPU work is suspended (dismiss/feedback/account).
             // Rebase on the latest immutable list before committing; never restore a removed card.
@@ -1706,6 +1814,13 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
                         isIncrementalRefresh = useIncrementalRecommendRefresh,
                         keySelector = ::videoItemKey,
                         requestVideos = currentCategoryState.videos,
+                        filterRetainedVideos = { retained ->
+                            com.android.purebilibili.feature.plugin.filterVideoTagMatches(
+                                retained,
+                                bvid = { it.bvid },
+                                asVideoItem = { it },
+                            )
+                        },
                     )
                 }
                 ensureAccountCurrent(identity)
@@ -1735,7 +1850,7 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
                         hasMore = if (currentCategory == HomeCategory.POPULAR) {
                             supportsPopularLoadMore(popularSubCategory)
                         } else {
-                            true
+                            merge.videos.size < HOME_FEED_MAX_CARDS
                         }
                     )
                 }
@@ -2206,6 +2321,7 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
                         isVip = isVip,
                         vipLabel = navData.vip.label.text.orEmpty(),
                         vipType = navData.vip.type,
+                        officialVerifyType = navData.officialVerify.type,
                     )
                 )
                 refreshMessageUnreadInBackground()

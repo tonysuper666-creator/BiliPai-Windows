@@ -175,12 +175,7 @@ class PlaybackService : MediaSessionService() {
     private fun buildFallbackNotification(): Notification {
         ensureNotificationChannel()
         return NotificationCompat.Builder(this, CHANNEL_ID)
-            .setSmallIcon(
-                resolveNotificationIconResByPriority(
-                    launcherIconRes = resolveLaunchActivityIconRes(this),
-                    fallbackIconKey = SettingsManager.getAppIconSync(this)
-                )
-            )
+            .setSmallIcon(resolveNotificationIconRes(SettingsManager.getAppIconSync(this)))
             .setContentTitle("BiliPai")
             .setContentText("正在准备播放控件")
             .setOnlyAlertOnce(true)

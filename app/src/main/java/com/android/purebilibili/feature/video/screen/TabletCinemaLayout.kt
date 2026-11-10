@@ -1,5 +1,6 @@
 package com.android.purebilibili.feature.video.screen
 
+import com.android.purebilibili.feature.video.ui.components.commentSectionNotice
 import com.android.purebilibili.navigation.tabSelectedPage
 import com.android.purebilibili.navigation.tabIndicatorPosition
 import com.android.purebilibili.feature.video.ui.components.RelatedVideoList
@@ -132,7 +133,6 @@ import com.android.purebilibili.feature.video.ui.components.PagesSelector
 import com.android.purebilibili.feature.video.ui.components.RelatedVideoItem
 import com.android.purebilibili.feature.video.ui.components.RelatedVideoGridRow
 import com.android.purebilibili.feature.video.ui.components.chunkRelatedVideosForHomeStyleGrid
-import com.android.purebilibili.feature.video.ui.components.filterRelatedVideosByHiddenBvids
 import com.android.purebilibili.feature.video.ui.components.rememberRelatedVideoCardLayout
 import com.android.purebilibili.feature.video.ui.components.ReplyItemView
 import com.android.purebilibili.feature.video.ui.components.VideoInlineSubReplyDetailContent
@@ -142,7 +142,6 @@ import com.android.purebilibili.feature.video.ui.components.shouldShowReplyTopAc
 import com.android.purebilibili.feature.video.ui.components.videoCommentItemModifier
 import com.android.purebilibili.feature.video.ui.components.videoCommentSkeletonItems
 import com.android.purebilibili.feature.video.ui.section.ActionButtonsRow
-import com.android.purebilibili.feature.video.ui.section.resolveDisplayBgmList
 import com.android.purebilibili.feature.video.ui.section.UpInfoSection
 import com.android.purebilibili.feature.video.ui.section.VideoTitleWithDesc
 import com.android.purebilibili.feature.video.ui.section.VideoPlayerSection
@@ -1073,12 +1072,7 @@ private fun CinemaVideoIntroSection(
                     )
                 },
                 onDescriptionUrlClick = onOpenBilibiliLink,
-                bgmList = resolveDisplayBgmList(
-                    bgmInfo = success.bgmInfo,
-                    bgmInfoList = success.bgmInfoList
-                ),
                 onBgmClick = onBgmClick,
-                onRelatedVideoClick = onRelatedVideoClick,
                 onTagClick = onSearchKeywordClick
             )
         }
@@ -1289,6 +1283,7 @@ private fun CinemaSideCurtain(
                                         CinemaRelatedPane(
                                             success = success,
                                             onRelatedVideoClick = onRelatedVideoClick,
+                                            onUpClick = onUpClick,
                                             context = context,
                                             showUpBadge = showUpBadge
                                         )
@@ -1407,7 +1402,7 @@ private fun CinemaCommentsPane(
         )
     }
 
-    if (subReplyState.visible && subReplyState.rootReply != null) {
+    if (subReplyState.visible) {
         VideoInlineSubReplyDetailContent(
             state = subReplyState,
             commentState = commentState,
@@ -1456,7 +1451,6 @@ private fun CinemaCommentsPane(
                 },
                 onSearchClick = { showCommentSearchSheet = true },
                 compactTypography = true,
-                scrollState = listState,
             )
             Box(modifier = Modifier.weight(1f).fillMaxWidth()) {
             AdaptivePullToRefreshBox(
@@ -1471,6 +1465,7 @@ private fun CinemaCommentsPane(
                         .layerBackdrop(commentChromeBackdrop),
                     contentPadding = PaddingValues(bottom = 112.dp)
                 ) {
+            commentSectionNotice(commentState.pageControl)
             commentState.voteCard?.let { card ->
                 item(key = "curtain_vote_${card.voteId}") {
                     com.android.purebilibili.feature.video.ui.components.VideoCommentVoteCard(
@@ -1521,8 +1516,8 @@ private fun CinemaCommentsPane(
                     },
                     onLikeClick = { commentActions.likeComment(reply.rpid) },
                     onHateClick = { commentActions.hateComment(reply.rpid) },
-                    isLiked = reply.action == 1 || reply.rpid in commentState.likedComments,
-                    isHated = reply.action == 2 || reply.rpid in commentState.hatedComments,
+                    isLiked = reply.rpid in commentState.likedComments,
+                    isHated = reply.rpid in commentState.hatedComments,
                     onReplyClick = { playbackActions.replyTo(reply) },
                     onReportClick = { reason -> commentActions.reportComment(reply.rpid, reason) },
                     canToggleTop = shouldShowReplyTopAction(
@@ -1544,9 +1539,12 @@ private fun CinemaCommentsPane(
                     }
                 )
             }
+            // 首包尚未完成或正在刷新时保留骨架；完成后正常显示真实空态。
+            val pendingFirstLoad = commentState.replies.isEmpty() &&
+                commentState.repliesError == null &&
+                (commentState.isRepliesRefreshing || (commentState.nextPage <= 1 && !commentState.isRepliesEnd))
             if (
-                commentState.isRepliesLoading &&
-                !commentState.isRepliesRefreshing &&
+                (commentState.isRepliesLoading || pendingFirstLoad) &&
                 commentState.replies.isEmpty()
             ) {
                 // 骨架拆成多个独立 lazy item（而不是 1 个 item 里塞 5 行）：数据到达时是
@@ -1555,7 +1553,7 @@ private fun CinemaCommentsPane(
                     slotCount = commentSkeletonSlotCount,
                     keyPrefix = "cinema_comment_skeleton_",
                 )
-            } else if (commentState.isRepliesLoading && !commentState.isRepliesRefreshing) {
+            } else if (commentState.isRepliesLoading) {
                 item {
                     Box(
                         modifier = Modifier
@@ -1571,6 +1569,7 @@ private fun CinemaCommentsPane(
                 commentState.replies.isEmpty() &&
                 !commentState.isRepliesLoading &&
                 !commentState.isRepliesRefreshing &&
+                !pendingFirstLoad &&
                 commentState.repliesError == null
             ) {
                 item {
@@ -1581,7 +1580,7 @@ private fun CinemaCommentsPane(
                         contentAlignment = Alignment.Center
                     ) {
                         AppText(
-                            text = "还没有评论，先看看相关推荐",
+                            text = commentState.pageControl?.emptyMessage()?.takeIf { it.isNotBlank() } ?: "还没有评论，先看看相关推荐",
                             style = MaterialTheme.typography.bodyMedium,
                             color = commentAppearance.secondaryTextColor
                         )
@@ -1635,13 +1634,11 @@ private fun CinemaCommentsPane(
 private fun CinemaRelatedPane(
     success: VideoPlaybackUiState.Success,
     onRelatedVideoClick: (String, android.os.Bundle?) -> Unit,
+    onUpClick: (Long) -> Unit,
     context: android.content.Context,
     showUpBadge: Boolean
 ) {
-    var hiddenRelatedBvids by remember(success.info.bvid) { mutableStateOf(emptySet<String>()) }
-    val visibleRelatedVideos = remember(success.related, hiddenRelatedBvids) {
-        filterRelatedVideosByHiddenBvids(success.related, hiddenRelatedBvids)
-    }
+    val visibleRelatedVideos = success.related
     val relatedVideoCardLayout = rememberRelatedVideoCardLayout()
     val listState = rememberLazyListState()
     val showBackToTop by remember(listState) {
@@ -1704,9 +1701,7 @@ private fun CinemaRelatedPane(
                             ) ?: android.os.Bundle.EMPTY
                             onRelatedVideoClick(video.bvid, navOptions)
                         },
-                        onVideoHidden = { video ->
-                            hiddenRelatedBvids = hiddenRelatedBvids + video.bvid
-                        }
+                        onUpClick = onUpClick,
                     )
                 }
             }

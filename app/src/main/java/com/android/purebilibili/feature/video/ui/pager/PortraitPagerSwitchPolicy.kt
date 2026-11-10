@@ -101,7 +101,8 @@ internal fun shouldUseViewportBoundPortraitCover(
     return false
 }
 
-internal fun resolvePortraitCoverContentScale(): ContentScale = ContentScale.Fit
+internal fun resolvePortraitCoverContentScale(isVerticalVideo: Boolean = false): ContentScale =
+    if (isVerticalVideo) ContentScale.Crop else ContentScale.Fit
 
 internal fun resolvePortraitCoverViewportAspect(
     currentVideoAspect: Float,

@@ -1,5 +1,10 @@
 package com.android.purebilibili.feature.web
 
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.background
+import androidx.compose.ui.graphics.graphicsLayer
+
 import com.android.purebilibili.core.ui.components.AppTextButton as TextButton
 
 import com.android.purebilibili.core.ui.AppContentColors
@@ -41,6 +46,7 @@ import com.android.purebilibili.core.ui.AppTopBar
 import com.android.purebilibili.core.ui.rememberAppBackIcon
 import com.android.purebilibili.core.ui.components.AppIconButton
 import com.android.purebilibili.core.util.BilibiliNavigationTarget
+import com.android.purebilibili.core.util.hasCommentLocation
 
 /**
  * WebViewScreen - 应用内浏览器
@@ -68,15 +74,19 @@ fun WebViewScreen(
     onDynamicClick: ((dynamicId: String) -> Unit)? = null,
     onBangumiClick: ((seasonId: Long, epId: Long, mediaId: Long) -> Unit)? = null,
     onMusicClick: ((musicId: String) -> Unit)? = null,
-    onMatchClick: ((contestId: Long) -> Unit)? = null
+    onMatchClick: ((contestId: Long) -> Unit)? = null,
+    onArticleCollectionClick: ((collectionId: Long) -> Unit)? = null,
+    onCommentLink: ((url: String) -> Unit)? = null,
 ) {
     val context = LocalContext.current
     val uriHandler = LocalUriHandler.current
     // 组合期读取明暗主题，factory 里不能再调用 @Composable。
     val shortReviewReport = remember(url) { isShortReviewReportUrl(url) }
     val darkTheme = com.android.purebilibili.core.ui.isAppInDarkTheme()
-    val systemDark = androidx.compose.foundation.isSystemInDarkTheme()
-    val webViewBackground = if (if (shortReviewReport) darkTheme else systemDark) 0xFF101010.toInt() else 0xFFFFFFFF.toInt()
+    val webViewBackground = if (darkTheme) 0xFF101010.toInt() else 0xFFFFFFFF.toInt()
+    val browserSession = remember(url) { BrowserPageSession() }
+    var currentPageUrl by remember(url) { mutableStateOf(url) }
+    var canGoBack by remember(url) { mutableStateOf(false) }
     val openInitialUrlExternally = remember(url) { shouldOpenWebUrlExternally(url) }
     if (openInitialUrlExternally) {
         val currentOnBack by rememberUpdatedState(onBack)
@@ -99,8 +109,22 @@ fun WebViewScreen(
         pendingFileWebView?.finishReportFileSelection(uris)
         pendingFileWebView = null
     }
+    val containerSources = com.android.purebilibili.feature.live.LocalLiveCardContainerSources.current
+    val cardSource = remember(url, title) {
+        containerSources?.sources?.get(com.android.purebilibili.navigation3.BiliPaiNavKey.Web(url, title.orEmpty()))
+    }
+    var cardPageReady by remember(url) { mutableStateOf(false) }
+    val reduceCardMotion = com.android.purebilibili.core.ui.LocalSystemReduceMotion.current
+    val webContentAlpha = androidx.compose.animation.core.animateFloatAsState(
+        targetValue = if (cardSource == null || cardPageReady) 1f else 0f,
+        animationSpec = androidx.compose.animation.core.tween(if (reduceCardMotion) 0 else 150),
+        label = "shopWebContent",
+    )
     var rendererFailed by remember(url) { mutableStateOf(false) }
     var externalUrl by remember(url) { mutableStateOf<String?>(null) }
+    val canNavigateBack = canGoBack && externalUrl == null && !rendererFailed
+    val goBack = { if (canNavigateBack) browserSession.goBack() else onBack() }
+    androidx.activity.compose.BackHandler(enabled = canNavigateBack) { browserSession.goBack() }
     val externalOpenGate = remember(url) { LinkOpenGate() }
     val openExternal by rememberUpdatedState<(String) -> Unit>({ targetUrl ->
         // Redirect callbacks can arrive repeatedly before Compose removes AndroidView.
@@ -121,12 +145,12 @@ fun WebViewScreen(
             AppTopBar(
                 title = title ?: "浏览器",
                 navigationIcon = {
-                    AppIconButton(onClick = onBack) {
+                    AppIconButton(onClick = goBack) {
                         AppIcon(rememberAppBackIcon(), contentDescription = "Back")
                     }
                 },
                 actions = {
-                    TextButton(onClick = { openExternal(externalUrl ?: url) }, modifier = Modifier.appElasticPress()) {
+                    TextButton(onClick = { openExternal(externalUrl ?: currentPageUrl) }, modifier = Modifier.appElasticPress()) {
                         Text("外部打开")
                     }
                 },
@@ -149,11 +173,12 @@ fun WebViewScreen(
                     modifier = Modifier.padding(16.dp)
                 )
             } else {
-                key(url) {
+                key(url, darkTheme) {
+                    androidx.compose.foundation.layout.Box(Modifier.fillMaxSize()) {
                     AndroidView(
                         factory = { context ->
                             syncBilibiliLoginCookies()
-                            BrowserWebView(context).apply {
+                            BrowserWebView(browserThemeContext(context, darkTheme)).apply {
                                 layoutParams = ViewGroup.LayoutParams(
                                     ViewGroup.LayoutParams.MATCH_PARENT,
                                     ViewGroup.LayoutParams.MATCH_PARENT
@@ -161,6 +186,9 @@ fun WebViewScreen(
                                 setBackgroundColor(webViewBackground)
                                 settings.javaScriptEnabled = true
                                 settings.domStorageEnabled = true
+                                if (androidx.webkit.WebViewFeature.isFeatureSupported(androidx.webkit.WebViewFeature.ALGORITHMIC_DARKENING)) {
+                                    androidx.webkit.WebSettingsCompat.setAlgorithmicDarkeningAllowed(settings, darkTheme && !shortReviewReport)
+                                }
                                 if (mobileUserAgent || shortReviewReport) {
                                     settings.userAgentString = MOBILE_USER_AGENT
                                 }
@@ -195,9 +223,29 @@ fun WebViewScreen(
 
                                 // [核心] 自定义 WebViewClient 拦截 Bilibili 链接
                                 webViewClient = object : WebViewClient() {
+                                    override fun doUpdateVisitedHistory(view: WebView, loadedUrl: String?, isReload: Boolean) {
+                                        super.doUpdateVisitedHistory(view, loadedUrl, isReload)
+                                        if (browserSession.owns(view)) {
+                                            canGoBack = view.canGoBack()
+                                            if (!loadedUrl.isNullOrBlank()) currentPageUrl = loadedUrl
+                                        }
+                                    }
+                                    override fun onReceivedError(
+                                        view: WebView,
+                                        request: WebResourceRequest,
+                                        error: android.webkit.WebResourceError,
+                                    ) {
+                                        super.onReceivedError(view, request, error)
+                                        if (request.isForMainFrame) cardPageReady = true
+                                    }
+                                    override fun onPageCommitVisible(view: WebView, loadedUrl: String?) {
+                                        super.onPageCommitVisible(view, loadedUrl)
+                                        cardPageReady = true
+                                    }
                                     override fun onPageFinished(view: WebView, loadedUrl: String?) {
                                         super.onPageFinished(view, loadedUrl)
                                         (view as? BrowserWebView)?.applyShortReviewReportTheme(loadedUrl)
+                                        cardPageReady = true
                                     }
                                     override fun shouldOverrideUrlLoading(
                                         view: WebView?,
@@ -253,6 +301,20 @@ fun WebViewScreen(
                                             android.util.Log.d("WebViewScreen", "🔍 Scheme: $scheme, Host: $host")
 
                                             fun dispatchTarget(target: BilibiliNavigationTarget): Boolean {
+                                                if (target.hasCommentLocation) {
+                                                    if (onCommentLink != null) {
+                                                        onCommentLink(urlString)
+                                                    } else {
+                                                        val intent = android.content.Intent(
+                                                            android.content.Intent.ACTION_VIEW,
+                                                            android.net.Uri.parse(urlString),
+                                                        ).setPackage(context.packageName)
+                                                        runCatching { context.startActivity(intent) }.onFailure {
+                                                            Toast.makeText(context, "无法打开评论链接", Toast.LENGTH_SHORT).show()
+                                                        }
+                                                    }
+                                                    return true
+                                                }
                                                 return when (target) {
                                                     is BilibiliNavigationTarget.Video -> {
                                                         onVideoClick?.invoke(target.videoId)
@@ -294,9 +356,14 @@ fun WebViewScreen(
                                                         onMatchClick != null
                                                     }
 
+                                                    is BilibiliNavigationTarget.ArticleCollection -> {
+                                                        onArticleCollectionClick?.invoke(target.collectionId)
+                                                        onArticleCollectionClick != null
+                                                    }
                                                     is BilibiliNavigationTarget.Search -> false
                                                     is BilibiliNavigationTarget.Article -> false
                                                     is BilibiliNavigationTarget.PopularFeed -> false
+                                                    is BilibiliNavigationTarget.CommentDetail -> false
                                                 }
                                             }
 
@@ -342,16 +409,38 @@ fun WebViewScreen(
                                     }
                                 }
 
-                            }
+                            }.also { browserSession.attach(it, url) }
                         },
                         update = { webView ->
                             // Compare the caller's request, not the current URL after redirects.
                             webView.setShortReviewReportTheme(if (shortReviewReport) darkTheme else null, webViewBackground)
                             webView.loadRequestedUrl(url)
                         },
-                        onRelease = { it.release() },
-                        modifier = Modifier.fillMaxSize()
+                        onRelease = { browserSession.release(it) },
+                        modifier = Modifier.fillMaxSize().then(
+                            if (cardSource != null) Modifier.graphicsLayer { alpha = webContentAlpha.value }
+                            else Modifier
+                        )
                     )
+                    if (cardSource != null && webContentAlpha.value < 1f) {
+                        androidx.compose.foundation.layout.Column(
+                            modifier = Modifier.fillMaxSize()
+                                .background(MaterialTheme.colorScheme.surface)
+                                .graphicsLayer { alpha = 1f - webContentAlpha.value }
+                                .padding(24.dp),
+                            horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally,
+                            verticalArrangement = androidx.compose.foundation.layout.Arrangement.Center,
+                        ) {
+                            coil3.compose.AsyncImage(
+                                model = cardSource.previewImageUrl,
+                                contentDescription = null,
+                                contentScale = androidx.compose.ui.layout.ContentScale.Fit,
+                                modifier = Modifier.fillMaxWidth().heightIn(max = 280.dp),
+                            )
+                            Text("正在加载商品…", modifier = Modifier.padding(top = 16.dp))
+                        }
+                    }
+                    }
                 }
             }
         }
@@ -361,6 +450,38 @@ fun WebViewScreen(
 private const val MOBILE_USER_AGENT =
     "Mozilla/5.0 (Linux; Android 14) AppleWebKit/537.36 (KHTML, like Gecko) " +
         "Version/4.0 Chrome/124.0.0.0 Mobile Safari/537.36"
+
+/** WebView 从原生主题的 isLightTheme 读取 prefers-color-scheme，必须与应用选择保持一致。 */
+internal fun browserThemeContext(context: Context, darkTheme: Boolean): Context =
+    android.view.ContextThemeWrapper(context,
+        if (darkTheme) com.android.purebilibili.R.style.Theme_BiliPai_Web_Dark
+        else com.android.purebilibili.R.style.Theme_BiliPai_Web_Light)
+
+/** 明暗切换需重建原生主题上下文，保留当前网页与浏览历史，避免回到最初的商品入口。 */
+private class BrowserPageSession {
+    private var active: BrowserWebView? = null
+    private var savedState: android.os.Bundle? = null
+
+    fun owns(view: WebView): Boolean = active === view
+    fun goBack() { active?.goBack() }
+
+    fun attach(view: BrowserWebView, requestedUrl: String) {
+        active?.let { previous ->
+            savedState = previous.savePageState()
+        }
+        active = view
+        savedState?.let { view.restoreRequestedPage(it, requestedUrl) }
+        savedState = null
+    }
+
+    fun release(view: BrowserWebView) {
+        if (active === view) {
+            savedState = view.savePageState()
+            active = null
+        }
+        view.release()
+    }
+}
 
 internal fun isShortReviewReportUrl(url: String): Boolean = runCatching {
     val uri = android.net.Uri.parse(url)
@@ -388,6 +509,13 @@ private class BrowserWebView(context: Context) : WebView(context) {
     }
     private var requestedUrl: String? = null
     private var released = false
+
+    fun savePageState(): android.os.Bundle? =
+        if (released) null else android.os.Bundle().takeIf { saveState(it) != null }
+
+    fun restoreRequestedPage(state: android.os.Bundle, originalUrl: String) {
+        if (restoreState(state) != null) requestedUrl = originalUrl
+    }
 
     fun setShortReviewReportTheme(dark: Boolean?, background: Int) {
         if (released) return

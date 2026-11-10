@@ -11,6 +11,32 @@ import kotlin.test.assertTrue
 
 class VideoDetailLayoutModePolicyTest {
     @Test
+    fun inheritedFullscreenUsesTargetVideoOrientationForAllFourDirectionPairs() {
+        for (sourceVertical in listOf(false, true)) {
+            for (targetVertical in listOf(false, true)) {
+                assertEquals(
+                    if (targetVertical) ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+                    else ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE,
+                    resolvePhoneVideoRequestedOrientation(
+                        autoRotateEnabled = true,
+                        fullscreenMode = FullscreenMode.AUTO,
+                        isCompactDevice = true,
+                        isOrientationDrivenFullscreen = true,
+                        isFullscreenMode = !sourceVertical,
+                        manualFullscreenRequested = true,
+                        isVerticalVideo = targetVertical,
+                        currentRequestedOrientation = if (sourceVertical) {
+                            ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+                        } else ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE,
+                        isCurrentlyLandscape = !sourceVertical,
+                    ),
+                    "sourceVertical=$sourceVertical targetVertical=$targetVertical",
+                )
+            }
+        }
+    }
+
+    @Test
     fun sensorLandscapeConfiguration_doesNotBecomeAnOppositeFixedSide() {
         assertEquals(
             null,
@@ -322,17 +348,6 @@ class VideoDetailLayoutModePolicyTest {
                 userRequestedFullscreen = false,
                 isInMultiWindowMode = false,
                 manualPortraitHoldActive = true,
-            )
-        )
-    }
-
-    @Test
-    fun systemSmallWindowFullscreenPolicy_requestsLandscapeOrientation() {
-        assertTrue(
-            shouldApplyStartFullscreenOrientationRequest(
-                startInFullscreen = true,
-                isOrientationDrivenFullscreen = true,
-                isLandscape = false
             )
         )
     }

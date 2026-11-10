@@ -123,6 +123,159 @@ def gradle_braces_balanced(body):
     return depth == 0
 
 
+def gradle_code(body, strings=True):
+    """The build script with its comments blanked; code positions and line breaks stay in place.
+
+    String literals stay too, or only their quotes when strings is false, so no text inside one reads as code."""
+    out, i, n = [], 0, len(body)
+    backslash = chr(92)
+
+    def literal(text, quote):
+        return text if strings else quote + ''.join(c if c == '\n' else '-' for c in text[len(quote):-len(quote)]) + quote
+    while i < n:
+        if body.startswith('//', i) or body.startswith('/*', i):
+            j = body.find('\n', i) if body.startswith('//', i) else body.find('*/', i) + 2
+            j = n if j == -1 else j
+            out.append(''.join(c if c == '\n' else ' ' for c in body[i:j]))
+        elif body.startswith('"""', i):
+            j = body.find('"""', i + 3) + 3
+            out.append(literal(body[i:j], '"""'))
+        elif body[i] in '"\'':
+            j = i + 1
+            while j < n and body[j] != body[i]:
+                j += 2 if body[j] == backslash else 1
+            j += 1
+            out.append(literal(body[i:j], body[i]))
+        else:
+            j = i + 1
+            out.append(body[i])
+        i = j
+    return ''.join(out)
+
+
+def gradle_close(code, start):
+    """Index just past the bracket that closes the one at code[start], string literals skipped."""
+    pairs, stack, i = {'(': ')', '{': '}'}, [], start
+    backslash = chr(92)
+    while True:
+        if code.startswith('"""', i):
+            i = code.find('"""', i + 3) + 3
+            continue
+        if code[i] == '"':
+            i += 1
+            while code[i] != '"':
+                i += 2 if code[i] == backslash else 1
+        elif code[i] == "'":
+            i = code.find("'", i + 1)
+        elif code[i] in pairs:
+            stack.append(pairs[code[i]])
+        elif code[i] in ')}':
+            assert stack.pop() == code[i], ('unbalanced build script', i)
+            if not stack:
+                return i + 1
+        i += 1
+
+
+# Gradle's mergedRepositoryRoot is the live tree; inside the gate read point it is BILIPAI_LIVE_ROOT, while the read
+# point's own module directories hold the legacy originals the producers read.
+MERGED = Path(os.environ.get('BILIPAI_LIVE_ROOT') or REPO).resolve()
+
+
+def gradle_main_kotlin_roots():
+    """(checked-in roots, build roots) of the Gradle main Kotlin source set, resolved from the build script as Gradle does.
+
+    Every source root call of the script is accounted for and every Kotlin one of a main block is placed, in any
+    spacing, or the read fails, so neither a new main root nor another way of writing one can drop out of a scan."""
+    assert MERGED != REPO.resolve() or not (REPO / '.merged-root').is_dir(), 'gate read point without its live root'
+    script = (REPO / 'desktop/build.gradle.kts').read_text(encoding='utf8')
+    code, bare = gradle_code(script), gradle_code(script, strings=False)
+    assert not re.search(r'\bbuildDirectory\s*\.\s*set\b|\bbuildDir\s*=', bare), 'moved build directory'
+
+    def flat(start, end):
+        """Code between start and end without its spacing; string literals stay whole."""
+        return ''.join(c for c, b in zip(code[start:end], bare[start:end]) if not b.isspace())
+
+    def expression(start):
+        """The expression starting at start, up to the first line break outside brackets."""
+        end = start
+        while end < len(bare) and bare[end] != '\n':
+            end = gradle_close(bare, end) if bare[end] in '({' else end + 1
+        return flat(start, end)
+
+    def value(name, within=None):
+        """(declaration, value) of name: its one declaration directly inside the block span within, else at top level."""
+        for indent, span in [(r'[ \t]+', within), ('', (0, len(bare)))]:
+            found = list(re.compile(r'(?m)^%sval\s+%s\b[^=\n]*?(=|\bby\b)\s*' % (indent, name)).finditer(bare, *span)) if span else []
+            if found:
+                assert len(found) == 1, ('one declaration expected', name)
+                return found[0], expression(found[0].end())
+        raise AssertionError('No declaration of ' + name)
+
+    def listed(name):
+        modules = []
+        for part in value(name)[1].split('+'):
+            if items := re.fullmatch(r'listOf\(((?:"[^"$\\]+",?)*)\)', part):
+                modules += re.findall(r'"([^"]+)"', items.group(1))
+            else:
+                assert re.fullmatch(r'\w+', part), ('module list this read cannot place', name)
+                modules += listed(part)
+        return modules
+
+    def place(argument, within=None):
+        """(built, path) of one source root argument."""
+        if text := re.fullmatch(r'"([^"$\\]+)"|file\("([^"$\\]+)"\)', argument):
+            return False, REPO / 'desktop' / (text.group(1) or text.group(2))
+        if text := re.fullmatch(r'mergedRepositoryRoot\.resolve\("([^"$\\]+)"\)', argument):
+            return False, MERGED / text.group(1)
+        if text := re.fullmatch(r'layout\.buildDirectory\.dir\("([^"$\\]+)"\)', argument):
+            return True, REPO / 'desktop/build' / text.group(1)
+        if text := re.fullmatch(r'files\((.+)\)\.builtBy\(\w+\)', argument):
+            return place(text.group(1), within)
+        if text := re.fullmatch(r'(\w+)\.map\{it\.dir\("([^"$\\]+)"\)\}', argument):
+            built, path = place(text.group(1), within)
+            assert built, ('directory of a checked-in provider', argument)
+            return built, path / text.group(2)
+        if re.fullmatch(r'\w+', argument):
+            declaration, assigned = value(argument, within)
+            if declaration.group(1) != 'by':
+                return place(assigned, within)
+            # A task as a source root contributes its outputs, which must be one directory this read can place.
+            assert assigned.startswith('tasks.registering{'), ('source root delegate', argument)
+            body = bare.index('{', declaration.end())
+            span = (body, gradle_close(bare, body))
+            outputs = list(re.compile(r'\boutputs\s*\.\s*(\w+)\s*\(').finditer(bare, *span))
+            assert [output.group(1) for output in outputs] == ['dir'], ('task outputs this read cannot place', argument)
+            return place(flat(outputs[0].end(), gradle_close(bare, outputs[0].end() - 1) - 1), span)
+        raise AssertionError('Main Kotlin source root this scan cannot place: ' + argument)
+
+    blocks = [(match.start(), gradle_close(bare, match.end() - 1), code[match.start(1):match.end(1)])
+              for match in re.finditer(r'(?<![\w.])(?:kotlin\s*\.\s*)?sourceSets\s*\.\s*named\s*\(\s*"([^"]*)"\s*\)\s*\{', bare)]
+    loops = [(match.start(), gradle_close(bare, match.end() - 1), match.group(1))
+             for match in re.finditer(r'\b(\w+)\s*\.\s*forEach\s*\{', bare)]
+    calls = list(re.finditer(r'\b(kotlin|resources)\s*\.\s*(srcDir)\s*\(', bare))
+    # Source roots are only ever added through kotlin.srcDir or resources.srcDir: any other source root API, receiver
+    # or spelling fails here rather than being skipped.
+    assert [match.start() for match in re.finditer(r'(?i)\w*srcdir', bare)] == [call.start(2) for call in calls], \
+        'unknown source root API'
+    # The Kotlin JVM plugin's own main roots.
+    checked_in, built = {REPO / 'desktop/src/main/kotlin', REPO / 'desktop/src/main/java'}, set()
+    for call in calls:
+        line = bare.count('\n', 0, call.start()) + 1
+        owners = [name for start, end, name in blocks if start < call.start() < end]
+        assert len(owners) == 1, ('source root outside one named source set block', line)
+        if owners != ['main'] or call.group(1) != 'kotlin':
+            continue
+        argument = flat(call.end(), gradle_close(bare, call.end() - 1) - 1)
+        if each := re.fullmatch(r'mergedRepositoryRoot\.resolve\(it\+"([^"$\\]+)"\)', argument):
+            loop = max([(start, name) for start, end, name in loops if start < call.start() < end], default=None)
+            assert loop, ('it outside a forEach', line)
+            checked_in |= {MERGED / (module + each.group(1)) for module in listed(loop[1])}
+            continue
+        is_built, path = place(argument)
+        (built if is_built else checked_in).add(path)
+    return checked_in, built
+
+
 def audit_tables():
     """OWNERS and VIEW_MODEL_SITES of the account-scoped audit, read without importing (and so running) that test module."""
     path = TOOLS / 'tests/test_v046_account_scoped_requests_source.py'
@@ -497,11 +650,34 @@ class BangumiHubPagesSliceTests(unittest.TestCase):
         for method in sorted(set(re.findall(r'desktopEnvironment\.requests\.(\w+)\(', self.vm))):
             self.assertRegex(requests, r'suspend fun ' + method + r'\(', method)
         self.assertIn('val followSession: () -> BangumiFollowSession,', environment)
-        callers = 0
-        for file in (REPO / 'desktop/src').rglob('*.kt'):
-            body = file.read_text(encoding='utf8')
-            callers += body.count('DesktopOriginalBangumiPagesEnvironment(') - body.count('class DesktopOriginalBangumiPagesEnvironment(')
-        self.assertEqual(1, callers)
+        # Production is every input of the Gradle main Kotlin source set, whose roots are read from the build script:
+        # its checked-in and merged roots, its build roots as they stand, and both hub producers' outputs as made here
+        # hold the one call; the build roots are made from desktop files (producers, slices, patches), so no other
+        # desktop file may hold one either. Only test sources and verification snapshots, which feed no main root,
+        # may build their own environments.
+        checked_in, built = gradle_main_kotlin_roots()
+        self.assertIn(REPO / 'desktop/upstream-core/transition/src', checked_in)
+        hubs = {REPO / 'desktop/build/generated/home-bangumi-page': self.home,
+                REPO / 'desktop/build/generated/independent-bangumi-pages': self.pages}
+        self.assertLessEqual(set(hubs), built)
+        # Every file, not only Kotlin: main roots also hold Java sources the compilation reads. A live hub output file
+        # stands for its fresh copy only when it has the same relative path and bytes; any other file there, extra or
+        # differing, is compiled as it stands and is scanned beside the fresh outputs.
+        def copy(file):
+            fresh = next((hubs[live] / file.relative_to(live) for live in hubs if file.is_relative_to(live)), None)
+            return fresh is not None and fresh.is_file() and fresh.read_bytes() == file.read_bytes()
+        main = {f for root in [*checked_in, *built, self.home, self.pages] for f in root.rglob('*') if f.is_file() and not copy(f)}
+        listed = subprocess.run(['git', '-C', str(REPO), 'ls-files', '-z', '--cached', '--others', '--exclude-standard'],
+                                capture_output=True, check=True).stdout.decode('utf8').split('\0')
+        files = [REPO / name for name in listed if name and (REPO / name).is_file()]
+        inputs = [f for f in files if f.is_relative_to(REPO / 'desktop') and f not in main and not any(
+            f.is_relative_to(REPO / 'desktop' / part) for part in ['src/test', 'tools/tests', 'verification'])]
+
+        def calls(file):
+            body = file.read_bytes()
+            return body.count(b'DesktopOriginalBangumiPagesEnvironment(') - body.count(b'class DesktopOriginalBangumiPagesEnvironment(')
+        self.assertEqual(1, sum(calls(f) for f in main))
+        self.assertEqual([], [f.relative_to(REPO).as_posix() for f in inputs if calls(f)])
         self.assertEqual(1, root.count('followSession = { desktopOriginalBangumiPagesFollowSession(gate.mid != null, gate.epoch) })'))
 
     def test_detail_screen_collects_the_single_state_with_the_upstream_lines_of_3b37b7a2(self):

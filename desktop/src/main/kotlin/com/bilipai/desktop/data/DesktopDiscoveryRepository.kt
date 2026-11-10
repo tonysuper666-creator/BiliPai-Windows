@@ -30,9 +30,7 @@ class DesktopDiscoveryRepository(private val repository: DesktopRepository,
     private val mutationMutex = Mutex()
     internal val homePreferences: DesktopDiscoveryPreferences get() = preferences
     val feedMode: StateFlow<DesktopRecommendationMode> get() = preferences.feedMode
-    val refreshCount: StateFlow<Int> get() = preferences.refreshCount
     suspend fun setFeedMode(value: DesktopRecommendationMode) = preferences.setFeedMode(value)
-    suspend fun setRefreshCount(value: Int) = preferences.setRefreshCount(value)
     fun feedback(mid: Long?): StateFlow<TodayWatchFeedbackSnapshot> = preferences.feedback(mid)
     val blockedUps: DesktopBlockedUpStore get() = preferences.blockedUps
     internal fun freezeWritesForRestore() = preferences.freezeWritesForRestore()
@@ -50,7 +48,7 @@ class DesktopDiscoveryRepository(private val repository: DesktopRepository,
         val api = catalogRequest.api
         when (section) {
             DiscoverySection.RECOMMEND -> {
-                val count = refreshCount.value; val mode = feedMode.value
+                val count = com.android.purebilibili.feature.home.resolveHomeFeedPageSize(7); val mode = feedMode.value
                 val result = resolveDiscoveryRecommendation(mode, web = { merged ->
                     val params = if (merged) buildDesktopMergedWebRecommendParams(page - 1, count) else discoveryRecommendParams(page, count)
                     val response = api.getRecommendParams(catalogRequest.sign(params))

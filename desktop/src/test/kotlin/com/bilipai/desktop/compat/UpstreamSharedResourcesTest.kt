@@ -133,7 +133,7 @@ class UpstreamSharedResourcesTest {
                     "adaptive" -> DesktopDrawableTable.adaptiveLayers(variant).toList().forEach { layer ->
                         if (layer is DesktopDrawableTable.Layer.Resource) DesktopDrawableTable.select(layer.id, night, 320)
                     }
-                    // Splash-screen compositions and the one upstream icon whose colour exists only as a -v31 system colour.
+                    // Splash-screen compositions, widget backgrounds and the one upstream icon whose colour exists only as a -v31 system colour.
                     else -> assertFailsWith<UnsupportedDesktopCapability> { DesktopDrawableTable.unsupported(variant) }
                 }
                 checked++

@@ -1,6 +1,9 @@
 // 文件路径: feature/bangumi/BangumiPlayerScreen.kt
 package com.android.purebilibili.feature.bangumi
 
+import com.android.purebilibili.core.player.withAppVideoDecoderDiagnostics
+import com.android.purebilibili.core.player.withAppVideoDecoderPreference
+
 import com.android.purebilibili.core.ui.motion.AppMotionEasing
 import com.android.purebilibili.core.ui.AppContentColors
 import com.android.purebilibili.core.ui.components.appElasticPress
@@ -14,6 +17,8 @@ import com.android.purebilibili.feature.video.ambient.AmbientFrameController
 import com.android.purebilibili.feature.video.ambient.LocalAmbientPresentation
 import com.android.purebilibili.feature.video.ambient.LocalAmbientController
 import com.android.purebilibili.feature.video.ui.overlay.ImmersiveStatusBarBackdrop
+import com.android.purebilibili.feature.video.ui.overlay.resolveOverlayPlaybackButtonPlayingState
+import com.android.purebilibili.feature.video.usecase.togglePlayerPlaybackFromUserAction
 import android.app.Activity
 import com.android.purebilibili.feature.bangumi.ui.player.BangumiPlayerFeatures
 import com.android.purebilibili.feature.bangumi.ui.player.rememberBangumiSubtitles
@@ -75,6 +80,9 @@ import com.android.purebilibili.feature.video.viewmodel.VideoCommentViewModel
 //  使用提取后的组件
 import com.android.purebilibili.feature.bangumi.ui.player.BangumiPlayerView
 import com.android.purebilibili.feature.bangumi.ui.player.BangumiPlayerContent
+import com.android.purebilibili.feature.bangumi.ui.player.BangumiPlayerContentMode
+import com.android.purebilibili.feature.bangumi.ui.player.BangumiLargeScreenLayout
+import com.android.purebilibili.feature.video.screen.shouldUseLargeScreenVideoLayout
 import com.android.purebilibili.feature.bangumi.ui.player.BangumiErrorContent
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
@@ -90,6 +98,7 @@ import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.lerp
+import androidx.lifecycle.compose.currentStateAsState
 import com.android.purebilibili.core.store.PortraitPlayerCollapseMode
 import com.android.purebilibili.feature.bangumi.ui.player.BangumiCollapsedPlayerBar
 import com.android.purebilibili.feature.video.policy.reduceVideoDetailPostScroll
@@ -121,6 +130,7 @@ fun BangumiPlayerScreen(
     resumePositionMs: Long = 0L,
     isCourse: Boolean = false,
     preferredAid: Long = 0L,
+    mediaId: Long = 0L,
     onBack: () -> Unit,
     onNavigateToLogin: () -> Unit = {},
     onUserClick: (Long) -> Unit = {},
@@ -174,6 +184,11 @@ fun BangumiPlayerScreen(
     val windowSizeClass = LocalWindowSizeClass.current
     val appWindowAdaptiveInfo = LocalAppWindowAdaptiveInfo.current
     val displayContext = appWindowAdaptiveInfo.displayContext
+    val horizontalAdaptationEnabled by remember(context) {
+        com.android.purebilibili.core.store.SettingsManager.getHorizontalAdaptationEnabled(context)
+    }.collectAsStateWithLifecycle(
+        initialValue = windowSizeClass.isTabletDevice || displayContext.isKnownFoldableDevice,
+    )
     val isTablet = windowSizeClass.shouldUseSplitLayout || appWindowAdaptiveInfo.shouldAvoidHinge
     val hostActivity = remember(context) { context.findActivity() }
     val playerWindowOrientationPolicy = remember(displayContext) {
@@ -239,6 +254,15 @@ fun BangumiPlayerScreen(
     val autoRotateEnabled by com.android.purebilibili.core.store.SettingsManager
         .getAutoRotateEnabled(context).collectAsStateWithLifecycle(initialValue = false)
     // The app switch explicitly opts into sensor rotation, independently of the system lock.
+    val rotationLifecycleOwner = androidx.lifecycle.compose.LocalLifecycleOwner.current
+    val rotationLifecycle by rotationLifecycleOwner.lifecycle.currentStateAsState()
+    val rotationWindowInfo = androidx.compose.ui.platform.LocalWindowInfo.current
+    val rotationWindowFocused = rotationWindowInfo.isWindowFocused
+    val rotationSensitivity by remember(context) {
+        com.android.purebilibili.core.store.ContentDisplayPreferences.rotationSensitivity(context)
+    }.collectAsStateWithLifecycle(initialValue = com.android.purebilibili.core.util.PlayerRotationSensitivity.STANDARD)
+    val landscapeHoldEnabled by remember(context) { com.android.purebilibili.core.store.SettingsManager.getLandscapeHoldEnabled(context) }
+        .collectAsStateWithLifecycle(initialValue = false)
     val sensorAutoRotateEnabled = autoRotateEnabled
 
     // 创建 ExoPlayer
@@ -254,8 +278,9 @@ fun BangumiPlayerScreen(
                     .setExtensionRendererMode(
                         androidx.media3.exoplayer.DefaultRenderersFactory.EXTENSION_RENDERER_MODE_ON
                     )
+                    .withAppVideoDecoderPreference(context)
             )
-            .build()
+            .build().withAppVideoDecoderDiagnostics(context)
             .apply {
                 playWhenReady = true
             }
@@ -358,7 +383,7 @@ fun BangumiPlayerScreen(
 
     // 附加播放器到 ViewModel 并加载番剧
     // 使用同一个 LaunchedEffect 确保顺序执行，避免竞态条件
-    LaunchedEffect(exoPlayer, seasonId, epId, resumePositionMs, isCourse, preferredAid) {
+    LaunchedEffect(exoPlayer, seasonId, epId, resumePositionMs, isCourse, preferredAid, mediaId) {
         miniPlayerManager.beginBangumiPlayback(exoPlayer)
         // 先附加播放器
         viewModel.attachPlayer(exoPlayer)
@@ -368,7 +393,8 @@ fun BangumiPlayerScreen(
             epId,
             resumePositionMs,
             isCourse = isCourse,
-            preferredAid = preferredAid
+            preferredAid = preferredAid,
+            mediaId = mediaId,
         )
     }
 
@@ -383,6 +409,17 @@ fun BangumiPlayerScreen(
         )
     }
 
+    val coinSuccessHaptic = rememberUpdatedState(
+        com.android.purebilibili.feature.video.ui.components.rememberVideoActionSuccessHaptic()
+    )
+    LaunchedEffect(viewModel) {
+        viewModel.coinSuccessEvents.collect { (episodeId, account) ->
+            val current = viewModel.uiState.value as? BangumiPlayerState.Success
+            if (current?.currentEpisode?.id == episodeId &&
+                com.android.purebilibili.core.store.TokenManager.accountIdentity.value == account
+            ) coinSuccessHaptic.value()
+        }
+    }
     LaunchedEffect(viewModel, context) {
         viewModel.toastEvent.collect { message ->
             Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
@@ -745,15 +782,65 @@ fun BangumiPlayerScreen(
         isPlayerScreenLocked,
         sensorAutoRotateEnabled,
         isInPipMode,
+        rotationSensitivity,
+        landscapeHoldEnabled,
+        rotationLifecycle,
+        rotationWindowFocused,
     ) {
-        if (isInPipMode || !sensorAutoRotateEnabled || isPlayerScreenLocked) return@DisposableEffect onDispose {}
+        if (isInPipMode || !sensorAutoRotateEnabled || isPlayerScreenLocked ||
+            !rotationLifecycle.isAtLeast(androidx.lifecycle.Lifecycle.State.RESUMED) || !rotationWindowFocused
+        ) return@DisposableEffect onDispose {}
         val activity = context.findActivity()
         var lastPortraitAppliedAtMs = 0L
+        var lastLandscapeAppliedAtMs: Long? = null
         val orientationEventListener = object : android.view.OrientationEventListener(context) {
             private var lastOrientation = -1
 
             override fun onOrientationChanged(orientation: Int) {
-                if (orientation == ORIENTATION_UNKNOWN) return
+                if (!rotationLifecycleOwner.lifecycle.currentState.isAtLeast(androidx.lifecycle.Lifecycle.State.RESUMED) ||
+                    !rotationWindowInfo.isWindowFocused || orientation == ORIENTATION_UNKNOWN
+                ) return
+                if (rotationSensitivity != com.android.purebilibili.core.util.PlayerRotationSensitivity.STANDARD) {
+                    val thresholds = rotationSensitivity.thresholds
+                    val candidate = com.android.purebilibili.feature.video.screen.resolvePhoneAutoRotateRequestedOrientation(
+                        orientationDegrees = orientation,
+                        isCurrentlyLandscape = latestIsLandscape,
+                        landscapeHoldEnabled = landscapeHoldEnabled,
+                        allowPortraitTransitions = com.android.purebilibili.feature.video.screen.shouldAllowPhoneSensorPortraitTransition(
+                            autoRotateEnabled = sensorAutoRotateEnabled,
+                            manualFullscreenRequested = userRequestedFullscreen,
+                        ),
+                        portraitSnapDegrees = thresholds.portraitSnap,
+                        landscapeEnterMinDegrees = thresholds.landscapeEnterMin,
+                        landscapeEnterMaxDegrees = thresholds.landscapeEnterMax,
+                        landscapeKeepMinDegrees = thresholds.landscapeKeepMin,
+                        landscapeKeepMaxDegrees = thresholds.landscapeKeepMax,
+                    )
+                    val now = android.os.SystemClock.elapsedRealtime()
+                    val target = com.android.purebilibili.feature.video.screen.resolvePhoneAutoRotateTargetToApply(
+                        candidateOrientation = candidate,
+                        lastLandscapeAppliedAtMs = lastLandscapeAppliedAtMs,
+                        lastPortraitAppliedAtMs = lastPortraitAppliedAtMs.takeIf { it > 0L },
+                        nowMs = now,
+                    ) ?: return
+                    activity?.let { act ->
+                        if (com.android.purebilibili.feature.video.screen.shouldReleaseManualFullscreenRequestAfterSensorTarget(
+                                manualFullscreenRequested = userRequestedFullscreen,
+                                sensorTargetOrientation = target,
+                                autoRotateEnabled = sensorAutoRotateEnabled,
+                            )) userRequestedFullscreen = false
+                        if (act.requestedOrientation != target) {
+                            if (target == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
+                                userRequestedFullscreen = false
+                                lastPortraitAppliedAtMs = now
+                            } else {
+                                lastLandscapeAppliedAtMs = now
+                            }
+                            act.applyPlayerRequestedOrientation(target, displayContext = displayContext)
+                        }
+                    }
+                    return
+                }
 
                 val newOrientation = when (orientation) {
                     in 315..360, in 0..45 -> 0   // Portrait
@@ -770,7 +857,7 @@ fun BangumiPlayerScreen(
 
                     activity?.let { act ->
                         val now = android.os.SystemClock.elapsedRealtime()
-                        if (latestIsLandscape && isUprightPortrait) {
+                        if (latestIsLandscape && isUprightPortrait && !landscapeHoldEnabled) {
                             if (now - lastPortraitAppliedAtMs >= 700L) {
                                 lastPortraitAppliedAtMs = now
                                 userRequestedFullscreen = false
@@ -860,18 +947,21 @@ fun BangumiPlayerScreen(
         }
     }
 
-    Box(
+    BoxWithConstraints(
         modifier = Modifier
             .fillMaxSize()
             .background(if (isFullscreen) Color.Black else AppSurfaceTokens.groupedListContainer())
     ) {
         //  获取清晰度数据
-        val bangumiPages = remember(successState) {
-            buildBangumiOverlayPages(successState?.seasonDetail?.episodes.orEmpty())
+        val playbackEpisodes = remember(successState?.seasonDetail, successState?.currentEpisode?.id) {
+            successState?.let { resolveBangumiPlaybackEpisodes(it.seasonDetail, it.currentEpisode.id) }.orEmpty()
+        }
+        val bangumiPages = remember(playbackEpisodes) {
+            buildBangumiOverlayPages(playbackEpisodes)
         }
         val currentPageIndex = remember(successState) {
             resolveBangumiOverlayCurrentPageIndex(
-                episodes = successState?.seasonDetail?.episodes.orEmpty(),
+                episodes = playbackEpisodes,
                 currentEpisodeId = successState?.currentEpisode?.id ?: 0L
             )
         }
@@ -932,7 +1022,7 @@ fun BangumiPlayerScreen(
                             currentPageIndex = currentPageIndex,
                             onPageSelect = { selectedPageIndex ->
                                 val episode = resolveBangumiEpisodeForPageSelection(
-                                    episodes = successState?.seasonDetail?.episodes.orEmpty(),
+                                    episodes = playbackEpisodes,
                                     selectedPageIndex = selectedPageIndex
                                 )
                                 if (episode != null) {
@@ -1028,7 +1118,8 @@ fun BangumiPlayerScreen(
                             ).filter { it.isNotBlank() }.joinToString(" ").ifBlank {
                                 successState.seasonDetail.title
                             },
-                            message = successState.playbackErrorMessage ?: "该剧集需购买后观看",
+                            message = successState.playbackErrorMessage ?: "资源获取中",
+                            loading = successState.playbackErrorMessage == null,
                             coverUrl = successState.currentEpisode.cover.ifBlank { successState.seasonDetail.cover },
                             isFullscreen = isFullscreenMode,
                             onBack = if (isFullscreenMode) { { toggleOrientation() } } else onBack,
@@ -1048,7 +1139,13 @@ fun BangumiPlayerScreen(
             .getPauseOnPlayerCollapseEnabled(context)
             .collectAsStateWithLifecycle(initialValue = true)
 
-        val inlineCollapseEnabled = !isFullscreen && !appWindowAdaptiveInfo.shouldAvoidHinge &&
+        val useLargeScreenLayout = !isFullscreen && shouldUseLargeScreenVideoLayout(
+            windowWidthDp = maxWidth.value,
+            windowHeightDp = maxHeight.value,
+            horizontalAdaptationEnabled = horizontalAdaptationEnabled,
+            isFoldableCoverWindow = displayContext.isFoldableCoverWindow,
+        )
+        val inlineCollapseEnabled = !isFullscreen && !useLargeScreenLayout && !appWindowAdaptiveInfo.shouldAvoidHinge &&
             portraitPlayerCollapseMode != PortraitPlayerCollapseMode.OFF
 
         val density = LocalDensity.current
@@ -1153,7 +1250,7 @@ fun BangumiPlayerScreen(
             }
         }
 
-        val supportingContent: @Composable () -> Unit = {
+        val supportingContent: @Composable (BangumiPlayerContentMode) -> Unit = { contentMode ->
             Box(
                 modifier = Modifier
                     .fillMaxSize()
@@ -1161,12 +1258,10 @@ fun BangumiPlayerScreen(
             ) {
                 when (val state = uiState) {
                     is BangumiPlayerState.Loading -> {
-                        Box(
+                        com.android.purebilibili.feature.bangumi.ui.player.BangumiPlayerSkeleton(
+                            contentMode = contentMode,
                             modifier = Modifier.fillMaxSize(),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            AdaptiveLoadingIndicator()
-                        }
+                        )
                     }
 
                     is BangumiPlayerState.Error -> {
@@ -1185,6 +1280,8 @@ fun BangumiPlayerScreen(
                             detail = state.seasonDetail,
                             currentEpisode = state.currentEpisode,
                             commentViewModel = commentViewModel,
+                            contentMode = contentMode,
+                            isLargeScreenLayout = useLargeScreenLayout && !appWindowAdaptiveInfo.shouldAvoidHinge,
                             isVideoPlaying = playbackDebugSnapshot.isPlaying,
                             handleCommentFeedback = !commentPanelVisible,
                             onEpisodeClick = { viewModel.switchEpisode(it) },
@@ -1282,11 +1379,20 @@ fun BangumiPlayerScreen(
                         }
                     }
                 },
-                secondaryContent = if (isFullscreen) null else supportingContent,
+                secondaryContent = if (isFullscreen) null else { { supportingContent(BangumiPlayerContentMode.Tabs) } },
             )
         } else if (isFullscreen) {
             // 全屏播放
             playerContentView(true)
+        } else if (useLargeScreenLayout) {
+            // 与视频详情共用窗口几何；玻璃与 MD3/Miuix 原生路径仅改变各自材质。
+            BangumiLargeScreenLayout(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .windowInsetsPadding(WindowInsets.safeDrawing),
+                playerContent = { playerContentView(false) },
+                supportingContent = supportingContent,
+            )
         } else {
             // 竖屏：播放器 + 内容 (支持下滑收起播放器)
             Column(
@@ -1318,17 +1424,15 @@ fun BangumiPlayerScreen(
                         BangumiCollapsedPlayerBar(
                             scrollRatio = animatedCollapseProgress,
                             topInset = 0.dp,
-                            isPlaying = exoPlayer?.isPlaying == true,
+                            isPlaying = exoPlayer?.let {
+                                resolveOverlayPlaybackButtonPlayingState(it.isPlaying, it.playWhenReady, it.playbackState)
+                            } == true,
                             isCompleted = exoPlayer?.playbackState == androidx.media3.common.Player.STATE_ENDED,
                             hasPlayed = (exoPlayer?.currentPosition ?: 0L) > 0L,
                             onBack = onBack,
                             onPlayClick = {
                                 inlinePlayerCollapseState.restore()
-                                if (exoPlayer?.isPlaying == true) {
-                                    exoPlayer?.pause()
-                                } else {
-                                    exoPlayer?.play()
-                                }
+                                exoPlayer?.let(::togglePlayerPlaybackFromUserAction)
                             },
                             modifier = Modifier.matchParentSize()
                         )
@@ -1336,7 +1440,7 @@ fun BangumiPlayerScreen(
                 }
 
                 // 内容区域
-                supportingContent()
+                supportingContent(BangumiPlayerContentMode.Tabs)
             }
         }
     }
@@ -1366,7 +1470,7 @@ fun BangumiPlayerScreen(
                     successState?.let { state ->
                         BangumiPlayerContent(
                             detail = state.seasonDetail, currentEpisode = state.currentEpisode,
-                            commentViewModel = commentViewModel, commentsOnly = true,
+                            commentViewModel = commentViewModel, contentMode = BangumiPlayerContentMode.CommentOverlay,
                             isVideoPlaying = playbackDebugSnapshot.isPlaying,
                             onEpisodeClick = viewModel::switchEpisode, onFollowStatusSelect = viewModel::updateFollowStatus,
                             onUserClick = onUserClick, onCommentUrlClick = onOpenBilibiliLink,
@@ -1427,6 +1531,7 @@ fun BangumiPlayerScreen(
     }
     CoinDialog(
         visible = coinDialogVisible,
+        contentKey = successState?.currentEpisode,
         currentCoinCount = successState?.coinCount ?: 0,
         userBalance = userCoinBalance,
         onDismiss = { viewModel.closeCoinDialog() },
@@ -1455,7 +1560,8 @@ private fun BangumiPlayNoticeOverlay(
     coverUrl: String,
     isFullscreen: Boolean,
     onBack: () -> Unit,
-    onRetry: () -> Unit
+    onRetry: () -> Unit,
+    loading: Boolean = false,
 ) {
     Box(
         modifier = Modifier
@@ -1469,7 +1575,7 @@ private fun BangumiPlayNoticeOverlay(
                 contentDescription = null,
                 modifier = Modifier.fillMaxSize(),
                 contentScale = ContentScale.Crop,
-                alpha = 0.25f
+                alpha = if (loading) 0.7f else 0.25f
             )
         }
 
@@ -1499,31 +1605,34 @@ private fun BangumiPlayNoticeOverlay(
                 textAlign = androidx.compose.ui.text.style.TextAlign.Center
             )
             Spacer(modifier = Modifier.height(16.dp))
-            AppButton(
-                onClick = onRetry,
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = AppContentColors.accent(),
-                    contentColor = AppContentColors.onAccent()
-                )
-            ) {
-                AppText("重试", style = MaterialTheme.typography.labelMedium)
+            if (loading) {
+                AdaptiveLoadingIndicator()
+            } else {
+                AppButton(
+                    onClick = onRetry,
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = AppContentColors.accent(),
+                        contentColor = AppContentColors.onAccent()
+                    )
+                ) {
+                    AppText("重试", style = MaterialTheme.typography.labelMedium)
+                }
             }
         }
 
-        if (isFullscreen) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .align(Alignment.TopStart)
-                    .padding(16.dp)
-            ) {
-                IconButton(onClick = onBack, modifier = Modifier.appElasticPress()) {
-                    AppIcon(
-                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = "返回",
-                        tint = Color.White
-                    )
-                }
+        // 加载和失败提示盖住控制层时，竖屏仍保留返回入口。
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.TopStart)
+                .padding(16.dp)
+        ) {
+            IconButton(onClick = onBack, modifier = Modifier.appElasticPress()) {
+                AppIcon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                    contentDescription = "返回",
+                    tint = Color.White
+                )
             }
         }
     }

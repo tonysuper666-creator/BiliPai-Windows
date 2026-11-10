@@ -16,7 +16,7 @@ def block(source,marker,parser):
  start=source.index(marker);tokens=parser.kotlin_tokens(source[start:]);opening=next(i for i,t in enumerate(tokens)if t[0]=='{');depth=1;end=opening
  while depth:end+=1;depth+=(tokens[end][0]=='{')-(tokens[end][0]=='}')
  return source[start:start+tokens[end][2]]
-def generate(repo,out,tests_output=None):
+def generate(repo,out,tests_output=None,current_repo=None):
  parser=load('storage_tokens',repo/'desktop/tools/sync-upstream.py');media=load('storage_methods',repo/'desktop/tools/extract-upstream-media.py')
  raw={p:(_desktop_canonical_source(repo, p)).read_text(encoding='utf8').replace('\r\n','\n') for p in PATHS};sections,manager,cache,policy,animation,screen,mirrors=[raw[p]for p in PATHS]
  body=media.function(sections,'DataStorageSection',parser).replace('fun DataStorageSection(','internal fun DesktopOriginalDataStorageSection(')
@@ -74,6 +74,14 @@ import com.android.purebilibili.core.store.DesktopOriginalStorageSettings as Set
  if policy!=cache_clear_raw[_cache_clear_policy]:raise ValueError('Existing sole CacheClearUiPolicy differs from fixed v029 policy')
  cache_clear_sources,cache_clear_proofs=_cache_clear_sources(tests_output)
  for path,body in cache_clear_sources.items():write(out/path,body)
+ # Extract the real current screen decisions so its full policy suite can run
+ # unchanged, including completion and error cases omitted by the old slice.
+ current_screen=((current_repo or repo)/BASE/'feature/settings/screen/SettingsScreen.kt').read_text(encoding='utf8')
+ completion=re.findall(r'(?m)^internal fun shouldMarkCacheClearAnimationComplete\(clearSucceeded: Boolean\): Boolean = clearSucceeded$',current_screen)
+ if len(completion)!=1:raise ValueError('Current cache completion decision changed identity')
+ decisions=completion[0]+'\n\n'+media.function(current_screen,'resolveCacheClearFailureMessage',parser)
+ write(out/'com/android/purebilibili/feature/settings/DesktopCacheClearScreenPolicy.kt',
+     'package com.android.purebilibili.feature.settings\n\n'+decisions+'\n')
  write(out/'cache-clear-source-inventory.json',json.dumps(cache_clear_proofs,ensure_ascii=False,indent=2)+'\n')
  vectorHelper=load('storage_vector',repo/'desktop/tools/extract-upstream-settings-search.py');vectorHelper.symbol_names=lambda unused:['ms_check_fill_24']
  vector=vectorHelper.vectors(repo).replace('DesktopSettingsSymbols','DesktopStorageSettingsSymbols').replace('DesktopSettingsVectors','DesktopStorageSettingsVectors')
@@ -85,6 +93,6 @@ import com.android.purebilibili.core.store.DesktopOriginalStorageSettings as Set
  write(out/'storage-source-inventory.json',json.dumps(inventory,ensure_ascii=False,indent=2)+'\n')
  return inventory
 if __name__=='__main__':
- p=argparse.ArgumentParser();p.add_argument('--repo',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--inventory',type=Path);p.add_argument('--tests-output',type=Path);a=p.parse_args();rows=generate(a.repo.resolve(),a.output.resolve(),a.tests_output.resolve() if a.tests_output else None)
+ p=argparse.ArgumentParser();p.add_argument('--repo',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--inventory',type=Path);p.add_argument('--current-repo',type=Path);p.add_argument('--tests-output',type=Path);a=p.parse_args();rows=generate(a.repo.resolve(),a.output.resolve(),a.tests_output.resolve() if a.tests_output else None,a.current_repo)
  if a.inventory:write(a.inventory,json.dumps(rows,ensure_ascii=False,indent=2)+'\n')
  print('Generated exact original storage families',len(rows))

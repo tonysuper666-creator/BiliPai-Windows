@@ -1,0 +1,39 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/home/components/cards/VideoCardPublishTimeState.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/home/components/cards/VideoCardPublishTimeState.kt
+@@ -10 +10,2 @@
+-import androidx.lifecycle.compose.collectAsStateWithLifecycle
++import androidx.compose.runtime.collectAsState
++import com.bilipai.desktop.data.LocalDesktopUpstreamSession
+@@ -40,4 +41,9 @@
+-    val accountIdentity by TokenManager.accountIdentity.collectAsStateWithLifecycle()
+-    var fetchedPubdate by remember(video.bvid, video.aid, accountIdentity) { mutableLongStateOf(0L) }
+-    var attempted by remember(video.bvid, video.aid, accountIdentity) { mutableStateOf(false) }
+-    val cachedPubdate = SharedContentRepository.cachedDetailInfo(video.bvid, video.aid)?.pubdate ?: 0L
++    val session = LocalDesktopUpstreamSession.current
++    // Observe the window repository, not a flow captured from an owner that retires at account switch.
++    val epoch = session?.accountEpoch?.collectAsState()?.value
++    val accountIdentity = session?.read(null) { TokenManager.accountIdentity.value }
++    var fetchedPubdate by remember(session, video.bvid, video.aid, epoch, accountIdentity) { mutableLongStateOf(0L) }
++    var attempted by remember(session, video.bvid, video.aid, epoch, accountIdentity) { mutableStateOf(false) }
++    val cachedPubdate = session?.read(0L) {
++        SharedContentRepository.cachedDetailInfo(video.bvid, video.aid)?.pubdate ?: 0L
++    } ?: 0L
+@@ -51,2 +57,2 @@
+-    LaunchedEffect(video.bvid, video.aid, accountIdentity, pubdate, workAllowed) {
+-        if (!workAllowed || pubdate > 0L || attempted) return@LaunchedEffect
++    LaunchedEffect(session, video.bvid, video.aid, epoch, accountIdentity, pubdate, workAllowed) {
++        if (session == null || accountIdentity == null || !workAllowed || pubdate > 0L || attempted) return@LaunchedEffect
+@@ -55,2 +61,8 @@
+-        val result = publishTimeRequests.withPermit {
+-            SharedContentRepository.detail(video.bvid, video.aid)
++        publishTimeRequests.withPermit {
++            session.withOwner {
++                // A switch during the delay must not turn an old card request into a new-account request.
++                if (TokenManager.accountIdentity.value != accountIdentity) return@withOwner
++                val result = SharedContentRepository.detail(video.bvid, video.aid)
++                fetchedPubdate = result.getOrNull()?.pubdate?.takeIf { it > 0L } ?: 0L
++                attempted = true
++            }
+@@ -58,2 +69,0 @@
+-        fetchedPubdate = result.getOrNull()?.pubdate?.takeIf { it > 0L } ?: 0L
+-        attempted = true

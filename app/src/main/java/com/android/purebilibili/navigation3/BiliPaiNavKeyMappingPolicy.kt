@@ -73,6 +73,7 @@ internal fun BiliPaiNavKey.toLegacyRoute(): String {
         BiliPaiNavKey.TipsSettings -> ScreenRoutes.TipsSettings.route
         BiliPaiNavKey.Login -> ScreenRoutes.Login.route
         BiliPaiNavKey.Profile -> ScreenRoutes.Profile.route
+        BiliPaiNavKey.ProfileAccountEdit -> "profile_account_edit"
         is BiliPaiNavKey.AccountLedger -> ScreenRoutes.AccountLedger.createRoute(kind)
         is BiliPaiNavKey.AicuQuery -> ScreenRoutes.AicuQuery.createRoute(uid, category)
         BiliPaiNavKey.History -> ScreenRoutes.History.route
@@ -120,6 +121,7 @@ internal fun BiliPaiNavKey.toLegacyRoute(): String {
         is BiliPaiNavKey.AudioMode -> if (collectionMediaId > 0L || collectionSeasonId > 0L) {
             "audio_mode?mediaId=$collectionMediaId&seasonId=$collectionSeasonId&title=${encodeRouteValue(collectionTitle)}"
         } else ScreenRoutes.AudioMode.createRoute(sourceBvid, sourceCid)
+        is BiliPaiNavKey.SpaceWebVideos -> "space_web_videos/$mid?name=${encodeRouteValue(ownerName)}&type=${encodeRouteValue(collectionType)}&id=$collectionId"
         is BiliPaiNavKey.SeasonSeriesDetail -> ScreenRoutes.SeasonSeriesDetail.createRoute(
             type = type,
             id = id,
@@ -152,11 +154,13 @@ internal fun BiliPaiNavKey.toLegacyRoute(): String {
             initialVertical = initialVertical,
             directPortraitEntry = directPortraitEntry,
         )
-        is BiliPaiNavKey.ArticleDetail -> ScreenRoutes.ArticleDetail.createRoute(articleId, title)
+        is BiliPaiNavKey.ArticleCollection -> ScreenRoutes.ArticleCollection.createRoute(collectionId, title, currentArticleId)
+        is BiliPaiNavKey.ArticleDetail -> ScreenRoutes.ArticleDetail.createRoute(articleId, title, commentRootRpid, commentTargetRpid)
         is BiliPaiNavKey.DynamicDetail -> ScreenRoutes.DynamicDetail.createRoute(
             dynamicId = dynamicId,
             commentRootRpid = commentRootRpid,
-            commentTargetRpid = commentTargetRpid
+            commentTargetRpid = commentTargetRpid,
+            openComments = openComments,
         )
         is BiliPaiNavKey.CommentDetail ->
             "comment_detail/$oid/$rootId?targetId=$targetId&type=$type&enterUri=${encodeRouteValue(enterUri)}"
@@ -223,6 +227,7 @@ internal fun legacyRouteToBiliPaiNavKey(route: String?): BiliPaiNavKey {
         normalized == ScreenRoutes.TipsSettings.route -> BiliPaiNavKey.TipsSettings
         normalized == ScreenRoutes.Login.route -> BiliPaiNavKey.Login
         normalized == ScreenRoutes.Profile.route -> BiliPaiNavKey.Profile
+        normalized == "profile_account_edit" -> BiliPaiNavKey.ProfileAccountEdit
         segments.firstOrNull() == "account_ledger" && segments.size == 2 -> {
             val kind = com.android.purebilibili.data.model.AccountLedgerKind.entries.firstOrNull { it.name.equals(segments.getOrNull(1), ignoreCase = true) }
             if (kind != null) BiliPaiNavKey.AccountLedger(kind) else BiliPaiNavKey.Unknown(normalized)
@@ -388,17 +393,27 @@ internal fun legacyRouteToBiliPaiNavKey(route: String?): BiliPaiNavKey {
                 sourceRoute = null
             )
         }
+        segments.firstOrNull() == "article_collection" && segments.size >= 2 -> {
+            BiliPaiNavKey.ArticleCollection(
+                collectionId = segments[1].toLongOrNull() ?: 0L,
+                title = query["title"].orEmpty(),
+                currentArticleId = query["currentArticleId"]?.toLongOrNull() ?: 0L,
+            )
+        }
         segments.firstOrNull() == "article" && segments.size >= 2 -> {
             BiliPaiNavKey.ArticleDetail(
                 articleId = segments[1].toLongOrNull() ?: 0L,
-                title = query["title"].orEmpty()
+                title = query["title"].orEmpty(),
+                commentRootRpid = query["commentRootRpid"]?.toLongOrNull()?.coerceAtLeast(0L) ?: 0L,
+                commentTargetRpid = query["commentTargetRpid"]?.toLongOrNull()?.coerceAtLeast(0L) ?: 0L,
             )
         }
         segments.firstOrNull() == "dynamic_detail" && segments.size >= 2 -> {
             BiliPaiNavKey.DynamicDetail(
                 dynamicId = decodeRouteValue(segments[1]),
                 commentRootRpid = query["commentRootRpid"]?.toLongOrNull() ?: 0L,
-                commentTargetRpid = query["commentTargetRpid"]?.toLongOrNull() ?: 0L
+                commentTargetRpid = query["commentTargetRpid"]?.toLongOrNull() ?: 0L,
+                openComments = query["openComments"]?.toBooleanStrictOrNull() ?: false,
             )
         }
         segments.firstOrNull() == "comment_detail" && segments.size >= 3 -> {
@@ -408,6 +423,14 @@ internal fun legacyRouteToBiliPaiNavKey(route: String?): BiliPaiNavKey {
                 targetId = query["targetId"]?.toLongOrNull() ?: 0L,
                 type = query["type"]?.toIntOrNull() ?: 1,
                 enterUri = decodeRouteValue(query["enterUri"].orEmpty())
+            )
+        }
+        segments.firstOrNull() == "space_web_videos" && segments.size >= 2 -> {
+            BiliPaiNavKey.SpaceWebVideos(
+                mid = segments[1].toLongOrNull() ?: 0L,
+                ownerName = query["name"].orEmpty(),
+                collectionType = query["type"].orEmpty(),
+                collectionId = query["id"]?.toLongOrNull() ?: 0L,
             )
         }
         segments.firstOrNull() == "space" && segments.size >= 2 -> {
@@ -473,6 +496,7 @@ internal fun isCardReturnTargetNavKey(key: BiliPaiNavKey): Boolean {
         BiliPaiNavKey.Partition,
         is BiliPaiNavKey.DynamicDetail,
         is BiliPaiNavKey.Space,
+        is BiliPaiNavKey.SpaceWebVideos,
         is BiliPaiNavKey.SeasonSeriesDetail,
         is BiliPaiNavKey.Category -> true
         else -> false

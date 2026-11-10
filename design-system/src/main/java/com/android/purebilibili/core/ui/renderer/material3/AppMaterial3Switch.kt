@@ -19,6 +19,8 @@ import com.android.purebilibili.core.theme.calculateContrastRatio
 import com.android.purebilibili.core.theme.opaqueCompositeOver
 import com.android.purebilibili.core.theme.resolveAccessibleContainerColors
 import com.android.purebilibili.core.ui.components.appDesktopInteractionVisuals
+import com.android.purebilibili.core.ui.LocalAppThemeConfig
+import com.android.purebilibili.core.ui.LiquidSwitchThumbMode
 
 @Composable
 internal fun AppMaterial3Switch(
@@ -37,7 +39,17 @@ internal fun AppMaterial3Switch(
     // custom accent. Keep light-surface handles light independently of that role.
     // Glass and Miuix retain their separate renderer policies and geometry.
     val scheme = MaterialTheme.colorScheme
-    val checkedThumbColor = if (scheme.surface.luminance() > 0.5f) {
+    // 拇指强制色是液态玻璃专属设置：关闭玻璃后的原生 MD3 开关走官方 SwitchDefaults 配色。
+    val forcedThumb = if (LocalAppThemeConfig.current.liquidGlassEnabled) {
+        when (LocalAppThemeConfig.current.liquidSwitchThumbMode) {
+            LiquidSwitchThumbMode.THEME -> null
+            LiquidSwitchThumbMode.DARK -> Color(0xFF202124)
+            LiquidSwitchThumbMode.LIGHT -> Color.White
+        }
+    } else {
+        null
+    }
+    val checkedThumbColor = forcedThumb ?: if (scheme.surface.luminance() > 0.5f) {
         Color.White
     } else {
         nativeColors.checkedThumbColor
@@ -77,7 +89,18 @@ internal fun AppMaterial3Switch(
         enabled = enabled,
         colors = nativeColors.copy(
             checkedThumbColor = checkedThumbColor,
+            uncheckedThumbColor = forcedThumb ?: nativeColors.uncheckedThumbColor,
+            disabledCheckedThumbColor = forcedThumb?.copy(alpha = 0.38f) ?: nativeColors.disabledCheckedThumbColor,
+            disabledUncheckedThumbColor = forcedThumb?.copy(alpha = 0.38f) ?: nativeColors.disabledUncheckedThumbColor,
             checkedIconColor = checkedIconColor,
+            uncheckedIconColor = if (forcedThumb == null) nativeColors.uncheckedIconColor else
+                resolveAccessibleContainerColors(
+                    containerColor = forcedThumb,
+                    contentColor = nativeColors.uncheckedIconColor,
+                    backgroundColor = nativeColors.uncheckedTrackColor,
+                    fallbackContentColors = listOf(Color.White, Color.Black),
+                    minimumContrast = ACCESSIBLE_UI_MIN_CONTRAST,
+                ).contentColor,
         ),
         interactionSource = resolvedInteractionSource,
     )

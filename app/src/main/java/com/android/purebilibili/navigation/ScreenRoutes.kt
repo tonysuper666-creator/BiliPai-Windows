@@ -84,23 +84,33 @@ sealed class ScreenRoutes(val route: String) {
     object Dynamic : ScreenRoutes("dynamic")
 
     //  动态详情页面
-    object DynamicDetail : ScreenRoutes("dynamic_detail/{dynamicId}?commentRootRpid={commentRootRpid}&commentTargetRpid={commentTargetRpid}") {
+    object DynamicDetail : ScreenRoutes("dynamic_detail/{dynamicId}?commentRootRpid={commentRootRpid}&commentTargetRpid={commentTargetRpid}&openComments={openComments}") {
         fun createRoute(
             dynamicId: String,
             commentRootRpid: Long = 0L,
-            commentTargetRpid: Long = 0L
+            commentTargetRpid: Long = 0L,
+            openComments: Boolean = false,
         ): String {
             val encodedDynamicId = URLEncoder.encode(dynamicId, StandardCharsets.UTF_8.name())
             return "dynamic_detail/$encodedDynamicId" +
                 "?commentRootRpid=${commentRootRpid.coerceAtLeast(0L)}" +
-                "&commentTargetRpid=${commentTargetRpid.coerceAtLeast(0L)}"
+                "&commentTargetRpid=${commentTargetRpid.coerceAtLeast(0L)}" +
+                if (openComments) "&openComments=true" else ""
         }
     }
 
-    object ArticleDetail : ScreenRoutes("article/{articleId}?title={title}") {
-        fun createRoute(articleId: Long, title: String? = null): String {
+    object ArticleCollection : ScreenRoutes("article_collection/{collectionId}?title={title}&currentArticleId={currentArticleId}") {
+        fun createRoute(collectionId: Long, title: String = "", currentArticleId: Long = 0L): String =
+            "article_collection/$collectionId?title=${encodeUrlComponentCompat(title)}&currentArticleId=$currentArticleId"
+    }
+
+    object ArticleDetail : ScreenRoutes("article/{articleId}?title={title}&commentRootRpid={commentRootRpid}&commentTargetRpid={commentTargetRpid}") {
+        fun createRoute(articleId: Long, title: String? = null, commentRootRpid: Long = 0L, commentTargetRpid: Long = 0L): String {
             val encodedTitle = title?.let(::encodeUrlComponentCompat).orEmpty()
-            return "article/$articleId?title=$encodedTitle"
+            val base = "article/$articleId?title=$encodedTitle"
+            if (commentRootRpid <= 0L && commentTargetRpid <= 0L) return base
+            return base + "&commentRootRpid=${commentRootRpid.coerceAtLeast(0L)}" +
+                "&commentTargetRpid=${commentTargetRpid.coerceAtLeast(0L)}"
         }
     }
     

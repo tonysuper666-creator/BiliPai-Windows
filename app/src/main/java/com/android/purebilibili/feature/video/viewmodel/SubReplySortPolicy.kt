@@ -28,16 +28,13 @@ internal fun SubReplyUiState.resetForSort(mode: SubReplySortMode): SubReplyUiSta
 internal fun isSortedSubReplyPageEnd(cursorIsEnd: Boolean, nextOffset: String?): Boolean =
     com.android.purebilibili.data.repository.isSortedSubReplyPageEnd(cursorIsEnd, nextOffset)
 
-/** Keep the server's relative order; an unloaded parent (or a root reply) falls back to the end. */
+/** A new local reply belongs at the tail, not beside its parent in an earlier time page. */
 internal fun insertSentSubReply(
     items: List<ReplyItem>,
     reply: ReplyItem
 ): List<ReplyItem> {
     val existingIndex = items.indexOfFirst { it.rpid == reply.rpid }
-    val insertionIndex = if (existingIndex >= 0) existingIndex else {
-        val parentIndex = items.indexOfFirst { it.rpid == reply.parent }
-        if (parentIndex >= 0) parentIndex + 1 else items.size
-    }
+    val insertionIndex = if (existingIndex >= 0) existingIndex else items.size
     return buildList(items.size + if (existingIndex < 0) 1 else 0) {
         items.forEachIndexed { index, item ->
             if (index == insertionIndex) add(reply)
@@ -47,13 +44,27 @@ internal fun insertSentSubReply(
     }
 }
 
+/** Rebuild from pure remote pages, then append only unacknowledged sends in send order. */
+internal fun mergeSentSubReplies(
+    remoteItems: List<ReplyItem>,
+    sentReplies: Collection<ReplyItem>
+): List<ReplyItem> = buildList(remoteItems.size + sentReplies.size) {
+    val ids = HashSet<Long>(remoteItems.size + sentReplies.size)
+    remoteItems.forEach { if (ids.add(it.rpid)) add(it) }
+    sentReplies.forEach { if (ids.add(it.rpid)) add(it) }
+}
+
 /** Add responses can omit threading fields; the captured composer target is authoritative. */
 internal fun resolveSentSubReply(
     reply: ReplyItem,
     rootId: Long,
     parentId: Long,
-    target: ReplyItem?
+    target: ReplyItem?,
+    oid: Long = reply.oid,
+    replyType: Int = reply.replyType
 ): ReplyItem = reply.copy(
+    oid = oid,
+    replyType = replyType,
     root = rootId,
     parent = parentId,
     dialog = reply.dialog.takeIf { it > 0L } ?: target?.takeIf { it.rpid != rootId }?.let {

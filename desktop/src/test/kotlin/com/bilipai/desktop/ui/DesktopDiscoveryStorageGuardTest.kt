@@ -48,12 +48,12 @@ class DesktopDiscoveryStorageGuardTest {
         assertFalse(guard.load());assertTrue(guard.canRetry)
         write(file,VALID_GUEST);val repaired=Files.readAllBytes(file)
         assertTrue(guard.load());val loaded=assertNotNull(guard.result.value?.getOrNull())
-        assertEquals(14,loaded.refreshCount.value);assertSame(authority,loaded.blockedUps)
+        assertEquals(DesktopRecommendationMode.WEB,loaded.feedMode.value);assertSame(authority,loaded.blockedUps)
         assertEquals(setOf(41L),authority.mids.value);assertNull(authority.migrationError.value)
         assertContentEquals(repaired,Files.readAllBytes(file));assertFalse(guard.canRetry)
-        write(file,VALID_GUEST.replace("14","39"))
+        write(file,VALID_GUEST.replace("\"type\":0", "\"type\":1").replace("14","39"))
         assertTrue(guard.load());assertSame(loaded,guard.result.value?.getOrNull());assertEquals(2,factories)
-        assertEquals(14,loaded.refreshCount.value) // No disk hot reload after a successful original backing.
+        assertEquals(DesktopRecommendationMode.WEB,loaded.feedMode.value) // No disk hot reload after a successful original backing.
         assertContains(Files.readString(file),"39");guard.close()
     }
 
@@ -61,11 +61,11 @@ class DesktopDiscoveryStorageGuardTest {
         val root=root();write(legacy(root),VALID_GUEST);val file=legacy(root,123);write(file,"NOT JSON fixture feedback")
         val original=Files.readAllBytes(file);val authority=blocked(root)
         val discovery=openDesktopDiscoveryStorage(repository()){DesktopDiscoveryPreferences(root,authority)}
-        assertEquals(14,discovery.refreshCount.value);assertFails{discovery.feedback(123)}
+        assertEquals(DesktopRecommendationMode.WEB,discovery.feedMode.value);assertFails{discovery.feedback(123)}
         val guard=DesktopDiscoveryStorageGuard({openDesktopDiscoveryFeedback(discovery,123)})
         assertFalse(guard.load());val failure=assertIs<DesktopDiscoveryStorageFailure>(guard.result.value?.exceptionOrNull())
         assertTrue(failure.failedConstructor&&failure.accountFeedback&&guard.canRetry)
-        assertContentEquals(original,Files.readAllBytes(file));assertEquals(14,discovery.refreshCount.value)
+        assertContentEquals(original,Files.readAllBytes(file));assertEquals(DesktopRecommendationMode.WEB,discovery.feedMode.value)
         write(file,VALID_FEEDBACK);val repaired=Files.readAllBytes(file)
         assertTrue(guard.load());val actual=assertNotNull(guard.result.value?.getOrNull()).value
         assertEquals(setOf("BVfixtureOriginal"),actual.dislikedBvids);assertEquals(setOf("保留"),actual.dislikedKeywords)

@@ -58,7 +58,7 @@ import androidx.navigationevent.compose.LocalNavigationEventDispatcherOwner
 class DesktopCacheClearComponentUiTest {
     @Test fun originalCleaningShowsActualProgressAndCharacterButNeverCompletesBusinessInEitherUiStyle(): Unit = runBlocking {
         for (style in AppUiStyle.entries) {
-            val progress = mutableStateOf(CacheClearProgress(1, 4, clearedSize = "1.0 MB"))
+            val progress = mutableStateOf(CacheClearProgress(1, 4, clearedSize = "1.0 MB", message = "正在清理网络与媒体分片"))
             var dismissals = 0
             val background = Background()
             val fixture = Scene(background, style) {
@@ -66,11 +66,11 @@ class DesktopCacheClearComponentUiTest {
             }
             try {
                 fixture.await("$style original progress labels") {
-                    fixture.hasText("正在清理") && fixture.hasText("25%") && fixture.hasText("已清理 1.0 MB")
+                    fixture.hasText("正在清理") && fixture.hasText("25%") && fixture.hasText("正在清理网络与媒体分片")
                 }
                 fixture.awaitArtwork(DesktopMaidAnimation.CLEANING)
                 assertEquals(true, fixture.observedReducedMotion)
-                fixture.awaitSettledText("正在清理", "25%", "已清理 1.0 MB")
+                fixture.awaitSettledText("正在清理", "25%", "正在清理网络与媒体分片")
                 fixture.assertArtwork(DesktopMaidAnimation.CLEANING, "${style.name.lowercase()}-cache-cleaning")
                 fixture.pumpFor(2_100)
                 assertEquals(0, dismissals, "Looping artwork cannot mark cleanup complete or close an in-flight operation")
@@ -87,7 +87,7 @@ class DesktopCacheClearComponentUiTest {
         }
     }
 
-    @Test fun onlyPublishedCompleteProgressShowsOriginalSuccessAndDispatchesOneDelayedDismissInBothUiStyles(): Unit = runBlocking {
+    @Test fun onlyPublishedCompleteProgressShowsOriginalSuccessAndDispatchesOneAnimationDismissInBothUiStyles(): Unit = runBlocking {
         for (style in AppUiStyle.entries) {
             val show = mutableStateOf(true)
             val completed = CacheClearProgress(1, 1, isComplete = true, clearedSize = "2.0 MB")
@@ -101,12 +101,12 @@ class DesktopCacheClearComponentUiTest {
             }
             try {
                 fixture.await("$style complete operation labels") {
-                    fixture.hasText("清理完成") && fixture.hasText("共释放 2.0 MB") && fixture.hasText("即将自动关闭…")
+                    fixture.hasText("清理完成") && fixture.hasText("已释放 2.0 MB 磁盘空间") && fixture.hasText("即将返回缓存详情")
                 }
                 fixture.awaitArtwork(DesktopMaidAnimation.CLEAN_COMPLETE)
-                fixture.awaitSettledText("清理完成", "共释放 2.0 MB", "即将自动关闭…")
+                fixture.awaitSettledText("清理完成", "已释放 2.0 MB 磁盘空间", "即将返回缓存详情")
                 fixture.assertArtwork(DesktopMaidAnimation.CLEAN_COMPLETE, "${style.name.lowercase()}-cache-complete")
-                fixture.await("$style original 2000ms completion dismissal") { dismissals == 1 && !show.value }
+                fixture.await("$style original animation completion dismissal") { dismissals == 1 && !show.value }
                 fixture.pumpFor(350)
                 assertEquals(1, dismissals)
                 assertTrue(completed.isComplete, "Dismiss is presentation state, not mutation of the supplied progress")
@@ -117,7 +117,7 @@ class DesktopCacheClearComponentUiTest {
         }
     }
 
-    @Test fun retiredCompleteTimerCannotDismissNewPendingProgressAndHostUsesCurrentOwnerAndPublication(): Unit = runBlocking {
+    @Test fun retiredCompleteAnimationCannotDismissNewPendingProgressAndHostUsesCurrentOwnerAndPublication(): Unit = runBlocking {
         val completed = CacheClearProgress(1, 1, isComplete = true)
         val pending = CacheClearProgress(0, 1)
         val progress = mutableStateOf(completed)
@@ -136,7 +136,7 @@ class DesktopCacheClearComponentUiTest {
                 "Late native close/finish from an old publication cannot dismiss the successor")
             assertFalse(canDismissDesktopCacheClearProgress(pending, { owned }, { progress.value === pending }))
             fixture.pumpFor(2_150)
-            assertEquals(0, dismissals, "The actual original LaunchedEffect retired its complete timer")
+            assertEquals(0, dismissals, "The original animation callback cannot dismiss replacement pending progress")
             owned = false
             assertFalse(canDismissDesktopCacheClearProgress(completed, { owned }, { true }))
             assertFalse(canDismissDesktopCacheClearProgress(completed, { true }, { false }))

@@ -1,14 +1,5 @@
 --- a/home-page/com/android/purebilibili/feature/home/HomeCategoryPage.kt
 +++ b/home-page/com/android/purebilibili/feature/home/HomeCategoryPage.kt
-@@ -351,7 +351,7 @@
-     val videoGridKeys = remember(visibleGridVideos) {
-         resolveHomeCategoryVideoGridKeys(visibleGridVideos)
-     }
--    SideEffect { cardReflowState.retainKeys(videoGridKeys.toSet()) }
-+    SideEffect { cardReflowState.retainKeys(videoGridKeys) }
-     val oldContentVideoIndex = oldContentAnchorBvid?.let { anchor ->
-         visibleGridVideos.indexOfFirst { it.bvid == anchor }.takeIf { it >= 0 }
-     } ?: oldContentStartIndex
 @@ -883,7 +883,7 @@
      val subCategories = PopularSubCategory.entries
      val selectedIndex = subCategories.indexOf(selectedSubCategory).coerceAtLeast(0)

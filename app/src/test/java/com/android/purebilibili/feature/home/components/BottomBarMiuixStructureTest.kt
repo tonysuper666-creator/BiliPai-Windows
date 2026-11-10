@@ -480,8 +480,12 @@ class BottomBarMiuixStructureTest {
             .substringBefore("private fun OfficialMd3FloatingBottomBar(")
 
         assertTrue(
+            officialToolbarSource.contains("HorizontalFloatingToolbar("),
+            "OfficialMd3FloatingToolbarContent must render the official M3E FloatingToolbar on the plain surface"
+        )
+        assertTrue(
             officialToolbarSource.contains("AppMaterial3Toolbar("),
-            "OfficialMd3FloatingToolbarContent must render AppMaterial3Toolbar"
+            "OfficialMd3FloatingToolbarContent keeps AppMaterial3Toolbar for the frosted blur shell"
         )
     }
 
