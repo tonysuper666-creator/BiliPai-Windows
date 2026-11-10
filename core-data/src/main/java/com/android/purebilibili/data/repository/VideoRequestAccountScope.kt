@@ -56,3 +56,16 @@ internal fun buildVideoRequestAccountScope(parts: List<String?>): String {
     }
     return digest.digest().joinToString("") { byte -> "%02x".format(byte) }
 }
+
+/** 推荐用途独立进入相关视频缓存键；不可用的指定账号不会命中主账号缓存。 */
+fun recommendationAccountScope(): String {
+    val context = NetworkModule.appContext
+    val purpose = com.android.purebilibili.core.store.AccountPurpose.RECOMMENDATION
+    val selected = context?.let { com.android.purebilibili.core.store.AccountSessionStore.getPurposeAccountMid(it, purpose) }
+    val account = context?.let { com.android.purebilibili.core.store.AccountSessionStore.getPurposeAccount(it, purpose) }
+    return buildVideoRequestAccountScope(if (selected == null) {
+        listOf(TokenManager.sessDataCache, TokenManager.midCache?.toString())
+    } else {
+        listOf(selected.toString(), account?.sessData, account?.accessToken)
+    })
+}

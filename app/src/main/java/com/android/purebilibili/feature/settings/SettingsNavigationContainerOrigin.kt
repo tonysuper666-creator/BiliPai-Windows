@@ -51,7 +51,10 @@ internal fun SettingsNavigationContainerOrigin(
     val groupRadius = rememberAdaptiveListVisualCapabilities().componentSpec.groupCornerRadiusDp
     val radius = if (isFlatGroup) 0f else with(density) { groupRadius.dp.toPx() }
     SideEffect {
-        sources.sources[target]?.takeIf { it.anchor === anchor }?.layer = layer
+        sources.sources[target]?.takeIf { it.anchor === anchor }?.let { source ->
+            source.layer = layer
+            source.color = color
+        }
     }
     DisposableEffect(anchor) {
         onDispose { anchor.detach() }

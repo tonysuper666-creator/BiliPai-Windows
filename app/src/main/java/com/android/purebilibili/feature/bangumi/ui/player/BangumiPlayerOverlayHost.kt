@@ -2,6 +2,7 @@ package com.android.purebilibili.feature.bangumi.ui.player
 
 import androidx.compose.runtime.Composable
 import android.os.SystemClock
+import com.android.purebilibili.core.player.SeekTickHapticPolicy
 import com.android.purebilibili.core.util.HapticType
 import com.android.purebilibili.core.util.rememberHapticFeedback
 import androidx.compose.runtime.LaunchedEffect
@@ -49,6 +50,7 @@ import com.android.purebilibili.feature.video.usecase.seekPlayerFromUserAction
 
 @Composable
 internal fun BangumiPlayerOverlayHost(
+    viewportWidthDp: Int,
     player: ExoPlayer,
     danmakuManager: DanmakuManager,
     features: BangumiPlayerFeatures,
@@ -120,7 +122,8 @@ internal fun BangumiPlayerOverlayHost(
     onVideoEnhancementAlgorithmChange: (VideoEnhancementAlgorithm) -> Unit,
     onAnime4kPresetChange: (Anime4KPreset) -> Unit,
     onFsrSharpnessChange: (Float) -> Unit,
-    onShowMessage: (String) -> Unit
+    onShowMessage: (String) -> Unit,
+    gestureSeekPositionProvider: () -> Long? = { null },
 ) {
     var pendingContentShare by androidx.compose.runtime.remember(epId) {
         androidx.compose.runtime.mutableStateOf<com.android.purebilibili.feature.share.ContentSharePayload?>(null)
@@ -130,7 +133,7 @@ internal fun BangumiPlayerOverlayHost(
     }
     val context = LocalContext.current
     val seekHaptic = rememberHapticFeedback(com.android.purebilibili.core.ui.AppHapticScene.PLAYER_SEEK)
-    val seekHaptics = remember(player, epId, bvid, cid) { BangumiSeekHapticPolicy() }
+    val seekHaptics = remember(player, epId, bvid, cid) { SeekTickHapticPolicy() }
     val settingsScope = rememberCoroutineScope()
     val danmakuSettingsScope = resolveDanmakuSettingsScope(isFullscreen)
     val settings by SettingsManager.getDanmakuSettings(context, danmakuSettingsScope)
@@ -160,6 +163,7 @@ internal fun BangumiPlayerOverlayHost(
 
     VideoPlayerOverlay(
         state = VideoPlayerOverlayState(
+            viewportWidthDpOverride = viewportWidthDp,
             player = player,
             title = title,
             isVisible = isVisible,
@@ -279,7 +283,8 @@ internal fun BangumiPlayerOverlayHost(
                 danmakuManager.seekTo(result.committedPositionMs)
             },
             progressDisplayOverridePositionProvider = {
-                seekSession.sliderPositionMs.takeIf { shouldUsePlaybackSeekSessionPosition(seekSession) }
+                gestureSeekPositionProvider()
+                    ?: seekSession.sliderPositionMs.takeIf { shouldUsePlaybackSeekSessionPosition(seekSession) }
             },
             onToggleVisible = onToggleVisible,
             onQualitySelected = { index ->

@@ -76,6 +76,15 @@ class EyeProtectionPolicyTest {
     }
 
     @Test
+    fun `snooze fires at requested time and next interval follows that reminder`() {
+        assertFalse(shouldTriggerCareReminder(39, 30, 40, 30))
+        assertTrue(shouldTriggerCareReminder(40, 30, 40, 30))
+        assertFalse(shouldTriggerCareReminder(60, 30, null, 40))
+        assertTrue(shouldTriggerCareReminder(70, 30, null, 40))
+        assertEquals(10, resolveMinutesUntilReminder(60, 30, null, true, 40))
+    }
+
+    @Test
     fun `tuningForPreset returns expected defaults`() {
         val gentle = tuningForPreset(EyeCarePreset.GENTLE)
         val focus = tuningForPreset(EyeCarePreset.FOCUS)

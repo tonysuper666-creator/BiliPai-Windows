@@ -1,0 +1,31 @@
+--- a/com/android/purebilibili/feature/space/SpaceShopCard.kt
++++ b/com/android/purebilibili/feature/space/SpaceShopCard.kt
+@@ -20,24 +20,11 @@ internal val LocalShopContainerMotionEnabled = androidx.compose.runtime.staticCo
+ @Composable
+ internal fun SpaceShopCard(product: SpaceShopProduct, onWebClick: (String, String) -> Unit, modifier: Modifier = Modifier) {
+     val target = shopWebUrl(product.url)
+-    val key = target?.let { com.android.purebilibili.navigation3.BiliPaiNavKey.Web(it, product.title) }
+-    val sources = com.android.purebilibili.feature.live.LocalLiveCardContainerSources.current
+-    val container = com.android.purebilibili.feature.live.rememberLiveCardContainerTransition(
+-        roomId = 0L,
+-        title = product.title,
+-        hostName = "",
+-        color = MaterialTheme.colorScheme.surface,
+-        cornerRadius = 6.dp,
+-        enabled = LocalShopContainerMotionEnabled.current && target != null && !com.android.purebilibili.feature.web.shouldOpenWebUrlExternally(target),
+-        containerTarget = key,
+-        onClick = {
+-            key?.let { sources?.sources?.get(it)?.previewImageUrl = product.cover }
+-            target?.let { onWebClick(it, product.title) }
+-        },
+-    )
+     Column(
+-        modifier.then(container.modifier).clip(RoundedCornerShape(6.dp))
+-            .clickable(enabled = target != null, onClick = container.onClick),
++        modifier.clip(RoundedCornerShape(6.dp))
++            .clickable(enabled = target != null) {
++                target?.let { onWebClick(it, product.title) }
++            },
+     ) {
+         AsyncImage(model = product.cover, contentDescription = product.title,
+             contentScale = ContentScale.Crop, modifier = Modifier.fillMaxWidth().aspectRatio(1f))

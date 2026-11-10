@@ -13,6 +13,30 @@ class SettingsContainerMotionPolicyTest {
     private val page = Rect(0f, 0f, 400f, 900f)
 
     @Test
+    fun mediaAndUpCardsReturnOnlyToTheirActualNavigationOwner() {
+        val owner = BiliPaiNavKey.Search()
+        val targets = listOf(BiliPaiNavKey.Space(42L), BiliPaiNavKey.BangumiDetail(123L, epId = 456L))
+        targets.forEach { target ->
+            assertTrue(isSettingsContainerBoundary(true, listOf(owner, target), target, owner))
+            assertFalse(isSettingsContainerBoundary(false, listOf(owner, target), target, owner))
+            assertFalse(isSettingsContainerBoundary(true, listOf(BiliPaiNavKey.Space(99L), target), target, owner))
+        }
+        val episode = BiliPaiNavKey.BangumiDetail(123L, epId = 456L)
+        assertFalse(isSettingsContainerBoundary(true, listOf(owner, episode.copy(epId = 789L)), episode, owner))
+    }
+
+    @Test
+    fun shopWebContainerRequiresItsCapturedOwnerAndExactProduct() {
+        val owner = BiliPaiNavKey.Space(123L)
+        val target = BiliPaiNavKey.Web("https://mall.bilibili.com/item/1", "商品")
+        assertTrue(isSettingsContainerBoundary(true, listOf(owner, target), target, owner))
+        assertFalse(isSettingsContainerBoundary(false, listOf(owner, target), target, owner))
+        assertFalse(isSettingsContainerBoundary(true, listOf(BiliPaiNavKey.Space(456L), target), target, owner))
+        assertFalse(isSettingsContainerBoundary(true, listOf(owner, target.copy(url = "https://mall.bilibili.com/item/2")), target, owner))
+        assertFalse(isSettingsContainerBoundary(true, listOf(target), target, null))
+    }
+
+    @Test
     fun liveAreaIconReturnsOnlyToItsCapturedCategorySession() {
         val owner = BiliPaiNavKey.LiveArea
         val target = BiliPaiNavKey.LiveAreaDetail(2, 86, "英雄联盟", openId = 10L)

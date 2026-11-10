@@ -1,5 +1,8 @@
 package com.android.purebilibili.feature.download
 
+import com.android.purebilibili.core.player.withAppVideoDecoderDiagnostics
+import com.android.purebilibili.core.player.withAppVideoDecoderPreference
+
 import com.android.purebilibili.core.ui.AppContentColors
 
 import com.android.purebilibili.feature.video.ui.overlay.NextWatchOverlay
@@ -247,7 +250,13 @@ fun OfflineVideoPlayerScreen(
 
     // 创建播放器
     val player = remember(context, task.id, file.absolutePath) {
-        ExoPlayer.Builder(context).build()
+        ExoPlayer.Builder(context)
+            .setRenderersFactory(
+                com.android.purebilibili.core.player.HiResCompatibleRenderersFactory(context)
+                    .setExtensionRendererMode(androidx.media3.exoplayer.DefaultRenderersFactory.EXTENSION_RENDERER_MODE_ON)
+                    .withAppVideoDecoderPreference(context)
+            )
+            .build().withAppVideoDecoderDiagnostics(context)
     }
     var playerView by remember(player) { mutableStateOf<PlayerView?>(null) }
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -697,16 +706,10 @@ fun OfflineVideoPlayerScreen(
                                         totalDragDistanceX += dragAmount.x
                                         val duration = player.duration.coerceAtLeast(0L)
                                         val seekDelta = resolveHorizontalSeekDeltaMs(
-                                            isFullscreen = isFullscreen,
-                                            fullscreenSwipeSeekEnabled = playerInteractionSettings.fullscreenSwipeSeekEnabled,
                                             totalDragDistanceX = totalDragDistanceX,
                                             containerWidthPx = size.width.toFloat(),
-                                            fullscreenSwipeSeekSeconds = playerInteractionSettings.fullscreenSwipeSeekSeconds,
-                                            inlineSwipeSeekSeconds = playerInteractionSettings.inlineSwipeSeekSeconds,
                                             gestureSensitivity = playerInteractionSettings.gestureSensitivity,
                                             durationMs = duration,
-                                            useRelativeDuration = playerInteractionSettings.swipeSeekUseRelativeDuration,
-                                            relativeSeekPercent = playerInteractionSettings.swipeSeekRelativePercent
                                         )
                                         if (seekDelta != null) {
                                             seekTargetTime = (startPosition + seekDelta).coerceIn(0L, duration)
@@ -826,14 +829,14 @@ fun OfflineVideoPlayerScreen(
                     AndroidView(
                         factory = { ctx ->
                             DanmakuRenderView(ctx).apply {
-                                danmakuManager.isFullscreenSurface = isFullscreen
+                                danmakuManager.useFullscreenTextSize = isFullscreen
                                 setBackgroundColor(android.graphics.Color.TRANSPARENT)
                                 configureAsPassiveDanmakuOverlay()
                                 danmakuManager.attachView(this)
                             }
                         },
                         update = { view ->
-                            danmakuManager.isFullscreenSurface = isFullscreen
+                            danmakuManager.useFullscreenTextSize = isFullscreen
                             view.visibility = if (showDanmakuLayer) {
                                 android.view.View.VISIBLE
                             } else {

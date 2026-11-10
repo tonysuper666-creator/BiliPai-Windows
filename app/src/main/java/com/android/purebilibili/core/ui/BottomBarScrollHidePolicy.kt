@@ -148,6 +148,8 @@ class BottomBarScrollHideConnection(
 ) : NestedScrollConnection {
 
     override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
+        // 预加载或保留页面不能更新底栏连续偏移，也不能参与显隐判断。
+        if (!isActivePage()) return Offset.Zero
         val nextOffset = resolveNextHomeGlobalScrollOffset(
             currentOffset = chromeScrollOffset.floatValue,
             scrollDeltaY = available.y,
@@ -156,7 +158,7 @@ class BottomBarScrollHideConnection(
         if (nextOffset != null) {
             chromeScrollOffset.floatValue = nextOffset
         }
-        if (!autoHideEnabled() || !isActivePage()) return Offset.Zero
+        if (!autoHideEnabled()) return Offset.Zero
 
         val update = reduceBottomBarScrollHideDelta(
             previousState = hideState.value,

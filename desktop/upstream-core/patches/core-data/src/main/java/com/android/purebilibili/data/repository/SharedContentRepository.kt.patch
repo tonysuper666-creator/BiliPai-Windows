@@ -1,0 +1,103 @@
+--- core-data/src/main/java/com/android/purebilibili/data/repository/SharedContentRepository.kt
++++ core-data/src/main/java/com/android/purebilibili/data/repository/SharedContentRepository.kt
+@@ -1,5 +1,6 @@
+-package com.android.purebilibili.data.repository
+-
+-import com.android.purebilibili.core.network.NetworkModule
+-import com.android.purebilibili.core.network.WbiKeyManager
+-import com.android.purebilibili.core.network.WbiUtils
++package com.android.purebilibili.data.repository
++
++import com.bilipai.desktop.data.DesktopUpstreamCalls
++import com.android.purebilibili.core.network.NetworkModule
++import com.android.purebilibili.core.network.WbiKeyManager
++import com.android.purebilibili.core.network.WbiUtils
+@@ -43,6 +44,11 @@
+-        }
+-    }
+-
+-    private data class DetailKey(val accountScope: String, val bvid: String, val aid: Long)
+-    private val detailCache = OnDemandRequestCache<DetailKey, Result<ViewInfo>>(
+-        maxEntries = 48,
++        }
++    }
++
++    // Desktop caches belong to one Store and login epoch, including an explicit guest partition.
++    private fun detailAccountScope(): String = DesktopUpstreamCalls.admitted("SharedContentRepository.detail cache") {
++        DesktopUpstreamCalls.cacheScope("SharedContentRepository.detail cache")
++    }
++
++    private data class DetailKey(val accountScope: String, val bvid: String, val aid: Long)
++    private val detailCache = OnDemandRequestCache<DetailKey, Result<ViewInfo>>(
++        maxEntries = 48,
+@@ -70,18 +76,22 @@
+-    suspend fun detail(bvid: String, aid: Long = 0, requestedCid: Long = 0): Result<ViewInfo> = dataRequest {
+-        val lookup = resolveVideoInfoLookupInput(bvid, aid) ?: error("无效的视频标识")
+-        TokenManager.awaitRestore()
+-        val accountScope = videoMetadataAccountScope()
+-        val key = DetailKey(accountScope, lookup.bvid, lookup.aid)
+-        val info = detailCache.getOrLoad(key) {
+-            dataRequest {
+-                val response = if (lookup.bvid.isNotEmpty()) NetworkModule.api.getVideoInfo(lookup.bvid)
+-                else NetworkModule.api.getVideoInfoByAid(lookup.aid)
+-                if (response.code != 0) throw ContentRequestException(response.code, response.message)
+-                check(accountScope == videoMetadataAccountScope()) { "账号已切换，请重新加载" }
+-                response.data ?: error("视频详情为空")
+-            }
+-        }.getOrThrow()
+-        check(accountScope == videoMetadataAccountScope()) { "账号已切换，请重新加载" }
+-        info.redirectUrl?.takeIf { it.isNotBlank() }?.let { throw ContentRedirectException(it) }
+-        val cid = resolveRequestedVideoCid(requestedCid, info.cid, info.pages)
+-        check(cid > 0) { "未找到可播放的分 P" }
++    suspend fun detail(bvid: String, aid: Long = 0, requestedCid: Long = 0): Result<ViewInfo> = dataRequest {
++        val lookup = resolveVideoInfoLookupInput(bvid, aid) ?: error("无效的视频标识")
++        TokenManager.awaitRestore()
++        val owner = DesktopUpstreamCalls.requireOwner("SharedContentRepository.detail")
++        val accountScope = detailAccountScope()
++        val key = DetailKey(accountScope, lookup.bvid, lookup.aid)
++        val info = detailCache.getOrLoad(key) {
++            // The cache owns its worker Job; carry only the request owner, not the caller Job.
++            DesktopUpstreamCalls.withOwnerScope(owner) {
++                dataRequest {
++                    val response = if (lookup.bvid.isNotEmpty()) NetworkModule.api.getVideoInfo(lookup.bvid)
++                    else NetworkModule.api.getVideoInfoByAid(lookup.aid)
++                    if (response.code != 0) throw ContentRequestException(response.code, response.message)
++                    check(accountScope == detailAccountScope()) { "账号已切换，请重新加载" }
++                    response.data ?: error("视频详情为空")
++                }
++            }
++        }.getOrThrow()
++        check(accountScope == detailAccountScope()) { "账号已切换，请重新加载" }
++        info.redirectUrl?.takeIf { it.isNotBlank() }?.let { throw ContentRedirectException(it) }
++        val cid = resolveRequestedVideoCid(requestedCid, info.cid, info.pages)
++        check(cid > 0) { "未找到可播放的分 P" }
+@@ -90,7 +100,7 @@
+-
+-    fun cachedDetailInfo(bvid: String, aid: Long = 0L): ViewInfo? {
+-        val lookup = resolveVideoInfoLookupInput(bvid, aid) ?: return null
+-        return detailCache.peek(DetailKey(videoMetadataAccountScope(), lookup.bvid, lookup.aid))
+-            ?.getOrNull()
+-    }
+-
++
++    fun cachedDetailInfo(bvid: String, aid: Long = 0L): ViewInfo? {
++        val lookup = resolveVideoInfoLookupInput(bvid, aid) ?: return null
++        return detailCache.peek(DetailKey(detailAccountScope(), lookup.bvid, lookup.aid))
++            ?.getOrNull()
++    }
++
+@@ -99,7 +109,7 @@
+-
+-    fun invalidateDetail(bvid: String, aid: Long = 0L) {
+-        val lookup = resolveVideoInfoLookupInput(bvid, aid) ?: return
+-        detailCache.invalidate(DetailKey(videoMetadataAccountScope(), lookup.bvid, lookup.aid))
+-    }
+-
+-    fun clearDetailCache() {
++
++    fun invalidateDetail(bvid: String, aid: Long = 0L) {
++        val lookup = resolveVideoInfoLookupInput(bvid, aid) ?: return
++        detailCache.invalidate(DetailKey(detailAccountScope(), lookup.bvid, lookup.aid))
++    }
++
++    fun clearDetailCache() {

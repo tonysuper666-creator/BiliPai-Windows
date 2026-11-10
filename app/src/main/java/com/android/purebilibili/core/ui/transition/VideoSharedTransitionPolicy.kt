@@ -46,6 +46,11 @@ internal object VideoHeroMotionTokens {
 private val VIDEO_CARD_SPATIAL_EASING: Easing =
     CubicBezierEasing(0.24f, 0.60f, 0.32f, 1f)
 
+// 自动返回将更多行程留给中后段，缩短最后 2% 几何位移的低速尾段。
+// 只缓动导航驱动一次；媒体、标题和景深继续读取同一深度，不另建时间时钟。
+private val VIDEO_CARD_RETURN_SPATIAL_EASING: Easing =
+    CubicBezierEasing(0.24f, 0.60f, 0.58f, 1f)
+
 internal data class VideoHeroMotionSpec(
     val enterDurationMillis: Int,
     val returnDurationMillis: Int,
@@ -55,7 +60,10 @@ internal data class VideoHeroMotionSpec(
     val enterSpatialSpec: Easing get() = VIDEO_CARD_SPATIAL_EASING
     // The driver itself must NOT overshoot: Miuix unloads an entry at relativeDepth <= -1.
     // Do not add a flying-layer landing pulse; it drifts off the frozen card bounds.
-    val returnSpatialSpec: Easing get() = VIDEO_CARD_SPATIAL_EASING
+    val returnSpatialSpec: Easing get() =
+        if (reducedMotion) VIDEO_CARD_SPATIAL_EASING else VIDEO_CARD_RETURN_SPATIAL_EASING
+    // 取消恢复与自动返回分开，调落位节奏不改变恢复到详情的手感。
+    val cancelSpatialSpec: Easing get() = VIDEO_CARD_SPATIAL_EASING
     val predictiveSeekSpec: Easing get() = LinearEasing
     val effectsEasing: Easing get() = LinearEasing // progress is already eased by the owner
     val handoffTimeline get() = VideoCardTransitionVisualTimeline
@@ -290,9 +298,8 @@ internal fun resolveVideoCardSharedTransitionReturnEasing(): Easing =
 /**
  * 卡片景深返回清晰曲线。
  *
- * **必须与 sharedBounds 返回 morph 一致用 Linear**：
- * morph 已是 Linear tween（可 seek / remainingDuration 可算），景深若用 SoftClear
- * 会在卡片将落位时仍「挂糊」，观感上模糊层和壳不同步。
+ * 导航主路径读取已经缓动的 morph 深度，此处保持恒等映射，不能再缓动一次。
+ * 兼容 sharedBounds 返回本身采用 Linear；两条路径都避免景深与卡片落位脱节。
  */
 internal fun resolveVideoCardTransitionBackgroundReturnClearEasing(): Easing =
     LinearEasing

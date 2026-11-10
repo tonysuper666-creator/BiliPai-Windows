@@ -1,11 +1,13 @@
 --- a/core-data/src/main/java/com/android/purebilibili/core/network/grpc/BiliGrpcClient.kt
 +++ b/core-data/src/main/java/com/android/purebilibili/core/network/grpc/BiliGrpcClient.kt
-@@ -43,7 +43,7 @@ object BiliGrpcClient {
+@@ -66,7 +66,9 @@ object BiliGrpcClient {
              }
              .build()
  
--        NetworkModule.okHttpClient.newCall(request).execute().use { response ->
-+        com.bilipai.desktop.data.DesktopUpstreamCalls.main.newCall(request).execute().use { response -> // Desktop: caller's owner (TON-1082)
+-        val client = if (profile.includeAccount) NetworkModule.okHttpClient else dynamicPreviewClient
++        // Desktop (TON-1082): account requests use the caller's owner; guest previews use the guest send gate
++        // (upstream's dynamicPreviewClient strips the gate's interceptors, so it is not used on the desktop).
++        val client = if (profile.includeAccount) com.bilipai.desktop.data.DesktopUpstreamCalls.main else com.bilipai.desktop.data.DesktopUpstreamCalls.guest
+         client.newCall(request).execute().use { response ->
              val body = response.body.bytes()
              val trailers = runCatching { response.trailers() }.getOrNull()
-             val grpcStatus = response.header("grpc-status")

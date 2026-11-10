@@ -20,6 +20,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
@@ -61,8 +62,19 @@ internal fun PiliPlaybackInformationDialog(
         player?.addListener(listener)
         onDispose { player?.removeListener(listener) }
     }
-    val rows = remember(player, playerRevision, debugInfo, videoUrl, audioUrl) {
-        playbackInformationRows(player, debugInfo, videoUrl, audioUrl)
+    val decoder = if (player is androidx.media3.exoplayer.ExoPlayer) {
+        val flow = remember(player) { com.android.purebilibili.core.player.VideoDecoderDiagnostics.observe(player) }
+        val snapshot by flow.collectAsStateWithLifecycle()
+        snapshot
+    } else null
+    val effectiveDebugInfo = if (decoder != null) (debugInfo ?: PlaybackDebugInfo()).copy(
+        videoDecoder = decoder.decoderName,
+        videoDecoderType = decoder.kind.label,
+        videoDecoderPreference = decoder.preference,
+        videoDecoderFallbackReason = decoder.fallbackReason,
+    ) else debugInfo
+    val rows = remember(player, playerRevision, effectiveDebugInfo, videoUrl, audioUrl) {
+        playbackInformationRows(player, effectiveDebugInfo, videoUrl, audioUrl)
     }
 
     PlayerNativeMenuTheme {
@@ -170,6 +182,9 @@ private fun playbackInformationRows(
         row("playWhenReady", player?.playWhenReady?.toString() ?: debugInfo?.playWhenReady)
         row("isPlaying", player?.isPlaying?.toString() ?: debugInfo?.isPlaying)
         debugInfo?.videoDecoder?.takeIf { it.isNotBlank() }?.let { row("Video decoder", it) }
+        debugInfo?.videoDecoderType?.takeIf { it.isNotBlank() }?.let { row("实际解码类型", it) }
+        debugInfo?.videoDecoderPreference?.takeIf { it.isNotBlank() }?.let { row("创建时解码偏好", it) }
+        debugInfo?.videoDecoderFallbackReason?.takeIf { it.isNotBlank() }?.let { row("解码方式说明", it) }
         debugInfo?.audioDecoder?.takeIf { it.isNotBlank() }?.let { row("Audio decoder", it) }
         player?.playerError?.let { row("Player error", "${it.errorCodeName}: ${it.message.orEmpty()}") }
     }

@@ -538,6 +538,7 @@ private fun FavoriteCategoryGrid(
 ) {
     BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
         val columns = resolveFavoriteCategoryColumnCount(state.section, maxWidth.value)
+        val alignRows = columns > 1 && !com.android.purebilibili.core.ui.LocalFullVideoCardContentVisible.current
         LazyVerticalStaggeredGrid(
             state = gridState,
             columns = StaggeredGridCells.Fixed(columns),
@@ -550,13 +551,16 @@ private fun FavoriteCategoryGrid(
             horizontalArrangement = Arrangement.spacedBy(AppSpacingTokens.Medium),
             verticalItemSpacing = AppSpacingTokens.Medium,
         ) {
-            itemsIndexed(state.items, key = { _, item -> "${item.section}_${item.id}" }) { index, item ->
+            val itemKeys = state.items.map { "${it.section}_${it.id}" }
+            val renderCard: @Composable (Int, Modifier) -> Unit = { index, cardModifier ->
+                val item = state.items[index]
                 if (index == state.items.lastIndex && state.hasMore && !state.isLoadingMore) {
                     LaunchedEffect(state.page, state.items.size) { onLoadMore() }
                 }
                 when (state.section) {
                     FavoriteSection.BANGUMI, FavoriteSection.CINEMA -> FavoritePgcCard(
                         item = item,
+                        modifier = cardModifier,
                         selected = item.id in state.selectedIds,
                         batchMode = state.selectedIds.isNotEmpty(),
                         selectedStatus = state.pgcStatus,
@@ -572,10 +576,11 @@ private fun FavoriteCategoryGrid(
                         onClick = { onTopicClick(item.id) },
                         label = { AppText("# ${item.title}", maxLines = 1, overflow = TextOverflow.Ellipsis) },
                         leadingIcon = null,
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = cardModifier.fillMaxWidth(),
                     )
                     else -> FavoriteGenericCategoryCard(
                         item = item,
+                        modifier = cardModifier,
                         selected = item.id in state.selectedIds,
                         batchMode = state.selectedIds.isNotEmpty(),
                         onClick = {
@@ -599,6 +604,25 @@ private fun FavoriteCategoryGrid(
                     )
                 }
             }
+            if (!alignRows) {
+                itemsIndexed(state.items, key = { index, _ -> itemKeys[index] }) { index, _ ->
+                    renderCard(index, Modifier)
+                }
+            } else {
+                com.android.purebilibili.feature.home.resolveHomeFeedAlignedRows(state.items.size, columns)
+                    .forEach { row ->
+                        item(key = "favorite_category_row_${itemKeys[row.first]}", span = androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan.FullLine) {
+                            com.android.purebilibili.feature.home.HomeAlignedVideoRow(
+                                indices = row,
+                                itemKeys = itemKeys,
+                                columns = columns,
+                                horizontalArrangement = Arrangement.spacedBy(AppSpacingTokens.Medium),
+                                modifier = Modifier.fillMaxWidth(),
+                                content = renderCard,
+                            )
+                        }
+                    }
+            }
         }
     }
 }
@@ -607,6 +631,7 @@ private fun FavoriteCategoryGrid(
 @OptIn(ExperimentalFoundationApi::class)
 private fun FavoritePgcCard(
     item: FavoriteCategoryItem,
+    modifier: Modifier = Modifier,
     selected: Boolean,
     batchMode: Boolean,
     selectedStatus: FavoritePgcStatus,
@@ -616,7 +641,7 @@ private fun FavoritePgcCard(
     onRemove: () -> Unit,
 ) {
     AppSurface(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .combinedClickable(onClick = appActionWithFeedback(onClick), onLongClick = onLongClick),
         shape = AppShapes.container(ContainerLevel.Card),
@@ -689,13 +714,21 @@ private fun FavoritePgcCard(
 @Composable
 private fun FavoriteGenericCategoryCard(
     item: FavoriteCategoryItem,
+    modifier: Modifier = Modifier,
     selected: Boolean,
     batchMode: Boolean,
     onClick: () -> Unit,
     onLongClick: (() -> Unit)?,
     onRemove: () -> Unit,
 ) {
+    val container = if (item.section == FavoriteSection.ARTICLE && !batchMode && item.id > 0L) {
+        com.android.purebilibili.core.ui.rememberNativeCardContainerTransition(
+            com.android.purebilibili.navigation3.BiliPaiNavKey.DynamicDetail(item.id.toString()), onClick,
+        )
+    } else null
     PersonalMediaCardFrame(
+        modifier = modifier.then(container?.modifier ?: Modifier),
+        horizontalCoverMaxWidthDp = com.android.purebilibili.feature.home.components.cards.WIDE_LIST_COVER_MAX_WIDTH_DP,
         selected = selected,
         headlineContent = {
             AppText(
@@ -734,7 +767,7 @@ private fun FavoriteGenericCategoryCard(
                 }
             }
         },
-        onClick = if (batchMode) ({ onLongClick?.invoke(); Unit }) else onClick,
+        onClick = if (batchMode) ({ onLongClick?.invoke(); Unit }) else container?.onClick ?: onClick,
         onLongClick = onLongClick,
     )
 }

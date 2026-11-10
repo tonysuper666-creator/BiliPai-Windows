@@ -122,6 +122,68 @@ class HomeScrollLayoutUiRegressionTest {
     }
 
     @Test
+    fun fixedNativeBarsKeepDockOffsetWithoutChromeUpdatesAndHonorRefreshAndRevealLock() {
+        val globalOffset = mutableFloatStateOf(0f)
+        val locked = mutableStateOf(false)
+        val refreshing = mutableStateOf(false)
+        val chromeUpdates = mutableListOf<String>()
+        lateinit var connection: NestedScrollConnection
+        rule.setContent {
+            val pager = rememberPagerState(pageCount = { 1 })
+            val subscription = rememberLazyStaggeredGridState()
+            val feed = rememberHomeFeedGridState(regularLayout = true)
+            connection = rememberHomeHeaderScrollConnection(
+                configuration = HomeHeaderScrollConfiguration(
+                    collapseEnabled = false,
+                    collapseDistancePx = 0f,
+                    collapseTabs = false,
+                    bottomBarAutoHideEnabled = false,
+                    useSideNavigation = false,
+                    liquidGlassEnabled = false,
+                    hideType = HomeBarHideType.SYNC,
+                ),
+                pagerState = pager,
+                topTabEntries = listOf(HomeTopTabEntry.Category(HomeCategory.RECOMMEND)),
+                activeGridStateProvider = { feed },
+                subscriptionListState = subscription,
+                revealLocked = locked.value,
+                refreshInteractionActiveProvider = { refreshing.value },
+                headerOffsetProvider = { 0f },
+                globalScrollOffset = globalOffset,
+                onHeaderOffsetChanged = { _, _ -> chromeUpdates.add("header") },
+                onTabsCollapsedChanged = { chromeUpdates.add("tabs") },
+                onBottomBarVisibleChanged = { chromeUpdates.add("bottom") },
+            )
+        }
+        rule.runOnIdle {
+            assertEquals(Offset.Zero, connection.onPreScroll(Offset(0f, -18f), NestedScrollSource.UserInput))
+            connection.onPreScroll(Offset(0f, -12f), NestedScrollSource.SideEffect)
+            assertEquals(30f, globalOffset.floatValue, 0f)
+            assertTrue(chromeUpdates.isEmpty())
+            connection.onPreScroll(Offset(20f, -2f), NestedScrollSource.UserInput)
+            assertEquals(30f, globalOffset.floatValue, 0f)
+            locked.value = true
+        }
+        rule.runOnIdle {
+            connection.onPreScroll(Offset(0f, -10f), NestedScrollSource.UserInput)
+            assertEquals(30f, globalOffset.floatValue, 0f)
+            assertTrue(chromeUpdates.isEmpty())
+            locked.value = false
+            refreshing.value = true
+        }
+        rule.runOnIdle {
+            connection.onPreScroll(Offset(0f, -10f), NestedScrollSource.UserInput)
+            assertEquals(30f, globalOffset.floatValue, 0f)
+            assertEquals(listOf("header", "tabs"), chromeUpdates)
+            refreshing.value = false
+        }
+        rule.runOnIdle {
+            connection.onPreScroll(Offset(0f, 8f), NestedScrollSource.UserInput)
+            assertEquals(22f, globalOffset.floatValue, 0f)
+        }
+    }
+
+    @Test
     fun headerScrollKeepsFeedScrollUnconsumedAndHonorsRevealLock() {
         val headerOffset = mutableFloatStateOf(0f)
         val globalOffset = mutableFloatStateOf(0f)
@@ -132,6 +194,7 @@ class HomeScrollLayoutUiRegressionTest {
         rule.setContent {
             val pager = rememberPagerState(pageCount = { 1 })
             val grid = rememberLazyStaggeredGridState()
+            val feedGrid = rememberHomeFeedGridState(regularLayout = true)
             connection = rememberHomeHeaderScrollConnection(
                 configuration = HomeHeaderScrollConfiguration(
                     collapseEnabled = true,
@@ -144,7 +207,7 @@ class HomeScrollLayoutUiRegressionTest {
                 ),
                 pagerState = pager,
                 topTabEntries = listOf(HomeTopTabEntry.Category(HomeCategory.RECOMMEND)),
-                activeGridStateProvider = { grid },
+                activeGridStateProvider = { feedGrid },
                 subscriptionListState = grid,
                 revealLocked = revealLocked.value,
                 headerOffsetProvider = { headerOffset.floatValue },
@@ -201,6 +264,7 @@ class HomeScrollLayoutUiRegressionTest {
             pager = rememberPagerState(pageCount = { 2 })
             scope = rememberCoroutineScope()
             val grid = rememberLazyStaggeredGridState()
+            val feedGrid = rememberHomeFeedGridState(regularLayout = true)
             connection = rememberHomeHeaderScrollConnection(
                 configuration = HomeHeaderScrollConfiguration(
                     collapseEnabled = true,
@@ -216,7 +280,7 @@ class HomeScrollLayoutUiRegressionTest {
                     HomeTopTabEntry.Category(HomeCategory.RECOMMEND),
                     HomeTopTabEntry.Category(HomeCategory.POPULAR),
                 ),
-                activeGridStateProvider = { grid },
+                activeGridStateProvider = { feedGrid },
                 subscriptionListState = grid,
                 revealLocked = false,
                 refreshInteractionActiveProvider = { refreshByPage[pager.currentPage].value },

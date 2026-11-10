@@ -1,0 +1,38 @@
+--- a/com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiPlayerViewModel.kt
++++ b/com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiPlayerViewModel.kt
+@@ -936,2 +936,1 @@
+-        currentEpId = episode.id
+-        val newIndex = currentState.seasonDetail.episodes?.indexOfFirst { it.id == episode.id } ?: 0
++        currentEpId = episode.id
+@@ -931,1 +931,0 @@
+-        if (episode.id == currentState.currentEpisode.id && currentState.playUrl != null) return
+@@ -928,2 +928,1 @@
+-        val desktopEpisodeIntent = desktopPlaybackIntentRevision
+-        val currentState = _uiState.value as? BangumiPlayerState.Success ?: return
++        val desktopEpisodeIntent = desktopPlaybackIntentRevision
+@@ -925,1 +925,6 @@
+-    fun switchEpisode(episode: BangumiEpisode) {
++    fun switchEpisode(episode: BangumiEpisode) {
++        val currentState = _uiState.value as? BangumiPlayerState.Success ?: return
++        val episodes = com.bilipai.desktop.ui.desktopBangumiPlaybackEpisodes(currentState.seasonDetail, episode.id)
++        val newIndex = episodes.indexOfFirst { it === episode }
++        if (newIndex < 0) return
++        if (episode.id == currentState.currentEpisode.id && currentState.playUrl != null) return
+@@ -454,1 +454,1 @@
+-                val episodeIndex = detail.episodes?.indexOfFirst { it.id == episode.id } ?: 0
++                val episodeIndex = com.bilipai.desktop.ui.desktopBangumiPlaybackEpisodes(detail, episode.id).indexOfFirst { it === episode }
+@@ -446,2 +446,3 @@
+-                val episode = detail.episodes?.find { it.id == targetEpId }
+-                    ?: detail.episodes?.firstOrNull()
++                val allEpisodes = com.bilipai.desktop.ui.desktopBangumiAllEpisodes(detail)
++                val episode = allEpisodes.find { it.id == targetEpId }
++                    ?: allEpisodes.firstOrNull()
+@@ -257,2 +257,3 @@
+-        val episodes = currentState.seasonDetail.episodes ?: return
+-        val currentIndex = currentState.currentEpisodeIndex
++        val episodes = com.bilipai.desktop.ui.desktopBangumiPlaybackEpisodes(currentState.seasonDetail, currentState.currentEpisode.id)
++        val currentIndex = episodes.indexOfFirst { it === currentState.currentEpisode }
++        if (currentIndex < 0) return
+@@ -118,1 +118,1 @@
+-    val episodes = detail.episodes.orEmpty().filter { it.id > 0L }
++    val episodes = com.bilipai.desktop.ui.desktopBangumiPlaybackEpisodes(detail, currentEpisodeId)

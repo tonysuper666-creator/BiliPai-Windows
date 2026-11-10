@@ -150,10 +150,10 @@ class SeekPreviewBubblePolicyTest {
     }
 
     @Test
-    fun compactPreview_keepsHeightWhenContainerCapBelowReadableMinimum() {
-        // clamp 结果低于可读下限时放弃 clamp，保持原尺寸。
+    fun compactPreview_keepsOnlyTimestampWhenContainerCapBelowReadableMinimum() {
+        // 高度不足时让组件只渲染时间，不能恢复到更大的缩略图。
         assertEquals(
-            CompactSeekPreviewSize(widthDp = 120, heightDp = 213),
+            CompactSeekPreviewSize(widthDp = 120, heightDp = 0),
             resolveCompactSeekPreviewSize(
                 sourceWidthPx = 160,
                 sourceHeightPx = 90,
@@ -162,6 +162,23 @@ class SeekPreviewBubblePolicyTest {
                 containerHeightDp = 200
             )
         )
+    }
+
+    @Test
+    fun previewShrinkAndRestoreUpdatesImageHeightAndKeepsNarrowWidthInsideWindow() {
+        val sizes = listOf(800, 300, 200, 800).map { height ->
+            resolveCompactSeekPreviewSize(160, 90, 393, 9f / 16f, height)
+        }
+        assertEquals(listOf(213, 160, 0, 213), sizes.map { it.heightDp })
+        assertEquals(68, resolveCompactSeekPreviewSize(160, 90, 100).widthDp)
+    }
+
+    @Test
+    fun landscapePreviewAndReservedAreaUseSameHeightDecisionOnResize() {
+        assertEquals(listOf(120, 100, 0, 120), listOf(800, 240, 200, 800).map {
+            resolveSeekPreviewBubbleHeightDp(900, it)
+        })
+        assertEquals(106, resolveSeekPreviewBubbleHeightDp(393, 0))
     }
 
     @Test

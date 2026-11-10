@@ -24,7 +24,7 @@ internal fun openDesktopDiscoveryStorage(
     val preferences=try {preferencesFactory()}
         catch(cancelled:CancellationException){throw cancelled}
         catch(failure:Exception){throw DesktopDiscoveryStorageFailure(true,false,failure)}
-    try {preferences.feedMode.value;preferences.refreshCount.value}
+    try {preferences.feedMode.value}
         catch(cancelled:CancellationException){throw cancelled}
         catch(failure:Exception){throw DesktopDiscoveryStorageFailure(false,false,failure)}
     return DesktopDiscoveryRepository(repository,preferences)

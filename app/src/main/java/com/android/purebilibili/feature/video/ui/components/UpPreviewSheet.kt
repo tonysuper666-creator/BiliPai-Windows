@@ -357,6 +357,7 @@ fun UpPreviewSheet(
                 val bottomPad = WindowInsets.navigationBars
                     .asPaddingValues()
                     .calculateBottomPadding()
+                val alignVideos = !com.android.purebilibili.core.ui.LocalFullVideoCardContentVisible.current
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(2),
                     state = gridState,
@@ -430,25 +431,37 @@ fun UpPreviewSheet(
                             }
                         }
                         else -> {
-                            itemsIndexed(
-                                items = videos,
-                                key = { index, item ->
-                                    resolveIndexedVideoLazyKey(
-                                        namespace = "up_preview_video",
-                                        index = index,
-                                        bvid = item.bvid,
-                                    )
-                                },
-                            ) { _, item ->
+                            val videoKeys = videos.mapIndexed { index, item ->
+                                resolveIndexedVideoLazyKey(namespace = "up_preview_video", index = index, bvid = item.bvid)
+                            }
+                            val renderVideo: @Composable (Int, Modifier) -> Unit = { index, cardModifier ->
+                                val video = videos[index]
                                 UpPreviewVideoCard(
-                                    item = item,
+                                    item = video,
+                                    modifier = cardModifier,
                                     colors = colors,
                                     onClick = {
-                                        resolveUpPreviewVideoClickTarget(item.bvid)?.let {
+                                        resolveUpPreviewVideoClickTarget(video.bvid)?.let {
                                             onVideoClick(it.first, it.second)
                                         }
                                     },
                                 )
+                            }
+                            if (!alignVideos) {
+                                itemsIndexed(videos, key = { index, _ -> videoKeys[index] }) { index, _ -> renderVideo(index, Modifier) }
+                            } else {
+                                com.android.purebilibili.feature.home.resolveHomeFeedAlignedRows(videos.size, 2).forEach { row ->
+                                    item(key = "up_preview_row_${videoKeys[row.first]}", span = { GridItemSpan(maxLineSpan) }) {
+                                        com.android.purebilibili.feature.home.HomeAlignedVideoRow(
+                                            indices = row,
+                                            itemKeys = videoKeys,
+                                            columns = 2,
+                                            horizontalArrangement = Arrangement.spacedBy(10.dp),
+                                            modifier = Modifier.fillMaxWidth(),
+                                            content = renderVideo,
+                                        )
+                                    }
+                                }
                             }
                         }
                     }

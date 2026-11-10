@@ -73,7 +73,8 @@ class BrandCacheClearProducerTest(unittest.TestCase):
             'com/bilipai/desktop/settings/DesktopStorageSettingsVectors.kt',
         }
         known=unchanged|{'storage-source-inventory.json','cache-clear-source-inventory.json',
-            'com/android/purebilibili/feature/settings/CacheClearAnimation.kt'}
+            'com/android/purebilibili/feature/settings/CacheClearAnimation.kt',
+            'com/android/purebilibili/feature/settings/DesktopCacheClearScreenPolicy.kt'}
         for output in (self.before,self.after):
             self.assertEqual(known,{p.relative_to(output).as_posix() for p in output.rglob('*') if p.is_file()})
         for path in unchanged:

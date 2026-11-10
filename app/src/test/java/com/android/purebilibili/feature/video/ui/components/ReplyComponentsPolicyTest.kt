@@ -61,6 +61,28 @@ class ReplyComponentsPolicyTest {
     }
 
     @Test
+    fun `block user action excludes current account and invalid authors`() {
+        assertFalse(shouldShowReplyBlockUserAction(authorMid = 42L, currentMid = 42L))
+        assertTrue(shouldShowReplyBlockUserAction(authorMid = 43L, currentMid = 42L))
+        assertTrue(shouldShowReplyBlockUserAction(authorMid = 42L, currentMid = null))
+        assertFalse(shouldShowReplyBlockUserAction(authorMid = 0L, currentMid = 42L))
+        assertFalse(shouldShowReplyBlockUserAction(authorMid = -1L, currentMid = null))
+    }
+
+    @Test
+    fun `block user policy uses member identity before item fallback`() {
+        val fallback = ReplyItem(mid = 42L, member = ReplyMember(mid = ""))
+        assertEquals(42L, resolveReplyMemberMid(fallback))
+        assertFalse(shouldShowReplyBlockUserAction(resolveReplyMemberMid(fallback), currentMid = 42L))
+        val memberIdentity = fallback.copy(member = ReplyMember(mid = "43"))
+        assertEquals(43L, resolveReplyMemberMid(memberIdentity))
+        assertTrue(shouldShowReplyBlockUserAction(resolveReplyMemberMid(memberIdentity), currentMid = 42L))
+        assertEquals(42L, resolveReplyMemberMid(fallback.copy(member = ReplyMember(mid = "invalid"))))
+        assertEquals(42L, resolveReplyMemberMid(fallback.copy(member = ReplyMember(mid = "0"))))
+        assertEquals(0L, resolveReplyMemberMid(ReplyItem(mid = -1L, member = ReplyMember(mid = "invalid"))))
+    }
+
+    @Test
     fun `resolveReplyLevelBadgeAsset keeps pili plus mapping for normal levels`() {
         assertEquals(
             ReplyLevelBadgeAsset.LEVEL_4,
@@ -262,15 +284,11 @@ class ReplyComponentsPolicyTest {
     }
 
     @Test
-    fun `resolveSubReplyPreviewSummaryLabel follows pili plus wording`() {
-        assertEquals(
-            "UP主等人 共4条回复",
-            resolveSubReplyPreviewSummaryLabel(replyCount = 4, hasUpReply = true)
-        )
-        assertEquals(
-            "共2条回复",
-            resolveSubReplyPreviewSummaryLabel(replyCount = 2, hasUpReply = false)
-        )
+    fun `full thread entry only appears when cached previews are incomplete`() {
+        assertFalse(shouldShowSubReplyPreviewSummary(replyCount = 6, previewReplyCount = 6))
+        assertTrue(shouldShowSubReplyPreviewSummary(replyCount = 6, previewReplyCount = 4))
+        assertTrue(shouldShowSubReplyPreviewSummary(replyCount = 6, previewReplyCount = 0))
+        assertFalse(shouldShowSubReplyPreviewSummary(replyCount = 0, previewReplyCount = 0))
     }
 
     @Test
@@ -446,20 +464,19 @@ class ReplyComponentsPolicyTest {
     }
 
     @Test
-    fun `buildRichCommentAnnotatedString uses server url title and app schema`() {
+    fun `rich comment short link prefers a valid video app schema`() {
         val annotated = buildRichCommentAnnotatedString(
             text = "看看 https://b23.tv/demo",
             richUrls = mapOf(
                 "https://b23.tv/demo" to ReplyContentUrl(
                     title = "视频标题",
-                    appUrlSchema = "bilibili://video/BV1testtest"
+                    appUrlSchema = "bilibili://video/BV1xx411c7mD"
                 )
             )
         )
 
-        assertEquals("看看 视频标题", annotated.text)
         assertEquals(
-            "bilibili://video/BV1testtest",
+            "bilibili://video/BV1xx411c7mD",
             annotated.firstCommentLinkTag(RICH_COMMENT_LINK_URL_PREFIX)
         )
     }
@@ -518,26 +535,6 @@ class ReplyComponentsPolicyTest {
                 rawToken = "https://t.bilibili.com/1199344045210468386",
                 url = url
             )
-        )
-    }
-
-    @Test
-    fun `buildRichCommentAnnotatedString accepts server url prefix icon`() {
-        val annotated = buildRichCommentAnnotatedString(
-            text = "看看 https://b23.tv/demo",
-            richUrls = mapOf(
-                "https://b23.tv/demo" to ReplyContentUrl(
-                    title = "视频标题",
-                    appUrlSchema = "bilibili://video/BV1testtest",
-                    prefixIcon = "https://example.com/icon.png"
-                )
-            )
-        )
-
-        assertTrue(annotated.text.contains("视频标题"))
-        assertEquals(
-            "bilibili://video/BV1testtest",
-            annotated.firstCommentLinkTag(RICH_COMMENT_LINK_URL_PREFIX)
         )
     }
 
@@ -1142,8 +1139,6 @@ class ReplyComponentsPolicyTest {
     fun `inline sub reply toggle only appears when preview count exceeds collapsed limit`() {
         assertFalse(shouldShowInlineSubReplyToggle(previewReplyCount = 3))
         assertTrue(shouldShowInlineSubReplyToggle(previewReplyCount = 4))
-        assertEquals("展开回复", resolveInlineSubReplyToggleLabel(expanded = false))
-        assertEquals("收起回复", resolveInlineSubReplyToggleLabel(expanded = true))
     }
 
     @Test

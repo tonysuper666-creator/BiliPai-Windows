@@ -1,0 +1,12 @@
+--- a/bgm-detail/com/android/purebilibili/data/repository/DesktopCommentFraudDao.kt
++++ b/bgm-detail/com/android/purebilibili/data/repository/DesktopCommentFraudDao.kt
+@@ -9,6 +9,9 @@
+ 
+     suspend fun insertAll(records: List<CommentFraudRecord>)
+ 
++    // Upstream v0.7.8 CommentFraudDao (OnConflictStrategy.IGNORE): keeps existing rows, -1 for each skipped record.
++    suspend fun importMissing(records: List<CommentFraudRecord>): List<Long>
++
+     /** 
+      * 优先按真实的官方发评时间 post_time 倒序排列；
+      * 复检老评论只会更新状态，防止老条目跳到列表顶部！

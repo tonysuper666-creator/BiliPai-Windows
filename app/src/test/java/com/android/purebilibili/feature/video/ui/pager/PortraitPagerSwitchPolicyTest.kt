@@ -321,10 +321,14 @@ class PortraitPagerSwitchPolicyTest {
     }
 
     @Test
-    fun portraitCover_prefersFitScaleToAvoidTemporaryCropJump() {
+    fun portraitCover_fillsVerticalViewportButKeepsLandscapeCoverComplete() {
+        assertEquals(
+            ContentScale.Crop,
+            resolvePortraitCoverContentScale(isVerticalVideo = true)
+        )
         assertEquals(
             ContentScale.Fit,
-            resolvePortraitCoverContentScale()
+            resolvePortraitCoverContentScale(isVerticalVideo = false)
         )
     }
 

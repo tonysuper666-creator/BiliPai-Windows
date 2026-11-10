@@ -116,8 +116,23 @@ class BangumiPlayerSliceTests(unittest.TestCase):
         run_producer(TOOLS / PLAYER_PRODUCER, cls.root / 'player')
         run_producer(TOOLS / PAGES_PRODUCER, cls.root / 'pages')
         run_producer(TOOLS / UI_PRODUCER, cls.root / 'ui')
+        # Rebuild the reviewed view-model stage before the later speed-only render change.
+        speed_hook = " body=bangumi_playback_speed_source_continuity_delta(recipe['output'],body)\n"
+        player_current = (TOOLS / PLAYER_PRODUCER).read_text(encoding='utf8')
+        assert player_current.count(speed_hook) == 1
+        player_stage = player_current.replace(speed_hook, '')
+        (cls.root / 'player-stage.py').write_text(player_stage, encoding='utf8')
+        run_producer(cls.root / 'player-stage.py', cls.root / 'stage-player')
+        # Replaying the real later function must reproduce the complete current output.
+        import ast
+        node = next(n for n in ast.parse(player_current).body if isinstance(n, ast.FunctionDef)
+                    and n.name == 'bangumi_playback_speed_source_continuity_delta')
+        scope = {}
+        exec(ast.get_source_segment(player_current, node), scope)
+        stage_vm = (cls.root / 'stage-player' / VM).read_text(encoding='utf8')
+        assert scope[node.name](VM, stage_vm) == (cls.root / 'player' / VM).read_text(encoding='utf8')
         # The same producers with this slice's hook lines removed give the predecessor stage of every output.
-        player = (TOOLS / PLAYER_PRODUCER).read_text(encoding='utf8')
+        player = player_stage
         for hook in PLAYER_HOOKS:
             assert player.count(hook) == 1, hook
             player = player.replace(hook, '')
@@ -134,7 +149,7 @@ class BangumiPlayerSliceTests(unittest.TestCase):
             run_producer(cls.root / name, cls.root / ('before-' + key))
         cls.player = cls.root / 'player'
         cls.pages = cls.root / 'pages'
-        cls.vm = (cls.player / VM).read_text(encoding='utf8')
+        cls.vm = stage_vm
         cls.vm_proof = json.loads((cls.player / bgm.PROOF_DIRECTORY / 'view-model.json').read_text(encoding='utf8'))
 
     # ---- archive -------------------------------------------------------------------------------------------------
@@ -281,7 +296,8 @@ class BangumiPlayerSliceTests(unittest.TestCase):
     def test_ui_layer_threads_the_like_known_flag_with_five_counted_pairs_and_changes_nothing_else(self):
         before_tree, after_tree = tree(self.root / 'before-ui'), tree(self.root / 'ui')
         changed = sorted(k for k in before_tree if before_tree[k] != after_tree[k])
-        self.assertEqual(sorted(UI_ROOT + rel for rel in UI_OUTPUTS.values()), changed)
+        self.assertEqual(sorted([UI_ROOT + rel for rel in UI_OUTPUTS.values()] +
+                                ['buffering-playback-DesktopOriginalBangumiPlayerScreen.json']), changed)
         self.assertEqual([], [k for k in before_tree if k not in after_tree])
         new = sorted(k for k in after_tree if k not in before_tree)
         self.assertEqual(sorted(bgm.PROOF_DIRECTORY + '/ui-retry-' + Path(out).stem + '.json' for out in UI_OUTPUTS), new)
@@ -289,6 +305,10 @@ class BangumiPlayerSliceTests(unittest.TestCase):
         for output, relative in UI_OUTPUTS.items():
             before = (self.root / 'before-ui' / UI_ROOT / relative).read_text(encoding='utf8')
             after = (self.root / 'ui' / UI_ROOT / relative).read_text(encoding='utf8')
+            if output == bgm.SCREEN_OUTPUT:
+                producer = load(UI_PRODUCER)
+                before = producer.restore_buffering_stage(before, self.root / 'before-ui')
+                after = producer.restore_buffering_stage(after, self.root / 'ui')
             self.assertEqual(self.manifest['beforeFinalOutputs'][output]['sha256'], bgm.sha(before))
             self.assertEqual(bgm.UI_RETRY_AFTER_SHA256[output], bgm.sha(after))
             proof = json.loads((self.root / 'ui' / bgm.PROOF_DIRECTORY / ('ui-retry-' + Path(output).stem + '.json')).read_text(encoding='utf8'))

@@ -1,5 +1,7 @@
 package com.android.purebilibili.feature.download
 
+import com.android.purebilibili.core.util.responsiveContentWidth
+
 import com.android.purebilibili.core.ui.components.AppTextButton as TextButton
 
 import com.android.purebilibili.core.util.rememberHapticFeedback
@@ -40,7 +42,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import com.android.purebilibili.core.ui.components.AppLazyVerticalGrid as LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 //  Material Icons
 import androidx.compose.material.icons.Icons
@@ -244,13 +246,14 @@ fun DownloadListScreen(
                 )
             }
         } else {
+            val alignRows = columns > 1 && !com.android.purebilibili.core.ui.LocalFullVideoCardContentVisible.current
             LazyVerticalGrid(
                 columns = GridCells.Fixed(columns),
                 state = gridState,
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
                 modifier = Modifier
-                    .fillMaxSize()
-                    ,
+                    .then(if (columns == 1) Modifier.responsiveContentWidth(com.android.purebilibili.core.util.resolveSingleColumnFeedMaxWidth()) else Modifier)
+                    .fillMaxSize(),
                 contentPadding = PaddingValues(
                     start = 16.dp,
                     end = 16.dp,
@@ -291,9 +294,11 @@ fun DownloadListScreen(
                         }
                     }
                 }
-                items(taskList, key = { it.id }) { task ->
+                val taskKeys = taskList.map { it.id }
+                val renderTask: @Composable (Int, Modifier) -> Unit = { index, cardModifier ->
+                    val task = taskList[index]
                     val isDissolving = task.id in dissolvingTaskIds
-                    AnimatedVideoListItem(modifier = videoListItemModifier(), enabled = true, useLookaheadBounds = false) {
+                    AnimatedVideoListItem(modifier = cardModifier, enabled = true, useLookaheadBounds = false) {
                     com.android.purebilibili.core.ui.animation.MaybeDissolvableVideoCard(
                         isDissolving = isDissolving,
                         onDissolveComplete = {
@@ -322,6 +327,7 @@ fun DownloadListScreen(
                         }
                         DownloadTaskItem(
                             task = task,
+                            modifier = if (alignRows) Modifier.fillMaxHeight() else Modifier,
                             stacked = columns > 1,
                             onClick = {
                                 if (selectionMode) {
@@ -372,6 +378,25 @@ fun DownloadListScreen(
                         )
                     }
                     }
+                }
+                if (!alignRows) {
+                    itemsIndexed(taskList, key = { _, task -> task.id }) { index, _ ->
+                        renderTask(index, videoListItemModifier())
+                    }
+                } else {
+                    com.android.purebilibili.feature.home.resolveHomeFeedAlignedRows(taskList.size, columns)
+                        .forEach { row ->
+                            item(key = "download_row_${taskKeys[row.first]}", span = { GridItemSpan(maxLineSpan) }) {
+                                com.android.purebilibili.feature.home.HomeAlignedVideoRow(
+                                    indices = row,
+                                    itemKeys = taskKeys,
+                                    columns = columns,
+                                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+                                    modifier = videoListItemModifier().fillMaxWidth(),
+                                    content = renderTask,
+                                )
+                            }
+                        }
                 }
 
                 // [新增] 显示当前存储路径
@@ -514,7 +539,7 @@ internal fun formatDownloadStorageBytes(bytes: Long): String {
 
 
 @Composable
-private fun DownloadTaskItem(
+internal fun DownloadTaskItem(
     task: DownloadTask,
     onClick: () -> Unit,
     onPauseResume: () -> Unit,
@@ -528,9 +553,8 @@ private fun DownloadTaskItem(
     modifier: Modifier = Modifier,
 ) {
     val feedbackClick = appActionWithFeedback(onClick)
-    // 与相关推荐/个人列表一致：复用全局横向卡骨架（顶对齐、共享封面宽度与信息区排版）。
-    HorizontalVideoCardFrame(
-        stacked = stacked,
+    val typography = com.android.purebilibili.feature.home.components.cards.horizontalVideoCardTypography()
+    Column(
         modifier = modifier
             .fillMaxWidth()
             .clip(AppShapes.container(ContainerLevel.Card))
@@ -542,156 +566,160 @@ private fun DownloadTaskItem(
                     role = Role.Checkbox,
                     onValueChange = { feedbackClick() },
                 ) else Modifier.appActionClickable(onClick = onClick)
-            ),
-        coverContent = {
-            // 🖼️ [修复] 优先使用本地封面（无网络时也能显示）
-            val localCoverFile = task.localCoverPath?.let { java.io.File(it) }
-            val coverSource = if (localCoverFile?.exists() == true) {
-                localCoverFile
-            } else {
-                val coverUrl = task.cover.let { url ->
-                    if (url.startsWith("http://")) url.replace("http://", "https://")
-                    else url
-                }
-                coil3.request.ImageRequest.Builder(androidx.compose.ui.platform.LocalContext.current)
-                    .data(coverUrl)
-                    .httpHeaders(NetworkHeaders.Builder().set("Referer", "https://www.bilibili.com").build())
-                    .crossfade(true)
-                    .build()
-            }
-
-            AsyncImage(
-                model = coverSource,
-                contentDescription = task.title,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier.fillMaxSize()
             )
-        },
-        coverOverlayContent = {
-            // 进度/状态覆盖层
-            if (!task.isComplete) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(Color.Black.copy(alpha = 0.5f)),
-                    contentAlignment = Alignment.Center
-                ) {
-                    when (task.status) {
-                        DownloadStatus.QUEUED -> {
-                            AppText("排队中", color = Color.White, style = MaterialTheme.typography.labelMedium)
+            .padding(12.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        // 封面旁只放视频信息；下载明细与操作使用下方通栏，避免挤在半宽信息区。
+        HorizontalVideoCardFrame(
+            stacked = stacked,
+            plainHorizontal = true,
+            horizontalCoverMaxWidthDp = com.android.purebilibili.feature.home.components.cards.WIDE_LIST_COVER_MAX_WIDTH_DP,
+            coverContent = {
+                val localCoverFile = task.localCoverPath?.let { java.io.File(it) }
+                val coverSource = if (localCoverFile?.exists() == true) {
+                    localCoverFile
+                } else {
+                    val coverUrl = task.cover.let { url ->
+                        if (url.startsWith("http://")) url.replace("http://", "https://")
+                        else url
+                    }
+                    coil3.request.ImageRequest.Builder(LocalContext.current)
+                        .data(coverUrl)
+                        .httpHeaders(NetworkHeaders.Builder().set("Referer", "https://www.bilibili.com").build())
+                        .crossfade(true)
+                        .build()
+                }
+                AsyncImage(
+                    model = coverSource,
+                    contentDescription = task.title,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.fillMaxSize()
+                )
+            },
+            coverOverlayContent = {
+                if (!task.isComplete) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(Color.Black.copy(alpha = 0.5f)),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        when (task.status) {
+                            DownloadStatus.QUEUED -> {
+                                AppText("排队中", color = Color.White, style = MaterialTheme.typography.labelMedium)
+                            }
+                            DownloadStatus.DOWNLOADING, DownloadStatus.MERGING -> {
+                                AppCircularProgressIndicator(
+                                    progress = { resolveDownloadTaskProgress(task) },
+                                    modifier = Modifier.size(32.dp),
+                                    color = Color.White,
+                                    strokeWidth = 3.dp
+                                )
+                            }
+                            DownloadStatus.PAUSED -> {
+                                AppText("已暂停", color = Color.White, style = MaterialTheme.typography.labelMedium)
+                            }
+                            DownloadStatus.FAILED -> {
+                                AppText("失败", color = AppContentColors.error(), style = MaterialTheme.typography.labelMedium)
+                            }
+                            else -> {}
                         }
-                        DownloadStatus.DOWNLOADING, DownloadStatus.MERGING -> {
-                            AppCircularProgressIndicator(
-                                progress = { resolveDownloadTaskProgress(task) },
-                                modifier = Modifier.size(32.dp),
-                                color = Color.White,
-                                strokeWidth = 3.dp
-                            )
-                        }
-                        DownloadStatus.PAUSED -> {
-                            AppText("已暂停", color = Color.White, style = MaterialTheme.typography.labelMedium)
-                        }
-                        DownloadStatus.FAILED -> {
-                            AppText("失败", color = AppContentColors.error(), style = MaterialTheme.typography.labelMedium)
-                        }
-                        else -> {}
                     }
                 }
-            }
-
-            // 画质标签
-            Box(
-                modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .padding(AppSpacingTokens.ExtraSmall)
-                    .background(
-                        Color.Black.copy(alpha = 0.7f),
-                        AppShapes.container(ContainerLevel.Tag)
-                    )
-                    .padding(horizontal = AppSpacingTokens.ExtraSmall, vertical = AppSpacingTokens.Micro)
-            ) {
+                Box(
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd)
+                        .padding(AppSpacingTokens.ExtraSmall)
+                        .background(
+                            Color.Black.copy(alpha = 0.7f),
+                            AppShapes.container(ContainerLevel.Tag)
+                        )
+                        .padding(horizontal = AppSpacingTokens.ExtraSmall, vertical = AppSpacingTokens.Micro)
+                ) {
+                    AppText(text = task.qualityDesc, color = Color.White, style = typography.statistic)
+                }
+            },
+            infoContent = {
                 AppText(
-                    text = task.qualityDesc,
-                    color = Color.White,
-                    style = com.android.purebilibili.feature.home.components.cards.horizontalVideoCardTypography().statistic
+                    text = task.title,
+                    style = typography.title,
+                    maxLines = com.android.purebilibili.core.ui.videoCardTitleMaxLines(),
+                    overflow = com.android.purebilibili.core.ui.videoCardTitleOverflow(),
+                    color = AppContentColors.primaryText()
                 )
-            }
-        },
-        infoContent = {
-            AppText(
-                text = task.title,
-                style = com.android.purebilibili.feature.home.components.cards.horizontalVideoCardTypography().title,
-                maxLines = com.android.purebilibili.core.ui.videoCardTitleMaxLines(),
-                overflow = com.android.purebilibili.core.ui.videoCardTitleOverflow(),
-                color = AppContentColors.primaryText()
-            )
-
-            resolveDownloadTaskSecondaryText(task)?.let { secondaryText ->
+            },
+            supportingContent = {
+                resolveDownloadTaskSecondaryText(task)?.let { secondaryText ->
+                    AppText(
+                        text = secondaryText,
+                        style = typography.author,
+                        color = AppContentColors.accent(),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
                 AppText(
-                    text = secondaryText,
-                    style = com.android.purebilibili.feature.home.components.cards.horizontalVideoCardTypography().author,
-                    color = AppContentColors.accent(),
+                    text = task.ownerName,
+                    style = typography.author,
+                    color = AppContentColors.secondaryText(),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
-            }
+            },
+        )
 
-            AppText(
-                text = task.ownerName,
-                style = com.android.purebilibili.feature.home.components.cards.horizontalVideoCardTypography().author,
-                color = AppContentColors.secondaryText(),
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
-
-            // 状态文字
-            val assetSummary = resolveDownloadAssetSummary(task)
-            val assetTexts = listOfNotNull(
-                assetSummary.videoText,
-                assetSummary.audioText,
-                assetSummary.danmakuText
-            )
-            val hasAssetSummary = assetTexts.isNotEmpty()
-            val statusText = when (task.status) {
-                DownloadStatus.QUEUED -> "排队中..."
-                DownloadStatus.PENDING -> "等待中..."
-                DownloadStatus.DOWNLOADING -> buildString {
-                    append("下载中 ${resolveDownloadTaskProgressPercent(task)}%")
-                    if (speedBytesPerSecond > 0L) {
-                        append(" · ")
-                        append(formatDownloadStorageBytes(speedBytesPerSecond))
-                        append("/s")
-                    }
+        val assetSummary = resolveDownloadAssetSummary(task)
+        val assetTexts = listOfNotNull(
+            assetSummary.videoText,
+            assetSummary.audioText,
+            assetSummary.danmakuText
+        )
+        val hasAssetSummary = assetTexts.isNotEmpty()
+        val statusText = when (task.status) {
+            DownloadStatus.QUEUED -> "排队中..."
+            DownloadStatus.PENDING -> "等待中..."
+            DownloadStatus.DOWNLOADING -> buildString {
+                append("下载中 ${resolveDownloadTaskProgressPercent(task)}%")
+                if (speedBytesPerSecond > 0L) {
+                    append(" · ")
+                    append(formatDownloadStorageBytes(speedBytesPerSecond))
+                    append("/s")
                 }
-                DownloadStatus.MERGING -> "处理中..."
-                // 已完成时资产行（视频/音频/弹幕完成）信息重复，仅在其缺席时显示
-                DownloadStatus.COMPLETED -> if (hasAssetSummary) null else "已完成"
-                DownloadStatus.PAUSED -> "已暂停"
-                DownloadStatus.FAILED -> task.errorMessage ?: "下载失败"
             }
+            DownloadStatus.MERGING -> "处理中..."
+            DownloadStatus.COMPLETED -> if (hasAssetSummary) null else "已完成"
+            DownloadStatus.PAUSED -> "已暂停"
+            DownloadStatus.FAILED -> task.errorMessage ?: "下载失败"
+        }
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            verticalArrangement = Arrangement.spacedBy(4.dp),
+        ) {
             if (statusText != null) {
                 AppText(
                     text = statusText,
-                    style = com.android.purebilibili.feature.home.components.cards.horizontalVideoCardTypography().statistic,
+                    modifier = Modifier.fillMaxWidth(),
+                    style = typography.statistic,
                     color = when (task.status) {
                         DownloadStatus.COMPLETED -> MaterialTheme.colorScheme.secondary
                         DownloadStatus.FAILED -> AppContentColors.error()
                         else -> AppContentColors.accent()
-                    }
+                    },
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
                 )
             }
-
             if (hasAssetSummary) {
-                // 单行省略：小横卡信息区宽度有限，折行会截断成“弹幕完/成”
                 AppText(
                     text = assetTexts.joinToString(" · "),
-                    style = com.android.purebilibili.feature.home.components.cards.horizontalVideoCardTypography().statistic,
+                    modifier = Modifier.fillMaxWidth(),
+                    style = typography.statistic,
                     color = MaterialTheme.colorScheme.secondary,
-                    maxLines = 1,
+                    maxLines = 2,
                     overflow = TextOverflow.Ellipsis
                 )
             }
-
             if (task.isComplete && !offlinePlayable) {
                 AppText(
                     text = if (!task.exportedFileUri.isNullOrBlank()) {
@@ -699,14 +727,19 @@ private fun DownloadTaskItem(
                     } else {
                         "本地缓存文件不可用"
                     },
-                    style = com.android.purebilibili.feature.home.components.cards.horizontalVideoCardTypography().statistic,
+                    modifier = Modifier.fillMaxWidth(),
+                    style = typography.statistic,
                     color = AppContentColors.secondaryText(),
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis
                 )
             }
-        },
-        trailingContent = {
+        }
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.End),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
             if (selectionMode) {
                 AppCheckbox(
                     checked = selected,
@@ -714,12 +747,9 @@ private fun DownloadTaskItem(
                     enabled = selectionEnabled,
                     modifier = Modifier.size(48.dp),
                 )
-            } else Column(
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                // 暂停/继续
+            } else {
                 if (task.isDownloading || task.canResume) {
-                    AppIconButton(onClick = onPauseResume) {
+                    AppIconButton(onClick = onPauseResume, modifier = Modifier.size(48.dp)) {
                         AppIcon(
                             imageVector = if (task.isDownloading) Icons.Outlined.Pause else Icons.Outlined.PlayArrow,
                             contentDescription = if (task.isDownloading) "暂停" else "继续",
@@ -727,9 +757,7 @@ private fun DownloadTaskItem(
                         )
                     }
                 }
-
-                // 删除
-                AppIconButton(onClick = onDelete) {
+                AppIconButton(onClick = onDelete, modifier = Modifier.size(48.dp)) {
                     AppIcon(
                         imageVector = Icons.Outlined.Delete,
                         contentDescription = "删除",
@@ -737,6 +765,6 @@ private fun DownloadTaskItem(
                     )
                 }
             }
-        },
-    )
+        }
+    }
 }

@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.android.purebilibili.core.theme.AppUiStyle
 import com.android.purebilibili.core.theme.LocalAppUiStyle
+import com.android.purebilibili.core.ui.AppSurfaceTokens
 import com.android.purebilibili.core.ui.AppShapes
 import com.android.purebilibili.core.ui.ContainerLevel
 import com.android.purebilibili.core.ui.components.AppSurface
@@ -72,7 +73,9 @@ internal fun resolveHomeFeedPinchColumnBounds(
         contentWidthDp >= 840 -> 6
         contentWidthDp >= 600 -> 5
         contentWidthDp >= 380 -> 4
-        else -> 3
+        contentWidthDp >= 300 -> 2
+        // 极窄分屏优先保留可读卡片；只限制当前显示，不写回用户的列数偏好。
+        else -> 1
     }
     return minColumns..maxColumns
 }
@@ -260,6 +263,8 @@ internal fun GridPinchColumnHudPill(
     columns: Int,
     modifier: Modifier = Modifier,
 ) {
+    val hudContainerColor = AppSurfaceTokens.searchContainer()
+    val hudContentColor = AppSurfaceTokens.searchContent()
     AnimatedVisibility(
         visible = visible,
         enter = fadeIn(animationSpec = tween(150)) + scaleIn(
@@ -277,23 +282,23 @@ internal fun GridPinchColumnHudPill(
                 // Material 3 原生 HUD 药丸：MD3 Surface + CircleShape + MD3 语义配色与排版
                 androidx.compose.material3.Surface(
                     shape = CircleShape,
-                    color = MaterialTheme.colorScheme.inverseSurface.copy(alpha = 0.90f),
-                    contentColor = MaterialTheme.colorScheme.inverseOnSurface,
+                    color = hudContainerColor,
+                    contentColor = hudContentColor,
                     tonalElevation = 6.dp,
                     shadowElevation = 8.dp,
                 ) {
-                    GridPinchColumnHudContent(columns = columns, modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp))
+                    GridPinchColumnHudContent(columns = columns, color = hudContentColor, modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp))
                 }
             }
             AppUiStyle.MIUIX -> {
                 // MIUIX 风格 HUD 胶囊：Miuix 连续曲率 Squircle 药丸容器
                 AppSurface(
                     shape = AppShapes.container(ContainerLevel.Pill),
-                    color = MaterialTheme.colorScheme.inverseSurface.copy(alpha = 0.85f),
+                    color = hudContainerColor,
                     tonalElevation = 6.dp,
                     shadowElevation = 8.dp,
                 ) {
-                    GridPinchColumnHudContent(columns = columns, modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp))
+                    GridPinchColumnHudContent(columns = columns, color = hudContentColor, modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp))
                 }
             }
         }
@@ -304,6 +309,7 @@ internal fun GridPinchColumnHudPill(
 @Composable
 private fun GridPinchColumnHudContent(
     columns: Int,
+    color: androidx.compose.ui.graphics.Color,
     modifier: Modifier = Modifier,
 ) {
     androidx.compose.animation.AnimatedContent(
@@ -322,12 +328,13 @@ private fun GridPinchColumnHudContent(
                 AppText(
                     text = "$columnCount 列网格",
                     style = MaterialTheme.typography.labelLarge,
-                    color = MaterialTheme.colorScheme.inverseOnSurface,
+                    color = color,
                 )
             } else {
                 androidx.compose.material3.Text(
                     text = "$columnCount 列网格",
                     style = MaterialTheme.typography.labelLarge,
+                    color = color,
                 )
             }
         }

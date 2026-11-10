@@ -4,7 +4,6 @@ feature/login/BilibiliLoginQrTest.kt	编译不过（8 处）：未解析 resolve
 feature/login/LoginEntryPolicyTest.kt	编译不过（11 处）：未解析 LoginMethod×5；Cannot infer type for type parameter '_'. Specify ×2；未解析 resolveLoginPalette×2；被测对象在 later-steps.tsv 里或依赖尚未迁移的类型，随被测对象迁移后一起跑
 feature/plugin/TodayWatchRecommendationPluginTest.kt	编译不过（2 处）：No value passed for parameter '_'.×2；被测对象在 later-steps.tsv 里或依赖尚未迁移的类型，随被测对象迁移后一起跑
 feature/settings/AppearanceSettingsDisplayPolicyTest.kt	编译不过（3 处）：未解析 resolveDisplayedAppDpiPercent×3；被测对象在 later-steps.tsv 里或依赖尚未迁移的类型，随被测对象迁移后一起跑
-feature/settings/CacheClearUiPolicyTest.kt	编译不过（4 处）：未解析 shouldMarkCacheClearAnimationComplete×2；未解析 resolveCacheClearFailureMessage×2；被测对象在 later-steps.tsv 里或依赖尚未迁移的类型，随被测对象迁移后一起跑
 feature/settings/IconGroupsTest.kt	编译不过（4 处）：未解析 mipmap×4；被测对象在 later-steps.tsv 里或依赖尚未迁移的类型，随被测对象迁移后一起跑
 feature/settings/LiquidGlassPresetSliderPolicyTest.kt	编译不过（15 处）：未解析 resolveLiquidGlassPresetSliderSettings×9；未解析 liquidGlassPresetSliderValue×6；被测对象在 later-steps.tsv 里或依赖尚未迁移的类型，随被测对象迁移后一起跑
 feature/settings/LoginActivityNavigationPolicyTest.kt	编译不过（6 处）：未解析 LOGIN_ACTIVITY×2；未解析 LoginActivitySettings×1；未解析 resolveSettingsRootCategoryForNavKey×1；被测对象在 later-steps.tsv 里或依赖尚未迁移的类型，随被测对象迁移后一起跑
