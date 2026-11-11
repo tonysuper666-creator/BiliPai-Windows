@@ -63,7 +63,7 @@ internal class DesktopHomeRootRequestBinding(
     // Dedicated request/publication qualification only; never change generic Gate owns.
     val environment=DesktopHomeProtocolEnvironment(api,guestApi,messages,requestScope,
         ::isMountedSourceCurrent,::withMountedPublication,
-        {assertMountedSourceCurrent();preferences.feedMode.value},{assertMountedSourceCurrent();preferences.refreshCount.value},
+        {assertMountedSourceCurrent();preferences.feedMode.value},{assertMountedSourceCurrent();com.android.purebilibili.feature.home.resolveHomeFeedPageSize(7)},
         {repository.homeWbiKeys(capturedEpoch,::isMountedSourceCurrent,api)},
         {repository.ownedHomeAccessToken(capturedEpoch,::isMountedSourceCurrent)},
         {repository.ownedHomeCookie("bili_jct",capturedEpoch,::isMountedSourceCurrent)},

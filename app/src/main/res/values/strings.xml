@@ -285,7 +285,7 @@
     <string name="icon_bilipai_white">BiliPai 白</string>
     <string name="icon_bilipai_white_description">霜白配色</string>
     <string name="icon_bilipai_monet">BiliPai Monet</string>
-    <string name="icon_bilipai_monet_description">随系统主题图标取色</string>
+    <string name="icon_bilipai_monet_description">Android 12 及以上随系统配色，旧版本使用蓝色</string>
     <string name="icon_settings_apply_notice">图标切换可能需要几秒钟生效，系统可能会短暂卡顿。</string>
     <string name="icon_appearance_title">女仆图标外观</string>
     <string name="icon_appearance_summary">可跟随系统，或在任意系统主题下固定明亮、暗黑外壳</string>
@@ -440,7 +440,7 @@
     <string name="preview_hold_speed">按住 · %1$s</string>
     <string name="preview_release_speed">松手 · 恢复 1x</string>
     <string name="preview_normal_speed">正常播放 · 1x</string>
-    <string name="animation_section_card">卡片动画</string>
+    <string name="animation_section_card">过渡动画</string>
     <string name="preview_caption_card_entrance_on">首页卡片依次淡入</string>
     <string name="preview_caption_card_entrance_off">首页卡片直接显示</string>
     <string name="preview_caption_live_on">当前画面继续播放并参与过渡</string>
@@ -496,20 +496,19 @@
     <string name="settings_feed_api_changed">已切换为%1$s，下拉刷新后生效</string>
     <string name="settings_donate_qr_description">打赏二维码</string>
     <string name="settings_donate_thanks">感谢您的支持！</string>
-    <string name="settings_donate_dismiss_hint">点击二维码或关闭按钮退出</string>
     <string name="settings_update_tap_to_check">点击检查</string>
     <string name="settings_search_history_title">搜索历史</string>
     <string name="settings_search_history_clear_all">清空全部</string>
     <string name="settings_search_history_empty">暂无搜索历史，搜索设置功能后会显示在这里</string>
     <string name="settings_search_history_delete">删除搜索历史：%1$s</string>
-    <string name="settings_search_legacy_001_title">界面与主题</string>
-    <string name="settings_search_legacy_001_summary">界面风格、颜色、字体和启动画面</string>
+    <string name="settings_search_legacy_001_title">外观与动画</string>
+    <string name="settings_search_legacy_001_summary">主题、文字大小、图标、动画与振动</string>
     <string name="settings_search_legacy_002_title">首页与推荐</string>
     <string name="settings_search_legacy_002_summary">首页卡片、推荐内容、动态和更新时间表</string>
-    <string name="settings_search_legacy_003_title">导航与标签</string>
-    <string name="settings_search_legacy_003_summary">调整底栏、分类标签和侧边栏</string>
-    <string name="settings_search_legacy_004_title">播放与画质</string>
-    <string name="settings_search_legacy_004_summary">画质、倍速、字幕和连续播放</string>
+    <string name="settings_search_legacy_003_title">导航布局</string>
+    <string name="settings_search_legacy_003_summary">底栏、首页分类栏、搜索分类和平板侧边栏</string>
+    <string name="settings_search_legacy_004_title">播放设置</string>
+    <string name="settings_search_legacy_004_summary">画质、倍速、字幕、连播、小窗和后台播放</string>
     <string name="settings_search_legacy_005_title">全屏与手势</string>
     <string name="settings_search_legacy_005_summary">全屏方向、截图、锁定按钮、亮度、音量与进度手势</string>
     <string name="settings_search_legacy_006_title">互动与评论</string>
@@ -518,14 +517,14 @@
     <string name="settings_search_legacy_007_summary">有数据时自动显示，无需开启；B站未返回时无法强制显示</string>
     <string name="settings_search_legacy_008_title">完整评论时间</string>
     <string name="settings_search_legacy_008_summary">显示年月日和时分秒；关闭后显示“多久前”</string>
-    <string name="settings_search_legacy_009_title">存储与备份</string>
-    <string name="settings_search_legacy_009_summary">保存位置、缓存、设置分享和云备份</string>
+    <string name="settings_search_legacy_009_title">下载与备份</string>
+    <string name="settings_search_legacy_009_summary">保存位置、缓存、设置分享和 WebDAV 备份</string>
     <string name="settings_search_legacy_010_title">隐私与权限</string>
     <string name="settings_search_legacy_010_summary">历史记录、系统权限和屏蔽名单</string>
-    <string name="settings_search_legacy_011_title">问题排查</string>
+    <string name="settings_search_legacy_011_title">诊断与日志</string>
     <string name="settings_search_legacy_011_summary">记录和导出信息，帮助排查问题</string>
-    <string name="settings_search_legacy_012_title">关于与支持</string>
-    <string name="settings_search_legacy_012_summary">版本更新、使用帮助和官方渠道</string>
+    <string name="settings_search_legacy_012_title">帮助与关于</string>
+    <string name="settings_search_legacy_012_summary">使用帮助、问题排查、更新和应用信息</string>
 
     <!-- Search filters -->
     <string name="search_filter">筛选</string>
@@ -627,7 +626,7 @@
     <string name="notify_live">关注的主播开播时通知</string>
     <string name="notify_section_resident">后台运行</string>
     <string name="notify_resident_enabled_desc">保持应用后台运行以更及时地收到通知；会增加耗电，系统仍可能终止</string>
-    <string name="notify_resident_requires_desc">需要先开启后台消息通知和可用的通知权限；会增加耗电，系统仍可能终止</string>
+    <string name="notify_resident_requires_desc">需要先开启后台消息通知和可用的通知权限</string>
     <string name="notify_resident_first_status">请先开启后台消息通知，再启用常驻后台</string>
     <string name="notify_permission_setup_status">请先在通知权限中开启通知，并确保通知渠道未被系统关闭</string>
     <string name="notify_section_send">发送通知</string>
@@ -828,13 +827,13 @@
     <string name="appearance_home_compact_stats_off">显示在 UP 主下方</string>
     <string name="appearance_home_duration_subtitle">选择视频时长的显示方式</string>
     <string name="appearance_home_publish_on">首页视频卡片显示发布时间</string>
-    <string name="appearance_home_publish_off">首页视频卡片不显示发布时间</string>
+    <string name="appearance_home_publish_off">隐藏发布时间，卡片信息更紧凑</string>
     <string name="appearance_home_avatars_on">首页视频卡片显示 UP 主头像</string>
     <string name="appearance_home_avatars_off">隐藏头像，为 UP 主名称留出更多空间</string>
     <string name="appearance_home_badges_on">首页和相关推荐显示 UP 标识</string>
     <string name="appearance_home_badges_off">首页和相关推荐隐藏 UP 标识</string>
-    <string name="appearance_home_refresh_tip_on">推荐流刷新后保留旧内容，并在刷新位置显示提示</string>
-    <string name="appearance_home_refresh_tip_off">关闭后刷新直接替换推荐内容，不显示刷新位置提示</string>
+    <string name="appearance_home_refresh_tip_on">保留旧推荐时显示上次刷新位置，内容是否保留由单独开关控制</string>
+    <string name="appearance_home_refresh_tip_off">隐藏刷新位置提示，不改变推荐内容的保留方式</string>
     <string name="appearance_home_refresh_undo">刷新推荐流后显示撤销按钮，可恢复刷新前的内容</string>
     <string name="appearance_home_online_on">在视频卡片显示“xx 人正在看”，不影响视频页</string>
     <string name="appearance_home_online_off">关闭后隐藏卡片观看人数，不影响视频页</string>
@@ -940,4 +939,36 @@
     <string name="animation_page_zoom">缩放淡入</string>
     <string name="animation_page_circular_reveal">圆形揭示（中心展开）</string>
     <string name="animation_page_ios">iOS 风格（侧滑与视差）</string>
+    <string name="settings_donate_title">支持 BiliPai 继续打磨</string>
+    <string name="settings_donate_intro">如果 BiliPai 让您看视频更舒服，欢迎支持后续开发与维护。</string>
+    <string name="settings_donate_voluntary">自愿赞赏，金额随心</string>
+    <string name="settings_donate_steps">1. 保存赞赏码到相册\n2. 微信 → 扫一扫 → 相册\n3. 选择赞赏码，在微信中完成赞赏</string>
+    <string name="settings_donate_enlarge">点击查看大图</string>
+    <string name="settings_donate_save">保存赞赏码</string>
+    <string name="settings_donate_saving">正在保存…</string>
+    <string name="settings_donate_save_again">再次保存赞赏码</string>
+    <string name="settings_donate_saved">赞赏码已保存到相册。打开微信后，从扫一扫的相册中选择图片。</string>
+    <string name="settings_donate_open_wechat">打开微信</string>
+    <string name="settings_donate_save_failed">保存失败，请检查存储空间后重试，也可查看大图后截图。</string>
+    <string name="settings_donate_permission_denied">保存到相册需要存储权限。您也可以查看大图后截图。</string>
+    <string name="settings_donate_wechat_unavailable">暂时无法打开微信，请手动打开微信并从扫一扫的相册中选择赞赏码。</string>
+    <string name="settings_donate_preview_hint">原图展示 · 长按可保存到相册</string>
+    <string name="settings_donate_save_confirm_title">保存赞赏码？</string>
+    <string name="settings_donate_save_confirm_message">是否将赞赏码原图保存到相册？</string>
+
+    <!-- Progressive top blur renderer -->
+    <string name="animation_progressive_renderer_title">渐进模糊方案</string>
+    <string name="animation_progressive_renderer_summary">两种方案共用模糊强度、覆盖范围与过渡设置。</string>
+    <string name="animation_progressive_renderer_fallback_summary">当前系统不支持官方方案，选择后仍使用 Miuix。</string>
+    <string name="animation_progressive_renderer_miuix_description">现有方案，默认使用。</string>
+    <string name="animation_progressive_renderer_android">Android 官方</string>
+    <string name="animation_progressive_renderer_android_description">使用系统背景模糊；不支持时自动使用 Miuix。</string>
+    <string name="preview_blur_compare_button">对照预览</string>
+    <string name="preview_blur_compare_title">渐进模糊对照</string>
+    <string name="preview_blur_compare_summary">使用同一画面和当前模糊参数。拖动下方滑块可同步移动背景，预览不会修改已保存的设置。</string>
+    <string name="preview_blur_compare_scroll">移动预览背景</string>
+    <string name="preview_blur_compare_unavailable">%1$s 暂不可用，当前设备无法显示该方案的实际效果。</string>
+    <string name="preview_blur_compare_api_requirement">官方方案需要平台 API 37.2 或更高版本；当前为 API %1$s，暂时使用 Miuix。</string>
+    <string name="animation_indicator_dynamic_length_title">液态玻璃指示器动态长度</string>
+    <string name="animation_indicator_dynamic_length_summary">选中指示器随文字长度变化；关闭后覆盖完整槽位，仅作用于液态玻璃</string>
 </resources>

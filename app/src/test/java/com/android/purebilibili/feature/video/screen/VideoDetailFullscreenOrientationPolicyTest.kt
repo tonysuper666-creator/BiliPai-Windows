@@ -128,6 +128,35 @@ class VideoDetailFullscreenOrientationPolicyTest {
     }
 
     @Test
+    fun `landscape hold suppresses tilt back to portrait while landscape`() {
+        // 关闭保持：横屏中倾到正上退出到竖屏（既有行为）。
+        assertEquals(
+            ActivityInfo.SCREEN_ORIENTATION_PORTRAIT,
+            resolvePhoneAutoRotateRequestedOrientation(
+                orientationDegrees = 0,
+                isCurrentlyLandscape = true,
+            )
+        )
+        // 开启保持：同一姿态不再产生竖屏请求，窗口维持横屏，仅手动退出。
+        assertNull(
+            resolvePhoneAutoRotateRequestedOrientation(
+                orientationDegrees = 0,
+                isCurrentlyLandscape = true,
+                landscapeHoldEnabled = true,
+            )
+        )
+        // 尚未进入横屏时保持不生效：竖屏稳定姿态仍按原路径进入横屏。
+        val entry = requireNotNull(
+            resolvePhoneAutoRotateRequestedOrientation(
+                orientationDegrees = 90,
+                isCurrentlyLandscape = false,
+                landscapeHoldEnabled = true,
+            )
+        )
+        assertTrue(isLandscapeRequestedOrientation(entry))
+    }
+
+    @Test
     fun `app auto rotate remains available under system rotation lock`() {
         for (appAutoRotate in listOf(false, true)) {
             assertEquals(appAutoRotate, shouldObservePhoneAutoRotate(

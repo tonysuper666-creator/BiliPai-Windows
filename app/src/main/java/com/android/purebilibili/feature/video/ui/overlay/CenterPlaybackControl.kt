@@ -3,11 +3,11 @@ package com.android.purebilibili.feature.video.ui.overlay
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
@@ -24,7 +24,7 @@ import com.android.purebilibili.core.ui.LocalAppThemeConfig
 import com.android.purebilibili.core.ui.components.AppIcon
 import com.android.purebilibili.core.ui.components.AppIconButton
 import com.android.purebilibili.core.ui.components.AppSurface
-import com.android.purebilibili.core.ui.motion.AppMotionEasing
+import com.android.purebilibili.core.ui.motion.continuityTween
 
 /** The central play/pause target follows the visibility of the rest of the player controls. */
 @Composable
@@ -35,6 +35,7 @@ internal fun CenterPlaybackControl(
     diameter: Dp,
     modifier: Modifier = Modifier,
     viewportTopInset: Dp = 0.dp,
+    isBuffering: Boolean = false,
 ) {
     val glass = LocalAppThemeConfig.current.liquidGlassEnabled
     // Inline chrome also covers the status-bar backdrop; that band is not part of the video viewport.
@@ -45,8 +46,8 @@ internal fun CenterPlaybackControl(
         AnimatedVisibility(
             visible = visible,
             modifier = Modifier.testTag("player_play_pause"),
-            enter = fadeIn(tween(200, easing = AppMotionEasing.Continuity)),
-            exit = fadeOut(tween(200, easing = AppMotionEasing.Continuity)),
+            enter = fadeIn(continuityTween(200)),
+            exit = fadeOut(continuityTween(200)),
         ) {
             PlayerControlTouchBounds(height = diameter) {
                 PlayerControlGlassDock(
@@ -74,6 +75,13 @@ internal fun CenterPlaybackControl(
                                 )
                             }
                         }
+                    }
+                    if (isBuffering) {
+                        BiliTvAnimatedBufferingIndicator(
+                            tint = Color.White,
+                            size = 20.dp,
+                            modifier = Modifier.align(Alignment.TopEnd).offset(x = 6.dp, y = (-6).dp),
+                        )
                     }
                 }
             }

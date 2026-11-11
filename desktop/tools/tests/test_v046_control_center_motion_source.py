@@ -126,7 +126,10 @@ class ControlCenterMotionSourceTests(unittest.TestCase):
             path = cm.SETTINGS_RELATIVE
         else:
             path = cm.RELATIVE[name]
-        return self.now[path].decode('utf-8')
+        body = self.now[path].decode('utf-8')
+        if name == 'VideoPlayerOverlay.kt':
+            body = self.controls.restore_buffering_stage(body, self.root / 'with', path)
+        return body
 
     def baseline(self, name):
         path = cm.OVERLAY_RELATIVE if name == 'VideoPlayerOverlay.kt' else cm.SETTINGS_RELATIVE

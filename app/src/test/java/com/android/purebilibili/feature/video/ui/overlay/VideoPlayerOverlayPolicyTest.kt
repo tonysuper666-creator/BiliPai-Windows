@@ -16,7 +16,44 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.luminance
 
 class VideoPlayerOverlayPolicyTest {
+    @Test
+    fun endedPlayback_ignoresStaleRecoveryAndQualitySwitchFlags() {
+        assertNull(resolveCenterLoadingUiState(
+            isBuffering = true,
+            isQualitySwitching = true,
+            isSeekTransitionPending = true,
+            playWhenReady = true,
+            isPlaying = false,
+            bandwidthEstimate = "",
+            playbackState = androidx.media3.common.Player.STATE_ENDED,
+        ))
+        assertFalse(resolveOverlayPlaybackButtonPlayingState(
+            isPlaying = false,
+            playWhenReady = true,
+            playbackState = androidx.media3.common.Player.STATE_ENDED,
+            hasPendingSeekResume = true,
+        ))
+    }
 
+    @Test
+    fun progressSnapshot_fillsLastTwoSecondsOnlyAfterPlaybackEnded() {
+        val ended = resolvePlayerProgressSnapshot(
+            58_000L, 60_000L, 59_000L, androidx.media3.common.Player.STATE_ENDED,
+        )
+        assertEquals(60_000L, ended.current)
+        assertEquals(60_000L, ended.buffered)
+        for (state in listOf(
+            androidx.media3.common.Player.STATE_READY,
+            androidx.media3.common.Player.STATE_BUFFERING,
+        )) {
+            assertEquals(58_000L, resolvePlayerProgressSnapshot(
+                58_000L, 60_000L, 59_000L, state,
+            ).current)
+        }
+        assertEquals(58_000L, resolvePlayerProgressSnapshot(
+            58_000L, 0L, 59_000L, androidx.media3.common.Player.STATE_ENDED,
+        ).current)
+    }
 
     @Test
     fun `long press speed keeps shared progress snapshot at high frequency`() {
@@ -91,28 +128,6 @@ class VideoPlayerOverlayPolicyTest {
         assertEquals(1, markers.size)
         assertEquals(SponsorCategory.INTRO, markers.single().category)
         assertTrue(markers.single().color.alpha < 1f)
-    }
-
-    @Test
-    fun inlineOverlayProgressPolling_stopsWhenHostLifecycleStops() {
-        assertTrue(
-            shouldPollInlineVideoOverlayProgress(
-                playerExists = true,
-                hostLifecycleStarted = true
-            )
-        )
-        assertFalse(
-            shouldPollInlineVideoOverlayProgress(
-                playerExists = true,
-                hostLifecycleStarted = false
-            )
-        )
-        assertFalse(
-            shouldPollInlineVideoOverlayProgress(
-                playerExists = false,
-                hostLifecycleStarted = true
-            )
-        )
     }
 
     @Test

@@ -2,6 +2,9 @@
 
 package com.android.purebilibili.feature.plugin.js
 
+import com.android.purebilibili.core.player.withAppVideoDecoderDiagnostics
+import com.android.purebilibili.core.player.withAppVideoDecoderPreference
+
 import com.android.purebilibili.core.ui.AppContentColors
 
 import android.view.ViewGroup
@@ -79,8 +82,11 @@ fun ExternalMediaPlayerScreen(
     }
     val player = remember(context, dataSourceFactory) {
         ExoPlayer.Builder(context)
+            .setRenderersFactory(
+                androidx.media3.exoplayer.DefaultRenderersFactory(context).withAppVideoDecoderPreference(context)
+            )
             .setMediaSourceFactory(DefaultMediaSourceFactory(dataSourceFactory))
-            .build()
+            .build().withAppVideoDecoderDiagnostics(context)
     }
 
     DisposableEffect(player) {

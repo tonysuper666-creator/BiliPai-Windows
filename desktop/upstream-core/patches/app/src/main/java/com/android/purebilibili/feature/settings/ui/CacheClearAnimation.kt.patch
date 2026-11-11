@@ -1,0 +1,24 @@
+--- a/com/android/purebilibili/feature/settings/ui/CacheClearAnimation.kt
++++ b/com/android/purebilibili/feature/settings/ui/CacheClearAnimation.kt
+@@ -1,6 +1,5 @@
+ package com.android.purebilibili.feature.settings
+ 
+-import android.os.StatFs
+ import androidx.activity.compose.BackHandler
+ import androidx.compose.animation.core.animateFloatAsState
+ import androidx.compose.animation.core.snap
+@@ -84,12 +83,12 @@
+     var deviceStorage by remember { mutableStateOf<Pair<Long, Long>?>(null) }
+     LaunchedEffect(breakdown) {
+         deviceStorage = withContext(Dispatchers.IO) {
+-            runCatching { StatFs(context.filesDir.path).let { it.totalBytes to it.availableBytes } }.getOrNull()
++            runCatching { context.filesDir.let { it.totalSpace to it.usableSpace } }.getOrNull()
+         }
+     }
+     Dialog(
+         onDismissRequest = { if (!clearing) onDismiss() },
+-        properties = DialogProperties(usePlatformDefaultWidth = false, decorFitsSystemWindows = false,
++        properties = DialogProperties(usePlatformDefaultWidth = false,
+             dismissOnBackPress = !clearing, dismissOnClickOutside = !clearing)
+     ) {
+         ModalWindowBlurBehindEffect(enabled = true)

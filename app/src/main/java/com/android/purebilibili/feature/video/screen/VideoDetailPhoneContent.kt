@@ -133,19 +133,28 @@ internal fun VideoDetailPhoneSuccessContentLayer(
     commentThreadCoveredBlurProgressProvider: () -> Float = { 0f },
     commentPullToRefreshEnabled: Boolean = true,
     animateLateEntryContent: Boolean = false,
+    deferFreshEntryContent: Boolean = false,
+    navigationOwnsEntryMotion: Boolean = false,
+    commentPagePreloadReady: Boolean = true,
 ) {
-    val commentState by commentStateHandle
     val engagementSuccess = success.withEngagementUiState(engagementState)
     var pendingVideoShare by remember { mutableStateOf<VideoSharePayload?>(null) }
+    val shareAnchorState = remember(success.info.bvid) { com.android.purebilibili.feature.video.share.VideoShareAnchorState() }
     val coveredBlurEffectCache = remember { BlurRenderEffectCache() }
     // Android 16 ART 曾拒绝校验 VideoDetailScreen 中捕获过多状态的匿名 Compose lambda。
     // 保持这个成功态为命名边界，避免 R8/Compose 再生成单个超大内容块。
+    androidx.compose.runtime.CompositionLocalProvider(
+        com.android.purebilibili.feature.video.share.LocalVideoShareAnchorState provides shareAnchorState,
+    ) {
     key(success.info.bvid) {
+        // 页面导航与卡片形变均持有正文的离场生命周期，避免正文先于页面淡空。
+        val navigationOwnsContentVisibility = rootTransitionOwnsContentAlpha || navigationOwnsEntryMotion
         val detailContentVisible = shouldShowVideoDetailContent(
             isTransitionFinished = isTransitionFinished,
             isLeaving = isLeaving,
-            rootTransitionOwnsContentAlpha = rootTransitionOwnsContentAlpha,
+            rootTransitionOwnsContentAlpha = navigationOwnsContentVisibility,
             keepContentVisibleAfterBackPreview = keepContentVisibleAfterBackPreview,
+            deferFreshEntryContent = deferFreshEntryContent,
         )
         // 正文被入场门控拦住时骨架垫底必须撑住（Loading 骨架此刻已卸载），
         // 否则骨架结束到正文放行之间是一段纯黑空窗。
@@ -178,9 +187,8 @@ internal fun VideoDetailPhoneSuccessContentLayer(
                     }
                 }
                 val detailContentRevealEnter = fadeIn(
-                    tween(
-                        motionSpec.contentRevealFadeDurationMillis,
-                        easing = com.android.purebilibili.core.ui.motion.AppMotionEasing.Continuity
+                    com.android.purebilibili.core.ui.motion.continuityTween(
+                        motionSpec.contentRevealFadeDurationMillis
                     )
                 )
                 val detailContentExitFade = fadeOut(
@@ -193,12 +201,13 @@ internal fun VideoDetailPhoneSuccessContentLayer(
                 AnimatedVisibility(
                     modifier = Modifier.graphicsLayer { alpha = lateContentReveal.value },
                     visible = detailContentVisible,
-                    enter = if (rootTransitionOwnsContentAlpha) {
+                    // 普通导航已负责整页入场，正文只保留一次骨架交接淡入。
+                    enter = if (navigationOwnsContentVisibility) {
                         EnterTransition.None
                     } else {
                         detailContentRevealEnter
                     },
-                    exit = if (rootTransitionOwnsContentAlpha) {
+                    exit = if (navigationOwnsContentVisibility) {
                         ExitTransition.None
                     } else {
                         detailContentExitFade
@@ -265,167 +274,173 @@ internal fun VideoDetailPhoneSuccessContentLayer(
                                     )
                                 }
                         ) {
-                            VideoContentSection(
-                                data = VideoContentData(
-                                    info = engagementSuccess.info,
-                                    introListState = introListState,
-                                    commentListState = commentListState,
-                                    pagerState = videoContentPagerState,
-                                    relatedVideos = success.related,
-                                    relatedLoadState = success.relatedLoadState,
-                                    replies = commentState.replies,
-                                    replyCount = commentState.resolveReplyCount(
-                                        subject = CommentSubjectKey(engagementSuccess.info.aid),
-                                        detailCount = engagementSuccess.info.stat.reply,
-                                    ) ?: engagementSuccess.info.stat.reply,
-                                    emoteMap = success.emoteMap,
-                                    followingMids = engagementState.followingMids,
-                                    videoTags = success.videoTags,
-                                    bgmInfo = success.bgmInfo,
-                                    bgmInfoList = success.bgmInfoList,
-                                ),
-                                engagementState = VideoContentEngagementState(
-                                    isLoggedIn = success.isLoggedIn,
-                                    isFollowing = engagementState.isFollowing,
-                                    followStatusKnown = engagementState.followStatusKnown,
-                                    isFavorited = engagementState.isFavorited,
-                                    isLiked = engagementState.isLiked,
-                                    likeStatusKnown = engagementState.likeStatusKnown,
-                                    isDisliked = engagementState.isDisliked,
-                                    coinCount = engagementState.coinCount,
-                                    currentPageIndex = currentPageIndex,
-                                    downloadProgress = downloadProgress.value,
-                                    isInWatchLater = engagementState.isInWatchLater,
-                                ),
-                                commentState = VideoContentCommentState(
-                                    isRepliesLoading = commentState.isRepliesLoading,
-                                    isRepliesRefreshing = commentState.isRepliesRefreshing,
-                                    repliesError = commentState.repliesError,
-                                    isRepliesEnd = commentState.isRepliesEnd,
-                                    voteCard = commentState.voteCard,
-                                    sortMode = commentState.sortMode,
-                                    currentMid = commentState.currentMid,
-                                    showUpFlag = commentState.showUpFlag,
-                                    showIdentityDecorations = commentMemberDecorationsEnabled,
-                                    dissolvingIds = commentState.dissolvingIds,
-                                    likedComments = commentState.likedComments,
-                                    hatedComments = commentState.hatedComments,
-                                    nextPage = commentState.nextPage,
-                                ),
-                                noteState = VideoContentNoteState(
-                                    aiSummary = success.aiSummary,
-                                    aiSummaryPrompt = success.aiSummaryPrompt,
-                                    videoNoteState = success.videoNoteState,
-                                ),
-                                presentationState = VideoContentPresentationState(
-                                    sponsorVideoLabel = success.sponsorVideoLabel,
-                                    danmakuEnabled = danmakuEnabledForDetail,
-                                    transitionEnabled = transitionEnabled,
-                                    isQuickReturnLimitedForSharedElements = isQuickReturnLimitedForSharedElements,
-                                    sourceRouteForSharedElement = sourceRouteForSharedElement,
-                                    isPlayerCollapsed = isPlayerCollapsed,
-                                    onlineCount = success.onlineCount,
-                                    showOnlineCount = true,
-                                    ownerFollowerCount = success.ownerFollowerCount,
-                                    ownerVideoCount = success.ownerVideoCount,
-                                    showUpBadge = homeUpBadgesVisible,
-                                    showInteractionActions = showInteractionActions,
-                                    isVideoPlaying = isVideoPlaying,
-                                    bottomContentPadding = videoContentBottomPadding,
-                                    commentPullToRefreshEnabled = commentPullToRefreshEnabled,
-                                    relatedContentReady = relatedContentReady,
-                                ),
-                                primaryActions = VideoContentPrimaryActions(
-                                    onFollowClick = engagementActions.toggleFollow,
-                                    onFavoriteClick = {
-                                        openFavoriteFolders(VideoFavoriteEntryPoint.DetailActionRow, false)
-                                    },
-                                    onLikeClick = engagementActions.toggleLike,
-                                    onDislikeClick = engagementActions.toggleDislike,
-                                    onCoinClick = engagementActions.openCoinDialog,
-                                    onTripleClick = engagementActions.doTripleAction,
-                                    onPageSelect = playbackActions.switchPage,
-                                    onUpClick = navigateToUserSpaceFromVideo,
-                                    onRelatedVideoClick = navigateToRelatedVideo,
-                                    onDownloadClick = playbackActions.openDownloadDialog,
-                                    onWatchLaterClick = engagementActions.toggleWatchLater,
-                                    onShareClick = {
-                                        pendingVideoShare = buildVideoSharePayload(
-                                            title = success.info.title,
-                                            bvid = success.info.bvid,
-                                            page = success.info.pages.indexOfFirst { it.cid == success.info.cid }.coerceAtLeast(0) + 1,
-                                            positionMs = playerState.player.currentPosition.coerceAtLeast(0L),
-                                            authorId = success.info.owner.mid,
-                                            coverUrl = success.info.pic,
-                                            upName = success.info.owner.name,
-                                            playCountText = FormatUtils.formatStat(success.info.stat.view.toLong()),
-                                        )
-                                    },
-                                    onTimestampClick = { positionMs -> seekPlayerFromUserAction(playerState.player, positionMs) },
-                                    onDanmakuSendClick = {
-                                        android.util.Log.d("VideoDetailScreen", "Danmaku send clicked")
-                                        playbackActions.showDanmakuSendDialog()
-                                    },
-                                    onDanmakuToggle = {
-                                        val newValue = !danmakuEnabledForDetail
-                                        danmakuManager.isEnabled = newValue
-                                        if (!newValue) danmakuManager.clear()
-                                        sortPreferenceScope.launch {
-                                            com.android.purebilibili.core.store.SettingsManager.setDanmakuEnabled(
-                                                context,
-                                                newValue,
-                                                com.android.purebilibili.core.store.DanmakuSettingsScope.PORTRAIT,
+                            VideoDetailBodyUpdates(
+                                comments = commentStateHandle,
+                                downloadProgress = downloadProgress,
+                            ) { commentState, currentDownloadProgress ->
+                                VideoContentSection(
+                                    commentUpdates = commentStateHandle,
+                                    data = VideoContentData(
+                                        info = engagementSuccess.info,
+                                        introListState = introListState,
+                                        commentListState = commentListState,
+                                        pagerState = videoContentPagerState,
+                                        relatedVideos = success.related,
+                                        relatedLoadState = success.relatedLoadState,
+                                        replies = commentState.replies,
+                                        replyCount = commentState.resolveReplyCount(
+                                            subject = CommentSubjectKey(engagementSuccess.info.aid),
+                                            detailCount = engagementSuccess.info.stat.reply,
+                                        ) ?: engagementSuccess.info.stat.reply,
+                                        emoteMap = success.emoteMap,
+                                        followingMids = engagementState.followingMids,
+                                        videoTags = success.videoTags,
+                                    ),
+                                    engagementState = VideoContentEngagementState(
+                                        isLoggedIn = success.isLoggedIn,
+                                        isFollowing = engagementState.isFollowing,
+                                        followStatusKnown = engagementState.followStatusKnown,
+                                        isFavorited = engagementState.isFavorited,
+                                        isLiked = engagementState.isLiked,
+                                        likeStatusKnown = engagementState.likeStatusKnown,
+                                        isDisliked = engagementState.isDisliked,
+                                        coinCount = engagementState.coinCount,
+                                        currentPageIndex = currentPageIndex,
+                                        downloadProgress = currentDownloadProgress,
+                                        isInWatchLater = engagementState.isInWatchLater,
+                                    ),
+                                    commentState = VideoContentCommentState(
+                                        isRepliesLoading = commentState.isRepliesLoading,
+                                        isRepliesRefreshing = commentState.isRepliesRefreshing,
+                                        repliesError = commentState.repliesError,
+                                        isRepliesEnd = commentState.isRepliesEnd,
+                                        voteCard = commentState.voteCard,
+                                        sortMode = commentState.sortMode,
+                                        currentMid = commentState.currentMid,
+                                        showUpFlag = commentState.showUpFlag,
+                                        showIdentityDecorations = commentMemberDecorationsEnabled,
+                                        dissolvingIds = commentState.dissolvingIds,
+                                        likedComments = commentState.likedComments,
+                                        hatedComments = commentState.hatedComments,
+                                        nextPage = commentState.nextPage,
+                                        pageControl = commentState.pageControl,
+                                    ),
+                                    noteState = VideoContentNoteState(
+                                        aiSummary = success.aiSummary,
+                                        aiSummaryPrompt = success.aiSummaryPrompt,
+                                        videoNoteState = success.videoNoteState,
+                                    ),
+                                    presentationState = VideoContentPresentationState(
+                                        sponsorVideoLabel = success.sponsorVideoLabel,
+                                        danmakuEnabled = danmakuEnabledForDetail,
+                                        transitionEnabled = transitionEnabled,
+                                        isQuickReturnLimitedForSharedElements = isQuickReturnLimitedForSharedElements,
+                                        sourceRouteForSharedElement = sourceRouteForSharedElement,
+                                        isPlayerCollapsed = isPlayerCollapsed,
+                                        onlineCount = success.onlineCount,
+                                        showOnlineCount = true,
+                                        ownerFollowerCount = success.ownerFollowerCount,
+                                        ownerVideoCount = success.ownerVideoCount,
+                                        showUpBadge = homeUpBadgesVisible,
+                                        showInteractionActions = showInteractionActions,
+                                        isVideoPlaying = isVideoPlaying,
+                                        bottomContentPadding = videoContentBottomPadding,
+                                        commentPullToRefreshEnabled = commentPullToRefreshEnabled,
+                                        relatedContentReady = relatedContentReady,
+                                        commentPagePreloadReady = commentPagePreloadReady,
+                                    ),
+                                    primaryActions = VideoContentPrimaryActions(
+                                        onFollowClick = engagementActions.toggleFollow,
+                                        onFavoriteClick = {
+                                            openFavoriteFolders(VideoFavoriteEntryPoint.DetailActionRow, false)
+                                        },
+                                        onLikeClick = engagementActions.toggleLike,
+                                        onDislikeClick = engagementActions.toggleDislike,
+                                        onCoinClick = engagementActions.openCoinDialog,
+                                        onTripleClick = engagementActions.doTripleAction,
+                                        onPageSelect = playbackActions.switchPage,
+                                        onUpClick = navigateToUserSpaceFromVideo,
+                                        onRelatedVideoClick = navigateToRelatedVideo,
+                                        onDownloadClick = playbackActions.openDownloadDialog,
+                                        onWatchLaterClick = engagementActions.toggleWatchLater,
+                                        onShareClick = {
+                                            pendingVideoShare = buildVideoSharePayload(
+                                                title = success.info.title,
+                                                bvid = success.info.bvid,
+                                                page = success.info.pages.indexOfFirst { it.cid == success.info.cid }.coerceAtLeast(0) + 1,
+                                                positionMs = playerState.player.currentPosition.coerceAtLeast(0L),
+                                                authorId = success.info.owner.mid,
+                                                coverUrl = success.info.pic,
+                                                upName = success.info.owner.name,
+                                                playCountText = FormatUtils.formatStat(success.info.stat.view.toLong()),
                                             )
-                                        }
-                                    },
-                                    onFavoriteLongClick = {
-                                        openFavoriteFolders(VideoFavoriteEntryPoint.DetailActionRow, true)
-                                    },
-                                    onBgmClick = onBgmClick,
-                                ),
-                                commentActions = VideoContentCommentActions(
-                                    onSortModeChange = { mode ->
-                                        commentActions.setSortMode(mode)
-                                        sortPreferenceScope.launch {
-                                            com.android.purebilibili.core.store.SettingsManager.setCommentDefaultSortMode(context, mode.apiMode)
-                                        }
-                                    },
-                                    onSubReplyClick = commentActions.openSubReply,
-                                    onCommentReplyClick = playbackActions.replyTo,
-                                    onLoadMoreReplies = commentActions.loadComments,
-                                    onRefreshReplies = commentActions.refreshComments,
-                                    onDeleteComment = commentActions.deleteComment,
-                                    onDissolveStart = commentActions.startDissolve,
-                                    onCommentLike = commentActions.likeComment,
-                                    onCommentHate = commentActions.hateComment,
-                                    onCommentUrlClick = openCommentUrl,
-                                    onDescriptionUrlClick = onOpenBilibiliLink,
-                                    onSearchKeywordClick = onSearchKeywordClick,
-                                    onReportComment = commentActions.reportComment,
-                                    onToggleTopComment = commentActions.toggleTopComment,
-                                    onCheckCommentFraud = commentActions.checkCommentFraud,
-                                ),
-                                noteActions = VideoContentNoteActions(
-                                    onRetryAiSummary = playbackActions.retryAiSummary,
-                                    onCreateNoteDraftFromAiSummary = playbackActions.createVideoNoteDraftFromAiSummary,
-                                    onOpenVideoNoteEditor = playbackActions.openVideoNoteEditor,
-                                    onCloseVideoNoteEditor = playbackActions.closeVideoNoteEditor,
-                                    onVideoNoteDocumentChange = playbackActions.updateVideoNoteEditorDocument,
-                                    onInsertVideoNoteTimestamp = playbackActions.currentVideoNoteTimestamp,
-                                    onVideoNoteTimestampClick = playbackActions.seekTo,
-                                    onSaveVideoNote = playbackActions.saveVideoNote,
-                                    onDeleteVideoNote = playbackActions.deleteVideoNote,
-                                    onRetryVideoNote = playbackActions.retryVideoNote,
-                                    onLoadMorePublicVideoNotes = playbackActions.loadMorePublicVideoNotes,
-                                    onPublicVideoNoteClick = { cvid, _ ->
-                                        onOpenBilibiliLink?.invoke("https://www.bilibili.com/read/cv$cvid")
-                                    },
-                                ),
-                                uiActions = VideoContentUiActions(
-                                    onSelectedTabChange = onSelectedTabChange,
-                                    onCommentScrollStateChange = { _, _ -> },
-                                ),
-                            )
+                                        },
+                                        onTimestampClick = { positionMs -> seekPlayerFromUserAction(playerState.player, positionMs) },
+                                        onDanmakuSendClick = {
+                                            android.util.Log.d("VideoDetailScreen", "Danmaku send clicked")
+                                            playbackActions.showDanmakuSendDialog()
+                                        },
+                                        onDanmakuToggle = {
+                                            val newValue = !danmakuEnabledForDetail
+                                            danmakuManager.isEnabled = newValue
+                                            if (!newValue) danmakuManager.clear()
+                                            sortPreferenceScope.launch {
+                                                com.android.purebilibili.core.store.SettingsManager.setDanmakuEnabled(
+                                                    context,
+                                                    newValue,
+                                                    com.android.purebilibili.core.store.DanmakuSettingsScope.PORTRAIT,
+                                                )
+                                            }
+                                        },
+                                        onFavoriteLongClick = {
+                                            openFavoriteFolders(VideoFavoriteEntryPoint.DetailActionRow, true)
+                                        },
+                                        onBgmClick = onBgmClick,
+                                    ),
+                                    commentActions = VideoContentCommentActions(
+                                        onSortModeChange = { mode ->
+                                            commentActions.setSortMode(mode)
+                                            sortPreferenceScope.launch {
+                                                com.android.purebilibili.core.store.SettingsManager.setCommentDefaultSortMode(context, mode.apiMode)
+                                            }
+                                        },
+                                        onSubReplyClick = commentActions.openSubReply,
+                                        onCommentReplyClick = playbackActions.replyTo,
+                                        onLoadMoreReplies = commentActions.loadComments,
+                                        onRefreshReplies = commentActions.refreshComments,
+                                        onDeleteComment = commentActions.deleteComment,
+                                        onDissolveStart = commentActions.startDissolve,
+                                        onCommentLike = commentActions.likeComment,
+                                        onCommentHate = commentActions.hateComment,
+                                        onCommentUrlClick = openCommentUrl,
+                                        onDescriptionUrlClick = onOpenBilibiliLink,
+                                        onSearchKeywordClick = onSearchKeywordClick,
+                                        onReportComment = commentActions.reportComment,
+                                        onToggleTopComment = commentActions.toggleTopComment,
+                                        onCheckCommentFraud = commentActions.checkCommentFraud,
+                                    ),
+                                    noteActions = VideoContentNoteActions(
+                                        onRetryAiSummary = playbackActions.retryAiSummary,
+                                        onCreateNoteDraftFromAiSummary = playbackActions.createVideoNoteDraftFromAiSummary,
+                                        onOpenVideoNoteEditor = playbackActions.openVideoNoteEditor,
+                                        onCloseVideoNoteEditor = playbackActions.closeVideoNoteEditor,
+                                        onVideoNoteDocumentChange = playbackActions.updateVideoNoteEditorDocument,
+                                        onInsertVideoNoteTimestamp = playbackActions.currentVideoNoteTimestamp,
+                                        onVideoNoteTimestampClick = playbackActions.seekTo,
+                                        onSaveVideoNote = playbackActions.saveVideoNote,
+                                        onDeleteVideoNote = playbackActions.deleteVideoNote,
+                                        onRetryVideoNote = playbackActions.retryVideoNote,
+                                        onLoadMorePublicVideoNotes = playbackActions.loadMorePublicVideoNotes,
+                                        onPublicVideoNoteClick = { cvid, _ ->
+                                            onOpenBilibiliLink?.invoke("https://www.bilibili.com/read/cv$cvid")
+                                        },
+                                    ),
+                                    uiActions = VideoContentUiActions(
+                                        onSelectedTabChange = onSelectedTabChange,
+                                        onCommentScrollStateChange = { _, _ -> },
+                                    ),
+                                )
+                            }
                         }
 
                         // 底栏可见度跟随翻页进度:滑动过程中连续淡入淡出,而不是过半时瞬间弹出。
@@ -531,10 +546,12 @@ internal fun VideoDetailPhoneSuccessContentLayer(
             pendingVideoShare?.let { sharePayload ->
                 VideoShareSheet(
                     payload = sharePayload,
+                    glassSource = shareAnchorState.source,
                     onDismiss = { pendingVideoShare = null },
                 )
             }
         }
+    }
     }
 }
 

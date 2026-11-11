@@ -10,13 +10,14 @@ import com.android.purebilibili.core.ui.AppContentColors
 
 import com.android.purebilibili.core.ui.resolveMatchedLiquidIndicatorHeightDp
 import com.android.purebilibili.core.ui.AppIconStyle
+import com.android.purebilibili.core.ui.AppSemanticIconFamily
+import com.android.purebilibili.core.ui.resolveAppSearchGlyphOpticalScale
 import com.android.purebilibili.core.ui.rememberResolvedAppIconStyle
 import com.android.purebilibili.core.ui.AppChromeSizeTokens
 import com.android.purebilibili.core.ui.AppBottomNavigationHost
 import com.android.purebilibili.core.ui.AppSpacingTokens
 import com.android.purebilibili.core.ui.components.AppNavigationBar
 import com.android.purebilibili.core.ui.components.AppNavigationBarItem
-import com.android.purebilibili.core.ui.components.AppPlatformNavigationBadge
 import com.android.purebilibili.core.ui.components.AppPlatformNavigationBar
 import com.android.purebilibili.core.ui.components.AppPlatformNavigationBarDisplayMode
 import com.android.purebilibili.core.ui.components.AppPlatformNavigationBarItem
@@ -83,7 +84,8 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.FilledTonalButton
-import androidx.compose.material3.FilledTonalIconButton
+import androidx.compose.material3.FloatingToolbarDefaults
+import androidx.compose.material3.HorizontalFloatingToolbar
 import com.android.purebilibili.core.ui.components.AppMaterial3Toolbar
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -488,6 +490,12 @@ internal data class AndroidNativeIndicatorSpec(
 internal fun resolveSharedBottomBarCapsuleShape(): androidx.compose.ui.graphics.Shape =
     AppShapes.SelectionIndicator
 
+/** 浮动 dock 内容水平内边距：对齐系统桌面浮动底栏的 12dp 基准，玻璃与原生路径共用。 */
+internal fun resolveBiliPaiFloatingBottomBarContentPadding(): Dp = AppSpacingTokens.Medium
+
+/** 浮动 dock 最小总宽下限，防止极少项数时胶囊缩得过短。 */
+internal fun resolveBiliPaiFloatingBottomBarMinWidth(): Dp = 150.dp
+
 internal fun resolveBiliPaiFloatingBottomBarWidth(
     containerWidth: Dp,
     itemCount: Int,
@@ -496,7 +504,7 @@ internal fun resolveBiliPaiFloatingBottomBarWidth(
     cornerRadius: Dp = AppSpacingTokens.DoubleExtraLarge
 ): Dp {
     val safeItemCount = itemCount.coerceAtLeast(1)
-    val contentPadding = AppSpacingTokens.ExtraSmall
+    val contentPadding = resolveBiliPaiFloatingBottomBarContentPadding()
     val minimumItemWidth = cornerRadius.coerceAtLeast(AppSpacingTokens.None) * 2
     val contentPreferredItemWidth = when (normalizeBottomBarLabelMode(labelMode)) {
         1 -> minimumItemWidth
@@ -507,7 +515,9 @@ internal fun resolveBiliPaiFloatingBottomBarWidth(
     val preferredWidth = (preferredItemWidth * safeItemCount) + (contentPadding * 2)
     val minimumWidth = (minimumItemWidth * safeItemCount) + (contentPadding * 2)
     val widthCap = (containerWidth - (minEdgePadding * 2)).coerceAtLeast(minimumWidth)
-    return minOf(preferredWidth, widthCap).coerceAtMost(containerWidth)
+    return minOf(preferredWidth, widthCap)
+        .coerceAtLeast(resolveBiliPaiFloatingBottomBarMinWidth())
+        .coerceAtMost(containerWidth)
 }
 
 internal fun resolveBiliPaiBottomBarItemSlotWidth(
@@ -576,7 +586,7 @@ internal fun resolveBiliPaiBottomBarSearchLayout(
             minimumIndicatorWidth = AppSpacingTokens.None,
             indicatorReferenceWidth = resolveBiliPaiBottomBarItemSlotWidth(
                 dockWidth = baseDockWidth,
-                horizontalPadding = AppSpacingTokens.ExtraSmall,
+                horizontalPadding = resolveBiliPaiFloatingBottomBarContentPadding(),
                 itemCount = itemCount,
             ),
         )
@@ -624,7 +634,7 @@ internal fun resolveBiliPaiBottomBarSearchLayout(
         // adjacent search control takes width away from the navigation dock.
         indicatorReferenceWidth = resolveBiliPaiBottomBarItemSlotWidth(
             dockWidth = baseDockWidth,
-            horizontalPadding = AppSpacingTokens.ExtraSmall,
+            horizontalPadding = resolveBiliPaiFloatingBottomBarContentPadding(),
             itemCount = itemCount,
         ),
     )
@@ -1064,12 +1074,19 @@ internal fun Modifier.biliPaiMiuixFloatingDockSurface(
         pressProgress = materialPressProgress,
         liquidGlassTuning = liquidGlassTuning
     )
+    val gravityGate = if (renderGlassEffects) {
+        com.android.purebilibili.core.ui.rememberDecorativeAnimationGate()
+    } else null
+    val effectiveShellLensIntensity = if (inheritShellOptics) 0f else shellLensIntensity.coerceIn(0f, 1f)
     val baseHighlight = if (renderGlassEffects) {
-        rememberBiliPaiGravityHighlight(iosIndicatorSpecular, extraDegrees = -45f)
+        rememberBiliPaiGravityHighlight(
+            iosIndicatorSpecular,
+            extraDegrees = -45f,
+            active = samplingBackdrop != null && effectiveShellLensIntensity > 0f && gravityGate?.active == true,
+        )
     } else {
         null
     }
-    val effectiveShellLensIntensity = if (inheritShellOptics) 0f else shellLensIntensity.coerceIn(0f, 1f)
     val hasBackdrop = samplingBackdrop != null && (renderGlassEffects || blurEnabled)
     val hasHazeBlur = !hasBackdrop && useHazeBlur && hazeState != null
 
@@ -1183,6 +1200,7 @@ internal fun Modifier.biliPaiMiuixFloatingDockSurface(
     }
 
     this
+        .then(gravityGate?.modifier ?: Modifier)
         .then(
             if (hasHazeBlur) {
                 Modifier.unifiedBlur(
@@ -1456,7 +1474,7 @@ internal fun shouldShowBottomBarIcon(labelMode: Int): Boolean {
     }
 }
 
-/** 红点模式的哨兵值：调用方把真实计数映射成它，格式化层负责换成圆点文本。 */
+/** 红点模式的哨兵值：调用方把真实计数映射成它，格式化层提供实心圆点标记。 */
 internal const val BOTTOM_BAR_DYNAMIC_BADGE_DOT = -1
 
 internal fun shouldShowBottomBarDynamicReminderBadge(
@@ -1468,7 +1486,7 @@ internal fun formatBottomBarDynamicReminderBadge(unreadCount: Int): String? {
     return when {
         unreadCount == BOTTOM_BAR_DYNAMIC_BADGE_DOT -> "•"
         unreadCount <= 0 -> null
-        unreadCount > 999 -> "999+"
+        unreadCount > 99 -> "99+"
         else -> unreadCount.toString()
     }
 }
@@ -2628,7 +2646,13 @@ private fun MaterialBottomBar(
             AppNavigationBar(
                 containerColor = Color.Transparent,
                 tonalElevation = AppSpacingTokens.None,
-                modifier = Modifier.windowInsetsPadding(WindowInsets.navigationBars)
+                // 贴底原生栏只由组件消费系统导航区；常规字阶收紧内容行，大字体保留原生行高。
+                // 悬浮玻璃、Miuix 与皮肤导航在各自入口处理，不借此改变它们的几何。
+                windowInsets = WindowInsets.navigationBars,
+                modifier = if (uiSkinDecoration == null) {
+                    val rowHeight = (64f + 16f * (LocalDensity.current.fontScale - 1f).coerceIn(0f, 1f)).dp
+                    Modifier.height(rowHeight + WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding())
+                } else Modifier,
             ) {
                 bottomBarVisibleItems.forEach { item ->
                     val itemLabel = resolveBottomNavItemLabel(item, itemLabels)
@@ -2646,7 +2670,8 @@ private fun MaterialBottomBar(
                             if (showIcon) {
                                 BottomBarReminderBadgeAnchor(
                                     item = item,
-                                    unreadCount = dynamicUnreadCount
+                                    unreadCount = dynamicUnreadCount,
+                                    badgeLift = 2.dp
                                 ) {
                                     if (skinIconPath != null) {
                                         BottomBarSkinIcon(
@@ -2765,13 +2790,8 @@ private fun OfficialMd3FloatingToolbarContent(
         containerColor = selectionColors.container,
         contentColor = selectionColors.content,
     )
-    val iconButtonColors = IconButtonDefaults.filledTonalIconButtonColors(
-        containerColor = selectionColors.container,
-        contentColor = selectionColors.content,
-    )
     val useBlur = blurEnabled && (hazeState != null || backdrop != null)
     val toolbarShape = MaterialTheme.shapes.extraLarge
-    val toolbarContainerColor = if (useBlur) Color.Transparent else MaterialTheme.colorScheme.surfaceContainer
     val toolbarModifier = if (useBlur) {
         Modifier.biliPaiFloatingDockShell(
             backdrop = backdrop,
@@ -2826,6 +2846,7 @@ private fun OfficialMd3FloatingToolbarContent(
                         item = item,
                         unreadCount = dynamicUnreadCount,
                         floatingCompact = true,
+                        badgeLift = 2.dp,
                     ) {
                         AppIcon(
                             imageVector = resolveMaterialBottomBarIcon(item, selected),
@@ -2844,8 +2865,69 @@ private fun OfficialMd3FloatingToolbarContent(
                         Spacer(Modifier.width(8.dp))
                         AppText(text = label, maxLines = 1)
                     }
-                    showIcon && selected -> FilledTonalIconButton(onClick = onClick, colors = iconButtonColors) { icon() }
-                    showIcon -> IconButton(onClick = onClick) { icon() }
+                    // 官方 M3 点按动画：指示底色在选中槽位原地 40%→100% 生长（fastSpatial 弹簧），
+                    // 透明度与内容色交叉淡化（defaultEffects），不做跨槽位滑动。
+                    showIcon -> {
+                        val indicatorProgress by animateFloatAsState(
+                            targetValue = if (selected) 1f else 0f,
+                            animationSpec = MaterialTheme.motionScheme.fastSpatialSpec(),
+                            label = "md3FloatingSelectionIndicatorProgress",
+                        )
+                        val indicatorAlpha by animateFloatAsState(
+                            targetValue = if (selected) 1f else 0f,
+                            animationSpec = MaterialTheme.motionScheme.defaultEffectsSpec(),
+                            label = "md3FloatingSelectionIndicatorAlpha",
+                        )
+                        val selectionContentColor by animateColorAsState(
+                            targetValue = if (selected) {
+                                selectionColors.content
+                            } else {
+                                MaterialTheme.colorScheme.onSurfaceVariant
+                            },
+                            animationSpec = MaterialTheme.motionScheme.defaultEffectsSpec(),
+                            label = "md3FloatingSelectionContentColor",
+                        )
+                        Box(contentAlignment = Alignment.Center) {
+                            IconButton(
+                                onClick = onClick,
+                                colors = IconButtonDefaults.iconButtonColors(contentColor = selectionContentColor),
+                            ) {
+                                Box(contentAlignment = Alignment.Center) {
+                                    if (indicatorProgress > 0f) {
+                                        Box(
+                                            modifier = Modifier
+                                                .size(40.dp)
+                                                .graphicsLayer {
+                                                    val scale = 0.4f + 0.6f * indicatorProgress
+                                                    scaleX = scale
+                                                    scaleY = scale
+                                                    alpha = indicatorAlpha
+                                                }
+                                                .clip(CircleShape)
+                                                .background(selectionColors.container),
+                                        )
+                                    }
+                                    AppIcon(
+                                        imageVector = resolveMaterialBottomBarIcon(item, selected),
+                                        contentDescription = label,
+                                    )
+                                }
+                            }
+                            // 角标独立于圆形按钮绘制，避免右上角被按钮自身的轮廓裁剪。
+                            formatBottomBarDynamicReminderBadge(
+                                if (shouldShowBottomBarDynamicReminderBadge(item, dynamicUnreadCount)) {
+                                    dynamicUnreadCount
+                                } else 0
+                            )?.let { badgeText ->
+                                BottomBarReminderBadge(
+                                    badgeText = badgeText,
+                                    modifier = Modifier
+                                        .align(Alignment.TopEnd)
+                                        .padding(top = 8.dp, end = 4.dp),
+                                )
+                            }
+                        }
+                    }
                     selected -> FilledTonalButton(onClick = onClick, colors = buttonColors) {
                         AppText(text = label, maxLines = 1)
                     }
@@ -2878,16 +2960,33 @@ private fun OfficialMd3FloatingToolbarContent(
                         .matchParentSize()
                         .then(toolbarModifier),
                 )
+                AppMaterial3Toolbar(
+                    containerColor = Color.Transparent,
+                    shape = toolbarShape,
+                    tonalElevation = 0.dp,
+                    shadowElevation = 0.dp,
+                    contentPadding = PaddingValues(horizontal = fit.horizontalPaddingDp.dp, vertical = 8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(fit.spacingDp.dp),
+                    content = toolbarContent,
+                )
+            } else {
+                // 官方 M3E FloatingToolbar：容器形状、颜色 token 与高度走官方实现；
+                // 按钮间距由 fit 逻辑通过内层 Row 保留。
+                HorizontalFloatingToolbar(
+                    expanded = true,
+                    colors = FloatingToolbarDefaults.standardFloatingToolbarColors(
+                        toolbarContainerColor = MaterialTheme.colorScheme.surfaceContainer,
+                        toolbarContentColor = MaterialTheme.colorScheme.onSurface,
+                    ),
+                    contentPadding = PaddingValues(horizontal = fit.horizontalPaddingDp.dp, vertical = 8.dp),
+                ) {
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(fit.spacingDp.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        content = toolbarContent,
+                    )
+                }
             }
-            AppMaterial3Toolbar(
-                containerColor = toolbarContainerColor,
-                shape = toolbarShape,
-                tonalElevation = if (useBlur) 0.dp else 3.dp,
-                shadowElevation = if (useBlur) 0.dp else 3.dp,
-                contentPadding = PaddingValues(horizontal = fit.horizontalPaddingDp.dp, vertical = 8.dp),
-                horizontalArrangement = Arrangement.spacedBy(fit.spacingDp.dp),
-                content = toolbarContent,
-            )
         }
     }
 }
@@ -3217,13 +3316,7 @@ private fun MiuixBottomBar(
                         ),
                         badge = reminderBadgeText?.let { badgeText ->
                             {
-                                AppPlatformNavigationBadge {
-                                    // 等宽数字：未读数进位时徽标宽度只按位数增长。
-                                    AppText(
-                                        text = badgeText,
-                                        style = appTabularNumberTextStyle(),
-                                    )
-                                }
+                                BottomBarReminderBadge(badgeText = badgeText)
                             }
                         }
                     )
@@ -3951,7 +4044,7 @@ private fun BiliPaiFloatingBottomBarChrome(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(
-                    bottom = if (embeddedDock) 0.dp else AppSpacingTokens.Medium +
+                    bottom = if (embeddedDock) 0.dp else AppSpacingTokens.ExtraLarge +
                         WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
                 )
         ) {
@@ -3966,6 +4059,7 @@ private fun BiliPaiFloatingBottomBarChrome(
                 hasUiSkinDecoration = uiSkinDecoration != null,
                 fillAllocatedDockWidth = embeddedDock,
                 nativeMiuixNavigation = useNativeMiuixNavigation,
+                glassMotionEnabled = effectiveGlassEnabled,
             )
             val compactSearchLayout =
                 bottomBarSearchLayoutMode == BottomBarSearchLayoutMode.HOME_AND_SEARCH
@@ -4130,9 +4224,33 @@ private fun BiliPaiFloatingBottomBarChrome(
                             }
                         }
                         if (useNativeMiuixNavigation) {
+                            val nativeShape = resolveSharedBottomBarCapsuleShape()
+                            val nativeSurfaceColor = top.yukonga.miuix.kmp.theme.MiuixTheme.colorScheme.surfaceContainer
+                            val useNativeBlur = blurEnabled && (miuixBackdrop != null || hazeState != null)
                             AppPlatformNavigationBar(
-                                modifier = dockModifier.clip(resolveSharedBottomBarCapsuleShape()),
-                                color = top.yukonga.miuix.kmp.theme.MiuixTheme.colorScheme.surfaceContainer,
+                                modifier = dockModifier
+                                    .clip(nativeShape)
+                                    .then(
+                                        if (useNativeBlur) {
+                                            // 原生悬浮导航保留自身布局，磨砂由壳层绘制；内部底色必须透明。
+                                            // 此分支仅用于关闭液态玻璃后的 Miuix，不改变 MD3 或玻璃材质。
+                                            Modifier.biliPaiMiuixFloatingDockSurface(
+                                                shape = nativeShape,
+                                                backdrop = miuixBackdrop,
+                                                containerColor = nativeSurfaceColor,
+                                                blurEnabled = true,
+                                                glassEnabled = false,
+                                                blurRadius = tuning.shellBlurRadiusDp.dp,
+                                                hazeState = hazeState,
+                                                motionTier = motionTier,
+                                                isTransitionRunning = isTransitionRunning,
+                                                forceLowBlurBudget = forceLowBlurBudget,
+                                            )
+                                        } else {
+                                            Modifier
+                                        }
+                                    ),
+                                color = if (useNativeBlur) Color.Transparent else nativeSurfaceColor,
                                 showDivider = false,
                                 defaultWindowInsetsPadding = false,
                                 mode = resolveMd3BottomBarDisplayMode(labelMode).toAppPlatformNavigationDisplayMode(),
@@ -4147,7 +4265,7 @@ private fun BiliPaiFloatingBottomBarChrome(
                                         icon = resolveSharedBottomBarIcon(item, currentItem == item, iconStyle),
                                         label = resolveBottomNavItemLabel(item, itemLabels),
                                         badge = badgeText?.let { text ->
-                                            { AppPlatformNavigationBadge { AppText(text, style = appTabularNumberTextStyle()) } }
+                                            { BottomBarReminderBadge(badgeText = text) }
                                         },
                                     )
                                 }
@@ -4182,9 +4300,10 @@ private fun BiliPaiFloatingBottomBarChrome(
                                     tabsCount = totalItems,
                                     modifier = dockModifier,
                                     mode = floatingMode,
-                                    // Glass-only breathing room; preserve the native 4dp default.
+                                    // Glass-only breathing room; native path follows the
+                                    // floating-dock 12dp content padding (glass clamps to 4dp for the lens).
                                     contentHorizontalPadding = com.android.purebilibili.core.ui.resolveLiquidGlassIndicatorHorizontalInsetDp(
-                                        requestedInsetDp = 4f,
+                                        requestedInsetDp = 12f,
                                         liquidGlassEnabled = floatingMode == FloatingBottomBarMode.LiquidGlass,
                                     ).dp,
                                     colors = floatingColors,
@@ -4595,6 +4714,16 @@ internal fun BoxScope.BiliPaiMiuixBottomBarIndicatorLayer(
             ),
         ) else opticalProgress
     }
+    val indicatorBackdrop = if (!glassEnabled) {
+        null
+    } else if (shouldUseBottomBarCombinedIndicatorBackdrop(liquidGlassPreset)) {
+        contentBackdrop
+    } else {
+        backdrop
+    }
+    val gravityGate = if (glassEnabled) {
+        com.android.purebilibili.core.ui.rememberDecorativeAnimationGate()
+    } else null
     val pillHighlight = if (glassEnabled) {
         rememberBiliPaiGravityHighlight(
             iosIndicatorSpecular,
@@ -4603,16 +4732,11 @@ internal fun BoxScope.BiliPaiMiuixBottomBarIndicatorLayer(
                 indicatorWidthDp = if (swapMotionAxes) indicatorHeight.value else indicatorWidth.value,
                 indicatorHeightDp = if (swapMotionAxes) indicatorWidth.value else indicatorHeight.value,
             ).dp,
+            active = indicatorBackdrop != null && dockContentAlpha > 0f &&
+                effectivePressProgress > 0.001f && gravityGate?.active == true,
         )
     } else {
         null
-    }
-    val indicatorBackdrop = if (!glassEnabled) {
-        null
-    } else if (shouldUseBottomBarCombinedIndicatorBackdrop(liquidGlassPreset)) {
-        contentBackdrop
-    } else {
-        backdrop
     }
     Box(
         modifier = Modifier
@@ -4637,6 +4761,7 @@ internal fun BoxScope.BiliPaiMiuixBottomBarIndicatorLayer(
             .height(indicatorHeight)
             .align(indicatorAlignment)
             .zIndex(2f)
+            .then(gravityGate?.modifier ?: Modifier)
             .then(interactionModifier)
             .run {
                 if (indicatorBackdrop != null) {
@@ -4936,7 +5061,15 @@ internal fun BiliPaiBottomBarSearchVisualContent(
                 modifier = Modifier
                     .size(AppSpacingTokens.ExtraLarge)
                     .graphicsLayer {
-                        val scale = iconScale()
+                        // Miuix 的 Search 字形占满视口，与 Material 字形同框偏大，统一光学补偿。
+                        val glyphScale = resolveAppSearchGlyphOpticalScale(
+                            if (iconStyle == SharedFloatingBottomBarIconStyle.MIUIX) {
+                                AppSemanticIconFamily.MIUIX
+                            } else {
+                                AppSemanticIconFamily.MATERIAL
+                            }
+                        )
+                        val scale = iconScale() * glyphScale
                         scaleX = scale
                         scaleY = scale
                     }
@@ -5353,6 +5486,7 @@ private fun BottomBarReminderBadgeAnchor(
     unreadCount: Int = 0,
     modifier: Modifier = Modifier,
     floatingCompact: Boolean = false,
+    badgeLift: Dp = 0.dp,
     content: @Composable BoxScope.() -> Unit
 ) {
     BottomBarReminderBadgeAnchor(
@@ -5365,6 +5499,7 @@ private fun BottomBarReminderBadgeAnchor(
         ),
         modifier = modifier,
         floatingCompact = floatingCompact,
+        badgeLift = badgeLift,
         content = content
     )
 }
@@ -5373,60 +5508,67 @@ private fun BottomBarReminderBadgeAnchor(
 private fun BottomBarReminderBadgeAnchor(
     badgeText: String?,
     modifier: Modifier = Modifier,
-    /**
-     * Floating BiliPai dock is short (64dp shell). Use a tighter badge offset so the
-     * pill does not clip the top of the reminder badge.
-     */
+    // 紧凑玻璃栏保留上沿空间；徽标完整避开图标轮廓。
     floatingCompact: Boolean = false,
+    badgeLift: Dp = 0.dp,
     content: @Composable BoxScope.() -> Unit
 ) {
-    val badgeOffsetX = if (floatingCompact) {
-        AppSpacingTokens.Small
-    } else {
-        AppSpacingTokens.Medium
-    }
-    val badgeOffsetY = if (floatingCompact) {
-        -AppSpacingTokens.Micro
-    } else {
-        -AppSpacingTokens.Small
-    }
+    val badgeSize = if (badgeText == "•") 7.dp else 18.dp
+    val badgeTopOverhang = badgeSize / 2f + if (floatingCompact) 0.dp else 1.dp
+    val badgeEndOverhang = badgeSize - 1.dp
     Box(
         modifier = modifier,
         contentAlignment = Alignment.Center
     ) {
-        content()
+        // 徽标必须整体落在锚点边界内，否则越界部分会被玻璃捕获层和原生容器裁切成月牙形。
+        // 预留空间只在有徽标时出现，且上下、左右对称分布：图标始终居中，
+        // 徽标悬在图标右上角，不出锚点，也不让图标在徽标出现时跳位。
         if (badgeText != null) {
             Box(
-                modifier = Modifier
-                    .align(Alignment.TopEnd)
-                    .offset(x = badgeOffsetX, y = badgeOffsetY)
-                    .defaultMinSize(
-                        minWidth = AppSpacingTokens.Large + AppSpacingTokens.Micro,
-                        minHeight = AppSpacingTokens.Large + AppSpacingTokens.Micro
-                    )
-                    .background(iOSRed, CircleShape)
-                    .border(
-                        width = AppSpacingTokens.Micro / 2,
-                        color = AppSurfaceTokens.cardContainer(),
-                        shape = CircleShape
-                    )
-                    .padding(
-                        horizontal = AppSpacingTokens.ExtraSmall + AppSpacingTokens.Micro / 2,
-                        vertical = AppSpacingTokens.Micro / 2
-                    ),
-                contentAlignment = Alignment.Center
-            ) {
-                AppText(
-                    text = badgeText,
-                    color = OpticalContrastPalette.Highlight,
-                    // 等宽数字：未读数进位时徽标宽度只按位数增长，不随数字内容抖动。
-                    style = appTabularNumberTextStyle(),
-                    fontSize = MaterialTheme.typography.labelSmall.fontSize,
-                    lineHeight = MaterialTheme.typography.labelSmall.lineHeight,
-                    fontWeight = FontWeight.SemiBold,
-                    maxLines = 1
+                modifier = Modifier.padding(
+                    horizontal = badgeEndOverhang / 2,
+                    // MD3 显式增加对称预留，让角标相对图标上移；图标保持居中，
+                    // 角标仍在锚点测量边界内，不用负偏移突破裁剪区域。
+                    vertical = badgeTopOverhang / 2 + badgeLift.coerceAtLeast(0.dp),
                 )
+            ) {
+                content()
             }
+            BottomBarReminderBadge(
+                badgeText = badgeText,
+                modifier = Modifier.align(Alignment.TopEnd),
+            )
+        } else {
+            content()
+        }
+    }
+}
+
+@Composable
+private fun BottomBarReminderBadge(
+    badgeText: String,
+    modifier: Modifier = Modifier,
+) {
+    val isDot = badgeText == "•"
+    Box(
+        modifier = modifier
+            .size(if (isDot) 7.dp else 18.dp)
+            .background(iOSRed, CircleShape)
+            .border(1.dp, AppSurfaceTokens.cardContainer(), CircleShape),
+        contentAlignment = Alignment.Center,
+    ) {
+        // 红点模式直接画实心圆；数字模式限制为 99+，保持等宽等高的正圆。
+        if (!isDot) {
+            AppText(
+                text = badgeText,
+                tapToCopyEnabled = false,
+                color = OpticalContrastPalette.Highlight,
+                style = appTabularNumberTextStyle(),
+                fontSize = 9.sp,
+                lineHeight = 10.sp,
+                fontWeight = FontWeight.SemiBold,
+                maxLines = 1,
+            )
         }
     }
 }

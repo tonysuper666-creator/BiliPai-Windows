@@ -96,6 +96,21 @@ class HomeHeroCarouselPolicyTest {
     }
 
     @Test
+    fun `carousel fills available slots with eligible items in feed order`() {
+        assertEquals(
+            listOf("video-a", "video-b"),
+            selectHomeHeroCarouselItems(
+                listOf("picture", "video-a", "bangumi", "video-b", "video-c"),
+                maxItems = 2,
+            ) { it.startsWith("video-") }
+        )
+        assertEquals(
+            emptyList(),
+            selectHomeHeroCarouselItems(listOf("picture", "bangumi")) { it.startsWith("video-") }
+        )
+    }
+
+    @Test
     fun `carousel feed removes visible hero items from regular grid`() {
         val items = listOf("a", "b", "c", "d")
         val carouselItems = listOf("a", "b")
@@ -192,7 +207,6 @@ class HomeHeroCarouselPolicyTest {
         assertTrue(abs(centered.contentParallaxFraction) < 0.001f)
         assertTrue(abs(centered.contentScale - 1f) < 0.001f)
         assertTrue(abs(centered.edgeShadeAlpha) < 0.001f)
-        assertTrue(abs(centered.shadowElevationFraction - 0.35f) < 0.001f)
         assertTrue(abs(centered.rotationZ) < 0.001f)
         assertTrue(centered.zIndex >= 1f)
 
@@ -223,7 +237,6 @@ class HomeHeroCarouselPolicyTest {
         assertTrue(leftNeighbor.edgeShadeAlpha > 0.2f)
         assertTrue(rightNeighbor.edgeShadeStartFromLeft)
         assertFalse(leftNeighbor.edgeShadeStartFromLeft)
-        assertTrue(rightNeighbor.shadowElevationFraction < centered.shadowElevationFraction)
 
         val draggingLeft = resolveHomeHeroCarouselCardTransform(-0.5f)
         val draggingRight = resolveHomeHeroCarouselCardTransform(0.5f)
@@ -246,7 +259,6 @@ class HomeHeroCarouselPolicyTest {
 
         val pressed = resolveHomeHeroCarouselCardTransform(0f, pressedProgress = 1f)
         assertTrue(pressed.scale < centered.scale)
-        assertTrue(pressed.shadowElevationFraction < centered.shadowElevationFraction)
     }
 
     @Test

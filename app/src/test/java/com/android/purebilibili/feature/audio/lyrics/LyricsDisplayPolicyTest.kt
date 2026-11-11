@@ -32,6 +32,22 @@ class LyricsDisplayPolicyTest {
         assertEquals(null, resolveLyricsDisplayDocument(null, false))
     }
 
+    @Test
+    fun wrappedSubtitleNotesAreHiddenWithoutChangingWordTimingOrSource() {
+        val original = LyricDocument(lines = listOf(LyricLine(
+            startTimeMs = 100L,
+            endTimeMs = 900L,
+            text = "♪ 你好 ♪",
+            spans = listOf(LyricSpan("♪ 你", 100L, 400L), LyricSpan("好 ♪", 400L, 900L)),
+            translations = listOf("hello"),
+        )))
+        val displayed = requireNotNull(resolveLyricsDisplayDocument(original, true)).lines.single()
+        assertEquals("你好", displayed.text)
+        assertEquals(listOf(LyricSpan("你", 100L, 400L), LyricSpan("好", 400L, 900L)), displayed.spans)
+        assertEquals(listOf("hello"), displayed.translations)
+        assertEquals("♪ 你好 ♪", original.lines.single().text)
+    }
+
     private fun line(startMs: Long, endMs: Long, text: String = "歌词") = LyricLine(
         startTimeMs = startMs,
         endTimeMs = endMs,

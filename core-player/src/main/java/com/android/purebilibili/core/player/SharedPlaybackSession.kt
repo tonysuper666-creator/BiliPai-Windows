@@ -73,7 +73,7 @@ class SharedPlaybackSession(context: Context) : AutoCloseable {
     private val appContext = context.applicationContext
     private val mutableState = MutableStateFlow(SharedPlaybackState())
     val state = mutableState.asStateFlow()
-    val player: ExoPlayer = ExoPlayer.Builder(appContext, DefaultRenderersFactory(appContext).setEnableDecoderFallback(true)).build().apply {
+    val player: ExoPlayer = ExoPlayer.Builder(appContext, DefaultRenderersFactory(appContext).withVideoDecoderPreference(preferHardware = true)).build().apply {
         setAudioAttributes(AudioAttributes.Builder().setUsage(C.USAGE_MEDIA).setContentType(C.AUDIO_CONTENT_TYPE_MOVIE).build(), true)
         setHandleAudioBecomingNoisy(true)
     }
@@ -170,7 +170,7 @@ class SharedPlaybackSession(context: Context) : AutoCloseable {
             val start = resolvePlaybackResumePosition(
                 explicitMs = request.startPositionMs,
                 localMs = recent.items(accountMid).firstOrNull { it.bvid == info.bvid && it.cid == info.cid }?.progress?.times(1000L) ?: 0,
-                serverMs = streams.lastPlayTime?.toLong()?.takeIf { streams.lastPlayCid == info.cid } ?: 0,
+                serverMs = loaded.serverPositionMs,
                 durationMs = streams.timelength,
             )
             mutableState.update { SharedPlaybackState(

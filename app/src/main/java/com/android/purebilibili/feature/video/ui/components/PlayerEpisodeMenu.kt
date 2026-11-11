@@ -8,6 +8,7 @@ import com.android.purebilibili.core.ui.LocalAppThemeConfig
 import com.android.purebilibili.core.ui.components.AppSegmentOption
 import com.android.purebilibili.core.ui.components.AppTabRowRole
 import com.android.purebilibili.core.ui.components.AppThemeAdaptiveTabRow
+import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
@@ -24,6 +25,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalDensity
@@ -87,6 +90,7 @@ fun PlayerEpisodeMenu(
     cover: String = "", isReversed: Boolean = false, onReverse: (() -> Unit)? = null,
     isSubscribed: Boolean? = null, onSubscriptionChange: ((Boolean) -> Unit)? = null,
     onCoverLongPress: ((String) -> Unit)? = null,
+    inlinePanel: Boolean = false,
 ) {
     val selectionHaptic = rememberHapticFeedback(com.android.purebilibili.core.ui.AppHapticScene.MENUS)
     val content = remember(pages, currentPageIndex, ugcSeason, currentBvid, currentCid) {
@@ -101,19 +105,20 @@ fun PlayerEpisodeMenu(
         val grouped = groupPlayerEpisodeEntries(section.entries)
         if (reversed) grouped.asReversed() else grouped
     }
-    val listState = rememberLazyListState()
-    val scope = rememberCoroutineScope()
     fun currentIndex(): Int {
         val current = content.sections.getOrNull(content.currentSectionIndex)?.entries?.getOrNull(content.currentEntryIndex)
         return entries.indexOfFirst { current in it }
     }
+    val initialIndex = if (sectionIndex == content.currentSectionIndex) currentIndex().coerceAtLeast(0) else 0
+    val listState = rememberLazyListState(initialFirstVisibleItemIndex = initialIndex)
+    val scope = rememberCoroutineScope()
     LaunchedEffect(content, sectionIndex, reversed) {
         val index = if (sectionIndex == content.currentSectionIndex) currentIndex() else 0
-        // 面板展开/切换分区后动画定位当前集，与面板入场衔接；越界保持原位。
-        if (index in entries.indices) listState.animateScrollToItem(index)
+        // 自动定位不与面板入场叠加滚动动画，首帧及分区/顺序变化后保持当前集完整可见。
+        if (index in entries.indices) listState.scrollToItem(index)
     }
-    PlayerDetailPanel(title = if (pages.size > 1) "分P" else "合集", isFullscreen = isFullscreen,
-        playerBounds = playerBounds, onDismiss = onDismiss, compactHeight = true) { requestPanelDismiss ->
+    PlayerEpisodeSelectionHost(title = if (pages.size > 1) "分P" else "合集", isFullscreen = isFullscreen,
+        playerBounds = playerBounds, onDismiss = onDismiss, inlinePanel = inlinePanel) { requestPanelDismiss ->
         Row(Modifier.fillMaxWidth().height(45.dp).horizontalScroll(rememberScrollState())
             .padding(horizontal = 6.dp), verticalAlignment = Alignment.CenterVertically) {
             Text(if (pages.size > 1) "分P" else "合集", fontSize = 16.sp)
@@ -137,6 +142,9 @@ fun PlayerEpisodeMenu(
             PanelAction(Icons.Default.Sort, if (reversed) "顺序" else "倒序") { reverseSections[sectionIndex] = !reversed }
             PanelAction(Icons.Default.Close, "关闭", requestPanelDismiss)
         }
+        com.android.purebilibili.core.ui.components.AppHorizontalDivider(
+            color = MaterialTheme.colorScheme.outlineVariant,
+        )
         if (content.sections.size > 1) {
             // 玻璃分区复用共享 dock 与完整槽位指示器，原生保留原有文字轨道。
             if (LocalAppThemeConfig.current.liquidGlassEnabled) {
@@ -165,7 +173,7 @@ fun PlayerEpisodeMenu(
                 }
             }
         }
-        LazyColumn(state = listState, modifier = Modifier.fillMaxWidth().weight(1f), overscrollEffect = null,
+        LazyColumn(state = listState, modifier = Modifier.fillMaxWidth().weight(1f).clipToBounds(), overscrollEffect = null,
             contentPadding = PaddingValues(top = 7.dp, bottom = 16.dp),
             verticalArrangement = Arrangement.spacedBy(2.dp)) {
             itemsIndexed(entries) { _, group ->
@@ -189,12 +197,11 @@ fun PlayerEpisodeMenu(
                         durationSeconds = if (group.size > 1) episode?.arc?.duration?.toLong() ?: entry.durationSeconds else entry.durationSeconds,
                         selected = selected,
                         indexLabel = entry.indexLabel.substringBefore(" · "),
-                        durationBesideIndex = entry.target is PlayerEpisodeMenuTarget.Part,
-                        metadataText = buildPlayerEpisodeMetadataText(
-                            pubdateSeconds = entry.pubdateSeconds,
-                            viewCount = entry.viewCount,
-                            danmakuCount = entry.danmakuCount,
-                        ),
+                        partCoverIndex = if (entry.target is PlayerEpisodeMenuTarget.Part) entry.indexLabel else null,
+                        episodePresentation = true,
+                        episodePubdate = entry.pubdateSeconds,
+                        episodeViewCount = entry.viewCount,
+                        episodeDanmakuCount = entry.danmakuCount,
                         onCoverLongPress = onCoverLongPress,
                         accessEpisode = episode,
                     ) { if (!selected) select(entry) }
@@ -211,6 +218,37 @@ fun PlayerEpisodeMenu(
                     }
                 }
             }
+        }
+    }
+}
+
+@Composable
+private fun PlayerEpisodeSelectionHost(
+    title: String,
+    isFullscreen: Boolean,
+    playerBounds: IntRect?,
+    onDismiss: () -> Unit,
+    inlinePanel: Boolean = false,
+    content: @Composable ColumnScope.(requestDismiss: () -> Unit) -> Unit,
+) {
+    if (inlinePanel) {
+        EpisodeSelectionSheet(onDismiss = onDismiss, inlinePanel = true, content = content)
+        return
+    }
+    val window = LocalWindowInfo.current.containerSize
+    if (isFullscreen && window.width > window.height) {
+        // 横屏全屏沿用播放器侧栏和画面避让；其余入口与合集共用自适应面板。
+        PlayerDetailPanel(title, isFullscreen, playerBounds, onDismiss, compactHeight = true, content = content)
+    } else {
+        val maxHeight = episodeSheetMaxHeight()
+        EpisodeSelectionSheet(onDismiss = onDismiss) { requestDismiss ->
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .heightIn(max = maxHeight)
+                    .semantics { paneTitle = title },
+                content = { content(requestDismiss) },
+            )
         }
     }
 }
@@ -244,6 +282,7 @@ internal fun PlayerDetailPanel(title: String, isFullscreen: Boolean, playerBound
     compactHeight: Boolean = false, useGlassSurface: Boolean = false,
     draggable: Boolean = false,
     content: @Composable ColumnScope.(requestDismiss: () -> Unit) -> Unit) {
+    if (!rememberPlayerPopupHostActive(onDismiss)) return
     val density = LocalDensity.current
     val size = LocalWindowInfo.current.containerSize
     val safe = playerPanelSafeWindowBounds()
@@ -252,6 +291,9 @@ internal fun PlayerDetailPanel(title: String, isFullscreen: Boolean, playerBound
     val bounds = resolvePlayerPanelBounds(safe, playerBounds, isFullscreen, landscape,
         with(density) { 500.dp.roundToPx() }, maxBottomHeight = compactMaxHeight)
     if (bounds.width <= 0 || bounds.height <= 0) return
+    // 底板延伸到窗口底边，列表仍避让导航区；不能把透明导航区留给后面的详情页。
+    val windowBounds = if (landscape) bounds else IntRect(bounds.left, bounds.top, bounds.right, size.height)
+    val bottomContentInset = with(density) { (windowBounds.bottom - bounds.bottom).coerceAtLeast(0).toDp() }
     val dragEnabled = draggable && isFullscreen && landscape
     // 退出位移包含窗口右侧安全边距，画面和面板一直共用相同的可见边界。
     val dragDistancePx = (size.width - bounds.left).coerceAtLeast(bounds.width)
@@ -263,15 +305,20 @@ internal fun PlayerDetailPanel(title: String, isFullscreen: Boolean, playerBound
         dragDistancePx = dragDistancePx,
         closeProgressProvider = { closeProgress.floatValue },
     )
-    val provider = remember(bounds) { object : PopupPositionProvider {
+    val provider = remember(windowBounds, landscape) { object : PopupPositionProvider {
         override fun calculatePosition(anchorBounds: IntRect, windowSize: IntSize, layoutDirection: LayoutDirection,
-            popupContentSize: IntSize) = IntOffset(bounds.left, bounds.top)
+            popupContentSize: IntSize) = resolvePlayerPanelPopupPosition(
+                windowBounds, windowSize, popupContentSize, bottomAligned = !landscape,
+            )
     } }
     val surfaceContent: @Composable (requestDismiss: () -> Unit) -> Unit = { requestDismiss ->
         val panelContent: @Composable () -> Unit = {
             Column(
                 modifier = modifier
-                    .requiredSize(with(density) { bounds.width.toDp() }, with(density) { bounds.height.toDp() })
+                    // 弹窗在旧系统上可能比宿主窗口小；遵守实际测量约束，避免子项被挤出屏幕。
+                    .size(with(density) { windowBounds.width.toDp() }, with(density) { windowBounds.height.toDp() })
+                    .clipToBounds()
+                    .padding(bottom = bottomContentInset)
                     .semantics { paneTitle = title },
                 content = { content(requestDismiss) },
             )
@@ -296,18 +343,27 @@ internal fun PlayerDetailPanel(title: String, isFullscreen: Boolean, playerBound
         popupPositionProvider = provider,
         onDismissRequest = { dismissAction.value?.invoke() ?: onDismiss() },
         // 返回由 Popup 自己的窗口回调处理，保留手势进度与取消恢复。
+        // 与宿主的 edge-to-edge 窗口使用同一坐标范围，避免系统可见框再次扣除状态栏。
+        // 安全区由上面的 bounds/底部内边距处理，绘制边界由面板自身裁剪。
         properties = PopupProperties(focusable = true, clippingEnabled = false, dismissOnBackPress = false),
     ) {
-        com.android.purebilibili.core.ui.AppPopupWindowHost(enableWindowMaterial = false) {
-            PlayerDetailPanelMotion(
-                sidePanel = landscape,
-                dragEnabled = dragEnabled,
-                distancePx = if (landscape) dragDistancePx.toFloat() else (size.height - bounds.top).toFloat(),
-                closeProgress = closeProgress,
-                onDismiss = onDismiss,
-                onDismissAction = { dismissAction.value = it },
-                content = surfaceContent,
-            )
+        // 玻璃菜单宿主会填满父约束，必须在宿主外限定面板尺寸，避免 Popup 按整窗大小定位到顶部。
+        // 两种材质共用原有面板边界，尺寸遵守 Popup 实际可用空间。
+        Box(Modifier
+            .size(with(density) { windowBounds.width.toDp() }, with(density) { windowBounds.height.toDp() })
+            .clipToBounds()
+        ) {
+            com.android.purebilibili.core.ui.AppPopupWindowHost(enableWindowMaterial = false) {
+                PlayerDetailPanelMotion(
+                    sidePanel = landscape,
+                    dragEnabled = dragEnabled,
+                    distancePx = if (landscape) dragDistancePx.toFloat() else (size.height - bounds.top).toFloat(),
+                    closeProgress = closeProgress,
+                    onDismiss = onDismiss,
+                    onDismissAction = { dismissAction.value = it },
+                    content = surfaceContent,
+                )
+            }
         }
     }
 }
@@ -318,6 +374,11 @@ internal fun PlayerPanelMediaRow(title: String, cover: String, durationSeconds: 
     accessLabel: String? = null, accessEpisode: com.android.purebilibili.data.model.response.UgcEpisode? = null,
     expandTitle: Boolean = false, metadataText: String? = null,
     durationBesideIndex: Boolean = false,
+    partCoverIndex: String? = null,
+    episodePresentation: Boolean = false,
+    episodePubdate: Long = 0L,
+    episodeViewCount: Long? = null,
+    episodeDanmakuCount: Long? = null,
     onClick: () -> Unit) {
     val color = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
     val durationText = if (durationSeconds > 0) {
@@ -335,8 +396,17 @@ internal fun PlayerPanelMediaRow(title: String, cover: String, durationSeconds: 
             onLongClick = if (cover.isNotBlank() && onCoverLongPress != null) ({ onCoverLongPress(cover) }) else null)
         .padding(horizontal = 12.dp, vertical = 5.dp),
         horizontalArrangement = Arrangement.spacedBy(10.dp), verticalAlignment = Alignment.CenterVertically) {
-        if (cover.isNotBlank()) Box(Modifier.width(160.dp).height(100.dp)) {
-            AsyncImage(model = cover, contentDescription = null, contentScale = ContentScale.Crop, modifier = Modifier.fillMaxSize())
+        if (cover.isNotBlank()) Box(Modifier.then(if (episodePresentation) Modifier.weight(0.67f, fill = false).widthIn(max = 160.dp) else Modifier.width(160.dp)).height(100.dp)) {
+            AsyncImage(model = cover, contentDescription = null, contentScale = ContentScale.Crop,
+                modifier = Modifier.fillMaxSize().then(if (episodePresentation) Modifier.clip(com.android.purebilibili.core.ui.AppShapes.container(com.android.purebilibili.core.ui.ContainerLevel.Chip)) else Modifier))
+            if (partCoverIndex != null) Text(
+                text = partCoverIndex.removePrefix("P"),
+                fontSize = 12.sp,
+                color = MaterialTheme.colorScheme.onSecondaryContainer,
+                modifier = Modifier.align(Alignment.TopEnd)
+                    .background(MaterialTheme.colorScheme.secondaryContainer, androidx.compose.foundation.shape.RoundedCornerShape(topEnd = 6.dp, bottomStart = 4.dp))
+                    .padding(horizontal = 4.dp),
+            )
             if (accessEpisode != null) {
                 CollectionAccessBadge(episode = accessEpisode, modifier = Modifier.align(Alignment.TopEnd).padding(4.dp))
             } else {
@@ -347,20 +417,38 @@ internal fun PlayerPanelMediaRow(title: String, cover: String, durationSeconds: 
                 modifier = Modifier.align(Alignment.BottomEnd).padding(6.dp),
             )
         }
-        Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        if (cover.isBlank() && selected && episodePresentation) {
+            Icon(Icons.Default.Equalizer, contentDescription = "正在播放", tint = color, modifier = Modifier.size(16.dp))
+        }
+        Column(
+            modifier = Modifier.weight(1f).then(if (episodePresentation) Modifier.height(100.dp) else Modifier),
+            verticalArrangement = if (episodePresentation) Arrangement.Top else Arrangement.spacedBy(8.dp),
+        ) {
             Text(title, fontSize = 14.sp, lineHeight = 20.sp, color = color,
                 maxLines = if (expandTitle) Int.MAX_VALUE else 2,
                 overflow = TextOverflow.Ellipsis,
-                fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal)
+                fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal,
+                modifier = if (episodePresentation) Modifier.weight(1f) else Modifier)
+            if (episodePresentation && episodePubdate > 0L) {
+                Text(java.time.Instant.ofEpochSecond(episodePubdate).atZone(java.time.ZoneId.systemDefault())
+                    .format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")),
+                    fontSize = 12.sp, color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = 1)
+            }
+            if (episodePresentation && episodeViewCount != null && episodeViewCount >= 0L) {
+                com.android.purebilibili.feature.home.components.cards.HorizontalVideoStatRow(
+                    playText = FormatUtils.formatStat(episodeViewCount),
+                    danmakuText = episodeDanmakuCount?.takeIf { it >= 0L }?.let { FormatUtils.formatStat(it) }.orEmpty(),
+                )
+            }
             if (cover.isBlank()) {
                 if (accessEpisode != null) CollectionAccessBadge(episode = accessEpisode)
                 else CollectionAccessBadge(label = accessLabel)
             }
-            if (indexAndDuration.isNotBlank()) Text(indexAndDuration, fontSize = 12.sp, color = color)
+            if (!episodePresentation && indexAndDuration.isNotBlank()) Text(indexAndDuration, fontSize = 12.sp, color = color)
             if (!metadataText.isNullOrBlank()) Text(metadataText, fontSize = 12.sp,
                 color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = 1, overflow = TextOverflow.Ellipsis)
             if (!durationBesideIndex && cover.isBlank() && durationText.isNotBlank()) Text(durationText, fontSize = 12.sp)
-            if (selected) Text("正在播放", fontSize = 12.sp, color = color)
+            if (selected && !episodePresentation) Text("正在播放", fontSize = 12.sp, color = color)
         }
     }
 }

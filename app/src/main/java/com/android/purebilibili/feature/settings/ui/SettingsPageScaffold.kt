@@ -153,6 +153,12 @@ internal fun SettingsPageScaffold(
         LocalBottomBarContentPadding.current,
     )
     val appThemeConfig = LocalAppThemeConfig.current
+    // 设置页导航槽补足窗口边距；大标题沿用顶栏自身的原生边距。
+    val navigationStartInset = when {
+        topBarStyle == AppTopBarStyle.LARGE -> 0.dp
+        LocalAppUiStyle.current == AppUiStyle.MIUIX -> 12.dp
+        else -> 8.dp
+    }
     val headerBlurEnabled = topBarBlurEnabled ?: appThemeConfig.headerBlurEnabled
     val lowBlurBudget = isLowBlurBudgetForced()
     val nonGlassMiuix = isMiuixNonGlassEnabled()
@@ -223,15 +229,18 @@ internal fun SettingsPageScaffold(
                                 )
                         } else Modifier,
                         navigationIcon = {
-                            AdaptivePlainTooltipBox(
-                                text = backContentDescription,
-                                enabled = true,
-                            ) {
-                                AppIconButton(onClick = onBack) {
-                                    AppIcon(
-                                        imageVector = rememberAppBackIcon(),
-                                        contentDescription = backContentDescription,
-                                    )
+                            // 设置页自行提供导航边距；不修改共用顶栏默认值，玻璃与原生路径共用。
+                            Box(modifier = Modifier.padding(start = navigationStartInset)) {
+                                AdaptivePlainTooltipBox(
+                                    text = backContentDescription,
+                                    enabled = true,
+                                ) {
+                                    AppIconButton(onClick = onBack) {
+                                        AppIcon(
+                                            imageVector = rememberAppBackIcon(),
+                                            contentDescription = backContentDescription,
+                                        )
+                                    }
                                 }
                             }
                         },
@@ -257,7 +266,11 @@ internal fun SettingsPageScaffold(
             val scrollModifier = Modifier
                 .fillMaxSize()
                 .then(chromeSource?.modifier ?: Modifier)
-                .then(if (hazeState != null) Modifier.hazeSourceCompat(hazeState) else Modifier)
+                .then(
+                    if (hazeState != null &&
+                        com.android.purebilibili.core.ui.blur.LocalChromeBackdropRecordingAllowed.current
+                    ) Modifier.hazeSourceCompat(hazeState) else Modifier
+                )
                 .globalWallpaperAwareBackground(pageContainerColor)
 
             val windowSizeClass = LocalWindowSizeClass.current

@@ -109,7 +109,6 @@ private fun DiscoveryContentReady(section: DiscoverySection, discovery: DesktopD
     var periodsRevision by state::periodsRevision
     var preview by remember(accountMid) { mutableStateOf<VideoCard?>(null) }
     val feedMode by discovery.feedMode.collectAsState()
-    val refreshCount by discovery.refreshCount.collectAsState()
     val scope = rememberCoroutineScope()
     var settingsBusy by remember { mutableStateOf(false) }; var settingsError by remember { mutableStateOf<String?>(null) }
     val config by plugins.feedFilterConfig.collectAsState()
@@ -139,12 +138,7 @@ private fun DiscoveryContentReady(section: DiscoverySection, discovery: DesktopD
                         finally { settingsBusy = false }
                     } }
                 }, enabled = !settingsBusy, label = { Text(item.label) }) }
-                listOf(10, 20, 30).forEach { count -> FilterChip(refreshCount == count, onClick = {
-                    if (!settingsBusy) { settingsBusy = true; settingsError = null; scope.launch {
-                        try { discovery.setRefreshCount(count) } catch (error: Exception) { if (error is CancellationException) throw error; settingsError = error.message ?: "设置保存失败" }
-                        finally { settingsBusy = false }
-                    } }
-                }, enabled = !settingsBusy, label = { Text("每批 $count") }) }
+
             }
             Text(feedMode.description, modifier = Modifier.padding(horizontal = 18.dp), style = MaterialTheme.typography.bodySmall)
             settingsError?.let { Text(it, modifier = Modifier.padding(horizontal = 18.dp), color = MaterialTheme.colorScheme.error) }
@@ -193,7 +187,7 @@ private fun DiscoveryFeed(section: DiscoverySection, regionId: Int, period: Int?
     filters: DesktopDiscoveryFilters, runtime: DesktopPluginRuntime?, onVideo: (VideoCard) -> Unit, onUser: (Long) -> Unit,
     onLogin: () -> Unit, feedbackSource: StateFlow<TodayWatchFeedbackSnapshot>, onPreview: (VideoCard) -> Unit) {
     val scope = rememberCoroutineScope(); val memory = LocalCommunityFeedMemory.current ?: LocalDesktopBrowseMemory.current?.feeds; val namespace = LocalCommunityFeedNamespace.current
-    val feedMode by discovery.feedMode.collectAsState(); val refreshCount by discovery.refreshCount.collectAsState()
+    val feedMode by discovery.feedMode.collectAsState()
     val feedback by feedbackSource.collectAsState()
     val blockedCreators by remember(discovery, accountMid) { discovery.blockedCreators(accountMid) }.collectAsState()
     val blockedMigrationError by discovery.blockedUps.migrationError.collectAsState()
@@ -201,7 +195,7 @@ private fun DiscoveryFeed(section: DiscoverySection, regionId: Int, period: Int?
     val jsonPlugins = runtime?.jsonPlugins?.collectAsState()?.value
     val pluginConfiguration = runtime?.store?.snapshot("plugin_prefs")?.collectAsState()?.value
     val key = listOf("discovery", section, regionId, period, namespace, accountMid,
-        feedMode.takeIf { section == DiscoverySection.RECOMMEND }, refreshCount.takeIf { section == DiscoverySection.RECOMMEND })
+        feedMode.takeIf { section == DiscoverySection.RECOMMEND })
     val page = remember(memory, key) { memory?.page<DiscoveryPage, Int>(key) ?: CommunityFeedState() }
     val scroll = remember(page) { discoveryGridScroll.getOrPut(page) { LazyStaggeredGridState() } }
     var busy by remember(key) { mutableStateOf(false) }; var error by page::failure

@@ -22,6 +22,7 @@ internal fun FavoritePersonalCardSkeleton(stacked: Boolean, blockColor: () -> Co
     }
     PersonalMediaCardFrame(
         modifier = modifier,
+        horizontalCoverMaxWidthDp = com.android.purebilibili.feature.home.components.cards.WIDE_LIST_COVER_MAX_WIDTH_DP,
         stacked = stacked,
         enabled = false,
         onClick = {},

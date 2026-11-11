@@ -33,10 +33,11 @@ internal fun resolveFeedGridColumnPreference(
     pageColumns: Int?,
     bounds: IntRange,
     minimumColumns: Int = 1,
-): Int = if (customizationEnabled) {
-    (pageColumns ?: defaultColumns).coerceIn(minimumColumns, bounds.last)
-} else {
-    defaultColumns
+): Int {
+    val requestedColumns = if (customizationEnabled) pageColumns ?: defaultColumns else defaultColumns
+    // 默认列数也受当前窗口上限约束；临时降列不修改保存值，放大后恢复。
+    val effectiveMinimum = if (customizationEnabled) minimumColumns.coerceIn(1, bounds.last) else 1
+    return requestedColumns.coerceIn(effectiveMinimum, bounds.last)
 }
 
 /** 网格行为与材质无关；窄屏和宽屏分别保存，关闭共用后仅保留各页面自己的手势选择。 */

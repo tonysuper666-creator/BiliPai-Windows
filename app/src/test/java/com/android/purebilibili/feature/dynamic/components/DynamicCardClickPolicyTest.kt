@@ -603,6 +603,22 @@ class DynamicCardClickPolicyTest {
     }
 
     @Test
+    fun commentLinkCardsKeepOriginalUrlForLocationAwareHostDispatch() {
+        listOf(
+            "https://www.bilibili.com/video/BV1xx411c7mD?root=456#reply789",
+            "https://t.bilibili.com/123?root=456&comment_id=789",
+            "https://www.bilibili.com/read/cv123?comment_id=789",
+            "bilibili://comment/detail/47/999/456/789",
+        ).forEach { link ->
+            assertEquals(
+                DynamicOpusLinkCardAction.OpenExternalUrl(link),
+                resolveDynamicOpusLinkCardAction(OpusLinkCard(title = "评论", jumpUrl = link)),
+                link,
+            )
+        }
+    }
+
+    @Test
     fun resolveDynamicOpusLinkCardAction_routesExternalUrlAndIgnoresMissingUrl() {
         assertEquals(
             DynamicOpusLinkCardAction.OpenExternalUrl("https://uland.taobao.com/item"),

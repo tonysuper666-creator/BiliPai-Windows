@@ -5,6 +5,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.layout.layout
@@ -98,6 +101,20 @@ internal fun Modifier.biliPaiProgressiveTopBlur(
     val source = requireNotNull(backdrop)
     return composed {
         if (isLowBlurBudgetForced()) return@composed this
+        // 渲染方案与玻璃开关独立，各主题保留自己的几何、底色和淡出参数。
+        // 自定义调色仍交给原有材质链，避免官方路径丢失扩展混色语义。
+        if (isOfficialProgressiveBlurSupported() && colors == BlurColors()) {
+            val context = LocalContext.current
+            val renderer by remember(context) {
+                com.android.purebilibili.core.store.home.LiquidGlassSettingsStore.observeProgressiveBlurRenderer(context)
+            }.collectAsStateWithLifecycle(
+                initialValue = com.android.purebilibili.core.store.home.ProgressiveBlurRenderer.MIUIX,
+            )
+            if (renderer == com.android.purebilibili.core.store.home.ProgressiveBlurRenderer.ANDROID) {
+                val official = rememberOfficialProgressiveTopBlur(shape, blurRadiusDp, gradient)
+                if (official != null) return@composed this.then(official)
+            }
+        }
         val continuousSource = com.android.purebilibili.core.ui.blur.rememberContinuousBackdrop(source)
         // The non-composable factory creates new shape/effect callbacks on each call.
         // Keep their identity while the material is unchanged, so an unrelated header

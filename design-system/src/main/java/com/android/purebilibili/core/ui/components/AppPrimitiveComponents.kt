@@ -51,7 +51,8 @@ import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import com.android.purebilibili.core.ui.LocalAppThemeConfig
-import top.yukonga.miuix.kmp.basic.ListPopupColumn
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.layout.widthIn
 import top.yukonga.miuix.kmp.window.WindowListPopup
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
@@ -875,9 +876,10 @@ fun AppDropdownMenu(
             popupModifier = modifier,
             onDismissRequest = onDismissRequest,
         ) {
-            ListPopupColumn {
-                Column(content = content)
-            }
+            Column(
+                modifier = Modifier.widthIn(max = 288.dp).verticalScroll(scrollState),
+                content = content,
+            )
         }
     } else {
         DropdownMenu(

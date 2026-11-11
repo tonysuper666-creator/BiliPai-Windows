@@ -18,6 +18,10 @@ import com.android.purebilibili.core.ui.blur.BlurIntensity
  *
  * 数据读取由应用外壳负责，core/ui 只消费已解析的值，避免反向依赖设置存储。
  */
+enum class LiquidSwitchThumbMode(val label: String) {
+    THEME("跟随主题"), DARK("固定深色"), LIGHT("固定浅色")
+}
+
 data class AppThemeConfig(
     val blurIntensity: BlurIntensity = BlurIntensity.THIN,
     val headerBlurEnabled: Boolean = true,
@@ -34,6 +38,7 @@ data class AppThemeConfig(
     // Matches the persisted default; each application host supplies the observed preference.
     val liquidGlassEnabled: Boolean = false,
     val liquidControlsUseThemeColor: Boolean = false,
+    val liquidSwitchThumbMode: LiquidSwitchThumbMode = LiquidSwitchThumbMode.THEME,
 )
 
 fun isMiuixNonGlassEnabled(uiStyle: AppUiStyle, liquidGlassEnabled: Boolean): Boolean =

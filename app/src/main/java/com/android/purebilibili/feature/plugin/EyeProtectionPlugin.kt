@@ -91,7 +91,7 @@ class EyeProtectionPlugin : BuiltinPlugin, EyeProtectionPluginApi {
 
     override val id = BuiltinPluginIds.EYE_PROTECTION
     override val name = "夜间护眼"
-    override val description = "柔和降蓝光、定时护眼与休息提醒"
+    override val description = "暖色滤镜、定时调节与休息提醒"
     override val version = "2.2.0"
     override val author = "BiliPai项目组"
     override val icon: ImageVector = Icons.Outlined.DarkMode
@@ -177,6 +177,8 @@ class EyeProtectionPlugin : BuiltinPlugin, EyeProtectionPluginApi {
 
     fun snoozeUntilMinute(): Int? = snoozeUntilMinute
 
+    fun lastReminderMinute(): Int? = lastReminderMinute
+
     fun snapshotConfig(): EyeProtectionConfig = config
 
     fun setSettingsPreviewEnabled(enabled: Boolean) {
@@ -232,6 +234,7 @@ class EyeProtectionPlugin : BuiltinPlugin, EyeProtectionPluginApi {
                     )
                 ) {
                     lastReminderMinute = usageMinutes
+                    snoozeUntilMinute = null
                     _careReminder.value = EyeCareReminder(
                         usageMinutes = usageMinutes,
                         title = "给眼睛一个小休息",

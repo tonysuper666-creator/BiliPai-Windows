@@ -11,6 +11,7 @@ import com.android.purebilibili.data.model.response.DynamicItem
 import com.android.purebilibili.data.model.response.DynamicMajor
 import com.android.purebilibili.data.model.response.DynamicModules
 import com.android.purebilibili.feature.dynamic.components.DynamicCardPrimaryAction
+import com.android.purebilibili.feature.comment.SentCommentReplyStore
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
@@ -210,6 +211,86 @@ class DynamicCommentLoadPolicyTest {
         // 空列表与空 dynamicId 都不进缓存，避免「重进秒出一个空骨架」。
         assertNull(cache.get("b", 3))
         assertNull(cache.get("", 3))
+    }
+
+    @Test
+    fun `forwarded video replies use selected video subject rather than first forward candidate`() {
+        val forward = DynamicItem(
+            id_str = "1000", type = "DYNAMIC_TYPE_FORWARD",
+            orig = DynamicItem(
+                id_str = "2000", type = "DYNAMIC_TYPE_AV",
+                basic = com.android.purebilibili.data.model.response.DynamicBasic(
+                    comment_id_str = "3000", comment_type = 1,
+                ),
+            ),
+        )
+        val candidates = resolveDynamicCommentTargets(forward)
+        assertEquals(DynamicCommentTarget(1000L, 17), candidates.first())
+        val videoTarget = candidates.first { it.type == 1 }
+        val selected = requireNotNull(selectPreferredDynamicCommentAttempt(
+            attempts = candidates.mapIndexed { index, target ->
+                DynamicCommentLoadAttempt(
+                    target = target,
+                    replies = if (target == videoTarget) listOf(ReplyItem(rpid = 10L)) else emptyList(),
+                    totalCount = if (target == videoTarget) 1 else 0,
+                    candidateIndex = index,
+                )
+            },
+        ))
+        val sent = resolveDynamicSentComment(
+            ReplyItem(rpid = 20L), selected.target, DynamicCommentComposerTarget(10L, 10L, "root"), null,
+        )
+        assertEquals(3000L, sent.oid)
+        assertEquals(1, sent.replyType)
+        assertEquals(10L, sent.root)
+        assertEquals(10L, sent.parent)
+    }
+
+    @Test
+    fun `cached main preview and pure remote snapshot remain separate across reopening`() {
+        val root = ReplyItem(rpid = 10L)
+        val localRoot = ReplyItem(rpid = 50L)
+        val store = SentCommentReplyStore()
+        store.record(localRoot, listOf(root))
+        store.record(ReplyItem(rpid = 40L, root = 10L), listOf(root))
+        val cache = DynamicCommentCache()
+        cache.put("a", 3, commentSnapshot(10L).copy(
+            replies = store.merge(listOf(root)), remoteReplies = listOf(root),
+        ))
+        val cached = requireNotNull(cache.get("a", 3))
+        assertEquals(listOf(50L, 10L), cached.replies.map { it.rpid })
+        assertEquals(listOf(40L), cached.replies.last().replies.orEmpty().map { it.rpid })
+        assertEquals(listOf(10L), cached.remoteReplies.map { it.rpid })
+        val remoteNextPage = cached.remoteReplies + ReplyItem(rpid = 30L) + localRoot.copy(like = 7)
+        val appended = store.merge(remoteNextPage)
+        assertEquals(listOf(10L, 30L, 50L), appended.map { it.rpid })
+        assertEquals(7, appended.last().like)
+        // Account activation clears both the rendered cache and subject-local send state.
+        cache.clear()
+        store.clear()
+        assertNull(cache.get("a", 3))
+        assertEquals(listOf(root), store.merge(listOf(root)))
+        assertEquals(emptyList(), store.repliesFor(10L))
+    }
+
+    @Test
+    fun `route pin is displayed first once without mutating the server order or top flag`() {
+        val first = ReplyItem(rpid = 10L)
+        val selected = ReplyItem(rpid = 20L)
+        val last = ReplyItem(rpid = 30L)
+        val remote = listOf(first, selected, last)
+        val state = DynamicCommentUiState(
+            comments = remote,
+            pinnedRootReplyId = selected.rpid,
+            pinnedReply = selected,
+        )
+
+        val displayed = resolveDynamicDetailDisplayComments(state)
+
+        assertEquals(listOf(20L, 10L, 30L), displayed.map { it.rpid })
+        assertEquals(listOf(10L, 20L, 30L), remote.map { it.rpid })
+        assertEquals(selected.replyControl, displayed.first().replyControl)
+        assertEquals(remote, resolveDynamicDetailDisplayComments(state.copy(pinnedRootReplyId = 0L)))
     }
 
     private fun commentSnapshot(rpid: Long, oid: Long = 1L) = DynamicCommentCacheSnapshot(

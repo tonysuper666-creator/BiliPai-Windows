@@ -1,0 +1,34 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/audio/lyrics/LyricsDisplayPolicy.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/audio/lyrics/LyricsDisplayPolicy.kt
+@@ -6,7 +6,7 @@
+     showTranslations: Boolean,
+ ): LyricDocument? {
+     if (document == null) return null
+-    return document.copy(lines = document.lines.map { line ->
++    val lines = document.lines.map { line ->
+         // 字幕来源可能用音符包裹歌词；只处理首尾装饰，保留正文和原始数据。
+         val trimmedText = line.text.trim()
+         val startDecorated = trimmedText.startsWith('♪') || trimmedText.startsWith('♫')
+@@ -22,13 +22,15 @@
+                 span.copy(text = spanText).takeIf { it.text.isNotEmpty() }
+             }
+         } else line.spans
+-        line.copy(
+-            text = if (text.isNotEmpty() && (startDecorated || endDecorated)) text else line.text,
+-            spans = spans,
+-            translations = if (showTranslations) line.translations else emptyList(),
+-            romanization = if (showTranslations) line.romanization else null,
+-        )
+-    })
++        val displayText = if (text.isNotEmpty() && (startDecorated || endDecorated)) text else line.text
++        val translations = if (showTranslations) line.translations else emptyList()
++        val romanization = if (showTranslations) line.romanization else null
++        // Desktop: an unchanged projection must not invalidate lyric renderer state.
++        if (displayText == line.text && spans == line.spans &&
++            translations == line.translations && romanization == line.romanization) line
++        else line.copy(text = displayText, spans = spans, translations = translations, romanization = romanization)
++    }
++    return if (lines.indices.all { lines[it] === document.lines[it] }) document else document.copy(lines = lines)
+ }
+ 
+ /**

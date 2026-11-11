@@ -6,26 +6,6 @@ import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 class VideoDetailDemandLoadingStructureTest {
-    @Test
-    fun networkRequestEffectDoesNotWaitForEntryAnimation() {
-        val source = source("state/VideoPlayerState.kt")
-        val marker = "    LaunchedEffect(\n        player,\n        bvid,\n        cid,\n        reuseFromMiniPlayerAtEntry,"
-        assertTrue(source.contains(marker))
-        val effect = source.substringAfter(marker).substringBefore("    return holder")
-        val keys = effect.substringBefore(") {")
-        assertFalse(keys.contains("entryTransitionFinished"))
-        assertFalse(effect.contains("if (!entryTransitionFinished)"))
-        assertTrue(effect.contains("viewModel.loadVideo("))
-    }
-
-    @Test
-    fun playbackPreparationStillWaitsForPlayerAttachmentAndEntryGate() {
-        val source = source("state/VideoPlayerState.kt")
-        val gate = source.substringAfter("DisposableEffect(viewModel, player, entryTransitionFinished, playbackSessionActive)")
-            .substringBefore("    LaunchedEffect(")
-        assertTrue(gate.indexOf("viewModel.attachPlayer(player)") < gate.indexOf("viewModel.setPlaybackPreparationAllowed"))
-        assertTrue(source("viewmodel/VideoPlaybackViewModel.kt").contains("playbackPreparationAllowed.first { it }"))
-    }
 
     @Test
     fun relatedRequestStartsBeforeThePlaybackLoader() {

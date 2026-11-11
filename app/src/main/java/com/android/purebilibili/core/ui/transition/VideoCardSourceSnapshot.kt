@@ -44,6 +44,10 @@ internal data class VideoCardSourceInfoPresentation(
     val useTintedInfoSurface: Boolean = false,
     /** Whether the stationary card exposes the bottom-right overflow affordance. */
     val showOverflowMenu: Boolean = false,
+    /** Regular home cards keep two title lines and single-line metadata at every width. */
+    val singleLineMetadata: Boolean = false,
+    /** Empty means no info-region online row; an unknown visible count is recorded as “—”. */
+    val onlineCountText: String = "",
 )
 
 /**
@@ -66,6 +70,8 @@ internal data class VideoCardSourceCoverPresentation(
     val premiumBadgeText: String = "",
     val showHistoryProgressBar: Boolean = false,
     val historyProgressFraction: Float = 0f,
+    /** 源封面的实际圆角，与透明横卡的整行外框圆角独立；未记录时沿用默认值。 */
+    val cornerRadiusDp: Float? = null,
 )
 
 /**
@@ -109,6 +115,12 @@ internal data class VideoCardSourceChromeSnapshot(
     val isNowPlayingBar: Boolean = false,
 )
 
+/** 相同内容也可能来自另一次点击；只有原始快照实例能使用该次点击的像素。 */
+internal fun ownsVideoCardSourceSnapshot(
+    expected: VideoCardSourceChromeSnapshot?,
+    recorded: VideoCardSourceChromeSnapshot?,
+): Boolean = expected != null && expected === recorded
+
 /** Freeze the measured source-cover decode size together with the click-time snapshot. */
 internal fun VideoCardSourceChromeSnapshot.withMeasuredCoverDecodeSize(
     coverBounds: Rect?,
@@ -126,6 +138,8 @@ internal fun resolveVideoCardSourceInfoPresentation(
     useTintedInfoSurface: Boolean = false,
     showOverflowMenu: Boolean = false,
     ownerBeforeStats: Boolean = false,
+    singleLineMetadata: Boolean = false,
+    onlineCountText: String = "",
 ): VideoCardSourceInfoPresentation = VideoCardSourceInfoPresentation(
     publishTimeText = publishTimeText.trim(),
     showStatsInInfo = showStatsInInfo,
@@ -134,6 +148,8 @@ internal fun resolveVideoCardSourceInfoPresentation(
     ownerBeforePublish = ownerBeforePublish,
     useTintedInfoSurface = useTintedInfoSurface,
     showOverflowMenu = showOverflowMenu,
+    singleLineMetadata = singleLineMetadata,
+    onlineCountText = onlineCountText,
 )
 
 internal fun resolveVideoCardSourceLayout(
