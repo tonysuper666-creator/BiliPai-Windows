@@ -2,6 +2,7 @@ package com.bilipai.desktop.ui
 
 import com.android.purebilibili.data.model.response.*
 import com.android.purebilibili.core.network.DynamicRepostContentItem
+import com.android.purebilibili.core.network.BilibiliApi
 import com.android.purebilibili.feature.video.playback.loader.PlaybackRequest
 import com.android.purebilibili.feature.video.viewmodel.*
 import com.bilipai.desktop.data.*
@@ -17,6 +18,8 @@ import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.ResponseBody.Companion.toResponseBody
 import okio.Buffer
+import retrofit2.Retrofit
+import retrofit2.converter.kotlinx.serialization.asConverterFactory
 import java.lang.reflect.Proxy
 import java.nio.file.Files
 import java.util.concurrent.CopyOnWriteArrayList
@@ -42,6 +45,7 @@ class DesktopVideoDynamicShareTest {
             "/x/web-interface/view" -> """{"code":0,"data":{"aid":9000000001,"bvid":"BVfixture"}}"""
             "/x/dynamic/feed/create/dyn" -> """{"code":0}"""
             "/x/dynamic/feed/edit/dyn" -> """{"code":0}"""
+            "/x/web-interface/nav" -> """{"code":0,"data":{"wbi_img":{"img_url":"https://fixture.invalid/0123456789abcdef0123456789abcdef.png","sub_url":"https://fixture.invalid/fedcba9876543210fedcba9876543210.png"}}}"""
             else -> error("Memory transport refuses ${request.method} ${request.url}")
         } }
         val operations: DesktopDynamicCardOperations
@@ -51,12 +55,18 @@ class DesktopVideoDynamicShareTest {
                 AccountSummary(123, "Fixture", ""))
             val transport = repository.httpClient.newBuilder().retryOnConnectionFailure(false).addInterceptor { chain ->
                 val request = chain.request(); val bytes = Buffer(); request.body?.writeTo(bytes)
+                println("Memory transport: ${request.method} ${request.url.host}${request.url.encodedPath}")
                 requests += Captured(request, bytes.readUtf8())
                 Response.Builder().request(request).protocol(Protocol.HTTP_1_1).code(200).message("memory")
                     .body(reply(request).toResponseBody("application/json".toMediaType())).build()
             }.build()
             // Same existing test seam as DesktopLiveOwnedStreamTest; no new production port.
             DesktopRepository::class.java.getDeclaredField("client").apply { isAccessible=true }.set(repository,transport)
+            // The repository creates its signing API before the client field is replaced.
+            val navApi = Retrofit.Builder().baseUrl("https://api.bilibili.com/").client(transport)
+                .addConverterFactory(Json { ignoreUnknownKeys = true; coerceInputValues = true }
+                    .asConverterFactory("application/json".toMediaType())).build().create(BilibiliApi::class.java)
+            DesktopRepository::class.java.getDeclaredField("api").apply { isAccessible=true }.set(repository,navApi)
             DesktopRepository::class.java.getDeclaredField("visitorInitialized").apply { isAccessible=true }.set(repository,true)
             DesktopRepository::class.java.getDeclaredField("visitorGeneration").apply { isAccessible=true }.set(repository,repository.sessionEpoch)
             epoch = repository.sessionEpoch
@@ -190,7 +200,9 @@ class DesktopVideoDynamicShareTest {
         withTimeout(5_000) { Fixture().use { f ->
             val draft=DynamicPublishDraft("ordinary create")
             assertTrue(f.operations.publishDynamic(draft){error("text-only must not load an image")}.isSuccess)
-            assertTrue(f.operations.editDynamic("111",draft){error("text-only must not load an image")}.isSuccess)
+            val editResult = f.operations.editDynamic("111",draft){error("text-only must not load an image")}
+            editResult.exceptionOrNull()?.printStackTrace()
+            assertTrue(editResult.isSuccess)
             assertEquals(2,f.posts().size)
             f.posts().forEach { captured ->
                 val request=json.parseToJsonElement(captured.body).jsonObject
