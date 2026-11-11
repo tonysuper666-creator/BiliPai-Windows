@@ -70,11 +70,20 @@ internal fun shouldHidePausedInlinePlayerForComments(
     selectedTabIndex: Int,
     isPlaybackPaused: Boolean,
     isCommentThreadVisible: Boolean = false,
-): Boolean = isPlaybackPaused && (selectedTabIndex == 1 || isCommentThreadVisible)
+): Boolean = isPlaybackPaused && (selectedTabIndex in 0..1 || isCommentThreadVisible)
 
 /** Restore the whole player before giving a downward comment drag to refresh. */
 internal fun shouldEnableCommentPullToRefresh(playerCollapseProgress: Float): Boolean =
     playerCollapseProgress <= 0f
+
+/** 恢复播放工具栏仅接替已收净且暂停的画面，紧凑预览仍使用播放器控件。 */
+internal fun shouldShowCollapsedPlayerPlayToolbar(
+    isPlaybackPaused: Boolean,
+    collapseProgress: Float,
+    viewportHeightDp: Float,
+    isFullscreen: Boolean,
+): Boolean = !isFullscreen && isPlaybackPaused && collapseProgress >= 0.98f &&
+    viewportHeightDp.isFinite() && viewportHeightDp in 0f..56.5f
 
 internal fun shouldEnableInlinePortraitScrollTransform(
     collapseMode: PortraitPlayerCollapseMode,
@@ -210,12 +219,14 @@ internal fun resolveInlinePortraitPlayerCommentCollapseDurationMillis(
     return tabSwitchAnimationSpec.durationMs
 }
 
-/** 暂停浏览评论时收起画面，横屏视频可保留播放工具栏。 */
+/** 暂停浏览详情时收起画面，可保留固定高度的恢复播放工具栏。 */
 internal fun resolveInlinePlayerCollapsedViewportHeightDp(
     standardCollapsedHeightDp: Float,
     hidePausedPlayerForComments: Boolean,
     retainPlayToolbar: Boolean = false,
-): Float = if (hidePausedPlayerForComments && !retainPlayToolbar) 0f else standardCollapsedHeightDp.coerceAtLeast(0f)
+): Float = if (hidePausedPlayerForComments) {
+    if (retainPlayToolbar) 56f else 0f
+} else standardCollapsedHeightDp.coerceAtLeast(0f)
 
 /**
  * Inline portrait detail player size.

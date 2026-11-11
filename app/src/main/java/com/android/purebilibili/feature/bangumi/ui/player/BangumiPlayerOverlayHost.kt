@@ -2,6 +2,7 @@ package com.android.purebilibili.feature.bangumi.ui.player
 
 import androidx.compose.runtime.Composable
 import android.os.SystemClock
+import com.android.purebilibili.core.player.SeekTickHapticPolicy
 import com.android.purebilibili.core.util.HapticType
 import com.android.purebilibili.core.util.rememberHapticFeedback
 import androidx.compose.runtime.LaunchedEffect
@@ -130,7 +131,7 @@ internal fun BangumiPlayerOverlayHost(
     }
     val context = LocalContext.current
     val seekHaptic = rememberHapticFeedback(com.android.purebilibili.core.ui.AppHapticScene.PLAYER_SEEK)
-    val seekHaptics = remember(player, epId, bvid, cid) { BangumiSeekHapticPolicy() }
+    val seekHaptics = remember(player, epId, bvid, cid) { SeekTickHapticPolicy() }
     val settingsScope = rememberCoroutineScope()
     val danmakuSettingsScope = resolveDanmakuSettingsScope(isFullscreen)
     val settings by SettingsManager.getDanmakuSettings(context, danmakuSettingsScope)

@@ -9,7 +9,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.FilterQuality
@@ -30,8 +30,8 @@ import com.android.purebilibili.core.store.DataSaverState
 import com.android.purebilibili.core.util.withBiliImageQuality
 import com.android.purebilibili.feature.home.LocalHomeCardCoverLoadingAllowed
 
-/** Defaults to normal loading outside the retained bottom-tab page scope. */
-internal val LocalPageImageLoadingAllowed = staticCompositionLocalOf { true }
+/** 页面覆盖、滚动及返回时频繁切换，只使实际读取加载许可的组件失效。 */
+internal val LocalPageImageLoadingAllowed = compositionLocalOf { true }
 
 /**
  * Removing AsyncImage cancels its request and forgets its animated painter. Keep only the

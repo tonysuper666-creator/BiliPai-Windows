@@ -238,6 +238,7 @@ private fun LiveRoomScreen(
     // 状态
     var showDanmakuSettingsDialog by remember { mutableStateOf(false) }
     val liveDanmakuSettingsSource = com.android.purebilibili.core.ui.components.rememberAppGlassMenuSource()
+    val liveInteractionWindowSource = com.android.purebilibili.core.ui.components.rememberAppGlassMenuSource()
     var showBlockDialog by remember { mutableStateOf(false) }
     var showPlayerInfoDialog by remember { mutableStateOf(false) }
     var showShutdownTimerDialog by remember { mutableStateOf(false) }
@@ -265,6 +266,8 @@ private fun LiveRoomScreen(
     var selectedInteractionTab by rememberSaveable(roomId, siteId) { mutableIntStateOf(0) }
     val chatListState = androidx.compose.foundation.lazy.rememberLazyListState()
     val superChatListState = androidx.compose.foundation.lazy.rememberLazyListState()
+    var showLandscapeInteraction by rememberSaveable(roomId, siteId) { mutableStateOf(false) }
+    var landscapeInteractionCollapsed by remember(roomId, siteId) { mutableStateOf(false) }
     var followingLatestChat by rememberSaveable(roomId, siteId) { mutableStateOf(true) }
     var isPipRequested by remember { mutableStateOf(false) }
     var wasPlaybackActiveBeforePause by remember { mutableStateOf(false) }
@@ -630,6 +633,14 @@ private fun LiveRoomScreen(
         if (livePageGlassSupported) retainedLiveGlassTexture = true
     }
     val liveHostLifecycleState by lifecycleOwner.lifecycle.currentStateAsState()
+    val landscapeInteractionAvailable = isLandscape &&
+        (isFullscreen || liveLayoutMode == LiveRoomLayoutMode.LandscapeOverlay)
+    val landscapeInteractionVisible = showLandscapeInteraction && landscapeInteractionAvailable && liveVisualWorkActive &&
+        liveHostLifecycleState.isAtLeast(Lifecycle.State.RESUMED) &&
+        androidx.compose.ui.platform.LocalWindowInfo.current.isWindowFocused &&
+        !miniPlayerManager.isMiniMode && !isPipRequested && activity?.isInPictureInPictureMode != true &&
+        liveDanmakuInteractionEnabled
+    LocalNavigationBackHandler(enabled = landscapeInteractionVisible) { showLandscapeInteraction = false }
     var liveBackdropRequired by remember(roomId, siteId) { mutableStateOf(true) }
     // 录制覆盖控件淡出，隐藏后停止；避免不可见控制层持续录制视频。
     val liveCaptureVisibility = androidx.compose.animation.core.animateFloatAsState(
@@ -642,7 +653,7 @@ private fun LiveRoomScreen(
     val liveCaptureExiting by remember(liveCaptureVisibility) {
         derivedStateOf { liveCaptureVisibility.value > 0f }
     }
-    val captureLivePlayerPage = livePageGlassSupported && (liveBackdropRequired || liveCaptureExiting) &&
+    val captureLivePlayerPage = livePageGlassSupported && (liveBackdropRequired || liveCaptureExiting || landscapeInteractionVisible) &&
         liveHostLifecycleState.isAtLeast(Lifecycle.State.STARTED) && !miniPlayerManager.isMiniMode
     val useTextureSurfaceForLivePlayer = com.android.purebilibili.feature.video.ui.section.shouldUsePlayerPageTexture(
         glassSupported = livePageGlassSupported,
@@ -1155,6 +1166,10 @@ private fun LiveRoomScreen(
                     onOpenVolume = { showVolumeDialog = true },
                     onOpenPlaybackPreferences = { showPlaybackPreferences = true },
                     onOpenSend = { openDanmakuInput() },
+                    showInteractionToggle = landscapeInteractionAvailable,
+                    interactionWindowVisible = landscapeInteractionVisible,
+                    interactionWindowSource = liveInteractionWindowSource,
+                    onToggleInteractionWindow = { showLandscapeInteraction = !showLandscapeInteraction },
                     videoFitDesc = videoAspectRatio.displayName,
                     videoFitOptions = listOf(VideoAspectRatio.STRETCH, VideoAspectRatio.FIT, VideoAspectRatio.FILL,
                         VideoAspectRatio.FIT_WIDTH, VideoAspectRatio.FIT_HEIGHT, VideoAspectRatio.ORIGINAL,
@@ -1234,6 +1249,7 @@ private fun LiveRoomScreen(
 
     val chatContent: @Composable (Boolean, Boolean) -> Unit = { isOverlay, showHeader ->
         LiveChatSection(
+            compact = landscapeInteractionAvailable,
             messages = if (liveSuperChatEnabled) chatHistory else chatHistory.filterNot { it.item.isSuperChat },
             anchorUid = anchorInfo.uid,
             canInteract = canInteractWithRoom,
@@ -1257,7 +1273,8 @@ private fun LiveRoomScreen(
             listState = chatListState,
             followingLatest = followingLatestChat,
             onFollowingLatestChange = { followingLatestChat = it },
-            active = selectedInteractionTab == 0 && liveHostLifecycleState.isAtLeast(Lifecycle.State.RESUMED) &&
+            active = (!landscapeInteractionAvailable || (landscapeInteractionVisible && !landscapeInteractionCollapsed)) &&
+                selectedInteractionTab == 0 && liveHostLifecycleState.isAtLeast(Lifecycle.State.RESUMED) &&
                 !miniPlayerManager.isMiniMode && !isPipRequested && activity?.isInPictureInPictureMode != true,
             modifier = Modifier.fillMaxSize()
         )
@@ -1265,6 +1282,7 @@ private fun LiveRoomScreen(
 
     val interactionInput: @Composable (Boolean) -> Unit = { isOverlay ->
         LiveChatInputBar(
+            compact = landscapeInteractionAvailable,
             isOverlay = true,
             isDanmakuEnabled = successState?.isDanmakuEnabled ?: true,
             onToggleDanmaku = { toggleLiveDanmaku() },
@@ -1280,6 +1298,7 @@ private fun LiveRoomScreen(
 
     val interactionContent: @Composable (Boolean, Boolean) -> Unit = { isOverlay, includeFooter ->
         LivePrimaryInteractionPanel(
+            compact = landscapeInteractionAvailable,
             isOverlay = isOverlay,
             selectedTab = selectedInteractionTab,
             showSuperChat = liveSuperChatEnabled && liveSuperChatPanelEnabled,
@@ -1404,6 +1423,30 @@ private fun LiveRoomScreen(
         interaction = interactionContent,
         inputFooter = { interactionInput(true) },
     )
+
+    if (landscapeInteractionVisible) {
+        com.android.purebilibili.feature.live.components.LiveLandscapeInteractionWindow(
+            roomKey = "$siteId:$roomId",
+            glass = livePageGlassSupported,
+            source = liveInteractionWindowSource,
+            backdrop = livePlayerBackdrop.backdrop.takeIf { captureLivePlayerPage && livePlayerBackdrop.video.isReady },
+            onClose = { showLandscapeInteraction = false },
+            modifier = Modifier.fillMaxSize(),
+            onCollapsedChange = { landscapeInteractionCollapsed = it },
+            headerAction = {
+                if (liveSuperChatEnabled && liveSuperChatPanelEnabled &&
+                    (superChatItems.isNotEmpty() || selectedInteractionTab == 1)
+                ) {
+                    AppTextButton(onClick = { selectedInteractionTab = if (selectedInteractionTab == 0) 1 else 0 }) {
+                        AppText(
+                            if (selectedInteractionTab == 1) "弹幕" else "SC(${if (superChatItems.size > 99) "99+" else superChatItems.size.toString()})",
+                            maxLines = 1,
+                        )
+                    }
+                }
+            },
+        ) { interactionContent(true, true) }
+    }
 
     // SC 左下角非侵入式悬浮卡片（不遮挡中央视频画面，仅响应实时新 SC，带倒计时与独立关闭）
     // 跟随弹幕开关显示，并可在弹幕设置中独立关闭
@@ -1881,6 +1924,7 @@ private fun LiveRoomHeaderGlassButton(
 
 @Composable
 private fun LivePrimaryInteractionPanel(
+    compact: Boolean = false,
     isOverlay: Boolean = false,
     selectedTab: Int,
     showSuperChat: Boolean,
@@ -1910,10 +1954,11 @@ private fun LivePrimaryInteractionPanel(
             state = pagerState,
             modifier = Modifier.weight(1f),
         ) { page ->
-            Box(Modifier.fillMaxSize().padding(top = if (isOverlay) 12.dp else 0.dp, bottom = 12.dp)) {
+            Box(Modifier.fillMaxSize().padding(top = if (compact) 0.dp else if (isOverlay) 12.dp else 0.dp, bottom = if (compact) 4.dp else 12.dp)) {
                 if (page == 0) {
                     chatContent()
-                    if (showSuperChat && superChatCount > 0) {
+                    // 紧凑悬浮窗的切换入口位于标题栏，不覆盖消息，也不挤占正文高度。
+                    if (!compact && showSuperChat && superChatCount > 0) {
                         AppSurface(
                             onClick = { pagerScope.launch { pagerState.animateScrollToPage(1, animationSpec = androidx.compose.animation.core.tween(200)) } },
                             modifier = Modifier.align(Alignment.TopEnd).padding(12.dp),

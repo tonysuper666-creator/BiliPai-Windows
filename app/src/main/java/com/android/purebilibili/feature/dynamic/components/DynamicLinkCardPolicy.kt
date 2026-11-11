@@ -61,6 +61,7 @@ internal fun resolveDynamicLinkCard(additional: DynamicAdditional?): OpusLinkCar
                     cover = normalizeLinkCardCover(item.cover),
                     jumpUrl = item.jump_url.ifBlank { goods.jump_url },
                     badgeText = item.jump_desc,
+                    goodsItem = item.copy(cover = normalizeLinkCardCover(item.cover)),
                 )
             }
         "ADDITIONAL_TYPE_RESERVE" -> additional.reserve
@@ -135,7 +136,8 @@ internal fun reserveDescription(reserve: DynamicAdditionalReserve): String =
 /** 预约按钮是否可用：有跳转链接时永远可点，否则看服务端下发的禁用标记。 */
 internal fun resolveReserveActionEnabled(card: OpusLinkCard): Boolean {
     val button = card.reserve?.button ?: return false
-    return button.jump_url.isNotBlank() || button.uncheck?.disable != 1
+    val currentStyle = if (button.status == button.type) button.check ?: button.uncheck else button.uncheck
+    return button.jump_url.isNotBlank() || currentStyle?.disable != 1
 }
 
 internal data class DynamicReserveUi(
@@ -265,3 +267,12 @@ internal fun resolveLiveReserveNotificationTime(
     zoneId: ZoneId = ZoneId.systemDefault(),
 ): String = DateTimeFormatter.ofPattern("M月d日 HH:mm")
     .format(java.time.Instant.ofEpochMilli(startAtMillis).atZone(zoneId))
+
+/** 商品介绍与价格分行显示；其他卡片继续沿用原描述。 */
+internal fun resolveDynamicLinkCardDescriptions(card: OpusLinkCard): List<String> {
+    val goods = card.goodsItem
+    return if (goods != null) {
+        listOf(goods.brief, goods.price, if (card.jumpUrl.isBlank()) "暂无商品链接" else "")
+            .filter(String::isNotBlank).distinct()
+    } else listOf(card.description).filter(String::isNotBlank)
+}

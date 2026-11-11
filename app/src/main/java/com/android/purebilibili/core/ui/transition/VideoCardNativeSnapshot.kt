@@ -13,8 +13,11 @@ import androidx.compose.ui.graphics.layer.drawLayer
 import androidx.compose.ui.graphics.rememberGraphicsLayer
 import com.android.purebilibili.core.ui.LocalSharedTransitionEnabled
 import com.android.purebilibili.core.util.CardPositionManager
+import com.android.purebilibili.core.util.VideoCardPixelOwner
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.CoroutineStart
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.ensureActive
 
 internal const val VIDEO_CARD_FLYING_OVERLAY_COVER_DEPTH = 0.001f
 
@@ -253,12 +256,14 @@ internal suspend fun captureNativeVideoCardBitmap(
     )
 }
 
-/** 在来源卡离开前冻结完整像素；只允许当前点击身份接收异步结果。 */
-internal suspend fun captureWholeCardReturnBitmap(layer: GraphicsLayer, expectedSourceKey: String?) {
+/** 冻结已保留的来源图层；开始和完成时均只认同一次点击身份。 */
+internal suspend fun captureWholeCardReturnBitmap(layer: GraphicsLayer, owner: VideoCardPixelOwner) {
+    if (!CardPositionManager.isActiveVideoCardPixelOwner(owner)) return
+    if (layer.isReleased) return
     if (!isNativeVideoCardLayerDrawable(layer.size.width, layer.size.height)) return
     if (!CardPositionManager.isNativeVideoCardLayerCurrentOwner(layer)) return
-    val owner = CardPositionManager.videoCardPixelOwnerFor(expectedSourceKey) ?: return
     val bitmap = layer.toImageBitmap()
+    currentCoroutineContext().ensureActive()
     if (CardPositionManager.isNativeVideoCardLayerCurrentOwner(layer)) {
         CardPositionManager.recordWholeCardReturnBitmap(bitmap, owner)
     }
@@ -294,6 +299,8 @@ internal fun rememberNativeVideoCardSnapshotController(
     val layer = rememberNativeVideoCardLayer()
     val coverOverlayLayer = rememberNativeVideoCardLayer()
     val captureScope = rememberCoroutineScope()
+    val captureAllowed = rememberVideoCardPixelCaptureAllowed()
+    val backgroundState = LocalVideoCardTransitionBackgroundState.current
     val freezeState = remember(key) { mutableStateOf(false) }
     val bvid = (key as? String).orEmpty()
     val sourceRoute = LocalVideoCardSharedElementSourceRoute.current
@@ -323,11 +330,26 @@ internal fun rememberNativeVideoCardSnapshotController(
             captureNativeVideoCardImage(layer)
             captureNativeCoverOverlayLayer(coverOverlayLayer)
             val expectedSourceKey = CardPositionManager.lastClickedVideoSourceKey
-            if (expectedSourceKey != null &&
+            val owner = CardPositionManager.videoCardPixelOwnerFor(expectedSourceKey)
+            if (owner != null &&
                 CardPositionManager.lastClickedVideoSourceChromeSnapshot?.isNowPlayingBar != true
             ) {
-                captureScope.launch(start = CoroutineStart.UNDISPATCHED) {
-                    captureWholeCardReturnBitmap(layer, expectedSourceKey)
+                captureScope.launch {
+                    captureVideoCardPixelsAfterEntry(
+                        phaseProvider = backgroundState.phaseProvider,
+                        isReturnGestureInProgress = {
+                            backgroundState.isReturnGestureInProgressProvider() ||
+                                backgroundState.isGestureRestoreInProgressProvider()
+                        },
+                        ownsCapture = {
+                            !layer.isReleased &&
+                                CardPositionManager.isActiveVideoCardPixelOwner(owner) &&
+                                CardPositionManager.isNativeVideoCardLayerCurrentOwner(layer)
+                        },
+                        captureAllowed = { captureAllowed.value },
+                        entryWorkReleased = { owner.entryWorkReleased },
+                        capture = { captureWholeCardReturnBitmap(layer, owner) },
+                    )
                 }
             }
         },

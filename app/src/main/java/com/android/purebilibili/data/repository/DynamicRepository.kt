@@ -192,12 +192,14 @@ object DynamicRepository {
     ): Result<DynamicFeedFetchResult> = withContext(Dispatchers.IO) {
         val identity = TokenManager.accountIdentity.value
         try {
+            val blockGoods = goodsDynamicFilterEnabled()
             val items = mutableListOf<DynamicItem>()
             val useBaseline = hostMid == null && offset.isBlank() && updateBaseline.isNotBlank()
             var requestOffset = offset
             var baseline = updateBaseline
             var updateNum = 0
             var pagesFetched = 0
+            var receivedItemCount = 0
             var hasMore: Boolean
             while (true) {
                 val previousOffset = requestOffset
@@ -225,11 +227,12 @@ object DynamicRepository {
                 baseline = resolveDynamicFeedUpdateBaseline(baseline, data.update_baseline, pagesFetched)
                 requestOffset = data.offset
                 hasMore = data.has_more
+                receivedItemCount += data.items.size
                 // 折叠卡片仍保留在时间线中，供展开操作恢复对应内容。
-                items += data.items
+                items += if (blockGoods) data.items.filterNot(::isGoodsDynamic) else data.items
                 pagesFetched += 1
                 val fetchNext = if (useBaseline) {
-                    shouldContinueDynamicIncrementalFetch(items.size, updateNum, hasMore, previousOffset, requestOffset)
+                    shouldContinueDynamicIncrementalFetch(receivedItemCount, updateNum, hasMore, previousOffset, requestOffset)
                 } else {
                     shouldContinueDynamicFetchAfterFilter(items.size, hasMore, previousOffset, requestOffset, pagesFetched)
                 }

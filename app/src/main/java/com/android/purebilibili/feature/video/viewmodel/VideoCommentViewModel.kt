@@ -219,6 +219,8 @@ data class FullCommentSearchUiState(
 )
 
 class VideoCommentViewModel : ViewModel() {
+    // 竖屏全屏面板可卸载重建，位置跟随评论 ViewModel 存活，不与详情/横屏共用滚动对象。
+    internal val fullscreenCommentScrollMemory = CommentScrollMemory()
     private val _commentState = MutableStateFlow(CommentUiState())
     val commentState = _commentState.asStateFlow()
 
@@ -294,6 +296,7 @@ class VideoCommentViewModel : ViewModel() {
      * 切换视频时立即废弃旧评论主体和未完成请求，等新页面真正打开评论区后再加载。
      */
     fun clearForVideoChange() {
+        fullscreenCommentScrollMemory.clear()
         commentLoadRequestId++
         mainPagingSession = null
         commentLoadJob?.cancel()
@@ -388,6 +391,7 @@ class VideoCommentViewModel : ViewModel() {
     fun setSortMode(mode: CommentSortMode) {
         val currentState = _commentState.value
         if (currentState.sortMode == mode) return
+        fullscreenCommentScrollMemory.clear()
         
         android.util.Log.d("CommentVM", " setSortMode")
         

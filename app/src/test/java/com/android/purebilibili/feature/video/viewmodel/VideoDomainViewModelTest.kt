@@ -373,6 +373,8 @@ class VideoDomainViewModelTest {
     @Test
     fun `cancel dislike and failed coin do not show completion feedback`() = runTest(dispatcher) {
         val viewModel = VideoEngagementViewModel(actions = FakeEngagementActions(failCoin = true))
+        val events = mutableListOf<VideoEngagementEvent>()
+        val eventJob = launch { viewModel.events.collect { events += it } }
         viewModel.bindSubject(subject("BV1", 1L), VideoEngagementSeed(likeStatusKnown = true, followStatusKnown = true, isDisliked = true))
         viewModel.toggleDislike()
         runCurrent()
@@ -382,11 +384,15 @@ class VideoDomainViewModelTest {
         runCurrent()
         assertEquals(null, viewModel.uiState.value.maidAction)
         assertEquals(0, viewModel.uiState.value.coinCount)
+        assertTrue(events.none { it is VideoEngagementEvent.CoinSucceeded })
+        eventJob.cancel()
     }
 
     @Test
     fun `coin with also like replaces like feedback with one coin animation`() = runTest(dispatcher) {
         val viewModel = VideoEngagementViewModel(actions = FakeEngagementActions())
+        val events = mutableListOf<VideoEngagementEvent>()
+        val eventJob = launch { viewModel.events.collect { events += it } }
         viewModel.bindSubject(subject("BV1", 1L), VideoEngagementSeed(likeStatusKnown = true, followStatusKnown = true))
         viewModel.toggleLike()
         runCurrent()
@@ -396,6 +402,13 @@ class VideoDomainViewModelTest {
         assertFalse(viewModel.uiState.value.likeBurstVisible)
         assertEquals(VideoMaidAction.COIN, viewModel.uiState.value.maidAction)
         assertTrue(viewModel.uiState.value.isLiked)
+        val coinEvents = events.filterIsInstance<VideoEngagementEvent.CoinSucceeded>()
+        assertEquals(1, coinEvents.size)
+        assertEquals(viewModel.uiState.value.subject, coinEvents.single().subject)
+        viewModel.bindSubject(subject("BV1", 1L), VideoEngagementSeed(likeStatusKnown = true, followStatusKnown = true))
+        runCurrent()
+        assertEquals(1, events.filterIsInstance<VideoEngagementEvent.CoinSucceeded>().size)
+        eventJob.cancel()
     }
 
     @Test

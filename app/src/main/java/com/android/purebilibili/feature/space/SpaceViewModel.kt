@@ -1459,7 +1459,7 @@ class SpaceViewModel(
                         break
                     }
 
-                    accumulated += responseData.items
+                    accumulated += com.android.purebilibili.data.repository.filterGoodsSpaceDynamics(responseData.items)
                     pagesFetched += 1
                     val previousOffset = offset
                     offset = responseData.offset
@@ -2011,7 +2011,7 @@ class SpaceViewModel(
             }
 
             val latest = _uiState.value as? SpaceUiState.Success ?: return false
-            val merged = mergeSpaceDynamicPages(existing = latest.dynamics, incoming = responseData.items)
+            val merged = mergeSpaceDynamicPages(existing = latest.dynamics, incoming = com.android.purebilibili.data.repository.filterGoodsSpaceDynamics(responseData.items))
             _uiState.value = latest.copy(
                 dynamics = merged,
                 dynamicOffset = responseData.offset,

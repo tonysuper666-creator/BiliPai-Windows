@@ -144,3 +144,7 @@ desktop/verification/**/private-native-home/
 # Legacy read point materialized by desktop/settings.gradle.kts
 /.legacy-root/
 /.legacy-root.tar
+
+# Upstream merge: keep upstream-tracked files trackable.
+!docs/performance/
+!docs/performance/video-card-transition/*.md

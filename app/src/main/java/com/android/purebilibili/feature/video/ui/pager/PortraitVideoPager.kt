@@ -147,7 +147,12 @@ import androidx.media3.ui.AspectRatioFrameLayout
 import androidx.media3.ui.PlayerView
 import coil3.compose.AsyncImage
 import com.android.purebilibili.core.network.NetworkModule
+import android.os.SystemClock
 import com.android.purebilibili.core.player.HiResCompatibleRenderersFactory
+import com.android.purebilibili.core.player.SeekTickHapticPolicy
+import com.android.purebilibili.core.ui.AppHapticScene
+import com.android.purebilibili.core.util.HapticType
+import com.android.purebilibili.core.util.rememberHapticFeedback
 import com.android.purebilibili.core.plugin.PluginManager
 import com.android.purebilibili.core.store.DanmakuSettings
 import com.android.purebilibili.core.util.NetworkUtils
@@ -414,6 +419,9 @@ fun PortraitVideoPager(
     val scope = rememberCoroutineScope()
     val engagementAccount by TokenManager.accountIdentity.collectAsStateWithLifecycle()
     val engagementSession = engagementAccount to TokenManager.sessDataCache
+    val coinSuccessHaptic = rememberUpdatedState(
+        com.android.purebilibili.feature.video.ui.components.rememberVideoActionSuccessHaptic(isActive)
+    )
     val engagementOwner = remember(engagementSession, viewModel, engagementViewModel) {
         PortraitVideoEngagementStore(
             parentScope = scope,
@@ -421,6 +429,12 @@ fun PortraitVideoPager(
             onEvent = { _, event ->
                 when (event) {
                     is VideoEngagementEvent.Message -> viewModel.toast(event.text)
+                    is VideoEngagementEvent.CoinSucceeded -> {
+                        // store 仅转发当前活动视频的事件；账号仍需按消费时身份校验。
+                        if (com.android.purebilibili.feature.video.viewmodel.matchesVideoEngagementAccount(event.accountSession)) {
+                            coinSuccessHaptic.value()
+                        }
+                    }
                     is VideoEngagementEvent.OpenFollowGroups -> viewModel.showFollowGroupDialogForUser(event.mid)
                     VideoEngagementEvent.InvalidateFavoriteFolders -> viewModel.invalidateFavoriteFolderCache()
                     is VideoEngagementEvent.LoadVideo -> onVideoChange(event.bvid)
@@ -2358,11 +2372,13 @@ private fun VideoPageItem(
         com.android.purebilibili.feature.video.ui.components.rememberVideoScreenshotAction(
             captureBitmap = { _, width, height -> enhancement.captureScreenshot(width, height) }
         )
+    val portraitShareMenuSource = com.android.purebilibili.core.ui.components.rememberAppGlassMenuSource()
     var pendingPortraitShare by remember(bvid, currentPlayingCid) {
         mutableStateOf<com.android.purebilibili.feature.video.share.VideoSharePayload?>(null)
     }
     com.android.purebilibili.feature.video.share.VideoShareSheetHost(
         payload = pendingPortraitShare,
+        glassSource = portraitShareMenuSource,
         onDismiss = { pendingPortraitShare = null },
     )
     var portraitPlayerMenuVisible by remember(bvid) { mutableStateOf(false) }
@@ -2370,7 +2386,7 @@ private fun VideoPageItem(
     val portraitExternalPlaylist by PlaylistManager.playlist.collectAsStateWithLifecycle()
     val portraitHasExternalPlaylist by PlaylistManager.isExternalPlaylist.collectAsStateWithLifecycle()
     var portraitEngagementModalVisible by remember(bvid) { mutableStateOf(false) }
-    val portraitAnyMenuVisible = portraitPlayerMenuVisible || showPortraitExternalPlaylist || portraitEngagementModalVisible
+    val portraitAnyMenuVisible = pendingPortraitShare != null || portraitPlayerMenuVisible || showPortraitExternalPlaylist || portraitEngagementModalVisible
     val portraitViewPoints by viewModel.viewPoints.collectAsStateWithLifecycle()
     val portraitPbpData by viewModel.pbpProgressData.collectAsStateWithLifecycle()
     val portraitDanmakuScope = DanmakuSettingsScope.LANDSCAPE
@@ -2814,6 +2830,9 @@ private fun VideoPageItem(
     
     // 手势调整进度状态
     var isSeekGesture by remember { mutableStateOf(false) }
+    // 中央横滑调进度的刻度触感：拖起轻振，跨过整秒时短振，快速滑动按 60ms 限频。
+    val seekGestureHaptic = rememberHapticFeedback(AppHapticScene.PLAYER_SEEK)
+    val seekGestureHapticPolicy = remember { SeekTickHapticPolicy() }
     var seekStartPosition by remember { mutableLongStateOf(0L) }
     var seekTargetPosition by remember { mutableLongStateOf(0L) }
     var isLongPressing by remember { mutableStateOf(false) }
@@ -3192,6 +3211,14 @@ private fun VideoPageItem(
                                     .coerceIn(0L, progressState.duration)
                                 seekTargetPosition = seekStartPosition
                                 isSeekGesture = true
+                                if (seekGestureHapticPolicy.start(
+                                        seekStartPosition,
+                                        progressState.duration,
+                                        SystemClock.uptimeMillis()
+                                    )
+                                ) {
+                                    seekGestureHaptic(HapticType.LIGHT)
+                                }
                             }
                         },
                         onDragEnd = {
@@ -3203,11 +3230,13 @@ private fun VideoPageItem(
                             } finally {
                                 isSeekGesture = false
                                 totalDragDistanceX = 0f
+                                seekGestureHapticPolicy.finish()
                             }
                         },
                         onDragCancel = {
                             isSeekGesture = false
                             totalDragDistanceX = 0f
+                            seekGestureHapticPolicy.finish()
                         },
                         onHorizontalDrag = { _, dragAmount ->
                             if (isCurrentPage && isSeekGesture && progressState.duration > 0L) {
@@ -3228,11 +3257,19 @@ private fun VideoPageItem(
                                     seekTargetPosition = (seekStartPosition + seekDelta)
                                         .coerceIn(0L, progressState.duration)
                                 }
+                                if (seekGestureHapticPolicy.update(
+                                        seekTargetPosition,
+                                        SystemClock.uptimeMillis()
+                                    )
+                                ) {
+                                    seekGestureHaptic(HapticType.GESTURE_STEP)
+                                }
                             }
                         }
                     )
                 } finally {
                     isSeekGesture = false
+                    seekGestureHapticPolicy.finish()
                 }
             }
     ) {
@@ -3425,7 +3462,7 @@ private fun VideoPageItem(
                             model = FormatUtils.fixImageUrl(cover),
                             contentDescription = null,
                             modifier = Modifier.fillMaxSize(),
-                            contentScale = resolvePortraitCoverContentScale()
+                            contentScale = resolvePortraitCoverContentScale(isVerticalVideo = currentVideoAspect < 1f)
                         )
                     }
                 } else {
@@ -3433,7 +3470,7 @@ private fun VideoPageItem(
                         model = FormatUtils.fixImageUrl(cover),
                         contentDescription = null,
                         modifier = Modifier.fillMaxSize(),
-                        contentScale = resolvePortraitCoverContentScale()
+                        contentScale = resolvePortraitCoverContentScale(isVerticalVideo = currentVideoAspect < 1f)
                     )
                 }
 
@@ -4335,6 +4372,7 @@ private fun VideoPageItem(
                         }
                     }
                 },
+                shareMenuSource = portraitShareMenuSource,
                 onShare = {
                     val info = currentSuccess?.info
                     pendingPortraitShare = com.android.purebilibili.feature.video.share.buildVideoSharePayload(

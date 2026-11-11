@@ -59,10 +59,18 @@ fun StoryScreen(
     LaunchedEffect(context) {
         engagementViewModel.initWithContext(context)
     }
+    val coinSuccessHaptic = androidx.compose.runtime.rememberUpdatedState(
+        com.android.purebilibili.feature.video.ui.components.rememberVideoActionSuccessHaptic(isActive)
+    )
     LaunchedEffect(engagementViewModel) {
         engagementViewModel.events.collect { event ->
             when (event) {
                 is VideoEngagementEvent.Message -> playerViewModel.toast(event.text)
+                is VideoEngagementEvent.CoinSucceeded -> {
+                    if (engagementViewModel.uiState.value.subject == event.subject &&
+                        com.android.purebilibili.feature.video.viewmodel.matchesVideoEngagementAccount(event.accountSession)
+                    ) coinSuccessHaptic.value()
+                }
                 is VideoEngagementEvent.OpenFollowGroups ->
                     playerViewModel.showFollowGroupDialogForUser(event.mid)
                 is VideoEngagementEvent.LoadVideo ->

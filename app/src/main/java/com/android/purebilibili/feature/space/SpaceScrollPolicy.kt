@@ -5,9 +5,11 @@ import androidx.compose.foundation.lazy.staggeredgrid.LazyStaggeredGridState
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 
-/** 渐进模糊需要内容连续穿过顶部；关闭后才启用资料折叠和标签吸顶。 */
-internal fun shouldPinSpaceContentTabs(progressiveTopBlurEnabled: Boolean): Boolean =
-    !progressiveTopBlurEnabled
+/** 任一顶部模糊开启时，内容连续穿过固定顶栏；全部关闭才使用资料折叠和标签吸顶。 */
+internal fun shouldPinSpaceContentTabs(
+    progressiveTopBlurEnabled: Boolean,
+    headerBlurEnabled: Boolean = false,
+): Boolean = !progressiveTopBlurEnabled && !headerBlurEnabled
 
 /** 标签到达工具栏下缘后显示顶层副本；原 item 回收后仍保持吸顶。 */
 internal fun shouldShowSpacePinnedTabs(

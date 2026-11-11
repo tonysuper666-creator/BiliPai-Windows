@@ -13,6 +13,7 @@ import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonDecoder
 import kotlinx.serialization.json.JsonNames
 import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.contentOrNull
 import kotlinx.serialization.json.doubleOrNull
 import kotlinx.serialization.json.intOrNull
@@ -280,7 +281,7 @@ object DynamicModulesFlexibleSerializer : KSerializer<DynamicModules> {
         extractParagraphPics(paragraph, includeLinePic = paragraphType != 3).forEach { pic ->
             blocks += OpusContentBlock.Image(pic)
         }
-        extractParagraphLinkCard(paragraph)?.let { blocks += OpusContentBlock.LinkCard(it) }
+        extractParagraphLinkCards(paragraph).forEach { blocks += OpusContentBlock.LinkCard(it) }
         return blocks
     }
 
@@ -469,6 +470,50 @@ object DynamicModulesFlexibleSerializer : KSerializer<DynamicModules> {
         )
     }
 
+    /** 商品段落保留所有有效条目，其他卡片继续使用单卡协议。 */
+    fun extractParagraphLinkCards(paragraph: JsonObject): List<OpusLinkCard> {
+        val card = paragraph.objectValue("link_card").objectValue("card") ?: return emptyList()
+        if (card.stringValue("type") != "LINK_CARD_TYPE_GOODS") return listOfNotNull(extractParagraphLinkCard(paragraph))
+        val goods = card.objectValue("goods") ?: return emptyList()
+        val items = goods["items"] as? JsonArray ?: return emptyList()
+        return items.mapNotNull { element ->
+            val item = element as? JsonObject ?: return@mapNotNull null
+            val name = item.goodsString("name")
+            val brief = item.goodsString("brief")
+            val price = item.goodsString("price")
+            val cover = normalizeOptionalOpusImageUrl(item.goodsString("cover"))
+            // 商品列表逐项使用自身链接，不把组级链接当成具体商品地址。
+            val jumpUrl = item.goodsString("jump_url")
+            if (name.isBlank() && brief.isBlank() && price.isBlank() && cover.isBlank() && jumpUrl.isBlank()) return@mapNotNull null
+            val details = DynamicAdditionalGoodsItem(
+                name = name, brief = brief, price = price, cover = cover,
+                jump_url = jumpUrl, jump_desc = item.goodsString("jump_desc"),
+            )
+            OpusLinkCard(
+                type = "LINK_CARD_TYPE_GOODS", oid = item.goodsString("id"),
+                title = name.ifBlank { "商品" }, description = price.ifBlank { brief },
+                label = goods.goodsString("head_text"), cover = cover, jumpUrl = jumpUrl,
+                badgeText = details.jump_desc.takeIf { jumpUrl.isNotBlank() }.orEmpty(),
+                goodsItem = details,
+            )
+        }
+    }
+
+    private fun JsonObject.goodsString(key: String): String {
+        val value = get(key) as? JsonPrimitive ?: return ""
+        if (!value.isString) {
+            val validNumber = when (key) {
+                "price" -> value.doubleOrNull?.isFinite() == true
+                "id" -> value.contentOrNull?.let { it.isNotEmpty() && it.all(Char::isDigit) } == true
+                else -> false
+            }
+            if (!validNumber) return ""
+        }
+        return value.contentOrNull?.trim()
+            ?.takeUnless { it.equals("null", true) || it.equals("undefined", true) }.orEmpty()
+    }
+
+    /** 非商品段落的单卡解析，保留内容身份、展示信息和跳转目标。 */
     private fun extractParagraphLinkCard(paragraph: JsonObject): OpusLinkCard? {
         val card = paragraph["link_card"]
             ?.let { runCatching { it.jsonObject }.getOrNull() }
@@ -478,12 +523,13 @@ object DynamicModulesFlexibleSerializer : KSerializer<DynamicModules> {
         val type = card.stringValue("type")
         if (type.isBlank()) return null
         return when (type) {
+            "LINK_CARD_TYPE_EVA3_VIDEO" -> parseEvaLinkCard(card, "eva3_video", type)
+            "LINK_CARD_TYPE_EVA3_OPUS" -> parseEvaLinkCard(card, "eva3_opus", type)
             "LINK_CARD_TYPE_UGC" -> parseUgcLinkCard(card, type)
             "LINK_CARD_TYPE_COMMON" -> parseCommonLinkCard(card, type)
             "LINK_CARD_TYPE_LIVE" -> parseLiveLinkCard(card, type)
             "LINK_CARD_TYPE_OPUS" -> parseOpusLinkCard(card, type)
             "LINK_CARD_TYPE_MUSIC" -> parseMusicLinkCard(card, type)
-            "LINK_CARD_TYPE_GOODS" -> parseGoodsLinkCard(card, type)
             "LINK_CARD_TYPE_VOTE" -> parseVoteLinkCard(card, type)
             "LINK_CARD_TYPE_RESERVE" -> parseReserveLinkCard(card, type)
             "LINK_CARD_TYPE_MATCH" -> parseMatchLinkCard(card, type)
@@ -491,6 +537,24 @@ object DynamicModulesFlexibleSerializer : KSerializer<DynamicModules> {
             "LINK_CARD_TYPE_ITEM_NULL" -> parseItemNullLinkCard(card, type)
             else -> parseGenericLinkCard(card, type)
         }.takeIf { it.title.isNotBlank() || it.cover.isNotBlank() || it.jumpUrl.isNotBlank() }
+    }
+
+    private fun parseEvaLinkCard(card: JsonObject, key: String, type: String): OpusLinkCard {
+        val info = card.objectValue(key).objectValue("info")
+        val picture = info?.get("pics")?.let { runCatching { it.jsonArray.firstOrNull()?.jsonObject }.getOrNull() }
+        val statText = info?.get("stat_infos")?.let { runCatching { it.jsonArray }.getOrNull() }
+            .orEmpty().mapNotNull { runCatching { it.jsonObject.stringValue("text") }.getOrNull()?.takeIf(String::isNotBlank) }
+            .joinToString(" · ")
+        return OpusLinkCard(
+            type = type,
+            oid = card.stringValue("oid"),
+            title = info.stringValue("title"),
+            description = statText.ifBlank { listOf(info.stringValue("author_name"), info.stringValue("view"), info.stringValue("reply"))
+                .filter(String::isNotBlank).joinToString(" · ") },
+            label = info.stringValue("badge"),
+            cover = normalizeOptionalOpusImageUrl(info.stringValue("cover").ifBlank { picture.stringValue("src") }),
+            jumpUrl = info.stringValue("jump_url"),
+        )
     }
 
     private fun parseUgcLinkCard(card: JsonObject, type: String): OpusLinkCard {
@@ -568,24 +632,6 @@ object DynamicModulesFlexibleSerializer : KSerializer<DynamicModules> {
             description = music.stringValue("label"),
             cover = normalizeOptionalOpusImageUrl(music.stringValue("cover")),
             jumpUrl = music.stringValue("jump_url")
-        )
-    }
-
-    private fun parseGoodsLinkCard(card: JsonObject, type: String): OpusLinkCard {
-        val goods = card.objectValue("goods")
-        val firstItem = goods?.get("items")
-            ?.let { runCatching { it.jsonArray }.getOrNull() }
-            ?.firstOrNull()
-            ?.let { runCatching { it.jsonObject }.getOrNull() }
-        return OpusLinkCard(
-            type = type,
-            oid = card.stringValue("oid").ifBlank { firstItem.stringValue("id") },
-            title = firstItem.stringValue("name").ifBlank { goods.stringValue("head_text") },
-            description = firstItem.stringValue("price").ifBlank { firstItem.stringValue("brief") },
-            label = goods.stringValue("head_text"),
-            badgeText = firstItem.stringValue("jump_desc"),
-            cover = normalizeOptionalOpusImageUrl(firstItem.stringValue("cover")),
-            jumpUrl = firstItem.stringValue("jump_url").ifBlank { goods.stringValue("jump_url") }
         )
     }
 
@@ -1131,7 +1177,7 @@ data class DynamicReserveClickResponse(
 data class DynamicReserveClickData(
     val desc_update: String = "",
     @Serializable(with = FlexibleLongSerializer::class)
-    val reserve_update: Long = 0,
+    val reserve_update: Long? = null,
     @Serializable(with = FlexibleIntSerializer::class)
     val final_btn_status: Int = 0,
 )
@@ -1351,6 +1397,8 @@ data class OpusLinkCard(
     val cover: String = "",
     val jumpUrl: String = "",
     val badgeText: String = "",
+    /** 商品的介绍与价格分别保留，长介绍不挤占价格展示。 */
+    val goodsItem: DynamicAdditionalGoodsItem? = null,
     /**
      * 预约交互载荷。信息流的 `additional.reserve` 与详情 opus 段落里的
      * `link_card.card.reserve` 结构一致，统一承载在这里，让两个入口共用同一套

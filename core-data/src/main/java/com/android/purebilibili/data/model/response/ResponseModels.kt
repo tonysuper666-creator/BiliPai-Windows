@@ -618,7 +618,9 @@ data class ReplyContentUrl(
     val appUrlSchema: String = "",
     @Serializable(with = FlexibleStringSerializer::class)
     @JsonNames("prefixIcon", "prefix_icon")
-    val prefixIcon: String = ""
+    val prefixIcon: String = "",
+    val extra: kotlinx.serialization.json.JsonObject? = null,
+    val isGoods: Boolean = false,
 )
 
 //  评论图片

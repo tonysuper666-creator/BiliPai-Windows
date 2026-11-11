@@ -61,9 +61,9 @@ val revisionNeutralSourceRecipePins = mapOf(
     "tools/extract-upstream-video-comment-ui.py" to "5cfb2e35b5e558c3a1911d04fd04ffed88ddc0d17571687901ed591b4e9dbf03",
     "tools/extract-video-enhancement.py" to "0046195e1914059a841aacf69ed704c86a85e5a9e3a432fbcce3d3628f2d9195",
     "tools/run-tool-tests.py" to "0114c7c7ecea5c45e26843ed025eae4a7fd991b6d50edf09bf9185ed7f20cd44",
-    "tools/sync-upstream.py" to "62e1bab0f3101a76f80d1ec2aa16c0b2f2aacba194df67c291324638adce1fa0",
-    "tools/v025-canonical-sources.json" to "2600739eef5521cfef71d6af16762ccc3b9df076dad7ccb79902944f1634130f",
-    "tools/v025_source_paths.py" to "3b84ba1b1b0907cfb3cb610bd6f713c37521a79f6a0d78ce185f764547ebc460",
+    "tools/sync-upstream.py" to "926b66706d101dba6253bd06d823c7e105f8c849fb9e339a468ff14028b39b3d",
+    "tools/v025-canonical-sources.json" to "18df80c4aa5014e369582e804771d58c10567e75e9ebc5c8e314140109bf3a7d",
+    "tools/v025_source_paths.py" to "6d734e6c279b24fca1408276c110064a6cae198f6f2acb184970f30c9eff1555",
     "tools/v029_brand_consumers.py" to "89648e569d074aaeaa456a12220efb4de3e8ecfcefbbe05f74ea55ef47c3742e",
     "tools/v029_comment_composer.py" to "49321836c7e0b49dbdbd226872f85df8cb391feb8ac7dadd27b56e345bbbca52",
     "tools/v029_comment_search.py" to "b80189f64014e373c136bc38e0fbb4171933203ba0cf2a2e76bf0053e17c1a9d",
@@ -96,7 +96,7 @@ val revisionNeutralSourceImportContextMatches =
     revisionNeutralSourceImportRoots.none { file("tools/$it").exists() } && revisionNeutralSourceImportShadowFiles.isEmpty
 // Pin the whole Gradle recipe, including canonical helpers and later wiring.
 // Mask exactly this self-digest assignment; raw build bytes remain task inputs.
-val revisionNeutralSourceGradleRecipeSha256 = "b943e53a7474a41bcdcf313c616378abae4b4402999f322e4ba3ee02b75346f3"
+val revisionNeutralSourceGradleRecipeSha256 = "08d4b7c49c758ff9af3d330457301cf4189ed72a95a0430278993944ba33c880"
 val revisionNeutralSourceGradleRecipeMatches = runCatching {
     val recipe = file("build.gradle.kts").readText(Charsets.UTF_8).replace("\r\n", "\n")
     val ownPin = "val revisionNeutralSourceGradleRecipeSha256 = \"$revisionNeutralSourceGradleRecipeSha256\""
@@ -121,7 +121,7 @@ val canonicalOriginalCatalogFile = file("tools/v025-canonical-sources.json")
 val canonicalOriginalHelperFile = file("tools/v025_source_paths.py")
 val canonicalOriginalCatalogBytes = canonicalOriginalCatalogFile.readBytes().also { bytes ->
     require(MessageDigest.getInstance("SHA-256").digest(bytes)
-        .joinToString("") { "%02x".format(it) } == "2600739eef5521cfef71d6af16762ccc3b9df076dad7ccb79902944f1634130f") {
+        .joinToString("") { "%02x".format(it) } == "18df80c4aa5014e369582e804771d58c10567e75e9ebc5c8e314140109bf3a7d") {
         "The v025 canonical original source catalog changed without review."
     }
 }

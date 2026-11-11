@@ -293,7 +293,7 @@ internal fun BoxScope.VideoDetailReturnSourceCardChrome(
     val isNowPlayingBar = sourceChromeSnapshot?.isNowPlayingBar == true
     // The complete bar (including buttons and material) is rendered by the media overlay.
     // Rebuilding an info band here would double-paint it over the frozen native pixels.
-    if (isNowPlayingBar && CardPositionManager.lastClickedNativeCardBitmap != null) return
+    if (isNowPlayingBar && CardPositionManager.nativeVideoCardBitmapFor(sourceChromeSnapshot) != null) return
 
     val density = LocalDensity.current
     val configuration = LocalConfiguration.current
@@ -407,7 +407,7 @@ internal fun BoxScope.VideoDetailReturnSourceCardChrome(
         )
     }
 
-    val nativeCardLayer = CardPositionManager.lastClickedNativeCardLayer
+    val nativeCardLayer = CardPositionManager.nativeVideoCardLayerFor(sourceChromeSnapshot)
     if (nativeCardLayer != null) {
         val infoCropXPx = layout.coverOffsetXPx + layout.coverWidthPx
         val infoCropYPx = frozenInfoAnchorYPx
@@ -442,6 +442,9 @@ internal fun BoxScope.VideoDetailReturnSourceCardChrome(
                 isCommittedCardReturn = isCommittedCardReturn,
             )
         }.drawWithContent {
+            if (CardPositionManager.nativeVideoCardLayerFor(sourceChromeSnapshot) !== nativeCardLayer) {
+                return@drawWithContent
+            }
             val inverse = sourcePixelInverseScale
             clipRect(left = horizontalInfoClipLeftPx().coerceAtMost(size.width)) {
                 scale(
@@ -656,7 +659,7 @@ internal fun VideoDetailReturnCoverChrome(
     },
     inverseScaleYProvider: () -> Float = inverseScaleXProvider,
 ) {
-    val nativeBarBitmap = CardPositionManager.lastClickedNativeCardBitmap
+    val nativeBarBitmap = CardPositionManager.nativeVideoCardBitmapFor(sourceChromeSnapshot)
     if (
         nativeBarBitmap != null &&
         shouldDrawNativeCoverOverlay(
@@ -666,6 +669,9 @@ internal fun VideoDetailReturnCoverChrome(
     ) {
         Box(
             modifier = modifier.drawWithContent {
+                if (CardPositionManager.nativeVideoCardBitmapFor(sourceChromeSnapshot) !== nativeBarBitmap) {
+                    return@drawWithContent
+                }
                 scale(
                     // The media layout already compensates the measured capsule bounds.
                     // Fit its pixels once; another inverse here doubles the transformation.
@@ -679,7 +685,7 @@ internal fun VideoDetailReturnCoverChrome(
         )
         return
     }
-    val overlayLayer = CardPositionManager.lastClickedNativeCoverOverlayLayer
+    val overlayLayer = CardPositionManager.nativeVideoCoverOverlayLayerFor(sourceChromeSnapshot)
     if (
         overlayLayer != null &&
         shouldDrawNativeCoverOverlay(
@@ -689,6 +695,9 @@ internal fun VideoDetailReturnCoverChrome(
     ) {
         Box(
             modifier = modifier.drawWithContent {
+                if (CardPositionManager.nativeVideoCoverOverlayLayerFor(sourceChromeSnapshot) !== overlayLayer) {
+                    return@drawWithContent
+                }
                 scale(
                     scaleX = size.width / overlayLayer.size.width.toFloat(),
                     scaleY = size.height / overlayLayer.size.height.toFloat(),

@@ -1266,9 +1266,7 @@ fun AppearanceSettingsContent(
             Box(modifier = Modifier.padding(top = 16.dp).entrance()) {
                 // 交给设置页分组承载：圆角、水平边距与容器色由 AppPreferenceGroup 统一决定。
                 AppPreferenceGroup {
-                    ThemeHomePreview(
-                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)
-                    )
+                    ExpandableThemeHomePreview()
                 }
             }
         }

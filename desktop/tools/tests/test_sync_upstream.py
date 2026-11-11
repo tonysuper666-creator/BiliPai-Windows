@@ -491,8 +491,8 @@ class VersionMetadataCompatibilityTests(unittest.TestCase):
     continue to cover those inputs. No generator/build/publish result is faked.
     """
 
-    BASELINE_SHA256 = "8cc478735527f9ace59ae1775258643030ba304fac7aef8f301bf867fc60f91b"
-    BASELINE_BLOB = "de05202c9517ccd6199e9d9044d7bb692fd68225"
+    BASELINE_SHA256 = "2effa06516310b858d81f1979939998097c6316502f4d2e042c184d03c710323"
+    BASELINE_BLOB = "268faa195cf2be1081e3317d0f2554ad4192b82f"
     ORIGINAL_BODY_SHA256 = "d7714aba672ae3754dd93d7ac12c159e597af5ffdf2a46feeec9f15f96c896ca"
     B209_COMMIT = "b2091b1de636e499df80af7e700796b4f52b7f92"
     B209_SHA256 = "d633a056def7f81830143e5d9115ec848057c3f372bfc87ae0a9de5bde8d1bcf"
@@ -569,10 +569,10 @@ class VersionMetadataCompatibilityTests(unittest.TestCase):
         self.offline_blob_calls = []
 
     def version(self, code, name):
-        self.assertEqual(self.baseline.count(b"versionCode = 529"), 1)
-        self.assertEqual(self.baseline.count(b'versionName = "0.6.7"'), 1)
-        return self.baseline.replace(b"versionCode = 529", f"versionCode = {code}".encode("ascii"), 1).replace(
-            b'versionName = "0.6.7"', f'versionName = "{name}"'.encode("ascii"), 1)
+        self.assertEqual(self.baseline.count(b"versionCode = 532"), 1)
+        self.assertEqual(self.baseline.count(b'versionName = "0.6.8"'), 1)
+        return self.baseline.replace(b"versionCode = 532", f"versionCode = {code}".encode("ascii"), 1).replace(
+            b'versionName = "0.6.8"', f'versionName = "{name}"'.encode("ascii"), 1)
 
     def accept_fixture_pin(self, code, name, *, commit=None, tag=None, crlf=False):
         # This prepares a later local pin; it does not call sync_update or claim
@@ -709,24 +709,24 @@ class VersionMetadataCompatibilityTests(unittest.TestCase):
         return report, hashes
 
     def test_first_literal_only_release_keeps_complete_report_and_fixed_catalog(self):
-        incoming = self.version(530, "0.6.7-alpha.1")
+        incoming = self.version(533, "0.6.8-alpha.1")
         changed = {sync.BUILD_CONFIGURATION_PATH: incoming}
         report, hashes = self.report(changed)
         self.assert_complete_report(report, hashes, changed, ready=True)
-        self.assert_metadata(report, self.baseline, incoming, 529, 530, "0.6.7", "0.6.7-alpha.1")
+        self.assert_metadata(report, self.baseline, incoming, 532, 533, "0.6.8", "0.6.8-alpha.1")
         self.assertEqual(report["buildCompatibility"]["reasons"], [])
         self.assertEqual(report["manualReviewReasons"], [])
         self.assertEqual(report["changedReusedSources"], [])
         self.assertEqual(report["changedResources"], [])
 
     def test_accepted_pin_checks_the_next_release_and_current_build_blob(self):
-        previous = self.accept_fixture_pin(530, "0.6.7-alpha.1", commit="c" * 40, tag="v0.6.7-alpha.1")
-        incoming = self.version(531, "0.6.7-alpha.2")
+        previous = self.accept_fixture_pin(533, "0.6.8-alpha.1", commit="c" * 40, tag="v0.6.8-alpha.1")
+        incoming = self.version(534, "0.6.8-alpha.2")
         changed = {sync.BUILD_CONFIGURATION_PATH: incoming}
         report, hashes = self.report(changed)
         self.assert_complete_report(report, hashes, changed, ready=True)
-        self.assert_metadata(report, previous, incoming, 530, 531, "0.6.7-alpha.1", "0.6.7-alpha.2")
-        self.accept_fixture_pin(531, "0.6.7-alpha.2", commit="d" * 40, tag="v0.6.7-alpha.2")
+        self.assert_metadata(report, previous, incoming, 533, 534, "0.6.8-alpha.1", "0.6.8-alpha.2")
+        self.accept_fixture_pin(534, "0.6.8-alpha.2", commit="d" * 40, tag="v0.6.8-alpha.2")
         report, hashes = self.report()
         self.assert_complete_report(report, hashes, {}, ready=True)
         self.assertEqual(report["versionMetadataChanges"], [])
@@ -734,39 +734,39 @@ class VersionMetadataCompatibilityTests(unittest.TestCase):
         self.assertEqual(self.offline_blob_calls, [])
 
     def test_higher_code_with_the_same_name_is_metadata_only(self):
-        incoming = self.version(530, "0.6.7")
+        incoming = self.version(533, "0.6.8")
         changed = {sync.BUILD_CONFIGURATION_PATH: incoming}
         report, hashes = self.report(changed)
         self.assert_complete_report(report, hashes, changed, ready=True)
-        self.assert_metadata(report, self.baseline, incoming, 529, 530, "0.6.7", "0.6.7")
+        self.assert_metadata(report, self.baseline, incoming, 532, 533, "0.6.8", "0.6.8")
 
     def test_equal_code_name_change_or_accepted_version_rollback_stays_manual(self):
-        self.assert_build_manual(self.version(529, "0.6.8"), "monotonic versionCode")
-        self.accept_fixture_pin(531, "0.6.7-alpha.2", commit="c" * 40, tag="v0.6.7-alpha.2")
-        for code, name in ((530, "0.6.7-alpha.1"), (529, "0.6.7"), (531, "0.6.7-alpha.1")):
+        self.assert_build_manual(self.version(532, "0.6.9"), "monotonic versionCode")
+        self.accept_fixture_pin(534, "0.6.8-alpha.2", commit="c" * 40, tag="v0.6.8-alpha.2")
+        for code, name in ((533, "0.6.8-alpha.1"), (532, "0.6.8"), (534, "0.6.8-alpha.1")):
             with self.subTest(code=code, name=name):
                 self.assert_build_manual(self.version(code, name), "monotonic versionCode")
         # An incompatible already-local version is rejected before reading any
         # candidate tree; matching a manifest hash is not a replacement for proof.
-        self.accept_fixture_pin(529, "0.6.8")
+        self.accept_fixture_pin(532, "0.6.9")
         with self.assertRaisesRegex(sync.UpdateError, "monotonic versionCode"):
-            self.report({sync.BUILD_CONFIGURATION_PATH: self.version(532, "0.6.8")})
+            self.report({sync.BUILD_CONFIGURATION_PATH: self.version(535, "0.6.9")})
         self.assertEqual(len(self.offline_api_calls), 2)
         self.assertEqual(self.offline_blob_calls, [])
 
     def test_duplicate_expression_and_unbounded_literals_never_get_metadata_admission(self):
-        valid = self.version(530, "0.6.7-alpha.1")
+        valid = self.version(533, "0.6.8-alpha.1")
         cases = {
             "duplicateCode": (valid + b"\nversionCode = 429\n", "unique supported"),
-            "duplicateName": (valid + b'\nversionName = "0.6.7-alpha.2"\n', "unique supported"),
-            "codeExpression": (valid.replace(b"versionCode = 530", b"versionCode = 529 + 1", 1), "unique supported"),
-            "nameExpression": (valid.replace(b'"0.6.7-alpha.1"', b'"0.6.7" + "-alpha.1"', 1), "unique supported"),
-            "nameTemplate": (valid.replace(b'"0.6.7-alpha.1"', b'"0.6.7-$' + b'{suffix}"', 1), "unique supported"),
-            "leadingZero": (valid.replace(b"versionCode = 530", b"versionCode = 0428", 1), "unique supported"),
-            "zeroCode": (valid.replace(b"versionCode = 530", b"versionCode = 0", 1), "unique supported"),
-            "integerOverflow": (valid.replace(b"versionCode = 530", b"versionCode = 2147483648", 1), "supported bounds"),
-            "longInteger": (valid.replace(b"versionCode = 530", b"versionCode = " + b"9" * 10000, 1), "unique supported"),
-            "longName": (self.version(530, "0.6.7-" + "a" * 129), "supported bounds"),
+            "duplicateName": (valid + b'\nversionName = "0.6.8-alpha.2"\n', "unique supported"),
+            "codeExpression": (valid.replace(b"versionCode = 533", b"versionCode = 532 + 1", 1), "unique supported"),
+            "nameExpression": (valid.replace(b'"0.6.8-alpha.1"', b'"0.6.8" + "-alpha.1"', 1), "unique supported"),
+            "nameTemplate": (valid.replace(b'"0.6.8-alpha.1"', b'"0.6.8-$' + b'{suffix}"', 1), "unique supported"),
+            "leadingZero": (valid.replace(b"versionCode = 533", b"versionCode = 0428", 1), "unique supported"),
+            "zeroCode": (valid.replace(b"versionCode = 533", b"versionCode = 0", 1), "unique supported"),
+            "integerOverflow": (valid.replace(b"versionCode = 533", b"versionCode = 2147483648", 1), "supported bounds"),
+            "longInteger": (valid.replace(b"versionCode = 533", b"versionCode = " + b"9" * 10000, 1), "unique supported"),
+            "longName": (self.version(533, "0.6.8-" + "a" * 129), "supported bounds"),
             "invalidUtf8": (valid + b"\n\xff\n", "valid UTF-8"),
             "byteBudget": (valid + b"x" * sync.MAX_MANIFEST_BYTES, "bounded input budget"),
         }
@@ -775,12 +775,12 @@ class VersionMetadataCompatibilityTests(unittest.TestCase):
                 self.assert_build_manual(incoming, message)
 
     def test_comment_plugin_dependency_scope_and_other_body_bytes_stay_manual(self):
-        valid = self.version(530, "0.6.7-alpha.1")
+        valid = self.version(533, "0.6.8-alpha.1")
         replacements = {
             "plugin": (b'id("com.android.application")', b'id("different.plugin")'),
             "dependency": (b"implementation(libs.miuix.ui)", b"implementation(libs.miuix.preference)"),
             "scope": (b"    defaultConfig {", b"    changedScope {"),
-            "literalIndentation": (b"        versionCode = 530", b"       versionCode = 530"),
+            "literalIndentation": (b"        versionCode = 533", b"       versionCode = 533"),
         }
         cases = {"comment": valid + b"\n// changed upstream build comment\n",
                  "otherBody": valid + b"\nval extraBuildValue = 1\n"}
@@ -801,25 +801,25 @@ class VersionMetadataCompatibilityTests(unittest.TestCase):
                 else:
                     self.baseline_file.write_bytes(contents)
                 with self.assertRaises(sync.UpdateError):
-                    self.report({sync.BUILD_CONFIGURATION_PATH: self.version(530, "0.6.7-alpha.1")})
+                    self.report({sync.BUILD_CONFIGURATION_PATH: self.version(533, "0.6.8-alpha.1")})
                 self.assertEqual(self.offline_api_calls, [
                     "releases?per_page=100&page=1", "git/ref/tags/v0.2.5-alpha.metadata-fixture"])
                 self.assertEqual(self.offline_blob_calls, [])
                 self.baseline_file.write_bytes(self.baseline)
         self.catalog_file.write_bytes(self.catalog_bytes + b"\n")
         with self.assertRaisesRegex(sync.UpdateError, "Unknown canonical source catalog"):
-            self.report({sync.BUILD_CONFIGURATION_PATH: self.version(530, "0.6.7-alpha.1")})
+            self.report({sync.BUILD_CONFIGURATION_PATH: self.version(533, "0.6.8-alpha.1")})
         self.assertEqual(len(self.offline_api_calls), 2)
         self.assertEqual(self.offline_blob_calls, [])
 
     def test_windows_crlf_whole_baseline_and_checkout_use_the_existing_lf_pin(self):
         self.baseline_file.write_bytes(self.baseline.replace(b"\n", b"\r\n"))
-        previous = self.accept_fixture_pin(529, "0.6.7", crlf=True)
-        incoming = self.version(530, "0.6.7-alpha.1").replace(b"\n", b"\r\n")
+        previous = self.accept_fixture_pin(532, "0.6.8", crlf=True)
+        incoming = self.version(533, "0.6.8-alpha.1").replace(b"\n", b"\r\n")
         changed = {sync.BUILD_CONFIGURATION_PATH: incoming}
         report, hashes = self.report(changed)
         self.assert_complete_report(report, hashes, changed, ready=True)
-        self.assert_metadata(report, previous, incoming, 529, 530, "0.6.7", "0.6.7-alpha.1")
+        self.assert_metadata(report, previous, incoming, 532, 533, "0.6.8", "0.6.8-alpha.1")
         detail = report["versionMetadataChanges"][0]
         self.assertEqual(detail["oldBlob"], self.BASELINE_BLOB)
         self.assertNotEqual(detail["newBlob"], self.blob(incoming),
@@ -831,13 +831,13 @@ class VersionMetadataCompatibilityTests(unittest.TestCase):
         source = next(item for item in self.manifest["sources"] if item["path"] != sync.BUILD_CONFIGURATION_PATH)
         resource = next(item for item in self.manifest["resources"]
                         if item.get("hashNormalization") == "raw" and item["path"].endswith(".png"))
-        incoming = self.version(530, "0.6.7-alpha.1")
+        incoming = self.version(533, "0.6.8-alpha.1")
         changed = {sync.BUILD_CONFIGURATION_PATH: incoming,
                    source["path"]: (self.repo / source["path"]).read_bytes() + b"\n// changed upstream original\n",
                    resource["path"]: (self.repo / resource["path"]).read_bytes() + b"\r\nchanged raw resource"}
         report, hashes = self.report(changed)
         self.assert_complete_report(report, hashes, changed, ready=False)
-        self.assert_metadata(report, self.baseline, incoming, 529, 530, "0.6.7", "0.6.7-alpha.1")
+        self.assert_metadata(report, self.baseline, incoming, 532, 533, "0.6.8", "0.6.8-alpha.1")
         self.assertEqual({(reason["code"], reason["path"], reason["kind"])
                           for reason in report["buildCompatibility"]["reasons"]},
                          {("canonicalInputChanged", source["path"], "source"),

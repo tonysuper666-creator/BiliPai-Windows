@@ -313,7 +313,7 @@ internal fun BottomBarMatchedReusableLiquidDock(
     liquidGlassEffectsEnabled: Boolean = true,
     /**
      * Allowlisted callers only: home search field, comment [BottomInputBar], and dynamic
-     * composer/detail chrome, live list search and the live room header that explicitly follow the same floating-dock contract.
+     * composer/detail chrome, article actions, live list search, the landscape live interaction window and the live room header that explicitly follow the same floating-dock contract.
      * Other chrome must leave this false.
      */
     reuseEnabled: Boolean = false,

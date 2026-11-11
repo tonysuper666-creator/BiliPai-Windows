@@ -664,11 +664,15 @@ object CommentGrpcRepository {
         var prefixIcon = ""
         var appUrlSchema = ""
         var pcUrl = ""
+        var isGoods = false
         ProtoWire.parseFields(bytes).forEach { field ->
             when (field.number) {
                 1 -> title = ProtoWire.stringValue(field)
                 3 -> prefixIcon = ProtoWire.stringValue(field)
                 4 -> appUrlSchema = ProtoWire.stringValue(field)
+                10 -> isGoods = ProtoWire.parseFields(field.bytes).any { extra ->
+                    extra.number == 1 || extra.number == 2 || (extra.number == 5 && extra.varint == 1L)
+                }
                 13 -> pcUrl = ProtoWire.stringValue(field)
             }
         }
@@ -676,7 +680,8 @@ object CommentGrpcRepository {
             title = title,
             url = pcUrl.ifBlank { token },
             appUrlSchema = appUrlSchema,
-            prefixIcon = prefixIcon
+            prefixIcon = prefixIcon,
+            isGoods = isGoods
         )
     }
 

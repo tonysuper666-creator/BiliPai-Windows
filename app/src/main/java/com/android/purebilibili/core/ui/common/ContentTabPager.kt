@@ -79,6 +79,7 @@ internal fun Modifier.contentTabPagerGestures(
     pager: PagerState,
     enabled: Boolean,
     contentTopPx: () -> Float,
+    dragInteractionSource: androidx.compose.foundation.interaction.MutableInteractionSource? = null,
 ): Modifier = composed {
     val latestContentTop = rememberUpdatedState(contentTopPx)
     val yieldGesture = remember { booleanArrayOf(false) }
@@ -103,6 +104,7 @@ internal fun Modifier.contentTabPagerGestures(
         state = pager,
         enabled = enabled,
         forceVerticalPriority = true,
+        dragInteractionSource = dragInteractionSource,
         shouldYield = { yieldGesture[0] },
     )
 }

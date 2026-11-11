@@ -118,8 +118,7 @@ data class DashVideo(
     val segmentBase: SegmentBase? = null,
     val codecid: Int? = null
 ) {
-    fun getValidUrl(): String = baseUrl.takeIf { it.isNotEmpty() }
-        ?: backupUrl?.firstOrNull { it.isNotEmpty() } ?: ""
+    fun getValidUrl(): String = preferredDashUrl(baseUrl, backupUrl)
     
     val decodeFormat: VideoDecodeFormat?
         get() = VideoDecodeFormat.fromCodecs(codecs)
@@ -149,8 +148,7 @@ data class DashAudio(
     val segmentBase: SegmentBase? = null,
     val codecid: Int? = null
 ) {
-    fun getValidUrl(): String = baseUrl.takeIf { it.isNotEmpty() }
-        ?: backupUrl?.firstOrNull { it.isNotEmpty() } ?: ""
+    fun getValidUrl(): String = preferredDashUrl(baseUrl, backupUrl)
 }
 
 @Serializable
@@ -313,3 +311,51 @@ fun Dash.getBestAudio(preferQuality: Int = -1): DashAudio? {
             codec.contains("eac3") || codec == "ec3"
     }.maxByOrNull { it.bandwidth }
 }
+
+/**
+ * 判断是否是 PCDN 节点。
+ *
+ * PCDN 由用户设备互相供给带宽，画质与稳定性都不如常规 CDN，不少用户会在路由器或
+ * 防火墙里直接屏蔽它。屏蔽后如果只认 `baseUrl`，下载和播放都会直接失败。
+ *
+ * 判定口径与 app 模块的 `CdnOptimizationPolicy.isRiskyCdnHost` 对齐，覆盖这些形态：
+ *  - `*.mcdn.bilivideo.(com|cn|net)`（域名形态的 mcdn）
+ *  - 裸 IP 主机（mcdn 常见的另一种形态，如 `175.12.94.20:8080`）
+ *  - 常规镜像域名但带 `os=mcdn` 参数（upos-*-mirror*?os=mcdn）
+ *  - 已废弃的 `szbdyd.com` 线路
+ *  - 其它带 pcdn / gotcha 字样的主机
+ */
+internal fun isPcdnUrl(url: String): Boolean {
+    val lower = url.lowercase()
+    if (lower.contains("mcdn") || lower.contains("pcdn") || lower.contains("gotcha")) return true
+    if (lower.contains("os=mcdn")) return true
+    if (lower.contains("szbdyd.com")) return true
+    val host = lower.substringAfter("://", "").substringBefore("/").substringBefore(":")
+    return host.matches(Regex("^\\d{1,3}(?:\\.\\d{1,3}){3}$"))
+}
+
+/**
+ * 选线：优先常规 CDN，全部候选都是 PCDN 时替换 host 兜底。
+ *
+ * 顺序保持稳定：按 baseUrl → backupUrl 的原始顺序挑第一个非 PCDN 的地址。
+ * 若整份响应里只有 PCDN 地址，则将 host 换成常规 CDN；
+ * upgcxcode 路径与签名在不同 host 之间通用，
+ * 这样即便 PCDN 全被屏蔽也仍然能下载/播放，而不是直接失败。
+ */
+internal fun preferredDashUrl(baseUrl: String, backupUrl: List<String>?): String {
+    val candidates = (listOf(baseUrl) + backupUrl.orEmpty()).filter { it.isNotEmpty() }
+    candidates.firstOrNull { !isPcdnUrl(it) }?.let { return it }
+
+    val pcdnUrl = candidates.firstOrNull() ?: return ""
+    val path = pcdnUrl.substringAfter("://", "").substringAfter("/", "")
+    if (path.isEmpty()) return pcdnUrl
+    return "https://${fallbackCdnHosts.first()}/$path"
+}
+
+/** 全 PCDN 时用来替换 host 的常规 CDN 线路。 */
+private val fallbackCdnHosts = listOf(
+    "upos-sz-mirrorali.bilivideo.com",
+    "upos-sz-mirrorcos.bilivideo.com",
+    "upos-sz-mirrorhw.bilivideo.com",
+    "upos-sz-mirroraliov.bilivideo.com",
+)

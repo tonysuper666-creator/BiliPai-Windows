@@ -1052,7 +1052,7 @@ private fun PosterGridCard(
     onClick: () -> Unit,
     onLongClick: () -> Unit,
 ) {
-    val transition = rememberBangumiCardTransition(onClick)
+    val transition = rememberBangumiCardTransition(item.seasonId, onClick = onClick)
     // Only the poster is rounded; keep the title block square for cleaner media rows.
     Column(
         modifier = transition.modifier.combinedClickable(
@@ -1093,7 +1093,7 @@ private fun SearchPosterCard(
     onClick: () -> Unit,
     onLongClick: () -> Unit,
 ) {
-    val transition = rememberBangumiCardTransition(onClick)
+    val transition = rememberBangumiCardTransition(item.seasonId, onClick = onClick)
     Column(
         modifier = transition.modifier.combinedClickable(
             interactionSource = remember { MutableInteractionSource() },
@@ -1170,7 +1170,7 @@ private fun FollowPosterCard(
     onPlay: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val transition = rememberBangumiCardTransition(onClick)
+    val transition = rememberBangumiCardTransition(item.seasonId, onClick = onClick)
     Column(
         modifier = modifier.then(transition.modifier).combinedClickable(
             interactionSource = remember { MutableInteractionSource() },
@@ -1211,7 +1211,7 @@ private fun FollowPosterCard(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun TimelineEpisodeCard(episode: TimelineEpisode, onClick: () -> Unit) {
-    val transition = rememberBangumiCardTransition(onClick)
+    val transition = rememberBangumiCardTransition(episode.seasonId, episode.episodeId, onClick)
     Column(
         modifier = Modifier
             .then(transition.modifier)
@@ -1261,7 +1261,7 @@ private fun FollowInfoCard(
     onMove: (BangumiFollowStatus) -> Unit,
     onUnfollow: () -> Unit,
 ) {
-    val transition = rememberBangumiCardTransition(onClick)
+    val transition = rememberBangumiCardTransition(item.seasonId, onClick = onClick)
     val cardSurface = wallpaperMediaCardSurface(
         containerColor = if (selected) AppSurfaceTokens.secondaryContainer() else AppSurfaceTokens.cardContainer(),
         shape = AppShapes.container(ContainerLevel.Card),
@@ -1278,7 +1278,7 @@ private fun FollowInfoCard(
             .combinedClickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = if (transition.enabled) null else LocalIndication.current,
-                onClick = transition.onClick,
+                onClick = if (selectionMode) onClick else transition.onClick,
                 onLongClick = onLongClick,
             ),
     ) {

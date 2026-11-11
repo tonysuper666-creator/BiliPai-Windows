@@ -729,6 +729,8 @@ private fun VideoPlayerOverlayContent(
     var showRatioMenu by remember { mutableStateOf(false) }
     var showDanmakuSettings by remember { mutableStateOf(false) }
     var showVideoSettings by remember { mutableStateOf(false) }  //  新增
+    val localShareMenuSource = com.android.purebilibili.core.ui.components.rememberAppGlassMenuSource()
+    val shareMenuSource = actions.shareMenuSource ?: localShareMenuSource
     var pendingVideoShare by remember { mutableStateOf<VideoSharePayload?>(null) }
     fun openVideoShareSheet() {
         if (bvid.isEmpty()) return
@@ -1287,7 +1289,7 @@ private fun VideoPlayerOverlayContent(
         )
     }
 
-    val playerMenuVisible = bottomControlFloatingPanelVisible || showQualityMenu ||
+    val playerMenuVisible = pendingVideoShare != null || bottomControlFloatingPanelVisible || showQualityMenu ||
         showSpeedMenu || showRatioMenu || showEpisodeMenu || showEpisodeSourceMenu ||
         showChapterList || showDanmakuSettings || showVideoSettings || showCastDialog ||
         showSponsorSegments || showEnableSponsorPlugin || showPlayerInformation || danmakuComposerVisible ||
@@ -1617,6 +1619,7 @@ private fun VideoPlayerOverlayContent(
                     onLikeLongClick = actions.onTripleAction,
                     onDislikeClick = onDislike,
                     onCoinClick = onCoin,
+                    shareMenuSource = shareMenuSource,
                     onShareClick = { onShare?.invoke() ?: openVideoShareSheet() },
                     onCastClick = onCastClickAction,
                     showCastButton = playerControlVisibility.showCastButton,
@@ -2055,6 +2058,7 @@ private fun VideoPlayerOverlayContent(
         com.android.purebilibili.feature.video.ui.components.PlayerNativeMenuTheme {
         VideoShareSheetHost(
             payload = pendingVideoShare,
+            glassSource = shareMenuSource,
             onDismiss = { pendingVideoShare = null },
         )
 

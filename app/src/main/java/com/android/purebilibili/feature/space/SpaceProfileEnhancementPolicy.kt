@@ -9,7 +9,8 @@ enum class SpaceMainTab {
     FAVORITE,
     BANGUMI,
     COLLECTIONS,
-    CHEESE
+    CHEESE,
+    SHOP
 }
 
 data class SpaceMainTabItem(
@@ -170,6 +171,7 @@ internal fun resolveSpaceDisplayedMainTabs(
     } else if (hasCheese || selectedTab == SpaceMainTab.CHEESE) {
         result.add(SpaceMainTabItem(SpaceMainTab.CHEESE, cheeseTitle.ifBlank { "课堂" }))
     }
+    tabs.firstOrNull { it.tab == SpaceMainTab.SHOP }?.let { result.add(it) }
     return result
 }
 
@@ -226,6 +228,7 @@ fun mainTabToTabIndex(tab: SpaceMainTab): Int {
         SpaceMainTab.BANGUMI -> 4
         SpaceMainTab.COLLECTIONS -> 5
         SpaceMainTab.CHEESE -> 6
+        SpaceMainTab.SHOP -> 7
     }
 }
 
@@ -262,6 +265,7 @@ internal fun resolveSpaceMainTabs(tab2: List<SpaceAggregateTab>): List<SpaceMain
             "bangumi" -> SpaceMainTabItem(SpaceMainTab.BANGUMI, item.title.ifBlank { "追番" })
             "channel", "collection", "collections", "series" ->
                 SpaceMainTabItem(SpaceMainTab.COLLECTIONS, item.title.ifBlank { "合集" })
+            "shop" -> SpaceMainTabItem(SpaceMainTab.SHOP, item.title.ifBlank { "小店" })
             "cheese" -> SpaceMainTabItem(SpaceMainTab.CHEESE, item.title.ifBlank { "课堂" })
             else -> null
         }
@@ -276,6 +280,7 @@ internal fun resolveSpaceMainTabs(tab2: List<SpaceAggregateTab>): List<SpaceMain
     resolved.firstOrNull { it.tab == SpaceMainTab.CHEESE }?.let {
         result.add(it)
     }
+    resolved.firstOrNull { it.tab == SpaceMainTab.SHOP }?.let { result.add(it) }
 
     return result
 }

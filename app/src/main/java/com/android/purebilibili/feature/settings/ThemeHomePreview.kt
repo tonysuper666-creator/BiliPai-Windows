@@ -3,6 +3,9 @@ package com.android.purebilibili.feature.settings
 import androidx.compose.foundation.background
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.border
+import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.selection.selectableGroup
+import androidx.compose.ui.semantics.Role
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -54,7 +57,8 @@ private const val THEME_PREVIEW_SEARCH_HINT = "搜索感兴趣的视频"
 /**
  * 首页配色预览。
  *
- * 只体现当前主题的角色分配：不请求数据、不响应触摸、不包含液态玻璃修饰符或动态效果。
+ * 只体现当前主题的角色分配：不请求数据、不包含液态玻璃修饰符或循环动态效果。
+ * 默认是静态小样；展开模式显式增大示例尺寸，底栏点击仅更新调用方的预览选中态。
  * Miuix 非玻璃底栏复用实际导航的选中轮廓；外部圆角、水平边距与容器色由
  * `AppPreferenceGroup` 承载，MD3 与玻璃预览保留原有示意样式。
  *
@@ -62,25 +66,34 @@ private const val THEME_PREVIEW_SEARCH_HINT = "搜索感兴趣的视频"
  * 底栏取卡片容器色与选中态强调色，因此三种颜色来源下都能直接看出效果。
  */
 @Composable
-internal fun ThemeHomePreview(modifier: Modifier = Modifier) {
+internal fun ThemeHomePreview(
+    modifier: Modifier = Modifier,
+    expanded: Boolean = false,
+    selectedNavigationIndex: Int = 0,
+    onNavigationSelected: ((Int) -> Unit)? = null,
+) {
     Column(
         modifier = modifier
             .fillMaxWidth()
             .semantics { contentDescription = "首页配色预览" },
         verticalArrangement = Arrangement.spacedBy(AppSpacingTokens.Medium),
     ) {
-        ThemePreviewTopBar()
+        ThemePreviewTopBar(expanded = expanded)
         Row(horizontalArrangement = Arrangement.spacedBy(AppSpacingTokens.Medium)) {
-            ThemePreviewCard(coverVariant = 0, modifier = Modifier.weight(1f))
-            ThemePreviewCard(coverVariant = 1, modifier = Modifier.weight(1f))
+            ThemePreviewCard(coverVariant = 0, expanded = expanded, modifier = Modifier.weight(1f))
+            ThemePreviewCard(coverVariant = 1, expanded = expanded, modifier = Modifier.weight(1f))
         }
-        ThemePreviewBottomBar()
+        ThemePreviewBottomBar(
+            expanded = expanded,
+            selectedIndex = selectedNavigationIndex,
+            onSelected = onNavigationSelected,
+        )
     }
 }
 
 /** 顶栏：搜索条 + 头像位（头像底取主色容器，避免纯色圆球显得突兀）。 */
 @Composable
-private fun ThemePreviewTopBar(modifier: Modifier = Modifier) {
+private fun ThemePreviewTopBar(modifier: Modifier = Modifier, expanded: Boolean = false) {
     val searchContent = AppSurfaceTokens.searchContent()
     Row(
         modifier = modifier.fillMaxWidth(),
@@ -90,7 +103,7 @@ private fun ThemePreviewTopBar(modifier: Modifier = Modifier) {
         Row(
             modifier = Modifier
                 .weight(1f)
-                .height(32.dp)
+                .height(if (expanded) 44.dp else 32.dp)
                 .clip(AppShapes.container(ContainerLevel.Field))
                 .background(AppSurfaceTokens.searchContainer())
                 .padding(horizontal = AppSpacingTokens.Small),
@@ -106,13 +119,13 @@ private fun ThemePreviewTopBar(modifier: Modifier = Modifier) {
             AppText(
                 text = THEME_PREVIEW_SEARCH_HINT,
                 color = searchContent,
-                fontSize = 12.sp,
+                fontSize = if (expanded) 15.sp else 12.sp,
                 maxLines = 1,
             )
         }
         Box(
             modifier = Modifier
-                .size(32.dp)
+                .size(if (expanded) 44.dp else 32.dp)
                 .clip(CircleShape)
                 .background(AppSurfaceTokens.primaryContainer()),
             contentAlignment = Alignment.Center,
@@ -129,7 +142,7 @@ private fun ThemePreviewTopBar(modifier: Modifier = Modifier) {
 
 /** 卡片：封面取主色容器并加一圈描边，标题与信息行用文字层级色。 */
 @Composable
-private fun ThemePreviewCard(coverVariant: Int, modifier: Modifier = Modifier) {
+private fun ThemePreviewCard(coverVariant: Int, modifier: Modifier = Modifier, expanded: Boolean = false) {
     val coverShape = AppShapes.container(ContainerLevel.Field)
     val highlight = AppSurfaceTokens.primary()
     val ridge = MaterialTheme.colorScheme.tertiary
@@ -150,13 +163,13 @@ private fun ThemePreviewCard(coverVariant: Int, modifier: Modifier = Modifier) {
         AppText(
             text = THEME_PREVIEW_TITLES[coverVariant.mod(THEME_PREVIEW_TITLES.size)],
             color = AppContentColors.primaryText(),
-            fontSize = 12.sp,
+            fontSize = if (expanded) 16.sp else 12.sp,
             maxLines = 1,
         )
         AppText(
             text = THEME_PREVIEW_META,
             color = AppContentColors.secondaryText(),
-            fontSize = 10.sp,
+            fontSize = if (expanded) 12.sp else 10.sp,
             maxLines = 1,
         )
     }
@@ -164,7 +177,12 @@ private fun ThemePreviewCard(coverVariant: Int, modifier: Modifier = Modifier) {
 
 /** 非玻璃 Miuix 预览与实际原生底栏共用选中语义，其余材质保留已有小样。 */
 @Composable
-private fun ThemePreviewBottomBar(modifier: Modifier = Modifier) {
+private fun ThemePreviewBottomBar(
+    modifier: Modifier = Modifier,
+    expanded: Boolean = false,
+    selectedIndex: Int = 0,
+    onSelected: ((Int) -> Unit)? = null,
+) {
     val nativeMiuix = isMiuixNonGlassEnabled()
     val navigationColors = com.android.purebilibili.core.ui.AppInteractionColors.nativeNavigation(
         com.android.purebilibili.core.ui.AppNavigationColorRole.BAR,
@@ -175,15 +193,21 @@ private fun ThemePreviewBottomBar(modifier: Modifier = Modifier) {
     Row(
         modifier = modifier
             .fillMaxWidth()
+            .then(if (onSelected != null) Modifier.selectableGroup() else Modifier)
             .clip(AppShapes.container(ContainerLevel.Field))
             .background(AppSurfaceTokens.cardContainer())
             .padding(vertical = 6.dp, horizontal = AppSpacingTokens.ExtraSmall),
     ) {
         THEME_PREVIEW_BOTTOM_ITEMS.forEachIndexed { index, item ->
-            val selected = index == 0
+            val selected = index == selectedIndex
             Column(
                 modifier = Modifier
                     .weight(1f)
+                    .then(if (onSelected != null) Modifier.selectable(
+                        selected = selected,
+                        role = Role.Tab,
+                        onClick = { onSelected(index) },
+                    ) else Modifier)
                     .then(if (nativeMiuix) Modifier
                         .clip(AppShapes.SelectionIndicator)
                         .background(if (selected) selectedContainer else Color.Transparent)
@@ -194,7 +218,7 @@ private fun ThemePreviewBottomBar(modifier: Modifier = Modifier) {
             ) {
                 Box(
                     modifier = Modifier
-                        .size(30.dp)
+                        .size(if (expanded) 44.dp else 30.dp)
                         .clip(CircleShape)
                         .background(if (selected && !nativeMiuix) selectedContainer else Color.Transparent),
                     contentAlignment = Alignment.Center,
@@ -204,13 +228,13 @@ private fun ThemePreviewBottomBar(modifier: Modifier = Modifier) {
                             else resolveMaterialBottomBarIcon(item, selected),
                         contentDescription = null,
                         tint = if (selected) selectedContent else idleContent,
-                        modifier = Modifier.size(18.dp),
+                        modifier = Modifier.size(if (expanded) 24.dp else 18.dp),
                     )
                 }
                 AppText(
                     text = resolveBottomNavItemLabel(item),
                     color = if (selected) selectedContent else idleContent,
-                    fontSize = 10.sp,
+                    fontSize = if (expanded) 12.sp else 10.sp,
                     maxLines = 1,
                 )
             }

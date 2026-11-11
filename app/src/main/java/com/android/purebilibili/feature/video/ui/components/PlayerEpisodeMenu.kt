@@ -265,13 +265,14 @@ internal fun PlayerDetailPanel(title: String, isFullscreen: Boolean, playerBound
     )
     val provider = remember(bounds) { object : PopupPositionProvider {
         override fun calculatePosition(anchorBounds: IntRect, windowSize: IntSize, layoutDirection: LayoutDirection,
-            popupContentSize: IntSize) = IntOffset(bounds.left, bounds.top)
+            popupContentSize: IntSize) = resolvePlayerPanelPopupPosition(bounds, windowSize, popupContentSize)
     } }
     val surfaceContent: @Composable (requestDismiss: () -> Unit) -> Unit = { requestDismiss ->
         val panelContent: @Composable () -> Unit = {
             Column(
                 modifier = modifier
-                    .requiredSize(with(density) { bounds.width.toDp() }, with(density) { bounds.height.toDp() })
+                    // 弹窗在旧系统上可能比宿主窗口小；遵守实际测量约束，避免子项被挤出屏幕。
+                    .size(with(density) { bounds.width.toDp() }, with(density) { bounds.height.toDp() })
                     .semantics { paneTitle = title },
                 content = { content(requestDismiss) },
             )
@@ -296,7 +297,8 @@ internal fun PlayerDetailPanel(title: String, isFullscreen: Boolean, playerBound
         popupPositionProvider = provider,
         onDismissRequest = { dismissAction.value?.invoke() ?: onDismiss() },
         // 返回由 Popup 自己的窗口回调处理，保留手势进度与取消恢复。
-        properties = PopupProperties(focusable = true, clippingEnabled = false, dismissOnBackPress = false),
+        // 使用可见窗口参与测量及定位；位移动画仍在内容图层执行，不移动弹窗窗口。
+        properties = PopupProperties(focusable = true, clippingEnabled = true, dismissOnBackPress = false),
     ) {
         com.android.purebilibili.core.ui.AppPopupWindowHost(enableWindowMaterial = false) {
             PlayerDetailPanelMotion(

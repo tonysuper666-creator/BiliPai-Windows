@@ -8,6 +8,13 @@ import kotlin.test.assertNotEquals
 
 class BiliPaiNavKeyMappingPolicyTest {
     @Test
+    fun articleCommentLocationSurvivesRouteRestoration() {
+        val key = BiliPaiNavKey.ArticleDetail(123L, "专栏 & 评论", 456L, 789L)
+        assertEquals(key, legacyRouteToBiliPaiNavKey(key.toLegacyRoute()))
+        assertEquals(BiliPaiNavKey.ArticleDetail(123L), legacyRouteToBiliPaiNavKey("article/123?title="))
+    }
+
+    @Test
     fun liveMatchesRestoreIntoNativeScheduleDestination() {
         assertEquals(ScreenRoutes.LiveMatch.route, BiliPaiNavKey.LiveMatch.toLegacyRoute())
         assertEquals(BiliPaiNavKey.LiveMatch, legacyRouteToBiliPaiNavKey("live_match"))

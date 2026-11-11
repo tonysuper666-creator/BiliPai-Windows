@@ -412,8 +412,12 @@ internal fun resolveMainActivityLinkNavigation(
             )
         }
 
+        is BilibiliNavigationTarget.ArticleCollection -> MainActivityLinkNavigation(
+            pendingNavigationRoute = ScreenRoutes.ArticleCollection.createRoute(target.collectionId)
+        )
+
         is BilibiliNavigationTarget.Article -> MainActivityLinkNavigation(
-            pendingNavigationRoute = ScreenRoutes.ArticleDetail.createRoute(target.articleId)
+            pendingNavigationRoute = ScreenRoutes.ArticleDetail.createRoute(target.articleId, commentRootRpid = target.commentRootRpid, commentTargetRpid = target.commentTargetRpid)
         )
 
         is BilibiliNavigationTarget.Match -> MainActivityLinkNavigation(

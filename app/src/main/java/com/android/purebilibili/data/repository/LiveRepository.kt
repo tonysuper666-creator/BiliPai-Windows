@@ -579,7 +579,7 @@ object LiveRepository {
             val snapshot = parseLiveFeedHomeSnapshot(data)
             val loggedIn = TokenManager.midCache?.let { it > 0 } == true || !TokenManager.sessDataCache.isNullOrBlank()
             val resolved = if (page == 1 && loggedIn && needsLiveFollowSupplement(snapshot)) {
-                getFollowedLivePage(page = 1).fold(
+                getAllFollowedLive().fold(
                     onSuccess = { supplementLiveFollowSnapshot(snapshot, it.items, it.totalCount) },
                     onFailure = { snapshot.copy(followError = it.message ?: "关注直播加载失败") },
                 )
@@ -796,7 +796,7 @@ object LiveRepository {
 
     private suspend fun fallbackLiveFeedHome(): Result<LiveFeedHomeSnapshot> {
         val recommend = getRecommendedLiveRooms().getOrElse { emptyList() }
-        val followedPage = getFollowedLivePage(page = 1).getOrNull()
+        val followedPage = getAllFollowedLive().getOrNull()
         val follow = followedPage?.items.orEmpty()
         val areas = getLiveAreaIndex().getOrElse { emptyList() }
             .map {
@@ -963,12 +963,33 @@ object LiveRepository {
      */
     suspend fun getFollowedLive(page: Int = 1): Result<List<LiveRoom>> = getFollowedLivePage(page).map { it.items }
 
+    /** 首页关注条聚合各页，不把接口首批数据当作完整关注列表。 */
+    private suspend fun getAllFollowedLive(): Result<LivePagedResult<LiveRoom>> {
+        val rooms = linkedMapOf<Long, LiveRoom>()
+        var page = 1
+        var total: Int? = null
+        while (true) {
+            val result = getFollowedLivePage(page)
+            val data = result.getOrElse {
+                if (rooms.isEmpty()) return Result.failure(it)
+                return Result.success(LivePagedResult(rooms.values.toList(), true, page, total))
+            }
+            val before = rooms.size
+            data.items.forEach { rooms[it.roomid] = it }
+            total = data.totalCount ?: total
+            if (!data.hasMore || (data.items.isNotEmpty() && rooms.size == before)) {
+                return Result.success(LivePagedResult(rooms.values.toList(), false, page + 1, total))
+            }
+            page = data.nextPage
+        }
+    }
+
     suspend fun getFollowedLivePage(
         page: Int = 1,
-        pageSize: Int = 50
+        pageSize: Int = 9
     ): Result<LivePagedResult<LiveRoom>> = withContext(Dispatchers.IO) {
         try {
-            val resp = api.getFollowedLive(page = page, pageSize = pageSize)
+            val resp = api.getFollowedLive(page = page, pageSize = pageSize.coerceIn(1, 10))
             if (resp.code != 0) {
                 return@withContext Result.failure(Exception(resp.message.ifBlank { "获取关注直播失败" }))
             }
@@ -978,11 +999,11 @@ object LiveRepository {
 
             val liveRooms = followedRooms.map { it.toLiveRoom() }
             val pageInfo = resp.data?.pageinfo
-            val hasMore = when {
-                pageInfo != null && pageInfo.total_page > 0 -> page < pageInfo.total_page
-                rooms.size >= pageSize -> true
-                else -> false
-            }
+            val hasMore = hasMoreFollowedLivePages(
+                page = page,
+                returnedRoomCount = rooms.size,
+                totalPages = data.totalPage.takeIf { it > 0 } ?: pageInfo?.total_page ?: 0,
+            )
 
             Result.success(
                 LivePagedResult(

@@ -82,13 +82,16 @@ fun SubReplySheet(
                 onCoveredBlurProgressChange?.invoke(0f)
             }
         }
+        val panelColor = rememberVideoCommentAppearance().panelColor
         com.android.purebilibili.core.ui.AppModalBottomSheet(
             onDismissRequest = onDismiss,
             dismissOnBackPress = false,
+            // 外壳与内容安全区使用同一实色，避免底部露出下层页面材质。
+            containerColor = panelColor,
             // 底部安全区由评论面板统一绘制，保留共享弹层与原生材质默认行为。
             windowInsets = WindowInsets.safeDrawing.only(WindowInsetsSides.Top),
             sheetSurfaceModifier = Modifier
-                .background(rememberVideoCommentAppearance().panelColor)
+                .background(panelColor)
                 .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal + WindowInsetsSides.Bottom)),
             modifier = Modifier.fillMaxHeight(maxHeightFraction)
                 .then(threadDrag.containerModifier)

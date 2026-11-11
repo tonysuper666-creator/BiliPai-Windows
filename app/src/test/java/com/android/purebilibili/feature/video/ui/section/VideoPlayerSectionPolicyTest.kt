@@ -932,6 +932,35 @@ class VideoPlayerSectionPolicyTest {
     }
 
     @Test
+    fun inlinePlayerBinding_retainsExistingOutputDuringForegroundCardReturnOnly() {
+        val retain = shouldRetainInlineSurfaceForCardReturn(
+            cardMorphEnabled = true,
+            entryRemoving = true,
+            windowStarted = true,
+            hasBoundPlayer = true,
+        )
+        assertTrue(retain)
+        // 导航退场已把 entry 降为 CREATED，但前台原输出继续参与卡片交接。
+        assertTrue(shouldBindInlinePlayerViewToPlayer(
+            isPortraitFullscreen = false,
+            hostLifecycleStarted = false,
+            isInPipMode = false,
+            retainBoundSurfaceForReturn = retain,
+        ))
+        // 竖屏播放器接管时，不能因外层卡片退场继续占用内联输出。
+        assertFalse(shouldBindInlinePlayerViewToPlayer(
+            isPortraitFullscreen = true,
+            hostLifecycleStarted = false,
+            isInPipMode = false,
+            retainBoundSurfaceForReturn = retain,
+        ))
+        assertFalse(shouldRetainInlineSurfaceForCardReturn(true, true, false, true))
+        assertFalse(shouldRetainInlineSurfaceForCardReturn(true, true, true, false))
+        assertFalse(shouldRetainInlineSurfaceForCardReturn(true, false, true, true))
+        assertFalse(shouldRetainInlineSurfaceForCardReturn(false, true, true, true))
+    }
+
+    @Test
     fun predictiveBackCancelRecovery_runsOnlyForTheCurrentBoundInlinePlayer() {
         assertTrue(
             shouldRecoverInlinePlayerAfterPredictiveBackCancel(

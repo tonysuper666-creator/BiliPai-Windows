@@ -180,6 +180,8 @@ class BangumiPlayerViewModel : BasePlayerViewModel() {
     val uiState = _uiState.asStateFlow()
     
     //  Toast 事件通道
+    private val _coinSuccessEvents = Channel<Pair<Long, com.android.purebilibili.core.store.AccountSessionIdentity>>(Channel.BUFFERED)
+    val coinSuccessEvents = _coinSuccessEvents.receiveAsFlow()
     private val _toastEvent = Channel<String>(Channel.BUFFERED)
     val toastEvent = _toastEvent.receiveAsFlow()
 
@@ -1643,6 +1645,7 @@ class BangumiPlayerViewModel : BasePlayerViewModel() {
                     coinDelta = count,
                     alsoLike = alsoLike
                 )
+                _coinSuccessEvents.trySend(currentState.currentEpisode.id to TokenManager.accountIdentity.value)
                 _toastEvent.trySend("投币成功")
             }.onFailure { error ->
                 _toastEvent.trySend(error.message ?: "投币失败")

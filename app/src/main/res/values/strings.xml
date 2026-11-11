@@ -496,7 +496,6 @@
     <string name="settings_feed_api_changed">已切换为%1$s，下拉刷新后生效</string>
     <string name="settings_donate_qr_description">打赏二维码</string>
     <string name="settings_donate_thanks">感谢您的支持！</string>
-    <string name="settings_donate_dismiss_hint">点击二维码或关闭按钮退出</string>
     <string name="settings_update_tap_to_check">点击检查</string>
     <string name="settings_search_history_title">搜索历史</string>
     <string name="settings_search_history_clear_all">清空全部</string>
@@ -940,4 +939,20 @@
     <string name="animation_page_zoom">缩放淡入</string>
     <string name="animation_page_circular_reveal">圆形揭示（中心展开）</string>
     <string name="animation_page_ios">iOS 风格（侧滑与视差）</string>
+    <string name="settings_donate_title">支持 BiliPai 继续打磨</string>
+    <string name="settings_donate_intro">如果 BiliPai 让您看视频更舒服，欢迎支持后续开发与维护。</string>
+    <string name="settings_donate_voluntary">自愿赞赏，金额随心</string>
+    <string name="settings_donate_steps">1. 保存赞赏码到相册\n2. 微信 → 扫一扫 → 相册\n3. 选择赞赏码，在微信中完成赞赏</string>
+    <string name="settings_donate_enlarge">点击查看大图</string>
+    <string name="settings_donate_save">保存赞赏码</string>
+    <string name="settings_donate_saving">正在保存…</string>
+    <string name="settings_donate_save_again">再次保存赞赏码</string>
+    <string name="settings_donate_saved">赞赏码已保存到相册。打开微信后，从扫一扫的相册中选择图片。</string>
+    <string name="settings_donate_open_wechat">打开微信</string>
+    <string name="settings_donate_save_failed">保存失败，请检查存储空间后重试，也可查看大图后截图。</string>
+    <string name="settings_donate_permission_denied">保存到相册需要存储权限。您也可以查看大图后截图。</string>
+    <string name="settings_donate_wechat_unavailable">暂时无法打开微信，请手动打开微信并从扫一扫的相册中选择赞赏码。</string>
+    <string name="settings_donate_preview_hint">原图展示 · 长按可保存到相册</string>
+    <string name="settings_donate_save_confirm_title">保存赞赏码？</string>
+    <string name="settings_donate_save_confirm_message">是否将赞赏码原图保存到相册？</string>
 </resources>

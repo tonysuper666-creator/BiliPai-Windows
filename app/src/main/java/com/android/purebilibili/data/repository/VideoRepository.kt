@@ -1193,6 +1193,29 @@ object VideoRepository {
     }
 
     /**
+     * 下载场景专用的播放地址查询。
+     *
+     * 下载只是要一份「当前账号可用的画质列表」，并不要求精确切到某个画质；
+     * 用 EXPLICIT 会把「请求 8K、服务端只能给 4K」当成失败返回 null，导致
+     * 离线缓存直接报「无法获取视频下载画质」。这里用 INITIAL 的宽松判定：
+     * 只要服务端返回了可播放的流就接受，降级由下载对话框列出实际可用画质。
+     */
+    suspend fun getPlayUrlDataForDownload(
+        bvid: String,
+        cid: Long,
+        qn: Int = 127,
+        audioLang: String? = null
+    ): PlayUrlData? = withContext(Dispatchers.IO) {
+        fetchPlaybackUrl(
+            bvid = bvid,
+            cid = cid,
+            targetQn = qn,
+            audioLang = audioLang,
+            requestKind = PlayUrlRequestKind.INITIAL
+        )?.data
+    }
+
+    /**
      * Fetch a playable stream while moving between parts of the same video.
      *
      * Unlike a user-requested quality change, a part transition may fall back when the target

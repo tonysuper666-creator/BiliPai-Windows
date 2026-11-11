@@ -262,15 +262,11 @@ class ReplyComponentsPolicyTest {
     }
 
     @Test
-    fun `resolveSubReplyPreviewSummaryLabel follows pili plus wording`() {
-        assertEquals(
-            "UP主等人 共4条回复",
-            resolveSubReplyPreviewSummaryLabel(replyCount = 4, hasUpReply = true)
-        )
-        assertEquals(
-            "共2条回复",
-            resolveSubReplyPreviewSummaryLabel(replyCount = 2, hasUpReply = false)
-        )
+    fun `full thread entry only appears when cached previews are incomplete`() {
+        assertFalse(shouldShowSubReplyPreviewSummary(replyCount = 6, previewReplyCount = 6))
+        assertTrue(shouldShowSubReplyPreviewSummary(replyCount = 6, previewReplyCount = 4))
+        assertTrue(shouldShowSubReplyPreviewSummary(replyCount = 6, previewReplyCount = 0))
+        assertFalse(shouldShowSubReplyPreviewSummary(replyCount = 0, previewReplyCount = 0))
     }
 
     @Test
@@ -1142,8 +1138,6 @@ class ReplyComponentsPolicyTest {
     fun `inline sub reply toggle only appears when preview count exceeds collapsed limit`() {
         assertFalse(shouldShowInlineSubReplyToggle(previewReplyCount = 3))
         assertTrue(shouldShowInlineSubReplyToggle(previewReplyCount = 4))
-        assertEquals("展开回复", resolveInlineSubReplyToggleLabel(expanded = false))
-        assertEquals("收起回复", resolveInlineSubReplyToggleLabel(expanded = true))
     }
 
     @Test

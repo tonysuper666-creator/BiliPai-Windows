@@ -244,6 +244,9 @@ import com.android.purebilibili.navigation3.legacyRouteToBiliPaiNavKey
 import com.android.purebilibili.navigation3.popBiliPaiNavKey
 import com.android.purebilibili.navigation3.popBiliPaiNavKeyToRoot
 import com.android.purebilibili.navigation3.pushBiliPaiNavKey
+import com.android.purebilibili.navigation3.continueArticleReading
+import com.android.purebilibili.navigation3.openReadingArticleCollection
+import com.android.purebilibili.navigation3.openArticleFromCollection
 import com.android.purebilibili.navigation3.pushOrReplaceSettingsCategoryNavKey
 import com.android.purebilibili.navigation3.resolveBiliPaiBackGestureDecision
 import com.android.purebilibili.navigation3.resolveBiliPaiNavCardSourceDirection
@@ -531,6 +534,9 @@ fun AppNavigation(
     var searchEntryMotionKey by remember { mutableIntStateOf(0) }
     var bottomBarSearchLaunchKey by remember { mutableIntStateOf(0) }
     var navigation3ReturnSession by remember { mutableStateOf(BiliPaiReturnSessionState()) }
+    val videoNavigationRequests = remember {
+        com.android.purebilibili.navigation3.VideoNavigationRequestTracker()
+    }
     val effectiveInitialSearchKeyword = inAppSearchKeyword ?: initialSearchKeyword
     val consumeInitialSearchKeyword: (String) -> Unit = { consumedKeyword ->
         if (inAppSearchKeyword == consumedKeyword) {
@@ -1228,6 +1234,9 @@ fun AppNavigation(
             useRecordedCardSource: Boolean = true,
             pendingTransitionSession: VideoCardTransitionSession? = null,
         ) {
+            val navigationRequest = videoNavigationRequests.begin(
+                navigation3BackStack, navigation3ReturnSession.sourceGeneration,
+            )
             val parsedKey = legacyRouteToBiliPaiNavKey(route)
             val videoKey = parsedKey as? BiliPaiNavKey.VideoDetail
             val transitionSession = pendingTransitionSession ?: captureVideoCardNavigationSession(
@@ -1261,7 +1270,12 @@ fun AppNavigation(
                     )
                 ) {
                     coroutineScope.launch {
-                        if (com.android.purebilibili.data.repository.VideoRepository.isVerticalVideo(videoKey.bvid)) {
+                        val isVertical = com.android.purebilibili.data.repository.VideoRepository.isVerticalVideo(videoKey.bvid)
+                        if (!videoNavigationRequests.isCurrent(
+                                navigationRequest, navigation3BackStack, navigation3ReturnSession.sourceGeneration,
+                            )
+                        ) return@launch
+                        if (isVertical) {
                             if (cardTransitionEnabled) {
                                 navigateToVideoRouteInNavigation3(
                                     route = videoKey.copy(
@@ -1352,6 +1366,9 @@ fun AppNavigation(
             useRecordedCardSource: Boolean = true,
             pendingTransitionSession: VideoCardTransitionSession? = null,
         ) {
+            val navigationRequest = videoNavigationRequests.begin(
+                navigation3BackStack, navigation3ReturnSession.sourceGeneration,
+            )
             // 统一兜底：调用方没有显式给出竖屏结论时，用列表预取缓存补全。
             // 这样所有入口（首页/搜索/历史/UP/动态/赛事/收藏…）都不必逐个传参。
             val navigationVertical = initialVertical ||
@@ -1386,10 +1403,12 @@ fun AppNavigation(
             }
             val isNetworkAvailable = NetworkUtils.isNetworkAvailable(context)
             if (!isNetworkAvailable && !com.android.purebilibili.feature.download.DownloadManager.isInitialized.value) {
-                val sourceBackStack = navigation3BackStack.toList()
                 coroutineScope.launch {
                     com.android.purebilibili.feature.download.DownloadManager.awaitInitialization()
-                    if (navigation3BackStack.toList() != sourceBackStack) return@launch
+                    if (!videoNavigationRequests.isCurrent(
+                            navigationRequest, navigation3BackStack, navigation3ReturnSession.sourceGeneration,
+                        )
+                    ) return@launch
                     navigateToVideoInNavigation3(
                         bvid = bvid,
                         cid = cid,
@@ -1445,12 +1464,18 @@ fun AppNavigation(
                 )
             ) {
                 coroutineScope.launch {
-                    if (com.android.purebilibili.data.repository.VideoRepository.isVerticalVideo(bvid)) {
+                    val isVertical = com.android.purebilibili.data.repository.VideoRepository.isVerticalVideo(bvid)
+                    if (!videoNavigationRequests.isCurrent(
+                            navigationRequest, navigation3BackStack, navigation3ReturnSession.sourceGeneration,
+                        )
+                    ) return@launch
+                    if (isVertical) {
                         if (cardTransitionEnabled) {
                             navigateToVideoInNavigation3(
                                 bvid = bvid,
                                 cid = cid,
                                 coverUrl = coverUrl,
+                                fullscreen = fullscreen,
                                 startAudio = startAudio,
                                 autoPortrait = true,
                                 resumePositionMs = resumePositionMs,
@@ -1760,7 +1785,7 @@ fun AppNavigation(
             derivedStateOf {
                 bottomBarVisibilityMode != SettingsManager.BottomBarVisibilityMode.SCROLL_HIDE &&
                     (!isBottomBarVisible ||
-                        (currentBottomNavItem == BottomNavItem.DYNAMIC && scrollOffsetState.floatValue > 50f))
+                        (currentBottomNavItem in setOf(BottomNavItem.DYNAMIC, BottomNavItem.LIVE) && scrollOffsetState.floatValue > 50f))
             }
         }
         val bottomBarVisibilityState = remember { MutableTransitionState(finalBottomBarVisible) }
@@ -1932,6 +1957,13 @@ fun AppNavigation(
                 scopedChannel.trySend(keyword.trim())
             } else {
                 submitSearchKeywordInNavigation3(keyword)
+            }
+        }
+        fun openArticleInNavigation3(articleId: Long, title: String) {
+            when (val target = resolveArticleNavigationTarget(articleId)) {
+                is ArticleNavigationTarget.NativeArticle -> pushNavigation3Key(BiliPaiNavKey.ArticleDetail(target.articleId, title))
+                is ArticleNavigationTarget.NativeDynamic -> pushNavigation3Key(BiliPaiNavKey.DynamicDetail(target.dynamicId))
+                null -> Unit
             }
         }
         // Shared across recompositions: one pending short-link resolution per navigation host.
@@ -2731,23 +2763,7 @@ fun AppNavigation(
                             pushSearchRouteInNavigation3(keyword)
                         },
                         onArticleClick = { articleId, title ->
-                            if (canNavigate(false)) {
-                                coroutineScope.launch {
-                                    when (val target = resolveArticleNavigationTarget(articleId)) {
-                                        is ArticleNavigationTarget.NativeDynamic -> {
-                                            pushNavigation3Key(
-                                                BiliPaiNavKey.DynamicDetail(target.dynamicId)
-                                            )
-                                        }
-                                        is ArticleNavigationTarget.NativeArticle -> {
-                                            pushNavigation3Key(
-                                                BiliPaiNavKey.ArticleDetail(target.articleId, title)
-                                            )
-                                        }
-                                        null -> Unit
-                                    }
-                                }
-                            }
+                            openArticleInNavigation3(articleId, title)
                         },
                         onViewAllClick = { type, id, mid, title, ownerName ->
                             if (type.equals("coin", ignoreCase = true)) {
@@ -3068,7 +3084,10 @@ fun AppNavigation(
                                     pushNavigation3Route(ScreenRoutes.Space.createRoute(mid))
                                 },
                                 globalHazeState = mainHazeState,
-                                isTopLevelActive = currentNavigation3Key == BiliPaiNavKey.MainHost &&
+                                // 保留首页布局供卡片落位，过渡结束后再恢复 Pager/锚点及业务工作。
+                                // 玻璃与原生材质共用活跃门控，不改变各自布局和视觉参数。
+                                isTopLevelActive = isBottomPagerPageActive &&
+                                    currentNavigation3Key == BiliPaiNavKey.MainHost &&
                                     currentBottomNavItem == BottomNavItem.HOME,
                                 visibleDuringNavigation = isBottomPagerPageVisibleDuringNavigation,
                                 isReturningFromVideoDetail = navigation3ReturnSession.isReturningFromDetail,
@@ -3125,7 +3144,6 @@ fun AppNavigation(
                         BiliPaiNavEntryContentRole.HISTORY -> {
                                 val historyViewModel: HistoryViewModel = viewModel()
                                 val historySearchKey = key as? BiliPaiNavKey.HistorySearch
-                                val historyNavigationScope = rememberCoroutineScope()
                                 // Keep a history browsing session through playback and return.
                                 // Background-work availability changes during card transitions
                                 // must not trigger a new server ordering.
@@ -3223,36 +3241,10 @@ fun AppNavigation(
                                                 }
                                             }
                                             HistoryNavigationKind.ARTICLE -> {
-                                                val articleId = historyItem?.videoItem?.id ?: 0L
-                                                val articleTitle = historyItem?.videoItem?.title.orEmpty()
-                                                if (articleId > 0L) {
-                                                    historyNavigationScope.launch {
-                                                        when (val target = resolveArticleNavigationTarget(articleId)) {
-                                                            is ArticleNavigationTarget.NativeDynamic -> {
-                                                                pushNavigation3Route(ScreenRoutes.DynamicDetail.createRoute(target.dynamicId))
-                                                            }
-                                                            is ArticleNavigationTarget.NativeArticle -> {
-                                                                pushNavigation3Route(
-                                                                    ScreenRoutes.ArticleDetail.createRoute(target.articleId, articleTitle)
-                                                                )
-                                                            }
-                                                            null -> {
-                                                                pushNavigation3Route(
-                                                                    ScreenRoutes.ArticleDetail.createRoute(articleId, articleTitle)
-                                                                )
-                                                            }
-                                                        }
-                                                    }
-                                                } else {
-                                                    navigateToVideoInNavigation3(
-                                                        lookupKey,
-                                                        resolvedCid,
-                                                        cover,
-                                                        resumePositionMs = resumePositionMs,
-                                                        initialVertical = isVertical,
-                                                        sourceRoute = ScreenRoutes.History.route
-                                                    )
-                                                }
+                                                openArticleInNavigation3(
+                                                    historyItem?.videoItem?.id ?: 0L,
+                                                    historyItem?.videoItem?.title.orEmpty(),
+                                                )
                                             }
                                             HistoryNavigationKind.VIDEO -> {
                                                 navigateToVideoInNavigation3(
@@ -3298,21 +3290,7 @@ fun AppNavigation(
                                 }
                             },
                             onArticleClick = { articleId, title ->
-                                coroutineScope.launch {
-                                    when (val target = resolveArticleNavigationTarget(articleId)) {
-                                        is ArticleNavigationTarget.NativeDynamic -> {
-                                            pushNavigation3Route(
-                                                ScreenRoutes.DynamicDetail.createRoute(target.dynamicId)
-                                            )
-                                        }
-                                        is ArticleNavigationTarget.NativeArticle -> {
-                                            pushNavigation3Route(
-                                                ScreenRoutes.ArticleDetail.createRoute(target.articleId, title)
-                                            )
-                                        }
-                                        null -> Unit
-                                    }
-                                }
+                                openArticleInNavigation3(articleId, title)
                             },
                             onDynamicDetailClick = { dynamicId ->
                                 pushNavigation3Route(ScreenRoutes.DynamicDetail.createRoute(dynamicId))
@@ -3374,7 +3352,7 @@ fun AppNavigation(
                             val initialSearchKeyword = searchKey?.keyword?.takeIf { it.isNotBlank() }
                                 ?: effectiveInitialSearchKeyword.orEmpty()
                             com.android.purebilibili.feature.search.SearchResultContainerHost(
-                                content = { openUpResult, openBangumiResult, openArticleResult, sourceVisible ->
+                                content = { openUpResult, openBangumiResult, _, sourceVisible ->
                                     SearchScreen(
                                         userFace = homeState.user.face,
                                         initialKeyword = initialSearchKeyword,
@@ -3417,7 +3395,6 @@ fun AppNavigation(
                                         },
                                         onUpResultClick = openUpResult,
                                         onBangumiResultClick = openBangumiResult,
-                                        onArticleResultClick = openArticleResult,
                                         backEnabled = sourceVisible,
                                         onCheeseClick = { seasonId, epId ->
                                             pushNavigation3Key(
@@ -3437,19 +3414,7 @@ fun AppNavigation(
                                             }
                                         },
                                         onArticleClick = { articleId, title ->
-                                            coroutineScope.launch {
-                                                when (val target = resolveArticleNavigationTarget(articleId)) {
-                                                    is ArticleNavigationTarget.NativeDynamic -> {
-                                                        pushNavigation3Route(ScreenRoutes.DynamicDetail.createRoute(target.dynamicId))
-                                                    }
-                                                    is ArticleNavigationTarget.NativeArticle -> {
-                                                        pushNavigation3Route(
-                                                            ScreenRoutes.ArticleDetail.createRoute(target.articleId, title)
-                                                        )
-                                                    }
-                                                    null -> Unit
-                                                }
-                                            }
+                                            openArticleInNavigation3(articleId, title)
                                         },
                                         onAvatarClick = {
                                             if (homeState.user.isLogin) {
@@ -3476,6 +3441,17 @@ fun AppNavigation(
                                                 ArticleDetailScreen(
                                                     articleId = target.id,
                                                     initialTitle = target.title,
+                                                    onAdjacentArticleClick = { id, title ->
+                                                        if (id > 0L && id != target.id) replace(target.copy(id = id, title = title))
+                                                    },
+                                                    onArticleClick = { id, title -> pushNavigation3Key(BiliPaiNavKey.ArticleDetail(id, title)) },
+                                                    onCollectionClick = { id, title, current ->
+                                                        replaceNavigation3BackStack(openReadingArticleCollection(
+                                                            navigation3BackStack, id, title, current,
+                                                        ))
+                                                    },
+                                                    onLinkClick = { url -> openBilibiliLinkInNavigation3(url) },
+                                                    onOpenWeb = { url -> pushNavigation3Key(BiliPaiNavKey.Web(url, "专栏")) },
                                                     contentTransitionReady = ready,
                                                     backHandlerEnabled = false,
                                                     onBack = { close() },
@@ -3739,6 +3715,7 @@ fun AppNavigation(
                                 isVisible = videoDetailPlaybackSessionActive &&
                                     navigation3BackStack.lastOrNull() !is BiliPaiNavKey.AudioMode,
                                 isPlaybackSessionActive = videoDetailPlaybackSessionActive,
+                                isOrientationOwner = navigation3BackStack.lastOrNull() == videoKey,
                                 startInFullscreen = videoKey.fullscreen,
                                 startAudioFromRoute = videoKey.startAudio,
                                 autoEnterPortraitFromRoute = videoKey.autoPortrait,
@@ -4228,6 +4205,7 @@ fun AppNavigation(
                         BiliPaiNavEntryContentRole.LIVE_LIST -> {
                             val liveHeaderUser by homeViewModel.user.collectAsStateWithLifecycle()
                             com.android.purebilibili.feature.live.LiveListScreen(
+                                isCurrentPage = isBottomPagerPageActive,
                                 user = liveHeaderUser,
                                 onAvatarClick = {
                                     pushNavigation3Key(
@@ -4444,10 +4422,8 @@ fun AppNavigation(
                                             )
                                         )
                                     },
-                                    onFavoriteArticleClick = { articleId, title ->
-                                        pushNavigation3Route(
-                                            ScreenRoutes.ArticleDetail.createRoute(articleId, title)
-                                        )
+                                    onFavoriteArticleClick = { opusId, _ ->
+                                        if (opusId > 0L) pushNavigation3Key(BiliPaiNavKey.DynamicDetail(opusId.toString()))
                                     },
                                     onFavoriteTopicClick = { topicId ->
                                         pushNavigation3Key(BiliPaiNavKey.TopicDetail(topicId))
@@ -4881,6 +4857,9 @@ fun AppNavigation(
                                     },
                                     onMatchClick = { contestId ->
                                         replaceNavigation3TopWithKey(BiliPaiNavKey.MatchInfo(contestId))
+                                    },
+                                    onArticleCollectionClick = { id ->
+                                        replaceNavigation3TopWithKey(BiliPaiNavKey.ArticleCollection(id))
                                     }
                                 )
                             }
@@ -4915,11 +4894,43 @@ fun AppNavigation(
                         BiliPaiNavEntryContentRole.DYNAMIC_DETAIL -> {
                             RenderDynamicDestination(key as BiliPaiNavKey.DynamicDetail) { performSystemBackAction() }
                         }
+                        BiliPaiNavEntryContentRole.ARTICLE_COLLECTION -> {
+                            val collectionKey = key as BiliPaiNavKey.ArticleCollection
+                            com.android.purebilibili.feature.article.ArticleCollectionScreen(
+                                collectionId = collectionKey.collectionId,
+                                initialTitle = collectionKey.title,
+                                currentArticleId = collectionKey.currentArticleId,
+                                onBack = { performSystemBackAction() },
+                                onUserClick = { mid -> if (mid > 0L) pushNavigation3Key(BiliPaiNavKey.Space(mid)) },
+                                onArticleClick = { id, title ->
+                                    replaceNavigation3BackStack(openArticleFromCollection(
+                                        navigation3BackStack, collectionKey.collectionId, id, title,
+                                    ))
+                                },
+                                onOpenWeb = { url -> pushNavigation3Key(BiliPaiNavKey.Web(url, collectionKey.title)) },
+                            )
+                        }
                         BiliPaiNavEntryContentRole.ARTICLE_DETAIL -> {
                                 val articleKey = key as BiliPaiNavKey.ArticleDetail
                                 ArticleDetailScreen(
                                     articleId = articleKey.articleId,
                                     initialTitle = articleKey.title,
+                                    openCommentRootRpid = articleKey.commentRootRpid,
+                                    openCommentTargetRpid = articleKey.commentTargetRpid,
+                                    onArticleClick = { id, title -> pushNavigation3Key(BiliPaiNavKey.ArticleDetail(id, title)) },
+                                    onAdjacentArticleClick = { id, title ->
+                                        navigation3ReturnSession = navigation3ReturnSession.clearReturning()
+                                        replaceNavigation3BackStack(continueArticleReading(
+                                            navigation3BackStack, articleKey.articleId, id, title,
+                                        ))
+                                    },
+                                    onCollectionClick = { id, title, current ->
+                                        replaceNavigation3BackStack(openReadingArticleCollection(
+                                            navigation3BackStack, id, title, current,
+                                        ))
+                                    },
+                                    onLinkClick = { url -> openBilibiliLinkInNavigation3(url) },
+                                    onOpenWeb = { url -> pushNavigation3Key(BiliPaiNavKey.Web(url, "专栏")) },
                                     transitionEnabled = cardTransitionEnabled,
                                     onBack = { useSharedReturn ->
                                         navigation3ReturnSession = if (useSharedReturn) {
@@ -4991,6 +5002,7 @@ fun AppNavigation(
 
                 BiliPaiNavDisplayHost(
                     backStack = navigation3BackStack,
+                    onOpenCardContainer = { pushNavigation3Key(it) },
                     activeMainHostRoute = activeBottomTabRoute,
                     cardTransitionEnabled = sharedVideoCardTransitionEnabled,
                     videoTransitionRealtimeBlurEnabled = videoTransitionRealtimeBlurEnabled,

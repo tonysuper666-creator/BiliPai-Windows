@@ -67,6 +67,10 @@ internal data class VideoCardFollowPose(
     val liftScale: Float = 1f,
     val cameraDistance: Float = MIUIX_VIDEO_CARD_GESTURE_CAMERA_DISTANCE_DP,
 ) {
+    /** 带有可见变换的中断姿态沿用原枢轴，避免切换触点时改变投影。 */
+    val hasSpatialTransform: Boolean
+        get() = rotationZ != 0f || rotationX != 0f || rotationY != 0f || liftScale != 1f
+
     fun settle(weight: Float): VideoCardFollowPose = copy(
         translation = translation * weight.coerceIn(0f, 1f),
         rotationZ = rotationZ * weight.coerceIn(0f, 1f),
@@ -146,8 +150,7 @@ internal fun resolveVideoCardFollowPose(
     )
     // Re-grabbing a cancelling pose can move the rotation pivot. Preserve the same rigid
     // transform at the interruption frame before following the new finger.
-    val keepInterruptedPivot = anchorPose.rotationX != 0f || anchorPose.rotationY != 0f ||
-        anchorPose.liftScale != 1f
+    val keepInterruptedPivot = anchorPose.hasSpatialTransform
     val pivotDelta = if (keepInterruptedPivot) Offset.Zero else Offset(
         anchorPose.transformOrigin.pivotFractionX * width,
         anchorPose.transformOrigin.pivotFractionY * height,
@@ -174,13 +177,16 @@ internal fun resolveVideoCardFollowPose(
         translation = anchorPose.translation + pivotCompensation + anchorPath - path + scaleCompensation + delta,
         // A small, continuous tilt; the grab point itself stays under the finger.
         rotationZ = (anchorPose.rotationZ + edgeSign * (2.4f + tilt * 2f) * poseWeight)
-            .coerceIn(-4.4f, 4.4f),
-        rotationX = (anchorPose.rotationX - tilt * 1.6f * poseWeight).coerceIn(-1.6f, 1.6f),
-        rotationY = (anchorPose.rotationY + edgeSign * 1.4f * poseWeight).coerceIn(-1.4f, 1.4f),
+            .coerceIn(minOf(-4.4f, anchorPose.rotationZ), maxOf(4.4f, anchorPose.rotationZ)),
+        rotationX = (anchorPose.rotationX - tilt * 1.6f * poseWeight)
+            .coerceIn(minOf(-1.6f, anchorPose.rotationX), maxOf(1.6f, anchorPose.rotationX)),
+        rotationY = (anchorPose.rotationY + edgeSign * 1.4f * poseWeight)
+            .coerceIn(minOf(-1.4f, anchorPose.rotationY), maxOf(1.4f, anchorPose.rotationY)),
         liftScale = (anchorPose.liftScale - MIUIX_VIDEO_CARD_GESTURE_LIFT_SCALE * poseWeight)
-            .coerceIn(.96f, 1f),
+            .coerceIn(minOf(.96f, anchorPose.liftScale), maxOf(1f, anchorPose.liftScale)),
+        // 自动飞行的透视距离或释放冲量可能超出跟随区间；钳制不能改变接手首帧。
         cameraDistance = (anchorPose.cameraDistance - MIUIX_VIDEO_CARD_GESTURE_CAMERA_PULL_DP * poseWeight)
-            .coerceAtLeast(6f),
+            .coerceAtLeast(minOf(6f, anchorPose.cameraDistance)),
         transformOrigin = if (keepInterruptedPivot) anchorPose.transformOrigin else TransformOrigin(
             (path.x + scaleX * sample.initialTouch.x) / width,
             (path.y + scaleY * sample.initialTouch.y) / height,
