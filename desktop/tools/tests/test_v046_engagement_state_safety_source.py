@@ -73,8 +73,7 @@ def body_of(relative, text):
 def without_cover_edit(relative, text, output):
     """The follow confirmation precedes the episode cover, control-center and buffering stages.
     Peel those later stages in reverse order before checking the follow receipt; every other output is unchanged.
-    plr-control-center-motion applies its thirteen end drawer hunks after that edit (the very last layer of the overlay),
-    so they are peeled first, each proven present exactly once."""
+    The buffering receipt pins both whole bodies; each following inverse hunk must be present exactly once."""
     if relative != follow.OVERLAY:
         return text
     from generation_stage_proof import restore_stage, CENTER_BUFFERING
