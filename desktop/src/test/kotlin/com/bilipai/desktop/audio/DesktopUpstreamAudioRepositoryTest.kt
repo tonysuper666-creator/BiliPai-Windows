@@ -161,11 +161,16 @@ class DesktopUpstreamAudioRepositoryTest {
             assertEquals("api.bilibili.com", play.url.host)
             assertEquals("64", play.url.queryParameter("qn"))
             assertEquals(null, play.url.queryParameter("audio_lang"))
-            val requestsBeforeCache = f.requests.size
+            val firstCallRequests = f.requests.size
             assertEquals(result, withDesktopAudioVideoRequest(binding) {
                 AudioRepository.getAudioStreamFromVideo("BV1GJ411x7h7", 22)
             })
-            assertEquals(requestsBeforeCache, f.requests.size)
+            // The owned transport keeps no play-url cache: the repeat re-asks exactly one
+            // playurl on the api host with the already known wbi keys, and never fetches a
+            // second nav or leaks onto the AU www base.
+            val repeated = f.requests.drop(firstCallRequests)
+            assertEquals(listOf(play.url.encodedPath), repeated.map { it.url.encodedPath })
+            assertEquals("api.bilibili.com", repeated.single().url.host)
             f.sessions.logout()
             assertFailsWith<CancellationException> {
                 withDesktopAudioVideoRequest(binding) { AudioRepository.getAudioStreamFromVideo("BV1GJ411x7h7", 22) }
