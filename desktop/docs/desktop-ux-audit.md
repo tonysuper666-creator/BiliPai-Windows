@@ -21,7 +21,7 @@
 - **基线**：`desktop/integration-263-claude-main` 的 `554a89b02`（PR #170 合并后，2026-11-11）。下文路径都相对仓库根。`K/` 是 `desktop/src/main/kotlin/com/bilipai/desktop/` 的缩写，`app/` 是 `app/src/main/java/com/android/purebilibili/` 的缩写。
 - **编译模型（引用行号前必须知道）**：桌面端是「上游源码 + 切片」双轨编译，不看清哪一份在编译就会引错文件。
   - `feature/home/`、`feature/search/`、`feature/dynamic/`、`feature/comment/`、`data/` 直接从 `app/` 编译（`desktop/build.gradle.kts:319`，M4b）；`feature/plugin|profile|space|message|settings|login` 同样直接编译（`:334`，M4d），个别文件被 `desktop/upstream-core/m4d/later-steps.tsv` 挡回旧副本。
-  - 其余页面仍由 `desktop/upstream-slices/*` 的哈希锁定原文、或由 `desktop/tools/extract-upstream-*.py` 从 `app/` 根源码抽取到 `build/generated/*`，经 Python 生成器注册进 `kotlin.srcDir`。**`feature/video/`（评论 `ReplyComponents.kt` 就在这里）仍走切片**，**`feature/bangumi/` 走抽取**（`desktop/build.gradle.kts:1404-1413`），两者都**不是** `app/` 直编；区别很重要，下面 C2、D1 分别按各自的轨道引用。
+  - 其余页面仍由 `desktop/upstream-slices/*` 的哈希锁定原文、或由 `desktop/tools/extract-upstream-*.py` 从 `app/` 根源码抽取到 `build/generated/*`，经 Python 生成器注册进 `kotlin.srcDir`。**`feature/video/`（评论 `ReplyComponents.kt` 就在这里）仍走切片**。**`feature/bangumi/` 走抽取，而且分成两条轨，不能混**：首页「番剧」标签由 `extract-upstream-home-bangumi-page.py` 生成到 `build/generated/home-bangumi-page`（`desktop/build.gradle.kts:1404-1413`）；导航栏的独立番剧路由由 `extract-upstream-bangumi-pages.py` 生成到 `build/generated/independent-bangumi-pages`（`:1419-1428`）。两者都**不是** `app/` 直编；区别很重要，下面 C2、D1 分别按各自的轨道引用。
   - 上一轮有几条正是错在这里：引了 `app/` 的副本，实际编译的是切片；反过来也有。本文逐条按上面的名单核对过所属轨道。
 - **页面**：首页推荐、视频详情和播放、番剧、搜索、动态、消息、个人中心、设置、登录。
 - **检查面**：键盘、鼠标、窗口、文字、系统集成。
@@ -39,7 +39,7 @@
 
 ## 结论摘要
 
-共 45 个核对项（A5 拆成「评论 A5」「私信 A5′」两行，故表内 46 行）：**缺口 34 条，已达标 9 条，待核实 2 条**，另有 1 条是规范与微软指南的分歧（只记录）。「待核实」一节另列 10 个需要实机确认的问题。
+共 **46 个核对项**（A5 拆成「评论 A5」「私信 A5′」两行，表内正好 46 行）：**缺口 34 条，已达标 9 条，待核实 2 条**，另有 1 条是规范与微软指南的分歧（只记录）。34 + 9 + 2 + 1 = 46，与表内行数一致。「待核实」一节另列 10 个需要实机确认的问题。
 
 | 级 | 缺口数 | 已有子卡 S1–S5 | 已有专卡 K/U/TON | 只记文档 |
 |---|---|---|---|---|
@@ -49,7 +49,7 @@
 | P3 | 8 | 0 | 1 | 7 |
 | 合计 | 34 | 10 | 12 | 12 |
 
-与上一轮的差异（45 条总数不变）：
+与上一轮的差异（上一轮 45 条，本轮 A5 拆成两行，总数 46）：
 
 - **D3 私信气泡改为「达标」**：`app/.../feature/message/ChatScreen.kt:1028` 已经用 `SelectionContainer` 包住文本气泡，且 `feature/message/` 是 M4d 直接编译区，这份文件确实在编译。上一轮引的是切片副本，看漏了。（缺口 35 → 34，P1 17 → 16，达标 7 → 8。）
 - **A5 拆开写**：私信输入框的 Ctrl+Enter 已经接上（`desktop/upstream-core/patches/.../ChatScreen.kt.patch:148` 注入 `rememberDesktopMessageSendShortcut`，实现见 `K/ui/DesktopMessageComposerShortcut.kt:23`、`:48`，有 `DesktopMessageSendShortcutTest` 与 `desktop/tools/tests/test_message_split_patches.py:114-126` 双重把关）。**未接上的是视频评论区**。上一轮把两者混成一条，既夸大了缺口也模糊了进度；本轮拆成 A5 与 A5′ 两行（达标再 +1 → 9）。
@@ -65,7 +65,7 @@
 
 | 编号 | 页面 | 现状（证据） | 期望行为（依据） | 级 | 量 | 归属 |
 |---|---|---|---|---|---|---|
-| A1 | 首页、搜索、历史、收藏 | 卡片用 `detectTapGestures` 打开（`app/.../feature/home/components/cards/VideoCard.kt:1449`、`:2009` 处同理），`focusable` 在 `:30` 导入但全文件没有调用，Tab 走不到，回车打不开；只有 `semantics { contentDescription }`（`:2001`、`:2145`） | Tab 进网格，方向键在卡片间移动，Enter 打开，Shift+F10 弹菜单，焦点环可见（规范 §4 第 4 条、§8「焦点顺序」；微软「可操作的控件都应是 tab stop」「多列网格四个方向键都能导航」，原话） | P1 | M | K3 TON-1054（首页）、K4 TON-1055（其余列表）、U4 TON-1007 #6（全局焦点环） |
+| A1 | 首页、搜索、历史、收藏 | 卡片用 `detectTapGestures` 打开（`app/.../feature/home/components/cards/VideoCard.kt:1449`、`:2009` 处同理；这份是生成器的输入，实际编译文件见 B4，行号只作定位），`focusable` 在 `:30` 导入但全文件没有调用，Tab 走不到，回车打不开；只有 `semantics { contentDescription }`（`:2001`、`:2145`） | Tab 进网格，方向键在卡片间移动，Enter 打开，Shift+F10 弹菜单，焦点环可见（规范 §4 第 4 条、§8「焦点顺序」；微软「可操作的控件都应是 tab stop」「多列网格四个方向键都能导航」，原话） | P1 | M | K3 TON-1054（首页）、K4 TON-1055（其余列表）、U4 TON-1007 #6（全局焦点环） |
 | A2 | 播放 | 播放器动作里 Esc 分层、视频信息、字幕浮层、逐帧、右键菜单、快捷键帮助全部直接返回 `false`（`K/ui/DesktopPlayerShortcutEffects.kt:143-144`）。Esc 本身的原生分层已经单独做过（`K/ui/DesktopWindowsVideoEscapeInput.kt:64-76`：先关浮层、再退全屏、再交给窗口后退，PR #147） | 合约里列出的播放器快捷键都要能用；Esc 先关最上层浮层，再退全屏，再返回（规范 §8） | P1 | M | K5 TON-1056（分层 Esc、输入隔离）、U2 TON-1006（控件） |
 | A3 | 输入框（搜索、评论、私信） | 根键盘处理器里 Esc 分支用 `!searchFocused` 防止误返回（`K/DesktopShell.kt:1782`，播放键分支同样在 `:1788`、`:1790` 用它）。但 `searchFocused` 只有声明（`:759`）**从来没有被赋值**，四行之外无引用，这道防线是死的。文本框不消费 Esc 时，Esc 会被当成「返回上一页」 | 光标在输入框里时，Esc 只取消输入（关建议、失焦），不翻页（微软：「Esc 只影响临时 UI，不关闭、不后退应用界面」，原话）。是否真会误返回待 UI 测试复现 | P1 | S | **S3**（TON-1265） |
 | A4 | 登录 | 「账号与登录」对话框（`K/ui/AdvancedLoginDialog.kt`）的账号、密码框都没有 `keyboardActions`（`:181`、`:182`），短信码（`:241`、`:258`）、区号搜索（`:224`）、Cookie 导入（`:274`）同样没有；输完只能鼠标点按钮（登录按钮在 `:184`） | 在账号框或密码框里按 Enter 就提交，等同点「登录」（网页登录表单通行做法，推断） | P1 | S | **S3**（TON-1265）；对话框外观仍归 K9 TON-1062 |
@@ -83,7 +83,7 @@
 | B1 | 播放 | 在画面上按下鼠标只显示控制条并把焦点要回视口（`K/ui/DesktopWindowsVideoPhysicalLeaf.kt:178`、`:1152` 一带的 `reveal`）；mpv 原生窗口只绑了 `MBTN_LEFT → reveal`、`MOUSE_MOVE → motion`、`SPACE → toggle`、`ESC → escape`（`K/player/MpvNativeWindowInput.kt:17`）。单击画面不会暂停。项目自己的设置页注释也承认：「nothing honours the player flag yet」（`K/ui/DesktopWindowsUxSettings.kt:27`） | 单击画面切换播放/暂停（合约 `click_action`，`K/appearance/DesktopWindowsUxModel.kt:95` 默认 PAUSE；B 站网页播放器同样如此，推断）。离线播放器同样：左键松开只显示控制条（`K/ui/DesktopOfflinePointerInput.kt`） | P0 | M | **S1**（TON-1263） |
 | B2 | 播放 | 双击画面不会全屏。`doubleClickAction = FULLSCREEN`（`K/appearance/DesktopWindowsUxModel.kt:96`）有定义，但 `grep -rn '\.wheelAction\|\.clickAction\|\.doubleClickAction' desktop/src/main` 排除该文件后**零命中**：全仓库没有读取者 | 双击画面切换全屏，容差 6 dp（合约 `double_click_action`、`pointer.double_click_tolerance_dp`）；双击后的播放状态和双击前一样，不被第一下单击顺带翻掉（主流桌面播放器做法，推断） | P0 | M | **S1**（TON-1263）；「即时、不黑屏」的画质要求仍归 U2 TON-1006 #12 |
 | B3 | 播放 | 画面上滚轮不调音量。`wheelAction = VOLUME`（`:94`）同样没人读；处理 `PointerEventType.Scroll` / `MouseWheel` 的只有直播弹幕、刷新按钮、表情输入、对话框和显示缩放输入几处，播放器没有；mpv 默认绑定也已关掉（`K/player/MpvPlayer.kt:2003`，`input-default-bindings = no`），所以滚轮在画面上什么都不做 | 画面上每格滚轮音量 ±5；进度条上每格 ±5 s，按住 Shift ±10 s（规范 §8「滚轮」） | P1 | S | **S1**（TON-1263） |
-| B4 | 首页卡片 | 右键菜单内容来自上游 `app/.../feature/home/components/cards/VideoCard.kt:2204-2322`，桌面原样编译：`K/ui/DesktopCardContextMenu.kt:65` 起的 `DesktopCardContextMenu` 只换外观、原样渲染传入项，`desktop/tools/ux_home_card.py` 只改写其中三项文案。实际菜单项：复制 BV 号（`:664`）、稍后再看（`:677`）、AI 总结（`:681`）、拉黑（`:686`）、无痕模式（`:690`），取消收藏只在收藏页出现（`:704`）。和规范五项对得上的只有稍后再看和不感兴趣；没有收藏、没有复制链接（复制的是 BV 号不是链接）、没有小窗播放 | 规范 §4 第 5 条定了五项：稍后再看、收藏、复制链接（Ctrl+C）、在小窗播放，分隔线下是不感兴趣 | P1 | S | K3 TON-1054 |
+| B4 | 首页卡片 | **编译的不是 `app/` 那份**：`app/.../feature/home/components/cards/VideoCard.kt` 列在 `desktop/upstream-core/m4b/later-steps.tsv:52`，被挡回旧副本。编进桌面的是 `build/generated/home-full-card/generated/.../VideoCard.kt`（`desktop/build.gradle.kts:1700-1721`，srcDir 在 `:3674`）：`desktop/tools/extract-upstream-home-full-card.py` 把 app 的 `VideoCard.kt` 当输入整文件改写（`ADAPTED` 在 `:72`，处理在 `:144`），再由 `desktop/tools/ux_home_card.py` 叠一层交互——右键 `desktopCardSecondaryClick`、手形光标、三项文案，靠精确锚点 `hasOverflowMenu` 和 `contentDescription = "更多操作"` 命中，且只落在网格卡的 `ElegantVideoCard` 上。菜单主体随正文一起复制：复制 BV 号、稍后再看、AI 总结、拉黑、无痕模式，收藏页多一项取消收藏；和规范五项对得上的只有稍后再看和不感兴趣，没有收藏、没有复制链接（复制的是 BV 号不是链接）、没有小窗播放。首页切单列时走同一函数里 `singleColumn = true` 的另一条分支（`app/` 副本 `:660` 起，委托 `HomeStyleSingleColumnVideoCard` 的 `AppWindowAction` 列表），这一层不覆盖它。生成器会重写 import 等行，生成产物的绝对行号会平移，所以这一行不引生成文件的行号 | 规范 §4 第 5 条定了五项：稍后再看、收藏、复制链接（Ctrl+C）、在小窗播放，分隔线下是不感兴趣 | P1 | S | K3 TON-1054 |
 | B5 | 评论、动态、视频区 | 只有导航栏、首页卡片和直播弹幕有右键处理（`isSecondaryPressed` / `desktopCardSecondaryClick` 只出现在 `K/ui/DesktopWindowsNavigationRail.kt`、`K/ui/DesktopCardPointer.kt:31-58`、`K/ui/DesktopCardInteractionPolicy.kt`、`K/ui/DesktopLiveChatMessages.kt`）。评论、动态卡片、视频区没有右键菜单；卡片手形光标用的 `desktopCardHandCursor()` 在 `DesktopCardPointer.kt:60`，也没有配套焦点环 | 右键只作用于光标下的对象；Shift+F10 和菜单键打开同一个菜单（规范 §8「右键」；微软：上下文菜单「挂在单个元素上、右键唤出」，原话） | P1 | M | U4 TON-1007 #7 |
 | B6 | 首页卡片 | 悬停只有高亮，没有视频预览；上游的预览只走长按（`VideoCard.kt:1447`、`:2007`，`hasPreviewAction = isLongPressEnabled && onLongClick != null`） | 悬停片刻后在封面上播放预览，或至少提供不用长按的入口（B 站网页首页悬停即预览，推断） | P2 | M | 预览本身只记文档；「每个长按都要有替代入口」归 U4 TON-1007 #9 |
 | B7 | 播放 | 进度条悬停预览已实现：有雪碧图时显示缩略图加时间，没有时只显示时间（`K/ui/DesktopWindowsVideoSeekPreview.kt`，挂载在 `K/ui/DesktopWindowsVideoPhysicalLeaf.kt:1312` 的 `DesktopWindowsVideoSeekPreviewHost`） | — | 达标 | — | 尺寸是否符合规范 §5 第 4 条（232×130 加章节名）归 U2 TON-1006 #8 |
@@ -95,7 +95,7 @@
 | 编号 | 页面 | 现状（证据） | 期望行为（依据） | 级 | 量 | 归属 |
 |---|---|---|---|---|---|---|
 | C1 | 播放 | 进全屏时只在窗口处于 `Floating` 状态才记住原边界（`K/ui/DesktopWindowsFullscreenControl.kt:51`），退出全屏一律回 `Floating`（`:46`，`destination = if (enabled) Fullscreen else Floating`）；类里没有「全屏前是最大化」这个状态（`:27` 只有 `floatingBounds`）。最大化 → F11 → Esc 之后窗口变成普通窗口 | 退出全屏回到进入前状态：最大化回最大化，普通窗口回原位置原尺寸（Windows 播放器通行做法，推断） | P1 | S | **S1**（TON-1263，与双击全屏同一入口） |
-| C2 | 番剧 | 番剧主页最外层 `Box` 套了 `Modifier.fillMaxSize().responsiveContentWidth()`，该 Modifier 默认上限 **800 dp**（`app/.../feature/bangumi/BangumiScreen.kt:348`，`:300`、`:318` 为局部；默认值在 `app/.../core/util/WindowSizeUtils.kt:570`）。这一份是编译源：番剧页由 `desktop/tools/extract-upstream-home-bangumi-page.py` 从根源码抽取到 `build/generated/home-bangumi-page` 再编译（`desktop/build.gradle.kts:1404-1413`），该 feature 的 transition 补丁目录里只有 `BangumiHubSkeletons.kt.patch`，不改这个上限。所以在 5120 宽的屏上，海报网格（`GridCells.Adaptive(112.dp)`，`BangumiHubContent.kt:342`、`:579`、`:1018`）被压在中间一条 800 dp 的窄带里。对照：个人空间已改为按窗口宽度算上限（`app/.../feature/space/SpaceScreen.kt:1326`，`maxWidth = adaptiveLayoutSpec.listContentMaxWidthDp.dp`）。注：TON-1266 已合入的 #111 标题写着「铺满内容区并跟随窗口列数」，但上面这条上限代码仍在，实际可见效果见 V10 | 番剧主页和首页一样铺满内容区，列数跟随窗口宽度（可复用 `K/ui/DesktopHomeFeedLayout.kt:80` 的 `desktopResolveHomeFeedGridColumns`） | P1 | M | **S4**（TON-1266） |
+| C2 | 番剧 | 两条轨要分开看，上一轮把它们并成一条，引错了生产者。**首页「番剧」标签**（`HomeBangumiTabPage` 与 `BangumiHubContent`，由 `extract-upstream-home-bangumi-page.py` 的 `PINS` 生成，`desktop/build.gradle.kts:1404-1413`）外层只用 `fillMaxSize`，全文件没有 `responsiveContentWidth`（`app/` 与 `desktop/upstream-slices/v046-bangumi-hub-pages/` 两份 grep 都是 0 命中），海报网格 `GridCells.Adaptive(112.dp)`（`BangumiHubContent.kt`，版本间只有行号差异）随窗口加列——这条轨**不是缺口**。**导航栏的独立番剧路由**才有 800 dp 上限：`K/ui/DesktopOriginalBangumiPagesRoot.kt:136` 调 `BangumiScreen`，后者由 `extract-upstream-bangumi-pages.py` 的 `PINS`（`:14`）生成 `DesktopOriginalBangumiScreen.kt`（`:56`）、注册进 `build/generated/independent-bangumi-pages`（`desktop/build.gradle.kts:1419-1428`）；原文是 `Box(modifier = Modifier.fillMaxSize().responsiveContentWidth())`（与生成器 `PINS` 哈希逐字节一致的原文副本在 `desktop/verification/stable-bangumi-pages-root-integration/prepared/original/.../BangumiScreen.kt:269`，`app/` 里同构的副本在 `:348`），默认上限 **800 dp**（`app/.../core/util/WindowSizeUtils.kt:570-571`），该 feature 的 transition 补丁目录不改这一处。所以在 5120 宽的屏上，**独立番剧页**仍被压在中间一条窄带里。对照：个人空间已改为按窗口宽度算上限（`app/.../feature/space/SpaceScreen.kt:1326`） | 独立番剧页也铺满内容区，列数跟随窗口宽度（可复用 `K/ui/DesktopHomeFeedLayout.kt:80` 的 `desktopResolveHomeFeedGridColumns`） | P1 | M | **S4**（TON-1266） |
 | C3 | 播放 | 详情栏宽度是 `minOf(360.dp, maxWidth * .43f)`（`K/ui/DesktopWindowsVideoPhysicalLeaf.kt:1206`，应用到 `:1417`），宽屏上偏窄；左上角是手机式 44 dp 返回箭头 | 面板宽先取窗口宽 22%，夹在 340–480 dp，横向富余时最多 560 dp（规范 §5「布局策略」）；顶栏放 36 dp 返回按钮，旁标「返回 Alt+←」（规范 §2.3、§5 第 1 条） | P1 | L | K5 TON-1056 |
 | C4 | 全局 | 首次启动默认窗口 1360×900（`K/appearance/DesktopWindowsUxWindowBounds.kt:126` 注释「1360 by 900, position chosen by the platform」） | 默认 1600×1000，按显示器可用区收缩（规范 §2.1） | P2 | S | K1 TON-1052 |
 | C5 | 全局 | 主窗口标题栏已跟随应用深浅色：根窗口挂载时装 `DesktopWindowsProfileChrome`（`K/ui/DesktopReadyOriginalRootMount.kt:225-228`），用 DWM 属性切换深色标题栏（`K/ui/DesktopProfileWindowChrome.kt:22`、`:38` 的 `DwmSetWindowAttribute(hwnd, 20, …)`） | — | 达标 | — | 实机效果由 K1 TON-1052 验收 |
@@ -161,7 +161,7 @@
 | V7 | 滚轮速度和惯性（B9） | 与 U5 TON-1001 的实测结论对照 | U5 |
 | V8 | 搜索建议 ↑↓（A7） | winbox 实测：聚焦搜索框按 ↓ 看建议是否被选中 | K4 |
 | V9 | 全屏时任务栏是否完全隐藏 | winbox 截图 | S1 |
-| V10 | 番剧主页实际可见宽度（C2）：代码上限仍在，但 #111 的标题说已铺满，两者对不上，必须看一眼画面 | winbox 打开番剧主页截图，量左右留白 | S4 |
+| V10 | 番剧实际可见宽度（C2）：首页「番剧」标签没有代码上限，独立番剧路由仍有 800 dp；#111 标题写「铺满内容区并跟随窗口列数」，覆盖的是哪一条要看画面 | winbox 分别打开「首页 → 番剧」和导航栏「番剧」，截图量左右留白 | S4 |
 
 ## 八、已有子卡与合并状态（本轮不再新开）
 
@@ -191,10 +191,10 @@
 2. **C1**：`K/ui/DesktopWindowsFullscreenControl.kt:46` 退出全屏目标固定 `Floating`；`:51` 只在 `Floating` 时记 `floatingBounds`，没有「全屏前是最大化」的状态。
 3. **A3**：`K/DesktopShell.kt:759` 的 `searchFocused` 只有声明，全文仅出现在 `:1782`、`:1788`、`:1790` 的读取处，无任何赋值。
 4. **D1**：`desktop/upstream-slices/v046-comment-list/ReplyComponents.kt:377` 是 `!hasInteractiveAnnotations`，`:2458` 把 `hasTapHandler` 当参数，`K/ui/DesktopWindowsVideoCommentsSection.kt:155-156` 无条件传 `urlClick`/`timeClick`。
-5. **C2**：`app/.../feature/bangumi/BangumiScreen.kt:348` 是 `Modifier.fillMaxSize().responsiveContentWidth()`，`WindowSizeUtils.kt:570` 的默认 `maxWidth = 800.dp`；番剧页编译源由 `desktop/build.gradle.kts:1404-1413` 的 `extract-upstream-home-bangumi-page.py` 生成。
+5. **C2**：首页「番剧」标签走 `extract-upstream-home-bangumi-page.py`（`desktop/build.gradle.kts:1404-1413`），`HomeBangumiTabPage` 全文件没有 `responsiveContentWidth`（`grep -c` 为 0，`app/` 与 `upstream-slices/v046-bangumi-hub-pages/` 两份一致），只有 `fillMaxSize`；独立番剧路由走 `extract-upstream-bangumi-pages.py`（`:1419-1428`，`PINS` 在 `:14`，产出 `DesktopOriginalBangumiScreen.kt` 在 `:56`），`BangumiScreen` 的 `Modifier.fillMaxSize().responsiveContentWidth()` 在钉住原文 `:269`（`app/` 副本 `:348`），默认 `maxWidth = 800.dp`（`WindowSizeUtils.kt:570-571`）。
 6. **E1**：`DesktopWindowsVideoWakeLease.acquire` 只被 `DesktopOriginalVideoWindowsWindowPort.kt:91-99` 调用，后者只被四处用到（含 `DesktopOriginalVideoRootWindowPlatforms.kt:71`）；`grep -rln -i keepAwake desktop/src/main` 无直播、离线、听视频文件；`DesktopOriginalVideoRootPortraitRendering.kt:121` 在小窗传 `keepAwake && !pip`。
 7. **A4**：`K/ui/AdvancedLoginDialog.kt:181`、`:182` 两个输入框没有 `keyboardActions`（`:224`、`:241`、`:258`、`:274` 同样没有）。
-8. **B4**：菜单在 `VideoCard.kt:2204-2322`，项为复制 BV 号 `:664`、稍后再看 `:677`、AI 总结 `:681`、拉黑 `:686`、无痕模式 `:690`、取消收藏 `:704`（仅收藏页）；`desktop/tools/ux_home_card.py` 只改文案；规范五项里的收藏、复制链接、小窗播放都不存在。
+8. **B4**：`app/.../feature/home/components/cards/VideoCard.kt` 在 `desktop/upstream-core/m4b/later-steps.tsv:52`，不参与桌面编译；编进桌面的是 `build/generated/home-full-card/generated/.../VideoCard.kt`（`desktop/build.gradle.kts:1700-1721`、`:3674`），由 `extract-upstream-home-full-card.py:72`（`ADAPTED`）/`:144` 改写，交互层是 `desktop/tools/ux_home_card.py`（锚点 `hasOverflowMenu`、`contentDescription = "更多操作"`），只覆盖网格卡。
 9. **D3 反证**：`app/.../feature/message/ChatScreen.kt:1028` 确实有 `SelectionContainer`，且 `feature/message/` 在 `desktop/build.gradle.kts:334` 的 M4d 直编名单里。上一轮把它当缺口是错的。
 10. **E2 / E3 反证**：`K/DesktopShell.kt:928`、`:982` 媒体键确实接好；`K/Main.kt:96` 单实例确实实现。
 
