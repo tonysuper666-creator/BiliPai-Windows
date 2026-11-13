@@ -170,6 +170,28 @@ class LegacyGateWorkspaceLongPathTest(unittest.TestCase):
             self.assertFalse(link.is_junction())
             self.assertEqual("keep", (outside / "keep.txt").read_text(encoding="utf-8"))
 
+    @unittest.skipUnless(os.name == "nt", "junctions are a Windows reparse point")
+    def test_recursive_cleanup_refuses_a_target_redirected_by_a_parent_junction(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            read_point = Path(temporary) / "read-point"
+            outside = Path(temporary) / "outside-live-build"
+            (outside / "generated").mkdir(parents=True)
+            sentinel = b"outside live build sentinel"
+            (outside / "generated/keep.txt").write_bytes(sentinel)
+            read_point.mkdir()
+            link = read_point / "build"
+            subprocess.run(["cmd", "/c", "mklink", "/J", str(link), str(outside)],
+                           check=True, capture_output=True)
+            # The spelling stays below the read point, but the parent junction
+            # resolves outside it; a recursive delete must be refused.
+            with self.assertRaises(RuntimeError):
+                _remove_tree(read_point, link / "generated")
+            self.assertEqual(sentinel, (outside / "generated/keep.txt").read_bytes())
+            # The junction itself is still only unlinked, never traversed.
+            _remove_tree(read_point, link)
+            self.assertFalse(link.is_junction())
+            self.assertEqual(sentinel, (outside / "generated/keep.txt").read_bytes())
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -44,8 +44,9 @@ def _remove_tree(root, target):
 
     Deletion needs the extended-length form because the retained originals hold
     paths past the Windows limit. A reparse point is unlinked instead of
-    traversed, so a junction can never delete the live tree it points at, and a
-    target outside ``root`` is refused.
+    traversed, so a junction can never delete the tree it points at, and a
+    target outside ``root`` is refused both by spelling and by resolved path: a
+    parent junction can redirect a delete while the spelling still looks local.
     """
     root_key, target_key = _path_key(root), _path_key(target)
     try:
@@ -57,10 +58,19 @@ def _remove_tree(root, target):
     safe = long_path(_absolute(target))
     if safe.is_junction():
         os.rmdir(safe)
-    elif os.path.islink(safe):
+        return
+    if safe.is_symlink():
         os.unlink(safe)
-    else:
-        shutil.rmtree(safe)
+        return
+    resolved_root = _path_key(os.path.realpath(long_path(_absolute(root))))
+    resolved_target = _path_key(os.path.realpath(safe))
+    try:
+        resolved_inside = os.path.commonpath((resolved_root, resolved_target)) == resolved_root
+    except ValueError:  # different drives
+        resolved_inside = False
+    if not resolved_inside or resolved_target == resolved_root:
+        raise RuntimeError(f"refusing to remove {target} outside the read point {root}")
+    shutil.rmtree(safe)
 
 
 @contextmanager
