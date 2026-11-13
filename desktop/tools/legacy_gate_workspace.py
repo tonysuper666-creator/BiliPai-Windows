@@ -14,6 +14,20 @@ import tarfile
 import tempfile
 
 
+def _io_path(path):
+    value = os.path.abspath(str(path))
+    if os.name == "nt" and not value.startswith("\\\\?\\"):
+        value = "\\\\?\\UNC\\" + value[2:] if value.startswith("\\\\") else "\\\\?\\" + value
+    return value
+
+
+def _plain_path(path):
+    value = str(path)
+    if value.startswith("\\\\?\\UNC\\"):
+        return "\\\\" + value[8:]
+    return value[4:] if value.startswith("\\\\?\\") else value
+
+
 @contextmanager
 def legacy_gate_workspace(repo):
     repo = Path(repo).resolve()
@@ -31,26 +45,26 @@ def legacy_gate_workspace(repo):
     with tempfile.TemporaryDirectory(prefix="bilipai-gates-", dir=repo.parent) as temporary:
         view = Path(temporary) / ".legacy-root"
         build_link = view / "desktop/build"
-        subprocess.run(["git", "-c", "core.autocrlf=false", "-C", str(repo),
+        subprocess.run(["git", "-c", "core.autocrlf=false", "-c", "core.longpaths=true", "-C", str(repo),
                         "worktree", "add", "--detach", "--quiet", str(view), "HEAD"], check=True)
         try:
             # Copy live tracked areas as well as uncommitted edits. No generated
             # output, Gradle state or recursive read points enter the snapshot.
             def ignore(directory, names):
                 excluded = {"__pycache__", ".gradle"}
-                if Path(directory) == repo / "desktop":
+                if Path(_plain_path(directory)) == repo / "desktop":
                     excluded.add("build")
                 return excluded.intersection(names)
 
             for name in ("desktop", ".github"):
-                shutil.rmtree(view / name)
-                shutil.copytree(repo / name, view / name,
+                shutil.rmtree(_io_path(view / name))
+                shutil.copytree(_io_path(repo / name), _io_path(view / name),
                                 ignore=ignore)
             for target in view.iterdir():
                 if target.name in protected:
                     continue
                 if target.is_dir() and not target.is_symlink():
-                    shutil.rmtree(target)
+                    shutil.rmtree(_io_path(target))
                 else:
                     target.unlink()
             archive = Path(temporary) / "originals.tar"
@@ -59,14 +73,14 @@ def legacy_gate_workspace(repo):
             # Windows resolves "tar" to System32 bsdtar, which decodes ustar names
             # with the ANSI code page and rejects UTF-8 originals (docs/images/233娘.jpeg).
             with tarfile.open(archive) as tar:
-                tar.extractall(view, filter="fully_trusted")
+                tar.extractall(_io_path(view), filter="fully_trusted")
             # The symbol gate also models modules compiled from the merged root.
             # Keep those real inputs separate from the old generator originals.
             recipe = repo / "desktop/build.gradle.kts"
             modules = re.search(r'val migratedUpstreamModules = listOf\((.*?)\)', recipe.read_text(encoding="utf-8")) if recipe.exists() else None
             for module in re.findall(r'"([^"]+)"', modules.group(1)) if modules else []:
                 relative = Path(module) / 'src/main/java'
-                shutil.copytree(repo / relative, view / '.merged-root' / relative)
+                shutil.copytree(_io_path(repo / relative), _io_path(view / '.merged-root' / relative))
             live_build = repo / "desktop/build"
             if live_build.is_dir():
                 if os.name == "nt":
@@ -81,4 +95,4 @@ def legacy_gate_workspace(repo):
                 build_link.unlink()
             elif build_link.is_junction():
                 build_link.rmdir()
-            subprocess.run(["git", "-C", str(repo), "worktree", "remove", "--force", str(view)], check=True)
+            subprocess.run(["git", "-c", "core.longpaths=true", "-C", str(repo), "worktree", "remove", "--force", str(view)], check=True)
