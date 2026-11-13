@@ -40,6 +40,9 @@ class CompleteUpDanmakuSourceTest(unittest.TestCase):
         return (self.output / 'pool' / relative).read_text(encoding='utf8')
 
     def restore_later_owner_stages(self, body):
+        from generation_stage_proof import restore_stage, OWNER_SPEED
+        body = restore_stage(self.output / 'owner', OWNER_SPEED,
+                             'com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt', body)
         # Every subsequently mounted full-owner stage must be reversed before
         # testing the earlier same-send guard at its actual byte offsets.
         for filename in (

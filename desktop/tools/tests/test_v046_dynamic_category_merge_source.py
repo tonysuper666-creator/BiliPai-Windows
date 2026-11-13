@@ -515,7 +515,9 @@ class V046DynamicCategoryMergeSourceTest(unittest.TestCase):
         native = self.generated(self.tabs_out, 'DesktopOriginalDynamicNativeTabs.kt')
         self.assertIn('(equalizeMiuixNonGlassItems || scrollable || options.size > 3 ||', native)
         host = text_of(MAIN / 'ui/DesktopDynamicTabsHost.kt')
-        row = host[host.index('Row(Modifier.fillMaxWidth().padding(horizontal=20.dp)) {'):host.index('trailing()')]
+        anchor = 'Row(Modifier.fillMaxWidth().testTag("dynamic-reading-tabs")) {'
+        self.assertEqual(1, host.count(anchor))
+        row = host[host.index(anchor):host.index('trailing()')]
         self.assertIn('AppNativeTabRow(', row)
         self.assertIn('modifier=Modifier.weight(1f)', row)
         # The tab row owns the width that the search button and the trailing action leave: it cannot overlap them.

@@ -27,6 +27,8 @@ def restore(body, rows, key="offset"):
 
 def restore_final_send_stage(body, row, output):
     assert hashlib.sha256(body.encode()).hexdigest() == row["sha256LF"]
+    from generation_stage_proof import restore_stage, OWNER_SPEED
+    body = restore_stage(output, OWNER_SPEED, VM, body)
     # Outer stages added after this contract (detail 38daac558, metadata related aed5c58b1, next watch f373ab762,
     # autoplay continuation 4cd3b844f, known state 75522724c, comment selection 38512320c) are unwound first,
     # each through its own recorded proof, in the producer's reverse order.

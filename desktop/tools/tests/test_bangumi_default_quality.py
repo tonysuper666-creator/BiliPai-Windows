@@ -30,6 +30,8 @@ LATER_STAGE_HOOKS = (
     " body=apply_pgc_audio_download(recipe['output'],body,out)\n",
     " body=apply_bangumi_v046_view_model(repo,recipe['output'],body,out)\n",
     "emit_bangumi_v046_features(repo,out)\n",
+    " body=bangumi_playback_speed_source_continuity_delta(recipe['output'],body)\n",
+    " body=bangumi_playback_selection_delta(recipe['output'],body)\n",
 )
 CURRENT_QUALITY_STAGE_PRODUCER_SHA256_LF = '00707559ef649ab74e3e40955029bcfddfdef15cca4149e1e6b45b0a27070f26'
 
@@ -42,6 +44,11 @@ class BangumiDefaultQualityGeneratorTest(unittest.TestCase):
         # Reconstruct both the current pre-quality stage and the fixed historical
         # whole producer; the later current-quality recipe is a separate change.
         script = AFTER.read_text(encoding="utf8")
+        # Later definitions are part of the producer bytes as well as its hooks.
+        # Removing their exact contiguous block must recover the existing pinned script.
+        start = script.index('\ndef bangumi_playback_speed_source_continuity_delta(')
+        end = script.index('\nfor recipe in RECIPES:', start)
+        script = script[:start] + script[end:]
         for hook in LATER_STAGE_HOOKS:
             if script.count(hook) != 1:
                 raise AssertionError("Later PGC producer layer hook changed: " + hook)
@@ -223,7 +230,19 @@ class BangumiDefaultQualityGeneratorTest(unittest.TestCase):
         stage = {path.relative_to(self.after): path.read_bytes() for path in self.after.rglob("*") if path.is_file()}
         actual = {path.relative_to(self.actual): path.read_bytes() for path in self.actual.rglob("*") if path.is_file()}
         self.assertEqual(set(), set(stage) - set(actual))
-        self.assertEqual({Path(base_vm), Path(VM)}, {path for path in stage if stage[path] != actual[path]})
+        resume = "com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiResumePolicy.kt"
+        receipt = json.loads((self.actual / "DesktopOriginalBangumiResumePolicy.playback-selection-source.json").read_text(encoding="utf8"))
+        self.assertEqual(resume, receipt["path"])
+        proof = receipt
+        body = actual[Path(resume)].decode("utf8").split("\n", 1)[1]
+        self.assertTrue(proof["completeInverse"])
+        self.assertEqual(hashlib.sha256(body.encode()).hexdigest(), proof["afterSha256LF"])
+        for edit in reversed(proof["edits"]):
+            self.assertEqual(edit["count"], body.count(edit["after"]))
+            body = body.replace(edit["after"], edit["before"], edit["count"])
+        self.assertEqual(hashlib.sha256(body.encode()).hexdigest(), proof["beforeSha256LF"])
+        self.assertEqual(stage[Path(resume)].decode("utf8").split("\n", 1)[1], body)
+        self.assertEqual({Path(base_vm), Path(VM), Path(resume)}, {path for path in stage if stage[path] != actual[path]})
 
     def test_original_manual_quality_and_drm_fallback_remain_complete(self):
         updated = self.updated

@@ -166,7 +166,10 @@ def emit(rel,t,origin,mode):
  # blobs: the end drawer width sync and motion groups, the glass sheet header and its motion groups).
  from v046_control_center_motion import advance_emitted as advance_control_center
  t,control_center_rows=advance_control_center(rel,t);ADAPT.extend(control_center_rows)
+ from generation_stage_proof import record_stage, CENTER_BUFFERING
+ before_buffering=t
  t=buffering_center_playback_ui(rel,t)
+ record_stage(OUTPUT,CENTER_BUFFERING,'com/android/purebilibili/'+rel,before_buffering,t)
  canonical=SOURCES.get(BASE+origin,{}).get('text')
  direct=mode=='direct-complete-original' and canonical==t
  if STANDALONE or not direct:write(OUTPUT/'com/android/purebilibili'/rel,t)

@@ -1,5 +1,6 @@
 """Source checks for roadmap slice bgm-player-viewmodel-and-features (part 1). Nothing here compiles Kotlin or starts a JVM."""
 from collections import Counter
+import ast
 from pathlib import Path
 import importlib.util
 import json
@@ -32,10 +33,15 @@ PLAYER_HOOKS = [
     " body=apply_bangumi_v046_view_model(repo,recipe['output'],body,out)\n",
     "emit_bangumi_v046_features(repo,out)\n",
 ]
+LATER_PLAYER_HOOKS = [
+    " body=bangumi_playback_speed_source_continuity_delta(recipe['output'],body)\n",
+    " body=bangumi_playback_selection_delta(recipe['output'],body)\n",
+]
 PAGES_HOOK_START = '# v0.4.6 follow-session policy (targetSeasonId'
 PAGES_HOOK_END = "emit_follow_preload_test(C,OUT.parent/(OUT.name+'-tests'))\n"
 UI_PRODUCER = 'extract-upstream-bangumi-player-ui.py'
 UI_HOOK = "  from v046_bangumi_player import apply_retry_ui\n  body=apply_retry_ui(a.repo,r['output'],body,a.output)\n"
+UI_BUFFERING_HOOK = "  body,buffering_edits=windows_bangumi_buffering_playback_toggle_ui(body,r['output'])\n"
 UI_ROOT = 'com/android/purebilibili/feature/bangumi/'
 UI_OUTPUTS = {
     bgm.SCREEN_OUTPUT: 'DesktopOriginalBangumiPlayerScreen.kt',
@@ -118,6 +124,11 @@ class BangumiPlayerSliceTests(unittest.TestCase):
         run_producer(TOOLS / UI_PRODUCER, cls.root / 'ui')
         # The same producers with this slice's hook lines removed give the predecessor stage of every output.
         player = (TOOLS / PLAYER_PRODUCER).read_text(encoding='utf8')
+        for hook in LATER_PLAYER_HOOKS:
+            assert player.count(hook) == 1, hook
+            player = player.replace(hook, '')
+        (cls.root / 'player-stage.py').write_text(player, encoding='utf8', newline='\n')
+        run_producer(cls.root / 'player-stage.py', cls.root / 'player-stage')
         for hook in PLAYER_HOOKS:
             assert player.count(hook) == 1, hook
             player = player.replace(hook, '')
@@ -126,6 +137,10 @@ class BangumiPlayerSliceTests(unittest.TestCase):
         end = pages.index(PAGES_HOOK_END) + len(PAGES_HOOK_END)
         pages = pages[:start] + pages[end:]
         ui = (TOOLS / UI_PRODUCER).read_text(encoding='utf8')
+        assert ui.count(UI_BUFFERING_HOOK) == 1
+        ui = ui.replace(UI_BUFFERING_HOOK, '  buffering_edits=[]\n')
+        (cls.root / 'ui-stage.py').write_text(ui, encoding='utf8', newline='\n')
+        run_producer(cls.root / 'ui-stage.py', cls.root / 'ui-stage')
         assert ui.count(UI_HOOK) == 1
         ui = ui.replace(UI_HOOK, '')
         for name, text, key in [('player-before.py', player, 'player'), ('pages-before.py', pages, 'pages'),
@@ -134,7 +149,7 @@ class BangumiPlayerSliceTests(unittest.TestCase):
             run_producer(cls.root / name, cls.root / ('before-' + key))
         cls.player = cls.root / 'player'
         cls.pages = cls.root / 'pages'
-        cls.vm = (cls.player / VM).read_text(encoding='utf8')
+        cls.vm = (cls.root / 'player-stage' / VM).read_text(encoding='utf8')
         cls.vm_proof = json.loads((cls.player / bgm.PROOF_DIRECTORY / 'view-model.json').read_text(encoding='utf8'))
 
     # ---- archive -------------------------------------------------------------------------------------------------
@@ -171,6 +186,28 @@ class BangumiPlayerSliceTests(unittest.TestCase):
 
     # ---- view model ----------------------------------------------------------------------------------------------
 
+    def test_later_speed_and_selection_layers_close_the_current_complete_vm(self):
+        stage = self.vm.split('\n', 1)[1]
+        script = (TOOLS / PLAYER_PRODUCER).read_text(encoding='utf8')
+        function = next(node for node in ast.parse(script).body if isinstance(node, ast.FunctionDef)
+                        and node.name == 'bangumi_playback_speed_source_continuity_delta')
+        namespace = {}
+        exec(compile(ast.Module(body=[function], type_ignores=[]), str(TOOLS / PLAYER_PRODUCER), 'exec'), namespace)
+        sped = namespace[function.name](VM, stage)
+        self.assertNotEqual(stage, sped)
+        for path in [VM, 'com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiResumePolicy.kt']:
+            proof = json.loads((self.player / (Path(path).stem + '.playback-selection-source.json')).read_text(encoding='utf8'))
+            current = (self.player / path).read_text(encoding='utf8').split('\n', 1)[1]
+            self.assertTrue(proof['completeInverse'])
+            self.assertEqual(path, proof['path'])
+            self.assertEqual(proof['afterSha256LF'], bgm.sha(current))
+            for edit in reversed(proof['edits']):
+                self.assertEqual(edit['count'], current.count(edit['after']))
+                current = current.replace(edit['after'], edit['before'], edit['count'])
+            self.assertEqual(proof['beforeSha256LF'], bgm.sha(current))
+            expected = sped if path == VM else (self.root / 'player-stage' / path).read_text(encoding='utf8').split('\n', 1)[1]
+            self.assertEqual(expected, current)
+
     def test_view_model_layer_is_the_exact_inverse_of_its_hunks_and_pins_both_ends(self):
         spec = self.manifest['viewModel']
         self.assertEqual(VM, spec['output'])
@@ -202,7 +239,7 @@ class BangumiPlayerSliceTests(unittest.TestCase):
             self.assertIn(line, after.splitlines())
 
     def test_every_other_pgc_output_is_byte_identical_and_only_the_features_and_proofs_are_new(self):
-        before, after = tree(self.root / 'before-player'), tree(self.player)
+        before, after = tree(self.root / 'before-player'), tree(self.root / 'player-stage')
         self.assertEqual([], [k for k in before if k not in after])
         changed = sorted(k for k in before if before[k] != after[k])
         self.assertEqual([VM], changed)
@@ -279,7 +316,7 @@ class BangumiPlayerSliceTests(unittest.TestCase):
     # ---- like-status threading in the UI bodies ------------------------------------------------------------------------
 
     def test_ui_layer_threads_the_like_known_flag_with_five_counted_pairs_and_changes_nothing_else(self):
-        before_tree, after_tree = tree(self.root / 'before-ui'), tree(self.root / 'ui')
+        before_tree, after_tree = tree(self.root / 'before-ui'), tree(self.root / 'ui-stage')
         changed = sorted(k for k in before_tree if before_tree[k] != after_tree[k])
         self.assertEqual(sorted(UI_ROOT + rel for rel in UI_OUTPUTS.values()), changed)
         self.assertEqual([], [k for k in before_tree if k not in after_tree])
@@ -288,7 +325,7 @@ class BangumiPlayerSliceTests(unittest.TestCase):
         self.assertEqual(5, sum(len(h) for h in bgm.UI_RETRY_HUNKS.values()))
         for output, relative in UI_OUTPUTS.items():
             before = (self.root / 'before-ui' / UI_ROOT / relative).read_text(encoding='utf8')
-            after = (self.root / 'ui' / UI_ROOT / relative).read_text(encoding='utf8')
+            after = (self.root / 'ui-stage' / UI_ROOT / relative).read_text(encoding='utf8')
             self.assertEqual(self.manifest['beforeFinalOutputs'][output]['sha256'], bgm.sha(before))
             self.assertEqual(bgm.UI_RETRY_AFTER_SHA256[output], bgm.sha(after))
             proof = json.loads((self.root / 'ui' / bgm.PROOF_DIRECTORY / ('ui-retry-' + Path(output).stem + '.json')).read_text(encoding='utf8'))
@@ -298,6 +335,28 @@ class BangumiPlayerSliceTests(unittest.TestCase):
                              sum(added.values()))
             for line in added:
                 self.assertIn('likeStatusKnown', line)
+
+    def test_later_buffering_layer_accounts_for_every_current_ui_output(self):
+        producer = load(UI_PRODUCER)
+        before, current = tree(self.root / 'ui-stage'), tree(self.root / 'ui')
+        self.assertEqual(set(before), set(current))
+        changed = []
+        for relative, raw in before.items():
+            if not relative.endswith('.kt'):
+                self.assertEqual(raw, current[relative], relative)
+                continue
+            stage = raw.decode('utf8')
+            after, edits = producer.windows_bangumi_buffering_playback_toggle_ui(stage, relative)
+            self.assertEqual(after.encode('utf8'), current[relative], relative)
+            if edits:
+                changed.append(relative)
+                self.assertEqual(2, len(edits))
+                restored = after
+                for edit in reversed(edits):
+                    self.assertEqual(1, restored.count(edit['after']))
+                    restored = restored.replace(edit['after'], edit['before'], 1)
+                self.assertEqual(stage, restored)
+        self.assertEqual([bgm.SCREEN_OUTPUT], changed)
 
     def test_ui_threading_lines_are_the_upstream_lines_pinned_in_the_manifest(self):
         provenance = self.manifest['uiRetry']['outputs']

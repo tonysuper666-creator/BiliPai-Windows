@@ -1,6 +1,8 @@
 """Real shared-reply generation and exact original/Windows ownership boundaries."""
 from pathlib import Path
 import importlib.util
+import contextlib
+import io
 import json
 import shutil
 import subprocess
@@ -243,6 +245,15 @@ class ConnectedCommentPanelSources(unittest.TestCase):
         ]
         for label, filename, named in commands:
             args = ['--repo', str(REPO), '--output', str(cls.output/label)] if named else [str(REPO), str(cls.output/label)]
+            if label == 'bangumi':
+                from generation_stage_proof import capture_ui_stage, PGC_BUFFERING
+                producer = module(filename)
+                capture = capture_ui_stage(cls.output/label, PGC_BUFFERING,
+                                           producer.windows_bangumi_buffering_playback_toggle_ui)
+                with patch.object(producer, 'windows_bangumi_buffering_playback_toggle_ui', capture), \
+                        patch.object(sys, 'argv', [filename, *args]), contextlib.redirect_stdout(io.StringIO()):
+                    producer.main()
+                continue
             result = subprocess.run([sys.executable, '-X', 'utf8', '-B', str(TOOLS/filename), *args],
                                     capture_output=True, encoding='utf8')
             if result.returncode:
@@ -437,6 +448,9 @@ class ConnectedCommentPanelSources(unittest.TestCase):
 
     def test_screen_supplies_reactive_existing_player_state_and_actual_guarded_seek(self):
         current = self.generated('bangumi', 'DesktopOriginalBangumiPlayerScreen.kt')
+        from generation_stage_proof import restore_stage, PGC_BUFFERING
+        current = restore_stage(self.output/'bangumi', PGC_BUFFERING,
+            'com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiPlayerScreen.kt', current)
         # The v0.4.6 like-status threading (bgm-player-viewmodel-and-features) is appended after this comment layer.
         retry = self.proof('bangumi', 'v046-bangumi-player-proofs/ui-retry-DesktopOriginalBangumiPlayerScreen')
         actual = restore(current, retry['retainedToCurrent'])
