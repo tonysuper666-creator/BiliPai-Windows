@@ -515,6 +515,8 @@ fun migratedUpstreamSource(path: String): Boolean = migratedUpstreamModules.any 
 
 val prepareUpstreamSources by tasks.registering(Sync::class) {
     from(repositoryRoot) {
+        // Copy the registered current motion owner below, never its legacy predecessor.
+        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/navigation/PagerSelectionMotion.kt"))
         include(sources.filter { (it["mode"] ?: "direct") == "direct" && !migratedUpstreamSource(it["path"].toString()) }.map { canonicalOriginalIdentity(it["path"].toString()) })
         // Whole v043 typed navigation is emitted by its existing space producer.
         exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/core/util/BilibiliNavigationTargetParser.kt"))
@@ -649,6 +651,21 @@ val prepareUpstreamSources by tasks.registering(Sync::class) {
         exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/article/ArticleContentBlockParser.kt"))
         // The existing dynamic settings producer owns the whole v0.4.6 tab policy (UP tab merged into All).
         exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicTabPolicy.kt"))
+    }
+    from(canonicalOriginalSource("app/src/main/java/com/android/purebilibili/navigation/PagerSelectionMotion.kt")) {
+        into("app/src/main/java/com/android/purebilibili/navigation")
+    }
+    // The current helper also needs this original declaration; the legacy Root
+    // producer still owns the remaining top-level navigation policy declarations.
+    val pagerPrewarmPolicy = canonicalOriginalSource("app/src/main/java/com/android/purebilibili/navigation/AppTopLevelNavigationPolicy.kt")
+    inputs.file(pagerPrewarmPolicy)
+    doLast {
+        val lines = pagerPrewarmPolicy.readLines(Charsets.UTF_8)
+        val packageLine = lines.single { it.startsWith("package ") }
+        val declaration = lines.single { it.startsWith("internal const val BOTTOM_PAGER_TARGET_PREWARM_FRAMES = ") }
+        val destination = generatedUpstream.get().file("app/src/main/java/com/android/purebilibili/navigation/PagerSelectionPrewarmPolicy.kt").asFile
+        destination.parentFile.mkdirs()
+        destination.writeText("$packageLine\n\n$declaration\n", Charsets.UTF_8)
     }
     into(generatedUpstream)
     inputs.property("upstreamSourceManifest", revisionNeutralSourceManifestInput)
