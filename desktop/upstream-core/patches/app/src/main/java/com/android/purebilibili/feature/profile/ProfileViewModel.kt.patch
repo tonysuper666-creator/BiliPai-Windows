@@ -1408,3 +1408,111 @@
 +    // epoch and retires with it (owns), so the requests keep one fixed identity, as AccountLedgerViewModel does.
 +    private val accountRequests = AccountScopedRequests(viewModelScope, kotlinx.coroutines.flow.MutableStateFlow(com.android.purebilibili.core.store.AccountSessionIdentity()))
      private var profileLoadJob: Job? = null
+@@ -649,25 +649,25 @@
+         val response = environment.spaceApi.getSpaceInfo(params)
+         return if (response.code == 0) response.data else null
+     }
+ 
+     fun selectProfileSpaceTab(tab: ProfileSpaceMainTab) {
+         val current = _uiState.value as? ProfileUiState.Success ?: return
+         if (current.space.selectedTab == tab) return
+         _uiState.value = current.copy(space = current.space.copy(selectedTab = tab))
+     }
+ 
+     fun clearProfileSpaceMessage() {
+         val current = _uiState.value as? ProfileUiState.Success ?: return
+-        _uiState.value = current.copy(space = current.space.copy(signSaveMessage = null, message = null))
++        _uiState.value = current.copy(space = current.space.copy(signSaveMessage = null, signSaveMessageOrigin = null, message = null))
+     }
+ 
+     fun deleteProfileDynamic(action: DynamicDeleteAction, onResult: (Boolean, String) -> Unit) {
+         val identity = accountRequests.identity
+         accountRequests.launch {
+             try {
+                 if (action.dynamicId.isBlank()) {
+                     environment.publishCallback { onResult(false, "无法删除该动态") }
+                     return@launch
+                 }
+                 val csrf = environment.csrf()
+                 if (csrf.isNullOrBlank()) {
+@@ -710,71 +710,72 @@
+                 }
+         }
+         _uiState.value = current.copy(
+             space = current.space.copy(dynamicItems = updatedItems)
+         )
+     }
+ 
+     fun updateProfileSign(sign: String) {
+         val validationError = validateProfileSign(sign)
+         val current = _uiState.value as? ProfileUiState.Success ?: return
+         if (validationError != null) {
+             _uiState.value = current.copy(
+-                space = current.space.copy(signSaveMessage = validationError)
++                space = current.space.copy(signSaveMessage = validationError, signSaveMessageOrigin = null)
+             )
+             return
+         }
+ 
+         performAccountEdit("签名已提交，等待审核后生效") { identity ->
+             ProfileAccountRepository.updateSign(identity, sign.trim())
+         }
+     }
+ 
+     internal fun updateAccountField(field: ProfileAccountField, value: String) {
+         val normalized = value.trim()
+         if (field == ProfileAccountField.NAME && (normalized.isEmpty() || normalized.length > 16)) {
+             val current = _uiState.value as? ProfileUiState.Success ?: return
+-            _uiState.value = current.copy(space = current.space.copy(signSaveMessage = "昵称须为 1 至 16 个字符"))
++            _uiState.value = current.copy(space = current.space.copy(signSaveMessage = "昵称须为 1 至 16 个字符", signSaveMessageOrigin = null))
+             return
+         }
+         performAccountEdit("资料修改成功") { identity ->
+             ProfileAccountRepository.update(identity, field, normalized)
+         }
+     }
+ 
+-    fun updateAccountAvatar(uri: String) {
+-        performAccountEdit("头像已提交，资料刷新可能需要一些时间") { identity ->
++    fun updateAccountAvatar(uri: String, origin: () -> Any) {
++        performAccountEdit("头像已提交，资料刷新可能需要一些时间", origin) { identity ->
+             ProfileAccountRepository.uploadAvatar(identity, uri)
+         }
+     }
+ 
+-    private fun performAccountEdit(message: String, action: suspend (AccountSessionIdentity) -> Unit) {
++    private fun performAccountEdit(message: String, origin: () -> Any? = { null }, action: suspend (AccountSessionIdentity) -> Unit) {
+         val identity = accountRequests.identity
+         val current = _uiState.value as? ProfileUiState.Success ?: return
+         if (current.space.isSavingSign) return
+-        _uiState.value = current.copy(space = current.space.copy(isSavingSign = true, signSaveMessage = null))
++        val acceptedOrigin = origin()
++        _uiState.value = current.copy(space = current.space.copy(isSavingSign = true, signSaveMessage = null, signSaveMessageOrigin = null))
+         accountRequests.launch {
+             try {
+                 action(identity)
+                 currentCoroutineContext().ensureActive()
+                 if (!accountRequests.isCurrent(identity)) return@launch
+                 val latest = _uiState.value as? ProfileUiState.Success ?: return@launch
+-                _uiState.value = latest.copy(space = latest.space.copy(isSavingSign = false, signSaveMessage = message))
++                _uiState.value = latest.copy(space = latest.space.copy(isSavingSign = false, signSaveMessage = message, signSaveMessageOrigin = acceptedOrigin))
+                 loadProfile(force = true)
+             } catch (cancelled: CancellationException) {
+                 throw cancelled
+             } catch (error: Exception) {
+                 if (!accountRequests.isCurrent(identity)) return@launch
+                 val latest = _uiState.value as? ProfileUiState.Success ?: return@launch
+-                _uiState.value = latest.copy(space = latest.space.copy(isSavingSign = false, signSaveMessage = error.message ?: "资料修改失败"))
++                _uiState.value = latest.copy(space = latest.space.copy(isSavingSign = false, signSaveMessage = error.message ?: "资料修改失败", signSaveMessageOrigin = acceptedOrigin))
+             }
+         }
+     }
+     
+     /**
+      * 更新自定义背景图
+      * 将选中的图片复制到应用私有目录，并更新设置
+      */
+     fun updateCustomBackground(
+         uri: String, 
+         mobileTransform: ProfileWallpaperTransform = ProfileWallpaperTransform(),
+         tabletTransform: ProfileWallpaperTransform = ProfileWallpaperTransform()
