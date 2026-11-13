@@ -78,7 +78,7 @@ object DesktopDynamicTabsSettings {
 '''+textwrap.indent('\n'.join(lines)+'\n\n'+functions(s,['getDynamicTabVisibleTabs','setDynamicTabVisibleTabs','getDynamicTabOrder','setDynamicTabOrder']),'    ')+'\n}\n'
  emit(path,body,'DesktopDynamicTabsSettings.kt')
  path=BASE+'feature/settings/ui/SettingsSections.kt';s=read_selected(repo,path);section=media.function(s,'FeedApiSection',parser)
- # The "All page strip" switch left FeedApiSection in v0.4.6 (the strip is always on); only the tab item remains.
+ # The retired "All page strip" switch is separate from DynamicSettingsStore's newer UP-list gate.
  marker=section.index('        FeedDynamicTabVisibilityItem(');end=section.index('        SettingsAdaptiveDivider()',marker)
  tabs=home.call(section[marker:end],'FeedDynamicTabVisibilityItem',parser)
  prelude='\n'.join(line for line in section.splitlines() if line.strip().startswith('val siblingTints =') or line.strip().startswith('val visibilityIcon ='))
@@ -230,6 +230,8 @@ import top.yukonga.miuix.kmp.blur.Backdrop
  emit(path,'package com.android.purebilibili.core.ui\nimport androidx.compose.runtime.compositionLocalOf\n'+line+'\n','DesktopOriginalDynamicImmersiveChrome.kt')
  from v041_dynamic_author_search import generate_main as generate_author_search_main
  files += generate_author_search_main(repo,output,host)
+ from dynamic_up_list import generate as generate_up_list
+ files.extend(generate_up_list(repo,output))
  return files
 
 def generate_tests(repo,output):
