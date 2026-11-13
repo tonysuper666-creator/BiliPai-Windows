@@ -12,6 +12,7 @@ import com.android.purebilibili.feature.profile.DesktopOriginalHomeWallpaperView
 import com.android.purebilibili.feature.profile.WallpaperSaveState
 import java.net.URI
 import java.nio.file.Path
+import kotlinx.coroutines.flow.map
 
 /** Mouse/keyboard Home settings. The real Root still owns state, file chooser and all writes. */
 @Composable
@@ -23,6 +24,9 @@ internal fun DesktopWindowsHomeSettings(state: HomeSettings, viewModel: DesktopO
     val wallpaper = desktopWindowsSettingsValue(remember(context) { Preferences.getHomeWallpaperUri(context) })
     val dynamicCommentPreview = desktopWindowsSettingsValue(remember(context) {
         com.android.purebilibili.core.store.home.DynamicSettingsStore.observeCommentPreviewVisible(context.pluginContext.asAndroidContext())
+    })
+    val showProfileEditButton = desktopWindowsSettingsValue(remember(context) {
+        context.settingsDataStore.data.map { it[playerBooleanPreferencesKey("show_profile_edit_button")] ?: false }
     })
     val wallpaperViewModel = remember(context, environment) { DesktopOriginalHomeWallpaperViewModel(environment, context) }
     val saveState by wallpaperViewModel.splashSaveState.collectAsState()
@@ -109,6 +113,9 @@ internal fun DesktopWindowsHomeSettings(state: HomeSettings, viewModel: DesktopO
             }
         }
         DesktopWindowsSettingsGroup("导航") {
+            DesktopWindowsSettingsSwitch("编辑资料按钮", showProfileEditButton) { value ->
+                actions.launch { context.settingsDataStore.edit { it[playerBooleanPreferencesKey("show_profile_edit_button")] = value } }
+            }
             DesktopWindowsSettingsSwitch("滚动时收起首页顶栏", state.isHeaderCollapseEnabled,
                 onChange = viewModel::toggleHeaderCollapse)
         }
