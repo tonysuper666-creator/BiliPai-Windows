@@ -1,6 +1,6 @@
 package com.bilipai.desktop.audio
 
-import com.android.purebilibili.core.network.AudioApi
+import com.android.purebilibili.core.network.BilibiliApi
 import com.android.purebilibili.data.model.response.*
 import com.android.purebilibili.feature.audio.lyrics.*
 import com.android.purebilibili.feature.audio.player.*
@@ -21,6 +21,8 @@ import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
 import java.nio.file.Files
 import java.util.concurrent.CopyOnWriteArrayList
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.TimeUnit
 import javax.swing.SwingUtilities
 
 private fun equal(expected: Any?, actual: Any?) { check(expected == actual) { "Expected $expected, actual $actual" } }
@@ -30,11 +32,12 @@ private fun fixtureSong(sid: Long = 81, author: String = "歌手") = SongInfoDat
     duration = 95, passtime = 1_700_000_000, coin_num = 6, statistic = SongStatistic(sid, 1234, 50, 17, 4))
 private const val LRC = "[ar:歌手]\n[00:00.00]第一行\n[00:03.50]第二行\n"
 
-/** Actual generated Retrofit AudioApi + original serializers. Interceptor always returns locally; no HTTP leaves process. */
+/** The real repository-owned transport and original serializers; every HTTP response is offline. */
 private class SongApiFixture {
     val sessions = DesktopSessionStore.temporary()
     val repository = DesktopRepository(sessions)
-    val audio = DesktopAudioRepository(repository, DesktopCommunityRepository(repository))
+    lateinit var audio: DesktopAudioRepository
+        private set
     var song = fixtureSong()
     var songCode = 0
     var lyricCode = 0
@@ -42,14 +45,25 @@ private class SongApiFixture {
     var afterReply: (String) -> Unit = {}
     val requests = CopyOnWriteArrayList<Request>()
     private val json = Json { ignoreUnknownKeys = true }
-    val client = OkHttpClient.Builder().cookieJar(sessions).addInterceptor { chain ->
+    val client = repository.httpClient.newBuilder().proxy(java.net.Proxy.NO_PROXY).retryOnConnectionFailure(false).addInterceptor { chain ->
         val request = chain.request()
-        requests.add(request)
         val path = request.url.encodedPath
+        // B1: the compiled upstream keeps its own audio base (www) for the three AU endpoints, while the
+        // account APIs (view/nav/playurl) stay on api. Unmodelled paths still fail instead of being allowed.
+        val expectedHost = when(path) {
+            "/audio/music-service-c/web/song/info", "/audio/music-service-c/web/url", "/audio/music-service-c/web/song/lyric" -> "www.bilibili.com"
+            "/x/web-interface/view", "/x/web-interface/nav", "/x/player/wbi/playurl", "/x/player/playurl" -> "api.bilibili.com"
+            else -> error("Unexpected API: $path")
+        }
+        check(request.url.host == expectedHost) { "Unexpected host ${request.url.host} for $path, expected $expectedHost" }
+        requests.add(request)
         val body = when(path) {
             "/audio/music-service-c/web/song/info" -> json.encodeToString(SongInfoResponse(songCode, "fixture song", if(songCode == 0) song else null))
             "/audio/music-service-c/web/url" -> json.encodeToString(SongStreamResponse(data = SongStreamData(song.id, 2, 4567, streams, song.title, song.cover)))
             "/audio/music-service-c/web/song/lyric" -> json.encodeToString(SongLyricResponse(lyricCode, "fixture lyrics", if(lyricCode == 0) LRC else null))
+            "/x/web-interface/view" -> """{"code":0,"data":{"bvid":"BV1GJ411x7h7","aid":7,"cid":21,"title":"two parts","pages":[{"cid":21,"page":1,"part":"one"},{"cid":42,"page":2,"part":"two"}]}}"""
+            "/x/web-interface/nav" -> """{"code":0,"data":{"wbi_img":{"img_url":"https://fixture.invalid/${"a".repeat(32)}.png","sub_url":"https://fixture.invalid/${"b".repeat(32)}.png"}}}"""
+            "/x/player/wbi/playurl", "/x/player/playurl" -> """{"code":0,"data":{"quality":80,"durl":[{"order":1,"length":1000,"url":"https://media.bilibili.com/first.flv"},{"order":2,"length":2000,"url":"https://media.bilibili.com/second.flv"}]}}"""
             else -> error("Unexpected API: $path")
         }
         afterReply(path)
@@ -57,9 +71,13 @@ private class SongApiFixture {
             .body(body.toResponseBody("application/json".toMediaType())).build()
     }.build()
     init {
-        val api = Retrofit.Builder().baseUrl("https://api.bilibili.com/").client(client)
-            .addConverterFactory(json.asConverterFactory("application/json".toMediaType())).build().create(AudioApi::class.java)
-        DesktopAudioRepository::class.java.getDeclaredField("audioApi").apply { isAccessible = true }.set(audio, api)
+        // Owned services are created from repository.client per request. videoDetails also has an
+        // eagerly constructed BilibiliApi, so rebind that existing service to the same offline client.
+        DesktopRepository::class.java.getDeclaredField("client").apply { isAccessible = true }.set(repository, client)
+        val detailApi = Retrofit.Builder().baseUrl("https://api.bilibili.com/").client(client)
+            .addConverterFactory(json.asConverterFactory("application/json".toMediaType())).build().create(BilibiliApi::class.java)
+        DesktopRepository::class.java.getDeclaredField("api").apply { isAccessible = true }.set(repository, detailApi)
+        audio = DesktopAudioRepository(repository, DesktopCommunityRepository(repository))
         skipVisitor()
     }
     fun skipVisitor() {
@@ -177,7 +195,12 @@ internal fun runNativeMusicOfflineCases(): Int = runBlocking {
         f.sessions.saveAccount(mapOf("SESSDATA" to "fake-fixture-only", "bili_jct" to "fake-fixture-csrf"), AccountSummary(1, "fake", ""))
         f.skipVisitor()
         equal("", f.prepare().source.cookieHeader)
-        check(f.requests.all { it.url.host == "api.bilibili.com" })
+        // B1: the only change to an old expectation. AU is now served by the upstream www base
+        // (ApiClient.kt:3709), so the host is asserted per path instead of assuming every request is api.
+        check(f.requests.all {
+            it.url.encodedPath in setOf("/audio/music-service-c/web/song/info", "/audio/music-service-c/web/url", "/audio/music-service-c/web/song/lyric") &&
+                it.url.host == "www.bilibili.com"
+        })
     }
     case("retained session loads AU metadata and original timed lyrics with au cache key") {
         val api = SongApiFixture(); val source = MusicDataSource { api.audio.prepare(it) }
@@ -274,6 +297,93 @@ internal fun runNativeMusicOfflineCases(): Int = runBlocking {
 }
 
 class DesktopNativeMusicIntegrationTest {
+    @org.junit.jupiter.api.Test
+    fun closingRealSessionCancelsInFlightOwnedAuRequestWithoutPublishing() = runBlocking {
+        val api = SongApiFixture()
+        val started = CountDownLatch(1)
+        val release = CountDownLatch(1)
+        val replied = CountDownLatch(1)
+        api.afterReply = { path ->
+            if (path.endsWith("/song/info")) {
+                started.countDown()
+                check(release.await(5, TimeUnit.SECONDS))
+                replied.countDown()
+            }
+        }
+        try {
+            MusicSessionFixture(MusicDataSource { api.audio.prepare(it) }, primaryRepository = api.repository).use { fixture ->
+                fixture.start()
+                check(withContext(Dispatchers.IO) { started.await(3, TimeUnit.SECONDS) })
+                try {
+                    onSwing { fixture.session.close() }
+                } finally {
+                    release.countDown()
+                }
+                withTimeout(5_000) { fixture.session.shutdownForRestore() }
+                check(withContext(Dispatchers.IO) { replied.await(3, TimeUnit.SECONDS) })
+                equal(listOf("/audio/music-service-c/web/song/info"), api.requests.map { it.url.encodedPath })
+                equal(null, fixture.player.currentSourceSnapshot())
+                equal(null, fixture.session.state.value.songInfo)
+                equal(null, fixture.session.ownedPlaybackSourceVersion)
+            }
+        } finally {
+            release.countDown()
+            api.client.dispatcher.executorService.shutdownNow()
+            api.client.connectionPool.evictAll()
+        }
+    }
+
+    @org.junit.jupiter.api.Test
+    fun retiringAccountDuringNonAuPlaybackRequestRejectsItsResponse() = runBlocking {
+        val api = SongApiFixture()
+        api.sessions.saveAccount(mapOf("SESSDATA" to "fake-fixture-only"), AccountSummary(1, "fake", ""))
+        api.skipVisitor()
+        api.afterReply = { path -> if (path == "/x/player/wbi/playurl") api.switchAccount() }
+        try {
+            val item = musicSourcePlaylistItem(MusicPlaybackSource.VideoAudio("BV1GJ411x7h7", 42, "part two"))
+            val failure = runCatching { api.audio.prepare(item) }.exceptionOrNull()
+            check(failure is CancellationException)
+            equal(1, api.requests.count { it.url.encodedPath == "/x/player/wbi/playurl" })
+        } finally {
+            api.client.dispatcher.executorService.shutdownNow()
+            api.client.connectionPool.evictAll()
+        }
+    }
+
+    @org.junit.jupiter.api.Test
+    fun nonAuProgressivePlaybackRetainsReceiptAndRejectsRetiredAccount() = runBlocking {
+        val api = SongApiFixture()
+        api.sessions.saveAccount(mapOf("SESSDATA" to "fake-fixture-only", "bili_jct" to "fake-fixture-csrf"), AccountSummary(1, "fake", ""))
+        api.skipVisitor()
+        try {
+            val item = musicSourcePlaylistItem(MusicPlaybackSource.VideoAudio("BV1GJ411x7h7", 42, "part two"))
+            val prepared = api.audio.prepare(item)
+            equal(42L, prepared.item.cid)
+            equal(listOf("https://media.bilibili.com/first.flv", "https://media.bilibili.com/second.flv"),
+                prepared.source.progressiveSegments.map { it.url })
+            equal(listOf(1.0, 2.0), prepared.source.progressiveSegments.map { it.durationSeconds })
+            equal("https://media.bilibili.com/first.flv", prepared.source.videoUrl)
+            equal("https://www.bilibili.com/video/BV1GJ411x7h7", prepared.source.referer)
+            val receipt = checkNotNull(prepared.source.authorizationReceipt)
+            val publication = DesktopRepositoryPlaybackPublication(api.repository, allowPrimaryAccountSource = true)
+            check(publication.isCurrent(prepared.source))
+            val authorization = api.repository.capturePlaybackAuthorization(api.repository.sessionEpoch) { true }
+            equal(receipt, authorization.receipt)
+            val cookies = api.repository.capturePlaybackMediaCookieHeader(authorization, prepared.source.videoUrl) { true }
+            check(cookies.contains("SESSDATA=fake-fixture-only"))
+            equal(Unit, publication.admit(prepared.source, { true }) { Unit })
+            val play = api.requests.single { it.url.encodedPath == "/x/player/wbi/playurl" }
+            equal("42", play.url.queryParameter("cid"))
+            api.switchAccount()
+            check(!publication.isCurrent(prepared.source))
+            check(runCatching { publication.admit(prepared.source, { true }) { error("retired source published") } }.exceptionOrNull() is CancellationException)
+            check(runCatching { api.repository.capturePlaybackMediaCookieHeader(authorization, prepared.source.videoUrl) { true } }.exceptionOrNull() is CancellationException)
+        } finally {
+            api.client.dispatcher.executorService.shutdownNow()
+            api.client.connectionPool.evictAll()
+        }
+    }
+
     @org.junit.jupiter.api.Test
     fun originalAudioRequestsAndRetainedPlaybackOwnership() {
         org.junit.jupiter.api.Assertions.assertEquals(18, runNativeMusicOfflineCases())
