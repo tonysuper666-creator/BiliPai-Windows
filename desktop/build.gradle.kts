@@ -4232,6 +4232,8 @@ val extractOriginalPlayerFullControls by tasks.registering(Exec::class) {
     inputs.dir("upstream-slices/v046-player-overlay")
     inputs.file("tools/v046_control_center_motion.py")
     inputs.dir("upstream-slices/v046-control-center-motion")
+    // Stage receipts reverse later layers; the helper and its whole-proof import feed this producer.
+    inputs.files("tools/generation_stage_proof.py", "tools/v029_comment_search.py")
 
     dependsOn(prepareUpstreamSources, extractOriginalVideoDetailUnits, extractOriginalOfflinePlayer)
     workingDir(projectDir)
@@ -4520,6 +4522,8 @@ val extractOriginalVideoFullOwner by tasks.registering(Exec::class) {
     inputs.file("tools/v030_up_danmaku.py")
     inputs.file("tools/v029_failure_recovery.py")
     inputs.dir("upstream-slices/v029-playback-recovery")
+    // Stage receipts reverse later layers; v029_comment_search is already declared for this task below.
+    inputs.file("tools/generation_stage_proof.py")
     inputs.files(sources.filter { "stable-original-video-full-owner" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/original-video-full-owner"))
