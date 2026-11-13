@@ -1,0 +1,19 @@
+{
+  "pinnedCommit": "79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40",
+  "vmOriginalSha256LF": "acfeb63539acaf710a4070f59220a1585a38fd1e034d6a7a56a82970998d4352",
+  "vmDesiredSha256LF": "afd2ec487277a09f7cc7f9e92d578f99e01fe6a3fc21110cd0008d99fb3d0ea7",
+  "preparedBaseVmDesiredSha256LF": "8a4aced7f493cc8afc27cce99e234a340c2689d1b74697cdedd7699760fe8ea2",
+  "solePlanConverterVisibilityAdaptation": true,
+  "adaptationOperations": 96,
+  "productionOutputs": 3,
+  "standaloneOnlyDirect": [
+    "app/src/main/java/com/android/purebilibili/core/util/EasterEggs.kt",
+    "app/src/main/java/com/android/purebilibili/feature/home/TodayWatchRefreshPolicy.kt",
+    "app/src/main/java/com/android/purebilibili/feature/home/HomeFollowFeedMappingPolicy.kt"
+  ],
+  "inverseOriginalSha256LF": "acfeb63539acaf710a4070f59220a1585a38fd1e034d6a7a56a82970998d4352",
+  "inverseOperations": 96,
+  "inverseExact": true,
+  "gradleOutputMatchesCli": true,
+  "consumedTarget": "build/transition-patched/com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel.kt"
+}
