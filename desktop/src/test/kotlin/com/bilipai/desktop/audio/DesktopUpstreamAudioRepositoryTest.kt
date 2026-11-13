@@ -55,8 +55,16 @@ class DesktopUpstreamAudioRepositoryTest {
             client = repository.httpClient.newBuilder().proxy(Proxy.NO_PROXY).retryOnConnectionFailure(false)
                 .addInterceptor { chain ->
                     val request = chain.request()
+                    val path = request.url.encodedPath
+                    // B1: three AU endpoints keep the upstream www base; view/nav/playurl stay on api.
+                    val expectedHost = when (path) {
+                        "/audio/music-service-c/web/song/info", "/audio/music-service-c/web/url", "/audio/music-service-c/web/song/lyric" -> "www.bilibili.com"
+                        "/x/web-interface/nav", "/x/player/wbi/playurl", "/x/player/playurl" -> "api.bilibili.com"
+                        else -> throw IOException("Unexpected offline fixture path: $path")
+                    }
+                    check(request.url.host == expectedHost) { "Unexpected offline fixture host ${request.url.host} for $path, expected $expectedHost" }
                     requests += request
-                    val body = when (request.url.encodedPath) {
+                    val body = when (path) {
                         "/audio/music-service-c/web/song/info" -> """{"code":0,"data":{"id":81,"title":"fixture song","author":"fixture artist"}}"""
                         "/audio/music-service-c/web/url" -> """{"code":0,"data":{"sid":81,"cdns":["https://api.bilibili.com/fixture-audio"]}}"""
                         "/audio/music-service-c/web/song/lyric" -> """{"code":0,"data":"fixture lyric"}"""
@@ -94,6 +102,7 @@ class DesktopUpstreamAudioRepositoryTest {
             assertEquals("fixture lyric", prepared.songLyrics)
             assertEquals(listOf("/audio/music-service-c/web/song/info", "/audio/music-service-c/web/url", "/audio/music-service-c/web/song/lyric"),
                 f.requests.map { it.url.encodedPath })
+            assertTrue(f.requests.all { it.url.host == "www.bilibili.com" })
             assertTrue(f.requests.all { it.url.queryParameter("sid") == "81" })
             assertEquals(f.repository.sessionEpoch, prepared.source.primaryAccountEpoch)
         }
@@ -109,9 +118,12 @@ class DesktopUpstreamAudioRepositoryTest {
     @Test fun switchingAccountAfterResponseNeverPublishesOldAudio() = runBlocking<Unit> {
         Fixture().use { f ->
             f.afterRequest = { if (it.url.encodedPath.endsWith("/song/info")) f.sessions.logout() }
-            assertFailsWith<CancellationException> {
+            // B2: the desktop prepare path restores the original account-switch failure instead of
+            // leaking the upstream owner-retired cancellation.
+            val failure = assertFailsWith<IllegalStateException> {
                 f.audio.prepare(musicSourcePlaylistItem(MusicPlaybackSource.AudioSong(81)))
             }
+            assertEquals("账号已切换，请重新加载音频。", failure.message)
             assertEquals(1, f.requests.size)
         }
     }
@@ -146,6 +158,7 @@ class DesktopUpstreamAudioRepositoryTest {
             }
             assertEquals("https://fixture.invalid/audio", result)
             val play = f.requests.first { it.url.encodedPath.contains("playurl") }
+            assertEquals("api.bilibili.com", play.url.host)
             assertEquals("64", play.url.queryParameter("qn"))
             assertEquals(null, play.url.queryParameter("audio_lang"))
             val requestsBeforeCache = f.requests.size

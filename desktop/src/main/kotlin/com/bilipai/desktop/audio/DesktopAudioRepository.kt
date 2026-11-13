@@ -16,6 +16,7 @@ import com.bilipai.desktop.data.BiliApiException
 import com.bilipai.desktop.data.DesktopCommunityRepository
 import com.bilipai.desktop.data.DesktopRepository
 import com.bilipai.desktop.data.DesktopUpstreamCalls
+import com.bilipai.desktop.data.DesktopUpstreamOwnerRetired
 import com.bilipai.desktop.data.DesktopUpstreamPurpose
 import com.bilipai.desktop.player.PlaybackSource
 import kotlinx.coroutines.CancellationException
@@ -98,30 +99,39 @@ internal class DesktopAudioRepository(val repository: DesktopRepository, private
             repository.ensureSession()
             ensureAccount()
             val owner = repository.upstreamOwner(DesktopUpstreamPurpose.Main, { requestJob.isActive }, expectedEpoch = epoch)
-            DesktopUpstreamCalls.withOwnerScope(owner) {
-                owner.admit("audio song info")
-                val infoReply = AudioRepository.getSongInfo(sid)
-                ensureAccount()
-                songCode(infoReply.code, infoReply.msg)
-                val info = infoReply.data ?: throw IOException("音频信息为空。")
-                val streamReply = AudioRepository.getSongStream(sid)
-                ensureAccount()
-                songCode(streamReply.code, streamReply.msg)
-                val address = streamReply.data?.cdns.orEmpty().firstOrNull { it.toHttpUrlOrNullAudio() != null }
-                    ?: throw IOException("没有可播放的音频地址。")
-                val songLyrics = try { AudioRepository.getSongLyric(sid).takeIf { it.code == 0 }?.data }
-                    catch (failure: Exception) {
-                        if (failure is CancellationException) throw failure
-                        null
+            try {
+                DesktopUpstreamCalls.withOwnerScope(owner) {
+                    owner.admit("audio song info")
+                    val infoReply = AudioRepository.getSongInfo(sid)
+                    ensureAccount()
+                    songCode(infoReply.code, infoReply.msg)
+                    val info = infoReply.data ?: throw IOException("音频信息为空。")
+                    val streamReply = AudioRepository.getSongStream(sid)
+                    ensureAccount()
+                    songCode(streamReply.code, streamReply.msg)
+                    val address = streamReply.data?.cdns.orEmpty().firstOrNull { it.toHttpUrlOrNullAudio() != null }
+                        ?: throw IOException("没有可播放的音频地址。")
+                    val songLyrics = try { AudioRepository.getSongLyric(sid).takeIf { it.code == 0 }?.data }
+                        catch (failure: Exception) {
+                            if (failure is CancellationException) throw failure
+                            null
+                        }
+                    ensureAccount()
+                    val actual = item.copy(title = info.title.ifBlank { item.bvid }, cover = info.cover, owner = info.author.ifBlank { info.uname }, duration = info.duration.toLong())
+                    owner.admitted {
+                        val cookies = repository.httpClient.cookieJar.loadForRequest(requireNotNull(address.toHttpUrlOrNullAudio()))
+                            .joinToString("; ") { "${it.name}=${it.value}" }
+                        PreparedListenAudio(actual, PlaybackSource(address, cookieHeader = cookies, title = actual.title, primaryAccountEpoch = epoch),
+                            songLyrics = songLyrics, songInfo = info)
                     }
-                ensureAccount()
-                val actual = item.copy(title = info.title.ifBlank { item.bvid }, cover = info.cover, owner = info.author.ifBlank { info.uname }, duration = info.duration.toLong())
-                owner.admitted {
-                    val cookies = repository.httpClient.cookieJar.loadForRequest(requireNotNull(address.toHttpUrlOrNullAudio()))
-                        .joinToString("; ") { "${it.name}=${it.value}" }
-                    PreparedListenAudio(actual, PlaybackSource(address, cookieHeader = cookies, title = actual.title, primaryAccountEpoch = epoch),
-                        songLyrics = songLyrics, songInfo = info)
                 }
+            } catch (retired: DesktopUpstreamOwnerRetired) {
+                // B2: keep the desktop contract. A real job/window cancellation still propagates as
+                // cancellation; an account switch restores the original business failure; anything else
+                // (e.g. a retired playback authorization) is rethrown unchanged.
+                currentCoroutineContext().ensureActive()
+                ensureAccount()
+                throw retired
             }
         } else {
             val details = repository.videoDetails(item.bvid)

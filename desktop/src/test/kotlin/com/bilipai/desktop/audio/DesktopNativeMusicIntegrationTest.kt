@@ -47,9 +47,16 @@ private class SongApiFixture {
     private val json = Json { ignoreUnknownKeys = true }
     val client = repository.httpClient.newBuilder().proxy(java.net.Proxy.NO_PROXY).retryOnConnectionFailure(false).addInterceptor { chain ->
         val request = chain.request()
-        check(request.url.host == "api.bilibili.com")
-        requests.add(request)
         val path = request.url.encodedPath
+        // B1: the compiled upstream keeps its own audio base (www) for the three AU endpoints, while the
+        // account APIs (view/nav/playurl) stay on api. Unmodelled paths still fail instead of being allowed.
+        val expectedHost = when(path) {
+            "/audio/music-service-c/web/song/info", "/audio/music-service-c/web/url", "/audio/music-service-c/web/song/lyric" -> "www.bilibili.com"
+            "/x/web-interface/view", "/x/web-interface/nav", "/x/player/wbi/playurl", "/x/player/playurl" -> "api.bilibili.com"
+            else -> error("Unexpected API: $path")
+        }
+        check(request.url.host == expectedHost) { "Unexpected host ${request.url.host} for $path, expected $expectedHost" }
+        requests.add(request)
         val body = when(path) {
             "/audio/music-service-c/web/song/info" -> json.encodeToString(SongInfoResponse(songCode, "fixture song", if(songCode == 0) song else null))
             "/audio/music-service-c/web/url" -> json.encodeToString(SongStreamResponse(data = SongStreamData(song.id, 2, 4567, streams, song.title, song.cover)))
@@ -188,7 +195,12 @@ internal fun runNativeMusicOfflineCases(): Int = runBlocking {
         f.sessions.saveAccount(mapOf("SESSDATA" to "fake-fixture-only", "bili_jct" to "fake-fixture-csrf"), AccountSummary(1, "fake", ""))
         f.skipVisitor()
         equal("", f.prepare().source.cookieHeader)
-        check(f.requests.all { it.url.host == "api.bilibili.com" })
+        // B1: the only change to an old expectation. AU is now served by the upstream www base
+        // (ApiClient.kt:3709), so the host is asserted per path instead of assuming every request is api.
+        check(f.requests.all {
+            it.url.encodedPath in setOf("/audio/music-service-c/web/song/info", "/audio/music-service-c/web/url", "/audio/music-service-c/web/song/lyric") &&
+                it.url.host == "www.bilibili.com"
+        })
     }
     case("retained session loads AU metadata and original timed lyrics with au cache key") {
         val api = SongApiFixture(); val source = MusicDataSource { api.audio.prepare(it) }
