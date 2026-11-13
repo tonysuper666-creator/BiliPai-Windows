@@ -15,6 +15,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import kotlinx.coroutines.delay
 
 /** A window token belongs to one opening of the editor, never to a later opening. */
@@ -56,7 +57,7 @@ internal class DesktopProfileFeedback(private val pageFeedback: (String) -> Unit
     }
 }
 
-/** Drawn in the editor's dialog window, after its content, so it is above the editor. */
+/** Keep feedback in the dialog window, above the editor's own stacking context. */
 @Composable
 internal fun DesktopProfileFeedbackHost(feedback: DesktopProfileFeedback, content: @Composable () -> Unit) {
     val notice = feedback.notice
@@ -64,10 +65,11 @@ internal fun DesktopProfileFeedbackHost(feedback: DesktopProfileFeedback, conten
         if (notice != null) { delay(4_000); feedback.dismiss(notice) }
     }
     Box(Modifier.fillMaxWidth()) {
-        content()
+        // Contain child zIndex values: editor surfaces must not cover the notice.
+        Box(Modifier.fillMaxWidth()) { content() }
         if (notice != null) {
             Surface(
-                modifier = Modifier.align(Alignment.TopCenter).fillMaxWidth().padding(8.dp),
+                modifier = Modifier.align(Alignment.TopCenter).zIndex(1f).fillMaxWidth().padding(8.dp),
                 color = MaterialTheme.colorScheme.inverseSurface,
                 contentColor = MaterialTheme.colorScheme.inverseOnSurface,
                 shape = RoundedCornerShape(8.dp),
