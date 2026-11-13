@@ -1,8 +1,8 @@
 package com.bilipai.desktop.audio
 
-import com.android.purebilibili.core.network.AudioApi
 import com.android.purebilibili.core.network.BilibiliApi
 import com.android.purebilibili.data.model.response.*
+import com.android.purebilibili.data.repository.AudioRepository
 import com.android.purebilibili.data.repository.FavoriteRequestException
 import com.android.purebilibili.feature.audio.library.*
 import com.android.purebilibili.feature.audio.lyrics.*
@@ -15,11 +15,14 @@ import com.bilipai.desktop.danmaku.ApiDesktopDanmakuSource
 import com.bilipai.desktop.data.BiliApiException
 import com.bilipai.desktop.data.DesktopCommunityRepository
 import com.bilipai.desktop.data.DesktopRepository
+import com.bilipai.desktop.data.DesktopUpstreamCalls
+import com.bilipai.desktop.data.DesktopUpstreamPurpose
 import com.bilipai.desktop.player.PlaybackSource
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.sync.Mutex
@@ -47,7 +50,6 @@ internal class DesktopAudioRepository(val repository: DesktopRepository, private
     private val retrofit = Retrofit.Builder().baseUrl("https://api.bilibili.com/").client(repository.httpClient)
         .addConverterFactory(json.asConverterFactory("application/json".toMediaType())).build()
     private val api = retrofit.create(BilibiliApi::class.java)
-    private val audioApi = retrofit.create(AudioApi::class.java)
     private val lyricsClient = boundedAudioClient(OkHttpClient.Builder().callTimeout(8, TimeUnit.SECONDS).build())
     /** Public playlist transport borrows the same bounded public audio client. */
     val externalPlaylistCalls: Call.Factory get() = lyricsClient
@@ -92,26 +94,35 @@ internal class DesktopAudioRepository(val repository: DesktopRepository, private
         }
         val sid = Regex("(?i)^au([1-9][0-9]*)$").matchEntire(item.bvid)?.groupValues?.get(1)?.toLongOrNull()
         if (sid != null) {
+            val requestJob = requireNotNull(currentCoroutineContext()[Job]) { "Audio request needs a coroutine Job" }
             repository.ensureSession()
             ensureAccount()
-            val infoReply = audioApi.getSongInfo(sid)
-            ensureAccount()
-            songCode(infoReply.code, infoReply.msg)
-            val info = infoReply.data ?: throw IOException("音频信息为空。")
-            val streamReply = audioApi.getSongStream(sid)
-            ensureAccount()
-            songCode(streamReply.code, streamReply.msg)
-            val address = streamReply.data?.cdns.orEmpty().firstOrNull { it.toHttpUrlOrNullAudio() != null }
-                ?: throw IOException("没有可播放的音频地址。")
-            val songLyrics = try { audioApi.getSongLyric(sid).takeIf { it.code == 0 }?.data }
-                catch (failure: Exception) { if (failure is CancellationException) throw failure; null }
-            ensureAccount()
-            val cookies = repository.httpClient.cookieJar.loadForRequest(requireNotNull(address.toHttpUrlOrNullAudio()))
-                .joinToString("; ") { "${it.name}=${it.value}" }
-            val actual = item.copy(title = info.title.ifBlank { item.bvid }, cover = info.cover, owner = info.author.ifBlank { info.uname }, duration = info.duration.toLong())
-            ensureAccount()
-            PreparedListenAudio(actual, PlaybackSource(address, cookieHeader = cookies, title = actual.title, primaryAccountEpoch = epoch),
-                songLyrics = songLyrics, songInfo = info)
+            val owner = repository.upstreamOwner(DesktopUpstreamPurpose.Main, { requestJob.isActive }, expectedEpoch = epoch)
+            DesktopUpstreamCalls.withOwnerScope(owner) {
+                owner.admit("audio song info")
+                val infoReply = AudioRepository.getSongInfo(sid)
+                ensureAccount()
+                songCode(infoReply.code, infoReply.msg)
+                val info = infoReply.data ?: throw IOException("音频信息为空。")
+                val streamReply = AudioRepository.getSongStream(sid)
+                ensureAccount()
+                songCode(streamReply.code, streamReply.msg)
+                val address = streamReply.data?.cdns.orEmpty().firstOrNull { it.toHttpUrlOrNullAudio() != null }
+                    ?: throw IOException("没有可播放的音频地址。")
+                val songLyrics = try { AudioRepository.getSongLyric(sid).takeIf { it.code == 0 }?.data }
+                    catch (failure: Exception) {
+                        if (failure is CancellationException) throw failure
+                        null
+                    }
+                ensureAccount()
+                val actual = item.copy(title = info.title.ifBlank { item.bvid }, cover = info.cover, owner = info.author.ifBlank { info.uname }, duration = info.duration.toLong())
+                owner.admitted {
+                    val cookies = repository.httpClient.cookieJar.loadForRequest(requireNotNull(address.toHttpUrlOrNullAudio()))
+                        .joinToString("; ") { "${it.name}=${it.value}" }
+                    PreparedListenAudio(actual, PlaybackSource(address, cookieHeader = cookies, title = actual.title, primaryAccountEpoch = epoch),
+                        songLyrics = songLyrics, songInfo = info)
+                }
+            }
         } else {
             val details = repository.videoDetails(item.bvid)
             val part = details.pages.indexOfFirst { it.cid == item.cid }.takeIf { it >= 0 } ?: 0
