@@ -311,10 +311,11 @@ class DesktopWindowsTextSelectionUiTest {
         } as DesktopDynamicCardPlatform
 
     private fun dynamicScene(style: AppUiStyle, onUser: (Long) -> Unit, onBlank: () -> Unit,
-        desc: DynamicDesc = dynamicDesc, frame: @Composable (@Composable () -> Unit) -> Unit = { it() }) = Scene(style) {
+        desc: DynamicDesc = dynamicDesc, frame: @Composable (@Composable () -> Unit) -> Unit = { it() },
+        foldInFeed: Boolean = false) = Scene(style) {
         val bindings = remember { platform(pluginContext) }
         CompositionLocalProvider(LocalDesktopDynamicCardBindings provides bindings) {
-            frame { RichTextContent(desc = desc, onUserClick = onUser, onBlankTap = onBlank) }
+            frame { RichTextContent(desc = desc, onUserClick = onUser, onBlankTap = onBlank, foldInFeed = foldInFeed) }
         }
     }
 
@@ -332,6 +333,27 @@ class DesktopWindowsTextSelectionUiTest {
             s.click(s.start(dynamicText)); assertEquals(1, blank, "A plain click on the body still reaches the card")
             s.click(s.end(dynamicText)); assertEquals(4242L, user, "The @ link still opens the user")
             assertEquals(1, blank)
+        }
+    }
+
+    @TestFactory fun foldedDynamicBodyStillSelectsAndOpensLinks() = styles("folded dynamic interaction") { style ->
+        val suffix = "\n二\n三\n四\n五\n六\n七"
+        val text = dynamicText + suffix
+        val desc = DynamicDesc(text = text, rich_text_nodes = dynamicDesc.rich_text_nodes +
+            RichTextNode(type = "RICH_TEXT_NODE_TYPE_TEXT", text = suffix, orig_text = suffix))
+        var user = 0L
+        dynamicScene(style, { user = it }, {}, desc = desc,
+            frame = { Box(Modifier.width(450.dp)) { it() } }, foldInFeed = true).use { s ->
+            s.advance()
+            assertTrue(s.hasText("展开更多"), "Fixture must actually overflow in collapsed mode")
+            s.drag(s.centerOf(text, "动态"), s.centerOf(text, "拖选"))
+            s.copyShortcut()
+            assertTrue(s.clipboard.text.orEmpty().isNotEmpty(), "Collapsed text is selectable")
+            s.click(s.centerOf(text, dynamicUser)); assertEquals(4242L, user, "Collapsed link opens")
+            s.click(s.bounds("展开更多").center)
+            assertTrue(s.hasText("收起"))
+            user = 0L
+            s.click(s.centerOf(text, dynamicUser)); assertEquals(4242L, user, "Expanded link opens")
         }
     }
 
