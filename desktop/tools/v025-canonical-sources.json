@@ -6097,11 +6097,11 @@
       "sha256CanonicalBytes": "3712b22e0bf8a4c269e79abe92f597fab8397f1d5721a99cb87ab5c628917ff9"
     },
     "app/src/main/java/com/android/purebilibili/feature/settings/SettingsSearchPolicy.kt": {
-      "blob": "c91e48c94263deb1f1cccea97063e886a80e398e",
-      "sha256": "893e3ecc40dbe6627981ef6689b27944434b882c03ce0c50fa9f192b2700b6b8",
+      "blob": "9b4624cf9f3ab6b2b076e7991dc5efc55dde70ba",
+      "sha256": "2cc19268279ce18e5842ebfc6bf3f76348004cddaa5fdd25f358a4c5eaaf7f82",
       "legacySha256": "cfb903651713d152d91956297ffa0f33ad64b232c065f4a4d52ea934b53c3ee8",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "893e3ecc40dbe6627981ef6689b27944434b882c03ce0c50fa9f192b2700b6b8"
+      "sha256CanonicalBytes": "2cc19268279ce18e5842ebfc6bf3f76348004cddaa5fdd25f358a4c5eaaf7f82"
     },
     "app/src/main/java/com/android/purebilibili/feature/settings/SettingsSelectionComponents.kt": {
       "blob": "2a5b1a4700ef3784e08e70823be093fbe756b8f5",
@@ -6111,11 +6111,11 @@
       "sha256CanonicalBytes": "f21907758fc8070756fd8e9329e7b81c9223f66f176ef4e5e6e86ae595d404ef"
     },
     "app/src/main/java/com/android/purebilibili/feature/settings/SettingsSemanticIconPolicy.kt": {
-      "blob": "1398ff944b46fba28db0656c72747493d133dd37",
-      "sha256": "4c0543f7b69063ee53ed484e3e2e22344ffc68a3f52e49ce379e26e8a93281da",
+      "blob": "43d8ccde4786ceb5420d838a77183c37a818e63a",
+      "sha256": "ef552a4b1508ee3ef019b3e02af4da2f35caf98b73c7caa2b0711c44ab80c155",
       "legacySha256": "b208983b36fe392708836eb45e7712ff72862454e84f40fba708a17cfc097d54",
       "hashNormalization": "lf",
-      "sha256CanonicalBytes": "4c0543f7b69063ee53ed484e3e2e22344ffc68a3f52e49ce379e26e8a93281da"
+      "sha256CanonicalBytes": "ef552a4b1508ee3ef019b3e02af4da2f35caf98b73c7caa2b0711c44ab80c155"
     },
     "app/src/main/java/com/android/purebilibili/feature/settings/SettingsSiblingIconPalettePolicy.kt": {
       "blob": "23698fffb49341e189be76f14bfe7d76d692bcc0",

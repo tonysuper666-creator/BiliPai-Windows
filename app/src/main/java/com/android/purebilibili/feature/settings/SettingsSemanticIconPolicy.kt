@@ -288,7 +288,7 @@ internal fun resolveSettingsMaterialSymbolResource(role: SettingsIconRole): Int 
     SettingsIconRole.FEED_API -> R.drawable.ms_rss_feed_24
     SettingsIconRole.REFRESH_COUNT -> R.drawable.ms_refresh_24
     SettingsIconRole.DYNAMIC_PREVIEW_TEXT -> R.drawable.ms_text_snippet_24
-    SettingsIconRole.DYNAMIC_TAB_VISIBILITY -> R.drawable.ms_visibility_24
+    SettingsIconRole.DYNAMIC_TAB_VISIBILITY -> R.drawable.ms_view_sidebar_24
     SettingsIconRole.EASTER_EGG -> R.drawable.ms_auto_awesome_24
     SettingsIconRole.AUTO_CHECK_UPDATE -> R.drawable.ms_update_24
     SettingsIconRole.BUILD_SOURCE -> R.drawable.ms_tag_24
@@ -316,7 +316,7 @@ internal fun resolveSettingsMaterialSymbolResource(role: SettingsIconRole): Int 
     SettingsIconRole.HOME_REFRESH_TIP -> R.drawable.ms_history_24
     SettingsIconRole.HOME_REFRESH_UNDO -> R.drawable.ms_undo_24
     SettingsIconRole.HOME_CARD_DYNAMIC_TINT -> R.drawable.ms_colors_24
-    SettingsIconRole.NOW_PLAYING_BAR -> R.drawable.ms_bottom_panel_open_24
+    SettingsIconRole.NOW_PLAYING_BAR -> R.drawable.ms_play_circle_outline_24
     SettingsIconRole.AUDIO_MODE_ENTRY -> R.drawable.ms_library_music_24
     SettingsIconRole.AUDIO_TITLE_AUTO_HIDE -> R.drawable.ms_bottom_panel_close_24
     SettingsIconRole.LOUDNESS_NORMALIZATION -> R.drawable.ms_instant_mix_24
@@ -412,14 +412,14 @@ internal fun resolveSettingsMaterialSymbolResource(role: SettingsIconRole): Int 
     SettingsIconRole.APP_ICON -> R.drawable.ms_apps_24
     SettingsIconRole.HOME_CARD_STATS_COMPACT -> R.drawable.ms_stacked_bar_chart_24
     SettingsIconRole.HOME_HERO_CAROUSEL -> R.drawable.ms_view_day_24
-    SettingsIconRole.HOME_ONLINE_COUNT -> R.drawable.ms_groups_24
+    SettingsIconRole.HOME_ONLINE_COUNT -> R.drawable.ms_online_prediction_24
     SettingsIconRole.PORTRAIT_STORY_ENTRY -> R.drawable.ms_stay_current_portrait_24
     SettingsIconRole.DISPLAY_SCALE -> R.drawable.ms_zoom_out_map_24
     SettingsIconRole.UI_ENTRANCE_ANIMATION -> R.drawable.ms_motion_photos_on_24
     SettingsIconRole.FULLSCREEN_SWIPE_BACK -> R.drawable.ms_swipe_right_24
     SettingsIconRole.FOLLOW_BUTTON -> R.drawable.ms_person_add_24
     SettingsIconRole.PRIVACY_SEARCH_RECOMMENDATION -> R.drawable.ms_search_24
-    SettingsIconRole.PERSONAL_RECAP -> R.drawable.ms_query_stats_24
+    SettingsIconRole.PERSONAL_RECAP -> R.drawable.ms_stars_24
     SettingsIconRole.PRIVACY_HISTORY -> R.drawable.ms_history_toggle_off_24
     SettingsIconRole.CUSTOM_MD3_COLOR -> R.drawable.ms_format_paint_24
     SettingsIconRole.THEME_LIGHT_BACKGROUND -> R.drawable.ms_light_mode_24
@@ -433,7 +433,7 @@ internal fun resolveSettingsMaterialSymbolResource(role: SettingsIconRole): Int 
     SettingsIconRole.DEVELOPER_CRASH_TRACKING -> R.drawable.ms_health_and_safety_24
     SettingsIconRole.DEVELOPER_ANALYTICS -> R.drawable.ms_data_usage_24
     SettingsIconRole.APP_VERSION -> R.drawable.ms_new_releases_24
-    SettingsIconRole.BOTTOM_BAR_GLASS_PREVIEW -> R.drawable.ms_lens_blur_24
+    SettingsIconRole.BOTTOM_BAR_GLASS_PREVIEW -> R.drawable.ms_hub_24
     SettingsIconRole.ADVANCED_COLOR -> R.drawable.ms_invert_colors_24
     SettingsIconRole.CAST_BUTTON -> R.drawable.ms_cast_24
     SettingsIconRole.PROGRESS_PEAK_DANMAKU -> R.drawable.ms_graphic_eq_24
@@ -451,7 +451,7 @@ internal fun resolveSettingsMaterialSymbolResource(role: SettingsIconRole): Int 
     SettingsIconRole.BLUR_INTENSITY -> R.drawable.ms_flare_24
     SettingsIconRole.HAPTIC_FEEDBACK -> R.drawable.ms_touch_app_fill_24
     SettingsIconRole.REMEMBER_PLAYBACK_SPEED -> R.drawable.ms_history_fill_24
-    SettingsIconRole.SPACE_PLAYED_VIDEO_LOCATE -> R.drawable.ms_search_24
+    SettingsIconRole.SPACE_PLAYED_VIDEO_LOCATE -> R.drawable.ms_video_library_24
     SettingsIconRole.IMAGE_LONG_PRESS_ACTION -> R.drawable.ms_photo_library_24
     SettingsIconRole.PLAYER_COLLAPSE_PAUSE -> R.drawable.ms_pause_24
     SettingsIconRole.BOTTOM_BAR_SEARCH -> R.drawable.ms_search_fill_24

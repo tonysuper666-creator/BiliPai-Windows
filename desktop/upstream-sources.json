@@ -3753,7 +3753,7 @@
       "features": [
         "settings-search-parity"
       ],
-      "sha256": "893e3ecc40dbe6627981ef6689b27944434b882c03ce0c50fa9f192b2700b6b8",
+      "sha256": "2cc19268279ce18e5842ebfc6bf3f76348004cddaa5fdd25f358a4c5eaaf7f82",
       "sourceCommit": "24841a6137ece748f345179fce0425c7c6f4a9f1"
     },
     {
@@ -3816,7 +3816,7 @@
       "features": [
         "settings-search-parity"
       ],
-      "sha256": "4c0543f7b69063ee53ed484e3e2e22344ffc68a3f52e49ce379e26e8a93281da",
+      "sha256": "ef552a4b1508ee3ef019b3e02af4da2f35caf98b73c7caa2b0711c44ab80c155",
       "sourceCommit": "71b86210a50b83d84a0405658906da33e891ecf5"
     },
     {
