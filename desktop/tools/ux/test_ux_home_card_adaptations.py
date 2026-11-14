@@ -202,12 +202,21 @@ class GeneratorOutputTest(unittest.TestCase):
         self.assertEqual(1, len(found))
         return found[0]
 
+    def without_hover(self, files):
+        """The card with only the K3d hover edits undone, last first: the text the H2, K3 and K3b edits alone produce."""
+        text = self.card(files)
+        for label, before, after in reversed(layer.HOVER_EDITS):
+            self.assertEqual(1, text.count(after), label)
+            text = text.replace(after, before, 1)
+        return text
+
     def test_the_layer_changes_exactly_the_generated_card_and_the_inventory(self):
         self.assertEqual(set(self.plain), set(self.layered))
         changed = {name for name in self.layered if self.layered[name] != self.plain[name]}
         self.assertEqual({CARD_PATH, INVENTORY_PATH}, changed)
         # In the inventory only the audit rows of the card entry change, and only by the rows the layer appends: the seven of
-        # slice H2, then the four of slice K3 (the cover focus), then the fourteen of slice K3b (the three-line layout), in that order.
+        # slice H2, then the four of slice K3 (the cover focus), then the fourteen of slice K3b (the three-line layout), then the four
+        # of slice K3d (the hover and the quick actions), in that order.
         plain_rows, layered_rows = self.rows(self.plain), self.rows(self.layered)
         self.assertEqual(len(plain_rows), len(layered_rows))
         for before, after in zip(plain_rows, layered_rows):
@@ -216,15 +225,18 @@ class GeneratorOutputTest(unittest.TestCase):
         before, after = self.card_row(self.plain), self.card_row(self.layered)
         self.assertEqual({key: value for key, value in before.items() if key != "changes"}, {key: value for key, value in after.items() if key != "changes"})
         self.assertEqual(before["changes"], after["changes"][:len(before["changes"])])
-        self.assertEqual(layer.EDITS + layer.COVER_EDITS + layer.LAYOUT_EDITS, layer.ALL_EDITS)
-        self.assertEqual((7, 4, 14), (len(layer.EDITS), len(layer.COVER_EDITS), len(layer.LAYOUT_EDITS)))
+        self.assertEqual(layer.EDITS + layer.COVER_EDITS + layer.LAYOUT_EDITS + layer.HOVER_EDITS, layer.ALL_EDITS)
+        self.assertEqual((7, 4, 14, 4), (len(layer.EDITS), len(layer.COVER_EDITS), len(layer.LAYOUT_EDITS), len(layer.HOVER_EDITS)))
+        self.assertEqual(["ux-card-hover-imports", "ux-card-hover-state", "ux-card-hover-surface", "ux-card-hover-quick-actions"],
+                         [row["id"] for row in after["changes"][-4:]])
         self.assertEqual([label for label, _b, _a in layer.ALL_EDITS], [row["id"] for row in after["changes"][len(before["changes"]):]])
 
     def test_the_output_is_deterministic(self):
         self.assertEqual(self.layered, self.again)
 
     def test_every_anchor_occurs_exactly_once_in_the_text_the_layer_receives(self):
-        received, produced = self.card(self.plain), self.card(self.layered)
+        # The K3d hover edit rewrites one line of the H2 right-click edit, so the H2 edits are read before the K3d edits.
+        received, produced = self.card(self.plain), self.without_hover(self.layered)
         for label, before, after in layer.EDITS:
             self.assertEqual(1, received.count(before), label)
             self.assertEqual(0, received.count(after), label)
@@ -234,6 +246,10 @@ class GeneratorOutputTest(unittest.TestCase):
                 self.assertEqual(0, produced.count(before), label)
             else:
                 self.assertEqual(1, produced.count(before), label)
+        # In the final card the vendored hover line of the H2 chain is gone; it is kept only as the OFF branch of the K3d switch.
+        final = self.card(self.layered)
+        self.assertEqual(0, final.count("            .adaptiveCardHoverEffect(shape = adaptiveHoverShape)\n"))
+        self.assertEqual(1, final.count("                    Modifier.adaptiveCardHoverEffect(shape = adaptiveHoverShape)\n"))
 
     def test_the_edits_are_the_seven_of_the_slice_in_one_file(self):
         self.assertEqual(["ux-card-menu-imports", "ux-card-modifier-imports", "ux-card-secondary-click-and-hand-cursor", "ux-card-overflow-target",
@@ -246,8 +262,8 @@ class GeneratorOutputTest(unittest.TestCase):
 
     def test_reverse_applying_the_edits_gives_back_the_received_text(self):
         self.assertEqual(self.card(self.plain), layer.reverse(layer.CARD, self.card(self.layered)))
-        # Undoing only the K3b layout edits, last first, gives back the text the H2 and K3 edits alone produce.
-        partial = self.card(self.layered)
+        # Undoing only the K3d hover edits and then the K3b layout edits, last first, gives back the text the H2 and K3 edits alone produce.
+        partial = self.without_hover(self.layered)
         for label, before, after in reversed(layer.LAYOUT_EDITS):
             self.assertEqual(1, partial.count(after), label)
             partial = partial.replace(after, before, 1)
@@ -331,7 +347,8 @@ class GeneratorOutputTest(unittest.TestCase):
                       "                offset = DpOffset.Zero\n            ) {", self.card(self.layered))
 
     def test_the_right_click_and_the_hand_cursor_sit_in_the_modifier_chain_of_the_card_box(self):
-        produced = self.card(self.layered)
+        # The chain as H2 left it; slice K3d then switches its hover line on the flag (pinned at the end of this test).
+        produced = self.without_hover(self.layered)
         chain_start = produced.index("    Box(\n        modifier = modifier\n            .fillMaxWidth()\n            .adaptiveCardHoverEffect(shape = adaptiveHoverShape)\n")
         chain = produced[chain_start:produced.index("\n    ) {\n", chain_start)]
         order = [".fillMaxWidth()", ".adaptiveCardHoverEffect(shape = adaptiveHoverShape)", ".desktopCardSecondaryClick(enabled = hasOverflowMenu) { pressOffset ->",
@@ -355,6 +372,19 @@ class GeneratorOutputTest(unittest.TestCase):
         self.assertEqual(1, produced.count("openDismissMenu(coverCoordsRef.value, pressOffset)"))
         self.assertEqual(1, produced.count("openDismissMenu(titleCoordsRef.value, pressOffset)"))
         self.assertEqual(1, produced.count("openDismissMenu(menuButtonCoordsRef.value, null)"))
+        # Slice K3d: in the final card the first two links of the chain are the width and the flag switch of the hover, whose OFF
+        # branch is the vendored expression; the rest of the chain is the H2 one. The quick "more" action is the one further call.
+        final = self.card(self.layered)
+        self.assertEqual(1, final.count("    Box(\n        modifier = modifier\n            .fillMaxWidth()\n            .then(\n"
+                                        "                if (homeCardThreeLine) {\n"
+                                        "                    Modifier.desktopHomeCardHoverSurface(homeCardHover, cornerRadius = cardCornerRadius)\n"
+                                        "                } else {\n"
+                                        "                    Modifier.adaptiveCardHoverEffect(shape = adaptiveHoverShape)\n"
+                                        "                }\n"
+                                        "            )\n"
+                                        "            .desktopCardSecondaryClick(enabled = hasOverflowMenu) { pressOffset ->\n"))
+        self.assertEqual(produced.count("openDismissMenu(") + 1, final.count("openDismissMenu("))
+        self.assertEqual(1, final.count("{ anchor -> openDismissMenu(anchor, null) }"))
 
     def test_only_the_overflow_box_takes_the_32_dp_target(self):
         received, produced = self.card(self.plain), self.card(self.layered)
