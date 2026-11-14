@@ -5,6 +5,8 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.hoverable
+import androidx.compose.foundation.relocation.BringIntoViewRequester
+import androidx.compose.foundation.relocation.bringIntoViewRequester
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsHoveredAsState
 import androidx.compose.foundation.layout.Arrangement
@@ -29,6 +31,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
@@ -156,6 +160,13 @@ internal fun Modifier.desktopHomeCoverFocusTarget(
     val open by rememberUpdatedState(onOpen)
     val menu by rememberUpdatedState(onMenu)
     val copy by rememberUpdatedState(onCopy)
+    val navigation = LocalDesktopHomeGridNavigation.current
+    val requester = remember { FocusRequester() }
+    val reveal = remember { BringIntoViewRequester() }
+    DisposableEffect(navigation, state) {
+        navigation?.register(state, requester, reveal)
+        onDispose { navigation?.unregister(state) }
+    }
     SideEffect { state.cornerRadius = cornerRadius }
     return this
         .desktopKitOnPointerPress { state.focus = state.focus.onPointerPress(desktopHomeCoverNowMs()) }
@@ -166,6 +177,7 @@ internal fun Modifier.desktopHomeCoverFocusTarget(
             false
         }
         .onKeyEvent { event ->
+            if (navigation?.onKey(state, event) == true) return@onKeyEvent true
             when (desktopHomeCoverKeyAction(event)) {
                 DesktopHomeCoverKeyAction.OPEN -> {
                     open()
@@ -184,6 +196,8 @@ internal fun Modifier.desktopHomeCoverFocusTarget(
                 state.focus = state.focus.onUnfocus()
             }
         }
+        .focusRequester(requester)
+        .bringIntoViewRequester(reveal)
         .focusable()
         .onGloballyPositioned { coordinates ->
             state.coverCoordinates = coordinates
