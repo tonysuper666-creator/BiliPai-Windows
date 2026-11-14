@@ -24,9 +24,9 @@ internal object DesktopWindowsUxSettingsStrings {
     const val PLAYER_LEGACY = "旧版底栏"
 
     const val DETAILS = "播放页详情面板"
-    const val DETAILS_AUTO = "自动打开"
-    const val DETAILS_OPEN = "打开面板"
-    const val DETAILS_CLOSED = "收起面板"
+    const val DETAILS_AUTO = "自动"
+    const val DETAILS_OPEN = "打开"
+    const val DETAILS_CLOSED = "收起"
     const val DETAILS_WIDTH = "详情面板宽度"
     const val DETAILS_WIDTH_AUTO = "自动宽度"
     const val DETAILS_WIDTH_RESET = "使用自动宽度"

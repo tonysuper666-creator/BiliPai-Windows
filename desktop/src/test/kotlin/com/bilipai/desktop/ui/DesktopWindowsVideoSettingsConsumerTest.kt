@@ -93,7 +93,7 @@ class DesktopWindowsVideoSettingsConsumerTest {
     @Test fun actualSettingsChoicesChangeStageAndPanelAndPersist(): Unit = runBlocking {
         Fixture(root.resolve("settings"), coroutineContext).use { f ->
             f.settle()
-            f.click(DesktopWindowsUxSettingsStrings.DETAILS_CLOSED)
+            f.click(DesktopWindowsUxSettingsStrings.DETAILS_CLOSED, DesktopWindowsUxSettingsStrings.DETAILS)
             assertEquals(0, f.livePanels)
             f.snapshot("legacy")
             val legacy = f.viewportBounds
@@ -105,7 +105,7 @@ class DesktopWindowsVideoSettingsConsumerTest {
             assertTrue(f.headerBounds.top > f.viewportBounds.top, "desktop header lies inside the viewport")
             assertSame(identity, f.stageIdentity)
             assertEquals(0, f.stageDisposes)
-            f.click(DesktopWindowsUxSettingsStrings.DETAILS_OPEN)
+            f.click(DesktopWindowsUxSettingsStrings.DETAILS_OPEN, DesktopWindowsUxSettingsStrings.DETAILS)
             assertEquals(1, f.livePanels)
             f.width(320f)
             assertEquals(320, f.ux.settings.value.detailsPanelWidthDp)
@@ -136,9 +136,9 @@ class DesktopWindowsVideoSettingsConsumerTest {
     @Test fun liveAutoAndManualCloseKeepEntryIntentAndAutomaticWidth(): Unit = runBlocking {
         Fixture(root.resolve("auto"), coroutineContext).use { f ->
             f.settle()
-            f.click(DesktopWindowsUxSettingsStrings.DETAILS_CLOSED)
+            f.click(DesktopWindowsUxSettingsStrings.DETAILS_CLOSED, DesktopWindowsUxSettingsStrings.DETAILS)
             assertEquals(0, f.livePanels)
-            f.click(DesktopWindowsUxSettingsStrings.DETAILS_AUTO)
+            f.click(DesktopWindowsUxSettingsStrings.DETAILS_AUTO, DesktopWindowsUxSettingsStrings.DETAILS)
             assertEquals(1, f.livePanels, "switching to AUTO at a wide window decides now")
             f.click("panel toggle")
             assertEquals(0, f.livePanels)
@@ -147,7 +147,7 @@ class DesktopWindowsVideoSettingsConsumerTest {
             f.covered.value = true; f.settle()
             f.covered.value = false; f.settle()
             assertEquals(0, f.livePanels, "same-entry restore keeps the manual close")
-            f.click(DesktopWindowsUxSettingsStrings.DETAILS_OPEN)
+            f.click(DesktopWindowsUxSettingsStrings.DETAILS_OPEN, DesktopWindowsUxSettingsStrings.DETAILS)
             f.width(320f)
             f.click(DesktopWindowsUxSettingsStrings.DETAILS_WIDTH_RESET)
             assertEquals(null, f.ux.settings.value.detailsPanelWidthDp)
