@@ -68,8 +68,8 @@ internal class DesktopWindowsVideoEscapeInput(
         routing = true
         try {
             when {
-                textEditorFocused() -> trace("$origin editor retained")
                 closeTopOverlay() -> trace("$origin overlay closed")
+                textEditorFocused() -> trace("$origin editor retained")
                 fullscreen() -> { leaveFullscreen(); trace("$origin fullscreen exited") }
                 else -> {
                     val accepted = requestBack()
