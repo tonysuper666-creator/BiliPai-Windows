@@ -125,6 +125,75 @@ def shared_shell_column(source):
  if source[end_line:spacer].strip():raise ValueError('Original shared shell Spacer does not start its own line')
  if tokens[end][1]-source.rfind('\n',0,tokens[end][1])-1!=start-start_line:raise ValueError('Original shared shell Column closing brace is not aligned with the Column')
  return source[:start]+'Column {\n'+source[end_line:]
+# Windows drag-to-copy for the dynamic body: on a PC text is selected by dragging and copied with
+# Ctrl+C or the right-click menu; the phone's long-press full-text sheet stays for touch only. A changed
+# upstream anchor fails generation instead of silently dropping the Windows behaviour. (Private-message
+# bubbles compile from upstream ChatScreen.kt, so their counterpart is the M0 patch of that file.)
+DYNAMIC_RICH_TEXT = '''    val textGestureModifier = Modifier.pointerInput(annotatedText, onBlankTap, copyText) {
+        detectTapWithSelectionFriendly(
+            onLongPress = {
+                if (copyText.isNotBlank()) {
+                    haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                    showTextSelectionSheet = true
+                }
+            },
+            onTap = onBlankTap?.let { callback -> { _: Offset -> callback() } },
+        )
+    }
+    AppText(
+        text = annotatedText,
+        inlineContent = inlineContent,
+        fontSize = fontSize,
+        fontWeight = fontWeight,
+        lineHeight = lineHeight,
+        maxLines = maxLines,
+        overflow = overflow,
+        color = textColor,
+        modifier = modifier.then(textGestureModifier)
+    )
+'''
+
+WINDOWS_DYNAMIC_RICH_TEXT = '''    // Windows：正文直接拖选，Ctrl+C 或右键「复制」；链接仍由 BasicText 处理，轻触空白仍走转发回调。
+    // 全文选择面板只留给触屏长按，鼠标按住停顿后再拖不会被弹窗打断。
+    var pressedByMouse by remember { mutableStateOf(false) }
+    val textGestureModifier = Modifier
+        .pointerInput(Unit) {
+            awaitPointerEventScope {
+                while (true) {
+                    awaitPointerEvent(androidx.compose.ui.input.pointer.PointerEventPass.Initial)
+                        .changes.firstOrNull { it.pressed && !it.previousPressed }
+                        ?.let { pressedByMouse = it.type == androidx.compose.ui.input.pointer.PointerType.Mouse }
+                }
+            }
+        }
+        .pointerInput(annotatedText, onBlankTap, copyText) {
+            detectTapWithSelectionFriendly(
+                onLongPress = {
+                    if (copyText.isNotBlank() && !pressedByMouse) {
+                        haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                        showTextSelectionSheet = true
+                    }
+                },
+                onTap = onBlankTap?.let { callback -> { _: Offset -> callback() } },
+            )
+        }
+    com.bilipai.desktop.ui.DesktopSelectionContainer(modifier = modifier) {
+        AppText(
+            text = annotatedText,
+            inlineContent = inlineContent,
+            fontSize = fontSize,
+            fontWeight = fontWeight,
+            lineHeight = lineHeight,
+            maxLines = maxLines,
+            overflow = overflow,
+            color = textColor,
+            modifier = textGestureModifier
+        )
+    }
+'''
+def dynamic_rich_text(text):
+ if text.count(DYNAMIC_RICH_TEXT)!=1:raise ValueError('Windows text selection anchor changed: RichTextContent textGestureModifier')
+ return text.replace(DYNAMIC_RICH_TEXT,WINDOWS_DYNAMIC_RICH_TEXT)
 def messages(repo):
  path=Path(__file__).with_name('extract-dynamic-message-share.py');spec=importlib.util.spec_from_file_location('dynamic_message_share',path);m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
 def inventory(repo):return [dict(path=p,mode='platform-adapter-reference' if p in SHARED+[BASE+'core/util/ModifierExt.kt'] else 'direct' if p in DIRECT else 'policy-extract',features=['settings-dynamic-full-card-parity'],sha256=hashlib.sha256(read(repo,p).encode()).hexdigest()) for p in PATHS]+messages(repo).inventory(repo)
@@ -251,6 +320,7 @@ def generate(repo,output,standalone=False,shared_closure=False):
    # v0.4.6 resolveUpNameColor reads `secondary` as the annual-VIP colour; this original still passes the theme colour.
    from v046_identity_badge_palette import up_name_vip_pink
    before,after=up_name_vip_pink('DynamicCard.kt',s);s=replace(s,before,after)
+   s=dynamic_rich_text(s)
   elif p.endswith('VideoCards.kt'):
    # Original static cover/info are preserved. Android's shared-element capture
    # remains an explicit missing platform seam, not an invented transition.

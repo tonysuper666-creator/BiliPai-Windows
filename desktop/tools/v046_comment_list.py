@@ -120,6 +120,41 @@ def translation_job(parser, text):
     return text[first:tokens[index][2]]
 
 
+# The phone policy drops SelectionContainer whenever a comment has any tap target, so on
+# Windows no comment with a link, @, timestamp or thread tap could be drag-selected. Here
+# those targets are LinkAnnotation links that BasicText consumes inside the text, and the
+# plain-text tap only fires on an unconsumed release, so selection never competes with them.
+RICH_COMMENT_SELECTION_GATE = '''    val selectionEnabled = remember(renderableEmoteKeys, hasTapHandler) {
+        shouldEnableRichCommentSelection(
+            hasRenderableEmotes = renderableEmoteKeys.isNotEmpty(),
+            hasInteractiveAnnotations = hasTapHandler
+        )
+    }
+'''
+WINDOWS_RICH_COMMENT_SELECTION = '''    // Windows：评论正文始终可以直接拖选复制；链接、@、时间戳由 BasicText 的原生链接手势处理。
+    val selectionEnabled = true
+'''
+
+
+RICH_COMMENT_SELECTION_CONTAINER = '''    if (selectionEnabled) {
+        SelectionContainer {
+            content()
+        }
+'''
+
+# 选择容器只在鼠标按下时拿焦点：Ctrl+C 能复制拖选的文字，Tab 不会停在评论正文上。
+WINDOWS_RICH_COMMENT_SELECTION_CONTAINER = '''    if (selectionEnabled) {
+        com.bilipai.desktop.ui.DesktopSelectionContainer {
+            content()
+        }
+'''
+
+
+def windows_drag_selection(text):
+    text = once(text, RICH_COMMENT_SELECTION_GATE, WINDOWS_RICH_COMMENT_SELECTION)
+    return once(text, RICH_COMMENT_SELECTION_CONTAINER, WINDOWS_RICH_COMMENT_SELECTION_CONTAINER)
+
+
 def advance_reply_components(repo, before, output):
     sources, manifest = fixed(repo)
     assert sha(before) == manifest['beforeWindowsReplyComponentsBodySHA256'], 'Current Windows reply owner changed'
@@ -150,6 +185,7 @@ def advance_reply_components(repo, before, output):
     body = windows_vip_pink(body, 2)
     assert body.count('AppContentColors.error()') == 1
     after = once(before, old, body)
+    after = windows_drag_selection(after)
     after = ensure_import(after, 'com.android.purebilibili.core.ui.AppContentColors')
     if 'import androidx.compose.foundation.lazy.LazyListState\n' not in after:
         after = once(after, 'package com.android.purebilibili.feature.video.ui.components\n',
