@@ -202,9 +202,17 @@ class GeneratorOutputTest(unittest.TestCase):
         self.assertEqual(1, len(found))
         return found[0]
 
-    def without_separator(self, files):
-        """The card with only the K3f separator edit undone: the text the K3e copy link edits leave."""
+    def without_actions(self, files):
+        """The card with only the K3i action edits undone: the text the K3f separator edit leaves."""
         text = self.card(files)
+        for label, before, after in reversed(layer.ACTION_EDITS):
+            self.assertEqual(1, text.count(after), label)
+            text = text.replace(after, before, 1)
+        return text
+
+    def without_separator(self, files):
+        """The card with the K3i action edits and then the K3f separator edit undone: the text the K3e copy link edits leave."""
+        text = self.without_actions(files)
         for label, before, after in reversed(layer.SEPARATOR_EDITS):
             self.assertEqual(1, text.count(after), label)
             text = text.replace(after, before, 1)
@@ -235,7 +243,7 @@ class GeneratorOutputTest(unittest.TestCase):
         # In the inventory only the audit rows of the card entry change, and only by the rows the layer appends: the seven of
         # slice H2, then the four of slice K3 (the cover focus), then the fourteen of slice K3b (the three-line layout), then the four
         # of slice K3d (the hover and the quick actions), then the three of slice K3e (the copy link), then the one of slice K3f
-        # (the menu separator), in that order.
+        # (the menu separator), then the two of slice K3i (收藏 and 小窗播放), in that order.
         plain_rows, layered_rows = self.rows(self.plain), self.rows(self.layered)
         self.assertEqual(len(plain_rows), len(layered_rows))
         for before, after in zip(plain_rows, layered_rows):
@@ -245,16 +253,18 @@ class GeneratorOutputTest(unittest.TestCase):
         self.assertEqual({key: value for key, value in before.items() if key != "changes"}, {key: value for key, value in after.items() if key != "changes"})
         self.assertEqual(before["changes"], after["changes"][:len(before["changes"])])
         self.assertEqual(layer.EDITS + layer.COVER_EDITS + layer.LAYOUT_EDITS + layer.HOVER_EDITS + layer.COPY_EDITS
-                         + layer.SEPARATOR_EDITS,
+                         + layer.SEPARATOR_EDITS + layer.ACTION_EDITS,
                          layer.ALL_EDITS)
-        self.assertEqual((7, 4, 14, 4, 3, 1),
+        self.assertEqual((7, 4, 14, 4, 3, 1, 2),
                          (len(layer.EDITS), len(layer.COVER_EDITS), len(layer.LAYOUT_EDITS), len(layer.HOVER_EDITS),
-                          len(layer.COPY_EDITS), len(layer.SEPARATOR_EDITS)))
+                          len(layer.COPY_EDITS), len(layer.SEPARATOR_EDITS), len(layer.ACTION_EDITS)))
         self.assertEqual(["ux-card-hover-imports", "ux-card-hover-state", "ux-card-hover-surface", "ux-card-hover-quick-actions"],
-                         [row["id"] for row in after["changes"][-8:-4]])
+                         [row["id"] for row in after["changes"][-10:-6]])
         self.assertEqual(["ux-card-copy-link-state", "ux-card-copy-link-key", "ux-card-copy-link-menu-row"],
-                         [row["id"] for row in after["changes"][-4:-1]])
-        self.assertEqual(["ux-card-menu-separator-row"], [row["id"] for row in after["changes"][-1:]])
+                         [row["id"] for row in after["changes"][-6:-3]])
+        self.assertEqual(["ux-card-menu-separator-row"], [row["id"] for row in after["changes"][-3:-2]])
+        self.assertEqual(["ux-card-home-actions-state", "ux-card-home-actions-menu-rows"],
+                         [row["id"] for row in after["changes"][-2:]])
         self.assertEqual([label for label, _b, _a in layer.ALL_EDITS], [row["id"] for row in after["changes"][len(before["changes"]):]])
 
     def test_the_output_is_deterministic(self):
@@ -319,7 +329,7 @@ class GeneratorOutputTest(unittest.TestCase):
             layer.apply_home_card(REPO, layer.CARD, self.card(self.layered), [])
 
     def test_a_taken_name_is_refused_before_any_edit(self):
-        for introduced in layer.INTRODUCED + layer.SEPARATOR_INTRODUCED:
+        for introduced in layer.INTRODUCED + layer.SEPARATOR_INTRODUCED + layer.ACTION_INTRODUCED:
             with self.assertRaises(AssertionError, msg=introduced):
                 layer.apply_home_card(REPO, layer.CARD, self.card(self.plain) + "\nval %s = 1\n" % introduced, [])
 
@@ -361,9 +371,10 @@ class GeneratorOutputTest(unittest.TestCase):
 
     def test_the_menu_call_shapes_are_the_vendored_ones(self):
         received, produced = source.mask_kotlin(self.card(self.plain)), source.mask_kotlin(self.card(self.layered))
-        # Every row keeps the vendored shape (a text slot and an onClick); slice K3e adds one more row, the copy link.
+        # Every row keeps the vendored shape (a text slot and an onClick); slice K3e adds one more row, the copy link, and slice
+        # K3i two more, 收藏 and 小窗播放.
         for name, expected, shaped in (("AppDropdownMenu", [["expanded", "onDismissRequest", "offset"]], [["expanded", "onDismissRequest", "offset"]]),
-                                       ("AppDropdownMenuItem", [["text", "onClick"]] * 3, [["text", "onClick"]] * 4)):
+                                       ("AppDropdownMenuItem", [["text", "onClick"]] * 3, [["text", "onClick"]] * 6)):
             for code, wanted in ((received, expected), (produced, shaped)):
                 calls = []
                 for match in re.finditer(r"(?<![\w.])%s\(" % name, code):

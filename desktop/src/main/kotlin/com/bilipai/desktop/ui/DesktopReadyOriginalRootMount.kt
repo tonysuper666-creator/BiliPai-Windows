@@ -476,7 +476,10 @@ internal class DesktopReadyOriginalRootHandle(
         val pages = DesktopOriginalRootPageBindings(windowBinding.window, scrollOffset, feedScrolling,
             homeScroll, { bottomVisible }, { bottomPadding }, { bottomVisible = it },
             clock, services.isPipActiveOrPending, { sourceReady }, { liveScrollId }, { 0.dp }, profile, { accountRefresh }, profileScroll,
-            services.logout, sidebarAccountSwitcher, { accountRefresh++ }, { accountRefresh++ })
+            services.logout, sidebarAccountSwitcher, { accountRefresh++ }, { accountRefresh++ },
+            homeCardActions = DesktopHomeCardActionServices(services.repository, services.community.favoriteApi,
+                services.navigationAdmission, services.beforeNavigationCommit, services.login, services.feedback,
+                services.isPipActiveOrPending))
         val environment = remember(root, navigation) { DesktopNavigationHostEnvironment(services.runtime.context,
             navigation, navigation, navigation, navigation, { null /* physical monitor corner API unavailable */ },
             { handle.isActive() && routes.owns() }) }

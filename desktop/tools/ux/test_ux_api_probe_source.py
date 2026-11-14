@@ -388,18 +388,19 @@ class GeneratedTextTest(unittest.TestCase):
         # generated card for the aliases of the desktop-owned menu, so the call text below (names, count, trailing lambda) is still the
         # vendored call text, and the imports are the two alias lines. test_ux_home_card_adaptations.py pins the swap itself.
         # Slice K3e added one row to that menu (the copy-link row), so the count below moved from three to four; the shape of every
-        # row is unchanged, and the probe mirrors the fourth row so the two sides stay comparable one for one.
+        # row is unchanged, and the probe mirrors the fourth row so the two sides stay comparable one for one. Slice K3i added two
+        # more rows (favourite and mini window) of the same shape, so the count moved from four to six, and the probe mirrors both.
         menu_import = "import com.bilipai.desktop.ui.DesktopCardContextMenu as AppDropdownMenu\n"
         item_import = "import com.bilipai.desktop.ui.DesktopCardContextMenuItem as AppDropdownMenuItem\n"
         self.assertEqual(1, text.count(menu_import))
         self.assertEqual(1, text.count(item_import))
         # Every other token use is a call: no reference, no named import of anything else from the family.
         self.assertEqual(2, len(re.findall(r"\bAppDropdownMenu\b", code)))
-        self.assertEqual(5, len(re.findall(r"\bAppDropdownMenuItem\b", code)))
+        self.assertEqual(7, len(re.findall(r"\bAppDropdownMenuItem\b", code)))
         self.assertEqual(0, len(re.findall(r"AppDropdownMenu\w+", code.replace("AppDropdownMenuItem", ""))))
         menus, items = probe.calls(text, "AppDropdownMenu"), probe.calls(text, "AppDropdownMenuItem")
         self.assertEqual([(("expanded", "onDismissRequest", "offset"), 0, True)], menus)
-        self.assertEqual([(("text", "onClick"), 0, False)] * 4, items)
+        self.assertEqual([(("text", "onClick"), 0, False)] * 6, items)
         # The probe reproduces those shapes through the aliases, in the same count.
         self.assertEqual(menus, probe.calls(PROBE_TEXT, "AppDropdownMenu"))
         self.assertEqual(items, probe.calls(PROBE_TEXT, "AppDropdownMenuItem"))

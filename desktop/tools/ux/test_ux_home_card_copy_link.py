@@ -104,7 +104,7 @@ def only_the_copy_edits():
     """The layer with only its K3e edits, for a text the earlier edits have already changed: the refusal of a K3e anchor is then
     the refusal of that edit and not of an earlier one whose anchor overlaps it."""
     return mock.patch.multiple(layer, ALL_EDITS=layer.COPY_EDITS, INTRODUCED=(), COVER_INTRODUCED=(), LAYOUT_INTRODUCED=(),
-                               HOVER_INTRODUCED=(), SEPARATOR_INTRODUCED=(), GONE=())
+                               HOVER_INTRODUCED=(), SEPARATOR_INTRODUCED=(), ACTION_INTRODUCED=(), GONE=())
 
 
 class _Generated(unittest.TestCase):
@@ -132,19 +132,20 @@ class CopyEditsTest(_Generated):
         self.assertEqual(LABELS, [label for label, _b, _a in layer.COPY_EDITS])
         self.assertEqual(EXPECTED, layer.COPY_EDITS)
         self.assertEqual(layer.EDITS + layer.COVER_EDITS + layer.LAYOUT_EDITS + layer.HOVER_EDITS + layer.COPY_EDITS
-                         + layer.SEPARATOR_EDITS,
+                         + layer.SEPARATOR_EDITS + layer.ACTION_EDITS,
                          layer.ALL_EDITS)
-        # K3f appends its one separator edit after these three, so the copy rows are the three before the last one.
-        self.assertEqual(LABELS, [label for label, _b, _a in layer.ALL_EDITS[-4:-1]])
+        # K3f appends its one separator edit and K3i its two action edits after these three, so the copy rows are the three
+        # before the last three.
+        self.assertEqual(LABELS, [label for label, _b, _a in layer.ALL_EDITS[-6:-3]])
         self.assertEqual(NAMES, layer.COPY_INTRODUCED)
         for label, before, after in EXPECTED:
             self.assertNotEqual(before, after, label)
             self.assertTrue(before.endswith("\n") and after.endswith("\n"), label)
 
     def test_every_anchor_occurs_exactly_once_in_the_text_the_edits_receive(self):
-        # The produced card has the K3f separator edit on top, and that edit rewrites the line the last K3e edit ends with, so
-        # the replacement is counted in the text the K3f edit leaves.
-        settled = undo_edits(self.layered, layer.SEPARATOR_EDITS)
+        # The produced card has the K3f separator edit and the K3i action edits on top, and they rewrite lines the K3e edits
+        # end with, so the replacement is counted in the text the K3f edit leaves.
+        settled = undo_edits(undo_edits(self.layered, layer.ACTION_EDITS), layer.SEPARATOR_EDITS)
         text = self.received
         for label, before, after in EXPECTED:
             self.assertEqual(1, text.count(before), label)
@@ -153,17 +154,17 @@ class CopyEditsTest(_Generated):
             self.assertEqual(1, settled.count(after), label)
 
     def test_forward_is_the_written_out_edits_byte_for_byte(self):
-        self.assertEqual(undo_edits(self.layered, layer.SEPARATOR_EDITS).encode("utf-8"),
+        self.assertEqual(undo_edits(undo_edits(self.layered, layer.ACTION_EDITS), layer.SEPARATOR_EDITS).encode("utf-8"),
                          apply_edits(self.received, EXPECTED).encode("utf-8"))
         audits = []
         produced = layer.apply_home_card(REPO, layer.CARD, self.plain, audits)
         self.assertEqual(self.layered_bytes, produced.encode("utf-8"))
 
     def test_inverse_gives_back_the_earlier_text_and_the_vendored_card_byte_for_byte(self):
-        # Undoing the K3f separator edit and then only the K3e edits, last first, gives back the text of H2, K3, K3b and K3d
-        # exactly; the whole layer reverses to the vendored card.
-        self.assertEqual(self.received.encode("utf-8"),
-                         undo_edits(undo_edits(self.layered, layer.SEPARATOR_EDITS), EXPECTED).encode("utf-8"))
+        # Undoing the K3i action edits, the K3f separator edit and then only the K3e edits, last first, gives back the text of
+        # H2, K3, K3b and K3d exactly; the whole layer reverses to the vendored card.
+        settled = undo_edits(undo_edits(self.layered, layer.ACTION_EDITS), layer.SEPARATOR_EDITS)
+        self.assertEqual(self.received.encode("utf-8"), undo_edits(settled, EXPECTED).encode("utf-8"))
         self.assertEqual(self.plain_bytes, layer.reverse(layer.CARD, self.layered).encode("utf-8"))
 
     def test_the_layer_changes_only_the_card_and_the_inventory(self):
@@ -174,9 +175,9 @@ class CopyEditsTest(_Generated):
     def test_the_last_three_audit_rows_are_the_copy_edits(self):
         audits = []
         layer.apply_home_card(REPO, layer.CARD, self.plain, audits)
-        # K3f appends one row after these three, so the copy rows are the three before the last one.
-        self.assertEqual(LABELS, [row["id"] for row in audits[-4:-1]])
-        for (label, before, after), row in zip(EXPECTED, audits[-4:-1]):
+        # K3f appends one row and K3i two rows after these three, so the copy rows are the three before the last three.
+        self.assertEqual(LABELS, [row["id"] for row in audits[-6:-3]])
+        for (label, before, after), row in zip(EXPECTED, audits[-6:-3]):
             self.assertEqual(hashlib.sha256(before.encode("utf-8")).hexdigest(), row["beforeSha256"], label)
             self.assertEqual(hashlib.sha256(after.encode("utf-8")).hexdigest(), row["afterSha256"], label)
             self.assertIs(True, row["inverseRestoresInput"], label)
@@ -193,10 +194,10 @@ class CopyEditsTest(_Generated):
 class CopyRefusalTest(_Generated):
     def test_the_copy_only_layer_reproduces_the_card(self):
         # The control of the refusals below: with only the K3e edits, the layer turns the received text into the produced card
-        # without the K3f separator edit that sits on top of it.
+        # without the K3f separator edit and the K3i action edits that sit on top of it.
         audits = []
         with only_the_copy_edits():
-            self.assertEqual(undo_edits(self.layered, layer.SEPARATOR_EDITS),
+            self.assertEqual(undo_edits(undo_edits(self.layered, layer.ACTION_EDITS), layer.SEPARATOR_EDITS),
                              layer.apply_home_card(REPO, layer.CARD, self.received, audits))
         self.assertEqual(LABELS, [row["id"] for row in audits])
 
@@ -244,8 +245,9 @@ class CopyWiringTest(_Generated):
     def test_the_row_is_the_last_vendored_row_of_the_existing_menu(self):
         # One new row, inside the menu the card already has: after the vendored rows and before 不感兴趣.
         comment = "                // 复制链接 (Ctrl C)\n"
-        # K3f draws its separator between this row and 不感兴趣, so the row is read from the text the K3f edit leaves.
-        settled = undo_edits(self.layered, layer.SEPARATOR_EDITS)
+        # K3f draws its separator between this row and 不感兴趣 and K3i puts its rows before it, so the row is read from the text
+        # the K3f edit leaves.
+        settled = undo_edits(undo_edits(self.layered, layer.ACTION_EDITS), layer.SEPARATOR_EDITS)
         self.assertEqual(0, self.received.count(comment))
         self.assertEqual(1, settled.count(comment))
         self.assertEqual(1, settled.count('                                "%s",\n' % LABEL))
