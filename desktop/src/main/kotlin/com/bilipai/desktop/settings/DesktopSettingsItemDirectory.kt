@@ -112,7 +112,7 @@ internal val desktopSettingsItemDirectory: List<DesktopSettingsItem> = listOf(
     playbackItem("video.nvidia_enhancement_intensity", "效果强度", "", ITEM_GROUP_ENHANCEMENT, ITEM_FOCUS_ENHANCEMENT, "NVIDIA", "RTX", "增强强度"),
     playbackItem("video.nvidia_enhancement_quality", "质量上限", "", ITEM_GROUP_ENHANCEMENT, ITEM_FOCUS_ENHANCEMENT, "NVIDIA", "RTX", "处理质量"),
     // DesktopAppearanceSettings
-    appearanceItem("appearance.ui_style", "界面预设", "", SettingsSearchFocusIds.APPEARANCE_THEME, "界面风格", "界面", "ui预设", "md3", "miuix"),
+    appearanceItem("appearance.ui_style", "界面风格", "", SettingsSearchFocusIds.APPEARANCE_THEME, "界面预设", "界面", "ui预设", "md3", "miuix"),
     appearanceItem("appearance.effective_liquid_glass_enabled", "原版液态玻璃", "复用原版折射与材质，跟随应用背景。", SettingsSearchFocusIds.APPEARANCE_THEME, "液态玻璃", "玻璃", "折射", "材质"),
     appearanceItem("appearance.theme_mode", "主题模式", "", SettingsSearchFocusIds.APPEARANCE_THEME, "浅色模式", "深色模式", "跟随系统", "夜间模式", "深色", "浅色"),
     appearanceItem("appearance.dark_theme_style", "深色风格", "", SettingsSearchFocusIds.APPEARANCE_THEME, "深色主题", "普通黑", "AMOLED", "纯黑"),

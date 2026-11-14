@@ -71,7 +71,7 @@ fun DesktopAppearanceSettings(
         DesktopAppearanceText(strings["appearance_settings_title"], style = MaterialTheme.typography.headlineMedium)
         error?.let { DesktopAppearanceText(it, color = MaterialTheme.colorScheme.error) }
         DesktopAppearanceCard(Modifier.fillMaxWidth().desktopSettingsSearchFocusAnchor(SettingsSearchTarget.APPEARANCE, SettingsSearchFocusIds.APPEARANCE_THEME)) {
-            AppearanceChoice(strings["appearance_ui_preset_title"], settings.uiStyle,
+            AppearanceChoice(strings.desktop("界面风格", "介面風格", "Interface Style"), settings.uiStyle,
                 resolveThemeSelectionOptions("Material 3", "Miuix"), !busy) { update { prefs.setUiStyle(it) } }
             AppSwitchPreference(
                 title = strings.desktop("原版液态玻璃", "原版液態玻璃", "Original liquid glass"),
