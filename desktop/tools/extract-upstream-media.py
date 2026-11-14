@@ -81,6 +81,9 @@ NOT_OPERANDS = {"as", "break", "catch", "class", "continue", "do", "else",
                 "finally", "for", "fun", "if", "import", "in", "interface",
                 "is", "object", "package", "return", "throw", "try",
                 "typealias", "val", "var", "when", "while"}
+# Operands that are keywords, so never a name after `.`, `?.`, `::` or as an
+# infix call; `super` is whole only as the receiver of a member access.
+KEYWORD_OPERANDS = {"false", "null", "super", "this", "true", "typeof"}
 # Binary operators, spelled by the adjacent one-character tokens that the
 # tokenizer emits. `<`/`>` are absent because a cut generic (`listOf<Int`)
 # reads as a comparison; `=`, `->` and compound assignments never join operands.
@@ -109,18 +112,37 @@ def complete_at_end(tokens: list) -> bool:
             index = end + 1
             continue
         kind = "punct" if len(token) == 1 and not (token.isalnum() or token == "_") else "word"
-        if kind == "word" and token[0] in "\"'`":
+        if kind == "word" and token[0] in "\"'":
             kind = "literal"
-        adjacent = bool(items) and items[-1][0] == "punct" and tokens[index - 1][2] == tokens[index][1]
+        elif kind == "word" and token[0].isdigit():
+            kind = "number"
+        adjacent = index > 0 and tokens[index - 1][2] == tokens[index][1]
         items.append((kind, token, adjacent))
         index += 1
 
-    def word(position):
-        return position < len(items) and items[position][0] in {"word", "literal"} and items[position][1] not in NOT_OPERANDS
+    def name(position):
+        """An identifier: never a keyword, a literal or a number."""
+        if position >= len(items) or items[position][0] != "word":
+            return False
+        token = items[position][1]
+        return token[0] == "`" or token not in NOT_OPERANDS | KEYWORD_OPERANDS
 
     def punct(position, value, joined=True):
         return (position < len(items) and items[position][0] == "punct" and items[position][1] == value
                 and (not joined or items[position][2]))
+
+    def number_end(position):
+        """`1.5f`, `0x1F`, `1_000L` arrive as adjacent pieces of one literal."""
+        position += 1
+        while position < len(items) and items[position][0] != "group" and items[position][2]:
+            if items[position][0] in {"word", "number"} and items[position - 1][0] != "punct":
+                position += 1
+            elif punct(position, ".") and position + 1 < len(items) and items[position + 1][0] == "number" \
+                    and items[position + 1][2]:
+                position += 2
+            else:
+                break
+        return position
 
     position, expect_operand = 0, True
     while position < len(items):
@@ -135,24 +157,32 @@ def complete_at_end(tokens: list) -> bool:
                 if position >= len(items) or items[position] != ("group", "{"):
                     return False
                 position, expect_operand = position + 1, False
-            elif item[0] == "group" or word(position):
+            elif item[0] == "word" and item[1] == "super":
+                if not (punct(position + 1, ".", False) and name(position + 2)):
+                    return False
+                position, expect_operand = position + 3, False
+            elif item[0] == "number":
+                position, expect_operand = number_end(position), False
+            elif item[0] in {"group", "literal"} or name(position) or \
+                    (item[0] == "word" and item[1] in KEYWORD_OPERANDS - {"super", "typeof"}):
                 position, expect_operand = position + 1, False
-            elif punct(position, ":", False) and punct(position + 1, ":") and word(position + 2):
+            elif punct(position, ":", False) and punct(position + 1, ":") and name(position + 2):
                 position, expect_operand = position + 3, False
             else:
                 return False
             continue
         if item[0] == "group":
             position += 1
-        elif punct(position, ".", False) and word(position + 1) and not punct(position + 1, "."):
+        elif punct(position, ".", False) and name(position + 1):
             position += 2
-        elif punct(position, "?", False) and punct(position + 1, ".") and word(position + 2):
+        elif punct(position, "?", False) and punct(position + 1, ".") and name(position + 2):
             position += 3
-        elif punct(position, ":", False) and punct(position + 1, ":") and word(position + 2):
+        elif punct(position, ":", False) and punct(position + 1, ":") and (
+                name(position + 2) or (position + 2 < len(items) and items[position + 2][1] == "class")):
             position += 3
         elif punct(position, "!", False) and punct(position + 1, "!") and not punct(position + 2, "="):
             position += 2
-        elif item[0] == "word" and item[1] not in NOT_OPERANDS:
+        elif name(position):
             position, expect_operand = position + 1, True  # infix call: `1 to 2`
         elif item[0] == "punct":
             operator, end = item[1], position + 1

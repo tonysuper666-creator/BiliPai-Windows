@@ -109,6 +109,34 @@ fun next(): Int = 1
         for name, body in (("mismatched", "post(]"), ("crossed", "post([)]")):
             with self.subTest(name=name), self.assertRaisesRegex(ValueError, "unbalanced"):
                 media.function("fun sample() = " + body + "\n", "sample", parser)
+        # Names after `.`, `?.` and `::` are identifiers: a file cut inside
+        # `trueValue` leaves a keyword where only a name may stand, and `super`
+        # is whole only as the receiver of a member access.
+        for keyword in ("true", "false", "null"):
+            for operator in (".", "?.", "::"):
+                full = ("class Holder(val " + keyword + "Value: Int)\nval item = Holder(1)\n"
+                        "fun sample() = item" + operator + keyword + "Value\n")
+                with self.subTest(full=full):
+                    self.assertEqual("fun sample() = item" + operator + keyword + "Value",
+                                     media.function(full, "sample", parser))
+                    with self.assertRaisesRegex(ValueError, "unterminated"):
+                        media.function(full[:-len("Value\n")], "sample", parser)
+            full = "fun " + keyword + "Value() = 1\nfun sample() = ::" + keyword + "Value\n"
+            with self.subTest(full=full):
+                self.assertEqual("fun sample() = ::" + keyword + "Value", media.function(full, "sample", parser))
+                with self.assertRaisesRegex(ValueError, "unterminated"):
+                    media.function(full[:-len("Value\n")], "sample", parser)
+        full = "open class Base { fun value() = 1 }\nclass Child : Base() {\n    fun sample() = super.value()\n}\n"
+        self.assertEqual("fun sample() = super.value()", media.function(full, "sample", parser))
+        with self.assertRaisesRegex(ValueError, "unterminated"):
+            media.function(full[:full.index("super.") + len("super")], "sample", parser)
+        for body in ("true && !false", "this", "x == null", "item.`true`", "String::class",
+                     "super.value()", "1.5f + 0x1F - 1_000L", "2.5.toInt()"):
+            with self.subTest(body=body):
+                self.assertEqual("fun sample() = " + body, media.function("fun sample() = " + body + "\n", "sample", parser))
+        for body in ("item.this", "item.1", "1.", "super", "super.", "x true y", "item::super"):
+            with self.subTest(body=body), self.assertRaisesRegex(ValueError, "unterminated"):
+                media.function("fun sample() = " + body + "\n", "sample", parser)
 
     def test_expression_body_without_a_boundary_fails_closed(self):
         parser = media.parser_for(REPO)
