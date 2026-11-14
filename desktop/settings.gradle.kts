@@ -2,6 +2,7 @@ import java.nio.file.Files
 import java.nio.file.LinkOption
 import java.nio.file.Path
 import java.nio.file.attribute.BasicFileAttributes
+import java.security.MessageDigest
 
 pluginManagement {
     repositories { gradlePluginPortal(); mavenCentral(); google() }
@@ -28,6 +29,42 @@ fun run(vararg command: String, directory: File) {
     check(process.waitFor() == 0) { "Legacy read point: `${command.joinToString(" ")}` failed:\n$output" }
 }
 
+// Keep extraction independent of the Windows tar pathname failure. The Python
+// interpreter selection matches desktop/build.gradle.kts and uses the existing toolchain.
+fun extractLegacyArchive(archive: File, root: File, expectedSha256: String, repository: File) {
+    check(expectedSha256.matches(Regex("[0-9a-f]{64}"))) { "Legacy read point: invalid archive SHA-256 pin" }
+    val digest = MessageDigest.getInstance("SHA-256")
+    archive.inputStream().use { input ->
+        val buffer = ByteArray(64 * 1024)
+        while (true) {
+            val size = input.read(buffer)
+            if (size < 0) break
+            digest.update(buffer, 0, size)
+        }
+    }
+    val actual = digest.digest().joinToString("") { "%02x".format(it.toInt() and 0xff) }
+    check(actual == expectedSha256) { "Legacy read point: archive SHA-256 mismatch: expected $expectedSha256, got $actual" }
+    if (System.getProperty("os.name").startsWith("Windows", ignoreCase = true)) {
+        val python = System.getenv("PYTHON_EXECUTABLE") ?: "python"
+        run(python, "-I", "-c", """
+            import os, sys, tarfile
+            destination = os.path.abspath(sys.argv[2])
+            # Extended paths work even when Windows LongPathsEnabled is disabled.
+            if not destination.startswith('\\\\?\\'):
+                if destination.startswith('\\\\'):
+                    destination = '\\\\?\\UNC\\' + destination[2:]
+                else:
+                    destination = '\\\\?\\' + destination
+            with tarfile.open(sys.argv[1], encoding='utf-8', errorlevel=2) as archive:
+                # Directory attribute restoration also needs native separators with \\?\ paths.
+                members = (member.replace(name=member.name.replace('/', os.sep), deep=False) for member in archive)
+                archive.extractall(destination, members=members, filter='data')
+        """.trimIndent(), archive.absolutePath, root.absolutePath, directory = repository)
+    } else {
+        run("tar", "-xf", archive.absolutePath, "-C", root.absolutePath, directory = repository)
+    }
+}
+
 fun materializeLegacyRoot(): File {
     val repository = settingsDir.parentFile
     val commit = settingsDir.resolve("upstream-core/legacy-root.commit").readLines()
@@ -49,7 +86,8 @@ fun materializeLegacyRoot(): File {
     } catch (failure: IllegalStateException) {
         throw GradleException("Legacy read point $commit is not in this clone; fetch it (e.g. `git fetch --unshallow`) and retry.", failure)
     }
-    run("tar", "-xf", archive.absolutePath, "-C", root.absolutePath, directory = repository)
+    val archiveSha256 = settingsDir.resolve("upstream-core/legacy-root.archive.sha256").readText().trim()
+    extractLegacyArchive(archive, root, archiveSha256, repository)
     archive.delete()
     val liveBuild = settingsDir.resolve("build").apply { mkdirs() }
     check(!buildLink.toFile().exists()) { "Legacy read point: $commit unexpectedly tracks desktop/build" }
