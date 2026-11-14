@@ -1,0 +1,40 @@
+{
+  "baseline": {
+    "upstreamDesignSourceTests:passed": 59,
+    "sponsorPresentationTests:passed": 4,
+    "test:passed": 5,
+    "upstreamAppCoreSourceTests:passed": 395,
+    "upstreamAppCoreSourceTests:failed": 46,
+    "applicationImageLoaderOwnerTests:passed": 3
+  },
+  "candidate": {
+    "applicationImageLoaderOwnerTests:passed": 3,
+    "sponsorPresentationTests:passed": 4,
+    "test:passed": 8,
+    "upstreamAppCoreSourceTests:passed": 395,
+    "upstreamAppCoreSourceTests:failed": 46,
+    "upstreamDesignSourceTests:passed": 59
+  },
+  "missing": [],
+  "added": [
+    [
+      "test",
+      "com.bilipai.desktop.ui.DesktopBgmDetailMigrationTest",
+      "replacingRequestsWithTheSameOperationsRebindsModelsScopeAndRoute()"
+    ],
+    [
+      "test",
+      "com.bilipai.desktop.ui.DesktopBgmDetailMigrationTest",
+      "retainedNestedNavigationCallbacksCannotWriteAfterOwnerRetirement()"
+    ],
+    [
+      "test",
+      "com.bilipai.desktop.ui.DesktopBgmDetailMigrationTest",
+      "sameOwnerRecompositionRetainsSubjectReplyAndNestedRoute()"
+    ]
+  ],
+  "failed_added": [],
+  "failed_removed": [],
+  "skipped_added": [],
+  "skipped_removed": []
+}
