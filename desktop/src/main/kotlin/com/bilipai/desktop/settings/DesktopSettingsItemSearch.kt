@@ -113,22 +113,14 @@ internal fun desktopSettingsSearchLanding(result: SettingsSearchResult): Desktop
     return landing
 }
 
-private fun searchCategory(result: SettingsSearchResult) = result.page
-    ?: resolveSettingsRootCategoryForSearchTarget(result.target)?.let(::canonicalSettingsRootCategory)
-
-/** Equal landings are one result; a matching mounted detail is more precise than its containing category. */
+/** Only identical final landings merge; focused individual controls win that tie. */
 internal fun mergeDesktopSettingsSearchResults(results: List<SettingsSearchResult>): List<SettingsSearchResult> {
     val itemIds = desktopSettingsItemDirectory.map { it.settingId }.toSet()
-    val unique = results.sortedByDescending { it.focusId != null && it.settingId in itemIds }
+    return results.sortedByDescending { it.focusId != null && it.settingId in itemIds }
         .distinctBy(::desktopSettingsSearchLanding)
-    val detailedCategories = unique.filter { desktopSettingsSearchLanding(it) is DesktopSettingsPage.Detail }
-        .mapNotNull(::searchCategory).toSet()
-    return unique.filterNot {
-        desktopSettingsSearchLanding(it) is DesktopSettingsPage.Category && searchCategory(it) in detailedCategories
-    }
 }
 
-/** A section adds nothing when a visible item already opens its landing, or a more precise detail in its category. */
+/** A section adds nothing when a visible item already opens exactly the same landing. */
 internal fun desktopSettingsVisibleSectionResults(
     sections: List<SettingsSearchResult>,
     hits: List<DesktopSettingsItemHit>,

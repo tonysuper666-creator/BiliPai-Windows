@@ -7,6 +7,21 @@ import org.junit.jupiter.api.Test
 import java.nio.file.Files
 import kotlin.test.*
 
+/** Read the upstream data without its resolver's alias pruning, scoring or matcher. */
+@Suppress("UNCHECKED_CAST")
+private val upstreamSectionEntries: List<SettingsSearchEntry> by lazy {
+    Class.forName("com.android.purebilibili.feature.settings.SettingsSearchPolicyKt")
+        .getDeclaredField("SETTINGS_SEARCH_INDEX").apply { isAccessible = true }.get(null) as List<SettingsSearchEntry>
+}
+
+internal fun expectedSectionTargets(query: String, oldDesktopTargets: Set<SettingsSearchTarget>): Set<SettingsSearchTarget> {
+    val normalized = query.trim().lowercase()
+    return oldDesktopTargets + upstreamSectionEntries.filter { entry ->
+        desktopSettingsTargetPlacement[entry.target.name]?.treatment == DesktopPlacementTreatment.available &&
+            (listOf(entry.title, entry.subtitle) + entry.aliases).any { it.trim().lowercase().contains(normalized) }
+    }.map { it.target }
+}
+
 /** Tests the installed Windows controller/catalog and navigation contracts, not labels. */
 class DesktopWindowsSettingsCatalogTest {
     // Keyed on what DesktopSettingsTree mounts: MESSAGE_NOTIFICATION is a Detail page opened from the privacy category.
@@ -48,7 +63,21 @@ class DesktopWindowsSettingsCatalogTest {
         for (query in listOf("权限", "通知权限", "手势", "三指截图", "竖屏", "横竖屏", "陀螺仪", "底栏", "亮度", "重新引导")) {
             controller.setQuery(query)
             assertEquals(query, controller.query.value)
-            assertTrue(controller.results.value.isEmpty(), "Removed control remains searchable: $query")
+            if (query in setOf("竖屏", "横竖屏")) {
+                assertEquals(setOf(SettingsSearchTarget.TIPS), controller.results.value.map { it.target }.toSet(), query)
+                val tips = controller.results.value.single()
+                val navigator = DesktopSettingsNavigator()
+                controller.activate(tips, navigator::openCategory, navigator::openSearchResult)
+                assertEquals(DesktopSettingsPage.Detail(SettingsSearchTarget.TIPS, null), navigator.state.value.current)
+                // Compiled PortraitVideoPager.kt:2360/2694/2703 consumes this preference; no other portrait item is available.
+                val haze = settingsItemDirectory.single { it.settingId == "playback.portrait_letterbox_ambient_haze" }
+                val matches = (listOf(haze.title) + haze.aliases).any { it.trim().lowercase().contains(query.trim().lowercase()) }
+                assertEquals(if (matches) setOf(haze.settingId) else emptySet(),
+                    controller.itemResults.value.map { it.item.settingId }.toSet(), query)
+                assertEquals(DesktopPlacementTreatment.available, desktopSettingsItemPlacement.getValue(haze.settingId).treatment)
+            } else {
+                assertTrue(controller.results.value.isEmpty(), "Removed control remains searchable: $query")
+            }
         }
         controller.setQuery("   ")
         assertTrue(controller.results.value.isEmpty())
@@ -64,20 +93,27 @@ class DesktopWindowsSettingsCatalogTest {
         }
         controller.setQuery("评论")
         val comments = controller.results.value
-        assertEquals(setOf(SettingsSearchTarget.PLAYBACK, SettingsSearchTarget.HOME_FEED),
+        assertEquals(expectedSectionTargets("评论", setOf(SettingsSearchTarget.PLAYBACK, SettingsSearchTarget.HOME_FEED)),
             comments.map { it.target }.toSet())
         assertEquals("windows_playback_comments",
             comments.single { it.target == SettingsSearchTarget.PLAYBACK }.focusId)
         for (query in listOf("动态评论预览", "评论预览")) {
             controller.setQuery(query)
-            val preview = controller.results.value.single()
+            assertEquals(expectedSectionTargets(query, setOf(SettingsSearchTarget.HOME_FEED)),
+                controller.results.value.map { it.target }.toSet(), query)
+            val preview = controller.results.value.single { it.target == SettingsSearchTarget.HOME_FEED }
             assertEquals(SettingsSearchTarget.HOME_FEED, preview.target)
             assertNull(preview.focusId)
             var category: SettingsRootCategory? = null
             var destination: SettingsSearchResult? = null
             controller.activate(preview, { category = it }, { destination = it })
-            assertEquals(SettingsRootCategory.HOME_RECOMMENDATION, category)
-            assertNull(destination)
+            val placement = desktopSettingsTargetPlacement.getValue(preview.target.name)
+            assertEquals("detail", placement.destination)
+            assertNull(category)
+            assertEquals(preview, destination)
+            val navigator = DesktopSettingsNavigator()
+            navigator.openSearchResult(preview)
+            assertEquals(DesktopSettingsPage.Detail(preview.target, null), navigator.state.value.current)
             assertNull(SettingsSearchFocusController.request.value)
         }
         controller.setQuery("  wAsApI  输出 ")
@@ -150,8 +186,9 @@ class DesktopWindowsSettingsCatalogTest {
         for ((target, queries) in labels) {
             for (query in queries) {
                 controller.setQuery(query)
-                val expectedTarget = if (query == "下载位置") SettingsSearchTarget.DOWNLOAD_PATH else target
-                assertEquals(setOf(expectedTarget), controller.results.value.map { it.target }.toSet(), query)
+                val expectedTargets = if (query in setOf("下载位置", "图片保存位置"))
+                    expectedSectionTargets(query, setOf(target)) else setOf(target)
+                assertEquals(expectedTargets, controller.results.value.map { it.target }.toSet(), query)
             }
         }
     }
@@ -172,6 +209,11 @@ class DesktopWindowsSettingsCatalogTest {
             for (entry in desktopWindowsSettingsSearchEntries) {
                 // Search by an actual catalog alias, then feed the controller's real result back.
                 controller.setQuery(entry.words.first())
+                val query = entry.words.first().trim().lowercase()
+                val oldTargets = desktopWindowsSettingsSearchEntries.filter { old ->
+                    (listOf(old.title, old.subtitle, old.section) + old.words).any { it.trim().lowercase().contains(query) }
+                }.map { it.target }.toSet()
+                assertEquals(expectedSectionTargets(query, oldTargets), controller.results.value.map { it.target }.toSet(), query)
                 val result = controller.results.value.single { it.target == entry.target && it.title == entry.title }
                 assertTrue(result.target in mountedTargets)
                 var category: SettingsRootCategory? = null

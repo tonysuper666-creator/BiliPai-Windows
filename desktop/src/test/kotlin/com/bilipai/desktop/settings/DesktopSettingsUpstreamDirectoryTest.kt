@@ -103,13 +103,24 @@ class DesktopSettingsUpstreamDirectoryTest {
             click(controller, controller.itemResults.value.single { it.item.settingId == item.settingId }))
     }
 
-    @Test fun fullscreenGestureClickOpensPlaybackCategoryAndHasNoDirectDetail() {
+    @Test fun replacedFullscreenSectionIsHiddenAndItsAvailableItemsClickIntoPlayback() {
         val controller = controller()
-        controller.setQuery("全屏与手势")
-        val result = controller.results.value.single { it.target == SettingsSearchTarget.FULLSCREEN_GESTURE }
-        val navigator = DesktopSettingsNavigator()
-        controller.activate(result, navigator::openCategory, navigator::openSearchResult)
-        assertEquals(DesktopSettingsPage.Category(SettingsRootCategory.PLAYBACK_QUALITY), navigator.state.value.current)
+        assertEquals(DesktopPlacementTreatment.replaced,
+            desktopSettingsTargetPlacement.getValue("FULLSCREEN_GESTURE").treatment)
+        for (query in listOf("全屏与手势", "手势")) {
+            controller.setQuery(query)
+            assertTrue(controller.results.value.none { it.target == SettingsSearchTarget.FULLSCREEN_GESTURE }, query)
+        }
+        val available = settingsItemDirectory.filter { it.page == SettingsRootCategory.FULLSCREEN_GESTURE &&
+            desktopSettingsItemPlacement.getValue(it.settingId).treatment == DesktopPlacementTreatment.available }
+        assertTrue(available.isNotEmpty())
+        for (original in available) {
+            val item = desktopSettingsItemDirectory.single { it.settingId == original.settingId }
+            controller.setQuery(item.title)
+            val actual = click(controller, controller.itemResults.value.single { it.item.settingId == item.settingId })
+            assertEquals(expected(item), actual, item.settingId)
+            assertEquals(SettingsRootCategory.PLAYBACK_QUALITY, desktopSettingsLandableCategory(actual), item.settingId)
+        }
         assertNull(desktopSettingsDirectDetail(SettingsRootCategory.FULLSCREEN_GESTURE))
     }
 
