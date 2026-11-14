@@ -7,6 +7,7 @@ SCRIPT=REPO/"desktop/tools/extract-upstream-story-topic.py"
 if not SCRIPT.exists(): SCRIPT=REPO/"desktop/.local/story-topic-parity/extract-story-topic-platform.py"
 spec=importlib.util.spec_from_file_location("story_topic",SCRIPT); module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
 import v035_story
+from compiled_source_fixture import relative_inside
 STORY_FEED=module.BASE+"feature/story/StoryFeedPolicy.kt"
 
 class OriginalStoryTopicExtractTest(unittest.TestCase):
@@ -35,6 +36,11 @@ class OriginalStoryTopicExtractTest(unittest.TestCase):
                 'StoryFeedPolicy.kt','StoryModels.kt'}
             self.assertEqual(expected,{path.name for path in files})
             self.assertEqual(len(files),len(expected))
+            identities=[relative_inside(path,directory) for path in files]
+            self.assertEqual(len(files),len(set(identities)))
+            for name in ('StoryFeedPolicy.kt','StoryModels.kt','StoryScreen.kt'):
+                projection=v035_story.source(name)[2]
+                self.assertIn(Path(projection['output']),identities)
             # The complete fixed v035 projection owns StoryFeedPolicy (aa20fe645); no other direct copy is emitted.
             self.assertTrue({Path(path).name for path in module.DIRECT if path!=STORY_FEED}.isdisjoint(expected))
             for name in ('StoryFeedPolicy.kt','StoryModels.kt'):

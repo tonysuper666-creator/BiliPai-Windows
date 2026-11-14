@@ -8,6 +8,7 @@ import textwrap
 import unittest
 from unittest.mock import patch
 from v025_source_paths import canonical_source
+from compiled_source_fixture import relative_inside
 
 REPO = Path(__file__).resolve().parents[3]
 spec = importlib.util.spec_from_file_location("extract_media", REPO / "desktop/tools/extract-upstream-media.py")
@@ -187,6 +188,9 @@ fun next(): Int = 1
             self.assertEqual(23, len(generated))
             image_path = output / "com/android/purebilibili/feature/live/components/DesktopOriginalLiveChatImage.kt"
             self.assertTrue(any(path.samefile(image_path) for path in generated))
+            identities = [relative_inside(path, output) for path in generated]
+            self.assertEqual(len(generated), len(set(identities)))
+            self.assertIn(relative_inside(image_path, output), identities)
             image = image_path.read_bytes()
             proof = json.loads((output / "v030-live-chat-image-source-proof.json").read_bytes())
             from v030_live_stream import safe
