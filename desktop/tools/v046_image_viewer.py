@@ -6,10 +6,12 @@ two original JVM suites that exercise them. This brings 0.3.4-beta.2 (exit drag 
 gesture mode) and 0.4.3 (continuous double-tap zoom, drag inertia, system reduced motion).
 
 The whole v0.4.6 ImagePreviewDialog.kt is pinned once in the archive for the Windows preview chain. This slice
-consumes only its pager span: the Windows renderer, which the same producer derives from the 0.2.5 dialog by many
-platform substitutions, takes the verbatim v0.4.6 userScrollEnabled lines (the pager must not restart its scroll
-node when a vertical dismissal starts) and gives the preview the Windows reduced-motion signal. The other v0.4.6
-dialog hunks (AppContentColors, AppHorizontalPager, publicContent) are not applied here.
+consumes only its pager span: the Windows renderer, which the same producer derives from the platform dialog by many
+substitutions, takes the verbatim v0.4.6 userScrollEnabled lines (the pager must not restart its scroll node when a
+vertical dismissal starts) and gives the preview the Windows reduced-motion signal. A renderer that already carries
+that span keeps it untouched and receives only the reduced-motion signal: the live tree reaches that state because
+its platform re-baselines landed the same upstream text. The other v0.4.6 dialog hunks (AppContentColors,
+AppHorizontalPager, publicContent) are not applied here.
 
 Nothing is compiled or executed here.
 """
@@ -60,13 +62,23 @@ DECLARATIONS = {
 PROOF_NAME = 'v046-image-viewer-proof.json'
 TESTS_PROOF_NAME = 'v046-image-viewer-tests-proof.json'
 
-# The Windows renderer body that the card producer holds right before this slice's layer (LF SHA-256).
+# The Windows renderer bodies that the card producer can hold right before this slice's layer (LF SHA-256), each with
+# the pager span it arrives with. The first is the 0.2.5-derived body this slice was recorded against, still built by
+# the legacy read point; the second is the live body, where the platform re-baselines (AppContentColors,
+# appActionClickable, publicContent, original-image decode, haptics) already carry the v0.4.6 span, so the splice
+# there is a verified no-op and only the reduced-motion signal is added. Any other body is rejected, not guessed at.
 RENDERER_PREDECESSOR_SHA256 = '240017afd2eeb1646b877c7e24a38df2cf301c8921eafaeff0626adf27454bd6'
-# The pager span of the dialog: the 0.2.5 text that the renderer still holds, and the v0.4.6 text of the archive.
+RENDERER_LIVE_PREDECESSOR_SHA256 = '30a816fa7bfc5b71a43304c515e78cb48b9f7f492fb946c993dd9551c891f44a'
+# The pager span of the dialog: the 0.2.5 text that the pinned renderer holds, and the v0.4.6 text of the archive.
 PAGER_START = '                    beyondViewportPageCount = 1,  // 预加载相邻页面\n'
 PAGER_END = '                    key = { images.getOrElse(it) { "" } }\n'
 PAGER_BEFORE_SHA256 = '7462b073fda3bae0d2a456b087fb1fb75b25b265c842439f396f8e14fc1de104'
 PAGER_AFTER_SHA256 = '56086a886d7b5110a0489a50bf14eb1df90bf3c4d46cf79b2bc41c6ee7246c00'
+# Which span each legitimate predecessor arrives with, and must still arrive with.
+PAGER_SPAN_BY_PREDECESSOR = {
+    RENDERER_PREDECESSOR_SHA256: PAGER_BEFORE_SHA256,
+    RENDERER_LIVE_PREDECESSOR_SHA256: PAGER_AFTER_SHA256,
+}
 # Windows reports the system animation setting (SPI_GETCLIENTAREAANIMATION) through one Root binding. The Android
 # local that ZoomableImage reads defaults to false and nothing on Windows provides it, so the preview provides it.
 PROVIDER_BEFORE = 'CompositionLocalProvider(com.bilipai.desktop.ui.LocalDesktopDynamicCardBindings provides request.platform) {\n'
@@ -170,21 +182,26 @@ def _pager_span(text, label):
 def advance_preview_renderer(repo, before):
     """Windows preview renderer: the v0.4.6 pager span and the Windows reduced-motion signal."""
     sources, _raws, _manifest = fixed(repo)
-    need(sha(before.replace('\r\n', '\n')) == RENDERER_PREDECESSOR_SHA256, 'Image viewer renderer predecessor changed')
+    predecessor = sha(before.replace('\r\n', '\n'))
+    need(predecessor in PAGER_SPAN_BY_PREDECESSOR, 'Image viewer renderer predecessor changed')
     start, end = _pager_span(before, 'renderer')
-    need(sha(before[start:end]) == PAGER_BEFORE_SHA256, 'Image viewer renderer pager span changed')
+    span = sha(before[start:end])
+    need(span == PAGER_SPAN_BY_PREDECESSOR[predecessor], 'Image viewer renderer pager span changed')
     dialog = sources[DIALOG]
     dialog_start, dialog_end = _pager_span(dialog, 'v0.4.6 dialog')
-    # The replacement is a verbatim slice of the archived v0.4.6 dialog, never retyped text.
-    after = before[:start] + dialog[dialog_start:dialog_end] + before[end:]
+    # The replacement is a verbatim slice of the archived v0.4.6 dialog, never retyped text. A predecessor that
+    # already holds that exact span keeps it: the check above proved those bytes are the archive's own, and splicing
+    # them back in would only rewrite the file.
+    kept = span == PAGER_AFTER_SHA256
+    after = before if kept else before[:start] + dialog[dialog_start:dialog_end] + before[end:]
     after = _replace_once(after, PROVIDER_BEFORE, PROVIDER_AFTER, 'reduced-motion provider')
     need('userScrollEnabled = !isDismissing && !isPreparingDismiss &&\n' in after,
          'Image viewer pager no longer follows the v0.4.6 scroll rule')
     need('userScrollEnabled = !isVerticalDismissDragging' not in after, 'Image viewer pager still restarts on drag')
     proof = inverse_proof(before, after)
     proof.update(upstreamCommit=COMMIT, sourceManifestSHA256=MANIFEST_SHA256, source=UPSTREAM_PATHS[DIALOG],
-                 sourceSHA256=sha(dialog), predecessorSHA256=RENDERER_PREDECESSOR_SHA256,
-                 pagerBeforeSHA256=PAGER_BEFORE_SHA256, pagerAfterSHA256=PAGER_AFTER_SHA256,
+                 sourceSHA256=sha(dialog), predecessorSHA256=predecessor,
+                 pagerBeforeSHA256=span, pagerAfterSHA256=PAGER_AFTER_SHA256,
                  reducedMotionSignal='LocalSystemReduceMotion provides rememberDesktopDynamicReduceMotion()',
                  jvmTestsExecuted=False, mainCompiled=False, runtimeExecuted=False)
     return after, proof
