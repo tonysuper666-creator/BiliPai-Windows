@@ -143,7 +143,9 @@ internal val desktopSettingsItemDirectory: List<DesktopSettingsItem> = listOf(
     privacyItem("privacy.search_suggestions_enabled", "个性化搜索推荐", "使用官方搜索推荐；关闭时使用公开热搜。", "搜索推荐词", "推荐词", "热搜"),
     privacyItem("privacy.personal_recap_enabled", "我的回顾", "在历史页显示阅读与观看统计、趋势图和最近爱看的 UP 主。", "回顾", "阅读统计", "观看统计"),
     privacyItem("privacy.privacy_mode_enabled", "不新增播放和搜索历史", "已有记录保留。", "不记录历史", "不新增", "无痕", "隐私", "历史记录"),
-)
+).plus(desktopWindowsUxSearchItems).also { items ->
+    check(items.map { it.settingId }.toSet().size == items.size) { "Duplicate desktop settings search ID" }
+}
 
 /** The breadcrumb of a row: 设置 / rail title / group. */
 internal fun desktopSettingsItemPath(item: DesktopSettingsItem): String =
