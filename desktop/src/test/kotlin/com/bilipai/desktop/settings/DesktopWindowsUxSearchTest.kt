@@ -21,6 +21,9 @@ class DesktopWindowsUxSearchTest {
     @Test fun enabledLayoutControlsOpenTheirActualAppearanceAnchor() {
         val expected = mapOf(
             "windows_ux.rail_mode" to DesktopWindowsUxSettingsStrings.RAIL,
+            "windows_ux.player_layout" to DesktopWindowsUxSettingsStrings.PLAYER,
+            "windows_ux.details_panel" to DesktopWindowsUxSettingsStrings.DETAILS,
+            "windows_ux.details_panel_width" to DesktopWindowsUxSettingsStrings.DETAILS_WIDTH,
             "windows_ux.home_layout" to DesktopWindowsUxSettingsStrings.HOME,
             "windows_ux.card_interactions" to DesktopWindowsUxSettingsStrings.CARDS,
             "windows_ux.reset_layout" to DesktopWindowsUxSettingsStrings.RESET,
@@ -46,11 +49,17 @@ class DesktopWindowsUxSearchTest {
         }
     }
 
-    @Test fun disabledOrAbsentControlsAreNotSearchable() {
-        val prohibited = setOf("windows_ux.player_layout", "windows_ux.details_panel", "windows_ux.wheel_action",
-            "windows_ux.click_action", "windows_ux.double_click_action")
+    /**
+     * The wheel / click / double-click pointer actions have neither a control nor a consumer in the
+     * Windows layout group, so they must never look operable from search. The player layout, the
+     * details panel and its width slider do have mounted, enabled controls (see
+     * [com.bilipai.desktop.settings.DesktopWindowsUxSettings] and the PR196 consumer test), which is
+     * exactly why those three rows are registered above.
+     */
+    @Test fun pointerActionsWithoutAConsumerAreNotSearchable() {
+        val prohibited = setOf("windows_ux.wheel_action", "windows_ux.click_action", "windows_ux.double_click_action")
         assertTrue(desktopSettingsItemDirectory.none { it.settingId in prohibited })
-        for (query in listOf(DesktopWindowsUxSettingsStrings.PLAYER, "详情面板", "滚轮操作", "单击操作", "双击操作")) {
+        for (query in listOf("滚轮操作", "单击操作", "双击操作")) {
             assertTrue(resolveDesktopSettingsItemSearch(query).isEmpty(), query)
         }
     }

@@ -55,6 +55,15 @@ WINDOWS_ONLY_IDS = {
     'privacy.default_search_hint_enabled', 'privacy.personal_recap_enabled',
 }
 
+# The rows of the Windows layout group that the settings search may name. A row belongs here only while its own control is
+# mounted and enabled: the four rows of the first slices, then the player layout row (its flag constant is on), the details
+# panel row and the details panel width slider (both read by the mounted video dock). The three pointer actions have no
+# control at all and must never be listed.
+UX_SEARCH_IDS = {
+    'windows_ux.rail_mode', 'windows_ux.player_layout', 'windows_ux.details_panel', 'windows_ux.details_panel_width',
+    'windows_ux.home_layout', 'windows_ux.card_interactions', 'windows_ux.reset_layout',
+}
+
 # What DesktopSettingsTree mounts, and who answers for it. Adding a page to the tree fails the coverage test below.
 COVERED_TARGETS = {'PLAYBACK', 'APPEARANCE', 'MESSAGE_NOTIFICATION', 'PRIVACY_PERMISSION'}
 DEFERRED_TARGETS = {
@@ -509,16 +518,79 @@ class MergedDirectoryTest(unittest.TestCase):
         ids = [item['id'] for item in items]
         self.assertEqual(152, len(available))
         self.assertEqual(74, len(filtered))
-        self.assertEqual(len(available) + len(WINDOWS_ONLY_IDS) + 4, len(ids))
+        self.assertEqual(len(available) + len(WINDOWS_ONLY_IDS) + len(UX_SEARCH_IDS), len(ids))
+        # The 173 rows the directory carried before the player rows were registered, plus the three operable ones.
+        self.assertEqual(176, len(ids))
         self.assertEqual(len(ids), len(set(ids)))
         self.assertEqual(len(items), len({item['title'] for item in items}))
-        self.assertEqual(available | WINDOWS_ONLY_IDS | {
-            'windows_ux.rail_mode', 'windows_ux.home_layout', 'windows_ux.card_interactions', 'windows_ux.reset_layout'}, set(ids))
+        self.assertEqual(available | WINDOWS_ONLY_IDS | UX_SEARCH_IDS, set(ids))
         self.assertFalse(filtered & set(ids))
         for item in items:
             self.assertEqual(item['id'], mirror_search(items, item['title'])[0][0], item['id'])
             for alias in item['aliases']:
                 self.assertIn(item['id'], [row[0] for row in mirror_search(items, alias, 500)], alias)
+
+    def test_every_registered_row_is_a_mounted_enabled_control_and_no_pointer_action_is_searchable(self):
+        """A row may be searched only while the group mounts its control and nothing greys that control out."""
+        settings = text(KOTLIN/'ui/DesktopWindowsUxSettings.kt')
+        search = text(SETTINGS/'DesktopWindowsUxSearchItems.kt')
+        layout = text(KOTLIN/'ui/DesktopPlayerLayoutSelection.kt')
+        overlay = re.search(r'const val DESKTOP_PLAYER_OVERLAY_AVAILABLE = (true|false)', layout)
+        self.assertIsNotNone(overlay, 'the player overlay gate disappeared')
+        flags = dict(re.findall(r'private const val (\w+_HAS_CONSUMER) = (\w+)', settings))
+        flags['DESKTOP_PLAYER_OVERLAY_AVAILABLE'] = overlay.group(1)
+
+        def resolve(name):
+            seen = set()
+            while name in flags and name not in seen:
+                seen.add(name)
+                name = flags[name]
+            return name
+
+        for name in ('RAIL_MODE_HAS_CONSUMER', 'PLAYER_LAYOUT_HAS_CONSUMER', 'HOME_LAYOUT_HAS_CONSUMER',
+                     'CARD_INTERACTIONS_HAS_CONSUMER'):
+            self.assertIn(name, flags, name)
+            self.assertEqual('true', resolve(name), name)
+
+        def call_block(marker):
+            start = settings.index(marker)
+            depth, end = 0, start
+            while True:
+                if settings[end] == '(':
+                    depth += 1
+                elif settings[end] == ')':
+                    depth -= 1
+                    if depth == 0:
+                        return settings[start:end + 1]
+                end += 1
+
+        rows = dict(re.findall(r'layoutItem\("([^"]+)", DesktopWindowsUxSettingsStrings\.(\w+)\)', search))
+        self.assertEqual(UX_SEARCH_IDS, set(rows))
+        for ident, key in sorted(rows.items()):
+            if key == 'DETAILS_WIDTH':
+                # The width row is a slider plus its reset row, not a choice.
+                self.assertEqual(1, settings.count('contentDescription = text.DETAILS_WIDTH'), ident)
+                self.assertIn('valueRange = 320f..560f', settings, ident)
+                # The slider commits the dragged width and the reset row hands control back to automatic: two consumers.
+                self.assertEqual(2, settings.count('DesktopWindowsUxCommand.SetDetailsPanelWidth('), ident)
+                continue
+            if key == 'RESET':
+                # The reset row is a plain button, not a choice, and it has no off switch of its own.
+                self.assertEqual(1, settings.count('label = text.RESET,'), ident)
+                self.assertEqual(1, settings.count('DesktopWindowsUxCommand.ResetLayout'), ident)
+                continue
+            marker = 'DesktopWindowsSettingsChoice(text.%s,' % key
+            self.assertEqual(1, settings.count(marker), ident)
+            block = call_block(marker)
+            enabled = re.search(r'enabled = (\w+)', block)
+            if enabled is None:
+                # Only a row whose consumer is part of this very mount keeps no off switch.
+                self.assertEqual('DETAILS', key, ident)
+                continue
+            self.assertEqual('true', resolve(enabled.group(1)), '%s: enabled = %s' % (ident, enabled.group(1)))
+        # The pointer actions of the player have neither a control nor a consumer, so they cannot be searched for.
+        for action in ('WHEEL', 'CLICK', 'DOUBLE_CLICK'):
+            self.assertNotIn('text.%s' % action, settings, action)
 
     def test_only_the_two_rendered_player_controls_are_phone_word_exceptions(self):
         items = parse_directory()
