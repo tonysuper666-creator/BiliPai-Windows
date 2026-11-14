@@ -446,9 +446,13 @@ object PlayerSelfTest {
         val firstRejected = File(screenshot.parentFile, "${screenshot.nameWithoutExtension}-first-rejected.png")
         val firstRejectedObservations = File(screenshot.parentFile, "${screenshot.nameWithoutExtension}-first-rejected.json")
         val observations = File(screenshot.parentFile, "${screenshot.nameWithoutExtension}-capture.json")
+        val lastRejected = File(screenshot.parentFile, "${screenshot.nameWithoutExtension}-last-rejected.png")
         firstRejected.delete()
         firstRejectedObservations.delete()
+        lastRejected.delete()
         var failure = "The native test window did not become visible on the desktop."
+        // Exactly the BufferedImage whose check produced `failure`; assigned only beside it.
+        var lastRejectedImage: BufferedImage? = null
         while (System.nanoTime() < deadline) {
             var bounds: Pair<Rectangle, Rectangle>? = null
             var focused = false
@@ -520,6 +524,7 @@ object PlayerSelfTest {
                     trace.lastPixelCapture = fields
                     return focused
                 } catch (notRendered: IllegalStateException) {
+                    lastRejectedImage = surfaceImage
                     failure = notRendered.message ?: "The native video surface was not rendered."
                     fields["validated"] = "false"
                     fields["failure"] = failure
@@ -537,7 +542,20 @@ object PlayerSelfTest {
         val primaryFailure = IllegalStateException("Timed out waiting for visible native video rendering: $failure")
         val fields = linkedMapOf<String, String>()
         trace.failedNativeFrameCapture = fields
-        throw observeFailedFrameCpuFirst(player, window, robot, initialSource, screenshot, primaryFailure, fields)
+        val thrown = observeFailedFrameCpuFirst(player, window, robot, initialSource, screenshot, primaryFailure, fields)
+        // Encode after the auxiliary sequence so its timing is unchanged. No recapture: these are
+        // the terminal rejected pixels that the reported failure and pixels.* fields describe.
+        lastRejectedImage?.let { image ->
+            try {
+                check(ImageIO.write(image, "png", lastRejected)) { "No PNG encoder for rejected native surface." }
+                trace.lastPixelCapture = trace.lastPixelCapture + ("lastRejectedImage" to lastRejected.name)
+                writePixelCaptureObservations(observations, trace.lastPixelCapture)
+            } catch (diagnosticFailure: Throwable) {
+                // A diagnostic write failure must not replace the actual pixel failure.
+                trace.lastPixelCapture = trace.lastPixelCapture + ("lastRejectedWriteError" to diagnosticFailure.javaClass.simpleName)
+            }
+        }
+        throw thrown
     }
 
     /** This sequence collects evidence only. Neither auxiliary success nor failure replaces the physical failure. */
