@@ -7819,6 +7819,41 @@
           "blob": "bfd2228ff6de70eb0393f0b0d6045da87b247eda"
         }
       ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v076-search-submit-link",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v076-search-submit-link/manifest.json",
+          "sha256": "a0816de0e4377abe75571d60c68f058712cc17a2a33b3da354742f59cb54e564",
+          "hashNormalization": "raw",
+          "blob": "ec1442c5a2265e6ef5e85266f0d6bece314693fb"
+        },
+        {
+          "path": "desktop/upstream-slices/v076-search-submit-link/SearchSubmitPolicy.kt",
+          "sha256": "8b19bb72f2fddddbe3a7cacdb62b54dbeebec5c687493fd4e355b4a4acf60061",
+          "hashNormalization": "raw",
+          "blob": "d3f116cbbe436c9a20f4a5ea2a5eea8096c150e1"
+        },
+        {
+          "path": "desktop/upstream-slices/v076-search-submit-link/SearchSubmitPolicyTest.kt",
+          "sha256": "18fb6d672552fec58693c0b2235909347d41a3abd80610954e21c789760f1385",
+          "hashNormalization": "raw",
+          "blob": "81500704bf37669010dc1b9a63d11dd5ee5fdddc"
+        },
+        {
+          "path": "desktop/upstream-slices/v076-search-submit-link/AppNavigation.kt",
+          "sha256": "5ab389e0ee91533b36f3d838b4330a78a3f0fe252268448c4bb9a45b8eca1c32",
+          "hashNormalization": "raw",
+          "blob": "bf3ea46112be1adf6aa740611faa2ac5cf74e31f"
+        },
+        {
+          "path": "desktop/upstream-slices/v076-search-submit-link/SearchScreen.kt",
+          "sha256": "4a79f841e79eff90156f7c3ea3fc5ac80139222af6d6420fa850a5fcfd9b0845",
+          "hashNormalization": "raw",
+          "blob": "e2813d765e0fba99c6ec0a903a2a086fce7a0d92"
+        }
+      ]
     }
   ],
   "inputs": [
@@ -20638,6 +20673,66 @@
       "referenceOnly": false,
       "partialReuse": false,
       "usedScope": "Whole v0.4.6 VideoDetailInlineScrollRecovery (new in v0.4.2, emitted by the video detail holder producer, called by one counted holder block) and its unit test (a verbatim desktop-owned copy runs it). TabletVideoLayout, TabletCinemaLayout and VideoContentSection take counted v0.4.6 hunks whose text is read from the v046-comment-list archive (not leaves of this archive); the holder block is pinned by sha256 and git blob."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation/SearchSubmitPolicy.kt",
+      "localPath": "desktop/upstream-slices/v076-search-submit-link/SearchSubmitPolicy.kt",
+      "upstreamCommit": "0ec9c4dd25ad8f364dcc32dc7a3309bba9b30f1c",
+      "blob": "d3f116cbbe436c9a20f4a5ea2a5eea8096c150e1",
+      "sha256": "8b19bb72f2fddddbe3a7cacdb62b54dbeebec5c687493fd4e355b4a4acf60061",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v076-search-submit-link-retained-original-inputs"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole original search-submit policy or its unchanged original tests, consumed by the existing linked-dock producer and Root content-link opener"
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/navigation/SearchSubmitPolicyTest.kt",
+      "localPath": "desktop/upstream-slices/v076-search-submit-link/SearchSubmitPolicyTest.kt",
+      "upstreamCommit": "0ec9c4dd25ad8f364dcc32dc7a3309bba9b30f1c",
+      "blob": "81500704bf37669010dc1b9a63d11dd5ee5fdddc",
+      "sha256": "18fb6d672552fec58693c0b2235909347d41a3abd80610954e21c789760f1385",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v076-search-submit-link-retained-original-inputs"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole original search-submit policy or its unchanged original tests, consumed by the existing linked-dock producer and Root content-link opener"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation/AppNavigation.kt",
+      "localPath": "desktop/upstream-slices/v076-search-submit-link/AppNavigation.kt",
+      "upstreamCommit": "0ec9c4dd25ad8f364dcc32dc7a3309bba9b30f1c",
+      "blob": "bf3ea46112be1adf6aa740611faa2ac5cf74e31f",
+      "sha256": "5ab389e0ee91533b36f3d838b4330a78a3f0fe252268448c4bb9a45b8eca1c32",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v076-search-submit-link-original-navigation"
+      ],
+      "referenceOnly": true,
+      "partialReuse": true,
+      "usedScope": "Complete original submitSearchKeywordInNavigation3/submitBottomBarSearchKeyword callbacks; other destination implementations retain their accepted originals"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchScreen.kt",
+      "localPath": "desktop/upstream-slices/v076-search-submit-link/SearchScreen.kt",
+      "upstreamCommit": "0ec9c4dd25ad8f364dcc32dc7a3309bba9b30f1c",
+      "blob": "e2813d765e0fba99c6ec0a903a2a086fce7a0d92",
+      "sha256": "4a79f841e79eff90156f7c3ea3fc5ac80139222af6d6420fa850a5fcfd9b0845",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v076-search-submit-link-original-search-screen"
+      ],
+      "referenceOnly": true,
+      "partialReuse": true,
+      "usedScope": "Three counted 39ad3afe SearchScreen submit edits (onOpenSearchLink parameter, OpenLink branch, initial keyword through submitSearch) applied by the existing complete-Search producer; the rest of the page keeps its accepted original"
     }
   ],
   "buildStandaloneInputs": [

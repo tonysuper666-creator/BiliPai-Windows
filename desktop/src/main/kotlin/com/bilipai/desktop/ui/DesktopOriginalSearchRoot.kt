@@ -16,6 +16,8 @@ internal class DesktopOriginalSearchRoot(
     val routes: DesktopOriginalRootRouteAssembly,
     private val published: () -> Boolean,
     val account: StateFlow<AccountSummary?>,
+    /** Root's existing content-link opener; v0.7.6 submit of a share short link / content link lands here. */
+    val openLink: (String) -> Unit,
     private val createEnvironment: (owned: () -> Boolean, commit: ((() -> Unit) -> Boolean)) -> DesktopOriginalSearchEnvironment,
 ) : AutoCloseable {
     internal data class Identity(val key: BiliPaiNavKey, val pagerHosted: Boolean)
@@ -112,6 +114,7 @@ internal val LocalDesktopOriginalSearchRoot = staticCompositionLocalOf<DesktopOr
                     select { accepted=dispatchDesktopReadyNativeTarget(commands.root,commands,target) }
                     accepted
                 },
+                onOpenSearchLink={ url -> select { root.openLink(url) } },
                 onVideoClick={ bvid,cid,cover -> select { commands.video(BiliPaiNavKey.VideoDetail(bvid,cid,cover,sourceRoute=key.toLegacyRoute())) } },
                 onWebClick={ url,title -> select { commands.push(BiliPaiNavKey.Web(url,title)) } },
                 onUpClick={ mid -> select { commands.push(BiliPaiNavKey.Space(mid)) } },
