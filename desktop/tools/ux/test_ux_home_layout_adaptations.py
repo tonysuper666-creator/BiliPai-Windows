@@ -89,6 +89,8 @@ SCREEN_PATH = HOME_DIR + layer.SCREEN
 CATEGORY_PATH = HOME_DIR + layer.CATEGORY
 AUDIT_PATH = "home-page-v029-load-adaptations.json"
 PATHS = {layer.SCREEN: SCREEN_PATH, layer.CATEGORY: CATEGORY_PATH}
+# Slice K3c: the generated HomeHeader is the third file the layer owns, with its own edit table next to the eight H1 edits.
+HEADER_PATH = HOME_DIR + "components/" + layer.HEADER
 
 WRAPPER_FILES = {
     "desktopHomeFeedLayoutKey": LAYOUT_KT,
@@ -180,7 +182,7 @@ class GeneratorOutputTest(unittest.TestCase):
     def test_the_layer_changes_exactly_the_two_generated_files_and_the_audit_record(self):
         self.assertEqual(set(self.plain), set(self.layered))
         changed = {name for name in self.layered if self.layered[name] != self.plain[name]}
-        self.assertEqual({SCREEN_PATH, CATEGORY_PATH, AUDIT_PATH}, changed)
+        self.assertEqual({SCREEN_PATH, CATEGORY_PATH, HEADER_PATH, AUDIT_PATH}, changed)
 
     def test_the_output_is_deterministic(self):
         self.assertEqual(self.layered, self.again)
@@ -214,6 +216,7 @@ class GeneratorOutputTest(unittest.TestCase):
     def test_reverse_applying_the_edits_gives_back_the_received_text(self):
         for name in layer.EDITS:
             self.assertEqual(self.text(self.plain, name), layer.reverse(name, self.text(self.layered, name)), name)
+        self.assertEqual(self.plain[HEADER_PATH], layer.reverse(layer.HEADER, self.layered[HEADER_PATH].decode("utf-8")).encode("utf-8"))
 
     def test_the_text_between_the_edits_is_untouched(self):
         # The layered file differs from the received one by the edits and by nothing else: its length is the received one plus the
@@ -246,7 +249,7 @@ class GeneratorOutputTest(unittest.TestCase):
     def test_a_file_the_layer_does_not_own_passes_through_as_the_same_object(self):
         audits = []
         for relative, data in self.plain.items():
-            if not relative.endswith(".kt") or Path(relative).name in layer.EDITS:
+            if not relative.endswith(".kt") or Path(relative).name in layer.EDITS or relative == HEADER_PATH:
                 continue
             body = data.decode("utf-8")
             self.assertIs(body, layer.apply_home_layout(REPO, Path(relative).name, body, audits), relative)
@@ -258,7 +261,8 @@ class GeneratorOutputTest(unittest.TestCase):
         rows = layered["audits"]
         mine = [row for row in rows if str(row.get("id", "")).startswith("ux-home-")]
         self.assertEqual([row for row in rows if row not in mine], plain)
-        expected = {label: (before, after) for edits in layer.EDITS.values() for label, before, after in edits}
+        expected = {label: (before, after) for edits in (*layer.EDITS.values(), layer.HEADER_EDITS) for label, before, after in edits}
+        self.assertEqual(len(expected), 8 + len(layer.HEADER_EDITS))
         self.assertEqual(sorted(expected), sorted(row["id"] for row in mine))
         for row in mine:
             self.assertEqual({"id", "beforeSha256", "afterSha256", "inverseRestoresInput"}, set(row), row["id"])
@@ -266,7 +270,7 @@ class GeneratorOutputTest(unittest.TestCase):
             self.assertEqual(hashlib.sha256(before.encode("utf-8")).hexdigest(), row["beforeSha256"])
             self.assertEqual(hashlib.sha256(after.encode("utf-8")).hexdigest(), row["afterSha256"])
             self.assertIs(True, row["inverseRestoresInput"])
-        for name, edits in layer.EDITS.items():
+        for name, edits in (*layer.EDITS.items(), (layer.HEADER, layer.HEADER_EDITS)):
             order = [row["id"] for row in mine if row["id"] in {label for label, _b, _a in edits}]
             self.assertEqual([label for label, _b, _a in edits], order, name)
 
