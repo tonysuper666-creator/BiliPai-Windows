@@ -12,6 +12,16 @@ internal fun dispatchDesktopSettingsSearchDestination(
     onCategory: (SettingsRootCategory) -> Unit,
     onDetail: (SettingsSearchTarget, String?) -> Unit,
 ) {
+    if (result.page != null) {
+        desktopSettingsSearchCategoryDestination(result)?.let {
+            onCategory(it)
+            return
+        }
+        if (desktopSettingsSearchHasMountedDetail(result)) {
+            onDetail(result.target, result.focusId)
+            return
+        }
+    }
     val category = resolveSettingsRootCategoryForSearchTarget(result.target)
     if (isSceneSettingsSearchTarget(result.target) && category != null) {
         onCategory(canonicalSettingsRootCategory(category))

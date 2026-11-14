@@ -5,7 +5,7 @@ import argparse, hashlib, importlib.util, json, os, sys
 from pathlib import Path
 sys.dont_write_bytecode = True
 UPSTREAM="79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40"
-CATALOG_SHA="2600739eef5521cfef71d6af16762ccc3b9df076dad7ccb79902944f1634130f"
+CATALOG_SHA="5557c14384106ba4b6a39f53e5adad9e32dcbe7c0be20d5ef62317768c43b972"
 LEGACY_CATALOG_SHA="2fa53aa78cc27c76a3923cc44750128b3657c340dbcfe44ec13810cbc48becbc"
 FEATURE="desktop-whole-original-donate-dialog"
 SCREEN="app/src/main/java/com/android/purebilibili/feature/settings/screen/SettingsScreen.kt"
