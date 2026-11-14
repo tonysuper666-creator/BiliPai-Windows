@@ -90,6 +90,15 @@
              while (isActive) {
                  viewModel.refreshMessages()
                  delay(5_000L)
+@@ -202,7 +190,7 @@
+         snapshotFlow { listState.isScrollInProgress to listState.canScrollBackward }
+             .collect { (scrolling, canScrollToNewer) ->
+                 // Data insertion must not change the user's intention to follow the latest message.
+-                if (scrolling || !canScrollToNewer) followLatest = !canScrollToNewer
++                if (scrolling || (!canScrollToNewer && listState.layoutInfo.totalItemsCount > 0)) followLatest = !canScrollToNewer
+             }
+     }
+     var showInterceptConfirm by remember(accountIdentity) { mutableStateOf(false) }
 @@ -211,10 +199,8 @@
      val context = LocalContext.current
      val keyboard = androidx.compose.ui.platform.LocalSoftwareKeyboardController.current
