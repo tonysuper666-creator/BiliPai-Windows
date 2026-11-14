@@ -3,7 +3,7 @@
 The Home card producer (extract-upstream-home-full-card.py) calls apply_home_card once per emitted file, right after the
 recommendation badge layer, through one hook line (the v043_home_recommendation_badges pattern). The layer touches one generated
 file and nothing else, VideoCard.kt (the grid card of the Home feed; its ElegantVideoCard function), with seven exact-once
-replacements:
+replacements of slice H2 (EDITS) and four of slice K3 (COVER_EDITS, below):
 
   * the two imports of the vendored dropdown menu become import aliases of the desktop-owned menu, so the call text of the card is
     the vendored call text (named arguments expanded, onDismissRequest, offset, and the ColumnScope trailing lambda):
@@ -17,6 +17,16 @@ replacements:
   * three emoji-free labels, each through desktopCardMenuLabel(original, plain): the default of dismissMenuText and the literals of
     the watch later and unfavorite menu rows. The original text (with its emoji) stays in the call and is what the OFF flag shows. No
     caller passes its own dismissMenuText (checked by the adaptation suite), so changing the default is enough.
+
+Slice K3 adds the keyboard focus of the cover (spec 2 focus ring, spec 4 Home item 4), four more exact-once edits in
+COVER_EDITS, applied after the seven above, with the helpers in desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeCardFrame.kt:
+
+  * two imports, desktopHomeCoverFocusTarget and desktopHomeCoverFocusRing;
+  * the shared state homeCoverFocus, declared once next to adaptiveHoverShape, before the card root Box;
+  * the focus target on the cover Box, right after its test tag: Enter calls triggerCardClick (the cover tap path), and
+    Shift+F10 or the menu key call openDismissMenu with the cover anchor when the card has a menu (hasOverflowMenu, as the
+    right click);
+  * the ring on the card root Box, after its position recorder: the card shell clips the cover, the root does not.
 
 Not covered by this layer: the single-column display mode (AppWindowActionMenu), StoryVideoCard and DynamicCard. This is a
 desktop-owned layer: there is no upstream archive, no manifest and no pinned predecessor hash. Every anchor is counted on the text
@@ -86,6 +96,44 @@ EDITS = (
      + UNFAVORITE_PLAIN + '"),\n'),
 )
 
+# Slice K3: the keyboard focus of the cover. Same rules as EDITS: each `before` occurs exactly once in the text the
+# layer receives (after EDITS), and each edit keeps its anchor and adds lines.
+COVER_EDITS = (
+    ('ux-card-cover-focus-imports',
+     'import androidx.compose.ui.platform.testTag\n',
+     'import androidx.compose.ui.platform.testTag\n'
+     'import ' + UI + 'desktopHomeCoverFocusRing\n'
+     'import ' + UI + 'desktopHomeCoverFocusTarget\n'),
+    ('ux-card-cover-focus-state',
+     '    val adaptiveHoverShape = AppShapes.container(ContainerLevel.Card)\n',
+     '    val adaptiveHoverShape = AppShapes.container(ContainerLevel.Card)\n'
+     '    val homeCoverFocus = ' + UI + 'rememberDesktopHomeCoverFocus()\n'),
+    ('ux-card-cover-focus-target',
+     '                .testTag("home_video_cover")\n',
+     '                .testTag("home_video_cover")\n'
+     '                .desktopHomeCoverFocusTarget(\n'
+     '                    state = homeCoverFocus,\n'
+     '                    cornerRadius = cardCornerRadius,\n'
+     '                    onOpen = { triggerCardClick() },\n'
+     '                    onMenu = if (hasOverflowMenu) {\n'
+     '                        { openDismissMenu(coverCoordsRef.value, null) }\n'
+     '                    } else {\n'
+     '                        null\n'
+     '                    },\n'
+     '                )\n'),
+    ('ux-card-cover-focus-ring',
+     '            .onGloballyPositioned { coordinates ->\n'
+     '                cardCoordsRef.value = coordinates\n'
+     '            }\n'
+     '    ) {\n',
+     '            .onGloballyPositioned { coordinates ->\n'
+     '                cardCoordsRef.value = coordinates\n'
+     '            }\n'
+     '            .desktopHomeCoverFocusRing(homeCoverFocus)\n'
+     '    ) {\n'),
+)
+ALL_EDITS = EDITS + COVER_EDITS
+
 # After the layer none of these vendored lines may remain in the file: the menu imports and the overflow box size line.
 GONE = (
     'import com.android.purebilibili.core.ui.components.AppDropdownMenu\n',
@@ -95,6 +143,7 @@ GONE = (
 # Names the layer introduces into the generated text. None may exist in the text it receives.
 INTRODUCED = ('DesktopCardContextMenu', 'DesktopCardContextMenuItem', 'desktopCardSecondaryClick', 'desktopCardHandCursor',
               'desktopCardMenuLabel', 'desktopCardOverflowTarget')
+COVER_INTRODUCED = ('desktopHomeCoverFocusTarget', 'desktopHomeCoverFocusRing', 'rememberDesktopHomeCoverFocus', 'homeCoverFocus')
 
 
 def sha(text):
@@ -117,10 +166,10 @@ def apply_home_card(repo, name, text, audits):
     """The text of one emitted file with the Home card edits, or the text itself for any file the layer does not own."""
     if name != CARD:
         return text
-    for introduced in INTRODUCED:
+    for introduced in INTRODUCED + COVER_INTRODUCED:
         need(introduced not in text, 'Home card layer already applied or name taken: %s in %s' % (introduced, name))
     received = text
-    for label, before, after in EDITS:
+    for label, before, after in ALL_EDITS:
         text = _once(text, before, after, label)
         audits.append(dict(id=label, beforeSha256=sha(before), afterSha256=sha(after), inverseRestoresInput=True))
     for vendored in GONE:
@@ -132,7 +181,7 @@ def apply_home_card(repo, name, text, audits):
 def reverse(name, text):
     """The text before the layer: the edits undone in the opposite order, each found exactly once."""
     need(name == CARD, 'Home card layer does not own ' + name)
-    for label, before, after in reversed(EDITS):
+    for label, before, after in reversed(ALL_EDITS):
         need(text.count(after) == 1, 'Home card replacement count changed: %s (%d)' % (label, text.count(after)))
         text = text.replace(after, before, 1)
     return text
