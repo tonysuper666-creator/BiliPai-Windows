@@ -9375,6 +9375,96 @@
       "hashNormalization": "lf",
       "sha256CanonicalBytes": "4c1973bd5d092f8535c8ce054a865b4a5e3ebe1a0278b98573d96ba38ebceaad"
     },
+    "app/src/main/res/drawable/ic_settings_action_counts_24.xml": {
+      "blob": "5d92156b1a202f5b1f78d0fee6e5fcb46297622d",
+      "sha256": "230b522bac082d3364aba1a04aa572279529444bb80a631fe9bb5c7fe36c2251",
+      "hashNormalization": "lf",
+      "sha256CanonicalBytes": "230b522bac082d3364aba1a04aa572279529444bb80a631fe9bb5c7fe36c2251"
+    },
+    "app/src/main/res/drawable/ic_settings_bottom_bar_compact_24.xml": {
+      "blob": "16815b1b8ef57e4ff67b9f5d9a33f11ca24db64c",
+      "sha256": "28f7889c33953ff9dd32bc3cd14ea0ec897e4dadad6e35b66c4af5d8c44acb9b",
+      "hashNormalization": "lf",
+      "sha256CanonicalBytes": "28f7889c33953ff9dd32bc3cd14ea0ec897e4dadad6e35b66c4af5d8c44acb9b"
+    },
+    "app/src/main/res/drawable/ic_settings_comment_avatar_push_24.xml": {
+      "blob": "0110ddda23ae4834bf0043b925526ad324c6cca3",
+      "sha256": "887331692050872067081db7aff519e8134d79362055465623ea9f7e4e90f3d1",
+      "hashNormalization": "lf",
+      "sha256CanonicalBytes": "887331692050872067081db7aff519e8134d79362055465623ea9f7e4e90f3d1"
+    },
+    "app/src/main/res/drawable/ic_settings_cover_pulse_24.xml": {
+      "blob": "88e9d23a0286d01d571f355d159e25fdf9509a3c",
+      "sha256": "76b7b2b62520969a9ea647e67f226443e2ceec6c824680d10ff4db91ac615f0b",
+      "hashNormalization": "lf",
+      "sha256CanonicalBytes": "76b7b2b62520969a9ea647e67f226443e2ceec6c824680d10ff4db91ac615f0b"
+    },
+    "app/src/main/res/drawable/ic_settings_indicator_wobble_24.xml": {
+      "blob": "ea3627406a4c251502263e3f3bfb1b0a1444d756",
+      "sha256": "a85e7f794b33cecc74e305eec87169fbdf50026993a3c8ab75589733f47aaf92",
+      "hashNormalization": "lf",
+      "sha256CanonicalBytes": "a85e7f794b33cecc74e305eec87169fbdf50026993a3c8ab75589733f47aaf92"
+    },
+    "app/src/main/res/drawable/ic_settings_login_activity_24.xml": {
+      "blob": "5d281ef6b47736711bcdc782868adfd3d11b978c",
+      "sha256": "fa399e50a50c3017265bda8fc7bbd71a18ca3c63051ee8e7fcbee53c3ed7b435",
+      "hashNormalization": "lf",
+      "sha256CanonicalBytes": "fa399e50a50c3017265bda8fc7bbd71a18ca3c63051ee8e7fcbee53c3ed7b435"
+    },
+    "app/src/main/res/drawable/ic_settings_nearby_handoff_24.xml": {
+      "blob": "a5066f601125b0f00cf2db4bbf632b76debd2ece",
+      "sha256": "55e5c1a48d4f8cb19f0289c7a2f80f6c308fc178a794b4f7e28ebb35af55e194",
+      "hashNormalization": "lf",
+      "sha256CanonicalBytes": "55e5c1a48d4f8cb19f0289c7a2f80f6c308fc178a794b4f7e28ebb35af55e194"
+    },
+    "app/src/main/res/drawable/ic_settings_palette_swatches_24.xml": {
+      "blob": "afc1fd8dfe4e5093c475580c6e9ab2e02fe11c07",
+      "sha256": "49ceab3dc6529e3dc621f6908f86ddc8566b8ffa8370e29ff9f24266e968eaa8",
+      "hashNormalization": "lf",
+      "sha256CanonicalBytes": "49ceab3dc6529e3dc621f6908f86ddc8566b8ffa8370e29ff9f24266e968eaa8"
+    },
+    "app/src/main/res/drawable/ic_settings_part_resume_24.xml": {
+      "blob": "6c1f2d0b55053b5cd89ff3e021a1446f1d71e4ea",
+      "sha256": "fafc0411017b2c4c596222d08cdb7280cc9288bc79266cd2f1a326bfadd87f6f",
+      "hashNormalization": "lf",
+      "sha256CanonicalBytes": "fafc0411017b2c4c596222d08cdb7280cc9288bc79266cd2f1a326bfadd87f6f"
+    },
+    "app/src/main/res/drawable/ic_settings_portrait_ambient_24.xml": {
+      "blob": "2119ba549d38857aa80e5e7ec89e8c279822f083",
+      "sha256": "f14b3eaf5bc7f90d6c105f0c6d1557a184f5f40be423715443687d3ec1c550e0",
+      "hashNormalization": "lf",
+      "sha256CanonicalBytes": "f14b3eaf5bc7f90d6c105f0c6d1557a184f5f40be423715443687d3ec1c550e0"
+    },
+    "app/src/main/res/drawable/ic_settings_progressive_top_blur_24.xml": {
+      "blob": "17aad35aa5ee362d4e0ac50911a6bb928e0fcbe3",
+      "sha256": "bff60f4071e6e1e7063fe020603b9518922a560123d8474159b09b1abf947336",
+      "hashNormalization": "lf",
+      "sha256CanonicalBytes": "bff60f4071e6e1e7063fe020603b9518922a560123d8474159b09b1abf947336"
+    },
+    "app/src/main/res/drawable/ic_settings_progressive_top_fade_24.xml": {
+      "blob": "407c9600fea13b0795d17c7fa2e357dd30d002af",
+      "sha256": "f91cc8454e2a1abec8b8036077c46cb49879b7c6fb9deb5964ecde36b03fa6d9",
+      "hashNormalization": "lf",
+      "sha256CanonicalBytes": "f91cc8454e2a1abec8b8036077c46cb49879b7c6fb9deb5964ecde36b03fa6d9"
+    },
+    "app/src/main/res/drawable/ic_settings_resilient_buffer_24.xml": {
+      "blob": "87455c11c4be0652580b32ba8fec5a881f95887b",
+      "sha256": "4c565f9c00cc7c25983616f5722079c03778cdb2db69cd253fec375bf3595e68",
+      "hashNormalization": "lf",
+      "sha256CanonicalBytes": "4c565f9c00cc7c25983616f5722079c03778cdb2db69cd253fec375bf3595e68"
+    },
+    "app/src/main/res/drawable/ic_settings_skeleton_breathing_24.xml": {
+      "blob": "43c364df82f2f25167830d9d3d80ab5988bc9c63",
+      "sha256": "dd2a146108563d9b712a06286d22b765a020fd71edeb66d8111893b856136ad2",
+      "hashNormalization": "lf",
+      "sha256CanonicalBytes": "dd2a146108563d9b712a06286d22b765a020fd71edeb66d8111893b856136ad2"
+    },
+    "app/src/main/res/drawable/ic_settings_top_search_24.xml": {
+      "blob": "7643492663e31c02c03565afa0f340b445ac0989",
+      "sha256": "d154dc9bce3836b3e338083e6df22a5f16757d6110b6d80e903cc7acf04eae1d",
+      "hashNormalization": "lf",
+      "sha256CanonicalBytes": "d154dc9bce3836b3e338083e6df22a5f16757d6110b6d80e903cc7acf04eae1d"
+    },
     "app/src/main/res/drawable/ic_shortcut_dynamic.xml": {
       "blob": "63b3f9ce4719d4ded0a53225d4479fc07a72b20b",
       "sha256": "fd2f87079e033ec5435e8ac844a1c9eb81492bdfd262d54e462687d557d8643e",
@@ -9573,6 +9663,18 @@
       "hashNormalization": "lf",
       "sha256CanonicalBytes": "b6e3b601b6ecb13d997521fc16515023155f9eccc827a182cd87ce18d6a32412"
     },
+    "app/src/main/res/drawable/ms_bottom_panel_close_24.xml": {
+      "blob": "58c4f53a4fd88ff1e296b2bf230c14cf614f3d0b",
+      "sha256": "4beabf14c7ebc915dfb57bb409406e33ed0a2f10f00995177dcb9380667f8158",
+      "hashNormalization": "lf",
+      "sha256CanonicalBytes": "4beabf14c7ebc915dfb57bb409406e33ed0a2f10f00995177dcb9380667f8158"
+    },
+    "app/src/main/res/drawable/ms_bottom_panel_open_24.xml": {
+      "blob": "610d683567bd1f2f656656e84eb4944d2789878b",
+      "sha256": "49c523076e4c48b78891da474e0cc65a886a08871479cee2e4da30ea341f7b4a",
+      "hashNormalization": "lf",
+      "sha256CanonicalBytes": "49c523076e4c48b78891da474e0cc65a886a08871479cee2e4da30ea341f7b4a"
+    },
     "app/src/main/res/drawable/ms_brightness_medium_24.xml": {
       "blob": "613daadba7164ff0e495df6986dab5ed8bd272c4",
       "sha256": "6440e5805fd223221999231ad997d804a88cc32a25e60abc990bae76d0667397",
@@ -9596,6 +9698,12 @@
       "sha256": "517479a5c927e84029edf4dd8b8ddba6220554b3545b9d33778719887c2270ce",
       "hashNormalization": "lf",
       "sha256CanonicalBytes": "517479a5c927e84029edf4dd8b8ddba6220554b3545b9d33778719887c2270ce"
+    },
+    "app/src/main/res/drawable/ms_calendar_clock_24.xml": {
+      "blob": "25c2e530ce79df857b94c934263746fc6580b874",
+      "sha256": "7d8cfbaf8acdd36aa866674e103e3f8fb516080bfd00c04219d9bb765f59f5c7",
+      "hashNormalization": "lf",
+      "sha256CanonicalBytes": "7d8cfbaf8acdd36aa866674e103e3f8fb516080bfd00c04219d9bb765f59f5c7"
     },
     "app/src/main/res/drawable/ms_calendar_month_24.xml": {
       "blob": "7746c58a6d90e86b75e32fbf1a4f6d65d754870a",
@@ -9705,6 +9813,12 @@
       "hashNormalization": "lf",
       "sha256CanonicalBytes": "803e0b1518e286e09fbb3c46365b4a3ea45422c025a988e50b41544aacfd779b"
     },
+    "app/src/main/res/drawable/ms_collapse_content_24.xml": {
+      "blob": "c9f7471bcf7b810f0601ab5acf47e18514767989",
+      "sha256": "11c80a796a4452501e075e3fd16c9bb6f4ffde295adf0ada918533b2ee7375c0",
+      "hashNormalization": "lf",
+      "sha256CanonicalBytes": "11c80a796a4452501e075e3fd16c9bb6f4ffde295adf0ada918533b2ee7375c0"
+    },
     "app/src/main/res/drawable/ms_collections_bookmark_24.xml": {
       "blob": "1d885acc2e7847ea488efecc775d7a593692f742",
       "sha256": "c4e94e3741882f5b3ab46fe2456560f0f96dc5e494c857d2e58dffd442fa9a79",
@@ -9728,6 +9842,12 @@
       "sha256": "d56021f9a1c7a68367e13b1d8a1fa52456cd46d132b84537f8927d69076628c2",
       "hashNormalization": "lf",
       "sha256CanonicalBytes": "d56021f9a1c7a68367e13b1d8a1fa52456cd46d132b84537f8927d69076628c2"
+    },
+    "app/src/main/res/drawable/ms_colors_24.xml": {
+      "blob": "b456ad123b98b1ff1ed4e465b654c286b8596e0d",
+      "sha256": "74fdc1eac9a2eb70fa77fbe72b832660a262611d2465b808fc4646ada34ed6c1",
+      "hashNormalization": "lf",
+      "sha256CanonicalBytes": "74fdc1eac9a2eb70fa77fbe72b832660a262611d2465b808fc4646ada34ed6c1"
     },
     "app/src/main/res/drawable/ms_comments_disabled_24.xml": {
       "blob": "73befe5579b08a0af34a5f3a71d07eb29d5283aa",
@@ -9801,11 +9921,29 @@
       "hashNormalization": "lf",
       "sha256CanonicalBytes": "4288ae4bc24c88073ff231a47b41b50365c9bb1fd52d03d6da1209a43f01ab74"
     },
+    "app/src/main/res/drawable/ms_dialogs_24.xml": {
+      "blob": "4935c05c059332da94498fc71c97aa749e68ded7",
+      "sha256": "02d047a0bc5fa63e02575bb3ed91cb13a2b4a6c368143162dc32576c0f266218",
+      "hashNormalization": "lf",
+      "sha256CanonicalBytes": "02d047a0bc5fa63e02575bb3ed91cb13a2b4a6c368143162dc32576c0f266218"
+    },
     "app/src/main/res/drawable/ms_download_fill_24.xml": {
       "blob": "dba4601444759ebc17f78f41442e57f64531dffc",
       "sha256": "75f8b4dae0ef464f527f3adadde29a0d57e9875985d49f44df3585f60fe9fbf4",
       "hashNormalization": "lf",
       "sha256CanonicalBytes": "75f8b4dae0ef464f527f3adadde29a0d57e9875985d49f44df3585f60fe9fbf4"
+    },
+    "app/src/main/res/drawable/ms_drag_indicator_24.xml": {
+      "blob": "b10d45cdf637a727f0baddb5d7efc75a64d9ce67",
+      "sha256": "552b0e1d9ca65baa780e9021cb76c9dba0cca757ac3e02b7e6f8c4d71ff42ae2",
+      "hashNormalization": "lf",
+      "sha256CanonicalBytes": "552b0e1d9ca65baa780e9021cb76c9dba0cca757ac3e02b7e6f8c4d71ff42ae2"
+    },
+    "app/src/main/res/drawable/ms_drag_pan_24.xml": {
+      "blob": "52ba6706a2e2a21d335b8369988395cee1d33100",
+      "sha256": "53b6baf6e990218966b705adff245de9ca2f97db0999b35bd798fe00d4dd4a8d",
+      "hashNormalization": "lf",
+      "sha256CanonicalBytes": "53b6baf6e990218966b705adff245de9ca2f97db0999b35bd798fe00d4dd4a8d"
     },
     "app/src/main/res/drawable/ms_draw_fill_24.xml": {
       "blob": "0df84340b164f921e4b80967741a90b3cbdecf5f",
@@ -10065,6 +10203,12 @@
       "hashNormalization": "lf",
       "sha256CanonicalBytes": "ad0bff2749ac153fe97f7fd4ffb7cab865ba0c14eeb54ec998f68f80df8ee418"
     },
+    "app/src/main/res/drawable/ms_instant_mix_24.xml": {
+      "blob": "20a8adbc90e6218d4d32285b478d7a446c6f1e45",
+      "sha256": "b0d5550c83a733899cb5811e63570183e84030820f90883e0bf6522226bc01f6",
+      "hashNormalization": "lf",
+      "sha256CanonicalBytes": "b0d5550c83a733899cb5811e63570183e84030820f90883e0bf6522226bc01f6"
+    },
     "app/src/main/res/drawable/ms_inventory2_fill_24.xml": {
       "blob": "a9c36d75aba409dc1602ff8cff58574606339247",
       "sha256": "1de7a0ac1a668c0243204af934c3d03c8a4edfefcdb137a06c6d3a8573f3978b",
@@ -10161,6 +10305,12 @@
       "hashNormalization": "lf",
       "sha256CanonicalBytes": "2041393ca823f5c8ca45fad5d46bbe483c18ed5ee3678ae832f0f6ddd0edf774"
     },
+    "app/src/main/res/drawable/ms_lightbulb_circle_24.xml": {
+      "blob": "978f555cbae3ee3b8a7c4f690985023e02a80b62",
+      "sha256": "58da4b690d5f057fce8679b81b898749a77dbc503154f870b8ef52a812326f55",
+      "hashNormalization": "lf",
+      "sha256CanonicalBytes": "58da4b690d5f057fce8679b81b898749a77dbc503154f870b8ef52a812326f55"
+    },
     "app/src/main/res/drawable/ms_lightbulb_fill_24.xml": {
       "blob": "03dc5657d601ed84e53bde5e5a596be10a1810c0",
       "sha256": "86e521f9c906d013f72d66222de64b0415fdb9c423ac58716d66764f57521a2d",
@@ -10221,6 +10371,12 @@
       "hashNormalization": "lf",
       "sha256CanonicalBytes": "fb24f19cb38db3dc7ecab82eaa9faff129227190f202dbfeea125b8128ec68f5"
     },
+    "app/src/main/res/drawable/ms_merge_24.xml": {
+      "blob": "c4d38efa5076eb87a749a64ac3238e514143fe0d",
+      "sha256": "d3dba9c4ead8dde9f82260cabf6e7cf7209851a1b51097dd32d12f7e58165c67",
+      "hashNormalization": "lf",
+      "sha256CanonicalBytes": "d3dba9c4ead8dde9f82260cabf6e7cf7209851a1b51097dd32d12f7e58165c67"
+    },
     "app/src/main/res/drawable/ms_mode_comment_24.xml": {
       "blob": "d8faa023ab97f85e6e5e2ab5168da3b987637c24",
       "sha256": "49efb24da9948ece926543092b569e7ca71d8c91b0195f9c883155a78bcf58e5",
@@ -10238,6 +10394,12 @@
       "sha256": "b495cb0fce655da3c99604934e0dd97ef4820f8d98ff780a3ffe69bd9dbfbd7f",
       "hashNormalization": "lf",
       "sha256CanonicalBytes": "b495cb0fce655da3c99604934e0dd97ef4820f8d98ff780a3ffe69bd9dbfbd7f"
+    },
+    "app/src/main/res/drawable/ms_move_down_24.xml": {
+      "blob": "a2cda085083cdf157030ef970f4954a42519d139",
+      "sha256": "78595528005c74a5319d100c94e5cdfedba600812457480f4b151945cfd18c53",
+      "hashNormalization": "lf",
+      "sha256CanonicalBytes": "78595528005c74a5319d100c94e5cdfedba600812457480f4b151945cfd18c53"
     },
     "app/src/main/res/drawable/ms_movie_24.xml": {
       "blob": "5dce818e4737cc01a9e4b5fb8439c07dd36666f7",
@@ -10280,6 +10442,12 @@
       "sha256": "ad1749545ce66eeadf167e870d4b23edc3540cb96152810f84763e383e9b77ac",
       "hashNormalization": "lf",
       "sha256CanonicalBytes": "ad1749545ce66eeadf167e870d4b23edc3540cb96152810f84763e383e9b77ac"
+    },
+    "app/src/main/res/drawable/ms_notification_settings_24.xml": {
+      "blob": "806f9692c4f2dad004e0c69281eb2520cbbcd710",
+      "sha256": "25965ba3250ab5c8da0dd5c9730bade2d68c1c5e73f6a3e3fe2865146061bef6",
+      "hashNormalization": "lf",
+      "sha256CanonicalBytes": "25965ba3250ab5c8da0dd5c9730bade2d68c1c5e73f6a3e3fe2865146061bef6"
     },
     "app/src/main/res/drawable/ms_notifications_24.xml": {
       "blob": "77461925660575915178a45eeb0557555a7dad51",
@@ -10431,6 +10599,12 @@
       "hashNormalization": "lf",
       "sha256CanonicalBytes": "2af8af2f6733f3d0e2a4bf4b2378352b298a981ba56a05677e9e312ee65d1c4d"
     },
+    "app/src/main/res/drawable/ms_preview_24.xml": {
+      "blob": "abce12cf92ee7f1fb7b4a6cc99afc9bb14724d83",
+      "sha256": "18cc9d7c1ffb3caa25c7c704d986c1867f28fbbfbb9a1ad30dfc9bce5bcaf41a",
+      "hashNormalization": "lf",
+      "sha256CanonicalBytes": "18cc9d7c1ffb3caa25c7c704d986c1867f28fbbfbb9a1ad30dfc9bce5bcaf41a"
+    },
     "app/src/main/res/drawable/ms_query_stats_24.xml": {
       "blob": "436aec943389ddcbded927d5820e772b49345e7e",
       "sha256": "d4d85ff53db2537f81a93296ca41330bf67bd6d60d2765b26857915f21926b98",
@@ -10496,6 +10670,12 @@
       "sha256": "810cd1d657367d5f33c56bde96d6b3cb0e714528b8d60fb548a96cd4a63d257e",
       "hashNormalization": "lf",
       "sha256CanonicalBytes": "810cd1d657367d5f33c56bde96d6b3cb0e714528b8d60fb548a96cd4a63d257e"
+    },
+    "app/src/main/res/drawable/ms_resume_24.xml": {
+      "blob": "ad80e4bd503ffbcee2fb5fa54aa2d68ae46228f4",
+      "sha256": "96eaff9294d4a1d3293a6ac480cdf2cc6489c27e980f73c0e7013e0d6d4805fe",
+      "hashNormalization": "lf",
+      "sha256CanonicalBytes": "96eaff9294d4a1d3293a6ac480cdf2cc6489c27e980f73c0e7013e0d6d4805fe"
     },
     "app/src/main/res/drawable/ms_rocket_24.xml": {
       "blob": "4d6a136d7ced11cba2943ae819249098ae9c2f62",
@@ -10881,6 +11061,12 @@
       "hashNormalization": "lf",
       "sha256CanonicalBytes": "c35d841a42ea6064c6148c01e3bef61dc0ca4e12bb0ae0382c7fbcf2bb8bfc85"
     },
+    "app/src/main/res/drawable/ms_undo_24.xml": {
+      "blob": "a3f745b7679699624885a563870c7480432b0a92",
+      "sha256": "640246df692878d51ba94ab4da16f144376ae64014bc79fbcba17d2ae690629f",
+      "hashNormalization": "lf",
+      "sha256CanonicalBytes": "640246df692878d51ba94ab4da16f144376ae64014bc79fbcba17d2ae690629f"
+    },
     "app/src/main/res/drawable/ms_update_24.xml": {
       "blob": "ebbdc22c48d3a8ae99a1f447f8dd925ac9675c50",
       "sha256": "79690b8d19447cdad4366d60abc3af5b7fd9b843a7d48102aefd075940c47167",
@@ -10946,6 +11132,12 @@
       "sha256": "6072a994e015a7c95264ded23022c247e6387e56b2686bf7d873a6b5877bd316",
       "hashNormalization": "lf",
       "sha256CanonicalBytes": "6072a994e015a7c95264ded23022c247e6387e56b2686bf7d873a6b5877bd316"
+    },
+    "app/src/main/res/drawable/ms_view_stream_24.xml": {
+      "blob": "880e028bbec8f665d011e0736b37f302e3b78f2d",
+      "sha256": "d642b70938e639ce1448590738bee435fbbccb7e54f0588e9a337c403bbd39c0",
+      "hashNormalization": "lf",
+      "sha256CanonicalBytes": "d642b70938e639ce1448590738bee435fbbccb7e54f0588e9a337c403bbd39c0"
     },
     "app/src/main/res/drawable/ms_visibility_24.xml": {
       "blob": "23d640a8b36785b3b57d246cde92ad533e9b4fc4",
