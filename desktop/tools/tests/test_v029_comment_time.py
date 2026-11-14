@@ -120,6 +120,8 @@ class V029LiveReplyTimeTest(unittest.TestCase):
         self.assertEqual(self.original.count(anchor), 1)
         for changed in (self.original.replace(anchor, ''),
                         self.original + '\n' + anchor,
+                        self.original.replace('//  优化后的颜色常量', ''),
+                        self.original + '\n//  优化后的颜色常量',
                         self.original.replace('timestampSeconds = item.ctime,', 'timestampSeconds = 0,')):
             with self.subTest(change=time_slice.digest(changed.encode())):
                 # Simulate a reviewed digest for the mutated source to exercise structural guards.

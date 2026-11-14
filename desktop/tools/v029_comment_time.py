@@ -71,7 +71,7 @@ def apply(repo, path, original):
             ('    val metadataText = remember(item.ctime, displayLocation, detailedCommentTimeEnabled)', '    val showTopBadge'),
         ]
         for start, end in spans:
-            if original.count(start) != 1 or newest.count(start) != 1:
+            if any(text.count(marker) != 1 for text in (original, newest) for marker in (start, end)):
                 raise ValueError('Ambiguous live comment-time selection: ' + start)
             old_block = _between(original, start, end)
             new_block = _between(newest, start, end)
