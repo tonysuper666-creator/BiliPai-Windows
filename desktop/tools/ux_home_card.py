@@ -69,6 +69,17 @@ The row lives inside the existing menu and nowhere else: a card without onDismis
 policy and shows no menu, and with the flag OFF homeCardCopyLink stays null, so the vendored menu keeps its three rows and
 behaviour. Undoing only COPY_EDITS gives the text of H2, K3, K3b and K3d exactly.
 
+Slice K3f adds one separator line in front of 不感兴趣 (spec 4: the negative row goes after a separator), one more
+exact-once edit in SEPARATOR_EDITS, applied after all of the above, with the wrapper in DesktopCardContextMenu.kt:
+
+  * the line is the kit divider (outlineVariant on one physical pixel at any scale), so no new visual value is invented;
+  * it is drawn only when 不感兴趣 is drawn and one of the three rows above it is drawn too, so a card without that row,
+    or with no row above it, keeps a menu free of a lone line;
+  * the wrapper paints nothing while the flag is OFF, and the line is not focusable or clickable: the menu order, the
+    single callback of every row, Escape and the focus back to the cover stay the vendored behaviour. The vendored menu
+    keeps no line, as it always had none.
+Undoing only SEPARATOR_EDITS gives the text of H2, K3, K3b, K3d and K3e exactly.
+
 Not covered by this layer: the single-column display mode (AppWindowActionMenu), StoryVideoCard and DynamicCard. This is a
 desktop-owned layer: there is no upstream archive, no manifest and no pinned predecessor hash. Every anchor is counted on the text
 it receives and must occur exactly once, so a change of an earlier layer (the v041 status labels, the v043 recommendation badges,
@@ -396,7 +407,21 @@ COPY_EDITS = (
      '                }\n'
      '\n                // 不感兴趣 (放第一位，方便操作) -> 改回下方\n'),
 )
-ALL_EDITS = EDITS + COVER_EDITS + LAYOUT_EDITS + HOVER_EDITS + COPY_EDITS
+# Slice K3f: one separator line in front of 不感兴趣 (spec 4: "分隔线后放不感兴趣"). Same rules as EDITS: the `before`
+# occurs exactly once in the text this layer receives (after all of the above). The line is the kit divider and paints
+# nothing while the flag is OFF, so the vendored menu keeps its three rows and the flag-on menu keeps the grouping.
+# The guard keeps a card without that row, or with no visible row above it, free of a lone line: it names the three
+# rows the menu can draw above 不感兴趣, in their order, and it is the only place that knows them.
+SEPARATOR_EDITS = (
+    ('ux-card-menu-separator-row',
+     '\n                // 不感兴趣 (放第一位，方便操作) -> 改回下方\n',
+     '\n                // 分隔线：把常用操作和「不感兴趣」分开 (K3f)\n'
+     '                if (onDismiss != null && (onWatchLater != null || onUnfavorite != null || copyHomeCardLink != null)) {\n'
+     '                    ' + UI + 'DesktopCardMenuSeparator()\n'
+     '                }\n'
+     '\n                // 不感兴趣 (放第一位，方便操作) -> 改回下方\n'),
+)
+ALL_EDITS = EDITS + COVER_EDITS + LAYOUT_EDITS + HOVER_EDITS + COPY_EDITS + SEPARATOR_EDITS
 
 # After the layer none of these vendored lines may remain in the file: the menu imports and the overflow box size line.
 GONE = (
@@ -412,6 +437,7 @@ LAYOUT_INTRODUCED = ('desktopCardInteractionsOn', 'homeCardThreeLine', 'threeLin
 HOVER_INTRODUCED = ('desktopHomeCardHoverSurface', 'rememberDesktopHomeCardHover', 'homeCardHover', 'DesktopHomeCardQuickActions')
 COPY_INTRODUCED = ('desktopHomeVideoLink', 'desktopHomeCopyVideoLink', 'homeCardClipboard', 'homeCardCopyLink',
                    'copyHomeCardLink')
+SEPARATOR_INTRODUCED = ('DesktopCardMenuSeparator',)
 
 
 def sha(text):
@@ -434,7 +460,7 @@ def apply_home_card(repo, name, text, audits):
     """The text of one emitted file with the Home card edits, or the text itself for any file the layer does not own."""
     if name != CARD:
         return text
-    for introduced in INTRODUCED + COVER_INTRODUCED + LAYOUT_INTRODUCED + HOVER_INTRODUCED + COPY_INTRODUCED:
+    for introduced in INTRODUCED + COVER_INTRODUCED + LAYOUT_INTRODUCED + HOVER_INTRODUCED + COPY_INTRODUCED + SEPARATOR_INTRODUCED:
         need(introduced not in text, 'Home card layer already applied or name taken: %s in %s' % (introduced, name))
     received = text
     for label, before, after in ALL_EDITS:
