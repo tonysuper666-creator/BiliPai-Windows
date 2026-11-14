@@ -36,6 +36,58 @@ internal fun next(): Int { return 1 }
         with self.assertRaises(ValueError):
             media.function("fun changed(): Int { return 1 }\nfun changed(): Int { return 2 }", "changed", media.parser_for(REPO))
 
+    def test_expression_body_stops_before_the_next_declaration(self):
+        parser = media.parser_for(REPO)
+        source = '''private fun createPageInfo(
+    requestedPage: Int
+): SearchVideoSearchPageInfo = resolveVideoSearchPageInfo(
+    requestedPage = requestedPage
+)
+
+private fun searchTypeParams(): Map<String, String> = buildMap {
+    put("a", "b")
+}
+'''
+        self.assertEqual('''private fun createPageInfo(
+    requestedPage: Int
+): SearchVideoSearchPageInfo = resolveVideoSearchPageInfo(
+    requestedPage = requestedPage
+)''', media.function(source, "createPageInfo", parser))
+        # An expression body owns its lambdas; the chain after one is not a new body.
+        self.assertEqual('''fun watched(): Flow<Int> =
+    store.data.map { it[KEY] ?: 0 }.onEach { cache(it) }''',
+                         media.function('''fun watched(): Flow<Int> =
+    store.data.map { it[KEY] ?: 0 }.onEach { cache(it) }
+
+fun next(): Int = 1
+''', "watched", parser))
+
+    def test_expression_body_without_a_boundary_fails_closed(self):
+        parser = media.parser_for(REPO)
+        for name, source in (
+            ("empty", "fun empty(): Int =\n\nfun next(): Int = 1\n"),
+            ("unterminated", "fun unterminated(): Int = 1 +\n"),
+            ("dangling", "fun dangling(): Int = 1 +\nfun next(): Int = 1\n"),
+        ):
+            with self.subTest(name=name), self.assertRaises(ValueError):
+                media.function(source, name, parser)
+        with self.assertRaisesRegex(ValueError, "missing or ambiguous"):
+            media.function("fun renamedCreatePageInfo(): Int = 1\n", "createPageInfo", parser)
+
+    def test_changed_expression_body_still_fails_the_canonical_digest(self):
+        relative = "core-data/src/main/java/com/android/purebilibili/data/repository/SearchRepository.kt"
+        original = canonical_source(REPO, relative).read_bytes()
+        self.assertGreaterEqual(original.count(b"resolveVideoSearchPageInfo("), 1)
+        with tempfile.TemporaryDirectory() as temporary:
+            changed = Path(temporary) / relative
+            changed.parent.mkdir(parents=True)
+            changed.write_bytes(original.replace(b"resolveVideoSearchPageInfo(", b"resolveChangedPageInfo(", 1))
+            with self.assertRaisesRegex(ValueError, "Canonical original source digest mismatch"):
+                canonical_source(Path(temporary), relative)
+        with tempfile.TemporaryDirectory() as temporary:
+            with self.assertRaisesRegex(ValueError, "Unregistered canonical upstream source"):
+                canonical_source(Path(temporary), "app/src/main/java/com/android/purebilibili/data/repository/Unregistered.kt")
+
     def test_actual_generation_retains_original_algorithms_and_windows_binding(self):
         with tempfile.TemporaryDirectory() as temporary:
             output = Path(temporary)

@@ -50,6 +50,56 @@ def parser_for(repo: Path):
     return parser
 
 
+# A declaration head cannot continue an expression, so an `=` body stops before
+# one. Soft keywords are included because they only ever introduce a declaration
+# in Kotlin; this list gates the terminator, it never picks the cut by itself.
+DECLARATION_HEADS = {
+    "@", "abstract", "actual", "annotation", "class", "companion", "const",
+    "constructor", "crossinline", "data", "enum", "expect", "external",
+    "final", "fun", "import", "infix", "init", "inline", "inner", "interface",
+    "internal", "lateinit", "noinline", "object", "open", "operator",
+    "override", "package", "private", "protected", "public", "reified",
+    "sealed", "suspend", "tailrec", "typealias", "val", "value", "var",
+    "vararg",
+}
+# A body cut after one of these would be a partial original, so it fails closed.
+CONTINUATION_ONLY = {"=", ".", "?.", "?:", ",", "(", "[", "{", "+", "-", "*",
+                     "/", "%", "&&", "||", "..", "..<", "->", "<", ">", "!"}
+
+
+def line_indent(source: str, position: int) -> int | None:
+    """Indentation when `position` starts its own line, else None."""
+    beginning = source.rfind("\n", 0, position) + 1
+    prefix = source[beginning:position]
+    return len(prefix) if not prefix.strip() else None
+
+
+def expression_end(source: str, name: str, tokens: list, index: int, indent: int) -> int:
+    """Last token of an `= expression` body, failing closed when it cannot end."""
+    depth, last = 0, None
+    while index < len(tokens):
+        token, begin, _ = tokens[index]
+        if depth == 0 and "\n" in (source[tokens[last][2]:begin] if last is not None else ""):
+            leading = line_indent(source, begin)
+            if leading is not None and leading <= indent and token in DECLARATION_HEADS | {"}"}:
+                if last is None:
+                    raise ValueError(f"Original {name} has an empty expression body")
+                if tokens[last][0] in CONTINUATION_ONLY:
+                    raise ValueError(f"Original {name} expression body ends mid-expression")
+                return last
+        if last is None and depth == 0 and (token in DECLARATION_HEADS or token == "}"):
+            raise ValueError(f"Original {name} has an empty expression body")
+        if token in {"(", "[", "{"}:
+            depth += 1
+        elif token in {")", "]", "}"}:
+            depth -= 1
+            if depth < 0:
+                raise ValueError(f"Original {name} has an unbalanced expression body")
+        last = index
+        index += 1
+    raise ValueError(f"Original {name} has an unterminated expression body")
+
+
 def function(source: str, name: str, parser) -> str:
     matches = list(re.finditer(r"(?m)^[ \t]*(?:(?:internal|private|suspend)\s+)*fun\s+(?:[\w.]+\.)?" + re.escape(name) + r"\s*\(", source))
     if len(matches) != 1:
@@ -57,21 +107,27 @@ def function(source: str, name: str, parser) -> str:
     match = matches[0]
     tokens = parser.kotlin_tokens(source)
     index = next(i for i, (_, begin, _) in enumerate(tokens) if begin >= match.start())
+    indent = len(source[source.rfind("\n", 0, tokens[index][1]) + 1:tokens[index][1]])
     while tokens[index][0] != "(":
         index += 1
     parentheses = 1
     while parentheses:
         index += 1
         parentheses += (tokens[index][0] == "(") - (tokens[index][0] == ")")
-    # Every reviewed selection has a block or a `when {}` expression body.
-    while tokens[index][0] != "{":
+    # A reviewed selection has a block body or an expression body after its
+    # optional return type; anything else is a changed original.
+    index += 1
+    while tokens[index][0] not in {"{", "="}:
         if tokens[index][1] > match.end() and tokens[index][0] in {"fun", "class", "object"}:
             raise ValueError(f"Original {name} no longer has a supported body")
         index += 1
-    depth = 1
-    while depth:
-        index += 1
-        depth += (tokens[index][0] == "{") - (tokens[index][0] == "}")
+    if tokens[index][0] == "=":
+        index = expression_end(source, name, tokens, index + 1, indent)
+    else:
+        depth = 1
+        while depth:
+            index += 1
+            depth += (tokens[index][0] == "{") - (tokens[index][0] == "}")
     return textwrap.dedent(source[match.start():tokens[index][2]])
 
 
