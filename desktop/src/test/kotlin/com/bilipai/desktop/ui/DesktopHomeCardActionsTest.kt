@@ -3,6 +3,7 @@
 package com.bilipai.desktop.ui
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
@@ -10,6 +11,9 @@ import androidx.compose.ui.ImageComposeScene
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.KeyEvent
+import androidx.compose.ui.input.key.KeyEventType
 import androidx.compose.ui.input.pointer.PointerButtons
 import androidx.compose.ui.input.pointer.PointerEventType
 import androidx.compose.ui.platform.*
@@ -24,6 +28,7 @@ import coil3.intercept.Interceptor
 import coil3.request.ImageResult
 import com.android.purebilibili.app.newImageLoader
 import com.android.purebilibili.core.store.DesktopOriginalHomeCardVisualSettings
+import com.android.purebilibili.core.theme.AppUiStyle
 import com.android.purebilibili.core.store.HomeFeedCardStyle
 import com.android.purebilibili.core.util.WindowWidthSizeClass
 import com.android.purebilibili.data.model.response.Owner
@@ -31,6 +36,7 @@ import com.android.purebilibili.data.model.response.Stat
 import com.android.purebilibili.data.model.response.VideoItem
 import com.android.purebilibili.feature.home.components.cards.ElegantVideoCard
 import com.android.purebilibili.feature.home.resolveHomeFeedCardLayout
+import com.android.purebilibili.feature.settings.AppThemeMode
 import com.bilipai.desktop.appearance.*
 import com.bilipai.desktop.data.*
 import com.bilipai.desktop.plugins.DesktopPluginContext
@@ -46,6 +52,8 @@ import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestCoroutineScheduler
 import kotlinx.serialization.json.JsonObject
 import okhttp3.Call
+import org.junit.jupiter.api.DynamicTest
+import org.junit.jupiter.api.TestFactory
 import org.junit.jupiter.api.io.TempDir
 import kotlin.test.*
 
@@ -59,6 +67,8 @@ import kotlin.test.*
  *   * without the port (every page except the Root's active Home) and with card_interactions OFF the menu has no new row;
  *   * a special card (no video link, collection, episode) gets no row; a card without aid and id gets no 收藏 but 小窗播放;
  *   * removing the card tells the port that this card left, with the same identity the 小窗播放 call carried.
+ *   * by keyboard (Tab to the cover, Shift+F10, arrows, Enter) each row runs the same one port action, the menu closes
+ *     and the cover keeps the focus; mouse and keyboard hold in both styles x light/dark (Escape: MenuEscapeTest).
  * Not covered: a native window, real AWT input, high DPI, a screen reader (headless ImageComposeScene).
  */
 class DesktopHomeCardActionsTest {
@@ -91,11 +101,19 @@ class DesktopHomeCardActionsTest {
 
     private enum class Card { ENTRY, FULL }
 
+    private fun cases(scenario: String, body: (AppUiStyle, AppThemeMode) -> Unit) = AppUiStyle.entries.flatMap { style ->
+        listOf(AppThemeMode.LIGHT, AppThemeMode.DARK).map { mode ->
+            DynamicTest.dynamicTest("$scenario / ${style.name} / ${mode.name}") { body(style, mode) }
+        }
+    }
+
     private inner class Scene(
         private val item: VideoItem = video(),
         interactions: DesktopWindowsUxCardInteractions = DesktopWindowsUxCardInteractions.ON,
         withPort: Boolean = true,
         private val card: Card = Card.ENTRY,
+        style: AppUiStyle? = null,
+        mode: AppThemeMode? = null,
     ) : AutoCloseable {
         private val scheduler = TestCoroutineScheduler()
         private var time = 0L
@@ -125,7 +143,8 @@ class DesktopHomeCardActionsTest {
         private val scene = DesktopUpstreamCalls.withOwner(owner) {
             ImageComposeScene(520, 900, Density(1f), coroutineContext = StandardTestDispatcher(scheduler) +
                 DesktopUpstreamScope(owner) + CoroutineExceptionHandler { _, error -> errors += error }) {
-                DesktopAppearanceTheme(DesktopThemeSettings(hapticFeedbackEnabled = false),
+                val defaults = DesktopThemeSettings(hapticFeedbackEnabled = false)
+                DesktopAppearanceTheme(defaults.copy(uiStyle = style ?: defaults.uiStyle, themeMode = mode ?: defaults.themeMode),
                     systemLanguageTags = listOf("zh-CN"), windowSmallestWidthDp = 520) {
                     val original = LocalWindowInfo.current
                     val window = remember(original) { object : WindowInfo by original { override val isWindowFocused = true } }
@@ -146,7 +165,9 @@ class DesktopHomeCardActionsTest {
                     .copy(cardAnimationEnabled = false)
             }
             val layout = remember { resolveHomeFeedCardLayout(HomeFeedCardStyle.BILIPAI, 2, WindowWidthSizeClass.Expanded) }
-            Column(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background).padding(24.dp)) {
+            Column(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background).padding(24.dp),
+                verticalArrangement = Arrangement.spacedBy(24.dp)) {
+                Box(Modifier.size(40.dp).testTag("before").focusable())
                 Box(Modifier.width(320.dp)) {
                     if (shown) {
                         val dismiss = { menuActions += "not-interested"; Unit }
@@ -162,6 +183,7 @@ class DesktopHomeCardActionsTest {
                         }
                     }
                 }
+                Box(Modifier.size(40.dp).testTag("after").focusable())
             }
         }
 
@@ -186,6 +208,20 @@ class DesktopHomeCardActionsTest {
             scene.sendPointerEvent(PointerEventType.Press, point, timeMillis = ms + 1, buttons = PointerButtons(isPrimaryPressed = true))
             scene.sendPointerEvent(PointerEventType.Release, point, timeMillis = ms + 41, buttons = PointerButtons())
             advance()
+        }
+        fun focusedTag() = nodes().lastOrNull { it.config.getOrNull(SemanticsProperties.Focused) == true }
+            ?.config?.getOrNull(SemanticsProperties.TestTag)
+        fun key(key: Key, shift: Boolean = false) {
+            scene.sendKeyEvent(KeyEvent(key, KeyEventType.KeyDown, isShiftPressed = shift))
+            scene.sendKeyEvent(KeyEvent(key, KeyEventType.KeyUp, isShiftPressed = shift)); advance()
+        }
+        /** Tab to the sentinel before the card, Tab to the cover, Shift+F10: the card menu by keyboard. */
+        fun openMenuByKeyboard() {
+            advance(); key(Key.Tab)
+            assertEquals("before", focusedTag(), "The first Tab must reach the sentinel before the card")
+            key(Key.Tab); assertEquals("home_video_cover", focusedTag(), "The second Tab reaches the cover")
+            key(Key.F10, shift = true)
+            assertTrue(hasText("收藏") && hasText("小窗播放"), "Shift+F10 opens the menu with the new rows: ${texts()}")
         }
         fun openMenu() {
             advance()
@@ -294,6 +330,45 @@ class DesktopHomeCardActionsTest {
         Scene(item = video(aid = 0, id = 33)).use { s ->
             s.openMenu(); s.click(s.boundsOf("收藏").center)
             assertEquals(listOf("favorite:$bvid/33"), s.port.calls, "aid falls back to id like watch later")
+        }
+    }
+    // ---- Keyboard, focus after close, and both styles x light/dark ------------------------------------------------
+
+    @TestFactory fun byKeyboardFavoriteRunsOnePortActionClosesAndTheCoverKeepsTheFocus() = cases("keyboard 收藏") { style, mode ->
+        Scene(style = style, mode = mode).use { s ->
+            s.openMenuByKeyboard()
+            s.key(Key.DirectionDown); s.key(Key.DirectionDown); s.key(Key.Enter)
+            assertEquals(listOf("favorite:$bvid/11"), s.port.calls, "Down, Down, Enter picks 收藏 once")
+            assertFalse(s.hasText("不感兴趣"), "Picking 收藏 by keyboard closes the menu")
+            assertTrue(s.menuActions.isEmpty() && s.opened.isEmpty() && s.clipboard.writes.isEmpty())
+            assertEquals("home_video_cover", s.focusedTag(), "After the menu closes the cover keeps the focus")
+        }
+    }
+
+    @TestFactory fun byKeyboardMiniRunsOnePortActionClosesAndTheCoverKeepsTheFocus() = cases("keyboard 小窗播放") { style, mode ->
+        Scene(style = style, mode = mode).use { s ->
+            s.openMenuByKeyboard()
+            repeat(3) { s.key(Key.DirectionDown) }; s.key(Key.Enter)
+            assertEquals(listOf("mini:$bvid/11/71/71"), s.port.calls, "Down x3, Enter picks 小窗播放 once")
+            assertEquals(1, s.port.miniCards.size)
+            assertFalse(s.hasText("不感兴趣"), "Picking 小窗播放 by keyboard closes the menu")
+            assertTrue(s.menuActions.isEmpty() && s.opened.isEmpty(), "No other row and no ordinary card click")
+            assertEquals("home_video_cover", s.focusedTag(), "After the menu closes the cover keeps the focus")
+        }
+    }
+
+    @TestFactory fun byMouseBothRowsHoldInEveryStyleAndMode() = cases("mouse") { style, mode ->
+        Scene(style = style, mode = mode).use { s ->
+            s.openMenu()
+            assertEquals(listOf("稍后再看", "收藏", "小窗播放", "复制链接（Ctrl C）", "line", "不感兴趣"),
+                s.menuOrder(sliceRows), "The ON menu: ${s.texts()}")
+            s.click(s.boundsOf("收藏").center)
+            assertEquals(listOf("favorite:$bvid/11"), s.port.calls)
+            assertFalse(s.hasText("不感兴趣"))
+            s.openMenu(); s.click(s.boundsOf("小窗播放").center)
+            assertEquals(listOf("favorite:$bvid/11", "mini:$bvid/11/71/71"), s.port.calls)
+            assertFalse(s.hasText("不感兴趣"))
+            assertTrue(s.menuActions.isEmpty() && s.opened.isEmpty() && s.clipboard.writes.isEmpty())
         }
     }
 }

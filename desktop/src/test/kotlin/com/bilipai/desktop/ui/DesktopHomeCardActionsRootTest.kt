@@ -6,6 +6,7 @@ import androidx.compose.runtime.snapshots.Snapshot
 import androidx.compose.ui.ImageComposeScene
 import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.platform.WindowInfo
+import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.semantics.SemanticsNode
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.semantics.getOrNull
@@ -69,12 +70,18 @@ class DesktopHomeCardActionsRootTest {
         @Volatile var folders: () -> Any = {
             FavFolderResponse(data = FavFolderList(list = listOf(FavFolder(id = 9, title = "K3i 默认收藏夹"))))
         }
+        /** The original cloud favourite write's reply. */
+        @Volatile var saveResponse: () -> SimpleApiResponse = { SimpleApiResponse() }
         val api = Proxy.newProxyInstance(BilibiliApi::class.java.classLoader, arrayOf(BilibiliApi::class.java)) { _, method, args ->
             val list = args.orEmpty().toList()
             when (method.name) {
                 "getFavFolders" -> {
                     apiCalls += "getFavFolders:mid=${list[0]}/type=${list[1]}/rid=${list[2]}"
                     readEntered.countDown(); gate?.await(5, TimeUnit.SECONDS); folders()
+                }
+                "dealFavorite" -> {
+                    apiCalls += "dealFavorite:rid=${list[0]}/type=${list[1]}/add=${list[2]}/del=${list[3]}/csrf=${list[4]}"
+                    saveResponse()
                 }
                 "toString" -> "K3i synthetic api"
                 else -> { apiCalls += method.name; SimpleApiResponse() }
@@ -161,6 +168,20 @@ class DesktopHomeCardActionsRootTest {
         fun texts() = scene.semanticsOwners.flatMap { flatten(it.unmergedRootSemanticsNode) }
             .mapNotNull { node -> node.config.getOrNull(SemanticsProperties.Text)?.joinToString("") { it.text } }
         fun drawerShown() = texts().any { it == "添加到收藏夹" }
+        /** Runs the production onClick of the node showing [text] (or its nearest clickable ancestor). */
+        fun click(text: String): Boolean {
+            val node = scene.semanticsOwners.flatMap { flatten(it.unmergedRootSemanticsNode) }.firstOrNull { node ->
+                node.config.getOrNull(SemanticsProperties.Text)?.joinToString("") { it.text } == text
+            } ?: return false
+            var current: SemanticsNode? = node
+            while (current != null) {
+                current.config.getOrNull(SemanticsActions.OnClick)?.action?.let { action ->
+                    return DesktopUpstreamCalls.withOwner(owner) { action() }
+                }
+                current = current.parent
+            }
+            return false
+        }
         fun requirePort(): DesktopHomeCardActions = assertNotNull(port, "The active Home has the port")
 
         override fun close() { scene.close(); bus.close(); busScope.cancel() }
@@ -294,6 +315,100 @@ class DesktopHomeCardActionsRootTest {
                 s.active = true; s.settle()
                 assertFalse(s.drawerShown(), "Coming back does not replay the request")
                 assertTrue(root.writes().isEmpty())
+            }
+        }
+    }
+
+    // ---- 收藏: the user's confirmation on the original cloud protocol ---------------------------------------------
+
+    private fun openDrawerOf(s: Scene, root: Root) {
+        s.settle(); s.requirePort().favorite(target())
+        assertTrue(s.pumpUntil { s.drawerShown() && s.texts().any { it == "K3i 默认收藏夹" } },
+            "The original drawer with the folders it read: ${s.texts()}")
+        assertTrue(root.writes().isEmpty())
+    }
+
+    @Test fun savingATickedFolderFavouritesThroughTheOriginalCloudProtocol() {
+        Root().use { root ->
+            root.login(42)
+            Scene(root).use { s ->
+                openDrawerOf(s, root)
+                assertTrue(s.click("K3i 默认收藏夹"), "The folder row")
+                assertTrue(s.pumpUntil { s.texts().any { it == "已选择 1 个收藏夹" } }, s.texts().toString())
+                assertTrue(root.writes().isEmpty(), "Ticking alone writes nothing")
+                assertTrue(s.click("保存"), "The drawer's 保存")
+                assertTrue(s.pumpUntil { root.feedback.isNotEmpty() && !s.drawerShown() }, "Saved and closed: ${s.texts()}")
+                assertEquals(listOf("getFavFolders:mid=42/type=2/rid=11",
+                    "dealFavorite:rid=11/type=2/add=9/del=/csrf=synthetic-csrf-42"), root.apiCalls.toList(),
+                    "One original cloud write for this aid, folder and account")
+                assertEquals(listOf("收藏设置已保存"), root.feedback.toList())
+                assertTrue(root.logins.isEmpty())
+            }
+        }
+    }
+
+    @Test fun unTickingTheFolderOfAFavouriteCancelsItThroughTheOriginalCloudProtocol() {
+        Root().use { root ->
+            root.login(42)
+            root.folders = { FavFolderResponse(data = FavFolderList(list = listOf(
+                FavFolder(id = 9, title = "K3i 默认收藏夹", fav_state = 1)))) }
+            Scene(root).use { s ->
+                openDrawerOf(s, root)
+                assertTrue(s.pumpUntil { s.texts().any { it == "已选择 1 个收藏夹" } }, "Membership from the read")
+                assertTrue(s.click("K3i 默认收藏夹"))
+                assertTrue(s.pumpUntil { s.texts().any { it == "已选择 0 个收藏夹" } })
+                assertTrue(s.click("保存"))
+                assertTrue(s.pumpUntil { root.feedback.isNotEmpty() && !s.drawerShown() })
+                assertEquals(listOf("dealFavorite:rid=11/type=2/add=/del=9/csrf=synthetic-csrf-42"), root.writes())
+                assertEquals(listOf("已取消收藏"), root.feedback.toList())
+            }
+        }
+    }
+
+    @Test fun savingAnUnchangedSelectionWritesNothing() {
+        Root().use { root ->
+            root.login(42)
+            Scene(root).use { s ->
+                openDrawerOf(s, root)
+                assertTrue(s.click("保存"))
+                assertTrue(s.pumpUntil { root.feedback.isNotEmpty() && !s.drawerShown() })
+                assertEquals(listOf("收藏夹未变更"), root.feedback.toList())
+                assertTrue(root.writes().isEmpty(), "No cloud write: ${root.writes()}")
+            }
+        }
+    }
+
+    @Test fun aRejectedCloudSaveReportsTheOriginalFailureAndKeepsTheDrawer() {
+        Root().use { root ->
+            root.login(42)
+            root.saveResponse = { SimpleApiResponse(code = -111, message = "csrf 校验失败") }
+            Scene(root).use { s ->
+                openDrawerOf(s, root)
+                assertTrue(s.click("K3i 默认收藏夹"))
+                assertTrue(s.pumpUntil { s.texts().any { it == "已选择 1 个收藏夹" } })
+                assertTrue(s.click("保存"))
+                assertTrue(s.pumpUntil { root.feedback.isNotEmpty() })
+                assertEquals(listOf("dealFavorite:rid=11/type=2/add=9/del=/csrf=synthetic-csrf-42"), root.writes())
+                assertEquals(listOf("收藏失败: csrf 校验失败"), root.feedback.toList())
+                s.settle()
+                assertTrue(s.drawerShown(), "The rejected save leaves the drawer for another try")
+            }
+        }
+    }
+
+    @Test fun aSaveAfterAnotherAccountTookOverWritesNothing() {
+        Root().use { root ->
+            root.login(42)
+            Scene(root).use { s ->
+                openDrawerOf(s, root)
+                assertTrue(s.click("K3i 默认收藏夹"))
+                assertTrue(s.pumpUntil { s.texts().any { it == "已选择 1 个收藏夹" } })
+                root.login(43)
+                runCatching { s.click("保存") }
+                s.settle()
+                assertFalse(s.drawerShown())
+                assertTrue(root.writes().isEmpty(), "Nothing is written for account 43: ${root.writes()}")
+                assertTrue(root.feedback.isEmpty(), root.feedback.toString())
             }
         }
     }
