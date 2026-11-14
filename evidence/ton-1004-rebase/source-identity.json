@@ -1,0 +1,26 @@
+{
+  "base": "0cb58c3fe890f7a88860acb03fafc3e1b0fdacd8",
+  "base_tree": "81c03ae092d61a4e7b20edc6072699495593df33",
+  "old_pr56_head": "6cac3abc0011e087a59e8629ec7c2a1d3fe48506",
+  "screen_source_set": "desktop/build.gradle.kts:3693 generated/bgm-detail/com",
+  "screen_producer": "desktop/tools/extract-upstream-bgm-detail.py:358-378; emit:184",
+  "content_only_advancement": "desktop/tools/v046_comment_list.py:446 BgmDetailContent only",
+  "generic_vm_selection": "desktop/tools/extract-upstream-bgm-detail.py:281 v036_video_comment_cache.select_vm",
+  "missing_actual_generic_vm_apis": [
+    "composerDrafts",
+    "beginCommentDraft",
+    "updateCommentDraft"
+  ],
+  "whole_screen_migrated": false,
+  "sha256": {
+    "desktop/build.gradle.kts": "5db1f9b0defa4d4b8d512a26b53b9aa65e6cc7b785e8ddb1098406f7cd0e1b90",
+    "desktop/tools/extract-upstream-bgm-detail.py": "2a9f8ad706b290abc1e8328ed1ee26a39124d7fe3f841805b045e7acac4ad246",
+    "desktop/tools/v036_video_comment_cache.py": "81cb90c8236ea4ac0b04d1eec7a96aea46e6f2becb2ad24a4cdce8b6563683e2",
+    "desktop/tools/v046_comment_list.py": "b662f09fab64355eb8f9aba07fff57bc52098a673b97affab8ef6112b7d60cac",
+    "app/src/main/java/com/android/purebilibili/feature/audio/bgm/BgmDetailScreen.kt": "474bfd1c53d0739ee73a3bd5b3e4cb7f18a433da764ff4637168c8ca0dd835fe",
+    "desktop/build/generated/bgm-detail/com/android/purebilibili/feature/audio/bgm/BgmDetailScreen.kt": "a9acd7f3dba1b24cb181d03f43d29aaea34d97f7fb2fc82ee9aff6bc904522e0",
+    "desktop/build/generated/bgm-detail/com/android/purebilibili/feature/video/viewmodel/VideoCommentViewModel.kt": "9c596e9f4753cc92dcdce51d1c5bddc46e8962c66ed5a31bbc4ed976e161dd2d",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopBgmDetailRoot.kt": "4d4008490aa490379cb0219753b0a330105daf6ea304a7b644155dd8ec91f1ac",
+    "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopBgmDetailMigrationTest.kt": "4babf73eb3efc4b8e4b6f9684e9ebf311a685401bfc6976015e6d59a6edaf59b"
+  }
+}

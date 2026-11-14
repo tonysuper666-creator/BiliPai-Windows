@@ -17,7 +17,28 @@ import com.bilipai.desktop.settings.LocalDesktopDynamicTimelinePreferences
 import kotlinx.coroutines.*
 import java.util.concurrent.atomic.AtomicBoolean
 
-private data class DesktopBgmCommentRoute(val oid: Long, val root: Long, val target: Long, val type: Int)
+internal data class DesktopBgmCommentRoute(val oid: Long, val root: Long, val target: Long, val type: Int)
+
+/** The page variants and nested route borrow one Root owner's requests and scope. */
+internal class DesktopBgmDetailState(private val owner: DesktopOriginalCommentRootOwner) {
+    val detailRequests = owner.operations.bgmDetailRequests()
+    val detail = BgmDetailViewModel(owner.scope, detailRequests)
+    val comments = VideoCommentViewModel(owner.scope, owner.requests)
+    var route by mutableStateOf<DesktopBgmCommentRoute?>(null)
+        private set
+
+    fun openComment(oid: Long, root: Long, target: Long, type: Int) {
+        if (owner.isOwned()) route = DesktopBgmCommentRoute(oid, root, target, type)
+    }
+
+    fun closeComment() {
+        if (owner.isOwned()) route = null
+    }
+}
+
+@Composable
+internal fun rememberDesktopBgmDetailState(owner: DesktopOriginalCommentRootOwner): DesktopBgmDetailState =
+    remember(owner) { DesktopBgmDetailState(owner) }
 
 /** Original BGM and CommentDetail owners; all HTTP, images, emotes and records use Root bindings. */
 @Composable internal fun DesktopBgmDetailRootHost(
@@ -36,28 +57,22 @@ private data class DesktopBgmCommentRoute(val oid: Long, val root: Long, val tar
 ) {
     DesktopOriginalCommentRootBindings(repository, community, fraud,
         Triple(request.musicId, request.aid, request.cid), { true }, Modifier.fillMaxSize()) { owner ->
-        val operations = owner.operations
         val requests = owner.requests
         val scope = owner.scope
-        fun owned() = owner.isOwned()
-        val detailRequests = remember(operations) { operations.bgmDetailRequests() }
-        val vm = remember(operations) { BgmDetailViewModel(scope, detailRequests) }
-        val comments = remember(operations) { VideoCommentViewModel(scope, requests) }
-        var route by remember { mutableStateOf<DesktopBgmCommentRoute?>(null) }
-        val active = route
+        val page = rememberDesktopBgmDetailState(owner)
+        val active = page.route
         if (active == null) BgmDetailScreen(request.musicId, request.aid, request.cid, request.showVideos,
             onBack = onBack, onVideosClick = onVideosClick, onVideoClick = onVideoClick,
-            onUserClick = onUserClick, onCommentClick = { oid, root, target, type ->
-                if (owned()) route = DesktopBgmCommentRoute(oid, root, target, type)
-            }, onLinkClick = onLinkClick, onLogin = onLogin, viewModel = vm,
-            commentViewModel = comments, requests = detailRequests,
+            onUserClick = onUserClick, onCommentClick = page::openComment,
+            onLinkClick = onLinkClick, onLogin = onLogin, viewModel = page.detail,
+            commentViewModel = page.comments, requests = page.detailRequests,
             nowPlayingBarOverlayVisible = nowPlayingBarOverlayVisible, onMediaSearch = onMediaSearch)
-        else key(active) {
+        else key(owner, active) {
             val detailScope = remember { CoroutineScope(scope.coroutineContext + SupervisorJob(scope.coroutineContext[Job])) }
             val detail = remember { CommentDetailViewModel(detailScope, requests) }
             DisposableEffect(detailScope) { onDispose { detailScope.cancel() } }
             CommentDetailScreen(active.oid, active.root, active.target, active.type,
-                onBack = { route = null }, onOpenLink = onLinkClick, onUserClick = onUserClick,
+                onBack = page::closeComment, onOpenLink = onLinkClick, onUserClick = onUserClick,
                 viewModel = detail, requests = requests)
         }
     }
