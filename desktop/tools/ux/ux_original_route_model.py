@@ -63,6 +63,9 @@ NEW_NAMES = ("WindowsOriginalVideoRouteMountFixture", "WindowsOriginalVideoRoute
              "OriginalVideoRouteExpectation", "WindowsOriginalVideoRouteMountVerdictTest")
 HOLDER_ROUTE = "DesktopOriginalVideoHolderRoute"
 DESKTOP_LEAF = "DesktopWindowsVideoPhysicalLeaf"
+PLAYER_STAGE = "DesktopWindowsVideoPlayerStage"
+CONTROLS_LAMBDA = PLAYER_STAGE + ".controls"
+LEGACY_CONTROLS_CALL = "if (chromeVisible && legacy) controls()"
 # The original page and the pieces of it the anchors come from, and the desktop pieces the leaf anchors come from.
 ORIGINAL_PAGE_FUNCTIONS = ("VideoDetailScreenStateHolder", "VideoPlayerSection", "VideoPlayerOverlay", "UpInfoSection",
                            "NativeDanmakuToggleButton", "VideoContentTabBar", "PortraitTopBar", "BottomControlBar")
@@ -178,7 +181,48 @@ def normalized(line):
 def graph():
     """(universe, names reachable from the original route, names reachable from the desktop leaf)."""
     universe = detail.repo_universe()
-    return universe, universe.reach({HOLDER_ROUTE}), universe.reach({DESKTOP_LEAF})
+    return universe, universe.reach({HOLDER_ROUTE}), desktop_reach(universe)
+
+
+def legacy_controls_mounted(leaf):
+    """Resolve the one production controls supplier through the retained Leaf/Stage seam.
+
+    The PascalCase scanner cannot follow resourceHost's default argument or a
+    stored composable lambda. Require both ends of that connection before adding
+    its call-graph edge; a merely declared or uncalled supplier is not reachable.
+    """
+    required = (
+        "resourceHost: @Composable () -> DesktopWindowsVideoLeafResources? = {\n        DesktopWindowsVideoPhysicalLeafResources(",
+        "val resources = resourceHost() ?: return", "val plan = resources.content(panelState)",
+        "        DesktopWindowsVideoPlayerStage(\n",
+        "chromeVisible = plan.chromeVisible, header = plan.header, viewport = plan.viewport,",
+        "controls = plan.controls, status = plan.status,",
+        "val legacy = layout == DesktopWindowsUxPlayerLayout.LEGACY", LEGACY_CONTROLS_CALL,
+        "return DesktopWindowsVideoLeafResources(assembly, ::current, content = { panelState ->",
+        "    DesktopWindowsVideoLeafRenderPlan(\n",
+        "controls = { Box(Modifier.onSizeChanged { overlayControlsHeightPx = it.height }) { DesktopWindowsVideoControlBar(",
+    )
+    if any(leaf.count(needle) != 1 for needle in required):
+        return False
+    code = source.mask_kotlin(leaf)
+    functions = {name: (start, end) for name, _, start, end in detail.scan_functions(code)}
+    if PLAYER_STAGE not in functions:
+        return False
+    start, end = functions[PLAYER_STAGE]
+    return code[start:end].count(LEGACY_CONTROLS_CALL) == 1
+
+
+def desktop_reach(universe):
+    reach = universe.reach({DESKTOP_LEAF})
+    leaf = universe.texts[LEAF_KT.relative_to(REPO).as_posix()]
+    if PLAYER_STAGE in reach and legacy_controls_mounted(leaf):
+        # Include all production suppliers conservatively: any original-page
+        # witness they could emit must still be rejected as desktop-exclusive.
+        supplied = universe.reach({"DesktopWindowsVideoPhysicalLeafResources"})
+        reach.update({name: parent for name, parent in supplied.items() if name not in reach})
+        reach[CONTROLS_LAMBDA] = PLAYER_STAGE
+        reach["DesktopWindowsVideoControlBar"] = CONTROLS_LAMBDA
+    return reach
 
 
 _TOKEN = re.compile(r'//|/\*|"""|"|\'')
@@ -299,7 +343,7 @@ def semantic_occurrences(name, anchor):
 
 def premise_problems(universe=None):
     """Reasons the premise "the original VideoDetail branch is dormant and exclusive" does not hold in the sources."""
-    universe, original_reach, leaf_reach = graph() if universe is None else (universe, universe.reach({HOLDER_ROUTE}), universe.reach({DESKTOP_LEAF}))
+    universe, original_reach, leaf_reach = graph() if universe is None else (universe, universe.reach({HOLDER_ROUTE}), desktop_reach(universe))
     problems = []
     facts = detail.route_facts(universe.code[detail.SHELL_REL], universe.code[detail.ORIGINAL_LEAF_REL], universe.code)
     problems += ["route fact is false: " + name for name, value in facts.items() if not value]
@@ -369,8 +413,8 @@ def leaf_anchor_problems(leaf, original, strings_text=None, bar_text=None, leaf_
             problems.append("%r is also a literal of a file the original route reaches: %s" % (anchor, clash[:4]))
         if anchor in original:
             problems.append("%r is both a leaf and an original anchor" % anchor)
-    if "if (chromeVisible && legacyChrome) legacyControlBar()" not in leaf_text:
-        problems.append("the leaf no longer mounts the LEGACY control bar under chromeVisible and legacyChrome")
+    if not legacy_controls_mounted(leaf_text):
+        problems.append("the leaf no longer mounts the LEGACY control bar through Stage.controls under chromeVisible and legacy")
     if "val chromeVisible = !fullscreen || chrome.visible" not in leaf_text:
         problems.append("chromeVisible is no longer true on page entry (not fullscreen)")
     return problems
