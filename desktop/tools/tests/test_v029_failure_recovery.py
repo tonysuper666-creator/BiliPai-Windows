@@ -53,7 +53,8 @@ class FailureRecoveryGeneratorTests(unittest.TestCase):
         row = next(row for row in self.owner_rows if row["path"] == recovery.VM)
         actual = (self.root / "owner" / recovery.VM).read_text(encoding="utf-8")
         self.assertEqual(row["sha256LF"], hashlib.sha256(actual.encode()).hexdigest())
-        original_actual = actual
+        from generation_stage_proof import restore_stage, OWNER_SPEED
+        original_actual = restore_stage(self.root / 'owner', OWNER_SPEED, recovery.VM, actual)
         # Outer stages (38daac558 and later) are unwound via their own recorded
         # proofs before the original chain.
         comment = json.loads((self.root / "owner" / "v029-comment-selection-VideoPlaybackViewModel.json").read_text(encoding="utf-8"))

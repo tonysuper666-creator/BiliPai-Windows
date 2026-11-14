@@ -1,0 +1,116 @@
+upstream=6f0696eb1389728b5a090125d32c1aae470f72f1
+
+app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt
+650:     val navigationIconCrossScaleEnabled: Boolean = true,
+651:     val bottomBarLabelMode: Int = 0,       // (0=图标+文字, 1=仅图标, 2=仅文字)
+652:     val topTabLabelMode: Int = 2,          // (0=图标+文字, 1=仅图标, 2=仅文字)
+653:     val partitionSideRailOnRight: Boolean = false,
+654:     val hideTopTabs: Boolean = false,
+655:     val homeTopRightAction: HomeTopRightAction = HomeTopRightAction.SETTINGS,
+656:     val homeTopLayoutOrder: HomeTopLayoutOrder = HomeTopLayoutOrder.SEARCH_THEN_TABS,
+657:     val isHeaderBlurEnabled: Boolean = true,
+1509:     private val KEY_BOTTOM_BAR_LABEL_MODE = intPreferencesKey("bottom_bar_label_mode")
+1510:     //  [新增] 顶部标签显示模式 (0=图标+文字, 1=仅图标, 2=仅文字)
+1511:     private val KEY_TOP_TAB_LABEL_MODE = intPreferencesKey("top_tab_label_mode")
+1512:     private val KEY_PARTITION_SIDE_RAIL_ON_RIGHT = booleanPreferencesKey("partition_side_rail_on_right")
+1513:     private val KEY_HIDE_TOP_TABS = booleanPreferencesKey("hide_top_tabs")
+1514:     private val KEY_HOME_TOP_RIGHT_ACTION = intPreferencesKey("home_top_right_action")
+1515:     //  [新增] 顶部标签自定义 - 顺序和可见性
+1516:     private val KEY_TOP_TAB_ORDER = stringPreferencesKey("top_tab_order")
+1847:                 preferences[KEY_NAVIGATION_ICON_CROSS_SCALE_ENABLED] ?: true,
+1848:             bottomBarLabelMode = preferences[KEY_BOTTOM_BAR_LABEL_MODE] ?: BottomBarLabelMode.ICON_AND_TEXT,
+1849:             topTabLabelMode = preferences[KEY_TOP_TAB_LABEL_MODE] ?: TopTabLabelMode.TEXT_ONLY,
+1850:             partitionSideRailOnRight = preferences[KEY_PARTITION_SIDE_RAIL_ON_RIGHT] ?: false,
+1851:             hideTopTabs = preferences[KEY_HIDE_TOP_TABS] ?: false,
+1852:             homeTopRightAction = HomeTopRightAction.fromValue(
+1853:                 preferences[KEY_HOME_TOP_RIGHT_ACTION] ?: HomeTopRightAction.SETTINGS.value
+1854:             ),
+
+app/src/main/java/com/android/purebilibili/feature/partition/PartitionScreen.kt
+584:         }
+585:     }
+586:     val layoutDirection = LocalLayoutDirection.current
+587:     val sideRailOnRight = homeSettings.partitionSideRailOnRight
+588:     val leftPadding = contentPadding.calculateLeftPadding(layoutDirection)
+589:     val rightPadding = contentPadding.calculateRightPadding(layoutDirection)
+590:     val railOuterPadding = if (sideRailOnRight) rightPadding else leftPadding
+591:     val topPadding = contentPadding.calculateTopPadding()
+592:     val bottomPadding = contentPadding.calculateBottomPadding()
+593:     // 给标签保留文字缩放空间，侧栏和内容间距在所有材质下使用同一布局。
+594:     val sideRailWidth = 56.dp * LocalDensity.current.fontScale.coerceIn(1f, 1.35f) + railOuterPadding
+657:                                 ).dp,
+658:                         )
+659:                     } else PaddingValues(
+660:                         start = if (sideRailOnRight) 4.dp else railOuterPadding,
+661:                         top = topPadding + 8.dp,
+662:                         bottom = bottomPadding,
+663:                         end = if (sideRailOnRight) railOuterPadding else 4.dp
+664:                     ),
+665:                     liquidGlassIndicatorEnabled = liquidGlassIndicatorEnabled,
+666:                     liquidGlassPreset = homeSettings.bottomBarLiquidGlassPreset,
+667:                     liquidGlassTuning = liquidGlassTuning,
+677:                     indicatorTopInset = partitionRefreshIndicatorTopInset,
+678:                     modifier = Modifier
+679:                         .graphicsLayer {
+680:                             translationX = sideRailVideoPushPx.value * if (sideRailOnRight) -1f else 1f
+681:                         }
+682:                 ) {
+683:                     PartitionVideoList(
+684:                         state = state,
+685:                         listState = activeListState,
+686:                         modifier = Modifier.fillMaxSize(),
+687:                         contentPadding = PaddingValues.Absolute(
+688:                             left = if (sideRailOnRight) leftPadding else 4.dp,
+689:                             top = partitionRefreshIndicatorTopInset,
+690:                             right = if (sideRailOnRight) 4.dp else rightPadding,
+691:                             bottom = bottomPadding
+692:                         ),
+693:                         onVideoClick = { video ->
+694:                             if (video.contentType == "pgc_rank") onBangumiSeasonClick(video.id)
+705:                 Constraints.fixed(constraints.maxWidth - rail.width, constraints.maxHeight)
+706:             )
+707:             layout(constraints.maxWidth, constraints.maxHeight) {
+708:                 rail.place(if (sideRailOnRight) list.width else 0, 0)
+709:                 list.place(if (sideRailOnRight) 0 else rail.width, 0)
+710:             }
+711:         }
+712:     }
+713: }
+
+app/src/main/java/com/android/purebilibili/feature/settings/SettingsAdditionalDirectory.kt
+73:     PlaybackSettingItem("animation.bottom_bar_blur_enabled", "底栏磨砂", SettingsRootCategory.APPEARANCE_THEME, "animation_glass", null, target = SettingsSearchTarget.ANIMATION, readState = { state -> if (state.bottomBarBlurEnabled) "开启" else "关闭" }),
+74:     PlaybackSettingItem("navigation.is_bottom_bar_floating", "悬浮底栏", SettingsRootCategory.NAVIGATION_INTERACTION, "navigation_behavior", { context -> com.android.purebilibili.core.store.SettingsManager.getBottomBarFloating(context).map { if (it) "开启" else "关闭" } }, target = SettingsSearchTarget.BOTTOM_BAR),
+75:     PlaybackSettingItem("navigation.navigation_icon_cross_scale_enabled", "切换时放大图标", SettingsRootCategory.NAVIGATION_INTERACTION, "navigation_behavior", { context -> com.android.purebilibili.core.store.SettingsManager.getNavigationIconCrossScaleEnabled(context).map { if (it) "开启" else "关闭" } }, target = SettingsSearchTarget.BOTTOM_BAR),
+76:     PlaybackSettingItem("navigation.bottom_bar_search_enabled", "底栏搜索按钮", SettingsRootCategory.NAVIGATION_INTERACTION, "navigation_behavior", { context -> com.android.purebilibili.core.store.SettingsManager.getBottomBarSearchEnabled(context).map { if (it) "开启" else "关闭" } }, target = SettingsSearchTarget.BOTTOM_BAR),
+77:     PlaybackSettingItem("navigation.keep_home_top_search", "保留首页顶部搜索条", SettingsRootCategory.NAVIGATION_INTERACTION, "navigation_behavior", { context -> com.android.purebilibili.core.store.SettingsManager.getKeepHomeTopSearchWithBottomSearch(context).map { if (it) "开启" else "关闭" } }, target = SettingsSearchTarget.BOTTOM_BAR),
+78:     PlaybackSettingItem("navigation.bottom_bar_scroll_compact_enabled", "滚动时收成当前入口", SettingsRootCategory.NAVIGATION_INTERACTION, "navigation_behavior", { context -> com.android.purebilibili.core.store.SettingsManager.getBottomBarScrollCompactEnabled(context).map { if (it) "开启" else "关闭" } }, target = SettingsSearchTarget.BOTTOM_BAR),
+79:     PlaybackSettingItem("navigation.linked_dock_merge_on_scroll_enabled", "滚动时合并搜索按钮", SettingsRootCategory.NAVIGATION_INTERACTION, "navigation_behavior", { context -> com.android.purebilibili.core.store.SettingsManager.getLinkedDockMergeOnScrollEnabled(context).map { if (it) "开启" else "关闭" } }, target = SettingsSearchTarget.BOTTOM_BAR),
+80:     PlaybackSettingItem("navigation.list_scoped_search_enabled", "用底栏搜索当前列表", SettingsRootCategory.NAVIGATION_INTERACTION, "navigation_behavior", { context -> com.android.purebilibili.core.store.SettingsManager.getListScopedSearchEnabled(context).map { if (it) "开启" else "关闭" } }, target = SettingsSearchTarget.BOTTOM_BAR),
+81:     PlaybackSettingItem("navigation.hide_top_tabs", "隐藏首页分类栏", SettingsRootCategory.NAVIGATION_INTERACTION, "navigation_top_tabs", { context -> com.android.purebilibili.core.store.SettingsManager.getHideTopTabs(context).map { if (it) "开启" else "关闭" } }, target = SettingsSearchTarget.BOTTOM_BAR),
+82:     PlaybackSettingItem("navigation.partition_side_rail_position", "分区侧栏位置", SettingsRootCategory.NAVIGATION_INTERACTION, "navigation_partition", { context -> com.android.purebilibili.core.store.SettingsManager.getPartitionSideRailOnRight(context).map { if (it) "右侧" else "左侧" } }, target = SettingsSearchTarget.BOTTOM_BAR),
+83:     PlaybackSettingItem("navigation.tablet_use_sidebar", "侧边导航栏", SettingsRootCategory.NAVIGATION_INTERACTION, "navigation_tablet", { context -> com.android.purebilibili.core.store.SettingsManager.getTabletUseSidebar(context).map { if (it) "开启" else "关闭" } }, target = SettingsSearchTarget.BOTTOM_BAR),
+84:     PlaybackSettingItem("navigation.sidebar_account_switcher_enabled", "侧边栏账号切换", SettingsRootCategory.NAVIGATION_INTERACTION, "navigation_tablet", { context -> com.android.purebilibili.core.store.SettingsManager.getSidebarAccountSwitcherEnabled(context).map { if (it) "开启" else "关闭" } }, target = SettingsSearchTarget.BOTTOM_BAR),
+85:     PlaybackSettingItem("glass.progressive_blur_radius", "顶部模糊强度", SettingsRootCategory.APPEARANCE_THEME, "animation_glass", { context -> com.android.purebilibili.core.store.SettingsManager.getLiquidGlassAdvancedSettings(context).map { "${(it.progressiveBlurRadius * 100f).roundToInt()}%" } }, target = SettingsSearchTarget.ANIMATION),
+86:     PlaybackSettingItem("glass.progressive_blur_extent", "模糊覆盖范围", SettingsRootCategory.APPEARANCE_THEME, "animation_glass", { context -> com.android.purebilibili.core.store.SettingsManager.getLiquidGlassAdvancedSettings(context).map { "${(it.progressiveBlurExtent * 100f).roundToInt()}%" } }, target = SettingsSearchTarget.ANIMATION),
+87:     PlaybackSettingItem("glass.progressive_blur_curve", "模糊过渡", SettingsRootCategory.APPEARANCE_THEME, "animation_glass", { context -> com.android.purebilibili.core.store.SettingsManager.getLiquidGlassAdvancedSettings(context).map { "${(it.progressiveBlurCurve * 100f).roundToInt()}%" } }, target = SettingsSearchTarget.ANIMATION),
+88:     PlaybackSettingItem("glass.content_readability", "文字对比度", SettingsRootCategory.APPEARANCE_THEME, "animation_glass", { context -> com.android.purebilibili.core.store.SettingsManager.getLiquidGlassAdvancedSettings(context).map { "${(it.contentReadability * 100f).roundToInt()}%" } }, target = SettingsSearchTarget.ANIMATION),
+89:     PlaybackSettingItem("glass.chromatic_aberration", "边缘彩光", SettingsRootCategory.APPEARANCE_THEME, "animation_glass", { context -> com.android.purebilibili.core.store.SettingsManager.getLiquidGlassAdvancedSettings(context).map { "${(it.chromaticAberration * 100f).roundToInt()}%" } }, target = SettingsSearchTarget.ANIMATION),
+
+app/src/main/java/com/android/purebilibili/feature/settings/screen/BottomBarSettingsScreen.kt
+745:                             SettingsSingleChoicePreference(
+746:                                 icon = rememberSettingsSemanticIcon(SettingsIconRole.PARTITION_RAIL_POSITION),
+747:                                 iconTint = AppContentColors.secondaryText(),
+748:                                 title = settingItemTitle("navigation.partition_side_rail_position"),
+749:                                 subtitle = "选择分区分类侧栏位于列表的左侧或右侧",
+750:                                 options = listOf(
+751:                                     AppSegmentOption(false, "左侧"),
+752:                                     AppSegmentOption(true, "右侧"),
+753:                                 ),
+754:                                 selectedValue = homeConfiguration.partitionSideRailOnRight,
+755:                                 onSelectionChange = { onRight ->
+756:                                     scope.launch { SettingsManager.setPartitionSideRailOnRight(context, onRight) }
+757:                                 },
+758:                             )
+759:                         }
+760:                     }
+761:                 }

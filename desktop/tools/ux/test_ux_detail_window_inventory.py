@@ -180,9 +180,11 @@ KEY_RESOLVER_SHA256 = {
     (model.PLAYER_KEY_POLICY_REL, "resolvePlayerKeyAction"): ("b7c609b4c5eb15da2b6462e29ad9475d1846c808655d197bf16c64a84eb012a0",),
     (model.FULLSCREEN_KEY_POLICY_REL, "resolveFullscreenKeyboardAction"): ("114069a391b843b429bd710b9360251e7d03952690827a323bd3ce248f69538a",),
 }
+# The locked-screen action guard clears held input before either key path.
+# Keep exact function pins, including that guard and both window overloads.
 OFFLINE_KEY_FUNCTION_SHA256 = {
-    'windowKeyInput': ('d7ed5e7a09ec34a2290d690c33f5b5be504c4108b3f8a6fd60a11509e9049f9c', 'bfc9be4c72447a614602c3300a72c27d6d5b1e9ca716bda06f0fe3dce3b60bed'),
-    'keyPressed': ('7c3ab27e59a2dd01680f0e32267430ca805fdfe55f94498e272ca2c09a92960b', '29babc55225c23dedefea32c32c7b90ee8af97e471c711d01a856878e037fb27'),
+    'windowKeyInput': ('90277a20ba1609c0a43a761b3cdc28a5571a34a963b1d5991a35fe61fd5b1def', '807f4a078c843645247a30a032ed8b75bf929f7c68ba96e76d4935e035675904'),
+    'keyPressed': ('b86fd9b9dd2f484543ce03c530f42b65c7a456709dc145d4164041da36e917c2', '29babc55225c23dedefea32c32c7b90ee8af97e471c711d01a856878e037fb27'),
     'keyReleased': ('b0c9a1c21ad29c18751100e3b0e2a8924e9a49dbd2d9e51a18fcc2c11da53e5b', '486b922e0e6a7f693bdf9a6df49f18503c4b00d9ab103a55023cca3cad9d5599'),
     'pressSpace': ('f58ab0b4b5fc128c3a54c66d0d9412d21836ed0ae10c8f4a6328004a0ae439ae',),
     'releaseSpace': ('d21322c4ae0fd0184ce0cefa878bb8d13ab6c21609962326d72e6c7e2588e245',),

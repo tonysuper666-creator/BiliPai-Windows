@@ -1,0 +1,84 @@
+{
+  "newFailures": [],
+  "newSkips": [],
+  "fixed": [
+    "test|com.bilipai.desktop.ui.DesktopCommandAttentionDismissUiTest|tripleAndFollowCardHasOneWorkingOutsideClose()",
+    "test|com.bilipai.desktop.ui.DesktopCommandAttentionDismissUiTest|tripleOnlyCardHasOneWorkingOutsideClose()",
+    "test|com.bilipai.desktop.ui.DesktopCommandAttentionDismissUiTest|switchingVideoDuringPressDoesNotDismissReusedCommandId()",
+    "test|com.bilipai.desktop.ui.DesktopCommandAttentionDismissUiTest|followAndTripleActionsRemainClickableAndSeparateFromClose()",
+    "test|com.bilipai.desktop.ui.DesktopCommandAttentionDismissUiTest|expiringCardCancelsPressedCloseAndDoesNotDismissAnotherCard()"
+  ],
+  "missing": [],
+  "baseline": {
+    "counts": {
+      "pass": 459,
+      "failure": 52
+    },
+    "target": {
+      "test|com.bilipai.desktop.ui.DesktopCommandAttentionDismissUiTest|followOnlyCardHasOneWorkingOutsideClose()": {
+        "status": "pass",
+        "detail": ""
+      },
+      "test|com.bilipai.desktop.ui.DesktopCommandAttentionDismissUiTest|tripleAndFollowCardHasOneWorkingOutsideClose()": {
+        "status": "failure",
+        "detail": "org.opentest4j.AssertionFailedError: Production overlay must expose a clickable 关闭提示 ==> expected: not <null>"
+      },
+      "test|com.bilipai.desktop.ui.DesktopCommandAttentionDismissUiTest|tripleOnlyCardHasOneWorkingOutsideClose()": {
+        "status": "failure",
+        "detail": "org.opentest4j.AssertionFailedError: Production overlay must expose a clickable 关闭提示 ==> expected: not <null>"
+      },
+      "test|com.bilipai.desktop.ui.DesktopCommandAttentionDismissUiTest|switchingVideoDuringPressDoesNotDismissReusedCommandId()": {
+        "status": "failure",
+        "detail": "org.opentest4j.AssertionFailedError: Production overlay must expose a clickable 关闭提示 ==> expected: not <null>"
+      },
+      "test|com.bilipai.desktop.ui.DesktopCommandAttentionDismissUiTest|followAndTripleActionsRemainClickableAndSeparateFromClose()": {
+        "status": "failure",
+        "detail": "org.opentest4j.AssertionFailedError: Production overlay must expose a clickable 关闭提示 ==> expected: not <null>"
+      },
+      "test|com.bilipai.desktop.ui.DesktopCommandAttentionDismissUiTest|expiringCardCancelsPressedCloseAndDoesNotDismissAnotherCard()": {
+        "status": "failure",
+        "detail": "org.opentest4j.AssertionFailedError: Production overlay must expose a clickable 关闭提示 ==> expected: not <null>"
+      },
+      "test|com.bilipai.desktop.ui.DesktopCommandAttentionDismissUiTest|voteOptionAndVoteCloseStillUseTheirOriginalCallbacks()": {
+        "status": "pass",
+        "detail": ""
+      }
+    }
+  },
+  "candidate": {
+    "counts": {
+      "pass": 464,
+      "failure": 47
+    },
+    "target": {
+      "test|com.bilipai.desktop.ui.DesktopCommandAttentionDismissUiTest|followOnlyCardHasOneWorkingOutsideClose()": {
+        "status": "pass",
+        "detail": ""
+      },
+      "test|com.bilipai.desktop.ui.DesktopCommandAttentionDismissUiTest|tripleAndFollowCardHasOneWorkingOutsideClose()": {
+        "status": "pass",
+        "detail": ""
+      },
+      "test|com.bilipai.desktop.ui.DesktopCommandAttentionDismissUiTest|tripleOnlyCardHasOneWorkingOutsideClose()": {
+        "status": "pass",
+        "detail": ""
+      },
+      "test|com.bilipai.desktop.ui.DesktopCommandAttentionDismissUiTest|switchingVideoDuringPressDoesNotDismissReusedCommandId()": {
+        "status": "pass",
+        "detail": ""
+      },
+      "test|com.bilipai.desktop.ui.DesktopCommandAttentionDismissUiTest|followAndTripleActionsRemainClickableAndSeparateFromClose()": {
+        "status": "pass",
+        "detail": ""
+      },
+      "test|com.bilipai.desktop.ui.DesktopCommandAttentionDismissUiTest|expiringCardCancelsPressedCloseAndDoesNotDismissAnotherCard()": {
+        "status": "pass",
+        "detail": ""
+      },
+      "test|com.bilipai.desktop.ui.DesktopCommandAttentionDismissUiTest|voteOptionAndVoteCloseStillUseTheirOriginalCallbacks()": {
+        "status": "pass",
+        "detail": ""
+      }
+    }
+  }
+}

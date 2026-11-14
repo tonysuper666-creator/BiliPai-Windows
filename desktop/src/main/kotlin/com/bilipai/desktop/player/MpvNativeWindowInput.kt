@@ -21,13 +21,14 @@ internal data class MpvNativeWindowInputEvent(
     val kind: MpvNativeWindowInputKind,
     val point: java.awt.Point? = runCatching { java.awt.MouseInfo.getPointerInfo()?.location }.getOrNull(),
     val timeMs: Long = System.nanoTime() / 1_000_000,
+    val receivedAtNanos: Long = System.nanoTime(),
 )
 
 /** A new opaque binding for each actual native load, including same-file replay.
  * A queued input from a predecessor cannot acquire its successor's source.
  * This is MPV's own child-window/client-message API, not an OS input hook.
  */
-internal class MpvNativeWindowInputLease(val source: OwnedPlaybackSourceSnapshot, val playbackRevision: Long) {
+internal class MpvNativeWindowInputLease(val source: OwnedPlaybackSourceSnapshot, val playbackRevision: Long, val windowId: Long = 0L) {
     val token: String = "bilipai-input-" + UUID.randomUUID().toString()
     val bindings: String = MpvNativeWindowInputKind.entries
         .joinToString("\n") { "${it.binding} nonrepeatable script-message $token ${it.action}" }
@@ -70,15 +71,24 @@ internal class MpvNativeWindowInputDelivery(private val dispatch: (() -> Unit) -
         check(current.compareAndSet(null, registration)) { "Native window input already has an owner" }
         return AutoCloseable { current.compareAndSet(registration, null); Unit }
     }
+    // Ordinary video can own Escape without stealing pointer/offline shortcuts.
+    // A captured event never falls through to a successor or to the other channel.
+    private val escapeCurrent = AtomicReference<Registration?>()
+    fun registerEscape(listener: (MpvNativeWindowInputEvent) -> Unit): AutoCloseable {
+        val registration = Registration(listener)
+        check(escapeCurrent.compareAndSet(null, registration)) { "Native Escape already has an owner" }
+        return AutoCloseable { escapeCurrent.compareAndSet(registration, null); Unit }
+    }
     fun emit(event: MpvNativeWindowInputEvent) {
-        val registration = current.get() ?: return
+        val channel = if (event.kind == MpvNativeWindowInputKind.ESCAPE && escapeCurrent.get() != null) escapeCurrent else current
+        val registration = channel.get() ?: return
         if (event.kind == MpvNativeWindowInputKind.MOTION) synchronized(registration) {
             if (registration.motionPending) return
             registration.motionPending = true
         }
         dispatch {
             if (event.kind == MpvNativeWindowInputKind.MOTION) synchronized(registration) { registration.motionPending = false }
-            if (current.get() === registration) registration.listener(event)
+            if (channel.get() === registration) registration.listener(event)
         }
     }
 }

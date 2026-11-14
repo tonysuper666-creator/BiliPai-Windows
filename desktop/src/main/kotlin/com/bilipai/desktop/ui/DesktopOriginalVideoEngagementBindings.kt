@@ -109,12 +109,14 @@ internal class DesktopOriginalVideoEngagementPresentation private constructor(
     constructor(sourceOwner: DesktopOriginalVideoAcceptedPublication,
         subject: com.android.purebilibili.feature.video.viewmodel.VideoSubjectSnapshot,
         owns: () -> Boolean, admission: (() -> Unit) -> Boolean) :
-        this(owns, admission, DesktopWindowsVideoFeedbackSource(sourceOwner, subject), owns, admission)
+        this(sourceOwner, subject, owns, admission, owns, admission)
     constructor(sourceOwner: DesktopOriginalVideoAcceptedPublication,
         subject: com.android.purebilibili.feature.video.viewmodel.VideoSubjectSnapshot,
         owns: () -> Boolean, admission: (() -> Unit) -> Boolean,
         feedbackOwns: () -> Boolean, feedbackAdmission: (() -> Unit) -> Boolean) :
-        this(owns, admission, DesktopWindowsVideoFeedbackSource(sourceOwner, subject), feedbackOwns, feedbackAdmission)
+        this({ DesktopWindowsVideoFeedbackSource.matches(sourceOwner, subject) && owns() }, admission,
+            DesktopWindowsVideoFeedbackSource.capture(sourceOwner, subject),
+            { DesktopWindowsVideoFeedbackSource.matches(sourceOwner, subject) && feedbackOwns() }, feedbackAdmission)
     fun isOwned(): Boolean = owns()
     /** Exact source/account/entry lifetime. Temporary hide and an ephemeral
      * command window do not retire an admitted operation or confirmed receipt.

@@ -11,6 +11,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 
 REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(REPO / 'desktop/tools'))
@@ -498,11 +499,25 @@ class BangumiHubPagesSliceTests(unittest.TestCase):
             self.assertRegex(requests, r'suspend fun ' + method + r'\(', method)
         self.assertIn('val followSession: () -> BangumiFollowSession,', environment)
         callers = 0
-        for file in (REPO / 'desktop/src').rglob('*.kt'):
+        for file in (REPO / 'desktop/src/main').rglob('*.kt'):
             body = file.read_text(encoding='utf8')
             callers += body.count('DesktopOriginalBangumiPagesEnvironment(') - body.count('class DesktopOriginalBangumiPagesEnvironment(')
         self.assertEqual(1, callers)
         self.assertEqual(1, root.count('followSession = { desktopOriginalBangumiPagesFollowSession(gate.mid != null, gate.epoch) })'))
+
+    def test_an_extra_production_environment_constructor_is_rejected(self):
+        with tempfile.TemporaryDirectory(prefix='bp-hub-callers-') as temp:
+            repo = Path(temp)
+            ui = repo / 'desktop/src/main/kotlin/com/bilipai/desktop/ui'
+            ui.mkdir(parents=True)
+            shutil.copyfile(UI / 'DesktopOriginalBangumiPagesRoot.kt', ui / 'DesktopOriginalBangumiPagesRoot.kt')
+            with patch.dict(globals(), {'REPO': repo, 'UI': ui}):
+                # Run the actual contract against one call, then inject a second production call.
+                self.test_view_model_uses_only_environment_members_and_request_methods_that_exist()
+                (ui / 'ExtraProductionCaller.kt').write_text(
+                    'val extra = DesktopOriginalBangumiPagesEnvironment()\n', encoding='utf8')
+                with self.assertRaisesRegex(AssertionError, '1 != 2'):
+                    self.test_view_model_uses_only_environment_members_and_request_methods_that_exist()
 
     def test_detail_screen_collects_the_single_state_with_the_upstream_lines_of_3b37b7a2(self):
         detail = text(self.out(hub.OUT_DETAIL))

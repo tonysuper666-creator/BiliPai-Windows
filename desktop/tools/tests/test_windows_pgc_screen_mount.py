@@ -43,7 +43,11 @@ class WindowsPgcScreenMountTests(unittest.TestCase):
         with patch.object(stage, 'apply_and_record', side_effect=capture), \
                 patch.object(bangumi_player, 'apply_retry_ui', side_effect=lambda repo, relative, body, output: body):
             cls.run_producer(cls.baseline)
-        cls.run_producer(cls.generated)
+        from generation_stage_proof import capture_ui_stage, restore_stage, PGC_BUFFERING
+        capture_buffering = capture_ui_stage(cls.generated, PGC_BUFFERING,
+            cls.producer.windows_bangumi_buffering_playback_toggle_ui)
+        with patch.object(cls.producer, 'windows_bangumi_buffering_playback_toggle_ui', capture_buffering):
+            cls.run_producer(cls.generated)
         cls.before = cls.captured['screen']
         cls.current = (cls.generated / stage.TARGET).read_text(encoding='utf-8')
         # The initial-load gate precedes the reviewed full v046 comment stage.
@@ -54,7 +58,8 @@ class WindowsPgcScreenMountTests(unittest.TestCase):
             'v046-DesktopOriginalBangumiPlayerScreen-comment-caller-proof.json').read_bytes())
         retry_proof = json.loads((cls.generated / 'v046-bangumi-player-proofs' /
             'ui-retry-DesktopOriginalBangumiPlayerScreen.json').read_bytes())
-        cls.after = restore(restore(cls.current, retry_proof['retainedToCurrent']), cls.comment_proof['retainedToCurrent'])
+        before_buffering = restore_stage(cls.generated, PGC_BUFFERING, stage.TARGET, cls.current)
+        cls.after = restore(restore(before_buffering, retry_proof['retainedToCurrent']), cls.comment_proof['retainedToCurrent'])
 
     @classmethod
     def tearDownClass(cls):

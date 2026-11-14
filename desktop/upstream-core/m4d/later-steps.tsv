@@ -13,7 +13,6 @@ feature/login/OfficialQrAuthorizationViewModel.kt	桌面构造函数带 DesktopP
 feature/plugin/AdFilterInsightPolicy.kt	旧 AdFilterPlugin 副本和桌面插件页按 DesktopPluginContext 调用这个存储；随 AdFilterPlugin 一起迁
 feature/plugin/AdFilterPlugin.kt	编译不过（9 处）：None of the following candidates is applicable:×3；未解析 data×3；未解析 build×3；等对应桌面替身或桌面实现
 feature/plugin/Anime4KPlugin.kt	编译不过（7 处）：Argument type mismatch: actual type is '_', but '_×6；Assignment type mismatch: actual type is '_', but ×1；等对应桌面替身或桌面实现
-feature/plugin/BiliPaiFeedFilterPlugin.kt	编译不过（1 处）：Overload resolution ambiguity between candidates:×1；等对应桌面替身或桌面实现
 feature/plugin/CdnDashSegmentPrefetcher.kt	编译不过（4 处）：未解析 PlaybackMediaCache×2；未解析 media3×1；未解析 OkHttpDataSource×1；等对应桌面替身或桌面实现
 feature/plugin/CdnOptimizationPolicy.kt	与 CdnRegionPolicy 同族（同样使用 PlaybackCdnCandidate）；随 CdnRegionPolicy 一起迁
 feature/plugin/CdnPlaybackDataSource.kt	编译不过（58 处）：未解析 length×8；未解析 DataSpec×6；未解析 media3×5；等对应桌面替身或桌面实现

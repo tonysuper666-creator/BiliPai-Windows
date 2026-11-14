@@ -39,9 +39,9 @@ internal class DesktopCommentFraudJsonDao(
     init {
         require(mid>=0)
         owned {
-            UpdateStorage.verifiedRoot(directory)
+            val verifiedDirectory=UpdateStorage.verifiedRoot(directory)
             if(Files.exists(file,NOFOLLOW_LINKS)) {
-                require(Files.isRegularFile(file,NOFOLLOW_LINKS) && UpdateStorage.existingPathWithoutLinks(file)==file.toAbsolutePath().normalize())
+                require(Files.isRegularFile(file,NOFOLLOW_LINKS) && UpdateStorage.existingPathWithoutLinks(file).parent==verifiedDirectory)
                 records=json.decodeFromString(serializer,Files.readString(file)).associateByTo(linkedMapOf()){it.rpid}
             }
             publish()

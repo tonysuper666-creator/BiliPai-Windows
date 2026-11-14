@@ -38,15 +38,10 @@ internal fun desktopBangumiReadOnlyAdmissionRetiresLoad(origin: DesktopBangumiRe
     DesktopBangumiReadOnlyOrigin.NONE -> false
 }
 
-/** The original VM publishes the decoded DTO but keeps `detail.copy(userStatus = ...)` in
- * Success, and switch/reload/recovery hand that copy back. The copy shares the decoded
- * episode list, so list identity (never data-class equality, which the copy breaks) names
- * the same decoded season. A separately decoded season always owns a fresh list. */
+/** userStatus copies retain both original episode containers. A playable original
+ * DTO is the witness; shared empty lists cannot identify a decoded season. */
 internal fun desktopBangumiSameDecodedSeason(displayed: BangumiDetail?, requested: BangumiDetail): Boolean {
-    if (displayed == null) return false
-    if (displayed === requested) return true
-    val episodes = requested.episodes ?: return false
-    return episodes.isNotEmpty() && displayed.episodes === episodes && displayed.seasonId == requested.seasonId
+    return desktopBangumiSameDecodedPlaybackSeason(displayed, requested)
 }
 
 /** An Entry serves the very navigation key instance it was opened for (a covered return keeps

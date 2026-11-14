@@ -83,6 +83,9 @@ internal fun Modifier.desktopOfflineSeekPointerInput(
 /** Native Canvas input can land below the transparent Compose foreground.
  * Like the ordinary video leaf, listen only on this one existing host/Canvas;
  * original controls retain their own pointer handlers and native source admission. */
+internal fun desktopOfflineSurfaceAdmitted(showing: Boolean, playerWindow: Any?, surfaceWindow: Any?, activeWindow: Any?): Boolean =
+    showing && playerWindow != null && surfaceWindow === playerWindow && activeWindow === playerWindow
+
 internal class DesktopOfflineNativeInputBridge(
     private val surface: java.awt.Container,
     private val currentSource: () -> OwnedPlaybackSourceSnapshot?,
@@ -346,7 +349,7 @@ internal fun DesktopOfflineNativeInput(
         onVolume = ::volume, onSeek = ::seek,
         onShortcut = { code -> desktopPlayerPointerShortcut(code, bindings?.window?.fullscreen == true,
             ::fullscreen, ::seek, ::volume, { native.toggleMuted() }) },
-        handleWindowKeys = true)
+        handleWindowKeys = true, requirePlayerWindow = true)
 }
 
 /** All playback surfaces use one click arbiter. Delay a single click until the
@@ -422,6 +425,7 @@ internal fun DesktopNativePlaybackPointerInput(
     onShortcut: (Int) -> Boolean,
     handleAwtKeys: Boolean = true,
     handleWindowKeys: Boolean = false,
+    requirePlayerWindow: Boolean = false,
     actionsEnabled: () -> Boolean = { true },
 ): Modifier {
     val window = LocalDesktopWindowsPlayerWindow.current
@@ -442,16 +446,29 @@ internal fun DesktopNativePlaybackPointerInput(
     fun owns(source: OwnedPlaybackSourceSnapshot) = latestEnabled.value() && native.ownsSourceSnapshot(source)
     fun ownsAction(source: OwnedPlaybackSourceSnapshot) = latestActionsEnabled.value() && owns(source)
     fun tolerance() = 6.0 * density.value / (window?.graphicsConfiguration?.defaultTransform?.scaleX ?: 1.0)
-    val pointer = remember(native, window, fallback, handleAwtKeys, handleWindowKeys, presented, actionsActive) {
+    val pointer = remember(native, window, fallback, handleAwtKeys, handleWindowKeys, requirePlayerWindow, presented, actionsActive) {
         DesktopPlayerPointerInput({ settings.value }, ::ownsAction,
             { latestToggle.value() }, { latestFullscreen.value() },
             { latestVolume.value(it) }, { latestSeek.value(it) }, tolerance = ::tolerance)
     }
-    androidx.compose.runtime.DisposableEffect(native, window, fallback, handleAwtKeys, handleWindowKeys, presented, actionsActive) {
+    androidx.compose.runtime.DisposableEffect(native, window, fallback, handleAwtKeys, handleWindowKeys, requirePlayerWindow, presented, actionsActive) {
         if (!presented) return@DisposableEffect onDispose { pointer.close() }
         val input = DesktopOfflineNativeInputBridge(native.surface,
             { if (latestEnabled.value()) native.currentSourceSnapshot() else null }, ::owns,
             { latestReveal.value() }, { latestToggle.value() },
+            canUseSurface = {
+                val showing = native.surface.isShowing
+                val owner = javax.swing.SwingUtilities.getWindowAncestor(native.surface)
+                val active = java.awt.KeyboardFocusManager.getCurrentKeyboardFocusManager().activeWindow
+                if (requirePlayerWindow) {
+                    val attached = window != null && owner === window
+                    val playerActive = window != null && active === window
+                    MpvRuntimeProbe.record(MpvRuntimeProbeStage.SURFACE_ADMISSION, flags =
+                        (if (window != null) 1 else 0) or (if (showing) 2 else 0) or
+                        (if (attached) 4 else 0) or (if (playerActive) 8 else 0))
+                    desktopOfflineSurfaceAdmitted(showing, window, owner, active)
+                } else showing && owner != null && active === owner
+            },
             pointer = pointer, pointerTolerance = ::tolerance,
             onShortcut = { latestShortcut.value(it) }, handleAwtKeys = handleAwtKeys,
             actionsEnabled = { latestActionsEnabled.value() })

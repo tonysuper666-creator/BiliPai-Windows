@@ -197,6 +197,34 @@ class DesktopOriginalVideoCdnSelectionAssemblyTest {
         }
     }
 
+    @Test fun closeWaitsForAnInFlightEdtEntryRead(): Unit = runBlocking {
+        val fixture = Fixture(refreshExpiredUrls = true)
+        val entered = CompletableDeferred<Unit>()
+        val release = CountDownLatch(1)
+        var closing: Deferred<Unit>? = null
+        try {
+            fixture.initialize()
+            fixture.load(A, 101, 104, audioLang = "en")
+            fixture.beforePrimarySessionRead = {
+                entered.complete(Unit)
+                check(release.await(8, TimeUnit.SECONDS)) { "Entry read was not released" }
+            }
+            // The original VM performs a synchronous, admitted account read before
+            // launching its follow query. Pause that real read, not a fake Job.
+            fixture.gate.scope.launch { fixture.owner.playback.ensureFollowStatus(51, force = true) }
+            withTimeout(8_000) { entered.await() }
+            // UNDISPATCHED reaches close's first suspension before releasing the
+            // EDT. Off-EDT retirement used to invalidate this still-running read.
+            closing = async(start = CoroutineStart.UNDISPATCHED) { fixture.close() }
+        } finally {
+            release.countDown()
+            withContext(NonCancellable) {
+                val cleanup = closing
+                if (cleanup != null) cleanup.await() else fixture.close()
+            }
+        }
+    }
+
     @Test fun actualNetworkRetryRefreshesUrlsWhileHealthySameRequestKeepsItsSource(): Unit = runBlocking {
         Fixture(refreshExpiredUrls = true).useSuspending { f ->
             f.load(A, 101, 104, audioLang = "en")
@@ -789,6 +817,7 @@ class DesktopOriginalVideoCdnSelectionAssemblyTest {
         val sessions = DesktopSessionStore.temporary()
         val repository = DesktopRepository(sessions)
         var beforeProjectedSuccess: (() -> Unit)? = null
+        var beforePrimarySessionRead: (() -> Unit)? = null
         private val parentJob = SupervisorJob()
         private val failures = CopyOnWriteArrayList<Throwable>()
         private val dispatcher = OneDispatchHold()
@@ -972,7 +1001,10 @@ class DesktopOriginalVideoCdnSelectionAssemblyTest {
                     }, status = readbacks, prepareAcceptedMedia = media::accepted,
                     createPlugins = { native, invocations -> DesktopOriginalVideoOwnerPluginBridge(runtime, native, invocations,
                         runtimeBinding::generation, invocations::captureCurrentRequestAdmission, runtimeBinding::calls) },
-                    confirmFollow = { error("No follow") }, feedback = {}, readHasPrimarySession = readbacks::hasPrimarySession,
+                    confirmFollow = { error("No follow") }, feedback = {}, readHasPrimarySession = {
+                        beforePrimarySessionRead?.invoke()
+                        readbacks.hasPrimarySession()
+                    },
                     readHasPrimaryAccessToken = readbacks::hasPrimaryAccessToken, readPrimaryMid = readbacks::primaryMid,
                     readOwnedCooldown = readbacks::cooldownRemainingMs, progress = progress, capabilities = capabilities,
                     applyPreferredVolume = {}, dashSegmentRequestsEnabled = { false }, logSeek = { _, _, _, _ -> },
@@ -1214,7 +1246,10 @@ class DesktopOriginalVideoCdnSelectionAssemblyTest {
         }
         suspend fun ui(action: () -> Unit) = withContext(Dispatchers.Swing) { action() }
         suspend fun <T> uiResult(action: () -> T): T = withContext(Dispatchers.Swing) { action() }
-        suspend fun close() {
+        // Retire the entry between EDT work items, never halfway through an
+        // admitted synchronous VM read. Joining below suspends so cancellation
+        // callbacks can still finish on this same dispatcher.
+        suspend fun close(): Unit = withContext(Dispatchers.Swing) {
             tagsRelease.countDown(); relatedRelease.countDown(); dispatcher.drainOnClose()
             if (::facade.isInitialized) facade.close()
             if (nextWatchMode && ::settingsContext.isInitialized && gate.owns())
@@ -1233,7 +1268,7 @@ class DesktopOriginalVideoCdnSelectionAssemblyTest {
                 store.update("settings", mapOf("playback_completion_behavior" to completionSettingBefore))
             }
             transport.dispatcher.executorService.shutdownNow(); transport.connectionPool.evictAll()
-            assertTrue(failures.isEmpty(), failures.toString())
+            assertTrue(failures.isEmpty(), failures.joinToString("\n") { it.stackTraceToString() })
             assertTrue(unexpectedRequests.isEmpty(), unexpectedRequests.toString())
             deleteCreatedDirectory(directory, "cdn-original-owner-")
         }

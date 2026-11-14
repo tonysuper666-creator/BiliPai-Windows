@@ -115,6 +115,9 @@ class CommentSelectionConsumerClosureTest(unittest.TestCase):
             with self.subTest(path=path):
                 proof = json.loads((self.output / ("v029-comment-selection-" + Path(path).stem + ".json")).read_text(encoding="utf-8"))
                 current = self.source(path)
+                if path == OWNER:
+                    from generation_stage_proof import restore_stage, OWNER_SPEED
+                    current = restore_stage(self.output, OWNER_SPEED, path, current)
                 if path == PORTRAIT:
                     # plr-portrait-story-pager-repin is the newest layer of the pager: peel its counted hunks first.
                     current = portrait_pager.peel_pager(current, json.loads(

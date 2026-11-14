@@ -76,7 +76,187 @@ e.replace('import android.widget.Toast','import com.bilipai.desktop.ui.DesktopOr
 e.replace('import androidx.compose.ui.platform.LocalContext','import com.bilipai.desktop.ui.LocalDesktopOriginalBangumiPagesEnvironment as LocalContext')
 e.replace('import com.android.purebilibili.data.repository.BangumiReviewRepository','// Review requests borrow the actual Root owned API and csrf authority.')
 e.replace('BangumiReviewRepository.','context.reviews.')
-e.replace('val scope = rememberCoroutineScope()','val scope = context.scope',1)
+# Review state is composition-owned, unlike the retained detail VM. A popped
+# page must cancel its actions even while the Root entry scope remains alive.
+# Carry the query/cache/ensureActive semantics of upstream 6f0696eb, without
+# importing that screen's unrelated layout or adding a long-review composer.
+# Edit records below retain the original pin and byte-exact inverse proof.
+e.replace('import kotlinx.coroutines.launch', '''import kotlinx.coroutines.launch
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.ensureActive
+import androidx.compose.runtime.key
+import androidx.compose.runtime.mutableStateMapOf''',1)
+signature='''fun BangumiReviewScreen(
+    mediaId: Long,
+    title: String,
+    onBack: () -> Unit,
+    onOpenWeb: (String, String) -> Unit = { _, _ -> }
+) {'''
+e.replace(signature,signature+'''
+    val owner = LocalContext.current
+    key(owner, mediaId) {
+        DesktopOwnedBangumiReviewScreen(mediaId, title, onBack, onOpenWeb)
+    }
+}
+
+private data class CachedBangumiReviews(
+    val items: List<BangumiReviewItem>,
+    val nextCursor: String,
+    val hasMore: Boolean,
+)
+
+@Composable
+private fun DesktopOwnedBangumiReviewScreen(
+    mediaId: Long,
+    title: String,
+    onBack: () -> Unit,
+    onOpenWeb: (String, String) -> Unit,
+) {''',1)
+e.replace('''    val listState = rememberLazyListState()
+    var reviewType by remember { mutableStateOf(BangumiReviewType.SHORT) }''','''    val shortListState = rememberLazyListState()
+    val longListState = rememberLazyListState()
+    var reviewType by remember { mutableStateOf(BangumiReviewType.LONG) }
+    val listState = if (reviewType == BangumiReviewType.SHORT) shortListState else longListState''',1)
+start=e.s.index('    fun reload() {');end=e.s.index('    AppScaffold(',start)
+e.replace(e.s[start:end],'''    val reviewCache = remember { mutableStateMapOf<Pair<BangumiReviewType, Int>, CachedBangumiReviews>() }
+    val sortByType = remember { mutableStateMapOf<BangumiReviewType, Int>() }
+    var busyReviews by remember { mutableStateOf<Set<Long>>(emptySet()) }
+    var queryGeneration by remember { mutableIntStateOf(0) }
+    var reloadGeneration by remember { mutableIntStateOf(0) }
+
+    fun reload() {
+        reviewCache.remove(reviewType to sort)
+        queryGeneration++
+        loading = true
+        loadingMore = false
+        errorMessage = null
+        reloadGeneration++
+    }
+
+    fun selectQuery(type: BangumiReviewType, order: Int) {
+        if (type == reviewType && order == sort) return
+        val sortChanged = type == reviewType && order != sort
+        if (!loading && errorMessage == null && busyReviews.isEmpty()) {
+            reviewCache[reviewType to sort] = CachedBangumiReviews(items, nextCursor, hasMore)
+        } else {
+            reviewCache.remove(reviewType to sort)
+        }
+        val cached = reviewCache[type to order]
+        // Advance synchronously with the event, before effects are recomposed.
+        queryGeneration++
+        items = cached?.items.orEmpty()
+        nextCursor = cached?.nextCursor.orEmpty()
+        hasMore = cached?.hasMore ?: false
+        loading = cached == null
+        loadingMore = false
+        errorMessage = null
+        reviewType = type
+        sort = order
+        sortByType[type] = order
+        showComposer = false
+        if (sortChanged) scope.launch { listState.scrollToItem(0) }
+    }
+
+    LaunchedEffect(reviewType, sort, reloadGeneration, queryGeneration) {
+        if (!loading) return@LaunchedEffect
+        val query = reviewType to sort
+        val generation = queryGeneration
+        val result = context.reviews.getReviews(mediaId = mediaId, type = query.first, sort = query.second)
+        currentCoroutineContext().ensureActive()
+        if (generation != queryGeneration || query != (reviewType to sort)) return@LaunchedEffect
+        result.fold(
+            onSuccess = { page ->
+                items = page.items
+                nextCursor = page.next
+                hasMore = page.hasMore
+                reviewCache[query] = CachedBangumiReviews(items, nextCursor, hasMore)
+            },
+            onFailure = { error ->
+                if (items.isEmpty()) errorMessage = error.message ?: "点评加载失败"
+                else Toast.makeText(context, error.message ?: "点评刷新失败", Toast.LENGTH_SHORT).show()
+            }
+        )
+        loading = false
+    }
+
+    // Like upstream, prefetch the adjacent type only after the visible query.
+    LaunchedEffect(reviewType, sort, loading, reloadGeneration, queryGeneration) {
+        if (loading) return@LaunchedEffect
+        val generation = queryGeneration
+        val other = if (reviewType == BangumiReviewType.LONG) BangumiReviewType.SHORT else BangumiReviewType.LONG
+        val query = other to sort
+        if (reviewCache.containsKey(query)) return@LaunchedEffect
+        val result = context.reviews.getReviews(mediaId = mediaId, type = query.first, sort = query.second)
+        currentCoroutineContext().ensureActive()
+        if (generation != queryGeneration) return@LaunchedEffect
+        result.onSuccess { page ->
+            if (!reviewCache.containsKey(query)) reviewCache[query] = CachedBangumiReviews(page.items, page.next, page.hasMore)
+        }
+    }
+
+    LaunchedEffect(listState, queryGeneration, hasMore, nextCursor, loading) {
+        snapshotFlow {
+            val lastVisible = listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0
+            lastVisible to listState.layoutInfo.totalItemsCount
+        }.distinctUntilChanged().collect { (lastVisible, total) ->
+            if (!hasMore || loading || loadingMore || nextCursor.isBlank()) return@collect
+            if (total > 0 && lastVisible >= total - 3) {
+                val query = reviewType to sort
+                val generation = queryGeneration
+                loadingMore = true
+                val result = context.reviews.getReviews(
+                    mediaId = mediaId, type = query.first, cursor = nextCursor, sort = query.second
+                )
+                currentCoroutineContext().ensureActive()
+                if (generation != queryGeneration || query != (reviewType to sort)) return@collect
+                result.onSuccess { page ->
+                    items = items + page.items
+                    nextCursor = page.next
+                    hasMore = page.hasMore
+                    reviewCache[query] = CachedBangumiReviews(items, nextCursor, hasMore)
+                }
+                loadingMore = false
+            }
+        }
+    }
+
+''',1)
+e.replace('val reviewTypes = remember { BangumiReviewType.entries.toList() }',
+          'val reviewTypes = remember { listOf(BangumiReviewType.LONG, BangumiReviewType.SHORT) }',1)
+e.replace('reviewTypes.getOrNull(index)?.let { reviewType = it }',
+          'reviewTypes.getOrNull(index)?.let { selectQuery(it, sortByType[it] ?: 0) }',1)
+e.replace('onSelected = { index -> sort = index }','onSelected = { index -> selectQuery(reviewType, index) }',1)
+# Keep the short composer and existing long-review web route, as upstream does.
+e.replace('if (item.review_id <= 0L) return@AppTextButton',
+          'if (item.review_id <= 0L || item.review_id in busyReviews) return@AppTextButton',1)
+e.replace('''                                            scope.launch {
+                                                context.reviews.likeReview''','''                                            val requestQuery = reviewType to sort
+                                            val generation = queryGeneration
+                                            // An in-flight mutation must not be restored from cache.
+                                            reviewCache.remove(requestQuery)
+                                            busyReviews = busyReviews + item.review_id
+                                            scope.launch {
+                                                context.reviews.likeReview''',1)
+e.replace('''                                                context.reviews.likeReview(mediaId, item.review_id)
+                                                    .onSuccess''','''                                                val result = try {
+                                                    context.reviews.likeReview(mediaId, item.review_id)
+                                                } finally {
+                                                    busyReviews = busyReviews - item.review_id
+                                                }
+                                                currentCoroutineContext().ensureActive()
+                                                result.onSuccess''',1)
+e.replace('''                                                result.onSuccess {
+                                                        items = items.map''','''                                                result.onSuccess {
+                                                        if (generation != queryGeneration || requestQuery != (reviewType to sort)) {
+                                                            reviewCache.remove(requestQuery)
+                                                            if (requestQuery == (reviewType to sort)) reload()
+                                                            return@onSuccess
+                                                        }
+                                                        items = items.map''',1)
+e.replace('''                            showComposer = false
+                            reload()''','''                            showComposer = false
+                            reviewCache.keys.filter { it.first == BangumiReviewType.SHORT }.forEach { reviewCache.remove(it) }
+                            if (reviewType == BangumiReviewType.SHORT) reload()''',1)
 e.write(rel,'DesktopOriginalBangumiReviewScreen.kt')
 
 # Full combined VM: its original init/load/filter/detail/follow/search business remains.

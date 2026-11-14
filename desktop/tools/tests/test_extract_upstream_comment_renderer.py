@@ -10,9 +10,10 @@ from desktop_refresh_adaptation import unbind_refresh_lists
 # aad198489 advances these bodies after v021 records outputBodySha256.
 # Outer stage first. Each name is that stage's retainedToCurrent proof.
 LATER_COMMENT_STAGES={
-    'DesktopOriginalReplyComponents.kt':('v046-reply-list-renderer-proof.json',),
+    'DesktopOriginalReplyComponents.kt':(
+        'v046-comment-detail-root-text-proof.json','v046-reply-list-renderer-proof.json'),
     'DesktopOriginalSubReplyDetailComponents.kt':(
-        'v046-inline-subreply-entrance-proof.json',
+        'v046-comment-detail-split-item-states-proof.json','v046-inline-subreply-entrance-proof.json',
         'v046-comment-thread-host-proof.json','v046-subreply-list-renderer-proof.json'),
 }
 def restore_hunks(text, hunks):

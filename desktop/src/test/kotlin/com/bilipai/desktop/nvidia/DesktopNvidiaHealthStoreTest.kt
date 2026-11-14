@@ -1,5 +1,6 @@
 package com.bilipai.desktop.nvidia
 
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.io.TempDir
 import java.nio.file.Files
 import java.nio.file.Path
@@ -25,6 +26,16 @@ class DesktopNvidiaHealthStoreTest {
         NvidiaHealthEntry(key, streak = streak, rememberedUntilMillis = rememberedUntil, updatedAtMillis = now)
 
     private fun healthFile(): Path = root.resolve("gpu").resolve(HEALTH_FILE_NAME)
+
+    private val fileStores = ArrayList<DesktopNvidiaHealthStore>()
+
+    /** A store backed by this file whose writer thread is stopped after the test, before the temporary directory goes. */
+    private fun fileStore(path: Path, clock: () -> Long, writeIntervalMillis: Long = HEALTH_WRITE_MIN_INTERVAL_MILLIS) =
+        DesktopNvidiaHealthStore.forFile(path, clock, writeIntervalMillis).also { fileStores += it }
+
+    @AfterEach fun stopTheWriters() {
+        for (store in fileStores) assertTrue(store.stopWriter(), "the writer thread ends before the directory is removed")
+    }
 
     /** Polls the file until the condition holds for its text, for at most the timeout. The writer runs on its own thread. */
     private fun awaitFileText(path: Path, timeoutMillis: Long = 5_000L, condition: (String) -> Boolean): Boolean {
@@ -226,7 +237,7 @@ class DesktopNvidiaHealthStoreTest {
     @Test fun theFileIsWrittenAtomicallyAndAFreshStoreReadsItBack() {
         val clock = HealthStoreTestClock()
         val path = healthFile()
-        val store = DesktopNvidiaHealthStore.forFile(path, { clock.now })
+        val store = fileStore(path, { clock.now })
         assertFalse(Files.exists(path), "nothing is read or written before the first record")
         store.recordDeviceFailure(keyA, atLowestRung = true, failedQuality = 1)
         assertTrue(store.flushNow())
@@ -241,7 +252,7 @@ class DesktopNvidiaHealthStoreTest {
         assertTrue(text.length <= HEALTH_MAX_BYTES)
         assertFalse(text.contains('\r'))
 
-        val second = DesktopNvidiaHealthStore.forFile(path, { clock.now })
+        val second = fileStore(path, { clock.now })
         assertTrue(second.view(keyA).remembered)
         assertEquals(store.snapshot(), second.snapshot())
         // Nothing left to write: a second flush is a no-op that still succeeds.
@@ -251,7 +262,7 @@ class DesktopNvidiaHealthStoreTest {
     @Test fun aMissingDirectoryIsCreatedAndAMissingFileIsAnEmptyMemory() {
         val clock = HealthStoreTestClock()
         val path = root.resolve("a").resolve("b").resolve("c").resolve(HEALTH_FILE_NAME)
-        val store = DesktopNvidiaHealthStore.forFile(path, { clock.now })
+        val store = fileStore(path, { clock.now })
         assertEquals(NvidiaHealthView.None, store.view(keyA))
         store.recordRemembered(keyA)
         assertTrue(store.flushNow())
@@ -269,12 +280,12 @@ class DesktopNvidiaHealthStoreTest {
             val path = healthFile()
             Files.createDirectories(path.parent)
             Files.write(path, content)
-            val store = DesktopNvidiaHealthStore.forFile(path, { clock.now })
+            val store = fileStore(path, { clock.now })
             assertEquals(NvidiaHealthView.None, store.view(keyA))
             assertTrue(store.snapshot().isEmpty())
             store.recordRemembered(keyA)
             assertTrue(store.flushNow())
-            assertTrue(DesktopNvidiaHealthStore.forFile(path, { clock.now }).view(keyA).remembered)
+            assertTrue(fileStore(path, { clock.now }).view(keyA).remembered)
             Files.delete(path)
         }
     }
@@ -286,7 +297,7 @@ class DesktopNvidiaHealthStoreTest {
         val foreign = "{\"version\":1,\"entries\":[{\"key\":\"$keyB\",\"streak\":2," +
             "\"remembered_until\":${clock.now + day},\"updated\":${clock.now}}]}"
         Files.write(path, foreign.toByteArray())
-        val store = DesktopNvidiaHealthStore.forFile(path, { clock.now })
+        val store = fileStore(path, { clock.now })
         assertEquals(NvidiaHealthView.None, store.view(keyA))
         assertTrue(store.view(keyB).remembered)
     }
@@ -297,7 +308,7 @@ class DesktopNvidiaHealthStoreTest {
         val blocker = root.resolve("blocker")
         Files.write(blocker, byteArrayOf(1))
         // A long interval keeps the automatic retry of the failed write from firing after the temporary directory is gone.
-        val store = DesktopNvidiaHealthStore.forFile(blocker.resolve("gpu").resolve(HEALTH_FILE_NAME), { clock.now },
+        val store = fileStore(blocker.resolve("gpu").resolve(HEALTH_FILE_NAME), { clock.now },
             writeIntervalMillis = 3_600_000L)
         store.recordRemembered(keyA)
         assertFalse(store.flushNow(), "the write failed, and said so")
@@ -310,7 +321,7 @@ class DesktopNvidiaHealthStoreTest {
     @Test fun writesAreCoalescedOffThreadAndAtMostOneRunsPerInterval() {
         val clock = HealthStoreTestClock()
         val path = healthFile()
-        val store = DesktopNvidiaHealthStore.forFile(path, { clock.now }, writeIntervalMillis = 60_000L)
+        val store = fileStore(path, { clock.now }, writeIntervalMillis = 60_000L)
         // The first record is scheduled at once on the daemon thread; the caller never writes.
         store.recordRemembered(keyA)
         val deadline = System.nanoTime() + 5_000_000_000L
@@ -329,7 +340,7 @@ class DesktopNvidiaHealthStoreTest {
     @Test fun aClockThatStepsBackAfterAWriteDoesNotPostponeTheNextWriteBeyondOneInterval() {
         val clock = HealthStoreTestClock()
         val path = healthFile()
-        val store = DesktopNvidiaHealthStore.forFile(path, { clock.now }, writeIntervalMillis = 50L)
+        val store = fileStore(path, { clock.now }, writeIntervalMillis = 50L)
         store.recordRemembered(keyA)
         assertTrue(awaitFileText(path) { it.contains(keyA) }, "the first write happens without a flush")
         // The wall clock jumps back a day. Unclamped, the next write would wait the old time plus the interval, a whole day.
@@ -341,7 +352,7 @@ class DesktopNvidiaHealthStoreTest {
     @Test fun aChangeThatMeetsARunningWriteIsWrittenByTheWriterWithoutAFlush() {
         val clock = HealthStoreTestClock()
         val path = healthFile()
-        val store = DesktopNvidiaHealthStore.forFile(path, { clock.now }, writeIntervalMillis = 1L)
+        val store = fileStore(path, { clock.now }, writeIntervalMillis = 1L)
         val keys = (1..HEALTH_MAX_ENTRIES).map { "%016x".format(it) }
         for (key in keys) {
             store.recordRemembered(key)
@@ -357,7 +368,7 @@ class DesktopNvidiaHealthStoreTest {
         val blocker = root.resolve("gpu")
         Files.write(blocker, byteArrayOf(1))
         val path = blocker.resolve(HEALTH_FILE_NAME)
-        val store = DesktopNvidiaHealthStore.forFile(path, { clock.now }, writeIntervalMillis = 300L)
+        val store = fileStore(path, { clock.now }, writeIntervalMillis = 300L)
         store.recordRemembered(keyA)
         Thread.sleep(50)
         Files.delete(blocker)
@@ -369,7 +380,7 @@ class DesktopNvidiaHealthStoreTest {
 
     @Test fun aSkewedOrAdvancedClockExpiresEntriesWithoutAnError() {
         val clock = HealthStoreTestClock()
-        val store = DesktopNvidiaHealthStore.forFile(healthFile(), { clock.now })
+        val store = fileStore(healthFile(), { clock.now })
         store.recordRemembered(keyA)
         assertTrue(store.view(keyA).remembered)
         // A clock that went backwards: the entry now carries a future timestamp, which counts as expired.
@@ -387,7 +398,7 @@ class DesktopNvidiaHealthStoreTest {
 
     @Test fun theCooldownEndsAndTheEntryExpiresAfterFourteenDays() {
         val clock = HealthStoreTestClock()
-        val store = DesktopNvidiaHealthStore.forFile(healthFile(), { clock.now })
+        val store = fileStore(healthFile(), { clock.now })
         store.recordDeviceFailure(keyA, atLowestRung = true, failedQuality = 1)
         clock.now += day - 1L
         assertTrue(store.view(keyA).remembered)

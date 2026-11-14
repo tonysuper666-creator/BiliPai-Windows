@@ -35,6 +35,7 @@ import java.io.ByteArrayInputStream
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.StandardOpenOption
+import java.util.concurrent.CopyOnWriteArrayList
 import javax.imageio.ImageIO
 import kotlin.math.ceil
 import kotlin.math.floor
@@ -53,7 +54,7 @@ class DesktopBrandComponentUiTest {
     @Test fun wholeBlueSnowWaitsForVisibilityAndForegroundThenFinishesOncePerReplayIdentity(): Unit = runBlocking {
         val visible = mutableStateOf(false)
         val replay = mutableIntStateOf(0)
-        val completions = mutableListOf<Int>()
+        val completions = CopyOnWriteArrayList<Int>()
         val background = Background()
         val fixture = Scene(background) {
             val identity = replay.intValue
@@ -102,7 +103,7 @@ class DesktopBrandComponentUiTest {
     @Test fun decorativeContentUsesCallerLifecycleDespiteStartedHostAndFollowsPauseResumeAndDestroy(): Unit = runBlocking {
         val caller = ResumedLifecycle().apply { registry.currentState = Lifecycle.State.STARTED }
         val replay = mutableIntStateOf(0)
-        val completions = mutableListOf<Int>()
+        val completions = CopyOnWriteArrayList<Int>()
         var observedOwner: LifecycleOwner? = null
         val background = Background()
         // ImageComposeScene models the dialog's inner STARTED local. The same

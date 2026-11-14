@@ -273,7 +273,10 @@ class ControlCenterMotionSourceTests(unittest.TestCase):
     def test_overlay_hunks_close_every_end_drawer_difference_to_v046(self):
         upstream = git_blob(cm.OVERLAY_PATH).decode('utf-8')
         self.assertNotEqual([], keyword_opcodes(self.baseline('VideoPlayerOverlay.kt'), upstream, SLICE_WORDS))
-        self.assertEqual([], keyword_opcodes(self.emitted('VideoPlayerOverlay.kt'), upstream, SLICE_WORDS))
+        from generation_stage_proof import restore_stage, CENTER_BUFFERING
+        current = restore_stage(self.root / 'with', CENTER_BUFFERING, cm.OVERLAY_RELATIVE,
+                                self.emitted('VideoPlayerOverlay.kt'))
+        self.assertEqual([], keyword_opcodes(current, upstream, SLICE_WORDS))
 
     def test_settings_panel_hunks_and_item_rule_are_counted_and_fail_closed(self):
         previous = self.baseline('VideoSettingsPanel.kt')

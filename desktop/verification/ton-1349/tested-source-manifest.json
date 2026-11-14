@@ -1,0 +1,11 @@
+{
+  "base": "235eec58b195b1a16047031a95fbaa9581694f21",
+  "sources": {
+    "desktop/tools/extract-upstream-home-partition.py": "a1c3f8cdbf67aac4d9065af70df8d8992299bbb4219f188257eb4596c81e2617",
+    "desktop/tools/tests/test_partition_side_rail.py": "54009a33d3f46904df1eac27d70f857856fa05b33ad9a4591b6359352920b8be",
+    "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopPartitionPreferences.kt": "e146f5471e9f92ac4422ab772d4b495b1d93c71a746657e8197b46e9532cf410",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsHomeSettings.kt": "c4f2c8005d89f5437aea7ee0a990438142489ec69bb6c8504c3d25406853c9bf",
+    "desktop/src/test/kotlin/com/bilipai/desktop/settings/DesktopPartitionPreferencesTest.kt": "fb6f62dbc33f54b69d40fffe61b1c4dd4f6080c2ce45b7dfc74b4f0eeb3afff4",
+    "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopPartitionSideRailTest.kt": "33f931a5ccc1acb10b9ac46352e0ef6d768476228cb38d3304c320ff7f3843a5"
+  }
+}

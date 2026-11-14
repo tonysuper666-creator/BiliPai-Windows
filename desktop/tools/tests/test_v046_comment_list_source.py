@@ -1,6 +1,8 @@
 """Real shared-reply generation and exact original/Windows ownership boundaries."""
 from pathlib import Path
 import importlib.util
+import contextlib
+import io
 import json
 import shutil
 import subprocess
@@ -47,7 +49,9 @@ class OriginalCommentListSources(unittest.TestCase):
              patch.object(comments, 'advance_settings', side_effect=lambda repo, before, output, owner: before), \
              patch.object(comments, 'emit_shared', return_value={}), \
              patch('v046_comment_thread.advance', side_effect=lambda repo, before, output: before), \
-             patch('v046_comment_polish.advance_inline_entrance', side_effect=lambda repo, before, output: before):
+             patch('v046_comment_polish.advance_inline_entrance', side_effect=lambda repo, before, output: before), \
+             patch('v046_comment_thread.advance_split_item_states', side_effect=lambda repo, before, output: before), \
+             patch('v046_comment_thread.advance_root_text_layout', side_effect=lambda repo, before, output: before):
             cls.owner.generate(REPO, cls.output/'before')
 
     @classmethod
@@ -59,7 +63,8 @@ class OriginalCommentListSources(unittest.TestCase):
 
     def test_actual_whole_renderer_inverse_preserves_every_other_current_declaration(self):
         path = comments.PACKAGE+'DesktopOriginalReplyComponents.kt'
-        current = body(self.output/'actual'/path)
+        # The comment-detail root text hook follows the list renderer; peel it first.
+        current = restore(body(self.output/'actual'/path), self.proof('v046-comment-detail-root-text-proof')['retainedToCurrent'])
         previous = body(self.output/'before'/path)
         proof = self.proof('v046-reply-list-renderer-proof')
         self.assertEqual(previous, restore(current, proof['retainedToCurrent']))
@@ -145,9 +150,13 @@ class OriginalCommentListSources(unittest.TestCase):
         thread_proof = self.proof('v046-comment-thread-host-proof')
         # The v046 comment polish inline entrance stage follows the nested page stage; peel it first.
         entrance_proof = self.proof('v046-inline-subreply-entrance-proof')
-        previous_stage = restore(restore(actual, entrance_proof['retainedToCurrent']), thread_proof['retainedToCurrent'])
+        # The comment-detail split item states are the last stage of all; peel them before the entrance.
+        split_proof = self.proof('v046-comment-detail-split-item-states-proof')
+        unsplit = restore(actual, split_proof['retainedToCurrent'])
+        previous_stage = restore(restore(unsplit, entrance_proof['retainedToCurrent']),
+                                 thread_proof['retainedToCurrent'])
         self.assertEqual(before, restore(previous_stage, proof['retainedToCurrent']))
-        item = comments.declaration(self.syntax, actual, 'SubReplyDetailItem')
+        item = comments.declaration(self.syntax, unsplit, 'SubReplyDetailItem')
         old_item = comments.declaration(self.syntax, before, 'SubReplyDetailItem')
         self.assertEqual(comments.declaration(self.syntax, self.sources['SubReplyDetailComponents.kt'], 'SubReplyDetailItem'),
                          restore(item, proof['originalToWindows']))
@@ -236,6 +245,15 @@ class ConnectedCommentPanelSources(unittest.TestCase):
         ]
         for label, filename, named in commands:
             args = ['--repo', str(REPO), '--output', str(cls.output/label)] if named else [str(REPO), str(cls.output/label)]
+            if label == 'bangumi':
+                from generation_stage_proof import capture_ui_stage, PGC_BUFFERING
+                producer = module(filename)
+                capture = capture_ui_stage(cls.output/label, PGC_BUFFERING,
+                                           producer.windows_bangumi_buffering_playback_toggle_ui)
+                with patch.object(producer, 'windows_bangumi_buffering_playback_toggle_ui', capture), \
+                        patch.object(sys, 'argv', [filename, *args]), contextlib.redirect_stdout(io.StringIO()):
+                    producer.main()
+                continue
             result = subprocess.run([sys.executable, '-X', 'utf8', '-B', str(TOOLS/filename), *args],
                                     capture_output=True, encoding='utf8')
             if result.returncode:
@@ -430,6 +448,9 @@ class ConnectedCommentPanelSources(unittest.TestCase):
 
     def test_screen_supplies_reactive_existing_player_state_and_actual_guarded_seek(self):
         current = self.generated('bangumi', 'DesktopOriginalBangumiPlayerScreen.kt')
+        from generation_stage_proof import restore_stage, PGC_BUFFERING
+        current = restore_stage(self.output/'bangumi', PGC_BUFFERING,
+            'com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiPlayerScreen.kt', current)
         # The v0.4.6 like-status threading (bgm-player-viewmodel-and-features) is appended after this comment layer.
         retry = self.proof('bangumi', 'v046-bangumi-player-proofs/ui-retry-DesktopOriginalBangumiPlayerScreen')
         actual = restore(current, retry['retainedToCurrent'])

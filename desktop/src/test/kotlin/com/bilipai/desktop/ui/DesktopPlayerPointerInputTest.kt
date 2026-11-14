@@ -115,6 +115,33 @@ class DesktopPlayerPointerInputTest {
         f.settings = f.settings.copy(wheelAction = DesktopWindowsUxWheelAction.NONE)
         f.input.wheel(10); assertEquals(40, f.position); assertEquals(45, f.volume)
     }
+    @Test fun offlineNativeBridgeRequiresItsShownActivePlayerWindow() {
+        EventQueue.invokeAndWait {
+            Fixture().use { f ->
+                val surface = java.awt.Panel().apply { add(java.awt.Canvas()) }
+                val playerWindow = Any()
+                val otherWindow = Any()
+                var showing = true
+                var expectedWindow: Any? = playerWindow
+                var owner: Any? = playerWindow
+                var active: Any? = playerWindow
+                var reveals = 0
+                DesktopOfflineNativeInputBridge(surface, { f.source }, { f.active },
+                    { reveals++ }, { f.toggles++ },
+                    canUseSurface = { desktopOfflineSurfaceAdmitted(showing, expectedWindow, owner, active) },
+                    requestNativeFocus = {}).use { bridge ->
+                    fun reveal() = bridge.nativeWindowInput(MpvNativeWindowInputKind.MOTION)
+                    reveal(); assertEquals(1, reveals)
+                    showing = false; reveal(); showing = true
+                    owner = otherWindow; active = otherWindow; reveal()
+                    owner = playerWindow; reveal()
+                    active = playerWindow; expectedWindow = null; reveal()
+                    assertEquals(1, reveals)
+                    expectedWindow = playerWindow; reveal(); assertEquals(2, reveals)
+                }
+            }
+        }
+    }
     @Test fun nativeChildClicksWheelAndKeysReachTheSameOwnedActions() {
         EventQueue.invokeAndWait {
             Fixture().use { f ->
