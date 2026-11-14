@@ -14,6 +14,28 @@ import java.awt.event.ComponentEvent
 import java.awt.geom.AffineTransform
 import javax.swing.SwingUtilities
 
+/** Owns one fullscreen round trip on the actual Compose WindowState. */
+internal class DesktopFullscreenSession(private val state: WindowState) {
+    private var restorePlacement = WindowPlacement.Floating
+    var floatingBounds: Rectangle? = null
+        private set
+    fun setFullscreen(enabled: Boolean, bounds: Rectangle?) {
+        if (enabled) {
+            if (state.placement == WindowPlacement.Fullscreen) return
+            restorePlacement = state.placement
+            floatingBounds = bounds?.takeIf { state.placement == WindowPlacement.Floating }?.let(::Rectangle)
+            state.placement = WindowPlacement.Fullscreen
+        } else if (state.placement == WindowPlacement.Fullscreen) state.placement = restorePlacement
+    }
+    fun restoreFloatingBounds(apply: (Rectangle) -> Unit) {
+        if (state.placement != WindowPlacement.Floating) return
+        val captured = floatingBounds ?: return
+        floatingBounds = null
+        apply(Rectangle(captured))
+    }
+    fun clear() { floatingBounds = null }
+}
+
 /** Uses the same Compose placement setter. On Windows, fullscreen exit can restore
  * the native peer in unscaled units while AWT still reports the original bounds.
  * An equal setBounds is a no-op in Component.reshape; two real bounds changes on
@@ -24,7 +46,7 @@ internal class DesktopWindowsFullscreenControl(
 ) : AutoCloseable {
     private var closed = false
     private var revision = 0L
-    private var floatingBounds: Rectangle? = null
+    private val session = DesktopFullscreenSession(state)
     private var floatingDevice: GraphicsDevice? = null
     private var floatingMonitorBounds: Rectangle? = null
     private var floatingTransform: AffineTransform? = null
@@ -43,19 +65,19 @@ internal class DesktopWindowsFullscreenControl(
     fun setFullscreen(enabled: Boolean) {
         check(SwingUtilities.isEventDispatchThread())
         if (closed) return
-        val destination = if (enabled) WindowPlacement.Fullscreen else WindowPlacement.Floating
-        if (state.placement == destination) return
+        // Exit is meaningful only after entry; do not unmaximize an ordinary
+        // window when a retained screen redundantly asks to leave fullscreen.
+        if (!enabled && state.placement != WindowPlacement.Fullscreen) return
+        if (enabled && state.placement == WindowPlacement.Fullscreen) return
         revision++
         fullscreenRefreshRevision = if (enabled && window.isShowing) revision else null
         if (enabled) {
-            floatingBounds = if (state.placement == WindowPlacement.Floating && window.isShowing)
-                Rectangle(window.bounds) else null
             val configuration = window.graphicsConfiguration
             floatingDevice = configuration.device
             floatingMonitorBounds = Rectangle(configuration.bounds)
             floatingTransform = AffineTransform(configuration.defaultTransform)
         }
-        state.placement = destination
+        session.setFullscreen(enabled, window.bounds.takeIf { window.isShowing })
         if (!enabled) placementChanged()
     }
 
@@ -75,15 +97,19 @@ internal class DesktopWindowsFullscreenControl(
             }
             return
         }
-        val captured = floatingBounds ?: return
+        val captured = session.floatingBounds ?: return
         if (closed || state.placement != WindowPlacement.Floating) return
         val capturedRevision = revision
         SwingUtilities.invokeLater {
-            if (closed || capturedRevision != revision || floatingBounds !== captured ||
+            if (closed || capturedRevision != revision || session.floatingBounds !== captured ||
                 !window.isShowing || state.placement != WindowPlacement.Floating ||
                 window.placement != WindowPlacement.Floating) return@invokeLater
-            floatingBounds = null
-            if (matchesCapturedConfiguration()) reapplyCurrentPeerBounds()
+            session.restoreFloatingBounds { desired ->
+                if (matchesCapturedConfiguration()) {
+                    window.bounds = desired
+                    reapplyCurrentPeerBounds()
+                }
+            }
         }
     }
 
@@ -110,7 +136,7 @@ internal class DesktopWindowsFullscreenControl(
         if (closed) return
         closed = true
         revision++
-        floatingBounds = null
+        session.clear()
         floatingDevice = null
         floatingMonitorBounds = null
         floatingTransform = null

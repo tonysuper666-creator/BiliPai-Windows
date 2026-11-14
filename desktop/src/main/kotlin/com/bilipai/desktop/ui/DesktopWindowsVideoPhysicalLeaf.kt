@@ -302,6 +302,22 @@ internal class DesktopWindowsVideoActions(
             shortcuts.close()
         }
     }
+    val desktopPointerInput = DesktopNativePlaybackPointerInput(native,
+        enabled = { chromeCurrent() && !latestPip },
+        onReveal = { chromeActivity(DesktopWindowsFullscreenChromeActivity.NATIVE_PRESS) },
+        onToggle = { shell.togglePause() }, onFullscreen = { latestActions.fullscreen() },
+        onVolume = { delta ->
+            val target = (native.state.value.volume.toInt() + delta).coerceIn(0, 100)
+            if (shortcutBinding.perform(DesktopPlayerAction(DesktopPlayerActionKind.VOLUME, delta)))
+                latestActions.notice("音量 $target%")
+        },
+        onSeek = { delta -> shortcutBinding.perform(DesktopPlayerAction(DesktopPlayerActionKind.SEEK, delta)) },
+        onShortcut = { code -> desktopPlayerPointerShortcut(code, latestFullscreen,
+            { latestActions.fullscreen() },
+            { shortcutBinding.perform(DesktopPlayerAction(DesktopPlayerActionKind.SEEK, it)) },
+            { shortcutBinding.perform(DesktopPlayerAction(DesktopPlayerActionKind.VOLUME, it)) },
+            { shortcutBinding.perform(DesktopPlayerAction(DesktopPlayerActionKind.MUTE)) }) },
+        handleAwtKeys = false)
     // Listen only to this actual native host and its one non-focusable MPV Canvas.
     // A comment editor is outside this component tree and retains its native input.
     DisposableEffect(assembly, native.surface) {
@@ -1226,7 +1242,7 @@ internal class DesktopWindowsVideoActions(
                     val viewportHeight = with(density) { viewportLayout.height.toDp() }
                     var viewportSize by remember(native) { mutableStateOf(IntSize.Zero) }
                     Box(Modifier.align(Alignment.Center).size(viewportWidth, viewportHeight)
-                        .background(Color.Black).onSizeChanged { viewportSize = it }
+                        .background(Color.Black).then(desktopPointerInput).onSizeChanged { viewportSize = it }
                         .onGloballyPositioned { coordinates ->
                             // Store pixels only, never a LayoutCoordinates object.
                             // Host-hidden still keeps the peer; outgoing entries may
