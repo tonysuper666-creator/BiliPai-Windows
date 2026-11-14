@@ -133,8 +133,11 @@ class HoverEditsTest(_Generated):
     def test_the_edits_are_the_four_of_the_slice_after_the_earlier_ones(self):
         self.assertEqual(LABELS, [label for label, _b, _a in layer.HOVER_EDITS])
         self.assertEqual(EXPECTED, layer.HOVER_EDITS)
-        self.assertEqual(layer.EDITS + layer.COVER_EDITS + layer.LAYOUT_EDITS + layer.HOVER_EDITS, layer.ALL_EDITS)
-        self.assertEqual(LABELS, [label for label, _b, _a in layer.ALL_EDITS[-4:]])
+        # K3e appends its own copy link edits after these four, so the chain is checked by composition here and
+        # the hover group is pinned to the four rows that directly follow the K3b layout group.
+        self.assertEqual(layer.EDITS + layer.COVER_EDITS + layer.LAYOUT_EDITS + layer.HOVER_EDITS + layer.COPY_EDITS,
+                         layer.ALL_EDITS)
+        self.assertEqual(LABELS, [label for label, _b, _a in layer.ALL_EDITS[-7:-3]])
         self.assertEqual(NAMES, layer.HOVER_INTRODUCED)
         for label, before, after in EXPECTED:
             self.assertNotEqual(before, after, label)
@@ -149,14 +152,18 @@ class HoverEditsTest(_Generated):
             self.assertEqual(1, self.layered.count(after), label)
 
     def test_forward_is_the_written_out_edits_byte_for_byte(self):
-        self.assertEqual(self.layered_bytes, apply_edits(self.received, EXPECTED).encode("utf-8"))
+        # The text the K3d edits leave: the produced card with the K3e copy link edits undone, nothing else.
+        hover_only = undo_edits(self.layered, layer.COPY_EDITS)
+        self.assertEqual(hover_only.encode("utf-8"), apply_edits(self.received, EXPECTED).encode("utf-8"))
         audits = []
         produced = layer.apply_home_card(REPO, layer.CARD, self.plain, audits)
         self.assertEqual(self.layered_bytes, produced.encode("utf-8"))
 
     def test_inverse_gives_back_the_earlier_text_and_the_vendored_card_byte_for_byte(self):
-        # Undoing only the K3d edits, last first, gives back the text of H2, K3 and K3b exactly; the whole layer reverses to the vendored card.
-        self.assertEqual(self.received.encode("utf-8"), undo_edits(self.layered, EXPECTED).encode("utf-8"))
+        # Undoing the K3e edits and then only the K3d edits, last first, gives back the text of H2, K3 and K3b
+        # exactly; the whole layer reverses to the vendored card.
+        self.assertEqual(self.received.encode("utf-8"),
+                         undo_edits(undo_edits(self.layered, layer.COPY_EDITS), EXPECTED).encode("utf-8"))
         self.assertEqual(self.plain_bytes, layer.reverse(layer.CARD, self.layered).encode("utf-8"))
 
     def test_the_layer_changes_only_the_card_and_the_inventory(self):
@@ -164,11 +171,12 @@ class HoverEditsTest(_Generated):
         changed = {name for name in self.layered_tree if self.layered_tree[name] != self.plain_tree[name]}
         self.assertEqual({h2.CARD_PATH, h2.INVENTORY_PATH}, changed)
 
-    def test_the_last_four_audit_rows_are_the_hover_edits(self):
+    def test_the_four_audit_rows_of_the_hover_edits_follow_the_layout_ones(self):
         audits = []
         layer.apply_home_card(REPO, layer.CARD, self.plain, audits)
-        self.assertEqual(LABELS, [row["id"] for row in audits[-4:]])
-        for (label, before, after), row in zip(EXPECTED, audits[-4:]):
+        # K3e appends three rows after these four, so the hover rows are the four before the last three.
+        self.assertEqual(LABELS, [row["id"] for row in audits[-7:-3]])
+        for (label, before, after), row in zip(EXPECTED, audits[-7:-3]):
             self.assertEqual(hashlib.sha256(before.encode("utf-8")).hexdigest(), row["beforeSha256"], label)
             self.assertEqual(hashlib.sha256(after.encode("utf-8")).hexdigest(), row["afterSha256"], label)
             self.assertIs(True, row["inverseRestoresInput"], label)
@@ -184,10 +192,12 @@ class HoverEditsTest(_Generated):
 
 class HoverRefusalTest(_Generated):
     def test_the_hover_only_layer_reproduces_the_card(self):
-        # The control of the refusals below: with only the K3d edits, the layer turns the received text into the produced card.
+        # The control of the refusals below: with only the K3d edits, the layer turns the received text into the
+        # card the K3d edits leave (the produced card has the K3e copy link edits on top, so they are undone here).
+        hover_only = undo_edits(self.layered, layer.COPY_EDITS)
         audits = []
         with only_the_hover_edits():
-            self.assertEqual(self.layered, layer.apply_home_card(REPO, layer.CARD, self.received, audits))
+            self.assertEqual(hover_only, layer.apply_home_card(REPO, layer.CARD, self.received, audits))
         self.assertEqual(LABELS, [row["id"] for row in audits])
 
     def test_a_mutated_anchor_fails_closed(self):

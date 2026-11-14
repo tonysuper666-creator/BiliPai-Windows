@@ -3,8 +3,8 @@
 The Home card producer (extract-upstream-home-full-card.py) calls apply_home_card once per emitted file, right after the
 recommendation badge layer, through one hook line (the v043_home_recommendation_badges pattern). The layer touches one generated
 file and nothing else, VideoCard.kt (the grid card of the Home feed; its ElegantVideoCard function), with seven exact-once
-replacements of slice H2 (EDITS), four of slice K3 (COVER_EDITS), fourteen of slice K3b (LAYOUT_EDITS) and four of slice K3d
-(HOVER_EDITS, all below):
+replacements of slice H2 (EDITS), four of slice K3 (COVER_EDITS), fourteen of slice K3b (LAYOUT_EDITS), four of slice K3d
+(HOVER_EDITS) and three of slice K3e (COPY_EDITS, all below):
 
   * the two imports of the vendored dropdown menu become import aliases of the desktop-owned menu, so the call text of the card is
     the vendored call text (named arguments expanded, onDismissRequest, offset, and the ColumnScope trailing lambda):
@@ -52,6 +52,22 @@ exact-once edits in HOVER_EDITS, applied after all of the above, with the helper
   * DesktopHomeCardQuickActions as the last child of the cover Box, in its top end corner: watch later calls the card's own
     onWatchLater, more calls openDismissMenu with the more button as anchor when the card has a menu (hasOverflowMenu).
 Undoing only HOVER_EDITS gives the text of H2, K3 and K3b exactly.
+
+Slice K3e adds the copy link of the card (spec 4, menu item 5), three more exact-once edits in COPY_EDITS, applied after all
+of the above, with the helpers in DesktopHomeCardFrame.kt:
+
+  * the clipboard and the link of the card, read once next to homeCardHover: homeCardClipboard is the existing clipboard
+    boundary (LocalDesktopTextClipboard of the appearance package), homeCardCopyLink is the link of this video
+    (desktopHomeVideoLink, null when the bvid is not a video id), and copyHomeCardLink is the action that writes it once
+    through desktopHomeCopyVideoLink, or null when there is no link;
+  * the copy action of the cover focus target (onCopy): Ctrl+C on the focused cover is one more key action of the frame (COPY).
+    The shortcut belongs to the card, so text editing and selection outside it keep their Ctrl+C;
+  * one row of the card menu, "复制链接（Ctrl C）", after the vendored rows and before 不感兴趣: it closes the menu, as every
+    other row does, and writes the link; it plays nothing and calls neither watch later nor dismiss, and the row is not shown
+    when the card has no link.
+The row lives inside the existing menu and nowhere else: a card without onDismiss and onWatchLater keeps its hasOverflowMenu
+policy and shows no menu, and with the flag OFF homeCardCopyLink stays null, so the vendored menu keeps its three rows and
+behaviour. Undoing only COPY_EDITS gives the text of H2, K3, K3b and K3d exactly.
 
 Not covered by this layer: the single-column display mode (AppWindowActionMenu), StoryVideoCard and DynamicCard. This is a
 desktop-owned layer: there is no upstream archive, no manifest and no pinned predecessor hash. Every anchor is counted on the text
@@ -337,7 +353,50 @@ HOVER_EDITS = (
      '        \n'
      '        val infoSurfaceShape = remember(cardCornerRadius) {\n'),
 )
-ALL_EDITS = EDITS + COVER_EDITS + LAYOUT_EDITS + HOVER_EDITS
+# Slice K3e: the copy link of the card (spec 4, menu item 5). Same rules as EDITS: each `before` occurs exactly once in the
+# text the layer receives (after all of the above). The row is inside the existing menu, and homeCardCopyLink stays null while
+# the flag is OFF, so nothing of this slice renders then.
+COPY_EDITS = (
+    ('ux-card-copy-link-state',
+     '    val homeCardHover = ' + UI + 'rememberDesktopHomeCardHover()\n',
+     '    val homeCardHover = ' + UI + 'rememberDesktopHomeCardHover()\n'
+     '    val homeCardClipboard = com.bilipai.desktop.appearance.LocalDesktopTextClipboard.current\n'
+     '    val homeCardCopyLink = if (homeCardThreeLine) {\n'
+     '        ' + UI + 'desktopHomeVideoLink(video.bvid)\n'
+     '    } else {\n'
+     '        null\n'
+     '    }\n'
+     '    val copyHomeCardLink: (() -> Boolean)? = if (homeCardCopyLink == null) {\n'
+     '        null\n'
+     '    } else {\n'
+     '        { ' + UI + 'desktopHomeCopyVideoLink(homeCardClipboard, homeCardCopyLink) }\n'
+     '    }\n'),
+    ('ux-card-copy-link-key',
+     '                    onOpen = { triggerCardClick() },\n'
+     '                    onMenu = if (hasOverflowMenu) {\n',
+     '                    onOpen = { triggerCardClick() },\n'
+     '                    onCopy = copyHomeCardLink,\n'
+     '                    onMenu = if (hasOverflowMenu) {\n'),
+    ('ux-card-copy-link-menu-row',
+     '\n                // 不感兴趣 (放第一位，方便操作) -> 改回下方\n',
+     '\n                // 复制链接 (Ctrl C)\n'
+     '                if (copyHomeCardLink != null) {\n'
+     '                    AppDropdownMenuItem(\n'
+     '                        text = {\n'
+     '                            AppText(\n'
+     '                                "复制链接（Ctrl C）",\n'
+     '                                color = MaterialTheme.colorScheme.onSurface\n'
+     '                            )\n'
+     '                        },\n'
+     '                        onClick = {\n'
+     '                            showDismissMenu = false\n'
+     '                            copyHomeCardLink?.invoke()\n'
+     '                        }\n'
+     '                    )\n'
+     '                }\n'
+     '\n                // 不感兴趣 (放第一位，方便操作) -> 改回下方\n'),
+)
+ALL_EDITS = EDITS + COVER_EDITS + LAYOUT_EDITS + HOVER_EDITS + COPY_EDITS
 
 # After the layer none of these vendored lines may remain in the file: the menu imports and the overflow box size line.
 GONE = (
@@ -351,6 +410,8 @@ INTRODUCED = ('DesktopCardContextMenu', 'DesktopCardContextMenuItem', 'desktopCa
 COVER_INTRODUCED = ('desktopHomeCoverFocusTarget', 'desktopHomeCoverFocusRing', 'rememberDesktopHomeCoverFocus', 'homeCoverFocus')
 LAYOUT_INTRODUCED = ('desktopCardInteractionsOn', 'homeCardThreeLine', 'threeLineTime', 'home_video_owner_time')
 HOVER_INTRODUCED = ('desktopHomeCardHoverSurface', 'rememberDesktopHomeCardHover', 'homeCardHover', 'DesktopHomeCardQuickActions')
+COPY_INTRODUCED = ('desktopHomeVideoLink', 'desktopHomeCopyVideoLink', 'homeCardClipboard', 'homeCardCopyLink',
+                   'copyHomeCardLink')
 
 
 def sha(text):
@@ -373,7 +434,7 @@ def apply_home_card(repo, name, text, audits):
     """The text of one emitted file with the Home card edits, or the text itself for any file the layer does not own."""
     if name != CARD:
         return text
-    for introduced in INTRODUCED + COVER_INTRODUCED + LAYOUT_INTRODUCED + HOVER_INTRODUCED:
+    for introduced in INTRODUCED + COVER_INTRODUCED + LAYOUT_INTRODUCED + HOVER_INTRODUCED + COPY_INTRODUCED:
         need(introduced not in text, 'Home card layer already applied or name taken: %s in %s' % (introduced, name))
     received = text
     for label, before, after in ALL_EDITS:
