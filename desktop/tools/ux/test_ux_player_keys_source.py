@@ -878,7 +878,7 @@ def check_leaf_v6(leaf):
     need(leaf.count("desktopWindowsRequestPageEntryFocus(") == 1, "one page-entry focus request")
     order = ["val shortcutBinding = remember(assembly)", "val keyboardOwned = {", "val input = DesktopWindowsVideoKeyInput(", "val shortcuts = DesktopWindowsVideoShortcutInput(",
              "windowKeyFallback?.registerLeaf {", "val controls = DesktopPlayerControlsBinding(", "}.focusable()) {", "LaunchedEffect(assembly, route, active, presentationAlive, pipActive) {",
-             "if (active && !pipActive) {", "if (detailsOpen) detailsPanel()", "SideEffect {\n        shortcutBinding.legacyLayout",
+             "if (active && !pipActive) {", "DesktopWindowsVideoDetailsPanel(", "SideEffect {\n        shortcutBinding.legacyLayout",
              "audioLanguageMenu?.takeIf { shell.playback.isAudioSelectionCurrent(it) }"]
     position = 0
     for item in order:

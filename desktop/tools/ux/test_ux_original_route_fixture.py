@@ -94,6 +94,9 @@ class PremiseTest(unittest.TestCase):
     def test_the_desktop_leaf_reaches_its_legacy_control_bar(self):
         _, _, leaf_reach = model.graph()
         self.assertIn("DesktopWindowsVideoControlBar", leaf_reach)
+        self.assertEqual(model.CONTROLS_LAMBDA, leaf_reach["DesktopWindowsVideoControlBar"])
+        self.assertEqual(model.PLAYER_STAGE, leaf_reach[model.CONTROLS_LAMBDA])
+        self.assertEqual(model.DESKTOP_LEAF, leaf_reach[model.PLAYER_STAGE])
         self.assertNotIn("DesktopWindowsVideoControlBar", model.graph()[1])
 
     def test_the_shell_gives_the_original_leaf_only_the_audio_routes(self):
@@ -198,7 +201,8 @@ class AnchorTablesTest(unittest.TestCase):
 
     def test_the_leaf_mounts_the_legacy_bar_on_page_entry(self):
         leaf = source.read(model.LEAF_KT)
-        self.assertEqual(1, leaf.count("if (chromeVisible && legacyChrome) legacyControlBar()"))
+        self.assertTrue(model.legacy_controls_mounted(leaf))
+        self.assertEqual(1, leaf.count(model.LEGACY_CONTROLS_CALL))
         self.assertEqual(1, leaf.count("val chromeVisible = !fullscreen || chrome.visible"))
 
 
@@ -681,8 +685,23 @@ class MutationTest(unittest.TestCase):
         self.assertFails(model.leaf_anchor_problems(leaf, original, bar_text=conditional), "condition")
         retitled = replaced(source.read(model.STRINGS_KT), 'const val DETAILS = "详情"', 'const val DETAILS = "Details"')
         self.assertFails(model.leaf_anchor_problems(leaf, original, strings_text=retitled), "详情")
-        hidden = replaced(source.read(model.LEAF_KT), "if (chromeVisible && legacyChrome) legacyControlBar()", "if (legacyChrome) legacyControlBar()")
+        hidden = replaced(source.read(model.LEAF_KT), model.LEGACY_CONTROLS_CALL, "if (legacy) controls()")
         self.assertFails(model.leaf_anchor_problems(leaf, original, leaf_text=hidden), "LEGACY control bar")
+
+    def test_an_uncalled_or_disconnected_controls_supplier_is_not_reachable(self):
+        universe, _, _ = model.graph()
+        rel = model.LEAF_KT.relative_to(model.REPO).as_posix()
+        leaf = universe.texts[rel]
+        for before, after in (
+            (model.LEGACY_CONTROLS_CALL, "if (legacy) controls()"),
+            ("controls = plan.controls, status = plan.status,", "controls = {}, status = plan.status,"),
+            ("val plan = resources.content(panelState)", "val plan = unused.content(panelState)"),
+            ("        DesktopWindowsVideoPhysicalLeafResources(", "        UnusedVideoPhysicalLeafResources("),
+        ):
+            with self.subTest(before=before):
+                edited = replaced(leaf, before, after)
+                reach = model.desktop_reach(universe.replace(rel, edited))
+                self.assertNotIn("DesktopWindowsVideoControlBar", reach)
 
     # --- the premise
     def test_a_shell_that_routes_a_video_to_the_original_leaf_breaks_the_premise(self):

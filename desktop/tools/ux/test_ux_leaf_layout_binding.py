@@ -989,9 +989,13 @@ class MutationTest(unittest.TestCase):
         self.assertNotEqual(BASE_SHA256, sha256(reverse_apply(edited)))
 
     def test_a_hunk_that_no_longer_matches_is_reported_by_name(self):
-        edited = self.mutated("if (chromeVisible && legacyChrome) legacyTopStrip()", "if (chromeVisible && legacyChrome) legacyTopStrip(1)")
+        edited = self.mutated(STRIP_CALL, "if (chromeVisible && legacy) header(1)")
+        with self.assertRaisesRegex(AssertionError, "TON1592 retained stage/carrier hunk 2"):
+            reverse_consumer(edited)
+        # Keep exercising the historical chain too. Its existing SideEffect
+        # mismatch must remain visible after the new consumer layer is undone.
         with self.assertRaises(AssertionError) as caught:
-            reverse_apply(edited)
+            reverse_apply(LEAF_TEXT)
         self.assertIn("top strip lambda closes and is called", str(caught.exception))
 
     def test_a_binding_member_that_drifts_from_the_original_lambda_is_found(self):

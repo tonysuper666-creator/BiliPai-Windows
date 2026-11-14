@@ -37,6 +37,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import ux_source as source  # noqa: E402
 
 LEAF = source.K / "ui/DesktopWindowsVideoPhysicalLeaf.kt"
+DOCK = source.K / "ui/DesktopWindowsVideoDetailsDock.kt"
 
 COVER_MARKER_START = "    // Cover inputs never borrow"
 COVER_MARKER_END = "    var showSponsorSegment "
@@ -71,15 +72,15 @@ BAR_ARGUMENTS = (
 PANEL_ARGUMENTS = ("modifier", "selectedTab", "onTabChange", "onClose", "current", "loading", "failureContent", "related",
                    "introduction", "comments")
 
-# One entry per anchor of the layout, in the order the composition meets them. Each occurs exactly once. A hoist that keeps the code
-# where it was (V2) keeps this order; a slice that really moves a piece edits this list in the same commit.
+# TON-1592: geometry now lives in DockRow and Stage. Pin each body's order as well
+# as the calls connecting them; resource lambdas retain their own source order.
 LAYOUT_ORDER = (
     ("shell box", "BoxWithConstraints(Modifier.fillMaxSize().padding(if (fullscreen) 0.dp else 8.dp)) {"),
     ("row", "Row(Modifier.fillMaxSize(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {"),
-    ("column", "Column(Modifier.weight(1f).fillMaxHeight(), verticalArrangement = Arrangement.spacedBy(if (chromeVisible) 6.dp else 0.dp)) {"),
+    ("column", "Column(Modifier.weight(1f).fillMaxHeight(), verticalArrangement = Arrangement.spacedBy(if (chromeVisible && legacy) 6.dp else 0.dp)) {"),
     ("top strip", TOP_STRIP + "Modifier.fillMaxWidth()"),
     ("back name", 'contentDescription = "返回")'),
-    ("video box", "BoxWithConstraints(Modifier.fillMaxWidth().weight(1f).background(Color.Black)) {"),
+    ("video box", "Box(Modifier.fillMaxWidth().weight(1f).background(Color.Black)) {"),
     ("command popup", POPUP),
     ("entry cover", ENTRY_COVER),
     ("original overlay", OVERLAY),
@@ -90,9 +91,9 @@ LAYOUT_ORDER = (
     ("seek preview host", SEEK_PREVIEW_HOST),
     ("popup end", "}, native.surface)"),
     ("confirmed feedback", FEEDBACK_CALL),
+    ("control bar", CONTROL_BAR),
     ("recovering chip", "if (playback.recovering && playback.recoveryMessage != null)"),
     ("failure content", "if (bootstrapError != null || playback.error != null) failureContent()"),
-    ("control bar", CONTROL_BAR),
     ("details panel", DETAILS_PANEL),
     ("audio language dialog", "audioLanguageMenu?.takeIf { shell.playback.isAudioSelectionCurrent(it) }"),
     ("coin section", "DesktopWindowsVideoCoinSection(engagementBinding)"),
@@ -277,18 +278,35 @@ def check_must_keep(leaf):
     return found.items
 
 
-def check_legacy_branch(leaf):
+def check_legacy_branch(leaf, dock=None):
     found = Findings()
+    dock = source.read(DOCK) if dock is None else dock
     found.need(leaf.count(CONTROL_BAR) == 1, "the LEGACY branch holds exactly one DesktopWindowsVideoControlBar( call")
     found.need(source.mask_kotlin(leaf).count(CONTROL_BAR) == 1, "...and no other mention of it in code")
     found.need(leaf.count(TOP_STRIP) == 1, "one top strip surface")
     found.need(leaf.count(DETAILS_PANEL) == 1, "one details panel")
     for label, needle in LAYOUT_ORDER:
-        found.need(leaf.count(needle) == 1, "layout anchor %s occurs exactly once: %s" % (label, needle))
-    indices = [leaf.find(needle) for _, needle in LAYOUT_ORDER]
-    if all(index >= 0 for index in indices):
-        for (label, _), (next_label, _), before, after in zip(LAYOUT_ORDER, LAYOUT_ORDER[1:], indices, indices[1:]):
-            found.need(before < after, "layout order: %s must come before %s" % (label, next_label))
+        text = dock if label in ("shell box", "row") else leaf
+        found.need(text.count(needle) == 1, "layout anchor %s occurs exactly once: %s" % (label, needle))
+    anchors = dict(LAYOUT_ORDER)
+    groups = (
+        (dock, ("shell box", "row")),
+        (leaf, ("column", "stage header", "video box", "stage viewport", "stage status", "stage controls")),
+        (leaf, tuple(label for label, _ in LAYOUT_ORDER if label not in ("shell box", "row", "column", "video box"))),
+    )
+    anchors.update({"stage header": "if (chromeVisible && legacy) header()",
+                    "stage viewport": "            viewport {", "stage status": "        status()",
+                    "stage controls": "if (chromeVisible && legacy) controls()"})
+    for text, labels in groups:
+        for label in labels:
+            found.need(text.count(anchors[label]) == 1, "layout composition anchor occurs once: " + label)
+        for before, after in zip(labels, labels[1:]):
+            found.order(text, anchors[before], anchors[after], "layout order: %s must come before %s" % (before, after))
+    for needle in ("    DesktopWindowsVideoDetailsDockRow(", "        DesktopWindowsVideoPlayerStage(",
+                   "chromeVisible = plan.chromeVisible, header = plan.header, viewport = plan.viewport,",
+                   "controls = plan.controls, status = plan.status,", "val legacy = layout == DesktopWindowsUxPlayerLayout.LEGACY"):
+        found.need(leaf.count(needle) == 1, "layout connection occurs once: " + needle)
+    found.order(leaf, "    DesktopWindowsVideoDetailsDockRow(", "        DesktopWindowsVideoPlayerStage(", "DockRow mounts Stage")
     if leaf.count(CONTROL_BAR) == 1:
         found.need(argument_names(leaf, CONTROL_BAR) == BAR_ARGUMENTS, "the control bar keeps its 49 named arguments in order")
     if leaf.count(DETAILS_PANEL) == 1:
@@ -296,6 +314,33 @@ def check_legacy_branch(leaf):
     for expected, needle in HIT_AND_FOCUS_ANCHORS + LEAF_NAMES:
         found.need(leaf.count(needle) == expected, "%d x %s" % (expected, needle))
     return found.items
+
+
+class MountedGeometryMutationTest(unittest.TestCase):
+    def test_each_moved_geometry_anchor_still_detects_its_own_regression(self):
+        leaf, dock = read_leaf(), source.read(DOCK)
+        baseline = check_legacy_branch(leaf, dock)
+        for origin, label, before, after in (
+            ("dock", "shell box", "padding(if (fullscreen) 0.dp else 8.dp)", "padding(if (fullscreen) 0.dp else 9.dp)"),
+            ("dock", "row", "Arrangement.spacedBy(8.dp)", "Arrangement.spacedBy(4.dp)"),
+            ("leaf", "column", "if (chromeVisible && legacy) 6.dp else 0.dp", "if (chromeVisible && legacy) 3.dp else 0.dp"),
+            ("leaf", "video box", "weight(1f).background(Color.Black)", "weight(1f).background(Color.Transparent)"),
+        ):
+            with self.subTest(label=label):
+                text = dock if origin == "dock" else leaf
+                self.assertEqual(1, text.count(before))
+                edited = text.replace(before, after)
+                problems = check_legacy_branch(edited if origin == "leaf" else leaf, edited if origin == "dock" else dock)
+                added = [p for p in problems if p not in baseline]
+                self.assertTrue(any("layout anchor " + label in p for p in added), added)
+
+    def test_reordering_stage_header_after_the_viewport_is_detected(self):
+        leaf = read_leaf()
+        before = "        if (chromeVisible && legacy) header()\n"
+        self.assertEqual(1, leaf.count(before))
+        edited = leaf.replace(before, "").replace("        status()", before + "        status()")
+        problems = check_legacy_branch(edited)
+        self.assertIn("layout order: stage header must come before video box", problems)
 
 
 def check_future_order(leaf):
