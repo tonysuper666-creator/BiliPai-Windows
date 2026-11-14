@@ -1,29 +1,14 @@
 package com.bilipai.desktop.settings
 
+import com.android.purebilibili.feature.settings.PlaybackSettingItem
+import com.android.purebilibili.feature.settings.settingsItemDirectory
+import com.android.purebilibili.feature.settings.canonicalSettingsRootCategory
 import com.android.purebilibili.feature.settings.SettingsRootCategory
 import com.android.purebilibili.feature.settings.SettingsSearchFocusIds
 import com.android.purebilibili.feature.settings.SettingsSearchTarget
 import com.bilipai.desktop.ui.DesktopWindowsSettingsStrings
 
-/*
- * The item-level directory of the Windows settings (roadmap slice set-settings-search-items; upstream v0.3.4-beta.1
- * item search, v0.3.8 description hits, v0.3.9 focus claim).
- *
- * Upstream keeps one Android map (PlaybackSettingDirectory.kt and SettingsAdditionalDirectory.kt, about 200 rows, most of them
- * phone-only). The Windows directory is its own list of exactly the rows that the Windows pages mount. Every row below is a
- * row of a page that DesktopSettingsTree shows: its title, and its description where the row has a static one, are copied
- * from that row's source (test_v046_settings_search_items_source.py reads each source and fails on a title that no row
- * carries, on a row that the directory forgot, and on a group anchor that is not the row's own group).
- *
- * Ids: a row that exists upstream under the same meaning keeps the upstream id (the settings share catalog and a future
- * backup import can then relate the two); a Windows-only row gets an id of the same shape. Aliases are search words only.
- *
- * The directory never contains a phone control (permissions, gestures, portrait modes, bottom bar, brightness, onboarding).
- * Pages whose rows come from generated original screens (home, storage and backup, plugins, update and diagnostics, blocked
- * list, tips, licenses) are not itemised here; their sections stay reachable through DesktopWindowsSettingsCatalog.
- *
- * focus is the id of a group anchor that the page already mounts (desktopSettingsSearchFocusAnchor); null opens the page.
- */
+/** Upstream owns item existence. Windows records below supply presentation and real mounted anchors only. */
 internal data class DesktopSettingsItem(
     val settingId: String,
     val title: String,
@@ -77,7 +62,7 @@ private fun privacyItem(id: String, title: String, description: String, vararg a
     DesktopSettingsItem(id, title, description, SettingsSearchTarget.PRIVACY_PERMISSION, SettingsRootCategory.PRIVACY_PERMISSION,
         ITEM_GROUP_SEARCH_HISTORY, null, aliases.toList())
 
-internal val desktopSettingsItemDirectory: List<DesktopSettingsItem> = listOf(
+internal val desktopSettingsItemPresentation: List<DesktopSettingsItem> = listOf(
     // DesktopWindowsPlaybackSettings: 解码与画质
     playbackItem("playback.hw_decode", "硬件解码", "使用显卡解码；更改后由播放器按原有恢复策略应用。", ITEM_GROUP_QUALITY, ITEM_FOCUS_QUALITY, "启用硬件解码", "解码", "显卡"),
     playbackItem("playback.video_codec_preference", "首选视频编码", "", ITEM_GROUP_QUALITY, ITEM_FOCUS_QUALITY, "优先使用", "编码", "AV1", "HEVC", "H265", "H264", "AVC"),
@@ -143,9 +128,57 @@ internal val desktopSettingsItemDirectory: List<DesktopSettingsItem> = listOf(
     privacyItem("privacy.search_suggestions_enabled", "个性化搜索推荐", "使用官方搜索推荐；关闭时使用公开热搜。", "搜索推荐词", "推荐词", "热搜"),
     privacyItem("privacy.personal_recap_enabled", "我的回顾", "在历史页显示阅读与观看统计、趋势图和最近爱看的 UP 主。", "回顾", "阅读统计", "观看统计"),
     privacyItem("privacy.privacy_mode_enabled", "不新增播放和搜索历史", "已有记录保留。", "不记录历史", "不新增", "无痕", "隐私", "历史记录"),
-).plus(desktopWindowsUxSearchItems).also { items ->
+)
+
+internal val desktopOnlySettingsIds = setOf(
+    "playback.default_quality",
+    "playback.default_playback_speed",
+    "playback.comment_default_sort_mode",
+    "audio.wasapi_exclusive",
+    "audio.output_device",
+    "video.nvidia_auto_enhancement",
+    "video.nvidia_enhancement_content",
+    "video.nvidia_enhancement_intensity",
+    "video.nvidia_enhancement_quality",
+    "appearance.ui_style",
+    "appearance.theme_mode",
+    "appearance.dark_theme_style",
+    "appearance.app_language",
+    "appearance.seed_palette_style",
+    "appearance.window_scale",
+    "privacy.default_search_hint_enabled",
+    "privacy.personal_recap_enabled",
+)
+
+internal fun buildDesktopSettingsItemDirectory(
+    upstream: List<PlaybackSettingItem> = settingsItemDirectory,
+    placements: Map<String, DesktopPlacementRow> = desktopSettingsItemPlacement,
+    presentation: List<DesktopSettingsItem> = desktopSettingsItemPresentation,
+    windows: List<DesktopSettingsItem> = desktopWindowsUxSearchItems,
+): List<DesktopSettingsItem> {
+    check(presentation.map { it.settingId }.toSet().size == presentation.size) { "Duplicate Windows settings presentation ID" }
+    val upstreamIds = upstream.map { it.settingId }.toSet()
+    check(upstreamIds.size == upstream.size) { "Duplicate upstream settings search ID" }
+    val desktop = presentation.filter { it.settingId in desktopOnlySettingsIds } + windows
+    check(desktop.none { it.settingId in upstreamIds }) { "Desktop settings search ID collides with upstream" }
+    val overrides = presentation.filterNot { it.settingId in desktopOnlySettingsIds }.associateBy { it.settingId }
+    check(overrides.keys.all { it in upstreamIds }) { "Stale Windows settings presentation: ${overrides.keys - upstreamIds}" }
+    val items = upstream.mapNotNull { source ->
+        val placement = placements[source.settingId]
+        if (placement != null && placement.treatment != DesktopPlacementTreatment.available) return@mapNotNull null
+        // A newly merged item stays visible until the mandatory placement gate requires its decision.
+        val category = placement?.let { SettingsRootCategory.valueOf(it.desktopCategory) }
+            ?: if (source.page == SettingsRootCategory.GLASS_ADVANCED) SettingsRootCategory.APPEARANCE_THEME
+            else canonicalSettingsRootCategory(source.page)
+        val overlay = overrides[source.settingId]
+        if (overlay != null) overlay.copy(target = source.target, category = category)
+        else DesktopSettingsItem(source.settingId, source.title, "", source.target, category, null, null, source.aliases)
+    } + desktop
     check(items.map { it.settingId }.toSet().size == items.size) { "Duplicate desktop settings search ID" }
+    return items
 }
+
+internal val desktopSettingsItemDirectory: List<DesktopSettingsItem> by lazy { buildDesktopSettingsItemDirectory() }
 
 /** The breadcrumb of a row: 设置 / rail title / group. */
 internal fun desktopSettingsItemPath(item: DesktopSettingsItem): String =

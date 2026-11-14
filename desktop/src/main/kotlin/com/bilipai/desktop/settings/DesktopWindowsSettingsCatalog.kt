@@ -1,10 +1,12 @@
 package com.bilipai.desktop.settings
 
+import com.android.purebilibili.feature.settings.SettingsRootCategory
+import com.android.purebilibili.feature.settings.resolveSettingsSearchResults
+import com.android.purebilibili.feature.settings.settingsItemDirectory
 import com.android.purebilibili.feature.settings.SettingsSearchResult
 import com.android.purebilibili.feature.settings.SettingsSearchTarget
 
-/** Search indexes mounted Windows settings only. Android's index remains source history.
- * Words may name a mounted control that has no row of its own; they never name a removed phone control. */
+/** Windows section labels retain their focus anchors; additional upstream targets use the placement table. */
 internal data class DesktopWindowsSettingsSearchEntry(val target: SettingsSearchTarget,
     val title: String, val subtitle: String, val section: String, val words: List<String>, val focus: String? = null)
 
@@ -35,8 +37,21 @@ internal fun resolveDesktopWindowsSettingsSearchResults(query: String): List<Set
     val trimmed = query.trim()
     if (trimmed.isEmpty()) return emptyList()
     val terms = trimmed.split(Regex("\\s+"))
-    return desktopWindowsSettingsSearchEntries.filter { entry ->
+    val windows = desktopWindowsSettingsSearchEntries.filter { entry ->
         val searchable = listOf(entry.title, entry.subtitle, entry.section) + entry.words
         terms.all { term -> searchable.any { it.contains(term, ignoreCase = true) } }
-    }.take(20).map { entry -> SettingsSearchResult(entry.target, entry.title, entry.subtitle, entry.section, entry.focus) }
+    }.map { entry ->
+        val placement = desktopSettingsTargetPlacement.getValue(entry.target.name)
+        SettingsSearchResult(entry.target, entry.title, entry.subtitle, entry.section, entry.focus,
+            page = SettingsRootCategory.valueOf(placement.desktopCategory))
+    }
+    val representedTargets = desktopWindowsSettingsSearchEntries.map { it.target }.toSet()
+    val concreteIds = settingsItemDirectory.map { it.settingId }.toSet()
+    val originalTargets = resolveSettingsSearchResults(trimmed, Int.MAX_VALUE).mapNotNull { result ->
+        if (result.settingId in concreteIds || result.target in representedTargets) return@mapNotNull null
+        val placement = desktopSettingsTargetPlacement[result.target.name] ?: return@mapNotNull null
+        if (placement.treatment != DesktopPlacementTreatment.available) return@mapNotNull null
+        result.copy(focusId = null, page = SettingsRootCategory.valueOf(placement.desktopCategory))
+    }
+    return (windows + originalTargets).take(20)
 }

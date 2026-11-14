@@ -130,7 +130,7 @@ def focus_id_constants():
     return dict(re.findall(r'const val (\w+) = "([^"]*)"', text(FOCUS_POLICY)))
 
 
-def parse_directory():
+def parse_presentation():
     source = text(DIRECTORY)
     constants = dict(CONSTANT.findall(source))
     focus_ids = focus_id_constants()
@@ -161,6 +161,79 @@ def parse_directory():
             group = constants['ITEM_GROUP_NOTIFICATION' if function == 'notificationItem' else 'ITEM_GROUP_SEARCH_HISTORY']
         items.append(dict(id=ident, title=title, description=description, target=target, category=category, group=group,
                           focus=focus, aliases=aliases, kind=function))
+    return items
+
+
+def placement_model():
+    return load('ux/test_ux_settings_item_placement.py')
+
+
+def parse_directory():
+    """Read existence from the merged upstream; tables filter/locate, old records only overlay presentation.
+
+    Keep parse_presentation for the original page-by-page coverage below: those obligations remain even after merging
+    more upstream pages. Symbolic haptic records are filtered by the item table and never supply visible metadata.
+    """
+    model = placement_model()
+    declared = model.upstream_item_ids()
+    rows = {row[0]: row for row in model.table('settings-item-placement.tsv')}
+    targets = {row[0]: row for row in model.table('settings-target-placement.tsv')}
+    assert set(declared) == set(rows), 'upstream/table mismatch'
+    presentation = parse_presentation()
+    overlay = {item['id']: item for item in presentation if item['id'] not in WINDOWS_ONLY_IDS}
+    assert overlay.keys() <= set(declared), 'stale presentation'
+    metadata = {}
+    header = re.compile(r'PlaybackSettingItem\(\s*("[\w.]+"|[A-Z_]+),\s*("[^"]+"|[\w.]+),\s*SettingsRootCategory\.(\w+),')
+    for name in ('PlaybackSettingDirectory.kt', 'SettingsAdditionalDirectory.kt'):
+        source = text(REPO / UPSTREAM_SETTINGS / name)
+        masked = mask(source)
+        for start in re.finditer(r'PlaybackSettingItem\(', source):
+            depth, end = 1, start.end()
+            while depth:
+                if masked[end] == '(':
+                    depth += 1
+                elif masked[end] == ')':
+                    depth -= 1
+                end += 1
+            line = source[start.start():end]
+            found = header.search(line)
+            if not found:
+                continue
+            token, title, category = found.groups()
+            ident = model.SYMBOLIC_IDS.get(token, token.strip('"'))
+            if rows[ident][4] != 'available':
+                continue
+            if title.startswith('"'):
+                title = title.strip('"')
+            else:
+                owner, constant = title.rsplit('.', 1)
+                definition = REPO / 'app/src/main/java' / (owner.replace('.', '/') + '.kt')
+                definitions = [definition] if definition.is_file() else list(definition.with_suffix('').glob('*.kt'))
+                values = [value for path in definitions for value in re.findall(
+                    r'const val ' + constant + r' = "([^"]*)"', text(path))]
+                assert len(values) == 1, (title, values)
+                title = values[0]
+            target = re.search(r'target = SettingsSearchTarget\.(\w+)', line)
+            aliases = re.search(r'aliases = listOf\((.*?)\)', line)
+            metadata[ident] = dict(id=ident, title=title, description='', target=target.group(1) if target else 'PLAYBACK',
+                category=category, group=None, focus=None,
+                aliases=re.findall(r'"([^"]*)"', aliases.group(1)) if aliases else [], kind='upstream')
+    items = []
+    for ident in declared:
+        row = rows[ident]
+        if row[4] != 'available':
+            continue
+        item = dict(overlay.get(ident, metadata[ident]))
+        item['target'] = metadata[ident]['target']
+        item['category'] = row[3]
+        assert item['target'] in targets, 'missing target decision'
+        items.append(item)
+    items += [item for item in presentation if item['id'] in WINDOWS_ONLY_IDS]
+    strings = dict(re.findall(r'const val (\w+) = "([^"]*)"', text(KOTLIN/'ui/DesktopWindowsUxSettingsStrings.kt')))
+    ux = text(SETTINGS/'DesktopWindowsUxSearchItems.kt')
+    for ident, key in re.findall(r'layoutItem\("([^"]+)", DesktopWindowsUxSettingsStrings\.(\w+)\)', ux):
+        items.append(dict(id=ident, title=strings[key], description='', target='APPEARANCE', category='APPEARANCE_THEME',
+            group=None, focus='windows_display_scale', aliases=[], kind='windows'))
     return items
 
 
@@ -297,7 +370,7 @@ def function_text(source, header):
 class DirectoryDataTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.items = parse_directory()
+        cls.items = parse_presentation()
         cls.source = text(DIRECTORY)
 
     def test_every_entry_line_is_parsed_and_only_the_four_helpers_build_items(self):
@@ -310,7 +383,7 @@ class DirectoryDataTest(unittest.TestCase):
             helper = block_after(self.source, 'private fun ' + function + '(')
             self.assertIn('SettingsSearchTarget.' + target + ', SettingsRootCategory.' + category, helper, function)
         # The only way to build a DesktopSettingsItem is a helper above: no stray constructor call in the list.
-        listing = self.source[self.source.index('internal val desktopSettingsItemDirectory'):self.source.index('/** The breadcrumb of a row')]
+        listing = self.source[self.source.index('internal val desktopSettingsItemPresentation'):self.source.index('internal val desktopOnlySettingsIds')]
         self.assertNotIn('DesktopSettingsItem(', listing)
 
     def test_ids_have_the_upstream_shape_and_titles_and_ids_are_unique(self):
@@ -376,7 +449,7 @@ class MirroredSearchTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.items = parse_directory()
+        cls.items = parse_presentation()
 
     def ids(self, query, **kwargs):
         return [row[0] for row in mirror_search(self.items, query, **kwargs)]
@@ -426,12 +499,50 @@ class MirroredSearchTest(unittest.TestCase):
         self.assertEqual([], self.ids('外观与显示'))
 
 
+class MergedDirectoryTest(unittest.TestCase):
+    def test_merged_directory_covers_all_available_ids_and_no_filtered_ids(self):
+        model = placement_model()
+        rows = model.table('settings-item-placement.tsv')
+        items = parse_directory()
+        available = {row[0] for row in rows if row[4] == 'available'}
+        filtered = {row[0] for row in rows if row[4] != 'available'}
+        ids = [item['id'] for item in items]
+        self.assertEqual(153, len(available))
+        self.assertEqual(73, len(filtered))
+        self.assertEqual(174, len(ids))
+        self.assertEqual(len(ids), len(set(ids)))
+        self.assertEqual(len(items), len({item['title'] for item in items}))
+        self.assertEqual(available | WINDOWS_ONLY_IDS | {
+            'windows_ux.rail_mode', 'windows_ux.home_layout', 'windows_ux.card_interactions', 'windows_ux.reset_layout'}, set(ids))
+        self.assertFalse(filtered & set(ids))
+        for item in items:
+            self.assertEqual(item['id'], mirror_search(items, item['title'])[0][0], item['id'])
+            for alias in item['aliases']:
+                self.assertIn(item['id'], [row[0] for row in mirror_search(items, alias, 500)], alias)
+
+    def test_only_the_two_rendered_player_controls_are_phone_word_exceptions(self):
+        items = parse_directory()
+        exceptions = {'竖屏': 'playback.portrait_letterbox_ambient_haze', '截图': 'playback.show_fullscreen_screenshot_button'}
+        for word in PHONE_WORDS:
+            expected = [exceptions[word]] if word in exceptions else []
+            self.assertEqual(expected, [row[0] for row in mirror_search(items, word)], word)
+
+    def test_all_old_page_rows_keep_their_display_and_focus_and_new_rows_have_no_anchor(self):
+        old = {item['id']: item for item in parse_presentation()}
+        for item in parse_directory():
+            if item['id'] in old:
+                for field in ('title', 'description', 'aliases', 'group', 'focus'):
+                    self.assertEqual(old[item['id']][field], item[field], (item['id'], field))
+            elif item['kind'] == 'upstream':
+                self.assertIsNone(item['focus'], item['id'])
+
+
 class SourceLinkTest(unittest.TestCase):
     """Every directory row is a row of a mounted page, and every setting row of the itemised pages is in the directory."""
 
     @classmethod
     def setUpClass(cls):
-        cls.items = parse_directory()
+        cls.items = parse_presentation()
         cls.sources = {name: text(path) for name, path in dict(
             playback=PLAYBACK, audio=AUDIO, enhancement=ENHANCEMENT, appearance=APPEARANCE, scale=DISPLAY_SCALE,
             notification=NOTIFICATION, privacy=PRIVACY).items()}
@@ -559,7 +670,7 @@ class UpstreamAlignmentTest(unittest.TestCase):
         for name in ('PlaybackSettingDirectory.kt', 'SettingsAdditionalDirectory.kt'):
             upstream_ids |= set(re.findall(r'PlaybackSettingItem\(\s*"([\w.]+)"', upstream(name)))
         self.assertGreater(len(upstream_ids), 190)
-        ids = {item['id'] for item in parse_directory()}
+        ids = {item['id'] for item in parse_presentation()}
         self.assertEqual(WINDOWS_ONLY_IDS & ids, WINDOWS_ONLY_IDS)
         for ident in sorted(ids - WINDOWS_ONLY_IDS):
             self.assertIn(ident, upstream_ids, ident)
@@ -589,22 +700,16 @@ class UpstreamAlignmentTest(unittest.TestCase):
 
 
 class WiringTest(unittest.TestCase):
-    ORIGINAL_ACTIVATE = '''    /** Exact original SearchScreen dispatch; opening an action result does not perform it. */
-    fun activate(result: SettingsSearchResult, onCategoryClick: (SettingsRootCategory) -> Unit,
-        onResultClick: (SettingsSearchResult) -> Unit) {
-        val category = resolveSettingsRootCategoryForSearchTarget(result.target)
-        if (isSceneSettingsSearchTarget(result.target) && category != null) {
-            onCategoryClick(category)
-        } else {
-            SettingsSearchFocusController.submit(result.target, result.focusId)
-            onResultClick(result)
-        }
-    }
-'''
 
     def test_the_controller_keeps_the_section_results_and_the_original_dispatch_and_adds_the_rows(self):
         controller = text(CONTROLLER)
-        self.assertEqual(1, controller.count(self.ORIGINAL_ACTIVATE))
+        activate = function_text(controller, 'fun activate(')
+        self.assertIn('desktopSettingsSearchCategoryDestination(result)', activate)
+        self.assertIn('resolveSettingsRootCategoryForSearchTarget(result.target)', activate)
+        self.assertIn('onCategoryClick(requireNotNull(category))', activate)
+        self.assertIn('SettingsSearchFocusController.submit(result.target, result.focusId)', activate)
+        self.assertIn('onResultClick(result)', activate)
+        self.assertNotIn('result.copy(', activate)
         self.assertEqual(1, controller.count('        mutableResults.value = resolveDesktopWindowsSettingsSearchResults(query)\n'))
         self.assertEqual(1, controller.count('        mutableItemResults.value = resolveDesktopSettingsItemSearch(query)\n'))
         self.assertIn('internal val itemResults: StateFlow<List<DesktopSettingsItemHit>> = mutableItemResults.asStateFlow()', controller)

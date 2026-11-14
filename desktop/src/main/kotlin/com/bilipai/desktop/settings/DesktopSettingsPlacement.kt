@@ -1,5 +1,8 @@
 package com.bilipai.desktop.settings
 
+import com.android.purebilibili.feature.settings.SettingsRootCategory
+import com.android.purebilibili.feature.settings.SettingsSearchResult
+
 /** Decisions maintained during upstream merges; unknown item IDs are handled by the host. */
 internal enum class DesktopPlacementTreatment { available, hidden, unavailable, replaced }
 
@@ -47,3 +50,11 @@ internal fun loadDesktopSettingsPlacement(filename: String, targetTable: Boolean
 
 internal val desktopSettingsItemPlacement by lazy { loadDesktopSettingsPlacement("settings-item-placement.tsv", false) }
 internal val desktopSettingsTargetPlacement by lazy { loadDesktopSettingsPlacement("settings-target-placement.tsv", true) }
+
+/** Item availability is independent of the target row (ANIMATION is replaced, its available items survive). */
+internal fun desktopSettingsSearchCategoryDestination(result: SettingsSearchResult): SettingsRootCategory? {
+    val category = result.page ?: return null
+    val target = desktopSettingsTargetPlacement[result.target.name]
+    return if (target?.treatment == DesktopPlacementTreatment.available &&
+        target.destination == "detail" && target.desktopCategory == category.name) null else category
+}

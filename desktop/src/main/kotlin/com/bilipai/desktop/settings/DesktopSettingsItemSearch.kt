@@ -29,6 +29,7 @@ internal data class DesktopSettingsItemHit(
     fun toSearchResult(): SettingsSearchResult = SettingsSearchResult(
         item.target, item.title, item.description,
         item.group ?: DesktopWindowsSettingsStrings.railTitle(item.category).orEmpty(), item.focus,
+        settingId = item.settingId, path = path, page = item.category,
     )
 }
 
