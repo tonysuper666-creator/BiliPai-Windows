@@ -206,7 +206,8 @@ class GeneratorOutputTest(unittest.TestCase):
         self.assertEqual(set(self.plain), set(self.layered))
         changed = {name for name in self.layered if self.layered[name] != self.plain[name]}
         self.assertEqual({CARD_PATH, INVENTORY_PATH}, changed)
-        # In the inventory only the audit rows of the card entry change, and only by the seven rows the layer appends.
+        # In the inventory only the audit rows of the card entry change, and only by the rows the layer appends: the seven of
+        # slice H2, then the four of slice K3 (the cover focus), in that order.
         plain_rows, layered_rows = self.rows(self.plain), self.rows(self.layered)
         self.assertEqual(len(plain_rows), len(layered_rows))
         for before, after in zip(plain_rows, layered_rows):
@@ -215,7 +216,7 @@ class GeneratorOutputTest(unittest.TestCase):
         before, after = self.card_row(self.plain), self.card_row(self.layered)
         self.assertEqual({key: value for key, value in before.items() if key != "changes"}, {key: value for key, value in after.items() if key != "changes"})
         self.assertEqual(before["changes"], after["changes"][:len(before["changes"])])
-        self.assertEqual([label for label, _b, _a in layer.EDITS], [row["id"] for row in after["changes"][len(before["changes"]):]])
+        self.assertEqual([label for label, _b, _a in layer.EDITS + layer.COVER_EDITS], [row["id"] for row in after["changes"][len(before["changes"]):]])
 
     def test_the_output_is_deterministic(self):
         self.assertEqual(self.layered, self.again)
@@ -245,7 +246,7 @@ class GeneratorOutputTest(unittest.TestCase):
         self.assertEqual(self.card(self.plain), layer.reverse(layer.CARD, self.card(self.layered)))
 
     def test_the_text_between_the_edits_is_untouched(self):
-        expected = len(self.card(self.plain)) + sum(len(after) - len(before) for _label, before, after in layer.EDITS)
+        expected = len(self.card(self.plain)) + sum(len(after) - len(before) for _label, before, after in layer.EDITS + layer.COVER_EDITS)
         self.assertEqual(expected, len(self.card(self.layered)))
 
     def test_a_mutated_or_doubled_anchor_fails_closed(self):
@@ -285,8 +286,8 @@ class GeneratorOutputTest(unittest.TestCase):
     def test_the_audit_rows_have_the_v043_shape_and_the_right_hashes(self):
         plain_changes, rows = self.card_row(self.plain)["changes"], self.card_row(self.layered)["changes"]
         mine = rows[len(plain_changes):]
-        self.assertEqual(len(layer.EDITS), len(mine))
-        for (label, before, after), row in zip(layer.EDITS, mine):
+        self.assertEqual(len(layer.EDITS + layer.COVER_EDITS), len(mine))
+        for (label, before, after), row in zip(layer.EDITS + layer.COVER_EDITS, mine):
             self.assertEqual({"id", "beforeSha256", "afterSha256", "inverseRestoresInput"}, set(row), label)
             self.assertEqual(label, row["id"])
             self.assertEqual(hashlib.sha256(before.encode("utf-8")).hexdigest(), row["beforeSha256"], label)
@@ -336,8 +337,10 @@ class GeneratorOutputTest(unittest.TestCase):
                             "val hasOverflowMenu = onDismiss != null || onWatchLater != null"):
             self.assertEqual(1, produced.count(declaration), declaration)
             self.assertLess(produced.index(declaration), chain_start, declaration)
-        # The long press sites keep calling the menu with their own anchors.
-        self.assertEqual(self.card(self.plain).count("openDismissMenu(") + 1, produced.count("openDismissMenu("))
+        # The long press sites keep calling the menu with their own anchors. The two new calls are the right click (slice H2)
+        # and the menu key of the focused cover (slice K3), anchored on the cover.
+        self.assertEqual(self.card(self.plain).count("openDismissMenu(") + 2, produced.count("openDismissMenu("))
+        self.assertEqual(1, produced.count("{ openDismissMenu(coverCoordsRef.value, null) }"))
         self.assertEqual(1, produced.count("openDismissMenu(coverCoordsRef.value, pressOffset)"))
         self.assertEqual(1, produced.count("openDismissMenu(titleCoordsRef.value, pressOffset)"))
         self.assertEqual(1, produced.count("openDismissMenu(menuButtonCoordsRef.value, null)"))
