@@ -5,7 +5,7 @@ import com.bilipai.desktop.appearance.DesktopWindowsUxSettings
 import com.bilipai.desktop.ux.DesktopUxContract
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 
 /** The player layout selection of the ordinary-video leaf against the shared contract. No window, no GPU, no network. */
 class DesktopPlayerLayoutSelectionTest {
@@ -23,7 +23,7 @@ class DesktopPlayerLayoutSelectionTest {
         for (name in values) {
             val requested = DesktopWindowsUxPlayerLayout.valueOf(name)
             assertEquals(DesktopWindowsUxPlayerLayout.LEGACY, desktopPlayerEffectiveLayout(requested, overlayAvailable = false), name)
-            assertEquals(DesktopWindowsUxPlayerLayout.LEGACY, desktopPlayerEffectiveLayout(requested, DESKTOP_PLAYER_OVERLAY_AVAILABLE), name)
+            assertEquals(requested, desktopPlayerEffectiveLayout(requested, DESKTOP_PLAYER_OVERLAY_AVAILABLE), name)
         }
     }
 
@@ -34,8 +34,9 @@ class DesktopPlayerLayoutSelectionTest {
             desktopPlayerEffectiveLayout(DesktopWindowsUxPlayerLayout.LEGACY, overlayAvailable = true))
     }
 
-    // State of slice V2. The slice that mounts the carrier overlay (V4a) flips the constant and this test in the same commit.
-    @Test fun noOverlayIsMountedYet() {
-        assertFalse(DESKTOP_PLAYER_OVERLAY_AVAILABLE)
+    // The production Leaf now mounts the existing native foreground carrier.
+    // DesktopWindowsVideoSettingsConsumerTest also proves its distinct stage geometry.
+    @Test fun theMountedCarrierEnablesExplicitLayoutSelection() {
+        assertTrue(DESKTOP_PLAYER_OVERLAY_AVAILABLE)
     }
 }
