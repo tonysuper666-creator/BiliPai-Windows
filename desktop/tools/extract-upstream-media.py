@@ -89,6 +89,14 @@ KEYWORD_OPERANDS = {"false", "null", "super", "this", "true", "typeof"}
 # reads as a comparison; `=`, `->` and compound assignments never join operands.
 BINARY = {"+", "-", "*", "/", "%", "&&", "||", "==", "!=", "===", "!==",
           "?:", "..", "..<"}
+# Kotlin numeric literals (KotlinLexer.g4): a radix prefix or an exponent needs
+# digits after it, and a digit run never ends in `_`. Leading-dot doubles
+# (`.5`) and leading-zero integers are outside this set and fail closed.
+_DIGITS = r"\d(?:[\d_]*\d)?"
+_DOUBLE = rf"(?:{_DIGITS}\.{_DIGITS}(?:[eE][+-]?{_DIGITS})?|{_DIGITS}[eE][+-]?{_DIGITS})"
+_INTEGER = (r"(?:0|[1-9](?:[\d_]*\d)?|0[xX][0-9a-fA-F](?:[0-9a-fA-F_]*[0-9a-fA-F])?"
+            r"|0[bB][01](?:[01_]*[01])?)")
+NUMBER = re.compile(rf"(?:{_DOUBLE}[fF]?|{_DIGITS}[fF]|{_INTEGER}(?:[uU]L?|L)?)")
 
 
 def complete_at_end(tokens: list) -> bool:
@@ -132,17 +140,31 @@ def complete_at_end(tokens: list) -> bool:
                 and (not joined or items[position][2]))
 
     def number_end(position):
-        """`1.5f`, `0x1F`, `1_000L` arrive as adjacent pieces of one literal."""
-        position += 1
+        """End of the numeric literal at `position`, or None when it is malformed.
+
+        `1.5e-3f`, `0x1_F`, `1_000L` arrive as adjacent pieces; they are joined
+        back and the whole spelling must be a Kotlin number, so a cut one
+        (`0x`, `1e`, `1_`) is not taken for a whole operand.
+        """
+        text, position = items[position][1], position + 1
+
+        def digits_follow(at):
+            return at + 1 < len(items) and items[at + 1][0] == "number" and items[at + 1][2]
+
         while position < len(items) and items[position][0] != "group" and items[position][2]:
-            if items[position][0] in {"word", "number"} and items[position - 1][0] != "punct":
+            if items[position][0] in {"word", "number"}:
+                text += items[position][1]
                 position += 1
-            elif punct(position, ".") and position + 1 < len(items) and items[position + 1][0] == "number" \
-                    and items[position + 1][2]:
+            elif punct(position, ".") and digits_follow(position) and re.fullmatch(r"[\d_]+", text):
+                text += "." + items[position + 1][1]
+                position += 2
+            elif items[position][0] == "punct" and items[position][1] in "+-" and digits_follow(position) \
+                    and re.fullmatch(r"[\d_]+(?:\.[\d_]+)?[eE]", text):
+                text += items[position][1] + items[position + 1][1]
                 position += 2
             else:
                 break
-        return position
+        return position if NUMBER.fullmatch(text) else None
 
     position, expect_operand = 0, True
     while position < len(items):
@@ -163,6 +185,8 @@ def complete_at_end(tokens: list) -> bool:
                 position, expect_operand = position + 3, False
             elif item[0] == "number":
                 position, expect_operand = number_end(position), False
+                if position is None:
+                    return False
             elif item[0] in {"group", "literal"} or name(position) or \
                     (item[0] == "word" and item[1] in KEYWORD_OPERANDS - {"super", "typeof"}):
                 position, expect_operand = position + 1, False

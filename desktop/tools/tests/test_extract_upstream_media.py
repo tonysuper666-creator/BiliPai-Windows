@@ -137,6 +137,21 @@ fun next(): Int = 1
         for body in ("item.this", "item.1", "1.", "super", "super.", "x true y", "item::super"):
             with self.subTest(body=body), self.assertRaisesRegex(ValueError, "unterminated"):
                 media.function("fun sample() = " + body + "\n", "sample", parser)
+        # A number is whole only as a complete Kotlin literal: a file cut after
+        # a radix prefix, an exponent marker or a digit separator is not.
+        for whole, cut in (("0x1F", "0x"), ("0b101", "0b"), ("1e3", "1e"), ("1.5e3", "1.5e"),
+                           ("1_000L", "1_"), ("1.5_000f", "1.5_"), ("0x1_F", "0x1_"), ("1e1_0", "1e1_")):
+            with self.subTest(whole=whole):
+                self.assertEqual("fun sample() = " + whole,
+                                 media.function("fun sample() = " + whole + "\n", "sample", parser))
+                with self.assertRaisesRegex(ValueError, "unterminated"):
+                    media.function("fun sample() = " + cut, "sample", parser)
+        for body in ("1e-3 * 2", "1.5E+3f", "0xFFuL", "0B1_0u", "7L..9L", "1.toString()", "x-1"):
+            with self.subTest(body=body):
+                self.assertEqual("fun sample() = " + body, media.function("fun sample() = " + body + "\n", "sample", parser))
+        for body in ("1e-", "0x_1", "1__", "1.5.5", "1L.5"):
+            with self.subTest(body=body), self.assertRaisesRegex(ValueError, "unterminated"):
+                media.function("fun sample() = " + body + "\n", "sample", parser)
 
     def test_expression_body_without_a_boundary_fails_closed(self):
         parser = media.parser_for(REPO)
