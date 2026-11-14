@@ -15,6 +15,7 @@ CANONICAL_V025_LF_PINS = {
     BASE + 'ReplyComponents.kt': 'fcd9065876e3815af5337c9f43579c5bbd53e6d66d3dbfd8efb51bd43c9b66f1',
     BASE + 'SubReplyDetailComponents.kt': 'ac4646df2a2de90aad24e65f3bf4e11ac772463278e7d579b17eb2f290554b19',
 }
+LIVE_REPLY_LF_SHA256 = 'bc8e2465f33819e1fa9367fce434d6b47f5f9e248ae8b9cad2fb15f97c63c7c1'
 
 
 def digest(data):
@@ -60,9 +61,38 @@ def apply(repo, path, original):
     fixed = fixed_sources(repo)
     if path not in fixed:
         return original, None
-    if digest(original.encode()) != CANONICAL_V025_LF_PINS[path]:
-        raise ValueError('Changed canonical v025 comment-time baseline: ' + path)
+    source_sha = digest(original.encode())
     newest = fixed[path]
+    if path == BASE + 'ReplyComponents.kt' and source_sha == LIVE_REPLY_LF_SHA256:
+        # The live source already contains the selected v029 time policy. Verify
+        # each complete selected block and its unique consumer before retaining it.
+        spans = [
+            ('internal fun resolveReplyPreviewTextContent(', '//  优化后的颜色常量'),
+            ('    val metadataText = remember(item.ctime, displayLocation, detailedCommentTimeEnabled)', '    val showTopBadge'),
+        ]
+        for start, end in spans:
+            if original.count(start) != 1 or newest.count(start) != 1:
+                raise ValueError('Ambiguous live comment-time selection: ' + start)
+            old_block = _between(original, start, end)
+            new_block = _between(newest, start, end)
+            if old_block != new_block or original.count(old_block) != 1 or newest.count(new_block) != 1:
+                raise ValueError('Changed live comment-time selection: ' + start)
+        anchors = [
+            'import com.android.purebilibili.core.ui.LocalDetailedCommentTimeEnabled\n',
+            '    val appearance = rememberVideoCommentAppearance()\n    val context = LocalContext.current\n    val detailedCommentTimeEnabled = LocalDetailedCommentTimeEnabled.current\n    val scope = rememberCoroutineScope()',
+            '                                        onReplyClick = onReplyClick,\n                                        detailedTimeEnabled = detailedCommentTimeEnabled\n                                    )',
+            '"已切换为绝对时间：评论显示 yyyy-MM-dd HH:mm:ss"',
+            '"已切换为相对时间：评论按相对时间显示"',
+        ]
+        for anchor in anchors:
+            if original.count(anchor) != 1 or newest.count(anchor) != 1:
+                raise ValueError('Changed or ambiguous live comment-time consumer: ' + anchor)
+        return original, dict(fixedUpstreamCommit=COMMIT, originalPath=path,
+                              originalCanonicalSha256LF=source_sha, adaptedSha256LF=source_sha,
+                              exactCompleteCanonicalInverse=True,
+                              fixedRawSha256=PINS[Path(path).name][1], adaptations=[])
+    if source_sha != CANONICAL_V025_LF_PINS[path]:
+        raise ValueError('Changed canonical v025 comment-time baseline: ' + path)
     patches = []
     result = original
 

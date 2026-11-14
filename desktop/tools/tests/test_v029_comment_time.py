@@ -1,10 +1,12 @@
 from pathlib import Path
 import importlib.util
 import json
+import os
 import shutil
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 
 REPO = Path(__file__).resolve().parents[3]
 TOOLS = REPO / 'desktop/tools'
@@ -95,6 +97,37 @@ class V029CommentTimeTest(unittest.TestCase):
                 proof = json.loads((report / 'v029-comment-time-selection.json').read_text(encoding='utf-8'))
                 for row in proof if isinstance(proof, list) else [proof]:
                     self.assertTrue(row['exactCompleteCanonicalInverse'])
+
+
+class V029LiveReplyTimeTest(unittest.TestCase):
+    def setUp(self):
+        self.path = time_slice.BASE + 'ReplyComponents.kt'
+        live = Path(os.environ.get('BILIPAI_LIVE_ROOT', REPO))
+        self.original = canonical_source(live, self.path).read_text(encoding='utf-8')
+
+    def test_existing_live_time_policy_is_preserved_and_proven(self):
+        adapted, proof = time_slice.apply(REPO, self.path, self.original)
+        self.assertEqual(adapted, self.original)
+        self.assertEqual(proof['originalPath'], self.path)
+        self.assertEqual(proof['originalCanonicalSha256LF'], 'bc8e2465f33819e1fa9367fce434d6b47f5f9e248ae8b9cad2fb15f97c63c7c1')
+        self.assertEqual(proof['adaptedSha256LF'], proof['originalCanonicalSha256LF'])
+        self.assertTrue(proof['exactCompleteCanonicalInverse'])
+        self.assertEqual(proof['adaptations'], [])
+
+    def test_missing_duplicate_and_corrupt_live_selections_are_rejected(self):
+        anchor = ('                                        onReplyClick = onReplyClick,\n'
+                  '                                        detailedTimeEnabled = detailedCommentTimeEnabled\n                                    )')
+        self.assertEqual(self.original.count(anchor), 1)
+        for changed in (self.original.replace(anchor, ''),
+                        self.original + '\n' + anchor,
+                        self.original.replace('timestampSeconds = item.ctime,', 'timestampSeconds = 0,')):
+            with self.subTest(change=time_slice.digest(changed.encode())):
+                # Simulate a reviewed digest for the mutated source to exercise structural guards.
+                with patch.object(time_slice, 'LIVE_REPLY_LF_SHA256', time_slice.digest(changed.encode())):
+                    with self.assertRaises(ValueError):
+                        time_slice.apply(REPO, self.path, changed)
+        with self.assertRaises(ValueError):
+            time_slice.apply(REPO, self.path, self.original + '\n// unknown drift')
 
 
 if __name__ == '__main__':
