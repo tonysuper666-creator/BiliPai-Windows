@@ -223,9 +223,10 @@ private fun DrawScope.drawCoverRingStroke(cover: Rect, radiusPx: Float, distance
  * card, spec 8).
  *
  * While card_interactions is ON the generated card root takes desktopHomeCardHoverSurface instead of the vendored
- * adaptiveCardHoverEffect (a 1.025 scale and a 10 dp shadow): a primary wash at the kit hover percent (8) over the whole
- * card, drawn on a rounded rectangle that extends DESKTOP_HOME_CARD_HOVER_OUTSET_DP beyond the card on every side, its
- * corners concentric with the card corner. Nothing moves or grows: there is no graphics layer, scale or shadow. The hand
+ * adaptiveCardHoverEffect (a 1.025 scale and a 10 dp shadow): an onSurface wash at the kit hover percent (8, spec 1, the
+ * role of kit.wash and DesktopKitFocus) over the whole card, drawn on a rounded rectangle that extends
+ * DESKTOP_HOME_CARD_HOVER_OUTSET_DP beyond the card on every side, its corners concentric with the card corner. Nothing
+ * moves or grows: there is no graphics layer, scale or shadow. The hand
  * cursor is the one of slice H2 (desktopCardHandCursor). The OFF flag keeps the vendored call unchanged.
  *
  * DesktopHomeCardQuickActions sits in the top end corner of the cover: watch later and more, 32 dp kit icon buttons.
@@ -262,7 +263,7 @@ internal fun Modifier.desktopHomeCardHoverSurface(state: DesktopHomeCardHover, c
         animationSpec = tween(desktopKitMotionMs(LocalDesktopKitReducedMotion.current, DESKTOP_KIT_MOTION_FAST_MS)),
         label = "desktopHomeCardHover",
     )
-    val washColor = MaterialTheme.colorScheme.primary
+    val washColor = MaterialTheme.colorScheme.onSurface
     return this
         .hoverable(state.interactionSource)
         .drawWithContent {

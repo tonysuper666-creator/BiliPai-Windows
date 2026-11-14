@@ -73,7 +73,7 @@ import kotlin.test.*
  * by 1.025 on hover, and this test shows that it still does; with ON the card must keep its bounds.
  *
  * Pixels (Density 1, so 1 dp = 1 px), read on the page left of the card, at the vertical centre of the cover:
- * 4 px left of the card is inside the 8 dp outset of the hover wash (primary at 8 % over the page), 12 px left is outside it.
+ * 4 px left of the card is inside the 8 dp outset of the hover wash (onSurface at 8 % over the page, spec 1), 12 px left is outside it.
  * One pixel inside the top-left corner of the outset rectangle stays the page: the wash is rounded.
  *
  * Quick actions: found by their accessible names (稍后再看, 更多), 32 x 32, 8 dp from the top and right edges of the cover,
@@ -96,7 +96,7 @@ class DesktopHomeCardHoverTest {
     private val video = VideoItem(aid = 7, bvid = "BV-k3d-fixture", cid = 70, title = "K3d fixture",
         pic = "https://example.invalid/k3d-cover.png", owner = Owner(mid = 9, name = "up"), stat = Stat(view = 1200, danmaku = 3))
 
-    private class Theme(val primary: Color, val background: Color)
+    private class Theme(val onSurface: Color, val background: Color)
 
     /** Which card the page mounts: the real Home entry, or the generated card with some callbacks left out. */
     private enum class Card { ENTRY, DISMISS_ONLY, WATCH_LATER_ONLY, NO_MENU }
@@ -141,7 +141,7 @@ class DesktopHomeCardHoverTest {
                     val window = remember(original) { object : WindowInfo by original { override val isWindowFocused = true } }
                     val ux = remember { DesktopWindowsUxMemory(DesktopWindowsUxSettings(cardInteractions = interactions)) }
                     val colors = MaterialTheme.colorScheme
-                    SideEffect { theme = Theme(colors.primary, colors.background) }
+                    SideEffect { theme = Theme(colors.onSurface, colors.background) }
                     CompositionLocalProvider(LocalWindowInfo provides window, LocalDesktopWindowsUx provides ux,
                         LocalDesktopUpstreamAndroidContext provides context.asAndroidContext()) {
                         DesktopDetailWindow(precisePointerConnected = true) { Page() }
@@ -248,12 +248,12 @@ class DesktopHomeCardHoverTest {
             s.advance()
             val theme = checkNotNull(s.theme)
             val page = theme.background.toArgb()
-            val wash = theme.primary.copy(alpha = 0.08f).compositeOver(theme.background).toArgb()
+            val wash = theme.onSurface.copy(alpha = 0.08f).compositeOver(theme.background).toArgb()
             val before = s.cover()
             assertEquals(page, s.leftOfCard(4), "No wash before the pointer enters")
             s.move(before.center)
             assertEquals(before, s.cover(), "Hover neither moves nor scales the card")
-            assertNear(wash, s.leftOfCard(4), "4 px left of the card is the wash, 8 % primary over the page")
+            assertNear(wash, s.leftOfCard(4), "4 px left of the card is the wash, 8 % onSurface over the page")
             assertNear(wash, s.pixel(before.left.toInt() - 4, before.top.toInt() + 24), "The wash covers the card top too")
             assertEquals(page, s.leftOfCard(12), "12 px left of the card is outside the 8 dp outset")
             assertEquals(page, s.pixel(before.left.toInt() - 7, before.top.toInt() - 7), "The outset corner is rounded")
