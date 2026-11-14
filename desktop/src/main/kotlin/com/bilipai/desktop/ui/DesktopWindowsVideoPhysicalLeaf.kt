@@ -1425,7 +1425,12 @@ internal class DesktopWindowsVideoLeafResources(
                                     )
                                 }
                             }, native.surface)
-                        } else Text("正在浮窗播放", color=Color.White, modifier=Modifier.align(Alignment.Center))
+                        } else {
+                            Text("正在浮窗播放", color=Color.White, modifier=Modifier.align(Alignment.Center))
+                            // PiP has no native peer in this viewport, but the main page still
+                            // needs its existing back/control chrome in DESKTOP layout.
+                            desktopChrome()
+                        }
                         if (presentationAlive && !pipActive) engagementBinding?.let { binding ->
                             DesktopWindowsConfirmedVideoFeedback(binding, viewportSize, native.surface, feedbackBounds)
                         }
