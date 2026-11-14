@@ -61,17 +61,18 @@ class DesktopSettingsSearchTest {
         SettingsSearchFocusController.clear(newRequest.token);assertNull(SettingsSearchFocusController.request.value)
     }
     @Test fun originalRoleVectorsAreConcreteAndKeepGlyphSizes(): Unit = runBlocking {
-        val resources=mutableSetOf<String>()
+        val resources=mutableSetOf<Int>()
         SettingsIconRole.entries.forEach { role ->
-            val name=resolveSettingsMaterialSymbolResource(role);resources+=name
-            val vector=DesktopSettingsVectors.load(name)
-            assertEquals(name,vector.name);assertTrue(vector.root.size>0);assertTrue(vector.viewportWidth>0)
+            val id=resolveSettingsMaterialSymbolResource(role);resources+=id
+            val vector=DesktopSettingsVectors.load(id)
+            assertEquals(DesktopSettingsVectors.name(id),vector.name);assertTrue(vector.root.size>0);assertTrue(vector.viewportWidth>0)
         }
         assertTrue(resources.size>150)
         assertNotEquals(resolveSettingsMaterialSymbolResource(SettingsIconRole.HARDWARE_DECODER),resolveSettingsMaterialSymbolResource(SettingsIconRole.SUBTITLE))
         assertEquals(19,resolveSettingsSemanticIconSizeDp(SettingsIconRole.NAVIGATION,com.android.purebilibili.core.ui.AppSemanticIconFamily.MIUIX))
         assertEquals(20,resolveSettingsSemanticIconSizeDp(SettingsIconRole.NAVIGATION,com.android.purebilibili.core.ui.AppSemanticIconFamily.MATERIAL))
         assertFailsWith<IllegalStateException>{DesktopSettingsVectors.load("invented-icon")}
+        assertFailsWith<IllegalStateException>{DesktopSettingsVectors.load(-1)}
     }
     @Test fun cancellationAndFrozenBackingDoNotBecomeSilentSuccess(): Unit = runBlocking {
         val context=context();val repo=DesktopSettingsSearchRepository(context){false};val c=DesktopSettingsSearchController(repo)
