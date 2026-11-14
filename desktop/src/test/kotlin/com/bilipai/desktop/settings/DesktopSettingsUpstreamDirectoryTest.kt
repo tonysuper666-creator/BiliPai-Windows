@@ -37,8 +37,9 @@ class DesktopSettingsUpstreamDirectoryTest {
 
     @Test fun everyAvailableUpstreamIdIsSearchableAndItsClickHonorsBothPlacementLayers() {
         val available = desktopSettingsItemPlacement.values.filter { it.treatment == DesktopPlacementTreatment.available }
-        assertEquals(153, available.size)
-        assertEquals(174, desktopSettingsItemDirectory.size)
+        assertEquals(152, available.size)
+        assertEquals(available.size + desktopOnlySettingsIds.size + desktopWindowsUxSearchItems.size,
+            desktopSettingsItemDirectory.size)
         val controller = controller()
         val failures = mutableListOf<String>()
         for (row in available) {
@@ -57,7 +58,7 @@ class DesktopSettingsUpstreamDirectoryTest {
 
     @Test fun allFilteredIdsAreAbsentEvenWhenTheirOwnTitlesAndAliasesAreQueried() {
         val filtered = desktopSettingsItemPlacement.values.filter { it.treatment != DesktopPlacementTreatment.available }.map { it.id }.toSet()
-        assertEquals(73, filtered.size)
+        assertEquals(74, filtered.size)
         assertTrue(desktopSettingsItemDirectory.none { it.settingId in filtered })
         val controller = controller()
         for (item in settingsItemDirectory.filter { it.settingId in filtered }) {
@@ -80,7 +81,7 @@ class DesktopSettingsUpstreamDirectoryTest {
         }
         val retained = (desktopSettingsItemPresentation + desktopWindowsUxSearchItems).map { it.settingId }.toSet()
         val added = desktopSettingsItemDirectory.filter { it.settingId !in retained }
-        assertEquals(114, added.size)
+        assertEquals(113, added.size)
         assertTrue(added.all { it.focus == null })
     }
 

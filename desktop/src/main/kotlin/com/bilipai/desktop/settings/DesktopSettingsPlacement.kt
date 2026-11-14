@@ -51,10 +51,15 @@ internal fun loadDesktopSettingsPlacement(filename: String, targetTable: Boolean
 internal val desktopSettingsItemPlacement by lazy { loadDesktopSettingsPlacement("settings-item-placement.tsv", false) }
 internal val desktopSettingsTargetPlacement by lazy { loadDesktopSettingsPlacement("settings-target-placement.tsv", true) }
 
+/** Detail renderers mounted by DesktopSettingsTree; a category row never creates a detail renderer. */
+internal fun desktopSettingsSearchHasMountedDetail(result: SettingsSearchResult): Boolean {
+    val row = desktopSettingsTargetPlacement[result.target.name] ?: return false
+    return result.page?.name == row.desktopCategory && row.treatment == DesktopPlacementTreatment.available &&
+        row.destination == "detail"
+}
+
 /** Item availability is independent of the target row (ANIMATION is replaced, its available items survive). */
 internal fun desktopSettingsSearchCategoryDestination(result: SettingsSearchResult): SettingsRootCategory? {
     val category = result.page ?: return null
-    val target = desktopSettingsTargetPlacement[result.target.name]
-    return if (target?.treatment == DesktopPlacementTreatment.available &&
-        target.destination == "detail" && target.desktopCategory == category.name) null else category
+    return if (desktopSettingsSearchHasMountedDetail(result)) null else category
 }

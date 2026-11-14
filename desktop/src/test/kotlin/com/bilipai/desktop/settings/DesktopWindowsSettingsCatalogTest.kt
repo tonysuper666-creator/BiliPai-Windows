@@ -150,7 +150,8 @@ class DesktopWindowsSettingsCatalogTest {
         for ((target, queries) in labels) {
             for (query in queries) {
                 controller.setQuery(query)
-                assertEquals(setOf(target), controller.results.value.map { it.target }.toSet(), query)
+                val expectedTarget = if (query == "下载位置") SettingsSearchTarget.DOWNLOAD_PATH else target
+                assertEquals(setOf(expectedTarget), controller.results.value.map { it.target }.toSet(), query)
             }
         }
     }
@@ -176,7 +177,14 @@ class DesktopWindowsSettingsCatalogTest {
                 var category: SettingsRootCategory? = null
                 var detail: SettingsSearchResult? = null
                 controller.activate(result, { category = it }, { detail = it })
-                if (isSceneSettingsSearchTarget(result.target)) {
+                val placement = desktopSettingsTargetPlacement.getValue(result.target.name)
+                if (result.target == SettingsSearchTarget.HOME_FEED && placement.destination == "detail") {
+                    assertNull(category)
+                    assertEquals(result, detail)
+                    val navigator = DesktopSettingsNavigator()
+                    navigator.openSearchResult(result)
+                    assertEquals(DesktopSettingsPage.Detail(result.target, result.focusId), navigator.state.value.current)
+                } else if (isSceneSettingsSearchTarget(result.target)) {
                     assertEquals(resolveSettingsRootCategoryForSearchTarget(result.target), category)
                     assertNull(detail)
                 } else {

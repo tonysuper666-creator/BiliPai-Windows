@@ -507,9 +507,9 @@ class MergedDirectoryTest(unittest.TestCase):
         available = {row[0] for row in rows if row[4] == 'available'}
         filtered = {row[0] for row in rows if row[4] != 'available'}
         ids = [item['id'] for item in items]
-        self.assertEqual(153, len(available))
-        self.assertEqual(73, len(filtered))
-        self.assertEqual(174, len(ids))
+        self.assertEqual(152, len(available))
+        self.assertEqual(74, len(filtered))
+        self.assertEqual(len(available) + len(WINDOWS_ONLY_IDS) + 4, len(ids))
         self.assertEqual(len(ids), len(set(ids)))
         self.assertEqual(len(items), len({item['title'] for item in items}))
         self.assertEqual(available | WINDOWS_ONLY_IDS | {

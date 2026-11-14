@@ -1,7 +1,7 @@
 package com.bilipai.desktop.settings
 
 import com.android.purebilibili.core.util.PinyinUtils
-import com.android.purebilibili.feature.settings.SettingsSearchResult
+import com.android.purebilibili.feature.settings.*
 import com.bilipai.desktop.ui.DesktopWindowsSettingsStrings
 
 /*
@@ -104,15 +104,37 @@ internal fun resolveDesktopSettingsItemSearch(
         }
 }
 
-/**
- * The section results that still add something under the rows: a section whose page and group anchor a shown row already
- * opens is the same destination, so it is left out. With no rows the sections stay exactly as they are.
- */
+/** Use the navigation boundary itself so category/detail and focus are never inferred from target names. */
+internal fun desktopSettingsSearchLanding(result: SettingsSearchResult): DesktopSettingsPage? {
+    var landing: DesktopSettingsPage? = null
+    dispatchDesktopSettingsSearchDestination(result,
+        { landing = DesktopSettingsPage.Category(it) },
+        { target, focus -> landing = DesktopSettingsPage.Detail(target, focus) })
+    return landing
+}
+
+private fun searchCategory(result: SettingsSearchResult) = result.page
+    ?: resolveSettingsRootCategoryForSearchTarget(result.target)?.let(::canonicalSettingsRootCategory)
+
+/** Equal landings are one result; a matching mounted detail is more precise than its containing category. */
+internal fun mergeDesktopSettingsSearchResults(results: List<SettingsSearchResult>): List<SettingsSearchResult> {
+    val itemIds = desktopSettingsItemDirectory.map { it.settingId }.toSet()
+    val unique = results.sortedByDescending { it.focusId != null && it.settingId in itemIds }
+        .distinctBy(::desktopSettingsSearchLanding)
+    val detailedCategories = unique.filter { desktopSettingsSearchLanding(it) is DesktopSettingsPage.Detail }
+        .mapNotNull(::searchCategory).toSet()
+    return unique.filterNot {
+        desktopSettingsSearchLanding(it) is DesktopSettingsPage.Category && searchCategory(it) in detailedCategories
+    }
+}
+
+/** A section adds nothing when a visible item already opens its landing, or a more precise detail in its category. */
 internal fun desktopSettingsVisibleSectionResults(
     sections: List<SettingsSearchResult>,
     hits: List<DesktopSettingsItemHit>,
 ): List<SettingsSearchResult> {
-    if (hits.isEmpty()) return sections
-    val covered = hits.map { it.item.target to it.item.focus }.toSet()
-    return sections.filterNot { (it.target to it.focusId) in covered }
+    val items = hits.map { it.toSearchResult() }
+    val covered = items.map(::desktopSettingsSearchLanding).toSet()
+    return mergeDesktopSettingsSearchResults(sections + items).filter { it !in items }
+        .filterNot { desktopSettingsSearchLanding(it) in covered }
 }
