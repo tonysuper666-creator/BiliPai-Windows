@@ -873,6 +873,21 @@ def check_leaf_v6(leaf):
     need(leaf.count("windowKeyFallback?.registerLeaf { event -> input.onKey(event) || shortcuts.onKey(event) }") == 1, "the one slot takes both")
     need(leaf.count("shortcuts.releaseHeldInput()") == 1 and leaf.count("shortcuts.close()") == 1, "focus loss and dispose reach the router")
     need(len(re.findall(r"\bshortcutBinding\b", code)) == 12, "shortcutBinding is used 12 times (7 keyboard and 5 pointer): %d" % len(re.findall(r"\bshortcutBinding\b", code)))
+    # A count alone cannot distinguish the five pointer uses or detect swapped actions.
+    try:
+        pointer = dict(call_arguments(leaf, "DesktopNativePlaybackPointerInput("))
+        need("shortcutBinding.perform(DesktopPlayerAction(DesktopPlayerActionKind.VOLUME, delta))" in pointer["onVolume"],
+             "pointer wheel dispatches VOLUME")
+        need(km.squash(pointer["onSeek"]) == km.squash("{ delta -> shortcutBinding.perform(DesktopPlayerAction(DesktopPlayerActionKind.SEEK, delta)) }"),
+             "pointer seek dispatches SEEK")
+        need(km.squash(pointer["onShortcut"]) == km.squash("""{ code -> desktopPlayerPointerShortcut(code, latestFullscreen,
+            { latestActions.fullscreen() },
+            { shortcutBinding.perform(DesktopPlayerAction(DesktopPlayerActionKind.SEEK, it)) },
+            { shortcutBinding.perform(DesktopPlayerAction(DesktopPlayerActionKind.VOLUME, it)) },
+            { shortcutBinding.perform(DesktopPlayerAction(DesktopPlayerActionKind.MUTE)) }) }"""),
+             "pointer shortcut dispatches fullscreen, SEEK, VOLUME and MUTE in order")
+    except (KeyError, ValueError, AssertionError):
+        problems.append("pointer bridge and action callbacks are present")
     need(leaf.count("SideEffect {\n        shortcutBinding.legacyLayout = legacyChrome") == 1, "the binding is filled by one SideEffect from legacyChrome")
     need(leaf.count("DesktopPlayerShortcutEffects(") == 1, "one set of effects")
     need(leaf.count("desktopWindowsRequestPageEntryFocus(") == 1, "one page-entry focus request")
@@ -896,6 +911,23 @@ def check_leaf_v6(leaf):
 
 
 class LeafWiringTest(NeedleCase):
+    def test_pointer_action_wiring_rejects_count_preserving_misroutes(self):
+        replacements = (
+            ("DesktopPlayerActionKind.VOLUME, delta", "DesktopPlayerActionKind.SEEK, delta"),
+            ("DesktopPlayerActionKind.SEEK, delta", "DesktopPlayerActionKind.VOLUME, delta"),
+            ("DesktopPlayerActionKind.SEEK, it", "DesktopPlayerActionKind.VOLUME, it"),
+            ("DesktopPlayerActionKind.VOLUME, it", "DesktopPlayerActionKind.SEEK, it"),
+            ("DesktopPlayerActionKind.MUTE))", "DesktopPlayerActionKind.PLAY_PAUSE))"),
+        )
+        baseline = check_leaf_v6(LEAF_TEXT)
+        self.assertFalse(any(message.startswith("pointer ") for message in baseline), baseline)
+        for old, new in replacements:
+            with self.subTest(action=old):
+                self.assertEqual(1, LEAF_TEXT.count(old))
+                mutant = LEAF_TEXT.replace(old, new, 1)
+                self.assertEqual(LEAF_TEXT.count("shortcutBinding"), mutant.count("shortcutBinding"))
+                self.assertGreater(len(check_leaf_v6(mutant)), len(baseline))
+
     def test_the_nine_hunks_are_anchored_and_each_block_occurs_once(self):
         self.assertEqual(9, len(V6_HUNKS))
         for label, before, after in V6_HUNKS:
