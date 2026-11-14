@@ -48,7 +48,7 @@ import ux_shell_model as shell  # noqa: E402
 import ux_source as source  # noqa: E402
 import ux_vendored_player_keys as vk  # noqa: E402
 from test_ux_leaf_anchor_guard import call_arguments, check_legacy_branch, check_must_keep  # noqa: E402
-from test_ux_leaf_layout_binding import BASE_SHA256, HUNKS, TON1028_HUNKS, V6_HUNKS, reverse_apply, reverse_chain, reverse_v6  # noqa: E402
+from test_ux_leaf_layout_binding import BASE_SHA256, HUNKS, TON1028_HUNKS, V6_HUNKS, reverse_apply, reverse_chain, reverse_v6, reverse_consumer, BAR_OPEN, STRIP_OPEN  # noqa: E402
 
 CONTRACT = model.load()
 KEYS = CONTRACT["player_keys"]
@@ -907,9 +907,11 @@ class LeafWiringTest(NeedleCase):
                          [label for label, _, _ in V6_HUNKS])
 
     def test_the_hunks_do_not_overlap_the_ten_hunks_of_slice_v2(self):
-        # V2's blocks are all still in the leaf as they were, so the two chains are independent and reverse in either order.
+        # TON-1592 records its own exact chain before the historic V2/V6 chains.
+        # Unmount that layer before checking that the original V2 anchors remain.
+        text = reverse_consumer(LEAF_TEXT)
         for label, _before, after in HUNKS:
-            self.assertEqual(1, LEAF_TEXT.count("\n".join(after)), label)
+            self.assertEqual(1, text.count("\n".join(after)), label)
 
     def test_undoing_the_v6_hunks_gives_the_leaf_of_the_commit_before_the_slice_byte_for_byte(self):
         v2_state = reverse_v6(LEAF_TEXT)
@@ -937,9 +939,9 @@ class LeafWiringTest(NeedleCase):
 
     def test_the_legacy_bar_call_and_the_top_strip_are_untouched(self):
         self.assertEqual(1, LEAF_TEXT.count("DesktopWindowsVideoControlBar("))
-        self.assertEqual(1, LEAF_TEXT.count("val legacyControlBar: @Composable () -> Unit = { DesktopWindowsVideoControlBar("))
-        self.assertEqual(1, LEAF_TEXT.count("val legacyTopStrip: @Composable () -> Unit = { DesktopWindowsPlayerSurface(Modifier.fillMaxWidth()"))
-        self.assertEqual("false", re.search(r"DESKTOP_PLAYER_OVERLAY_AVAILABLE = (true|false)", source.read(source.K / "ui/DesktopPlayerLayoutSelection.kt")).group(1))
+        self.assertEqual(1, LEAF_TEXT.count(BAR_OPEN))
+        self.assertEqual(1, LEAF_TEXT.count(STRIP_OPEN))
+        self.assertEqual("true", re.search(r"DESKTOP_PLAYER_OVERLAY_AVAILABLE = (true|false)", source.read(source.K / "ui/DesktopPlayerLayoutSelection.kt")).group(1))
 
     def test_the_effects_run_only_through_admitted_lambdas_and_never_reach_the_player(self):
         block = LEAF_TEXT[LEAF_TEXT.index("SideEffect {\n        shortcutBinding.legacyLayout"):LEAF_TEXT.index("audioLanguageMenu?.takeIf { shell.playback.isAudioSelectionCurrent(it) }")]
