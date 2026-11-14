@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.Slider
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -85,7 +84,8 @@ internal fun DesktopWindowsUxLayoutGroup() {
         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             Text(text.DETAILS_WIDTH, Modifier.weight(1f), style = MaterialTheme.typography.bodyMedium)
             Text(settings.detailsPanelWidthDp?.let { text.width(it) } ?: text.DETAILS_WIDTH_AUTO)
-            TextButton(onClick = { ux.submit(DesktopWindowsUxCommand.SetDetailsPanelWidth(null)) }) { Text(text.DETAILS_WIDTH_RESET) }
+            DesktopMenuRow(label = text.DETAILS_WIDTH_RESET,
+                onClick = { ux.submit(DesktopWindowsUxCommand.SetDetailsPanelWidth(null)) }, modifier = Modifier.width(144.dp))
         }
         Slider(value = width, onValueChange = { width = it }, valueRange = 320f..560f,
             onValueChangeFinished = { ux.submit(DesktopWindowsUxCommand.SetDetailsPanelWidth(width.roundToInt())) },
