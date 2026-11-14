@@ -202,9 +202,18 @@ class GeneratorOutputTest(unittest.TestCase):
         self.assertEqual(1, len(found))
         return found[0]
 
-    def without_copy(self, files):
-        """The card with only the K3e copy link edits undone, last first: the text the K3d hover edits leave."""
+    def without_separator(self, files):
+        """The card with only the K3f separator edit undone: the text the K3e copy link edits leave."""
         text = self.card(files)
+        for label, before, after in reversed(layer.SEPARATOR_EDITS):
+            self.assertEqual(1, text.count(after), label)
+            text = text.replace(after, before, 1)
+        return text
+
+    def without_copy(self, files):
+        """The card with the K3f separator and then the K3e copy link edits undone, last first: the text the K3d hover edits
+        leave."""
+        text = self.without_separator(files)
         for label, before, after in reversed(layer.COPY_EDITS):
             self.assertEqual(1, text.count(after), label)
             text = text.replace(after, before, 1)
@@ -225,7 +234,8 @@ class GeneratorOutputTest(unittest.TestCase):
         self.assertEqual({CARD_PATH, INVENTORY_PATH}, changed)
         # In the inventory only the audit rows of the card entry change, and only by the rows the layer appends: the seven of
         # slice H2, then the four of slice K3 (the cover focus), then the fourteen of slice K3b (the three-line layout), then the four
-        # of slice K3d (the hover and the quick actions), then the three of slice K3e (the copy link), in that order.
+        # of slice K3d (the hover and the quick actions), then the three of slice K3e (the copy link), then the one of slice K3f
+        # (the menu separator), in that order.
         plain_rows, layered_rows = self.rows(self.plain), self.rows(self.layered)
         self.assertEqual(len(plain_rows), len(layered_rows))
         for before, after in zip(plain_rows, layered_rows):
@@ -234,15 +244,17 @@ class GeneratorOutputTest(unittest.TestCase):
         before, after = self.card_row(self.plain), self.card_row(self.layered)
         self.assertEqual({key: value for key, value in before.items() if key != "changes"}, {key: value for key, value in after.items() if key != "changes"})
         self.assertEqual(before["changes"], after["changes"][:len(before["changes"])])
-        self.assertEqual(layer.EDITS + layer.COVER_EDITS + layer.LAYOUT_EDITS + layer.HOVER_EDITS + layer.COPY_EDITS,
+        self.assertEqual(layer.EDITS + layer.COVER_EDITS + layer.LAYOUT_EDITS + layer.HOVER_EDITS + layer.COPY_EDITS
+                         + layer.SEPARATOR_EDITS,
                          layer.ALL_EDITS)
-        self.assertEqual((7, 4, 14, 4, 3),
+        self.assertEqual((7, 4, 14, 4, 3, 1),
                          (len(layer.EDITS), len(layer.COVER_EDITS), len(layer.LAYOUT_EDITS), len(layer.HOVER_EDITS),
-                          len(layer.COPY_EDITS)))
+                          len(layer.COPY_EDITS), len(layer.SEPARATOR_EDITS)))
         self.assertEqual(["ux-card-hover-imports", "ux-card-hover-state", "ux-card-hover-surface", "ux-card-hover-quick-actions"],
-                         [row["id"] for row in after["changes"][-7:-3]])
+                         [row["id"] for row in after["changes"][-8:-4]])
         self.assertEqual(["ux-card-copy-link-state", "ux-card-copy-link-key", "ux-card-copy-link-menu-row"],
-                         [row["id"] for row in after["changes"][-3:]])
+                         [row["id"] for row in after["changes"][-4:-1]])
+        self.assertEqual(["ux-card-menu-separator-row"], [row["id"] for row in after["changes"][-1:]])
         self.assertEqual([label for label, _b, _a in layer.ALL_EDITS], [row["id"] for row in after["changes"][len(before["changes"]):]])
 
     def test_the_output_is_deterministic(self):
@@ -307,7 +319,7 @@ class GeneratorOutputTest(unittest.TestCase):
             layer.apply_home_card(REPO, layer.CARD, self.card(self.layered), [])
 
     def test_a_taken_name_is_refused_before_any_edit(self):
-        for introduced in layer.INTRODUCED:
+        for introduced in layer.INTRODUCED + layer.SEPARATOR_INTRODUCED:
             with self.assertRaises(AssertionError, msg=introduced):
                 layer.apply_home_card(REPO, layer.CARD, self.card(self.plain) + "\nval %s = 1\n" % introduced, [])
 
@@ -757,9 +769,10 @@ class KotlinSourceTest(unittest.TestCase):
         names = []
         for path in cm.CARD_FILES:
             names += re.findall(r"(?m)^(?:@Composable\n)?internal (?:fun (?:Modifier\.)?|val |const val |class |enum class |object )(\w+)", source.read(path))
-        # The menu file: the flag reader, the label, the target, the menu and the row (5). The pointer file: the two modifiers (2). The
-        # policy: three tokens, the enum and five functions (9).
-        self.assertEqual(16, len(names), names)
+        # The menu file: the flag reader, the label, the target, the menu and the row (5), plus the separator of slice K3f (2:
+        # the tag and the composable). The pointer file: the two modifiers (2). The policy: three tokens, the enum and five
+        # functions (9).
+        self.assertEqual(18, len(names), names)
         self.assertEqual(len(names), len(set(names)))
         for path in sorted(source.K.rglob("*.kt")) + sorted(source.KT.rglob("*.kt")):
             if path in cm.CARD_FILES:

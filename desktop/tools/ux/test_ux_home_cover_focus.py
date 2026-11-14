@@ -81,9 +81,10 @@ class _Generated(unittest.TestCase):
         cls.temp.cleanup()
 
     def without_copy(self):
-        """The produced card with only the K3e copy link edits undone, last first: the text the K3d edits leave."""
+        """The produced card with the K3f separator edit and then the K3e copy link edits undone, last first: the text the
+        K3d edits leave."""
         text = self.produced
-        for label, before, after in reversed(layer.COPY_EDITS):
+        for label, before, after in reversed(layer.COPY_EDITS + layer.SEPARATOR_EDITS):
             self.assertEqual(1, text.count(after), label)
             text = text.replace(after, before, 1)
         return text
@@ -107,8 +108,10 @@ class _Generated(unittest.TestCase):
 class CoverEditsTest(_Generated):
     def test_the_four_cover_edits_follow_the_seven_card_edits(self):
         self.assertEqual(COVER_IDS, [label for label, _b, _a in layer.COVER_EDITS])
-        # The K3e copy link edits are appended after the K3d hover edits, so the chain is checked by composition here.
-        self.assertEqual(layer.EDITS + layer.COVER_EDITS + layer.LAYOUT_EDITS + layer.HOVER_EDITS + layer.COPY_EDITS,
+        # The K3e copy link edits and the K3f separator edit are appended after the K3d hover edits, so the chain is checked by
+        # composition here.
+        self.assertEqual(layer.EDITS + layer.COVER_EDITS + layer.LAYOUT_EDITS + layer.HOVER_EDITS + layer.COPY_EDITS
+                         + layer.SEPARATOR_EDITS,
                          layer.ALL_EDITS)
         for label, before, after in layer.COVER_EDITS:
             self.assertNotEqual(before, after, label)
