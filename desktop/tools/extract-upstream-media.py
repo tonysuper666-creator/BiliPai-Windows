@@ -74,9 +74,102 @@ def line_indent(source: str, position: int) -> int | None:
     return len(prefix) if not prefix.strip() else None
 
 
+CLOSING = {")": "(", "]": "[", "}": "{"}
+# Words that never start an operand and never join two. `if`, `try` and their
+# kin are rejected rather than parsed: an EOF body using them fails closed.
+NOT_OPERANDS = {"as", "break", "catch", "class", "continue", "do", "else",
+                "finally", "for", "fun", "if", "import", "in", "interface",
+                "is", "object", "package", "return", "throw", "try",
+                "typealias", "val", "var", "when", "while"}
+# Binary operators, spelled by the adjacent one-character tokens that the
+# tokenizer emits. `<`/`>` are absent because a cut generic (`listOf<Int`)
+# reads as a comparison; `=`, `->` and compound assignments never join operands.
+BINARY = {"+", "-", "*", "/", "%", "&&", "||", "==", "!=", "===", "!==",
+          "?:", "..", "..<"}
+
+
+def complete_at_end(tokens: list) -> bool:
+    """Whether `tokens` (brackets already matched) form one whole expression.
+
+    Only the end of a file can stop such a body, so a cut file must not be
+    mistaken for it. Bracket groups are atoms: they closed, so they are whole.
+    Everything else must be accepted by a deliberately small grammar —
+    operand (binary operand)*, an operand being prefixes, one primary and
+    postfix calls, indexes, lambdas, member and reference selections, `!!`.
+    """
+    items, index = [], 0
+    while index < len(tokens):
+        token = tokens[index][0]
+        if token in CLOSING.values():
+            depth, end = 1, index
+            while depth:
+                end += 1
+                depth += (tokens[end][0] in CLOSING.values()) - (tokens[end][0] in CLOSING)
+            items.append(("group", token))
+            index = end + 1
+            continue
+        kind = "punct" if len(token) == 1 and not (token.isalnum() or token == "_") else "word"
+        if kind == "word" and token[0] in "\"'`":
+            kind = "literal"
+        adjacent = bool(items) and items[-1][0] == "punct" and tokens[index - 1][2] == tokens[index][1]
+        items.append((kind, token, adjacent))
+        index += 1
+
+    def word(position):
+        return position < len(items) and items[position][0] in {"word", "literal"} and items[position][1] not in NOT_OPERANDS
+
+    def punct(position, value, joined=True):
+        return (position < len(items) and items[position][0] == "punct" and items[position][1] == value
+                and (not joined or items[position][2]))
+
+    position, expect_operand = 0, True
+    while position < len(items):
+        item = items[position]
+        if expect_operand:
+            if item[0] == "punct" and item[1] in "-+!":
+                position += 1
+            elif item[0] == "word" and item[1] == "when":
+                position += 1
+                if position < len(items) and items[position] == ("group", "("):
+                    position += 1
+                if position >= len(items) or items[position] != ("group", "{"):
+                    return False
+                position, expect_operand = position + 1, False
+            elif item[0] == "group" or word(position):
+                position, expect_operand = position + 1, False
+            elif punct(position, ":", False) and punct(position + 1, ":") and word(position + 2):
+                position, expect_operand = position + 3, False
+            else:
+                return False
+            continue
+        if item[0] == "group":
+            position += 1
+        elif punct(position, ".", False) and word(position + 1) and not punct(position + 1, "."):
+            position += 2
+        elif punct(position, "?", False) and punct(position + 1, ".") and word(position + 2):
+            position += 3
+        elif punct(position, ":", False) and punct(position + 1, ":") and word(position + 2):
+            position += 3
+        elif punct(position, "!", False) and punct(position + 1, "!") and not punct(position + 2, "="):
+            position += 2
+        elif item[0] == "word" and item[1] not in NOT_OPERANDS:
+            position, expect_operand = position + 1, True  # infix call: `1 to 2`
+        elif item[0] == "punct":
+            operator, end = item[1], position + 1
+            while end < len(items) and items[end][0] == "punct" and items[end][2]:
+                operator += items[end][1]
+                end += 1
+            if operator not in BINARY:
+                return False
+            position, expect_operand = end, True
+        else:
+            return False
+    return not expect_operand
+
+
 def expression_end(source: str, name: str, tokens: list, index: int, indent: int) -> int:
     """Last token of an `= expression` body, failing closed when it cannot end."""
-    depth, last = 0, None
+    depth, last, start, opened = 0, None, index, []
     while index < len(tokens):
         token, begin, _ = tokens[index]
         if depth == 0 and "\n" in (source[tokens[last][2]:begin] if last is not None else ""):
@@ -91,15 +184,16 @@ def expression_end(source: str, name: str, tokens: list, index: int, indent: int
             raise ValueError(f"Original {name} has an empty expression body")
         if token in {"(", "[", "{"}:
             depth += 1
-        elif token in {")", "]", "}"}:
+            opened.append(token)
+        elif token in CLOSING:
             depth -= 1
-            if depth < 0:
+            if depth < 0 or opened.pop() != CLOSING[token]:
                 raise ValueError(f"Original {name} has an unbalanced expression body")
         last = index
         index += 1
-    # The last declaration of a file is closed by the end of the file, as long
-    # as every bracket closed and the final token can end an expression.
-    if last is not None and depth == 0 and tokens[last][0] not in CONTINUATION_ONLY:
+    # The last declaration of a file is closed by the end of the file only when
+    # every bracket closed and the whole token stream is one complete expression.
+    if last is not None and depth == 0 and complete_at_end(tokens[start:last + 1]):
         return last
     raise ValueError(f"Original {name} has an unterminated expression body")
 

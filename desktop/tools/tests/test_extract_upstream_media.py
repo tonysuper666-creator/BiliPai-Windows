@@ -71,12 +71,44 @@ fun next(): Int = 1
         self.assertEqual(selection, media.function("package x\n\n" + selection + "\n", "resolveTarget", parser))
         self.assertEqual("fun report(id: Long) = post(\n    id\n)",
                          media.function("fun report(id: Long) = post(\n    id\n)\n", "report", parser))
-        for name, source in (
-            ("unclosed", "fun unclosed(): Int = compute(\n    1\n"),
-            ("empty", "fun empty(): Int =\n"),
+        for body in (
+            "1 to 2",
+            "items.map { it.id }.filter { it > 0 }",
+            "runCatching {\n    post(request)\n}.getOrNull()?.data!!",
+            "first ?: second.orEmpty() && !flag",
+            "-count + 1.5",
+            "\"$prefix:${id}\" + ::render.name",
+            "values[index] != null",
+        ):
+            with self.subTest(body=body):
+                self.assertEqual("fun sample() = " + body, media.function("fun sample() = " + body + "\n", "sample", parser))
+        # A file cut inside a body still ends with closed brackets; only the whole
+        # token stream tells it from a complete expression.
+        for name, body in (
+            ("unclosed", "compute(\n    1"),
+            ("empty", ""),
+            ("dangling_plus", "1 +"),
+            ("dangling_elvis", "item ?:"),
+            ("dangling_and", "ready &&"),
+            ("dangling_or", "ready ||"),
+            ("dangling_range", "0 .."),
+            ("dangling_member", "item."),
+            ("dangling_safe_call", "item?."),
+            ("dangling_reference", "item::"),
+            ("dangling_not", "!"),
+            ("dangling_as", "item as"),
+            ("dangling_else", "if (ready) 1 else"),
+            ("missing_then", "if (ready)"),
+            ("when_without_branches", "when (key)"),
+            ("cut_generic", "listOf<Int"),
+            ("dangling_infix", "1 to"),
+            ("assignment", "value = 1"),
         ):
             with self.subTest(name=name), self.assertRaisesRegex(ValueError, "unterminated|empty"):
-                media.function(source, name, parser)
+                media.function("fun sample(): Int = " + body + "\n", "sample", parser)
+        for name, body in (("mismatched", "post(]"), ("crossed", "post([)]")):
+            with self.subTest(name=name), self.assertRaisesRegex(ValueError, "unbalanced"):
+                media.function("fun sample() = " + body + "\n", "sample", parser)
 
     def test_expression_body_without_a_boundary_fails_closed(self):
         parser = media.parser_for(REPO)
