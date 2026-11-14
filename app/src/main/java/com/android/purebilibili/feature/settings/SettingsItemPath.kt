@@ -1,21 +1,33 @@
 package com.android.purebilibili.feature.settings
 
+// 搜索路径的分组名沿用桌面既有的分组词汇，与设置首页展示标题（上游场景名）解耦，
+// 避免展示标题改名时把已发布的搜索路径一起改掉。
+private fun settingsSearchPathGroupTitle(category: SettingsRootCategory): String = when (category) {
+    SettingsRootCategory.APPEARANCE_THEME -> "外观与动画"
+    SettingsRootCategory.PLAYBACK_QUALITY -> "播放设置"
+    SettingsRootCategory.HOME_RECOMMENDATION -> "首页与动态"
+    SettingsRootCategory.NAVIGATION_INTERACTION -> "导航布局"
+    SettingsRootCategory.PRIVACY_PERMISSION -> "隐私与权限"
+    SettingsRootCategory.STORAGE_BACKUP -> "下载与备份"
+    SettingsRootCategory.PLUGINS_EXTENSIONS -> "插件中心"
+    SettingsRootCategory.SYSTEM_ABOUT -> "帮助与关于"
+    SettingsRootCategory.VIDEO_DECODER,
+    SettingsRootCategory.COMMENTS_CONTENT,
+    SettingsRootCategory.FULLSCREEN_GESTURE -> "播放设置"
+    SettingsRootCategory.PLAYER_DIAGNOSTICS -> "帮助与关于"
+    SettingsRootCategory.GLASS_ADVANCED -> "外观与动画"
+    else -> category.title
+}
+
 internal fun settingItemPath(item: PlaybackSettingItem): String {
-    val owner = when (item.page) {
-        SettingsRootCategory.VIDEO_DECODER,
-        SettingsRootCategory.COMMENTS_CONTENT,
-        SettingsRootCategory.FULLSCREEN_GESTURE -> SettingsRootCategory.PLAYBACK_QUALITY.title
-        SettingsRootCategory.PLAYER_DIAGNOSTICS -> SettingsRootCategory.SYSTEM_ABOUT.title
-        SettingsRootCategory.GLASS_ADVANCED -> SettingsRootCategory.APPEARANCE_THEME.title
-        else -> item.page.title
-    }
+    val owner = settingsSearchPathGroupTitle(item.page)
     val page = when {
         item.page == SettingsRootCategory.GLASS_ADVANCED -> "玻璃高级调节"
         item.page == SettingsRootCategory.PLAYER_DIAGNOSTICS -> "问题排查"
         item.target == SettingsSearchTarget.ANIMATION -> "动画与触感"
         item.target == SettingsSearchTarget.PLAYBACK -> "播放设置"
         else -> null
-    }
+    }?.takeUnless { it == owner }
     val section = when (item.sectionKey) {
         SettingsSearchFocusIds.PLAYBACK_DECODER -> "视频解码"
         SettingsSearchFocusIds.PLAYBACK_SPEED -> "播放速度"

@@ -9,43 +9,43 @@ enum class SettingsRootCategory(
     val searchTarget: SettingsSearchTarget,
 ) {
     APPEARANCE_THEME(
-        title = "外观与动画",
-        subtitle = "主题、文字大小、图标、动画与振动",
+        title = "外观与主题",
+        subtitle = "调整界面风格、颜色、字体、显示大小和图标",
         searchTarget = SettingsSearchTarget.INTERFACE_THEME,
     ),
     PLAYBACK_QUALITY(
-        title = "播放设置",
-        subtitle = "画质、倍速、字幕、连播、小窗和后台播放",
+        title = "播放与画质",
+        subtitle = "设置清晰度、倍速、字幕、小窗和全屏操作",
         searchTarget = SettingsSearchTarget.PLAYBACK_QUALITY,
     ),
     HOME_RECOMMENDATION(
-        title = "首页与动态",
-        subtitle = "视频卡片、推荐内容和动态页面",
+        title = "首页与推荐",
+        subtitle = "调整首页卡片、推荐内容和动态页面",
         searchTarget = SettingsSearchTarget.HOME_FEED,
     ),
     NAVIGATION_INTERACTION(
-        title = "导航布局",
-        subtitle = "底栏、首页分类栏、搜索分类和平板侧边栏",
+        title = "导航与交互",
+        subtitle = "管理底栏、顶部入口、页面动画和振动反馈",
         searchTarget = SettingsSearchTarget.NAVIGATION,
     ),
     PRIVACY_PERMISSION(
         title = "隐私与权限",
-        subtitle = "历史记录、身份验证、系统权限和屏蔽名单",
+        subtitle = "管理历史记录、系统权限和已屏蔽的 UP 主",
         searchTarget = SettingsSearchTarget.PRIVACY_PERMISSION,
     ),
     STORAGE_BACKUP(
-        title = "下载与备份",
-        subtitle = "保存位置、缓存、设置分享和 WebDAV 备份",
+        title = "存储与备份",
+        subtitle = "管理下载位置、缓存、设置迁移和云备份",
         searchTarget = SettingsSearchTarget.DATA_BACKUP,
     ),
     PLUGINS_EXTENSIONS(
-        title = "插件中心",
-        subtitle = "插件、装扮和扩展功能",
+        title = "插件与扩展",
+        subtitle = "管理已安装插件和可选扩展功能",
         searchTarget = SettingsSearchTarget.PLUGINS,
     ),
     SYSTEM_ABOUT(
-        title = "帮助与关于",
-        subtitle = "使用帮助、问题排查、更新和应用信息",
+        title = "系统与关于",
+        subtitle = "排查问题、检查更新并查看应用信息",
         searchTarget = SettingsSearchTarget.ABOUT_SUPPORT,
     ),
 

@@ -6071,7 +6071,7 @@
     },
     "app/src/main/java/com/android/purebilibili/feature/settings/SettingsRootCategoryPolicy.kt": {
       "blob": "d482021d75fbb3494f6c781efc8734e9ceb89a64",
-      "sha256": "caad6fb1b47823331362d4cb5a883aa576e3425efd23050f3bc5a2b9883a7cb4",
+      "sha256": "18368904cf83c92b0874b60d137a6934c5946f1484d97d89f61ab1b96fab6495",
       "legacySha256": "1e68ae700ea22d3d5ed776701bb1378c4d79268fbb680d3250e7bc567e49f5ef",
       "hashNormalization": "lf",
       "sha256CanonicalBytes": "caad6fb1b47823331362d4cb5a883aa576e3425efd23050f3bc5a2b9883a7cb4"
