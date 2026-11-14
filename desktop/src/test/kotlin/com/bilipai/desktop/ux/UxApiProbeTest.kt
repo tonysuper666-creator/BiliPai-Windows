@@ -234,6 +234,7 @@ private fun ProbeVideoCardMenuCallShape(
     onWatchLater: (() -> Unit)?,
     onUnfavorite: (() -> Unit)?,
     onDismiss: (() -> Unit)?,
+    onCopy: (() -> Unit)?,
     dismissMenuText: String,
 ) {
     var showDismissMenu by remember { mutableStateOf(false) }
@@ -268,6 +269,15 @@ private fun ProbeVideoCardMenuCallShape(
                     onClick = {
                         showDismissMenu = false
                         onDismiss.invoke()
+                    }
+                )
+            }
+            if (onCopy != null) {
+                AppDropdownMenuItem(
+                    text = { BasicText("copy link") },
+                    onClick = {
+                        showDismissMenu = false
+                        onCopy.invoke()
                     }
                 )
             }

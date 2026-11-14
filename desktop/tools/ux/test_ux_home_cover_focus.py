@@ -47,6 +47,7 @@ TARGET_CALL = (".desktopHomeCoverFocusTarget(\n"
                "                    state = homeCoverFocus,\n"
                "                    cornerRadius = cardCornerRadius,\n"
                "                    onOpen = { triggerCardClick() },\n"
+               "                    onCopy = copyHomeCardLink,\n"
                "                    onMenu = if (hasOverflowMenu) {\n"
                "                        { openDismissMenu(coverCoordsRef.value, null) }\n"
                "                    } else {\n"
@@ -79,9 +80,18 @@ class _Generated(unittest.TestCase):
     def tearDownClass(cls):
         cls.temp.cleanup()
 
-    def without_hover(self):
-        """The produced card with only the K3d hover edits undone, last first: the text the H2, K3 and K3b edits alone produce."""
+    def without_copy(self):
+        """The produced card with only the K3e copy link edits undone, last first: the text the K3d edits leave."""
         text = self.produced
+        for label, before, after in reversed(layer.COPY_EDITS):
+            self.assertEqual(1, text.count(after), label)
+            text = text.replace(after, before, 1)
+        return text
+
+    def without_hover(self):
+        """The produced card with the K3e copy link edits and then the K3d hover edits undone, last first: the text the
+        H2, K3 and K3b edits alone produce."""
+        text = self.without_copy()
         for label, before, after in reversed(layer.HOVER_EDITS):
             self.assertEqual(1, text.count(after), label)
             text = text.replace(after, before, 1)
@@ -97,7 +107,9 @@ class _Generated(unittest.TestCase):
 class CoverEditsTest(_Generated):
     def test_the_four_cover_edits_follow_the_seven_card_edits(self):
         self.assertEqual(COVER_IDS, [label for label, _b, _a in layer.COVER_EDITS])
-        self.assertEqual(layer.EDITS + layer.COVER_EDITS + layer.LAYOUT_EDITS + layer.HOVER_EDITS, layer.ALL_EDITS)
+        # The K3e copy link edits are appended after the K3d hover edits, so the chain is checked by composition here.
+        self.assertEqual(layer.EDITS + layer.COVER_EDITS + layer.LAYOUT_EDITS + layer.HOVER_EDITS + layer.COPY_EDITS,
+                         layer.ALL_EDITS)
         for label, before, after in layer.COVER_EDITS:
             self.assertNotEqual(before, after, label)
             self.assertTrue(before.endswith("\n") and after.endswith("\n"), label)
@@ -106,10 +118,15 @@ class CoverEditsTest(_Generated):
             self.assertEqual(before, "".join(line for line in after.splitlines(True) if line not in added), label)
 
     def test_every_cover_anchor_occurs_exactly_once_in_the_text_it_receives(self):
+        # The K3e copy link edits add one argument line inside the focus target call of this slice, so the replacement is
+        # counted in the text the K3d edits leave; the other anchors are unchanged by later slices and appear in the card too.
+        staged = self.without_copy()
         for label, before, after in layer.COVER_EDITS:
             self.assertEqual(1, self.received.count(before), label)
             self.assertEqual(0, self.received.count(after), label)
-            self.assertEqual(1, self.produced.count(after), label)
+            self.assertEqual(1, staged.count(after), label)
+            if label != "ux-card-cover-focus-target":
+                self.assertEqual(1, self.produced.count(after), label)
 
     def test_the_produced_card_is_the_received_text_with_the_cover_edits(self):
         # The K3 edits, then the K3b layout edits (test_ux_home_card_layout.py) that follow them in ALL_EDITS; the K3d hover edits
@@ -214,7 +231,7 @@ class FrameSourceTest(unittest.TestCase):
     def test_the_three_entry_points_are_declared_once_with_the_names_the_card_uses(self):
         for pattern in (r"internal fun rememberDesktopHomeCoverFocus\(\): DesktopHomeCoverFocus",
                         r"internal fun Modifier\.desktopHomeCoverFocusTarget\(\s*state: DesktopHomeCoverFocus,\s*cornerRadius: Dp,"
-                        r"\s*onOpen: \(\) -> Unit,\s*onMenu: \(\(\) -> Unit\)\?,\s*\): Modifier",
+                        r"\s*onOpen: \(\) -> Unit,\s*onMenu: \(\(\) -> Unit\)\?,\s*onCopy: \(\(\) -> Boolean\)\?,\s*\): Modifier",
                         r"internal fun Modifier\.desktopHomeCoverFocusRing\(state: DesktopHomeCoverFocus\): Modifier"):
             self.assertEqual(1, len(re.findall(pattern, self.code)), pattern)
 

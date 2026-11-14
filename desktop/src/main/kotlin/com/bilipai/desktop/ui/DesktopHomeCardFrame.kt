@@ -56,6 +56,7 @@ import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.android.purebilibili.core.ui.MediaContrastPalette
+import com.bilipai.desktop.appearance.DesktopTextClipboard
 import com.bilipai.desktop.ui.kit.DESKTOP_KIT_FOCUS_RING_INNER_DP
 import com.bilipai.desktop.ui.kit.DESKTOP_KIT_FOCUS_RING_OUTER_DP
 import com.bilipai.desktop.ui.kit.DESKTOP_KIT_ICON_DP
@@ -121,10 +122,13 @@ internal class DesktopHomeCoverFocus {
 @Composable
 internal fun rememberDesktopHomeCoverFocus(): DesktopHomeCoverFocus = remember { DesktopHomeCoverFocus() }
 
-/** The key action of a focused cover: OPEN for Enter, MENU for Shift+F10 and the menu key, null for anything else. */
-internal enum class DesktopHomeCoverKeyAction { OPEN, MENU }
+/** The key action of a focused cover: OPEN for Enter, MENU for Shift+F10 and the menu key, COPY for Ctrl+C, null else. */
+internal enum class DesktopHomeCoverKeyAction { OPEN, MENU, COPY }
 
 internal fun desktopHomeCoverKeyAction(event: KeyEvent): DesktopHomeCoverKeyAction? {
+    if (event.type == KeyEventType.KeyDown && event.isCtrlPressed && !event.isAltPressed && !event.isMetaPressed &&
+        !event.isShiftPressed && event.key == Key.C
+    ) return DesktopHomeCoverKeyAction.COPY
     if (event.type != KeyEventType.KeyDown || event.isCtrlPressed || event.isAltPressed || event.isMetaPressed) return null
     val key = event.key
     return when {
@@ -137,7 +141,8 @@ internal fun desktopHomeCoverKeyAction(event: KeyEvent): DesktopHomeCoverKeyActi
 
 /**
  * Makes the cover a keyboard focus target. onOpen is the card's tap action; onMenu opens the card menu, or is null for a
- * card without one (the right click is disabled for that card as well).
+ * card without one (the right click is disabled for that card as well); onCopy writes the video link, or is null for a
+ * card without a valid video id (slice K3e).
  */
 @Composable
 internal fun Modifier.desktopHomeCoverFocusTarget(
@@ -145,10 +150,12 @@ internal fun Modifier.desktopHomeCoverFocusTarget(
     cornerRadius: Dp,
     onOpen: () -> Unit,
     onMenu: (() -> Unit)?,
+    onCopy: (() -> Boolean)?,
 ): Modifier {
     if (!desktopCardInteractionsOn()) return this
     val open by rememberUpdatedState(onOpen)
     val menu by rememberUpdatedState(onMenu)
+    val copy by rememberUpdatedState(onCopy)
     SideEffect { state.cornerRadius = cornerRadius }
     return this
         .desktopKitOnPointerPress { state.focus = state.focus.onPointerPress(desktopHomeCoverNowMs()) }
@@ -165,6 +172,7 @@ internal fun Modifier.desktopHomeCoverFocusTarget(
                     true
                 }
                 DesktopHomeCoverKeyAction.MENU -> menu?.let { it(); true } ?: false
+                DesktopHomeCoverKeyAction.COPY -> copy?.let { it(); true } ?: false
                 null -> false
             }
         }
@@ -331,3 +339,30 @@ private fun DesktopHomeCardQuickButton(label: String, icon: ImageVector, onClick
         Icon(icon, contentDescription = null, modifier = Modifier.size(DESKTOP_KIT_ICON_DP.dp), tint = MediaContrastPalette.Foreground)
     }
 }
+
+/*
+ * Copy link of the Home grid card (desktop UX program, slice K3e; spec 4, menu item 5).
+ *
+ * The card menu of the Home card gains one row, and Ctrl+C on the cover with keyboard focus is the same action: the card
+ * writes https://www.bilibili.com/video/<bvid> once through the existing clipboard boundary (LocalDesktopTextClipboard,
+ * DesktopTextClipboard.copyText) and does nothing else - no play, no watch later, no dismiss. The shortcut is read only by
+ * the focused cover, so text editing and selection elsewhere keep their Ctrl+C. A bvid that is not a video id has no
+ * link: the row is not shown and Ctrl+C writes nothing. A refused write is reported by the clipboard boundary and is
+ * never turned into a success of this layer.
+ */
+
+/** The web address of a video, as the card menu row and the cover shortcut write it. */
+internal const val DESKTOP_HOME_VIDEO_LINK_PREFIX = "https://www.bilibili.com/video/"
+
+/** BV and ten characters: the id of a bilibili video. */
+private val DESKTOP_HOME_BVID = Regex("^BV[0-9A-Za-z]{10}$")
+
+/** The link of a video, or null when the bvid is not a video id. */
+internal fun desktopHomeVideoLink(bvid: String?): String? {
+    val id = bvid?.trim().orEmpty()
+    return if (DESKTOP_HOME_BVID.matches(id)) DESKTOP_HOME_VIDEO_LINK_PREFIX + id else null
+}
+
+/** Writes the link once through the clipboard boundary. False without a link or when the platform refuses the write. */
+internal fun desktopHomeCopyVideoLink(clipboard: DesktopTextClipboard, link: String?): Boolean =
+    link != null && clipboard.copyText(link)

@@ -202,9 +202,18 @@ class GeneratorOutputTest(unittest.TestCase):
         self.assertEqual(1, len(found))
         return found[0]
 
-    def without_hover(self, files):
-        """The card with only the K3d hover edits undone, last first: the text the H2, K3 and K3b edits alone produce."""
+    def without_copy(self, files):
+        """The card with only the K3e copy link edits undone, last first: the text the K3d hover edits leave."""
         text = self.card(files)
+        for label, before, after in reversed(layer.COPY_EDITS):
+            self.assertEqual(1, text.count(after), label)
+            text = text.replace(after, before, 1)
+        return text
+
+    def without_hover(self, files):
+        """The card with the K3e copy link edits and then the K3d hover edits undone, last first: the text the H2, K3 and
+        K3b edits alone produce."""
+        text = self.without_copy(files)
         for label, before, after in reversed(layer.HOVER_EDITS):
             self.assertEqual(1, text.count(after), label)
             text = text.replace(after, before, 1)
@@ -216,7 +225,7 @@ class GeneratorOutputTest(unittest.TestCase):
         self.assertEqual({CARD_PATH, INVENTORY_PATH}, changed)
         # In the inventory only the audit rows of the card entry change, and only by the rows the layer appends: the seven of
         # slice H2, then the four of slice K3 (the cover focus), then the fourteen of slice K3b (the three-line layout), then the four
-        # of slice K3d (the hover and the quick actions), in that order.
+        # of slice K3d (the hover and the quick actions), then the three of slice K3e (the copy link), in that order.
         plain_rows, layered_rows = self.rows(self.plain), self.rows(self.layered)
         self.assertEqual(len(plain_rows), len(layered_rows))
         for before, after in zip(plain_rows, layered_rows):
@@ -225,10 +234,15 @@ class GeneratorOutputTest(unittest.TestCase):
         before, after = self.card_row(self.plain), self.card_row(self.layered)
         self.assertEqual({key: value for key, value in before.items() if key != "changes"}, {key: value for key, value in after.items() if key != "changes"})
         self.assertEqual(before["changes"], after["changes"][:len(before["changes"])])
-        self.assertEqual(layer.EDITS + layer.COVER_EDITS + layer.LAYOUT_EDITS + layer.HOVER_EDITS, layer.ALL_EDITS)
-        self.assertEqual((7, 4, 14, 4), (len(layer.EDITS), len(layer.COVER_EDITS), len(layer.LAYOUT_EDITS), len(layer.HOVER_EDITS)))
+        self.assertEqual(layer.EDITS + layer.COVER_EDITS + layer.LAYOUT_EDITS + layer.HOVER_EDITS + layer.COPY_EDITS,
+                         layer.ALL_EDITS)
+        self.assertEqual((7, 4, 14, 4, 3),
+                         (len(layer.EDITS), len(layer.COVER_EDITS), len(layer.LAYOUT_EDITS), len(layer.HOVER_EDITS),
+                          len(layer.COPY_EDITS)))
         self.assertEqual(["ux-card-hover-imports", "ux-card-hover-state", "ux-card-hover-surface", "ux-card-hover-quick-actions"],
-                         [row["id"] for row in after["changes"][-4:]])
+                         [row["id"] for row in after["changes"][-7:-3]])
+        self.assertEqual(["ux-card-copy-link-state", "ux-card-copy-link-key", "ux-card-copy-link-menu-row"],
+                         [row["id"] for row in after["changes"][-3:]])
         self.assertEqual([label for label, _b, _a in layer.ALL_EDITS], [row["id"] for row in after["changes"][len(before["changes"]):]])
 
     def test_the_output_is_deterministic(self):
@@ -335,14 +349,15 @@ class GeneratorOutputTest(unittest.TestCase):
 
     def test_the_menu_call_shapes_are_the_vendored_ones(self):
         received, produced = source.mask_kotlin(self.card(self.plain)), source.mask_kotlin(self.card(self.layered))
-        for name, expected in (("AppDropdownMenu", [["expanded", "onDismissRequest", "offset"]]),
-                               ("AppDropdownMenuItem", [["text", "onClick"]] * 3)):
-            for code in (received, produced):
+        # Every row keeps the vendored shape (a text slot and an onClick); slice K3e adds one more row, the copy link.
+        for name, expected, shaped in (("AppDropdownMenu", [["expanded", "onDismissRequest", "offset"]], [["expanded", "onDismissRequest", "offset"]]),
+                                       ("AppDropdownMenuItem", [["text", "onClick"]] * 3, [["text", "onClick"]] * 4)):
+            for code, wanted in ((received, expected), (produced, shaped)):
                 calls = []
                 for match in re.finditer(r"(?<![\w.])%s\(" % name, code):
                     arguments = top_level_arguments(code, match.end() - 1)
                     calls.append([argument.split("=", 1)[0].strip() for argument in arguments if re.match(r"^\w+\s*=[^=]", argument)])
-                self.assertEqual(expected, calls, name)
+                self.assertEqual(wanted, calls, name)
         self.assertIn("AppDropdownMenu(\n                expanded = showDismissMenu,\n                onDismissRequest = { showDismissMenu = false },\n"
                       "                offset = DpOffset.Zero\n            ) {", self.card(self.layered))
 
