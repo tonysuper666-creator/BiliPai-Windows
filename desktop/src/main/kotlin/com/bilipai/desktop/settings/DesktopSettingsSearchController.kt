@@ -30,12 +30,13 @@ class DesktopSettingsSearchController(private val repository: DesktopSettingsSea
     suspend fun deleteHistory(query: String) = historyChange { repository.delete(query) }
     suspend fun clearHistory() = historyChange { repository.clear() }
 
-    /** Exact original SearchScreen dispatch; opening an action result does not perform it. */
+    /** Placement selects category or detail while keeping the original target; actions only navigate. */
     fun activate(result: SettingsSearchResult, onCategoryClick: (SettingsRootCategory) -> Unit,
         onResultClick: (SettingsSearchResult) -> Unit) {
-        val category = resolveSettingsRootCategoryForSearchTarget(result.target)
-        if (isSceneSettingsSearchTarget(result.target) && category != null) {
-            onCategoryClick(category)
+        val explicitCategory = desktopSettingsSearchCategoryDestination(result)
+        val category = explicitCategory ?: resolveSettingsRootCategoryForSearchTarget(result.target)
+        if (explicitCategory != null || (result.page == null && isSceneSettingsSearchTarget(result.target) && category != null)) {
+            onCategoryClick(requireNotNull(category))
         } else {
             SettingsSearchFocusController.submit(result.target, result.focusId)
             onResultClick(result)

@@ -37,7 +37,7 @@ class DesktopSettingsItemSearchTest {
         for (item in directory) {
             assertTrue(Regex("[a-z0-9_]+(\\.[a-z0-9_]+)+").matches(item.settingId), item.settingId)
             assertTrue(item.title.isNotBlank(), item.settingId)
-            assertTrue(item.target in mountedTargets, item.settingId)
+            assertTrue(item.category in DESKTOP_SETTINGS_RAIL_CATEGORIES, item.settingId)
             assertEquals(item.aliases.size, item.aliases.toSet().size, item.settingId)
             assertTrue(item.aliases.all { it.isNotBlank() && it == it.trim() }, item.settingId)
             val allowed = when (item.target) {
@@ -46,9 +46,18 @@ class DesktopSettingsItemSearchTest {
                 else -> emptySet()
             }
             assertTrue(item.focus == null || item.focus in allowed, "${item.settingId} advertises ${item.focus}")
-            if (item.target == SettingsSearchTarget.PLAYBACK) assertNotNull(item.focus, item.settingId)
+            val retained = desktopSettingsItemPresentation.any { it.settingId == item.settingId } || item.settingId in desktopSearchableWindowsUxIds
+            if (!retained) assertNull(item.focus, item.settingId)
+            if (retained && item.target == SettingsSearchTarget.PLAYBACK) assertNotNull(item.focus, item.settingId)
             val text = listOf(item.title, item.description) + item.aliases
-            for (word in phoneWords) assertTrue(text.none { word in it }, "${item.settingId} names the removed control $word")
+            for (word in phoneWords) {
+                val exception = when (word) {
+                    "竖屏" -> "playback.portrait_letterbox_ambient_haze"
+                    "截图" -> "playback.show_fullscreen_screenshot_button"
+                    else -> null
+                }
+                if (item.settingId != exception) assertTrue(text.none { word in it }, "${item.settingId} names the removed control $word")
+            }
         }
     }
 
@@ -92,10 +101,12 @@ class DesktopSettingsItemSearchTest {
         assertTrue(resolveDesktopSettingsItemSearch("   ").isEmpty())
         assertTrue(resolveDesktopSettingsItemSearch("播放", maxResults = 0).isEmpty())
         assertTrue(resolveDesktopSettingsItemSearch("不存在的zqwxj设置").isEmpty())
-        for (query in listOf("权限", "通知权限", "手势", "三指截图", "竖屏", "横竖屏", "陀螺仪", "底栏", "亮度", "重新引导", "电池", "常驻服务",
+        for (query in listOf("权限", "通知权限", "手势", "三指截图", "横竖屏", "陀螺仪", "底栏", "亮度", "重新引导", "电池", "常驻服务",
             "Anime4K")) {
             assertTrue(resolveDesktopSettingsItemSearch(query).isEmpty(), "Removed control remains searchable: $query")
         }
+        assertEquals(listOf("playback.portrait_letterbox_ambient_haze"), resolveDesktopSettingsItemSearch("竖屏").map { it.item.settingId })
+        assertEquals(listOf("playback.show_fullscreen_screenshot_button"), resolveDesktopSettingsItemSearch("截图").map { it.item.settingId })
         val limited = resolveDesktopSettingsItemSearch("播放", maxResults = 3)
         assertEquals(3, limited.size)
         assertTrue(resolveDesktopSettingsItemSearch("播放").size <= DESKTOP_SETTINGS_ITEM_SEARCH_LIMIT)

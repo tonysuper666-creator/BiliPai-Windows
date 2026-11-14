@@ -1,0 +1,46 @@
+--- a/com/android/purebilibili/feature/settings/SettingsItemAnchor.kt
++++ b/com/android/purebilibili/feature/settings/SettingsItemAnchor.kt
+@@ -24,7 +24,10 @@
+ import androidx.compose.ui.graphics.drawscope.Stroke
+ import androidx.compose.ui.unit.dp
+ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+-import androidx.compose.ui.platform.LocalView
++import androidx.compose.ui.semantics.LiveRegionMode
++import androidx.compose.ui.semantics.liveRegion
++import androidx.compose.ui.semantics.semantics
++import androidx.compose.ui.semantics.stateDescription
+ import androidx.lifecycle.compose.collectAsStateWithLifecycle
+ import kotlinx.coroutines.delay
+ 
+@@ -37,8 +40,9 @@
+     val request by SettingsSearchFocusController.request.collectAsStateWithLifecycle()
+     val bringIntoView = remember { BringIntoViewRequester() }
+     val keyboard = LocalSoftwareKeyboardController.current
+-    val view = LocalView.current
+     var highlighted by remember { mutableStateOf(false) }
++    // Desktop: no Android View to announce through; the anchor carries the same text as a polite live region while highlighted.
++    var announcement by remember { mutableStateOf<String?>(null) }
+     var searchQuery by rememberSaveable(settingId) { mutableStateOf("") }
+     LaunchedEffect(request?.token, settingId) {
+         val current = request ?: return@LaunchedEffect
+@@ -49,10 +53,11 @@
+             withFrameNanos { }
+             bringIntoView.bringIntoView()
+             highlighted = true
+-            view.announceForAccessibility("已定位到${settingsItemDirectory.firstOrNull { it.settingId == settingId }?.title.orEmpty()}")
++            announcement = "已定位到${settingsItemDirectory.firstOrNull { it.settingId == settingId }?.title.orEmpty()}"
+             delay(SettingsSearchHighlightTiming.HOLD_MILLIS)
+         } finally {
+             highlighted = false
++            announcement = null
+             SettingsSearchFocusController.clear(current.token)
+         }
+     }
+@@ -65,6 +70,7 @@
+     Box(
+         modifier.fillMaxWidth()
+             .bringIntoViewRequester(bringIntoView)
++            .semantics { announcement?.let { liveRegion = LiveRegionMode.Polite; stateDescription = it } }
+             .drawWithContent {
+                 drawContent()
+                 // Draw above the preference surface so native row backgrounds cannot hide it.

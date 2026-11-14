@@ -77,7 +77,7 @@ playback.app_gesture_screenshot_enabled	应用内截图	FULLSCREEN_GESTURE	-	hid
 playback.show_fullscreen_battery_level	全屏显示电量	FULLSCREEN_GESTURE	-	hidden	桌面机通常没有电池信息接口
 playback.show_online_count	视频页观看人数	FULLSCREEN_GESTURE	PLAYBACK_QUALITY	available	
 playback.show_fullscreen_time	全屏显示时间	FULLSCREEN_GESTURE	PLAYBACK_QUALITY	available	
-playback.fullscreen_action_counts	横屏互动数量	FULLSCREEN_GESTURE	PLAYBACK_QUALITY	available	
+playback.fullscreen_action_counts	横屏互动数量	FULLSCREEN_GESTURE	-	unavailable	设置控件未编译（later-steps.tsv:46），桌面播放器无消费
 playback.show_fullscreen_action_items	全屏显示互动按钮	FULLSCREEN_GESTURE	PLAYBACK_QUALITY	available	
 playback.chapter_display_mode	章节显示方式	FULLSCREEN_GESTURE	PLAYBACK_QUALITY	available	
 playback.progress_peak_danmaku_enabled	进度条显示弹幕热度	FULLSCREEN_GESTURE	PLAYBACK_QUALITY	available	

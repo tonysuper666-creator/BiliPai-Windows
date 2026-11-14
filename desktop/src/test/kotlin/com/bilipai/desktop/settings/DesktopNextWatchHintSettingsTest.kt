@@ -109,14 +109,22 @@ class DesktopNextWatchHintSettingsTest {
     }
 
     @Test fun `search reaches the switch through the playback behaviour group and the auto continue queries stay single`() {
+        val fixture = Fixture()
+        val controller = DesktopSettingsSearchController(DesktopSettingsSearchRepository(
+            DesktopPluginContext(fixture.store)) { false })
         for (query in listOf("接下来观看", "接下来观看卡片", "下一集提示", "相关推荐提示")) {
-            val result = resolveDesktopWindowsSettingsSearchResults(query).single()
+            controller.setQuery(query)
+            val result = assertDesktopQueryContract(controller, SettingsSearchTarget.PLAYBACK to "windows_playback_behavior")
+                .single { it.target == SettingsSearchTarget.PLAYBACK && it.focusId == "windows_playback_behavior" }
             assertEquals(SettingsSearchTarget.PLAYBACK, result.target, query)
             assertEquals("windows_playback_behavior", result.focusId, query)
         }
         for (query in listOf("自动播放下一个", "列表连续播放", "收藏夹")) {
-            val result = resolveDesktopWindowsSettingsSearchResults(query).single()
+            controller.setQuery(query)
+            val result = assertDesktopQueryContract(controller, SettingsSearchTarget.PLAYBACK to "windows_playback_behavior")
+                .single { it.target == SettingsSearchTarget.PLAYBACK && it.focusId == "windows_playback_behavior" }
             assertEquals("windows_playback_behavior", result.focusId, query)
         }
+        assertFalse(Files.exists(fixture.file), "Search and navigation must not write preferences")
     }
 }
