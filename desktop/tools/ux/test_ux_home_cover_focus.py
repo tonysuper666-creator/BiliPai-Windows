@@ -6,9 +6,10 @@ Run: PYTHONUTF8=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=desktop/tools python -X u
 What is proved. desktop/tools/ux_home_card.py runs through the real Home card producer (extract-upstream-home-full-card.py),
 once with the layer and once with the layer patched out:
 
-  CoverEditsTest   the four K3 edits come after the seven H2 edits; each anchor occurs exactly once in the text K3 receives
-                   (the H2 output), each replacement once in the produced card; reverse() gives back the received text byte for
-                   byte; a mutated or doubled anchor and a taken K3 name fail closed with AssertionError
+  CoverEditsTest   the four K3 edits come after the seven H2 edits and before the fourteen K3b layout edits; each anchor occurs
+                   exactly once in the text K3 receives (the H2 output), each replacement once in the produced card; reverse()
+                   gives back the received text byte for byte; a mutated or doubled anchor and a taken K3 name fail closed with
+                   AssertionError
   CoverWiringTest  the focus target sits in the modifier chain of the cover Box (home_video_cover), after the test tag and before
                    the clip; Enter calls triggerCardClick, the same call as the cover tap; the menu keys call openDismissMenu with
                    the cover anchor only when hasOverflowMenu (the condition of the right click); the ring is the last modifier
@@ -88,7 +89,7 @@ class _Generated(unittest.TestCase):
 class CoverEditsTest(_Generated):
     def test_the_four_cover_edits_follow_the_seven_card_edits(self):
         self.assertEqual(COVER_IDS, [label for label, _b, _a in layer.COVER_EDITS])
-        self.assertEqual(layer.EDITS + layer.COVER_EDITS, layer.ALL_EDITS)
+        self.assertEqual(layer.EDITS + layer.COVER_EDITS + layer.LAYOUT_EDITS, layer.ALL_EDITS)
         for label, before, after in layer.COVER_EDITS:
             self.assertNotEqual(before, after, label)
             self.assertTrue(before.endswith("\n") and after.endswith("\n"), label)
@@ -103,8 +104,10 @@ class CoverEditsTest(_Generated):
             self.assertEqual(1, self.produced.count(after), label)
 
     def test_the_produced_card_is_the_received_text_with_the_cover_edits(self):
+        # The K3 edits, then the K3b layout edits (test_ux_home_card_layout.py) that follow them in ALL_EDITS.
         expected = self.received
-        for label, before, after in layer.COVER_EDITS:
+        for label, before, after in layer.COVER_EDITS + layer.LAYOUT_EDITS:
+            self.assertEqual(1, expected.count(before), label)
             expected = expected.replace(before, after, 1)
         self.assertEqual(expected, self.produced)
 
@@ -139,8 +142,8 @@ class CoverWiringTest(_Generated):
     def test_the_focus_target_sits_on_the_cover_box_after_the_tag_and_before_the_clip(self):
         chain = self.chain_of('.testTag("home_video_cover")')
         self.assertEqual(1, self.produced.count(".desktopHomeCoverFocusTarget("))
-        order = ['.testTag("home_video_cover")', TARGET_CALL, ".aspectRatio(coverAspectRatio)", ".clip(coverShape)",
-                 "coverCoordsRef.value = coordinates", "onTap = {\n                            triggerCardClick()"]
+        order = ['.testTag("home_video_cover")', TARGET_CALL, ".aspectRatio(if (homeCardThreeLine) 16f / 9f else coverAspectRatio)",
+                 ".clip(coverShape)", "coverCoordsRef.value = coordinates", "onTap = {\n                            triggerCardClick()"]
         positions = [chain.index(item) for item in order]
         self.assertEqual(sorted(positions), positions)
 
