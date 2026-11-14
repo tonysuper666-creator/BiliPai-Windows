@@ -8,14 +8,15 @@ gradle.projectsEvaluated {
     def phase = rootProject.providers.gradleProperty('commentSearchPhase').get()
     if (!(phase in ['prepare', 'run'])) throw new GradleException('Unknown comment-search phase')
     def uiCase = rootProject.providers.gradleProperty('commentUiCase').orElse('search').get()
-    if (!(uiCase in ['search', 'composer', 'feedback', 'video_share', 'fullscreen'])) throw new GradleException('Unknown independent comment UI case')
+    if (!(uiCase in ['search', 'composer', 'feedback', 'video_share', 'fullscreen', 'search_link'])) throw new GradleException('Unknown independent comment UI case')
     ui.configure {
         systemProperty('bilipai.validation.commentSearchInput', (uiCase == 'search').toString())
         systemProperty('bilipai.validation.composerInput', (uiCase in ['composer', 'feedback', 'video_share']).toString())
         systemProperty('bilipai.validation.brandFeedbackPlacementInput', (uiCase == 'feedback').toString())
         systemProperty('bilipai.validation.videoDynamicShareInput', (uiCase == 'video_share').toString())
         systemProperty('bilipai.validation.fullscreenIdleInput', (uiCase == 'fullscreen').toString())
-        if (uiCase in ['composer', 'feedback', 'video_share', 'fullscreen']) {
+        systemProperty('bilipai.validation.searchLinkInput', (uiCase == 'search_link').toString())
+        if (uiCase in ['composer', 'feedback', 'video_share', 'fullscreen', 'search_link']) {
             ['nvidiaInput', 'scaleInput', 'featureInput', 'hotInput', 'collectionInput',
              'metadataInput', 'bgmInput', 'pipInput', 'originalInteractionInput'].each {
                 systemProperty('bilipai.validation.' + it, 'false')
