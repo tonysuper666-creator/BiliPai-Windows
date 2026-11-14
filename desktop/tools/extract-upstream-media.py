@@ -97,6 +97,10 @@ def expression_end(source: str, name: str, tokens: list, index: int, indent: int
                 raise ValueError(f"Original {name} has an unbalanced expression body")
         last = index
         index += 1
+    # The last declaration of a file is closed by the end of the file, as long
+    # as every bracket closed and the final token can end an expression.
+    if last is not None and depth == 0 and tokens[last][0] not in CONTINUATION_ONLY:
+        return last
     raise ValueError(f"Original {name} has an unterminated expression body")
 
 

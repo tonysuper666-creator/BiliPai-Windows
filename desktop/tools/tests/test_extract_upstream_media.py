@@ -62,6 +62,22 @@ private fun searchTypeParams(): Map<String, String> = buildMap {
 fun next(): Int = 1
 ''', "watched", parser))
 
+    def test_expression_body_of_the_last_declaration_ends_at_the_end_of_the_file(self):
+        parser = media.parser_for(REPO)
+        selection = '''internal fun resolveTarget(key: String): Target? = when (key) {
+    "a" -> Target.A
+    else -> null
+}'''
+        self.assertEqual(selection, media.function("package x\n\n" + selection + "\n", "resolveTarget", parser))
+        self.assertEqual("fun report(id: Long) = post(\n    id\n)",
+                         media.function("fun report(id: Long) = post(\n    id\n)\n", "report", parser))
+        for name, source in (
+            ("unclosed", "fun unclosed(): Int = compute(\n    1\n"),
+            ("empty", "fun empty(): Int =\n"),
+        ):
+            with self.subTest(name=name), self.assertRaisesRegex(ValueError, "unterminated|empty"):
+                media.function(source, name, parser)
+
     def test_expression_body_without_a_boundary_fails_closed(self):
         parser = media.parser_for(REPO)
         for name, source in (
