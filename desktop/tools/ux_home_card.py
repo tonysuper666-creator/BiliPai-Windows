@@ -3,7 +3,7 @@
 The Home card producer (extract-upstream-home-full-card.py) calls apply_home_card once per emitted file, right after the
 recommendation badge layer, through one hook line (the v043_home_recommendation_badges pattern). The layer touches one generated
 file and nothing else, VideoCard.kt (the grid card of the Home feed; its ElegantVideoCard function), with seven exact-once
-replacements of slice H2 (EDITS) and four of slice K3 (COVER_EDITS, below):
+replacements of slice H2 (EDITS), four of slice K3 (COVER_EDITS) and fourteen of slice K3b (LAYOUT_EDITS, both below):
 
   * the two imports of the vendored dropdown menu become import aliases of the desktop-owned menu, so the call text of the card is
     the vendored call text (named arguments expanded, onDismissRequest, offset, and the ColumnScope trailing lambda):
@@ -27,6 +27,18 @@ COVER_EDITS, applied after the seven above, with the helpers in desktop/src/main
     Shift+F10 or the menu key call openDismissMenu with the cover anchor when the card has a menu (hasOverflowMenu, as the
     right click);
   * the ring on the card root Box, after its position recorder: the card shell clips the cover, the root does not.
+
+Slice K3b adds the three line card content (spec 4 Home item 3), fourteen more exact-once edits in LAYOUT_EDITS, applied last.
+All of them read the card_interactions flag once, through the local homeCardThreeLine (desktopCardInteractionsOn), so the OFF flag
+renders the vendored card:
+
+  * the cover is 16:9 with a 12 dp corner (the card shell uses the same corner), and its compact stats strip carries play,
+    danmaku and the duration (the duration moves onto the cover when the duration style is the default OUTSIDE_COVER; HIDDEN
+    still hides it), so there is no separate stat row or duration row under the cover;
+  * the title is two lines of 14 sp / 20 sp Medium (the vendored max and min line counts are kept);
+  * one owner row: the UP name, ellipsized on one line, then "· <time>" (the compact publish time without its "发布于 " prefix);
+    the recommendation reason badge and the separate publish row are not shown, and the overflow button keeps its 32 dp target
+    (desktopCardOverflowTarget of slice H2) at the end of the info block. No like count is shown, as in the vendored card.
 
 Not covered by this layer: the single-column display mode (AppWindowActionMenu), StoryVideoCard and DynamicCard. This is a
 desktop-owned layer: there is no upstream archive, no manifest and no pinned predecessor hash. Every anchor is counted on the text
@@ -132,7 +144,137 @@ COVER_EDITS = (
      '            .desktopHomeCoverFocusRing(homeCoverFocus)\n'
      '    ) {\n'),
 )
-ALL_EDITS = EDITS + COVER_EDITS
+# Slice K3b: the three line card content of spec 4 Home item 3 (spec v2 line 100). Same rules as EDITS: each `before`
+# occurs exactly once in the text the layer receives (after EDITS and COVER_EDITS), and every change reads the
+# card_interactions flag through the single local homeCardThreeLine, so the OFF flag renders the vendored card unchanged.
+LAYOUT_EDITS = (
+    ('ux-card-layout-flag-and-corner',
+     '    val cardCornerRadius = AppShapes.containerCornerDp(ContainerLevel.Card)\n',
+     '    val homeCardThreeLine = ' + UI + 'desktopCardInteractionsOn()\n'
+     '    val cardCornerRadius = if (homeCardThreeLine) 12.dp else AppShapes.containerCornerDp(ContainerLevel.Card)\n'),
+    ('ux-card-layout-duration-on-cover',
+     '    val showDurationOnCover = homeDurationStyle == HomeDurationStyle.OVERLAY_TEXT_ONLY\n',
+     '    val showDurationOnCover = homeDurationStyle == HomeDurationStyle.OVERLAY_TEXT_ONLY ||\n'
+     '        (homeCardThreeLine && homeDurationStyle == HomeDurationStyle.OUTSIDE_COVER)\n'),
+    ('ux-card-layout-duration-outside',
+     '    val showDurationOutside = homeDurationStyle == HomeDurationStyle.OUTSIDE_COVER\n',
+     '    val showDurationOutside = !homeCardThreeLine && homeDurationStyle == HomeDurationStyle.OUTSIDE_COVER\n'),
+    ('ux-card-layout-stats-on-cover',
+     '    val scrollLitePolicy = remember(compactStatsOnCover) {\n'
+     '        resolveVideoCardScrollLiteVisualPolicy(\n'
+     '            scrollLiteModeEnabled = false,\n'
+     '            compactStatsOnCover = compactStatsOnCover\n'
+     '        )\n'
+     '    }\n',
+     '    val scrollLitePolicy = remember(compactStatsOnCover, homeCardThreeLine) {\n'
+     '        resolveVideoCardScrollLiteVisualPolicy(\n'
+     '            scrollLiteModeEnabled = false,\n'
+     '            compactStatsOnCover = compactStatsOnCover || homeCardThreeLine\n'
+     '        )\n'
+     '    }\n'),
+    ('ux-card-layout-publish-time',
+     '    remember(showPublishTime, video.pubdate) {\n'
+     '        if (!showPublishTime) {\n'
+     '            "" to false\n'
+     '        } else {\n'
+     '            resolveCompactPublishTimeRowText(pubdate = video.pubdate) to false\n'
+     '        }\n'
+     '    }.let { (text, emphasize) ->\n',
+     '    remember(showPublishTime, video.pubdate, homeCardThreeLine) {\n'
+     '        if (!showPublishTime) {\n'
+     '            "" to false\n'
+     '        } else if (homeCardThreeLine) {\n'
+     '            resolveCompactPublishTimeRowText(pubdate = video.pubdate).removePrefix("发布于 ") to false\n'
+     '        } else {\n'
+     '            resolveCompactPublishTimeRowText(pubdate = video.pubdate) to false\n'
+     '        }\n'
+     '    }.let { (text, emphasize) ->\n'),
+    ('ux-card-layout-shell-shape',
+     '        val cardShellShape = AppShapes.container(ContainerLevel.Card)\n',
+     '        val cardShellShape = if (homeCardThreeLine) {\n'
+     '            androidx.compose.foundation.shape.RoundedCornerShape(cardCornerRadius)\n'
+     '        } else {\n'
+     '            AppShapes.container(ContainerLevel.Card)\n'
+     '        }\n'),
+    ('ux-card-layout-cover-16-9',
+     '                .aspectRatio(coverAspectRatio)\n'
+     '                .clip(coverShape)\n',
+     '                .aspectRatio(if (homeCardThreeLine) 16f / 9f else coverAspectRatio)\n'
+     '                .clip(coverShape)\n'),
+    ('ux-card-layout-title-style',
+     '            style = contentTypography.title.copy(\n'
+     '                color = adaptiveContentColors.titleColor\n'
+     '            ),\n',
+     '            style = contentTypography.title.copy(\n'
+     '                color = adaptiveContentColors.titleColor\n'
+     '            ).let { title ->\n'
+     '                if (homeCardThreeLine) {\n'
+     '                    title.copy(fontSize = 14.sp, lineHeight = 20.sp, fontWeight = FontWeight.Medium)\n'
+     '                } else {\n'
+     '                    title\n'
+     '                }\n'
+     '            },\n'),
+    ('ux-card-layout-owner-time-parameter',
+     '    onUpClick: ((Long) -> Unit)?,\n'
+     '    modifier: Modifier = Modifier\n'
+     ') {\n'
+     '    val contentTypography = feedContentTypography()\n',
+     '    onUpClick: ((Long) -> Unit)?,\n'
+     '    modifier: Modifier = Modifier,\n'
+     '    threeLineTime: String? = null\n'
+     ') {\n'
+     '    val contentTypography = feedContentTypography()\n'),
+    ('ux-card-layout-owner-leading-condition',
+     '        nameLeadingContent = if (isFollowing || video.isFollowed || video.recommendationReason.isNotBlank()) {\n',
+     '        nameLeadingContent = if (isFollowing || video.isFollowed ||\n'
+     '            (threeLineTime == null && video.recommendationReason.isNotBlank())) {\n'),
+    ('ux-card-layout-owner-no-reason-badge',
+     '                    VideoRecommendationBadge(video.recommendationReason)\n',
+     '                    if (threeLineTime == null) {\n'
+     '                        VideoRecommendationBadge(video.recommendationReason)\n'
+     '                    }\n'),
+    ('ux-card-layout-owner-time-inline',
+     '        maxLines = Int.MAX_VALUE,\n'
+     '        overflow = TextOverflow.Visible,\n'
+     '        metaMaxLines = Int.MAX_VALUE,\n'
+     '        metaOverflow = TextOverflow.Visible,\n'
+     '        modifier = ownerModifier\n'
+     '    )\n'
+     '}\n',
+     '        maxLines = if (threeLineTime != null) 1 else Int.MAX_VALUE,\n'
+     '        overflow = if (threeLineTime != null) TextOverflow.Ellipsis else TextOverflow.Visible,\n'
+     '        metaMaxLines = Int.MAX_VALUE,\n'
+     '        metaOverflow = TextOverflow.Visible,\n'
+     '        inlineTrailingContent = threeLineTime?.takeIf { it.isNotBlank() }?.let { time ->\n'
+     '            {\n'
+     '                AppText(\n'
+     '                    text = "· " + time,\n'
+     '                    style = contentTypography.author,\n'
+     '                    color = metadataColors.publishTimeColor,\n'
+     '                    maxLines = 1,\n'
+     '                    softWrap = false,\n'
+     '                    modifier = Modifier.testTag("home_video_owner_time")\n'
+     '                )\n'
+     '            }\n'
+     '        },\n'
+     '        modifier = ownerModifier\n'
+     '    )\n'
+     '}\n'),
+    ('ux-card-layout-owner-time-call',
+     '            onUpClick = onUpClick,\n'
+     '            modifier = resolveVideoCardMetadataRowModifier()\n'
+     '        )\n',
+     '            onUpClick = onUpClick,\n'
+     '            modifier = resolveVideoCardMetadataRowModifier(),\n'
+     '            threeLineTime = publishTimeRowText.takeIf { homeCardThreeLine }\n'
+     '        )\n'),
+    ('ux-card-layout-no-publish-row',
+     '            publishTimeText = publishTimeRowText,\n'
+     '            emphasizePublishTime = emphasizePublishTime,\n',
+     '            publishTimeText = if (homeCardThreeLine) "" else publishTimeRowText,\n'
+     '            emphasizePublishTime = emphasizePublishTime,\n'),
+)
+ALL_EDITS = EDITS + COVER_EDITS + LAYOUT_EDITS
 
 # After the layer none of these vendored lines may remain in the file: the menu imports and the overflow box size line.
 GONE = (
@@ -144,6 +286,7 @@ GONE = (
 INTRODUCED = ('DesktopCardContextMenu', 'DesktopCardContextMenuItem', 'desktopCardSecondaryClick', 'desktopCardHandCursor',
               'desktopCardMenuLabel', 'desktopCardOverflowTarget')
 COVER_INTRODUCED = ('desktopHomeCoverFocusTarget', 'desktopHomeCoverFocusRing', 'rememberDesktopHomeCoverFocus', 'homeCoverFocus')
+LAYOUT_INTRODUCED = ('desktopCardInteractionsOn', 'homeCardThreeLine', 'threeLineTime', 'home_video_owner_time')
 
 
 def sha(text):
@@ -166,7 +309,7 @@ def apply_home_card(repo, name, text, audits):
     """The text of one emitted file with the Home card edits, or the text itself for any file the layer does not own."""
     if name != CARD:
         return text
-    for introduced in INTRODUCED + COVER_INTRODUCED:
+    for introduced in INTRODUCED + COVER_INTRODUCED + LAYOUT_INTRODUCED:
         need(introduced not in text, 'Home card layer already applied or name taken: %s in %s' % (introduced, name))
     received = text
     for label, before, after in ALL_EDITS:

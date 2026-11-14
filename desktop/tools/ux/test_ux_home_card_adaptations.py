@@ -207,7 +207,7 @@ class GeneratorOutputTest(unittest.TestCase):
         changed = {name for name in self.layered if self.layered[name] != self.plain[name]}
         self.assertEqual({CARD_PATH, INVENTORY_PATH}, changed)
         # In the inventory only the audit rows of the card entry change, and only by the rows the layer appends: the seven of
-        # slice H2, then the four of slice K3 (the cover focus), in that order.
+        # slice H2, then the four of slice K3 (the cover focus), then the fourteen of slice K3b (the three-line layout), in that order.
         plain_rows, layered_rows = self.rows(self.plain), self.rows(self.layered)
         self.assertEqual(len(plain_rows), len(layered_rows))
         for before, after in zip(plain_rows, layered_rows):
@@ -216,7 +216,9 @@ class GeneratorOutputTest(unittest.TestCase):
         before, after = self.card_row(self.plain), self.card_row(self.layered)
         self.assertEqual({key: value for key, value in before.items() if key != "changes"}, {key: value for key, value in after.items() if key != "changes"})
         self.assertEqual(before["changes"], after["changes"][:len(before["changes"])])
-        self.assertEqual([label for label, _b, _a in layer.EDITS + layer.COVER_EDITS], [row["id"] for row in after["changes"][len(before["changes"]):]])
+        self.assertEqual(layer.EDITS + layer.COVER_EDITS + layer.LAYOUT_EDITS, layer.ALL_EDITS)
+        self.assertEqual((7, 4, 14), (len(layer.EDITS), len(layer.COVER_EDITS), len(layer.LAYOUT_EDITS)))
+        self.assertEqual([label for label, _b, _a in layer.ALL_EDITS], [row["id"] for row in after["changes"][len(before["changes"]):]])
 
     def test_the_output_is_deterministic(self):
         self.assertEqual(self.layered, self.again)
@@ -244,9 +246,18 @@ class GeneratorOutputTest(unittest.TestCase):
 
     def test_reverse_applying_the_edits_gives_back_the_received_text(self):
         self.assertEqual(self.card(self.plain), layer.reverse(layer.CARD, self.card(self.layered)))
+        # Undoing only the K3b layout edits, last first, gives back the text the H2 and K3 edits alone produce.
+        partial = self.card(self.layered)
+        for label, before, after in reversed(layer.LAYOUT_EDITS):
+            self.assertEqual(1, partial.count(after), label)
+            partial = partial.replace(after, before, 1)
+        expected = self.card(self.plain)
+        for label, before, after in layer.EDITS + layer.COVER_EDITS:
+            expected = expected.replace(before, after, 1)
+        self.assertEqual(expected, partial)
 
     def test_the_text_between_the_edits_is_untouched(self):
-        expected = len(self.card(self.plain)) + sum(len(after) - len(before) for _label, before, after in layer.EDITS + layer.COVER_EDITS)
+        expected = len(self.card(self.plain)) + sum(len(after) - len(before) for _label, before, after in layer.ALL_EDITS)
         self.assertEqual(expected, len(self.card(self.layered)))
 
     def test_a_mutated_or_doubled_anchor_fails_closed(self):
@@ -286,8 +297,8 @@ class GeneratorOutputTest(unittest.TestCase):
     def test_the_audit_rows_have_the_v043_shape_and_the_right_hashes(self):
         plain_changes, rows = self.card_row(self.plain)["changes"], self.card_row(self.layered)["changes"]
         mine = rows[len(plain_changes):]
-        self.assertEqual(len(layer.EDITS + layer.COVER_EDITS), len(mine))
-        for (label, before, after), row in zip(layer.EDITS + layer.COVER_EDITS, mine):
+        self.assertEqual(len(layer.ALL_EDITS), len(mine))
+        for (label, before, after), row in zip(layer.ALL_EDITS, mine):
             self.assertEqual({"id", "beforeSha256", "afterSha256", "inverseRestoresInput"}, set(row), label)
             self.assertEqual(label, row["id"])
             self.assertEqual(hashlib.sha256(before.encode("utf-8")).hexdigest(), row["beforeSha256"], label)
