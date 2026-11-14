@@ -122,8 +122,8 @@ internal fun desktopWindowsUxSampleOf(state: WindowState): DesktopWindowsUxWindo
 
 /**
  * The window state Main.kt hands to the Window, restored from the saved bounds (clamped to the monitors that exist
- * now) and kept up to date while the window lives. Without saved bounds this is exactly the earlier state: floating,
- * 1360 by 900, position chosen by the platform.
+ * now) and kept up to date while the window lives. Without saved bounds it targets a 1600 by 1000 client area plus
+ * frame allowance, fitted and centred within the usable screen when known.
  */
 @Composable
 internal fun rememberDesktopWindowsUxWindowState(store: DesktopPluginStore): WindowState {
