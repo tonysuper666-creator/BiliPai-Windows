@@ -1040,6 +1040,7 @@ val extractUpstreamSettingsSearch by tasks.registering(Exec::class) {
     workingDir(projectDir)
     commandLine(pythonExecutable, "tools/extract-upstream-settings-search.py",
         "--repo", repositoryRoot.absolutePath,
+        "--symbols-repo", mergedRepositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/settings-search").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-settings-search.py", "tools/v032_pinyin.py", "tools/extract-upstream-plugins.py", "tools/extract-upstream-media.py", "tools/sync-upstream.py")
     inputs.dir("upstream-slices/v032-pinyin")

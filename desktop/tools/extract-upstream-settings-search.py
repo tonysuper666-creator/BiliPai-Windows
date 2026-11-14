@@ -20,6 +20,11 @@ def symbol_names(repo):return sorted(set(re.findall(r'R\.drawable\.(\w+)',read(r
 def vectors(repo):
  names=symbol_names(repo); functions=[]
  def number(v):return str(float(v))+'f'
+ def brush(v):
+  v={'@android:color/white':'#FFFFFFFF','@android:color/transparent':'#00000000'}.get(v,v)
+  if re.fullmatch(r'#[0-9a-fA-F]{6}',v):v='#FF'+v[1:]
+  if not re.fullmatch(r'#[0-9a-fA-F]{8}',v):raise ValueError('Unbound original fillColor: '+v)
+  return 'SolidColor(Color(0x'+v[1:]+'))'
  for name in names:
   root=ET.fromstring(read(repo,'app/src/main/res/drawable/'+name+'.xml'))
   if root.tag!='vector':raise ValueError('Non-vector settings asset: '+name)
@@ -29,13 +34,11 @@ def vectors(repo):
   for node in root:
    if node.tag!='path':raise ValueError('Unsupported original settings vector node: '+node.tag)
    attrs={k.removeprefix(A):v for k,v in node.attrib.items()}
-   if set(attrs)-{'pathData','fillColor','fillAlpha','fillType'}:raise ValueError('Unbound path attributes: '+name+str(attrs))
-   color=attrs.get('fillColor','#000000')
-   if color=='@android:color/white':color='#FFFFFFFF'
-   if re.fullmatch(r'#[0-9a-fA-F]{6}',color):color='#FF'+color[1:]
-   if not re.fullmatch(r'#[0-9a-fA-F]{8}',color):raise ValueError('Unbound original fillColor: '+color)
+   if set(attrs)-{'pathData','fillColor','fillAlpha','fillType','strokeColor','strokeWidth','strokeLineCap','strokeLineJoin','strokeAlpha','strokeMiterLimit'}:raise ValueError('Unbound path attributes: '+name+str(attrs))
    fill='EvenOdd' if attrs.get('fillType')=='evenOdd' else 'NonZero'
-   body.append('addPath(pathData=addPathNodes('+json.dumps(attrs['pathData'])+'),fill=SolidColor(Color(0x'+color[1:]+')),fillAlpha='+number(attrs.get('fillAlpha','1'))+',pathFillType=PathFillType.'+fill+')')
+   args=['pathData=addPathNodes('+json.dumps(attrs['pathData'])+')','fill='+brush(attrs.get('fillColor','#000000')),'fillAlpha='+number(attrs.get('fillAlpha','1')),'pathFillType=PathFillType.'+fill]
+   if 'strokeColor' in attrs:args+=['stroke='+brush(attrs['strokeColor']),'strokeLineWidth='+number(attrs.get('strokeWidth','0')),'strokeAlpha='+number(attrs.get('strokeAlpha','1')),'strokeLineCap=StrokeCap.'+{'butt':'Butt','round':'Round','square':'Square'}[attrs.get('strokeLineCap','butt')],'strokeLineJoin=StrokeJoin.'+{'miter':'Miter','round':'Round','bevel':'Bevel'}[attrs.get('strokeLineJoin','miter')],'strokeLineMiter='+number(attrs.get('strokeMiterLimit','4'))]
+   body.append('addPath('+','.join(args)+')')
   size=lambda key:number(root.attrib[A+key].removesuffix('dp'))+'.dp'
   functions.append('"'+name+'" -> ImageVector.Builder(name="'+name+'",defaultWidth='+size('width')+',defaultHeight='+size('height')+',viewportWidth='+number(root.attrib[A+'viewportWidth'])+',viewportHeight='+number(root.attrib[A+'viewportHeight'])+',autoMirror='+str(root.attrib.get(A+'autoMirrored','false')).lower()+').apply{\n'+'\n'.join(body)+'\n}.build()')
  return '''package com.bilipai.desktop.settings
@@ -51,13 +54,16 @@ internal object DesktopSettingsVectors {
  private val cache=ConcurrentHashMap<String,ImageVector>()
  private val namesById=mapOf(
 '''+''.join('  com.android.purebilibili.R.drawable.'+n+' to "'+n+'",\n' for n in names)+''' )
- @Composable fun vector(id:Int):ImageVector=vector(namesById[id] ?: error("Unknown original settings vector id: $id"))
+ fun name(id:Int):String=namesById[id] ?: error("Unknown original settings vector id: $id")
+ @Composable fun vector(id:Int):ImageVector=vector(name(id))
  @Composable fun vector(name:String):ImageVector=remember(name){load(name)}
+ fun load(id:Int):ImageVector=load(name(id))
  fun load(name:String):ImageVector=cache.computeIfAbsent(name){build(it)}
  private fun build(name:String):ImageVector=when(name){
 '''+ '\n'.join(functions)+ '\nelse->error("Unknown original settings vector: $name")\n}\n}\n'
 
-def generate(repo,output,standalone=False):
+def generate(repo,output,standalone=False,symbols_repo=None):
+ symbols_repo=symbols_repo or repo
  h=helper(repo);m=h.media_extractor(repo);parser=m.parser_for(repo);files=[];output.mkdir(parents=True,exist_ok=True)
  for path in DIRECT:
   original=read(repo,path);h.prune_old_direct(output,path,original)
@@ -65,12 +71,14 @@ def generate(repo,output,standalone=False):
  from v032_pinyin import emit as emit_fixed_pinyin
  files.append(emit_fixed_pinyin(repo,output))
  for path in ADAPTED+SELECTED:
-  original=source=read(repo,path);name=None
+  original=source=read(symbols_repo if path in ADAPTED[:2] else repo,path);name=None
   if path.endswith(('SettingsSemanticIconPolicy.kt','SettingsEntryVisualPolicy.kt')):
    if path.endswith('SettingsSemanticIconPolicy.kt'):
     # Active original rememberSettingsSemanticIcon always loads its local XML.
     # The old unused extended-library lookup is outside this source-closed slice.
-    source=source[:source.index('/**\n * Miuix 设置页只使用 miuix-icons 字形。')]
+    marker='/**\n * Miuix 设置页只使用 miuix-icons 字形。'
+    if marker in source: source=source[:source.index(marker)]
+    elif re.search(r'MiuixIcons|top\.yukonga\.miuix\.kmp\.icon',source): raise ValueError('Miuix icon lookup changed shape: '+path)
     source=source.replace('import top.yukonga.miuix.kmp.icon.MiuixIcons\n','').replace('import top.yukonga.miuix.kmp.icon.extended.*\n','')
    source=source.replace('import androidx.annotation.DrawableRes\n','').replace('@DrawableRes ','').replace('import androidx.compose.ui.res.vectorResource\n','')
    source=source.replace('import com.android.purebilibili.R','import com.bilipai.desktop.settings.DesktopSettingsSymbols\nimport com.bilipai.desktop.settings.DesktopSettingsVectors')
@@ -113,13 +121,17 @@ internal class SettingsSearchHistoryOperations(private val context:DesktopPlugin
   else:raise ValueError(path)
   if re.search(r'^import (android\.|androidx\.datastore|androidx\.compose\.ui\.res\.)',source,re.M):raise ValueError('Android binding remains: '+path)
   files.append(h.write(output,path,original,source,name))
- vector=output/'com/bilipai/desktop/settings/DesktopSettingsVectors.kt';vector.parent.mkdir(parents=True,exist_ok=True);vector.write_text(vectors(repo),encoding='utf-8');files.append(vector)
+ vector=output/'com/bilipai/desktop/settings/DesktopSettingsVectors.kt';vector.parent.mkdir(parents=True,exist_ok=True);vector.write_text(vectors(symbols_repo),encoding='utf-8');files.append(vector)
+ used=set().union(*(set(re.findall(r'DesktopSettingsSymbols\.(\w+)',Path(f).read_text(encoding='utf-8'))) for f in files))
+ missing=used-set(symbol_names(symbols_repo))
+ if missing:raise ValueError('Missing DesktopSettingsSymbols: '+', '.join(sorted(missing)))
  return files
 
 def inventory(repo):return [dict(path=p,mode='direct' if p in DIRECT else 'platform-adapter-reference' if p in ADAPTED else 'policy-extract',features=['settings-search-parity'],sha256=hashlib.sha256(read(repo,p).encode()).hexdigest()) for p in DIRECT+OWNED+ADAPTED+SELECTED]
 def resource_inventory(repo):return [dict(path='app/src/main/res/drawable/'+n+'.xml',sha256=hashlib.sha256(read(repo,'app/src/main/res/drawable/'+n+'.xml').encode()).hexdigest(),features=['settings-search-symbols']) for n in symbol_names(repo)]
 if __name__=='__main__':
- cli=argparse.ArgumentParser(description=__doc__);cli.add_argument('--repo',type=Path,required=True);cli.add_argument('--output',type=Path);cli.add_argument('--standalone',action='store_true');cli.add_argument('--inventory',action='store_true');cli.add_argument('--resource-inventory',action='store_true');args=cli.parse_args()
+ cli=argparse.ArgumentParser(description=__doc__);cli.add_argument('--repo',type=Path,required=True);cli.add_argument('--symbols-repo',type=Path);cli.add_argument('--output',type=Path);cli.add_argument('--standalone',action='store_true');cli.add_argument('--inventory',action='store_true');cli.add_argument('--resource-inventory',action='store_true');args=cli.parse_args()
+ symbols_repo=(args.symbols_repo or args.repo).resolve()
  if args.inventory:print(json.dumps(inventory(args.repo.resolve()),indent=2))
- if args.resource_inventory:print(json.dumps(resource_inventory(args.repo.resolve()),indent=2))
- if args.output:print('Generated',len(generate(args.repo.resolve(),args.output.resolve(),args.standalone)))
+ if args.resource_inventory:print(json.dumps(resource_inventory(symbols_repo),indent=2))
+ if args.output:print('Generated',len(generate(args.repo.resolve(),args.output.resolve(),args.standalone,symbols_repo)))
