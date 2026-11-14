@@ -5725,6 +5725,8 @@ tasks.named("extractBgmDetail") {
 
 // Original icon font is copied unchanged from the verified fixed v037 archive.
 tasks.named<Copy>("processResources") {
+    from("upstream-core/m4d/settings-item-placement.tsv") { into("settings-placement") }
+    from("upstream-core/m4d/settings-target-placement.tsv") { into("settings-placement") }
     from("upstream-slices/v037-shared-tabs-progress-closure/piliplus_custom_icons.ttf") { into("fonts") }
     from("upstream-slices/v037-player-runtime-resources/ic_pili_tv_play.png") { into("icons") }
 }
