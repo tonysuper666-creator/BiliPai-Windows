@@ -1,6 +1,7 @@
 --- a/full-navigation-settings/com/android/purebilibili/feature/settings/DesktopOriginalAnimationSettingsContent.kt
 +++ b/full-navigation-settings/com/android/purebilibili/feature/settings/DesktopOriginalAnimationSettingsContent.kt
-@@ -1,9 +1,11 @@
+@@ -1,9 +1,12 @@
++// Generated at build time: build/generated/full-navigation-settings/com/android/purebilibili/feature/settings/DesktopOriginalAnimationSettingsContent.kt + upstream-core/transition/patches/full-navigation-settings/com/android/purebilibili/feature/settings/DesktopOriginalAnimationSettingsContent.kt.patch
  package com.android.purebilibili.feature.settings
 +
 +import com.bilipai.desktop.plugins.asAndroidContext
@@ -12,7 +13,7 @@
  import androidx.compose.foundation.background
  import androidx.compose.foundation.lazy.LazyColumn
  import androidx.compose.foundation.lazy.rememberLazyListState
-@@ -84,17 +86,17 @@
+@@ -84,31 +87,28 @@
          when (cardMotionTier) {
              MotionTier.Reduced -> "更短延迟与更弱位移，优先稳定和性能"
              MotionTier.Normal -> "平衡性能与动效，适合大多数设备"
@@ -31,7 +32,56 @@
      val videoTransitionRealtimeBlurEnabled by DesktopOriginalFullNavigationSettings
          .getVideoTransitionRealtimeBlurEnabled(context)
          .collectAsState(initial = false)
-@@ -522,17 +524,17 @@
+     val liveSurfaceCardTransitionEnabled by DesktopOriginalFullNavigationSettings
+         .getLiveSurfaceCardTransitionEnabled(context)
+         .collectAsState(initial = false)
+-    val relatedVideoTransitionEnabled by DesktopOriginalFullNavigationSettings
+-        .getRelatedVideoTransitionEnabled(context)
+-        .collectAsState(initial = true)
+     val fullScreenSwipeBackEnabled by DesktopOriginalFullNavigationSettings
+         .getFullScreenSwipeBackEnabled(context)
+         .collectAsState(initial = false)
+     val effectiveEntranceSpec = rememberEffectiveEntranceMotionSpec()
+     // 开关开着、但有效参数被降级为不动画 → 系统减弱动效在生效。
+     val entranceDowngradedBySystem = uiEntranceAnimationEnabled && !effectiveEntranceSpec.animate
+     val sharedTransitionSpeedOptions = remember {
+         listOf(
+@@ -248,34 +248,16 @@
+                         )
+                         AppPreferenceDivider()
+                         AppSwitchPreference(
+                             icon = rememberSettingsSemanticIcon(SettingsIconRole.CARD_TRANSITION_ANIMATION),
+                             title = "过渡动画",
+                             subtitle = "封面和标题平滑过渡到详情页",
+                             checked = state.cardTransitionEnabled,
+                             onCheckedChange = { scope.launch { DesktopOriginalFullNavigationSettings.setCardTransitionEnabled(context, it) } },
+-                            iconTint = iOSTeal
+-                        )
+-                        AppPreferenceDivider()
+-                        AppSwitchPreference(
+-                            icon = rememberSettingsSemanticIcon(SettingsIconRole.RELATED_VIDEO_TRANSITION),
+-                            title = "相关推荐过渡动画",
+-                            subtitle = if (relatedVideoTransitionEnabled) {
+-                                "点击相关推荐时使用卡片变形过渡"
+-                            } else {
+-                                "点击相关推荐时使用默认页面过渡"
+-                            },
+-                            checked = relatedVideoTransitionEnabled,
+-                            onCheckedChange = { enabled ->
+-                                scope.launch {
+-                                    DesktopOriginalFullNavigationSettings.setRelatedVideoTransitionEnabled(context, enabled)
+-                                }
+-                            },
+-                            enabled = state.cardTransitionEnabled,
+                             iconTint = iOSTeal
+                         )
+                         AppPreferenceDivider()
+                         AppSwitchPreference(
+                             icon = rememberSettingsSemanticIcon(SettingsIconRole.LIVE_SURFACE_TRANSITION),
+                             title = "实时画面转场",
+                             subtitle = "用播放器当前画面做转场变形，不降低画质",
+                             checked = liveSurfaceCardTransitionEnabled,
+@@ -522,17 +504,17 @@
                          AppSwitchPreference(
                              icon = rememberSettingsSemanticIcon(SettingsIconRole.TOP_BAR_BLUR),
                              title = "骨架呼吸动画",

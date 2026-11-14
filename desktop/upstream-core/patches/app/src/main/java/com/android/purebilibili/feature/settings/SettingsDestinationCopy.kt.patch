@@ -1,0 +1,11 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/settings/SettingsDestinationCopy.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/settings/SettingsDestinationCopy.kt
+@@ -165,7 +165,7 @@
+         summary = "GitHub · Telegram 频道与群组",
+     )
+     SettingsSearchTarget.NEARBY_HANDOFF -> SettingsDestinationCopy(
+-        title = com.android.purebilibili.feature.nearby.NEARBY_TITLE,
++        title = "设备接力",
+         summary = "局域网配对、加密接力与已信任设备",
+     )
+ }

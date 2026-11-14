@@ -46,9 +46,12 @@ import androidx.compose.ui.unit.dp
 import java.util.concurrent.ConcurrentHashMap
 /** Exact original XML paths/viewports. Native list icon tint remains authoritative. */
 internal object DesktopSettingsSymbols {
-'''+''.join('const val '+n+'="'+n+'"\n' for n in names)+'''}
+'''+''.join('const val '+n+': Int = com.android.purebilibili.R.drawable.'+n+'\n' for n in names)+'''}
 internal object DesktopSettingsVectors {
  private val cache=ConcurrentHashMap<String,ImageVector>()
+ private val namesById=mapOf(
+'''+''.join('  com.android.purebilibili.R.drawable.'+n+' to "'+n+'",\n' for n in names)+''' )
+ @Composable fun vector(id:Int):ImageVector=vector(namesById[id] ?: error("Unknown original settings vector id: $id"))
  @Composable fun vector(name:String):ImageVector=remember(name){load(name)}
  fun load(name:String):ImageVector=cache.computeIfAbsent(name){build(it)}
  private fun build(name:String):ImageVector=when(name){
