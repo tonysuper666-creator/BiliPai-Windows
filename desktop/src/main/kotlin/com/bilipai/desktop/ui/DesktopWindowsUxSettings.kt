@@ -6,6 +6,17 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.Slider
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.foundation.layout.Row
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
+import com.bilipai.desktop.appearance.DesktopWindowsUxDetailsPanel
+import kotlin.math.roundToInt
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -21,18 +32,10 @@ import com.bilipai.desktop.ui.kit.DESKTOP_KIT_RADIUS_CONTROL_DP
 import com.bilipai.desktop.ui.kit.DesktopMenuRow
 import com.bilipai.desktop.ui.kit.desktopKitHairlineBorder
 
-/*
- * A row of the layout group is offered only while something honours its flag. The shell frame honours the rail flag (slice S1),
- * the Home feed wrappers honour the home flag (slice H1, DesktopHomeFeedLayout.kt) and the Home card menu, labels, right click and
- * hand cursor honour the card flag (slice H2, DesktopCardContextMenu.kt); nothing honours the player flag yet (the player leaf reads
- * it but resolves DESKTOP to LEGACY while no overlay exists), and the player flag in particular must not be set to DESKTOP before
- * the flip gate: an explicit DESKTOP key would switch the unaccepted overlay on the day it lands. So that row is shown, with the
- * stored value, but cannot be changed. The slice that adds the consumer of a flag turns its row on (S1 the rail, H1 the home feed
- * and H2 the cards, done; V4a the player layout together with DESKTOP_PLAYER_OVERLAY_AVAILABLE) and the source test that scans
- * for readers of the flags fails until it does.
- */
+// Controls are enabled only alongside their real consumers. Player selection and details
+// now feed the public Leaf's retained stage/dock; the default player layout remains LEGACY.
 private const val RAIL_MODE_HAS_CONSUMER = true
-private const val PLAYER_LAYOUT_HAS_CONSUMER = false
+private const val PLAYER_LAYOUT_HAS_CONSUMER = DESKTOP_PLAYER_OVERLAY_AVAILABLE
 private const val HOME_LAYOUT_HAS_CONSUMER = true
 private const val CARD_INTERACTIONS_HAS_CONSUMER = true
 
@@ -72,6 +75,22 @@ internal fun DesktopWindowsUxLayoutGroup() {
             DesktopWindowsUxPlayerLayout.DESKTOP to text.PLAYER_DESKTOP,
             DesktopWindowsUxPlayerLayout.LEGACY to text.PLAYER_LEGACY,
         ), enabled = PLAYER_LAYOUT_HAS_CONSUMER) { ux.submit(DesktopWindowsUxCommand.SetPlayerLayout(it)) }
+        DesktopWindowsSettingsChoice(text.DETAILS, settings.detailsPanel, listOf(
+            DesktopWindowsUxDetailsPanel.AUTO to text.DETAILS_AUTO,
+            DesktopWindowsUxDetailsPanel.OPEN to text.DETAILS_OPEN,
+            DesktopWindowsUxDetailsPanel.CLOSED to text.DETAILS_CLOSED,
+        )) { ux.submit(DesktopWindowsUxCommand.SetDetailsPanel(it)) }
+        // Keep drag previews local; commit only on release through the existing serialized store writer.
+        var width by remember(settings.detailsPanelWidthDp) { mutableStateOf((settings.detailsPanelWidthDp ?: 400).toFloat()) }
+        Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+            Text(text.DETAILS_WIDTH, Modifier.weight(1f), style = MaterialTheme.typography.bodyMedium)
+            Text(settings.detailsPanelWidthDp?.let { text.width(it) } ?: text.DETAILS_WIDTH_AUTO)
+            TextButton(onClick = { ux.submit(DesktopWindowsUxCommand.SetDetailsPanelWidth(null)) }) { Text(text.DETAILS_WIDTH_RESET) }
+        }
+        Slider(value = width, onValueChange = { width = it }, valueRange = 320f..560f,
+            onValueChangeFinished = { ux.submit(DesktopWindowsUxCommand.SetDetailsPanelWidth(width.roundToInt())) },
+            modifier = Modifier.fillMaxWidth().semantics { contentDescription = text.DETAILS_WIDTH })
+        Text(text.DETAILS_NOTE, style = MaterialTheme.typography.bodySmall)
         DesktopWindowsSettingsChoice(text.HOME, settings.homeLayout, listOf(
             DesktopWindowsUxHomeLayout.DESKTOP to text.HOME_DESKTOP,
             DesktopWindowsUxHomeLayout.CLASSIC to text.HOME_CLASSIC,

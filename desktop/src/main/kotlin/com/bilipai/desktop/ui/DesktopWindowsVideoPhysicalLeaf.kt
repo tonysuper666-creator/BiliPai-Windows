@@ -93,6 +93,29 @@ internal class DesktopWindowsVideoActions(
     val interaction: @Composable (DesktopWindowsVideoInteractionPresentation) -> Unit,
 )
 
+// K5 layout seam: the resource closure returns a render plan; the public leaf below owns panel state and calls the one DockRow.
+internal class DesktopWindowsVideoLeafPanelState(
+    val open: MutableState<Boolean>,
+    val tab: MutableState<DesktopWindowsVideoDetailsTab>,
+    val mounted: MutableState<Boolean>,
+)
+
+internal class DesktopWindowsVideoLeafRenderPlan(
+    val chromeVisible: Boolean,
+    val header: @Composable () -> Unit,
+    val viewport: @Composable (@Composable BoxScope.() -> Unit) -> Unit,
+    val controls: @Composable () -> Unit,
+    val status: @Composable () -> Unit,
+    val panel: @Composable (Modifier) -> Unit,
+    val afterLayout: @Composable () -> Unit,
+)
+
+internal class DesktopWindowsVideoLeafResources(
+    val owner: Any,
+    val current: () -> Boolean,
+    val content: @Composable (DesktopWindowsVideoLeafPanelState) -> DesktopWindowsVideoLeafRenderPlan,
+)
+
 /** Windows renderer over the installed original VM/owner/MPV. Native peer stays in Root; this leaf reports its viewport only. */
 @Composable internal fun DesktopWindowsVideoPhysicalLeaf(
     route: BiliPaiNavKey.VideoDetail,
@@ -104,7 +127,98 @@ internal class DesktopWindowsVideoActions(
     preferences: PlayerPreferences,
     preferencesChanged: (PlayerPreferences) -> Unit,
     actions: DesktopWindowsVideoActions,
+    resourceHost: @Composable () -> DesktopWindowsVideoLeafResources? = {
+        DesktopWindowsVideoPhysicalLeafResources(route, shell, active, presentationAlive,
+            fullscreen, pipActive, preferences, preferencesChanged, actions)
+    },
 ) {
+    val resources = resourceHost() ?: return
+    val settings by LocalDesktopWindowsUx.current.settings.collectAsState()
+    val detailsOpen = rememberSaveable(resources.owner) { mutableStateOf(false) }
+    val detailsTab = rememberSaveable(resources.owner, stateSaver = Saver<DesktopWindowsVideoDetailsTab, String>(
+        save = { it.name }, restore = { DesktopWindowsVideoDetailsTab.valueOf(it) },
+    )) { mutableStateOf(DesktopWindowsVideoDetailsTab.INTRODUCTION) }
+    val entryDecided = rememberSaveable(resources.owner) { mutableStateOf(false) }
+    val mounted = remember(resources.owner) { mutableStateOf(false) }
+    val panelState = remember(detailsOpen, detailsTab, mounted) {
+        DesktopWindowsVideoLeafPanelState(detailsOpen, detailsTab, mounted)
+    }
+    val latestCurrent = rememberUpdatedState(resources.current)
+    LaunchedEffect(resources.owner, route.commentRootRpid, route.commentTargetRpid) {
+        if (latestCurrent.value() && route.commentRootRpid > 0L) {
+            detailsTab.value = DesktopWindowsVideoDetailsTab.COMMENTS
+            detailsOpen.value = true
+        }
+    }
+    // Entry AUTO is decided once by DockRow. An explicit preference change is a new intent,
+    // while resize and cover/restore retain manual panel choices and the native stage slot.
+    val appliedPreference = rememberSaveable(resources.owner) { mutableStateOf(settings.detailsPanel.name) }
+    val density = LocalDensity.current.density
+    val clientWidthDp = (androidx.compose.ui.platform.LocalWindowInfo.current.containerSize.width / density).toInt()
+    LaunchedEffect(resources.owner, active, settings.detailsPanel, clientWidthDp) {
+        if (active && latestCurrent.value() && clientWidthDp > 0 && appliedPreference.value != settings.detailsPanel.name) {
+            detailsOpen.value = desktopPlayerPanelWanted(settings.detailsPanel, desktopPlayerPanelDefaultOpen(clientWidthDp))
+            entryDecided.value = true
+            appliedPreference.value = settings.detailsPanel.name
+        }
+    }
+    val plan = resources.content(panelState)
+    DesktopWindowsVideoDetailsDockRow(
+        owner = resources.owner, fullscreen = fullscreen, active = active, current = resources.current,
+        detailsOpen = detailsOpen.value, entryDecided = entryDecided.value,
+        entryWanted = { w -> desktopPlayerPanelWanted(settings.detailsPanel, desktopPlayerPanelDefaultOpen(w)) }, onEntryOpen = { detailsOpen.value = true },
+        onEntryDecided = { entryDecided.value = true }, userPanelWidthDp = settings.detailsPanelWidthDp,
+        onMounted = { if (mounted.value != it) mounted.value = it },
+    ) { dock ->
+        DesktopWindowsVideoPlayerStage(
+            layout = desktopPlayerEffectiveLayout(settings.playerLayout, DESKTOP_PLAYER_OVERLAY_AVAILABLE),
+            chromeVisible = plan.chromeVisible, header = plan.header, viewport = plan.viewport,
+            controls = plan.controls, status = plan.status,
+        )
+        if (dock.mounted) plan.panel(Modifier.width(dock.widthDp.dp).fillMaxHeight())
+    }
+    plan.afterLayout()
+}
+
+/** Keeps one viewport call site. DESKTOP draws chrome in the existing native foreground carrier;
+ * LEGACY reserves sibling rows. Neither branch replaces the stage or any playback owner. */
+@Composable internal fun RowScope.DesktopWindowsVideoPlayerStage(
+    layout: DesktopWindowsUxPlayerLayout, chromeVisible: Boolean,
+    header: @Composable () -> Unit,
+    viewport: @Composable (@Composable BoxScope.() -> Unit) -> Unit,
+    controls: @Composable () -> Unit, status: @Composable () -> Unit,
+) {
+    val legacy = layout == DesktopWindowsUxPlayerLayout.LEGACY
+    Column(Modifier.weight(1f).fillMaxHeight(), verticalArrangement = Arrangement.spacedBy(if (chromeVisible && legacy) 6.dp else 0.dp)) {
+        if (chromeVisible && legacy) header()
+        Box(Modifier.fillMaxWidth().weight(1f).background(Color.Black)) {
+            viewport {
+                if (chromeVisible && !legacy) {
+                    Box(Modifier.align(Alignment.TopCenter).fillMaxWidth().padding(12.dp)
+                        .desktopCommandHitRegion("desktop-player-header")) { header() }
+                    Box(Modifier.align(Alignment.BottomCenter).widthIn(max = 1200.dp).fillMaxWidth().padding(12.dp)
+                        .desktopCommandHitRegion("desktop-player-controls")) { controls() }
+                }
+            }
+        }
+        status()
+        if (chromeVisible && legacy) controls()
+    }
+}
+
+@Composable private fun DesktopWindowsVideoPhysicalLeafResources(
+    route: BiliPaiNavKey.VideoDetail,
+    shell: DesktopOriginalVideoShellOwner,
+    active: Boolean,
+    presentationAlive: Boolean,
+    fullscreen: Boolean,
+    pipActive: Boolean,
+    preferences: PlayerPreferences,
+    preferencesChanged: (PlayerPreferences) -> Unit,
+    actions: DesktopWindowsVideoActions,
+): DesktopWindowsVideoLeafResources? {
+    val windowsUxSettings by LocalDesktopWindowsUx.current.settings.collectAsState()
+    val legacyChrome = desktopPlayerEffectiveLayout(windowsUxSettings.playerLayout, DESKTOP_PLAYER_OVERLAY_AVAILABLE) == DesktopWindowsUxPlayerLayout.LEGACY
     val ready by shell.slot.factoryReady.collectAsState()
     LaunchedEffect(shell, ready, route) { if (ready && active) shell.slot.requireAssembly() }
     val owner by shell.slot.assemblies.collectAsState()
@@ -116,7 +230,7 @@ internal class DesktopWindowsVideoActions(
             LinearProgressIndicator(Modifier.fillMaxWidth())
             TextButton(onClick = actions.back) { Text("返回") }
         }
-        return
+        return null
     }
     val routeState = LocalDesktopOriginalRootVideoRouteState.current
     SideEffect { shell.publishVideoRouteState(assembly, routeState) }
@@ -1048,24 +1162,18 @@ internal class DesktopWindowsVideoActions(
         }
     }
 
+    return DesktopWindowsVideoLeafResources(assembly, ::current, content = { panelState ->
     // The original Nav entry may leave composition while a detail route covers
     // it. Preserve its panel intent through the entry's existing saveable owner.
-    var detailsOpen by rememberSaveable(assembly) { mutableStateOf(false) }
+    var detailsOpen by panelState.open
+    val detailsDockMounted by panelState.mounted
     val feedbackPlacementDiagnostic = System.getProperty("bilipai.validation.brandFeedbackPlacementInput") == "true"
     // Validation-only plain counters: no Compose state, listener, action or normal-run allocation.
     val detailsCallbackCounts = if (feedbackPlacementDiagnostic) remember(assembly, native.surface) { LongArray(2) } else null
-    var detailsTab by rememberSaveable(assembly, stateSaver = Saver<DesktopWindowsVideoDetailsTab, String>(
-        save = { it.name }, restore = { DesktopWindowsVideoDetailsTab.valueOf(it) },
-    )) { mutableStateOf(DesktopWindowsVideoDetailsTab.INTRODUCTION) }
-    LaunchedEffect(assembly, route.commentRootRpid, route.commentTargetRpid) {
-        if (current() && route.commentRootRpid > 0L) {
-            detailsTab = DesktopWindowsVideoDetailsTab.COMMENTS
-            detailsOpen = true
-        }
-    }
+    var detailsTab by panelState.tab
     val chromeHeld = DesktopWindowsFullscreenChromeInteraction(topHovered, topFocused)
         .held(nativePointerOnVideo, nativeKeyboardOnVideo) ||
-        barInteraction.held(nativePointerOnVideo, nativeKeyboardOnVideo) || detailsOpen ||
+        barInteraction.held(nativePointerOnVideo, nativeKeyboardOnVideo) || (detailsOpen && detailsDockMounted) ||
         showCollection || showPlaybackQueue || audioLanguageMenu != null || audioTrackMenu != null || interactionMode != null ||
         screenshotBusy || savedScreenshot?.isCurrent() == true
     val chromeCanAutoHide = desktopWindowsFullscreenChromeCanAutoHide(fullscreen, active && !pipActive,
@@ -1158,6 +1266,7 @@ internal class DesktopWindowsVideoActions(
             chrome.hideIfIdle(revision, latestChrome === chrome && latestChromeCanAutoHide && chromeCurrent())
         }
     }
+    var overlayControlsHeightPx by remember(assembly) { mutableStateOf(0) }
     val chromeVisible = !fullscreen || chrome.visible
     fun command(block: () -> Unit): Boolean {
         val accepted = assembly.native.current() ?: return false
@@ -1186,11 +1295,6 @@ internal class DesktopWindowsVideoActions(
             preferencesChanged(preferences.copy(speed = speed))
         }
     }
-    // V2 (spec 4.13 and 4.15): the player_layout flag is read here. DESKTOP has no overlay yet, so it resolves to LEGACY and the
-    // three pieces below render exactly as before. The controls binding holds the admitted actions of the bar and the strip.
-    val windowsUxSettings by LocalDesktopWindowsUx.current.settings.collectAsState()
-    val legacyChrome = desktopPlayerEffectiveLayout(windowsUxSettings.playerLayout, DESKTOP_PLAYER_OVERLAY_AVAILABLE) ==
-        DesktopWindowsUxPlayerLayout.LEGACY
     val controls = DesktopPlayerControlsBinding(
         current = ::current, command = ::command,
         togglePause = { native.togglePause() }, setMuted = { native.setMuted(it) }, setVolume = { native.setVolume(it) },
@@ -1200,13 +1304,9 @@ internal class DesktopWindowsVideoActions(
         goBack = { actions.back() }, enterPictureInPicture = { actions.pictureInPicture() },
         toggleFullscreen = { actions.fullscreen() }, speed = ::setSpeed,
     )
-    BoxWithConstraints(Modifier.fillMaxSize().padding(if (fullscreen) 0.dp else 8.dp)) {
-        // Keep one Row and one native slot through every width/fullscreen/panel change.
-        // A narrow window still reserves real sibling space: a heavyweight Canvas cannot be covered by a Compose sheet.
-        val detailsWidth = minOf(360.dp, maxWidth * .43f)
-        Row(Modifier.fillMaxSize(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            Column(Modifier.weight(1f).fillMaxHeight(), verticalArrangement = Arrangement.spacedBy(if (chromeVisible) 6.dp else 0.dp)) {
-                val legacyTopStrip: @Composable () -> Unit = { DesktopWindowsPlayerSurface(Modifier.fillMaxWidth()
+    DesktopWindowsVideoLeafRenderPlan(
+        chromeVisible = chromeVisible,
+        header = { DesktopWindowsPlayerSurface(Modifier.fillMaxWidth()
                     .desktopWindowsChromePointerInput(::observeChromePointer)
                     .onFocusChanged { topFocused = it.hasFocus }.focusGroup().hoverable(topInteractions)) {
                     Row(Modifier.fillMaxWidth().heightIn(min = 44.dp).padding(end = 12.dp), verticalAlignment = Alignment.CenterVertically) {
@@ -1216,10 +1316,10 @@ internal class DesktopWindowsVideoActions(
                         Text(success?.info?.title ?: readonlyInfo?.title ?: "视频", Modifier.weight(1f), style = MaterialTheme.typography.titleSmall,
                             maxLines = 1, overflow = TextOverflow.Ellipsis)
                     }
-                } }
-                if (chromeVisible && legacyChrome) legacyTopStrip()
+                } },
+        viewport = { desktopChrome ->
                 // One retained native slot; original fixed ratios letterbox the same viewport.
-                BoxWithConstraints(Modifier.fillMaxWidth().weight(1f).background(Color.Black)) {
+                BoxWithConstraints(Modifier.fillMaxSize().background(Color.Black)) {
                     val viewportLayout = resolveVideoViewportLayout(constraints.maxWidth, constraints.maxHeight, pictureAspectRatio)
                     val density = LocalDensity.current
                     val viewportWidth = with(density) { viewportLayout.width.toDp() }
@@ -1270,10 +1370,16 @@ internal class DesktopWindowsVideoActions(
                                         onPlayFromCover = ::playFromEntryCover,
                                     )
                                     actions.overlay()
+                                    desktopChrome()
                                     val subtitleSizes = resolveSubtitleTextSizeSpec(
                                         playerWidthDp = viewportWidth.value.toInt(), largeTextEnabled = subtitleLargeTextByUser)
                                     CompositionLocalProvider(LocalDesktopOriginalVideoSectionPlatform provides platforms.holder.section) {
                                         key(assembly.subtitleSaveableOwnerKey, success?.info?.bvid, success?.info?.cid) {
+                                            // Windowed upstream subtitles reserve only 32dp. Reserve the measured
+                                            // desktop controls here so the same upstream host stays above the overlay.
+                                            val reservedBottomPx = if (!legacyChrome && chromeVisible)
+                                                overlayControlsHeightPx + with(density) { 24.dp.roundToPx() } else 0
+                                            Box(Modifier.fillMaxSize().padding(bottom = with(density) { reservedBottomPx.toDp() })) {
                                             VideoSubtitleOverlayHost(
                                                 player = assembly.section, uiState = original,
                                                 bvid = success?.info?.bvid ?: route.bvid,
@@ -1285,11 +1391,12 @@ internal class DesktopWindowsVideoActions(
                                                 positionLocked = pictureSettings.subtitlePositionLocked,
                                                 isInPipMode = pipActive, isAudioOnly = state.audioOnly,
                                                 suppressSubtitleOverlay = !current(), isFullscreen = fullscreen,
-                                                // Windows chrome is a sibling outside this measured video viewport.
                                                 controlsVisible = false, endDrawerReservedWidth = 0.dp,
-                                                playerViewportSize = viewportSize, bottomControlsHeightPx = 0,
+                                                playerViewportSize = IntSize(viewportSize.width, (viewportSize.height - reservedBottomPx).coerceAtLeast(0)),
+                                                bottomControlsHeightPx = 0,
                                                 onVerticalOffsetCommitted = subtitlePositionWriter,
                                             )
+                                            }
                                         }
                                     }
                                     DesktopWindowsVideoInteractiveChoiceOverlay(assembly, interactiveChoicePanel, interactiveChoiceSource)
@@ -1324,10 +1431,8 @@ internal class DesktopWindowsVideoActions(
                         }
                     }
                 }
-                if (playback.recovering && playback.recoveryMessage != null)
-                    Text(playback.recoveryMessage.orEmpty(), Modifier.fillMaxWidth(), style = MaterialTheme.typography.bodySmall)
-                if (bootstrapError != null || playback.error != null) failureContent()
-                val legacyControlBar: @Composable () -> Unit = { DesktopWindowsVideoControlBar(
+        },
+        controls = { Box(Modifier.onSizeChanged { overlayControlsHeightPx = it.height }) { DesktopWindowsVideoControlBar(
                     state = state, sourceVersion = native.currentSourceSnapshot()?.sourceVersion ?: 0L,
                     enabled = current() && success != null, fullscreen = fullscreen, detailsOpen = detailsOpen,
                     onInteractionHoldChanged = { interaction ->
@@ -1410,11 +1515,14 @@ internal class DesktopWindowsVideoActions(
                                 assembly.playback.desktopSponsorPresentation.value.skip === skip })
                     },
                     enhancement = actions.enhancement,
-                ) }
-                if (chromeVisible && legacyChrome) legacyControlBar()
-            }
-            val detailsPanel: @Composable () -> Unit = { DesktopWindowsVideoDetailsPanel(
-                modifier = Modifier.width(detailsWidth).fillMaxHeight(), selectedTab = detailsTab,
+                ) } },
+        status = {
+                if (playback.recovering && playback.recoveryMessage != null)
+                    Text(playback.recoveryMessage.orEmpty(), Modifier.fillMaxWidth(), style = MaterialTheme.typography.bodySmall)
+                if (bootstrapError != null || playback.error != null) failureContent()
+        },
+        panel = { panelModifier -> DesktopWindowsVideoDetailsPanel(
+                modifier = panelModifier, selectedTab = detailsTab,
                 onTabChange = { detailsTab = it }, onClose = { if (current()) detailsOpen = false },
                 current = ::current,
                 loading = readonlyInfo == null && original is VideoPlaybackUiState.Loading && bootstrapError == null && playback.error == null,
@@ -1695,10 +1803,8 @@ internal class DesktopWindowsVideoActions(
                         }
                     } else Text("正在读取评论", style = MaterialTheme.typography.bodyMedium)
                 },
-            ) }
-            if (detailsOpen) detailsPanel()
-        }
-    }
+            ) },
+        afterLayout = {
 
     // V6 (spec 6.5 and 6.6): bind the shortcut router to this composition. Each effect is an admitted lambda of the leaf: the controls binding,
     // current(), shell.playback.* and actions.*; the router reaches neither the player nor the assembly.
@@ -1910,6 +2016,9 @@ internal class DesktopWindowsVideoActions(
         }
     }
     DesktopWindowsVideoCoinSection(engagementBinding)
+        },
+    )
+    })
 }
 
 @OptIn(androidx.compose.ui.ExperimentalComposeUiApi::class, androidx.compose.ui.InternalComposeUiApi::class)
