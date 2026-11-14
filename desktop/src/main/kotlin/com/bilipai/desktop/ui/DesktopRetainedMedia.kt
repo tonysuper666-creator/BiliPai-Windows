@@ -165,6 +165,12 @@ class DesktopRetainedMedia(parent: CoroutineScope, val player: MpvPlayer?, priva
 /** Always mounted by the shell; page disposal does not stop, detach ownership or close the live socket. */
 @Composable
 fun DesktopRetainedMediaEffects(memory: DesktopRetainedMedia, onActive: (Boolean) -> Unit) {
+    // The Shell's always-mounted player also serves original video/offline
+    // owners. The same native source retains its request when moved to PiP.
+    LaunchedEffect(memory.player) {
+        val player = memory.player ?: return@LaunchedEffect
+        DesktopPlaybackWakeBinding({ player.currentSourceSnapshot() != null }).observe(player.state)
+    }
     val latestActive by rememberUpdatedState(onActive)
     val versions = memory.pages.map { it.sourceVersion to it.opening }
     LaunchedEffect(memory, versions) {
