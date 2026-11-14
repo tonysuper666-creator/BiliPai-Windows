@@ -3,7 +3,8 @@
 The Home card producer (extract-upstream-home-full-card.py) calls apply_home_card once per emitted file, right after the
 recommendation badge layer, through one hook line (the v043_home_recommendation_badges pattern). The layer touches one generated
 file and nothing else, VideoCard.kt (the grid card of the Home feed; its ElegantVideoCard function), with seven exact-once
-replacements of slice H2 (EDITS), four of slice K3 (COVER_EDITS) and fourteen of slice K3b (LAYOUT_EDITS, both below):
+replacements of slice H2 (EDITS), four of slice K3 (COVER_EDITS), fourteen of slice K3b (LAYOUT_EDITS) and four of slice K3d
+(HOVER_EDITS, all below):
 
   * the two imports of the vendored dropdown menu become import aliases of the desktop-owned menu, so the call text of the card is
     the vendored call text (named arguments expanded, onDismissRequest, offset, and the ColumnScope trailing lambda):
@@ -40,6 +41,18 @@ renders the vendored card:
     the recommendation reason badge and the separate publish row are not shown, and the overflow button keeps its 32 dp target
     (desktopCardOverflowTarget of slice H2) at the end of the info block. No like count is shown, as in the vendored card.
 
+Slice K3d adds the hover of the card and its quick actions (spec 4 Home item 3, spec 7 video card, spec 8), four more
+exact-once edits in HOVER_EDITS, applied after all of the above, with the helpers in DesktopHomeCardFrame.kt:
+
+  * one import, desktopHomeCardHoverSurface;
+  * the shared state homeCardHover, declared once next to homeCoverFocus;
+  * the hover of the card root: while the flag is ON (homeCardThreeLine) the root takes desktopHomeCardHoverSurface (an 8 percent
+    primary wash on a base 8 dp wider than the card, no scale, no shadow); while it is OFF the root keeps the vendored call
+    adaptiveCardHoverEffect(shape = adaptiveHoverShape) unchanged;
+  * DesktopHomeCardQuickActions as the last child of the cover Box, in its top end corner: watch later calls the card's own
+    onWatchLater, more calls openDismissMenu with the more button as anchor when the card has a menu (hasOverflowMenu).
+Undoing only HOVER_EDITS gives the text of H2, K3 and K3b exactly.
+
 Not covered by this layer: the single-column display mode (AppWindowActionMenu), StoryVideoCard and DynamicCard. This is a
 desktop-owned layer: there is no upstream archive, no manifest and no pinned predecessor hash. Every anchor is counted on the text
 it receives and must occur exactly once, so a change of an earlier layer (the v041 status labels, the v043 recommendation badges,
@@ -60,6 +73,8 @@ UI = 'com.bilipai.desktop.ui.'
 WATCH_LATER_PLAIN = '稍后再看'
 UNFAVORITE_PLAIN = '取消收藏'
 DISMISS_PLAIN = '不感兴趣'
+# The accessible name of the quick "more" action of slice K3d; the overflow button under the title keeps "更多操作".
+QUICK_MORE_PLAIN = '更多'
 WATCH_LATER_ORIGINAL = '\U0001F550 ' + WATCH_LATER_PLAIN
 UNFAVORITE_ORIGINAL = '\U0001F494 ' + UNFAVORITE_PLAIN
 DISMISS_ORIGINAL_KOTLIN = '\\uD83D\\uDEAB ' + DISMISS_PLAIN  # backslash-u escapes, exactly as the generated Kotlin text has them
@@ -274,7 +289,55 @@ LAYOUT_EDITS = (
      '            publishTimeText = if (homeCardThreeLine) "" else publishTimeRowText,\n'
      '            emphasizePublishTime = emphasizePublishTime,\n'),
 )
-ALL_EDITS = EDITS + COVER_EDITS + LAYOUT_EDITS
+# Slice K3d: the hover of the card and its quick actions. Same rules as EDITS: each `before` occurs exactly once in the
+# text the layer receives (after EDITS, COVER_EDITS and LAYOUT_EDITS). The flag is read through homeCardThreeLine (K3b), and
+# the OFF branch of the root keeps the vendored hover expression verbatim.
+HOVER_EDITS = (
+    ('ux-card-hover-imports',
+     'import ' + UI + 'desktopHomeCoverFocusTarget\n',
+     'import ' + UI + 'desktopHomeCoverFocusTarget\n'
+     'import ' + UI + 'desktopHomeCardHoverSurface\n'),
+    ('ux-card-hover-state',
+     '    val homeCoverFocus = ' + UI + 'rememberDesktopHomeCoverFocus()\n',
+     '    val homeCoverFocus = ' + UI + 'rememberDesktopHomeCoverFocus()\n'
+     '    val homeCardHover = ' + UI + 'rememberDesktopHomeCardHover()\n'),
+    ('ux-card-hover-surface',
+     '            .adaptiveCardHoverEffect(shape = adaptiveHoverShape)\n',
+     '            .then(\n'
+     '                if (homeCardThreeLine) {\n'
+     '                    Modifier.desktopHomeCardHoverSurface(homeCardHover, cornerRadius = cardCornerRadius)\n'
+     '                } else {\n'
+     '                    Modifier.adaptiveCardHoverEffect(shape = adaptiveHoverShape)\n'
+     '                }\n'
+     '            )\n'),
+    ('ux-card-hover-quick-actions',
+     '            }\n'
+     '            }\n'
+     '\n'
+     '        }\n'
+     '        \n'
+     '        val infoSurfaceShape = remember(cardCornerRadius) {\n',
+     '            }\n'
+     '            }\n'
+     '            ' + UI + 'DesktopHomeCardQuickActions(\n'
+     '                state = homeCardHover,\n'
+     '                coverFocus = homeCoverFocus,\n'
+     '                onWatchLater = onWatchLater,\n'
+     '                onMore = if (hasOverflowMenu) {\n'
+     '                    { anchor -> openDismissMenu(anchor, null) }\n'
+     '                } else {\n'
+     '                    null\n'
+     '                },\n'
+     '                watchLaterLabel = "' + WATCH_LATER_PLAIN + '",\n'
+     '                moreLabel = "' + QUICK_MORE_PLAIN + '",\n'
+     '                modifier = Modifier.align(Alignment.TopEnd),\n'
+     '            )\n'
+     '\n'
+     '        }\n'
+     '        \n'
+     '        val infoSurfaceShape = remember(cardCornerRadius) {\n'),
+)
+ALL_EDITS = EDITS + COVER_EDITS + LAYOUT_EDITS + HOVER_EDITS
 
 # After the layer none of these vendored lines may remain in the file: the menu imports and the overflow box size line.
 GONE = (
@@ -287,6 +350,7 @@ INTRODUCED = ('DesktopCardContextMenu', 'DesktopCardContextMenuItem', 'desktopCa
               'desktopCardMenuLabel', 'desktopCardOverflowTarget')
 COVER_INTRODUCED = ('desktopHomeCoverFocusTarget', 'desktopHomeCoverFocusRing', 'rememberDesktopHomeCoverFocus', 'homeCoverFocus')
 LAYOUT_INTRODUCED = ('desktopCardInteractionsOn', 'homeCardThreeLine', 'threeLineTime', 'home_video_owner_time')
+HOVER_INTRODUCED = ('desktopHomeCardHoverSurface', 'rememberDesktopHomeCardHover', 'homeCardHover', 'DesktopHomeCardQuickActions')
 
 
 def sha(text):
@@ -309,7 +373,7 @@ def apply_home_card(repo, name, text, audits):
     """The text of one emitted file with the Home card edits, or the text itself for any file the layer does not own."""
     if name != CARD:
         return text
-    for introduced in INTRODUCED + COVER_INTRODUCED + LAYOUT_INTRODUCED:
+    for introduced in INTRODUCED + COVER_INTRODUCED + LAYOUT_INTRODUCED + HOVER_INTRODUCED:
         need(introduced not in text, 'Home card layer already applied or name taken: %s in %s' % (introduced, name))
     received = text
     for label, before, after in ALL_EDITS:

@@ -47,6 +47,15 @@ def apply_edits(text, edits):
     return text
 
 
+def undo_edits(text, edits):
+    """Undo the edits last first, each of whose replacement must occur exactly once."""
+    for label, before, after in reversed(edits):
+        if text.count(after) != 1:
+            raise AssertionError("%s replacement occurs %d times" % (label, text.count(after)))
+        text = text.replace(after, before, 1)
+    return text
+
+
 class LayoutProducerTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -61,6 +70,8 @@ class LayoutProducerTest(unittest.TestCase):
         cls.layered, cls.plain = cls.layered_bytes.decode("utf-8"), cls.plain_bytes.decode("utf-8")
         # The text the K3b edits receive: the H2 and K3 edits applied, nothing else.
         cls.received = apply_edits(cls.plain, layer.EDITS + layer.COVER_EDITS)
+        # The text the K3b edits leave: the produced card with only the K3d hover edits (test_ux_home_card_hover.py) undone.
+        cls.k3b = undo_edits(cls.layered, layer.HOVER_EDITS)
 
     @classmethod
     def tearDownClass(cls):
@@ -68,7 +79,7 @@ class LayoutProducerTest(unittest.TestCase):
 
     def test_the_edits_are_the_fourteen_of_the_slice_in_order(self):
         self.assertEqual(LABELS, [label for label, _b, _a in layer.LAYOUT_EDITS])
-        self.assertEqual(layer.EDITS + layer.COVER_EDITS + layer.LAYOUT_EDITS, layer.ALL_EDITS)
+        self.assertEqual(layer.EDITS + layer.COVER_EDITS + layer.LAYOUT_EDITS + layer.HOVER_EDITS, layer.ALL_EDITS)
         for label, before, after in layer.LAYOUT_EDITS:
             self.assertNotEqual(before, after, label)
             self.assertTrue(before.endswith("\n") and after.endswith("\n"), label)
@@ -81,7 +92,7 @@ class LayoutProducerTest(unittest.TestCase):
             self.assertEqual(0, text.count(after), label)
             text = text.replace(before, after, 1)
             self.assertEqual(1, self.layered.count(after), label)
-        self.assertEqual(self.layered, text)
+        self.assertEqual(self.k3b, text)
 
     def test_forward_and_inverse_are_byte_identical(self):
         audits = []
@@ -89,8 +100,8 @@ class LayoutProducerTest(unittest.TestCase):
         self.assertEqual(self.layered_bytes, produced.encode("utf-8"))
         self.assertEqual(self.plain_bytes, layer.reverse(layer.CARD, produced).encode("utf-8"))
         self.assertEqual([label for label, _b, _a in layer.ALL_EDITS], [row["id"] for row in audits])
-        # Undoing only the K3b edits, last first, gives back the text the H2 and K3 edits alone produce, byte for byte.
-        partial = produced
+        # Undoing only the K3d edits and then the K3b edits, last first, gives back the text the H2 and K3 edits alone produce, byte for byte.
+        partial = undo_edits(produced, layer.HOVER_EDITS)
         for label, before, after in reversed(layer.LAYOUT_EDITS):
             self.assertEqual(1, partial.count(after), label)
             partial = partial.replace(after, before, 1)

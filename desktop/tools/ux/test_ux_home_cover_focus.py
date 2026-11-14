@@ -79,6 +79,14 @@ class _Generated(unittest.TestCase):
     def tearDownClass(cls):
         cls.temp.cleanup()
 
+    def without_hover(self):
+        """The produced card with only the K3d hover edits undone, last first: the text the H2, K3 and K3b edits alone produce."""
+        text = self.produced
+        for label, before, after in reversed(layer.HOVER_EDITS):
+            self.assertEqual(1, text.count(after), label)
+            text = text.replace(after, before, 1)
+        return text
+
     def chain_of(self, start_marker):
         """The modifier chain text of the Box whose chain contains start_marker: from the Box( to its matching )."""
         index = self.produced.index(start_marker)
@@ -89,7 +97,7 @@ class _Generated(unittest.TestCase):
 class CoverEditsTest(_Generated):
     def test_the_four_cover_edits_follow_the_seven_card_edits(self):
         self.assertEqual(COVER_IDS, [label for label, _b, _a in layer.COVER_EDITS])
-        self.assertEqual(layer.EDITS + layer.COVER_EDITS + layer.LAYOUT_EDITS, layer.ALL_EDITS)
+        self.assertEqual(layer.EDITS + layer.COVER_EDITS + layer.LAYOUT_EDITS + layer.HOVER_EDITS, layer.ALL_EDITS)
         for label, before, after in layer.COVER_EDITS:
             self.assertNotEqual(before, after, label)
             self.assertTrue(before.endswith("\n") and after.endswith("\n"), label)
@@ -104,12 +112,13 @@ class CoverEditsTest(_Generated):
             self.assertEqual(1, self.produced.count(after), label)
 
     def test_the_produced_card_is_the_received_text_with_the_cover_edits(self):
-        # The K3 edits, then the K3b layout edits (test_ux_home_card_layout.py) that follow them in ALL_EDITS.
+        # The K3 edits, then the K3b layout edits (test_ux_home_card_layout.py) that follow them in ALL_EDITS; the K3d hover edits
+        # (test_ux_home_card_hover.py) come last and are undone before the comparison.
         expected = self.received
         for label, before, after in layer.COVER_EDITS + layer.LAYOUT_EDITS:
             self.assertEqual(1, expected.count(before), label)
             expected = expected.replace(before, after, 1)
-        self.assertEqual(expected, self.produced)
+        self.assertEqual(expected, self.without_hover())
 
     def test_reverse_gives_back_the_plain_card_byte_for_byte(self):
         self.assertEqual(self.plain.encode("utf-8"), layer.reverse(layer.CARD, self.produced).encode("utf-8"))
@@ -169,7 +178,10 @@ class CoverWiringTest(_Generated):
     def test_the_shared_state_is_declared_once_before_the_root_box_after_what_the_calls_use(self):
         declaration = "    val homeCoverFocus = com.bilipai.desktop.ui.rememberDesktopHomeCoverFocus()\n"
         self.assertEqual(1, self.produced.count(declaration))
-        self.assertEqual(3, len(re.findall(r"\bhomeCoverFocus\b", self.produced)))  # the declaration, the target, the ring
+        self.assertEqual(3, len(re.findall(r"\bhomeCoverFocus\b", self.without_hover())))  # the declaration, the target, the ring
+        # Slice K3d adds one read: the quick actions show while the cover has the focus.
+        self.assertEqual(4, len(re.findall(r"\bhomeCoverFocus\b", self.produced)))
+        self.assertEqual(1, self.produced.count("                coverFocus = homeCoverFocus,\n"))
         at = self.produced.index(declaration)
         root = self.produced.index(".adaptiveCardHoverEffect(shape = adaptiveHoverShape)")
         self.assertLess(at, root)
