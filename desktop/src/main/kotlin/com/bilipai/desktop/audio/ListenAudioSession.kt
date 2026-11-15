@@ -92,6 +92,11 @@ internal class ListenAudioSession(
     init {
         if (sessionIsCurrent()) player.initializePreferencesBeforeFirstSource(preferences.copy(audioOnly = true))
         scope.launch {
+            com.bilipai.desktop.ui.DesktopPlaybackWakeBinding(
+                { ownedPlaybackSourceVersion != null }, audioOnly = true,
+            ).observe(player.state)
+        }
+        scope.launch {
             repository.sessionEpochFlow.first { it != sessionEpoch }
             close()
         }

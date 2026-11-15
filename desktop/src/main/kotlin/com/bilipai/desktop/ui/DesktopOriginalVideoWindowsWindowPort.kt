@@ -4,6 +4,7 @@ import androidx.compose.ui.unit.IntRect
 import com.android.purebilibili.core.util.AppDisplayContext
 import com.android.purebilibili.feature.video.screen.VideoDetailSystemBarsApplySpec
 import com.bilipai.desktop.player.PictureInPictureController
+import kotlinx.coroutines.*
 import java.awt.EventQueue
 import java.awt.Frame
 import java.awt.Window
@@ -91,11 +92,12 @@ internal class DesktopOriginalVideoWindowsWindowPort(
     override fun acquireKeepAwake(enabled: Boolean): AutoCloseable {
         if (!enabled) return AutoCloseable {} // Original explicitly declines keeping the screen awake.
         val subject = capture()
-        val lease = try { DesktopWindowsVideoWakeLease.acquire(subject::owns) { diagnostic(it.message ?: it.javaClass.simpleName) } }
-        catch (failure: IllegalStateException) {
-            diagnostic(failure.message ?: "Windows keep-awake unavailable")
-            return AutoCloseable {} // Explicit failed Windows capability, never advertised as accepted.
-        }
+        val binding = DesktopPlaybackWakeBinding(subject::owns,
+            diagnostic = { diagnostic(it.message ?: it.javaClass.simpleName) })
+        val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
+        binding.update(owner.section.nativePlayer.state.value)
+        scope.launch { binding.observe(owner.section.nativePlayer.state) }
+        val lease = AutoCloseable { binding.close(); scope.cancel() }
         val token = sequence.incrementAndGet()
         wake[token] = lease
         if (!subject.owns()) wake.remove(token)?.close()
