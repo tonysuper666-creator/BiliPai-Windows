@@ -219,6 +219,16 @@ def main():
  t=adapt(t,'''            onRelatedVideoClick = onRelatedVideoClick,
             animateLayout = animateVideoDetailLayout,''','''            onRelatedVideoClick = { bvid, cid -> onRelatedVideoClick(bvid, cid, null) },
             animateLayout = animateVideoDetailLayout,''','Existing complete original info renderer callback consumes CID; rich recommended callback retains cover separately')
+ pager_call='''tabSwipeModifier = Modifier.verticalPriorityHorizontalPagerSwipe(
+                    state = pagerState,
+                    enabled = shouldEnableVideoContentHorizontalPagerSwipe(
+                        currentPage = pagerState.currentPage,
+                        commentPageIndex = 1,
+                        isPagerScrollInProgress = pagerState.isScrollInProgress,
+                    ),
+                ),'''
+ assert t.count(pager_call)==1 and sha(t[t.index(pager_call):t.index(pager_call)+len(pager_call)])=='74b06e97cadd121d68b96d7dc1d192779e0db09799fad6b5fe335daa897c364d'
+ t=adapt(t,pager_call,pager_call.replace('                    ),\n                ),','                    ),\n                    forceVerticalPriority = liquidGlassEnabled,\n                ),'),'Preserve vertical priority for the liquid-glass tab bar')
  t=t.replace('com.android.purebilibili.core.ui.animation.MaybeDissolvableVideoCard(','com.bilipai.desktop.ui.DesktopReplyDissolvableContainer(')
  emit('feature/video/screen/DesktopOriginalVideoContentSection.kt',t,rel,'complete-original-content-groups-body-all-panels-reference-sole-commenttab-platform-adapt')
  rel='core/store/SettingsManager.kt';t=read(rel);manager=t[t.index('object SettingsManager {')+len('object SettingsManager {'):t.rfind('}')]

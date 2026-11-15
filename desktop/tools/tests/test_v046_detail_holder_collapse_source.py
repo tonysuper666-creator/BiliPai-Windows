@@ -52,6 +52,11 @@ ENTRY_IDS = (
     'v046-collapse-height-shared', 'post046-shared-collapse-detail-layouts',
 )
 KINDS = {'carried', 'partial', 'already-carried', 'not-needed', 'deferred'}
+CURRENT_PAGER_DECISION = {
+    'kind': 'partial',
+    'reason': ('The tab bar carries forceVerticalPriority = liquidGlassEnabled; the content pager remains deferred '
+               'because touch gesture arbitration and glass rail fling/spec still need work.'),
+}
 
 
 def load(name, label):
@@ -195,6 +200,10 @@ class DetailHolderCollapseSourceTests(unittest.TestCase):
         self.assertEqual({'partial'}, {kinds['v046-collapse-height-shared'], kinds['post046-shared-collapse-detail-layouts']})
         self.assertEqual(['deferred', 'deferred', 'deferred'], [kinds[e] for e in (
             'v030-detail-chrome-hidden-paused-collapsed', 'v042-compact-comment-autopause', 'v042-glass-pager-vertical-priority')])
+        self.assertEqual('deferred', kinds['v042-glass-pager-vertical-priority'])  # Historical archive decision.
+        self.assertEqual('partial', CURRENT_PAGER_DECISION['kind'])
+        self.assertIn('forceVerticalPriority = liquidGlassEnabled', CURRENT_PAGER_DECISION['reason'])
+        self.assertIn('content pager remains deferred', CURRENT_PAGER_DECISION['reason'])
         self.assertEqual('already-carried', kinds['v030-detail-glass-gated-chrome-blur'])
         self.assertEqual('not-needed', kinds['v042-detail-cover-169-skeleton'])
         self.assertEqual(3, len(manifest['followUps']))
@@ -467,9 +476,16 @@ class DetailHolderCollapseSourceTests(unittest.TestCase):
         self.assertEqual(1, len(re.findall(r'isCompactFoldableCoverWindow &&\s+useOfficialInlinePortraitDetailExperience &&', policy)))
         self.assertEqual(1, len(re.findall(r'\): Boolean = compactForCommentTab\s', scroll)))
         self.assertEqual(1, len(re.findall(r'val playerCollapsedForAutoPause =\s+isPlayerCollapsed \|\| skipGesturePlayerCollapse', holder)))
-        # v042-glass-pager-vertical-priority: the pager gesture still lacks the v0.4.6 Miuix branch and its parameter
+        # The compiled core gesture has the Miuix branch; only the tab bar carries the current partial decision.
         pager = lf_of(REPO / 'app/src/main/java/com/android/purebilibili/core/ui/common/VerticalPriorityPagerGesture.kt')
-        self.assertEqual(0, pager.count('forceVerticalPriority'))
+        self.assertEqual(2, pager.count('forceVerticalPriority'))
+        self.assertIn('if (!forceVerticalPriority && LocalAppUiStyle.current == AppUiStyle.MIUIX)', pager)
+        self.assertEqual(1, len(re.findall(r'tabSwipeModifier = Modifier\.verticalPriorityHorizontalPagerSwipe\(\s*'
+                                          r'state = pagerState,\s*enabled = shouldEnableVideoContentHorizontalPagerSwipe\('
+                                          r'[^)]*\),\s*forceVerticalPriority = liquidGlassEnabled,\s*\)', content)))
+        self.assertEqual(1, content.count('forceVerticalPriority = liquidGlassEnabled'))
+        self.assertEqual(0, content.count('forceVerticalPriority = true'))
+        self.assertEqual(0, content.count('dragInteractionSource'))
         # v046-collapse-height-shared: the phone collapse state is still the pinned v0.2.5 file
         collapse_state = lf_of(SOURCE / collapse_path)
         self.assertEqual(0, collapse_state.count('reconcileLayout'))
