@@ -18,6 +18,12 @@ abstract class Context(val dataDir: File) {
     open val applicationInfo: android.content.pm.ApplicationInfo get() = android.content.pm.ApplicationInfo(dataDir.path, null)
     open val packageManager: android.content.pm.PackageManager = android.content.pm.PackageManager()
     open val packageName: String get() = "com.bilipai.desktop"
+    /** Android app-ops can report unavailable capabilities; there is no Android service registry. */
+    open fun getSystemService(name: String): Any = when (name) {
+        APP_OPS_SERVICE -> android.app.AppOpsManager.desktop
+        else -> throw com.bilipai.desktop.compat.UnsupportedDesktopCapability(
+            "Context.getSystemService($name)", "this desktop Context has no such service")
+    }
     /** Android activities have no desktop launcher. Never silently treat a request as successful. */
     open fun startActivity(intent: Intent): Unit =
         throw com.bilipai.desktop.compat.UnsupportedDesktopCapability(
@@ -30,7 +36,10 @@ abstract class Context(val dataDir: File) {
     open val resources: android.content.res.Resources get() = android.content.res.Resources.system
     fun getString(resId: Int): String = resources.getString(resId)
     fun getString(resId: Int, vararg formatArgs: Any?): String = resources.getString(resId, *formatArgs)
-    companion object { const val MODE_PRIVATE = 0 }
+    companion object {
+        const val MODE_PRIVATE = 0
+        const val APP_OPS_SERVICE = "appops"
+    }
 }
 
 /** Local files only (what the desktop file pickers hand out). Other schemes fail loudly instead of reading as "no data". */

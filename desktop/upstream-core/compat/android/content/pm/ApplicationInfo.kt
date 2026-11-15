@@ -5,4 +5,7 @@ package android.content.pm
  * [sourceDir] is the installed APK path on Android; the desktop has no APK, so it is null and callers must handle that
  * (the upstream APK-digest code already does: no source means no digest).
  */
-class ApplicationInfo(@JvmField val dataDir: String, @JvmField val sourceDir: String?)
+class ApplicationInfo(@JvmField val dataDir: String, @JvmField val sourceDir: String?) {
+    /** No Android package UID exists on desktop. This invalid identity must never grant app-ops. */
+    @JvmField val uid: Int = -1
+}
