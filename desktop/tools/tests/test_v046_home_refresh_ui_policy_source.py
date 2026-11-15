@@ -54,6 +54,29 @@ STATIC_ROOTS = (
     'desktop/src',
     'desktop/upstream-slices',
 )
+# The producer reads repositoryRoot, the pinned legacy read point, whose original lacks the new symbols. The desktop main
+# compile reads both trees: prepareUpstreamSources copies non-migrated direct rows from the legacy tree, while the migrated
+# modules (design-system, core-data, ...) and migratedAppPaths compile from the live checkout (mergedRepositoryRoot).
+# feature/home is a migrated area (M4b), so CANONICAL compiles from the live tree and the producer's build-dir copy at
+# RELATIVE is dropped. The live original may change with every upstream merge, so no byte equality is required of it;
+# it must declare the new symbols once, nothing else either tree compiles may declare them, and no producer run may
+# touch either original.
+PROBE = 'app/src/main/java/com/android/purebilibili/feature/home/HomeScreen.kt'
+LIVE_ROOTS = ('desktop/src', 'desktop/upstream-slices')
+HOME = 'feature/home/HomeRefreshUiPolicy.kt'
+
+
+def source_root():
+    return legacy_read_point(REPO, PROBE)
+
+
+def scanned_roots():
+    roots = [REPO / relative for relative in STATIC_ROOTS]
+    return roots + [source_root() / relative for relative in STATIC_ROOTS if relative not in LIVE_ROOTS]
+
+
+def originals():
+    return {str(root): (root / CANONICAL).read_bytes() for root in (REPO, source_root())}
 
 
 def sha(raw):
@@ -98,7 +121,7 @@ def run_cli(output, seed):
                        PYTHONDONTWRITEBYTECODE='1', PYTHONUTF8='1')
     done = subprocess.run(
         [sys.executable, '-X', 'utf8', '-B', str(REPO / 'desktop' / PRODUCER),
-         '--repo', str(legacy_read_point(REPO, 'app/src/main/java/com/android/purebilibili/feature/home/HomeScreen.kt')),
+         '--repo', str(source_root()),
          '--output', str(output)],
         cwd=str(REPO / 'desktop'), env=environment, capture_output=True, check=False)
     if done.returncode != 0:
@@ -132,6 +155,7 @@ class V046HomeRefreshUiPolicySourceTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.archive = {p.name: p.read_bytes() for p in (REPO / policy.ARCHIVE).iterdir() if p.is_file()}
+        cls.originals = originals()
         cls.temporary = tempfile.TemporaryDirectory(prefix='bp-hru-')
         cls.root = Path(cls.temporary.name)
         cls.stdout = run_cli(cls.root / 'main', 0)
@@ -168,7 +192,11 @@ class V046HomeRefreshUiPolicySourceTest(unittest.TestCase):
         self.assertIn('original Home outputs', self.stdout)
         manifest = json.loads(self.archive['manifest.json'])
         self.assertEqual([row['filename'] for row in manifest['files']], list(policy.MAIN_FILES))
-        vendored = (REPO / CANONICAL).read_bytes()
+        vendored = (source_root() / CANONICAL).read_bytes()
+        policy.emit(REPO, self.root / 'untouched-emit')
+        run_cli(self.root / 'untouched-cli', 3)
+        self.assertEqual(2, len(self.originals))
+        self.assertEqual(self.originals, originals())
         for row in manifest['files']:
             with self.subTest(name=row['filename']):
                 archived = self.archive[row['filename']]
@@ -295,6 +323,9 @@ class V046HomeRefreshUiPolicySourceTest(unittest.TestCase):
         prepared = prepare_block(build)
         self.assertEqual(1, build.count(line), line)
         self.assertEqual(1, prepared.count(line), line)
+        self.assertEqual(1, build.count('val repositoryRoot = file(gradle.extra["bilipai.legacyRoot"] as String)'))
+        self.assertTrue(prepared.startswith(
+            'val prepareUpstreamSources by tasks.registering(Sync::class) {\n    from(repositoryRoot) {\n'))
         model = gate.parse_gradle(build)
         self.assertEqual(1, model.sync_excludes.count(CANONICAL))
         for literal in ('inputs.file("tools/v046_home_refresh_ui_policy.py")',
@@ -313,13 +344,35 @@ class V046HomeRefreshUiPolicySourceTest(unittest.TestCase):
         self.assertEqual('direct', listed[0]['mode'])
         discovery = (TOOLS / 'extract-discovery-platform.py').read_text(encoding='utf-8')
         self.assertEqual(1, discovery.count('BASE + "feature/home/HomeRefreshUiPolicy.kt": "direct"'))
-        vendored = (REPO / CANONICAL).read_text(encoding='utf-8')
+        vendored = (source_root() / CANONICAL).read_text(encoding='utf-8')
         for token in NEW_SYMBOLS:
             self.assertNotIn(token, vendored, token)
         static = []
-        for relative in STATIC_ROOTS:
-            static.extend(declaration_hits(REPO / relative))
-        self.assertEqual([policy.ARCHIVE + '/HomeRefreshUiPolicy.kt'], static)
+        for root in scanned_roots():
+            static.extend(declaration_hits(root))
+        self.assertEqual(sorted([CANONICAL, policy.ARCHIVE + '/HomeRefreshUiPolicy.kt']), sorted(static))
+        # why the live original, not the producer copy, is the compiled definer
+        self.assertIn('"feature/home/"', next(row for row in build.splitlines()
+                                              if row.startswith('val migratedAppFeatureAreas = listOf(')))
+        self.assertEqual(1, build.count('val migratedAppPaths: Set<String> = migratedAppCorePaths + '))
+        self.assertEqual(1, build.count('val migratedUpstreamRelativePaths = migratedWholeModulePaths + migratedAppPaths + '))
+        self.assertEqual(1, build.count('val appJavaRoot = mergedRepositoryRoot.resolve("app/src/main/java")'))
+        self.assertEqual(1, build.count('    kotlin.srcDir(appJavaRoot)\n'))
+        for name in ('appCoreDesktopOwned', 'appCoreLaterSteps'):
+            start = build.index('val ' + name + ': Map<String, String> = mapOf(')
+            self.assertNotIn('"feature/', build[start:build.index('\n)\n', start)], name)
+        self.assertEqual(1, build.count('path.startsWith(buildDirectoryPath) && !path.startsWith(patchedDirectoryPath) && '
+                                        'upstreamIdentity(element.file) in migratedUpstreamRelativePaths'))
+        held = []
+        for directory in ('m4b', 'data', 'm4c'):
+            table = REPO / 'desktop/upstream-core' / directory / 'later-steps.tsv'
+            rows = table.read_text(encoding='utf-8').splitlines() if table.is_file() else []
+            held += [row.split('\t', 1)[0] for row in rows if row.strip() and not row.startswith('#')]
+        self.assertIn('val appFeatureListDirectories = listOf("upstream-core/m4b", "upstream-core/data", "upstream-core/m4c")',
+                      build)
+        self.assertNotIn(HOME, held)
+        self.assertFalse((REPO / 'desktop/upstream-core/patches' / (CANONICAL + '.patch')).exists())
+        self.assertFalse((REPO / 'desktop/upstream-core/replacements' / RELATIVE).exists())
         self.assertIn(policy.ARCHIVE, self.catalog['buildInputRoots'])
         self.assertEqual(1, self.catalog['buildInputRoots'].count(policy.ARCHIVE))
         rows = [row for row in self.catalog['inputs'] if row['localPath'].startswith(policy.ARCHIVE + '/')]
