@@ -15,6 +15,7 @@ import androidx.compose.runtime.tooling.LocalInspectionTables
 import androidx.compose.ui.ImageComposeScene
 import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.semantics.SemanticsNode
+import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.semantics.getOrNull
 import androidx.compose.ui.unit.Density
 import androidx.lifecycle.Lifecycle
@@ -24,6 +25,7 @@ import com.android.purebilibili.core.theme.AppUiStyle
 import com.android.purebilibili.feature.settings.AppThemeMode
 import com.android.purebilibili.feature.settings.PlaybackSettingItem
 import com.android.purebilibili.feature.settings.SettingsItemAnchor
+import com.android.purebilibili.feature.settings.SettingsRootCategory
 import com.android.purebilibili.feature.settings.settingsItemDirectory
 import com.bilipai.desktop.appearance.DesktopAppearanceTheme
 import com.bilipai.desktop.appearance.DesktopThemeSettings
@@ -33,7 +35,7 @@ import com.bilipai.desktop.plugins.DesktopPluginContext
 import com.bilipai.desktop.plugins.DesktopPluginStore
 import com.bilipai.desktop.plugins.DesktopVideoEnhancementConfiguration
 import com.bilipai.desktop.ui.DesktopOriginalPlayerSettingsContext
-import com.bilipai.desktop.ui.DesktopWindowsPlaybackSettings
+import com.bilipai.desktop.ui.DesktopPlaybackRightPaneContent
 import com.bilipai.desktop.ui.DesktopWindowsVideoEnhancementUiBinding
 import com.bilipai.desktop.ui.LocalDesktopDetailForeground
 import com.bilipai.desktop.ui.LocalDesktopOriginalPlayerSettingsContext
@@ -57,15 +59,14 @@ import org.junit.jupiter.api.Test
  * It is excluded from coverage. Lazy rows are visited by scrolling the actual pane.
  */
 class DesktopPlaybackPaneCoverageTest {
-    private val playbackItems: List<PlaybackSettingItem>
-        get() {
-            // Use the published destination: a future item without a placement row
-            // remains visible at runtime and must not silently escape coverage here.
-            val published = desktopSettingsItemDirectory.associateBy { it.settingId }
-            return settingsItemDirectory.filter {
-                published[it.settingId]?.category == com.android.purebilibili.feature.settings.SettingsRootCategory.PLAYBACK_QUALITY
-            }
+    private fun playbackItems(upstream: List<PlaybackSettingItem> = settingsItemDirectory): List<PlaybackSettingItem> {
+        // Use the published destination: a future item without a placement row
+        // remains visible at runtime and must not silently escape coverage here.
+        val published = buildDesktopSettingsItemDirectory(upstream).associateBy { it.settingId }
+        return upstream.filter {
+            published[it.settingId]?.category == SettingsRootCategory.PLAYBACK_QUALITY
         }
+    }
 
     private fun requireCoverage(directory: List<PlaybackSettingItem>, rendered: Set<String>) {
         val expected = directory.map { it.settingId }.toSet()
@@ -106,34 +107,50 @@ class DesktopPlaybackPaneCoverageTest {
                     systemLanguageTags = listOf("en"),
                 ) {
                     Box {
-                        DesktopWindowsPlaybackSettings(bindings, onBack = {})
-                        SettingsItemAnchor(witness) { Text("inspection witness") }
+                        DesktopPlaybackRightPaneContent(bindings, onBack = {})
+                        SettingsItemAnchor(witness) { Text("playback.coverage_text_decoy") }
                     }
                 }
             }
         }
         fun render() { repeat(4) { nanos += 30_000_000L; scene.render(nanos).close() } }
-        // The real anchor retains its settingId as a LaunchedEffect key. Inspect only
-        // anchor subtrees, never arbitrary strings elsewhere in the pane or the directory.
-        fun retainedStrings(data: CompositionData): List<String> = data.compositionGroups.flatMap { group ->
-            group.data.filterIsInstance<String>().toList() + retainedStrings(group)
-        }
+        // Read only key2 in this anchor's own LaunchedEffect(request?.token, settingId).
+        // Its direct remember slots retain the key; never inspect content or nested anchors.
         fun anchors(data: CompositionData): Set<String> = data.compositionGroups.flatMap { group ->
-            if (group.sourceInfo?.startsWith("C(SettingsItemAnchor)") == true) retainedStrings(group)
-            else anchors(group).toList()
+            if (group.sourceInfo?.startsWith("C(SettingsItemAnchor)") == true) {
+                val effect = group.compositionGroups.single { it.sourceInfo?.startsWith("C(LaunchedEffect)") == true }
+                val ids = effect.compositionGroups.flatMap { it.data.filterIsInstance<String>().toList() }
+                assertEquals(1, ids.size, "Each SettingsItemAnchor must expose exactly its own settingId key")
+                ids + anchors(group)
+            } else anchors(group).toList()
         }.toSet()
         fun nodes(node: SemanticsNode): List<SemanticsNode> = listOf(node) + node.children.flatMap(::nodes)
         try {
             render()
             val found = mutableSetOf<String>()
-            repeat(80) {
+            var bottomStable = false
+            var previous = emptySet<String>()
+            var scrollAttempts = 0
+            while (!bottomStable) {
                 tables.forEach { found += anchors(it) }
-                val scrolls = scene.semanticsOwners.flatMap { nodes(it.unmergedRootSemanticsNode) }
-                    .mapNotNull { it.config.getOrNull(SemanticsActions.ScrollBy)?.action }
-                scrolls.forEach { scroll -> scroll(0f, 650f) }
+                val scrollNodes = scene.semanticsOwners.flatMap { nodes(it.unmergedRootSemanticsNode) }
+                    .filter { it.config.getOrNull(SemanticsProperties.VerticalScrollAxisRange) != null }
+                assertTrue(scrollNodes.isNotEmpty(), "Right pane must expose its vertical scroll range")
+                val atBottom = scrollNodes.all { node ->
+                    val range = node.config.getOrNull(SemanticsProperties.VerticalScrollAxisRange)!!
+                    range.value() >= range.maxValue()
+                }
+                bottomStable = atBottom && previous == found
+                previous = found.toSet()
+                if (!atBottom) scrollNodes.forEach { node ->
+                    val scroll = node.config.getOrNull(SemanticsActions.ScrollBy)?.action
+                    checkNotNull(scroll) { "Scrollable pane has no ScrollBy action" }(0f, 650f)
+                }
+                assertTrue(++scrollAttempts <= 1000, "Right pane never reached a stable bottom after $scrollAttempts scroll attempts")
                 render()
             }
             assertTrue(witness in found, "Runtime observer did not see the real SettingsItemAnchor witness; coverage cannot pass vacuously")
+            assertTrue("playback.coverage_text_decoy" !in found, "Anchor content text must not count as settingId")
             return found - witness
         } finally {
             scene.close()
@@ -146,14 +163,17 @@ class DesktopPlaybackPaneCoverageTest {
     }
 
     @Test fun everyAvailablePlaybackDirectoryItemHasAnAnchorInTheRenderedRightPane() {
-        assertTrue(playbackItems.isNotEmpty(), "Placement must select playback entries")
-        requireCoverage(playbackItems, renderedIds())
+        assertTrue(playbackItems().isNotEmpty(), "Placement must select playback entries")
+        requireCoverage(playbackItems(), renderedIds())
     }
 
     @Test fun aDirectoryOnlyItemIsReportedAlongsideAnyOtherMissingIds() {
         val actual = renderedIds()
-        val fake = playbackItems.first().copy(settingId = "playback.coverage_directory_only", title = "Directory-only coverage witness")
-        val injectedDirectory = playbackItems + fake
+        val fake = settingsItemDirectory.first { it.page == SettingsRootCategory.FULLSCREEN_GESTURE }
+            .copy(settingId = "playback.coverage_directory_only", title = "Directory-only coverage witness")
+        assertTrue(fake.settingId !in desktopSettingsItemPlacement, "Witness must have no placement row")
+        val injectedDirectory = playbackItems(settingsItemDirectory + fake)
+        assertEquals(fake, injectedDirectory.single { it.settingId == fake.settingId }, "New upstream entries must survive canonical placement into playback")
         val failure = assertFailsWith<AssertionError> { requireCoverage(injectedDirectory, actual) }
         val missing = (injectedDirectory.map { it.settingId }.toSet() - actual).sorted()
         assertTrue(fake.settingId in missing)

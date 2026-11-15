@@ -120,7 +120,7 @@ internal fun DesktopOriginalPlaybackSettingsRootHost(
         }
         CompositionLocalProvider(LocalDesktopOriginalPlayerSettingsContext provides context) {
             key(context) {
-                DesktopWindowsPlaybackSettings(bindings, onBack = ownedBack)
+                DesktopPlaybackRightPaneContent(bindings, onBack = ownedBack)
             }
         }
     } else {
@@ -135,6 +135,15 @@ internal fun DesktopOriginalPlaybackSettingsRootHost(
             }
         }
     }
+}
+
+/** The single content boundary used by the mounted right pane and its composition coverage gate. */
+@Composable
+internal fun DesktopPlaybackRightPaneContent(
+    bindings: DesktopOriginalPlaybackSettingsBindings,
+    onBack: () -> Unit,
+) {
+    DesktopWindowsPlaybackSettings(bindings, onBack)
 }
 
 /** Detail is an original value class; repeated equal destinations still own distinct jobs. */
