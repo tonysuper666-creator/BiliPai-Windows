@@ -333,8 +333,51 @@ def generate_ui(repo,output,original,shared,emit,changes):
                         sendDraftSession, sendDraftReplyRpid, sentDraft
                     )
                 )
+                val completedReplyTarget = if (current.composerDrafts.sessionId == sendDraftSession) {
+                    null
+                } else {
+                    current.replyTarget
+                }
 
                 // [新增] 启动评论反诈检测（后台协程，不阻塞 UI）
+''')
+    # A late success must not clear the reply target of a newer composer session that was
+    # opened while this request was in flight; the same session still clears its own target.
+    body=replace_once(body,'''                            replyTarget = null,
+                            replyCount = current.replyCount + 1
+                        )
+''','''                            replyTarget = completedReplyTarget,
+                            replyCount = current.replyCount + 1
+                        )
+''')
+    body=replace_once(body,'''                            replyTarget = null
+                        )
+                        // 重置并重新加载
+''','''                            replyTarget = completedReplyTarget
+                        )
+                        // 重置并重新加载
+''')
+    body=replace_once(body,'''                    _commentState.value = current.copy(
+                        isSending = false,
+                        sendError = null,
+                        replyTarget = null
+                    )
+                }
+''','''                    _commentState.value = current.copy(
+                        isSending = false,
+                        sendError = null,
+                        replyTarget = completedReplyTarget
+                    )
+                }
+''')
+    body=replace_once(body,'''                        replyTarget = null,
+                        replyCount = current.replyCount + 1
+                    )
+                }
+''','''                        replyTarget = completedReplyTarget,
+                        replyCount = current.replyCount + 1
+                    )
+                }
 ''')
     body=replace_once(body,'        _commentState.value = CommentUiState(\n            currentMid = requests.currentMid()\n        )\n','        _commentState.value = CommentUiState(\n            currentMid = requests.currentMid(),\n            composerDrafts = _commentState.value.composerDrafts.reset()\n        )\n')
     body=replace_once(body,'            replyCount = expectedReplyCount.coerceAtLeast(0)\n        )\n','            replyCount = expectedReplyCount.coerceAtLeast(0),\n            composerDrafts = _commentState.value.composerDrafts.reset()\n        )\n')
