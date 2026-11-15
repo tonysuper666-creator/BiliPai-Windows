@@ -87,6 +87,28 @@ def windows_bangumi_buffering_playback_toggle_ui(source, output):
  assert inverse==source,'complete PGC buffering playback toggle inverse'
  return s,edits
 
+def windows_bangumi_introduction_panel_ui(source, output):
+ # Upstream BangumiPlayerContent: the title opens the introduction panel in place of the area below
+ # the player; the tab pager, intro list and episode row states stay hoisted so 收起 returns to them.
+ if not output.endswith('/ui/player/DesktopOriginalBangumiPlayerContent.kt'):
+  return source,[]
+ edits=[dict(label='panel visibility is saved per season and the list states are hoisted',before='    val isCourse = detail.seasonType == 10\n',after='    val isCourse = detail.seasonType == 10\n    var showDetailPanel by rememberSaveable(detail.seasonId) { mutableStateOf(false) }\n    val introductionListState = rememberLazyListState()\n    val episodeRowState = rememberLazyListState()\n'),
+  dict(label='the title opens the panel unless the season is a course',before='                AppText(\n                    text = detail.title,\n                    style = MaterialTheme.typography.titleLarge,\n',after='                AppText(\n                    text = detail.title,\n                    modifier = Modifier.clickable(enabled = !isCourse) { showDetailPanel = true },\n                    style = MaterialTheme.typography.titleLarge,\n'),
+  dict(label='the panel replaces the background and tab column while dialogs stay mounted',before='    Box(modifier = Modifier.fillMaxSize()) {\n        Box(\n            modifier = Modifier\n                .fillMaxSize()\n                .layerBackdrop(selectionBackdrop)\n',after='    Box(modifier = Modifier.fillMaxSize()) {\n        if (showDetailPanel) {\n            com.bilipai.desktop.ui.DesktopBangumiIntroductionPanel(\n                detail = detail,\n                onDismiss = { showDetailPanel = false },\n                modifier = Modifier.fillMaxSize()\n            )\n        } else {\n        Box(\n            modifier = Modifier\n                .fillMaxSize()\n                .layerBackdrop(selectionBackdrop)\n'),
+  dict(label='the else branch closes right after the tab column',before='            }\n        }\n    }\n\n    if (showFollowStatusDialog) {\n',after='            }\n        }\n    }\n        }\n\n    if (showFollowStatusDialog) {\n'),
+  dict(label='the intro list keeps its scroll position across the panel',before='                0 -> LazyColumn(\n                    modifier = Modifier.fillMaxSize(),\n',after='                0 -> LazyColumn(\n                    state = introductionListState,\n                    modifier = Modifier.fillMaxSize(),\n'),
+  dict(label='the episode row keeps its scroll position across the panel',before='                // 普通剧集列表\n                item {\n                    LazyRow(\n',after='                // 普通剧集列表\n                item {\n                    LazyRow(\n                        state = episodeRowState,\n')]
+ s=source
+ for edit in edits:
+  assert s.count(edit['before'])==1,edit['label']
+  s=s.replace(edit['before'],edit['after'],1)
+ inverse=s
+ for edit in reversed(edits):
+  assert inverse.count(edit['after'])==1,edit['label']+' inverse'
+  inverse=inverse.replace(edit['after'],edit['before'],1)
+ assert inverse==source,'complete PGC introduction panel inverse'
+ return s,edits
+
 def main():
  parser=argparse.ArgumentParser();parser.add_argument('--repo',type=Path,required=True);parser.add_argument('--output',type=Path,required=True);a=parser.parse_args()
  records=[]
@@ -121,6 +143,8 @@ def main():
   body=apply_retry_ui(a.repo,r['output'],body,a.output)
   body,buffering_edits=windows_bangumi_buffering_playback_toggle_ui(body,r['output'])
   windows_edits.extend(buffering_edits)
+  body,intro_edits=windows_bangumi_introduction_panel_ui(body,r['output'])
+  windows_edits.extend(intro_edits)
   write(a.output,r['output'],body);records.append(dict(source=r['originalPath'],output=r['output'],wholeBody=True,edits=len(r['edits']),originalSha256LF=sha(raw),generatedSha256LF=sha(body),windowsAdaptations=windows_edits))
  from v046_comment_list import emit_bangumi_panel
  emit_bangumi_panel(a.repo,a.output)
