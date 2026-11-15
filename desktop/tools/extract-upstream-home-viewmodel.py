@@ -6,7 +6,7 @@ from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
 from desktop_paths import long_path
 import argparse,hashlib,json,importlib.util
-from v029_home_load import home_vm_delta, sources as home_load_sources
+from v029_home_load import Delta, home_vm_delta, sources as home_load_sources
 
 SOURCE_PINS={'app/src/main/java/com/android/purebilibili/feature/home/HomeViewModel.kt': 'acfeb63539acaf710a4070f59220a1585a38fd1e034d6a7a56a82970998d4352', 'app/src/main/java/com/android/purebilibili/core/util/EasterEggs.kt': '1a4758cc65806db893da7942433a4ba44fd2b91c1396bf1653dbdcd59dc6827f', 'app/src/main/java/com/android/purebilibili/feature/home/TodayWatchRefreshPolicy.kt': '14aed865e65aa2a8f79db3760abd9931b36c5b719676eb577241601cd90be454', 'app/src/main/java/com/android/purebilibili/feature/home/HomeFollowFeedMappingPolicy.kt': '45dc3e2eb12e82a5dc2d0fec4bf82a03154444fd4519f6b2256c98f19ab2d630', 'app/src/main/java/com/android/purebilibili/feature/plugin/BiliPaiFeedFilterPlugin.kt': '10c8ec1f6ae455fc6e488908c948a8e424080faa3c772788194dcdd3bd2adff3', 'app/src/main/java/com/android/purebilibili/feature/message/MessageCenterPolicy.kt': 'b341edc17ccbe4d802341635279bc98e7cd308c067d96ab2f4e549b175703605'}
 BASE='app/src/main/java/com/android/purebilibili/'
@@ -35,6 +35,104 @@ def owned_today_watch_feedback_delta(vm):
  vm=vm.replace('        ) }) throw CancellationException("Home entry retired")\n','        )\n',1)
  return vm
 
+
+def owned_follow_rebase_delta(vm, audits=None):
+ """Rebase both follow replacement paths on removals made during this request.
+
+ The request keeps the original immutable list, not a second feed/cache owner.
+ The existing entry, account and caller admission still surrounds every reducer.
+ """
+ d=Delta(vm)
+ d.change('        val followScope = com.android.purebilibili.data.repository.DynamicFeedScope.HOME_FOLLOW\n', '''        val desktopFollowRequestVideos = _uiState.value.categoryStates.getValue(HomeCategory.FOLLOW).videos
+        val desktopFollowIncremental = incrementalTimelineRefreshEnabled
+        fun desktopRebaseFollowVideos(incoming: List<VideoItem>, current: List<VideoItem>): List<VideoItem> {
+            if (current === desktopFollowRequestVideos) return incoming
+            val currentKeys = current.mapTo(mutableSetOf(), ::videoItemKey)
+            val removedKeys = desktopFollowRequestVideos.mapTo(mutableSetOf(), ::videoItemKey) - currentKeys
+            return incoming.filterNot { videoItemKey(it) in removedKeys }
+        }
+
+        val followScope = com.android.purebilibili.data.repository.DynamicFeedScope.HOME_FOLLOW
+''')
+ d.change('                !isLoadMore && incrementalTimelineRefreshEnabled\n', '                !isLoadMore && desktopFollowIncremental\n')
+ d.change('                    incrementalRefreshEnabled = incrementalTimelineRefreshEnabled,\n', '                    incrementalRefreshEnabled = desktopFollowIncremental,\n')
+ d.change('''                    updateCategoryState(HomeCategory.FOLLOW) { oldState ->
+                        oldState.copy(
+                            videos = fullVideos.toImmutableList(),''', '''                    updateCategoryState(HomeCategory.FOLLOW) { oldState ->
+                        val rebasedVideos = desktopRebaseFollowVideos(fullVideos, oldState.videos)
+                        oldState.copy(
+                            videos = rebasedVideos.toImmutableList(),''')
+ d.change('error = if (fullVideos.isEmpty())', 'error = if (rebasedVideos.isEmpty())')
+ d.change('''            updateCategoryState(HomeCategory.FOLLOW) { oldState ->
+                val oldSize = oldState.videos.size''', '''            updateCategoryState(HomeCategory.FOLLOW) { oldState ->
+                val rebasedVideos = desktopRebaseFollowVideos(videos, oldState.videos)
+                val oldSize = oldState.videos.size''')
+ d.change('videos.any { newVid ->', 'rebasedVideos.any { newVid ->')
+ d.change('val canPrepend = (usedBaseline || (!isLoadMore && incrementalTimelineRefreshEnabled))', 'val canPrepend = (usedBaseline || (!isLoadMore && desktopFollowIncremental))')
+ # Each anchor is unique to follow; recommend already uses incomingVideos.
+ d.change('appendDistinctByKey(oldState.videos, videos, ::videoItemKey)', 'appendDistinctByKey(oldState.videos, rebasedVideos, ::videoItemKey)')
+ d.change('prependDistinctByKey(oldState.videos, videos, ::videoItemKey)', 'prependDistinctByKey(oldState.videos, rebasedVideos, ::videoItemKey)')
+ d.change('else -> videos.toImmutableList()', 'else -> rebasedVideos.toImmutableList()')
+ return d.done(audits, 'DesktopOriginalHomeViewModel.kt')
+
+
+def owned_today_watch_build_dispatch_delta(vm, audits=None):
+ """Capture mutable owner inputs before suspension; compute only on Default.
+
+ The original plugin's buildRecommendations consumes only this request. Stores,
+ state, cache and generation checks stay on the original VM context.
+ """
+ d=Delta(vm)
+ d.change('''        fun buildResult(candidates: List<VideoItem>): RecommendationResult {
+            return recommendationPlugin.buildRecommendations(
+                RecommendationRequest(''', '''        suspend fun buildResult(candidates: List<VideoItem>): RecommendationResult {
+            val request = RecommendationRequest(''')
+ d.change('                    historyVideos = historySample,', '                    historyVideos = historySample.toList(),')
+ d.change('                    candidateVideos = candidates,', '                    candidateVideos = candidates.toList(),')
+ d.change('''                )
+            )
+        }
+
+        val localResult = buildResult(recommendVideos)''', '''                )
+            val result = withContext(environment.todayWatchComputeDispatcher) {
+                recommendationPlugin.buildRecommendations(request)
+            }
+            currentCoroutineContext().ensureActive()
+            ensureOwned()
+            return result
+        }
+
+        val localResult = buildResult(recommendVideos)''')
+ anchor='''                _uiState.value = _uiState.value.copy(
+                    todayWatchPlan = buildResult(mergedCandidates).toTodayWatchPlan(),'''
+ # The cache and fresh expanded branches have distinct return labels.
+ assert d.body.count(anchor)==2
+ # Change the full cache branch to keep each anchor unique, then the remaining fresh branch.
+ cached='''                    todayWatchPlan = buildResult(mergedCandidates).toTodayWatchPlan(),
+                    todayWatchError = null
+                )
+            }
+            return
+'''
+ d.change(cached, '''                    todayWatchPlan = expandedBuild.toTodayWatchPlan(),
+                    todayWatchError = null
+                )
+            }
+            return
+''')
+ d.change('''            ) {
+                _uiState.value = _uiState.value.copy(
+                    todayWatchPlan = expandedBuild.toTodayWatchPlan(),''', '''            ) {
+                val expandedBuild = buildResult(mergedCandidates)
+                if (!shouldApplyTodayWatchBuildResult(generation, todayWatchBuildGeneration)) return
+                _uiState.value = _uiState.value.copy(
+                    todayWatchPlan = expandedBuild.toTodayWatchPlan(),''')
+ d.change(anchor, '''                val expandedBuild = buildResult(mergedCandidates)
+                if (!shouldApplyTodayWatchBuildResult(generation, todayWatchBuildGeneration)) return@onSuccess
+                _uiState.value = _uiState.value.copy(
+                    todayWatchPlan = expandedBuild.toTodayWatchPlan(),''')
+ return d.done(audits, 'DesktopOriginalHomeViewModel.kt')
+
 def generate(repo,output,standalone=False,test_output=None):
  repo=Path(repo);output=Path(output)
  from v046_account_scoped_requests import validate_outputs as validate_account_scoped_outputs
@@ -55,11 +153,15 @@ def generate(repo,output,standalone=False,test_output=None):
  assert vm.count(visibility)==1
  vm=vm.replace(visibility,'internal fun RecommendationResult.toTodayWatchPlan')
  vm=owned_today_watch_feedback_delta(vm)
+ follow_today_audits=[]
+ vm=owned_follow_rebase_delta(vm,follow_today_audits)
+ vm=owned_today_watch_build_dispatch_delta(vm,follow_today_audits)
  home_load_audits=[]
  vm=home_vm_delta(repo,vm,home_load_audits)
  from desktop_refresh_adaptation import bind_refresh_launch
  vm=bind_refresh_launch(vm)
  write(output/spec['target'],vm)
+ write(output/'home-follow-today-adaptations.json',json.dumps(dict(audits=follow_today_audits),ensure_ascii=False,indent=2)+'\n')
  write(output/'home-load-v029-adaptations.json',json.dumps(dict(upstreamCommit='a4b77f894d0a2dd26c0b9fc144b8adb88ac05480',audits=home_load_audits),ensure_ascii=False,indent=2)+'\n')
  if test_output is not None:
   original_test=home_load_sources(repo)['app/src/test/java/com/android/purebilibili/feature/home/HomeLoadSequencePolicyTest.kt']
