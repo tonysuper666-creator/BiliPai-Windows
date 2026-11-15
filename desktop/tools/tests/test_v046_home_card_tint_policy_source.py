@@ -17,6 +17,14 @@ TOOLS = REPO / 'desktop/tools'
 sys.path.insert(0, str(TOOLS))
 import check_slice_symbol_closure as gate
 import v046_home_card_tint_policy as policy
+from legacy_read_point import legacy_read_point
+
+SOURCE = None
+
+
+def setUpModule():
+    global SOURCE
+    SOURCE = legacy_read_point(REPO, policy.ARCHIVE + '/manifest.json')
 import v025_source_paths as v025
 
 spec = importlib.util.spec_from_file_location('sync_upstream_home_card_tint_policy', TOOLS / 'sync-upstream.py')
@@ -112,7 +120,7 @@ def run_cli(output, seed):
                        PYTHONDONTWRITEBYTECODE='1', PYTHONUTF8='1')
     done = subprocess.run(
         [sys.executable, '-X', 'utf8', '-B', str(REPO / 'desktop' / PRODUCER),
-         '--repo', str(REPO), '--output', str(output)],
+         '--repo', str(SOURCE), '--output', str(output)],
         cwd=str(REPO / 'desktop'), env=environment, capture_output=True, check=False)
     if done.returncode != 0:
         raise RuntimeError(done.stderr.decode('utf-8', 'replace')[-4000:])
@@ -187,7 +195,7 @@ class V046HomeCardTintPolicySourceTest(unittest.TestCase):
         self.assertNotEqual(vendored, self.archive[TINT])
 
     def test_the_vendored_copy_is_the_old_v025_file_and_the_new_members_are_not_in_it(self):
-        vendored = (REPO / CANONICAL).read_bytes()
+        vendored = (SOURCE / CANONICAL).read_bytes()
         self.assertEqual(V025_TINT_SHA256, sha(vendored.replace(b'\r\n', b'\n')))
         self.assertEqual(V025_TINT_BLOB, hashlib.sha1(b'blob ' + str(len(vendored)).encode() + b'\0' + vendored).hexdigest())
         text = vendored.decode('utf-8')
@@ -198,7 +206,7 @@ class V046HomeCardTintPolicySourceTest(unittest.TestCase):
         canonical = json.loads((TOOLS / 'v025-canonical-sources.json').read_text(encoding='utf-8'))
         entry = canonical['paths'][CANONICAL]
         self.assertEqual(V025_TINT_SHA256, entry['legacySha256'])
-        self.assertEqual(V025_TINT_SHA256, v025.reviewed_sha256(REPO, entry))
+        self.assertEqual(V025_TINT_SHA256, v025.reviewed_sha256(SOURCE, entry))
         self.assertEqual(DIRECT_TINT_SHA256, entry['sha256'])
         self.assertEqual(DIRECT_TINT_BLOB, entry['blob'])
         # v0.4.6 is a strict superset: every top-level name of the old copy is still declared by the archive file
@@ -209,7 +217,7 @@ class V046HomeCardTintPolicySourceTest(unittest.TestCase):
         self.assertEqual({'resolveWallpaperGlassAlpha', 'LocalHomeCardScrolling', 'LocalHomeCardTransitionRunning'},
                          {name for _vis, _kind, name in set(new_decls) - set(old_decls)})
         # the readability file is new to the tree: no vendored copy and no other declaration of its names
-        self.assertFalse((REPO / READABILITY_PATH).exists())
+        self.assertFalse((SOURCE / READABILITY_PATH).exists())
         sources = json.loads((REPO / 'desktop/upstream-sources.json').read_text(encoding='utf-8'))
         self.assertEqual([], [row for row in sources['sources'] if row['path'] == READABILITY_PATH])
 
@@ -251,7 +259,7 @@ class V046HomeCardTintPolicySourceTest(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, 'overlaps'):
                 policy.validate_outputs(REPO, REPO)
             with self.assertRaisesRegex(ValueError, 'overlaps'):
-                page.generate(REPO, nested)
+                page.generate(SOURCE, nested)
             self.assertFalse(nested.exists())
             self.assertEqual(before, {p.name: p.read_bytes() for p in (REPO / policy.ARCHIVE).iterdir() if p.is_file()})
         finally:
@@ -397,14 +405,14 @@ class V046HomeCardTintPolicySourceTest(unittest.TestCase):
         self.assertIn(CANONICAL, full_card.DIRECT)
         self.assertNotIn(CANONICAL, full_card.EXTRACTED)
         self.assertNotIn(CANONICAL, full_card.ADAPTED)
-        rows = {row['path']: row for row in full_card.inventory(REPO)}
+        rows = {row['path']: row for row in full_card.inventory(SOURCE)}
         self.assertEqual('direct', rows[CANONICAL]['mode'])
         self.assertEqual(V025_TINT_SHA256, rows[CANONICAL]['sha256'])
         # the shared Sync no longer copies it, so production must never emit a second copy from the full-card side
         producer = (TOOLS / 'extract-upstream-home-full-card.py').read_text(encoding='utf-8')
         self.assertEqual(1, producer.count("if path not in DIRECT or standalone:write(out,"))
         with tempfile.TemporaryDirectory(prefix='bp-htp-full-') as tmp:
-            full_card.generate(REPO, Path(tmp))
+            full_card.generate(SOURCE, Path(tmp))
             written = {p.name for p in Path(tmp).rglob('*.kt')}
             self.assertNotIn(TINT, written)
             self.assertNotIn(READABILITY, written)
@@ -498,3 +506,27 @@ class V046HomeCardTintPolicySourceTest(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+class ProtectedReadPointsTests(unittest.TestCase):
+    def test_both_archive_copies_and_real_cli_are_protected(self):
+        live = REPO / policy.ARCHIVE
+        legacy = SOURCE / policy.ARCHIVE
+        self.assertNotEqual(live.resolve(), legacy.resolve())
+        self.assertEqual(1, len(policy.protected_archives(REPO)))
+        with self.assertRaisesRegex(ValueError, 'Output overlaps original home card tint policy inputs'):
+            policy.validate_outputs(SOURCE, live / 'child')
+        for target in (live / 'child', live, REPO / 'desktop', legacy / 'child', legacy,
+                       SOURCE / 'desktop', SOURCE, REPO):
+            with self.subTest(target=target), self.assertRaisesRegex(ValueError, 'Output overlaps original home card tint policy inputs'):
+                policy.validate_outputs(SOURCE, target)
+        with tempfile.TemporaryDirectory() as temp:
+            policy.validate_outputs(SOURCE, Path(temp) / 'out', None,
+                                   REPO / 'desktop/build/generated/home-page')
+        child = live / 'child'
+        self.assertFalse(child.exists())
+        done = subprocess.run([sys.executable, '-X', 'utf8', '-B', str(TOOLS / 'extract-upstream-home-page.py')] +
+                              ['--repo', str(SOURCE), '--output', str(child)], cwd=REPO / 'desktop', capture_output=True, text=True)
+        self.assertNotEqual(done.returncode, 0, done.stdout)
+        self.assertIn('Output overlaps original home card tint policy inputs', done.stderr)
+        self.assertFalse(child.exists())
