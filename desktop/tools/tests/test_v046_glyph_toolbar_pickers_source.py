@@ -18,6 +18,14 @@ TOOLS = REPO / 'desktop/tools'
 sys.path.insert(0, str(TOOLS))
 import check_slice_symbol_closure as gate
 import v046_glyph_toolbar_pickers as glyph
+from legacy_read_point import legacy_read_point
+
+SOURCE = None
+
+
+def setUpModule():
+    global SOURCE
+    SOURCE = legacy_read_point(REPO, glyph.ARCHIVE + '/manifest.json')
 
 spec = importlib.util.spec_from_file_location('sync_upstream_glyph_toolbar_pickers', TOOLS / 'sync-upstream.py')
 sync = importlib.util.module_from_spec(spec)
@@ -127,7 +135,7 @@ def run_cli(output, seed):
                        PYTHONDONTWRITEBYTECODE='1', PYTHONUTF8='1')
     done = subprocess.run(
         [sys.executable, '-X', 'utf8', '-B', str(REPO / 'desktop' / PRODUCER),
-         '--repo', str(REPO), '--output', str(output)],
+         '--repo', str(SOURCE), '--output', str(output)],
         cwd=str(REPO / 'desktop'), env=environment, capture_output=True, check=False)
     if done.returncode != 0:
         raise RuntimeError(done.stderr.decode('utf-8', 'replace')[-4000:])
@@ -370,7 +378,7 @@ class V046GlyphToolbarPickersSourceTest(unittest.TestCase):
         # The glyph style stays public and composable; the two bridge functions stay internal.
         self.assertIn('@Composable\n@ReadOnlyComposable\nfun appIconGlyphTextStyle(): TextStyle =', adapted)
         # v0.4.6 only adds the glyph function and one import to the vendored v0.2.5 file.
-        vendored = (REPO / glyph.UPSTREAM_PATHS[glyph.ADAPTED]).read_text(encoding='utf-8').replace('\r\n', '\n')
+        vendored = (SOURCE / glyph.UPSTREAM_PATHS[glyph.ADAPTED]).read_text(encoding='utf-8').replace('\r\n', '\n')
         block_start = original.index('/**\n * Shared text style with Android font padding turned off')
         block_end = original.index('/** Resolves the content color')
         self.assertEqual(vendored, original[:block_start].replace(glyph.THEME_IMPORT, '', 1) + original[block_end:])
@@ -421,7 +429,7 @@ class V046GlyphToolbarPickersSourceTest(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, 'overlaps'):
                 glyph.validate_outputs(REPO, REPO)
             with self.assertRaisesRegex(ValueError, 'overlaps'):
-                page.generate(REPO, nested)
+                page.generate(SOURCE, nested)
             self.assertFalse(nested.exists())
             self.assertEqual(before, archive_files())
         finally:
@@ -598,7 +606,7 @@ class V046GlyphToolbarPickersSourceTest(unittest.TestCase):
             expected_definers = [menu_copy, owner] if name in {'AppWindowAction', 'AppWindowActionMenu'} else [owner]
             self.assertEqual(sorted(expected_definers), sorted(path for path, names in hits if name in names), name)
         # AppPrimitiveThemeDefaults has no appIconGlyphTextStyle in the vendored copy: the archive is the only definer.
-        vendored = (REPO / glyph.UPSTREAM_PATHS[glyph.ADAPTED]).read_text(encoding='utf-8')
+        vendored = (SOURCE / glyph.UPSTREAM_PATHS[glyph.ADAPTED]).read_text(encoding='utf-8')
         self.assertNotIn('appIconGlyphTextStyle', vendored)
         # Nothing desktop-owned reimplements or shadows these names.
         shadows = []
@@ -610,7 +618,7 @@ class V046GlyphToolbarPickersSourceTest(unittest.TestCase):
         self.assertEqual([], shadows)
 
     def test_window_action_menu_keeps_the_vendored_public_signatures(self):
-        vendored = (REPO / glyph.UPSTREAM_PATHS['AppWindowActionMenu.kt']).read_text(encoding='utf-8')
+        vendored = (SOURCE / glyph.UPSTREAM_PATHS['AppWindowActionMenu.kt']).read_text(encoding='utf-8')
         new = self.sources['AppWindowActionMenu.kt']
         self.assertEqual(parameters(vendored, 'AppWindowActionMenu'), parameters(new, 'AppWindowActionMenu'))
         self.assertEqual(parameters(vendored, 'AppWindowAction', 'class'), parameters(new, 'AppWindowAction', 'class'))
@@ -758,3 +766,27 @@ class V046GlyphToolbarPickersSourceTest(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+class ProtectedReadPointsTests(unittest.TestCase):
+    def test_both_archive_copies_and_real_cli_are_protected(self):
+        live = REPO / glyph.ARCHIVE
+        legacy = SOURCE / glyph.ARCHIVE
+        self.assertNotEqual(live.resolve(), legacy.resolve())
+        self.assertEqual(1, len(glyph.protected_archives(REPO)))
+        with self.assertRaisesRegex(ValueError, 'Output overlaps original glyph toolbar picker inputs'):
+            glyph.validate_outputs(SOURCE, live / 'child')
+        for target in (live / 'child', live, REPO / 'desktop', legacy / 'child', legacy,
+                       SOURCE / 'desktop', SOURCE, REPO):
+            with self.subTest(target=target), self.assertRaisesRegex(ValueError, 'Output overlaps original glyph toolbar picker inputs'):
+                glyph.validate_outputs(SOURCE, target)
+        with tempfile.TemporaryDirectory() as temp:
+            glyph.validate_outputs(SOURCE, Path(temp) / 'out', None,
+                                   REPO / 'desktop/build/generated/dynamic-detail-container')
+        child = live / 'child'
+        self.assertFalse(child.exists())
+        done = subprocess.run([sys.executable, '-X', 'utf8', '-B', str(TOOLS / 'extract-upstream-dynamic-detail-container.py')] +
+                              ['--repo', str(SOURCE), '--output', str(child)], cwd=REPO / 'desktop', capture_output=True, text=True)
+        self.assertNotEqual(done.returncode, 0, done.stdout)
+        self.assertIn('Output overlaps original glyph toolbar picker inputs', done.stderr)
+        self.assertFalse(child.exists())
