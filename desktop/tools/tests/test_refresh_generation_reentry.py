@@ -10,6 +10,7 @@ import unittest
 REPO=Path(__file__).resolve().parents[3]
 TOOLS=REPO/'desktop/tools'
 sys.path.insert(0,str(TOOLS))
+from desktop_paths import read_point_tool
 from legacy_read_point import legacy_read_point
 import v036_comment_refresh_dependencies as refresh
 import v046_identity_badge_palette as palette
@@ -35,7 +36,11 @@ class RefreshGenerationReentryTest(unittest.TestCase):
     @classmethod
     def run_script(cls,name,output,test_output=None):
         source=legacy_read_point(REPO,'app/src/main/java/com/android/purebilibili/feature/home/HomeScreen.kt')
-        args=[sys.executable,'-X','utf8','-B',str(TOOLS/name),'--repo',str(source),'--output',str(output)]
+        # Gradle launches the live core-refresh script. That script selects home-page
+        # through read_point_tool, which on Windows is the pinned copy. Launching the
+        # checkout copy compares a different producer against the same legacy originals.
+        tool=TOOLS/name if name!='extract-upstream-home-page.py' else read_point_tool(source,name)
+        args=[sys.executable,'-X','utf8','-B',str(tool),'--repo',str(source),'--output',str(output)]
         if test_output is not None:args+=['--test-output',str(test_output)]
         result=subprocess.run(args,cwd=REPO,env=dict(os.environ,PYTHONDONTWRITEBYTECODE='1',PYTHONIOENCODING='utf-8'),capture_output=True,text=True,encoding='utf-8',errors='replace')
         if result.returncode:raise AssertionError(name+' failed: '+result.stderr[-5000:])
