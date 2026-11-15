@@ -171,6 +171,36 @@ def declaration_hits(root, names):
     return hits
 
 
+def nested_toolbar_scrolls(source):
+    """Find horizontalScroll calls inside a trailing AppFloatingToolbar lambda."""
+    tokens = [token[0] for token in sync.kotlin_tokens(source)]
+    found = 0
+    for index, token in enumerate(tokens):
+        if token != 'AppFloatingToolbar' or index and tokens[index - 1] in ('fun', 'import'):
+            continue
+        pos = index + 1
+        if pos < len(tokens) and tokens[pos] == '(':
+            depth = 1
+            pos += 1
+            while pos < len(tokens) and depth:
+                depth += (tokens[pos] == '(') - (tokens[pos] == ')')
+                pos += 1
+            if depth:
+                raise AssertionError('Unbalanced toolbar arguments')
+        if pos >= len(tokens) or tokens[pos] != '{':
+            continue
+        depth = 1
+        pos += 1
+        while pos < len(tokens) and depth:
+            if tokens[pos] == 'horizontalScroll' and pos + 1 < len(tokens) and tokens[pos + 1] == '(':
+                found += 1
+            depth += (tokens[pos] == '{') - (tokens[pos] == '}')
+            pos += 1
+        if depth:
+            raise AssertionError('Unbalanced toolbar body')
+    return found
+
+
 def parenthesized(tokens, open_at):
     """Split the balanced parentheses that start at open_at into depth-1 comma separated token lists."""
     depth, parts, current = 0, [], []
@@ -595,16 +625,22 @@ class V046GlyphToolbarPickersSourceTest(unittest.TestCase):
         archived = {glyph.ARCHIVE + '/' + name for name in glyph.MAIN_FILES}
         self.assertEqual(archived, {path for path, _names in hits if path in archived})
         others = [(path, names) for path, names in hits if path not in archived]
-        # The only other declarers are the two vendored v0.2.5 copies; both are excluded from the Sync.
-        self.assertEqual(
-            [('design-system/src/main/java/com/android/purebilibili/core/ui/components/AppWindowActionMenu.kt',
-              ['AppWindowAction', 'AppWindowActionMenu'])],
-            others)
-        menu_copy = 'design-system/src/main/java/com/android/purebilibili/core/ui/components/AppWindowActionMenu.kt'
+        live = {name: 'design-system/src/main/java/' + glyph.RELATIVE[name] for name in glyph.MAIN_FILES}
+        self.assertEqual(set(live.values()), {path for path, _names in others})
         for name in GLOBAL_NAMES:
             owner = glyph.ARCHIVE + '/' + OWNER[name]
-            expected_definers = [menu_copy, owner] if name in {'AppWindowAction', 'AppWindowActionMenu'} else [owner]
+            expected_definers = [live[OWNER[name]], owner]
             self.assertEqual(sorted(expected_definers), sorted(path for path, names in hits if name in names), name)
+        self.assertIn('val migratedWholeModules = listOf("design-tokens/", "design-system/", "plugin-sdk/")', self.build)
+        self.assertIn('val migratedWholeModulePaths: Set<String> = migratedWholeModules.flatMap', self.build)
+        self.assertIn('val migratedUpstreamRelativePaths = migratedWholeModulePaths +', self.build)
+        self.assertIn('upstreamIdentity(element.file) in migratedUpstreamRelativePaths', self.build)
+        for name in glyph.MAIN_FILES:
+            self.assertTrue((REPO / live[name]).is_file(), name)
+            self.assertEqual(glyph.RELATIVE[name], str(Path(live[name]).relative_to('design-system/src/main/java')))
+        patch = REPO / 'desktop/upstream-core/patches' / (live[glyph.ADAPTED] + '.patch')
+        self.assertTrue(patch.is_file(), patch)
+        self.assertIn('appIconGlyphTextStyle', (REPO / live[glyph.ADAPTED]).read_text(encoding='utf-8'))
         # AppPrimitiveThemeDefaults has no appIconGlyphTextStyle in the vendored copy: the archive is the only definer.
         vendored = (SOURCE / glyph.UPSTREAM_PATHS[glyph.ADAPTED]).read_text(encoding='utf-8')
         self.assertNotIn('appIconGlyphTextStyle', vendored)
@@ -668,15 +704,17 @@ class V046GlyphToolbarPickersSourceTest(unittest.TestCase):
         picker = self.sources['AppNumberPicker.kt']
         duration = self.sources['AppDurationPicker.kt']
         # The Material overload is HorizontalFloatingToolbar(expanded, modifier, ..., content); its presence in the pinned
-        # material3-desktop 1.12.0-alpha03 jar is recorded in the slice report, not provable from the repository. The
-        # opt-in marker it needs is imported by a compiled direct-mode design-system file.
+        # material3-desktop 1.12.0-alpha03 jar is recorded in the slice report, not provable from the repository.
+        # The archive records the historical opt-in; the migrated live toolbar has its own compiled contract below.
         self.assertEqual(1, toolbar.count('HorizontalFloatingToolbar(modifier = modifier, expanded = true) { content() }'))
         self.assertIn('@OptIn(ExperimentalMaterial3ExpressiveApi::class)', toolbar)
-        marker_path = 'design-system/src/main/java/com/android/purebilibili/core/ui/AdaptiveLoadingIndicator.kt'
-        sources = json.loads((REPO / 'desktop/upstream-sources.json').read_text(encoding='utf-8'))
-        self.assertEqual(['direct'], [row['mode'] for row in sources['sources'] if row['path'] == marker_path])
-        marker = (REPO / marker_path).read_text(encoding='utf-8')
-        self.assertIn('import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi\n', marker)
+        live_toolbar = (REPO / 'design-system/src/main/java' / glyph.RELATIVE['AppFloatingToolbar.kt']).read_text(encoding='utf-8')
+        self.assertEqual(0, live_toolbar.count('HorizontalFloatingToolbar'))
+        self.assertEqual(0, live_toolbar.count('ExperimentalMaterial3ExpressiveApi'))
+        self.assertEqual(1, live_toolbar.count('fun AppMaterial3Toolbar'))
+        self.assertEqual(2, live_toolbar.count('horizontalScroll(rememberScrollState())'))
+        self.assertEqual(['modifier', 'content'], [label for label, _ in parameters(live_toolbar, 'AppFloatingToolbar')])
+        self.assertIn('content: @Composable RowScope.() -> Unit', live_toolbar)
         # AppDurationPicker calls AppNumberPicker with names the picker declares.
         params = parameters(picker, 'AppNumberPicker')
         self.assertEqual(['value', 'onValueChange', 'modifier', 'range', 'label'], [label for label, _default in params])
@@ -688,6 +726,29 @@ class V046GlyphToolbarPickersSourceTest(unittest.TestCase):
         text_params = parameters((REPO / 'design-system/src/main/java/com/android/purebilibili/core/ui/components/AppText.kt')
                                  .read_text(encoding='utf-8'), 'AppText')
         self.assertEqual('text', text_params[0][0])
+
+    def test_compiled_generated_toolbar_consumers_do_not_nest_scroll(self):
+        # These feature areas currently compile from the two producer outputs; a later migration must revisit this guard.
+        feature_areas = self.build[self.build.index('val migratedAppFeatureAreas ='):].splitlines()[0]
+        self.assertNotIn('feature/list/', feature_areas)
+        self.assertNotIn('feature/watchlater/', feature_areas)
+        self.assertIn('kotlin.srcDir(layout.buildDirectory.dir("generated/original-favorites/com"))', self.build)
+        self.assertIn('kotlin.srcDir(layout.buildDirectory.dir("generated/original-watchlater"))', self.build)
+        self.assertEqual(1, nested_toolbar_scrolls('AppFloatingToolbar { Row(Modifier.horizontalScroll(state)) { Text("x") } }'))
+        self.assertEqual(0, nested_toolbar_scrolls('AppFloatingToolbar { Text("horizontalScroll(") }'))
+        with tempfile.TemporaryDirectory(prefix='bp-toolbar-consumers-') as directory:
+            root = Path(directory)
+            for script, output, extra in (
+                    ('extract-upstream-favorites.py', root / 'favorites', ['--test-output', str(root / 'tests')]),
+                    ('extract-upstream-watchlater.py', root / 'watchlater', [])):
+                subprocess.run([sys.executable, '-X', 'utf8', '-B', str(TOOLS / script), '--repo', str(SOURCE),
+                                '--output', str(output), *extra], cwd=REPO / 'desktop', check=True, capture_output=True)
+            expected = {'CommonListScreen.kt', 'FavoriteCategoryScreen.kt', 'WatchLaterScreen.kt'}
+            files = list(root.rglob('*.kt'))
+            self.assertTrue(expected <= {p.name for p in files})
+            for path in files:
+                self.assertEqual(0, nested_toolbar_scrolls(path.read_text(encoding='utf-8')), str(path))
+        self.assertEqual(0, nested_toolbar_scrolls(JVM_TEST.read_text(encoding='utf-8')))
 
     def test_all_eight_carried_toolbar_consumers_call_the_real_signature(self):
         params = parameters(self.sources['AppFloatingToolbar.kt'], 'AppFloatingToolbar')
