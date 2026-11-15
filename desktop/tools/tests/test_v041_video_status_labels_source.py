@@ -20,6 +20,7 @@ import v041_video_status_labels as source
 import v043_search_up_author as search_up_followup
 import v043_home_native_cards as home_native_followup
 from v025_source_paths import canonical_source
+from legacy_read_point import legacy_read_point
 
 MODEL_DIR = 'com/android/purebilibili/data/model/response/'
 BADGES_PATH = 'com/android/purebilibili/core/ui/components/VideoStatusBadges.kt'
@@ -77,7 +78,8 @@ def task_block(build, name):
 def run_producer(output, tests_output, cwd, script, seed):
     environment = dict(os.environ, PYTHONHASHSEED=str(seed), PYTHONIOENCODING='utf-8', PYTHONDONTWRITEBYTECODE='1')
     environment.pop('PYTHONPATH', None)
-    done = subprocess.run([sys.executable, str(script), '--repo', str(REPO), '--output', str(output),
+    source_root = legacy_read_point(REPO, 'desktop/upstream-slices/v041-video-status-labels/manifest.json')
+    done = subprocess.run([sys.executable, str(script), '--repo', str(source_root), '--output', str(output),
                            '--tests-output', str(tests_output)], cwd=str(cwd), env=environment,
                           capture_output=True, check=True)
     return json.loads(done.stdout.decode('utf-8').strip().splitlines()[-1])
@@ -620,7 +622,7 @@ class V041VideoStatusLabelsSourceTest(unittest.TestCase):
                         self.assertEqual([1, 1, 1], [sum(row[i] for row in allowed) for i in range(3)])
                         output = self.root / 'v046-api-sole-model-contract'
                         result = subprocess.run([sys.executable, '-X', 'utf8', '-B',
-                            str(REPO / 'desktop/tools/extract-upstream-api.py'), '--repo', str(REPO), '--output', str(output)],
+                            str(REPO / 'desktop/tools/extract-upstream-api.py'), '--repo', str(legacy_read_point(REPO, 'desktop/upstream-slices/v041-video-status-labels/manifest.json')), '--output', str(output)],
                             cwd=REPO, env=dict(os.environ, PYTHONDONTWRITEBYTECODE='1'), capture_output=True)
                         self.assertEqual(0, result.returncode, result.stdout.decode('utf8') + result.stderr.decode('utf8'))
                         files = sorted(output.rglob('*.kt'))
