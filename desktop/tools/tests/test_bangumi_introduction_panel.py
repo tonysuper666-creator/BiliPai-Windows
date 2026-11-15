@@ -159,5 +159,112 @@ class BangumiIntroductionPanelTest(unittest.TestCase):
             self.assertIn(shown, self.panel)
 
 
+class BangumiPaginationReturnTest(unittest.TestCase):
+    """Check the actual generated consumer and composition ownership, without claiming a UI run."""
+
+    @classmethod
+    def setUpClass(cls):
+        BangumiIntroductionPanelTest.setUpClass.__func__(cls)
+        cls.declarations, cls.visible = cls.content.split(
+            '    Box(modifier = Modifier.fillMaxSize()) {\n        if (showDetailPanel) {', 1)
+
+    def test_selection_and_playing_episode_effect_outlive_detail_and_lazy_items(self):
+        self.assertIn('var selectedPage by rememberSaveable(detail.seasonId) {', self.declarations)
+        self.assertIn('mutableIntStateOf(maxOf(currentEpisodeIndex, 0) / episodesPerPage)', self.declarations)
+        effect, _ = block(self.syntax, self.declarations,
+                          'LaunchedEffect(detail.seasonId, currentEpisode.id, currentEpisodeIndex) {')
+        self.assertIn('if (currentEpisodeIndex >= 0)', effect)
+        self.assertIn('selectedPage = currentEpisodeIndex / episodesPerPage', effect)
+        self.assertNotIn('showDetailPanel', effect)
+        self.assertNotIn('LaunchedEffect(currentEpisodeIndex)', self.visible)
+        self.assertNotIn('var selectedPage', self.visible)
+
+    def test_both_real_pagination_rows_consume_state_owned_outside_visibility(self):
+        self.assertIn('val episodeRangeRowState = key(detail.seasonId) { rememberLazyListState() }',
+                      self.declarations)
+        self.assertIn('val pagedEpisodeRowState = key(detail.seasonId, selectedPage) { rememberLazyListState() }',
+                      self.declarations)
+        for state, items in [('episodeRangeRowState', 'items(totalPages, key = { it })'),
+                             ('pagedEpisodeRowState', 'items(pageEpisodes, key = { it.id })')]:
+            layout = ('                        horizontalArrangement = Arrangement.spacedBy(6.dp),\n'
+                      '                        modifier = Modifier.padding(bottom = 8.dp)\n'
+                      if state == 'episodeRangeRowState' else
+                      '                        horizontalArrangement = Arrangement.spacedBy(8.dp)\n')
+            opener = 'LazyRow(\n                        state = ' + state + ',\n' + (
+                '                        contentPadding = PaddingValues(horizontal = 16.dp),\n'
+                + layout + '                    ) {')
+            row, _ = block(self.syntax, self.visible, opener)
+            self.assertIn(items, row)
+            self.assertNotIn('remember', row)
+
+    def test_range_click_and_sublist_use_the_preserved_selection_only_for_long_seasons(self):
+        long_season, end = block(self.syntax, self.visible,
+                                '// 对于超长剧集，添加范围选择器\n'
+                                '            if (detail.episodes.orEmpty().size > 50) {')
+        self.assertIn('onClick = { selectedPage = page }', long_season)
+        self.assertIn('isCurrentPage = page == selectedPage', long_season)
+        self.assertIn('val pageStart = selectedPage.coerceIn(0, totalPages - 1) * episodesPerPage', long_season)
+        self.assertIn('val pageEnd = minOf(pageStart + episodesPerPage, detail.episodes.orEmpty().size)', long_season)
+        self.assertIn('val pageEpisodes = detail.episodes.orEmpty().subList(pageStart, pageEnd)', long_season)
+        self.assertIn('val episodesPerPage = 50', self.declarations)
+        self.assertNotIn('remember', long_season)
+        self.assertNotIn('LaunchedEffect', long_season)
+        self.assertIn('state = episodeRowState,', self.visible[end:])
+
+    def pagination_predecessor(self):
+        producer = load('bp_pagination_producer', PRODUCER)
+        content = (self.stage / CONTENT).read_text(encoding='utf8')
+        # Obtain the real predecessor by running the same CLI without either final hook.
+        root = Path(self.directory.name)
+        script = root / 'without-pagination.py'
+        source = PRODUCER.read_text(encoding='utf8').replace(HOOK, '  intro_edits=[]\n')
+        pagination_hook = "  body,pagination_edits=windows_bangumi_pagination_state_ui(body,r['output'])\n"
+        self.assertEqual(1, source.count(pagination_hook))
+        script.write_text(source.replace(pagination_hook, '  pagination_edits=[]\n'), encoding='utf8')
+        output = root / 'without-pagination'
+        result = subprocess.run([sys.executable, '-B', str(script), '--repo', str(self.source),
+                                 '--output', str(output)], cwd=REPO / 'desktop',
+                                env=dict(os.environ, PYTHONDONTWRITEBYTECODE='1', PYTHONUTF8='1',
+                                         PYTHONPATH=str(TOOLS)), capture_output=True,
+                                text=True, timeout=240)
+        self.assertEqual(0, result.returncode, result.stdout + result.stderr)
+        return producer, output, content
+
+    def test_only_real_content_changes_and_all_five_edits_invert(self):
+        producer, predecessor, content = self.pagination_predecessor()
+        before, after = tree(predecessor), tree(self.stage)
+        self.assertEqual(set(before), set(after))
+        changed = []
+        for relative, raw in before.items():
+            if not relative.endswith('.kt'):
+                self.assertEqual(raw, after[relative], relative)
+                continue
+            generated, edits = producer.windows_bangumi_pagination_state_ui(raw.decode('utf8'), relative)
+            self.assertEqual(after[relative], generated.encode('utf8'), relative)
+            if edits:
+                changed.append(relative)
+                self.assertEqual(5, len(edits))
+                inverse = generated
+                for edit in reversed(edits):
+                    self.assertEqual(1, inverse.count(edit['after']))
+                    inverse = inverse.replace(edit['after'], edit['before'], 1)
+                self.assertEqual(raw.decode('utf8'), inverse)
+        self.assertEqual([CONTENT], changed)
+        self.assertEqual(after[CONTENT].decode('utf8'), content)
+
+    def test_missing_duplicate_and_drifted_pagination_anchors_are_rejected(self):
+        producer, predecessor, _ = self.pagination_predecessor()
+        source = (predecessor / CONTENT).read_text(encoding='utf8')
+        _, edits = producer.windows_bangumi_pagination_state_ui(source, CONTENT)
+        for edit in edits:
+            before = edit['before']
+            for kind, broken in [('missing', source.replace(before, '', 1)),
+                                 ('duplicate', source + before),
+                                 ('drift', source.replace(before, before.replace(' ', '\t', 1), 1))]:
+                with self.subTest(anchor=edit['label'], kind=kind):
+                    with self.assertRaises(AssertionError):
+                        producer.windows_bangumi_pagination_state_ui(broken, CONTENT)
+
+
 if __name__ == '__main__':
     unittest.main()
