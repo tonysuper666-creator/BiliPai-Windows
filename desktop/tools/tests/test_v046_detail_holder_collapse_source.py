@@ -435,9 +435,23 @@ class DetailHolderCollapseSourceTests(unittest.TestCase):
     def test_decision_premises_hold_in_the_generated_tree(self):
         holder = self.out('actual', 'holder', HOLDER_OUTPUT)
         content = self.out('actual', 'content', CONTENT_OUTPUT)
-        policy = lf_of(REPO / 'app/src/main/java/com/android/purebilibili/feature/video/screen/PortraitDetailPresentationPolicy.kt')
-        autopause = lf_of(REPO / 'app/src/main/java/com/android/purebilibili/feature/video/screen/PlayerCollapseAutoPausePolicy.kt')
-        scroll = lf_of(REPO / 'app/src/main/java/com/android/purebilibili/feature/video/policy/VideoDetailScrollCoordinator.kt')
+        # The holder producer emits this adapted policy from SOURCE; the live video area is not migrated.
+        policy_path = SCREEN + 'PortraitDetailPresentationPolicy.kt'
+        policy_spec = next(spec for spec in self.holder.SPECS if spec['output'] == policy_path)
+        self.assertFalse(policy_spec['direct'])
+        build = text_of(REPO / 'desktop/build.gradle.kts')
+        self.assertIn('kotlin.srcDir(layout.buildDirectory.dir("generated/original-video-detail-holder-full"))', build)
+        self.assertNotIn('"feature/video/"', re.search(r'val migratedAppFeatureAreas = listOf\((.*?)\)', build).group(1))
+        policy = self.out('actual', 'holder', policy_path)
+        autopause_path = 'app/src/main/java/com/android/purebilibili/feature/video/screen/PlayerCollapseAutoPausePolicy.kt'
+        scroll_path = 'app/src/main/java/com/android/purebilibili/feature/video/policy/VideoDetailScrollCoordinator.kt'
+        collapse_path = 'app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailInlineCollapseState.kt'
+        manifest = json.loads(text_of(REPO / 'desktop/upstream-sources.json'))
+        for path in (autopause_path, scroll_path, collapse_path):
+            self.assertEqual(['direct'], [row['mode'] for row in manifest['sources'] if row['path'] == path])
+        self.assertIn('from(repositoryRoot) {', build)
+        autopause = lf_of(SOURCE / autopause_path)
+        scroll = lf_of(SOURCE / scroll_path)
         # v030-detail-glass-gated-chrome-blur: already carried by the retained VideoContentSection
         self.assertIn('val chromeBlurActive = !isPlayerCollapsed || liquidGlassEnabled', content)
         self.assertIn('(!isPlayerCollapsed || liquidGlassEnabledForTabBar)', content)
@@ -457,7 +471,7 @@ class DetailHolderCollapseSourceTests(unittest.TestCase):
         pager = lf_of(REPO / 'app/src/main/java/com/android/purebilibili/core/ui/common/VerticalPriorityPagerGesture.kt')
         self.assertEqual(0, pager.count('forceVerticalPriority'))
         # v046-collapse-height-shared: the phone collapse state is still the pinned v0.2.5 file
-        collapse_state = lf_of(REPO / 'app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailInlineCollapseState.kt')
+        collapse_state = lf_of(SOURCE / collapse_path)
         self.assertEqual(0, collapse_state.count('reconcileLayout'))
         self.assertEqual(1, holder.count('introScrollPastCollapseThreshold by rememberSaveable'))
 
