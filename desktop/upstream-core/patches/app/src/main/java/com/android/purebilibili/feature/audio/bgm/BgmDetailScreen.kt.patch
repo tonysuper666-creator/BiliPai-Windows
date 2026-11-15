@@ -115,7 +115,40 @@
      )
      val composerSessionId = comments.composerDrafts.sessionId
      val composerReplyRpid = comments.replyTarget?.rpid
-@@ -145,7 +137,7 @@
+@@ -119,33 +111,23 @@
+     val composerKey = remember(info?.oid, info?.pageType, composerReplyRpid, composerSessionId) {
+         "bgm:${info?.oid}:${info?.let(::resolveBgmCommentType)}:$composerReplyRpid:$composerSessionId"
+     }
++    val composerCallbacks = BgmComposerCallbacks(
++        comments = commentViewModel, sessionId = composerSessionId, replyRpid = composerReplyRpid,
++        isComposerOpen = { composer }, closeComposer = { composer = false },
++        markSubmitted = { submittedSessionId = it },
++    )
+     CommentInputDialog(
+         visible = composer,
+         draftKey = composerKey,
+-        onDismiss = {
+-            if (commentViewModel.commentState.value.composerDrafts.sessionId == composerSessionId) {
+-                composer = false
+-                commentViewModel.cancelReply()
+-            }
+-        },
+-        onSend = { text, images, sync ->
+-            val latest = commentViewModel.commentState.value
+-            if (composer && latest.composerDrafts.sessionId == composerSessionId &&
+-                latest.composerDrafts.completedSessionId != composerSessionId &&
+-                latest.replyTarget?.rpid == composerReplyRpid && !latest.isSending
+-            ) {
+-                submittedSessionId = composerSessionId
+-                commentViewModel.updateCommentDraft(composerSessionId, composerReplyRpid, text, images, sync)
+-                commentViewModel.sendComment(text, images, sync)
+-            }
+-        },
++        onDismiss = composerCallbacks::onDismiss,
++        onSend = composerCallbacks::onSend,
+         isSending = comments.isSending, replyToName = comments.replyTarget?.member?.uname,
+         inputHint = if (comments.replyTarget == null) comments.rootInputHint else comments.childInputHint,
+         canInputComment = comments.canInputComment, emotePackages = emotePackages,
          initialText = composerDraft?.text.orEmpty(),
          initialImageUris = composerDraft?.imageUris.orEmpty(),
          initialSyncToDynamic = composerDraft?.syncToDynamic ?: false,
@@ -124,7 +157,7 @@
              commentViewModel.updateCommentDraft(composerSessionId, composerReplyRpid, text, images, sync)
          },
      )
-@@ -175,6 +167,8 @@
+@@ -175,6 +157,8 @@
      onCommentReport: (Long, Int, String) -> Unit,
      onLinkClick: (String) -> Unit,
      modifier: Modifier = Modifier,
@@ -133,7 +166,7 @@
  ) {
      var previewImages by remember { mutableStateOf<List<String>>(emptyList()) }
      var previewIndex by remember { mutableIntStateOf(0) }
-@@ -202,9 +196,6 @@
+@@ -202,9 +186,6 @@
          floatingActionButton = {
              if (canComment && !showVideos && !state.loading) {
                  // 听视频小横条悬浮时上浮避让（与首页/动态页 76dp 预留一致），避免挡住入口
@@ -143,7 +176,7 @@
                  AppButton(
                      onClick = onCompose,
                      modifier = Modifier
-@@ -233,7 +224,7 @@
+@@ -233,7 +214,7 @@
                  val commentList: @Composable (Modifier, Boolean) -> Unit = { listModifier, includeDetails ->
                      LazyColumn(modifier = listModifier, state = listState, contentPadding = PaddingValues(bottom = 100.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                          if (includeDetails) {
@@ -152,7 +185,7 @@
                              item("heat-chart") { BgmHeatChart(detail.hotSongHeat?.songHeat.orEmpty(), Modifier.fillMaxWidth().padding(16.dp)) }
                          }
                          if (commentsEnabled) {
-@@ -271,7 +262,7 @@
+@@ -271,7 +252,7 @@
                  }
                  if (wide) Row(Modifier.fillMaxSize()) {
                      LazyColumn(Modifier.weight(1f), contentPadding = PaddingValues(bottom = 100.dp)) {
@@ -161,7 +194,7 @@
                          item { BgmHeatChart(detail.hotSongHeat?.songHeat.orEmpty(), Modifier.fillMaxWidth().padding(16.dp)) }
                      }
                      commentList(Modifier.weight(1f), false)
-@@ -288,13 +279,14 @@
+@@ -288,13 +269,14 @@
      onVideosClick: () -> Unit,
      onVideoClick: (String, Long, String) -> Unit,
      onUserClick: (Long) -> Unit,
@@ -179,7 +212,7 @@
      }
      AppSurface(modifier = modifier, shape = RoundedCornerShape(20.dp), color = MaterialTheme.colorScheme.surfaceContainer) {
          Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-@@ -304,13 +296,7 @@
+@@ -304,13 +286,7 @@
                  }
                  Column(Modifier.weight(1f)) {
                      AppTextButton(onClick = {
@@ -194,3 +227,37 @@
                      }, contentPadding = PaddingValues(0.dp), modifier = Modifier.heightIn(min = 48.dp)) {
                          AppText(detail.musicTitle.ifBlank { "未知音乐" }, style = MaterialTheme.typography.titleMedium)
                      }
+@@ -373,3 +349,33 @@
+         }
+     }
+ }
++
++/** The composer's close and send decisions for one composer session. A callback captured by an older session or reply
++ * target does nothing: the comment state is read when it runs, not when it was created. */
++internal class BgmComposerCallbacks(
++    private val comments: VideoCommentViewModel,
++    private val sessionId: Long,
++    private val replyRpid: Long?,
++    private val isComposerOpen: () -> Boolean,
++    private val closeComposer: () -> Unit,
++    private val markSubmitted: (Long) -> Unit,
++) {
++    fun onDismiss() {
++        if (comments.commentState.value.composerDrafts.sessionId == sessionId) {
++            closeComposer()
++            comments.cancelReply()
++        }
++    }
++
++    fun onSend(text: String, images: List<String>, sync: Boolean) {
++        val latest = comments.commentState.value
++        if (isComposerOpen() && latest.composerDrafts.sessionId == sessionId &&
++            latest.composerDrafts.completedSessionId != sessionId &&
++            latest.replyTarget?.rpid == replyRpid && !latest.isSending
++        ) {
++            markSubmitted(sessionId)
++            comments.updateCommentDraft(sessionId, replyRpid, text, images, sync)
++            comments.sendComment(text, images, sync)
++        }
++    }
++}
