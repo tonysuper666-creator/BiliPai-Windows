@@ -16,6 +16,7 @@ REPO = Path(os.environ.get('BILIPAI_LIVE_DANMAKU_REPO', DESKTOP.parent))
 sys.path.insert(0, str(DESKTOP / 'tools'))
 sys.path.append(str(REPO / 'desktop/tools'))
 import v030_live_danmaku as fixed
+from legacy_read_point import legacy_read_point
 
 def media():
     spec = importlib.util.spec_from_file_location('actual_media_danmaku', DESKTOP/'tools/extract-upstream-media.py')
@@ -67,7 +68,7 @@ class LiveDanmakuSourceTests(unittest.TestCase):
             env=dict(os.environ, PYTHONIOENCODING='utf-8', PYTHONDONTWRITEBYTECODE='1',
                 PYTHONPATH=os.pathsep.join([str(DESKTOP/'tools'),str(REPO/'desktop/tools')]))
             result=subprocess.run([sys.executable,'-X','utf8','-B',str(DESKTOP/'tools/extract-upstream-media.py'),
-                '--repo',str(REPO),'--output',str(output),'--test-output',str(tests)],
+                '--repo',str(legacy_read_point(REPO, 'app/src/main/java/com/android/purebilibili/data/repository/DanmakuRepository.kt')),'--output',str(output),'--test-output',str(tests)],
                 env=env,cwd=REPO,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
             self.assertEqual(0,result.returncode,result.stderr.decode('utf8'))
             proof=json.loads((output/'v030-live-danmaku-source-proof.json').read_bytes())
