@@ -22,6 +22,11 @@ REPO = Path(__file__).resolve().parents[3]
 LIVE = Path(os.environ.get('BILIPAI_LIVE_ROOT') or REPO)
 TOOLS = REPO / 'desktop/tools'
 sys.path.insert(0, str(TOOLS))
+from legacy_read_point import legacy_read_point
+
+# extractUpstreamDynamicFullCard passes repositoryRoot, the pinned legacy tree. LIVE stays the checkout.
+PINNED = legacy_read_point(
+    REPO, 'app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewDialog.kt')
 import check_slice_symbol_closure as gate
 import v046_image_viewer as source
 
@@ -103,7 +108,12 @@ def declaration_hits(root, names):
         raw = path.read_bytes()
         if not any(name.encode('utf-8') in raw for name in names):
             continue
-        relative = path.relative_to(REPO).as_posix() if str(path).startswith(str(REPO)) else path.as_posix()
+        if path.is_relative_to(PINNED):
+            relative = path.relative_to(PINNED).as_posix()
+        elif path.is_relative_to(REPO):
+            relative = path.relative_to(REPO).as_posix()
+        else:
+            relative = path.as_posix()
         _package, found = declarations(raw.decode('utf-8').replace('\r\n', '\n'), relative)
         for visibility, kind, name in found:
             if name in names:
@@ -128,9 +138,9 @@ class V046ImageViewerSourceTest(unittest.TestCase):
             return after, proof
 
         with mock.patch.object(source, 'advance_preview_renderer', spy):
-            cls.files = producer.generate(REPO, cls.main_root)
+            cls.files = producer.generate(PINNED, cls.main_root)
         cls.before, cls.after, cls.renderer_proof = captured['before'], captured['after'], captured['proof']
-        cls.test_files = producer.generate_image_viewer_tests(REPO, cls.test_root)
+        cls.test_files = producer.generate_image_viewer_tests(PINNED, cls.test_root)
         cls.main = tree(cls.main_root)
         cls.tests = tree(cls.test_root)
         cls.build = (REPO / 'desktop/build.gradle.kts').read_text(encoding='utf-8')
@@ -138,10 +148,10 @@ class V046ImageViewerSourceTest(unittest.TestCase):
         cls.proof = json.loads(cls.main[source.PROOF_NAME])
         with mock.patch.object(source, 'advance_preview_renderer', lambda repo, before: (before, None)):
             cls.patched_root = cls.root / 'patched'
-            producer.generate(REPO, cls.patched_root)
+            producer.generate(PINNED, cls.patched_root)
         cls.patched = tree(cls.patched_root)
         cls.standalone_root = cls.root / 'standalone'
-        producer.generate(REPO, cls.standalone_root, True)
+        producer.generate(PINNED, cls.standalone_root, True)
         cls.standalone = tree(cls.standalone_root)
 
     @classmethod
@@ -233,14 +243,14 @@ class V046ImageViewerSourceTest(unittest.TestCase):
     def test_the_vendored_direct_copies_are_the_old_versions_and_the_motion_policy_is_new(self):
         for name, path in EXCLUDED.items():
             with self.subTest(name=name):
-                vendored = (REPO / path).read_bytes().replace(b'\r\n', b'\n')
+                vendored = (PINNED / path).read_bytes().replace(b'\r\n', b'\n')
                 self.assertNotEqual(vendored, self.archive[name])
-        old_gesture = (REPO / EXCLUDED[source.GESTURE]).read_text(encoding='utf-8')
+        old_gesture = (PINNED / EXCLUDED[source.GESTURE]).read_text(encoding='utf-8')
         self.assertIn('else -> ZoomableImageGestureMode.IMAGE_INTERACTION', old_gesture.replace('\r\n', '\n'))
         new_gesture = self.archive[source.GESTURE].decode('utf-8')
         self.assertIn('else -> ZoomableImageGestureMode.UNDECIDED', new_gesture)
         self.assertNotIn('else -> ZoomableImageGestureMode.IMAGE_INTERACTION', new_gesture)
-        self.assertFalse((REPO / (source.COMPONENTS + source.MOTION)).exists())
+        self.assertFalse((PINNED / (source.COMPONENTS + source.MOTION)).exists())
         zoomable = self.archive[source.ZOOMABLE].decode('utf-8')
         for token in ('PointerEventPass.Initial', 'VelocityTracker()', 'resolveZoomableImagePanBounds(',
                       'resolveZoomableImageFlingVelocity(', 'animateTransform(targetScale, targetOffset, 250)',
@@ -257,7 +267,8 @@ class V046ImageViewerSourceTest(unittest.TestCase):
                 self.assertEqual(TOP_LEVEL[name][0], visibility, name)
         hits = []
         for relative in STATIC_ROOTS:
-            hits.extend(declaration_hits(REPO / relative, names))
+            root = REPO if relative.startswith('desktop/') else PINNED
+            hits.extend(declaration_hits(root / relative, names))
         by_name = {}
         for path, _visibility, _kind, name in hits:
             by_name.setdefault(name, []).append(path)
@@ -523,21 +534,21 @@ class V046ImageViewerSourceTest(unittest.TestCase):
 
     def test_generation_is_deterministic_and_incremental_reruns_match(self):
         again = self.root / 'again'
-        producer.generate(REPO, again)
+        producer.generate(PINNED, again)
         # The producer writes its own files with the platform newline; every file is stable across runs.
         self.assertEqual(self.main, tree(again))
-        producer.generate(REPO, again)
+        producer.generate(PINNED, again)
         self.assertEqual(self.main, tree(again))
         tests_again = self.root / 'tests-again'
-        producer.generate_image_viewer_tests(REPO, tests_again)
-        producer.generate_image_viewer_tests(REPO, tests_again)
+        producer.generate_image_viewer_tests(PINNED, tests_again)
+        producer.generate_image_viewer_tests(PINNED, tests_again)
         self.assertEqual(self.tests, tree(tests_again))
 
     def test_command_line_writes_the_tests_outside_the_main_root_and_refuses_an_overlap(self):
         main, tests = self.root / 'cli-main', self.root / 'cli-tests'
         environment = dict(os.environ, PYTHONIOENCODING='utf-8', PYTHONDONTWRITEBYTECODE='1', PYTHONUTF8='1')
         done = subprocess.run([sys.executable, '-X', 'utf8', '-B', str(TOOLS / 'extract-upstream-dynamic-card.py'),
-                               '--repo', str(REPO), '--output', str(main), '--test-output', str(tests)],
+                               '--repo', str(PINNED), '--output', str(main), '--test-output', str(tests)],
                               cwd=str(REPO / 'desktop'), env=environment, capture_output=True, check=False)
         self.assertEqual(0, done.returncode, done.stderr.decode('utf-8', 'replace')[-2000:])
         self.assertIn('Generated 2 image viewer test source files', done.stdout.decode('utf-8'))
@@ -646,7 +657,7 @@ class V046ImageViewerSourceTest(unittest.TestCase):
                 self.assertEqual('direct', rows[path]['mode'])
         self.assertNotIn(source.UPSTREAM_PATHS[source.MOTION], rows)
         # The producer's own inventory keeps describing the canonical bodies, which this slice does not change.
-        inventory = {row['path']: row for row in producer.inventory(REPO)}
+        inventory = {row['path']: row for row in producer.inventory(PINNED)}
         # ad2967bbf re-pinned the live registry to the direct-compile bytes; the catalog records the one
         # reviewed pair (live sha256, legacySha256 = the canonical bodies the inventory describes).
         catalog = json.loads((REPO / 'desktop/tools/v025-canonical-sources.json').read_bytes())['paths']
