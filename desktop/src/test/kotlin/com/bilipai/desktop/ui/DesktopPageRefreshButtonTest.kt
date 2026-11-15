@@ -7,11 +7,11 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -317,6 +317,7 @@ class DesktopPageRefreshButtonTest {
         val width = 520
         val height = 420
         val lastRow = 59
+        var listState: LazyListState? = null
         val scene = ImageComposeScene(width, height, Density(1f)) {
             val actualWindow = LocalWindowInfo.current
             val focused = androidx.compose.runtime.remember(actualWindow) { object : WindowInfo by actualWindow {
@@ -326,7 +327,8 @@ class DesktopPageRefreshButtonTest {
                 MaterialTheme {
                     AdaptivePullToRefreshBox(isRefreshing = false, onRefresh = {}, modifier = Modifier.fillMaxSize()) {
                         val state = rememberLazyListState()
-                        LaunchedEffect(Unit) { state.scrollToItem(lastRow) }
+                        // The test body jumps this list to its end between frames; see the comment there.
+                        listState = state
                         // What the pages do: the end padding the box reserves, read from the composition local it provides.
                         LazyColumn(
                             Modifier.fillMaxSize(),
@@ -349,8 +351,16 @@ class DesktopPageRefreshButtonTest {
                 }
             }
             var nanos = 0L
+            fun render() { nanos = maxOf(System.nanoTime(), nanos + 1); scene.render(nanos).close() }
+            // Compose the page once, then jump the list to its end from this thread between two frames. A jump
+            // started from LaunchedEffect can run inside the scene's own measure pass, and the
+            // IllegalArgumentException it throws there ("performMeasureAndLayout called during measure layout")
+            // escapes as an uncaught coroutine exception: kotlinx-coroutines-test then reports it against the
+            // first test of the next class in this JVM instead of failing here.
+            render()
+            assertNotNull(listState, "the scene must hand over its list state").scrollToItem(lastRow)
             withTimeout(6_000) {
-                do { nanos = maxOf(System.nanoTime(), nanos + 1); scene.render(nanos).close(); delay(12) }
+                do { render(); delay(12) }
                 while (row() == null || button() == null)
             }
             val rowBounds = assertNotNull(row()).boundsInRoot
