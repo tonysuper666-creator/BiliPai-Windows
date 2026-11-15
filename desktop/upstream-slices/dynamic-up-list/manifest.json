@@ -1,0 +1,25 @@
+{
+  "repository": "jay3-yy/BiliPai",
+  "commit": "6f0696eb1389728b5a090125d32c1aae470f72f1",
+  "purpose": "TON-1344 targeted backport; not a full v0.7.8 source repin",
+  "files": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/home/DynamicSettingsStore.kt",
+      "filename": "DynamicSettingsStore.kt",
+      "sha256": "aaefbadb6f75c7c542cb8ce7131dedaf35b8e2f97dc90850bc7d9ba5b6ebc9d3",
+      "gitBlob": "8cc96746711cb2d36d92e8e27747a0029c4e8047"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/HomeFeedSettingsSection.kt",
+      "filename": "HomeFeedSettingsSection.kt",
+      "sha256": "014d9352bb7f73c9438b453b3833b90d3053920c4841688e83894c31ee4537fe",
+      "gitBlob": "067e24c65526e3a5916e91ee001be158757c58ca"
+    },
+    {
+      "path": "LICENSE",
+      "filename": "LICENSE",
+      "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+      "gitBlob": "f288702d2fa16d3cdf0035b15a9fcbc552cd88e7"
+    }
+  ]
+}

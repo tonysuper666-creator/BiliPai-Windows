@@ -202,7 +202,8 @@ internal object DesktopSettingsShareWindowsCatalog {
 
         val navigation = SettingsShareSection.NAVIGATION
         // dynamic_all_tab_horizontal_user_list_visible left the Android share definitions in v0.4.5 (9ee5fc5f): the
-        // follow strip is always on, so an old backup's value is reported as unmapped. dynamic_tab_visible_tabs and
+        // old backups report that retired key as unmapped. The current dynamic_up_list_visible gate lives in
+        // DynamicSettingsStore and controls both desktop following presentations. dynamic_tab_visible_tabs and
         // dynamic_tab_order are not imported on Windows, so the "up" to "all" fold happens in the tab getters.
         booleans(navigation, "header_collapse_enabled", "show_pgc_timeline", "tablet_use_sidebar", "sidebar_expanded",
             "sidebar_account_switcher_enabled", "incremental_timeline_refresh", "dynamic_image_preview_text_visible",

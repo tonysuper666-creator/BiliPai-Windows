@@ -2,8 +2,11 @@ package com.bilipai.desktop.settings
 
 import androidx.compose.runtime.*
 import com.android.purebilibili.core.store.DesktopDynamicTabsSettings
+import com.android.purebilibili.core.store.DesktopDynamicUpListSettings
 import com.android.purebilibili.feature.dynamic.*
 import com.android.purebilibili.feature.settings.DesktopDynamicTabsSettingsFields
+import com.android.purebilibili.feature.settings.DesktopDynamicUpListSettingsField
+import androidx.compose.foundation.layout.Column
 import com.bilipai.desktop.plugins.*
 import com.bilipai.desktop.data.DesktopDynamicCacheSession
 import kotlinx.coroutines.*
@@ -18,9 +21,11 @@ internal class DesktopDynamicTabsPreferences(val context:DesktopPluginContext, i
     private fun requireAccount()=checkNotNull(account){"Dynamic user preferences require the actual current Root cache session"}
     val visibleTabs=DesktopDynamicTabsSettings.getDynamicTabVisibleTabs(context)
     val tabOrder=DesktopDynamicTabsSettings.getDynamicTabOrder(context)
+    val upListVisible=DesktopDynamicUpListSettings.observeUpListVisible(context)
     // These are synchronous maps of the already loaded StateFlow, with no disk/network wait.
     val initialVisibleTabs:Set<String> get()=runBlocking{visibleTabs.first()}
     val initialTabOrder:List<String> get()=runBlocking{tabOrder.first()}
+    val initialUpListVisible:Boolean get()=runBlocking{upListVisible.first()}
     val users get()=requireAccount().userPreferences(context.store)
     // The v0.4.6 tab count: a saved "up" index (4) from an older session resolves to the All tab.
     val selectedTab:Int get()=resolveDynamicSelectedTab(users.value[selectedKey],allDynamicTabSpecs.size)
@@ -46,6 +51,7 @@ internal class DesktopDynamicTabsPreferences(val context:DesktopPluginContext, i
     }
     suspend fun setVisibleTabs(value:Set<String>)=DesktopDynamicTabsSettings.setDynamicTabVisibleTabs(context,value)
     suspend fun setOrder(value:List<String>)=DesktopDynamicTabsSettings.setDynamicTabOrder(context,value)
+    suspend fun setUpListVisible(value:Boolean)=DesktopDynamicUpListSettings.setUpListVisible(context,value)
     suspend fun toggleVisibility(id:String)=setVisibleTabs(resolveDynamicVisibleTabIdsAfterToggle(visibleTabs.first(),id))
     // StringSet has no Android platform representation on Windows. A JSON array preserves
     // the original set of decimal MID strings in the same original namespace and key.
@@ -66,7 +72,11 @@ internal class DesktopDynamicTabsPreferences(val context:DesktopPluginContext, i
 @Composable internal fun DesktopDynamicTabsSettings(preferences:DesktopDynamicTabsPreferences,onFailure:(Throwable)->Unit) {
     val visible by preferences.visibleTabs.collectAsState(preferences.initialVisibleTabs)
     val order by preferences.tabOrder.collectAsState(preferences.initialTabOrder)
+    val upListVisible by preferences.upListVisible.collectAsState(preferences.initialUpListVisible)
     val scope=rememberCoroutineScope();val writer=remember(preferences){Mutex()};val failure by rememberUpdatedState(onFailure)
     fun write(block:suspend()->Unit){scope.launch{try{writer.withLock{block()}}catch(cancelled:CancellationException){throw cancelled}catch(error:Exception){failure(error)}}}
-    DesktopDynamicTabsSettingsFields(visible,{write{preferences.toggleVisibility(it)}},order,{write{preferences.setOrder(it)}})
+    Column {
+        DesktopDynamicUpListSettingsField(upListVisible,{value->write{preferences.setUpListVisible(value)}})
+        DesktopDynamicTabsSettingsFields(visible,{write{preferences.toggleVisibility(it)}},order,{write{preferences.setOrder(it)}})
+    }
 }

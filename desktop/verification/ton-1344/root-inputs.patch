@@ -1,0 +1,198 @@
+diff --git a/desktop/build.gradle.kts b/desktop/build.gradle.kts
+--- a/desktop/build.gradle.kts
++++ b/desktop/build.gradle.kts
+@@ -2329,6 +2329,8 @@
+ }
+ 
+ val extractUpstreamDynamicTabs by tasks.registering(Exec::class) {
++    inputs.file("tools/dynamic_up_list.py")
++    inputs.dir("upstream-slices/dynamic-up-list")
+     inputs.file("tools/v043_theme_chrome.py")
+     inputs.dir("upstream-slices/v043-theme-chrome")
+     inputs.file("tools/v042_optical_dependencies.py")
+diff --git a/desktop/tools/compatibility-source-inputs.json b/desktop/tools/compatibility-source-inputs.json
+--- a/desktop/tools/compatibility-source-inputs.json
++++ b/desktop/tools/compatibility-source-inputs.json
+@@ -3,6 +3,7 @@
+   "upstreamRepository": "jay3-yy/BiliPai",
+   "scope": "Complete retained original inputs used by build/source-validation producers. Reference-only rows do not imply emitted Windows features; canonical baseline stays v025.",
+   "buildInputRoots": [
++    "desktop/upstream-slices/dynamic-up-list",
+     "desktop/upstream-slices/v027-danmaku-config",
+     "desktop/upstream-slices/v027-danmaku-hot-settings",
+     "desktop/upstream-slices/v027-hot-danmaku",
+@@ -134,45 +135,45 @@
+     "desktop/upstream-slices/v044-favorite-subscription",
+     "desktop/upstream-slices/v044-following-fans",
+     "desktop/upstream-slices/v044-list-foreground",
++    "desktop/upstream-slices/v046-account-scoped-requests",
++    "desktop/upstream-slices/v046-audio-listen-closure",
++    "desktop/upstream-slices/v046-bangumi-hub-pages",
++    "desktop/upstream-slices/v046-bangumi-player",
++    "desktop/upstream-slices/v046-chrome-glass-tuning",
+     "desktop/upstream-slices/v046-comment-chrome",
+     "desktop/upstream-slices/v046-comment-list",
++    "desktop/upstream-slices/v046-comment-polish",
++    "desktop/upstream-slices/v046-comment-thread",
++    "desktop/upstream-slices/v046-control-center-motion",
++    "desktop/upstream-slices/v046-core-data-policies",
++    "desktop/upstream-slices/v046-danmaku-hot-command",
++    "desktop/upstream-slices/v046-danmaku-protocol",
++    "desktop/upstream-slices/v046-design-system-leaves-a",
++    "desktop/upstream-slices/v046-design-system-leaves-b",
++    "desktop/upstream-slices/v046-detail-holder-collapse",
++    "desktop/upstream-slices/v046-dynamic-category-merge",
++    "desktop/upstream-slices/v046-episode-selector",
+     "desktop/upstream-slices/v046-favorite-editor",
+-    "desktop/upstream-slices/v046-comment-thread",
++    "desktop/upstream-slices/v046-follow-confirmation",
++    "desktop/upstream-slices/v046-glyph-toolbar-pickers",
++    "desktop/upstream-slices/v046-home-card-cascade-definers",
++    "desktop/upstream-slices/v046-home-card-tint-policy",
++    "desktop/upstream-slices/v046-home-refresh-ui-policy",
++    "desktop/upstream-slices/v046-identity-badge-palette",
+     "desktop/upstream-slices/v046-identity-badges",
+-    "desktop/upstream-slices/v046-core-data-policies",
+-    "desktop/upstream-slices/v046-home-card-cascade-definers",
++    "desktop/upstream-slices/v046-image-viewer",
++    "desktop/upstream-slices/v046-message-notifications",
++    "desktop/upstream-slices/v046-mfx-small-protocol-fixes",
++    "desktop/upstream-slices/v046-player-overlay",
++    "desktop/upstream-slices/v046-portrait-pager",
++    "desktop/upstream-slices/v046-rss-public-content",
++    "desktop/upstream-slices/v046-search-state",
+     "desktop/upstream-slices/v046-sheet-motion",
+-    "desktop/upstream-slices/v046-home-refresh-ui-policy",
+-    "desktop/upstream-slices/v046-message-notifications",
++    "desktop/upstream-slices/v046-space-content-pager",
++    "desktop/upstream-slices/v046-theme-palette-schedule",
+     "desktop/upstream-slices/v046-theme-tokens",
+-    "desktop/upstream-slices/v046-design-system-leaves-a",
+-    "desktop/upstream-slices/v046-comment-polish",
+-    "desktop/upstream-slices/v046-account-scoped-requests",
+-    "desktop/upstream-slices/v046-identity-badge-palette",
+-    "desktop/upstream-slices/v046-follow-confirmation",
+-    "desktop/upstream-slices/v046-danmaku-protocol",
+-    "desktop/upstream-slices/v046-design-system-leaves-b",
+-    "desktop/upstream-slices/v046-rss-public-content",
+-    "desktop/upstream-slices/v046-image-viewer",
+-    "desktop/upstream-slices/v046-chrome-glass-tuning",
+-    "desktop/upstream-slices/v046-home-card-tint-policy",
+-    "desktop/upstream-slices/v046-glyph-toolbar-pickers",
+     "desktop/upstream-slices/v046-video-info-section",
+-    "desktop/upstream-slices/v046-episode-selector",
+-    "desktop/upstream-slices/v046-player-overlay",
+-    "desktop/upstream-slices/v046-bangumi-player",
+-    "desktop/upstream-slices/v046-danmaku-hot-command",
+-    "desktop/upstream-slices/v046-audio-listen-closure",
+-    "desktop/upstream-slices/v046-mfx-small-protocol-fixes",
+-    "desktop/upstream-slices/v046-dynamic-category-merge",
+-    "desktop/upstream-slices/v046-search-state",
+-    "desktop/upstream-slices/v046-bangumi-hub-pages",
+-    "desktop/upstream-slices/v046-theme-palette-schedule",
+-    "desktop/upstream-slices/v046-portrait-pager",
+-    "desktop/upstream-slices/v046-space-content-pager",
+-    "desktop/upstream-slices/v046-wallpaper-foundation",
+-    "desktop/upstream-slices/v046-control-center-motion",
+-    "desktop/upstream-slices/v046-detail-holder-collapse"
++    "desktop/upstream-slices/v046-wallpaper-foundation"
+   ],
+   "archives": [
+     {
+@@ -7817,6 +7818,35 @@
+           "sha256": "1530368bcab70b55492f91fe1e16fc1f5899f01b269069b200feb6901fb6a994",
+           "hashNormalization": "raw",
+           "blob": "bfd2228ff6de70eb0393f0b0d6045da87b247eda"
++        }
++      ]
++    },
++    {
++      "directory": "desktop/upstream-slices/dynamic-up-list",
++      "files": [
++        {
++          "path": "desktop/upstream-slices/dynamic-up-list/DynamicSettingsStore.kt",
++          "sha256": "aaefbadb6f75c7c542cb8ce7131dedaf35b8e2f97dc90850bc7d9ba5b6ebc9d3",
++          "hashNormalization": "raw",
++          "blob": "8cc96746711cb2d36d92e8e27747a0029c4e8047"
++        },
++        {
++          "path": "desktop/upstream-slices/dynamic-up-list/HomeFeedSettingsSection.kt",
++          "sha256": "014d9352bb7f73c9438b453b3833b90d3053920c4841688e83894c31ee4537fe",
++          "hashNormalization": "raw",
++          "blob": "067e24c65526e3a5916e91ee001be158757c58ca"
++        },
++        {
++          "path": "desktop/upstream-slices/dynamic-up-list/LICENSE",
++          "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
++          "hashNormalization": "raw",
++          "blob": "f288702d2fa16d3cdf0035b15a9fcbc552cd88e7"
++        },
++        {
++          "path": "desktop/upstream-slices/dynamic-up-list/manifest.json",
++          "sha256": "1279af04cb976428015a2f852f07bcdc0bcbb07bc886270f6cc991a826a6bb13",
++          "hashNormalization": "raw",
++          "blob": "159eb3a64e04e71061a704a87bb6c990aca5a8af"
+         }
+       ]
+     }
+@@ -20638,6 +20668,36 @@
+       "referenceOnly": false,
+       "partialReuse": false,
+       "usedScope": "Whole v0.4.6 VideoDetailInlineScrollRecovery (new in v0.4.2, emitted by the video detail holder producer, called by one counted holder block) and its unit test (a verbatim desktop-owned copy runs it). TabletVideoLayout, TabletCinemaLayout and VideoContentSection take counted v0.4.6 hunks whose text is read from the v046-comment-list archive (not leaves of this archive); the holder block is pinned by sha256 and git blob."
++    },
++    {
++      "path": "app/src/main/java/com/android/purebilibili/core/store/home/DynamicSettingsStore.kt",
++      "localPath": "desktop/upstream-slices/dynamic-up-list/DynamicSettingsStore.kt",
++      "upstreamCommit": "6f0696eb1389728b5a090125d32c1aae470f72f1",
++      "blob": "8cc96746711cb2d36d92e8e27747a0029c4e8047",
++      "sha256": "aaefbadb6f75c7c542cb8ce7131dedaf35b8e2f97dc90850bc7d9ba5b6ebc9d3",
++      "hashNormalization": "raw",
++      "kind": "adaptedSource",
++      "features": [
++        "dynamic-up-list"
++      ],
++      "referenceOnly": false,
++      "partialReuse": true,
++      "usedScope": "TON-1344: complete canonical key and observeUpListVisible/setUpListVisible function bodies; complete DynamicUpListVisibilityPreference AppSwitchPreference call with three reversible desktop seams. Other declarations in these byte-identical full originals are not emitted. See dynamic-up-list-proof.json."
++    },
++    {
++      "path": "app/src/main/java/com/android/purebilibili/feature/settings/HomeFeedSettingsSection.kt",
++      "localPath": "desktop/upstream-slices/dynamic-up-list/HomeFeedSettingsSection.kt",
++      "upstreamCommit": "6f0696eb1389728b5a090125d32c1aae470f72f1",
++      "blob": "067e24c65526e3a5916e91ee001be158757c58ca",
++      "sha256": "014d9352bb7f73c9438b453b3833b90d3053920c4841688e83894c31ee4537fe",
++      "hashNormalization": "raw",
++      "kind": "adaptedSource",
++      "features": [
++        "dynamic-up-list"
++      ],
++      "referenceOnly": false,
++      "partialReuse": true,
++      "usedScope": "TON-1344: complete canonical key and observeUpListVisible/setUpListVisible function bodies; complete DynamicUpListVisibilityPreference AppSwitchPreference call with three reversible desktop seams. Other declarations in these byte-identical full originals are not emitted. See dynamic-up-list-proof.json."
+     }
+   ],
+   "buildStandaloneInputs": [
+diff --git a/desktop/tools/sync-upstream.py b/desktop/tools/sync-upstream.py
+--- a/desktop/tools/sync-upstream.py
++++ b/desktop/tools/sync-upstream.py
+@@ -33,7 +33,7 @@
+ COMPATIBILITY_CATALOG_PATH = "desktop/tools/compatibility-source-inputs.json"
+ BUILD_CONFIGURATION_PATH = "app/build.gradle.kts"
+ CANONICAL_BUILD_CONFIGURATION_PATH = "desktop/tools/upstream-build-configuration-baseline-v025.gradle.kts"
+-COMPATIBILITY_CATALOG_SHA256 = "0b32416e622021854a959df017a0f871401573025b039808861e857f5b82f832"
++COMPATIBILITY_CATALOG_SHA256 = "8a1e4d7e249e8921e0e0eae85e5ceae25e4b3e9760cd67d6ebefd9c8af6d9d10"
+ 
+ 
+ class UpdateError(RuntimeError):
+diff --git a/.gitattributes b/.gitattributes
+--- a/.gitattributes
++++ b/.gitattributes
+@@ -166,3 +166,8 @@
+ desktop/native/veyra-guidance/** -text whitespace=cr-at-eol,-blank-at-eof
+ # Generated brand preview embeds assets and should not count as source code.
+ artwork/brand-motion/preview.html linguist-generated=true
++
++# TON-1344: preserve inherited CRLF and exact upstream/patch artifact bytes.
++desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopSettingsShareWindowsCatalog.kt whitespace=cr-at-eol
++desktop/upstream-slices/dynamic-up-list/HomeFeedSettingsSection.kt whitespace=-blank-at-eol
++desktop/verification/ton-1344/root-inputs.patch whitespace=-blank-at-eol
