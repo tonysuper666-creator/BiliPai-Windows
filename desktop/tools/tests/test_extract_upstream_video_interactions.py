@@ -13,6 +13,8 @@ REPO = Path(__file__).resolve().parents[3]
 TOOLS = REPO / "desktop/tools"
 sys.path.insert(0, str(TOOLS))
 
+from legacy_gate_workspace import legacy_gate_workspace
+
 
 def load(name, filename):
     spec = importlib.util.spec_from_file_location(name, TOOLS / filename)
@@ -29,12 +31,20 @@ SEND = "app/src/main/java/com/android/purebilibili/feature/video/ui/components/D
 
 
 class OriginalVideoInteractionExtractionTest(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        # Gradle feeds these live generators originals from legacy-root.commit.
+        # Keep TOOLS on the checkout under test; only the source view is pinned.
+        # The full gate may already have materialized that view for this test.
+        cls.source_repo = (REPO if REPO.name == ".legacy-root" else
+                           cls.enterClassContext(legacy_gate_workspace(REPO)))
+
     def test_composer_lifecycle_is_only_five_exact_edits_over_whole_vm(self):
-        original_path = owner._desktop_canonical_source(REPO, owner.RECIPES[0]["originalPath"])
+        original_path = owner._desktop_canonical_source(self.source_repo, owner.RECIPES[0]["originalPath"])
         original_raw = owner.wide(original_path).read_bytes()
         with tempfile.TemporaryDirectory(prefix="original-interaction-owner-") as temp:
             output = Path(temp)
-            actual_rows = owner.generate(REPO, output / "actual")
+            actual_rows = owner.generate(self.source_repo, output / "actual")
             actual = (output / "actual" / VM).read_text(encoding="utf-8")
             # The v046 like write guard is a stage of VideoEngagementViewModel.kt (detail units producer). This owner
             # producer emits VideoPlaybackViewModel.kt only, so there is no guard stage to peel in restore_later_stages.
@@ -129,12 +139,12 @@ class OriginalVideoInteractionExtractionTest(unittest.TestCase):
                     "    private var wasPlayingBeforeDanmakuComposer = false\n", "", 1))
 
     def test_whole_composer_container_inverse_restores_pinned_original(self):
-        original = controls.wide(controls._desktop_canonical_source(REPO, SEND)).read_text(
+        original = controls.wide(controls._desktop_canonical_source(self.source_repo, SEND)).read_text(
             encoding="utf-8").replace("\r\n", "\n")
         self.assertEqual(controls.SOURCE_PINS[SEND]["sha256LF"],
             hashlib.sha256(original.encode()).hexdigest())
         with tempfile.TemporaryDirectory(prefix="original-interaction-controls-") as temp:
-            controls.generate(REPO, Path(temp))
+            controls.generate(self.source_repo, Path(temp))
             selected_original = controls.read("feature/video/ui/components/DanmakuSendDialog.kt")
             actual = (Path(temp) / "com/android/purebilibili/feature/video/ui/components/DanmakuSendDialog.kt").read_text(
                 encoding="utf-8")
@@ -153,9 +163,9 @@ class OriginalVideoInteractionExtractionTest(unittest.TestCase):
     def test_all_three_share_bodies_restore_whole_previous_adaptation(self):
         with tempfile.TemporaryDirectory(prefix="original-interaction-share-") as temp:
             output = Path(temp)
-            share.generate(REPO, output / "actual")
+            share.generate(self.source_repo, output / "actual")
             with patch.object(share, "share_presentation_delta", side_effect=lambda path, body, audit=None: (body, 0)):
-                share.generate(REPO, output / "before")
+                share.generate(self.source_repo, output / "before")
             for spec in share.SPECS:
                 target = spec["target"]
                 actual = share.safe(output / "actual" / target).read_text(encoding="utf-8")
