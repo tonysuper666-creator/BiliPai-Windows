@@ -3500,6 +3500,7 @@ val appCoreUpstreamTestsNotRun: Map<String, String> = mapOf(
 // Approved upstream test corrections are isolated from production patch outputs.
 // The complete LF-normalized source is pinned: even an edit outside a hunk needs review.
 val correctedUpstreamTestPaths = setOf(
+    "app/src/test/java/com/android/purebilibili/feature/video/subtitle/SubtitleDocumentCodecTest.kt",
     "app/src/test/java/com/android/purebilibili/feature/settings/SettingsSemanticIconPolicyTest.kt",
     "app/src/test/java/com/android/purebilibili/core/util/NavigationUiPolicyTabletTest.kt",
     "app/src/test/java/com/android/purebilibili/core/theme/SeedColorSchemeTest.kt",
@@ -3586,8 +3587,8 @@ kotlin.sourceSets.named("test") { kotlin.srcDir(correctedUpstreamTestOutput) }
 val appM4dTestsNotRun: Map<String, String> = m4dTable("tests-not-run.tsv").toMap()
 val appCoreUpstreamTestPaths: Set<String> = (appTestRoot.resolve("com/android/purebilibili/core").walkTopDown() +
         migratedAppM4dAreas.asSequence().flatMap { appTestRoot.resolve("com/android/purebilibili/$it").walkTopDown() } +
-        // TON-1120: upstream's IM wire tests run against the directly compiled MessageImRepository.
-        sequenceOf(appTestRoot.resolve("com/android/purebilibili/data/repository/MessageImRepositoryTest.kt")))
+        // Single-file migrations also bring their same-directory FooTest.kt; the shared filters below still apply.
+        migratedAppSingleFiles.asSequence().map { appTestRoot.resolve(it.removeSuffix(".kt") + "Test.kt") })
     .filter { it.isFile && it.extension == "kt" }
     // JUnit 4, Robolectric, mockk and androidx.test are not on the desktop test classpath; JUnit 5 (org.junit.jupiter) is.
     .filter { file -> !Regex("""^import (org\.junit\.(?!jupiter)|org\.robolectric|io\.mockk|androidx\.test)""", RegexOption.MULTILINE).containsMatchIn(file.readText()) }

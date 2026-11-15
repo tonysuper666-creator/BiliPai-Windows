@@ -1,0 +1,18 @@
+Upstream-commit: 25ce80f0f19758dd955d07be7967af8a734922fe
+Upstream-source-sha256: 65e5d2a8310b44bd6eefafdc1cc70d9b4bf5dbc65af72dd90d707a9000670708
+Reason: TON-1116 runs the unchanged codec assertions on desktop JUnit 5; remove only the Android runner/configuration and use kotlin.test.Test.
+
+--- a/app/src/test/java/com/android/purebilibili/feature/video/subtitle/SubtitleDocumentCodecTest.kt
++++ b/app/src/test/java/com/android/purebilibili/feature/video/subtitle/SubtitleDocumentCodecTest.kt
+@@ -3,5 +3,2 @@
+-import org.junit.Test
+-import org.junit.runner.RunWith
+-import org.robolectric.RobolectricTestRunner
+-import org.robolectric.annotation.Config
++import kotlin.test.Test
+ import kotlin.test.assertEquals
+@@ -12,4 +9,2 @@
+-@RunWith(RobolectricTestRunner::class)
+-@Config(sdk = [33], manifest = Config.NONE)
+ class SubtitleDocumentCodecTest {
+     @Test fun decodesUnicodeDocumentByteOrderMarks() {

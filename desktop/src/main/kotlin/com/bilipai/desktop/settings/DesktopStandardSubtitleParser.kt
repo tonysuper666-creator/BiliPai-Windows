@@ -14,11 +14,31 @@ internal object DesktopStandardSubtitleParser {
     fun parse(source: String, mimeType: String): List<SubtitleCue> {
         val normalized = source.removePrefix("\uFEFF").replace("\r\n", "\n").replace('\r', '\n')
         val cues = when (mimeType) {
-            MimeTypes.APPLICATION_SUBRIP, MimeTypes.TEXT_VTT -> parseTimedBlocks(normalized)
+            MimeTypes.APPLICATION_SUBRIP -> parseTimedBlocks(normalized, stripSubripTags = true)
+            MimeTypes.TEXT_VTT -> parseTimedBlocks(normalized, stripSubripTags = false)
             MimeTypes.TEXT_SSA -> parseAss(normalized)
             else -> throw IllegalArgumentException("不支持的字幕格式：$mimeType")
         }
-        return cues.filter { it.endMs > it.startMs && it.content.isNotBlank() }.sortedBy { it.startMs }
+        val valid = cues.filter { it.endMs > it.startMs && it.content.isNotBlank() }.sortedBy { it.startMs }
+        // Media3 SubripParser emits original intervals; WebVTT/SSA emit the active cue timeline.
+        return if (mimeType == MimeTypes.APPLICATION_SUBRIP) valid else standardTimeline(valid)
+    }
+
+    private fun standardTimeline(cues: List<SubtitleCue>): List<SubtitleCue> {
+        val starts = cues.withIndex().groupBy { it.value.startMs }
+        val ends = cues.withIndex().groupBy { it.value.endMs }
+        val boundaries = (starts.keys + ends.keys).sorted()
+        // Indices follow the stable start-time sort, retaining document order for equal starts.
+        val active = sortedSetOf<Int>()
+        return buildList {
+            for ((start, end) in boundaries.zipWithNext()) {
+                ends[start]?.forEach { active.remove(it.index) }
+                starts[start]?.forEach { active.add(it.index) }
+                if (active.isNotEmpty()) {
+                    add(SubtitleCue(start, end, active.joinToString("\n") { cues[it].content }))
+                }
+            }
+        }
     }
 
     private val timing = Regex("""^\s*(\S+)\s+-->\s+(\S+)(?:\s+.*)?$""")
@@ -38,7 +58,9 @@ internal object DesktopStandardSubtitleParser {
         }
     }
 
-    private fun parseTimedBlocks(source: String): List<SubtitleCue> = buildList {
+    private val subripControlTag = Regex("""\{\\.*?}""")
+
+    private fun parseTimedBlocks(source: String, stripSubripTags: Boolean): List<SubtitleCue> = buildList {
         for (block in source.split(Regex("\n[\t ]*\n"))) {
             val lines = block.trim().lines()
             val first = lines.firstOrNull() ?: continue
@@ -51,7 +73,8 @@ internal object DesktopStandardSubtitleParser {
             val times = lines.getOrNull(index)?.let(timing::matchEntire) ?: continue
             val start = timeMs(times.groupValues[1]) ?: continue
             val end = timeMs(times.groupValues[2]) ?: continue
-            add(SubtitleCue(start, end, plainText(lines.drop(index + 1).joinToString("\n"))))
+            val text = lines.drop(index + 1).joinToString("\n")
+            add(SubtitleCue(start, end, plainText(if (stripSubripTags) subripControlTag.replace(text, "") else text)))
         }
     }
 

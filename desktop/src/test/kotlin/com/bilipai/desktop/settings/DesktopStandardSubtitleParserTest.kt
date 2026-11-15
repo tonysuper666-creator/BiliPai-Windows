@@ -23,6 +23,20 @@ class DesktopStandardSubtitleParserTest {
         ), parseSubtitleDocument("captions.SRT", source))
     }
 
+    @Test fun srtStripsBackslashControlTagsWithoutRemovingLiteralBracesOrVttText() {
+        val text = """{\an8}<b>Hello</b>{\pos(20,30)} {literal}
+            |{\an1}next line{\i0}""".trimMargin()
+        val timing = "00:00:01,000 --> 00:00:02,000\n"
+        assertEquals(listOf(SubtitleCue(1000, 2000, "Hello {literal}\nnext line")),
+            parseSubtitleDocument("controls.srt", "1\n" + timing + text))
+        assertEquals(listOf(SubtitleCue(1000, 2000, """{\an8}Hello{\pos(20,30)} {literal}
+            |{\an1}next line{\i0}""".trimMargin())),
+            parseSubtitleDocument("literal.vtt", "WEBVTT\n\n" + timing + text))
+        assertFailsWith<IllegalArgumentException> {
+            parseSubtitleDocument("empty.srt", "1\n" + timing + """{\an8}{\i0}""")
+        }
+    }
+
     @Test fun webVttHonorsIdentifiersSettingsAndMetadataWithoutPublishingTheirText() {
         val source = """
             WEBVTT description
@@ -128,8 +142,35 @@ class DesktopStandardSubtitleParserTest {
     }
 
     @Test fun overlappingRealCuesArePreservedForTheTimelineConsumer() {
+        val vtt = "WEBVTT\n\n00:00.000 --> 00:02.000\nfirst\n\n00:01.000 --> 00:03.000\nsecond\n"
+        val ass = "[Events]\nFormat: Start, End, Text\n" +
+            "Dialogue: 0:00:00.00,0:00:02.00,first\nDialogue: 0:00:01.00,0:00:03.00,second\n"
+        val expected = listOf(SubtitleCue(0, 1000, "first"),
+            SubtitleCue(1000, 2000, "first\nsecond"), SubtitleCue(2000, 3000, "second"))
+        for ((name, source) in listOf("overlap.vtt" to vtt, "overlap.ass" to ass, "overlap.ssa" to ass)) {
+            val cues = parseSubtitleDocument(name, source)
+            assertEquals(expected, cues, name)
+            assertEquals("first", resolveSubtitleTextAt(cues, 500), name)
+            assertEquals("first\nsecond", resolveSubtitleTextAt(cues, 1500), name)
+            assertEquals("second", resolveSubtitleTextAt(cues, 2500), name)
+            assertNull(resolveSubtitleTextAt(cues, 3500), name)
+        }
+        // SRT follows SubripParser's original-interval output, unlike WebVTT and SSA.
         assertEquals(listOf(SubtitleCue(0, 2000, "first"), SubtitleCue(1000, 3000, "second")),
-            parseSubtitleDocument("overlap.vtt",
-                "WEBVTT\n\n00:00.000 --> 00:02.000\nfirst\n\n00:01.000 --> 00:03.000\nsecond\n"))
+            parseSubtitleDocument("overlap.srt", vtt.removePrefix("WEBVTT\n\n")))
+
+        // Out-of-order input, equal starts, an ending/starting boundary, a gap and nested cues.
+        val events = listOf(SubtitleCue(1000, 3000, "second"), SubtitleCue(0, 2000, "first"),
+            SubtitleCue(1000, 2000, "third"), SubtitleCue(2000, 3000, "fourth"),
+            SubtitleCue(4000, 5000, "last"))
+        val ordered = listOf(SubtitleCue(0, 1000, "first"),
+            SubtitleCue(1000, 2000, "first\nsecond\nthird"),
+            SubtitleCue(2000, 3000, "second\nfourth"), SubtitleCue(4000, 5000, "last"))
+        assertEquals(ordered, parseSubtitleDocument("ordered.vtt",
+            encodeSubtitleDocument(events, SubtitleDocumentFormat.WEBVTT)))
+        assertEquals(ordered, parseSubtitleDocument("ordered.ass",
+            "[Events]\nFormat: Start, End, Text\n" + events.joinToString("\n") {
+                "Dialogue: 0:00:0${it.startMs / 1000}.00,0:00:0${it.endMs / 1000}.00,${it.content}"
+            }))
     }
 }
