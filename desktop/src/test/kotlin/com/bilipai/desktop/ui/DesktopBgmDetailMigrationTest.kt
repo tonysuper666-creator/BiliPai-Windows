@@ -2,6 +2,8 @@ package com.bilipai.desktop.ui
 
 import androidx.compose.runtime.*
 import androidx.compose.runtime.snapshots.Snapshot
+import com.android.purebilibili.feature.audio.bgm.BgmComposerCallbacks
+import com.android.purebilibili.feature.video.viewmodel.VideoCommentViewModel
 import com.android.purebilibili.data.model.response.ReplyCursor
 import com.android.purebilibili.data.model.response.ReplyData
 import com.android.purebilibili.data.model.response.ReplyItem
@@ -189,6 +191,117 @@ class DesktopBgmDetailMigrationTest {
             assertNull(state.replyTarget)
             assertNull(state.composerDrafts.drafts[commentComposerDraftKey(41L)])
             assertEquals("other root draft", state.composerDrafts.drafts[commentComposerDraftKey(null)]?.text)
+        }
+    }
+
+    private class ComposerHarness(val vm: VideoCommentViewModel) {
+        var open = true
+        val submitted = mutableListOf<Long>()
+        fun callbacks(session: Long, reply: Long?) =
+            BgmComposerCallbacks(vm, session, reply, { open }, { open = false }, { submitted += it })
+        fun session() = vm.commentState.value.composerDrafts.sessionId
+    }
+
+    @Test fun oldSessionDismissCannotChangeTheNewSessionVisibilityOrReplyTarget() = runTest {
+        Fixture(testScheduler).use { f ->
+            val vm = f.page.comments
+            vm.init(aid = 771, commentType = 17)
+            f.frames()
+            val h = ComposerHarness(vm)
+            vm.beginCommentDraft()
+            val old = h.callbacks(h.session(), null)
+            vm.beginCommentDraft()
+            val current = h.callbacks(h.session(), 42L)
+            vm.replyTo(ReplyItem(rpid = 42))
+            old.onDismiss()
+            assertTrue(h.open, "An older session cannot close the new composer")
+            assertEquals(42L, vm.commentState.value.replyTarget?.rpid, "or drop its reply target")
+            current.onDismiss()
+            assertFalse(h.open)
+            assertNull(vm.commentState.value.replyTarget)
+        }
+    }
+
+    @Test fun oldSessionSendMakesNoRequestAndTheCurrentSessionSends() = runTest {
+        Fixture(testScheduler).use { f ->
+            val vm = f.page.comments
+            vm.init(aid = 771, commentType = 17)
+            f.frames()
+            val h = ComposerHarness(vm)
+            vm.beginCommentDraft()
+            val old = h.callbacks(h.session(), null)
+            vm.beginCommentDraft()
+            val second = h.session()
+            val current = h.callbacks(second, null)
+            old.onSend("stale", emptyList(), false)
+            assertFalse(vm.commentState.value.isSending)
+            assertTrue(h.submitted.isEmpty())
+            assertEquals(0, f.first.addCalls.size)
+            f.first.holdAdd = true
+            current.onSend("fresh", emptyList(), true)
+            f.first.awaitAdd()
+            assertEquals(listOf(second), h.submitted)
+            assertEquals(1, f.first.addCalls.size)
+            assertTrue(vm.commentState.value.isSending)
+            val draft = vm.commentState.value.composerDrafts.drafts.values.single()
+            assertEquals(Triple("fresh", emptyList<String>(), true), Triple(draft.text, draft.imageUris, draft.syncToDynamic),
+                "The send first publishes the current session draft")
+            f.first.releaseAdd()
+            f.frames()
+        }
+    }
+
+    @Test fun sendIsRejectedWhileBusyAndAfterTheSessionCompleted() = runTest {
+        Fixture(testScheduler).use { f ->
+            val vm = f.page.comments
+            vm.init(aid = 771, commentType = 17)
+            f.frames()
+            val h = ComposerHarness(vm)
+            vm.beginCommentDraft()
+            val cb = h.callbacks(h.session(), null)
+            f.first.holdAdd = true
+            cb.onSend("one", emptyList(), false)
+            f.first.awaitAdd()
+            cb.onSend("two", emptyList(), false)
+            assertEquals(1, f.first.addCalls.size, "A second send while busy makes no request")
+            assertEquals(1, h.submitted.size)
+            f.first.releaseAdd()
+            f.frames()
+            assertEquals(h.session(), vm.commentState.value.composerDrafts.completedSessionId)
+            h.open = true
+            cb.onSend("three", emptyList(), false)
+            assertFalse(vm.commentState.value.isSending)
+            assertEquals(1, f.first.addCalls.size, "A completed session cannot send again")
+            assertEquals(1, h.submitted.size)
+        }
+    }
+
+    @Test fun sendIsRejectedWhenTheReplyTargetChangedOrTheComposerClosed() = runTest {
+        Fixture(testScheduler).use { f ->
+            val vm = f.page.comments
+            vm.init(aid = 771, commentType = 17)
+            f.frames()
+            val h = ComposerHarness(vm)
+            vm.beginCommentDraft()
+            vm.replyTo(ReplyItem(rpid = 41))
+            val cb = h.callbacks(h.session(), 41L)
+            vm.replyTo(ReplyItem(rpid = 42))
+            cb.onSend("wrong target", emptyList(), false)
+            vm.cancelReply()
+            cb.onSend("no target", emptyList(), false)
+            vm.replyTo(ReplyItem(rpid = 41))
+            h.open = false
+            cb.onSend("closed", emptyList(), false)
+            assertFalse(vm.commentState.value.isSending)
+            assertTrue(h.submitted.isEmpty())
+            assertEquals(0, f.first.addCalls.size)
+            h.open = true
+            f.first.holdAdd = true
+            cb.onSend("right", emptyList(), false)
+            f.first.awaitAdd()
+            assertEquals(1, f.first.addCalls.size, "Same session, target and open composer sends")
+            f.first.releaseAdd()
+            f.frames()
         }
     }
 
