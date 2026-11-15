@@ -85,7 +85,6 @@ feature/settings/screen/TipsSettingsScreen.kt	编译不过（2 处）：Conflict
 feature/settings/share/SettingsShareScreen.kt	编译不过（79 处）：Cannot infer type for type parameter '_'. Specify ×7；未解析 Intent×6；未解析 isBusy×6；等对应桌面替身或桌面实现
 feature/settings/share/SettingsShareService.kt	编译不过（60 处）：Overload resolution ambiguity between candidates:×14；Cannot infer type for type parameter '_'. Specify ×12；未解析 Configuration×4；等对应桌面替身或桌面实现
 feature/settings/share/SettingsShareViewModel.kt	编译不过（11 处）：未解析 Application×3；未解析 AndroidViewModel×2；未解析 applicationContext×2；等对应桌面替身或桌面实现
-feature/settings/ui/SettingsPageScaffold.kt	编译不过（1 处）：未解析 settingsIconColors×1；等对应桌面替身或桌面实现
 feature/settings/ui/SettingsSections.kt	编译不过（262 处）：@Composable invocations can only happen from the c×103；Overload resolution ambiguity between candidates:×98；No parameter with name '_' found.×22；等对应桌面替身或桌面实现
 feature/settings/update/AppUpdateChecker.kt	上游直连 GitHub Releases 检查更新；桌面更新走自有发布渠道（TON-1013），不能连上游仓库，且桌面要注入受代理/Root 门控的 HTTP
 feature/settings/update/AppUpdateDialogHost.kt	编译不过（7 处）：Overload resolution ambiguity between candidates:×4；未解析 Toast×2；未解析 widget×1；等对应桌面替身或桌面实现

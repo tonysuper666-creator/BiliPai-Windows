@@ -1,0 +1,11 @@
+--- a/com/android/purebilibili/feature/settings/ui/SettingsPageScaffold.kt
++++ b/com/android/purebilibili/feature/settings/ui/SettingsPageScaffold.kt
+@@ -176,7 +176,7 @@
+     val backdrop = chromeSource?.takeIf { it.isReady }?.backdrop
+     val hazeState = if (
+         headerBlurEnabled && !lowBlurBudget &&
+-        shouldAllowRenderEffectBackedHazeEffect(android.os.Build.VERSION.SDK_INT)
++        com.bilipai.desktop.ui.desktopDetailRenderEffectsSupported()
+     ) rememberRecoverableHazeState().takeIf { recoverableBlurEnabled(it) } else null
+     val hazeReady = hazeState != null
+     val topBarBlurActive = progressiveBlurEnabled || hazeReady || fadeActive
