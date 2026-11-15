@@ -1,5 +1,7 @@
 package com.bilipai.desktop.ui
 import androidx.compose.runtime.staticCompositionLocalOf
+import com.android.purebilibili.core.util.BilibiliNavigationTarget
+import com.android.purebilibili.core.util.BilibiliNavigationTargetParser
 import com.android.purebilibili.navigation.*
 import com.android.purebilibili.navigation3.*
 
@@ -7,6 +9,10 @@ import com.android.purebilibili.navigation3.*
 internal val LocalDesktopOriginalMessageLinkNavigation = staticCompositionLocalOf<(String) -> Unit> {
     error("Original message links require the actual retained Root route")
 }
+
+// Only an outer scheme the old Web branch or original deep links already accepted may
+// reach the original search parser; it unwraps ?url= before judging the scheme.
+private val desktopMessageSearchSchemes = setOf("http", "https", "bilibili", "bili")
 
 internal fun desktopOriginalOpenMessageLink(rawLink: String, commands: DesktopOriginalRootRouteCommands, sourceRoute: String) {
     when (val action = resolveMessageLinkNavigationAction(rawLink)) {
@@ -73,9 +79,16 @@ internal fun desktopOriginalOpenMessageLink(rawLink: String, commands: DesktopOr
             commands.push(BiliPaiNavKey.ArticleDetail(action.articleId))
         }
         is MessageLinkNavigationAction.Web -> {
-            val url = action.url.trim()
-            if (url.startsWith("http://", ignoreCase = true) || url.startsWith("https://", ignoreCase = true)) {
-                commands.push(BiliPaiNavKey.Web(url))
+            val scheme = rawLink.trim().substringBefore("://", "").lowercase()
+            val search = if (scheme in desktopMessageSearchSchemes)
+                BilibiliNavigationTargetParser.parse(rawLink) as? BilibiliNavigationTarget.Search else null
+            if (search != null) {
+                commands.push(BiliPaiNavKey.Search(search.keyword))
+            } else {
+                val url = action.url.trim()
+                if (url.startsWith("http://", ignoreCase = true) || url.startsWith("https://", ignoreCase = true)) {
+                    commands.push(BiliPaiNavKey.Web(url))
+                }
             }
         }
     }
