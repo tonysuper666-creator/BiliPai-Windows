@@ -54,20 +54,25 @@ STATIC_ROOTS = (
     'desktop/src',
     'desktop/upstream-slices',
 )
-# prepareUpstreamSources syncs the original main sources from repositoryRoot, the pinned legacy read point, and excludes
-# CANONICAL there; the live checkout's app/ is not compiled. So the archive must differ from, and alone declare the new
-# symbols against, that tree. The live original may equal the archive once upstream catches up, so for it the test only
-# requires that no producer run touches it.
+# The producer reads repositoryRoot, the pinned legacy read point, whose original lacks the new symbols. The desktop main
+# compile reads both trees: prepareUpstreamSources copies non-migrated direct rows from the legacy tree, while the migrated
+# modules (design-system, core-data, ...) and migratedAppPaths compile from the live checkout (mergedRepositoryRoot).
+# feature/home is a migrated area (M4b), so CANONICAL compiles from the live tree and the producer's build-dir copy at
+# RELATIVE is dropped. The live original may change with every upstream merge, so no byte equality is required of it;
+# it must declare the new symbols once, nothing else either tree compiles may declare them, and no producer run may
+# touch either original.
 PROBE = 'app/src/main/java/com/android/purebilibili/feature/home/HomeScreen.kt'
 LIVE_ROOTS = ('desktop/src', 'desktop/upstream-slices')
+HOME = 'feature/home/HomeRefreshUiPolicy.kt'
 
 
 def source_root():
     return legacy_read_point(REPO, PROBE)
 
 
-def static_root(relative):
-    return (REPO if relative in LIVE_ROOTS else source_root()) / relative
+def scanned_roots():
+    roots = [REPO / relative for relative in STATIC_ROOTS]
+    return roots + [source_root() / relative for relative in STATIC_ROOTS if relative not in LIVE_ROOTS]
 
 
 def originals():
@@ -343,9 +348,31 @@ class V046HomeRefreshUiPolicySourceTest(unittest.TestCase):
         for token in NEW_SYMBOLS:
             self.assertNotIn(token, vendored, token)
         static = []
-        for relative in STATIC_ROOTS:
-            static.extend(declaration_hits(static_root(relative)))
-        self.assertEqual([policy.ARCHIVE + '/HomeRefreshUiPolicy.kt'], static)
+        for root in scanned_roots():
+            static.extend(declaration_hits(root))
+        self.assertEqual(sorted([CANONICAL, policy.ARCHIVE + '/HomeRefreshUiPolicy.kt']), sorted(static))
+        # why the live original, not the producer copy, is the compiled definer
+        self.assertIn('"feature/home/"', next(row for row in build.splitlines()
+                                              if row.startswith('val migratedAppFeatureAreas = listOf(')))
+        self.assertEqual(1, build.count('val migratedAppPaths: Set<String> = migratedAppCorePaths + '))
+        self.assertEqual(1, build.count('val migratedUpstreamRelativePaths = migratedWholeModulePaths + migratedAppPaths + '))
+        self.assertEqual(1, build.count('val appJavaRoot = mergedRepositoryRoot.resolve("app/src/main/java")'))
+        self.assertEqual(1, build.count('    kotlin.srcDir(appJavaRoot)\n'))
+        for name in ('appCoreDesktopOwned', 'appCoreLaterSteps'):
+            start = build.index('val ' + name + ': Map<String, String> = mapOf(')
+            self.assertNotIn('"feature/', build[start:build.index('\n)\n', start)], name)
+        self.assertEqual(1, build.count('path.startsWith(buildDirectoryPath) && !path.startsWith(patchedDirectoryPath) && '
+                                        'upstreamIdentity(element.file) in migratedUpstreamRelativePaths'))
+        held = []
+        for directory in ('m4b', 'data', 'm4c'):
+            table = REPO / 'desktop/upstream-core' / directory / 'later-steps.tsv'
+            rows = table.read_text(encoding='utf-8').splitlines() if table.is_file() else []
+            held += [row.split('\t', 1)[0] for row in rows if row.strip() and not row.startswith('#')]
+        self.assertIn('val appFeatureListDirectories = listOf("upstream-core/m4b", "upstream-core/data", "upstream-core/m4c")',
+                      build)
+        self.assertNotIn(HOME, held)
+        self.assertFalse((REPO / 'desktop/upstream-core/patches' / (CANONICAL + '.patch')).exists())
+        self.assertFalse((REPO / 'desktop/upstream-core/replacements' / RELATIVE).exists())
         self.assertIn(policy.ARCHIVE, self.catalog['buildInputRoots'])
         self.assertEqual(1, self.catalog['buildInputRoots'].count(policy.ARCHIVE))
         rows = [row for row in self.catalog['inputs'] if row['localPath'].startswith(policy.ARCHIVE + '/')]
