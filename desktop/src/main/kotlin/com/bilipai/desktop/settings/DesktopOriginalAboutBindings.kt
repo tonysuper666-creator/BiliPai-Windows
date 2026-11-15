@@ -94,6 +94,7 @@ internal data class DesktopOriginalAboutReleaseState(
     val checking: Boolean = false,
     val status: String = "点击检查",
     val result: AppUpdateCheckResult? = null,
+    val checkedVersionCode: Int? = null,
 )
 
 /** One retained Root's metadata projection; caller-owned manual and consent-gated automatic
@@ -120,7 +121,7 @@ internal class DesktopOriginalAboutReleaseMetadata(private val client: OkHttpCli
             checkRequest()
             publish {
                 mutable.value = result.fold(
-                    onSuccess = { DesktopOriginalAboutReleaseState(false, it.message, it) },
+                    onSuccess = { DesktopOriginalAboutReleaseState(false, it.message, it, currentVersionCode) },
                     onFailure = { previous.copy(checking = false, status = "检查失败") })
             }
             return result

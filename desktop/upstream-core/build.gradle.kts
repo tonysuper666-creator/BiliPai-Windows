@@ -18,6 +18,7 @@ dependencies {
     // Same versions as the desktop runtime graph.
     api("androidx.datastore:datastore-preferences-core:1.2.1")
     api("androidx.collection:collection:1.5.0")
+    api("org.jetbrains.androidx.lifecycle:lifecycle-viewmodel:2.11.0")
     api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
     api("org.jetbrains.kotlinx:kotlinx-serialization-json:1.11.0")
     api("com.squareup.okhttp3:okhttp:5.3.2")
