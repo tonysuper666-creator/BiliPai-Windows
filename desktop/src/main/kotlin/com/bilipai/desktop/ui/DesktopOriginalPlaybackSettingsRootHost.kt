@@ -12,6 +12,9 @@ import com.bilipai.desktop.settings.DesktopOriginalPlaybackSettingsBindings
 import com.bilipai.desktop.settings.DesktopOriginalPlaybackSettingsState
 import com.bilipai.desktop.settings.DesktopSettingsNavigator
 import com.bilipai.desktop.settings.DesktopSettingsPage
+import com.bilipai.desktop.settings.DesktopSettingsApplication
+import com.bilipai.desktop.settings.DesktopStorageSettingsOwner
+import com.bilipai.desktop.settings.LocalDesktopOriginalAboutReleaseMetadata
 import java.util.concurrent.atomic.AtomicReference
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
@@ -31,6 +34,7 @@ internal fun DesktopOriginalPlaybackSettingsRootHost(
     homeSettings: StateFlow<HomeSettings>,
     hardwareDecode: DesktopOriginalHardwareDecodePreferences,
     legacyHardwareDecodeFallback: Boolean,
+    storageOwner: DesktopStorageSettingsOwner,
     active: Boolean,
     pictureInPictureAvailable: () -> Boolean,
     onFailure: (Throwable) -> Unit,
@@ -77,6 +81,10 @@ internal fun DesktopOriginalPlaybackSettingsRootHost(
         DesktopOriginalVideoEntryReadbacks(repository, routes.root.entry.gate.epoch,
             pageScope, current, commit)
     }
+    val releaseMetadata = LocalDesktopOriginalAboutReleaseMetadata.current
+    val application = remember(context, storageOwner, releaseMetadata) {
+        DesktopSettingsApplication(context.androidContext, releaseMetadata, current, storageOwner)
+    }
     var initialState by remember(context) { mutableStateOf<DesktopOriginalPlaybackSettingsState?>(null) }
     var preparationFailed by remember(context) { mutableStateOf(false) }
     var retry by remember(context) { mutableIntStateOf(0) }
@@ -118,7 +126,10 @@ internal fun DesktopOriginalPlaybackSettingsRootHost(
                 pictureInPicture = { pipNow() }, playbackLoggedIn = readbacks::isPlaybackLoggedIn,
                 playbackVip = readbacks::isPlaybackVip, settingChange = { name, value -> logNow(name, value) })
         }
-        CompositionLocalProvider(LocalDesktopOriginalPlayerSettingsContext provides context) {
+        CompositionLocalProvider(
+            LocalDesktopOriginalPlayerSettingsContext provides context,
+            LocalDesktopUpstreamAndroidContext provides application,
+        ) {
             key(context) {
                 DesktopPlaybackRightPaneContent(bindings, onBack = ownedBack)
             }

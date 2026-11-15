@@ -2738,7 +2738,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                     DesktopOriginalPlaybackSettingsRootHost(messageRoutes, homeRootRef, entryKey, page,
                                         settingsNavigator, globalPluginContext, repository, services.imageLifetime,
                                         originalHomePreferences.homeSettings, originalHardwareDecodePreferences,
-                                        legacyHardwareDecodeFallback,
+                                        legacyHardwareDecodeFallback, storageOwner = storageOwner,
                                         active = active && hostVisible && hostDisplayable && !isClosing() && !activatingUpdate,
                                         pictureInPictureAvailable = { pip != null && player != null && !isClosing() && !activatingUpdate },
                                         onFailure = { error = it.message ?: "播放设置保存失败" }, onNotice = { error = it },

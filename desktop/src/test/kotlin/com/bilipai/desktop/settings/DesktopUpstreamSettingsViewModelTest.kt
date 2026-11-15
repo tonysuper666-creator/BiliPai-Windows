@@ -12,6 +12,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStore
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.android.purebilibili.core.store.SettingsManager
+import com.android.purebilibili.core.util.CacheClearTarget
+import com.android.purebilibili.core.util.CacheUtils
+import com.android.purebilibili.core.util.isLargeScreenOrFoldableConfiguration
 import com.android.purebilibili.feature.settings.AppUpdateCheckResult
 import com.android.purebilibili.feature.settings.SettingsViewModel
 import com.android.purebilibili.feature.settings.SettingsViewModelFactory
@@ -32,6 +35,7 @@ import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
 import kotlinx.serialization.json.JsonPrimitive
 import org.junit.jupiter.api.Test
+import okhttp3.OkHttpClient
 
 class DesktopUpstreamSettingsViewModelTest {
     private class Fixture {
@@ -104,6 +108,74 @@ class DesktopUpstreamSettingsViewModelTest {
             store.clear()
             dispatcher.scheduler.runCurrent()
             Dispatchers.resetMain()
+        }
+    }
+
+    @Test fun originalVmCacheRefreshAndClearReachItsMountedOwner(): Unit = runBlocking {
+        val f = Fixture()
+        val calls = mutableListOf<String>()
+        val selected = setOf(CacheClearTarget.IMAGE_PREVIEW, CacheClearTarget.PLAYBACK_QUALITY)
+        val before = CacheUtils.CacheBreakdown(imageDiskCache = 1729L)
+        val after = CacheUtils.CacheBreakdown(imageDiskCache = 37L)
+        var currentBreakdown = before
+        val cacheOwner = object : DesktopSettingsCacheOwner {
+            override suspend fun breakdown(): CacheUtils.CacheBreakdown {
+                calls += "breakdown"
+                return currentBreakdown
+            }
+            override suspend fun clear(targets: Set<CacheClearTarget>) {
+                assertEquals(selected, targets)
+                calls += "clear"
+                currentBreakdown = after
+            }
+        }
+        val application = DesktopSettingsApplication(f.page.androidContext,
+            DesktopOriginalAboutReleaseMetadata(OkHttpClient()), f.current::get, cacheOwner)
+        val dispatcher = StandardTestDispatcher()
+        val store = ViewModelStore()
+        Dispatchers.setMain(dispatcher)
+        try {
+            // Construct the original VM, not its cache extensions. A future upstream member with
+            // the same name takes precedence over an extension and must fail this contract.
+            val vm = ViewModelProvider.create(store, SettingsViewModelFactory(application))[SettingsViewModel::class]
+            dispatcher.scheduler.runCurrent()
+            assertEquals(listOf("breakdown"), calls, "VM initialization must reach this Root's owner")
+            vm.refreshCacheSize()
+            dispatcher.scheduler.runCurrent()
+            assertEquals(listOf("breakdown", "breakdown"), calls)
+            assertSame(after, vm.clearCache(selected).getOrThrow())
+            assertEquals(listOf("breakdown", "breakdown", "clear", "breakdown"), calls)
+            f.current.set(false)
+            assertFailsWith<kotlinx.coroutines.CancellationException> { vm.clearCache(selected) }
+            assertEquals(4, calls.size, "A retired page must not enter the owner")
+        } finally {
+            store.clear()
+            dispatcher.scheduler.runCurrent()
+            Dispatchers.resetMain()
+        }
+    }
+
+    @Test fun applicationWrappersKeepThePagesActualMonitorAnswer() {
+        val f = Fixture()
+        var actualLarge = false
+        var monitorReads = 0
+        val page = DesktopOriginalPlayerSettingsContext(f.plugin, f.current::get,
+            { error("Reading the monitor must not write preferences") },
+            largeScreenOrFoldableConfiguration = { monitorReads++; actualLarge })
+        val wrapped = Application(Application(page.androidContext))
+        for (answer in listOf(false, true, false)) {
+            actualLarge = answer
+            assertEquals(answer, wrapped.isLargeScreenOrFoldableConfiguration())
+        }
+        f.current.set(false)
+        assertFalse(wrapped.isLargeScreenOrFoldableConfiguration())
+        assertEquals(4, monitorReads)
+        val unsupported = object : android.content.Context(page.androidContext.dataDir) {
+            override fun getSharedPreferences(name: String, mode: Int): android.content.SharedPreferences =
+                error("An unsupported monitor context must fail before reading storage")
+        }
+        assertFailsWith<UnsupportedDesktopCapability> {
+            Application(unsupported).isLargeScreenOrFoldableConfiguration()
         }
     }
 

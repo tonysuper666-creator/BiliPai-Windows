@@ -57,6 +57,8 @@
 
 ## 2. 手机专属选项清单与桌面处理
 
+APK 安装包摘要在桌面不可用：桌面 Context 的 `applicationInfo.sourceDir` 为 null，上游 `calculateInstalledApkSha256` 返回 null。手机专属项以 [TON-1115 的清单](https://multica.ai/issues/01a18c2b-289e-7ce2-913d-5b873efbf80f) 为准，此处不另建清单。诊断页显示「不可用」仍待页面接线与验收，尚未完成。
+
 处理取值：**隐藏**（桌面没有对应硬件或系统概念，不显示）；**不可用**（显示但置灰并说明原因）；**被代替**（隐藏上游项，由桌面等价项承担）。
 
 ### 不可用：需要 Windows Hello 或系统验证接口，桌面端尚未接入（1 项）
