@@ -15,6 +15,7 @@ internal class DesktopHomeRequestPorts(
     private val observeNavResult: (DesktopHomeNavRequestSource, Boolean, Job) -> Unit,
     private val navPublication: (DesktopHomeNavRequestSource, NavData, Job) -> DesktopHomeNavPublication,
     private val backgroundPublication: (DesktopHomeNavRequestSource, Job) -> DesktopHomeBackgroundPublication,
+    private val messageUnread: DesktopHomeMessageUnreadProtocol? = null,
 ) : AutoCloseable {
     private val originalVideo=DesktopOriginalHomeVideoProtocol(environment)
     private val originalHistory=DesktopOriginalHomeHistoryProtocol(environment.api)
@@ -75,7 +76,13 @@ internal class DesktopHomeRequestPorts(
         override suspend fun getFollowedLive(page:Int)=result {originalLive.getFollowedLive(page)}
         override suspend fun getLiveRooms(page:Int)=result {originalLive.getLiveRooms(page)}
     }
-    val messages=object:DesktopHomeMessageRequests {
+    val messages=object:DesktopHomeMessageUnreadRequests {
+        override suspend fun getGatewayUnread()=result {backgroundRequest {
+            messageUnread?.gateway() ?: Result.failure(IllegalStateException("No owned Home IM transport"))
+        }}
+        override suspend fun getImUnread()=result {backgroundRequest {
+            messageUnread?.im() ?: Result.failure(IllegalStateException("No owned Home IM transport"))
+        }}
         override suspend fun getUnreadCount()=result {backgroundRequest {originalMessages.getUnreadCount()}}
         override suspend fun getFeedUnread()=result {backgroundRequest {originalMessages.getFeedUnread()}}
     }
