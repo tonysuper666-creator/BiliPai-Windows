@@ -10,6 +10,7 @@ import unittest
 REPO = Path(os.environ.get("BILIPAI_VIDEO_SKELETON_TEST_REPO", Path(__file__).resolve().parents[3]))
 TOOLS = REPO / "desktop/tools"
 sys.path.insert(0, str(TOOLS))
+from legacy_read_point import legacy_read_point
 
 
 def load(name, path):
@@ -50,7 +51,8 @@ class VideoDetailSkeletonProducerReviewTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.raw = (REPO / INPUT).read_bytes()
-        cls.original, cls.identities = identity.load_pinned_sources(REPO, DISCOVERY_SOURCES)
+        cls.original, cls.identities = identity.load_pinned_sources(
+            legacy_read_point(REPO, DISCOVERY_SOURCE), DISCOVERY_SOURCES)
 
     def fixture(self, root, raw=None):
         path = root / INPUT
