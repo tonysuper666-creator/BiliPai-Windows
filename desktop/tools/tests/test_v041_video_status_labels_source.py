@@ -22,6 +22,12 @@ import v043_home_native_cards as home_native_followup
 from v025_source_paths import canonical_source
 from legacy_read_point import legacy_read_point
 
+
+def legacy_repo():
+    """Match Gradle's repositoryRoot: the originals these checks pin come from the legacy tree."""
+    return legacy_read_point(REPO, 'desktop/upstream-slices/v041-video-status-labels/manifest.json')
+
+
 MODEL_DIR = 'com/android/purebilibili/data/model/response/'
 BADGES_PATH = 'com/android/purebilibili/core/ui/components/VideoStatusBadges.kt'
 LABELS_PATH = MODEL_DIR + 'VideoStatusLabels.kt'
@@ -150,7 +156,7 @@ class V041VideoStatusLabelsSourceTest(unittest.TestCase):
                                   if path.endswith('.kt') and forbidden in raw.decode('utf-8')], forbidden)
         self.assertEqual([], [hook.id for hook in source.HOOKS
                               if hook.path.endswith(('SpaceChargeBadgePolicy.kt', 'VideoPremiumBadgePolicy.kt'))])
-        charge = canonical_source(REPO, source.APP + 'feature/space/SpaceChargeBadgePolicy.kt').read_text(encoding='utf-8')
+        charge = canonical_source(legacy_repo(), source.APP + 'feature/space/SpaceChargeBadgePolicy.kt').read_text(encoding='utf-8')
         self.assertIn('internal fun resolveSpaceVideoChargeBadgeLabel(video: SpaceVideoItem): String? {', charge)
 
     # ------------------------------------------------------------------ shared policy and badge row
@@ -196,7 +202,7 @@ class V041VideoStatusLabelsSourceTest(unittest.TestCase):
             with self.subTest(path=path):
                 self.assertNotIn('订阅', text)
         screen = self.latest[source.SPACE_SCREEN]
-        hooked = source.apply(source.SPACE_SCREEN, source.baseline(REPO, source.SPACE_SCREEN))
+        hooked = source.apply(source.SPACE_SCREEN, source.baseline(legacy_repo(), source.SPACE_SCREEN))
         self.assertEqual(1, screen.count('badgeLabel = "置顶"'))
         self.assertEqual(1, hooked.count('badgeLabel = "置顶"'))
         for path in (source.LABELS, source.BADGES):
@@ -206,7 +212,7 @@ class V041VideoStatusLabelsSourceTest(unittest.TestCase):
         self.assertEqual(1, lists.count('paid = (rights?.pay ?: 0) > 0 || (rights?.arcPay ?: 0) > 0,'))
         self.assertEqual(1, len(re.findall(r'\bpaid\s*=', lists)))
         for text in (self.emitted(MODEL_DIR + 'SpaceModels.kt'), self.emitted(SEARCH_PATH),
-                     source.apply(source.WATCH_LATER_REPOSITORY, source.baseline(REPO, source.WATCH_LATER_REPOSITORY))):
+                     source.apply(source.WATCH_LATER_REPOSITORY, source.baseline(legacy_repo(), source.WATCH_LATER_REPOSITORY))):
             self.assertNotRegex(text, r'\bpaid\s*=')
         proof = json.loads(self.main['v041-video-status-labels-proof.json'])
         self.assertEqual(dict(subscribeLabelExists=False, pinnedLabelInSharedPolicy=False,
@@ -265,7 +271,7 @@ class V041VideoStatusLabelsSourceTest(unittest.TestCase):
         emitted = self.emitted(FAVORITE_PATH)
         self.assertEqual(self.latest[source.FAVORITE_MODELS], emitted)
         self.assertEqual('3b5a648f0b9625019f173afbd4981d81313919c64dbea8140602a8437d595534', sha(emitted.encode()))
-        baseline = source.baseline(REPO, source.FAVORITE_MODELS)
+        baseline = source.baseline(legacy_repo(), source.FAVORITE_MODELS)
         self.assertEqual([('insert', 1), ('insert', 1)],
                          [(op[0], op[4] - op[3]) for op in changed_lines(baseline, emitted)])
         declaration = emitted[emitted.index('data class WatchLaterData('):]
@@ -284,7 +290,7 @@ class V041VideoStatusLabelsSourceTest(unittest.TestCase):
     def test_hooked_search_and_favorite_text_replays_inverse_and_matches_independent_replacement(self):
         for path, count in ((source.SEARCH_MODELS, 9), (source.FAVORITE_MODELS, 1)):
             with self.subTest(path=path):
-                baseline = source.baseline(REPO, path)
+                baseline = source.baseline(legacy_repo(), path)
                 edits = self.edits(path, baseline)
                 text = source.apply(path, baseline)
                 emitted = self.emitted(MODEL_DIR + Path(path).name)
@@ -304,7 +310,7 @@ class V041VideoStatusLabelsSourceTest(unittest.TestCase):
         self.assertEqual(HOOK_IDS, [hook.id for hook in source.HOOKS])
         self.assertEqual(len(HOOK_IDS), len({hook.id for hook in source.HOOKS}))
         self.assertEqual(set(HOOKED_PATHS), {hook.path for hook in source.HOOKS})
-        receipts = source.verify_hooks(REPO)
+        receipts = source.verify_hooks(legacy_repo())
         rows = [row for row in receipts if row['id'] != 'result']
         self.assertEqual(HOOK_IDS, [row['id'] for row in rows])
         for row in rows:
@@ -315,7 +321,7 @@ class V041VideoStatusLabelsSourceTest(unittest.TestCase):
         self.assertTrue(all(row['inverseRestoresBaseline'] for row in receipts if row['id'] == 'result'))
         for path in HOOKED_PATHS:
             with self.subTest(path=path):
-                baseline = source.baseline(REPO, path)
+                baseline = source.baseline(legacy_repo(), path)
                 for hook in source.hooks_for(path):
                     self.assertEqual(1, baseline.count(hook.before), hook.id)
                 edits = []
@@ -335,7 +341,7 @@ class V041VideoStatusLabelsSourceTest(unittest.TestCase):
         self.assertEqual('text', source.apply('app/src/main/java/other/Unhooked.kt', 'text'))
 
     def test_duplicate_space_screen_badge_line_is_only_hooked_with_unique_context(self):
-        baseline = source.baseline(REPO, source.SPACE_SCREEN)
+        baseline = source.baseline(legacy_repo(), source.SPACE_SCREEN)
         naive = ' ' * 44 + 'badgeLabel = resolveSpaceVideoChargeBadgeLabel(video),\n'
         self.assertEqual(2, baseline.count(naive))
         hooks = {hook.id: hook for hook in source.hooks_for(source.SPACE_SCREEN)}
@@ -375,13 +381,13 @@ class V041VideoStatusLabelsSourceTest(unittest.TestCase):
     def test_pinned_hunk_tables_replay_forward_and_inverse_and_reject_any_drift(self):
         for path, count in ((source.LIST_MODELS, 10), (source.SPACE_MODELS, 2)):
             with self.subTest(path=path):
-                receipts = source.reviewed_delta(path, source.WHOLE_MODEL_DELTAS, source.baseline(REPO, path), self.latest[path])
+                receipts = source.reviewed_delta(path, source.WHOLE_MODEL_DELTAS, source.baseline(legacy_repo(), path), self.latest[path])
                 self.assertEqual(count, len(receipts))
                 self.assertTrue(all(row['meaning'] for row in receipts))
-                self.drift(path, source.WHOLE_MODEL_DELTAS, source.baseline(REPO, path), self.latest[path])
+                self.drift(path, source.WHOLE_MODEL_DELTAS, source.baseline(legacy_repo(), path), self.latest[path])
         for path, count in ((source.SEARCH_MODELS, 9), (source.FAVORITE_MODELS, 1)):
             with self.subTest(path=path):
-                emitted = source.apply(path, source.baseline(REPO, path))
+                emitted = source.apply(path, source.baseline(legacy_repo(), path))
                 receipts = source.reviewed_delta(path, source.REVIEWED_POST_HOOK_DELTAS, emitted, self.latest[path])
                 self.assertEqual(count, len(receipts))
                 self.drift(path, source.REVIEWED_POST_HOOK_DELTAS, emitted, self.latest[path])
@@ -455,23 +461,24 @@ class V041VideoStatusLabelsSourceTest(unittest.TestCase):
         self.assertEqual('8301c8b6', by_name['UserContentRepository.kt'])
 
     def test_any_changed_canonical_v025_source_fails_closed_and_checkout_crlf_is_accepted(self):
+        originals = legacy_repo()
         for path in source.BASELINE_SHA256_LF:
-            original = canonical_source(REPO, path)
-            relative = original.relative_to(REPO)
+            original = canonical_source(originals, path)
+            relative = original.relative_to(originals)
             with self.subTest(path=path, mutation='changed'), tempfile.TemporaryDirectory() as tmp:
                 # Same directory name as the read point, so the canonical pin for its tree applies.
-                tmp = Path(tmp) / REPO.name
+                tmp = Path(tmp) / originals.name
                 target = tmp / relative
                 target.parent.mkdir(parents=True)
                 target.write_bytes(original.read_bytes() + b'\n// changed canonical source\n')
                 with self.assertRaisesRegex(ValueError, 'Canonical original source digest mismatch'):
                     source.baseline(Path(tmp), path)
             with self.subTest(path=path, mutation='crlf'), tempfile.TemporaryDirectory() as tmp:
-                tmp = Path(tmp) / REPO.name
+                tmp = Path(tmp) / originals.name
                 target = tmp / relative
                 target.parent.mkdir(parents=True)
                 target.write_bytes(original.read_bytes().replace(b'\r\n', b'\n').replace(b'\n', b'\r\n'))
-                self.assertEqual(source.baseline(REPO, path), source.baseline(Path(tmp), path))
+                self.assertEqual(source.baseline(originals, path), source.baseline(Path(tmp), path))
         with tempfile.TemporaryDirectory() as tmp:
             repo = Path(tmp)
             copy_archive(repo)
@@ -730,12 +737,13 @@ class V041GeneratorWiringTest(unittest.TestCase):
             return text
 
         module = load_generator(consumer)
+        originals = legacy_repo()
         with tempfile.TemporaryDirectory(prefix='bp-status-labels-generated-') as output:
             with mock.patch.object(source, 'apply', recording if hooked else identity):
                 if consumer == source.WATCH_LATER_GENERATOR:
-                    module.generate(REPO, Path(output))
+                    module.generate(originals, Path(output))
                 else:
-                    module.generate(REPO, Path(output), True)
+                    module.generate(originals, Path(output), True)
             texts = {path.relative_to(output).as_posix(): path.read_text(encoding='utf-8')
                      for path in sorted(Path(output).rglob('*.kt'))}
         return [call for call in recorded if call[1]], texts
