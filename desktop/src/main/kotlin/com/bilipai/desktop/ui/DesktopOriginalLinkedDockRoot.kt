@@ -93,6 +93,7 @@ internal fun DesktopOriginalLinkedDock(
     onSearchClick: () -> Unit,
     onOpenSearch: (String) -> Unit,
     onOpenNativeTarget: (BilibiliNavigationTarget) -> Unit,
+    onOpenLink: (String) -> Unit,
     historyListScopedSearchChannel: SendChannel<String>?,
     favoriteListScopedSearchChannel: SendChannel<String>?,
     watchLaterListScopedSearchChannel: SendChannel<String>?,
@@ -153,6 +154,7 @@ internal fun DesktopOriginalLinkedDock(
                 watchLaterListScopedSearchChannel = watchLaterListScopedSearchChannel,
                 onOpenSearch = onOpenSearch,
                 onOpenNativeTarget = onOpenNativeTarget,
+                onOpenLink = onOpenLink,
                 isOwned = owner.isOwned,
             )
         },

@@ -44,9 +44,12 @@ class BrandCallerProducerTest(unittest.TestCase):
         current_whole=row.get('comprehensiveSearchAdaptation',{}).get('completeCurrentOriginalScreen',False)
         self.assertEqual(audit['countedAdaptations'],0 if current_whole else 8)
         self.assertTrue(row['inverseOriginalBodyExact']);self.assertTrue(audit['fullAdaptedBodyInverseExact'])
+        # The desktop submit guard, then the v0.7.6 submit-link stage, are the last ones on the screen: peel them first.
+        submit_link=load('v076_search_submit_link','v076_search_submit_link.py')
+        peeled=submit_link.restore_search_screen(submit_link.unguard_search_screen_submit(body,row['desktopSearchSubmitGuard']),row['v076SearchSubmitLink'])
         tab=row['windowsTabAbiAdaptation']
-        self.assertEqual(sha(body),tab['afterSha256LF'])
-        inverse=body
+        self.assertEqual(sha(peeled),tab['afterSha256LF'])
+        inverse=peeled
         for edit in reversed(tab['indexedEdits']):
             at=edit['afterOffset'];self.assertEqual(inverse[at:at+len(edit['after'])],edit['after'])
             inverse=inverse[:at]+edit['before']+inverse[at+len(edit['after']):]

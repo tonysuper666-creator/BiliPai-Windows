@@ -368,7 +368,7 @@ internal class DesktopReadyOriginalRootHandle(
             handle.personalLists.compareAndSet(personalLists, null); personalLists.close()
         } }
         val profile = remember(root, windowBinding) { windowBinding.profile(root, services.profileAccounts(root.entry.gate)) }
-        val originalSearch = remember(root, routes, windowBinding,personalLists) { windowBinding.searchRoot(root,routes,personalLists.preferences) }
+        val originalSearch = remember(root, routes, windowBinding,personalLists) { windowBinding.searchRoot(root,routes,personalLists.preferences,services.openExternalLink) }
         val originalHomeSettings = remember(root, profile, windowBinding, personalLists) {
             DesktopOriginalHomeSettingsRootServices(root.environment.settings, personalLists.preferences, services.feedback) { pageScope, owns, admit, write ->
                 windowBinding.homeSettingsProfile(root, profile, pageScope, owns, admit, write)
@@ -468,6 +468,7 @@ internal class DesktopReadyOriginalRootHandle(
             },
             { query -> routes.push(BiliPaiNavKey.Search(query)) },
             { target -> dispatchDesktopReadyNativeTarget(root, routes, target) },
+            services.openExternalLink,
             { searchLaunch = 0 }, { scope.launch { prefs.setTabletUseSidebar(!prefs.navigation.value.tabletUseSidebar) } },
             personalLists.historySearchChannel, services.favoriteSearch, personalLists.watchLaterSearchChannel)
         val chromeBindings = DesktopOriginalRootChromeBindings(owner, navPreferences, scope, actions, audio,
