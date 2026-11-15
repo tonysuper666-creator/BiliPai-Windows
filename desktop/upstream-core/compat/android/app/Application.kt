@@ -15,6 +15,7 @@ open class Application(val baseContext: Context) : Context(baseContext.dataDir),
     override val contentResolver get() = baseContext.contentResolver
     override val assets get() = baseContext.assets
     override val resources get() = baseContext.resources
+    override fun startActivity(intent: android.content.Intent) = baseContext.startActivity(intent)
     override fun getExternalFilesDir(type: String?) = baseContext.getExternalFilesDir(type)
     override fun getSharedPreferences(name: String, mode: Int) = baseContext.getSharedPreferences(name, mode)
     override fun desktopPreferencesDataStore(name: String) =

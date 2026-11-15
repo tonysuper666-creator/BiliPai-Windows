@@ -18,6 +18,10 @@ abstract class Context(val dataDir: File) {
     open val applicationInfo: android.content.pm.ApplicationInfo get() = android.content.pm.ApplicationInfo(dataDir.path, null)
     open val packageManager: android.content.pm.PackageManager = android.content.pm.PackageManager()
     open val packageName: String get() = "com.bilipai.desktop"
+    /** Android activities have no desktop launcher. Never silently treat a request as successful. */
+    open fun startActivity(intent: Intent): Unit =
+        throw com.bilipai.desktop.compat.UnsupportedDesktopCapability(
+            "Context.startActivity(${intent.action})", "Android settings activities are unavailable; desktop navigation belongs to Root")
     abstract fun getSharedPreferences(name: String, mode: Int): SharedPreferences
     /** Packaged app assets. The desktop packages no Android assets by default; an adapter that does overrides this. */
     open val assets: android.content.res.AssetManager get() =
