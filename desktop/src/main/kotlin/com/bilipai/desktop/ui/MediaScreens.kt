@@ -260,18 +260,25 @@ fun LiveBrowserScreen(
             MediaPlaybackHeader(current.title, ::closeRoom, onToggleFullscreen)
             Text("${current.author} · ${current.area} · ${current.online} 人观看", color = MaterialTheme.colorScheme.onSurfaceVariant)
             MediaMessage(opening, error, false, "")
-            Row(Modifier.fillMaxWidth().weight(1f), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                if (player != null && loaded && memory.ownsNativeSource) Box(Modifier.weight(3f).fillMaxHeight()) { playerContent(player) }
-                chat?.let { session ->
+            val ownsStage = player != null && loaded && memory.ownsNativeSource
+            DesktopLiveRoomStage(current.roomId,
+                // Only the source this room still owns; a replaced or mini-window stream is not paused from here.
+                onTogglePause = player?.takeIf { ownsStage }?.let { owned -> {
+                    memory.liveSourceSnapshot?.let { expected -> owned.admitSourceSnapshot(expected) { owned.togglePause() } }
+                    Unit
+                } },
+                modifier = Modifier.fillMaxWidth().weight(1f),
+                chat = chat?.let { session -> @Composable { chatModifier: Modifier, inputFocus: DesktopLiveChatInputFocus ->
                     key(session) {
-                        LiveChatPanel(session, account != null, Modifier.weight(1f).fillMaxHeight(),
+                        LiveChatPanel(session, account != null, chatModifier,
                             captureCurrent = {
                                 val binding = memory.captureLiveSourceBinding()
                                 if (binding == null || memory.chat !== session) null
                                 else ({ memory.scope.isActive && memory.chat === session && binding.current() })
-                            }, onUserClick = onUserClick)
+                            }, onUserClick = onUserClick, inputFocus = inputFocus)
                     }
-                }
+                } }) { stageModifier ->
+                Box(stageModifier) { if (ownsStage) player?.let { playerContent(it) } }
             }
             MediaSelector(stream?.qualities.orEmpty().map { it.label }, stream?.qualities?.firstOrNull { it.id == stream?.source?.quality }?.label.orEmpty()) { label ->
                 stream?.qualities?.firstOrNull { it.label == label }?.let { playRoom(current.roomId, it.id) }
@@ -549,7 +556,7 @@ internal fun com.bilipai.desktop.data.PlaybackSource.toNativePlayback() = Native
 
 @Composable
 private fun LiveChatPanel(session: DesktopLiveSession, isLoggedIn: Boolean, modifier: Modifier = Modifier,
-    captureCurrent: () -> (() -> Boolean)?, onUserClick: (Long) -> Unit) {
+    captureCurrent: () -> (() -> Boolean)?, onUserClick: (Long) -> Unit, inputFocus: DesktopLiveChatInputFocus? = null) {
     val state by session.state.collectAsState()
     val voteSnapshot by session.voteSnapshot.collectAsState()
     var showVotes by remember(session) { mutableStateOf(false) }
@@ -666,7 +673,7 @@ private fun LiveChatPanel(session: DesktopLiveSession, isLoggedIn: Boolean, modi
                         canReply = isLoggedIn && permission?.canSend == true,
                         canModerate = isLoggedIn && !state.moderating && moderationJob?.isActive != true,
                         onCopyInfo = { item, source -> if (source() && retained(item)) {
-                            clipboard.setText(androidx.compose.ui.text.AnnotatedString("uid=${item.uid}, uname=${item.uname}, text=${item.text}"))
+                            clipboard.copyDesktopLiveDanmaku(item)
                             moderationNotice = source to "已复制弹幕信息"
                         } },
                         onBlockUser = { item, source -> if (retained(item) && !item.isSelf && !item.isSystem) {
@@ -697,10 +704,8 @@ private fun LiveChatPanel(session: DesktopLiveSession, isLoggedIn: Boolean, modi
                             permission.availableColors.forEach { option -> FilterChip(color == option.color, { color = option.color }, label = { Text(option.name) }) }
                         }
                     }
-                    OutlinedTextField(message, draft::editMessage, Modifier.fillMaxWidth(), enabled = isLoggedIn && permission?.canSend == true,
-                        singleLine = true, label = { Text("发送直播弹幕") },
-                        supportingText = { if (permission != null) Text("${message.length}/${permission.maxLength}") },
-                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Send), keyboardActions = KeyboardActions(onSend = { send() }))
+                    DesktopLiveChatInput(message, draft::editMessage, enabled = isLoggedIn && permission?.canSend == true,
+                        maxLength = permission?.maxLength, onSend = ::send, inputFocus = inputFocus)
                     FilledTonalButton(onClick = ::send, enabled = canSend, modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp)) {
                         Text(if (state.sending) "发送中" else "发送")
                     }
