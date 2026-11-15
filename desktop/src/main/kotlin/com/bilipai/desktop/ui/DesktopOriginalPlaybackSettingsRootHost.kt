@@ -81,6 +81,8 @@ internal fun DesktopOriginalPlaybackSettingsRootHost(
         DesktopOriginalVideoEntryReadbacks(repository, routes.root.entry.gate.epoch,
             pageScope, current, commit)
     }
+    val playbackPlatform = remember(context, readbacks) { com.bilipai.desktop.settings.DesktopPlaybackSettingsPlatform(
+        current, readbacks::isPlaybackLoggedIn, readbacks::isPlaybackVip) { name, value -> logNow(name, value) } }
     val releaseMetadata = LocalDesktopOriginalAboutReleaseMetadata.current
     val application = remember(context, storageOwner, releaseMetadata) {
         DesktopSettingsApplication(context.androidContext, releaseMetadata, current, storageOwner)
@@ -129,6 +131,7 @@ internal fun DesktopOriginalPlaybackSettingsRootHost(
         CompositionLocalProvider(
             LocalDesktopOriginalPlayerSettingsContext provides context,
             LocalDesktopUpstreamAndroidContext provides application,
+            com.bilipai.desktop.settings.LocalDesktopPlaybackSettingsPlatform provides playbackPlatform,
         ) {
             key(context) {
                 DesktopPlaybackRightPaneContent(bindings, onBack = ownedBack)
