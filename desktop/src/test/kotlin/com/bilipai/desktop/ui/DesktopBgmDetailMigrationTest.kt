@@ -7,12 +7,16 @@ import com.android.purebilibili.data.model.response.ReplyData
 import com.android.purebilibili.data.model.response.ReplyItem
 import com.android.purebilibili.feature.video.viewmodel.DesktopVideoCommentRequests
 import com.android.purebilibili.feature.video.viewmodel.VIDEO_COMMENT_PAGE_SIZE
+import com.android.purebilibili.feature.video.viewmodel.commentComposerDraftKey
 import com.bilipai.desktop.data.DesktopDynamicCardOperations
 import com.bilipai.desktop.data.DesktopRepository
 import com.bilipai.desktop.data.DesktopSessionStore
 import kotlinx.coroutines.*
 import kotlinx.coroutines.test.*
 import java.lang.reflect.Proxy
+import kotlin.coroutines.Continuation
+import kotlin.coroutines.intrinsics.COROUTINE_SUSPENDED
+import kotlin.coroutines.resume
 import kotlin.test.*
 
 /** Current production Root state and generic comment VM; no window, HTTP, account or audio session. */
@@ -85,6 +89,109 @@ class DesktopBgmDetailMigrationTest {
         }
     }
 
+    @Test fun composerDraftsStayIsolatedPerReplyTarget() = runTest {
+        Fixture(testScheduler).use { f ->
+            val vm = f.page.comments
+            vm.init(aid = 771, commentType = 17)
+            f.frames()
+            vm.beginCommentDraft()
+            val session = vm.commentState.value.composerDrafts.sessionId
+            vm.updateCommentDraft(session, null, "root text", listOf("root.png"), true)
+            vm.updateCommentDraft(session, 41L, "to 41", emptyList(), false)
+            vm.updateCommentDraft(session, 42L, "", listOf("a.png", "b.png"), false)
+            val drafts = vm.commentState.value.composerDrafts.drafts
+            assertEquals(3, drafts.size)
+            assertEquals(Triple("root text", listOf("root.png"), true),
+                drafts[commentComposerDraftKey(null)]!!.let { Triple(it.text, it.imageUris, it.syncToDynamic) })
+            assertEquals(Triple("to 41", emptyList<String>(), false),
+                drafts[commentComposerDraftKey(41L)]!!.let { Triple(it.text, it.imageUris, it.syncToDynamic) })
+            assertEquals(Triple("", listOf("a.png", "b.png"), false),
+                drafts[commentComposerDraftKey(42L)]!!.let { Triple(it.text, it.imageUris, it.syncToDynamic) })
+            vm.updateCommentDraft(session, 41L, "", emptyList(), false)
+            val after = vm.commentState.value.composerDrafts.drafts
+            assertNull(after[commentComposerDraftKey(41L)], "An emptied draft is removed")
+            assertEquals("root text", after[commentComposerDraftKey(null)]?.text)
+            assertEquals(listOf("a.png", "b.png"), after[commentComposerDraftKey(42L)]?.imageUris)
+        }
+    }
+
+    @Test fun staleSessionUpdatesCannotPolluteTheNewDraft() = runTest {
+        Fixture(testScheduler).use { f ->
+            val vm = f.page.comments
+            vm.init(aid = 771, commentType = 17)
+            f.frames()
+            vm.beginCommentDraft()
+            val old = vm.commentState.value.composerDrafts.sessionId
+            vm.updateCommentDraft(old, null, "old", emptyList(), false)
+            vm.beginCommentDraft()
+            val current = vm.commentState.value.composerDrafts.sessionId
+            assertEquals(old + 1, current)
+            val before = vm.commentState.value.composerDrafts
+            vm.updateCommentDraft(old, null, "stale", listOf("stale.png"), true)
+            vm.updateCommentDraft(old, 41L, "stale reply", emptyList(), false)
+            assertEquals(before, vm.commentState.value.composerDrafts, "A superseded session is ignored entirely")
+            vm.updateCommentDraft(current, null, "fresh", emptyList(), false)
+            val drafts = vm.commentState.value.composerDrafts.drafts
+            assertEquals("fresh", drafts[commentComposerDraftKey(null)]?.text)
+            assertNull(drafts[commentComposerDraftKey(41L)])
+        }
+    }
+
+    @Test fun delayedSendCompletionKeepsTheNewSessionDraftAndReplyTarget() = runTest {
+        Fixture(testScheduler).use { f ->
+            val vm = f.page.comments
+            vm.init(aid = 771, commentType = 17)
+            f.frames()
+            vm.beginCommentDraft()
+            val first = vm.commentState.value.composerDrafts.sessionId
+            vm.replyTo(ReplyItem(rpid = 41))
+            vm.updateCommentDraft(first, 41L, "sent text", emptyList(), false)
+            f.first.holdAdd = true
+            vm.sendComment("sent text")
+            f.first.awaitAdd()
+            assertTrue(vm.commentState.value.isSending)
+            assertEquals(1, f.first.addCalls.size)
+            vm.beginCommentDraft()
+            val second = vm.commentState.value.composerDrafts.sessionId
+            vm.replyTo(ReplyItem(rpid = 42))
+            vm.updateCommentDraft(second, 41L, "newer 41", listOf("n.png"), true)
+            vm.updateCommentDraft(second, 42L, "to 42", emptyList(), false)
+            f.first.releaseAdd()
+            f.frames()
+            val state = vm.commentState.value
+            assertFalse(state.isSending)
+            assertEquals(second, state.composerDrafts.sessionId)
+            assertEquals(first, state.composerDrafts.completedSessionId)
+            assertNotEquals(second, state.composerDrafts.completedSessionId, "The new session is not marked complete")
+            assertEquals(42L, state.replyTarget?.rpid, "The new reply target is not replaced")
+            assertEquals("newer 41", state.composerDrafts.drafts[commentComposerDraftKey(41L)]?.text)
+            assertEquals("to 42", state.composerDrafts.drafts[commentComposerDraftKey(42L)]?.text)
+        }
+    }
+
+    @Test fun completedSendOfTheCurrentSessionClearsItsOwnDraftAndTarget() = runTest {
+        Fixture(testScheduler).use { f ->
+            val vm = f.page.comments
+            vm.init(aid = 771, commentType = 17)
+            f.frames()
+            vm.beginCommentDraft()
+            val session = vm.commentState.value.composerDrafts.sessionId
+            vm.replyTo(ReplyItem(rpid = 41))
+            vm.updateCommentDraft(session, 41L, "sent text", emptyList(), false)
+            vm.updateCommentDraft(session, null, "other root draft", emptyList(), false)
+            f.first.holdAdd = true
+            vm.sendComment("sent text")
+            f.first.awaitAdd()
+            f.first.releaseAdd()
+            f.frames()
+            val state = vm.commentState.value
+            assertEquals(session, state.composerDrafts.completedSessionId)
+            assertNull(state.replyTarget)
+            assertNull(state.composerDrafts.drafts[commentComposerDraftKey(41L)])
+            assertEquals("other root draft", state.composerDrafts.drafts[commentComposerDraftKey(null)]?.text)
+        }
+    }
+
     private class EmptyApplier : AbstractApplier<Unit>(Unit) {
         override fun insertTopDown(index: Int, instance: Unit) = Unit
         override fun insertBottomUp(index: Int, instance: Unit) = Unit
@@ -119,6 +226,16 @@ class DesktopBgmDetailMigrationTest {
         inner class Owner {
             var owned = true
             val reads = mutableListOf<Pair<Long, Int>>()
+            val addCalls = java.util.concurrent.CopyOnWriteArrayList<List<Any?>>()
+            var holdAdd = false
+            @Volatile private var held: Continuation<Any?>? = null
+            /** The VM uploads pictures on Dispatchers.IO first, so the request arrives on a real thread. */
+            fun awaitAdd() {
+                val deadline = System.nanoTime() + 5_000_000_000L
+                while (held == null && System.nanoTime() < deadline) Thread.sleep(5)
+                checkNotNull(held) { "The send request never reached the requests owner" }
+            }
+            fun releaseAdd() { held!!.also { held = null }.resume(Result.success<ReplyItem?>(ReplyItem())) }
             private val scope = CoroutineScope(SupervisorJob() + UnconfinedTestDispatcher(scheduler) +
                 CoroutineExceptionHandler { _, failure -> errors += failure })
             private val requests = Proxy.newProxyInstance(DesktopVideoCommentRequests::class.java.classLoader,
@@ -132,6 +249,15 @@ class DesktopBgmDetailMigrationTest {
                         assertEquals(listOf(1, VIDEO_COMMENT_PAGE_SIZE), values.drop(2).take(2))
                         reads += (values[0] as Long) to (values[1] as Int)
                         ReplyData(replies = emptyList(), cursor = ReplyCursor(isEnd = true))
+                    }
+                    "addCommentForSubject" -> {
+                        check(owned)
+                        addCalls += args!!.dropLast(1)
+                        if (holdAdd) {
+                            @Suppress("UNCHECKED_CAST")
+                            held = args.last() as Continuation<Any?>
+                            COROUTINE_SUSPENDED
+                        } else ReplyItem()
                     }
                     else -> error("Unexpected comment request ${method.name}")
                 }
