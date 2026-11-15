@@ -44,6 +44,243 @@ def advance_video_detail_skeleton_source(repo, original, identities):
 def replace_once(text,old,new):
     assert text.count(old)==1,(old,text.count(old));return text.replace(old,new)
 
+def bgm_dialog_draft_key(body):
+    """Isolate the composer by the caller's draft key (upstream 85784533 CommentInputDialog): every draft state is
+    keyed by it and the seed effect re-runs when it changes, so a new session or reply target re-seeds from its own
+    draft instead of inheriting the previous editor state. The default keeps the other generated callers unchanged."""
+    body=replace_once(body,'    visible: Boolean,\n    onDismiss: () -> Unit,\n','    visible: Boolean,\n    draftKey: String = "",\n    onDismiss: () -> Unit,\n')
+    body=replace_once(body,'var textFieldValue by rememberSaveable(stateSaver = TextFieldValue.Saver) {','var textFieldValue by rememberSaveable(draftKey, stateSaver = TextFieldValue.Saver) {')
+    body=replace_once(body,'var isForwardToDynamic by rememberSaveable { mutableStateOf(initialSyncToDynamic) }','var isForwardToDynamic by rememberSaveable(draftKey) { mutableStateOf(initialSyncToDynamic) }')
+    body=replace_once(body,'    var selectedImageUris by rememberSaveable(\n        stateSaver','    var selectedImageUris by rememberSaveable(\n        draftKey,\n        stateSaver')
+    body=replace_once(body,'var inputWasVisible by rememberSaveable { mutableStateOf(false) }','var inputWasVisible by rememberSaveable(draftKey) { mutableStateOf(false) }')
+    body=replace_once(body,'    LaunchedEffect(visible) {\n        if (!visible) {','    LaunchedEffect(visible, draftKey) {\n        if (!visible) {')
+    return body
+
+
+def bgm_dialog_draft_seam(body):
+    """Production seam for the keyed draft state: the four saveable values and the seed/hide effect move out of the
+    dialog body into rememberCommentInputDraft / CommentInputDraftEffect (same keys, same order of writes), so a
+    windowless Compose test can drive the exact code the dialog runs. The focus, keyboard and panel resets stay in the
+    dialog as the two callbacks."""
+    body=replace_once(body,"""    var textFieldValue by rememberSaveable(draftKey, stateSaver = TextFieldValue.Saver) {
+        mutableStateOf(commentDraftTextFieldValue(initialText))
+    }
+    var isForwardToDynamic by rememberSaveable(draftKey) { mutableStateOf(initialSyncToDynamic) } // 转发到动态
+""","""    val draft = rememberCommentInputDraft(draftKey, initialText, initialImageUris, initialSyncToDynamic)
+    var textFieldValue by draft::textFieldValue
+    var isForwardToDynamic by draft::isForwardToDynamic // 转发到动态
+""")
+    body=replace_once(body,"""    var selectedImageUris by rememberSaveable(
+        draftKey,
+        stateSaver = listSaver<List<String>, String>(
+            save = { uris -> uris.toList() },
+            restore = { uris -> uris.toList() },
+        )
+    ) { mutableStateOf(initialImageUris) }
+""","""    var selectedImageUris by draft::selectedImageUris
+""")
+    body=replace_once(body,"    var inputWasVisible by rememberSaveable(draftKey) { mutableStateOf(false) }\n","")
+    start=body.index("    LaunchedEffect(visible, draftKey) {\n        if (!visible) {")
+    end=body.index("        selectedImageUris = initialImageUris\n    }\n",start)+len("        selectedImageUris = initialImageUris\n    }\n")
+    body=body[:start]+"""    CommentInputDraftEffect(
+        draft = draft, visible = visible, draftKey = draftKey,
+        initialText = initialText, initialImageUris = initialImageUris, initialSyncToDynamic = initialSyncToDynamic,
+        initialSelectionStart = initialSelectionStart, initialSelectionEnd = initialSelectionEnd,
+        onHidden = {
+            // 外部关闭（例如导航离开详情页）也要立即撤销输入焦点，避免输入光标
+            // 在弹层退场期间继续显示在播放详情页上。
+            keyboardController?.hide()
+            focusManager.clearFocus(force = true)
+        },
+        onSeeded = {
+            showEmojiPanel = false
+            showMentionPanel = false
+            mentionSearchText = ""
+        },
+    )
+"""+body[end:]
+    return body.rstrip("\n")+"""
+
+/** The draft values of one composer session. Every value is saveable and keyed by the caller's draft key, so another key
+ * gets its own fresh state and a retained old holder can no longer reach it. */
+internal class CommentInputDraft internal constructor(
+    private val text: MutableState<TextFieldValue>,
+    private val forward: MutableState<Boolean>,
+    private val images: MutableState<List<String>>,
+    private val wasVisible: MutableState<Boolean>,
+) {
+    var textFieldValue: TextFieldValue by text
+    var isForwardToDynamic: Boolean by forward
+    var selectedImageUris: List<String> by images
+    var inputWasVisible: Boolean by wasVisible
+}
+
+@Composable
+internal fun rememberCommentInputDraft(
+    draftKey: String,
+    initialText: String,
+    initialImageUris: List<String>,
+    initialSyncToDynamic: Boolean,
+): CommentInputDraft {
+    val text = rememberSaveable(draftKey, stateSaver = TextFieldValue.Saver) {
+        mutableStateOf(commentDraftTextFieldValue(initialText))
+    }
+    val forward = rememberSaveable(draftKey) { mutableStateOf(initialSyncToDynamic) }
+    val images = rememberSaveable(
+        draftKey,
+        stateSaver = listSaver<List<String>, String>(
+            save = { uris -> uris.toList() },
+            restore = { uris -> uris.toList() },
+        )
+    ) { mutableStateOf(initialImageUris) }
+    val wasVisible = rememberSaveable(draftKey) { mutableStateOf(false) }
+    return remember(text, forward, images, wasVisible) { CommentInputDraft(text, forward, images, wasVisible) }
+}
+
+/** Seeds the keyed draft when the composer becomes visible (or its key changes while visible) and clears focus when it is
+ * hidden. A restored visible session keeps its text, selection, images and sync flag; only a reopen loads the upstream draft.
+ * The upstream draft updates flow back with every edit, so they are deliberately not effect keys. */
+@Composable
+internal fun CommentInputDraftEffect(
+    draft: CommentInputDraft,
+    visible: Boolean,
+    draftKey: String,
+    initialText: String,
+    initialImageUris: List<String>,
+    initialSyncToDynamic: Boolean,
+    initialSelectionStart: Int,
+    initialSelectionEnd: Int,
+    onHidden: () -> Unit,
+    onSeeded: () -> Unit,
+) {
+    LaunchedEffect(visible, draftKey) {
+        if (!visible) {
+            if (draft.inputWasVisible) {
+                onHidden()
+                draft.inputWasVisible = false
+            }
+            return@LaunchedEffect
+        }
+        if (draft.inputWasVisible) return@LaunchedEffect
+        draft.inputWasVisible = true
+        draft.textFieldValue = commentDraftTextFieldValue(initialText, initialSelectionStart, initialSelectionEnd)
+        draft.isForwardToDynamic = initialSyncToDynamic
+        onSeeded()
+        draft.selectedImageUris = initialImageUris
+    }
+}
+"""
+
+
+def bgm_dialog_picker_seam(body):
+    """The image-picker callback of the dialog as a production seam: the callback keeps the holder and draft callback that
+    were current when the picker opened, so a late result of an older key writes only that older holder and reports only
+    to that older session's draft callback (which the comment state ignores once the session moved on)."""
+    body=replace_once(body,"""                                        platform.pickCommentImages(9) { uris ->
+                                            if (platform.isOwned() && uris.isNotEmpty()) {
+                                                selectedImageUris = (selectedImageUris + uris).distinct().take(9)
+                                                onDraftChange(textFieldValue.text, selectedImageUris, isForwardToDynamic, textFieldValue.selection.start, textFieldValue.selection.end)
+                                            }
+                                        }
+""","""                                        draft.pickImages(platform, onDraftChange)
+""")
+    return body.rstrip("\n")+"""
+
+/** Opens the platform picker; a result is applied only while the application owner is current, ignoring an empty result,
+ * keeping selection order without duplicates and at most nine images, and is reported through [onDraftChange]. */
+internal fun CommentInputDraft.pickImages(
+    platform: com.bilipai.desktop.ui.DesktopCommentPlatform,
+    onDraftChange: (String, List<String>, Boolean, Int, Int) -> Unit,
+) {
+    platform.pickCommentImages(9) { uris ->
+        if (platform.isOwned() && uris.isNotEmpty()) {
+            selectedImageUris = (selectedImageUris + uris).distinct().take(9)
+            onDraftChange(textFieldValue.text, selectedImageUris, isForwardToDynamic, textFieldValue.selection.start, textFieldValue.selection.end)
+        }
+    }
+}
+"""
+
+
+def bgm_comment_draft_session(body):
+    """Bind the retained BGM composer to the current upstream comment-draft session (474bfd1c BgmDetailScreen):
+    one session per compose, drafts keyed by reply target, close on that session's completion. The Windows dialog
+    reports selection too, so its 5-argument draft callback forwards the same three persisted fields."""
+    body=replace_once(body,'    var submitted by remember { mutableStateOf(false) }\n',
+        '    var submittedSessionId by remember { mutableStateOf<Long?>(null) }\n')
+    body=replace_once(body,"""    LaunchedEffect(comments.isSending, comments.sendError) {
+        if (submitted && !comments.isSending) {
+            submitted = false
+            if (comments.sendError == null) { composer = false; commentViewModel.cancelReply() }
+            else platform.showFeedback(comments.sendError.orEmpty())
+        }
+    }
+""","""    LaunchedEffect(comments.isSending, comments.sendError, comments.composerDrafts.completedSessionId) {
+        if (submittedSessionId != null && !comments.isSending) {
+            submittedSessionId = null
+            comments.sendError?.let { platform.showFeedback(it) }
+        }
+    }
+    LaunchedEffect(comments.composerDrafts.sessionId, comments.composerDrafts.completedSessionId) {
+        if (comments.composerDrafts.completedSessionId == comments.composerDrafts.sessionId) {
+            composer = false
+        }
+    }
+""")
+    body=replace_once(body,"""        if (reply == null) commentViewModel.cancelReply() else commentViewModel.replyTo(reply)
+        composer = true
+""","""        if (reply == null) commentViewModel.cancelReply() else commentViewModel.replyTo(reply)
+        commentViewModel.beginCommentDraft()
+        composer = true
+""")
+    body=replace_once(body,"""    CommentInputDialog(
+        visible = composer,
+        onDismiss = { composer = false; commentViewModel.cancelReply() },
+        onSend = { text, images, sync -> submitted = true; commentViewModel.sendComment(text, images, sync) },
+        isSending = comments.isSending, replyToName = comments.replyTarget?.member?.uname,
+        inputHint = if (comments.replyTarget == null) comments.rootInputHint else comments.childInputHint,
+        canInputComment = comments.canInputComment, emotePackages = emotePackages,
+    )
+""","""    val composerSessionId = comments.composerDrafts.sessionId
+    val composerReplyRpid = comments.replyTarget?.rpid
+    val composerDraft = comments.composerDrafts.drafts[commentComposerDraftKey(composerReplyRpid)]
+    val composerKey = remember(info?.oid, info?.pageType, composerReplyRpid, composerSessionId) {
+        "bgm:${info?.oid}:${info?.let(::resolveBgmCommentType)}:$composerReplyRpid:$composerSessionId"
+    }
+    CommentInputDialog(
+        visible = composer,
+        draftKey = composerKey,
+        onDismiss = {
+            if (commentViewModel.commentState.value.composerDrafts.sessionId == composerSessionId) {
+                composer = false
+                commentViewModel.cancelReply()
+            }
+        },
+        onSend = { text, images, sync ->
+            val latest = commentViewModel.commentState.value
+            if (composer && latest.composerDrafts.sessionId == composerSessionId &&
+                latest.composerDrafts.completedSessionId != composerSessionId &&
+                latest.replyTarget?.rpid == composerReplyRpid && !latest.isSending
+            ) {
+                submittedSessionId = composerSessionId
+                commentViewModel.updateCommentDraft(composerSessionId, composerReplyRpid, text, images, sync)
+                commentViewModel.sendComment(text, images, sync)
+            }
+        },
+        isSending = comments.isSending, replyToName = comments.replyTarget?.member?.uname,
+        inputHint = if (comments.replyTarget == null) comments.rootInputHint else comments.childInputHint,
+        canInputComment = comments.canInputComment, emotePackages = emotePackages,
+        initialText = composerDraft?.text.orEmpty(),
+        initialImageUris = composerDraft?.imageUris.orEmpty(),
+        initialSyncToDynamic = composerDraft?.syncToDynamic ?: false,
+        onDraftChange = { text, images, sync, _, _ ->
+            commentViewModel.updateCommentDraft(composerSessionId, composerReplyRpid, text, images, sync)
+        },
+    )
+""")
+    return body
+
+
 def comment_detail_root_entry_delta(relative,body):
  if relative=='com/android/purebilibili/feature/comment/CommentDetailViewModel.kt':
   before='    private val requests: DesktopVideoCommentRequests,\n) {'
@@ -301,6 +538,87 @@ def generate_ui(repo,output,original,shared,emit,changes):
             } catch (cancelled: CancellationException) { throw cancelled }
             catch (failure: Exception) { ensureRequestOwned(); Result.failure(failure) }
         }'''+body[upload_end:]
+    # The composer draft lifetime rides the same generic VM: field, open/update/complete/reset
+    # seams and the state type. CommentComposerDraft and commentComposerDraftKey already have
+    # one producer (the v029 draft schema), so only the state machine is declared here.
+    body=replace_once(body,'    val replyTarget: ReplyItem? = null,  // 回复目标评论（为空则是一级评论）\n','    val replyTarget: ReplyItem? = null,  // 回复目标评论（为空则是一级评论）\n    val composerDrafts: CommentComposerDraftState = CommentComposerDraftState(),\n')
+    body=replace_once(body,'    fun replyTo(reply: ReplyItem) {','''    fun beginCommentDraft() {
+        _commentState.update { it.copy(composerDrafts = it.composerDrafts.open(), sendError = null) }
+    }
+
+    fun updateCommentDraft(
+        sessionId: Long,
+        replyRpid: Long?,
+        text: String,
+        imageUris: List<Uri>,
+        syncToDynamic: Boolean
+    ) {
+        _commentState.update {
+            it.copy(
+                composerDrafts = it.composerDrafts.update(
+                    sessionId, replyRpid, CommentComposerDraft(text, imageUris, syncToDynamic)
+                )
+            )
+        }
+    }
+
+    fun replyTo(reply: ReplyItem) {''')
+    body=replace_once(body,'        val sendSubReplyState = _subReplyState.value\n','        val sendSubReplyState = _subReplyState.value\n        val sendDraftSession = currentState.composerDrafts.sessionId\n        val sendDraftReplyRpid = sendReplyTarget?.rpid\n        val sentDraft = currentState.composerDrafts.drafts[commentComposerDraftKey(sendDraftReplyRpid)]\n')
+    body=replace_once(body,'                val current = _commentState.value\n\n                // [新增] 启动评论反诈检测（后台协程，不阻塞 UI）\n','''                val latest = _commentState.value
+                val current = latest.copy(
+                    composerDrafts = latest.composerDrafts.complete(
+                        sendDraftSession, sendDraftReplyRpid, sentDraft
+                    )
+                )
+                val completedReplyTarget = if (current.composerDrafts.sessionId == sendDraftSession) {
+                    null
+                } else {
+                    current.replyTarget
+                }
+
+                // [新增] 启动评论反诈检测（后台协程，不阻塞 UI）
+''')
+    # A late success must not clear the reply target of a newer composer session that was
+    # opened while this request was in flight; the same session still clears its own target.
+    body=replace_once(body,'''                            replyTarget = null,
+                            replyCount = current.replyCount + 1
+                        )
+''','''                            replyTarget = completedReplyTarget,
+                            replyCount = current.replyCount + 1
+                        )
+''')
+    body=replace_once(body,'''                            replyTarget = null
+                        )
+                        // 重置并重新加载
+''','''                            replyTarget = completedReplyTarget
+                        )
+                        // 重置并重新加载
+''')
+    body=replace_once(body,'''                    _commentState.value = current.copy(
+                        isSending = false,
+                        sendError = null,
+                        replyTarget = null
+                    )
+                }
+''','''                    _commentState.value = current.copy(
+                        isSending = false,
+                        sendError = null,
+                        replyTarget = completedReplyTarget
+                    )
+                }
+''')
+    body=replace_once(body,'''                        replyTarget = null,
+                        replyCount = current.replyCount + 1
+                    )
+                }
+''','''                        replyTarget = completedReplyTarget,
+                        replyCount = current.replyCount + 1
+                    )
+                }
+''')
+    body=replace_once(body,'        _commentState.value = CommentUiState(\n            currentMid = requests.currentMid()\n        )\n','        _commentState.value = CommentUiState(\n            currentMid = requests.currentMid(),\n            composerDrafts = _commentState.value.composerDrafts.reset()\n        )\n')
+    body=replace_once(body,'            replyCount = expectedReplyCount.coerceAtLeast(0)\n        )\n','            replyCount = expectedReplyCount.coerceAtLeast(0),\n            composerDrafts = _commentState.value.composerDrafts.reset()\n        )\n')
+    body=replace_once(body,'            replyCount = currentState.replyCount\n        )\n','            replyCount = currentState.replyCount,\n            composerDrafts = currentState.composerDrafts\n        )\n')
     body=remove_declaration(body,'queryDisplayName').replace('List<Uri>','List<String>')
     body=body.replace('com.android.purebilibili.core.util.Logger.', 'Logger.')
     body=shared.drop_logs(body)
@@ -316,6 +634,55 @@ def generate_ui(repo,output,original,shared,emit,changes):
     body=re.sub(r'(\.onFailure\s*\{(?:\s*\w+\s*->)?)',r'\1\n                ensureRequestOwned()',body)
     body=replace_once(body,'            val picturesResult = uploadCommentPictures(imageUris)','            ensureRequestOwned()\n            val picturesResult = uploadCommentPictures(imageUris)')
     body, search_lifetime = comment_search.vm_delta(body)
+    # Canonical draft state machine, kept verbatim from the upstream declaration; the payload
+    # type and key helper stay with their existing producer.
+    body=body.rstrip('\n')+'''
+
+data class CommentComposerDraftState(
+    val sessionId: Long = 0L,
+    val completedSessionId: Long = -1L,
+    val drafts: Map<Long, CommentComposerDraft> = emptyMap(),
+    val revision: Long = 0L
+) {
+    internal fun open(): CommentComposerDraftState = copy(sessionId = sessionId + 1L)
+
+    internal fun reset(): CommentComposerDraftState = copy(
+        sessionId = sessionId + 1L,
+        drafts = emptyMap()
+    )
+
+    internal fun update(
+        sessionId: Long,
+        replyRpid: Long?,
+        draft: CommentComposerDraft
+    ): CommentComposerDraftState {
+        if (sessionId != this.sessionId || sessionId <= completedSessionId) return this
+        val key = commentComposerDraftKey(replyRpid)
+        val updatedDrafts = if (
+            draft.text.isEmpty() && draft.imageUris.isEmpty() && !draft.syncToDynamic
+        ) {
+            if (key in drafts) drafts - key else drafts
+        } else {
+            drafts + (key to draft)
+        }
+        // StateFlow must retain a newer draft instance even when its contents are equal.
+        return copy(drafts = updatedDrafts, revision = revision + 1L)
+    }
+
+    internal fun complete(
+        sessionId: Long,
+        replyRpid: Long?,
+        sentDraft: CommentComposerDraft?
+    ): CommentComposerDraftState {
+        if (sessionId > this.sessionId) return this
+        val key = commentComposerDraftKey(replyRpid)
+        return copy(
+            completedSessionId = maxOf(completedSessionId, sessionId),
+            drafts = if (sentDraft != null && drafts[key] === sentDraft) drafts - key else drafts
+        )
+    }
+}
+'''
     comment_selection['originalToPlatform'] = comment_search.whole_proof(comment_raw,body)
     comment_selection['searchLifetime'] = search_lifetime
     changes.append(dict(source=path,v036VideoCommentCache=comment_selection))
@@ -344,6 +711,9 @@ def generate_ui(repo,output,original,shared,emit,changes):
     body=shared.drop_logs(body)
     from v029_comment_composer import dialog_delta
     body=dialog_delta(repo,output,original[path],body)
+    body=bgm_dialog_draft_key(body)
+    body=bgm_dialog_draft_seam(body)
+    body=bgm_dialog_picker_seam(body)
     emit('com/android/purebilibili/feature/video/ui/components/CommentInputDialog.kt',body)
     retained(path,body,'Full original input renderer/policies/mention/emotes/skin/draft/sync/9 images; owned existing Windows picker replaces ActivityResult, measured viewport replaces Android configuration and Android-only dialog inset flag is omitted.')
     from v046_comment_chrome import advance_sort_source, emit_tests as emit_comment_chrome_tests
@@ -375,6 +745,7 @@ def generate_ui(repo,output,original,shared,emit,changes):
     body=replace_once(body,'        (context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).setPrimaryClip(ClipData.newPlainText("音乐", text))\n        Toast.makeText(context, "已复制", Toast.LENGTH_SHORT).show()','        platform.copyText(text, "音乐")\n        platform.showFeedback("已复制")')
     start=body.index('                        val intent = Intent(MediaStore.INTENT_ACTION_MEDIA_PLAY_FROM_SEARCH)');end=body.index('\n                    }, contentPadding',start)
     body=body[:start]+'''                        if (!onMediaSearch(detail.musicTitle, detail.originArtist.ifBlank { detail.originArtistList }, detail.album)) copy(detail.musicTitle)'''+body[end:]
+    body=bgm_comment_draft_session(body)
     emit('com/android/purebilibili/feature/audio/bgm/BgmDetailScreen.kt',body)
     retained(path,body,'Entire original Screen/Content/InfoCard/Videos retained, with owned required VM/platform callbacks, actual ListenAudioSession overlay parameter, and original external-media-search fallback. Native BGM never becomes legacy AU/Music page.')
     for suffix in ['data/model/CommentFraudStatus.kt','data/repository/CommentFraudDetectionPolicy.kt']:

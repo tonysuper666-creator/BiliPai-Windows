@@ -310,7 +310,6 @@ val appCoreLaterSteps: Map<String, String> = mapOf(
     "core/events/BrandSuccessEvents.kt" to "the desktop success feedback carries its own origin model (DesktopBrandSuccessOrigin) that upstream's events do not have; moves with the feedback host",
     "core/ui/BrandSuccessFeedbackHost.kt" to "the desktop success feedback carries its own origin model (DesktopBrandSuccessOrigin); moves with BrandSuccessEvents",
     "core/store/FavoriteFolderCoverCache.kt" to "the desktop keeps one cover cache per favorites origin; moves with the favorites feature (M4d)",
-    "core/ui/components/AppLiquidAwareTabRow.kt" to "calls feature/home's liquid tab components with their new parameters; moves with the home feature (M4b)",
 )
 // Feature areas compiled from the merged root as well (TON-1003, M4b): home, search, dynamic and comment. A file of those
 // areas stays on its legacy copy while upstream-core/m4b/later-steps.tsv lists it (path <TAB> what it waits for);
@@ -385,7 +384,6 @@ val appM4cDesktopOwned: Map<String, String> = mapOf(
 )
 // appM4cLaterSteps: still on their legacy copy in this step; the reason names what has to move first.
 val appM4cLaterSteps: Map<String, String> = mapOf(
-    "com/android/purebilibili/feature/audio/bgm/BgmDetailScreen.kt" to "依赖 ViewGrpcRepository 与 Toast/MediaStore；等 BGM 数据层迁移",
     "com/android/purebilibili/feature/audio/lyrics/halcyon/AppleCoverFlowBackground.kt" to "Android Canvas/Bitmap 封面流；桌面音乐页（ui/DesktopNativeMusicDetailScreen.kt，79 行）还没有封面流，先保留旧副本",
     "com/android/purebilibili/feature/audio/lyrics/halcyon/PlayerBlurBackground.kt" to "Bitmap 模糊取样；桌面音乐页还没有模糊底图，先保留旧副本",
     "com/android/purebilibili/feature/audio/lyrics/halcyon/PlayerLyricPerspective.kt" to "依赖 Android Configuration.smallestScreenWidthDp",
@@ -2653,6 +2651,7 @@ val prepareJsWorkerResources = if (hostIsWindows) tasks.register<Sync>("prepareJ
 
 // Generated legacy files that re-declare migrated upstream declarations under another file name.
 val upstreamOwnedGeneratedCopies = setOf(
+    "bgm-detail/com/android/purebilibili/feature/audio/bgm/BgmDetailScreen.kt",
     // M4c (TON-1004): the live danmaku model now lives in desktop/src/main/kotlin/.../feature/live.
     "media/com/android/purebilibili/feature/live/DesktopLiveDanmakuItem.kt",
     // core/ui/components/UserLevelBadge (TON-1072): the upstream file draws its R.drawable level badges through the generated
