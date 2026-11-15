@@ -14,6 +14,7 @@ import unittest
 REPO = Path(__file__).resolve().parents[3]
 TOOLS = REPO / 'desktop/tools'
 sys.path.insert(0, str(TOOLS))
+from legacy_read_point import legacy_read_point
 import check_slice_symbol_closure as gate
 import v046_home_refresh_ui_policy as policy
 
@@ -97,7 +98,8 @@ def run_cli(output, seed):
                        PYTHONDONTWRITEBYTECODE='1', PYTHONUTF8='1')
     done = subprocess.run(
         [sys.executable, '-X', 'utf8', '-B', str(REPO / 'desktop' / PRODUCER),
-         '--repo', str(REPO), '--output', str(output)],
+         '--repo', str(legacy_read_point(REPO, 'app/src/main/java/com/android/purebilibili/feature/home/HomeScreen.kt')),
+         '--output', str(output)],
         cwd=str(REPO / 'desktop'), env=environment, capture_output=True, check=False)
     if done.returncode != 0:
         raise RuntimeError(done.stderr.decode('utf-8', 'replace')[-4000:])
