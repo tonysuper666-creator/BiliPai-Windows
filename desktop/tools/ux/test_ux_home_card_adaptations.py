@@ -202,11 +202,40 @@ class GeneratorOutputTest(unittest.TestCase):
         self.assertEqual(1, len(found))
         return found[0]
 
+    def without_separator(self, files):
+        """The card with only the K3f separator edit undone: the text the K3e copy link edits leave."""
+        text = self.card(files)
+        for label, before, after in reversed(layer.SEPARATOR_EDITS):
+            self.assertEqual(1, text.count(after), label)
+            text = text.replace(after, before, 1)
+        return text
+
+    def without_copy(self, files):
+        """The card with the K3f separator and then the K3e copy link edits undone, last first: the text the K3d hover edits
+        leave."""
+        text = self.without_separator(files)
+        for label, before, after in reversed(layer.COPY_EDITS):
+            self.assertEqual(1, text.count(after), label)
+            text = text.replace(after, before, 1)
+        return text
+
+    def without_hover(self, files):
+        """The card with the K3e copy link edits and then the K3d hover edits undone, last first: the text the H2, K3 and
+        K3b edits alone produce."""
+        text = self.without_copy(files)
+        for label, before, after in reversed(layer.HOVER_EDITS):
+            self.assertEqual(1, text.count(after), label)
+            text = text.replace(after, before, 1)
+        return text
+
     def test_the_layer_changes_exactly_the_generated_card_and_the_inventory(self):
         self.assertEqual(set(self.plain), set(self.layered))
         changed = {name for name in self.layered if self.layered[name] != self.plain[name]}
         self.assertEqual({CARD_PATH, INVENTORY_PATH}, changed)
-        # In the inventory only the audit rows of the card entry change, and only by the seven rows the layer appends.
+        # In the inventory only the audit rows of the card entry change, and only by the rows the layer appends: the seven of
+        # slice H2, then the four of slice K3 (the cover focus), then the fourteen of slice K3b (the three-line layout), then the four
+        # of slice K3d (the hover and the quick actions), then the three of slice K3e (the copy link), then the one of slice K3f
+        # (the menu separator), in that order.
         plain_rows, layered_rows = self.rows(self.plain), self.rows(self.layered)
         self.assertEqual(len(plain_rows), len(layered_rows))
         for before, after in zip(plain_rows, layered_rows):
@@ -215,13 +244,25 @@ class GeneratorOutputTest(unittest.TestCase):
         before, after = self.card_row(self.plain), self.card_row(self.layered)
         self.assertEqual({key: value for key, value in before.items() if key != "changes"}, {key: value for key, value in after.items() if key != "changes"})
         self.assertEqual(before["changes"], after["changes"][:len(before["changes"])])
-        self.assertEqual([label for label, _b, _a in layer.EDITS], [row["id"] for row in after["changes"][len(before["changes"]):]])
+        self.assertEqual(layer.EDITS + layer.COVER_EDITS + layer.LAYOUT_EDITS + layer.HOVER_EDITS + layer.COPY_EDITS
+                         + layer.SEPARATOR_EDITS,
+                         layer.ALL_EDITS)
+        self.assertEqual((7, 4, 14, 4, 3, 1),
+                         (len(layer.EDITS), len(layer.COVER_EDITS), len(layer.LAYOUT_EDITS), len(layer.HOVER_EDITS),
+                          len(layer.COPY_EDITS), len(layer.SEPARATOR_EDITS)))
+        self.assertEqual(["ux-card-hover-imports", "ux-card-hover-state", "ux-card-hover-surface", "ux-card-hover-quick-actions"],
+                         [row["id"] for row in after["changes"][-8:-4]])
+        self.assertEqual(["ux-card-copy-link-state", "ux-card-copy-link-key", "ux-card-copy-link-menu-row"],
+                         [row["id"] for row in after["changes"][-4:-1]])
+        self.assertEqual(["ux-card-menu-separator-row"], [row["id"] for row in after["changes"][-1:]])
+        self.assertEqual([label for label, _b, _a in layer.ALL_EDITS], [row["id"] for row in after["changes"][len(before["changes"]):]])
 
     def test_the_output_is_deterministic(self):
         self.assertEqual(self.layered, self.again)
 
     def test_every_anchor_occurs_exactly_once_in_the_text_the_layer_receives(self):
-        received, produced = self.card(self.plain), self.card(self.layered)
+        # The K3d hover edit rewrites one line of the H2 right-click edit, so the H2 edits are read before the K3d edits.
+        received, produced = self.card(self.plain), self.without_hover(self.layered)
         for label, before, after in layer.EDITS:
             self.assertEqual(1, received.count(before), label)
             self.assertEqual(0, received.count(after), label)
@@ -231,6 +272,10 @@ class GeneratorOutputTest(unittest.TestCase):
                 self.assertEqual(0, produced.count(before), label)
             else:
                 self.assertEqual(1, produced.count(before), label)
+        # In the final card the vendored hover line of the H2 chain is gone; it is kept only as the OFF branch of the K3d switch.
+        final = self.card(self.layered)
+        self.assertEqual(0, final.count("            .adaptiveCardHoverEffect(shape = adaptiveHoverShape)\n"))
+        self.assertEqual(1, final.count("                    Modifier.adaptiveCardHoverEffect(shape = adaptiveHoverShape)\n"))
 
     def test_the_edits_are_the_seven_of_the_slice_in_one_file(self):
         self.assertEqual(["ux-card-menu-imports", "ux-card-modifier-imports", "ux-card-secondary-click-and-hand-cursor", "ux-card-overflow-target",
@@ -243,9 +288,18 @@ class GeneratorOutputTest(unittest.TestCase):
 
     def test_reverse_applying_the_edits_gives_back_the_received_text(self):
         self.assertEqual(self.card(self.plain), layer.reverse(layer.CARD, self.card(self.layered)))
+        # Undoing only the K3d hover edits and then the K3b layout edits, last first, gives back the text the H2 and K3 edits alone produce.
+        partial = self.without_hover(self.layered)
+        for label, before, after in reversed(layer.LAYOUT_EDITS):
+            self.assertEqual(1, partial.count(after), label)
+            partial = partial.replace(after, before, 1)
+        expected = self.card(self.plain)
+        for label, before, after in layer.EDITS + layer.COVER_EDITS:
+            expected = expected.replace(before, after, 1)
+        self.assertEqual(expected, partial)
 
     def test_the_text_between_the_edits_is_untouched(self):
-        expected = len(self.card(self.plain)) + sum(len(after) - len(before) for _label, before, after in layer.EDITS)
+        expected = len(self.card(self.plain)) + sum(len(after) - len(before) for _label, before, after in layer.ALL_EDITS)
         self.assertEqual(expected, len(self.card(self.layered)))
 
     def test_a_mutated_or_doubled_anchor_fails_closed(self):
@@ -265,7 +319,7 @@ class GeneratorOutputTest(unittest.TestCase):
             layer.apply_home_card(REPO, layer.CARD, self.card(self.layered), [])
 
     def test_a_taken_name_is_refused_before_any_edit(self):
-        for introduced in layer.INTRODUCED:
+        for introduced in layer.INTRODUCED + layer.SEPARATOR_INTRODUCED:
             with self.assertRaises(AssertionError, msg=introduced):
                 layer.apply_home_card(REPO, layer.CARD, self.card(self.plain) + "\nval %s = 1\n" % introduced, [])
 
@@ -285,8 +339,8 @@ class GeneratorOutputTest(unittest.TestCase):
     def test_the_audit_rows_have_the_v043_shape_and_the_right_hashes(self):
         plain_changes, rows = self.card_row(self.plain)["changes"], self.card_row(self.layered)["changes"]
         mine = rows[len(plain_changes):]
-        self.assertEqual(len(layer.EDITS), len(mine))
-        for (label, before, after), row in zip(layer.EDITS, mine):
+        self.assertEqual(len(layer.ALL_EDITS), len(mine))
+        for (label, before, after), row in zip(layer.ALL_EDITS, mine):
             self.assertEqual({"id", "beforeSha256", "afterSha256", "inverseRestoresInput"}, set(row), label)
             self.assertEqual(label, row["id"])
             self.assertEqual(hashlib.sha256(before.encode("utf-8")).hexdigest(), row["beforeSha256"], label)
@@ -307,19 +361,21 @@ class GeneratorOutputTest(unittest.TestCase):
 
     def test_the_menu_call_shapes_are_the_vendored_ones(self):
         received, produced = source.mask_kotlin(self.card(self.plain)), source.mask_kotlin(self.card(self.layered))
-        for name, expected in (("AppDropdownMenu", [["expanded", "onDismissRequest", "offset"]]),
-                               ("AppDropdownMenuItem", [["text", "onClick"]] * 3)):
-            for code in (received, produced):
+        # Every row keeps the vendored shape (a text slot and an onClick); slice K3e adds one more row, the copy link.
+        for name, expected, shaped in (("AppDropdownMenu", [["expanded", "onDismissRequest", "offset"]], [["expanded", "onDismissRequest", "offset"]]),
+                                       ("AppDropdownMenuItem", [["text", "onClick"]] * 3, [["text", "onClick"]] * 4)):
+            for code, wanted in ((received, expected), (produced, shaped)):
                 calls = []
                 for match in re.finditer(r"(?<![\w.])%s\(" % name, code):
                     arguments = top_level_arguments(code, match.end() - 1)
                     calls.append([argument.split("=", 1)[0].strip() for argument in arguments if re.match(r"^\w+\s*=[^=]", argument)])
-                self.assertEqual(expected, calls, name)
+                self.assertEqual(wanted, calls, name)
         self.assertIn("AppDropdownMenu(\n                expanded = showDismissMenu,\n                onDismissRequest = { showDismissMenu = false },\n"
                       "                offset = DpOffset.Zero\n            ) {", self.card(self.layered))
 
     def test_the_right_click_and_the_hand_cursor_sit_in_the_modifier_chain_of_the_card_box(self):
-        produced = self.card(self.layered)
+        # The chain as H2 left it; slice K3d then switches its hover line on the flag (pinned at the end of this test).
+        produced = self.without_hover(self.layered)
         chain_start = produced.index("    Box(\n        modifier = modifier\n            .fillMaxWidth()\n            .adaptiveCardHoverEffect(shape = adaptiveHoverShape)\n")
         chain = produced[chain_start:produced.index("\n    ) {\n", chain_start)]
         order = [".fillMaxWidth()", ".adaptiveCardHoverEffect(shape = adaptiveHoverShape)", ".desktopCardSecondaryClick(enabled = hasOverflowMenu) { pressOffset ->",
@@ -336,11 +392,26 @@ class GeneratorOutputTest(unittest.TestCase):
                             "val hasOverflowMenu = onDismiss != null || onWatchLater != null"):
             self.assertEqual(1, produced.count(declaration), declaration)
             self.assertLess(produced.index(declaration), chain_start, declaration)
-        # The long press sites keep calling the menu with their own anchors.
-        self.assertEqual(self.card(self.plain).count("openDismissMenu(") + 1, produced.count("openDismissMenu("))
+        # The long press sites keep calling the menu with their own anchors. The two new calls are the right click (slice H2)
+        # and the menu key of the focused cover (slice K3), anchored on the cover.
+        self.assertEqual(self.card(self.plain).count("openDismissMenu(") + 2, produced.count("openDismissMenu("))
+        self.assertEqual(1, produced.count("{ openDismissMenu(coverCoordsRef.value, null) }"))
         self.assertEqual(1, produced.count("openDismissMenu(coverCoordsRef.value, pressOffset)"))
         self.assertEqual(1, produced.count("openDismissMenu(titleCoordsRef.value, pressOffset)"))
         self.assertEqual(1, produced.count("openDismissMenu(menuButtonCoordsRef.value, null)"))
+        # Slice K3d: in the final card the first two links of the chain are the width and the flag switch of the hover, whose OFF
+        # branch is the vendored expression; the rest of the chain is the H2 one. The quick "more" action is the one further call.
+        final = self.card(self.layered)
+        self.assertEqual(1, final.count("    Box(\n        modifier = modifier\n            .fillMaxWidth()\n            .then(\n"
+                                        "                if (homeCardThreeLine) {\n"
+                                        "                    Modifier.desktopHomeCardHoverSurface(homeCardHover, cornerRadius = cardCornerRadius)\n"
+                                        "                } else {\n"
+                                        "                    Modifier.adaptiveCardHoverEffect(shape = adaptiveHoverShape)\n"
+                                        "                }\n"
+                                        "            )\n"
+                                        "            .desktopCardSecondaryClick(enabled = hasOverflowMenu) { pressOffset ->\n"))
+        self.assertEqual(produced.count("openDismissMenu(") + 1, final.count("openDismissMenu("))
+        self.assertEqual(1, final.count("{ anchor -> openDismissMenu(anchor, null) }"))
 
     def test_only_the_overflow_box_takes_the_32_dp_target(self):
         received, produced = self.card(self.plain), self.card(self.layered)
@@ -698,9 +769,10 @@ class KotlinSourceTest(unittest.TestCase):
         names = []
         for path in cm.CARD_FILES:
             names += re.findall(r"(?m)^(?:@Composable\n)?internal (?:fun (?:Modifier\.)?|val |const val |class |enum class |object )(\w+)", source.read(path))
-        # The menu file: the flag reader, the label, the target, the menu and the row (5). The pointer file: the two modifiers (2). The
-        # policy: three tokens, the enum and five functions (9).
-        self.assertEqual(16, len(names), names)
+        # The menu file: the flag reader, the label, the target, the menu and the row (5), plus the separator of slice K3f (2:
+        # the tag and the composable). The pointer file: the two modifiers (2). The policy: three tokens, the enum and five
+        # functions (9).
+        self.assertEqual(18, len(names), names)
         self.assertEqual(len(names), len(set(names)))
         for path in sorted(source.K.rglob("*.kt")) + sorted(source.KT.rglob("*.kt")):
             if path in cm.CARD_FILES:

@@ -36,6 +36,149 @@ internal fun next(): Int { return 1 }
         with self.assertRaises(ValueError):
             media.function("fun changed(): Int { return 1 }\nfun changed(): Int { return 2 }", "changed", media.parser_for(REPO))
 
+    def test_expression_body_stops_before_the_next_declaration(self):
+        parser = media.parser_for(REPO)
+        source = '''private fun createPageInfo(
+    requestedPage: Int
+): SearchVideoSearchPageInfo = resolveVideoSearchPageInfo(
+    requestedPage = requestedPage
+)
+
+private fun searchTypeParams(): Map<String, String> = buildMap {
+    put("a", "b")
+}
+'''
+        self.assertEqual('''private fun createPageInfo(
+    requestedPage: Int
+): SearchVideoSearchPageInfo = resolveVideoSearchPageInfo(
+    requestedPage = requestedPage
+)''', media.function(source, "createPageInfo", parser))
+        # An expression body owns its lambdas; the chain after one is not a new body.
+        self.assertEqual('''fun watched(): Flow<Int> =
+    store.data.map { it[KEY] ?: 0 }.onEach { cache(it) }''',
+                         media.function('''fun watched(): Flow<Int> =
+    store.data.map { it[KEY] ?: 0 }.onEach { cache(it) }
+
+fun next(): Int = 1
+''', "watched", parser))
+
+    def test_expression_body_of_the_last_declaration_ends_at_the_end_of_the_file(self):
+        parser = media.parser_for(REPO)
+        selection = '''internal fun resolveTarget(key: String): Target? = when (key) {
+    "a" -> Target.A
+    else -> null
+}'''
+        self.assertEqual(selection, media.function("package x\n\n" + selection + "\n", "resolveTarget", parser))
+        self.assertEqual("fun report(id: Long) = post(\n    id\n)",
+                         media.function("fun report(id: Long) = post(\n    id\n)\n", "report", parser))
+        for body in (
+            "1 to 2",
+            "items.map { it.id }.filter { it > 0 }",
+            "runCatching {\n    post(request)\n}.getOrNull()?.data!!",
+            "first ?: second.orEmpty() && !flag",
+            "-count + 1.5",
+            "\"$prefix:${id}\" + ::render.name",
+            "values[index] != null",
+        ):
+            with self.subTest(body=body):
+                self.assertEqual("fun sample() = " + body, media.function("fun sample() = " + body + "\n", "sample", parser))
+        # A file cut inside a body still ends with closed brackets; only the whole
+        # token stream tells it from a complete expression.
+        for name, body in (
+            ("unclosed", "compute(\n    1"),
+            ("empty", ""),
+            ("dangling_plus", "1 +"),
+            ("dangling_elvis", "item ?:"),
+            ("dangling_and", "ready &&"),
+            ("dangling_or", "ready ||"),
+            ("dangling_range", "0 .."),
+            ("dangling_member", "item."),
+            ("dangling_safe_call", "item?."),
+            ("dangling_reference", "item::"),
+            ("dangling_not", "!"),
+            ("dangling_as", "item as"),
+            ("dangling_else", "if (ready) 1 else"),
+            ("missing_then", "if (ready)"),
+            ("when_without_branches", "when (key)"),
+            ("cut_generic", "listOf<Int"),
+            ("dangling_infix", "1 to"),
+            ("assignment", "value = 1"),
+        ):
+            with self.subTest(name=name), self.assertRaisesRegex(ValueError, "unterminated|empty"):
+                media.function("fun sample(): Int = " + body + "\n", "sample", parser)
+        for name, body in (("mismatched", "post(]"), ("crossed", "post([)]")):
+            with self.subTest(name=name), self.assertRaisesRegex(ValueError, "unbalanced"):
+                media.function("fun sample() = " + body + "\n", "sample", parser)
+        # Names after `.`, `?.` and `::` are identifiers: a file cut inside
+        # `trueValue` leaves a keyword where only a name may stand, and `super`
+        # is whole only as the receiver of a member access.
+        for keyword in ("true", "false", "null"):
+            for operator in (".", "?.", "::"):
+                full = ("class Holder(val " + keyword + "Value: Int)\nval item = Holder(1)\n"
+                        "fun sample() = item" + operator + keyword + "Value\n")
+                with self.subTest(full=full):
+                    self.assertEqual("fun sample() = item" + operator + keyword + "Value",
+                                     media.function(full, "sample", parser))
+                    with self.assertRaisesRegex(ValueError, "unterminated"):
+                        media.function(full[:-len("Value\n")], "sample", parser)
+            full = "fun " + keyword + "Value() = 1\nfun sample() = ::" + keyword + "Value\n"
+            with self.subTest(full=full):
+                self.assertEqual("fun sample() = ::" + keyword + "Value", media.function(full, "sample", parser))
+                with self.assertRaisesRegex(ValueError, "unterminated"):
+                    media.function(full[:-len("Value\n")], "sample", parser)
+        full = "open class Base { fun value() = 1 }\nclass Child : Base() {\n    fun sample() = super.value()\n}\n"
+        self.assertEqual("fun sample() = super.value()", media.function(full, "sample", parser))
+        with self.assertRaisesRegex(ValueError, "unterminated"):
+            media.function(full[:full.index("super.") + len("super")], "sample", parser)
+        for body in ("true && !false", "this", "x == null", "item.`true`", "String::class",
+                     "super.value()", "1.5f + 0x1F - 1_000L", "2.5.toInt()"):
+            with self.subTest(body=body):
+                self.assertEqual("fun sample() = " + body, media.function("fun sample() = " + body + "\n", "sample", parser))
+        for body in ("item.this", "item.1", "1.", "super", "super.", "x true y", "item::super"):
+            with self.subTest(body=body), self.assertRaisesRegex(ValueError, "unterminated"):
+                media.function("fun sample() = " + body + "\n", "sample", parser)
+        # A number is whole only as a complete Kotlin literal: a file cut after
+        # a radix prefix, an exponent marker or a digit separator is not.
+        for whole, cut in (("0x1F", "0x"), ("0b101", "0b"), ("1e3", "1e"), ("1.5e3", "1.5e"),
+                           ("1_000L", "1_"), ("1.5_000f", "1.5_"), ("0x1_F", "0x1_"), ("1e1_0", "1e1_")):
+            with self.subTest(whole=whole):
+                self.assertEqual("fun sample() = " + whole,
+                                 media.function("fun sample() = " + whole + "\n", "sample", parser))
+                with self.assertRaisesRegex(ValueError, "unterminated"):
+                    media.function("fun sample() = " + cut, "sample", parser)
+        for body in ("1e-3 * 2", "1.5E+3f", "0xFFuL", "0B1_0u", "7L..9L", "1.toString()", "x-1"):
+            with self.subTest(body=body):
+                self.assertEqual("fun sample() = " + body, media.function("fun sample() = " + body + "\n", "sample", parser))
+        for body in ("1e-", "0x_1", "1__", "1.5.5", "1L.5"):
+            with self.subTest(body=body), self.assertRaisesRegex(ValueError, "unterminated"):
+                media.function("fun sample() = " + body + "\n", "sample", parser)
+
+    def test_expression_body_without_a_boundary_fails_closed(self):
+        parser = media.parser_for(REPO)
+        for name, source in (
+            ("empty", "fun empty(): Int =\n\nfun next(): Int = 1\n"),
+            ("unterminated", "fun unterminated(): Int = 1 +\n"),
+            ("dangling", "fun dangling(): Int = 1 +\nfun next(): Int = 1\n"),
+        ):
+            with self.subTest(name=name), self.assertRaises(ValueError):
+                media.function(source, name, parser)
+        with self.assertRaisesRegex(ValueError, "missing or ambiguous"):
+            media.function("fun renamedCreatePageInfo(): Int = 1\n", "createPageInfo", parser)
+
+    def test_changed_expression_body_still_fails_the_canonical_digest(self):
+        relative = "core-data/src/main/java/com/android/purebilibili/data/repository/SearchRepository.kt"
+        original = canonical_source(REPO, relative).read_bytes()
+        self.assertGreaterEqual(original.count(b"resolveVideoSearchPageInfo("), 1)
+        with tempfile.TemporaryDirectory() as temporary:
+            changed = Path(temporary) / relative
+            changed.parent.mkdir(parents=True)
+            changed.write_bytes(original.replace(b"resolveVideoSearchPageInfo(", b"resolveChangedPageInfo(", 1))
+            with self.assertRaisesRegex(ValueError, "Canonical original source digest mismatch"):
+                canonical_source(Path(temporary), relative)
+        with tempfile.TemporaryDirectory() as temporary:
+            with self.assertRaisesRegex(ValueError, "Unregistered canonical upstream source"):
+                canonical_source(Path(temporary), "app/src/main/java/com/android/purebilibili/data/repository/Unregistered.kt")
+
     def test_actual_generation_retains_original_algorithms_and_windows_binding(self):
         with tempfile.TemporaryDirectory() as temporary:
             output = Path(temporary)

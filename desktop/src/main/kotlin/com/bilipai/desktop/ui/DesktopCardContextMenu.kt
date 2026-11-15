@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
@@ -26,6 +27,7 @@ import com.bilipai.desktop.appearance.DesktopWindowsUxCardInteractions
 import com.bilipai.desktop.appearance.LocalDesktopWindowsUx
 import com.bilipai.desktop.ui.kit.DESKTOP_KIT_RADIUS_CONTROL_DP
 import com.bilipai.desktop.ui.kit.DesktopContextMenu
+import com.bilipai.desktop.ui.kit.DesktopKitDivider
 import com.bilipai.desktop.ui.kit.desktopKitDisabledAlpha
 import com.bilipai.desktop.ui.kit.desktopKitInteraction
 
@@ -46,6 +48,9 @@ internal fun desktopCardInteractionsOn(): Boolean {
     val settings by LocalDesktopWindowsUx.current.settings.collectAsState()
     return settings.cardInteractions == DesktopWindowsUxCardInteractions.ON
 }
+
+/** The semantics tag of the separator line of the card menu, so a test can find the one pixel row it paints. */
+internal const val DESKTOP_CARD_MENU_SEPARATOR_TAG = "desktop_card_menu_separator"
 
 /** The text of a menu entry for the flag in force: the plain label while ON, the vendored label while OFF. */
 @Composable
@@ -116,4 +121,16 @@ internal fun DesktopCardContextMenuItem(
     ) {
         text()
     }
+}
+
+/**
+ * The line between the common actions of the card menu and the negative dismiss row (spec 4: that row goes after a
+ * separator). It is the kit divider, so the colour is the outlineVariant role of the theme and the height is one physical
+ * pixel at any scale, and the generated card draws it only when the dismiss row and one of the rows above it are drawn. It
+ * is not focusable and not clickable, so the arrow keys of the menu skip it, and it paints nothing while the flag is OFF.
+ */
+@Composable
+internal fun DesktopCardMenuSeparator(modifier: Modifier = Modifier) {
+    if (!desktopCardInteractionsOn()) return
+    DesktopKitDivider(modifier.testTag(DESKTOP_CARD_MENU_SEPARATOR_TAG))
 }

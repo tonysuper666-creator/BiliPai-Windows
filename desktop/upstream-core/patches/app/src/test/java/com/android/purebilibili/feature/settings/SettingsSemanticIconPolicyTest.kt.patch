@@ -1,0 +1,32 @@
+Upstream-source-sha256: 3af2d150b8d709ed82594c5dc8239cf4df390e56861c92b31907dfeb7534eb50
+Reason: Upstream tests run with app as their working directory; preserve assertions while correcting the source path prefix.
+
+--- a/app/src/test/java/com/android/purebilibili/feature/settings/SettingsSemanticIconPolicyTest.kt
++++ b/app/src/test/java/com/android/purebilibili/feature/settings/SettingsSemanticIconPolicyTest.kt
+@@ -29,7 +29,7 @@
+     @Test
+     fun batteryStatus_usesBatteryResourceInsteadOfPhoneGlyph() {
+         val source = File(
+-            "app/src/main/java/com/android/purebilibili/feature/settings/SettingsSemanticIconPolicy.kt"
++            "src/main/java/com/android/purebilibili/feature/settings/SettingsSemanticIconPolicy.kt"
+         ).readText()
+ 
+         assertEquals(
+@@ -41,7 +41,7 @@
+     @Test
+     fun allSettingsSkinsUseRoleSpecificLocalVectors() {
+         val source = File(
+-            "app/src/main/java/com/android/purebilibili/feature/settings/SettingsSemanticIconPolicy.kt"
++            "src/main/java/com/android/purebilibili/feature/settings/SettingsSemanticIconPolicy.kt"
+         ).readText()
+         val rememberFunction = source
+             .substringAfter("internal fun rememberSettingsSemanticIcon(")
+@@ -53,7 +53,7 @@
+ 
+     @Test
+     fun settingsSource_hasNoLegacyComposeMaterialIconReferences() {
+-        val source = File("app/src/main/java/com/android/purebilibili/feature/settings")
++        val source = File("src/main/java/com/android/purebilibili/feature/settings")
+             .walkTopDown().filter { it.isFile && it.extension == "kt" }.joinToString("\n") { it.readText() }
+         assertTrue("androidx.compose.material.icons" !in source)
+         assertTrue(Regex("""(?<!App)(?<!Miuix)Icons\.""").find(source) == null)

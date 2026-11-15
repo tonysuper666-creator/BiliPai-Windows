@@ -14,9 +14,13 @@ class DesktopSettingsSearchTest {
     @Test fun exactOriginalSynonymsPinyinAndSpecificFocus(): Unit = runBlocking {
         assertTrue(resolveSettingsSearchResults("   ").isEmpty())
         assertTrue(resolveSettingsSearchResults("字幕", 0).isEmpty())
-        val codec=resolveSettingsSearchResults(" HEVC ").first()
+        val codecResults=resolveSettingsSearchResults(" HEVC ")
+        assertEquals(listOf("legacy.014","legacy.047"),codecResults.take(2).map{it.settingId})
+        val codec=codecResults.single{it.settingId=="legacy.047"}
         assertEquals(SettingsSearchTarget.PLAYBACK,codec.target);assertEquals(SettingsSearchFocusIds.PLAYBACK_DECODER,codec.focusId)
-        val audio=resolveSettingsSearchResults("Hi - Res").first()
+        val audioResults=resolveSettingsSearchResults("Hi - Res")
+        assertEquals(listOf("legacy.004","legacy.014","legacy.053"),audioResults.take(3).map{it.settingId})
+        val audio=audioResults.single{it.settingId=="legacy.053"}
         assertEquals(SettingsSearchTarget.PLAYBACK,audio.target);assertEquals(SettingsSearchFocusIds.PLAYBACK_NETWORK,audio.focusId)
         for(query in listOf("倍速","beisu","bs")) assertTrue(resolveSettingsSearchResults(query).any{it.target==SettingsSearchTarget.PLAYBACK})
         val sentence=resolveSettingsSearchResults("我想关闭自动启用字幕").first()
@@ -53,7 +57,7 @@ class DesktopSettingsSearchTest {
         var category:SettingsRootCategory?=null;var destination:SettingsSearchResult?=null
         c.activate(SettingsSearchResult(SettingsSearchTarget.PRIVACY_PERMISSION,"","",""),{category=it},{destination=it})
         assertEquals(SettingsRootCategory.PRIVACY_PERMISSION,category);assertNull(destination)
-        val codec=resolveSettingsSearchResults("HEVC").first();c.activate(codec,{category=it},{destination=it})
+        val codec=resolveSettingsSearchResults("HEVC").single{it.settingId=="legacy.047"};c.activate(codec,{category=it},{destination=it})
         assertEquals(codec,destination);val oldToken=assertNotNull(SettingsSearchFocusController.request.value).token
         SettingsSearchFocusController.submit(SettingsSearchTarget.PLAYBACK,SettingsSearchFocusIds.PLAYBACK_INTERACTION)
         val newRequest=assertNotNull(SettingsSearchFocusController.request.value)
@@ -61,17 +65,33 @@ class DesktopSettingsSearchTest {
         SettingsSearchFocusController.clear(newRequest.token);assertNull(SettingsSearchFocusController.request.value)
     }
     @Test fun originalRoleVectorsAreConcreteAndKeepGlyphSizes(): Unit = runBlocking {
-        val resources=mutableSetOf<String>()
+        val resources=mutableSetOf<Int>()
         SettingsIconRole.entries.forEach { role ->
-            val name=resolveSettingsMaterialSymbolResource(role);resources+=name
-            val vector=DesktopSettingsVectors.load(name)
-            assertEquals(name,vector.name);assertTrue(vector.root.size>0);assertTrue(vector.viewportWidth>0)
+            val id=resolveSettingsMaterialSymbolResource(role);resources+=id
+            val vector=DesktopSettingsVectors.load(id)
+            assertEquals(DesktopSettingsVectors.name(id),vector.name);assertTrue(vector.root.size>0);assertTrue(vector.viewportWidth>0)
         }
         assertTrue(resources.size>150)
         assertNotEquals(resolveSettingsMaterialSymbolResource(SettingsIconRole.HARDWARE_DECODER),resolveSettingsMaterialSymbolResource(SettingsIconRole.SUBTITLE))
         assertEquals(19,resolveSettingsSemanticIconSizeDp(SettingsIconRole.NAVIGATION,com.android.purebilibili.core.ui.AppSemanticIconFamily.MIUIX))
         assertEquals(20,resolveSettingsSemanticIconSizeDp(SettingsIconRole.NAVIGATION,com.android.purebilibili.core.ui.AppSemanticIconFamily.MATERIAL))
         assertFailsWith<IllegalStateException>{DesktopSettingsVectors.load("invented-icon")}
+        assertFailsWith<IllegalStateException>{DesktopSettingsVectors.load(-1)}
+    }
+    @Test fun outlinedUpstreamIconsRetainStrokeAndTransparentFill() {
+        val fixtures = mapOf("ic_settings_login_activity_24" to 1.8f, "ic_settings_action_counts_24" to 2f)
+        for ((name, width) in fixtures) {
+            val vector = DesktopSettingsVectors.load(name)
+            assertEquals(if (name == "ic_settings_login_activity_24") 1 else 2, vector.root.size)
+            for (index in 0 until vector.root.size) {
+                val path = assertIs<androidx.compose.ui.graphics.vector.VectorPath>(vector.root[index])
+                assertEquals(androidx.compose.ui.graphics.SolidColor(androidx.compose.ui.graphics.Color.White), path.stroke)
+                assertEquals(width, path.strokeLineWidth)
+                assertEquals(androidx.compose.ui.graphics.StrokeCap.Round, path.strokeLineCap)
+                assertEquals(androidx.compose.ui.graphics.StrokeJoin.Round, path.strokeLineJoin)
+                assertEquals(androidx.compose.ui.graphics.SolidColor(androidx.compose.ui.graphics.Color.Transparent), path.fill)
+            }
+        }
     }
     @Test fun cancellationAndFrozenBackingDoNotBecomeSilentSuccess(): Unit = runBlocking {
         val context=context();val repo=DesktopSettingsSearchRepository(context){false};val c=DesktopSettingsSearchController(repo)

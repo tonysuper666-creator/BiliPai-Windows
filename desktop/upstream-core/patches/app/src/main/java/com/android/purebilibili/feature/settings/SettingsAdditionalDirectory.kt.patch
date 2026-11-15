@@ -1,0 +1,11 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/settings/SettingsAdditionalDirectory.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/settings/SettingsAdditionalDirectory.kt
+@@ -106,7 +106,7 @@
+     PlaybackSettingItem("playback.data_saver_mode", "省流量模式", SettingsRootCategory.PLAYBACK_QUALITY, SettingsSearchFocusIds.PLAYBACK_DATA_SAVER, { context -> com.android.purebilibili.core.store.SettingsManager .getDataSaverMode(context).map { it.label } }, target = SettingsSearchTarget.PLAYBACK),
+     PlaybackSettingItem("playback.player_insight_mode", "显示播放信息", SettingsRootCategory.PLAYER_DIAGNOSTICS, SettingsSearchFocusIds.PLAYBACK_DEBUG, { context -> com.android.purebilibili.core.store.SettingsManager.getPlayerInsightMode(context).map { when (it.toString()) { "OFF" -> "关闭"; "SMART" -> "智能显示"; "ALWAYS" -> "始终显示"; else -> it.toString() } } }, target = SettingsSearchTarget.PLAYBACK),
+     PlaybackSettingItem("playback.playback_completion_behavior", "视频播完后", SettingsRootCategory.PLAYBACK_QUALITY, SettingsSearchFocusIds.PLAYBACK_INTERACTION, { context -> com.android.purebilibili.core.store.SettingsManager .getPlaybackCompletionBehavior(context).map { it.label } }, target = SettingsSearchTarget.PLAYBACK),
+-    PlaybackSettingItem("playback.subtitle_appearance", com.android.purebilibili.feature.video.ui.components.SUBTITLE_APPEARANCE_TITLE, SettingsRootCategory.PLAYBACK_QUALITY,
++    PlaybackSettingItem("playback.subtitle_appearance", "字幕样式", SettingsRootCategory.PLAYBACK_QUALITY,
+         SettingsSearchFocusIds.PLAYBACK_INTERACTION, null,
+         aliases = listOf("字幕自定义", "字幕字体", "字幕颜色", "字幕描边", "字幕字号", "导入字体"),
+         target = SettingsSearchTarget.PLAYBACK),

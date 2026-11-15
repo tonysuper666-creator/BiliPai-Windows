@@ -107,7 +107,7 @@ internal class DesktopOriginalTabletOwnerSpaceActions(private val api:BilibiliAp
   path=out/pkg.replace('.','/')/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_text(text,encoding='utf-8',newline='\n')
  emit('com.android.purebilibili.feature.space','DesktopOriginalTabletOwnerSpaceLoader.kt',result)
  emit('com.bilipai.desktop.ui','DesktopOriginalTabletOwnerSpaceActions.kt',at)
- proof=dict(pin=PIN,methods=list(selected),fields=list(selectedFields),originalSources=[dict(path=p,sha256LF=hashlib.sha256(s.encode()).hexdigest())for p,s in original.items()],vmDeclarations=records,actionDeclarations=[dict(original=a)for a in apieces],aggregateExtension=dict(original=ext,adapted=adapted))
+ proof=dict(pin=PIN,methods=list(selected),fields=sorted(selectedFields),originalSources=[dict(path=p,sha256LF=hashlib.sha256(s.encode()).hexdigest())for p,s in original.items()],vmDeclarations=records,actionDeclarations=[dict(original=a)for a in apieces],aggregateExtension=dict(original=ext,adapted=adapted))
  (out/'selection-proof.json').write_text(json.dumps(proof,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
 if __name__=='__main__':
  p=argparse.ArgumentParser();p.add_argument('--repo',type=Path,required=True);p.add_argument('--output',type=Path,required=True);a=p.parse_args();generate(a.repo,a.output)

@@ -55,6 +55,12 @@ internal fun desktopSettingsLandableCategory(page: DesktopSettingsPage): Setting
  * now carries).
  */
 internal fun desktopSettingsDirectDetail(category: SettingsRootCategory): SettingsSearchTarget? {
+    // Nested mobile categories are not direct desktop rail destinations.
+    if (category !in DESKTOP_SETTINGS_RAIL_CATEGORIES && category !in setOf(
+            SettingsRootCategory.APPEARANCE_INTERACTION,
+            SettingsRootCategory.CONTENT_PLAYBACK,
+            SettingsRootCategory.PRIVACY_STORAGE,
+        )) return null
     val canonical = canonicalSettingsRootCategory(category)
     return resolveDesktopSettingsCategoryDirectTarget(canonical) ?: when (canonical) {
         SettingsRootCategory.PLAYBACK_QUALITY -> SettingsSearchTarget.PLAYBACK

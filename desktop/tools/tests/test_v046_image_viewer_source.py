@@ -17,6 +17,9 @@ import tempfile
 import unittest
 
 REPO = Path(__file__).resolve().parents[3]
+# The gate runs this suite inside the legacy read point, whose upstream originals are the pinned commit; the live
+# renderer body is produced from the live checkout, which the runner passes as BILIPAI_LIVE_ROOT.
+LIVE = Path(os.environ.get('BILIPAI_LIVE_ROOT') or REPO)
 TOOLS = REPO / 'desktop/tools'
 sys.path.insert(0, str(TOOLS))
 import check_slice_symbol_closure as gate
@@ -282,6 +285,8 @@ class V046ImageViewerSourceTest(unittest.TestCase):
 
     def test_renderer_layer_has_an_exact_inverse_and_changes_only_the_two_pinned_hunks(self):
         self.assertEqual(source.RENDERER_PREDECESSOR_SHA256, source.sha(self.before.replace('\r\n', '\n')))
+        self.assertEqual(source.PAGER_BEFORE_SHA256,
+                         source.PAGER_SPAN_BY_PREDECESSOR[source.RENDERER_PREDECESSOR_SHA256])
         self.assertEqual(self.before, source.restore(self.after, self.renderer_proof))
         self.assertEqual(self.renderer_proof, source.advance_preview_renderer(REPO, self.before)[1])
         self.assertTrue(self.renderer_proof['wholeInverseExact'])
@@ -332,6 +337,72 @@ class V046ImageViewerSourceTest(unittest.TestCase):
         self.assertIn('isVerticalDismissDragging = true', self.after)
         self.assertEqual(1, self.after.count('beyondViewportPageCount = 1,'))
 
+    def test_a_renderer_that_already_holds_the_v046_pager_keeps_it_instead_of_resplicing(self):
+        dialog = self.archive[source.DIALOG].decode('utf-8')
+        span = dialog[slice(*source._pager_span(dialog, 'test'))]
+        old = source._pager_span(self.before, 'before')
+        advanced = self.before[:old[0]] + span + self.before[old[1]:]
+        self.assertEqual(source.PAGER_AFTER_SHA256,
+                         source.sha(advanced[slice(*source._pager_span(advanced, 'advanced'))]))
+        with mock.patch.dict(source.PAGER_SPAN_BY_PREDECESSOR,
+                             {source.sha(advanced): source.PAGER_AFTER_SHA256}):
+            after, proof = source.advance_preview_renderer(REPO, advanced)
+        self.assertEqual(source.PAGER_AFTER_SHA256, proof['pagerBeforeSHA256'])
+        self.assertEqual(1, len(proof['hunks']))
+        self.assertIn(source.PROVIDER_BEFORE, proof['hunks'][0]['before'])
+        self.assertIn(source.PROVIDER_AFTER, proof['hunks'][0]['after'])
+        self.assertEqual(advanced, source.restore(after, proof))
+        self.assertIn('userScrollEnabled = !isDismissing && !isPreparingDismiss &&\n', after)
+        self.assertIn('activeZoomScale <= 1.01f,\n', after)
+        self.assertNotIn('userScrollEnabled = !isVerticalDismissDragging', after)
+        # The pager bytes are untouched; only the reduced-motion provider moved.
+        self.assertEqual(advanced.replace(source.PROVIDER_BEFORE, source.PROVIDER_AFTER), after)
+        # A body whose registered hash and actual span disagree is refused, never kept and never respliced.
+        swapped = self.before.replace('userScrollEnabled = !isVerticalDismissDragging &&\n',
+                                      'userScrollEnabled = userScrollEnabled,\n')
+        with mock.patch.dict(source.PAGER_SPAN_BY_PREDECESSOR,
+                             {source.sha(swapped): source.PAGER_AFTER_SHA256}):
+            with self.assertRaisesRegex(ValueError, 'pager span changed'):
+                source.advance_preview_renderer(REPO, swapped)
+
+    def test_the_live_renderer_advances_with_only_the_reduced_motion_hunk(self):
+        class Reached(Exception):
+            pass
+
+        captured = {}
+        original = source.advance_preview_renderer
+
+        def spy(repo, before):
+            after, proof = original(repo, before)
+            captured.update(before=before, after=after, proof=proof)
+            # Stop at this layer's boundary: later layers own their own anchors and their own receipts.
+            raise Reached
+
+        with tempfile.TemporaryDirectory(prefix='bp-iv-live-') as tmp, \
+                mock.patch.object(source, 'advance_preview_renderer', spy):
+            with self.assertRaises(Reached):
+                producer.generate(LIVE, Path(tmp))
+        before, after, proof = captured['before'], captured['after'], captured['proof']
+        # The predecessor is the body the producer really builds from the live tree, not a fixture.
+        self.assertEqual(source.RENDERER_LIVE_PREDECESSOR_SHA256, source.sha(before.replace('\r\n', '\n')))
+        self.assertEqual(source.PAGER_AFTER_SHA256,
+                         source.PAGER_SPAN_BY_PREDECESSOR[source.RENDERER_LIVE_PREDECESSOR_SHA256])
+        self.assertEqual(source.PAGER_AFTER_SHA256, proof['pagerBeforeSHA256'])
+        # The live body already carries the v0.4.6 pager, so this layer owes it only the reduced-motion signal.
+        self.assertEqual(1, len(proof['hunks']))
+        self.assertIn(source.PROVIDER_BEFORE, proof['hunks'][0]['before'])
+        self.assertIn(source.PROVIDER_AFTER, proof['hunks'][0]['after'])
+        self.assertEqual(before.replace(source.PROVIDER_BEFORE, source.PROVIDER_AFTER), after)
+        self.assertEqual(before, source.restore(after, proof))
+        self.assertEqual(source.sha(after), proof['afterSHA256'])
+        self.assertIn('userScrollEnabled = !isDismissing && !isPreparingDismiss &&\n', after)
+        self.assertIn('activeZoomScale <= 1.01f,\n', after)
+        self.assertNotIn('userScrollEnabled = !isVerticalDismissDragging', after)
+        self.assertEqual(1, after.count('LocalSystemReduceMotion provides'))
+        # Its own output is not a predecessor either, so a second pass over the live body fails closed.
+        with self.assertRaisesRegex(ValueError, 'predecessor changed'):
+            source.advance_preview_renderer(REPO, after)
+
     def test_reduced_motion_signal_is_provided_once_around_the_preview_content(self):
         self.assertEqual(1, self.before.count(source.PROVIDER_BEFORE))
         self.assertEqual(0, self.after.count(source.PROVIDER_BEFORE))
@@ -377,11 +448,13 @@ class V046ImageViewerSourceTest(unittest.TestCase):
         reordered = source.PAGER_END + 'filler\n' + source.PAGER_START
         with self.assertRaisesRegex(ValueError, 'pager span changed'):
             source._pager_span(reordered, 'x')
-        with mock.patch.object(source, 'RENDERER_PREDECESSOR_SHA256', source.sha(before.replace('userScrollEnabled', 'userScroll'))):
+        with mock.patch.dict(source.PAGER_SPAN_BY_PREDECESSOR,
+                             {source.sha(before.replace('userScrollEnabled', 'userScroll')): source.PAGER_BEFORE_SHA256}):
             with self.assertRaisesRegex(ValueError, 'pager anchors changed|pager span changed|predecessor changed'):
                 source.advance_preview_renderer(REPO, before.replace('userScrollEnabled', 'userScroll'))
         changed = before.replace('activeZoomScale <= 1.01f,', 'activeZoomScale <= 1.02f,', 1)
-        with mock.patch.object(source, 'RENDERER_PREDECESSOR_SHA256', source.sha(changed)):
+        with mock.patch.dict(source.PAGER_SPAN_BY_PREDECESSOR,
+                             {source.sha(changed): source.PAGER_BEFORE_SHA256}):
             with self.assertRaisesRegex(ValueError, 'pager span changed'):
                 source.advance_preview_renderer(REPO, changed)
         with self.assertRaisesRegex(ValueError, 'predecessor inverse failed|inverse span changed|differs from its receipt'):

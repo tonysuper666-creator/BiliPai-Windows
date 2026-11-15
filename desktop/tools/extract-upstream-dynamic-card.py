@@ -19,6 +19,112 @@ def read(repo,path):
  from v035_dynamic_preview import updated_original
  original=(_desktop_canonical_source(repo, path)).read_text(encoding='utf-8').replace('\r\n','\n')
  return updated_original(path,original)
+def _kotlin_tokens(source):
+ '''Code tokens; literal and comment bodies stay opaque, comments are dropped.'''
+ def block(i):
+  depth,i=1,i+2
+  while i<len(source):
+   if source.startswith('/*',i):depth,i=depth+1,i+2
+   elif source.startswith('*/',i):
+    depth,i=depth-1,i+2
+    if not depth:return i
+   else:i+=1
+  raise ValueError('Original shared shell seam has an unterminated Kotlin comment')
+ def template(i):
+  depth=1
+  while i<len(source):
+   if source.startswith('//',i):
+    i=source.find('\n',i)
+    if i<0:return len(source)
+   elif source.startswith('/*',i):i=block(i)
+   elif source[i] in ('"',"'"):i=quoted(i)
+   elif source[i]=='{':depth,i=depth+1,i+1
+   elif source[i]=='}':
+    depth,i=depth-1,i+1
+    if not depth:return i
+   else:i+=1
+  raise ValueError('Original shared shell seam has an unterminated Kotlin template')
+ def quoted(i):
+  raw=source.startswith('"""',i);quote='"""' if raw else source[i];i+=len(quote)
+  while i<len(source):
+   if source.startswith(quote,i):return i+len(quote)
+   if not raw and source[i]=='\\':i+=2
+   elif quote!="'" and source.startswith('${',i):i=template(i+2)
+   else:i+=1
+  raise ValueError('Original shared shell seam has an unterminated Kotlin literal')
+ tokens,i=[],0
+ while i<len(source):
+  c=source[i]
+  if c.isspace():i+=1
+  elif source.startswith('//',i):
+   end=source.find('\n',i);i=len(source) if end<0 else end
+  elif source.startswith('/*',i):i=block(i)
+  elif c in ('"',"'"):
+   end=quoted(i);tokens.append((source[i:end],i,end));i=end
+  elif c.isalnum() or c=='_':
+   end=i+1
+   while end<len(source) and (source[end].isalnum() or source[end]=='_'):end+=1
+   tokens.append((source[i:end],i,end));i=end
+  else:
+   tokens.append((c,i,i+1));i+=1
+ return tokens
+def _kotlin_close(tokens,opening,kind):
+ depth=0
+ for index in range(opening,len(tokens)):
+  depth+=tokens[index][0]==kind[0]
+  depth-=tokens[index][0]==kind[1]
+  if not depth:return index
+ raise ValueError('Original shared shell seam has an unbalanced Kotlin body')
+def shared_shell_column(source):
+ '''Drop the Android shared-element chrome seam from the info column only.
+
+ The chrome alpha call must be the modifier argument of the single Column that
+ directly owns it, and the retained Spacer must be that Column's first body
+ statement. Any other shape is refused instead of sliced across containers.'''
+ call='.videoCardShellReturnChromeAlpha('
+ if source.count(call)!=1:raise ValueError('Original VideoCards no longer has exactly one shared shell chrome alpha call')
+ tokens=_kotlin_tokens(source);at=source.index(call)+1
+ index=next((k for k,(v,s,e) in enumerate(tokens) if s==at),None)
+ if index is None or tokens[index][0]!='videoCardShellReturnChromeAlpha':raise ValueError('Original shared shell chrome alpha call is no longer a plain modifier call')
+ opened=[];depth=0
+ for k in range(index):
+  value=tokens[k][0]
+  if value in ('(','[','{'):opened.append(k)
+  elif value in (')',']','}'):
+   if not opened:raise ValueError('Original shared shell seam is unbalanced before the chrome alpha call')
+   opened.pop()
+ if not opened or tokens[opened[-1]][0]!='(':raise ValueError('Original shared shell chrome alpha call is no longer inside a Column modifier')
+ opening=opened[-1]
+ if opening<1 or tokens[opening-1][0]!='Column':raise ValueError('Original shared shell chrome alpha call is no longer owned by a Column')
+ closing=_kotlin_close(tokens,opening,'()')
+ def depth_scan(lo,hi):
+  level=0
+  for k in range(lo,hi):
+   value=tokens[k][0]
+   level+=value in ('(','[','{')
+   level-=value in (')',']','}')
+   yield k,level
+ segments,cursor=[],opening+1
+ for k,level in depth_scan(opening+1,closing):
+  if level==0 and tokens[k][0]==',':
+   segments.append((cursor,k));cursor=k+1
+ segments.append((cursor,closing))
+ segments=[(a,b) for a,b in segments if any(tokens[k][0].strip() for k in range(a,b))]
+ owning=[(a,b) for a,b in segments if a<=index<b]
+ if len(segments)!=1 or len(owning)!=1:raise ValueError('Original shared shell Column no longer takes the modifier as its only argument')
+ segment=owning[0]
+ if tokens[segment[0]][0]!='modifier':raise ValueError('Original shared shell chrome alpha call is no longer the Column modifier')
+ body=closing+1
+ if body>=len(tokens) or tokens[body][0]!='{':raise ValueError('Original shared shell Column no longer has a body')
+ end=_kotlin_close(tokens,body,'{}')
+ if end<=body+1 or tokens[body+1][0]!='Spacer':raise ValueError('Original shared shell Column body no longer starts with the retained Spacer')
+ start=tokens[opening-1][1];spacer=tokens[body+1][1]
+ start_line=source.rfind('\n',0,start)+1
+ if source[start_line:start].strip():raise ValueError('Original shared shell Column does not start its own line')
+ end_line=source.rfind('\n',0,spacer)+1
+ if source[end_line:spacer].strip():raise ValueError('Original shared shell Spacer does not start its own line')
+ if tokens[end][1]-source.rfind('\n',0,tokens[end][1])-1!=start-start_line:raise ValueError('Original shared shell Column closing brace is not aligned with the Column')
+ return source[:start]+'Column {\n'+source[end_line:]
 def messages(repo):
  path=Path(__file__).with_name('extract-dynamic-message-share.py');spec=importlib.util.spec_from_file_location('dynamic_message_share',path);m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
 def inventory(repo):return [dict(path=p,mode='platform-adapter-reference' if p in SHARED+[BASE+'core/util/ModifierExt.kt'] else 'direct' if p in DIRECT else 'policy-extract',features=['settings-dynamic-full-card-parity'],sha256=hashlib.sha256(read(repo,p).encode()).hexdigest()) for p in PATHS]+messages(repo).inventory(repo)
@@ -157,8 +263,7 @@ def generate(repo,output,standalone=False,shared_closure=False):
    s=s.replace('overlayModifier = nativeCardSnapshot.coverOverlayModifier,','overlayModifier = Modifier,')
    start=s.index('            modifier = Modifier\n                .videoCardShellReturnCoverAlpha');end=s.index('\n        )',start)
    s=s[:start]+'            modifier = Modifier,'+s[end:]
-   start=s.index('        Column(\n            modifier = Modifier.videoCardShellReturnChromeAlpha');end=s.index('            Spacer(',start)
-   s=s[:start]+'        Column {\n'+s[end:]
+   s=shared_shell_column(s)
    s='\n'.join(line for line in s.splitlines() if not any(x in line for x in ['import androidx.compose.ui.platform.LocalConfiguration','import com.android.purebilibili.core.ui.LocalAnimated','import com.android.purebilibili.core.ui.LocalShared','import com.android.purebilibili.core.ui.transition.','import com.android.purebilibili.core.util.CardPositionManager','import com.android.purebilibili.feature.home.components.cards.videoCardShellReturn']))+'\n'
   elif p.endswith('DynamicVoteDialog.kt'):
    s=s.replace('import com.android.purebilibili.data.repository.DynamicVoteRepository','import com.bilipai.desktop.ui.LocalDesktopDynamicCardBindings')

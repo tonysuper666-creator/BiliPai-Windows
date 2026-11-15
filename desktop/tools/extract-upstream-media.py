@@ -50,6 +50,208 @@ def parser_for(repo: Path):
     return parser
 
 
+# A declaration head cannot continue an expression, so an `=` body stops before
+# one. Soft keywords are included because they only ever introduce a declaration
+# in Kotlin; this list gates the terminator, it never picks the cut by itself.
+DECLARATION_HEADS = {
+    "@", "abstract", "actual", "annotation", "class", "companion", "const",
+    "constructor", "crossinline", "data", "enum", "expect", "external",
+    "final", "fun", "import", "infix", "init", "inline", "inner", "interface",
+    "internal", "lateinit", "noinline", "object", "open", "operator",
+    "override", "package", "private", "protected", "public", "reified",
+    "sealed", "suspend", "tailrec", "typealias", "val", "value", "var",
+    "vararg",
+}
+# A body cut after one of these would be a partial original, so it fails closed.
+CONTINUATION_ONLY = {"=", ".", "?.", "?:", ",", "(", "[", "{", "+", "-", "*",
+                     "/", "%", "&&", "||", "..", "..<", "->", "<", ">", "!"}
+
+
+def line_indent(source: str, position: int) -> int | None:
+    """Indentation when `position` starts its own line, else None."""
+    beginning = source.rfind("\n", 0, position) + 1
+    prefix = source[beginning:position]
+    return len(prefix) if not prefix.strip() else None
+
+
+CLOSING = {")": "(", "]": "[", "}": "{"}
+# Words that never start an operand and never join two. `if`, `try` and their
+# kin are rejected rather than parsed: an EOF body using them fails closed.
+NOT_OPERANDS = {"as", "break", "catch", "class", "continue", "do", "else",
+                "finally", "for", "fun", "if", "import", "in", "interface",
+                "is", "object", "package", "return", "throw", "try",
+                "typealias", "val", "var", "when", "while"}
+# Operands that are keywords, so never a name after `.`, `?.`, `::` or as an
+# infix call; `super` is whole only as the receiver of a member access.
+KEYWORD_OPERANDS = {"false", "null", "super", "this", "true", "typeof"}
+# Binary operators, spelled by the adjacent one-character tokens that the
+# tokenizer emits. `<`/`>` are absent because a cut generic (`listOf<Int`)
+# reads as a comparison; `=`, `->` and compound assignments never join operands.
+BINARY = {"+", "-", "*", "/", "%", "&&", "||", "==", "!=", "===", "!==",
+          "?:", "..", "..<"}
+# Kotlin numeric literals (KotlinLexer.g4): a radix prefix or an exponent needs
+# digits after it, and a digit run never ends in `_`. Leading-dot doubles
+# (`.5`) and leading-zero integers are outside this set and fail closed.
+_DIGITS = r"\d(?:[\d_]*\d)?"
+_DOUBLE = rf"(?:{_DIGITS}\.{_DIGITS}(?:[eE][+-]?{_DIGITS})?|{_DIGITS}[eE][+-]?{_DIGITS})"
+_INTEGER = (r"(?:0|[1-9](?:[\d_]*\d)?|0[xX][0-9a-fA-F](?:[0-9a-fA-F_]*[0-9a-fA-F])?"
+            r"|0[bB][01](?:[01_]*[01])?)")
+NUMBER = re.compile(rf"(?:{_DOUBLE}[fF]?|{_DIGITS}[fF]|{_INTEGER}(?:[uU]L?|L)?)")
+
+
+def complete_at_end(tokens: list) -> bool:
+    """Whether `tokens` (brackets already matched) form one whole expression.
+
+    Only the end of a file can stop such a body, so a cut file must not be
+    mistaken for it. Bracket groups are atoms: they closed, so they are whole.
+    Everything else must be accepted by a deliberately small grammar —
+    operand (binary operand)*, an operand being prefixes, one primary and
+    postfix calls, indexes, lambdas, member and reference selections, `!!`.
+    """
+    items, index = [], 0
+    while index < len(tokens):
+        token = tokens[index][0]
+        if token in CLOSING.values():
+            depth, end = 1, index
+            while depth:
+                end += 1
+                depth += (tokens[end][0] in CLOSING.values()) - (tokens[end][0] in CLOSING)
+            items.append(("group", token))
+            index = end + 1
+            continue
+        kind = "punct" if len(token) == 1 and not (token.isalnum() or token == "_") else "word"
+        if kind == "word" and token[0] in "\"'":
+            kind = "literal"
+        elif kind == "word" and token[0].isdigit():
+            kind = "number"
+        adjacent = index > 0 and tokens[index - 1][2] == tokens[index][1]
+        items.append((kind, token, adjacent))
+        index += 1
+
+    def name(position):
+        """An identifier: never a keyword, a literal or a number."""
+        if position >= len(items) or items[position][0] != "word":
+            return False
+        token = items[position][1]
+        return token[0] == "`" or token not in NOT_OPERANDS | KEYWORD_OPERANDS
+
+    def punct(position, value, joined=True):
+        return (position < len(items) and items[position][0] == "punct" and items[position][1] == value
+                and (not joined or items[position][2]))
+
+    def number_end(position):
+        """End of the numeric literal at `position`, or None when it is malformed.
+
+        `1.5e-3f`, `0x1_F`, `1_000L` arrive as adjacent pieces; they are joined
+        back and the whole spelling must be a Kotlin number, so a cut one
+        (`0x`, `1e`, `1_`) is not taken for a whole operand.
+        """
+        text, position = items[position][1], position + 1
+
+        def digits_follow(at):
+            return at + 1 < len(items) and items[at + 1][0] == "number" and items[at + 1][2]
+
+        while position < len(items) and items[position][0] != "group" and items[position][2]:
+            if items[position][0] in {"word", "number"}:
+                text += items[position][1]
+                position += 1
+            elif punct(position, ".") and digits_follow(position) and re.fullmatch(r"[\d_]+", text):
+                text += "." + items[position + 1][1]
+                position += 2
+            elif items[position][0] == "punct" and items[position][1] in "+-" and digits_follow(position) \
+                    and re.fullmatch(r"[\d_]+(?:\.[\d_]+)?[eE]", text):
+                text += items[position][1] + items[position + 1][1]
+                position += 2
+            else:
+                break
+        return position if NUMBER.fullmatch(text) else None
+
+    position, expect_operand = 0, True
+    while position < len(items):
+        item = items[position]
+        if expect_operand:
+            if item[0] == "punct" and item[1] in "-+!":
+                position += 1
+            elif item[0] == "word" and item[1] == "when":
+                position += 1
+                if position < len(items) and items[position] == ("group", "("):
+                    position += 1
+                if position >= len(items) or items[position] != ("group", "{"):
+                    return False
+                position, expect_operand = position + 1, False
+            elif item[0] == "word" and item[1] == "super":
+                if not (punct(position + 1, ".", False) and name(position + 2)):
+                    return False
+                position, expect_operand = position + 3, False
+            elif item[0] == "number":
+                position, expect_operand = number_end(position), False
+                if position is None:
+                    return False
+            elif item[0] in {"group", "literal"} or name(position) or \
+                    (item[0] == "word" and item[1] in KEYWORD_OPERANDS - {"super", "typeof"}):
+                position, expect_operand = position + 1, False
+            elif punct(position, ":", False) and punct(position + 1, ":") and name(position + 2):
+                position, expect_operand = position + 3, False
+            else:
+                return False
+            continue
+        if item[0] == "group":
+            position += 1
+        elif punct(position, ".", False) and name(position + 1):
+            position += 2
+        elif punct(position, "?", False) and punct(position + 1, ".") and name(position + 2):
+            position += 3
+        elif punct(position, ":", False) and punct(position + 1, ":") and (
+                name(position + 2) or (position + 2 < len(items) and items[position + 2][1] == "class")):
+            position += 3
+        elif punct(position, "!", False) and punct(position + 1, "!") and not punct(position + 2, "="):
+            position += 2
+        elif name(position):
+            position, expect_operand = position + 1, True  # infix call: `1 to 2`
+        elif item[0] == "punct":
+            operator, end = item[1], position + 1
+            while end < len(items) and items[end][0] == "punct" and items[end][2]:
+                operator += items[end][1]
+                end += 1
+            if operator not in BINARY:
+                return False
+            position, expect_operand = end, True
+        else:
+            return False
+    return not expect_operand
+
+
+def expression_end(source: str, name: str, tokens: list, index: int, indent: int) -> int:
+    """Last token of an `= expression` body, failing closed when it cannot end."""
+    depth, last, start, opened = 0, None, index, []
+    while index < len(tokens):
+        token, begin, _ = tokens[index]
+        if depth == 0 and "\n" in (source[tokens[last][2]:begin] if last is not None else ""):
+            leading = line_indent(source, begin)
+            if leading is not None and leading <= indent and token in DECLARATION_HEADS | {"}"}:
+                if last is None:
+                    raise ValueError(f"Original {name} has an empty expression body")
+                if tokens[last][0] in CONTINUATION_ONLY:
+                    raise ValueError(f"Original {name} expression body ends mid-expression")
+                return last
+        if last is None and depth == 0 and (token in DECLARATION_HEADS or token == "}"):
+            raise ValueError(f"Original {name} has an empty expression body")
+        if token in {"(", "[", "{"}:
+            depth += 1
+            opened.append(token)
+        elif token in CLOSING:
+            depth -= 1
+            if depth < 0 or opened.pop() != CLOSING[token]:
+                raise ValueError(f"Original {name} has an unbalanced expression body")
+        last = index
+        index += 1
+    # The last declaration of a file is closed by the end of the file only when
+    # every bracket closed and the whole token stream is one complete expression.
+    if last is not None and depth == 0 and complete_at_end(tokens[start:last + 1]):
+        return last
+    raise ValueError(f"Original {name} has an unterminated expression body")
+
+
 def function(source: str, name: str, parser) -> str:
     matches = list(re.finditer(r"(?m)^[ \t]*(?:(?:internal|private|suspend)\s+)*fun\s+(?:[\w.]+\.)?" + re.escape(name) + r"\s*\(", source))
     if len(matches) != 1:
@@ -57,21 +259,27 @@ def function(source: str, name: str, parser) -> str:
     match = matches[0]
     tokens = parser.kotlin_tokens(source)
     index = next(i for i, (_, begin, _) in enumerate(tokens) if begin >= match.start())
+    indent = len(source[source.rfind("\n", 0, tokens[index][1]) + 1:tokens[index][1]])
     while tokens[index][0] != "(":
         index += 1
     parentheses = 1
     while parentheses:
         index += 1
         parentheses += (tokens[index][0] == "(") - (tokens[index][0] == ")")
-    # Every reviewed selection has a block or a `when {}` expression body.
-    while tokens[index][0] != "{":
+    # A reviewed selection has a block body or an expression body after its
+    # optional return type; anything else is a changed original.
+    index += 1
+    while tokens[index][0] not in {"{", "="}:
         if tokens[index][1] > match.end() and tokens[index][0] in {"fun", "class", "object"}:
             raise ValueError(f"Original {name} no longer has a supported body")
         index += 1
-    depth = 1
-    while depth:
-        index += 1
-        depth += (tokens[index][0] == "{") - (tokens[index][0] == "}")
+    if tokens[index][0] == "=":
+        index = expression_end(source, name, tokens, index + 1, indent)
+    else:
+        depth = 1
+        while depth:
+            index += 1
+            depth += (tokens[index][0] == "{") - (tokens[index][0] == "}")
     return textwrap.dedent(source[match.start():tokens[index][2]])
 
 

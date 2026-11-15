@@ -62,7 +62,7 @@ val revisionNeutralSourceRecipePins = mapOf(
     "tools/extract-video-enhancement.py" to "0046195e1914059a841aacf69ed704c86a85e5a9e3a432fbcce3d3628f2d9195",
     "tools/run-tool-tests.py" to "0114c7c7ecea5c45e26843ed025eae4a7fd991b6d50edf09bf9185ed7f20cd44",
     "tools/sync-upstream.py" to "62e1bab0f3101a76f80d1ec2aa16c0b2f2aacba194df67c291324638adce1fa0",
-    "tools/v025-canonical-sources.json" to "2600739eef5521cfef71d6af16762ccc3b9df076dad7ccb79902944f1634130f",
+    "tools/v025-canonical-sources.json" to "5557c14384106ba4b6a39f53e5adad9e32dcbe7c0be20d5ef62317768c43b972",
     "tools/v025_source_paths.py" to "3b84ba1b1b0907cfb3cb610bd6f713c37521a79f6a0d78ce185f764547ebc460",
     "tools/v029_brand_consumers.py" to "89648e569d074aaeaa456a12220efb4de3e8ecfcefbbe05f74ea55ef47c3742e",
     "tools/v029_comment_composer.py" to "49321836c7e0b49dbdbd226872f85df8cb391feb8ac7dadd27b56e345bbbca52",
@@ -121,7 +121,7 @@ val canonicalOriginalCatalogFile = file("tools/v025-canonical-sources.json")
 val canonicalOriginalHelperFile = file("tools/v025_source_paths.py")
 val canonicalOriginalCatalogBytes = canonicalOriginalCatalogFile.readBytes().also { bytes ->
     require(MessageDigest.getInstance("SHA-256").digest(bytes)
-        .joinToString("") { "%02x".format(it) } == "2600739eef5521cfef71d6af16762ccc3b9df076dad7ccb79902944f1634130f") {
+        .joinToString("") { "%02x".format(it) } == "5557c14384106ba4b6a39f53e5adad9e32dcbe7c0be20d5ef62317768c43b972") {
         "The v025 canonical original source catalog changed without review."
     }
 }
@@ -1040,6 +1040,7 @@ val extractUpstreamSettingsSearch by tasks.registering(Exec::class) {
     workingDir(projectDir)
     commandLine(pythonExecutable, "tools/extract-upstream-settings-search.py",
         "--repo", repositoryRoot.absolutePath,
+        "--symbols-repo", mergedRepositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/settings-search").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-settings-search.py", "tools/v032_pinyin.py", "tools/extract-upstream-plugins.py", "tools/extract-upstream-media.py", "tools/sync-upstream.py")
     inputs.dir("upstream-slices/v032-pinyin")
@@ -3456,6 +3457,7 @@ val appCoreUpstreamTestsNotRun: Map<String, String> = mapOf(
 // Approved upstream test corrections are isolated from production patch outputs.
 // The complete LF-normalized source is pinned: even an edit outside a hunk needs review.
 val correctedUpstreamTestPaths = setOf(
+    "app/src/test/java/com/android/purebilibili/feature/settings/SettingsSemanticIconPolicyTest.kt",
     "app/src/test/java/com/android/purebilibili/core/util/NavigationUiPolicyTabletTest.kt",
     "app/src/test/java/com/android/purebilibili/core/theme/SeedColorSchemeTest.kt",
     "app/src/test/java/com/android/purebilibili/core/ui/BottomBarScrollHidePolicyTest.kt",
@@ -5723,6 +5725,8 @@ tasks.named("extractBgmDetail") {
 
 // Original icon font is copied unchanged from the verified fixed v037 archive.
 tasks.named<Copy>("processResources") {
+    from("upstream-core/m4d/settings-item-placement.tsv") { into("settings-placement") }
+    from("upstream-core/m4d/settings-target-placement.tsv") { into("settings-placement") }
     from("upstream-slices/v037-shared-tabs-progress-closure/piliplus_custom_icons.ttf") { into("fonts") }
     from("upstream-slices/v037-player-runtime-resources/ic_pili_tv_play.png") { into("icons") }
 }
