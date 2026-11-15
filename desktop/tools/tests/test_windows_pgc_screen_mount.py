@@ -14,6 +14,7 @@ from unittest.mock import patch
 TOOLS = Path(__file__).resolve().parents[1]
 ROOT = TOOLS.parents[1]
 sys.path.insert(0, str(TOOLS))
+from legacy_read_point import legacy_read_point
 import windows_pgc_screen_mount as stage
 import v046_bangumi_player as bangumi_player
 
@@ -25,7 +26,9 @@ class WindowsPgcScreenMountTests(unittest.TestCase):
         cls.directory = Path(cls.temp.name)
         # Sparse local worktrees may point at the accepted canonical input tree.
         # The producer still comes from this test's exact source checkout.
-        cls.source = Path(os.environ.get('BILIPAI_PGC_TEST_SOURCE_REPO', ROOT))
+        override = os.environ.get('BILIPAI_PGC_TEST_SOURCE_REPO')
+        cls.source = Path(override) if override else legacy_read_point(
+            ROOT, 'app/src/main/java/com/android/purebilibili/feature/bangumi/ui/player/BangumiPlayerContent.kt')
         spec = importlib.util.spec_from_file_location('pgc_mount_complete_producer', TOOLS / 'extract-upstream-bangumi-player-ui.py')
         cls.producer = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(cls.producer)
