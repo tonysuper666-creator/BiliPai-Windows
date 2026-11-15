@@ -28,6 +28,7 @@ TOOLS = REPO / 'desktop/tools'
 sys.path.insert(0, str(TOOLS))
 import v046_episode_selector as episode
 import v046_detail_holder_collapse as holder_collapse
+from legacy_read_point import legacy_read_point
 
 PKG = 'com/android/purebilibili/'
 COMPONENTS = PKG + 'feature/video/ui/components/'
@@ -111,10 +112,15 @@ def tree(root):
     return {p.relative_to(root).as_posix(): p.read_bytes() for p in sorted(Path(root).rglob('*')) if p.is_file()}
 
 
-def run_script_producer(label, output):
+def legacy_repo():
+    """Match Gradle's repositoryRoot for originals; tools, slice fixtures and Git stay live."""
+    return legacy_read_point(REPO, episode.UPSTREAM_PATHS['CollectionSheet.kt'])
+
+
+def run_script_producer(label, output, repo=None):
     """Run a script-style producer (argument parsing at module level, no generate()) in process, as __main__."""
     sink = io.TextIOWrapper(io.BytesIO(), encoding='utf-8')
-    with patch.object(sys, 'argv', [SCRIPT_PRODUCERS[label], '--repo', str(REPO), '--output', str(output)]), \
+    with patch.object(sys, 'argv', [SCRIPT_PRODUCERS[label], '--repo', str(legacy_repo() if repo is None else repo), '--output', str(output)]), \
             patch('sys.stdout', sink):
         runpy.run_path(str(TOOLS / SCRIPT_PRODUCERS[label]), run_name='__main__')
 
@@ -305,7 +311,7 @@ class ArchiveAndWiringTests(unittest.TestCase):
         v037_pages = closure.fixed_sources()[pages_path]
         self.assertEqual(episode.PREDECESSOR_SHA256['PagesSelector.kt'], sha(v037_pages))
         self.assertTrue(v037_pages.encode() != self.raws['PagesSelector.kt'])
-        vendored = canonical_source(REPO, sheet_path).read_bytes().replace(b'\r\n', b'\n')
+        vendored = canonical_source(legacy_repo(), sheet_path).read_bytes().replace(b'\r\n', b'\n')
         self.assertEqual(episode.PREDECESSOR_SHA256['CollectionSheet.kt'], sha(vendored))
         self.assertEqual(registered_reviewed_sha256(self.rows, sheet_path), sha(vendored))
         v031 = coin.sources()[1]['VideoDetailResponse.kt']
@@ -406,6 +412,8 @@ class ArchiveAndWiringTests(unittest.TestCase):
         self.assertEqual(digest, load('sync-upstream.py', 'ves_digest').COMPATIBILITY_CATALOG_SHA256)
 
     def test_the_vendored_direct_copy_exclude_already_exists_once_and_nothing_else_is_excluded(self):
+        # These existence checks describe Gradle's original tree, not the merged Android tree.
+        REPO = legacy_repo()
         detail_path = episode.UPSTREAM_PATHS['VideoDetailResponse.kt']
         line = 'exclude(canonicalOriginalIdentity("' + detail_path + '"))'
         self.assertEqual(1, self.build.count(line))
@@ -425,6 +433,8 @@ class ArchiveAndWiringTests(unittest.TestCase):
         self.assertEqual(1, model.sync_excludes.count(detail_path))
 
     def test_the_same_package_helpers_and_the_layout_policy_are_the_v046_files(self):
+        # Bind only the original-file input; upstream_blob() still runs Git at the live root.
+        REPO = legacy_repo()
         # The part selector and the sheet call these without importing them; they are vendored direct copies.
         for relative in ('feature/video/ui/components/PagesSelectorLayoutPolicy.kt',
                          'feature/video/ui/components/CollectionEpisodePolicy.kt', 'feature/video/ui/components/ModalChildScroll.kt'):
@@ -502,10 +512,10 @@ class GeneratedOutputTests(unittest.TestCase):
     @classmethod
     def run_all(cls, base, with_tests):
         with patch('sys.stdout', new_callable=io.StringIO):
-            cls.controls.generate(REPO, base / 'controls', False, (base / 'controls-tests') if with_tests else None)
-            cls.sheet.generate(REPO, base / 'sheet')
-            cls.units.generate(REPO, base / 'units')
-            cls.content.generate(REPO, base / 'content')
+            cls.controls.generate(legacy_repo(), base / 'controls', False, (base / 'controls-tests') if with_tests else None)
+            cls.sheet.generate(legacy_repo(), base / 'sheet')
+            cls.units.generate(legacy_repo(), base / 'units')
+            cls.content.generate(legacy_repo(), base / 'content')
         run_script_producer('tablet', base / 'tablet')
         run_script_producer('audio', base / 'audio')
 
@@ -674,7 +684,7 @@ class GeneratedOutputTests(unittest.TestCase):
         verifier = load('verify-upstream-video-player-full-controls.py', 'ves_verify_controls')
         report = self.root / 'controls-report.json'
         with patch('sys.stdout', new_callable=io.StringIO):
-            verifier.verify(REPO, self.real('controls'), report)
+            verifier.verify(legacy_repo(), self.real('controls'), report)
         self.assertTrue(json.loads(text_of(report))['passed'])
 
     def test_the_collection_sheet_is_the_whole_v046_file_with_only_the_seven_windows_hunks(self):
@@ -783,7 +793,7 @@ class GeneratedOutputTests(unittest.TestCase):
         self.assertNotEqual(sha(generated), proof['retainedToCurrent']['afterSHA256'])
         verifier = load('verify-upstream-video-content-full.py', 'ves_verify_content')
         with patch('sys.stdout', new_callable=io.StringIO):
-            verifier.verify(REPO, self.real('content'))
+            verifier.verify(legacy_repo(), self.real('content'))
 
     def test_the_call_site_edits_fail_closed_when_an_anchor_of_the_producer_text_moves(self):
         controls = load('extract-upstream-video-player-full-controls.py', 'ves_controls_anchor')
@@ -851,7 +861,8 @@ class GeneratedOutputTests(unittest.TestCase):
             self.controls.generate(REPO, self.root / 'elsewhere', False, archive / 'tests')
         for producer in ('tablet', 'audio'):
             with self.subTest(producer=producer), self.assertRaisesRegex(ValueError, 'overlaps'):
-                run_script_producer(producer, archive / 'child')
+                # This is deliberately the live root: reject writes into its live slice before reading originals.
+                run_script_producer(producer, archive / 'child', repo=REPO)
         with self.assertRaisesRegex(ValueError, 'overlaps'):
             episode.validate_outputs(REPO, archive)
         with self.assertRaisesRegex(ValueError, 'overlaps'):
@@ -861,10 +872,10 @@ class GeneratedOutputTests(unittest.TestCase):
         # A second run of EVERY producer that carries a layer of this slice reproduces its first output byte for byte.
         snapshot = {key: tree(self.real(key)) for key in ('controls', 'sheet', 'units', 'content', 'controls-tests', 'tablet', 'audio')}
         with patch('sys.stdout', new_callable=io.StringIO):
-            self.controls.generate(REPO, self.real('controls'), False, self.real('controls-tests'))
-            self.sheet.generate(REPO, self.real('sheet'))
-            self.units.generate(REPO, self.real('units'))
-            self.content.generate(REPO, self.real('content'))
+            self.controls.generate(legacy_repo(), self.real('controls'), False, self.real('controls-tests'))
+            self.sheet.generate(legacy_repo(), self.real('sheet'))
+            self.units.generate(legacy_repo(), self.real('units'))
+            self.content.generate(legacy_repo(), self.real('content'))
         run_script_producer('tablet', self.real('tablet'))
         run_script_producer('audio', self.real('audio'))
         for key in snapshot:
