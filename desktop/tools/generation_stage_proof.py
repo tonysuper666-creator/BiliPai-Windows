@@ -6,6 +6,7 @@ import json
 from v029_comment_search import whole_proof
 
 OWNER_SPEED = 'playback-speed-source-continuity'
+OWNER_SAME_VIDEO_QUEUE = 'same-video-playlist-session'
 CENTER_BUFFERING = 'buffering-center-playback'
 PGC_BUFFERING = 'pgc-buffering-playback-toggle'
 

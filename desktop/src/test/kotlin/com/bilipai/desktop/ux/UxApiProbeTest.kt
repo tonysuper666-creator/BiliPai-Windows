@@ -235,6 +235,8 @@ private fun ProbeVideoCardMenuCallShape(
     onUnfavorite: (() -> Unit)?,
     onDismiss: (() -> Unit)?,
     onCopy: (() -> Unit)?,
+    onFavorite: (() -> Unit)?,
+    onMini: (() -> Unit)?,
     dismissMenuText: String,
 ) {
     var showDismissMenu by remember { mutableStateOf(false) }
@@ -278,6 +280,24 @@ private fun ProbeVideoCardMenuCallShape(
                     onClick = {
                         showDismissMenu = false
                         onCopy.invoke()
+                    }
+                )
+            }
+            if (onFavorite != null) {
+                AppDropdownMenuItem(
+                    text = { BasicText("favorite") },
+                    onClick = {
+                        showDismissMenu = false
+                        onFavorite.invoke()
+                    }
+                )
+            }
+            if (onMini != null) {
+                AppDropdownMenuItem(
+                    text = { BasicText("mini") },
+                    onClick = {
+                        showDismissMenu = false
+                        onMini.invoke()
                     }
                 )
             }

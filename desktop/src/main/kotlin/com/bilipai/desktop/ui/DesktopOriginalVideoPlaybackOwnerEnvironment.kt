@@ -83,6 +83,8 @@ internal interface DesktopOriginalVideoOwnerPlaylist {
     fun playNext():PlaylistItem?
     fun playPrevious():PlaylistItem?
     fun setPlaylist(items:List<PlaylistItem>,startIndex:Int)
+    fun captureSession():PlaylistSession? = null
+    fun replaceQueueIfCurrent(items:List<PlaylistItem>,index:Int,session:PlaylistSession):Boolean = false
 }
 
 internal interface DesktopOriginalVideoOwnerMini {

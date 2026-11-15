@@ -44,6 +44,8 @@ internal class DesktopOriginalRootPageBindings(
     val accountSwitcher: (() -> Unit)?,
     val logoutSucceeded: () -> Unit,
     val accountSwitchSucceeded: () -> Unit,
+    /** K3i: the real Root services the Home card 收藏 / 小窗播放 rows use; null keeps the vendored menu. */
+    val homeCardActions: DesktopHomeCardActionServices? = null,
 )
 
 /** Actual original physical NavDisplay + MainHost pager + complete Home/Profile/Category/Live
@@ -156,12 +158,17 @@ internal class DesktopOriginalRootPageBindings(
                 }
             }) {
             when (key) {
-                BiliPaiNavKey.Home -> DesktopRetainedHomePage(root, pages.window, homeNavigation,
-                    pages.scrollOffset, pages.feedScrollInProgress, pages.homeScroll,
-                    LocalBottomBarVisible.current, LocalBottomBarContentPadding.current, pages.setBottomBarVisible,
-                    LocalVideoCardTransitionBackgroundState.current, pages.transitionClock, pages.window.globalHaze(),
-                    isTopLevelActive = active && (routes.currentKey == BiliPaiNavKey.MainHost || routes.currentKey == key),
-                    homeGraphicsLayerCaptureReady = pages.homeGraphicsLayerCaptureReady())
+                BiliPaiNavKey.Home -> {
+                    val homeTopLevelActive = active && (routes.currentKey == BiliPaiNavKey.MainHost || routes.currentKey == key)
+                    DesktopHomeCardActionsHost(pages.homeCardActions, homeTopLevelActive) {
+                        DesktopRetainedHomePage(root, pages.window, homeNavigation,
+                            pages.scrollOffset, pages.feedScrollInProgress, pages.homeScroll,
+                            LocalBottomBarVisible.current, LocalBottomBarContentPadding.current, pages.setBottomBarVisible,
+                            LocalVideoCardTransitionBackgroundState.current, pages.transitionClock, pages.window.globalHaze(),
+                            isTopLevelActive = homeTopLevelActive,
+                            homeGraphicsLayerCaptureReady = pages.homeGraphicsLayerCaptureReady())
+                    }
+                }
                 BiliPaiNavKey.Profile -> DesktopOriginalProfileHost(pages.profile, profileNavigation,
                     isCurrentPage = active && (routes.currentKey == BiliPaiNavKey.MainHost || routes.currentKey == key),
                     accountSessionRefreshGeneration = pages.accountSessionRefreshGeneration(),

@@ -4,7 +4,8 @@ The Home card producer (extract-upstream-home-full-card.py) calls apply_home_car
 recommendation badge layer, through one hook line (the v043_home_recommendation_badges pattern). The layer touches one generated
 file and nothing else, VideoCard.kt (the grid card of the Home feed; its ElegantVideoCard function), with seven exact-once
 replacements of slice H2 (EDITS), four of slice K3 (COVER_EDITS), fourteen of slice K3b (LAYOUT_EDITS), four of slice K3d
-(HOVER_EDITS) and three of slice K3e (COPY_EDITS, all below):
+(HOVER_EDITS), three of slice K3e (COPY_EDITS), one of slice K3f (SEPARATOR_EDITS) and two of slice K3i
+(ACTION_EDITS, all below):
 
   * the two imports of the vendored dropdown menu become import aliases of the desktop-owned menu, so the call text of the card is
     the vendored call text (named arguments expanded, onDismissRequest, offset, and the ColumnScope trailing lambda):
@@ -79,6 +80,21 @@ exact-once edit in SEPARATOR_EDITS, applied after all of the above, with the wra
     single callback of every row, Escape and the focus back to the cover stay the vendored behaviour. The vendored menu
     keeps no line, as it always had none.
 Undoing only SEPARATOR_EDITS gives the text of H2, K3, K3b, K3d and K3e exactly.
+
+Slice K3i adds two rows of the card menu, 收藏 and 小窗播放, two more exact-once edits in ACTION_EDITS, applied after all
+of the above, with the helpers in DesktopHomeCardActions.kt:
+
+  * the Home actions of the real mounted Root, read once after the copy link: homeCardActionsPort is
+    LocalDesktopHomeCardActions (null everywhere except inside the active Home page of the Root), homeCardActions is that
+    port only while homeCardThreeLine (the flag) is on, favoriteHomeCard opens the original cloud favourite folder drawer
+    (null for a special card or aid <= 0) and miniHomeCard plays the video in the existing player mini window with the
+    semantics of an ordinary click (null for a special card);
+  * the two rows go after the vendored rows and before 复制链接, so the menu reads 稍后再看 / 取消收藏 / 收藏 / 小窗播放 /
+    复制链接 / separator / 不感兴趣, at most seven items. Each row closes the menu, as every other row does, and runs its
+    action once; neither row plays, favourites or dismisses anything by itself.
+A row exists only with an action, and an action exists only with a copy link (same flag, same video id), so the separator
+guard of K3f stays exact. With the flag OFF, or outside the Root Home page, both actions stay null and the vendored menu keeps
+its rows and behaviour. Undoing only ACTION_EDITS gives the text of H2, K3, K3b, K3d, K3e and K3f exactly.
 
 Not covered by this layer: the single-column display mode (AppWindowActionMenu), StoryVideoCard and DynamicCard. This is a
 desktop-owned layer: there is no upstream archive, no manifest and no pinned predecessor hash. Every anchor is counted on the text
@@ -421,7 +437,55 @@ SEPARATOR_EDITS = (
      '                }\n'
      '\n                // 不感兴趣 (放第一位，方便操作) -> 改回下方\n'),
 )
-ALL_EDITS = EDITS + COVER_EDITS + LAYOUT_EDITS + HOVER_EDITS + COPY_EDITS + SEPARATOR_EDITS
+# Slice K3i: 收藏 and 小窗播放 of the card menu (spec 4, menu items 3 and 4). Same rules as EDITS: each `before` occurs
+# exactly once in the text this layer receives (after all of the above). Both actions are null while the flag is OFF or
+# outside the Root Home page, so nothing of this slice renders then. miniHomeCard is composable (the card owns its pending
+# mini wait), so it is read unconditionally at the top of the card, next to the copy link.
+ACTION_EDITS = (
+    ('ux-card-home-actions-state',
+     '        { ' + UI + 'desktopHomeCopyVideoLink(homeCardClipboard, homeCardCopyLink) }\n'
+     '    }\n',
+     '        { ' + UI + 'desktopHomeCopyVideoLink(homeCardClipboard, homeCardCopyLink) }\n'
+     '    }\n'
+     '    val homeCardActionsPort = ' + UI + 'LocalDesktopHomeCardActions.current\n'
+     '    val homeCardActions = if (homeCardThreeLine) homeCardActionsPort else null\n'
+     '    val favoriteHomeCard: (() -> Unit)? = ' + UI + 'desktopHomeCardFavorite(homeCardActions, video)\n'
+     '    val miniHomeCard: (() -> Unit)? = ' + UI + 'desktopHomeCardMini(homeCardActions, video)\n'),
+    ('ux-card-home-actions-menu-rows',
+     '\n                // 复制链接 (Ctrl C)\n',
+     '\n                // 收藏 (原云端收藏夹抽屉, K3i)\n'
+     '                if (favoriteHomeCard != null) {\n'
+     '                    AppDropdownMenuItem(\n'
+     '                        text = {\n'
+     '                            AppText(\n'
+     '                                "收藏",\n'
+     '                                color = MaterialTheme.colorScheme.onSurface\n'
+     '                            )\n'
+     '                        },\n'
+     '                        onClick = {\n'
+     '                            showDismissMenu = false\n'
+     '                            favoriteHomeCard?.invoke()\n'
+     '                        }\n'
+     '                    )\n'
+     '                }\n'
+     '\n                // 小窗播放 (现有播放器小窗, K3i)\n'
+     '                if (miniHomeCard != null) {\n'
+     '                    AppDropdownMenuItem(\n'
+     '                        text = {\n'
+     '                            AppText(\n'
+     '                                "小窗播放",\n'
+     '                                color = MaterialTheme.colorScheme.onSurface\n'
+     '                            )\n'
+     '                        },\n'
+     '                        onClick = {\n'
+     '                            showDismissMenu = false\n'
+     '                            miniHomeCard?.invoke()\n'
+     '                        }\n'
+     '                    )\n'
+     '                }\n'
+     '\n                // 复制链接 (Ctrl C)\n'),
+)
+ALL_EDITS = EDITS + COVER_EDITS + LAYOUT_EDITS + HOVER_EDITS + COPY_EDITS + SEPARATOR_EDITS + ACTION_EDITS
 
 # After the layer none of these vendored lines may remain in the file: the menu imports and the overflow box size line.
 GONE = (
@@ -438,6 +502,8 @@ HOVER_INTRODUCED = ('desktopHomeCardHoverSurface', 'rememberDesktopHomeCardHover
 COPY_INTRODUCED = ('desktopHomeVideoLink', 'desktopHomeCopyVideoLink', 'homeCardClipboard', 'homeCardCopyLink',
                    'copyHomeCardLink')
 SEPARATOR_INTRODUCED = ('DesktopCardMenuSeparator',)
+ACTION_INTRODUCED = ('LocalDesktopHomeCardActions', 'desktopHomeCardFavorite', 'desktopHomeCardMini', 'homeCardActions',
+                     'favoriteHomeCard', 'miniHomeCard')
 
 
 def sha(text):
@@ -460,7 +526,7 @@ def apply_home_card(repo, name, text, audits):
     """The text of one emitted file with the Home card edits, or the text itself for any file the layer does not own."""
     if name != CARD:
         return text
-    for introduced in INTRODUCED + COVER_INTRODUCED + LAYOUT_INTRODUCED + HOVER_INTRODUCED + COPY_INTRODUCED + SEPARATOR_INTRODUCED:
+    for introduced in INTRODUCED + COVER_INTRODUCED + LAYOUT_INTRODUCED + HOVER_INTRODUCED + COPY_INTRODUCED + SEPARATOR_INTRODUCED + ACTION_INTRODUCED:
         need(introduced not in text, 'Home card layer already applied or name taken: %s in %s' % (introduced, name))
     received = text
     for label, before, after in ALL_EDITS:

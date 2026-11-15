@@ -72,7 +72,8 @@ class OriginalVideoInteractionExtractionTest(unittest.TestCase):
             def restore_later_stages(body, rows):
                 row = next(item for item in rows if item["path"] == VM)
                 self.assertEqual(row["sha256LF"], hashlib.sha256(body.encode()).hexdigest())
-                from generation_stage_proof import restore_stage, OWNER_SPEED
+                from generation_stage_proof import restore_stage, OWNER_SPEED, OWNER_SAME_VIDEO_QUEUE
+                body = restore_stage(output / 'actual', OWNER_SAME_VIDEO_QUEUE, VM, body)
                 body = restore_stage(output / 'actual', OWNER_SPEED, VM, body)
                 # The v029 comment selection stage (38512320c) is the producer's last VM layer; its own proof unwinds it.
                 comment = json.loads((output/"actual/v029-comment-selection-VideoPlaybackViewModel.json").read_bytes())

@@ -5,9 +5,9 @@ Run: PYTHONUTF8=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=desktop/tools python -X u
 
 What is proved. The real Home card producer (extract-upstream-home-full-card.py) is run with the layer and with the layer patched out:
 
-  SeparatorEditsTest    the one edit is the one written out below, after the H2, K3, K3b, K3d and K3e edits; its anchor occurs exactly
-                        once in the text the earlier edits leave; that written-out edit applied to that text gives the produced card
-                        byte for byte; undoing only it gives the H2 + K3 + K3b + K3d + K3e text back byte for byte, and the whole layer
+  SeparatorEditsTest    the one edit is the one written out below, after the H2, K3, K3b, K3d and K3e edits and before the two K3i
+                        edits; its anchor occurs exactly once in the text the earlier edits leave; that written-out edit applied to
+                        that text gives the produced card without the K3i edits byte for byte; undoing only it gives the H2 + K3 + K3b + K3d + K3e text back byte for byte, and the whole layer
                         reverses to the vendored card; the audit row carries its hashes; no row of the menu is added or removed
   SeparatorRefusalTest  a mutated or doubled K3f anchor and a taken K3f name fail closed with AssertionError, naming the edit or the
                         name, before any audit row is written
@@ -74,7 +74,7 @@ def only_the_separator_edits():
     """The layer with only its K3f edit, for a text the earlier edits have already changed: the refusal of the K3f anchor is then the
     refusal of that edit and not of an earlier one whose anchor overlaps it (the copy row of K3e uses the same line)."""
     return mock.patch.multiple(layer, ALL_EDITS=layer.SEPARATOR_EDITS, INTRODUCED=(), COVER_INTRODUCED=(),
-                               LAYOUT_INTRODUCED=(), HOVER_INTRODUCED=(), COPY_INTRODUCED=(), GONE=())
+                               LAYOUT_INTRODUCED=(), HOVER_INTRODUCED=(), COPY_INTRODUCED=(), ACTION_INTRODUCED=(), GONE=())
 
 
 class _Generated(unittest.TestCase):
@@ -92,6 +92,8 @@ class _Generated(unittest.TestCase):
         # The text the K3f edit receives: the H2, K3, K3b, K3d and K3e edits applied, nothing else.
         cls.received = apply_edits(cls.plain, layer.EDITS + layer.COVER_EDITS + layer.LAYOUT_EDITS
                                    + layer.HOVER_EDITS + layer.COPY_EDITS)
+        # The text the K3f edit leaves: the produced card without the K3i action edits on top of it.
+        cls.settled = undo_edits(cls.layered, layer.ACTION_EDITS)
 
     @classmethod
     def tearDownClass(cls):
@@ -103,8 +105,9 @@ class SeparatorEditsTest(_Generated):
         self.assertEqual(LABELS, [label for label, _b, _a in layer.SEPARATOR_EDITS])
         self.assertEqual(EXPECTED, layer.SEPARATOR_EDITS)
         self.assertEqual(layer.EDITS + layer.COVER_EDITS + layer.LAYOUT_EDITS + layer.HOVER_EDITS + layer.COPY_EDITS
-                         + layer.SEPARATOR_EDITS, layer.ALL_EDITS)
-        self.assertEqual(LABELS, [label for label, _b, _a in layer.ALL_EDITS[-1:]])
+                         + layer.SEPARATOR_EDITS + layer.ACTION_EDITS, layer.ALL_EDITS)
+        # K3i appends its two action edits after this one.
+        self.assertEqual(LABELS, [label for label, _b, _a in layer.ALL_EDITS[-3:-2]])
         self.assertEqual(NAMES, layer.SEPARATOR_INTRODUCED)
         for label, before, after in EXPECTED:
             self.assertNotEqual(before, after, label)
@@ -117,15 +120,15 @@ class SeparatorEditsTest(_Generated):
             self.assertEqual(1, self.layered.count(after), label)
 
     def test_forward_is_the_written_out_edit_byte_for_byte(self):
-        self.assertEqual(self.layered_bytes, apply_edits(self.received, EXPECTED).encode("utf-8"))
+        self.assertEqual(self.settled.encode("utf-8"), apply_edits(self.received, EXPECTED).encode("utf-8"))
         audits = []
         produced = layer.apply_home_card(REPO, layer.CARD, self.plain, audits)
         self.assertEqual(self.layered_bytes, produced.encode("utf-8"))
 
     def test_inverse_gives_back_the_earlier_text_and_the_vendored_card_byte_for_byte(self):
-        # Undoing only the K3f edit gives back the text of H2, K3, K3b, K3d and K3e exactly; the whole layer reverses to the
-        # vendored card.
-        self.assertEqual(self.received.encode("utf-8"), undo_edits(self.layered, EXPECTED).encode("utf-8"))
+        # Undoing the K3i action edits and then only the K3f edit gives back the text of H2, K3, K3b, K3d and K3e exactly; the
+        # whole layer reverses to the vendored card.
+        self.assertEqual(self.received.encode("utf-8"), undo_edits(self.settled, EXPECTED).encode("utf-8"))
         self.assertEqual(self.plain_bytes, layer.reverse(layer.CARD, self.layered).encode("utf-8"))
 
     def test_the_layer_changes_only_the_card_and_the_inventory(self):
@@ -133,24 +136,24 @@ class SeparatorEditsTest(_Generated):
         changed = {name for name in self.layered_tree if self.layered_tree[name] != self.plain_tree[name]}
         self.assertEqual({h2.CARD_PATH, h2.INVENTORY_PATH}, changed)
 
-    def test_the_last_audit_row_is_the_separator_edit(self):
+    def test_the_audit_row_before_the_k3i_rows_is_the_separator_edit(self):
         audits = []
         layer.apply_home_card(REPO, layer.CARD, self.plain, audits)
-        self.assertEqual(LABELS, [row["id"] for row in audits[-1:]])
-        for (label, before, after), row in zip(EXPECTED, audits[-1:]):
+        self.assertEqual(LABELS, [row["id"] for row in audits[-3:-2]])
+        for (label, before, after), row in zip(EXPECTED, audits[-3:-2]):
             self.assertEqual(hashlib.sha256(before.encode("utf-8")).hexdigest(), row["beforeSha256"], label)
             self.assertEqual(hashlib.sha256(after.encode("utf-8")).hexdigest(), row["afterSha256"], label)
             self.assertIs(True, row["inverseRestoresInput"], label)
 
     def test_no_menu_row_is_added_or_removed(self):
         # The line is not a row: the three vendored rows and the copy row of K3e stay the rows of the menu.
-        self.assertEqual(self.received.count("AppDropdownMenuItem("), self.layered.count("AppDropdownMenuItem("))
-        self.assertEqual(1, self.layered.count(COPY_VALUE))
+        self.assertEqual(self.received.count("AppDropdownMenuItem("), self.settled.count("AppDropdownMenuItem("))
+        self.assertEqual(1, self.settled.count(COPY_VALUE))
 
     def test_the_brackets_balance_as_before(self):
         for pair in ("()", "{}", "[]"):
             counts = []
-            for text in (self.received, self.layered):
+            for text in (self.received, self.settled):
                 code = h2.source.mask_kotlin(text)
                 counts.append(code.count(pair[0]) - code.count(pair[1]))
             self.assertEqual(counts[0], counts[1], pair)
@@ -158,10 +161,10 @@ class SeparatorEditsTest(_Generated):
 
 class SeparatorRefusalTest(_Generated):
     def test_the_separator_only_layer_reproduces_the_card(self):
-        # The control of the refusals below: with only the K3f edit, the layer turns the received text into the produced card.
+        # The control of the refusals below: with only the K3f edit, the layer turns the received text into the text K3i receives.
         audits = []
         with only_the_separator_edits():
-            self.assertEqual(self.layered, layer.apply_home_card(REPO, layer.CARD, self.received, audits))
+            self.assertEqual(self.settled, layer.apply_home_card(REPO, layer.CARD, self.received, audits))
         self.assertEqual(LABELS, [row["id"] for row in audits])
 
     def test_a_mutated_anchor_fails_closed(self):

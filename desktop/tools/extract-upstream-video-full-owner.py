@@ -1303,6 +1303,25 @@ def playback_speed_source_continuity_delta(path, body):
  assert body.count(imported)==1 and body.count('shouldRefreshPremiumAudioForPlaybackSpeedChange')==1,'speed refresh policy has no other owner caller'
  return body.replace(imported,'')
 
+def same_video_playlist_session_delta(path, body):
+ if path != 'com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt': return body
+ before='             environment.playlist.setPlaylist(newPlaylist, currentIndex)\n'
+ after='''             val session = environment.playlist.captureSession()
+             val replaced = session != null &&
+                 !environment.playlist.isExternalPlaylist.value &&
+                 environment.playlist.externalPlaylistSource.value == ExternalPlaylistSource.NONE &&
+                 currentInfo.cid > 0L &&
+                 currentItemInList.cid == currentInfo.cid &&
+                 environment.playlist.replaceQueueIfCurrent(newPlaylist, currentIndex, session)
+             if (!replaced) environment.playlist.setPlaylist(newPlaylist, currentIndex)
+'''
+ assert body.count(before)==1,'same-video playlist update anchor must be unique'
+ original=body
+ body=body.replace(before,after)
+ assert body.count(after)==1,'same-video playlist replacement must be unique'
+ assert body.replace(after,before)==original,'same-video playlist exact inverse'
+ return body
+
 def generate(repo,output,standalone=False):
  outputs=[];follow_group_audits=[]
  for recipe in RECIPES:
@@ -1384,10 +1403,13 @@ def generate(repo,output,standalone=False):
   body,knownStateProof=apply_known_state(recipe['output'],body,repo,output)
   from v029_comment_composer import legacy_comment_selection_delta
   body=legacy_comment_selection_delta(recipe['output'],body,output)
-  from generation_stage_proof import record_stage, OWNER_SPEED
+  from generation_stage_proof import record_stage, OWNER_SPEED, OWNER_SAME_VIDEO_QUEUE
   before_speed=body
   body=playback_speed_source_continuity_delta(recipe['output'],body)
   record_stage(output,OWNER_SPEED,recipe['output'],before_speed,body)
+  before_same_video_queue=body
+  body=same_video_playlist_session_delta(recipe['output'],body)
+  record_stage(output,OWNER_SAME_VIDEO_QUEUE,recipe['output'],before_same_video_queue,body)
   emitted=standalone or recipe['mode']!='direct'
   if emitted:
    target=wide(Path(output)/recipe['output']);target.parent.mkdir(parents=True,exist_ok=True)
