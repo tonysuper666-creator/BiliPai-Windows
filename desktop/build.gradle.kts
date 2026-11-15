@@ -345,8 +345,9 @@ val migratedAppM4dPaths: Set<String> = migratedAppM4dAreas.asSequence().flatMap 
 // TON-1109: the message feed pages' MessageManagementRepository, built per message page child over its gated services;
 // TON-1120: the private messages' MessageImRepository, whose gRPC calls go over the calling message page child's gated call,
 // and the read events the message Root shares between its pages).
-// TON-1116: DesktopSubtitleFontFileTest reads the original font tool; its production reader,
-// PlayerSubtitleSettingsPanel (PlaybackSettingsScreen's subtitle panel), is still awaiting migration.
+// TON-1116: DesktopSubtitleFontFileTest reads the original font tool; its production readers,
+// PlayerSubtitleSettingsPanel (PlaybackSettingsScreen's subtitle panel) and PiliSubtitleSession,
+// are still awaiting migration; see their dependency blockers in m4d/later-steps.tsv.
 val migratedAppSingleFiles: Set<String> = setOf(
     "com/android/purebilibili/feature/video/subtitle/SubtitleFontFile.kt",
     "com/android/purebilibili/feature/home/components/cards/HorizontalVideoCardLayoutPolicy.kt",
