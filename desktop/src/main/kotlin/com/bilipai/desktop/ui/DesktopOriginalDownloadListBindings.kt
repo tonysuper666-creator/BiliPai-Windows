@@ -37,7 +37,7 @@ class DesktopOriginalDownloadListBindings(
     fun pauseDownload(taskId: String) = mutate(taskId) { manager.pause(taskId) }
     fun startDownload(taskId: String) = mutate(taskId) { manager.resume(taskId) }
     /** Original confirmation explicitly removes video, audio and Danmaku assets. */
-    fun removeTask(taskId: String) = mutate(taskId) { manager.remove(taskId, deleteFiles = true) }
+    fun removeTask(taskId: String, deleteFiles: Boolean = true) = mutate(taskId) { manager.remove(taskId, deleteFiles = deleteFiles) }
 
     fun displayedDownloadLocation(defaultManagedPath: String, customManagedPath: String?, exportTreeUri: String?): String {
         val effective = runCatching { resolveDesktopOriginalDownloadDestination(customManagedPath, Path.of(defaultManagedPath)) }
