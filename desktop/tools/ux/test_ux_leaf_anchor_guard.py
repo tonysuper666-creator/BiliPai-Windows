@@ -81,6 +81,7 @@ LAYOUT_ORDER = (
     ("back name", 'contentDescription = "返回")'),
     ("video box", "BoxWithConstraints(Modifier.fillMaxWidth().weight(1f).background(Color.Black)) {"),
     ("command popup", POPUP),
+    ("failure content", "if (showPageError) DesktopWindowsPageErrorOverlay("),
     ("entry cover", ENTRY_COVER),
     ("original overlay", OVERLAY),
     ("subtitle host", "VideoSubtitleOverlayHost("),
@@ -91,7 +92,6 @@ LAYOUT_ORDER = (
     ("popup end", "}, native.surface)"),
     ("confirmed feedback", FEEDBACK_CALL),
     ("recovering chip", "if (playback.recovering && playback.recoveryMessage != null)"),
-    ("failure content", "if (bootstrapError != null || playback.error != null) failureContent()"),
     ("control bar", CONTROL_BAR),
     ("details panel", DETAILS_PANEL),
     ("audio language dialog", "audioLanguageMenu?.takeIf { shell.playback.isAudioSelectionCurrent(it) }"),
@@ -120,10 +120,27 @@ HIT_AND_FOCUS_ANCHORS = (
     (1, "val shortcuts = DesktopWindowsVideoShortcutInput("),
     (1, "desktopWindowsRequestPageEntryFocus("),
     (1, "surface.isFocusable = true"),
-    (2, "viewportFocus.requestFocus()"),
     (1, "surface.requestFocusInWindow()"),
     (1, "val chromeCanAutoHide = desktopWindowsFullscreenChromeCanAutoHide("),
     (1, "val chrome = remember(assembly, DesktopWindowsFullscreenChromeEntryKey(route), chromeSource) { DesktopWindowsFullscreenChromeState() }"),
+)
+
+# Every viewportFocus.requestFocus() call the leaf may make, each with the guard that admits it. This is not a frozen total: a later slice
+# that adds a call adds its path here with the guard, and a call that stands outside every path fails by name. Matching ignores the leading
+# indentation of each line (a reindent is not a behaviour change), but it keeps the block order and the exact expressions.
+FOCUS_ADMISSION = (
+    ("window regained focus behind the owner gate",
+     "if (pageErrorFocus.ownerActivated(feedbackPresentationCurrent())) viewportFocus.requestFocus()\n"
+     "chromeActivity(DesktopWindowsFullscreenChromeActivity.WINDOW_FOCUS_GAINED)"),
+    ("native surface press restores the viewport and the surface",
+     "viewportFocus.requestFocus()\n"
+     "surface.requestFocusInWindow()"),
+    ("page entry behind the text-editor guard",
+     "desktopWindowsRequestPageEntryFocus(desktopWindowsTextEditorFocused()) { viewportFocus.requestFocus() }"),
+    ("the error card returns focus behind its release and owner gates",
+     "if (pageErrorFocus.release(feedbackPresentationCurrent(), foregroundOwned) && window != null) {\n"
+     "if (window.isActive) {\n"
+     "if (pageErrorFocus.ownerActivated(feedbackPresentationCurrent())) viewportFocus.requestFocus()"),
 )
 
 # The accessible names the leaf itself owns: the strip back button and the loading page back button.
@@ -277,6 +294,34 @@ def check_must_keep(leaf):
     return found.items
 
 
+def check_focus_admission(leaf):
+    """Every viewportFocus.requestFocus() call sits on one of the admitted paths above, with the guard that path carries.
+
+    The old check froze the total number of calls, which any legitimate second path had to edit. This one reads the paths instead: each
+    path occurs once, and every call in the file falls inside one of them, so a new bare call (for example a LaunchedEffect that grabs the
+    viewport on every route change) fails even though it merely adds to a number."""
+    code = re.sub(r"(?m)^[ \t]+", "", source.mask_kotlin(leaf))
+    call = "viewportFocus.requestFocus()"
+    found = Findings()
+    spans = []
+    for label, path in FOCUS_ADMISSION:
+        occurrences = code.count(path)
+        found.need(occurrences == 1, "focus admission path %s occurs exactly once, found %d" % (label, occurrences))
+        if occurrences == 1:
+            begin = code.index(path)
+            spans.append((begin, begin + len(path)))
+    calls = [match.start() for match in re.finditer(re.escape(call), code)]
+    admitted = sum(path.count(call) for _, path in FOCUS_ADMISSION)
+    found.need(len(calls) == admitted,
+               "%d viewportFocus.requestFocus() calls for %d admitted path calls" % (len(calls), admitted))
+    for start in calls:
+        end = start + len(call)
+        found.need(any(begin <= start and end <= stop for begin, stop in spans),
+                   "a viewportFocus.requestFocus() call stands outside every admitted path (line %d)"
+                   % (code.count("\n", 0, start) + 1))
+    return found.items
+
+
 def check_legacy_branch(leaf):
     found = Findings()
     found.need(leaf.count(CONTROL_BAR) == 1, "the LEGACY branch holds exactly one DesktopWindowsVideoControlBar( call")
@@ -295,6 +340,10 @@ def check_legacy_branch(leaf):
         found.need(argument_names(leaf, DETAILS_PANEL) == PANEL_ARGUMENTS, "the details panel keeps its ten named arguments in order")
     for expected, needle in HIT_AND_FOCUS_ANCHORS + LEAF_NAMES:
         found.need(leaf.count(needle) == expected, "%d x %s" % (expected, needle))
+    # Focus return is the contract of this slice: a call that takes the viewport away from a comment editor must say who admits it.
+    # The admission table names those paths instead of freezing the total number of calls.
+    found.need("observeNativePointer(null)" in leaf, "a native surface press restarts pointer observation")
+    found.items.extend(check_focus_admission(leaf))
     return found.items
 
 
@@ -487,6 +536,35 @@ class MutationTest(unittest.TestCase):
         wrong_overlay = self.LEAF_TEXT.replace(SEEK_PREVIEW_HOST, PLAYER_OVERLAY + ") " + SEEK_PREVIEW_HOST, 1)
         self.assertTrue(check_future_order(wrong_overlay))
         self.assertTrue(check_future_order(self.LEAF_TEXT + "\n" + INPUT_LAYER + "\n" + INPUT_LAYER))
+
+    def test_a_bare_focus_call_outside_every_admitted_path_is_found(self):
+        # N4: a new route effect grabs the viewport with no guard. The old count assertion caught it by arithmetic; this one names it.
+        bare = self.LEAF_TEXT + '\n                        LaunchedEffect(route) { viewportFocus.requestFocus() }\n'
+        self.assertTrue(any("outside every admitted path" in problem for problem in check_focus_admission(bare)))
+        self.assertTrue(check_legacy_branch(bare))
+
+    def test_each_lost_owner_gate_of_the_two_focus_returns_is_found(self):
+        # N1 (:247, the window regained focus) and N2 (:1244, the error card's return), one at a time.
+        window_regain = ("                if (pageErrorFocus.ownerActivated(feedbackPresentationCurrent())) viewportFocus.requestFocus()\n"
+                         "                chromeActivity(DesktopWindowsFullscreenChromeActivity.WINDOW_FOCUS_GAINED)")
+        self.assertTrue(check_focus_admission(self.mutated(
+            window_regain, window_regain.replace("if (pageErrorFocus.ownerActivated(feedbackPresentationCurrent())) ", ""))))
+        card_return = ("                                        if (pageErrorFocus.release(feedbackPresentationCurrent(), foregroundOwned) && window != null) {\n"
+                       "                                            if (window.isActive) {\n"
+                       "                                                if (pageErrorFocus.ownerActivated(feedbackPresentationCurrent())) viewportFocus.requestFocus()")
+        self.assertTrue(check_focus_admission(self.mutated(
+            card_return, card_return.replace("if (pageErrorFocus.ownerActivated(feedbackPresentationCurrent())) ", ""))))
+
+    def test_a_deleted_window_regain_focus_is_found(self):
+        # N3: the path itself is gone, so the table no longer holds it.
+        self.assertTrue(check_focus_admission(self.mutated(
+            "                if (pageErrorFocus.ownerActivated(feedbackPresentationCurrent())) viewportFocus.requestFocus()\n", "")))
+
+    def test_a_lost_release_gate_around_the_error_card_return_is_found(self):
+        # N14: the return also has to be released first, or a card that already gave focus back takes it again.
+        self.assertTrue(check_focus_admission(self.mutated(
+            "if (pageErrorFocus.release(feedbackPresentationCurrent(), foregroundOwned) && window != null) {",
+            "if (window != null) {")))
 
     def test_the_findings_say_which_anchor_failed(self):
         problems = check_legacy_branch(self.mutated(".desktopWindowsChromePointerInput(::observeChromePointer)", ""))

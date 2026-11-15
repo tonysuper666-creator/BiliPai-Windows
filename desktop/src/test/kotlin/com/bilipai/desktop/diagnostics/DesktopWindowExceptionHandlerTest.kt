@@ -36,7 +36,7 @@ class DesktopWindowExceptionHandlerTest {
         val notice = h.notices.single()
         assertTrue(notice.contains("已记录到诊断日志"))
         assertFalse(notice.contains("Original resolved video metadata"), "no raw exception text in the notice")
-        assertTrue(notice.contains("IllegalStateException"))
+        assertFalse(notice.contains("IllegalStateException"), "exception types belong in diagnostics, not the notice")
         assertTrue(h.fatal.isEmpty())
     }
 
@@ -83,6 +83,57 @@ class DesktopWindowExceptionHandlerTest {
         handler.handle(RuntimeException("window failure"))
 
         assertEquals(1, records.size)
+    }
+
+    @Test fun everyLogOutcomeHidesExceptionDetailsButRecordsTheOriginalFailure() {
+        val cause = IllegalArgumentException("private cause detail")
+        for (failure in listOf(IllegalStateException("private outer detail", cause),
+                java.io.IOException("private io detail", cause))) {
+            for ((recorded, backedUp) in listOf(true to true, false to true, false to false)) {
+                val h = Harness(recordResult = { recorded }, fallbackResult = { backedUp })
+
+                h.handler.handle(failure)
+
+                assertSame(failure, h.recorded.single(), "diagnostics must receive the original exception and stack")
+                assertSame(cause, h.recorded.single().cause)
+                if (recorded) assertTrue(h.fallbacks.isEmpty())
+                else assertSame(failure, h.fallbacks.single())
+                val notice = h.notices.single()
+                for (detail in listOf(failure.javaClass.simpleName, cause.javaClass.simpleName,
+                        failure.message!!, cause.message!!, "\tat ")) {
+                    assertFalse(notice.contains(detail), "exception detail leaked into the notice: $notice")
+                }
+                assertTrue(notice.contains("重启客户端"))
+                assertTrue(h.fatal.isEmpty())
+            }
+        }
+    }
+
+    @Test fun backupKeepsExceptionTypesAndStackWhileTheNoticeStaysReadable() {
+        val directory = Files.createTempDirectory("window-exception-notice-")
+        try {
+            val file = directory.resolve("window-exceptions.log")
+            val log = DesktopWindowExceptionFallbackLog(file)
+            val notices = mutableListOf<String>()
+            val failure = IllegalStateException("outer diagnostic detail", IllegalArgumentException("inner diagnostic detail"))
+            val handler = DesktopWindowExceptionHandler(
+                record = { false }, fallback = log::append, notify = { notices += it }, fatal = { throw it })
+
+            handler.handle(failure)
+
+            val text = Files.readString(file)
+            assertTrue(text.contains("java.lang.IllegalStateException: outer diagnostic detail"))
+            assertTrue(text.contains("Caused by: java.lang.IllegalArgumentException: inner diagnostic detail"))
+            assertTrue(text.contains("\tat "), "the diagnostic stack must survive the wording change")
+            val notice = notices.single()
+            assertTrue(notice.contains("本地后备日志"))
+            assertTrue(notice.contains("重启客户端"))
+            assertFalse(notice.contains("IllegalStateException"))
+            assertFalse(notice.contains("IllegalArgumentException"))
+            assertFalse(notice.contains("diagnostic detail"))
+        } finally {
+            deleteCreatedDirectory(directory)
+        }
     }
 
     @Test fun nonRecoverableErrorsTakeTheFatalPathInsteadOfAnInAppNotice() {
@@ -242,7 +293,9 @@ class DesktopWindowExceptionHandlerTest {
 
     @Test fun noticeNamesTheRestartAsTheWayBackAndNoLongerPromisesAHomeScreen() {
         for ((recorded, backedUp) in listOf(true to true, false to true, false to false)) {
-            val text = DesktopWindowExceptionHandler.message(recorded, backedUp, IllegalStateException())
+            val h = Harness(recordResult = { recorded }, fallbackResult = { backedUp })
+            h.handler.handle(IllegalStateException())
+            val text = h.notices.single()
             assertTrue(text.contains("重启客户端"), "the way back must be named: $text")
             assertFalse(text.contains("回到首页"), "a dead window cannot go back to the home page: $text")
         }

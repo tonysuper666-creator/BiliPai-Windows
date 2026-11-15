@@ -448,7 +448,7 @@ class RailSourceTest(unittest.TestCase):
         # The three kinds of stop: the toggle, the search row and the rows.
         for needle in ("modifier = Modifier.desktopRailStop(requesters, DESKTOP_RAIL_STOP_HEADER, tabStop),",
                        "modifier = Modifier.padding(horizontal = sidePadding).desktopRailStop(requesters, DESKTOP_RAIL_STOP_SEARCH, tabStop),",
-                       "modifier = Modifier.desktopRailStop(requesters, DESKTOP_RAIL_FIRST_ROW_STOP + rows.indexOf(row), tabStop),"):
+                       "modifier = Modifier.onFocusChanged { rowFocused = it.isFocused } .desktopRailStop(requesters, DESKTOP_RAIL_FIRST_ROW_STOP + rows.indexOf(row), tabStop),"):
             self.assertEqual(1, flat.count(needle), needle)
         self.assertIn("private const val DESKTOP_RAIL_STOP_HEADER = 0", RAIL_CODE)
         self.assertIn("private const val DESKTOP_RAIL_STOP_SEARCH = 1", RAIL_CODE)
@@ -492,7 +492,7 @@ class RailSourceTest(unittest.TestCase):
         self.assertEqual(1, flat.count("val entries = remember(names, hasAccountSwitcher) { desktopRailEntries(names, hasAccountSwitcher) }"))
         self.assertIn("val onMainHost = key == BiliPaiNavKey.MainHost", flat)
         self.assertIn("val legacyRoute = key.toLegacyRoute()", flat)
-        self.assertIn("label = item?.label ?: entry.item?.let { DesktopShellStrings.railLabel(it) }.orEmpty(),", flat)
+        self.assertIn("label = entry.item?.let { DesktopShellStrings.railLabel(it) } ?: item?.label.orEmpty(),", flat)
         self.assertIn("icon = desktopRailIcon(entry, item, selected),", flat)
         self.assertIn("item != null -> resolveMaterialBottomBarIcon(item, selected)", flat)
         # The old expression is still in the classic block, and the model keeps its own copy of it.

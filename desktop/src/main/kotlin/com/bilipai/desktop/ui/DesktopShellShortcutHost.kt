@@ -156,6 +156,7 @@ internal class DesktopShellRootCommands(
     val refresh: (DesktopShellPage) -> Boolean,
     val goTo: (DesktopRailItem) -> Boolean,
     val openHelp: () -> Boolean,
+    val atNavigationRoot: () -> Boolean = { false },
 )
 
 /** What the shell frame lends the host: the rail toggle (false when there is none) and the panes with their focus. */
@@ -173,17 +174,29 @@ internal class DesktopShellShortcutHost(
     private val refreshTargets: DesktopRefreshTargets = DesktopRefreshRegistry.shared,
 ) {
     private var root: DesktopShellRootCommands? = null
+    private var pageErrorKeys: Any? = null
     private var frame: DesktopShellFrameCommands? = null
     private var focusedPane: DesktopShellPane? = null
     private var backHeld = false
     private val held = DesktopShellHeldKeys(nowMs)
 
     fun bindRoot(commands: DesktopShellRootCommands) {
+        if (root != null && root?.owner !== commands.owner) pageErrorKeys = null
         root = commands
     }
 
     fun unbindRoot(owner: Any) {
-        if (root?.owner === owner) root = null
+        if (root?.owner === owner) {
+            root = null
+            pageErrorKeys = null
+        }
+    }
+
+    /** A recoverable player error uses the existing global navigation table until its card leaves. */
+    fun admitPageErrorNavigation(): AutoCloseable {
+        val token = Any()
+        pageErrorKeys = token
+        return AutoCloseable { if (pageErrorKeys === token) pageErrorKeys = null }
     }
 
     fun bindFrame(commands: DesktopShellFrameCommands) {
@@ -218,7 +231,8 @@ internal class DesktopShellShortcutHost(
         val page = commands.page() ?: return false
         val chord = desktopShellChord(data)
         if (held.isRepeat(data.key, chord)) return true
-        val action = resolveDesktopShellKey(data, DesktopShellKeyContext(page, textEditorFocused())) ?: return false
+        val keyPage = if (page == DesktopShellPage.PLAYER && pageErrorKeys != null) DesktopShellPage.OTHER else page
+        val action = resolveDesktopShellKey(data, DesktopShellKeyContext(keyPage, textEditorFocused())) ?: return false
         if (!perform(action, page, commands, toggleFullscreen)) return false
         held.claim(data.key, chord)
         return true
@@ -246,7 +260,13 @@ internal class DesktopShellShortcutHost(
     }
 
     /** Back through the window navigation owner. At the first page it does nothing (and says it acted): Back must never close the app. */
-    private fun back(commands: DesktopShellRootCommands): Boolean = if (commands.canGoBack()) requestBack() else true
+    private fun back(commands: DesktopShellRootCommands): Boolean {
+        if (!commands.canGoBack()) return true
+        // MainHost's sidebar tabs share one physical stack entry. Dispatching system Back
+        // there can reach the window's exit fallback instead of the selected tab's handler.
+        // Use the same admitted Home selection as the rail; nested pages keep native Back.
+        return if (commands.atNavigationRoot()) commands.goTo(DesktopRailItem.HOME) else requestBack()
+    }
 
     /**
      * TON-1026: the shell table gives F5 and Ctrl+R to the Home and Dynamic pages only (the contract stays as it is). On every other
@@ -368,6 +388,7 @@ internal fun DesktopShellRootBinding(
         refresh = { page -> desktopShellRefresh(routes, chrome, page) },
         goTo = { item -> desktopShellGoTo(routes, visibleItems, item) },
         openHelp = { desktopShellOpenHelp(routes) },
+        atNavigationRoot = { routes.stack.size <= 1 },
     )
     SideEffect { host.bindRoot(commands) }
     DisposableEffect(host, routes) { onDispose { host.unbindRoot(routes) } }

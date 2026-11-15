@@ -90,7 +90,7 @@ def screen(x, y, width, height, primary=False):
 
 class ContractTest(unittest.TestCase):
     def test_the_section_has_exactly_the_documented_keys(self):
-        self.assertEqual({"about", "default_size", "min_base", "edge_tolerance", "settle_ms", "plan_kinds", "placements", "rules",
+        self.assertEqual({"about", "default_size", "frame_allowance", "min_base", "edge_tolerance", "settle_ms", "plan_kinds", "placements", "rules",
                           "layouts", "golden_plan", "minimum_extent", "golden_tracker"}, set(SECTION))
         self.assertIn(wm.SECTION, list(CONTRACT)[-3:], "the section follows the sections of the earlier slices")
 
@@ -101,7 +101,8 @@ class ContractTest(unittest.TestCase):
         self.assertEqual([], wm.problems(CONTRACT))
 
     def test_the_values_are_the_ones_the_spec_and_the_earlier_behaviour_fix(self):
-        self.assertEqual([1360, 900], SECTION["default_size"], "Main.kt opened the window 1360 by 900 before this slice")
+        self.assertEqual([1600, 1000], SECTION["default_size"], "desktop first-launch client target")
+        self.assertEqual([16, 39], SECTION["frame_allowance"], "maximum AWT frame insets measured at 100% and 150%")
         self.assertEqual(CONTRACT["tokens"]["min_window_dp"], SECTION["min_base"], "the minimum window of the display scale contract")
         self.assertEqual(list(wm.KINDS), SECTION["plan_kinds"])
         self.assertEqual(list(wm.PLACEMENTS), SECTION["placements"])
@@ -117,6 +118,8 @@ class ContractTest(unittest.TestCase):
         constants = dict(re.findall(r"internal const val (\w+) = (\d+)L?\n", block))
         self.assertEqual({"WINDOWS_UX_WINDOW_DEFAULT_WIDTH": str(SECTION["default_size"][0]),
                           "WINDOWS_UX_WINDOW_DEFAULT_HEIGHT": str(SECTION["default_size"][1]),
+                          "WINDOWS_UX_WINDOW_FRAME_WIDTH": str(SECTION["frame_allowance"][0]),
+                          "WINDOWS_UX_WINDOW_FRAME_HEIGHT": str(SECTION["frame_allowance"][1]),
                           "WINDOWS_UX_WINDOW_MIN_BASE_WIDTH": str(SECTION["min_base"][0]),
                           "WINDOWS_UX_WINDOW_MIN_BASE_HEIGHT": str(SECTION["min_base"][1]),
                           "WINDOWS_UX_WINDOW_EDGE_TOLERANCE": str(SECTION["edge_tolerance"]),
@@ -222,6 +225,20 @@ def cells(start, length):
     return set(range(start, start + length))
 
 
+def oracle_default(sec, screens, zoom):
+    """First launch: add frame to client target, honour zoom, fit and centre in the usable display."""
+    live = [s for s in screens if min(s["width"], s["height"]) > 0]
+    chosen = next((s for s in live if s["primary"]), live[0] if live else None)
+    extents = [max(default + frame, math.floor(base * min(200, max(50, zoom)) / 100 + .5))
+               for default, frame, base in zip(sec["default_size"], sec["frame_allowance"], sec["min_base"])]
+    if chosen is not None:
+        extents = [min(extents[i], chosen[key]) for i, key in enumerate(("width", "height"))]
+    return dict(kind="DEFAULT", x=chosen["x"] + (chosen["width"] - extents[0]) // 2 if chosen else None,
+                y=chosen["y"] + (chosen["height"] - extents[1]) // 2 if chosen else None,
+                width=extents[0], height=extents[1], maximized=False,
+                screen=next((i for i, item in enumerate(screens) if item is chosen), None))
+
+
 def oracle_plan(contract, saved, screens, zoom):
     """The plan by its definition, written differently from the model: counted cells, a sort, a brute force search."""
     sec = contract[wm.SECTION]
@@ -229,8 +246,7 @@ def oracle_plan(contract, saved, screens, zoom):
     sane = saved is not None and all(limits["min_extent"] <= saved[k] <= limits["max_extent"] for k in ("width", "height")) \
         and all(abs(saved[k]) <= limits["max_abs_origin"] for k in ("x", "y"))
     if not sane:
-        return {"kind": "DEFAULT", "x": None, "y": None, "width": sec["default_size"][0], "height": sec["default_size"][1],
-                "maximized": False, "screen": None}
+        return oracle_default(sec, screens, zoom)
     percent = min(max(zoom, 50), 200)
     min_w = math.floor(Fraction(sec["min_base"][0] * percent, 100) + Fraction(1, 2))  # half up
     min_h = math.floor(Fraction(sec["min_base"][1] * percent, 100) + Fraction(1, 2))
@@ -339,12 +355,15 @@ class PlanOracleTest(unittest.TestCase):
                     checked += 1
         self.assertGreater(checked, 10000)
 
-    def test_default_and_unvalidated_plans_have_no_position(self):
+    def test_default_is_centred_and_only_unknown_screens_leave_the_position_undecided(self):
         sane = b(100, 80, 1360, 900)
         self.assertEqual("DEFAULT", wm.plan(CONTRACT, None, [screen(0, 0, 1920, 1032, True)], 125)["kind"])
         self.assertEqual("DEFAULT", wm.plan(CONTRACT, b(0, 0, 99, 900), [screen(0, 0, 1920, 1032, True)], 125)["kind"])
         self.assertEqual("DEFAULT", wm.plan(CONTRACT, b(0, 0, 900, 32769), [screen(0, 0, 1920, 1032, True)], 125)["kind"])
         self.assertEqual("DEFAULT", wm.plan(CONTRACT, b(100001, 0, 900, 900), [screen(0, 0, 1920, 1032, True)], 125)["kind"])
+        fresh = wm.plan(CONTRACT, None, [screen(0, 0, 1920, 1032, True)], 125)
+        self.assertEqual((152, 0, 1616, 1032, 0), tuple(fresh[k] for k in ("x", "y", "width", "height", "screen")))
+        self.assertEqual(wm.plan_bounds(fresh), wm.startup_seed(fresh, None))
         for screens in ([], [screen(0, 0, 0, 100, True)], [screen(0, 0, 100, -1, True)]):
             result = wm.plan(CONTRACT, sane, screens, 125)
             self.assertEqual("UNVALIDATED", result["kind"])
@@ -411,8 +430,7 @@ def oracle_plan_fast(contract, saved, screens, zoom):
     only (cell counting would take minutes at 3413 by 1392)."""
     sec = contract[wm.SECTION]
     if saved is None or not wm.is_sane(contract, saved):
-        return {"kind": "DEFAULT", "x": None, "y": None, "width": sec["default_size"][0], "height": sec["default_size"][1],
-                "maximized": False, "screen": None}
+        return oracle_default(sec, screens, zoom)
     percent = min(max(zoom, 50), 200)
     min_w = (sec["min_base"][0] * percent * 2 + 100) // 200
     min_h = (sec["min_base"][1] * percent * 2 + 100) // 200

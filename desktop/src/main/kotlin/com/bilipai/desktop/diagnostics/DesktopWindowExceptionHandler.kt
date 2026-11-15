@@ -102,7 +102,7 @@ internal class DesktopWindowExceptionHandler(
         // A last-resort handler that threw here would replace the original failure
         // with its own, so only the notice step is guarded; the record outcome is
         // already part of the message.
-        runCatching { notify(message(recorded, backedUp, failure)) }
+        runCatching { notify(message(recorded, backedUp)) }
     }
 
     companion object {
@@ -111,14 +111,13 @@ internal class DesktopWindowExceptionHandler(
             failure is VirtualMachineError || failure is LinkageError || failure is ThreadDeath
 
         /** Stable user-facing text only; no exception text, URL or account detail. */
-        fun message(recorded: Boolean, backedUp: Boolean, failure: Throwable): String {
-            val name = failure.javaClass.simpleName
+        fun message(recorded: Boolean, backedUp: Boolean): String {
             return when {
-                recorded -> "界面遇到一个内部错误（$name），已记录到诊断日志。" +
+                recorded -> "界面遇到一个内部错误，已记录到诊断日志。" +
                     "当前窗口可能已无法操作，请点击「重启客户端」恢复；反复出现请重启后在设置里导出日志。"
-                backedUp -> "界面遇到一个内部错误（$name），诊断日志不可用，已写入本地后备日志 window-exceptions.log。" +
+                backedUp -> "界面遇到一个内部错误，诊断日志不可用，已写入本地后备日志 window-exceptions.log。" +
                     "当前窗口可能已无法操作，请点击「重启客户端」恢复。"
-                else -> "界面遇到一个内部错误（$name），本次未能保存日志。当前窗口可能已无法操作，请点击「重启客户端」恢复。"
+                else -> "界面遇到一个内部错误，本次未能保存日志。当前窗口可能已无法操作，请点击「重启客户端」恢复。"
             }
         }
     }

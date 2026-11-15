@@ -38,6 +38,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.KeyEvent
@@ -52,6 +53,7 @@ import androidx.compose.ui.input.key.type
 import androidx.compose.ui.input.pointer.PointerEventType
 import androidx.compose.ui.input.pointer.isSecondaryPressed
 import androidx.compose.ui.input.pointer.onPointerEvent
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
@@ -322,11 +324,20 @@ private fun DesktopRailItemRow(
     val collapsed = presentation == DesktopRailPresentation.COLLAPSED
     val number = if (DESKTOP_RAIL_SHORTCUT_HINTS) row.entry.item?.let { desktopRailNumberOf(it) } else null
     val badge = desktopRailBadgeKind(row.unreadCount, presentation)
+    val focusManager = LocalFocusManager.current
+    var rowFocused by remember { mutableStateOf(false) }
     DesktopNavRow(
         label = row.label,
         selected = row.selected,
-        onClick = onClick,
-        modifier = Modifier.desktopRailStop(requesters, DESKTOP_RAIL_FIRST_ROW_STOP + rows.indexOf(row), tabStop),
+        onClick = {
+            // A pointer can activate a non-tab-stop row without taking focus from the retained page's editor.
+            // End that old input session before navigating; preserve focus when activating this row by keyboard.
+            // Do this synchronously so a destination editor that focuses itself later keeps its focus.
+            if (!rowFocused) focusManager.clearFocus()
+            onClick()
+        },
+        modifier = Modifier.onFocusChanged { rowFocused = it.isFocused }
+            .desktopRailStop(requesters, DESKTOP_RAIL_FIRST_ROW_STOP + rows.indexOf(row), tabStop),
         collapsed = collapsed,
         icon = {
             Icon(
@@ -422,7 +433,7 @@ internal fun DesktopWindowsRailHost(
         val selected = item != null && desktopRailItemSelected(onMainHost, currentItem.name, item.name, legacyRoute, item.route)
         DesktopRailRowState(
             entry = entry,
-            label = item?.label ?: entry.item?.let { DesktopShellStrings.railLabel(it) }.orEmpty(),
+            label = entry.item?.let { DesktopShellStrings.railLabel(it) } ?: item?.label.orEmpty(),
             selected = selected,
             icon = desktopRailIcon(entry, item, selected),
             unreadCount = if (entry.item == DesktopRailItem.DYNAMIC) unreadCount else 0,

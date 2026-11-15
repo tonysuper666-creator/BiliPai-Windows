@@ -28,6 +28,47 @@ import kotlin.test.assertTrue
 class DesktopShellShortcutHostTest {
     private val host = DesktopUxContract.section("shell_host")
 
+    @Test fun recoverablePlayerErrorUsesOriginalGlobalNavigationAndThenRestoresPlayerPolicy() {
+        val rig = rig(DesktopShellPage.PLAYER)
+        for (chord in listOf("Ctrl+K", "Ctrl+1", "Ctrl+B")) assertFalse(rig.down(chord), chord)
+        val recovery = rig.host.admitPageErrorNavigation()
+        for (chord in listOf("Ctrl+K", "Ctrl+1", "Ctrl+B", "Alt+Left", "F11")) {
+            assertTrue(rig.down(chord), chord)
+            assertTrue(rig.up(chord), chord)
+        }
+        assertEquals(listOf("openSearch", "goTo:HOME", "toggleRail", "requestBack", "fullscreen"), rig.calls)
+        assertFalse(rig.down("F5"))
+        rig.editor = true
+        assertFalse(rig.down("Ctrl+K"))
+        rig.editor = false
+        recovery.close()
+        assertFalse(rig.down("Ctrl+K"))
+        assertFalse(rig.down("Ctrl+1"))
+        assertFalse(rig.down("Ctrl+B"))
+    }
+
+    @Test fun aRetiredErrorCannotClearItsSuccessorOrKeepNavigationOnAReplacementRoot() {
+        val rig = rig(DesktopShellPage.PLAYER)
+        val retired = rig.host.admitPageErrorNavigation()
+        val current = rig.host.admitPageErrorNavigation()
+        retired.close()
+        rig.bindRoot() // Rebinding the same owner keeps its mounted card.
+        assertTrue(rig.down("Ctrl+K"))
+        assertTrue(rig.up("Ctrl+K"))
+        val replacementOwner = Any()
+        rig.host.bindRoot(DesktopShellRootCommands(replacementOwner, { DesktopShellPage.PLAYER }, { true },
+            { error("retired error leaked navigation") }, { false }, { true }, { false }))
+        assertFalse(rig.down("Ctrl+K"))
+        current.close()
+        val replacement = rig.host.admitPageErrorNavigation()
+        rig.host.unbindRoot(rig) // A stale owner cannot clear the current binding or its card.
+        assertTrue(rig.down("Ctrl+1"))
+        assertTrue(rig.up("Ctrl+1"))
+        rig.host.unbindRoot(replacementOwner)
+        assertFalse(rig.down("Ctrl+1"))
+        replacement.close()
+    }
+
     private companion object {
         const val K = 75
         const val L = 76
@@ -476,6 +517,39 @@ class DesktopShellShortcutHostTest {
         rig.canGoBack = false
         assertTrue(rig.down("Alt+Left"))
         assertTrue(rig.calls.isEmpty())
+    }
+
+    @Test fun singleEntrySidebarPagesReturnHomeWithoutDispatchingWindowExit() {
+        for (sidebar in listOf(BiliPaiNavKey.LiveList, BiliPaiNavKey.History)) {
+            for (mouse in listOf(false, true)) {
+                // The actual MainHost pager keeps the tab outside the physical Nav3 stack.
+                val stack = androidx.compose.runtime.mutableStateListOf<BiliPaiNavKey>(BiliPaiNavKey.MainHost)
+                var destination: BiliPaiNavKey = sidebar
+                val selections = mutableListOf<DesktopRailItem>()
+                val host = DesktopShellShortcutHost({ error("Back reached the window exit fallback from $sidebar") }, { false })
+                host.bindRoot(DesktopShellRootCommands(
+                    owner = stack,
+                    page = { desktopShellPageOf(destination) },
+                    canGoBack = { !(stack.size <= 1 && destination == BiliPaiNavKey.Home) },
+                    openSearch = { false }, refresh = { false }, openHelp = { false },
+                    goTo = { item -> selections += item; destination = BiliPaiNavKey.Home; true },
+                    atNavigationRoot = { stack.size <= 1 },
+                ))
+                fun back(): Boolean = if (mouse) host.onBackButtonPress(true)
+                    else host.handleKey(shellKeyData("Alt+Left", true)) {}
+                fun release() {
+                    if (mouse) host.onBackButtonRelease(false)
+                    else assertTrue(host.handleKey(shellKeyData("Alt+Left", false)) {})
+                }
+                assertTrue(back(), "$sidebar mouse=$mouse")
+                release()
+                assertEquals(BiliPaiNavKey.Home, destination)
+                assertEquals(listOf(BiliPaiNavKey.MainHost), stack.toList())
+                assertTrue(back()) // Home root consumes Back without selecting or closing again.
+                release()
+                assertEquals(listOf(DesktopRailItem.HOME), selections)
+            }
+        }
     }
 
     @Test fun aBackThatTheOwnerRefusesIsNotClaimed() {

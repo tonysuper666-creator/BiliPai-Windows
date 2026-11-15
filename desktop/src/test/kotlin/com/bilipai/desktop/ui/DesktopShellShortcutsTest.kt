@@ -245,7 +245,7 @@ class DesktopShellShortcutsTest {
         for (shortcut in DESKTOP_SHELL_SHORTCUTS) {
             assertTrue(DesktopShellStrings.actionLabel(shortcut.action).isNotBlank(), shortcut.chord)
         }
-        assertEquals("转到推荐", DesktopShellStrings.actionLabel(DesktopShellAction(DesktopShellActionKind.GO_DESTINATION, DesktopRailItem.HOME)))
+        assertEquals("转到首页", DesktopShellStrings.actionLabel(DesktopShellAction(DesktopShellActionKind.GO_DESTINATION, DesktopRailItem.HOME)))
         assertEquals("切换到下一个区域", DesktopShellStrings.actionLabel(DesktopShellAction(DesktopShellActionKind.CYCLE_PANES, direction = 1)))
         assertEquals("切换到上一个区域", DesktopShellStrings.actionLabel(DesktopShellAction(DesktopShellActionKind.CYCLE_PANES, direction = -1)))
         assertEquals(DesktopShellActionKind.entries.size, DesktopShellActionKind.entries.map { kind ->
