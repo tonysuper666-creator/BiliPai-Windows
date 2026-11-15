@@ -198,21 +198,38 @@ class DesktopHomeCardActionsMountTest {
                     val request = video.factory.captureSourceRequest(assembly, accepted) { assembly.owns() }
                     request.assertCurrent()
                     val homeCard = discoveryVideoCard(fixture.root.entry.viewModel.uiState.value.videos.single())
-                    // Keep the original same-video wait as its own test, including its timeout.
-                    // A separate B navigation proves actual source replacement through the owner.
                     val card = if (navigateToB) homeCard.copy(bvid = "BV1xx411c7mE", preferredCid = 71L) else homeCard
+                    val beforeOpenSession = fixture.shell.playlist.captureSession()
                     fixture.shell.playback.openVideoDetail(card, 0L, keepMatchingSource = false)
-                    video.factory.sourceVersions(assembly).first { it != null && it > accepted.sourceVersion }
-                    val replacement = assertNotNull(assembly.native.current())
-                    assertNotSame(accepted, replacement)
-                    assertEquals(card.bvid, replacement.request.bvid)
-                    assertEquals(card.preferredCid, replacement.request.cid)
-                    assertTrue(video.factory.isPresentationCurrent(assembly, replacement))
-                    assertFailsWith<CancellationException> { request.assertCurrent() }
-                    assertFalse(video.factory.withPresentationAdmission(assembly, accepted) {
-                        fail("Replaced source admitted to Mini")
-                    })
-                    assertEquals(2, video.entries.size, "Replacement alone must not enter Mini")
+                    if (navigateToB) {
+                        video.factory.sourceVersions(assembly).first { it != null && it > accepted.sourceVersion }
+                        val replacement = assertNotNull(assembly.native.current())
+                        assertNotSame(accepted, replacement)
+                        assertEquals(card.bvid, replacement.request.bvid)
+                        assertEquals(card.preferredCid, replacement.request.cid)
+                        assertTrue(video.factory.isPresentationCurrent(assembly, replacement))
+                        assertFailsWith<CancellationException> { request.assertCurrent() }
+                        assertFalse(video.factory.withPresentationAdmission(assembly, accepted) {
+                            fail("Replaced source admitted to Mini")
+                        })
+                        assertEquals(2, video.entries.size, "Replacement alone must not enter Mini")
+                    } else {
+                        // openQueue adopts the queue and synchronously calls loadVideo for this
+                        // resolved CID; return means its keepLoadedUi decision has been reached.
+                        assertFalse(fixture.shell.playlist.isSessionCurrent(beforeOpenSession))
+                        assembly.playback.uiState.first { state ->
+                            state is com.android.purebilibili.feature.video.viewmodel.VideoPlaybackUiState.Success &&
+                                state.info.bvid == card.bvid && state.info.cid == card.preferredCid
+                        }
+                        assertEquals(accepted.sourceVersion, video.player.currentSourceVersion)
+                        assertSame(accepted, assembly.native.current())
+                        assertEquals(playRequests, fixture.calls.count { it.contains("/playurl") })
+                        assertTrue(video.factory.isPresentationCurrent(assembly, accepted))
+                        assertEquals(2, video.entries.size, "Reopening alone must not enter Mini")
+                        // Source request ownership follows the accepted publication and account,
+                        // not the playlist generation; a same-source open keeps it current.
+                        request.assertCurrent()
+                    }
                 }
                 fixture.shell.retire()
                 assertFalse(video.factory.withPresentationAdmission(assembly, accepted) { fail("Retired source admitted") })
