@@ -11,6 +11,9 @@ if str(TOOLS) not in sys.path:
     sys.path.insert(0, str(TOOLS))
 
 
+from legacy_read_point import legacy_read_point
+
+
 def load(name, filename):
     spec = importlib.util.spec_from_file_location(name, TOOLS / filename)
     tool = importlib.util.module_from_spec(spec)
@@ -32,7 +35,8 @@ SOURCES = [PATH] + [tool.BASE + path + ".kt" for path in [
 class BgmDiscoveryExtractionTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.original, cls.identities = identity.load_pinned_sources(REPO, SOURCES)
+        cls.original, cls.identities = identity.load_pinned_sources(
+            legacy_read_point(REPO, PATH), SOURCES)
 
     def generate(self, originals=None):
         generated = {}
@@ -74,6 +78,17 @@ class BgmDiscoveryExtractionTest(unittest.TestCase):
         changed[PATH] += "\nprivate fun extraPublication() {\n    itemStateByKey[itemKey] = BgmSheetItemState()\n}\n"
         with self.assertRaises(AssertionError):
             self.generate(changed)
+
+
+class PinnedReadPointIsTheBuildInput(unittest.TestCase):
+    def test_gradle_runs_this_producer_on_the_materialized_legacy_root(self):
+        settings = (REPO / "desktop/settings.gradle.kts").read_text(encoding="utf-8")
+        self.assertIn('val root = repository.resolve(".legacy-root")', settings)
+        self.assertIn('settingsDir.resolve("upstream-core/legacy-root.commit")', settings)
+        recipe = (REPO / "desktop/build.gradle.kts").read_text(encoding="utf-8")
+        self.assertIn('val repositoryRoot = file(gradle.extra["bilipai.legacyRoot"] as String)', recipe)
+        self.assertRegex(recipe,
+                         r'"tools/extract-upstream-bgm-detail\.py",\s*"--repo",\s*repositoryRoot\.absolutePath,')
 
 
 if __name__ == "__main__":
