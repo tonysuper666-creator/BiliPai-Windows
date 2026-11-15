@@ -8,6 +8,8 @@ import hashlib, importlib.util, json, os, shutil, subprocess, sys, tempfile, uni
 
 TOOLS=Path(os.environ.get('BILIPAI_BRAND_HISTORY_TOOLS', str(Path(__file__).resolve().parents[1])))
 REPO=Path(os.environ.get('BILIPAI_BRAND_HISTORY_BASE_REPO', str(TOOLS.parents[1])))
+sys.path.insert(0,str(TOOLS))
+from legacy_read_point import legacy_read_point
 def wide(p):
     s=str(p.absolute());return Path(s if s.startswith('\\\\?\\') else '\\\\?\\'+s) if os.name=='nt' else p
 def sha(raw):return hashlib.sha256(raw.encode() if isinstance(raw,str) else raw).hexdigest()
@@ -25,7 +27,8 @@ class BrandHistoryProducerTest(unittest.TestCase):
     def generated(self):
         temp=tempfile.TemporaryDirectory(prefix='brand-history-');self.addCleanup(temp.cleanup)
         output=Path(temp.name)/'out'
-        result=subprocess.run([sys.executable,'-X','utf8','-B',str(TOOLS/'extract-upstream-favorites.py'),'--repo',str(REPO),'--output',str(output)],
+        source=legacy_read_point(REPO,'app/src/main/java/com/android/purebilibili/feature/list/ListViewModel.kt')
+        result=subprocess.run([sys.executable,'-X','utf8','-B',str(TOOLS/'extract-upstream-favorites.py'),'--repo',str(source),'--output',str(output)],
             cwd=REPO,env=dict(os.environ,PYTHONDONTWRITEBYTECODE='1'),stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
         self.assertEqual(result.returncode,0,result.stdout.decode('utf-8',errors='replace'))
         return output,json.loads((output.parent/'source-inventory.json').read_bytes())
@@ -54,6 +57,7 @@ class BrandHistoryProducerTest(unittest.TestCase):
     def test_existing_transport_owner_and_other_sources_keep_authenticated_baselines(self):
         output,rows=self.generated();history=[r for r in rows if 'historySourceAdaptation' in r]
         self.assertEqual(len(history),3)
+        source=legacy_read_point(REPO,'app/src/main/java/com/android/purebilibili/feature/list/ListViewModel.kt')
         canonical=load('history_canonical_contract','v025_source_paths.py');catalog=canonical._catalog()
         compatibility=load('history_all_retained_inputs','sync-upstream.py').adapted_compatibility_inputs(REPO)
         # The raw new three-file slice does not change the existing canonical catalog.
@@ -61,13 +65,13 @@ class BrandHistoryProducerTest(unittest.TestCase):
             if row in history or "recapGeneratedAdaptation" in row:continue
             if row['upstreamCommit']==catalog['upstreamCommit']:
                 # The exact reviewed pin for the tree read (legacy read point or live, 7b992dc09).
-                self.assertEqual(row['sha256LfUtf8'],canonical.reviewed_sha256(REPO,catalog['paths'][row['path']]))
+                self.assertEqual(row['sha256LfUtf8'],canonical.reviewed_sha256(source,catalog['paths'][row['path']]))
             else:
                 fixed=[item for item in compatibility if item['upstreamCommit']==row['upstreamCommit'] and
                     (item['path']==row['path'] or item['localPath']==row['path'])]
                 self.assertTrue(fixed,row['path'])
                 for item in fixed:
-                    original=(REPO/item['localPath']).read_bytes()
+                    original=(source/item['localPath']).read_bytes()
                     self.assertEqual(row['sha256LfUtf8'],sha(original.replace(b'\r\n',b'\n')))
                     self.assertEqual(row['gitBlob'],hashlib.sha1(b'blob '+str(len(original)).encode()+b'\0'+original).hexdigest())
         repository=(output/'com/android/purebilibili/data/repository/DesktopOriginalHistoryRepository.kt').read_text(encoding='utf-8')
