@@ -193,11 +193,16 @@ class DesktopHomeCardActionsMountTest {
                 DesktopHomeCardRootFixture.awaitEdt {
                     val request = video.factory.captureSourceRequest(assembly, accepted) { assembly.owns() }
                     request.assertCurrent()
-                    val card = fixture.root.entry.viewModel.uiState.value.videos.single()
-                    fixture.shell.playback.openVideoDetail(discoveryVideoCard(card), 0L, keepMatchingSource = false)
+                    // Reopening the same loaded video retains Success UI in the original VM.
+                    // Navigate to B to actually publish a replacement through the real owner.
+                    val card = discoveryVideoCard(fixture.root.entry.viewModel.uiState.value.videos.single())
+                        .copy(bvid = "BV1xx411c7mE", preferredCid = 71L)
+                    fixture.shell.playback.openVideoDetail(card, 0L, keepMatchingSource = false)
                     video.factory.sourceVersions(assembly).first { it != null && it > accepted.sourceVersion }
                     val replacement = assertNotNull(assembly.native.current())
                     assertNotSame(accepted, replacement)
+                    assertEquals(card.bvid, replacement.request.bvid)
+                    assertEquals(card.preferredCid, replacement.request.cid)
                     assertTrue(video.factory.isPresentationCurrent(assembly, replacement))
                     assertFailsWith<CancellationException> { request.assertCurrent() }
                     assertFalse(video.factory.withPresentationAdmission(assembly, accepted) {

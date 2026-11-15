@@ -100,7 +100,15 @@ internal class DesktopHomeCardRootFixture : AutoCloseable {
                 path.contains("rcmd") || path.endsWith("/popular") -> """{"code":0,"data":{"item":[$VIDEO],"list":[$VIDEO],"no_more":true}}"""
                 path.endsWith("/folder/created/list-all") -> """{"code":0,"data":{"count":1,"list":[{"id":9,"title":"Root synthetic folder","media_count":0,"fav_state":0}]}}"""
                 path.endsWith("/resource/deal") -> """{"code":0}"""
-                path == "/x/web-interface/view" -> """{"code":0,"data":${VIDEO.dropLast(1)},"pages":[{"cid":71,"page":1,"part":"Root","duration":60}]}}"""
+                path == "/x/web-interface/view" -> {
+                    val bvid = request.url.queryParameter("bvid")
+                    val info = when (bvid) {
+                        "BV1xx411c7mD" -> VIDEO
+                        "BV1xx411c7mE" -> VIDEO.replace("BV1xx411c7mD", bvid)
+                        else -> error("Unexpected synthetic video request: $bvid")
+                    }
+                    """{"code":0,"data":${info.dropLast(1)},"pages":[{"cid":71,"page":1,"part":"Root","duration":60}]}}"""
+                }
                 path.endsWith("/playurl") -> """{"code":0,"data":{"quality":64,"timelength":60000,"accept_quality":[64],"accept_description":["720P"],"dash":{"duration":60,"video":[{"id":64,"baseUrl":"https://media.invalid/video.m4s","bandwidth":100000,"mime_type":"video/mp4","codecs":"avc1.640028","width":1280,"height":720,"frameRate":"30","codecid":7}],"audio":[{"id":30280,"baseUrl":"https://media.invalid/audio.m4s","bandwidth":192000,"mime_type":"audio/mp4","codecs":"mp4a.40.2"}]}}}"""
                 path.endsWith("/archive/related") || path.endsWith("/archive/tags") -> """{"code":0,"data":[]}"""
                 path.endsWith("/player/wbi/v2") || path.endsWith("/player/v2") -> """{"code":0,"data":{"subtitle":{"subtitles":[]}}}"""

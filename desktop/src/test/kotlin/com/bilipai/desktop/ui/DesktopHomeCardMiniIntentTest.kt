@@ -187,6 +187,48 @@ class DesktopHomeCardMiniIntentTest {
         assertEquals(DESKTOP_HOME_MINI_PIP_BUSY, rejected(intent.check(w)))
     }
 
+    @Test fun aChangedSelectionWithinTheSameSessionWithdrawsTheOldRequest() {
+        for (selection in listOf(null, other to 71L, bvid to 72L)) {
+            val p = FakePlayback()
+            val intent = DesktopHomeCardMiniIntent(target(), p)
+            val w = waiting(intent.start(admit))
+            p.item = selection
+            p.acceptedSource = DesktopHomeCardMiniAccepted(bvid, 71L, 6L)
+            assertSame(DesktopHomeCardMiniResult.Withdrawn, intent.check(w), "$selection")
+            assertFalse(p.calls.any { it.startsWith("mini:") })
+        }
+    }
+
+    @Test fun aChangedQueueSourceWithinTheSameSessionWithdrawsTheRequest() {
+        val p = FakePlayback()
+        val intent = DesktopHomeCardMiniIntent(target(), p)
+        val w = waiting(intent.start(admit))
+        p.none = false
+        p.acceptedSource = DesktopHomeCardMiniAccepted(bvid, 71L, 6L)
+        assertSame(DesktopHomeCardMiniResult.Withdrawn, intent.check(w))
+        assertFalse(p.calls.any { it.startsWith("mini:") })
+    }
+
+    @Test fun anInitiallyUnresolvedCidMayEnterWithItsMatchingResolvedSelection() {
+        val p = FakePlayback()
+        val intent = DesktopHomeCardMiniIntent(target(cid = 0L), p)
+        val w = waiting(intent.start(admit))
+        p.item = bvid to 71L
+        p.acceptedSource = DesktopHomeCardMiniAccepted(bvid, 71L, 6L)
+        assertSame(DesktopHomeCardMiniResult.Entered, intent.check(w))
+        assertEquals(1, p.calls.count { it.startsWith("mini:") })
+    }
+
+    @Test fun anInitiallyUnresolvedCidCannotEnterAnotherResolvedSelection() {
+        val p = FakePlayback()
+        val intent = DesktopHomeCardMiniIntent(target(cid = 0L), p)
+        val w = waiting(intent.start(admit))
+        p.item = bvid to 72L
+        p.acceptedSource = DesktopHomeCardMiniAccepted(bvid, 71L, 6L)
+        assertSame(DesktopHomeCardMiniResult.Withdrawn, intent.check(w))
+        assertFalse(p.calls.any { it.startsWith("mini:") })
+    }
+
     @Test fun theReusedSessionThatPlaysTheCardEntersWithItsAcceptedSource() {
         val p = FakePlayback().apply {
             reuse = true; item = bvid to 71L; none = true; acceptedSource = DesktopHomeCardMiniAccepted(bvid, 71L, 5L)

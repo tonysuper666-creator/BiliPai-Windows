@@ -92,9 +92,16 @@ internal class DesktopHomeCardMiniIntent<S : Any>(
     /** One check of the waiting request. null keeps waiting; it never stops or pauses anything. */
     fun check(waiting: DesktopHomeCardMiniResult.Waiting<S>): DesktopHomeCardMiniResult? {
         if (!playback.isSessionCurrent(waiting.after)) return DesktopHomeCardMiniResult.Withdrawn
+        // Queue navigation keeps the original session. Its previous accepted source can still be
+        // published while the newly selected item loads, so the selection must still be this request.
+        val item = playback.currentItem()
+        if (item == null || item.first != target.bvid || !playback.sourceIsNone() ||
+            (target.card.preferredCid > 0L && item.second != target.card.preferredCid))
+            return DesktopHomeCardMiniResult.Withdrawn
         if (playback.pipActiveOrPending()) return DesktopHomeCardMiniResult.Rejected(DESKTOP_HOME_MINI_PIP_BUSY)
         if (playback.loadFailed(target.bvid)) return DesktopHomeCardMiniResult.Rejected(DESKTOP_HOME_MINI_FAILED)
         val accepted = playback.accepted()?.takeIf(::matches) ?: return null
+        if (item.second > 0L && item.second != accepted.cid) return DesktopHomeCardMiniResult.Withdrawn
         // A source of this request is newer than every source the player had when it was submitted (the native
         // version only grows), so the publication of an earlier A of A -> B -> A is never taken for it.
         if (!waiting.reused && waiting.baselineVersion != null && accepted.sourceVersion <= waiting.baselineVersion) return null
