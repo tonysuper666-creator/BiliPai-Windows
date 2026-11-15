@@ -5,6 +5,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.tooling.*
 import com.android.purebilibili.navigation3.BiliPaiNavKey
 import com.android.purebilibili.feature.comment.CommentDetailViewModel
+import com.android.purebilibili.feature.video.viewmodel.VideoPlaybackUiState
 import com.bilipai.desktop.data.DesktopRepository
 import com.bilipai.desktop.player.MpvPlayer
 import com.bilipai.desktop.player.PlayerPreferences
@@ -216,16 +217,52 @@ object WindowsVideoCrashRegressionFixture {
                             }
                             val detail = edt {
                                 val owner = checkNotNull(refs.find<DesktopOriginalVideoShellOwner>()?.slot?.currentAssembly())
-                                BiliPaiNavKey.CommentDetail(checkNotNull(owner.native.current()).request.aid,
+                                // BV-only playback requests retain aid=0. Comment routes
+                                // use the committed video's resolved subject, like the UI.
+                                val info = (owner.playback.captureDesktopPlaybackState() as VideoPlaybackUiState.Success).info
+                                check(info.aid > 0)
+                                BiliPaiNavKey.CommentDetail(info.aid,
                                     owner.domains.comments.commentState.value.replies.first().rpid)
                             }
                             edt { check(routes.push(detail)) }
                             await("comment detail") { latest.get()?.key == detail }
-                            await("loaded public comment detail") {
+                            try { await("loaded public comment detail") {
                                 refs.find<CommentDetailViewModel>()?.subReplyState?.value?.let {
                                     !it.isLoading && it.error == null && it.rootReply?.rpid == detail.rootId &&
                                         it.rootReply?.content?.message?.isNotBlank() == true
                                 } == true
+                            } } finally {
+                                val diagnostics = edt { buildJsonObject {
+                                    val repository = checkNotNull(refs.find<DesktopRepository>())
+                                    val guestAccountEmpty = repository.account.value == null && repository.savedAccounts.value.isEmpty()
+                                    put("guestAccountEmpty", guestAccountEmpty)
+                                    check(guestAccountEmpty) { "Comment detail must remain a guest with no saved account" }
+                                    put("routeCurrent", latest.get()?.key == detail)
+                                    put("requestedOidValid", detail.oid > 0L)
+                                    put("requestedRootValid", detail.rootId > 0L)
+                                    put("routeRetained", routes.containsEntry(detail))
+                                    put("rootOwned", routes.root.entry.gate.owns())
+                                    val owners = refs.values().filterIsInstance<DesktopOriginalCommentRootOwner>()
+                                    put("commentOwners", JsonArray(owners.map { JsonPrimitive(it.isOwned()) }))
+                                    put("detailStates", JsonArray(refs.values().filterIsInstance<CommentDetailViewModel>()
+                                        .distinct().map { vm -> buildJsonObject {
+                                            val state = vm.subReplyState.value
+                                            put("visible", state.visible)
+                                            put("loading", state.isLoading)
+                                            put("hasError", state.error != null)
+                                            put("rootMatches", state.rootReply?.rpid == detail.rootId)
+                                            put("rootHasText", state.rootReply?.content?.message?.isNotBlank() == true)
+                                            put("replyCount", state.items.size)
+                                            val fields = vm.javaClass.declaredFields.onEach { it.isAccessible = true }
+                                            val vmScope = fields.firstOrNull { it.name == "scope" }?.get(vm) as? CoroutineScope
+                                            val requests = fields.firstOrNull { it.name == "requests" }?.get(vm) as?
+                                                com.android.purebilibili.feature.video.viewmodel.DesktopVideoCommentRequests
+                                            put("scopeActive", vmScope?.isActive == true)
+                                            put("requestsOwned", requests?.isOwned() == true)
+                                        } }))
+                                } }
+                                Files.writeString(report.resolve("comment-detail-state.json"), diagnostics.toString())
+                                shot(report, "comment-detail-state")
                             }
                             Thread.sleep(2000); shot(report, "comment-detail")
                         }
