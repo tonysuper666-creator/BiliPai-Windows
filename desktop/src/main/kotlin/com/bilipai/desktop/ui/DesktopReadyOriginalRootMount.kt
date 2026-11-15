@@ -16,6 +16,7 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.Dp
 import coil3.compose.LocalPlatformContext
 import coil3.request.ImageRequest
 import com.android.purebilibili.core.util.HomeCoverReturnPrefetchRegistry
@@ -55,6 +56,40 @@ internal fun shouldRetireHomeForLoginInstallation(
 ): Boolean = loginReturn?.installation?.sourceEpoch == epoch ||
     (installation?.receipt?.let { it.acceptedEpoch == epoch && it.acceptedMid == mid } == true &&
         !mountedSourceCurrent)
+
+/** The pages constructor used by Ready Root. All Root services remain required inputs. */
+internal fun desktopReadyOriginalRootPages(
+    repository: DesktopRepository,
+    favoriteApi: com.android.purebilibili.core.network.BilibiliApi,
+    navigationAdmission: ((() -> Unit) -> Boolean),
+    beforeNavigationCommit: (BiliPaiNavKey, BiliPaiNavKey) -> Unit,
+    login: () -> Unit,
+    feedback: (String) -> Unit,
+    isPipActiveOrPending: () -> Boolean,
+    window: DesktopHomeRootWindowBindings,
+    scrollOffset: MutableFloatState,
+    feedScrolling: MutableState<Boolean>,
+    homeScroll: Channel<HomeScrollRequest>,
+    bottomVisible: () -> Boolean,
+    bottomPadding: () -> Dp,
+    setBottomVisible: (Boolean) -> Unit,
+    clock: VideoCardTransitionClock,
+    sourceReady: () -> Boolean,
+    liveScrollId: () -> Int,
+    liveTopPadding: () -> Dp,
+    profile: DesktopOriginalProfileBinding,
+    accountRefresh: () -> Int,
+    profileScroll: Channel<Unit>?,
+    logout: (() -> Unit)?,
+    sidebarAccountSwitcher: (() -> Unit)?,
+    logoutSucceeded: () -> Unit,
+    accountSwitchSucceeded: () -> Unit,
+): DesktopOriginalRootPageBindings = DesktopOriginalRootPageBindings(
+    window, scrollOffset, feedScrolling, homeScroll, bottomVisible, bottomPadding, setBottomVisible,
+    clock, isPipActiveOrPending, sourceReady, liveScrollId, liveTopPadding, profile, accountRefresh, profileScroll,
+    logout, sidebarAccountSwitcher, logoutSucceeded, accountSwitchSucceeded,
+    homeCardActions = DesktopHomeCardActionServices(repository, favoriteApi, navigationAdmission,
+        beforeNavigationCommit, login, feedback, isPipActiveOrPending))
 
 /** The actual Shell services. No navigation state, copied cookies, list model, cache or player
  * is added. Root passes its current existing actors and primitive UI actions below. */
@@ -473,13 +508,12 @@ internal class DesktopReadyOriginalRootHandle(
         val chromeBindings = DesktopOriginalRootChromeBindings(owner, navPreferences, scope, actions, audio,
             services.nowPlayingVisibility, audioNavigation, { 0.dp }, { dynamicUnreadCount }, { searchLaunch },
             { prefs.homeSettings.value.cardTransitionEnabled }, sidebarAccountSwitcher, { sourceReady = it })
-        val pages = DesktopOriginalRootPageBindings(windowBinding.window, scrollOffset, feedScrolling,
+        val pages = desktopReadyOriginalRootPages(services.repository, services.community.favoriteApi,
+            services.navigationAdmission, services.beforeNavigationCommit, services.login, services.feedback,
+            services.isPipActiveOrPending, windowBinding.window, scrollOffset, feedScrolling,
             homeScroll, { bottomVisible }, { bottomPadding }, { bottomVisible = it },
-            clock, services.isPipActiveOrPending, { sourceReady }, { liveScrollId }, { 0.dp }, profile, { accountRefresh }, profileScroll,
-            services.logout, sidebarAccountSwitcher, { accountRefresh++ }, { accountRefresh++ },
-            homeCardActions = DesktopHomeCardActionServices(services.repository, services.community.favoriteApi,
-                services.navigationAdmission, services.beforeNavigationCommit, services.login, services.feedback,
-                services.isPipActiveOrPending))
+            clock, { sourceReady }, { liveScrollId }, { 0.dp }, profile, { accountRefresh }, profileScroll,
+            services.logout, sidebarAccountSwitcher, { accountRefresh++ }, { accountRefresh++ })
         val environment = remember(root, navigation) { DesktopNavigationHostEnvironment(services.runtime.context,
             navigation, navigation, navigation, navigation, { null /* physical monitor corner API unavailable */ },
             { handle.isActive() && routes.owns() }) }
