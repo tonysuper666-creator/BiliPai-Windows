@@ -54,6 +54,24 @@ STATIC_ROOTS = (
     'desktop/src',
     'desktop/upstream-slices',
 )
+# prepareUpstreamSources syncs the original main sources from repositoryRoot, the pinned legacy read point, and excludes
+# CANONICAL there; the live checkout's app/ is not compiled. So the archive must differ from, and alone declare the new
+# symbols against, that tree. The live original may equal the archive once upstream catches up, so for it the test only
+# requires that no producer run touches it.
+PROBE = 'app/src/main/java/com/android/purebilibili/feature/home/HomeScreen.kt'
+LIVE_ROOTS = ('desktop/src', 'desktop/upstream-slices')
+
+
+def source_root():
+    return legacy_read_point(REPO, PROBE)
+
+
+def static_root(relative):
+    return (REPO if relative in LIVE_ROOTS else source_root()) / relative
+
+
+def originals():
+    return {str(root): (root / CANONICAL).read_bytes() for root in (REPO, source_root())}
 
 
 def sha(raw):
@@ -98,7 +116,7 @@ def run_cli(output, seed):
                        PYTHONDONTWRITEBYTECODE='1', PYTHONUTF8='1')
     done = subprocess.run(
         [sys.executable, '-X', 'utf8', '-B', str(REPO / 'desktop' / PRODUCER),
-         '--repo', str(legacy_read_point(REPO, 'app/src/main/java/com/android/purebilibili/feature/home/HomeScreen.kt')),
+         '--repo', str(source_root()),
          '--output', str(output)],
         cwd=str(REPO / 'desktop'), env=environment, capture_output=True, check=False)
     if done.returncode != 0:
@@ -132,6 +150,7 @@ class V046HomeRefreshUiPolicySourceTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.archive = {p.name: p.read_bytes() for p in (REPO / policy.ARCHIVE).iterdir() if p.is_file()}
+        cls.originals = originals()
         cls.temporary = tempfile.TemporaryDirectory(prefix='bp-hru-')
         cls.root = Path(cls.temporary.name)
         cls.stdout = run_cli(cls.root / 'main', 0)
@@ -168,7 +187,11 @@ class V046HomeRefreshUiPolicySourceTest(unittest.TestCase):
         self.assertIn('original Home outputs', self.stdout)
         manifest = json.loads(self.archive['manifest.json'])
         self.assertEqual([row['filename'] for row in manifest['files']], list(policy.MAIN_FILES))
-        vendored = (REPO / CANONICAL).read_bytes()
+        vendored = (source_root() / CANONICAL).read_bytes()
+        policy.emit(REPO, self.root / 'untouched-emit')
+        run_cli(self.root / 'untouched-cli', 3)
+        self.assertEqual(2, len(self.originals))
+        self.assertEqual(self.originals, originals())
         for row in manifest['files']:
             with self.subTest(name=row['filename']):
                 archived = self.archive[row['filename']]
@@ -295,6 +318,9 @@ class V046HomeRefreshUiPolicySourceTest(unittest.TestCase):
         prepared = prepare_block(build)
         self.assertEqual(1, build.count(line), line)
         self.assertEqual(1, prepared.count(line), line)
+        self.assertEqual(1, build.count('val repositoryRoot = file(gradle.extra["bilipai.legacyRoot"] as String)'))
+        self.assertTrue(prepared.startswith(
+            'val prepareUpstreamSources by tasks.registering(Sync::class) {\n    from(repositoryRoot) {\n'))
         model = gate.parse_gradle(build)
         self.assertEqual(1, model.sync_excludes.count(CANONICAL))
         for literal in ('inputs.file("tools/v046_home_refresh_ui_policy.py")',
@@ -313,12 +339,12 @@ class V046HomeRefreshUiPolicySourceTest(unittest.TestCase):
         self.assertEqual('direct', listed[0]['mode'])
         discovery = (TOOLS / 'extract-discovery-platform.py').read_text(encoding='utf-8')
         self.assertEqual(1, discovery.count('BASE + "feature/home/HomeRefreshUiPolicy.kt": "direct"'))
-        vendored = (REPO / CANONICAL).read_text(encoding='utf-8')
+        vendored = (source_root() / CANONICAL).read_text(encoding='utf-8')
         for token in NEW_SYMBOLS:
             self.assertNotIn(token, vendored, token)
         static = []
         for relative in STATIC_ROOTS:
-            static.extend(declaration_hits(REPO / relative))
+            static.extend(declaration_hits(static_root(relative)))
         self.assertEqual([policy.ARCHIVE + '/HomeRefreshUiPolicy.kt'], static)
         self.assertIn(policy.ARCHIVE, self.catalog['buildInputRoots'])
         self.assertEqual(1, self.catalog['buildInputRoots'].count(policy.ARCHIVE))
