@@ -11,14 +11,16 @@ TOOLS = Path(__file__).resolve().parents[1]
 ROOT = TOOLS.parents[1]
 sys.path.insert(0, str(TOOLS))
 from desktop_refresh_adaptation import unbind_refresh_launch, unbind_refresh_lists
+from legacy_read_point import legacy_read_point
 from v025_source_paths import canonical_source
 
 
 class PartitionProducerTest(unittest.TestCase):
     def test_actual_cli_and_complete_inverse(self):
         with tempfile.TemporaryDirectory() as directory:
+            source = legacy_read_point(ROOT, "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoContentSection.kt")
             command = [sys.executable, str(TOOLS / "extract-upstream-home-partition.py"),
-                       "--repo", str(ROOT), "--output", directory]
+                       "--repo", str(source), "--output", directory]
             result = subprocess.run(command, cwd=ROOT, text=True, capture_output=True)
             self.assertEqual(0, result.returncode, result.stdout + result.stderr)
             inventory = json.loads((Path(directory) / "partition-producer-inventory.json").read_text())
@@ -32,7 +34,7 @@ class PartitionProducerTest(unittest.TestCase):
             for change in reversed(row["adaptations"]):
                 self.assertEqual(change["count"], restored.count(change["after"]), change["after"])
                 restored = restored.replace(change["after"], change["before"])
-            original = canonical_source(ROOT, row["origin"]).read_bytes()
+            original = canonical_source(source, row["origin"]).read_bytes()
             self.assertEqual(original, restored.encode(), "Inverse must restore all original bytes")
             self.assertEqual(inventory["pins"][row["origin"]], hashlib.sha256(original).hexdigest())
             print(json.dumps({"argv": command, "cwd": str(ROOT), "exit": result.returncode,

@@ -16,6 +16,7 @@ TOOLS = REPO / 'desktop/tools'
 sys.path.insert(0, str(TOOLS))
 import check_slice_symbol_closure as gate
 import v046_core_data_policies as policies
+from legacy_read_point import legacy_read_point
 
 spec = importlib.util.spec_from_file_location('sync_upstream_core_data_policies', TOOLS / 'sync-upstream.py')
 sync = importlib.util.module_from_spec(spec)
@@ -76,7 +77,7 @@ def run_cli(output, tests_output, seed):
     environment.pop('PYTHONPATH', None)
     done = subprocess.run(
         [sys.executable, '-X', 'utf8', '-B', str(REPO / 'desktop' / PRODUCER),
-         '--repo', str(REPO), '--output', str(output), '--tests-output', str(tests_output)],
+         '--repo', str(legacy_read_point(REPO, 'desktop/upstream-slices/v041-video-status-labels/manifest.json')), '--output', str(output), '--tests-output', str(tests_output)],
         cwd=str(REPO / 'desktop'), env=environment, capture_output=True, check=True)
     return json.loads(done.stdout.decode('utf-8').strip().splitlines()[-1])
 
