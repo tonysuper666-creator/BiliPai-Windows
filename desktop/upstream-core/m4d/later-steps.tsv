@@ -51,8 +51,6 @@ feature/settings/SettingsAppNavigationPolicy.kt	编译不过（2 处）：Overlo
 feature/settings/SettingsNavHierarchyPolicy.kt	编译不过（29 处）：Overload resolution ambiguity between candidates:×26；未解析 not×3；等对应桌面替身或桌面实现
 feature/settings/SettingsNavigationContainerOrigin.kt	编译不过（2 处）：未解析 SpacePrivacySettings×1；未解析 LoginActivitySettings×1；等对应桌面替身或桌面实现
 feature/settings/SettingsSearchNavigationPolicy.kt	依赖 navigation3 新导航键，桌面跳转由宿主 DesktopSettingsItemSearch 负责
-feature/settings/SettingsSectionFocus.kt	编译不过（4 处）：未解析 settingId×2；未解析 resolveSettingsItemScrollKey×1；未解析 clearUnclaimedSettingsFocusRequest×1；等对应桌面替身或桌面实现
-feature/settings/SettingsTextCopyPreference.kt	编译不过（4 处）：@Composable invocations can only happen from the c×3；未解析 SettingsItemAnchor×1；等对应桌面替身或桌面实现
 feature/settings/SpacePrivacyViewModel.kt	编译不过（7 处）：Cannot infer type for type parameter '_'. Specify ×4；未解析 SpacePrivacyRepository×3；等对应桌面替身或桌面实现
 feature/settings/ThemeCustomColorPickerDialog.kt	编译不过（16 处）：未解析 horizontalPadding×3；Overload resolution ambiguity between candidates:×2；Unresolved reference. None of the following candid×2；等对应桌面替身或桌面实现
 feature/settings/ThemeHomePreview.kt	图标资源已接通后可直编（TON-1072）；移出随设置迁移（TON-1116）
