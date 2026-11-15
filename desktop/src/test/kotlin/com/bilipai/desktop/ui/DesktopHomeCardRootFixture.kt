@@ -31,6 +31,9 @@ import java.awt.event.*
 import java.awt.image.BufferedImage
 import java.nio.file.Files
 import java.util.concurrent.CopyOnWriteArrayList
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.TimeUnit
+import java.util.concurrent.atomic.AtomicBoolean
 import java.util.logging.Logger
 import javax.imageio.ImageIO
 import kotlinx.coroutines.*
@@ -53,6 +56,8 @@ internal class DesktopHomeCardRootFixture : AutoCloseable {
     val cards: DesktopDynamicCardSession
     val calls = CopyOnWriteArrayList<String>()
     val feedback = CopyOnWriteArrayList<String>()
+    /** Blocks a synthetic HTTP response until [DesktopHomeTransportOrder.release]. The call is recorded first. */
+    val transport = DesktopHomeTransportOrder()
     val imageLifetime = DesktopImageSaveLifetime { false }
     val resources: DesktopHomeActualWindowResources
     val navigation: DesktopRootWindowNavigationOwner
@@ -88,6 +93,7 @@ internal class DesktopHomeCardRootFixture : AutoCloseable {
             val path = request.url.encodedPath
             calls += "${request.method} $path ${request.url.encodedQuery.orEmpty()} ${
                 (request.body as? FormBody)?.let { body -> (0 until body.size).joinToString("&") { "${body.name(it)}=${body.value(it)}" } }.orEmpty()}"
+            transport.awaitRelease(path)
             val data = when {
                 path == "/" -> "{}" // Actual visitor bootstrap; no socket is opened.
                 path.endsWith("/nav") -> """{"code":0,"data":{"isLogin":true,"mid":47,"uname":"Synthetic","wbi_img":{"img_url":"https://example.invalid/abcdefghijklmnopqrstuvwxyz012345.png","sub_url":"https://example.invalid/012345abcdefghijklmnopqrstuvwxyz.png"}}}"""
@@ -286,21 +292,61 @@ internal class DesktopHomeCardRootFixture : AutoCloseable {
         override fun getBackground(): Color = Color.BLACK
     }
 
+    /** One in-flight synthetic response. Arrival is recorded before the worker blocks, so the EDT can release it. */
+    internal class DesktopHomeTransportOrder {
+        private class Hold {
+            val arrived = CountDownLatch(1)
+            val release = CountDownLatch(1)
+            val responded = AtomicBoolean(false)
+            val blockedOnEdt = AtomicBoolean(false)
+        }
+        private val holds = java.util.concurrent.ConcurrentHashMap<String, Hold>()
+        fun hold(suffix: String) { holds[suffix] = Hold() }
+        fun release(suffix: String) { holds[suffix]?.release?.countDown() }
+        fun arrived(suffix: String) = holds[suffix]?.arrived?.count == 0L
+        fun responded(suffix: String) = holds[suffix]?.responded?.get() == true
+        fun blockedOnEdt(suffix: String) = holds[suffix]?.blockedOnEdt?.get() == true
+        fun awaitRelease(path: String) {
+            val hold = holds.entries.firstOrNull { path.endsWith(it.key) }?.value ?: return
+            hold.arrived.countDown()
+            if (EventQueue.isDispatchThread()) {
+                hold.blockedOnEdt.set(true)
+                return
+            }
+            check(hold.release.await(20, TimeUnit.SECONDS)) { "Transport hold timed out for $path" }
+            hold.responded.set(true)
+        }
+    }
+
     companion object {
-        /** Pump the real Swing dispatcher while awaiting actual suspend installation/drain. */
+        /** Pump the real Swing dispatcher while awaiting actual suspend installation/drain.
+         * A nested secondary loop can return before Dispatchers.Main finishes the block, and
+         * CompletableFuture.get on that same EDT never runs the timeout. Each pump posts its
+         * own exit, so the wait cannot park the event thread. */
         fun <T> awaitEdt(block: suspend () -> T): T {
             check(EventQueue.isDispatchThread())
-            val loop = Toolkit.getDefaultToolkit().systemEventQueue.createSecondaryLoop()
             val result = java.util.concurrent.CompletableFuture<T>()
             val waiting = CoroutineScope(SupervisorJob() + Dispatchers.Main)
             waiting.launch {
                 try { result.complete(withTimeout(15_000) { block() }) }
                 catch (failure: Throwable) { result.completeExceptionally(failure) }
-                finally { EventQueue.invokeLater { loop.exit() } }
             }
-            check(loop.enter())
+            val deadline = System.nanoTime() + 20_000_000_000L
+            while (!result.isDone) {
+                if (System.nanoTime() >= deadline) {
+                    waiting.cancel()
+                    pumpEdt()
+                    throw AssertionError("awaitEdt timed out after 20s")
+                }
+                pumpEdt()
+                if (!result.isDone) Thread.sleep(15)
+            }
             waiting.cancel()
-            return result.get()
+            try {
+                return result.get()
+            } catch (wrapped: java.util.concurrent.ExecutionException) {
+                throw wrapped.cause ?: wrapped
+            }
         }
 
         fun pumpEdt() {
