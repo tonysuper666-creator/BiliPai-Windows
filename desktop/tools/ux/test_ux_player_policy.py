@@ -54,6 +54,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import ux_model as model  # noqa: E402
+import ux_player_keys_model as pkm  # noqa: E402
 import ux_player_model as pm  # noqa: E402
 import ux_shell_model as shell  # noqa: E402
 import ux_source as source  # noqa: E402
@@ -773,8 +774,17 @@ class ShortcutTest(NeedleCase):
             "popupOpen -> DesktopPlayerEscStep.CLOSE_POPUP fullscreen -> DesktopPlayerEscStep.LEAVE_FULLSCREEN "
             "layout == DesktopWindowsUxPlayerLayout.LEGACY -> DesktopPlayerEscStep.LEAVE_PAGE else -> DesktopPlayerEscStep.NONE",
         )
-        root = pm.read(source.K / "DesktopShell.kt")
-        self.assertIn("if (isFullscreen()) setOriginalFullscreen(false) else homeRootRef.get()?.navigation?.requestBack()", root)
+        # D4 is consumed by the player router: the real caller asks resolveDesktopPlayerEscStep with no popup (a flyout is a window of its
+        # own), the live fullscreen and the live layout, and lets the key go to the Root only when the step is NONE.
+        router = pm.squash(pm.read(pkm.INPUT_KT))
+        self.assertIn("if (action.kind == DesktopPlayerActionKind.ESC_CHAIN) escapeSwallowed() else perform(action)", router)
+        self.assertIn("private fun escapeSwallowed(): Boolean = resolveDesktopPlayerEscStep(popupOpen = false, "
+                      "fullscreen = isFullscreen(), layout = layout()) == DesktopPlayerEscStep.NONE", router)
+        # Priority: the Root resolves its own Esc chain first, so a windowed Esc is the Root's to leave fullscreen or go back, and only a
+        # step of NONE reaches the player branch below. Moving the player branch above the Esc chain would claim the key first and fail here.
+        handler = pm.squash(pm.read(source.K / "DesktopShell.kt"))
+        handler = handler[handler.index("val rootKeyHandler"):handler.index("val latestRootKeyHandler")]
+        self.assertLess(handler.index("desktopShellRootEsc("), handler.index("playerFocused"))
 
     def test_the_difference_to_the_vendored_key_map_is_written_down(self):
         vendored = pm.squash(pm.read(pm.VENDORED_KEY_POLICY))

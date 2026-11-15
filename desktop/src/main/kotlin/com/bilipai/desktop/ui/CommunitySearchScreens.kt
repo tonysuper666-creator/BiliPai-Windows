@@ -12,6 +12,11 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.KeyEventType
+import androidx.compose.ui.input.key.key
+import androidx.compose.ui.input.key.onPreviewKeyEvent
+import androidx.compose.ui.input.key.type
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
@@ -121,9 +126,11 @@ internal fun CommunitySearch(initialQuery: String, community: DesktopCommunityRe
         try { state.discover = search.discover(personalized = suggestionsEnabled && !privacy) }
         catch (error: Exception) { if (error is CancellationException) throw error; state.discoverError = error }
     }
-    LaunchedEffect(draft, submitted) {
+    // Esc in the field closes the suggestions of the draft it was pressed on; typing on asks again (A3).
+    var dismissedDraft by remember(state) { mutableStateOf<String?>(null) }
+    LaunchedEffect(draft, submitted, dismissedDraft) {
         suggestions = emptyList(); suggestionsError = null
-        if (draft.isNotBlank() && draft.trim() != submitted) {
+        if (draft.isNotBlank() && draft.trim() != submitted && draft != dismissedDraft) {
             delay(300)
             try { suggestions = community.searchSuggestions(draft).filter { it.term.isNotBlank() || it.value.isNotBlank() || it.name.isNotBlank() } }
             catch (error: Exception) { if (error is CancellationException) throw error; suggestionsError = error }
@@ -132,7 +139,11 @@ internal fun CommunitySearch(initialQuery: String, community: DesktopCommunityRe
     Column(Modifier.fillMaxSize(), verticalArrangement = Arrangement.spacedBy(6.dp)) {
         Row(Modifier.fillMaxWidth().padding(horizontal = 20.dp), horizontalArrangement = Arrangement.spacedBy(12.dp), verticalAlignment = Alignment.CenterVertically) {
             OutlinedTextField(draft, { draft = it }, singleLine = true, placeholder = { Text(displayedSearchHint.ifBlank { resolveSearchDefaultPlaceholder() }) },
-                modifier = Modifier.weight(1f), keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search), keyboardActions = KeyboardActions(onSearch = { submit(resolvedSubmitKeyword) }))
+                modifier = Modifier.weight(1f).onPreviewKeyEvent { event ->
+                    // Not consumed: the Root goes on to drop the caret, so one Esc closes the suggestions and ends the input.
+                    if (event.type == KeyEventType.KeyDown && event.key == Key.Escape) dismissedDraft = draft
+                    false
+                }, keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search), keyboardActions = KeyboardActions(onSearch = { submit(resolvedSubmitKeyword) }))
             Button(enabled = resolvedSubmitKeyword.isNotBlank(), onClick = { submit(resolvedSubmitKeyword) }) { Text("搜索") }
             if (submitted.isNotBlank()) TextButton(onClick = { draft = ""; submitted = ""; suggestions = emptyList() }) { Text("搜索首页") }
         }

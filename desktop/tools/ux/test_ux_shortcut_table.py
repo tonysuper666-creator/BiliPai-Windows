@@ -173,7 +173,10 @@ class TableTest(unittest.TestCase):
     def test_the_existing_root_keys_are_not_redefined_and_the_player_keys_are_not_taken(self):
         handler = shell.read(source.K / "DesktopShell.kt")
         self.assertIn("event.key == Key.F11", handler)
-        self.assertIn("event.key == Key.Escape", handler)
+        # Esc is still the Root's own key: since S3 (TON-1265) it reaches the shell through the shared decision, which names it, instead
+        # of through a branch of the handler. DesktopShellTextFieldEscapeTest proves what that decision does on the real pages.
+        self.assertIn("desktopShellRootEsc(", handler)
+        self.assertIn("event.key != Key.Escape -> DesktopShellEscape.NONE", shell.squash(handler))
         chords = {row["chord"] for row in SHELL_ROWS}
         for chord in ("Esc", "Escape", "Space", "Enter", "Backspace"):
             self.assertNotIn(chord, chords)
