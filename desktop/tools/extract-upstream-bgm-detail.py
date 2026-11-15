@@ -301,6 +301,44 @@ def generate_ui(repo,output,original,shared,emit,changes):
             } catch (cancelled: CancellationException) { throw cancelled }
             catch (failure: Exception) { ensureRequestOwned(); Result.failure(failure) }
         }'''+body[upload_end:]
+    # The composer draft lifetime rides the same generic VM: field, open/update/complete/reset
+    # seams and the state type. CommentComposerDraft and commentComposerDraftKey already have
+    # one producer (the v029 draft schema), so only the state machine is declared here.
+    body=replace_once(body,'    val replyTarget: ReplyItem? = null,  // 回复目标评论（为空则是一级评论）\n','    val replyTarget: ReplyItem? = null,  // 回复目标评论（为空则是一级评论）\n    val composerDrafts: CommentComposerDraftState = CommentComposerDraftState(),\n')
+    body=replace_once(body,'    fun replyTo(reply: ReplyItem) {','''    fun beginCommentDraft() {
+        _commentState.update { it.copy(composerDrafts = it.composerDrafts.open(), sendError = null) }
+    }
+
+    fun updateCommentDraft(
+        sessionId: Long,
+        replyRpid: Long?,
+        text: String,
+        imageUris: List<Uri>,
+        syncToDynamic: Boolean
+    ) {
+        _commentState.update {
+            it.copy(
+                composerDrafts = it.composerDrafts.update(
+                    sessionId, replyRpid, CommentComposerDraft(text, imageUris, syncToDynamic)
+                )
+            )
+        }
+    }
+
+    fun replyTo(reply: ReplyItem) {''')
+    body=replace_once(body,'        val sendSubReplyState = _subReplyState.value\n','        val sendSubReplyState = _subReplyState.value\n        val sendDraftSession = currentState.composerDrafts.sessionId\n        val sendDraftReplyRpid = sendReplyTarget?.rpid\n        val sentDraft = currentState.composerDrafts.drafts[commentComposerDraftKey(sendDraftReplyRpid)]\n')
+    body=replace_once(body,'                val current = _commentState.value\n\n                // [新增] 启动评论反诈检测（后台协程，不阻塞 UI）\n','''                val latest = _commentState.value
+                val current = latest.copy(
+                    composerDrafts = latest.composerDrafts.complete(
+                        sendDraftSession, sendDraftReplyRpid, sentDraft
+                    )
+                )
+
+                // [新增] 启动评论反诈检测（后台协程，不阻塞 UI）
+''')
+    body=replace_once(body,'        _commentState.value = CommentUiState(\n            currentMid = requests.currentMid()\n        )\n','        _commentState.value = CommentUiState(\n            currentMid = requests.currentMid(),\n            composerDrafts = _commentState.value.composerDrafts.reset()\n        )\n')
+    body=replace_once(body,'            replyCount = expectedReplyCount.coerceAtLeast(0)\n        )\n','            replyCount = expectedReplyCount.coerceAtLeast(0),\n            composerDrafts = _commentState.value.composerDrafts.reset()\n        )\n')
+    body=replace_once(body,'            replyCount = currentState.replyCount\n        )\n','            replyCount = currentState.replyCount,\n            composerDrafts = currentState.composerDrafts\n        )\n')
     body=remove_declaration(body,'queryDisplayName').replace('List<Uri>','List<String>')
     body=body.replace('com.android.purebilibili.core.util.Logger.', 'Logger.')
     body=shared.drop_logs(body)
@@ -316,6 +354,55 @@ def generate_ui(repo,output,original,shared,emit,changes):
     body=re.sub(r'(\.onFailure\s*\{(?:\s*\w+\s*->)?)',r'\1\n                ensureRequestOwned()',body)
     body=replace_once(body,'            val picturesResult = uploadCommentPictures(imageUris)','            ensureRequestOwned()\n            val picturesResult = uploadCommentPictures(imageUris)')
     body, search_lifetime = comment_search.vm_delta(body)
+    # Canonical draft state machine, kept verbatim from the upstream declaration; the payload
+    # type and key helper stay with their existing producer.
+    body=body.rstrip('\n')+'''
+
+data class CommentComposerDraftState(
+    val sessionId: Long = 0L,
+    val completedSessionId: Long = -1L,
+    val drafts: Map<Long, CommentComposerDraft> = emptyMap(),
+    val revision: Long = 0L
+) {
+    internal fun open(): CommentComposerDraftState = copy(sessionId = sessionId + 1L)
+
+    internal fun reset(): CommentComposerDraftState = copy(
+        sessionId = sessionId + 1L,
+        drafts = emptyMap()
+    )
+
+    internal fun update(
+        sessionId: Long,
+        replyRpid: Long?,
+        draft: CommentComposerDraft
+    ): CommentComposerDraftState {
+        if (sessionId != this.sessionId || sessionId <= completedSessionId) return this
+        val key = commentComposerDraftKey(replyRpid)
+        val updatedDrafts = if (
+            draft.text.isEmpty() && draft.imageUris.isEmpty() && !draft.syncToDynamic
+        ) {
+            if (key in drafts) drafts - key else drafts
+        } else {
+            drafts + (key to draft)
+        }
+        // StateFlow must retain a newer draft instance even when its contents are equal.
+        return copy(drafts = updatedDrafts, revision = revision + 1L)
+    }
+
+    internal fun complete(
+        sessionId: Long,
+        replyRpid: Long?,
+        sentDraft: CommentComposerDraft?
+    ): CommentComposerDraftState {
+        if (sessionId > this.sessionId) return this
+        val key = commentComposerDraftKey(replyRpid)
+        return copy(
+            completedSessionId = maxOf(completedSessionId, sessionId),
+            drafts = if (sentDraft != null && drafts[key] === sentDraft) drafts - key else drafts
+        )
+    }
+}
+'''
     comment_selection['originalToPlatform'] = comment_search.whole_proof(comment_raw,body)
     comment_selection['searchLifetime'] = search_lifetime
     changes.append(dict(source=path,v036VideoCommentCache=comment_selection))
