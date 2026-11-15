@@ -1,4 +1,5 @@
 # Producer copies (build/generated/<path>) retired because a migrated file of the same area declares their names (TON-1003).
+shared-liquid-tabs/generated/com/android/purebilibili/core/ui/components/AppLiquidAwareTabRow.kt
 discovery/com/android/purebilibili/feature/home/DesktopDiscoveryHomeUiState.kt
 dynamic-detail/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicReplyPagingGuard.kt
 dynamic-full-card/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicCardLayout.kt
