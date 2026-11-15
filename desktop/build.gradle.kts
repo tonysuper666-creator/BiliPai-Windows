@@ -348,6 +348,18 @@ val migratedAppM4dPaths: Set<String> = migratedAppM4dAreas.asSequence().flatMap 
 // PlayerSubtitleSettingsPanel (PlaybackSettingsScreen's subtitle panel) and PiliSubtitleSession,
 // are still awaiting migration; see their dependency blockers in m4d/later-steps.tsv.
 val migratedAppSingleFiles: Set<String> = setOf(
+    "com/android/purebilibili/feature/video/ui/components/PlayerEpisodeMenu.kt",
+    "com/android/purebilibili/feature/video/ui/components/PlayerEpisodeMenuPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/components/PlayerNativeSettings.kt",
+    "com/android/purebilibili/feature/video/ui/components/PlayerDetailPanelMotion.kt",
+    "com/android/purebilibili/feature/video/ui/components/PlayerSelectionPopup.kt",
+    "com/android/purebilibili/feature/video/ui/components/PlayerSettingsMenuLayoutPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/components/PlayerPopupGeometry.kt",
+    "com/android/purebilibili/feature/video/ui/components/PlayerPanelViewport.kt",
+    "com/android/purebilibili/feature/video/ui/components/EpisodeSheetLayoutPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/components/PlayerOptionStyle.kt",
+    "com/android/purebilibili/feature/video/ui/components/CollectionAccessBadge.kt",
+    "com/android/purebilibili/feature/video/ui/components/PlayerPanelPopupBackHandler.kt",
     // TON-1116: the original document codec delegates standard text formats to the desktop parser;
     // BCC/JSON and export stay upstream. Session/Store still await the panel-owned appearance model.
     "com/android/purebilibili/feature/video/subtitle/SubtitleDocumentCodec.kt",
@@ -359,7 +371,12 @@ val migratedAppSingleFiles: Set<String> = setOf(
     "com/android/purebilibili/data/repository/MessageReadEvent.kt",
     // TON-1124: the upstream ledger repository takes the calling Profile page environment.
     "com/android/purebilibili/data/repository/AccountLedgerRepository.kt",
-)
+).let { selected ->
+    // TON-1116: when the controls generator stops the old popup, compile its upstream wrapper.
+    if ("com/android/purebilibili/feature/video/ui/components/PlayerSelectionPopup.kt" in selected) {
+        selected + "com/android/purebilibili/feature/video/ui/components/glass/PlayerMiuixListPopup.kt"
+    } else selected
+}
 // M4c (TON-1004): every upstream file of live, audio and download compiles from the merged root,
 // except the two maps below.
 // appM4cDesktopOwned: Android-only files whose capability the desktop implements itself; the reason names it.
@@ -521,6 +538,10 @@ fun migratedUpstreamSource(path: String): Boolean = migratedUpstreamModules.any 
 val prepareUpstreamSources by tasks.registering(Sync::class) {
     from(repositoryRoot) {
         include(sources.filter { (it["mode"] ?: "direct") == "direct" && !migratedUpstreamSource(it["path"].toString()) }.map { canonicalOriginalIdentity(it["path"].toString()) })
+        // TON-1116: retain the legacy selector policy until its three screen callers migrate.
+        if ("feature/video/ui/components/PagesSelector.kt" in appM4dLaterSteps) {
+            include("app/src/main/java/com/android/purebilibili/feature/video/ui/components/PagesSelectorLayoutPolicy.kt")
+        }
         // Whole v043 typed navigation is emitted by its existing space producer.
         exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/core/util/BilibiliNavigationTargetParser.kt"))
         // Current collection playback/management policy has one Space producer.
@@ -570,7 +591,14 @@ val prepareUpstreamSources by tasks.registering(Sync::class) {
         exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/ui/components/LandscapeDanmakuComposer.kt"))
         exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/ui/components/LandscapeSidePanel.kt"))
         exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/ui/components/NativeDanmakuToggleButton.kt"))
-        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/ui/components/PlayerMiuixListPopup.kt"))
+        // TON-1116: matches extract-upstream-video-player-full-controls.py's ACTUAL popup condition.
+        if ("com/android/purebilibili/feature/video/ui/components/PlayerSelectionPopup.kt" !in migratedAppSingleFiles) {
+            exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/ui/components/PlayerMiuixListPopup.kt"))
+        } else {
+            // TON-1116: LEGACY_PLAYER_POPUP_RETIRED in the controls producer adds these wrapper imports.
+            exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/ui/components/AudioQualitySelectionMenu.kt"))
+            exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/ui/components/ChapterListPanel.kt"))
+        }
         exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/BottomControlBarLayoutPolicy.kt"))
         exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/ImmersiveStatusBarBackdrop.kt"))
         exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PlaybackButtonComponents.kt"))

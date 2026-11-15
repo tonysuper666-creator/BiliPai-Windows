@@ -10,8 +10,16 @@ EXPECTED_ALL_OUTPUTS=frozenset(['com/android/purebilibili/core/player/PlaybackPr
 def verify(repo,output,report):
  path=Path(__file__).with_name('extract-upstream-video-player-full-controls.py')
  spec=importlib.util.spec_from_file_location('verify_one_original_controls',path);tool=importlib.util.module_from_spec(spec);spec.loader.exec_module(tool)
+ legacy_popup='com/android/purebilibili/feature/video/ui/components/PlayerMiuixListPopup.kt'
+ retired={legacy_popup} if tool.LEGACY_PLAYER_POPUP_RETIRED else set()
+ EXPECTED_ALL_OUTPUTS=globals()['EXPECTED_ALL_OUTPUTS']-retired
+ EXPECTED_GENERATED_OUTPUTS=globals()['EXPECTED_GENERATED_OUTPUTS']-retired
+ if tool.LEGACY_PLAYER_POPUP_RETIRED:
+  EXPECTED_GENERATED_OUTPUTS |= {'com/android/purebilibili/feature/video/ui/components/AudioQualitySelectionMenu.kt', 'com/android/purebilibili/feature/video/ui/components/ChapterListPanel.kt'}
  with tempfile.TemporaryDirectory(prefix='bilipai-verify-controls-')as tmp:
   tool.generate(repo,tmp)
+  assert (legacy_popup not in {r['path'] for r in tool.OUTPUTS})==tool.LEGACY_PLAYER_POPUP_RETIRED
+  assert (not wide(Path(output)/legacy_popup).exists())==tool.LEGACY_PLAYER_POPUP_RETIRED
   rows=[]
   for row in tool.OUTPUTS:
    if row['generated']:
