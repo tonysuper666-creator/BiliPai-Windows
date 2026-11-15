@@ -168,9 +168,74 @@ class DesktopStandardSubtitleParserTest {
             SubtitleCue(2000, 3000, "second\nfourth"), SubtitleCue(4000, 5000, "last"))
         assertEquals(ordered, parseSubtitleDocument("ordered.vtt",
             encodeSubtitleDocument(events, SubtitleDocumentFormat.WEBVTT)))
-        assertEquals(ordered, parseSubtitleDocument("ordered.ass",
+        val dialogueOrder = ordered.toMutableList().apply {
+            this[1] = SubtitleCue(1000, 2000, "second\nfirst\nthird")
+        }
+        assertEquals(dialogueOrder, parseSubtitleDocument("ordered.ass",
             "[Events]\nFormat: Start, End, Text\n" + events.joinToString("\n") {
                 "Dialogue: 0:00:0${it.startMs / 1000}.00,0:00:0${it.endMs / 1000}.00,${it.content}"
             }))
+    }
+
+    @Test fun assAndSsaOverlapKeepsDialogueFileOrderEvenWhenStartsAndLayersDiffer() {
+        val source = """
+            [Events]
+            Format: Layer, Start, End, Text
+            Dialogue: 9,0:00:01.00,0:00:03.00,second
+            Dialogue: 0,0:00:00.00,0:00:02.00,first
+            Dialogue: 1,0:00:01.00,0:00:02.00,third
+        """.trimIndent()
+        for (extension in listOf("ass", "ssa")) {
+            val cues = parseSubtitleDocument("unordered.$extension", source)
+            assertEquals(listOf(SubtitleCue(0, 1000, "first"),
+                SubtitleCue(1000, 2000, "second\nfirst\nthird"),
+                SubtitleCue(2000, 3000, "second")), cues, extension)
+            assertEquals("first", resolveSubtitleTextAt(cues, 500), extension)
+            assertEquals("second\nfirst\nthird", resolveSubtitleTextAt(cues, 1500), extension)
+            assertEquals("second", resolveSubtitleTextAt(cues, 2500), extension)
+            assertNull(resolveSubtitleTextAt(cues, 3500), extension)
+        }
+    }
+
+    @Test fun webVttExplicitLinesPrecedeStableStartOrderedUnsetLines() {
+        // Media3 accepts integer/float-percentage lines, even with a bad anchor or range.
+        // A malformed setting leaves the previous valid line intact; "auto" is not numeric.
+        val explicit = listOf("line:0", "line:-1", "line:+2", "line:25", "line:25%,start", "line:2,end",
+            "line:50%,middle", "line:50%,center", "line:2,bad-anchor", "line:150%", "line:-10%",
+            "line:NaN%", "line:Infinity%", "line:1e2%", "line:0x1.0p1%",
+            "line:2147483647", "line:-2147483648", "line:2 line:auto", "line:auto line:2")
+        val unset = listOf("", "line:auto", "line:bad", "line:1.5", "line:%",
+            "line:bad%", "line:2147483648", "line:-2147483649", "LINE:2", "line:,start")
+        for ((setting, hasLine) in explicit.map { it to true } + unset.map { it to false }) {
+            val source = """
+                WEBVTT
+
+                00:01.000 --> 00:04.000
+                unset-later
+
+                00:02.000 --> 00:04.000 $setting
+                candidate
+
+                00:00.000 --> 00:04.000
+                unset-early
+
+                00:00.000 --> 00:03.000 line:-1
+                explicit-early
+
+                00:01.000 --> 00:04.000
+                unset-equal
+            """.trimIndent()
+            val cues = parseSubtitleDocument("mixed.vtt", source)
+            val middle = if (hasLine) "candidate\nexplicit-early\nunset-early\nunset-later\nunset-equal"
+                else "explicit-early\nunset-early\nunset-later\nunset-equal\ncandidate"
+            val last = if (hasLine) "candidate\nunset-early\nunset-later\nunset-equal"
+                else "unset-early\nunset-later\nunset-equal\ncandidate"
+            assertEquals(listOf(SubtitleCue(0, 1000, "explicit-early\nunset-early"),
+                SubtitleCue(1000, 2000, "explicit-early\nunset-early\nunset-later\nunset-equal"),
+                SubtitleCue(2000, 3000, middle), SubtitleCue(3000, 4000, last)), cues, setting)
+            assertEquals(middle, resolveSubtitleTextAt(cues, 2500), setting)
+            assertEquals(last, resolveSubtitleTextAt(cues, 3500), setting)
+            assertNull(resolveSubtitleTextAt(cues, 4500), setting)
+        }
     }
 }

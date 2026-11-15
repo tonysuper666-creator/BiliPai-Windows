@@ -16,19 +16,28 @@ internal object DesktopStandardSubtitleParser {
         val cues = when (mimeType) {
             MimeTypes.APPLICATION_SUBRIP -> parseTimedBlocks(normalized, stripSubripTags = true)
             MimeTypes.TEXT_VTT -> parseTimedBlocks(normalized, stripSubripTags = false)
-            MimeTypes.TEXT_SSA -> parseAss(normalized)
+            MimeTypes.TEXT_SSA -> parseAss(normalized).map { TimedCue(it) }
             else -> throw IllegalArgumentException("不支持的字幕格式：$mimeType")
         }
-        val valid = cues.filter { it.endMs > it.startMs && it.content.isNotBlank() }.sortedBy { it.startMs }
+        val valid = cues.filter { it.cue.endMs > it.cue.startMs && it.cue.content.isNotBlank() }
         // Media3 SubripParser emits original intervals; WebVTT/SSA emit the active cue timeline.
-        return if (mimeType == MimeTypes.APPLICATION_SUBRIP) valid else standardTimeline(valid)
+        return when (mimeType) {
+            MimeTypes.APPLICATION_SUBRIP -> valid.map { it.cue }.sortedBy { it.startMs }
+            // WebvttSubtitle.getCues keeps explicit lines in file order, then stably sorts unset lines.
+            MimeTypes.TEXT_VTT -> standardTimeline(valid.filter { it.hasLine }.map { it.cue } +
+                valid.filterNot { it.hasLine }.map { it.cue }.sortedBy { it.startMs })
+            // SsaParser appends each Dialogue to every interval it covers, in file order.
+            else -> standardTimeline(valid.map { it.cue })
+        }
     }
+
+    private data class TimedCue(val cue: SubtitleCue, val hasLine: Boolean = false)
 
     private fun standardTimeline(cues: List<SubtitleCue>): List<SubtitleCue> {
         val starts = cues.withIndex().groupBy { it.value.startMs }
         val ends = cues.withIndex().groupBy { it.value.endMs }
         val boundaries = (starts.keys + ends.keys).sorted()
-        // Indices follow the stable start-time sort, retaining document order for equal starts.
+        // Indices retain the format's display order while boundaries remain chronological.
         val active = sortedSetOf<Int>()
         return buildList {
             for ((start, end) in boundaries.zipWithNext()) {
@@ -41,7 +50,23 @@ internal object DesktopStandardSubtitleParser {
         }
     }
 
-    private val timing = Regex("""^\s*(\S+)\s+-->\s+(\S+)(?:\s+.*)?$""")
+    private val timing = Regex("""^\s*(\S+)\s+-->\s+(\S+)(?:\s+(.*))?$""")
+    private val cueSetting = Regex("""(\S+?):(\S+)""")
+
+    private fun hasWebVttLine(settings: String): Boolean = cueSetting.findAll(settings).any { match ->
+        if (match.groupValues[1] != "line") return@any false
+        val value = match.groupValues[2].substringBefore(',')
+        // WebvttCueParser.parseLineAttribute / WebvttParserUtil.parsePercentage accept any
+        // parsable integer or float percentage. Bad anchors and out-of-range percentages
+        // still produce an explicit line; a bad later setting does not erase a valid one.
+        try {
+            if (value.endsWith('%')) java.lang.Float.parseFloat(value.dropLast(1))
+            else Integer.parseInt(value)
+            true
+        } catch (_: NumberFormatException) {
+            false
+        }
+    }
     private val timestamp = Regex("""^(?:(\d+):)?(\d{2}):(\d{2})[.,](\d{1,3})$""")
 
     private fun timeMs(value: String): Long? {
@@ -60,7 +85,7 @@ internal object DesktopStandardSubtitleParser {
 
     private val subripControlTag = Regex("""\{\\.*?}""")
 
-    private fun parseTimedBlocks(source: String, stripSubripTags: Boolean): List<SubtitleCue> = buildList {
+    private fun parseTimedBlocks(source: String, stripSubripTags: Boolean): List<TimedCue> = buildList {
         for (block in source.split(Regex("\n[\t ]*\n"))) {
             val lines = block.trim().lines()
             val first = lines.firstOrNull() ?: continue
@@ -74,7 +99,9 @@ internal object DesktopStandardSubtitleParser {
             val start = timeMs(times.groupValues[1]) ?: continue
             val end = timeMs(times.groupValues[2]) ?: continue
             val text = lines.drop(index + 1).joinToString("\n")
-            add(SubtitleCue(start, end, plainText(if (stripSubripTags) subripControlTag.replace(text, "") else text)))
+            add(TimedCue(SubtitleCue(start, end,
+                plainText(if (stripSubripTags) subripControlTag.replace(text, "") else text)),
+                hasLine = !stripSubripTags && hasWebVttLine(times.groupValues[3])))
         }
     }
 
