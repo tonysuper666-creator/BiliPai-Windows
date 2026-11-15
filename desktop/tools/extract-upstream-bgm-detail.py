@@ -57,6 +57,121 @@ def bgm_dialog_draft_key(body):
     return body
 
 
+def bgm_dialog_draft_seam(body):
+    """Production seam for the keyed draft state: the four saveable values and the seed/hide effect move out of the
+    dialog body into rememberCommentInputDraft / CommentInputDraftEffect (same keys, same order of writes), so a
+    windowless Compose test can drive the exact code the dialog runs. The focus, keyboard and panel resets stay in the
+    dialog as the two callbacks."""
+    body=replace_once(body,"""    var textFieldValue by rememberSaveable(draftKey, stateSaver = TextFieldValue.Saver) {
+        mutableStateOf(commentDraftTextFieldValue(initialText))
+    }
+    var isForwardToDynamic by rememberSaveable(draftKey) { mutableStateOf(initialSyncToDynamic) } // 转发到动态
+""","""    val draft = rememberCommentInputDraft(draftKey, initialText, initialImageUris, initialSyncToDynamic)
+    var textFieldValue by draft::textFieldValue
+    var isForwardToDynamic by draft::isForwardToDynamic // 转发到动态
+""")
+    body=replace_once(body,"""    var selectedImageUris by rememberSaveable(
+        draftKey,
+        stateSaver = listSaver<List<String>, String>(
+            save = { uris -> uris.toList() },
+            restore = { uris -> uris.toList() },
+        )
+    ) { mutableStateOf(initialImageUris) }
+""","""    var selectedImageUris by draft::selectedImageUris
+""")
+    body=replace_once(body,"    var inputWasVisible by rememberSaveable(draftKey) { mutableStateOf(false) }\n","")
+    start=body.index("    LaunchedEffect(visible, draftKey) {\n        if (!visible) {")
+    end=body.index("        selectedImageUris = initialImageUris\n    }\n",start)+len("        selectedImageUris = initialImageUris\n    }\n")
+    body=body[:start]+"""    CommentInputDraftEffect(
+        draft = draft, visible = visible, draftKey = draftKey,
+        initialText = initialText, initialImageUris = initialImageUris, initialSyncToDynamic = initialSyncToDynamic,
+        initialSelectionStart = initialSelectionStart, initialSelectionEnd = initialSelectionEnd,
+        onHidden = {
+            // 外部关闭（例如导航离开详情页）也要立即撤销输入焦点，避免输入光标
+            // 在弹层退场期间继续显示在播放详情页上。
+            keyboardController?.hide()
+            focusManager.clearFocus(force = true)
+        },
+        onSeeded = {
+            showEmojiPanel = false
+            showMentionPanel = false
+            mentionSearchText = ""
+        },
+    )
+"""+body[end:]
+    return body.rstrip("\n")+"""
+
+/** The draft values of one composer session. Every value is saveable and keyed by the caller's draft key, so another key
+ * gets its own fresh state and a retained old holder can no longer reach it. */
+internal class CommentInputDraft internal constructor(
+    private val text: MutableState<TextFieldValue>,
+    private val forward: MutableState<Boolean>,
+    private val images: MutableState<List<String>>,
+    private val wasVisible: MutableState<Boolean>,
+) {
+    var textFieldValue: TextFieldValue by text
+    var isForwardToDynamic: Boolean by forward
+    var selectedImageUris: List<String> by images
+    var inputWasVisible: Boolean by wasVisible
+}
+
+@Composable
+internal fun rememberCommentInputDraft(
+    draftKey: String,
+    initialText: String,
+    initialImageUris: List<String>,
+    initialSyncToDynamic: Boolean,
+): CommentInputDraft {
+    val text = rememberSaveable(draftKey, stateSaver = TextFieldValue.Saver) {
+        mutableStateOf(commentDraftTextFieldValue(initialText))
+    }
+    val forward = rememberSaveable(draftKey) { mutableStateOf(initialSyncToDynamic) }
+    val images = rememberSaveable(
+        draftKey,
+        stateSaver = listSaver<List<String>, String>(
+            save = { uris -> uris.toList() },
+            restore = { uris -> uris.toList() },
+        )
+    ) { mutableStateOf(initialImageUris) }
+    val wasVisible = rememberSaveable(draftKey) { mutableStateOf(false) }
+    return remember(text, forward, images, wasVisible) { CommentInputDraft(text, forward, images, wasVisible) }
+}
+
+/** Seeds the keyed draft when the composer becomes visible (or its key changes while visible) and clears focus when it is
+ * hidden. A restored visible session keeps its text, selection, images and sync flag; only a reopen loads the upstream draft.
+ * The upstream draft updates flow back with every edit, so they are deliberately not effect keys. */
+@Composable
+internal fun CommentInputDraftEffect(
+    draft: CommentInputDraft,
+    visible: Boolean,
+    draftKey: String,
+    initialText: String,
+    initialImageUris: List<String>,
+    initialSyncToDynamic: Boolean,
+    initialSelectionStart: Int,
+    initialSelectionEnd: Int,
+    onHidden: () -> Unit,
+    onSeeded: () -> Unit,
+) {
+    LaunchedEffect(visible, draftKey) {
+        if (!visible) {
+            if (draft.inputWasVisible) {
+                onHidden()
+                draft.inputWasVisible = false
+            }
+            return@LaunchedEffect
+        }
+        if (draft.inputWasVisible) return@LaunchedEffect
+        draft.inputWasVisible = true
+        draft.textFieldValue = commentDraftTextFieldValue(initialText, initialSelectionStart, initialSelectionEnd)
+        draft.isForwardToDynamic = initialSyncToDynamic
+        onSeeded()
+        draft.selectedImageUris = initialImageUris
+    }
+}
+"""
+
+
 def bgm_comment_draft_session(body):
     """Bind the retained BGM composer to the current upstream comment-draft session (474bfd1c BgmDetailScreen):
     one session per compose, drafts keyed by reply target, close on that session's completion. The Windows dialog
@@ -567,6 +682,7 @@ data class CommentComposerDraftState(
     from v029_comment_composer import dialog_delta
     body=dialog_delta(repo,output,original[path],body)
     body=bgm_dialog_draft_key(body)
+    body=bgm_dialog_draft_seam(body)
     emit('com/android/purebilibili/feature/video/ui/components/CommentInputDialog.kt',body)
     retained(path,body,'Full original input renderer/policies/mention/emotes/skin/draft/sync/9 images; owned existing Windows picker replaces ActivityResult, measured viewport replaces Android configuration and Android-only dialog inset flag is omitted.')
     from v046_comment_chrome import advance_sort_source, emit_tests as emit_comment_chrome_tests
