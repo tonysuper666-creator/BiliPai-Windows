@@ -372,10 +372,11 @@ class FrameSourceTest(unittest.TestCase):
         self.assertIn("private const val HOME_LAYOUT_HAS_CONSUMER = true\n", source.read(SETTINGS_GROUP_KT))
         # Slice H2 changed this pin a second time, with exact values: the Home card menu, labels, right click and hand cursor
         # (ui/DesktopCardContextMenu.kt) read card_interactions and honour both values (OFF runs the vendored code), so the card row
-        # is on. Only the player row is still off.
+        # is on. TON-1592 mounts the player chrome in the retained foreground carrier as well.
         self.assertIn("private const val CARD_INTERACTIONS_HAS_CONSUMER = true\n", source.read(SETTINGS_GROUP_KT))
-        for other in ("PLAYER_LAYOUT",):
-            self.assertIn("private const val %s_HAS_CONSUMER = false\n" % other, source.read(SETTINGS_GROUP_KT), other)
+        self.assertIn("private const val PLAYER_LAYOUT_HAS_CONSUMER = DESKTOP_PLAYER_OVERLAY_AVAILABLE\n", source.read(SETTINGS_GROUP_KT))
+        self.assertIn("internal const val DESKTOP_PLAYER_OVERLAY_AVAILABLE = true\n",
+                      source.read(source.K / "ui/DesktopPlayerLayoutSelection.kt"))
 
     def test_the_default_mode_is_automatic_and_the_classic_mode_is_the_old_block(self):
         defaults = source.read(source.K / "appearance/DesktopWindowsUxModel.kt")

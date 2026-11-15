@@ -11,7 +11,7 @@ internal object DesktopWindowsUxSettingsStrings {
      * The flags are read by the new rail, home feed, cards and player as those slices land. A row stays greyed out until its
      * consumer exists, so nothing is stored that no part of the program honours yet; the reset button works at all times.
      */
-    const val NOTE = "灰色的选项尚不可用：对应的新界面上线后才能更改，现在保持默认值，与现有界面一致。"
+    const val NOTE = "布局设置立即应用；播放器默认保留旧版布局。"
 
     const val RAIL = "导航栏"
     const val RAIL_AUTO = "自动"
@@ -22,6 +22,16 @@ internal object DesktopWindowsUxSettingsStrings {
     const val PLAYER = "播放器布局"
     const val PLAYER_DESKTOP = "桌面"
     const val PLAYER_LEGACY = "旧版底栏"
+
+    const val DETAILS = "播放页详情面板"
+    const val DETAILS_AUTO = "自动"
+    const val DETAILS_OPEN = "打开"
+    const val DETAILS_CLOSED = "收起"
+    const val DETAILS_WIDTH = "详情面板宽度"
+    const val DETAILS_WIDTH_AUTO = "自动宽度"
+    const val DETAILS_WIDTH_RESET = "使用自动宽度"
+    const val DETAILS_NOTE = "自动模式在进入宽屏播放页时打开；窗口空间不足或普通全屏时收起。宽度范围 320–560 dp。"
+    fun width(dp: Int) = "$dp dp"
 
     const val HOME = "首页布局"
     const val HOME_DESKTOP = "桌面"

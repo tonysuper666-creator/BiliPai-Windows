@@ -64,7 +64,7 @@ OLD_CALL_LINES = {
 }
 # Call lines that slice X3 itself adds, in the files it creates or rewrites.
 NEW_CALL_LINES = {
-    "ui/DesktopWindowsUxSettings.kt": 4,
+    "ui/DesktopWindowsUxSettings.kt": 5,  # TON-1592: details preference has its own live consumer
     "ui/DesktopWindowsTipsShortcuts.kt": 3,
     "settings/DesktopSettingsTree.kt": 1,
 }
@@ -470,7 +470,10 @@ class LayoutGroupTest(unittest.TestCase):
             self.assertEqual(1, squashed.count("DesktopWindowsUxCommand.%s(it)" % commands[row["flag"]]), row["flag"])
             values = re.findall(r"DesktopWindowsUx%s\.(\w+) to text\." % order[row["flag"]], squashed)
             self.assertEqual(row["values"], values, row["flag"])
-        self.assertEqual(4, squashed.count("DesktopWindowsSettingsChoice(text."))
+        self.assertEqual(5, squashed.count("DesktopWindowsSettingsChoice(text."))
+        self.assertIn('DesktopWindowsSettingsChoice(text.DETAILS, settings.detailsPanel, listOf(', squashed)
+        self.assertEqual(['AUTO', 'OPEN', 'CLOSED'], re.findall(r'DesktopWindowsUxDetailsPanel\.(\w+) to text\.', squashed))
+        self.assertEqual(1, squashed.count('DesktopWindowsUxCommand.SetDetailsPanel(it)'))
         self.assertIn("DesktopMenuRow(label = text.RESET, onClick = { ux.submit(DesktopWindowsUxCommand.ResetLayout) },", squashed)
         self.assertEqual("ResetLayout", model.load()["settings"]["ux_group"]["reset_command"])
 
@@ -513,9 +516,9 @@ class LayoutGroupTest(unittest.TestCase):
                     readers.setdefault(flag, []).append(source.rel(path))
         return readers
 
-    # Slice V2 changed this pin, with exact values. The ordinary-video leaf now reads player_layout, but it shows DESKTOP only
-    # when an overlay exists to show it and none does yet (desktopPlayerEffectiveLayout, DESKTOP_PLAYER_OVERLAY_AVAILABLE = false),
-    # so that reader cannot honour the value and the row of the flag stays off. Slice S1 changed it again, with exact values: the
+    # The player row follows the canonical overlay capability. TON-1592 mounts its
+    # retained carrier consumers; the leaf/carrier suites guard that capability.
+    # Slice S1 changed the rail pin with exact values: the
     # shell frame reads rail_mode and honours every value of it (the pure rail presentation rule, the classic block inline), so the
     # rail row is on. The readers are pinned exactly: any other reader of any of the four flags still fails here until its slice
     # turns its row on.
@@ -534,32 +537,29 @@ class LayoutGroupTest(unittest.TestCase):
         return {flag for flag in readers if flag != "playerLayout" or overlay.group(1) == "true"}
 
     def test_a_row_is_enabled_only_while_something_reads_its_flag(self):
-        # Only the rail flag (slice S1), the home flag (slice H1) and the card flag (slice H2) have a reader that honours them;
-        # player_layout has none, so no row of its own may be offered: a stored explicit DESKTOP player layout would switch the
-        # unaccepted overlay on the day the player slice lands.
+        # Every offered choice has an effective consumer; player availability is
+        # an alias so it cannot drift independently from the selection rule.
         squashed = sm.squash(self.TEXT)
         readers = self.flag_readers()
         honoured = self.honoured_flags(readers)
         for flag, constant, row in self.FLAG_ROWS:
-            self.assertEqual(1, len(re.findall(r"private const val %s_HAS_CONSUMER = (true|false)\n" % constant, self.TEXT)), constant)
-            wired = "private const val %s_HAS_CONSUMER = true" % constant in self.TEXT
+            expected = 'DESKTOP_PLAYER_OVERLAY_AVAILABLE' if flag == 'playerLayout' else 'true'
+            self.assertEqual(1, len(re.findall(r"private const val %s_HAS_CONSUMER = %s\n" % (constant, expected), self.TEXT)), constant)
+            wired = flag != 'playerLayout' or 'DESKTOP_PLAYER_OVERLAY_AVAILABLE = true' in sm.read(self.SELECTION_KT)
             self.assertEqual(flag in honoured, wired, "%s: the row is on exactly when a reader that honours the flag exists %s" % (flag, readers.get(flag)))
             self.assertEqual(1, squashed.count("enabled = %s_HAS_CONSUMER)" % constant), constant)
         self.assertEqual(self.EXPECTED_READERS, readers)
-        self.assertEqual({"cardInteractions", "homeLayout", "railMode"}, honoured)
+        self.assertEqual({"cardInteractions", "homeLayout", "railMode", "playerLayout"}, honoured)
         self.assertEqual(4, squashed.count("enabled = "))
         # The reset button is the escape from a stored flag and stays enabled.
         self.assertIn("DesktopMenuRow(label = text.RESET, onClick = { ux.submit(DesktopWindowsUxCommand.ResetLayout) },", squashed)
 
-    def test_the_note_says_that_grey_options_are_not_available_yet(self):
+    def test_the_note_says_layout_applies_and_legacy_stays_the_default(self):
         note = re.search(r'const val NOTE = "([^"]+)"', self.STRINGS).group(1)
-        self.assertIn("灰色", note)
-        self.assertIn("尚不可用", note)
+        self.assertEqual("布局设置立即应用；播放器默认保留旧版布局。", note)
 
     def test_the_option_note_says_the_values_take_effect_later_and_the_defaults_are_unchanged(self):
-        # Honest state after slice H2: the shell frame reads rail_mode, the Home feed wrappers read home_layout and the Home card
-        # menu wrappers read card_interactions (all honoured), and the only reader of player_layout is the player leaf, which
-        # resolves DESKTOP to LEGACY while no overlay exists.
+        # TON-1592 mounts the player consumer. Enabling that choice preserves the existing persisted defaults.
         self.assertIn("const val NOTE", self.STRINGS)
         defaults = sm.read(K / "appearance/DesktopWindowsUxModel.kt")
         self.assertIn("val railMode: DesktopWindowsUxRailMode = DesktopWindowsUxRailMode.AUTO,", defaults)
