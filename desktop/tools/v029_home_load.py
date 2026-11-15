@@ -86,6 +86,46 @@ VM_REQUEST_MEMBERS = '''    @Volatile private var desktopHomeSelection = Any()
     @Volatile private var desktopHomeLoad: DesktopHomeLoadRequest? = null
     @Volatile private var desktopHomeRefresh: DesktopHomeLoadRequest? = null
     private val desktopHomeLoadLocal = ThreadLocal<DesktopHomeLoadRequest?>()
+    // Admission is reserved before dispatch, while publication remains guarded
+    // by the existing selection/account request token below.
+    private data class DesktopHomeTarget(val category: HomeCategory, val popular: PopularSubCategory?)
+    private enum class DesktopHomeRequestKind { INITIAL, REFRESH, APPEND }
+    private class DesktopHomeAdmission(val kind: DesktopHomeRequestKind, val job: Job)
+    private val desktopHomeAdmissionLock = Any()
+    private val desktopHomeAdmissions = mutableMapOf<DesktopHomeTarget, MutableSet<DesktopHomeAdmission>>()
+
+    private fun desktopStartHomeRequest(
+        category: HomeCategory, popular: PopularSubCategory, kind: DesktopHomeRequestKind,
+        block: suspend () -> Unit,
+    ): Job? {
+        val target = DesktopHomeTarget(category, if (category == HomeCategory.POPULAR) popular else null)
+        var previous: List<Job> = emptyList()
+        val job = synchronized(desktopHomeAdmissionLock) {
+            val existing = desktopHomeAdmissions.getOrPut(target) { mutableSetOf() }
+            if (kind == DesktopHomeRequestKind.APPEND && existing.any { !it.job.isCancelled }) return null
+            if (kind == DesktopHomeRequestKind.REFRESH && existing.any { it.kind == DesktopHomeRequestKind.REFRESH && !it.job.isCancelled }) return null
+            if (kind != DesktopHomeRequestKind.APPEND) previous = existing.map { it.job }
+            val waitFor = if (kind == DesktopHomeRequestKind.REFRESH) previous else emptyList()
+            val created = viewModelScope.launch(start = kotlinx.coroutines.CoroutineStart.LAZY) {
+                waitFor.forEach { it.join() }
+                block()
+            }
+            val admission = DesktopHomeAdmission(kind, created)
+            existing.add(admission)
+            created.invokeOnCompletion {
+                synchronized(desktopHomeAdmissionLock) {
+                    desktopHomeAdmissions[target]?.let {
+                        it.remove(admission)
+                        if (it.isEmpty()) desktopHomeAdmissions.remove(target)
+                    }
+                }
+            }
+            created
+        }
+        previous.forEach { it.cancel() }
+        job.start()
+        return job
+    }
     private class DesktopHomeLoadRequest(
         val selection: Any, val category: HomeCategory,
         val popular: PopularSubCategory, val live: LiveSubCategory,
@@ -301,6 +341,72 @@ def home_vm_delta(repo, body, audits=None):
                     }
                 }
                 throw error''', '''                throw error''')
+    # Reserve the actual Home coroutine before it can be dispatched. A target's
+    # refresh waits for cancellation/finally, including delayed cleanup.
+    d.change('''        categoryInitialLoadJob?.cancel()
+        categoryInitialLoadJob = viewModelScope.launch {
+            ensureOwned()
+            //  [修复] 如果切换到直播分类''', '''        categoryInitialLoadJob?.cancel()
+        val selection = desktopHomeSelection
+        categoryInitialLoadJob = desktopStartHomeRequest(category, currentState.popularSubCategory, DesktopHomeRequestKind.INITIAL) {
+            ensureOwned()
+            if (desktopHomeSelection !== selection) return@desktopStartHomeRequest
+            //  [修复] 如果切换到直播分类''')
+    d.change('''        val category = _uiState.value.currentCategory
+        categoryInitialLoadJob = viewModelScope.launch {
+            ensureOwned()
+            _uiState.value = _uiState.value.copy(isLoading = true, error = null)''', '''        val category = _uiState.value.currentCategory
+        val selection = desktopHomeSelection
+        val popular = _uiState.value.popularSubCategory
+        categoryInitialLoadJob = desktopStartHomeRequest(category, popular, DesktopHomeRequestKind.INITIAL) {
+            ensureOwned()
+            if (desktopHomeSelection !== selection) return@desktopStartHomeRequest
+            _uiState.value = _uiState.value.copy(isLoading = true, error = null)''')
+    d.change('''        desktopRetireHomeSelection()
+        viewModelScope.launch {
+            ensureOwned()
+            _uiState.value = _uiState.value.copy(
+                liveSubCategory = subCategory,''', '''        desktopRetireHomeSelection()
+        val selection = desktopHomeSelection
+        val popular = _uiState.value.popularSubCategory
+        desktopStartHomeRequest(HomeCategory.LIVE, popular, DesktopHomeRequestKind.INITIAL) {
+            ensureOwned()
+            if (desktopHomeSelection !== selection) return@desktopStartHomeRequest
+            _uiState.value = _uiState.value.copy(
+                liveSubCategory = subCategory,''')
+    d.change('''        if (current.currentCategory == HomeCategory.POPULAR && needFetch) {
+            viewModelScope.launch {
+            ensureOwned()
+                fetchData(isLoadMore = false)
+            }
+        }''', '''        if (current.currentCategory == HomeCategory.POPULAR && needFetch) {
+            val selection = desktopHomeSelection
+            desktopStartHomeRequest(HomeCategory.POPULAR, subCategory, DesktopHomeRequestKind.INITIAL) {
+                ensureOwned()
+                if (desktopHomeSelection !== selection || _uiState.value.popularSubCategory != subCategory) return@desktopStartHomeRequest
+                fetchData(isLoadMore = false, category = HomeCategory.POPULAR)
+            }
+        }''')
+    d.change('''        val selection = desktopHomeSelection
+        viewModelScope.launch {
+            ensureOwned()
+            if (desktopHomeSelection !== selection) return@launch
+            val refreshingCategory = category''', '''        val selection = desktopHomeSelection
+        val popular = _uiState.value.popularSubCategory
+        desktopStartHomeRequest(category, popular, DesktopHomeRequestKind.REFRESH) {
+            ensureOwned()
+            if (desktopHomeSelection !== selection || (category == HomeCategory.POPULAR && _uiState.value.popularSubCategory != popular)) return@desktopStartHomeRequest
+            val refreshingCategory = category''')
+    d.change('''        viewModelScope.launch {
+            ensureOwned()
+            if (desktopHomeSelection !== selection) return@launch
+            fetchData(isLoadMore = true, category = currentCategory)
+        }''', '''        val popular = _uiState.value.popularSubCategory
+        desktopStartHomeRequest(currentCategory, popular, DesktopHomeRequestKind.APPEND) {
+            ensureOwned()
+            if (desktopHomeSelection !== selection || (currentCategory == HomeCategory.POPULAR && _uiState.value.popularSubCategory != popular)) return@desktopStartHomeRequest
+            fetchData(isLoadMore = true, category = currentCategory)
+        }''')
     return d.done(audits, "DesktopOriginalHomeViewModel.kt")
 
 
