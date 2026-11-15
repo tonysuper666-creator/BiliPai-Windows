@@ -157,9 +157,11 @@ def declared_parameters(text, name):
 
 def declaring_packages(name):
     """Packages of the Kotlin files in the repository that declare a top-level name (git grep, read only)."""
-    pattern = r"(^|[ \t])(fun|class|object|interface|typealias|val|var)[ \t]+(<[^>]*>[ \t]+)?([A-Za-z0-9_<>?, ]+\.)?%s\b" % re.escape(name)
+    pattern = r"(^|[[:space:]])(fun|class|object|interface|typealias|val|var)[[:space:]]+(<[^>]*>[[:space:]]+)?([A-Za-z0-9_<>?, ]+\.)?%s([^[:alnum:]_]|$)" % re.escape(name)
     result = subprocess.run(["git", "-c", "core.autocrlf=false", "grep", "--untracked", "-l", "-E", pattern, "--", "app", "design-system", "desktop/src/main"],
                             cwd=str(REPO), stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False)
+    if result.returncode not in (0, 1):
+        raise RuntimeError("git grep failed: " + result.stderr.decode("utf-8", "replace"))
     packages = set()
     for line in result.stdout.decode("utf-8", "replace").splitlines():
         if not line.endswith(".kt"):
@@ -173,6 +175,40 @@ def declaring_packages(name):
 def has(text, needle):
     """Whitespace-insensitive containment (the shell model's squash also drops the space inside brackets)."""
     return shell.squash(needle) in shell.squash(text)
+
+
+class DeclarationProbeTest(unittest.TestCase):
+    def test_word_boundaries_and_untracked_sources(self):
+        import test_ux_home_layout_adaptations as layout_probe
+
+        with tempfile.TemporaryDirectory() as tmp:
+            repo = Path(tmp)
+            subprocess.run(["git", "init", "-q", str(repo)], check=True)
+            for directory in ("app", "design-system", "desktop/src/main"):
+                (repo / directory).mkdir(parents=True)
+            (repo / "app/Menu.kt").write_text(
+                "package example.menu\nfun AppDropdownMenuItem() {}\n"
+                "fun AppDropdownMenu_extra() {}\nfun AppDropdownMenu2() {}\n", encoding="utf-8")
+            for module in (sys.modules[__name__], layout_probe):
+                with self.subTest(probe=module.__name__), mock.patch.object(module, "REPO", repo):
+                    self.assertEqual(set(), module.declaring_packages("AppDropdownMenu"))
+                    self.assertEqual({"example.menu"}, module.declaring_packages("AppDropdownMenuItem"))
+                    with (repo / "app/Menu.kt").open("a", encoding="utf-8") as stream:
+                        stream.write("fun\tAppDropdownMenu() {}\n")
+                    self.assertEqual({"example.menu"}, module.declaring_packages("AppDropdownMenu"))
+                    (repo / "app/Menu.kt").write_text(
+                        "package example.menu\nfun AppDropdownMenuItem() {}\n"
+                        "fun AppDropdownMenu_extra() {}\nfun AppDropdownMenu2() {}\n", encoding="utf-8")
+
+    def test_git_errors_are_not_mistaken_for_missing_symbols(self):
+        import test_ux_home_layout_adaptations as layout_probe
+
+        for module in (sys.modules[__name__], layout_probe):
+            with self.subTest(probe=module.__name__), mock.patch.object(
+                module.subprocess, "run", return_value=subprocess.CompletedProcess([], 128, b"", b"broken git")
+            ):
+                with self.assertRaisesRegex(RuntimeError, "broken git"):
+                    module.declaring_packages("AppDropdownMenu")
 
 
 class GeneratorOutputTest(unittest.TestCase):

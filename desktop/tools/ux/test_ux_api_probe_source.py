@@ -36,6 +36,7 @@ import sys
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
@@ -108,6 +109,68 @@ def project_declaration(import_name):
                 if declares(probe.read_text(path), name):
                     return path
     return None
+
+
+class JarDiscoveryTest(unittest.TestCase):
+    def test_existing_sibling_runtime_location_remains_available(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            checkout = root / "checkout"
+            common = checkout / ".git"
+            common.mkdir(parents=True)
+            jar = root / "BiliPai/.local/fsr/base-runtime/ui-desktop-1.12.1.jar"
+            jar.parent.mkdir(parents=True)
+            jar.touch()
+            with (mock.patch.object(probe, "REPO", checkout),
+                  mock.patch.dict(os.environ, {"GRADLE_USER_HOME": str(root / "empty"), "BILIPAI_UX_JAR_DIRS": ""}),
+                  mock.patch.object(probe, "pins", return_value=("1.12.1", "5c91d5e5")),
+                  mock.patch.object(probe.subprocess, "run", return_value=subprocess.CompletedProcess([], 0, stdout=str(common)))):
+                found, _ = probe.find_jars()
+                self.assertEqual([jar.resolve()], found["ui-desktop"])
+
+    def test_gradle_ui_artifacts_require_the_pinned_version(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            cache = root / "caches/modules-2/files-2.1/org.jetbrains.compose.ui"
+            expected = {}
+            for family in ("ui-desktop", "ui-unit-desktop"):
+                for version in ("1.12.0", "1.12.1"):
+                    path = cache / family / version / "digest" / (family + "-" + version + ".jar")
+                    path.parent.mkdir(parents=True, exist_ok=True)
+                    path.touch()
+                    if version == "1.12.1":
+                        expected[family] = path
+            with (mock.patch.object(probe, "REPO", root),
+                  mock.patch.dict(os.environ, {"GRADLE_USER_HOME": temp, "BILIPAI_UX_JAR_DIRS": ""}),
+                  mock.patch.object(probe, "pins", return_value=("1.12.1", "5c91d5e5")),
+                  mock.patch.object(probe.subprocess, "run", return_value=subprocess.CompletedProcess([], 1, stdout=""))):
+                found, _ = probe.find_jars()
+                for family, path in expected.items():
+                    self.assertEqual([path], found[family])
+                    path.unlink()
+                found, missing = probe.find_jars()
+                for family in expected:
+                    self.assertNotIn(family, found)
+                    self.assertIn(family, missing)
+
+    def test_gradle_runtime_uses_the_androidx_artifact_and_respects_the_version_pin(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            cache = root / "caches/modules-2/files-2.1"
+            def artifact(group, version):
+                path = cache / group / "runtime-desktop" / version / "digest" / ("runtime-desktop-" + version + ".jar")
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.touch()
+                return path
+            artifact("org.jetbrains.compose.runtime", "1.12.1")  # metadata-only bridge
+            expected = artifact("androidx.compose.runtime", "1.12.1")
+            artifact("androidx.compose.runtime", "1.12.0")
+            with (mock.patch.object(probe, "REPO", root),
+                  mock.patch.dict(os.environ, {"GRADLE_USER_HOME": temp, "BILIPAI_UX_JAR_DIRS": ""}),
+                  mock.patch.object(probe, "pins", return_value=("1.12.1", "5c91d5e5")),
+                  mock.patch.object(probe.subprocess, "run", return_value=subprocess.CompletedProcess([], 1, stdout=""))):
+                found, _ = probe.find_jars()
+                self.assertEqual([expected], found["runtime-desktop"])
 
 
 class JarCase(unittest.TestCase):

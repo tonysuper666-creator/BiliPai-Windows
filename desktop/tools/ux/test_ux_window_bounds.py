@@ -42,10 +42,8 @@ Slice notes, kept here with the pins they explain.
 import copy
 import itertools
 import math
-import os
 import random
 import re
-import subprocess
 import sys
 import unittest
 import zipfile
@@ -56,6 +54,7 @@ from unittest import mock
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import ux_model as model  # noqa: E402
+import ux_api_probe as api_probe  # noqa: E402
 import ux_source as source  # noqa: E402
 import ux_window_model as wm  # noqa: E402
 
@@ -806,24 +805,8 @@ class PinnedApiTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        version = re.search(r'id\("org\.jetbrains\.compose"\) version "([^"]+)"', source.read(source.REPO / "desktop/build.gradle.kts")).group(1)
-        roots = [Path(item) for item in os.environ.get("BILIPAI_UX_JAR_DIRS", "").split(os.pathsep) if item]
-        try:
-            common = subprocess.run(["git", "-C", str(source.REPO), "rev-parse", "--git-common-dir"], capture_output=True, text=True,
-                                    timeout=30).stdout.strip()
-        except (OSError, subprocess.SubprocessError):
-            common = ""
-        if common:
-            checkout = Path(common).resolve().parent
-            roots += [checkout / ".local/fsr/base-runtime", checkout.parent / "BiliPai/.local/fsr/base-runtime"]
-        cls.jars = {}
-        for family in ("ui-desktop", "ui-unit-desktop"):
-            pattern = re.compile(r"^%s-%s(-[0-9a-f]+)?\.jar$" % (re.escape(family), re.escape(version)))
-            for root in roots:
-                found = sorted(jar for jar in root.glob("*.jar") if pattern.match(jar.name)) if root.is_dir() else []
-                if found:
-                    cls.jars[family] = found[0]
-                    break
+        found, _ = api_probe.find_jars()
+        cls.jars = {family: found[family][0] for family in ("ui-desktop", "ui-unit-desktop") if family in found}
         cls.cache = {}
 
     def members(self, family, internal_name):
