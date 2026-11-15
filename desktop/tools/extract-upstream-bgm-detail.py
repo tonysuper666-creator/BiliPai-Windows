@@ -44,6 +44,19 @@ def advance_video_detail_skeleton_source(repo, original, identities):
 def replace_once(text,old,new):
     assert text.count(old)==1,(old,text.count(old));return text.replace(old,new)
 
+def bgm_dialog_draft_key(body):
+    """Isolate the composer by the caller's draft key (upstream 85784533 CommentInputDialog): every draft state is
+    keyed by it and the seed effect re-runs when it changes, so a new session or reply target re-seeds from its own
+    draft instead of inheriting the previous editor state. The default keeps the other generated callers unchanged."""
+    body=replace_once(body,'    visible: Boolean,\n    onDismiss: () -> Unit,\n','    visible: Boolean,\n    draftKey: String = "",\n    onDismiss: () -> Unit,\n')
+    body=replace_once(body,'var textFieldValue by rememberSaveable(stateSaver = TextFieldValue.Saver) {','var textFieldValue by rememberSaveable(draftKey, stateSaver = TextFieldValue.Saver) {')
+    body=replace_once(body,'var isForwardToDynamic by rememberSaveable { mutableStateOf(initialSyncToDynamic) }','var isForwardToDynamic by rememberSaveable(draftKey) { mutableStateOf(initialSyncToDynamic) }')
+    body=replace_once(body,'    var selectedImageUris by rememberSaveable(\n        stateSaver','    var selectedImageUris by rememberSaveable(\n        draftKey,\n        stateSaver')
+    body=replace_once(body,'var inputWasVisible by rememberSaveable { mutableStateOf(false) }','var inputWasVisible by rememberSaveable(draftKey) { mutableStateOf(false) }')
+    body=replace_once(body,'    LaunchedEffect(visible) {\n        if (!visible) {','    LaunchedEffect(visible, draftKey) {\n        if (!visible) {')
+    return body
+
+
 def bgm_comment_draft_session(body):
     """Bind the retained BGM composer to the current upstream comment-draft session (474bfd1c BgmDetailScreen):
     one session per compose, drafts keyed by reply target, close on that session's completion. The Windows dialog
@@ -86,37 +99,39 @@ def bgm_comment_draft_session(body):
 ""","""    val composerSessionId = comments.composerDrafts.sessionId
     val composerReplyRpid = comments.replyTarget?.rpid
     val composerDraft = comments.composerDrafts.drafts[commentComposerDraftKey(composerReplyRpid)]
-    key(info?.oid, info?.pageType, composerReplyRpid, composerSessionId) {
-        CommentInputDialog(
-            visible = composer,
-            onDismiss = {
-                if (commentViewModel.commentState.value.composerDrafts.sessionId == composerSessionId) {
-                    composer = false
-                    commentViewModel.cancelReply()
-                }
-            },
-            onSend = { text, images, sync ->
-                val latest = commentViewModel.commentState.value
-                if (composer && latest.composerDrafts.sessionId == composerSessionId &&
-                    latest.composerDrafts.completedSessionId != composerSessionId &&
-                    latest.replyTarget?.rpid == composerReplyRpid && !latest.isSending
-                ) {
-                    submittedSessionId = composerSessionId
-                    commentViewModel.updateCommentDraft(composerSessionId, composerReplyRpid, text, images, sync)
-                    commentViewModel.sendComment(text, images, sync)
-                }
-            },
-            isSending = comments.isSending, replyToName = comments.replyTarget?.member?.uname,
-            inputHint = if (comments.replyTarget == null) comments.rootInputHint else comments.childInputHint,
-            canInputComment = comments.canInputComment, emotePackages = emotePackages,
-            initialText = composerDraft?.text.orEmpty(),
-            initialImageUris = composerDraft?.imageUris.orEmpty(),
-            initialSyncToDynamic = composerDraft?.syncToDynamic ?: false,
-            onDraftChange = { text, images, sync, _, _ ->
-                commentViewModel.updateCommentDraft(composerSessionId, composerReplyRpid, text, images, sync)
-            },
-        )
+    val composerKey = remember(info?.oid, info?.pageType, composerReplyRpid, composerSessionId) {
+        "bgm:${info?.oid}:${info?.let(::resolveBgmCommentType)}:$composerReplyRpid:$composerSessionId"
     }
+    CommentInputDialog(
+        visible = composer,
+        draftKey = composerKey,
+        onDismiss = {
+            if (commentViewModel.commentState.value.composerDrafts.sessionId == composerSessionId) {
+                composer = false
+                commentViewModel.cancelReply()
+            }
+        },
+        onSend = { text, images, sync ->
+            val latest = commentViewModel.commentState.value
+            if (composer && latest.composerDrafts.sessionId == composerSessionId &&
+                latest.composerDrafts.completedSessionId != composerSessionId &&
+                latest.replyTarget?.rpid == composerReplyRpid && !latest.isSending
+            ) {
+                submittedSessionId = composerSessionId
+                commentViewModel.updateCommentDraft(composerSessionId, composerReplyRpid, text, images, sync)
+                commentViewModel.sendComment(text, images, sync)
+            }
+        },
+        isSending = comments.isSending, replyToName = comments.replyTarget?.member?.uname,
+        inputHint = if (comments.replyTarget == null) comments.rootInputHint else comments.childInputHint,
+        canInputComment = comments.canInputComment, emotePackages = emotePackages,
+        initialText = composerDraft?.text.orEmpty(),
+        initialImageUris = composerDraft?.imageUris.orEmpty(),
+        initialSyncToDynamic = composerDraft?.syncToDynamic ?: false,
+        onDraftChange = { text, images, sync, _, _ ->
+            commentViewModel.updateCommentDraft(composerSessionId, composerReplyRpid, text, images, sync)
+        },
+    )
 """)
     return body
 
@@ -551,6 +566,7 @@ data class CommentComposerDraftState(
     body=shared.drop_logs(body)
     from v029_comment_composer import dialog_delta
     body=dialog_delta(repo,output,original[path],body)
+    body=bgm_dialog_draft_key(body)
     emit('com/android/purebilibili/feature/video/ui/components/CommentInputDialog.kt',body)
     retained(path,body,'Full original input renderer/policies/mention/emotes/skin/draft/sync/9 images; owned existing Windows picker replaces ActivityResult, measured viewport replaces Android configuration and Android-only dialog inset flag is omitted.')
     from v046_comment_chrome import advance_sort_source, emit_tests as emit_comment_chrome_tests
