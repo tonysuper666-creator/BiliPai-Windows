@@ -552,17 +552,42 @@ class MergedDirectoryTest(unittest.TestCase):
             self.assertIn(name, flags, name)
             self.assertEqual('true', resolve(name), name)
 
-        def call_block(marker):
-            start = settings.index(marker)
+        def balanced(source, start):
             depth, end = 0, start
             while True:
-                if settings[end] == '(':
+                if source[end] == '(':
                     depth += 1
-                elif settings[end] == ')':
+                elif source[end] == ')':
                     depth -= 1
                     if depth == 0:
-                        return settings[start:end + 1]
+                        return source[start:end + 1]
                 end += 1
+
+        def call_block(marker):
+            return balanced(settings, settings.index(marker))
+
+        def slider_block():
+            """The width Slider call itself: from its name up to its own closing parenthesis."""
+            return balanced(settings, settings.rindex('Slider(', 0, settings.index('contentDescription = text.DETAILS_WIDTH')))
+
+        def button_block(marker):
+            """The DesktopMenuRow call that owns a label: the reset row is a button, not a choice."""
+            return balanced(settings, settings.rindex('DesktopMenuRow(', 0, settings.index(marker)))
+
+        def assert_enabled(block, what):
+            """A control is enabled when it keeps no off switch or resolves one that is true: a greyed row must fail."""
+            self.assertNotIn('enabled = false', block, what)
+            for expression in re.findall(r'enabled = (\w+)', block):
+                self.assertEqual('true', resolve(expression), '%s: enabled = %s' % (what, expression))
+
+        # The rows above are only searchable while the display-scale card mounts them: delete that call and the
+        # directory still lists the rows, so the mount itself is the thing this contract has to pin.
+        scale = text(DISPLAY_SCALE)
+        self.assertEqual(1, scale.count('DesktopWindowsUxLayoutGroup()'), 'the layout group mount')
+        anchor = scale.index('desktopSettingsSearchFocusAnchor(SettingsSearchTarget.APPEARANCE, "windows_display_scale")')
+        self.assertLess(anchor, scale.index('DesktopWindowsUxLayoutGroup()'), 'the group must sit inside the anchored card')
+        # Every registered row claims the one anchor the card really mounts, so a hit scrolls to the group.
+        self.assertEqual(1, search.count('null, "windows_display_scale",'), 'the row anchor id')
 
         rows = dict(re.findall(r'layoutItem\("([^"]+)", DesktopWindowsUxSettingsStrings\.(\w+)\)', search))
         self.assertEqual(UX_SEARCH_IDS, set(rows))
@@ -571,6 +596,8 @@ class MergedDirectoryTest(unittest.TestCase):
                 # The width row is a slider plus its reset row, not a choice.
                 self.assertEqual(1, settings.count('contentDescription = text.DETAILS_WIDTH'), ident)
                 self.assertIn('valueRange = 320f..560f', settings, ident)
+                # A searchable row claims an operable control: a disabled slider still renders, so it must be refused.
+                assert_enabled(slider_block(), ident)
                 # The slider commits the dragged width and the reset row hands control back to automatic: two consumers.
                 self.assertEqual(2, settings.count('DesktopWindowsUxCommand.SetDetailsPanelWidth('), ident)
                 continue
@@ -578,6 +605,7 @@ class MergedDirectoryTest(unittest.TestCase):
                 # The reset row is a plain button, not a choice, and it has no off switch of its own.
                 self.assertEqual(1, settings.count('label = text.RESET,'), ident)
                 self.assertEqual(1, settings.count('DesktopWindowsUxCommand.ResetLayout'), ident)
+                assert_enabled(button_block('label = text.RESET,'), ident)
                 continue
             marker = 'DesktopWindowsSettingsChoice(text.%s,' % key
             self.assertEqual(1, settings.count(marker), ident)

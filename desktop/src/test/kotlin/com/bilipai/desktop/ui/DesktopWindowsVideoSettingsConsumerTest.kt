@@ -341,6 +341,8 @@ class DesktopWindowsVideoSettingsConsumerTest {
 
         suspend fun width(value: Float) {
             val slider = all().single { it.config.getOrNull(SemanticsActions.SetProgress) != null }
+            // A dock that greys the control out would still answer SetProgress, so the state is checked before the value.
+            assertTrue(SemanticsProperties.Disabled !in slider.config, "the mounted details width control must stay enabled")
             assertTrue(slider.config[SemanticsActions.SetProgress].action!!.invoke(value))
             settle()
         }
