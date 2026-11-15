@@ -3,6 +3,10 @@ package com.bilipai.desktop.ui
 import androidx.compose.runtime.*
 import androidx.compose.runtime.snapshots.Snapshot
 import com.android.purebilibili.feature.audio.bgm.BgmComposerCallbacks
+import com.android.purebilibili.feature.video.ui.components.CommentInputDraft
+import com.android.purebilibili.feature.video.ui.components.CommentInputDraftEffect
+import com.android.purebilibili.feature.video.ui.components.pickImages
+import com.android.purebilibili.feature.video.ui.components.rememberCommentInputDraft
 import com.android.purebilibili.feature.video.viewmodel.VideoCommentViewModel
 import com.android.purebilibili.data.model.response.ReplyCursor
 import com.android.purebilibili.data.model.response.ReplyData
@@ -305,6 +309,107 @@ class DesktopBgmDetailMigrationTest {
         }
     }
 
+    private class PickerInputs(val key: String, val text: String, val images: List<String>, val sync: Boolean)
+
+    /** Fake platform: captures the real production picker callback so the test releases it later. */
+    private class PickerPlatform {
+        var owned = true
+        var pending: ((List<String>) -> Unit)? = null
+        val platform = Proxy.newProxyInstance(DesktopCommentPlatform::class.java.classLoader,
+            arrayOf(DesktopCommentPlatform::class.java)) { _, method, args ->
+            when (method.name) {
+                "isOwned" -> owned
+                "pickCommentImages" -> {
+                    assertEquals(9, args!![0])
+                    @Suppress("UNCHECKED_CAST")
+                    pending = args[1] as (List<String>) -> Unit
+                    Unit
+                }
+                else -> error("Unexpected platform call ${method.name}")
+            }
+        } as DesktopCommentPlatform
+        fun release(vararg uris: String) = checkNotNull(pending) { "No picker was opened" }.invoke(uris.toList())
+    }
+
+    /** Hosts the real keyed draft seam for the current key; `draft` is what the dialog holds for it. */
+    private class PickerDialogHost(val f: Fixture) {
+        val inputs = mutableStateOf(PickerInputs("A", "A-text", listOf("a.png"), false))
+        lateinit var draft: CommentInputDraft
+        init {
+            f.extra.value = {
+                val i = inputs.value
+                draft = rememberCommentInputDraft(i.key, i.text, i.images, i.sync)
+                CommentInputDraftEffect(draft, true, i.key, i.text, i.images, i.sync, -1, -1, onHidden = {}, onSeeded = {})
+            }
+            f.frames()
+        }
+    }
+
+    @Test fun lateImageResultOfAnOlderSessionCannotChangeTheNewSessionDraft() = runTest {
+        Fixture(testScheduler).use { f ->
+            val vm = f.page.comments
+            vm.init(aid = 771, commentType = 17)
+            f.frames()
+            val host = PickerDialogHost(f)
+            val picker = PickerPlatform()
+            vm.beginCommentDraft()
+            val sessionA = vm.commentState.value.composerDrafts.sessionId
+            vm.updateCommentDraft(sessionA, null, "A-text", listOf("a.png"), false)
+            // Session A opens the picker through the dialog's own seam, then the composer moves on to session B.
+            host.draft.pickImages(picker.platform) { text, images, sync, _, _ ->
+                vm.updateCommentDraft(sessionA, null, text, images, sync)
+            }
+            vm.beginCommentDraft()
+            val sessionB = vm.commentState.value.composerDrafts.sessionId
+            host.inputs.value = PickerInputs("B", "B-text", listOf("b.png"), true)
+            f.frames()
+            vm.updateCommentDraft(sessionB, null, "B-text", listOf("b.png"), true)
+            val draftBefore = vm.commentState.value.composerDrafts
+            val valueBefore = host.draft.textFieldValue
+            picker.release("late-1.png", "late-2.png")
+            f.frames()
+            assertEquals(valueBefore, host.draft.textFieldValue)
+            assertEquals(listOf("b.png"), host.draft.selectedImageUris)
+            assertTrue(host.draft.isForwardToDynamic)
+            assertEquals(draftBefore, vm.commentState.value.composerDrafts, "The comment draft of the new session is untouched")
+        }
+    }
+
+    @Test fun currentSessionImageResultIsWrittenBackDedupedCappedAndOwnerGuarded() = runTest {
+        Fixture(testScheduler).use { f ->
+            val vm = f.page.comments
+            vm.init(aid = 771, commentType = 17)
+            f.frames()
+            val host = PickerDialogHost(f)
+            val picker = PickerPlatform()
+            vm.beginCommentDraft()
+            val session = vm.commentState.value.composerDrafts.sessionId
+            val reports = mutableListOf<List<String>>()
+            fun open() = host.draft.pickImages(picker.platform) { text, images, sync, _, _ ->
+                reports += images
+                vm.updateCommentDraft(session, null, text, images, sync)
+            }
+            open()
+            picker.release("a.png", "n1.png", "n1.png", "n2.png")
+            assertEquals(listOf("a.png", "n1.png", "n2.png"), host.draft.selectedImageUris, "Order kept, duplicates dropped")
+            assertEquals(listOf("a.png", "n1.png", "n2.png"), vm.commentState.value.composerDrafts.drafts.values.single().imageUris)
+            open()
+            picker.release(*(3..12).map { "p$it.png" }.toTypedArray())
+            assertEquals(9, host.draft.selectedImageUris.size, "At most nine images")
+            assertEquals(listOf("a.png", "n1.png", "n2.png", "p3.png", "p4.png", "p5.png", "p6.png", "p7.png", "p8.png"),
+                host.draft.selectedImageUris)
+            val reported = reports.size
+            open()
+            picker.release()
+            assertEquals(reported, reports.size, "An empty result changes and reports nothing")
+            open()
+            picker.owned = false
+            picker.release("late-owner.png")
+            assertEquals(reported, reports.size, "A retired application owner cannot write")
+            assertFalse("late-owner.png" in host.draft.selectedImageUris)
+        }
+    }
+
     private class EmptyApplier : AbstractApplier<Unit>(Unit) {
         override fun insertTopDown(index: Int, instance: Unit) = Unit
         override fun insertBottomUp(index: Int, instance: Unit) = Unit
@@ -322,6 +427,7 @@ class DesktopBgmDetailMigrationTest {
         val first = owner()
         val current = mutableStateOf(first.root)
         val tick = mutableStateOf(0)
+        val extra = mutableStateOf<(@Composable () -> Unit)?>(null)
         lateinit var page: DesktopBgmDetailState
         private val clock = BroadcastFrameClock()
         private val recomposer = Recomposer(compositionScope.coroutineContext + clock)
@@ -332,6 +438,7 @@ class DesktopBgmDetailMigrationTest {
             composition.setContent {
                 tick.value
                 page = rememberDesktopBgmDetailState(current.value)
+                extra.value?.invoke()
             }
             frames()
         }

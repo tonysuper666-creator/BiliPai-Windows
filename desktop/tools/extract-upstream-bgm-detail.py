@@ -172,6 +172,36 @@ internal fun CommentInputDraftEffect(
 """
 
 
+def bgm_dialog_picker_seam(body):
+    """The image-picker callback of the dialog as a production seam: the callback keeps the holder and draft callback that
+    were current when the picker opened, so a late result of an older key writes only that older holder and reports only
+    to that older session's draft callback (which the comment state ignores once the session moved on)."""
+    body=replace_once(body,"""                                        platform.pickCommentImages(9) { uris ->
+                                            if (platform.isOwned() && uris.isNotEmpty()) {
+                                                selectedImageUris = (selectedImageUris + uris).distinct().take(9)
+                                                onDraftChange(textFieldValue.text, selectedImageUris, isForwardToDynamic, textFieldValue.selection.start, textFieldValue.selection.end)
+                                            }
+                                        }
+""","""                                        draft.pickImages(platform, onDraftChange)
+""")
+    return body.rstrip("\n")+"""
+
+/** Opens the platform picker; a result is applied only while the application owner is current, ignoring an empty result,
+ * keeping selection order without duplicates and at most nine images, and is reported through [onDraftChange]. */
+internal fun CommentInputDraft.pickImages(
+    platform: com.bilipai.desktop.ui.DesktopCommentPlatform,
+    onDraftChange: (String, List<String>, Boolean, Int, Int) -> Unit,
+) {
+    platform.pickCommentImages(9) { uris ->
+        if (platform.isOwned() && uris.isNotEmpty()) {
+            selectedImageUris = (selectedImageUris + uris).distinct().take(9)
+            onDraftChange(textFieldValue.text, selectedImageUris, isForwardToDynamic, textFieldValue.selection.start, textFieldValue.selection.end)
+        }
+    }
+}
+"""
+
+
 def bgm_comment_draft_session(body):
     """Bind the retained BGM composer to the current upstream comment-draft session (474bfd1c BgmDetailScreen):
     one session per compose, drafts keyed by reply target, close on that session's completion. The Windows dialog
@@ -683,6 +713,7 @@ data class CommentComposerDraftState(
     body=dialog_delta(repo,output,original[path],body)
     body=bgm_dialog_draft_key(body)
     body=bgm_dialog_draft_seam(body)
+    body=bgm_dialog_picker_seam(body)
     emit('com/android/purebilibili/feature/video/ui/components/CommentInputDialog.kt',body)
     retained(path,body,'Full original input renderer/policies/mention/emotes/skin/draft/sync/9 images; owned existing Windows picker replaces ActivityResult, measured viewport replaces Android configuration and Android-only dialog inset flag is omitted.')
     from v046_comment_chrome import advance_sort_source, emit_tests as emit_comment_chrome_tests
