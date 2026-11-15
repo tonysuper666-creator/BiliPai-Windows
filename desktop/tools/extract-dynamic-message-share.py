@@ -11,6 +11,21 @@ def read(repo,p):return(_desktop_canonical_source(repo, p)).read_text(encoding='
 def inventory(repo):return[dict(path=p,mode='direct'if p in DIRECT else'policy-extract',features=['settings-dynamic-full-card-parity'],sha256=hashlib.sha256(read(repo,p).encode()).hexdigest())for p in PATHS]
 def load(repo,name,path):
  spec=importlib.util.spec_from_file_location(name,repo/path);m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
+def user_basic_info_source(repo,parser):
+ # Inspect both registered originals: a first-hit fallback would hide duplicates.
+ found=[]
+ for path in (BASE+'feature/message/InboxUserInfoResolver.kt',BASE+'feature/message/InboxViewModel.kt'):
+  source=read(repo,path);tokens=parser.kotlin_tokens(source)
+  depth=parens=brackets=0
+  for i,(text,start,end) in enumerate(tokens):
+   # Match appearance.declarations' top-level declaration boundaries.
+   if depth==parens==brackets==0 and text in ['fun','val','var','class','object','interface'] and i+1<len(tokens) and tokens[i+1][0]=='UserBasicInfo':
+    found.append((path,source))
+   depth+=(text=='{')-(text=='}')
+   parens+=(text=='(')-(text==')');brackets+=(text=='[')-(text==']')
+ if len(found)!=1:
+  raise ValueError('Expected exactly one top-level UserBasicInfo declaration across InboxUserInfoResolver.kt and InboxViewModel.kt; found '+str(len(found)))
+ return found[0]
 def generate(repo,out,standalone=False):
  host=load(repo,'dynamic_message_host','desktop/tools/extract-upstream-plugins.py');media=host.media_extractor(repo);parser=media.parser_for(repo)
  appearance=load(repo,'dynamic_message_decl','desktop/tools/extract-appearance-platform.py');files=[]
@@ -18,7 +33,7 @@ def generate(repo,out,standalone=False):
  def fun(s,n):return media.function(s,n,parser)
  for p in DIRECT:
   if standalone:emit(p,read(repo,p),'DesktopOriginal'+Path(p).name)
- p=BASE+'feature/message/InboxViewModel.kt';s=read(repo,p)
+ p,s=user_basic_info_source(repo,parser)
  body=appearance.declarations(parser,s,['UserBasicInfo'])
  emit(p,'package com.android.purebilibili.feature.message\n'+body,'DesktopOriginalMessageUserBasicInfo.kt')
  p=BASE+'core/network/grpc/BiliGrpcClient.kt';s=read(repo,p)
