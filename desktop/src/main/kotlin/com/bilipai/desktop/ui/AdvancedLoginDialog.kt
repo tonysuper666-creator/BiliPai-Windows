@@ -13,6 +13,7 @@ import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.graphics.toComposeImageBitmap
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.DialogProperties
 import coil3.compose.AsyncImage
 import com.android.purebilibili.data.model.response.CaptchaData
 import com.android.purebilibili.feature.login.*
@@ -60,8 +61,13 @@ internal fun AdvancedLoginDialog(repository: DesktopRepository, updateHold: Desk
     CompositionLocalProvider(LocalDesktopLoginUpdateInstance provides instance,
         LocalDesktopLoginReturn provides loginReturn, LocalDesktopLoginAttemptOwned provides ownsAttempt,
         LocalDesktopLoginInstalled provides installed, LocalDesktopLoginAttemptReset provides { replaceAttempt() }) {
-    AlertDialog(onDismissRequest = onDismiss, title = { Text("账号与登录") }, text = {
-        Column(Modifier.width(650.dp).heightIn(max = 670.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+    BoxWithConstraints {
+    AlertDialog(onDismissRequest = onDismiss,
+        modifier = Modifier.width(minOf(480.dp, (maxWidth - 32.dp).coerceAtLeast(0.dp)))
+            .heightIn(max = (maxHeight - 32.dp).coerceAtLeast(0.dp)),
+        properties = DialogProperties(usePlatformDefaultWidth = false),
+        title = { Text("账号与登录") }, text = {
+        Column(Modifier.fillMaxWidth().heightIn(max = 670.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
             Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                 LoginMethod.entries.forEach { value -> FilterChip(method == value, { if (method != value) { replaceAttempt(); method = value } }, label = { Text(value.label) }) }
             }
@@ -79,6 +85,7 @@ internal fun AdvancedLoginDialog(repository: DesktopRepository, updateHold: Desk
             }
         }
     }, confirmButton = { TextButton(onClick = onDismiss) { Text("关闭") } })
+    }
     }
 }
 
