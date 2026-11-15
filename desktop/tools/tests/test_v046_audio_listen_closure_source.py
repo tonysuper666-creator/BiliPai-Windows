@@ -19,6 +19,17 @@ REPO = Path(__file__).resolve().parents[3]
 TOOLS = REPO / 'desktop/tools'
 sys.path.insert(0, str(TOOLS))
 import v046_audio_listen_closure as gen  # noqa: E402
+from legacy_read_point import legacy_read_point  # noqa: E402
+
+# Gradle runs these producers with --repo repositoryRoot, the pinned .legacy-root (settings.gradle.kts), so the
+# producers read their originals there. The archive tests and every live-tree read below stay on the checkout.
+PROBE = 'app/src/main/java/com/android/purebilibili/feature/audio/library/ListenVideoLibraryDataSource.kt'
+SOURCE = None
+
+
+def setUpModule():
+    global SOURCE
+    SOURCE = legacy_read_point(REPO, PROBE)
 
 PKG = 'com/android/purebilibili/'
 LISTEN = gen.RELATIVE['listen']
@@ -66,14 +77,14 @@ def run_producer(script, arguments, disabled=None):
 
 def run_all(root, with_layer):
     """The four real producers into `root`; without the layer every hook of this slice is replaced by an identity."""
-    run_producer(PRODUCERS['listen'], ['--repo', str(REPO), '--output', str(root / 'listen'),
+    run_producer(PRODUCERS['listen'], ['--repo', str(SOURCE), '--output', str(root / 'listen'),
                                        '--test-output', str(root / 'listen-tests')],
                  None if with_layer else {'advance_listen_output': 'lambda repo, output, receipts: None'})
-    run_producer(PRODUCERS['music'], ['--repo', str(REPO), '--output', str(root / 'music')],
+    run_producer(PRODUCERS['music'], ['--repo', str(SOURCE), '--output', str(root / 'music')],
                  None if with_layer else {'advance_music_outputs': 'lambda repo, output, changes: None'})
-    run_producer(PRODUCERS['audio'], ['--repo', str(REPO), '--output', str(root / 'audio')],
+    run_producer(PRODUCERS['audio'], ['--repo', str(SOURCE), '--output', str(root / 'audio')],
                  None if with_layer else {'advance_audio_mode_outputs': 'lambda repo, output, changes: None'})
-    run_producer(PRODUCERS['lyrics'], ['--repo', str(REPO), '--output', str(root / 'lyrics')],
+    run_producer(PRODUCERS['lyrics'], ['--repo', str(SOURCE), '--output', str(root / 'lyrics')],
                  None if with_layer else {'upgraded_lyrics_display_policy': 'lambda repo, raw, row: (raw, row)'})
 
 
@@ -167,6 +178,32 @@ class ArchiveTests(unittest.TestCase):
                           'audio': 'v046_audio_listen_closure.validate_outputs(REPO,LANE)',
                           'lyrics': 'validate_outputs(repo, output)'}.items():
             self.assertEqual(1, text_of(PRODUCERS[key]).count(hook), key)
+
+    def test_with_the_legacy_read_point_both_archive_copies_stay_protected(self):
+        """Gradle passes the pinned .legacy-root as --repo: the archive read there proves the source identity, and the
+        live archive next to these tools is what Gradle declares as the input (inputs.dir). Neither copy, nor any
+        ancestor of either, is ever a valid output; a Gradle build output or a scratch directory is."""
+        live, legacy, child = REPO / gen.ARCHIVE, SOURCE / gen.ARCHIVE, REPO / gen.ARCHIVE / 'child'
+        # a regression must not leave a stray leaf in the live archive for the other tests to trip over
+        self.addCleanup(shutil.rmtree, child, True)
+        for target in (child, live, REPO / 'desktop', legacy / 'child', legacy, SOURCE / 'desktop', SOURCE, REPO):
+            with self.assertRaisesRegex(ValueError, 'overlaps', msg=str(target)):
+                gen.validate_outputs(SOURCE, target)
+        with tempfile.TemporaryDirectory(prefix='bp-al-o-') as temp:
+            gen.validate_outputs(SOURCE, Path(temp) / 'out', None,
+                                 REPO / 'desktop/build/generated/original-listen-video-pages')
+        with self.assertRaisesRegex(ValueError, 'overlaps'):
+            load('al_lyrics_legacy', 'extract-upstream-text-lyrics.py').generate(SOURCE, child)
+        # the real producers, run the way Gradle runs them (cwd desktop, --repo the legacy read point), stop first
+        with tempfile.TemporaryDirectory(prefix='bp-al-o-') as temp:
+            for key, arguments in (('listen', ['--output', str(Path(temp) / 'listen'), '--test-output', str(child)]),
+                                   ('music', ['--output', str(child)]), ('audio', ['--output', str(child)])):
+                done = subprocess.run([sys.executable, '-X', 'utf8', '-B', str(PRODUCERS[key]), '--repo', str(SOURCE),
+                                       *arguments], capture_output=True, text=True, encoding='utf8',
+                                      cwd=REPO / 'desktop')
+                self.assertNotEqual(0, done.returncode, key)
+                self.assertIn('Output overlaps the v0.4.6 listen closure inputs', done.stderr, key)
+        self.assertFalse(child.exists())
 
     def test_each_layer_is_hooked_exactly_once_as_the_last_step_of_its_producer(self):
         hooks = {'listen': 'v046_audio_listen_closure.advance_listen_output(repo, output, receipts)',
@@ -307,7 +344,7 @@ class MusicTests(Fixture, ProofMixin):
         self.assertEqual(sha(body), proof['outputFileSHA256'])
         # the recorded ports rebuild the predecessor from the whole 79e8 original, and only the four atmosphere ports are new
         self.assertEqual(gen.BASELINE_SHA256['MusicPlayerContent.kt'], sha(
-            gen._baseline(REPO, 'feature/audio/screen/MusicPlayerContent.kt', 'MusicPlayerContent.kt')))
+            gen._baseline(SOURCE, 'feature/audio/screen/MusicPlayerContent.kt', 'MusicPlayerContent.kt')))
         self.assertEqual(4, len(proof['windowsEdits']))
         self.assertEqual(25 + 1, len(proof['replayedPorts']))
 
