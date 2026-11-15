@@ -349,6 +349,9 @@ val migratedAppM4dPaths: Set<String> = migratedAppM4dAreas.asSequence().flatMap 
 // PlayerSubtitleSettingsPanel (PlaybackSettingsScreen's subtitle panel) and PiliSubtitleSession,
 // are still awaiting migration; see their dependency blockers in m4d/later-steps.tsv.
 val migratedAppSingleFiles: Set<String> = setOf(
+    // TON-1116: the original document codec delegates standard text formats to the desktop parser;
+    // BCC/JSON and export stay upstream. Session/Store still await the panel-owned appearance model.
+    "com/android/purebilibili/feature/video/subtitle/SubtitleDocumentCodec.kt",
     "com/android/purebilibili/feature/video/subtitle/SubtitleFontFile.kt",
     "com/android/purebilibili/feature/home/components/cards/HorizontalVideoCardLayoutPolicy.kt",
     "com/android/purebilibili/feature/home/FeedGridColumnPreference.kt",

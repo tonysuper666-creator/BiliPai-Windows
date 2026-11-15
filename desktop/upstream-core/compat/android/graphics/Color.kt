@@ -2,6 +2,8 @@ package android.graphics
 
 /** Desktop stand-in for android.graphics.Color's static helpers (packed ARGB ints, HSV with hue in degrees). */
 object Color {
+    const val WHITE: Int = -1
+    const val BLACK: Int = -0x1000000
     @JvmStatic fun alpha(color: Int): Int = color ushr 24
     @JvmStatic fun red(color: Int): Int = (color shr 16) and 0xFF
     @JvmStatic fun green(color: Int): Int = (color shr 8) and 0xFF
