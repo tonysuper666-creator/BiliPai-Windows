@@ -12,6 +12,9 @@ import com.bilipai.desktop.settings.DesktopOriginalPlaybackSettingsBindings
 import com.bilipai.desktop.settings.DesktopOriginalPlaybackSettingsState
 import com.bilipai.desktop.settings.DesktopSettingsNavigator
 import com.bilipai.desktop.settings.DesktopSettingsPage
+import com.bilipai.desktop.settings.DesktopSettingsApplication
+import com.bilipai.desktop.settings.DesktopStorageSettingsOwner
+import com.bilipai.desktop.settings.LocalDesktopOriginalAboutReleaseMetadata
 import java.util.concurrent.atomic.AtomicReference
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
@@ -31,6 +34,7 @@ internal fun DesktopOriginalPlaybackSettingsRootHost(
     homeSettings: StateFlow<HomeSettings>,
     hardwareDecode: DesktopOriginalHardwareDecodePreferences,
     legacyHardwareDecodeFallback: Boolean,
+    storageOwner: DesktopStorageSettingsOwner,
     active: Boolean,
     pictureInPictureAvailable: () -> Boolean,
     onFailure: (Throwable) -> Unit,
@@ -77,6 +81,12 @@ internal fun DesktopOriginalPlaybackSettingsRootHost(
         DesktopOriginalVideoEntryReadbacks(repository, routes.root.entry.gate.epoch,
             pageScope, current, commit)
     }
+    val playbackPlatform = remember(context, readbacks) { com.bilipai.desktop.settings.DesktopPlaybackSettingsPlatform(
+        current, readbacks::isPlaybackLoggedIn, readbacks::isPlaybackVip) { name, value -> logNow(name, value) } }
+    val releaseMetadata = LocalDesktopOriginalAboutReleaseMetadata.current
+    val application = remember(context, storageOwner, releaseMetadata) {
+        DesktopSettingsApplication(context.androidContext, releaseMetadata, current, storageOwner)
+    }
     var initialState by remember(context) { mutableStateOf<DesktopOriginalPlaybackSettingsState?>(null) }
     var preparationFailed by remember(context) { mutableStateOf(false) }
     var retry by remember(context) { mutableIntStateOf(0) }
@@ -118,9 +128,13 @@ internal fun DesktopOriginalPlaybackSettingsRootHost(
                 pictureInPicture = { pipNow() }, playbackLoggedIn = readbacks::isPlaybackLoggedIn,
                 playbackVip = readbacks::isPlaybackVip, settingChange = { name, value -> logNow(name, value) })
         }
-        CompositionLocalProvider(LocalDesktopOriginalPlayerSettingsContext provides context) {
+        CompositionLocalProvider(
+            LocalDesktopOriginalPlayerSettingsContext provides context,
+            LocalDesktopUpstreamAndroidContext provides application,
+            com.bilipai.desktop.settings.LocalDesktopPlaybackSettingsPlatform provides playbackPlatform,
+        ) {
             key(context) {
-                DesktopWindowsPlaybackSettings(bindings, onBack = ownedBack)
+                DesktopPlaybackRightPaneContent(bindings, onBack = ownedBack)
             }
         }
     } else {
@@ -135,6 +149,15 @@ internal fun DesktopOriginalPlaybackSettingsRootHost(
             }
         }
     }
+}
+
+/** The single content boundary used by the mounted right pane and its composition coverage gate. */
+@Composable
+internal fun DesktopPlaybackRightPaneContent(
+    bindings: DesktopOriginalPlaybackSettingsBindings,
+    onBack: () -> Unit,
+) {
+    DesktopWindowsPlaybackSettings(bindings, onBack)
 }
 
 /** Detail is an original value class; repeated equal destinations still own distinct jobs. */

@@ -1,0 +1,53 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/settings/screen/PlaybackSettingsScreen.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/settings/screen/PlaybackSettingsScreen.kt
+@@ -140,6 +140,7 @@
+     val listState = rememberLazyListState()
+     val focusRequest by SettingsSearchFocusController.request.collectAsStateWithLifecycle()
+     val context = LocalContext.current
++    val desktopPlatform = com.bilipai.desktop.settings.LocalDesktopPlaybackSettingsPlatform.current
+     val warningTint = AppContentColors.warning()
+     val windowSizeClass = LocalWindowSizeClass.current
+     // val state by viewModel.state.collectAsStateWithLifecycle() // Moved to parameter
+@@ -333,7 +334,7 @@
+                                 onCheckedChange = {
+                                     viewModel.toggleHwDecode(it)
+                                     //  [埋点] 设置变更追踪
+-                                    com.android.purebilibili.core.util.AnalyticsHelper.logSettingChange("hw_decode", it.toString())
++                                    desktopPlatform.logSettingChange("hw_decode", it.toString())
+                                 },
+                                 iconTint = AppContentColors.secondaryText()
+                             )
+@@ -970,5 +971,5 @@
+                     val directedTrafficEnabled = playbackPreferences.directedTrafficEnabled
+                     val resilientVideoBuffer by remember(context) { SettingsManager.getResilientVideoBuffer(context) }
+                         .collectAsStateWithLifecycle(initialValue = SettingsManager.getResilientVideoBufferSync(context))
+-                    val isLoggedIn = com.android.purebilibili.data.repository.VideoRepository.isPlaybackLoggedIn()
+-                    val isVip = com.android.purebilibili.data.repository.VideoRepository.isPlaybackVip()
++                    val isLoggedIn = desktopPlatform.isPlaybackLoggedIn()
++                    val isVip = desktopPlatform.isPlaybackVip()
+@@ -1289,6 +1290,7 @@
+ ) {
+     val playerConfiguration = rememberSettingsPlayerConfiguration()
+     val scope = rememberCoroutineScope()
++    val desktopPlatform = com.bilipai.desktop.settings.LocalDesktopPlaybackSettingsPlatform.current
+     val hideInteractiveCommandDanmaku by remember(context) { com.android.purebilibili.core.store.SettingsManager.getDanmakuHideInteractiveCommands(context) }
+         .collectAsStateWithLifecycle(initialValue = false)
+     val danmakuCloudSyncEnabled by remember(context) { com.android.purebilibili.core.store.SettingsManager.getDanmakuCloudSyncEnabled(context) }
+@@ -1560,7 +1562,7 @@
+                 checked = state.autoSkipOpEd,
+                 onCheckedChange = {
+                     viewModel.toggleAutoSkipOpEd(it)
+-                    com.android.purebilibili.core.util.AnalyticsHelper.logSettingChange(
++                    desktopPlatform.logSettingChange(
+                         "auto_skip_op_ed",
+                         it.toString()
+                     )
+@@ -1786,7 +1788,7 @@
+                 onCheckedChange = {
+                     viewModel.toggleDoubleTapLike(it)
+                     //  [埋点] 设置变更追踪
+-                    com.android.purebilibili.core.util.AnalyticsHelper.logSettingChange("double_tap_like", it.toString())
++                    desktopPlatform.logSettingChange("double_tap_like", it.toString())
+                 },
+                 iconTint = AppContentColors.secondaryText()
+             )

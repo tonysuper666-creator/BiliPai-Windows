@@ -5,7 +5,9 @@ import com.bilipai.desktop.ui.DesktopOriginalSettingsAndroidContext
 
 /** Desktop implementation of the function upstream's desktop-owned FoldableDisplayPolicy.kt exports: the large-screen
  * default is Root's actual physical monitor answer, held by the page's settings owner. */
-internal fun android.content.Context.isLargeScreenOrFoldableConfiguration(): Boolean =
-    (this as? DesktopOriginalSettingsAndroidContext)?.isLargeScreenOrFoldableConfiguration()
-        ?: throw UnsupportedDesktopCapability("isLargeScreenOrFoldableConfiguration on ${this::class.java.name}",
-            "only a page's settings owner (LocalContext) knows the actual monitor")
+internal fun android.content.Context.isLargeScreenOrFoldableConfiguration(): Boolean = when (this) {
+    is android.app.Application -> baseContext.isLargeScreenOrFoldableConfiguration()
+    is DesktopOriginalSettingsAndroidContext -> isLargeScreenOrFoldableConfiguration()
+    else -> throw UnsupportedDesktopCapability("isLargeScreenOrFoldableConfiguration on ${this::class.java.name}",
+        "only a page's settings owner (LocalContext) knows the actual monitor")
+}

@@ -1,0 +1,32 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/video/subtitle/SubtitleDocumentCodec.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/video/subtitle/SubtitleDocumentCodec.kt
+@@ -3,5 +3,2 @@
+-import androidx.media3.common.C
+-import androidx.media3.common.Format
+-import androidx.media3.common.MimeTypes
+-import androidx.media3.extractor.text.DefaultSubtitleParserFactory
+-import androidx.media3.extractor.text.SubtitleParser
++import com.bilipai.desktop.settings.DesktopStandardSubtitleParser
++import com.bilipai.desktop.settings.DesktopStandardSubtitleParser.MimeTypes
+@@ -51,18 +48,3 @@
+-/** 标准格式由媒体解析器处理；转换为本项目字幕工具共用的毫秒文本时间轴。 */
+-@androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
+-private fun parseStandardSubtitle(source: String, mimeType: String): List<SubtitleCue> {
+-    val format = Format.Builder().setSampleMimeType(mimeType).build()
+-    val parser = DefaultSubtitleParserFactory().create(format)
+-    val bytes = source.toByteArray(Charsets.UTF_8)
+-    return buildList {
+-        parser.parse(bytes, SubtitleParser.OutputOptions.allCues()) { timed ->
+-            if (timed.startTimeUs != C.TIME_UNSET && timed.endTimeUs != C.TIME_UNSET) {
+-                val text = timed.cues.mapNotNull { it.text?.toString()?.replace('\u00A0', ' ')?.trim()?.takeIf(String::isNotBlank) }
+-                    .joinToString("\n")
+-                if (text.isNotBlank()) {
+-                    add(SubtitleCue(timed.startTimeUs / 1000, timed.endTimeUs / 1000, text))
+-                }
+-            }
+-        }
+-    }
+-}
++/** Standard text formats use the desktop document parser; BCC/JSON stays upstream. */
++private fun parseStandardSubtitle(source: String, mimeType: String): List<SubtitleCue> =
++    DesktopStandardSubtitleParser.parse(source, mimeType)

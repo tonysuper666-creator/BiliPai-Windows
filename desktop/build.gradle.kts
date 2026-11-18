@@ -344,7 +344,26 @@ val migratedAppM4dPaths: Set<String> = migratedAppM4dAreas.asSequence().flatMap 
 // TON-1109: the message feed pages' MessageManagementRepository, built per message page child over its gated services;
 // TON-1120: the private messages' MessageImRepository, whose gRPC calls go over the calling message page child's gated call,
 // and the read events the message Root shares between its pages).
+// TON-1116: DesktopSubtitleFontFileTest reads the original font tool; its production readers,
+// PlayerSubtitleSettingsPanel (PlaybackSettingsScreen's subtitle panel) and PiliSubtitleSession,
+// are still awaiting migration; see their dependency blockers in m4d/later-steps.tsv.
 val migratedAppSingleFiles: Set<String> = setOf(
+    "com/android/purebilibili/feature/video/ui/components/PlayerEpisodeMenu.kt",
+    "com/android/purebilibili/feature/video/ui/components/PlayerEpisodeMenuPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/components/PlayerNativeSettings.kt",
+    "com/android/purebilibili/feature/video/ui/components/PlayerDetailPanelMotion.kt",
+    "com/android/purebilibili/feature/video/ui/components/PlayerSelectionPopup.kt",
+    "com/android/purebilibili/feature/video/ui/components/PlayerSettingsMenuLayoutPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/components/PlayerPopupGeometry.kt",
+    "com/android/purebilibili/feature/video/ui/components/PlayerPanelViewport.kt",
+    "com/android/purebilibili/feature/video/ui/components/EpisodeSheetLayoutPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/components/PlayerOptionStyle.kt",
+    "com/android/purebilibili/feature/video/ui/components/CollectionAccessBadge.kt",
+    "com/android/purebilibili/feature/video/ui/components/PlayerPanelPopupBackHandler.kt",
+    // TON-1116: the original document codec delegates standard text formats to the desktop parser;
+    // BCC/JSON and export stay upstream. Session/Store still await the panel-owned appearance model.
+    "com/android/purebilibili/feature/video/subtitle/SubtitleDocumentCodec.kt",
+    "com/android/purebilibili/feature/video/subtitle/SubtitleFontFile.kt",
     "com/android/purebilibili/feature/home/components/cards/HorizontalVideoCardLayoutPolicy.kt",
     "com/android/purebilibili/feature/home/FeedGridColumnPreference.kt",
     "com/android/purebilibili/data/repository/MessageManagementRepository.kt",
@@ -352,7 +371,12 @@ val migratedAppSingleFiles: Set<String> = setOf(
     "com/android/purebilibili/data/repository/MessageReadEvent.kt",
     // TON-1124: the upstream ledger repository takes the calling Profile page environment.
     "com/android/purebilibili/data/repository/AccountLedgerRepository.kt",
-)
+).let { selected ->
+    // TON-1116: when the controls generator stops the old popup, compile its upstream wrapper.
+    if ("com/android/purebilibili/feature/video/ui/components/PlayerSelectionPopup.kt" in selected) {
+        selected + "com/android/purebilibili/feature/video/ui/components/glass/PlayerMiuixListPopup.kt"
+    } else selected
+}
 // M4c (TON-1004): every upstream file of live, audio and download compiles from the merged root,
 // except the two maps below.
 // appM4cDesktopOwned: Android-only files whose capability the desktop implements itself; the reason names it.
@@ -514,6 +538,10 @@ fun migratedUpstreamSource(path: String): Boolean = migratedUpstreamModules.any 
 val prepareUpstreamSources by tasks.registering(Sync::class) {
     from(repositoryRoot) {
         include(sources.filter { (it["mode"] ?: "direct") == "direct" && !migratedUpstreamSource(it["path"].toString()) }.map { canonicalOriginalIdentity(it["path"].toString()) })
+        // TON-1116: retain the legacy selector policy until its three screen callers migrate.
+        if ("feature/video/ui/components/PagesSelector.kt" in appM4dLaterSteps) {
+            include("app/src/main/java/com/android/purebilibili/feature/video/ui/components/PagesSelectorLayoutPolicy.kt")
+        }
         // Whole v043 typed navigation is emitted by its existing space producer.
         exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/core/util/BilibiliNavigationTargetParser.kt"))
         // Current collection playback/management policy has one Space producer.
@@ -563,7 +591,14 @@ val prepareUpstreamSources by tasks.registering(Sync::class) {
         exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/ui/components/LandscapeDanmakuComposer.kt"))
         exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/ui/components/LandscapeSidePanel.kt"))
         exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/ui/components/NativeDanmakuToggleButton.kt"))
-        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/ui/components/PlayerMiuixListPopup.kt"))
+        // TON-1116: matches extract-upstream-video-player-full-controls.py's ACTUAL popup condition.
+        if ("com/android/purebilibili/feature/video/ui/components/PlayerSelectionPopup.kt" !in migratedAppSingleFiles) {
+            exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/ui/components/PlayerMiuixListPopup.kt"))
+        } else {
+            // TON-1116: LEGACY_PLAYER_POPUP_RETIRED in the controls producer adds these wrapper imports.
+            exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/ui/components/AudioQualitySelectionMenu.kt"))
+            exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/ui/components/ChapterListPanel.kt"))
+        }
         exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/BottomControlBarLayoutPolicy.kt"))
         exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/ImmersiveStatusBarBackdrop.kt"))
         exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PlaybackButtonComponents.kt"))
@@ -2825,9 +2860,20 @@ fun applyUnifiedPatch(original: String, patch: String, label: String): String {
 
 // Desktop-only fixes against the merged upstream tree. The independent upstream-core
 // project deliberately compiles the unpatched originals so upstream regressions stay visible.
+// M4d later-steps patches are validated against the merged originals, but are not compiled until those originals migrate.
 val desktopUpstreamPatchDirectory = file("upstream-core/patches")
 val desktopUpstreamPatchedFiles = fileTree(desktopUpstreamPatchDirectory) { include("**/*.patch"); exclude("**/src/test/**") }.files
     .map { it.relativeTo(desktopUpstreamPatchDirectory).invariantSeparatorsPath.removeSuffix(".patch") }.toSortedSet()
+val orphanAppPatches = desktopUpstreamPatchedFiles.filter { root ->
+    root.startsWith("app/src/main/java/") && root.removePrefix("app/src/main/java/") !in migratedAppPaths &&
+        root.removePrefix("app/src/main/java/com/android/purebilibili/") !in appM4dLaterSteps
+}
+if (orphanAppPatches.isNotEmpty()) throw GradleException("App patches without a migrated or later-steps target: $orphanAppPatches")
+val desktopUpstreamCompiledPatchFiles = desktopUpstreamPatchedFiles.filterNot { root ->
+    root.startsWith("app/src/main/java/com/android/purebilibili/") &&
+        root.removePrefix("app/src/main/java/com/android/purebilibili/") in appM4dLaterSteps
+}.toSortedSet()
+val desktopUpstreamDeferredPatchFiles = desktopUpstreamPatchedFiles - desktopUpstreamCompiledPatchFiles
 // Build-time rewrite rules (TON-1072): one call-site adaptation that every migrated upstream file needs in the same way,
 // so no per-file patch is written for it. A rule turns one call into a desktop bridge call with the same arguments and
 // applies to every upstream file compiled from the merged root that contains it (after that file's patch, if it has one);
@@ -2854,26 +2900,51 @@ val desktopUpstreamRewrittenFiles: Set<String> = run {
         mergedRepositoryRoot.resolve(prefix + relative).let { it.isFile && desktopUpstreamRewriteRules.any { rule -> rule.first.containsMatchIn(it.readText()) } } }
         .map { (relative, prefix) -> prefix + relative }.toSortedSet()
 }
-val desktopUpstreamAdaptedRootFiles: Set<String> = (desktopUpstreamPatchedFiles + desktopUpstreamRewrittenFiles).toSortedSet()
+val desktopUpstreamAdaptedRootFiles: Set<String> = (desktopUpstreamCompiledPatchFiles + desktopUpstreamRewrittenFiles).toSortedSet()
 val applyDesktopUpstreamPatches by tasks.registering {
     val output = layout.buildDirectory.dir("patched-upstream")
     inputs.dir(desktopUpstreamPatchDirectory).withPathSensitivity(PathSensitivity.RELATIVE)
-    inputs.files(desktopUpstreamAdaptedRootFiles.map { mergedRepositoryRoot.resolve(it) }).withPathSensitivity(PathSensitivity.RELATIVE)
+    inputs.files((desktopUpstreamPatchedFiles + desktopUpstreamRewrittenFiles).map { mergedRepositoryRoot.resolve(it) }).withPathSensitivity(PathSensitivity.RELATIVE)
+    inputs.property("compiledPatchFiles", desktopUpstreamCompiledPatchFiles)
     inputs.property("rewriteRules", desktopUpstreamRewriteRules.map { it.first.pattern + " -> " + it.second })
     outputs.dir(output)
     doLast {
         val target = output.get().asFile
         target.deleteRecursively()
-        desktopUpstreamAdaptedRootFiles.forEach { relative ->
+        (desktopUpstreamPatchedFiles + desktopUpstreamRewrittenFiles).forEach { relative ->
             val original = mergedRepositoryRoot.resolve(relative).readText()
             val patched = if (relative in desktopUpstreamPatchedFiles) applyUnifiedPatch(original,
                 desktopUpstreamPatchDirectory.resolve("$relative.patch").readText(), relative) else original
+            // Still apply every deferred hunk above: only discard its output, never its validation.
+            if (relative in desktopUpstreamDeferredPatchFiles) return@forEach
             val destination = target.resolve(relative)
             destination.parentFile.mkdirs()
             destination.writeText(applyDesktopUpstreamRewrites(patched))
         }
     }
 }
+
+val verifyDeferredUpstreamPatchRejection by tasks.registering {
+    group = "verification"
+    description = "A deferred patch must reject changed upstream context using the normal build patcher."
+    dependsOn(applyDesktopUpstreamPatches)
+    doLast {
+        desktopUpstreamDeferredPatchFiles.forEach { relative ->
+            val lines = desktopUpstreamPatchDirectory.resolve("$relative.patch").readLines().toMutableList()
+            val context = (lines.indexOfFirst { it.startsWith("@@ ") } + 1 until lines.size)
+                .first { lines[it].startsWith(" ") }
+            lines[context] = " __TON1116_CHANGED_UPSTREAM_CONTEXT__"
+            val rejection = runCatching {
+                applyUnifiedPatch(mergedRepositoryRoot.resolve(relative).readText(), lines.joinToString("\n"), relative)
+            }.exceptionOrNull()
+            if (rejection !is GradleException || rejection.message?.contains("matches 0 times") != true) {
+                throw GradleException("Deferred patch accepted changed context: $relative", rejection)
+            }
+            logger.lifecycle("Deferred patch context rejected: ${rejection.message}")
+        }
+    }
+}
+tasks.named("compileKotlin") { dependsOn(verifyDeferredUpstreamPatchRejection) }
 
 val applyTransitionPatches by tasks.registering {
     val generated = layout.buildDirectory.dir("generated")
@@ -3456,6 +3527,7 @@ val appCoreUpstreamTestsNotRun: Map<String, String> = mapOf(
 // Approved upstream test corrections are isolated from production patch outputs.
 // The complete LF-normalized source is pinned: even an edit outside a hunk needs review.
 val correctedUpstreamTestPaths = setOf(
+    "app/src/test/java/com/android/purebilibili/feature/video/subtitle/SubtitleDocumentCodecTest.kt",
     "app/src/test/java/com/android/purebilibili/feature/settings/SettingsSemanticIconPolicyTest.kt",
     "app/src/test/java/com/android/purebilibili/core/util/NavigationUiPolicyTabletTest.kt",
     "app/src/test/java/com/android/purebilibili/core/theme/SeedColorSchemeTest.kt",
@@ -3542,8 +3614,8 @@ kotlin.sourceSets.named("test") { kotlin.srcDir(correctedUpstreamTestOutput) }
 val appM4dTestsNotRun: Map<String, String> = m4dTable("tests-not-run.tsv").toMap()
 val appCoreUpstreamTestPaths: Set<String> = (appTestRoot.resolve("com/android/purebilibili/core").walkTopDown() +
         migratedAppM4dAreas.asSequence().flatMap { appTestRoot.resolve("com/android/purebilibili/$it").walkTopDown() } +
-        // TON-1120: upstream's IM wire tests run against the directly compiled MessageImRepository.
-        sequenceOf(appTestRoot.resolve("com/android/purebilibili/data/repository/MessageImRepositoryTest.kt")))
+        // Single-file migrations also bring their same-directory FooTest.kt; the shared filters below still apply.
+        migratedAppSingleFiles.asSequence().map { appTestRoot.resolve(it.removeSuffix(".kt") + "Test.kt") })
     .filter { it.isFile && it.extension == "kt" }
     // JUnit 4, Robolectric, mockk and androidx.test are not on the desktop test classpath; JUnit 5 (org.junit.jupiter) is.
     .filter { file -> !Regex("""^import (org\.junit\.(?!jupiter)|org\.robolectric|io\.mockk|androidx\.test)""", RegexOption.MULTILINE).containsMatchIn(file.readText()) }
