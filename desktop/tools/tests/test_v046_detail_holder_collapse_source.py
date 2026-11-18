@@ -26,6 +26,14 @@ REPO = Path(__file__).resolve().parents[3]
 TOOLS = REPO / 'desktop/tools'
 sys.path.insert(0, str(TOOLS))
 import v046_detail_holder_collapse as collapse
+from legacy_read_point import legacy_read_point
+
+SOURCE = None
+
+
+def setUpModule():
+    global SOURCE
+    SOURCE = legacy_read_point(REPO, collapse.ARCHIVE + '/manifest.json')
 import desktop_refresh_adaptation as refresh
 
 PKG = 'com/android/purebilibili/'
@@ -44,6 +52,11 @@ ENTRY_IDS = (
     'v046-collapse-height-shared', 'post046-shared-collapse-detail-layouts',
 )
 KINDS = {'carried', 'partial', 'already-carried', 'not-needed', 'deferred'}
+CURRENT_PAGER_DECISION = {
+    'kind': 'partial',
+    'reason': ('The tab bar carries forceVerticalPriority = liquidGlassEnabled; the content pager remains deferred '
+               'because touch gesture arbitration and glass rail fling/spec still need work.'),
+}
 
 
 def load(name, label):
@@ -65,7 +78,7 @@ def lf_of(path):
 def run_tablet(output):
     """The tablet producer is a script (argument parsing at module level): run it in process, as __main__."""
     sink = io.TextIOWrapper(io.BytesIO(), encoding='utf-8')
-    with patch.object(sys, 'argv', ['extract-upstream-video-tablet-full.py', '--repo', str(REPO), '--output', str(output)]), \
+    with patch.object(sys, 'argv', ['extract-upstream-video-tablet-full.py', '--repo', str(SOURCE), '--output', str(output)]), \
             patch('sys.stdout', sink):
         runpy.run_path(str(TOOLS / 'extract-upstream-video-tablet-full.py'), run_name='__main__')
 
@@ -132,13 +145,13 @@ class DetailHolderCollapseSourceTests(unittest.TestCase):
         for label in ('actual', 'before'):
             directory = root / label
             if label == 'actual':
-                cls.holder.generate(REPO, directory / 'holder')
-                cls.content.generate(REPO, directory / 'content')
+                cls.holder.generate(SOURCE, directory / 'holder')
+                cls.content.generate(SOURCE, directory / 'content')
                 run_tablet(directory / 'tablet')
             else:
                 with identity_layers():
-                    cls.holder.generate(REPO, directory / 'holder')
-                    cls.content.generate(REPO, directory / 'content')
+                    cls.holder.generate(SOURCE, directory / 'holder')
+                    cls.content.generate(SOURCE, directory / 'content')
                     run_tablet(directory / 'tablet')
         cls.root = root
 
@@ -187,6 +200,10 @@ class DetailHolderCollapseSourceTests(unittest.TestCase):
         self.assertEqual({'partial'}, {kinds['v046-collapse-height-shared'], kinds['post046-shared-collapse-detail-layouts']})
         self.assertEqual(['deferred', 'deferred', 'deferred'], [kinds[e] for e in (
             'v030-detail-chrome-hidden-paused-collapsed', 'v042-compact-comment-autopause', 'v042-glass-pager-vertical-priority')])
+        self.assertEqual('deferred', kinds['v042-glass-pager-vertical-priority'])  # Historical archive decision.
+        self.assertEqual('partial', CURRENT_PAGER_DECISION['kind'])
+        self.assertIn('forceVerticalPriority = liquidGlassEnabled', CURRENT_PAGER_DECISION['reason'])
+        self.assertIn('content pager remains deferred', CURRENT_PAGER_DECISION['reason'])
         self.assertEqual('already-carried', kinds['v030-detail-glass-gated-chrome-blur'])
         self.assertEqual('not-needed', kinds['v042-detail-cover-169-skeleton'])
         self.assertEqual(3, len(manifest['followUps']))
@@ -369,15 +386,15 @@ class DetailHolderCollapseSourceTests(unittest.TestCase):
                 with self.assertRaisesRegex(ValueError, 'overlaps'):
                     collapse.validate_outputs(REPO, candidate)
             with self.assertRaisesRegex(ValueError, 'overlaps'):
-                self.holder.generate(REPO, REPO / collapse.ARCHIVE / 'child')
+                self.holder.generate(SOURCE, REPO / collapse.ARCHIVE / 'child')
             collapse.validate_outputs(REPO, directory, None)
         self.assertEqual(before, {p.name: p.read_bytes() for p in (REPO / collapse.ARCHIVE).iterdir()})
 
     def test_the_layers_are_deterministic(self):
         with tempfile.TemporaryDirectory(prefix='bp-hc-d-') as directory:
             second = Path(directory)
-            self.holder.generate(REPO, second / 'holder')
-            self.content.generate(REPO, second / 'content')
+            self.holder.generate(SOURCE, second / 'holder')
+            self.content.generate(SOURCE, second / 'content')
             run_tablet(second / 'tablet')
             for owner, files in (('holder', (HOLDER_OUTPUT, RECOVERY_OUTPUT)), ('content', (CONTENT_OUTPUT,)),
                                  ('tablet', (TABLET_OUTPUT, CINEMA_OUTPUT))):
@@ -427,9 +444,23 @@ class DetailHolderCollapseSourceTests(unittest.TestCase):
     def test_decision_premises_hold_in_the_generated_tree(self):
         holder = self.out('actual', 'holder', HOLDER_OUTPUT)
         content = self.out('actual', 'content', CONTENT_OUTPUT)
-        policy = lf_of(REPO / 'app/src/main/java/com/android/purebilibili/feature/video/screen/PortraitDetailPresentationPolicy.kt')
-        autopause = lf_of(REPO / 'app/src/main/java/com/android/purebilibili/feature/video/screen/PlayerCollapseAutoPausePolicy.kt')
-        scroll = lf_of(REPO / 'app/src/main/java/com/android/purebilibili/feature/video/policy/VideoDetailScrollCoordinator.kt')
+        # The holder producer emits this adapted policy from SOURCE; the live video area is not migrated.
+        policy_path = SCREEN + 'PortraitDetailPresentationPolicy.kt'
+        policy_spec = next(spec for spec in self.holder.SPECS if spec['output'] == policy_path)
+        self.assertFalse(policy_spec['direct'])
+        build = text_of(REPO / 'desktop/build.gradle.kts')
+        self.assertIn('kotlin.srcDir(layout.buildDirectory.dir("generated/original-video-detail-holder-full"))', build)
+        self.assertNotIn('"feature/video/"', re.search(r'val migratedAppFeatureAreas = listOf\((.*?)\)', build).group(1))
+        policy = self.out('actual', 'holder', policy_path)
+        autopause_path = 'app/src/main/java/com/android/purebilibili/feature/video/screen/PlayerCollapseAutoPausePolicy.kt'
+        scroll_path = 'app/src/main/java/com/android/purebilibili/feature/video/policy/VideoDetailScrollCoordinator.kt'
+        collapse_path = 'app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailInlineCollapseState.kt'
+        manifest = json.loads(text_of(REPO / 'desktop/upstream-sources.json'))
+        for path in (autopause_path, scroll_path, collapse_path):
+            self.assertEqual(['direct'], [row['mode'] for row in manifest['sources'] if row['path'] == path])
+        self.assertIn('from(repositoryRoot) {', build)
+        autopause = lf_of(SOURCE / autopause_path)
+        scroll = lf_of(SOURCE / scroll_path)
         # v030-detail-glass-gated-chrome-blur: already carried by the retained VideoContentSection
         self.assertIn('val chromeBlurActive = !isPlayerCollapsed || liquidGlassEnabled', content)
         self.assertIn('(!isPlayerCollapsed || liquidGlassEnabledForTabBar)', content)
@@ -445,14 +476,45 @@ class DetailHolderCollapseSourceTests(unittest.TestCase):
         self.assertEqual(1, len(re.findall(r'isCompactFoldableCoverWindow &&\s+useOfficialInlinePortraitDetailExperience &&', policy)))
         self.assertEqual(1, len(re.findall(r'\): Boolean = compactForCommentTab\s', scroll)))
         self.assertEqual(1, len(re.findall(r'val playerCollapsedForAutoPause =\s+isPlayerCollapsed \|\| skipGesturePlayerCollapse', holder)))
-        # v042-glass-pager-vertical-priority: the pager gesture still lacks the v0.4.6 Miuix branch and its parameter
+        # The compiled core gesture has the Miuix branch; only the tab bar carries the current partial decision.
         pager = lf_of(REPO / 'app/src/main/java/com/android/purebilibili/core/ui/common/VerticalPriorityPagerGesture.kt')
-        self.assertEqual(0, pager.count('forceVerticalPriority'))
+        self.assertEqual(2, pager.count('forceVerticalPriority'))
+        self.assertIn('if (!forceVerticalPriority && LocalAppUiStyle.current == AppUiStyle.MIUIX)', pager)
+        self.assertEqual(1, len(re.findall(r'tabSwipeModifier = Modifier\.verticalPriorityHorizontalPagerSwipe\(\s*'
+                                          r'state = pagerState,\s*enabled = shouldEnableVideoContentHorizontalPagerSwipe\('
+                                          r'[^)]*\),\s*forceVerticalPriority = liquidGlassEnabled,\s*\)', content)))
+        self.assertEqual(1, content.count('forceVerticalPriority = liquidGlassEnabled'))
+        self.assertEqual(0, content.count('forceVerticalPriority = true'))
+        self.assertEqual(0, content.count('dragInteractionSource'))
         # v046-collapse-height-shared: the phone collapse state is still the pinned v0.2.5 file
-        collapse_state = lf_of(REPO / 'app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailInlineCollapseState.kt')
+        collapse_state = lf_of(SOURCE / collapse_path)
         self.assertEqual(0, collapse_state.count('reconcileLayout'))
         self.assertEqual(1, holder.count('introScrollPastCollapseThreshold by rememberSaveable'))
 
 
 if __name__ == '__main__':
     unittest.main()
+
+
+class ProtectedReadPointsTests(unittest.TestCase):
+    def test_both_archive_copies_and_real_cli_are_protected(self):
+        live = REPO / collapse.ARCHIVE
+        legacy = SOURCE / collapse.ARCHIVE
+        self.assertNotEqual(live.resolve(), legacy.resolve())
+        self.assertEqual(1, len(collapse.protected_archives(REPO)))
+        with self.assertRaisesRegex(ValueError, 'Detail holder collapse output overlaps retained source'):
+            collapse.validate_outputs(SOURCE, live / 'child')
+        for target in (live / 'child', live, REPO / 'desktop', legacy / 'child', legacy,
+                       SOURCE / 'desktop', SOURCE, REPO):
+            with self.subTest(target=target), self.assertRaisesRegex(ValueError, 'Detail holder collapse output overlaps retained source'):
+                collapse.validate_outputs(SOURCE, target)
+        with tempfile.TemporaryDirectory() as temp:
+            collapse.validate_outputs(SOURCE, Path(temp) / 'out', None,
+                                   REPO / 'desktop/build/generated/original-video-detail-holder-full')
+        child = live / 'child'
+        self.assertFalse(child.exists())
+        done = subprocess.run([sys.executable, '-X', 'utf8', '-B', str(TOOLS / 'extract-upstream-video-detail-holder.py')] +
+                              [str(SOURCE), str(child)], cwd=REPO / 'desktop', capture_output=True, text=True)
+        self.assertNotEqual(done.returncode, 0, done.stdout)
+        self.assertIn('Detail holder collapse output overlaps retained source', done.stderr)
+        self.assertFalse(child.exists())

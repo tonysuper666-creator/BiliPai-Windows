@@ -25,6 +25,14 @@ sys.path.insert(0, str(TOOLS))
 import check_slice_symbol_closure as gate
 import v040_chrome_actions as chrome_actions
 import v046_design_system_leaves_a as leaves
+from legacy_read_point import legacy_read_point
+
+SOURCE = None
+
+
+def setUpModule():
+    global SOURCE
+    SOURCE = legacy_read_point(REPO, leaves.ARCHIVE + '/manifest.json')
 import v025_source_paths as v025
 
 spec = importlib.util.spec_from_file_location('sync_upstream_design_system_leaves_a', TOOLS / 'sync-upstream.py')
@@ -126,7 +134,7 @@ def run_cli(output, test_output, seed):
                        PYTHONDONTWRITEBYTECODE='1', PYTHONUTF8='1')
     done = subprocess.run(
         [sys.executable, '-X', 'utf8', '-B', str(REPO / 'desktop' / PRODUCER),
-         '--repo', str(REPO), '--output', str(output), '--test-output', str(test_output)],
+         '--repo', str(SOURCE), '--output', str(output), '--test-output', str(test_output)],
         cwd=str(REPO / 'desktop'), env=environment, capture_output=True, check=False)
     if done.returncode != 0:
         raise RuntimeError(done.stderr.decode('utf-8', 'replace')[-4000:])
@@ -371,7 +379,7 @@ class V046DesignSystemLeavesASourceTest(unittest.TestCase):
             return [line for line in both if line[:1] == '-'], [line for line in both if line[:1] == '+']
 
         text = {name: raw.decode('utf-8') for name, raw in self.archive.items() if name.endswith('.kt')}
-        vendored = {name: (REPO / CANONICAL[name]).read_bytes().decode('utf-8').replace('\r\n', '\n')
+        vendored = {name: (SOURCE / CANONICAL[name]).read_bytes().decode('utf-8').replace('\r\n', '\n')
                     for name in ('MediaContrastPalette.kt', 'AppPopupSurface.kt', 'AppSemanticVisualPolicy.kt')}
         removed, added = changed(vendored['MediaContrastPalette.kt'], text['MediaContrastPalette.kt'])
         self.assertEqual([], removed)
@@ -423,14 +431,14 @@ class V046DesignSystemLeavesASourceTest(unittest.TestCase):
     def test_chain_layer_asserts_its_predecessor_and_leaves_every_other_path_alone(self):
         popup = BASE + 'AppPopupSurface.kt'
         tokens = BASE + 'AppChromeSizeTokens.kt'
-        vendored_popup = (REPO / popup).read_bytes().decode('utf-8').replace('\r\n', '\n')
+        vendored_popup = (SOURCE / popup).read_bytes().decode('utf-8').replace('\r\n', '\n')
         v040_tokens = chrome_actions.fixed_sources(REPO)[tokens].decode('utf-8')
         self.assertEqual(self.archive['AppPopupSurface.kt'].decode('utf-8'), leaves.chain_source(REPO, popup, vendored_popup))
         self.assertEqual(self.archive['AppChromeSizeTokens.kt'].decode('utf-8'), leaves.chain_source(REPO, tokens, v040_tokens))
         self.assertEqual(sha(vendored_popup.encode()), leaves.CHAIN_PREDECESSOR_SHA256['AppPopupSurface.kt'])
         self.assertEqual(sha(v040_tokens.encode()), leaves.CHAIN_PREDECESSOR_SHA256['AppChromeSizeTokens.kt'])
         for path, foreign in ((popup, v040_tokens), (tokens, vendored_popup),
-                              (tokens, (REPO / tokens).read_bytes().decode('utf-8').replace('\r\n', '\n')),
+                              (tokens, (SOURCE / tokens).read_bytes().decode('utf-8').replace('\r\n', '\n')),
                               (popup, vendored_popup + '\n'), (tokens, self.archive['AppChromeSizeTokens.kt'].decode('utf-8'))):
             with self.subTest(path=path, foreign=sha(foreign.encode())[:8]):
                 with self.assertRaisesRegex(ValueError, 'predecessor changed'):
@@ -458,7 +466,7 @@ class V046DesignSystemLeavesASourceTest(unittest.TestCase):
         self.assertEqual(1, producer.count('from v046_design_system_leaves_a import '))
         # standalone isolated output is the same single owner: the chain writes the v0.4.6 bytes there too
         with tempfile.TemporaryDirectory(prefix='bp-dsl-') as tmp:
-            components.generate(REPO, Path(tmp) / 'o', standalone=True)
+            components.generate(SOURCE, Path(tmp) / 'o', standalone=True)
             body = lf((Path(tmp) / 'o' / leaves.RELATIVE['AppPopupSurface.kt']).read_bytes()).split(b'\n', 2)[2]
             self.assertEqual(self.archive['AppPopupSurface.kt'], body)
 
@@ -489,7 +497,7 @@ class V046DesignSystemLeavesASourceTest(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, 'overlaps'):
                 leaves.validate_outputs(REPO, REPO)
             with self.assertRaisesRegex(ValueError, 'overlaps'):
-                components.generate(REPO, nested)
+                components.generate(SOURCE, nested)
             self.assertFalse(nested.exists())
             self.assertEqual(before, archive_files())
         finally:
@@ -592,7 +600,7 @@ class V046DesignSystemLeavesASourceTest(unittest.TestCase):
             self.assertEqual(leaves.VENDORED_LF_SHA256[name], entry['legacySha256'], name)
             self.assertEqual(v025.reviewed_sha256(REPO, entry), sha(lf((REPO / CANONICAL[name]).read_bytes())), name)
         self.assertNotIn(CANONICAL['AppEntryIconPalette.kt'], by_path)
-        self.assertFalse((REPO / CANONICAL['AppEntryIconPalette.kt']).exists())
+        self.assertFalse((SOURCE / CANONICAL['AppEntryIconPalette.kt']).exists())
         self.assertEqual(chrome_actions.COMPONENT_DIRECT_PATHS & set(CANONICAL.values()), {CANONICAL['AppChromeSizeTokens.kt']})
         self.assertEqual({row['replacedBy'] for row in self.manifest['replacedVendoredCopies']}, set(EXCLUDED_NOW))
 
@@ -720,3 +728,27 @@ class V046DesignSystemLeavesASourceTest(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+class ProtectedReadPointsTests(unittest.TestCase):
+    def test_both_archive_copies_and_real_cli_are_protected(self):
+        live = REPO / leaves.ARCHIVE
+        legacy = SOURCE / leaves.ARCHIVE
+        self.assertNotEqual(live.resolve(), legacy.resolve())
+        self.assertEqual(1, len(leaves.protected_archives(REPO)))
+        with self.assertRaisesRegex(ValueError, 'Output overlaps original design-system leaf inputs'):
+            leaves.validate_outputs(SOURCE, live / 'child')
+        for target in (live / 'child', live, REPO / 'desktop', legacy / 'child', legacy,
+                       SOURCE / 'desktop', SOURCE, REPO):
+            with self.subTest(target=target), self.assertRaisesRegex(ValueError, 'Output overlaps original design-system leaf inputs'):
+                leaves.validate_outputs(SOURCE, target)
+        with tempfile.TemporaryDirectory() as temp:
+            leaves.validate_outputs(SOURCE, Path(temp) / 'out', None,
+                                   REPO / 'desktop/build/generated/components')
+        child = live / 'child'
+        self.assertFalse(child.exists())
+        done = subprocess.run([sys.executable, '-X', 'utf8', '-B', str(TOOLS / 'extract-upstream-components.py')] +
+                              ['--repo', str(SOURCE), '--output', str(child)], cwd=REPO / 'desktop', capture_output=True, text=True)
+        self.assertNotEqual(done.returncode, 0, done.stdout)
+        self.assertIn('Output overlaps original design-system leaf inputs', done.stderr)
+        self.assertFalse(child.exists())
