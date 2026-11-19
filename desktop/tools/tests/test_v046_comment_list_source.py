@@ -4,6 +4,7 @@ import importlib.util
 import contextlib
 import io
 import json
+import re
 import shutil
 import subprocess
 import sys
@@ -18,6 +19,16 @@ import v046_comment_list as comments
 import v046_detail_holder_collapse as holder_collapse
 from v046_favorite_editor import restore
 from desktop_refresh_adaptation import unbind_refresh_lists
+from legacy_read_point import legacy_read_point
+
+# Producers patch the pinned originals the desktop build reads, not the merged root.
+PROBE = 'app/src/main/java/com/android/purebilibili/feature/video/screen/VideoContentSection.kt'
+SOURCE = None
+
+
+def setUpModule():
+    global SOURCE
+    SOURCE = legacy_read_point(REPO, PROBE)
 
 
 def module(filename):
@@ -41,8 +52,8 @@ class OriginalCommentListSources(unittest.TestCase):
         cls.playback_owner = module('extract-upstream-whole-playback-settings.py')
         cls.syntax = module('sync-upstream.py')
         cls.sources, cls.manifest = comments.fixed(REPO)
-        cls.owner.generate(REPO, cls.output/'actual')
-        cls.playback_owner.main(REPO, cls.output/'playback')
+        cls.owner.generate(SOURCE, cls.output/'actual')
+        cls.playback_owner.main(SOURCE, cls.output/'playback')
         with patch.object(comments, 'advance_reply_components', side_effect=lambda repo, before, output: before), \
              patch.object(comments, 'advance_subreply_components', side_effect=lambda repo, before, output: before), \
              patch.object(comments, 'advance_dynamic_items', side_effect=lambda repo, before, output: before), \
@@ -52,7 +63,7 @@ class OriginalCommentListSources(unittest.TestCase):
              patch('v046_comment_polish.advance_inline_entrance', side_effect=lambda repo, before, output: before), \
              patch('v046_comment_thread.advance_split_item_states', side_effect=lambda repo, before, output: before), \
              patch('v046_comment_thread.advance_root_text_layout', side_effect=lambda repo, before, output: before):
-            cls.owner.generate(REPO, cls.output/'before')
+            cls.owner.generate(SOURCE, cls.output/'before')
 
     @classmethod
     def tearDownClass(cls):
@@ -134,7 +145,7 @@ class OriginalCommentListSources(unittest.TestCase):
             comments.emit_shared(REPO, REPO/comments.ARCHIVE)
 
     def test_actual_generator_is_deterministic_and_does_not_duplicate_existing_rows(self):
-        self.owner.generate(REPO, self.output/'again')
+        self.owner.generate(SOURCE, self.output/'again')
         for path in (self.output/'actual/com').rglob('*.kt'):
             self.assertEqual(path.read_bytes(), (self.output/'again'/path.relative_to(self.output/'actual')).read_bytes())
         definitions = ''.join(p.read_text(encoding='utf8') for p in (self.output/'actual/com').rglob('*.kt'))
@@ -244,7 +255,7 @@ class ConnectedCommentPanelSources(unittest.TestCase):
             ('bgm', 'extract-upstream-bgm-detail.py', True),
         ]
         for label, filename, named in commands:
-            args = ['--repo', str(REPO), '--output', str(cls.output/label)] if named else [str(REPO), str(cls.output/label)]
+            args = ['--repo', str(SOURCE), '--output', str(cls.output/label)] if named else [str(SOURCE), str(cls.output/label)]
             if label == 'bangumi':
                 from generation_stage_proof import capture_ui_stage, PGC_BUFFERING
                 producer = module(filename)
@@ -541,6 +552,17 @@ class ConnectedCommentPanelSources(unittest.TestCase):
             self.assertEqual(1, holder[first:last].count('pinnedReplyIds = commentState.pinnedReplyIds'))
         proof = self.proof('holder', 'v046-landscape-comment-pins-proof')
         self.assertEqual(2, proof['actualLandscapeCallers'])
+
+
+class PinnedReadPointIsTheBuildInput(unittest.TestCase):
+    def test_gradle_runs_these_producers_on_the_materialized_legacy_root(self):
+        settings = (REPO/'desktop/settings.gradle.kts').read_text(encoding='utf8')
+        self.assertIn('val root = repository.resolve(".legacy-root")', settings)
+        self.assertIn('settingsDir.resolve("upstream-core/legacy-root.commit")', settings)
+        recipe = (REPO/'desktop/build.gradle.kts').read_text(encoding='utf8')
+        self.assertIn('val repositoryRoot = file(gradle.extra["bilipai.legacyRoot"] as String)', recipe)
+        for producer in ['extract-upstream-video-comment-ui.py', 'extract-upstream-dynamic-reply.py']:
+            self.assertRegex(recipe, r'"tools/'+re.escape(producer)+r'",\s*"--repo",\s*repositoryRoot\.absolutePath,')
 
 
 if __name__ == '__main__':
