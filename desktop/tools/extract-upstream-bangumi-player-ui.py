@@ -87,6 +87,73 @@ def windows_bangumi_buffering_playback_toggle_ui(source, output):
  assert inverse==source,'complete PGC buffering playback toggle inverse'
  return s,edits
 
+def windows_bangumi_pagination_state_ui(source, output):
+ # Keep long-season selection/effects and both row states alive when the detail panel or
+ # lazy item leaves composition. A new season gets fresh state; a new playing episode
+ # still selects its range. Run before introduction_panel so its six-edit proof stays intact.
+ if not output.endswith('/ui/player/DesktopOriginalBangumiPlayerContent.kt'):
+  return source,[]
+ local='                    val episodesPerPage = 50\n                    val totalPages = (detail.episodes.orEmpty().size + episodesPerPage - 1) / episodesPerPage\n                    var selectedPage by remember { mutableIntStateOf(0) }\n                    \n                    // 当前集所在的页\n                    val currentEpisodeIndex = detail.episodes.orEmpty().indexOfFirst { it.id == currentEpisode.id }\n                    LaunchedEffect(currentEpisodeIndex) {\n                        if (currentEpisodeIndex >= 0) {\n                            selectedPage = currentEpisodeIndex / episodesPerPage\n                        }\n                    }\n                    \n'
+ hoisted='''    val episodesPerPage = 50
+    val totalPages = (detail.episodes.orEmpty().size + episodesPerPage - 1) / episodesPerPage
+    val currentEpisodeIndex = detail.episodes.orEmpty().indexOfFirst { it.id == currentEpisode.id }
+    var selectedPage by rememberSaveable(detail.seasonId) {
+        mutableIntStateOf(maxOf(currentEpisodeIndex, 0) / episodesPerPage)
+    }
+    val episodeRangeRowState = key(detail.seasonId) { rememberLazyListState() }
+    val pagedEpisodeRowState = key(detail.seasonId, selectedPage) { rememberLazyListState() }
+    LaunchedEffect(detail.seasonId, currentEpisode.id, currentEpisodeIndex) {
+        if (currentEpisodeIndex >= 0) {
+            selectedPage = currentEpisodeIndex / episodesPerPage
+        }
+    }
+'''
+ edits=[dict(label='long-season pagination state and episode tracking outlive detail visibility',
+             before='    val isCourse = detail.seasonType == 10\n',
+             after='    val isCourse = detail.seasonType == 10\n'+hoisted),
+        dict(label='the lazy item consumes the hoisted selection without restarting episode tracking',before=local,after='                    // Pagination state is owned by Content above the detail branch.\n'),
+        dict(label='the range selector consumes its season-scoped scroll state',
+             before='                    // 范围选择器\n                    LazyRow(\n',
+             after='                    // 范围选择器\n                    LazyRow(\n                        state = episodeRangeRowState,\n'),
+        dict(label='the selected range consumes its season-and-page-scoped episode row state',
+             before='                    LazyRow(\n                        contentPadding = PaddingValues(horizontal = 16.dp),\n                        horizontalArrangement = Arrangement.spacedBy(8.dp)\n                    ) {\n                        items(pageEpisodes, key = { it.id })',
+             after='                    LazyRow(\n                        state = pagedEpisodeRowState,\n                        contentPadding = PaddingValues(horizontal = 16.dp),\n                        horizontalArrangement = Arrangement.spacedBy(8.dp)\n                    ) {\n                        items(pageEpisodes, key = { it.id })'),
+        dict(label='a shrinking episode list cannot leave subList outside its bounds',
+             before='                    val pageStart = selectedPage * episodesPerPage\n',
+             after='                    val pageStart = selectedPage.coerceIn(0, totalPages - 1) * episodesPerPage\n')]
+ s=source
+ for edit in edits:
+  assert s.count(edit['before'])==1,edit['label']
+  s=s.replace(edit['before'],edit['after'],1)
+ inverse=s
+ for edit in reversed(edits):
+  assert inverse.count(edit['after'])==1,edit['label']+' inverse'
+  inverse=inverse.replace(edit['after'],edit['before'],1)
+ assert inverse==source,'complete PGC pagination state inverse'
+ return s,edits
+
+def windows_bangumi_introduction_panel_ui(source, output):
+ # Upstream BangumiPlayerContent: the title opens the introduction panel in place of the area below
+ # the player; the tab pager, intro list and episode row states stay hoisted so 收起 returns to them.
+ if not output.endswith('/ui/player/DesktopOriginalBangumiPlayerContent.kt'):
+  return source,[]
+ edits=[dict(label='panel visibility is saved per season and the list states are hoisted',before='    val isCourse = detail.seasonType == 10\n',after='    val isCourse = detail.seasonType == 10\n    var showDetailPanel by rememberSaveable(detail.seasonId) { mutableStateOf(false) }\n    val introductionListState = rememberLazyListState()\n    val episodeRowState = rememberLazyListState()\n'),
+  dict(label='the title opens the panel unless the season is a course',before='                AppText(\n                    text = detail.title,\n                    style = MaterialTheme.typography.titleLarge,\n',after='                AppText(\n                    text = detail.title,\n                    modifier = Modifier.clickable(enabled = !isCourse) { showDetailPanel = true },\n                    style = MaterialTheme.typography.titleLarge,\n'),
+  dict(label='the panel replaces the background and tab column while dialogs stay mounted',before='    Box(modifier = Modifier.fillMaxSize()) {\n        Box(\n            modifier = Modifier\n                .fillMaxSize()\n                .layerBackdrop(selectionBackdrop)\n',after='    Box(modifier = Modifier.fillMaxSize()) {\n        if (showDetailPanel) {\n            com.bilipai.desktop.ui.DesktopBangumiIntroductionPanel(\n                detail = detail,\n                onDismiss = { showDetailPanel = false },\n                modifier = Modifier.fillMaxSize()\n            )\n        } else {\n        Box(\n            modifier = Modifier\n                .fillMaxSize()\n                .layerBackdrop(selectionBackdrop)\n'),
+  dict(label='the else branch closes right after the tab column',before='            }\n        }\n    }\n\n    if (showFollowStatusDialog) {\n',after='            }\n        }\n    }\n        }\n\n    if (showFollowStatusDialog) {\n'),
+  dict(label='the intro list keeps its scroll position across the panel',before='                0 -> LazyColumn(\n                    modifier = Modifier.fillMaxSize(),\n',after='                0 -> LazyColumn(\n                    state = introductionListState,\n                    modifier = Modifier.fillMaxSize(),\n'),
+  dict(label='the episode row keeps its scroll position across the panel',before='                // 普通剧集列表\n                item {\n                    LazyRow(\n',after='                // 普通剧集列表\n                item {\n                    LazyRow(\n                        state = episodeRowState,\n')]
+ s=source
+ for edit in edits:
+  assert s.count(edit['before'])==1,edit['label']
+  s=s.replace(edit['before'],edit['after'],1)
+ inverse=s
+ for edit in reversed(edits):
+  assert inverse.count(edit['after'])==1,edit['label']+' inverse'
+  inverse=inverse.replace(edit['after'],edit['before'],1)
+ assert inverse==source,'complete PGC introduction panel inverse'
+ return s,edits
+
 def main():
  parser=argparse.ArgumentParser();parser.add_argument('--repo',type=Path,required=True);parser.add_argument('--output',type=Path,required=True);a=parser.parse_args()
  records=[]
@@ -121,6 +188,10 @@ def main():
   body=apply_retry_ui(a.repo,r['output'],body,a.output)
   body,buffering_edits=windows_bangumi_buffering_playback_toggle_ui(body,r['output'])
   windows_edits.extend(buffering_edits)
+  body,pagination_edits=windows_bangumi_pagination_state_ui(body,r['output'])
+  windows_edits.extend(pagination_edits)
+  body,intro_edits=windows_bangumi_introduction_panel_ui(body,r['output'])
+  windows_edits.extend(intro_edits)
   write(a.output,r['output'],body);records.append(dict(source=r['originalPath'],output=r['output'],wholeBody=True,edits=len(r['edits']),originalSha256LF=sha(raw),generatedSha256LF=sha(body),windowsAdaptations=windows_edits))
  from v046_comment_list import emit_bangumi_panel
  emit_bangumi_panel(a.repo,a.output)
