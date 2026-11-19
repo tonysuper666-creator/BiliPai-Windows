@@ -170,7 +170,8 @@ BANGUMI_PATHS = {
 }
 
 # Exact pins of the key maps (LF-normalised text, sha256). Bangumi: the two vendored direct sources that the keyboard flag enables and their resolvers.
-# Offline: the Space-only window key input of the desktop bridge. Neither is touched by X5; a later change has to update the pin and say why.
+# TON-1263 extends the desktop bridge to arrows, F/M/F11/Esc and native pointer input.
+# Keep exact function, binding and registration pins; the vendored policies stay unchanged.
 KEY_POLICY_FILE_SHA256 = {
     model.PLAYER_KEY_POLICY_REL: "d9315792c605c4acc4f7c3de98c888b335de729fba741c6e7f0eb966a3101441",
     model.FULLSCREEN_KEY_POLICY_REL: "86cd0968201445d8bda29fcca43f5676f9d0c32d8809188426385d407036836e",
@@ -179,15 +180,19 @@ KEY_RESOLVER_SHA256 = {
     (model.PLAYER_KEY_POLICY_REL, "resolvePlayerKeyAction"): ("b7c609b4c5eb15da2b6462e29ad9475d1846c808655d197bf16c64a84eb012a0",),
     (model.FULLSCREEN_KEY_POLICY_REL, "resolveFullscreenKeyboardAction"): ("114069a391b843b429bd710b9360251e7d03952690827a323bd3ce248f69538a",),
 }
+# The locked-screen action guard clears held input before either key path.
+# Keep exact function pins, including that guard and both window overloads.
 OFFLINE_KEY_FUNCTION_SHA256 = {
-    "windowKeyInput": ("d7ed5e7a09ec34a2290d690c33f5b5be504c4108b3f8a6fd60a11509e9049f9c", "ace85d4fd6da72da286252814f1366dd818f1c9fd25b44bc55d11077e20f5345"),
-    "keyPressed": ("69dd5a61117e1f5b2fbd5f5c259c25f485de3631be8ef40599a75b4bd99adfcd", "29babc55225c23dedefea32c32c7b90ee8af97e471c711d01a856878e037fb27"),
-    "keyReleased": ("e9d5c2787cf3778b80074f16273b64beee45cf5b5c07fcf6949794f3bc002dec", "486b922e0e6a7f693bdf9a6df49f18503c4b00d9ab103a55023cca3cad9d5599"),
-    "pressSpace": ("f58ab0b4b5fc128c3a54c66d0d9412d21836ed0ae10c8f4a6328004a0ae439ae",),
-    "releaseSpace": ("d21322c4ae0fd0184ce0cefa878bb8d13ab6c21609962326d72e6c7e2588e245",),
+    'windowKeyInput': ('90277a20ba1609c0a43a761b3cdc28a5571a34a963b1d5991a35fe61fd5b1def', '807f4a078c843645247a30a032ed8b75bf929f7c68ba96e76d4935e035675904'),
+    'keyPressed': ('b86fd9b9dd2f484543ce03c530f42b65c7a456709dc145d4164041da36e917c2', '29babc55225c23dedefea32c32c7b90ee8af97e471c711d01a856878e037fb27'),
+    'keyReleased': ('b0c9a1c21ad29c18751100e3b0e2a8924e9a49dbd2d9e51a18fcc2c11da53e5b', '486b922e0e6a7f693bdf9a6df49f18503c4b00d9ab103a55023cca3cad9d5599'),
+    'pressSpace': ('f58ab0b4b5fc128c3a54c66d0d9412d21836ed0ae10c8f4a6328004a0ae439ae',),
+    'releaseSpace': ('d21322c4ae0fd0184ce0cefa878bb8d13ab6c21609962326d72e6c7e2588e245',),
 }
-MPV_BINDINGS_LINE = '    val bindings: String = listOf("MBTN_LEFT" to "reveal", "MOUSE_MOVE" to "motion", "SPACE" to "toggle")'
-OFFLINE_REGISTRATION = "windowKeyFallback?.registerLeaf { event -> input.windowKeyInput(event) }"
+MPV_BINDINGS_LINE = '    val bindings: String = MpvNativeWindowInputKind.entries'
+MPV_BINDINGS_FORMAT = '        .joinToString("\\n") { "${it.binding} nonrepeatable script-message $token ${it.action}" }'
+MPV_INPUT_KIND_SHA256 = '94495bde51159d9e117982e389f810f834f1c60b7d5a765b02eb159b54830546'
+OFFLINE_REGISTRATION = 'val keys = if (handleWindowKeys) fallback?.registerLeaf { input.windowKeyInput(it) } else null'
 BANGUMI_ARGS = "precisePointerConnected = true, hardwareKeyboardConnected = true"
 BANGUMI_CALL = "DesktopDetailWindow(" + BANGUMI_ARGS + ")"
 
@@ -336,8 +341,12 @@ def key_map_problems(universe):
         actual = tuple(model.sha256_of(text) for text in universe.function_texts(model.OFFLINE_INPUT_REL, name))
         if actual != expected:
             problems.append("offline %s changed" % name)
-    if MPV_BINDINGS_LINE not in universe.texts[model.MPV_INPUT_REL].splitlines():
-        problems.append("the three mpv native input bindings changed")
+    mpv = universe.texts[model.MPV_INPUT_REL]
+    enum = re.search(r"internal enum class[^}]+}\n", mpv)
+    if (mpv.splitlines().count(MPV_BINDINGS_LINE) != 1 or
+            mpv.splitlines().count(MPV_BINDINGS_FORMAT) != 1 or
+            enum is None or model.sha256_of(enum.group()) != MPV_INPUT_KIND_SHA256):
+        problems.append("the thirteen exact native input bindings changed")
     if universe.texts[model.OFFLINE_INPUT_REL].count(OFFLINE_REGISTRATION) != 1:
         problems.append("the offline key registration changed")
     bangumi = [provider for provider in model.providers(universe) if provider.rel == model.BANGUMI_LEAF_REL]
@@ -614,18 +623,20 @@ class KeyMapPinsTest(unittest.TestCase):
         self.assertEqual([], bangumi)
         self.assertIsNone(pattern.search(universe.code[APP + "feature/download/OfflineVideoPlayerScreen.kt"]))
 
-    def test_the_offline_key_input_is_space_only(self):
+    def test_the_offline_key_input_keeps_space_and_the_desktop_shortcuts(self):
         universe = model.repo_universe()
         texts = [text for name in OFFLINE_KEY_FUNCTION_SHA256 for text in universe.function_texts(model.OFFLINE_INPUT_REL, name)]
         code = "\n".join(source.mask_kotlin(text) for text in texts)
-        self.assertEqual({"VK_SPACE"}, set(re.findall(r"\bVK_\w+", code)))
-        self.assertEqual({"Key.Spacebar"}, set(re.findall(r"\bKey\.\w+", code)))
+        self.assertEqual({"VK_SPACE", "VK_LEFT", "VK_RIGHT", "VK_UP", "VK_DOWN", "VK_F", "VK_F11", "VK_ESCAPE", "VK_M"}, set(re.findall(r"\bVK_\w+", code)))
+        self.assertEqual({"Key.Spacebar", "Key.DirectionLeft", "Key.DirectionRight", "Key.DirectionUp", "Key.DirectionDown", "Key.F", "Key.F11", "Key.Escape", "Key.M"}, set(re.findall(r"\bKey\.\w+", code)))
         self.assertEqual(1, universe.texts[model.OFFLINE_INPUT_REL].count(OFFLINE_REGISTRATION))
 
-    def test_the_mpv_native_input_keeps_three_bindings(self):
+    def test_the_mpv_native_input_keeps_thirteen_exact_bindings(self):
         text = model.repo_universe().texts[model.MPV_INPUT_REL]
         self.assertEqual(1, text.splitlines().count(MPV_BINDINGS_LINE))
-        self.assertEqual(3, MPV_BINDINGS_LINE.count(" to "))
+        self.assertEqual(1, text.splitlines().count(MPV_BINDINGS_FORMAT))
+        self.assertEqual(13, len(re.findall(r'\b[A-Z_0-9]+\("', text)))
+        self.assertEqual([], key_map_problems(model.repo_universe()))
 
     def test_the_player_key_policies_are_vendored_direct_sources(self):
         modes = model.manifest_modes([model.PLAYER_KEY_POLICY_REL, model.FULLSCREEN_KEY_POLICY_REL])
@@ -835,7 +846,9 @@ class MutationTest(unittest.TestCase):
             (model.OFFLINE_INPUT_REL, "event.keyCode != java.awt.event.KeyEvent.VK_SPACE ||", "event.keyCode != java.awt.event.KeyEvent.VK_ENTER ||"),
             (model.OFFLINE_INPUT_REL, "if (event.key != Key.Spacebar) return false", "if (event.key != Key.Enter) return false"),
             (model.OFFLINE_INPUT_REL, OFFLINE_REGISTRATION, "windowKeyFallback?.registerLeaf { event -> false }"),
-            (model.MPV_INPUT_REL, '"SPACE" to "toggle")', '"SPACE" to "toggle", "ENTER" to "toggle")'),
+            (model.MPV_INPUT_REL, 'TOGGLE("SPACE", "toggle")', 'TOGGLE("ENTER", "toggle")'),
+            (model.MPV_INPUT_REL, 'WHEEL_UP("WHEEL_UP", "wheel-up")', 'WHEEL_UP("WHEEL_DOWN", "wheel-up")'),
+            (model.MPV_INPUT_REL, "nonrepeatable script-message", "repeatable script-message"),
             (model.BANGUMI_LEAF_REL, BANGUMI_CALL, "DesktopDetailWindow(precisePointerConnected = true)"),
         )
         for rel, old, new in edits:
