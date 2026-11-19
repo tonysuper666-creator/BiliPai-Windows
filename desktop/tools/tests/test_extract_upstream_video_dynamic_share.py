@@ -7,6 +7,7 @@ TOOLS=Path(__file__).resolve().parents[1]
 REPO=TOOLS.parents[1]
 sys.path.insert(0,str(TOOLS))
 import v030_video_dynamic_share as source
+from legacy_read_point import legacy_read_point
 def load(name,file):
     spec=importlib.util.spec_from_file_location(name,file);m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
 def reverse(body,rows):
@@ -58,7 +59,7 @@ class VideoDynamicShareSourceTest(unittest.TestCase):
         with tempfile.TemporaryDirectory(prefix='video-dynamic-share-cli-') as temp:
             out=Path(temp)/'share'
             result=subprocess.run([sys.executable,str(TOOLS/'extract-upstream-video-share-consent.py'),
-                '--source-repo',str(REPO),'--output-dir',str(out)],env=environment,capture_output=True)
+                '--source-repo',str(legacy_read_point(REPO, 'app/src/main/java/com/android/purebilibili/feature/video/share/VideoShareSheet.kt')),'--output-dir',str(out)],env=environment,capture_output=True)
             self.assertEqual(0,result.returncode,result.stderr.decode('utf8','replace'))
             report=json.loads((out/'video-share-consent-selection-proof.json').read_bytes())
             originals=source.sources(REPO);checked=0
@@ -88,7 +89,7 @@ class VideoDynamicShareSourceTest(unittest.TestCase):
     def test_real_api_cli_emits_one_complete_model_with_unchanged_canonical_inventory(self):
         with tempfile.TemporaryDirectory(prefix='video-dynamic-api-cli-') as temp:
             out=Path(temp)/'api'
-            result=subprocess.run([sys.executable,str(TOOLS/'extract-upstream-api.py'),'--repo',str(REPO),'--output',str(out)],capture_output=True)
+            result=subprocess.run([sys.executable,str(TOOLS/'extract-upstream-api.py'),'--repo',str(legacy_read_point(REPO, 'app/src/main/java/com/android/purebilibili/feature/video/share/VideoShareSheet.kt')),'--output',str(out)],capture_output=True)
             self.assertEqual(0,result.returncode,result.stderr.decode('utf8','replace'))
             models=list(out.rglob('DynamicCreateModels.kt'));self.assertEqual(1,len(models))
             self.assertEqual(source.sources(REPO)['DynamicCreateModels.kt'].encode(),models[0].read_bytes())
