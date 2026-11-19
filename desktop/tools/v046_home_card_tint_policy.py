@@ -121,15 +121,29 @@ def fixed(repo):
     return sources, raws, manifest
 
 
+LIVE_REPO = Path(__file__).resolve().parents[2]
+
+
+def protected_archives(repo):
+    """Protect both the source archive and the live Gradle input archive."""
+    roots = []
+    for base in (Path(repo), LIVE_REPO):
+        root = (base / ARCHIVE).resolve()
+        if root not in roots:
+            roots.append(root)
+    return roots
+
+
 def validate_outputs(repo, *outputs):
     fixed(repo)
-    root = (Path(repo) / ARCHIVE).resolve()
+    roots = protected_archives(repo)
     for output in outputs:
         if output is None:
             continue
         target = Path(output).resolve()
-        need(not (target.is_relative_to(root) or root.is_relative_to(target)),
-             'Output overlaps original home card tint policy inputs')
+        for root in roots:
+            need(not (target.is_relative_to(root) or root.is_relative_to(target)),
+                 'Output overlaps original home card tint policy inputs')
 
 
 def _target(root, name):

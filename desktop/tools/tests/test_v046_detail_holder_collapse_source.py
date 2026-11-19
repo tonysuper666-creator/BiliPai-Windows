@@ -26,6 +26,14 @@ REPO = Path(__file__).resolve().parents[3]
 TOOLS = REPO / 'desktop/tools'
 sys.path.insert(0, str(TOOLS))
 import v046_detail_holder_collapse as collapse
+from legacy_read_point import legacy_read_point
+
+SOURCE = None
+
+
+def setUpModule():
+    global SOURCE
+    SOURCE = legacy_read_point(REPO, collapse.ARCHIVE + '/manifest.json')
 import desktop_refresh_adaptation as refresh
 
 PKG = 'com/android/purebilibili/'
@@ -65,7 +73,7 @@ def lf_of(path):
 def run_tablet(output):
     """The tablet producer is a script (argument parsing at module level): run it in process, as __main__."""
     sink = io.TextIOWrapper(io.BytesIO(), encoding='utf-8')
-    with patch.object(sys, 'argv', ['extract-upstream-video-tablet-full.py', '--repo', str(REPO), '--output', str(output)]), \
+    with patch.object(sys, 'argv', ['extract-upstream-video-tablet-full.py', '--repo', str(SOURCE), '--output', str(output)]), \
             patch('sys.stdout', sink):
         runpy.run_path(str(TOOLS / 'extract-upstream-video-tablet-full.py'), run_name='__main__')
 
@@ -132,13 +140,13 @@ class DetailHolderCollapseSourceTests(unittest.TestCase):
         for label in ('actual', 'before'):
             directory = root / label
             if label == 'actual':
-                cls.holder.generate(REPO, directory / 'holder')
-                cls.content.generate(REPO, directory / 'content')
+                cls.holder.generate(SOURCE, directory / 'holder')
+                cls.content.generate(SOURCE, directory / 'content')
                 run_tablet(directory / 'tablet')
             else:
                 with identity_layers():
-                    cls.holder.generate(REPO, directory / 'holder')
-                    cls.content.generate(REPO, directory / 'content')
+                    cls.holder.generate(SOURCE, directory / 'holder')
+                    cls.content.generate(SOURCE, directory / 'content')
                     run_tablet(directory / 'tablet')
         cls.root = root
 
@@ -369,15 +377,15 @@ class DetailHolderCollapseSourceTests(unittest.TestCase):
                 with self.assertRaisesRegex(ValueError, 'overlaps'):
                     collapse.validate_outputs(REPO, candidate)
             with self.assertRaisesRegex(ValueError, 'overlaps'):
-                self.holder.generate(REPO, REPO / collapse.ARCHIVE / 'child')
+                self.holder.generate(SOURCE, REPO / collapse.ARCHIVE / 'child')
             collapse.validate_outputs(REPO, directory, None)
         self.assertEqual(before, {p.name: p.read_bytes() for p in (REPO / collapse.ARCHIVE).iterdir()})
 
     def test_the_layers_are_deterministic(self):
         with tempfile.TemporaryDirectory(prefix='bp-hc-d-') as directory:
             second = Path(directory)
-            self.holder.generate(REPO, second / 'holder')
-            self.content.generate(REPO, second / 'content')
+            self.holder.generate(SOURCE, second / 'holder')
+            self.content.generate(SOURCE, second / 'content')
             run_tablet(second / 'tablet')
             for owner, files in (('holder', (HOLDER_OUTPUT, RECOVERY_OUTPUT)), ('content', (CONTENT_OUTPUT,)),
                                  ('tablet', (TABLET_OUTPUT, CINEMA_OUTPUT))):
@@ -456,3 +464,27 @@ class DetailHolderCollapseSourceTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+class ProtectedReadPointsTests(unittest.TestCase):
+    def test_both_archive_copies_and_real_cli_are_protected(self):
+        live = REPO / collapse.ARCHIVE
+        legacy = SOURCE / collapse.ARCHIVE
+        self.assertNotEqual(live.resolve(), legacy.resolve())
+        self.assertEqual(1, len(collapse.protected_archives(REPO)))
+        with self.assertRaisesRegex(ValueError, 'Detail holder collapse output overlaps retained source'):
+            collapse.validate_outputs(SOURCE, live / 'child')
+        for target in (live / 'child', live, REPO / 'desktop', legacy / 'child', legacy,
+                       SOURCE / 'desktop', SOURCE, REPO):
+            with self.subTest(target=target), self.assertRaisesRegex(ValueError, 'Detail holder collapse output overlaps retained source'):
+                collapse.validate_outputs(SOURCE, target)
+        with tempfile.TemporaryDirectory() as temp:
+            collapse.validate_outputs(SOURCE, Path(temp) / 'out', None,
+                                   REPO / 'desktop/build/generated/original-video-detail-holder-full')
+        child = live / 'child'
+        self.assertFalse(child.exists())
+        done = subprocess.run([sys.executable, '-X', 'utf8', '-B', str(TOOLS / 'extract-upstream-video-detail-holder.py')] +
+                              [str(SOURCE), str(child)], cwd=REPO / 'desktop', capture_output=True, text=True)
+        self.assertNotEqual(done.returncode, 0, done.stdout)
+        self.assertIn('Detail holder collapse output overlaps retained source', done.stderr)
+        self.assertFalse(child.exists())
