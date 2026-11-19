@@ -12,7 +12,9 @@ test_ux_leaf_anchor_guard.py pins the anchors of the leaf. This suite pins what 
   BindingSourceTest     DesktopPlayerControlsBinding.kt agrees with the model line by line, the model agrees with an independent
                         oracle on every combination of page, gate and muted flag, and the file is pure
   SelectionSourceTest   DesktopPlayerLayoutSelection.kt agrees with the model and the contract; the settings row of the flag
-                        stays off while no overlay exists
+                        follows the canonical capability, now enabled by the mounted DESKTOP consumer
+  CarrierSourceTest     the real native foreground carrier, hit regions, subtitle reserve and shared layout selection
+  CarrierMutationTest   every carrier check rejects its own mutation; the consumer hunks restore the exact pre-consumer leaf
   JvmTestsTest          the two JVM test classes exist and use no window
   MutationTest          each V2 check fails on an edited copy of the real leaf
 
@@ -23,8 +25,13 @@ Slice V6 (the window-level shortcut router) is the first of them: V6_HUNKS below
 and then the ten of V2, so the base leaf (commit dee21a6c5) still comes out byte for byte. The V2 checks that read the leaf as it is now
 stay as they were, with two exact updates that V6 caused: legacyChrome is read four times (it also feeds the shortcut binding), and the
 recorded diff size of V2 is measured between the V2 state (V6 undone) and the base. test_ux_player_keys_source.py pins what V6 did.
+
+TON-1592 prepends ux_player_consumer_hunks.json before those historical chains. The new stage and native carrier are checked on
+the current leaf; historical anchors are checked after undoing only this consumer layer. Pre-existing V6 baseline failures remain
+visible, rather than broadening an old identity assertion to accept unrelated changes.
 """
 import hashlib
+import json
 import itertools
 import re
 import sys
@@ -339,9 +346,19 @@ TON1028_HUNKS = (
 )
 
 
+CONSUMER_RECORD = json.loads(Path(__file__).with_name('ux_player_consumer_hunks.json').read_text())
+CONSUMER_HUNKS = tuple((h['label'], h['before'].split('\n'), h['after'].split('\n'))
+                       for h in CONSUMER_RECORD['hunks'])
+
+
+def reverse_consumer(leaf):
+    """Undo only TON-1592 before checking the historical V2/V6 identity chain."""
+    return reverse_chain(leaf, CONSUMER_HUNKS)
+
+
 def reverse_v6(leaf):
     """The V2 state of the leaf: the hunks of the later slices (TON-1028, then V6) undone."""
-    return reverse_chain(reverse_chain(leaf, TON1028_HUNKS), V6_HUNKS)
+    return reverse_chain(reverse_chain(reverse_consumer(leaf), TON1028_HUNKS), V6_HUNKS)
 
 
 def reverse_apply(leaf):
@@ -384,15 +401,14 @@ CONSTRUCTION = (
     ("toggleFullscreen", "{ actions.fullscreen() }"), ("speed", "::setSpeed"),
 )
 
-STRIP_OPEN = "val legacyTopStrip: @Composable () -> Unit = { DesktopWindowsPlayerSurface(Modifier.fillMaxWidth()"
-STRIP_CALL = "if (chromeVisible && legacyChrome) legacyTopStrip()"
-BAR_OPEN = "val legacyControlBar: @Composable () -> Unit = { DesktopWindowsVideoControlBar("
-BAR_CALL = "if (chromeVisible && legacyChrome) legacyControlBar()"
-PANEL_OPEN = "val detailsPanel: @Composable () -> Unit = { DesktopWindowsVideoDetailsPanel("
-PANEL_CALL = "if (detailsOpen) detailsPanel()"
-FLAG_READ = "val windowsUxSettings by LocalDesktopWindowsUx.current.settings.collectAsState()"
-EFFECTIVE = ("val legacyChrome = desktopPlayerEffectiveLayout(windowsUxSettings.playerLayout, DESKTOP_PLAYER_OVERLAY_AVAILABLE) ==\n"
-             "        DesktopWindowsUxPlayerLayout.LEGACY")
+STRIP_OPEN = "header = { DesktopWindowsPlayerSurface(Modifier.fillMaxWidth()"
+STRIP_CALL = "if (chromeVisible && legacy) header()"
+BAR_OPEN = "controls = { Box(Modifier.onSizeChanged { overlayControlsHeightPx = it.height }) { DesktopWindowsVideoControlBar("
+BAR_CALL = "if (chromeVisible && legacy) controls()"
+PANEL_OPEN = "panel = { panelModifier -> DesktopWindowsVideoDetailsPanel("
+PANEL_CALL = "if (dock.mounted) plan.panel(Modifier.width(dock.widthDp.dp).fillMaxHeight())"
+FLAG_READ = "val settings by LocalDesktopWindowsUx.current.settings.collectAsState()"
+EFFECTIVE = "layout = desktopPlayerEffectiveLayout(settings.playerLayout, DESKTOP_PLAYER_OVERLAY_AVAILABLE)"
 IMPORTS = ("import com.bilipai.desktop.appearance.DesktopWindowsUxPlayerLayout", "import com.bilipai.desktop.appearance.LocalDesktopWindowsUx")
 
 
@@ -414,7 +430,7 @@ def lambda_block(leaf, opener):
 
 
 def check_v2_structure(leaf):
-    """Problems in the V2 shape of the leaf: the imports, the flag read, the three lambdas and where they are called."""
+    """V2's binding survives in the retained plan; both layouts share one viewport."""
     problems = []
 
     def need(condition, message):
@@ -425,24 +441,20 @@ def check_v2_structure(leaf):
         need(leaf.count(line + "\n") == 1, "import: " + line)
     need(leaf.count(FLAG_READ) == 1, "the flag read")
     need(leaf.count(EFFECTIVE) == 1, "the effective layout")
-    need(leaf.count("DESKTOP_PLAYER_OVERLAY_AVAILABLE") == 1, "the overlay availability is read once")
-    need(len(re.findall(r"\.playerLayout\b", source.mask_kotlin(leaf))) == 1, "player_layout is read exactly once")
-    need(len(re.findall(r"\blegacyChrome\b", source.mask_kotlin(leaf))) == 4,
-         "legacyChrome is defined once, gates the strip and the bar, and feeds the shortcut binding (slice V6)")
+    need(not carrier_problems(leaf)['layout-source'], "both effective-layout calculations use the same store and capability")
     for opener, call in ((STRIP_OPEN, STRIP_CALL), (BAR_OPEN, BAR_CALL), (PANEL_OPEN, PANEL_CALL)):
         need(leaf.count(opener) == 1, "lambda defined once: " + opener)
         need(leaf.count(call) == 1, "lambda called once: " + call)
-        if leaf.count(opener) == 1 and leaf.count(call) == 1:
-            need(leaf.index(opener) < leaf.index(call), "defined before it is called: " + opener)
-    order = [EFFECTIVE, "val controls = DesktopPlayerControlsBinding(", "BoxWithConstraints(Modifier.fillMaxSize().padding(if (fullscreen)",
-             STRIP_OPEN, STRIP_CALL, "BoxWithConstraints(Modifier.fillMaxWidth().weight(1f).background(Color.Black)) {",
-             "if (bootstrapError != null || playback.error != null) failureContent()", BAR_OPEN, BAR_CALL, PANEL_OPEN, PANEL_CALL,
-             "audioLanguageMenu?.takeIf { shell.playback.isAudioSelectionCurrent(it) }"]
+    order = ["val plan = resources.content(panelState)", "DesktopWindowsVideoDetailsDockRow(", EFFECTIVE, PANEL_CALL,
+             "plan.afterLayout()", "fun RowScope.DesktopWindowsVideoPlayerStage(", STRIP_CALL, "viewport {", "status()", BAR_CALL,
+             "val controls = DesktopPlayerControlsBinding(", STRIP_OPEN, "viewport = { desktopChrome ->", BAR_OPEN, PANEL_OPEN]
     if all(item in leaf for item in order):
         indices = [leaf.index(item) for item in order]
         need(indices == sorted(indices), "composition order of the flag, the binding, the strip, the video, the bar and the panel")
     else:
         problems.append("an order anchor is missing")
+    need(leaf.count('viewport {') == 1, 'one retained viewport invocation')
+    need(leaf.count('if (chromeVisible && !legacy) {') == 1, 'DESKTOP chrome has its own branch')
     for opener in (STRIP_OPEN, BAR_OPEN, PANEL_OPEN):
         if leaf.count(opener) != 1:
             continue
@@ -453,6 +465,85 @@ def check_v2_structure(leaf):
         scoped = re.findall(r"\.(weight|align|alignBy|alignByBaseline|matchParentSize|animateItem)\(", body)
         need(scoped == (["weight"] if opener == STRIP_OPEN else []), "scope-bound modifiers inside %s: %s" % (opener, scoped))
     return problems
+
+
+def braced_block(text, opener):
+    """Balanced Kotlin scope, with braces inside strings/comments masked."""
+    code = source.mask_kotlin(text)
+    start = text.index(opener)
+    begin = code.index('{', start)
+    depth = 0
+    for end in range(begin, len(code)):
+        depth += (code[end] == '{') - (code[end] == '}')
+        if depth == 0:
+            return text[begin:end + 1]
+    raise AssertionError('unclosed scope: ' + opener)
+
+
+def carrier_problems(leaf):
+    """Production carrier invariants absent from the fake native resources in the scene test."""
+    result = {key: [] for key in ('placement', 'hit-regions', 'subtitles', 'layout-source')}
+
+    def need(key, condition, message):
+        if not condition:
+            result[key].append(message)
+
+    try:
+        viewport = braced_block(leaf, 'viewport = { desktopChrome ->')
+        native = braced_block(viewport, 'DesktopVideoCommandPopup(viewportSize, {')
+        content = braced_block(native, 'Box(Modifier.fillMaxSize()) {')
+        active = braced_block(viewport, 'if (active && !pipActive) {')
+        after_native = viewport[viewport.index(active) + len(active):]
+        pip = braced_block(after_native, 'else {')
+        need('placement', viewport.count('DesktopVideoCommandPopup(') == 1 and
+             '}, native.surface)' in active, 'one native foreground carrier')
+        need('placement', native.count('desktopChrome()') == content.count('desktopChrome()') == 1,
+             'chrome belongs once to the popup content BoxScope')
+        need('placement', content.index('actions.overlay()') < content.index('desktopChrome()') <
+             content.index('VideoSubtitleOverlayHost('), 'chrome follows overlays and precedes subtitles')
+        need('placement', pip.count('desktopChrome()') == 1 and viewport.count('desktopChrome()') == 2,
+             'one additional invocation in the PiP fallback, none elsewhere')
+    except (ValueError, AssertionError) as error:
+        result['placement'].append(str(error))
+
+    try:
+        stage = braced_block(leaf, 'fun RowScope.DesktopWindowsVideoPlayerStage(')
+        desktop = braced_block(stage, 'if (chromeVisible && !legacy) {')
+        for edge, control in (('Top', 'header'), ('Bottom', 'controls')):
+            # The region and its control must belong to the same Box, on the intended edge.
+            box = braced_block(desktop, 'Box(Modifier.align(Alignment.' + edge + 'Center)')
+            modifier = desktop[desktop.index('Box(Modifier.align(Alignment.' + edge + 'Center)'):desktop.index(box)]
+            need('hit-regions', '.desktopCommandHitRegion("desktop-player-' + control + '")' in modifier and
+                 model.squash(box) == '{ ' + control + '() }' and
+                 leaf.count('.desktopCommandHitRegion("desktop-player-' + control + '")') == 1,
+                 'one owned region for ' + control)
+    except (ValueError, AssertionError) as error:
+        result['hit-regions'].append(str(error))
+
+    squashed = model.squash(source.mask_kotlin(leaf))
+    reserve = ('val reservedBottomPx = if (!legacyChrome && chromeVisible) '
+               'overlayControlsHeightPx + with(density) { 24.dp.roundToPx() } else 0')
+    need('subtitles', reserve in squashed and squashed.count('val reservedBottomPx =') == 1,
+         'reserve measured controls plus padding only for visible DESKTOP chrome')
+    need('subtitles', 'Box(Modifier.fillMaxSize().padding(bottom = with(density) { reservedBottomPx.toDp() }))' in squashed,
+         'subtitle host uses the reserved padding')
+    need('subtitles', 'playerViewportSize = IntSize(viewportSize.width, (viewportSize.height - reservedBottomPx).coerceAtLeast(0))' in squashed,
+         'subtitle drag viewport subtracts the identical reserve')
+    need('subtitles', squashed.count('reservedBottomPx') == 3 and
+         'controls = { Box(Modifier.onSizeChanged { overlayControlsHeightPx = it.height })' in squashed,
+         'one measured controls height and exactly the two reserve consumers')
+
+    for variable in ('settings', 'windowsUxSettings'):
+        need('layout-source', leaf.count('val ' + variable + ' by LocalDesktopWindowsUx.current.settings.collectAsState()') == 1,
+             variable + ' reads the same local store')
+        call = 'desktopPlayerEffectiveLayout(' + variable + '.playerLayout, DESKTOP_PLAYER_OVERLAY_AVAILABLE)'
+        need('layout-source', leaf.count(call) == 1, variable + ' uses the canonical selection rule and capability')
+    need('layout-source', squashed.count('desktopPlayerEffectiveLayout(') == 2 and
+         squashed.count('DESKTOP_PLAYER_OVERLAY_AVAILABLE') == 2 and
+         len(re.findall(r'\.playerLayout\b', squashed)) == 2, 'no third or diverging layout calculation')
+    need('layout-source', 'val legacyChrome = desktopPlayerEffectiveLayout(windowsUxSettings.playerLayout, DESKTOP_PLAYER_OVERLAY_AVAILABLE) == DesktopWindowsUxPlayerLayout.LEGACY' in squashed,
+         'carrier subtitle/shortcut layout agrees with the stage')
+    return result
 
 
 def check_routes(leaf):
@@ -497,7 +588,7 @@ def check_construction(leaf):
 class LeafIdentityTest(unittest.TestCase):
     def test_the_hunks_are_anchored_and_each_block_occurs_once(self):
         self.assertEqual(10, len(HUNKS))
-        text = LEAF_TEXT
+        text = reverse_consumer(LEAF_TEXT)
         for label, before, after in HUNKS:
             self.assertEqual(1, text.count("\n".join(after)), label)
             self.assertEqual(before[0], after[0], label + ": the first line is unchanged context")
@@ -571,11 +662,15 @@ class LeafStructureTest(unittest.TestCase):
         self.assertEqual([], check_must_keep(LEAF_TEXT))
         self.assertEqual(BAR_ARGUMENTS, argument_names(LEAF_TEXT, "DesktopWindowsVideoControlBar("))
 
-    def test_desktop_has_no_branch_of_its_own_yet(self):
-        # The only mention of the DESKTOP layout in the leaf is the import of the enum for the LEGACY comparison.
+    def test_desktop_and_legacy_share_the_retained_stage(self):
         code = source.mask_kotlin(LEAF_TEXT)
         self.assertNotIn("UxPlayerLayout.DESKTOP", code)
-        self.assertEqual(1, code.count("DesktopWindowsUxPlayerLayout.LEGACY"))
+        self.assertEqual(2, code.count("DesktopWindowsUxPlayerLayout.LEGACY"))
+        self.assertEqual(1, code.count('if (chromeVisible && !legacy) {'))
+        self.assertEqual(1, code.count('viewport {'))
+        self.assertEqual(1, code.count(STRIP_CALL))
+        self.assertEqual(1, code.count(BAR_CALL))
+        self.assertEqual(1, code.count(PANEL_CALL))
         for needle in ("DesktopPlayerOverlay(", "DesktopPlayerInputLayer(", "DesktopPlayerInputProbe", "DesktopWindowsCarrierScaleInput",
                        "DesktopFlyout"):
             self.assertNotIn(needle, code, needle)
@@ -705,7 +800,7 @@ class SelectionSourceTest(unittest.TestCase):
 
     def test_the_kotlin_function_is_the_model(self):
         squashed = model.squash(self.TEXT)
-        self.assertIn("internal const val DESKTOP_PLAYER_OVERLAY_AVAILABLE = false", squashed)
+        self.assertIn("internal const val DESKTOP_PLAYER_OVERLAY_AVAILABLE = true", squashed)
         self.assertIn("internal fun desktopPlayerEffectiveLayout( requested: DesktopWindowsUxPlayerLayout, overlayAvailable: Boolean, ): "
                       "DesktopWindowsUxPlayerLayout = if (requested == DesktopWindowsUxPlayerLayout.DESKTOP && overlayAvailable) "
                       "DesktopWindowsUxPlayerLayout.DESKTOP else DesktopWindowsUxPlayerLayout.LEGACY", squashed)
@@ -724,9 +819,8 @@ class SelectionSourceTest(unittest.TestCase):
     def test_the_settings_row_of_the_flag_is_on_exactly_when_an_overlay_exists(self):
         selection = re.search(r"\ninternal const val DESKTOP_PLAYER_OVERLAY_AVAILABLE = (true|false)\n", self.TEXT).group(1)
         settings = model.read(model.SETTINGS_KT)
-        row = re.search(r"private const val PLAYER_LAYOUT_HAS_CONSUMER = (true|false)\n", settings).group(1)
-        self.assertEqual(selection, row)
-        self.assertEqual("false", row)
+        self.assertIn('private const val PLAYER_LAYOUT_HAS_CONSUMER = DESKTOP_PLAYER_OVERLAY_AVAILABLE\n', settings)
+        self.assertEqual("true", selection)
 
     def test_the_leaf_is_the_only_reader_of_the_flag_outside_the_store_and_the_settings_group(self):
         readers = []
@@ -786,6 +880,63 @@ class JvmTestsTest(unittest.TestCase):
         self.assertEqual(sorted(positions), positions, "the rig names the parameters in the declared order")
 
 
+class CarrierSourceTest(unittest.TestCase):
+    def test_chrome_is_inside_the_native_popup_and_pip_fallback(self):
+        self.assertEqual([], carrier_problems(LEAF_TEXT)['placement'])
+
+    def test_header_and_controls_own_their_hit_regions(self):
+        self.assertEqual([], carrier_problems(LEAF_TEXT)['hit-regions'])
+
+    def test_subtitle_padding_and_drag_viewport_use_the_same_reserve(self):
+        self.assertEqual([], carrier_problems(LEAF_TEXT)['subtitles'])
+
+    def test_resource_and_stage_effective_layouts_have_one_source(self):
+        self.assertEqual([], carrier_problems(LEAF_TEXT)['layout-source'])
+
+
+# These transformations are also applied to the final head by the delivery runner,
+# which runs CarrierSourceTest unchanged and must exit nonzero for each mutant.
+CARRIER_MUTATIONS = {
+    'placement': ('\n                                    desktopChrome()\n', '\n'),
+    'hit-regions': ('.desktopCommandHitRegion("desktop-player-controls")', '.desktopCommandHitRegion("other-controls")'),
+    'subtitles': ('viewportSize.height - reservedBottomPx', 'viewportSize.height'),
+    'layout-source': ('windowsUxSettings.playerLayout, DESKTOP_PLAYER_OVERLAY_AVAILABLE)', 'windowsUxSettings.playerLayout, false)'),
+}
+
+
+class CarrierMutationTest(unittest.TestCase):
+    def test_each_carrier_mutant_is_caught_by_its_own_check(self):
+        for key, (before, after) in CARRIER_MUTATIONS.items():
+            with self.subTest(key=key):
+                self.assertEqual(1, LEAF_TEXT.count(before))
+                changed = LEAF_TEXT.replace(before, after, 1)
+                problems = carrier_problems(changed)
+                self.assertTrue(problems[key], key)
+                self.assertEqual([], [other for other, errors in problems.items() if other != key and errors])
+
+    def test_native_order_duplication_pip_and_region_swaps_are_caught(self):
+        mutations = (
+            ('placement', 'actions.overlay()\n                                    desktopChrome()', 'desktopChrome()\n                                    actions.overlay()'),
+            ('placement', '                                    desktopChrome()', '                                    desktopChrome()\n                                    desktopChrome()'),
+            ('placement', '\n                            desktopChrome()\n', '\n'),
+            ('hit-regions', 'desktop-player-header', 'desktop-player-controls'),
+            ('subtitles', 'if (!legacyChrome && chromeVisible)', 'if (!legacyChrome)'),
+            ('subtitles', 'overlayControlsHeightPx + with(density)', '0 + with(density)'),
+        )
+        for key, before, after in mutations:
+            with self.subTest(key=key, anchor=before):
+                self.assertEqual(1, LEAF_TEXT.count(before))
+                self.assertTrue(carrier_problems(LEAF_TEXT.replace(before, after, 1))[key])
+
+    def test_the_consumer_chain_restores_its_exact_base(self):
+        self.assertEqual('d29d06bb00631b5da9c151b270625cd082a7fddf', CONSUMER_RECORD['base'])
+        self.assertEqual(CONSUMER_RECORD['leaf_sha256'], sha256(reverse_consumer(LEAF_TEXT)))
+        for label, _before, after in CONSUMER_HUNKS:
+            self.assertEqual(1, LEAF_TEXT.count('\n'.join(after)), label)
+        with self.assertRaises(AssertionError):
+            reverse_consumer(LEAF_TEXT.replace('desktop-player-header', 'other-header', 1))
+
+
 class MutationTest(unittest.TestCase):
     def mutated(self, old, new, count=1):
         self.assertIn(old, LEAF_TEXT, "the mutation anchor is gone: " + old)
@@ -798,11 +949,11 @@ class MutationTest(unittest.TestCase):
             self.assertEqual([], check(LEAF_TEXT), check.__name__)
 
     def test_a_bar_that_is_shown_in_any_layout_is_found(self):
-        self.assertTrue(check_v2_structure(self.mutated(BAR_CALL, "if (chromeVisible) legacyControlBar()")))
-        self.assertTrue(check_v2_structure(self.mutated(STRIP_CALL, "if (chromeVisible) legacyTopStrip()")))
+        self.assertTrue(check_v2_structure(self.mutated(BAR_CALL, "if (chromeVisible) controls()")))
+        self.assertTrue(check_v2_structure(self.mutated(STRIP_CALL, "if (chromeVisible) header()")))
 
     def test_a_panel_that_is_gated_on_the_legacy_layout_is_found(self):
-        self.assertTrue(check_v2_structure(self.mutated(PANEL_CALL, "if (detailsOpen && legacyChrome) detailsPanel()")))
+        self.assertTrue(check_v2_structure(self.mutated(PANEL_CALL, PANEL_CALL.replace('dock.mounted', 'dock.mounted && legacyChrome'))))
 
     def test_a_lambda_that_is_never_called_or_called_before_it_is_defined_is_found(self):
         self.assertTrue(check_v2_structure(self.mutated(BAR_CALL, "")))
@@ -838,9 +989,13 @@ class MutationTest(unittest.TestCase):
         self.assertNotEqual(BASE_SHA256, sha256(reverse_apply(edited)))
 
     def test_a_hunk_that_no_longer_matches_is_reported_by_name(self):
-        edited = self.mutated("if (chromeVisible && legacyChrome) legacyTopStrip()", "if (chromeVisible && legacyChrome) legacyTopStrip(1)")
+        edited = self.mutated(STRIP_CALL, "if (chromeVisible && legacy) header(1)")
+        with self.assertRaisesRegex(AssertionError, "TON1592 retained stage/carrier hunk 2"):
+            reverse_consumer(edited)
+        # Keep exercising the historical chain too. Its existing SideEffect
+        # mismatch must remain visible after the new consumer layer is undone.
         with self.assertRaises(AssertionError) as caught:
-            reverse_apply(edited)
+            reverse_apply(LEAF_TEXT)
         self.assertIn("top strip lambda closes and is called", str(caught.exception))
 
     def test_a_binding_member_that_drifts_from_the_original_lambda_is_found(self):
