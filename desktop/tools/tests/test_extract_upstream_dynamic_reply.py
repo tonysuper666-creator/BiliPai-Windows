@@ -4,6 +4,8 @@ import sys
 import tempfile
 import unittest
 
+from desktop.tools.legacy_read_point import legacy_read_point
+
 
 REPO = Path(__file__).resolve().parents[3]
 TOOL = REPO / "desktop/tools/extract-upstream-dynamic-reply.py"
@@ -13,7 +15,7 @@ LEGACY_AICU = Path("com/android/purebilibili/feature/aicu/DesktopOriginalReplyAi
 class DynamicReplyFreshGenerationTest(unittest.TestCase):
     def generate(self, output):
         return subprocess.run(
-            [sys.executable, "-B", str(TOOL), "--repo", str(REPO), "--output", str(output)],
+            [sys.executable, "-B", str(TOOL), "--repo", str(legacy_read_point(REPO, "app/src/main/java/com/android/purebilibili/feature/video/ui/components/ReplyComponents.kt")), "--output", str(output)],
             cwd=output.parent,
             capture_output=True,
             text=True,
