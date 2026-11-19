@@ -210,15 +210,32 @@ def fixed(repo):
     return sources, manifest
 
 
+# The checkout these tools belong to. Gradle declares its archive as the input (inputs.dir, relative to desktop/) while
+# it passes the producers the pinned legacy read point as --repo, so the two copies are different paths.
+LIVE_REPO = Path(__file__).resolve().parents[2]
+
+
+def protected_archives(repo):
+    """Every copy of the archive an output must never touch: the one read from `repo` for the source identity, and
+    the live one next to these tools. They are one path when `repo` is this checkout."""
+    roots = []
+    for base in (Path(repo), LIVE_REPO):
+        root = (base / ARCHIVE).resolve()
+        if root not in roots:
+            roots.append(root)
+    return roots
+
+
 def validate_outputs(repo, *outputs):
     fixed(repo)
-    root = (Path(repo) / ARCHIVE).resolve()
+    roots = protected_archives(repo)
     for output in outputs:
         if output is None:
             continue
         target = Path(output).resolve()
-        need(not (target.is_relative_to(root) or root.is_relative_to(target)),
-             'Output overlaps the v0.4.6 listen closure inputs')
+        for root in roots:
+            need(not (target.is_relative_to(root) or root.is_relative_to(target)),
+                 'Output overlaps the v0.4.6 listen closure inputs')
 
 
 def restore(value, proof):
