@@ -1,6 +1,7 @@
 package com.bilipai.desktop.ui
 
 import androidx.compose.ui.input.key.*
+import com.bilipai.desktop.player.*
 import java.awt.Canvas
 import java.awt.EventQueue
 import kotlin.test.*
@@ -38,10 +39,23 @@ class DesktopWindowsVideoEscapeInputTest {
         f.input.close(); fallback.close()
     }
 
-    @Test fun editorRetainsEscapeEvenWhenVideoIsFullscreenOrHasAnOverlay() = edt {
-        val f = Fixture(); f.editor = true; f.fullscreen = true; f.overlay = true
+    @Test fun editorRetainsEscapeWhenVideoIsFullscreenWithoutAnOverlay() = edt {
+        val f = Fixture(); f.editor = true; f.fullscreen = true
         assertTrue(f.input.onKey(key()))
-        assertTrue(f.effects.isEmpty()); assertTrue(f.fullscreen); assertTrue(f.overlay)
+        assertTrue(f.effects.isEmpty()); assertTrue(f.fullscreen); assertFalse(f.overlay)
+    }
+
+    @Test fun topOverlayClosesBeforeEditorForBothEscapeEntrypoints() = edt {
+        for (native in listOf(false, true)) {
+            val f = Fixture(allowNative = native)
+            f.editor = true; f.overlay = true; f.fullscreen = true
+            val consumed = if (native) f.input.onNative(MpvNativeWindowInputEvent(
+                f.lease, MpvNativeWindowInputKind.ESCAPE, System.nanoTime(),
+            )) else f.input.onKey(key())
+            assertTrue(consumed)
+            assertEquals(listOf("overlay"), f.effects)
+            assertFalse(f.overlay); assertTrue(f.fullscreen)
+        }
     }
 
     @Test fun topOverlayClosesBeforeFullscreenAndHeldPressCannotCascade() = edt {
@@ -70,7 +84,10 @@ class DesktopWindowsVideoEscapeInputTest {
         assertEquals(listOf("fullscreen", "back"), f.effects)
     }
 
-    private class Fixture {
+    private class Fixture(private val allowNative: Boolean = false) {
+        val lease = MpvNativeWindowInputLease(
+            OwnedPlaybackSourceSnapshot(7L, PlaybackSource("file:///ton1378-fixture.mp4")), 11L, 42L,
+        )
         var current = true; var window = true; var editor = false
         var overlay = false; var fullscreen = false
         var backAccepted = true
@@ -79,7 +96,10 @@ class DesktopWindowsVideoEscapeInputTest {
             current = { current }, windowCurrent = { window }, textEditorFocused = { editor },
             closeTopOverlay = { if (overlay) { overlay = false; effects += "overlay"; true } else false },
             fullscreen = { fullscreen }, leaveFullscreen = { fullscreen = false; effects += "fullscreen" },
-            requestBack = { effects += "back"; backAccepted }, admitNative = { error("AWT called native admission") },
+            requestBack = { effects += "back"; backAccepted }, admitNative = { event ->
+                check(allowNative) { "AWT called native admission" }
+                event.lease === lease
+            },
         )
     }
 
